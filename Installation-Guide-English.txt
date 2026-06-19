@@ -1,0 +1,151 @@
+SkuAddon - Installation Guide
+
+
+What is Sku?
+Sku is an addon for World of Warcraft. It makes the game playable for blind and
+visually impaired people through a screen reader (NVDA or JAWS). This guide is for
+the Anniversary version of The Burning Crusade, game version 2.5.5.
+
+Please read first:
+Installing Sku is NOT possible for fully blind screen reader users on their own.
+At a few points - login screens, the license agreement, enabling the addons -
+sighted help is needed. This can also be done remotely, for example via stream or
+TeamViewer. The affected steps are clearly marked below.
+
+A tip for the whole process: only ever do one download or one copy operation at a
+time. Go step by step, that avoids mistakes.
+
+
+Overview of the steps
+1. Create a Battle.net account and take out a subscription.
+2. Install the game and start it once (sighted help).
+3. Download the Sku addons and copy them into the AddOns folder.
+4. Enable the addons in the game (sighted help).
+5. Make the first settings.
+6. Set up the login tool - then you are ready to play.
+
+
+Step 1: Account and game subscription
+- Create a game account for World of Warcraft on battle.net and take out the
+monthly subscription.
+- Install the Battle.net app and log in.
+
+
+Step 2: Install the game and start it once (sighted help needed)
+Some of this can be done blind, but not everything. Plan for support here.
+- When logging in, if possible, tick the "Keep me logged in" box. It is not
+available on every system, but should be set.
+- In the Battle.net app, find the game "World of Warcraft Classic" and download the
+client.
+- Set the correct game version: Anniversary, The Burning Crusade, version 2.5.5.
+- Click "Play".
+- On start there is often a second login screen. This one cannot be used with
+screen readers. Log in here - and be sure to tick the box for automatic login or
+"do not ask again".
+- Choose the server.
+- The character creation appears. Create a character, enter a name and press Enter.
+- Now the license agreement comes up (help is needed again): the text must be
+scrolled all the way to the end - with the mouse wheel downward or with the slider
+on the right side. Only then does the "Accept" button become clickable; before
+that it is greyed out. Click "Accept" and log in once.
+- As soon as the game world appears and your character is standing there, log out
+again: press ESC and choose "Log out", or type /logout and press Enter.
+- When the character screen is back, the game is correctly installed.
+
+
+Step 3: Download the Sku addons and copy them into the AddOns folder
+Go to the Sku homepage and follow the instructions there. It always shows what you
+need and in which version:
+https://sku75.github.io/Sku-WoW-Addon-TBC/
+
+You need these downloads:
+- Sku - the main addon.
+- SkuBeaconSoundsets - provides the sounds and beacons. Without this addon the
+sounds stay silent. So it is mandatory.
+- one language pack - exactly one: German, English or German fast.
+
+How to proceed:
+- Download the files one at a time, not all at once. Afterwards the ZIP files are
+in your Downloads folder.
+- Unzip each ZIP file.
+- Copy the three unzipped folders side by side into the AddOns folder of WoW, that
+is as three separate folders directly in the AddOns folder, not inside each other.
+Make sure you insert folders and not ZIP files. The default path is:
+C:\Program Files (x86)\World of Warcraft\_anniversary_\Interface\AddOns\
+- Afterwards the AddOns folder contains, side by side: Sku, SkuBeaconSoundsets and
+your language pack (a SkuAudioData folder).
+
+Note on updating: in future, when updating you only need to replace the Sku addon.
+
+
+Step 4: Enable the addons in the game (sighted help needed)
+- Start the game via Battle.net: on the "World of Warcraft Classic" tab press
+Enter, then you land on "Play". The announcement should read: "Play, Anniversary of
+Burning Crusade, version 2.5.5 ...". If the version is wrong, you can find the
+dropdown lists with Shift+Tab and set the correct version.
+- After "Play" the server is usually chosen automatically. At the login screen
+press Enter.
+- When you are in the game and the character is visible: press ESC, open the menu,
+click "AddOns".
+- Tick all Sku addons. They may be marked red as "out of date" - that is fine.
+- At the top of the window tick the box "Load out of date AddOns".
+- Click "Reload UI" at the bottom. The game performs a reload.
+
+After the reload Sku is active and the speech output can be heard.
+Test: press Shift+F1. The Sku menu should open, "Navigation" is announced. ESC
+closes it again. Sighted people see the menu as a black bar at the top of the
+screen.
+
+
+Step 5: First settings and important notes
+
+Attention: during play you will get a script prompt.
+The first time you use an item, WoW asks: "You are about to run a script. It could
+cause you to lose gold or items. Run anyway, yes or no?" Confirm with Yes. This is
+normal and the basis of Sku: instead of clicking with the mouse, we trigger buttons
+via key presses (scripts).
+
+Set key bindings to default (important as a new user):
+Open the Sku menu with Shift+F1. Then:
+- Go down with the arrow keys to the Core menu and into it with arrow right.
+- Go down to "Game Key binds", then right to the option to reset all keys to
+default and confirm.
+- Go back into the Core menu, there to "Sku key binds", right, and likewise restore
+the default.
+That activates the Sku key bindings.
+
+
+Step 6: Set up the login tool
+The WoW login screens cannot be used with screen readers. So that you can log in
+yourself in future and create or delete characters, you set up the WoW login tool
+at the end.
+- Install AutoHotkey from autohotkey.com.
+- Download the login tool from the Sku homepage (it is linked there):
+https://sku75.github.io/Sku-WoW-Addon-TBC/
+- Unzip it and follow the included readme file. It describes step by step which
+folders and files (including the start menu) you have to copy where. Do exactly
+that.
+- Start the login tool via its program file. ALT+ESC quits the tool. ALT+F1
+switches between menu and game mode - but the tool usually does this automatically.
+- After that you can use the login tool to log in and to create and delete
+characters.
+
+Now you are ready to play.
+
+
+Further notes
+Recommendation: read the key binding text files that come with the Sku addon (in
+the Sku folder as txt files). They contain the default key bindings. There you also
+find the patch notes, always up to date for the version. That is the best source
+for current changes.
+
+
+If something does not work
+- No speech after the reload: check that all Sku addons are really enabled and that
+the "Load out of date AddOns" box was ticked.
+- No sounds or beacons: usually SkuBeaconSoundsets is missing or not enabled.
+Without this addon the sounds stay silent.
+- Very quiet or nothing at all: check the WoW volume.
+
+
+Have fun!
