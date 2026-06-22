@@ -113,6 +113,12 @@ SkuCore.QueryCurrentPage = nil
 SkuCore.QueryMaxPage = nil
 SkuCore.QueryData = {}
 SkuCore.QueryRunning = false
+-- Scanner state machine (see AuctionScanSetState in SECTION 8).
+--   state ∈ { "idle", "waiting", "paging" }
+--   mode  ∈ { "browse", "buy", "getAll" }  (nil while idle)
+-- The QueryRunning / QueryWaitingPage flags are written through SetState and
+-- will be retired once every reader is migrated to read state/mode directly.
+SkuCore.AuctionScan = SkuCore.AuctionScan or { state = "idle", mode = nil }
 SkuCore.QueryCallback = nil
 SkuCore.QueryBuyData = nil
 SkuCore.QueryBuyType = nil
@@ -2948,13 +2954,58 @@ end
 -- planned "2b" state-machine refactor targets.
 -- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Single source of truth for the scanner's lifecycle. Collapses the scattered
+-- QueryRunning / QueryWaitingPage booleans into one named state so illegal
+-- combinations are unrepresentable and every transition is logged in one place.
+--   "idle"    — no scan in flight
+--   "waiting" — a page (or getAll) query is out, awaiting its complete response
+--   "paging"  — a page was fully ingested; more pages remain; awaiting the
+--               throttle before the ticker sends the next page
+-- aMode (optional) records what kind of scan is running: "browse" | "buy" |
+-- "getAll" (cleared to nil on idle). Post-scan history serialization is tracked
+-- separately by QuerySerializeRunning — it runs after the scan is already idle.
+-- NOTE: during the strangler migration this still writes through the legacy
+-- QueryRunning / QueryWaitingPage booleans (the authoritative guards until the
+-- readers are migrated), so behaviour is identical.
+function SkuCore:AuctionScanSetState(aState, aMode)
+   local SC = SkuCore.AuctionScan
+   local tPrev = SC.state
+   SC.state = aState
+   if aState == "idle" then
+      SC.mode = nil
+   elseif aMode ~= nil then
+      SC.mode = aMode
+   end
+
+   if aState == "idle" then
+      SkuCore.QueryRunning = false
+      SkuCore.QueryWaitingPage = nil
+   elseif aState == "waiting" then
+      SkuCore.QueryRunning = true
+      SkuCore.QueryWaitingPage = true
+   elseif aState == "paging" then
+      SkuCore.QueryRunning = true
+      SkuCore.QueryWaitingPage = false
+   end
+
+   if tPrev ~= aState and SkuErrorLog and SkuErrorLog.Log then
+      pcall(function()
+         SkuErrorLog:Log("auction.scan", "state", {
+            from = tPrev, to = aState, mode = SC.mode,
+            page = SkuCore.QueryCurrentPage, maxPage = SkuCore.QueryMaxPage,
+         })
+      end)
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseResetQuery(aForce)
    dprint("AuctionHouseResetQuery")
    if SkuCore.QueryRunning == true and SkuCore.QueryData[7] == true and aForce ~= true then
       return
    end
 
-   SkuCore.QueryRunning = false
+   SkuCore:AuctionScanSetState("idle")
    SkuCore.QueryCurrentType = ""
    SkuCore.QueryCurrentPage = nil
    SkuCore.QueryMaxPage = nil
@@ -2964,7 +3015,6 @@ function SkuCore:AuctionHouseResetQuery(aForce)
    -- es darf nichts mehr angehängt werden (Host/Flag weg).
    SkuCore.QueryResultsPartialReady = nil
    SkuCore.QueryResultsHost = nil
-   SkuCore.QueryWaitingPage = nil
    --[[
    SkuCore.QueryBuyData = nil
    SkuCore.QueryBuyType = nil
@@ -3117,14 +3167,16 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
       return false
    end
 
-   SkuCore.QueryRunning = true
    -- Genau EINE vollständige Antwort pro abgesetzter Seiten-Query einlesen.
    -- AUCTION_ITEM_LIST_UPDATE feuert pro Server-Antwort MEHRFACH (Streaming).
    -- Ohne diese Sperre wurde dieselbe Seite doppelt eingelesen (doppelte
    -- Einträge / inflationierte Stückzahlen) und teils die Folgeseite
-   -- übersprungen. Wird im LIST-Handler nach erfolgreichem Einlesen wieder
-   -- auf false gesetzt; die nächste Seiten-Query setzt es erneut auf true.
-   SkuCore.QueryWaitingPage = true
+   -- übersprungen. "waiting" sperrt das; der LIST-/BUY-Handler wechselt nach
+   -- erfolgreichem Einlesen auf "paging", die nächste Seiten-Query kehrt
+   -- nach "waiting" zurück.
+   local tMode = (SkuCore.QueryData[tQAIindex.getAll] == true) and "getAll"
+      or (SkuCore.QueryBuyData ~= nil) and "buy" or "browse"
+   SkuCore:AuctionScanSetState("waiting", tMode)
    return true
 end
 
@@ -3365,7 +3417,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          end
          -- Seite vollständig eingelesen → weitere Events DERSELBEN Antwort
          -- ignorieren, bis die nächste Seiten-Query abgesetzt wurde.
-         SkuCore.QueryWaitingPage = false
+         SkuCore:AuctionScanSetState("paging")
 
          -- Inkrementelle Darstellung: erste vollständige Seite SOFORT
          -- zeigen, weitere Seiten still anhängen (append-only), damit der
@@ -3508,7 +3560,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
    end
    -- Seite vollständig → genau EINMAL verarbeiten (weitere Events derselben
    -- Antwort ignorieren, bis die nächste Kauf-Query abgesetzt wurde).
-   SkuCore.QueryWaitingPage = false
+   SkuCore:AuctionScanSetState("paging")
 
    -- Bei wiederholten Fehlschlägen (No-Op) NICHT dieselbe Auktion erneut
    -- versuchen: failCount = bisherige Fehlschläge → so viele passende
@@ -3585,7 +3637,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
                })
             end)
          end
-         SkuCore.QueryRunning = false
+         SkuCore:AuctionScanSetState("idle")
 
          -- Gesamte Bestätigungs-Sequenz (Typ 1 = Gebot, Typ 2 = Kauf)
          -- läuft jetzt durch die zentrale State-Machine
