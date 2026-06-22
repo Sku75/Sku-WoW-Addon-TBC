@@ -1,4 +1,32 @@
-﻿---------------------------------------------------------------------------------------------------------------------------------------
+﻿-- ===========================================================================
+-- auctionHouse.lua — Sku Auction House feature (TBC Anniversary, legacy AH API)
+-- ---------------------------------------------------------------------------
+-- TABLE OF CONTENTS   (search for "SECTION n" to jump to a section)
+--   SECTION 1 — Locals, constants & shared state
+--   SECTION 2 — Session lifecycle & AH open/close events
+--   SECTION 3 — Buying & bidding
+--   SECTION 4 — Voice, formatting & dialog helpers
+--   SECTION 5 — Strategy buy
+--   SECTION 6 — Menu builders
+--   SECTION 7 — Result list building
+--   SECTION 8 — Scanner / query engine & auction result events
+--   SECTION 9 — Price data & history
+-- ---------------------------------------------------------------------------
+-- Ordering note: this is a single deliberately-sectioned file. A few file-local
+-- upvalues constrain the order — keep these invariants when moving code:
+--   * SECTION 1 (shared locals) must stay first.
+--   * SECTION 3 defines _ABBuyGiveUp / AuctionBuyConfirm, used by the buy
+--     result handler in SECTION 8 — SECTION 3 must precede SECTION 8.
+--   * SECTION 4 defines Median, used by the price history in SECTION 9 —
+--     SECTION 4 must precede SECTION 9.
+-- ===========================================================================
+
+-- ===========================================================================
+-- SECTION 1 — LOCALS, CONSTANTS & SHARED STATE
+-- Module names, the field-index maps (tQAIindex / tAIDIndex), sort modes,
+-- scan/ticker tunables, the Query* scanner state and the result/history DBs.
+-- ===========================================================================
+---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "AuctionHouse"  
 local L = Sku.L
 local _G = _G
@@ -100,6 +128,12 @@ local OwnDB = {}
 
 local OnEnterAllFlag = nil
 
+-- ===========================================================================
+-- SECTION 2 — SESSION LIFECYCLE & AH OPEN/CLOSE EVENTS
+-- OnInitialize registers the AH events and creates the scan/serialize ticker
+-- (OnUpdate watchdog for both getAll and paged scans). OnLogin restores the
+-- saved price history. AUCTION_HOUSE_SHOW/CLOSED handle entering/leaving an AH.
+-- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseOnInitialize()
    SkuCore:RegisterEvent("AUCTION_HOUSE_SHOW")
@@ -244,6 +278,51 @@ function SkuCore:AuctionHouseOnLogin()
    SkuOptions.db.factionrealm[MODULE_NAME].First31_13Load = true
 end
 
+-- ---------------------------------------------------------------------------
+-- AH open/close session events (fire when the player opens / leaves an AH NPC).
+-- Kept here with the lifecycle hooks; the result-stream events
+-- (AUCTION_*_LIST_UPDATE) live with the scanner in SECTION 8.
+-- ---------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:AUCTION_HOUSE_SHOW()
+   -- this is a temp fix to avoid some blizzard bug
+   PriceDropdown = BrowsePrevPageButton
+   --
+
+   SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime = SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime or 0
+   SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter = {
+      ["LevelMin"] = nil,
+      ["LevelMax"] = nil,
+      ["MinQuality"] = nil,
+      ["Usable"] = nil,
+      ["SortBy"] = 1,
+   }   
+
+   SkuCore.AuctionHouseOpen = true
+   C_Timer.After(0.3, function()
+      SkuOptions:SlashFunc(L["short"]..L[",SkuCore,Auktionshaus"])
+   end)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:AUCTION_HOUSE_CLOSED()
+   SkuCore:AuctionBuyCancel()
+   SkuCore:AuctionHouseResetQuery()
+   -- Kauf-Fehler-/Leerzähler beim Schließen zurücksetzen, damit kein alter
+   -- Zählerstand in einen späteren AH-Besuch übergreift.
+   SkuCore.AuctionBuy.failCount = 0
+   SkuCore.QueryBuyEmptyWaits = 0
+   SkuCore.AuctionHouseOpen = false
+   -- Strategiekauf zurücksetzen bei AH-Schließung
+   SkuCore.StratBuyConfig = {}
+end
+
+-- ===========================================================================
+-- SECTION 3 — BUYING & BIDDING
+-- Buy-confirm state machine (AuctionBuy + _AB* helpers) and the shared
+-- keypress buy (AuctionSecureBuy + _ASB*, AuctionArmKeypressBid,
+-- AuctionBuyConfirm). PlaceAuctionBid is hardware-event gated; see notes below.
+-- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Auction Buy Confirmation State Machine
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -806,40 +885,12 @@ function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
    })
 end
 
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AUCTION_HOUSE_CLOSED()
-   SkuCore:AuctionBuyCancel()
-   SkuCore:AuctionHouseResetQuery()
-   -- Kauf-Fehler-/Leerzähler beim Schließen zurücksetzen, damit kein alter
-   -- Zählerstand in einen späteren AH-Besuch übergreift.
-   SkuCore.AuctionBuy.failCount = 0
-   SkuCore.QueryBuyEmptyWaits = 0
-   SkuCore.AuctionHouseOpen = false
-   -- Strategiekauf zurücksetzen bei AH-Schließung
-   SkuCore.StratBuyConfig = {}
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AUCTION_HOUSE_SHOW()
-   -- this is a temp fix to avoid some blizzard bug
-   PriceDropdown = BrowsePrevPageButton
-   --
-
-   SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime = SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime or 0
-   SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter = {
-      ["LevelMin"] = nil,
-      ["LevelMax"] = nil,
-      ["MinQuality"] = nil,
-      ["Usable"] = nil,
-      ["SortBy"] = 1,
-   }   
-
-   SkuCore.AuctionHouseOpen = true
-   C_Timer.After(0.3, function()
-      SkuOptions:SlashFunc(L["short"]..L[",SkuCore,Auktionshaus"])
-   end)
-end
-
+-- ===========================================================================
+-- SECTION 4 — VOICE, FORMATTING & DIALOG HELPERS
+-- Median, coin/price text, item-name formatting, tooltip building, and the
+-- legacy confirm dialog (ConfirmButtonShow). Median is a file-local consumed
+-- by the price-history code in SECTION 9, so this section must precede it.
+-- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function SkuAuctionConfirmOkScript(...) end
 local function SkuAuctionConfirmEscScript(...) end
@@ -1091,6 +1142,12 @@ function SkuCore:AuctionGetPricePerItem(aData)
    return {bid = tPPIBid, buy = tPPIBuy,}
 end
 
+-- ===========================================================================
+-- SECTION 5 — STRATEGY BUY (automated repeated buy up to a price limit)
+-- Self-contained: its own frame (SkuStratBuyFrame) with its own
+-- AUCTION_ITEM_LIST_UPDATE registration, and the tStratSay helper. Reuses the
+-- shared keypress buy (AuctionArmKeypressBid) via its own result handlers.
+-- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- STRATEGIEKAUF (41.02.06e) — Automatischer AH-Kauf mit Preislimit und Retry
 -- Entfernbar: Diesen Block + Menü-Eintrag unten + STRAT_* Locales löschen
@@ -1288,6 +1345,11 @@ end
 -- Ende STRATEGIEKAUF Funktionen
 ---------------------------------------------------------------------------------------------------------------------------------------
 
+-- ===========================================================================
+-- SECTION 6 — MENU BUILDERS
+-- The voice-menu tree: the top-level AH menu, the sell ("Neue Auktion") sub
+-- menu, the full-scan browse menu, and the per-item category browse menu.
+-- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseMenuBuilder()
    --auctions
@@ -2473,6 +2535,12 @@ function SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryInd
 
 end
 
+-- ===========================================================================
+-- SECTION 7 — RESULT LIST BUILDING
+-- Turns the frozen, append-only browse snapshot (QueryResultsDB) into the
+-- spoken results menu: grouping/dedupe, per-entry creation, silent append of
+-- later pages, and the results menu builder.
+-- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Gruppiert QueryResultsDB nach Item-Namen zu einer (nach dem aktuellen
 -- Filter) sortierten Liste eindeutiger Gegenstände, jeder mit seinen
@@ -2872,6 +2940,13 @@ function SkuCore:AuctionHouseResultsMenuBuilder(aParent)
       end
 end
 
+-- ===========================================================================
+-- SECTION 8 — SCANNER / QUERY ENGINE & AUCTION RESULT EVENTS
+-- The paged/getAll query driver (Reset/StartQuery) and the result-stream event
+-- handlers (OWNED / BIDDER / ITEM_LIST_UPDATE, split into the LIST scan path
+-- and the BUY re-find path). This is the boolean-flag-driven scanner that the
+-- planned "2b" state-machine refactor targets.
+-- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseResetQuery(aForce)
    dprint("AuctionHouseResetQuery")
@@ -3565,6 +3640,12 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
    end
 end
 
+-- ===========================================================================
+-- SECTION 9 — PRICE DATA & HISTORY
+-- O(n) per-unit price aggregation, the cross-session AuctionDBHistory fold
+-- (low/median/high), and the combined vendor/current/history price lookup.
+-- Uses Median from SECTION 4.
+-- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Build a { [itemId] = { [1]={bidPerUnit,...}, [2]={buyPerUnit,...} } } table
 -- from an auction source DB in a single O(n) pass. Separated so that the
