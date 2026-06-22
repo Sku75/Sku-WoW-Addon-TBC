@@ -1,0 +1,90 @@
+{
+	"folders": [
+		{
+			"name": ".git",
+			"path": ".git"
+		},
+		{
+			"name": "SkuChat",
+			"path": "SkuChat"
+		},
+		{
+			"name": "SkuCore",
+			"path": "SkuCore"
+		},
+		{
+			"name": "SkuDB",
+			"path": "SkuDB"
+		},
+		{
+			"name": "SkuMob",
+			"path": "SkuMob"
+		},
+		{
+			"name": "SkuNav",
+			"path": "SkuNav"
+		},
+		{
+			"name": "SkuQuest",
+			"path": "SkuQuest"
+		},
+		{
+			"name": "SkuZOptions",
+			"path": "SkuZOptions"
+		},
+		{
+			"name": "SkuAuras",
+			"path": "SkuAuras"
+		},
+		{
+			"name": "SkuAdventureGuide",
+			"path": "SkuAdventureGuide"
+		},
+		{
+			"name": "Libs",
+			"path": "Libs"
+		},
+		{
+			"path": "SkuAudioData"
+		},
+		{
+			"path": "SkuDispatcher"
+		},
+		{
+			"path": "debug"
+		},
+		{
+			"path": "audio"
+		}
+	],
+	"settings": {
+		"Lua.diagnostics.globals": [
+			"SkuNav",
+			"SkuCore",
+			"SkuOptions",
+			"SkuQuest",
+			"SkuDB",
+			"SkuAudiodata",
+			"SkuMob",
+			"SPELL_PERIODIC_HEAL_COMBATLOG_TOOLTIP"
+		],
+		"Lua.diagnostics.disable": [
+			"param-type-mismatch"
+		],
+		"Lua.runtime.version": "Lua 5.1",
+		"Lua.runtime.builtin": {
+			"basic": "disable",
+			"debug": "disable",
+			"io": "disable",
+			"math": "disable",
+			"os": "disable",
+			"package": "disable",
+			"string": "disable",
+			"table": "disable",
+			"utf8": "disable"
+		},
+		"Lua.workspace.library": [
+			"~\\.vscode\\extensions\\ketho.wow-api-0.21.0\\Annotations\\Core"
+		]
+	}
+}

@@ -1,0 +1,2 @@
+# Keep text files LF so diffs/patches stay clean against the upstream release.
+* text=auto eol=lf
