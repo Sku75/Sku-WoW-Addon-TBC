@@ -98,8 +98,6 @@ local BidDB = {}
 local OwnDB = {}
  AuctionDBHistory = {}
 
-local HistoryMaxValues = 500
-
 local OnEnterAllFlag = nil
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -534,6 +532,7 @@ end
 -- wiederherstellen. announce=true spricht die Abbruch-Meldung.
 function SkuCore:AuctionSecureBuyCancel(announce)
    local SB = SkuCore.AuctionSecureBuy
+   local p = SB.p
    local wasActive = SB.active
    SB.active = false
    SB.stage  = nil
@@ -542,7 +541,12 @@ function SkuCore:AuctionSecureBuyCancel(announce)
    SkuCore.AuctionBuy.failCount = 0
    SkuCore.QueryBuyEmptyWaits = 0
    SkuCore:AuctionBuyCancel()
-   if announce and wasActive then
+   -- Abbruch-Handler aus dem Spec (Strategiekauf sagt eigene Meldung an und
+   -- beendet seine Schleife); sonst der Standard-Kaufpfad.
+   if p and p.onCancel then
+      if wasActive then _ABLog("secure buy cancel", {}) end
+      p.onCancel(wasActive)
+   elseif announce and wasActive then
       _ABLog("secure buy cancel", {})
       SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"], true, true, 0.1, nil, nil, nil, 1)
    end
@@ -561,7 +565,10 @@ function SkuCore:AuctionSecureBuyOnCommitted()
    _ABLog("secure buy committed", { gen = gen, itemId = p.expItemId, buyout = p.expBuyout })
    _ABTrack(C_Timer.NewTimer(2, function()
       if SkuCore.AuctionBuy.generation ~= gen then return end
-      if not SkuCore.QueryBuyData then return end
+      -- QueryBuyData gibt es nur im normalen Kaufpfad; der Strategiekauf bringt
+      -- eigene Handler (p.onSuccess) mit und schützt sich selbst über sb.active.
+      -- Daher diesen Abbruch nur für den Standardpfad erzwingen.
+      if not p.onSuccess and not SkuCore.QueryBuyData then return end
       SB.active = false
       local mAfter = (type(GetMoney) == "function") and GetMoney() or 0
       local mDiff = (p.moneyBefore or 0) - mAfter
@@ -571,22 +578,32 @@ function SkuCore:AuctionSecureBuyOnCommitted()
          diff = mDiff, expectedDiff = p.bidAmount, success = ok,
       })
       if ok then
-         SkuCore.AuctionBuy.failCount = 0
-         _ABContinueOrFinish()
+         -- Kauf bestätigt. Erfolgs-Handler aus dem Spec (Strategiekauf bringt
+         -- eigene Logik mit); sonst der Standard-Kaufpfad (weiter/fertig).
+         if p.onSuccess then
+            p.onSuccess(mDiff)
+         else
+            SkuCore.AuctionBuy.failCount = 0
+            _ABContinueOrFinish()
+         end
       else
          -- Popup bestätigt, aber kein Geldabzug → die Auktion war zum Klick
          -- schon weg (echtes Race). Wie WowVision: nächste gleichwertige nehmen.
-         SkuCore.AuctionBuy.failCount = (SkuCore.AuctionBuy.failCount or 0) + 1
          _ABLog("secure buy race", {
-            failCount = SkuCore.AuctionBuy.failCount, max = AB_BUY_MAX_FAILS,
+            failCount = (SkuCore.AuctionBuy.failCount or 0) + 1, max = AB_BUY_MAX_FAILS,
          })
-         SkuOptions.Voice:OutputStringBTtts(
-            L["Server hat den Kauf nicht bestätigt, bitte erneut versuchen"],
-            true, true, 0.1, nil, nil, nil, 1)
-         if SkuCore.AuctionBuy.failCount >= AB_BUY_MAX_FAILS then
-            _ABBuyGiveUp()
+         if p.onRace then
+            p.onRace()
          else
-            _ABRetrySamePurchase()
+            SkuCore.AuctionBuy.failCount = (SkuCore.AuctionBuy.failCount or 0) + 1
+            SkuOptions.Voice:OutputStringBTtts(
+               L["Server hat den Kauf nicht bestätigt, bitte erneut versuchen"],
+               true, true, 0.1, nil, nil, nil, 1)
+            if SkuCore.AuctionBuy.failCount >= AB_BUY_MAX_FAILS then
+               _ABBuyGiveUp()
+            else
+               _ABRetrySamePurchase()
+            end
          end
       end
    end))
@@ -626,11 +643,15 @@ function SkuCore:AuctionSecureBuyExecute()
       _ASBRelease()
       _ASBClearSafety()
       SB.active = false
-      SkuCore.AuctionBuy.failCount = (SkuCore.AuctionBuy.failCount or 0) + 1
-      if SkuCore.AuctionBuy.failCount >= AB_BUY_MAX_FAILS then
-         _ABBuyGiveUp()
+      if p.onGone then
+         p.onGone()
       else
-         _ABRetrySamePurchase()
+         SkuCore.AuctionBuy.failCount = (SkuCore.AuctionBuy.failCount or 0) + 1
+         if SkuCore.AuctionBuy.failCount >= AB_BUY_MAX_FAILS then
+            _ABBuyGiveUp()
+         else
+            _ABRetrySamePurchase()
+         end
       end
       return
    end
@@ -657,25 +678,32 @@ function SkuCore:AuctionSecureBuyExecute()
    SkuCore:AuctionSecureBuyOnCommitted()
 end
 
--- Match gefunden → Liste stabilisieren lassen, Details ansagen und Enter auf den
--- Ausführungs-Button (SkuAuctionBuyExec) binden, der PlaceAuctionBid direkt im
--- Hardware-Event aufruft (Auctionator-Weg, ein Tastendruck, kein Popup).
-function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
+-- Geteilter Tastendruck-Kauf (Auctionator-Weg). Wird vom normalen Kauf
+-- (AuctionBuyConfirm) UND vom Strategiekauf benutzt, damit beide das gleiche,
+-- nachweislich funktionierende Hardware-Event-Verfahren teilen: Enter wird per
+-- SetOverrideBindingClick auf den versteckten Button SkuAuctionBuyExec gemappt,
+-- dessen OnClick PlaceAuctionBid DIREKT im Hardware-Event aufruft — kein
+-- Blizzard-Popup, ein Tastendruck pro Kauf. Erst scharfschalten, wenn die
+-- Server-Liste gesetzt ist (CanSendAuctionQuery==true, nichts mehr unterwegs);
+-- bis dahin unterdrückt AuctionHouseStartQuery neue Queries, damit der Index
+-- nicht unter dem Gebot wegzieht.
+--
+-- aSpec-Felder:
+--   x          = bevorzugter Listen-Index (wird vor dem Gebot frisch gesucht)
+--   type       = 1 Gebot, 2 Kauf (nur für Logs)
+--   expItemId, expBuyout, expCount = Identität für die Index-Neusuche
+--   bidAmount  = Betrag für PlaceAuctionBid
+--   prompt     = Ansage beim Scharfschalten
+--   onSuccess(diff), onRace(), onGone(), onCancel(wasActive)
+--     = optionale Ergebnis-Handler. Fehlen sie, greift der Standard-Kaufpfad
+--       (weiter/fertig bzw. failCount-Retry) — so bleibt der normale Kauf
+--       verhaltensgleich, der Strategiekauf bringt eigene Handler mit.
+function SkuCore:AuctionArmKeypressBid(aSpec)
    local AB = SkuCore.AuctionBuy
    -- Neue Match → alte Bestätigung/Bindings verwerfen, Generation hochziehen.
    SkuCore:AuctionBuyCancel()
    AB.generation = AB.generation + 1
    local thisGen = AB.generation
-
-   local tType      = SkuCore.QueryBuyType
-   local tItemName  = tCurrentResult[1]
-   local tItemCount = tCurrentResult[3]
-   local tExpItemId = tCurrentResult[17]
-   local tExpBuyout = tCurrentResult[10]
-   local tExpCount  = tCurrentResult[3]
-   local tBidAmount = (tType == 1)
-      and (tCurrentResult[8] + tCurrentResult[9])
-      or  (tCurrentResult[10])
 
    local SB = SkuCore.AuctionSecureBuy
    SB.active = true
@@ -685,29 +713,22 @@ function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
    -- bis zum Tastendruck NICHT mehr verschiebt.
    SB.stage  = "settling"
    SB.gen    = thisGen
-   SB.p = {
-      x = x, type = tType, itemName = tItemName, itemCount = tItemCount,
-      expItemId = tExpItemId, expBuyout = tExpBuyout, expCount = tExpCount,
-      bidAmount = tBidAmount,
-      moneyBefore = (type(GetMoney) == "function") and GetMoney() or 0,
-   }
+   aSpec.moneyBefore = (type(GetMoney) == "function") and GetMoney() or 0
+   SB.p = aSpec
    _ABLog("ABStart (secure)", {
-      gen = thisGen, x = x, type = tType, itemId = tExpItemId,
-      buyout = tExpBuyout, count = tExpCount, bidAmount = tBidAmount,
+      gen = thisGen, x = aSpec.x, type = aSpec.type, itemId = aSpec.expItemId,
+      buyout = aSpec.expBuyout, count = aSpec.expCount, bidAmount = aSpec.bidAmount,
    })
 
-   -- Kein nativer Browse-Umweg, keine Selektion und kein Popup nötig: Enter wird
-   -- direkt auf unseren Ausführungs-Button (SkuAuctionBuyExec) gemappt, dessen
-   -- OnClick PlaceAuctionBid direkt im Hardware-Event aufruft (Auctionator-Weg).
+   -- Enter wird direkt auf unseren Ausführungs-Button (SkuAuctionBuyExec)
+   -- gemappt, dessen OnClick PlaceAuctionBid direkt im Hardware-Event aufruft.
    local tNativeButton = "SkuAuctionBuyExec"
 
    -- WICHTIG (Auctionator-Lektion gegen das beobachtete No-Op): NICHT in eine
-   -- noch nicht fertige/instabile Liste bieten. Auctionator aktiviert seinen
-   -- Kauf-Button erst, wenn die Suche fertig ist (IsNotThrottled/gotAllResults).
-   -- Wir scharfschalten daher erst, wenn die Server-Liste GESETZT ist:
-   -- CanSendAuctionQuery() == true und keine Seite mehr unterwegs. Bis dahin
-   -- pollen (mit Deckel), damit ein gerade noch streamender Query-Response den
-   -- Index nicht unter dem Gebot wegzieht.
+   -- noch nicht fertige/instabile Liste bieten. Wir scharfschalten daher erst,
+   -- wenn die Server-Liste GESETZT ist: CanSendAuctionQuery() == true und keine
+   -- Seite mehr unterwegs. Bis dahin pollen (mit Deckel), damit ein gerade noch
+   -- streamender Query-Response den Index nicht unter dem Gebot wegzieht.
    local tArm
    tArm = function(aWaited)
       if not SB.active or SB.gen ~= thisGen then
@@ -737,17 +758,40 @@ function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
       })
 
       -- Auslöse-Prompt: WAS wird gekauft + "Eingabe zum Kaufen". Enter kauft dann
-      -- direkt (ein Tastendruck, kein Popup). Nur registrierte Locale-Keys.
-      local tPrompt
-      if tType == 1 then
-         tPrompt = L["Gebot "]..(SkuCore.QueryBuyBought + 1)..L[" von "]..SkuCore.QueryBuyAmount..": "..tItemName.." "..tItemCount..L[" stück"]..L[" für "]..SkuGetCoinText(tBidAmount, false, true)..". "..L["Eingabe zum Bieten, Escape zum Abbrechen"]
-      else
-         tPrompt = L["Kauf "]..(SkuCore.QueryBuyBought + 1)..L[" von "]..SkuCore.QueryBuyAmount..": "..tItemName.." "..tItemCount..L[" stück"]..L[" für "]..SkuGetCoinText(tBidAmount, false, true)..". "..L["Eingabe zum Kaufen, Escape zum Abbrechen"]
-      end
+      -- direkt (ein Tastendruck, kein Popup).
       PlaySound(88)
-      SkuOptions.Voice:OutputStringBTtts(tPrompt, true, true, 0.1, nil, nil, nil, 1)
+      SkuOptions.Voice:OutputStringBTtts(aSpec.prompt, true, true, 0.1, nil, nil, nil, 1)
    end
    _ABTrack(C_Timer.NewTimer(0.3, function() tArm(0) end))
+end
+
+-- Match gefunden → Details ansagen und den geteilten Tastendruck-Kauf
+-- scharfschalten. Dünner Wrapper: baut nur den Spec aus dem normalen Kaufpfad
+-- (QueryBuyType/-Bought/-Amount) und delegiert an AuctionArmKeypressBid. Ohne
+-- eigene Ergebnis-Handler → Standardverhalten (weiter/fertig, failCount-Retry).
+function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
+   local tType      = SkuCore.QueryBuyType
+   local tItemName  = tCurrentResult[1]
+   local tItemCount = tCurrentResult[3]
+   local tExpItemId = tCurrentResult[17]
+   local tExpBuyout = tCurrentResult[10]
+   local tExpCount  = tCurrentResult[3]
+   local tBidAmount = (tType == 1)
+      and (tCurrentResult[8] + tCurrentResult[9])
+      or  (tCurrentResult[10])
+
+   local tPrompt
+   if tType == 1 then
+      tPrompt = L["Gebot "]..(SkuCore.QueryBuyBought + 1)..L[" von "]..SkuCore.QueryBuyAmount..": "..tItemName.." "..tItemCount..L[" stück"]..L[" für "]..SkuGetCoinText(tBidAmount, false, true)..". "..L["Eingabe zum Bieten, Escape zum Abbrechen"]
+   else
+      tPrompt = L["Kauf "]..(SkuCore.QueryBuyBought + 1)..L[" von "]..SkuCore.QueryBuyAmount..": "..tItemName.." "..tItemCount..L[" stück"]..L[" für "]..SkuGetCoinText(tBidAmount, false, true)..". "..L["Eingabe zum Kaufen, Escape zum Abbrechen"]
+   end
+
+   SkuCore:AuctionArmKeypressBid({
+      x = x, type = tType, itemName = tItemName, itemCount = tItemCount,
+      expItemId = tExpItemId, expBuyout = tExpBuyout, expCount = tExpCount,
+      bidAmount = tBidAmount, prompt = tPrompt,
+   })
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1126,10 +1170,11 @@ function SkuCore:StrategyBuyProcessResults()
 	-- Alle passenden Einzelstück-Auktionen sammeln, bereits versuchte Preise meiden
 	local tCandidates = {}
 	for i = 1, numResults do
-		local name, _, count, _, _, _, _, _, _, buyout = GetAuctionItemInfo("list", i)
+		local tInfo = {GetAuctionItemInfo("list", i)}
+		local name, count, buyout, itemId = tInfo[1], tInfo[3], tInfo[10], tInfo[17]
 		if buyout and buyout > 0 and count and count == 1 then
 			if buyout <= sb.maxPrice and not sb.triedPrices[buyout.."-"..i] then
-				tCandidates[#tCandidates + 1] = {idx = i, buyout = buyout, name = name}
+				tCandidates[#tCandidates + 1] = {idx = i, buyout = buyout, name = name, itemId = itemId}
 			end
 		end
 	end
@@ -1137,81 +1182,8 @@ function SkuCore:StrategyBuyProcessResults()
 
 	-- Günstigstes noch nicht versuchtes Angebot wählen
 	local tPick = tCandidates[1]
-	local bestIdx = tPick and tPick.idx
-	local bestBuyout = tPick and tPick.buyout
-	local bestCount = tPick and 1
-	local bestName = tPick and tPick.name
-	if bestIdx then
-		-- Warte-Sound stoppen, direkt Enter-Aufforderung mit Details
-		if sb.waitTimer then sb.waitTimer:Cancel(); sb.waitTimer = nil end
-		local tPrompt = L["STRAT_PressEnter"]..", 1 "..bestName..", "..SkuGetCoinText(bestBuyout, false, true)..". "..L["Kauf "]..(sb.bought + 1)..L[" von "]..sb.totalWanted..". "..L["STRAT_EnterBuy"]
-		C_Timer.After(0.3, function() tStratSay(tPrompt) end)
-		-- Bling-Sound + ConfirmButton gleichzeitig nach Delay (Enter sofort moeglich)
-		C_Timer.After(1.0, function()
-		if not sb or not sb.active then return end
-		pcall(function() SkuOptions.Voice:OutputStringBTtts("sound-error_dang", false, true) end)
-		if not sb or not sb.active then return end
-		SkuCore:ConfirmButtonShow(tPrompt,
-			function()
-				if not sb or not sb.active then return end
-				local moneyBefore = GetMoney()
-				if moneyBefore < bestBuyout then
-					tStratSay(L["STRAT_NoMoney"]); sb.active = false; return
-				end
-				local rN, _, rC, _, _, _, _, _, _, rB = GetAuctionItemInfo("list", bestIdx)
-				if rB == bestBuyout and rC == bestCount then
-					PlaySound(89)
-					PlaceAuctionBid("list", bestIdx, bestBuyout)
-					C_Timer.After(2.5, function()
-						if not sb or not sb.active then return end
-						local diff = moneyBefore - GetMoney()
-						if diff >= bestBuyout then
-							sb.bought = sb.bought + 1
-							sb.totalSpent = sb.totalSpent + bestBuyout
-							sb.fails = 0
-							sb.skipCount = 0
-							sb.triedPrices = {}
-							sb.purchaseLog[#sb.purchaseLog + 1] = {name = bestName, price = bestBuyout}
-							tStratSay(L["STRAT_BuyOK"].." "..(sb.bought)..L[" von "]..sb.totalWanted)
-							if sb.bought >= sb.totalWanted then
-								-- Zusammenfassung mit Aufzählung
-								local tSummary = L["STRAT_Done"]..". "
-								for k, v in ipairs(sb.purchaseLog) do
-									tSummary = tSummary..L["Kauf "]..k..", 1 "..v.name.." "..L["STRAT_For"].." "..SkuGetCoinText(v.price, false, true)..". "
-								end
-								tSummary = tSummary..L["STRAT_Total"]..": "..SkuGetCoinText(sb.totalSpent, false, true)
-								C_Timer.After(1, function() tStratSay(tSummary) end)
-								sb.active = false
-							else
-								C_Timer.After(1.5, function() SkuCore:StrategyBuySearch() end)
-							end
-						else
-							sb.fails = sb.fails + 1
-							sb.skipCount = sb.skipCount + 1
-							sb.triedPrices[bestBuyout.."-"..bestIdx] = true
-							if sb.fails >= sb.maxFails then
-								tStratSay(L["STRAT_MaxFails"]); sb.active = false
-							else
-								tStratSay(L["STRAT_BuyFail"].." "..sb.fails..L[" von "]..sb.maxFails..". "..L["STRAT_TryNext"])
-								C_Timer.After(2, function() SkuCore:StrategyBuySearch() end)
-							end
-						end
-					end)
-				else
-					sb.fails = sb.fails + 1
-					sb.skipCount = sb.skipCount + 1
-					sb.triedPrices[bestBuyout.."-"..bestIdx] = true
-					tStratSay(L["STRAT_AuctionGone"])
-					C_Timer.After(1, function() SkuCore:StrategyBuySearch() end)
-				end
-			end,
-			function()
-				if sb then sb.active = false end
-				tStratSay(L["STRAT_Cancelled"])
-			end
-		)
-		end) -- Ende C_Timer.After fuer ConfirmButtonShow Delay
-	else
+	if not tPick then
+		-- Nichts (mehr) gefunden → wie bisher: ein paar Mal neu suchen, dann Schluss.
 		if sb.waitTimer then sb.waitTimer:Cancel(); sb.waitTimer = nil end
 		sb.fails = sb.fails + 1
 		if sb.fails >= sb.maxFails then
@@ -1220,7 +1192,86 @@ function SkuCore:StrategyBuyProcessResults()
 			tStratSay(L["STRAT_NoneFound"].." "..L["STRAT_Retrying"].." "..sb.fails..L[" von "]..sb.maxFails)
 			C_Timer.After(3, function() SkuCore:StrategyBuySearch() end)
 		end
+		return
 	end
+
+	local bestIdx    = tPick.idx
+	local bestBuyout = tPick.buyout
+	local bestName   = tPick.name
+	local bestItemId = tPick.itemId
+	if sb.waitTimer then sb.waitTimer:Cancel(); sb.waitTimer = nil end
+
+	-- Gemeinsame "Kauf nicht zustande gekommen"-Logik (No-Op / Auktion weg):
+	-- diesen Preis/Index meiden, hochzählen und neu suchen oder aufgeben.
+	local function stratFail(reason)
+		sb.fails = sb.fails + 1
+		sb.skipCount = sb.skipCount + 1
+		sb.triedPrices[bestBuyout.."-"..bestIdx] = true
+		if sb.fails >= sb.maxFails then
+			tStratSay(L["STRAT_MaxFails"]); sb.active = false
+		else
+			tStratSay((reason or L["STRAT_BuyFail"]).." "..sb.fails..L[" von "]..sb.maxFails..". "..L["STRAT_TryNext"])
+			C_Timer.After(2, function() SkuCore:StrategyBuySearch() end)
+		end
+	end
+
+	-- Geld-Vorabprüfung (der geteilte Kaufpfad prüft das nicht).
+	if GetMoney() < bestBuyout then
+		tStratSay(L["STRAT_NoMoney"]); sb.active = false; return
+	end
+
+	local tPrompt = L["STRAT_PressEnter"]..", 1 "..bestName..", "..SkuGetCoinText(bestBuyout, false, true)..". "..L["Kauf "]..(sb.bought + 1)..L[" von "]..sb.totalWanted..". "..L["STRAT_EnterBuy"]
+
+	-- Strategiekauf benutzt jetzt EXAKT denselben internen Kaufweg wie der normale
+	-- Kauf: Enter → Hardware-Event → direkter PlaceAuctionBid (über
+	-- AuctionArmKeypressBid). Der frühere ConfirmButtonShow-/Editbox-Pfad rief
+	-- PlaceAuctionBid AUSSERHALB eines Hardware-Events auf → ADDON_ACTION_BLOCKED,
+	-- der Kauf passierte nie. Die Strategie-spezifische Schleife (weiter suchen,
+	-- Preislimit, Zusammenfassung) lebt in den Ergebnis-Handlern.
+	SkuCore:AuctionArmKeypressBid({
+		x = bestIdx, type = 2,
+		itemName = bestName, itemCount = 1,
+		expItemId = bestItemId, expBuyout = bestBuyout, expCount = 1,
+		bidAmount = bestBuyout, prompt = tPrompt,
+		onSuccess = function(diff)
+			if not sb or not sb.active then return end
+			sb.bought = sb.bought + 1
+			sb.totalSpent = sb.totalSpent + bestBuyout
+			sb.fails = 0
+			sb.skipCount = 0
+			sb.triedPrices = {}
+			sb.purchaseLog[#sb.purchaseLog + 1] = {name = bestName, price = bestBuyout}
+			tStratSay(L["STRAT_BuyOK"].." "..(sb.bought)..L[" von "]..sb.totalWanted)
+			if sb.bought >= sb.totalWanted then
+				-- Zusammenfassung mit Aufzählung
+				local tSummary = L["STRAT_Done"]..". "
+				for k, v in ipairs(sb.purchaseLog) do
+					tSummary = tSummary..L["Kauf "]..k..", 1 "..v.name.." "..L["STRAT_For"].." "..SkuGetCoinText(v.price, false, true)..". "
+				end
+				tSummary = tSummary..L["STRAT_Total"]..": "..SkuGetCoinText(sb.totalSpent, false, true)
+				C_Timer.After(1, function() tStratSay(tSummary) end)
+				sb.active = false
+			else
+				C_Timer.After(1.5, function() SkuCore:StrategyBuySearch() end)
+			end
+		end,
+		onRace = function()
+			if not sb or not sb.active then return end
+			stratFail()
+		end,
+		onGone = function()
+			if not sb or not sb.active then return end
+			sb.fails = sb.fails + 1
+			sb.skipCount = sb.skipCount + 1
+			sb.triedPrices[bestBuyout.."-"..bestIdx] = true
+			tStratSay(L["STRAT_AuctionGone"])
+			C_Timer.After(1, function() SkuCore:StrategyBuySearch() end)
+		end,
+		onCancel = function(wasActive)
+			if sb then sb.active = false end
+			tStratSay(L["STRAT_Cancelled"])
+		end,
+	})
 end
 -- Ende STRATEGIEKAUF Funktionen
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2322,6 +2373,7 @@ function SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryInd
             function()
                self.BuildChildren(self)
                C_Timer.After(0.01, function()
+                  if not SkuOptions.currentMenuPosition then return end
                   if SkuOptions.currentMenuPosition.name == L["Warten"] then
                      SkuOptions.currentMenuPosition:OnUpdate(self)
                   else
@@ -2383,6 +2435,7 @@ function SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryInd
                      function()
                         self.BuildChildren(self)
                         C_Timer.After(0.01, function()
+                           if not SkuOptions.currentMenuPosition then return end
                            if SkuOptions.currentMenuPosition.name == L["Warten"] then
                               SkuOptions.currentMenuPosition:OnUpdate(self)
                            else
@@ -3265,7 +3318,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
                SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
                SkuCore:AuctionHouseResetQuery()
             else
-               if SkuOptions.currentMenuPosition.name == L["Warten"] then
+               if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name == L["Warten"] then
                   SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
                end
                SkuCore.QueryCallback()
