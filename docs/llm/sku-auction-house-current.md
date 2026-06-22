@@ -1,8 +1,29 @@
 # Sku Auction House feature — technical reference (current state)
 
+> **STATUS BANNER (read first).** This document captures the pre-rework analysis.
+> Since it was written, the scan and buy paths were substantially reworked — the
+> file is now ~3760 lines, not ~3086, and several §8 weaknesses are **fixed**.
+> Quick map of §8 vs reality (see `improvement-plan.md` STATUS for detail):
+>
+> - 8.1 (broken buy-mode paging) — superseded; buy now re-queries + re-finds the
+>   exact index at the keypress.
+> - 8.3 (`PlaceAuctionBid` buyout) — root cause corrected: it is **hardware-event
+>   gated**, now called directly from a real keypress. Works reliably.
+> - 8.5 / unguarded `currentMenuPosition.name` — the event/timer derefs are now
+>   nil-guarded.
+> - 8.9 (nil-owner page abort) — fixed in the LIST path (waits on the name field).
+> - 8.11 `HistoryMaxValues` dead var — removed (history is per-item aggregates).
+>
+> Still open (tracked in `improvement-plan.md` → Next steps): the scanner is still
+> boolean-flag-driven (the "2b" state-machine refactor is the next task),
+> last-page-by-arithmetic, single-pass getAll ingest, and the duplicate
+> `SkuStratBuyFrame` event registration. The buy path must be **stress-tested in
+> the busiest categories at peak time** before it is considered solid.
+
 Scope: TBC Anniversary client, Interface 11508, legacy/classic Auction House
-API. Primary source file: `Sku/SkuCore/auctionHouse.lua` (~3086 lines). All line
-references below are into that file unless another path is given.
+API. Primary source file: `Sku/SkuCore/auctionHouse.lua`. All line references
+below are into that file unless another path is given (and predate the rework, so
+treat them as approximate).
 
 This document describes how the feature is wired, what game API it uses, how it
 scans, stores, buys, sells and speaks, and (final section) where it is fragile.

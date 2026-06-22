@@ -32,10 +32,17 @@ Read in this order:
    weaknesses, with a lowest-risk-first priority list.
 
 6. `improvement-plan.md`
-   The actual plan: confirmed root causes (latency + intermittent silent buy
-   no-op, verified against a live SkuErrorLog capture), the target architecture
-   ported from WV, and phased steps. Has two open decisions (load-more UX,
-   migration style) awaiting the maintainer's call.
+   The plan **and current status**. Phase 1 (incremental scan) and Phase 2
+   (reliable buy) are DONE — note Phase 2 was solved differently than first
+   planned (direct hardware-event `PlaceAuctionBid`, not the WV secure-button
+   proxy). Strategy-buy now shares that path. The doc carries the NEXT task (the
+   "2b" scanner state-machine refactor) and the **busy-realm stress-test
+   requirement** for the buy path. Read this one first for "where are we now".
+
+Note: docs 1–5 describe the pre-rework analysis and reference implementations.
+Several concrete weaknesses listed in `sku-auction-house-current.md` §8 are now
+fixed — see the status banner at the top of that file and the STATUS section of
+`improvement-plan.md`.
 
 Companion debug tooling: see project `CLAUDE.md` → "Debugging (WVDebug helper
 addon)" for capturing live Sku menu/voice state out-of-game.
