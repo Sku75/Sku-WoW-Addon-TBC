@@ -260,7 +260,14 @@ SkuCore.AuctionBuy = SkuCore.AuctionBuy or {
    generation = 0,
    pending    = nil,
    timers     = {},
+   failCount  = 0,
 }
+
+-- Mehrfachkauf: nach so vielen AUFEINANDERFOLGENDEN nicht bestätigten Käufen
+-- (No-Op) wird der ganze Lauf abgebrochen. Ein Erfolg setzt den Zähler zurück.
+-- Jeder (Wieder-)Versuch fragt regulär per Tastendruck nach — PlaceAuctionBid
+-- ist geschützt, ein Timer-Gebot ist nicht möglich.
+local AB_BUY_MAX_FAILS = 3
 
 local function _ABLog(action, payload)
    if SkuErrorLog and SkuErrorLog.Log then
@@ -294,6 +301,8 @@ local function _ABFinalizeAllBought()
    SkuCore.QueryBuyType   = nil
    SkuCore.QueryBuyAmount = nil
    SkuCore.QueryBuyBought = nil
+   SkuCore.AuctionBuy.failCount = 0
+   SkuCore.QueryBuyEmptyWaits = 0
    SkuCore:AuctionHouseResetQuery()
    -- Nil-safe Menü-Hochnavigation.
    pcall(function()
@@ -309,6 +318,32 @@ local function _ABFinalizeAllBought()
          pcall(SkuOptions.VocalizeCurrentMenuName, SkuOptions)
       end
       SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], false, true, 0.1, nil, nil, nil, 1)
+   end))
+end
+
+-- Kauf endgültig aufgeben (Retries erschöpft / echter Stellenwechsel):
+-- Zustand säubern und Menü hochnavigieren, OHNE Erfolgsmeldung. Die konkrete
+-- Fehlermeldung wurde vorher bereits gesprochen.
+local function _ABBuyGiveUp()
+   SkuCore.QueryBuyData   = nil
+   SkuCore.QueryBuyType   = nil
+   SkuCore.QueryBuyAmount = nil
+   SkuCore.QueryBuyBought = nil
+   SkuCore.AuctionBuy.failCount = 0
+   SkuCore.QueryBuyEmptyWaits = 0
+   SkuCore:AuctionHouseResetQuery()
+   pcall(function()
+      local n = SkuOptions and SkuOptions.currentMenuPosition
+      for _ = 1, 4 do
+         if not (n and n.parent) then break end
+         n = n.parent
+      end
+      if n and n.OnSelect then n:OnSelect() end
+   end)
+   _ABTrack(C_Timer.NewTimer(0.65, function()
+      if SkuOptions and SkuOptions.VocalizeCurrentMenuName then
+         pcall(SkuOptions.VocalizeCurrentMenuName, SkuOptions)
+      end
    end))
 end
 
@@ -332,6 +367,35 @@ local function _ABContinueOrFinish()
    else
       _ABFinalizeAllBought()
    end
+end
+
+-- Nach einem nicht bestätigten Kauf (No-Op): denselben Kauf erneut anstoßen,
+-- OHNE die Gekauft-Zählung zu erhöhen. Die Neu-Query führt wieder zu einem
+-- Bestätigungs-Dialog → das eigentliche Gebot erfolgt dort per Tastendruck.
+-- (Bei mehreren gleichen Auktionen ist "dieselbe" und "die nächste" ohnehin
+-- austauschbar — die Query trifft die erste passende verfügbare Auktion.)
+local function _ABRetrySamePurchase()
+   if not SkuCore.QueryBuyData then
+      _ABLog("retry abort: no QueryBuyData", {})
+      return
+   end
+   _ABLog("retry re-query", {
+      text = SkuCore.QueryBuyData.query and SkuCore.QueryBuyData.query[1],
+      skip = SkuCore.AuctionBuy and SkuCore.AuctionBuy.failCount,
+   })
+   SkuCore:AuctionHouseStartQuery(
+      nil,
+      "AUCTION_ITEM_LIST_UPDATE",
+      SkuCore.QueryBuyData.query[1],
+      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
+      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax,
+      0,
+      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
+      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
+      false, true,
+      SkuCore.QueryBuyData.query[9],
+      function() end
+   )
 end
 
 function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
@@ -368,9 +432,11 @@ function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
       count = tExpCount, bidAmount = tBidAmount,
    })
 
-   -- Bewusst gehaltene 1s-Pause: Sapi soll erst den ankündigenden Satz
-   -- fertigsprechen, bevor das Bestätigungsfenster aufgeht.
-   _ABTrack(C_Timer.NewTimer(1, function()
+   -- Kurze Pause, damit Sapi den ankündigenden Satz noch fertigsprechen kann,
+   -- bevor das Bestätigungsfenster aufgeht. Früher 1 s — das war der größte
+   -- spürbare Teil der Verzögerung bis zum Kauf-Prompt (der Match selbst liegt
+   -- auf Seite 0); 0,3 s reichen.
+   _ABTrack(C_Timer.NewTimer(0.3, function()
       -- Zwischen-Cancel (AH zu / ESC / neue Match) → nichts tun.
       if AB.pending == nil or AB.pending.gen ~= thisGen then
          _ABLog("ABStart aborted before show", { gen = thisGen, currentGen = AB.generation })
@@ -399,6 +465,9 @@ function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
                SkuOptions.Voice:OutputStringBTtts(L["Bestätigung veraltet, Kauf abgebrochen"], true, true, 0.1, nil, nil, nil, 1)
                return
             end
+            -- Pending konsumiert (genau EINE Bestätigung).
+            SkuCore.AuctionBuy.pending = nil
+
             -- Re-Validierung: ist Index x noch dieselbe Auktion?
             local rNow = {GetAuctionItemInfo("list", p.x)}
             local stillValid = rNow[17] == p.expItemId
@@ -414,55 +483,80 @@ function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
                SkuOptions.Voice:OutputStringBTtts(
                   L["Auktion nicht mehr an dieser Stelle, Kauf abgebrochen"],
                   true, true, 0.1, nil, nil, nil, 1)
-               SkuCore.AuctionBuy.pending = nil
+               _ABBuyGiveUp()
                return
             end
-            -- Snapshot der Read-APIs für die nachträgliche
-            -- Money-Diff-Verifikation (Sapi-Feedback bei Fehlschlag).
+            -- WICHTIG: PlaceAuctionBid ist eine GESCHÜTZTE Funktion und darf
+            -- NUR aus einem Hardware-Event heraus aufgerufen werden — also
+            -- genau hier, im OK-Pfad dieses Bestätigungs-Tastendrucks. Ein
+            -- Aufruf aus einem Timer (z.B. Auto-Retry) wird vom Client mit
+            -- ADDON_ACTION_BLOCKED abgewiesen (Lua-Fehler). Deshalb: GENAU EIN
+            -- Gebot pro bestätigtem Tastendruck, KEIN Timer-Retry.
             local tMoneyBefore = (type(GetMoney) == "function") and GetMoney() or 0
-            local tGenForLog   = p.gen
-            local tBidForLog   = p.bidAmount
-            -- *** Vorlage-Pfad: synchron, direkt, kein pcall, kein
-            -- SAB. Genau diese Form hat in der Vorlage zuverlässig
-            -- gekauft. ***
             PlaySound(89)
             PlaceAuctionBid("list", p.x, p.bidAmount)
             _ABLog("BID call", {
-               gen = tGenForLog, x = p.x, type = p.type,
-               bidAmount = tBidForLog,
+               gen = thisGen, x = p.x, type = p.type,
+               bidAmount = p.bidAmount,
                listSize = GetNumAuctionItems("list"),
                stillValid = true,
                moneyBefore = tMoneyBefore,
             })
-            dprint('PlaceAuctionBid("list"', p.x, tBidForLog)
-            -- 2 s nach dem Call den Server-Erfolg verifizieren.
+            dprint('PlaceAuctionBid("list"', p.x, p.bidAmount)
+            -- Erfolg per Geld-Differenz prüfen. Der Timer bietet NICHT (das
+            -- wäre geschützt/blockiert) — er entscheidet nur: Erfolg → weiter /
+            -- fertig; No-Op → Fehlermeldung + erneut versuchen (neuer Dialog,
+            -- Gebot per Tastendruck), nach AB_BUY_MAX_FAILS Fehlschlägen in
+            -- Folge ganzen Lauf abbrechen. Fehlversuche zählen NICHT als gekauft.
             _ABTrack(C_Timer.NewTimer(2, function()
+               if SkuCore.AuctionBuy.generation ~= thisGen then return end
+               if not SkuCore.QueryBuyData then return end
                local mAfter = (type(GetMoney) == "function") and GetMoney() or 0
                local mDiff = tMoneyBefore - mAfter
-               local serverAccepted = (mDiff >= tBidForLog)
+               local serverAccepted = (mDiff >= p.bidAmount)
                _ABLog("PlaceAuctionBid money diff", {
-                  gen          = tGenForLog,
+                  gen          = thisGen,
                   moneyBefore  = tMoneyBefore,
                   moneyAfter   = mAfter,
                   diff         = mDiff,
-                  expectedDiff = tBidForLog,
+                  expectedDiff = p.bidAmount,
                   success      = serverAccepted,
                })
-               if not serverAccepted then
+               if serverAccepted then
+                  SkuCore.AuctionBuy.failCount = 0
+                  _ABContinueOrFinish()
+               else
+                  SkuCore.AuctionBuy.failCount = (SkuCore.AuctionBuy.failCount or 0) + 1
+                  _ABLog("buy verdict no-op", {
+                     failCount = SkuCore.AuctionBuy.failCount,
+                     max = AB_BUY_MAX_FAILS,
+                     willRetry = SkuCore.AuctionBuy.failCount < AB_BUY_MAX_FAILS,
+                     hasBuyData = SkuCore.QueryBuyData ~= nil,
+                  })
                   SkuOptions.Voice:OutputStringBTtts(
                      L["Server hat den Kauf nicht bestätigt, bitte erneut versuchen"],
                      true, true, 0.1, nil, nil, nil, 1)
+                  if SkuCore.AuctionBuy.failCount >= AB_BUY_MAX_FAILS then
+                     -- Zu viele Fehlschläge in Folge → ganzen Lauf abbrechen.
+                     _ABBuyGiveUp()
+                  else
+                     -- Erneut versuchen: Neu-Query → neuer Bestätigungs-Dialog
+                     -- → Gebot per Tastendruck. Gekauft-Zähler NICHT erhöhen.
+                     _ABRetrySamePurchase()
+                  end
                end
             end))
-            -- Pending konsumiert.
-            SkuCore.AuctionBuy.pending = nil
-            _ABTrack(C_Timer.NewTimer(1, _ABContinueOrFinish))
          end,
          -- Cancel-Pfad — ESC.
          function()
             _ABLog("ABOnCancel", { gen = thisGen })
             dprint("abgebrochen Nicht geboten", x, tBidAmount)
             SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"], true, true, 0.1, nil, nil, nil, 1)
+            -- Lauf vom Nutzer abgebrochen → Fehler-/Leerzähler zurücksetzen,
+            -- damit der nächste Kauf sauber bei 0 startet (sonst kann ein alter
+            -- Zählerstand den nächsten Kauf sofort aufgeben lassen).
+            SkuCore.AuctionBuy.failCount = 0
+            SkuCore.QueryBuyEmptyWaits = 0
             SkuCore:AuctionBuyCancel()
          end
       )
@@ -475,6 +569,10 @@ end
 function SkuCore:AUCTION_HOUSE_CLOSED()
    SkuCore:AuctionBuyCancel()
    SkuCore:AuctionHouseResetQuery()
+   -- Kauf-Fehler-/Leerzähler beim Schließen zurücksetzen, damit kein alter
+   -- Zählerstand in einen späteren AH-Besuch übergreift.
+   SkuCore.AuctionBuy.failCount = 0
+   SkuCore.QueryBuyEmptyWaits = 0
    SkuCore.AuctionHouseOpen = false
    -- Strategiekauf zurücksetzen bei AH-Schließung
    SkuCore.StratBuyConfig = {}
@@ -2589,6 +2687,11 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
 
       SkuCore.QueryCurrentType = aType
       SkuCore.QueryCurrentPage = 0
+      -- Seitenzahl-Obergrenze bei jeder FRISCHEN Query zurücksetzen, damit sie
+      -- aus dem neuen tCount neu berechnet wird. Sonst blieb ein alter Wert
+      -- stehen (z.B. 17) und ein leerer Kauf-Requery "paginierte" sinnlos durch
+      -- lauter leere Seiten.
+      SkuCore.QueryMaxPage = nil
       SkuCore.QueryData = {
          [tQAIindex.text] = aFilterText, 
          [tQAIindex.minLevel] = aFilterMinLevel, 
@@ -2958,8 +3061,33 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
    dprint("AUCTION_ITEM_LIST_UPDATE_BUY")
+   -- Doppelte/Spuk-Events ignorieren: pro abgesetzter Kauf-Query nur die erste
+   -- VOLLSTÄNDIGE Antwort verarbeiten (wie in der Browse-Liste via
+   -- QueryWaitingPage). Verhindert doppelte Gebote / übersprungene Seiten.
+   if SkuCore.QueryWaitingPage ~= true then
+      return
+   end
    local tBatch, tCount = GetNumAuctionItems("list")
    dprint(" tBatch, tCount", tBatch, tCount)
+
+   -- Verfrühte/leere Antwort abfangen: AUCTION_ITEM_LIST_UPDATE feuert teils
+   -- BEVOR die Server-Antwort eintrifft (oder wenn die Liste gerade geleert
+   -- wurde) → tBatch=0. Das NICHT als "kein Treffer" werten — sonst gibt der
+   -- (Wieder-)Kauf sofort auf und findet die noch lebende Auktion nie (genau
+   -- das "kein zweiter Prompt"-Verhalten). Auf die echte Antwort warten;
+   -- nach vielen leeren Events zur Sicherheit abbrechen.
+   if not tBatch or tBatch == 0 then
+      SkuCore.QueryBuyEmptyWaits = (SkuCore.QueryBuyEmptyWaits or 0) + 1
+      if SkuCore.QueryBuyEmptyWaits >= 10 then
+         SkuCore.QueryBuyEmptyWaits = 0
+         SkuOptions.Voice:OutputStringBTtts(
+            L["Auktion nicht mehr an dieser Stelle, Kauf abgebrochen"],
+            true, true, 0.1, nil, nil, nil, 1)
+         _ABBuyGiveUp()
+      end
+      return
+   end
+   SkuCore.QueryBuyEmptyWaits = 0
 
    -- Diagnose: Eintritt + gesuchte Felder
    if SkuErrorLog and SkuErrorLog.Log then
@@ -3008,16 +3136,27 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
    -- Popup, kein Kauf. Wir lassen die Schleife trotz nil-Owners
    -- durchlaufen, der eigentliche Match-Vergleich (Item-ID + Buyout +
    -- Stückzahl) klappt unabhängig vom Owner.
-   local tHadAnyData = false
+   -- Vollständigkeit: erst matchen/bieten, wenn ALLE Zeilen der Seite einen
+   -- Namen haben (Daten fertig gestreamt). Sonst ist das gesuchte Item evtl.
+   -- noch nicht geladen → kein Match → Seite übersprungen → Kauf verfehlt,
+   -- oder es wird auf einen noch instabilen Index geboten (das alte
+   -- No-Op-Problem). Owner (Feld 14) wird weiter toleriert (Anniversary-Quirk).
    for x = 1, tBatch do
       local tResult = {GetAuctionItemInfo("list", x)}
-      if tResult[1] then tHadAnyData = true end
+      if not tResult[1] or tResult[1] == "" then
+         dprint("buy: incomplete page data, waiting")
+         return
+      end
    end
-   if not tHadAnyData then
-      dprint("no auction data in batch, return")
-      return
-   end
+   -- Seite vollständig → genau EINMAL verarbeiten (weitere Events derselben
+   -- Antwort ignorieren, bis die nächste Kauf-Query abgesetzt wurde).
+   SkuCore.QueryWaitingPage = false
 
+   -- Bei wiederholten Fehlschlägen (No-Op) NICHT dieselbe Auktion erneut
+   -- versuchen: failCount = bisherige Fehlschläge → so viele passende
+   -- (gleichwertige) Auktionen überspringen und die nächste der Gruppe nehmen.
+   local tSkip = (SkuCore.AuctionBuy and SkuCore.AuctionBuy.failCount) or 0
+   local tMatchSeen = 0
    local tMatchAttempts = {}
    for x = 1, tBatch do
       --check if same item
@@ -3068,6 +3207,13 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
 
       -- found, buy
       if tFound == true then
+         tMatchSeen = tMatchSeen + 1
+         if tMatchSeen <= tSkip then
+            -- In einem früheren Versuch bereits (erfolglos) probiert →
+            -- überspringen und die NÄCHSTE gleichwertige Auktion nehmen, statt
+            -- erneut auf dieselbe (weg-gekaufte/blockierte) zu bieten.
+            dprint("skip already-tried match idx", x, "skip", tSkip)
+         else
          dprint("bid for", SkuCore.QueryCurrentPage, x, tCurrentResult[8], tCurrentResult[9])
          if SkuErrorLog and SkuErrorLog.Log then
             pcall(function()
@@ -3091,9 +3237,18 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
          -- neuer Match.
          SkuCore:AuctionBuyConfirm(x, tCurrentResult)
          return
+         end
       end
    end
 
+   if SkuErrorLog and SkuErrorLog.Log then
+      pcall(function()
+         SkuErrorLog:Log("auction.buy", "match scan done (no bid)", {
+            tSkip = tSkip, tMatchSeen = tMatchSeen, tBatch = tBatch,
+            page = SkuCore.QueryCurrentPage, maxPage = SkuCore.QueryMaxPage,
+         })
+      end)
+   end
    if SkuCore.QueryCurrentPage < SkuCore.QueryMaxPage then
       SkuCore.QueryCurrentPage = SkuCore.QueryCurrentPage + 1
       SkuCore.QueryData[tQAIindex.page] = SkuCore.QueryCurrentPage
@@ -3115,11 +3270,15 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
             })
          end)
       end
-      if SkuOptions.currentMenuPosition.name == L["Warten"] then
-         SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
-      end
-      SkuCore.QueryCallback()
-      SkuCore:AuctionHouseResetQuery()
+      -- Hier sind wir IMMER im Kauf-Kontext (QueryBuyData ist gesetzt, sonst
+      -- liefe der LIST-Zweig). Kein (weiteres) passendes Item gefunden →
+      -- Kauf SAUBER beenden. Sonst bliebe QueryBuyData hängen und würde bei
+      -- der nächsten, völlig anderen Suche fälschlich ein Kauf-Popup auslösen
+      -- (genau dieser Geister-Prompt nach AH-Neuöffnen + Suche).
+      SkuOptions.Voice:OutputStringBTtts(
+         L["Auktion nicht mehr an dieser Stelle, Kauf abgebrochen"],
+         true, true, 0.1, nil, nil, nil, 1)
+      _ABBuyGiveUp()
    end
 end
 
