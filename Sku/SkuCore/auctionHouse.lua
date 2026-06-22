@@ -740,7 +740,19 @@ function SkuCore:AuctionArmKeypressBid(aSpec)
       local tSettled = false
       pcall(function() tSettled = (CanSendAuctionQuery() == true) end)
       local tWaiting = (SkuCore.QueryWaitingPage == true) or (SkuCore.QueryRunning == true)
-      if (not tSettled or tWaiting) and (aWaited or 0) < 4.0 then
+      -- NUR warten, solange noch eine Sku-Seiten-Query unterwegs ist (tWaiting).
+      -- FRÜHER wurde zusätzlich auf CanSendAuctionQuery()==true gewartet — das ist
+      -- aber der Throttle für NEUE Queries und fürs Gebot irrelevant
+      -- (PlaceAuctionBid ist KEINE Query). Auf vollen Realms bleibt der Throttle
+      -- mehrere Sekunden zu, wodurch der Kauf-Prompt erst spät kam und ein erster,
+      -- vor dem Scharfschalten gedrückter Enter verpuffte → man musste ein zweites
+      -- Mal drücken. Die Listenstabilität ist anders abgesichert: (1) der BUY-/
+      -- Such-Handler ruft erst, wenn die Seite vollständig gestreamt ist; (2) ab
+      -- jetzt unterdrückt AuctionHouseStartQuery neue Queries (stage settling/
+      -- trigger); (3) der exakte Listen-Index wird beim Tastendruck frisch gesucht
+      -- (AuctionSecureBuyExecute, matchAt). tSettled bleibt nur als Diagnose im
+      -- Arm-Log.
+      if tWaiting and (aWaited or 0) < 4.0 then
          _ABTrack(C_Timer.NewTimer(0.2, function() tArm((aWaited or 0) + 0.2) end))
          return
       end
