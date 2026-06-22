@@ -161,7 +161,7 @@ function SkuCore:AuctionHouseOnInitialize()
          return
       end
       tTime = tTime + time
-      if SkuCore.QueryRunning == true or SkuCore.QuerySerializeRunning == true then
+      if SkuCore.AuctionScan.state ~= "idle" or SkuCore.QuerySerializeRunning == true then
          if SkuCore.QueryData[tQAIindex.getAll] == true or SkuCore.QuerySerializeRunning == true then
             if tTime < SkuCore.AuctionTickerWaitFull then return end
 
@@ -756,8 +756,7 @@ function SkuCore:AuctionSecureBuyExecute()
       type = p.type, bidAmount = p.bidAmount,
       listSize = n, moneyBefore = p.moneyBefore,
       canSend = tCanSend,
-      queryRunning = SkuCore.QueryRunning,
-      queryWaitingPage = SkuCore.QueryWaitingPage,
+      scanState = SkuCore.AuctionScan.state,
    })
    -- Erfolg/Race per Geld-Differenz auswerten und ggf. weiter/fertig.
    SkuCore:AuctionSecureBuyOnCommitted()
@@ -824,7 +823,7 @@ function SkuCore:AuctionArmKeypressBid(aSpec)
       end
       local tSettled = false
       pcall(function() tSettled = (CanSendAuctionQuery() == true) end)
-      local tWaiting = (SkuCore.QueryWaitingPage == true) or (SkuCore.QueryRunning == true)
+      local tWaiting = (SkuCore.AuctionScan.state ~= "idle")
       -- NUR warten, solange noch eine Sku-Seiten-Query unterwegs ist (tWaiting).
       -- FRÜHER wurde zusätzlich auf CanSendAuctionQuery()==true gewartet — das ist
       -- aber der Throttle für NEUE Queries und fürs Gebot irrelevant
@@ -1202,7 +1201,7 @@ function SkuCore:StrategyBuySearch()
 		sb.active = false
 		return
 	end
-	if SkuCore.QueryRunning then
+	if SkuCore.AuctionScan.state ~= "idle" then
 		C_Timer.After(3, function() SkuCore:StrategyBuySearch() end)
 		return
 	end
@@ -1633,7 +1632,7 @@ function SkuCore:AuctionHouseMenuBuilder()
          end)
       end
       tNewMenuEntrysearch.BuildChildren = function(self)
-         if SkuCore.QueryRunning == true then
+         if SkuCore.AuctionScan.state ~= "idle" then
             local tNewMenuEntry1 = SkuOptions:InjectMenuItems(tNewMenuEntrysearch, {L["Warten"]}, SkuGenericMenuItem)
             tNewMenuEntry1.dynamic = false
          else
@@ -1890,7 +1889,7 @@ OnEnterAllFlag = nil
    tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
    tNewMenuEntry.BuildChildren = function(self)
-      if SkuCore.QueryRunning == true then
+      if SkuCore.AuctionScan.state ~= "idle" then
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["not possible, scan in progess"]}, SkuGenericMenuItem)
          return
       end
@@ -2756,7 +2755,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseResultsMenuBuilder(aParent)
    dprint("AuctionHouseResultsMenuBuilder", aParent.name)
-   if SkuCore.QueryRunning == true and SkuCore.QueryResultsPartialReady ~= true then
+   if SkuCore.AuctionScan.state ~= "idle" and SkuCore.QueryResultsPartialReady ~= true then
       tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["Warten"]}, SkuGenericMenuItem)
       tNewMenuEntryCategorySubItem.dynamic = false
       --OnEnterAllFlag = nil
@@ -3001,7 +3000,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseResetQuery(aForce)
    dprint("AuctionHouseResetQuery")
-   if SkuCore.QueryRunning == true and SkuCore.QueryData[7] == true and aForce ~= true then
+   if SkuCore.AuctionScan.state ~= "idle" and SkuCore.QueryData[7] == true and aForce ~= true then
       return
    end
 
@@ -3046,7 +3045,7 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
       return false
    end
 
-   if SkuCore.QueryRunning == true and SkuCore.QueryData[7] == true then
+   if SkuCore.AuctionScan.state ~= "idle" and SkuCore.QueryData[7] == true then
       return false
    end
 
@@ -3066,7 +3065,7 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
    end
 
    if aContinue ~= true then
-      if SkuCore.QueryRunning == true then
+      if SkuCore.AuctionScan.state ~= "idle" then
          SkuCore:AuctionHouseResetQuery()
       end
 
@@ -3247,20 +3246,20 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName)
    if SkuErrorLog and SkuErrorLog.Log then
       pcall(function()
          SkuErrorLog:Log("auction.event", "AUCTION_ITEM_LIST_UPDATE fired", {
-            queryRunning = SkuCore.QueryRunning,
+            scanState = SkuCore.AuctionScan.state,
             queryCurrentType = SkuCore.QueryCurrentType,
             queryBuyData = SkuCore.QueryBuyData ~= nil,
             getAll = SkuCore.QueryData and SkuCore.QueryData[tQAIindex.getAll],
          })
       end)
    end
-   if SkuCore.QueryRunning == true and SkuCore.QueryCurrentType == "AUCTION_ITEM_LIST_UPDATE" then
+   if SkuCore.AuctionScan.state ~= "idle" and SkuCore.QueryCurrentType == "AUCTION_ITEM_LIST_UPDATE" then
       dprint("AUCTION_ITEM_LIST_UPDATE", SkuCore.QueryBuyData)
 
-      if SkuCore.QueryBuyData == nil then
-         SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
-      else
+      if SkuCore.AuctionScan.mode == "buy" then
          SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
+      else
+         SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
       end
    end
 end
@@ -3278,7 +3277,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
             tBatch = tBatch,
             tCount = tCount,
             getAll = SkuCore.QueryData and SkuCore.QueryData[tQAIindex.getAll],
-            queryRunning = SkuCore.QueryRunning,
+            scanState = SkuCore.AuctionScan.state,
             queryCurrentPage = SkuCore.QueryCurrentPage,
             fsdbLenBefore = #FullScanResultsDB,
          })
@@ -3381,7 +3380,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          -- die erste VOLLSTÄNDIGE Antwort verarbeiten. AUCTION_ITEM_LIST_UPDATE
          -- feuert pro Antwort mehrfach; ohne diese Sperre wurde dieselbe Seite
          -- doppelt eingelesen und teils die Folgeseite übersprungen.
-         if SkuCore.QueryWaitingPage ~= true then
+         if SkuCore.AuctionScan.state ~= "waiting" then
             return
          end
          if SkuCore.QueryMaxPage == nil then
@@ -3473,8 +3472,8 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
    dprint("AUCTION_ITEM_LIST_UPDATE_BUY")
    -- Doppelte/Spuk-Events ignorieren: pro abgesetzter Kauf-Query nur die erste
    -- VOLLSTÄNDIGE Antwort verarbeiten (wie in der Browse-Liste via
-   -- QueryWaitingPage). Verhindert doppelte Gebote / übersprungene Seiten.
-   if SkuCore.QueryWaitingPage ~= true then
+   -- "waiting"). Verhindert doppelte Gebote / übersprungene Seiten.
+   if SkuCore.AuctionScan.state ~= "waiting" then
       return
    end
    local tBatch, tCount = GetNumAuctionItems("list")
