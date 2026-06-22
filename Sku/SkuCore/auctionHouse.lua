@@ -293,6 +293,29 @@ function SkuCore:AuctionBuyCancel()
    AB.timers     = {}
    AB.pending    = nil
    AB.generation = AB.generation + 1
+   -- Sichere Kauf-Bindings + Safety-Timer ebenfalls lösen (Taint-Fix-Pfad).
+   -- Per Global-Name angesprochen, da die lokalen Helfer/Frames erst weiter
+   -- unten im File definiert werden (diese Funktion läuft aber erst zur
+   -- Laufzeit, da existieren sie längst).
+   if SkuCore.AuctionSecureBuy then
+      SkuCore.AuctionSecureBuy.active = false
+      SkuCore.AuctionSecureBuy.stage  = nil
+      local tBinder = _G["SkuAuctionSecureBinder"]
+      if tBinder then pcall(ClearOverrideBindings, tBinder) end
+      -- Skus Menü-Enter/Escape wiederherstellen (wir haben sie evtl. überschrieben).
+      pcall(function()
+         local tMain = _G["OnSkuOptionsMainOption1"]
+         if tMain and tMain.IsShown and tMain:IsShown() then
+            if _G["SecureOnSkuOptionsMainOption1"] then
+               SetOverrideBindingClick(_G["SecureOnSkuOptionsMainOption1"], true, "ENTER", "SecureOnSkuOptionsMainOption1", "ENTER")
+            end
+            SetOverrideBindingClick(tMain, true, "ESCAPE", "OnSkuOptionsMainOption1", "ESCAPE")
+         end
+      end)
+      local tSafety = SkuCore.AuctionSecureBuy.safety
+      if tSafety and tSafety.Cancel then pcall(tSafety.Cancel, tSafety) end
+      SkuCore.AuctionSecureBuy.safety = nil
+   end
    _ABLog("ABCancel", { newGeneration = AB.generation })
 end
 
@@ -398,9 +421,351 @@ local function _ABRetrySamePurchase()
    )
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Sicherer Kauf über Blizzards native Buttons (Taint-Fix)
+---------------------------------------------------------------------------------------------------------------------------------------
+-- PlaceAuctionBid ist auf dem 2.5.5-Anniversary-Client taint-geschützt: ein
+-- direkter Aufruf aus Sku-Code — sogar aus einem Tastendruck-Handler heraus —
+-- wird vom Client STILL verworfen (kein Fehler, kein ADDON_ACTION_BLOCKED, kein
+-- Geldabzug). Genau das war das beobachtete Dauer-No-Op (money diff = 0, Item
+-- bleibt liegen), unabhängig von Index/Sortierung/Race.
+--
+-- Lösung wie in WowVision (core/ui/.../ProxyWidget.lua + tbc/auction/module.lua):
+-- Wir rufen PlaceAuctionBid NICHT selbst auf, sondern leiten den Tastendruck des
+-- Nutzers per sicherer Override-Bindung an Blizzards native, untainted Buttons:
+--   Schritt 1: Enter → sicherer Klick auf BrowseBuyoutButton / BrowseBidButton
+--              → Blizzard zeigt sein BUYOUT_AUCTION / BID_AUCTION-Popup
+--   Schritt 2: Enter → sicherer Klick auf den Bestätigen-Button des Popups
+--              → Blizzards untainted Code ruft PlaceAuctionBid auf → Kauf
+-- Escape bricht in beiden Schritten ab. Die anschließende Geld-Differenz-Prüfung
+-- ist NICHT taint-sensitiv und entscheidet: Erfolg → weiter/fertig, echtes Race
+-- (Auktion weg) → nächste gleichwertige Auktion (wie WowVision).
+
+SkuCore.AuctionSecureBuy = SkuCore.AuctionSecureBuy or {
+   active = false,
+   stage  = nil,   -- "trigger" | "confirm" | "verifying"
+   p      = nil,
+   gen    = 0,
+   safety = nil,
+}
+
+-- Owner-Frame für die Override-Bindings.
+local _ASBBinder = _G["SkuAuctionSecureBinder"]
+if not _ASBBinder then
+   _ASBBinder = CreateFrame("Frame", "SkuAuctionSecureBinder", UIParent)
+end
+
+-- Versteckter Button, auf den Escape gemappt wird → bricht den Kauf ab.
+local _ASBCancelBtn = _G["SkuAuctionSecureCancelButton"]
+if not _ASBCancelBtn then
+   _ASBCancelBtn = CreateFrame("Button", "SkuAuctionSecureCancelButton", UIParent)
+   _ASBCancelBtn:RegisterForClicks("AnyDown", "AnyUp")
+   _ASBCancelBtn:SetScript("OnClick", function()
+      SkuCore:AuctionSecureBuyCancel(true)
+   end)
+end
+
+-- Versteckter Ausführungs-Button: Enter wird hierauf gemappt. Sein OnClick ruft
+-- PlaceAuctionBid DIREKT auf — exakt wie Auctionator (Source_LegacyAH/Tabs/
+-- Buying/Mixins/BuyDialog.lua: BuyStackClicked → PlaceAuctionBid("list", idx,
+-- price)). PlaceAuctionBid ist NICHT taint-/secure-geschützt, sondern nur
+-- HARDWARE-EVENT-geschützt: aus einem echten Tasten-/Klick-Event heraus (und der
+-- Enter→Klick via SetOverrideBindingClick IST ein solches) ist der direkte Aufruf
+-- erlaubt — OHNE Blizzards Bestätigungs-Popup. Damit: EIN Tastendruck pro Kauf,
+-- kein zweites Popup. (Skus alter Editbox-/Timer-Pfad lieferte KEIN gültiges
+-- Hardware-Event → ADDON_ACTION_BLOCKED, daher schien es "geschützt".)
+local _ASBExecBtn = _G["SkuAuctionBuyExec"]
+if not _ASBExecBtn then
+   _ASBExecBtn = CreateFrame("Button", "SkuAuctionBuyExec", UIParent)
+   _ASBExecBtn:RegisterForClicks("AnyDown", "AnyUp")
+   _ASBExecBtn:SetScript("OnClick", function()
+      SkuCore:AuctionSecureBuyExecute()
+   end)
+end
+
+local function _ASBClearBindings()
+   pcall(ClearOverrideBindings, _ASBBinder)
+end
+
+-- Sku steuert seine Menü-Tasten selbst über Override-Bindings: Enter →
+-- SecureOnSkuOptionsMainOption1, Escape → OnSkuOptionsMainOption1 (siehe
+-- SkuZOptions/Core.lua, OnShow der jeweiligen Secure-Buttons). Wir ÜBERSCHREIBEN
+-- diese globalen Enter/Escape-Bindings während des Kaufs. Beim Aufräumen müssen
+-- wir Skus Bindings exakt so wiederherstellen, sonst sind Enter/Escape im Menü
+-- danach tot. Nur wiederherstellen, wenn das Menü noch sichtbar ist (sonst hat
+-- Skus eigenes OnHide sie bereits absichtlich gelöscht).
+local function _ASBRestoreSkuBindings()
+   pcall(function()
+      local tMain = _G["OnSkuOptionsMainOption1"]
+      if not (tMain and tMain.IsShown and tMain:IsShown()) then return end
+      if _G["SecureOnSkuOptionsMainOption1"] then
+         SetOverrideBindingClick(_G["SecureOnSkuOptionsMainOption1"], true, "ENTER", "SecureOnSkuOptionsMainOption1", "ENTER")
+      end
+      SetOverrideBindingClick(tMain, true, "ESCAPE", "OnSkuOptionsMainOption1", "ESCAPE")
+   end)
+end
+
+-- Bindings vollständig freigeben (unsere lösen + Skus wiederherstellen).
+local function _ASBRelease()
+   _ASBClearBindings()
+   _ASBRestoreSkuBindings()
+end
+
+local function _ASBClearSafety()
+   local SB = SkuCore.AuctionSecureBuy
+   if SB.safety and SB.safety.Cancel then pcall(SB.safety.Cancel, SB.safety) end
+   SB.safety = nil
+end
+
+-- Sicherheitsnetz: falls der Nutzer weder bestätigt noch abbricht, die globalen
+-- Enter/Escape-Override-Bindings nicht ewig hängen lassen.
+local function _ASBArmSafety()
+   _ASBClearSafety()
+   SkuCore.AuctionSecureBuy.safety = C_Timer.NewTimer(30, function()
+      if SkuCore.AuctionSecureBuy.active then
+         _ABLog("secure buy safety timeout", {})
+         SkuCore:AuctionSecureBuyCancel(false)
+      end
+   end)
+end
+
+-- Sicherstellen, dass Blizzards Browse-Tab sichtbar ist, damit die nativen
+-- Buyout/Bid-Buttons existieren und aktiviert werden.
+local function _ASBEnsureBrowseShown()
+   pcall(function()
+      if AuctionFrame and not AuctionFrame:IsShown() then
+         ShowUIPanel(AuctionFrame)
+      end
+      if AuctionFrameBrowse and not AuctionFrameBrowse:IsShown() and AuctionFrameTab1 then
+         AuctionFrameTab1:Click()
+      end
+   end)
+end
+
+-- Kauf abbrechen: Bindings + Safety lösen, evtl. offene Blizzard-Popups
+-- schließen, Zähler zurücksetzen. announce=true spricht die Abbruch-Meldung.
+function SkuCore:AuctionSecureBuyCancel(announce)
+   local SB = SkuCore.AuctionSecureBuy
+   local wasActive = SB.active
+   SB.active = false
+   SB.stage  = nil
+   _ASBRelease()
+   _ASBClearSafety()
+   -- Offene Popups schließen. Deren OnCancel-Hook prüft SB.active (jetzt false)
+   -- und macht nichts → keine Rekursion.
+   pcall(function() StaticPopup_Hide("BUYOUT_AUCTION") end)
+   pcall(function() StaticPopup_Hide("BID_AUCTION") end)
+   SkuCore.AuctionBuy.failCount = 0
+   SkuCore.QueryBuyEmptyWaits = 0
+   SkuCore:AuctionBuyCancel()
+   if announce and wasActive then
+      _ABLog("secure buy cancel", {})
+      SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"], true, true, 0.1, nil, nil, nil, 1)
+   end
+end
+
+-- Schritt 2: Blizzards Bestätigungs-Popup ist da → Enter auf dessen
+-- Bestätigen-Button (Button1) umbinden und ansagen.
+function SkuCore:AuctionSecureBuyArmConfirm(buttonName, which)
+   local SB = SkuCore.AuctionSecureBuy
+   if not SB.active then return end
+   SB.stage = "confirm"
+   _ASBClearBindings()
+   pcall(SetOverrideBindingClick, _ASBBinder, true, "ENTER", buttonName)
+   pcall(SetOverrideBindingClick, _ASBBinder, true, "NUMPADENTER", buttonName)
+   pcall(SetOverrideBindingClick, _ASBBinder, true, "ESCAPE", "SkuAuctionSecureCancelButton")
+   _ASBArmSafety()
+   -- Schritt 2 = Blizzards EIGENES, erzwungenes Bestätigungs-Popup. Item und
+   -- Preis kamen bereits in Schritt 1 — hier NICHT wiederholen, nur kurz sagen,
+   -- dass jetzt die (vom Client verlangte) Bestätigung ansteht. Registrierte
+   -- Locale-Keys, damit AceLocale (GetLocale "Sku", false → strikt) nicht meckert.
+   local tPrompt = L["Bestätigung: Eingabe Ja, Escape Nein."]
+   _ABLog("secure buy arm confirm", { which = which, button = buttonName })
+   PlaySound(88)
+   SkuOptions.Voice:OutputStringBTtts(tPrompt, true, true, 0.1, nil, nil, nil, 1)
+end
+
+-- Gebot ist raus (direkter PlaceAuctionBid lief im Hardware-Event). Erfolg per
+-- Geld-Differenz prüfen → weiter/fertig oder (echtes Race) erneut.
+function SkuCore:AuctionSecureBuyOnCommitted()
+   local SB = SkuCore.AuctionSecureBuy
+   if not SB.active then return end
+   local p = SB.p
+   SB.stage = "verifying"
+   _ASBRelease()
+   _ASBClearSafety()
+   local gen = SB.gen
+   _ABLog("secure buy committed", { gen = gen, itemId = p.expItemId, buyout = p.expBuyout })
+   _ABTrack(C_Timer.NewTimer(2, function()
+      if SkuCore.AuctionBuy.generation ~= gen then return end
+      if not SkuCore.QueryBuyData then return end
+      SB.active = false
+      local mAfter = (type(GetMoney) == "function") and GetMoney() or 0
+      local mDiff = (p.moneyBefore or 0) - mAfter
+      local ok = mDiff >= p.bidAmount
+      _ABLog("secure buy money diff", {
+         gen = gen, moneyBefore = p.moneyBefore, moneyAfter = mAfter,
+         diff = mDiff, expectedDiff = p.bidAmount, success = ok,
+      })
+      if ok then
+         SkuCore.AuctionBuy.failCount = 0
+         _ABContinueOrFinish()
+      else
+         -- Popup bestätigt, aber kein Geldabzug → die Auktion war zum Klick
+         -- schon weg (echtes Race). Wie WowVision: nächste gleichwertige nehmen.
+         SkuCore.AuctionBuy.failCount = (SkuCore.AuctionBuy.failCount or 0) + 1
+         _ABLog("secure buy race", {
+            failCount = SkuCore.AuctionBuy.failCount, max = AB_BUY_MAX_FAILS,
+         })
+         SkuOptions.Voice:OutputStringBTtts(
+            L["Server hat den Kauf nicht bestätigt, bitte erneut versuchen"],
+            true, true, 0.1, nil, nil, nil, 1)
+         if SkuCore.AuctionBuy.failCount >= AB_BUY_MAX_FAILS then
+            _ABBuyGiveUp()
+         else
+            _ABRetrySamePurchase()
+         end
+      end
+   end))
+end
+
+-- Schritt 2 (jetzt der EINZIGE Kauf-Tastendruck): läuft im Hardware-Event des
+-- Enter→Klicks auf SkuAuctionBuyExec. Findet den aktuellen Listen-Index der
+-- exakten Auktion (wie Auctionator: FindAuctionOnCurrentPage kurz vor dem Kauf),
+-- ruft PlaceAuctionBid DIREKT auf (kein Blizzard-Popup) und verifiziert dann.
+function SkuCore:AuctionSecureBuyExecute()
+   local SB = SkuCore.AuctionSecureBuy
+   if not SB.active or SB.stage ~= "trigger" then return end
+   local p = SB.p
+   if not p then return end
+
+   -- Aktuellen Index der exakten Auktion bestimmen (Item-ID + Buyout + Stückzahl,
+   -- und nicht bereits eigenes Höchstgebot). Erst p.x prüfen, sonst Liste scannen.
+   local n = GetNumAuctionItems("list") or 0
+   local function matchAt(i)
+      local r = {GetAuctionItemInfo("list", i)}
+      return r[17] == p.expItemId and r[10] == p.expBuyout
+         and r[3] == p.expCount and r[12] ~= true
+   end
+   local idx
+   if p.x and p.x >= 1 and p.x <= n and matchAt(p.x) then
+      idx = p.x
+   else
+      for i = 1, n do
+         if matchAt(i) then idx = i; break end
+      end
+   end
+
+   if not idx then
+      -- Auktion vor dem Klick verschwunden (echtes Race) → wie WowVision: nächste
+      -- gleichwertige nehmen, sonst nach zu vielen Fehlschlägen aufgeben.
+      _ABLog("direct bid: gone before click", { x = p.x, listSize = n })
+      _ASBRelease()
+      _ASBClearSafety()
+      SB.active = false
+      SkuCore.AuctionBuy.failCount = (SkuCore.AuctionBuy.failCount or 0) + 1
+      if SkuCore.AuctionBuy.failCount >= AB_BUY_MAX_FAILS then
+         _ABBuyGiveUp()
+      else
+         _ABRetrySamePurchase()
+      end
+      return
+   end
+
+   -- Diagnose: war die Liste zum Gebot wirklich gesetzt? (canSend==true → ja).
+   local tCanSend = false
+   pcall(function() tCanSend = (CanSendAuctionQuery() == true) end)
+
+   local tArmedIdx = p.x          -- beim Scharfschalten gemerkter Index
+   p.x = idx                      -- jetzt aktueller (neu gefundener) Index
+   p.moneyBefore = (type(GetMoney) == "function") and GetMoney() or 0
+   PlaySound(89)
+   -- DIREKTER, ungeschützter Aufruf — erlaubt, weil wir im Hardware-Event sind.
+   PlaceAuctionBid("list", p.x, p.bidAmount)
+   _ABLog("direct bid", {
+      gen = SB.gen, x = p.x, armedIdx = tArmedIdx, reFound = (idx ~= tArmedIdx),
+      type = p.type, bidAmount = p.bidAmount,
+      listSize = n, moneyBefore = p.moneyBefore,
+      canSend = tCanSend,
+      queryRunning = SkuCore.QueryRunning,
+      queryWaitingPage = SkuCore.QueryWaitingPage,
+   })
+   -- Erfolg/Race per Geld-Differenz auswerten und ggf. weiter/fertig.
+   SkuCore:AuctionSecureBuyOnCommitted()
+end
+
+-- (Vestigial) Blizzards Kauf/Gebots-Popups: im direkten Kauf-Pfad erscheint kein
+-- BUYOUT_AUCTION-Popup mehr. Hook bleibt nur als Schutz erhalten, falls je ein
+-- solches Popup während eines aktiven Kaufs auftaucht — er feuert dann nicht.
+local _ASBDialogHooked = {}
+local function _ASBHookDialog(which)
+   if _ASBDialogHooked[which] then return end
+   local d = StaticPopupDialogs and StaticPopupDialogs[which]
+   if not d then return end
+   _ASBDialogHooked[which] = true
+   if type(d.OnAccept) == "function" then
+      hooksecurefunc(d, "OnAccept", function()
+         if SkuCore.AuctionSecureBuy.active then
+            SkuCore:AuctionSecureBuyOnCommitted()
+         end
+      end)
+   end
+   if type(d.OnCancel) == "function" then
+      hooksecurefunc(d, "OnCancel", function()
+         if SkuCore.AuctionSecureBuy.active then
+            SkuCore:AuctionSecureBuyCancel(true)
+         end
+      end)
+   end
+end
+
+hooksecurefunc("StaticPopup_Show", function(which)
+   local SB = SkuCore.AuctionSecureBuy
+   if not SB or not SB.active then return end
+   if which ~= "BUYOUT_AUCTION" and which ~= "BID_AUCTION" then return end
+   _ASBHookDialog(which)
+   for i = 1, (STATICPOPUP_NUMDIALOGS or 4) do
+      local f = _G["StaticPopup"..i]
+      if f and f.which == which and f:IsShown() then
+         SkuCore:AuctionSecureBuyArmConfirm("StaticPopup"..i.."Button1", which)
+         break
+      end
+   end
+end)
+
+-- Diagnose: bestätigt, dass Schritt 1 (der sichere Enter-Klick) Blizzards nativen
+-- Button wirklich erreicht hat. Lazy gehookt, da Blizzard_AuctionUI LoadOnDemand
+-- ist. Post-Hook (HookScript) → läuft NACH Blizzards sicherer OnClick-Logik,
+-- taintet den eigentlichen Kauf also nicht.
+local _ASBButtonsHooked = false
+local function _ASBHookNativeButtons()
+   if _ASBButtonsHooked then return end
+   local bb = _G["BrowseBuyoutButton"]
+   local bd = _G["BrowseBidButton"]
+   if not bb and not bd then return end
+   _ASBButtonsHooked = true
+   if bb then
+      bb:HookScript("OnClick", function()
+         if SkuCore.AuctionSecureBuy.active then
+            _ABLog("native buyout button clicked", { stage = SkuCore.AuctionSecureBuy.stage })
+         end
+      end)
+   end
+   if bd then
+      bd:HookScript("OnClick", function()
+         if SkuCore.AuctionSecureBuy.active then
+            _ABLog("native bid button clicked", { stage = SkuCore.AuctionSecureBuy.stage })
+         end
+      end)
+   end
+end
+
+-- Schritt 1: Match gefunden → Auktion selektieren, Details ansagen und Enter auf
+-- Blizzards nativen Buyout/Bid-Button binden (Taint-frei). Ersetzt den früheren
+-- direkten PlaceAuctionBid-Pfad, der auf diesem Client immer still scheiterte.
 function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
    local AB = SkuCore.AuctionBuy
-   -- Neue Match → alte Bestätigung verwerfen, Generation hochziehen.
+   -- Neue Match → alte Bestätigung/Bindings verwerfen, Generation hochziehen.
    SkuCore:AuctionBuyCancel()
    AB.generation = AB.generation + 1
    local thisGen = AB.generation
@@ -415,154 +780,77 @@ function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
       and (tCurrentResult[8] + tCurrentResult[9])
       or  (tCurrentResult[10])
 
-   AB.pending = {
-      gen       = thisGen,
-      x         = x,
-      type      = tType,
-      itemName  = tItemName,
-      itemCount = tItemCount,
-      expItemId = tExpItemId,
-      expBuyout = tExpBuyout,
-      expCount  = tExpCount,
+   local SB = SkuCore.AuctionSecureBuy
+   SB.active = true
+   -- "settling": Liste erst stabilisieren lassen, BEVOR Enter scharfgeschaltet
+   -- wird. In diesem Zustand (und in "trigger") unterdrückt AuctionHouseStartQuery
+   -- jede neue Query, damit sich die Server-Liste — und damit der Kauf-Index —
+   -- bis zum Tastendruck NICHT mehr verschiebt.
+   SB.stage  = "settling"
+   SB.gen    = thisGen
+   SB.p = {
+      x = x, type = tType, itemName = tItemName, itemCount = tItemCount,
+      expItemId = tExpItemId, expBuyout = tExpBuyout, expCount = tExpCount,
       bidAmount = tBidAmount,
+      moneyBefore = (type(GetMoney) == "function") and GetMoney() or 0,
    }
-   _ABLog("ABStart", {
-      gen = thisGen, x = x, type = tType,
-      itemId = tExpItemId, buyout = tExpBuyout,
-      count = tExpCount, bidAmount = tBidAmount,
+   _ABLog("ABStart (secure)", {
+      gen = thisGen, x = x, type = tType, itemId = tExpItemId,
+      buyout = tExpBuyout, count = tExpCount, bidAmount = tBidAmount,
    })
 
-   -- Kurze Pause, damit Sapi den ankündigenden Satz noch fertigsprechen kann,
-   -- bevor das Bestätigungsfenster aufgeht. Früher 1 s — das war der größte
-   -- spürbare Teil der Verzögerung bis zum Kauf-Prompt (der Match selbst liegt
-   -- auf Seite 0); 0,3 s reichen.
-   _ABTrack(C_Timer.NewTimer(0.3, function()
-      -- Zwischen-Cancel (AH zu / ESC / neue Match) → nichts tun.
-      if AB.pending == nil or AB.pending.gen ~= thisGen then
-         _ABLog("ABStart aborted before show", { gen = thisGen, currentGen = AB.generation })
+   -- Kein nativer Browse-Umweg, keine Selektion und kein Popup nötig: Enter wird
+   -- direkt auf unseren Ausführungs-Button (SkuAuctionBuyExec) gemappt, dessen
+   -- OnClick PlaceAuctionBid direkt im Hardware-Event aufruft (Auctionator-Weg).
+   local tNativeButton = "SkuAuctionBuyExec"
+
+   -- WICHTIG (Auctionator-Lektion gegen das beobachtete No-Op): NICHT in eine
+   -- noch nicht fertige/instabile Liste bieten. Auctionator aktiviert seinen
+   -- Kauf-Button erst, wenn die Suche fertig ist (IsNotThrottled/gotAllResults).
+   -- Wir scharfschalten daher erst, wenn die Server-Liste GESETZT ist:
+   -- CanSendAuctionQuery() == true und keine Seite mehr unterwegs. Bis dahin
+   -- pollen (mit Deckel), damit ein gerade noch streamender Query-Response den
+   -- Index nicht unter dem Gebot wegzieht.
+   local tArm
+   tArm = function(aWaited)
+      if not SB.active or SB.gen ~= thisGen then
+         _ABLog("secure buy arm aborted", {
+            gen = thisGen, curGen = SkuCore.AuctionBuy.generation, active = SB.active,
+         })
+         return
+      end
+      local tSettled = false
+      pcall(function() tSettled = (CanSendAuctionQuery() == true) end)
+      local tWaiting = (SkuCore.QueryWaitingPage == true) or (SkuCore.QueryRunning == true)
+      if (not tSettled or tWaiting) and (aWaited or 0) < 4.0 then
+         _ABTrack(C_Timer.NewTimer(0.2, function() tArm((aWaited or 0) + 0.2) end))
          return
       end
 
+      -- Liste gesetzt → jetzt erst scharfschalten (Enter → Kauf-Ausführung).
+      SB.stage = "trigger"
+      _ASBClearBindings()
+      local okBound = pcall(SetOverrideBindingClick, _ASBBinder, true, "ENTER", tNativeButton)
+      pcall(SetOverrideBindingClick, _ASBBinder, true, "NUMPADENTER", tNativeButton)
+      pcall(SetOverrideBindingClick, _ASBBinder, true, "ESCAPE", "SkuAuctionSecureCancelButton")
+      _ASBArmSafety()
+      _ABLog("secure buy arm trigger", {
+         gen = thisGen, button = tNativeButton, bound = okBound,
+         waited = aWaited or 0, settled = tSettled,
+      })
+
+      -- Auslöse-Prompt: WAS wird gekauft + "Eingabe zum Kaufen". Enter kauft dann
+      -- direkt (ein Tastendruck, kein Popup). Nur registrierte Locale-Keys.
       local tPrompt
       if tType == 1 then
-         tPrompt = L["Gebot "]..(SkuCore.QueryBuyBought + 1)..L[" von "]..SkuCore.QueryBuyAmount..": "..tItemName.." "..tItemCount..L[" stück wirklich "]..SkuGetCoinText(tBidAmount, false, true)..L[" bieten? Eingabe Ja, Escape Nein"]
+         tPrompt = L["Gebot "]..(SkuCore.QueryBuyBought + 1)..L[" von "]..SkuCore.QueryBuyAmount..": "..tItemName.." "..tItemCount..L[" stück"]..L[" für "]..SkuGetCoinText(tBidAmount, false, true)..". "..L["Eingabe zum Bieten, Escape zum Abbrechen"]
       else
-         tPrompt = L["Kauf "]..(SkuCore.QueryBuyBought + 1)..L[" von "]..SkuCore.QueryBuyAmount..": "..tItemName.." "..tItemCount..L[" stück wirklich für "]..SkuGetCoinText(tBidAmount, false, true)..L[" kaufen? Eingabe Ja, Escape Nein."]
+         tPrompt = L["Kauf "]..(SkuCore.QueryBuyBought + 1)..L[" von "]..SkuCore.QueryBuyAmount..": "..tItemName.." "..tItemCount..L[" stück"]..L[" für "]..SkuGetCoinText(tBidAmount, false, true)..". "..L["Eingabe zum Kaufen, Escape zum Abbrechen"]
       end
-
-      SkuCore:ConfirmButtonShow(tPrompt,
-         -- ===== OK-Pfad — exakt wie Vorlage =====
-         -- Inline-Closure, direkter PlaceAuctionBid-Aufruf, kein
-         -- SecureActionButton-Umweg. Auf Anniversary 2.5.5 wurde
-         -- der direkte Lua-Aufruf nachweislich vom Server akzeptiert
-         -- (Vorlage funktioniert genau so), während der SAB-/run-
-         -- macrotext-Pfad strikter geprüft und konsistent verworfen
-         -- wurde.
-         function(self)
-            local p = SkuCore.AuctionBuy.pending
-            if not p or p.gen ~= thisGen then
-               _ABLog("ABOnAccept stale", { gen = thisGen, currentGen = SkuCore.AuctionBuy.generation })
-               SkuOptions.Voice:OutputStringBTtts(L["Bestätigung veraltet, Kauf abgebrochen"], true, true, 0.1, nil, nil, nil, 1)
-               return
-            end
-            -- Pending konsumiert (genau EINE Bestätigung).
-            SkuCore.AuctionBuy.pending = nil
-
-            -- Re-Validierung: ist Index x noch dieselbe Auktion?
-            local rNow = {GetAuctionItemInfo("list", p.x)}
-            local stillValid = rNow[17] == p.expItemId
-                           and rNow[10] == p.expBuyout
-                           and rNow[3]  == p.expCount
-            if not stillValid then
-               _ABLog("BID call (stale)", {
-                  gen = p.gen, x = p.x, bidAmount = p.bidAmount,
-                  nowItemId = rNow[17], expItemId = p.expItemId,
-                  nowBuyout = rNow[10], expBuyout = p.expBuyout,
-                  nowCount  = rNow[3],  expCount  = p.expCount,
-               })
-               SkuOptions.Voice:OutputStringBTtts(
-                  L["Auktion nicht mehr an dieser Stelle, Kauf abgebrochen"],
-                  true, true, 0.1, nil, nil, nil, 1)
-               _ABBuyGiveUp()
-               return
-            end
-            -- WICHTIG: PlaceAuctionBid ist eine GESCHÜTZTE Funktion und darf
-            -- NUR aus einem Hardware-Event heraus aufgerufen werden — also
-            -- genau hier, im OK-Pfad dieses Bestätigungs-Tastendrucks. Ein
-            -- Aufruf aus einem Timer (z.B. Auto-Retry) wird vom Client mit
-            -- ADDON_ACTION_BLOCKED abgewiesen (Lua-Fehler). Deshalb: GENAU EIN
-            -- Gebot pro bestätigtem Tastendruck, KEIN Timer-Retry.
-            local tMoneyBefore = (type(GetMoney) == "function") and GetMoney() or 0
-            PlaySound(89)
-            PlaceAuctionBid("list", p.x, p.bidAmount)
-            _ABLog("BID call", {
-               gen = thisGen, x = p.x, type = p.type,
-               bidAmount = p.bidAmount,
-               listSize = GetNumAuctionItems("list"),
-               stillValid = true,
-               moneyBefore = tMoneyBefore,
-            })
-            dprint('PlaceAuctionBid("list"', p.x, p.bidAmount)
-            -- Erfolg per Geld-Differenz prüfen. Der Timer bietet NICHT (das
-            -- wäre geschützt/blockiert) — er entscheidet nur: Erfolg → weiter /
-            -- fertig; No-Op → Fehlermeldung + erneut versuchen (neuer Dialog,
-            -- Gebot per Tastendruck), nach AB_BUY_MAX_FAILS Fehlschlägen in
-            -- Folge ganzen Lauf abbrechen. Fehlversuche zählen NICHT als gekauft.
-            _ABTrack(C_Timer.NewTimer(2, function()
-               if SkuCore.AuctionBuy.generation ~= thisGen then return end
-               if not SkuCore.QueryBuyData then return end
-               local mAfter = (type(GetMoney) == "function") and GetMoney() or 0
-               local mDiff = tMoneyBefore - mAfter
-               local serverAccepted = (mDiff >= p.bidAmount)
-               _ABLog("PlaceAuctionBid money diff", {
-                  gen          = thisGen,
-                  moneyBefore  = tMoneyBefore,
-                  moneyAfter   = mAfter,
-                  diff         = mDiff,
-                  expectedDiff = p.bidAmount,
-                  success      = serverAccepted,
-               })
-               if serverAccepted then
-                  SkuCore.AuctionBuy.failCount = 0
-                  _ABContinueOrFinish()
-               else
-                  SkuCore.AuctionBuy.failCount = (SkuCore.AuctionBuy.failCount or 0) + 1
-                  _ABLog("buy verdict no-op", {
-                     failCount = SkuCore.AuctionBuy.failCount,
-                     max = AB_BUY_MAX_FAILS,
-                     willRetry = SkuCore.AuctionBuy.failCount < AB_BUY_MAX_FAILS,
-                     hasBuyData = SkuCore.QueryBuyData ~= nil,
-                  })
-                  SkuOptions.Voice:OutputStringBTtts(
-                     L["Server hat den Kauf nicht bestätigt, bitte erneut versuchen"],
-                     true, true, 0.1, nil, nil, nil, 1)
-                  if SkuCore.AuctionBuy.failCount >= AB_BUY_MAX_FAILS then
-                     -- Zu viele Fehlschläge in Folge → ganzen Lauf abbrechen.
-                     _ABBuyGiveUp()
-                  else
-                     -- Erneut versuchen: Neu-Query → neuer Bestätigungs-Dialog
-                     -- → Gebot per Tastendruck. Gekauft-Zähler NICHT erhöhen.
-                     _ABRetrySamePurchase()
-                  end
-               end
-            end))
-         end,
-         -- Cancel-Pfad — ESC.
-         function()
-            _ABLog("ABOnCancel", { gen = thisGen })
-            dprint("abgebrochen Nicht geboten", x, tBidAmount)
-            SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"], true, true, 0.1, nil, nil, nil, 1)
-            -- Lauf vom Nutzer abgebrochen → Fehler-/Leerzähler zurücksetzen,
-            -- damit der nächste Kauf sauber bei 0 startet (sonst kann ein alter
-            -- Zählerstand den nächsten Kauf sofort aufgeben lassen).
-            SkuCore.AuctionBuy.failCount = 0
-            SkuCore.QueryBuyEmptyWaits = 0
-            SkuCore:AuctionBuyCancel()
-         end
-      )
       PlaySound(88)
       SkuOptions.Voice:OutputStringBTtts(tPrompt, true, true, 0.1, nil, nil, nil, 1)
-   end))
+   end
+   _ABTrack(C_Timer.NewTimer(0.3, function() tArm(0) end))
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2653,6 +2941,24 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMinLevel, aFilterMaxLevel, aFilterPage, aFilterUsable, aFilterRarity, aFilterGetAll, aFilterExactMatch, aFilterFilterData, aCallback)
+   -- KAUF-SCHUTZ: Während ein Kauf vorbereitet ("settling") oder scharf
+   -- ("trigger") ist, KEINE neue Query absetzen. Eine Query würde die
+   -- Server-Liste neu aufbauen und den bereits ermittelten Kauf-Index ungültig
+   -- machen → genau das beobachtete No-Op (Gebot auf falschen Index, kein
+   -- Geldabzug). Nach Abschluss/Abbruch des Kaufs (active=false) sind Queries
+   -- wieder frei (auch der Retry- und der Nächster-Artikel-Requery laufen dann).
+   if SkuCore.AuctionSecureBuy and SkuCore.AuctionSecureBuy.active
+      and (SkuCore.AuctionSecureBuy.stage == "settling" or SkuCore.AuctionSecureBuy.stage == "trigger") then
+      if SkuErrorLog and SkuErrorLog.Log then
+         pcall(function()
+            SkuErrorLog:Log("auction.buy", "query suppressed (buy armed)", {
+               stage = SkuCore.AuctionSecureBuy.stage,
+            })
+         end)
+      end
+      return false
+   end
+
    if SkuCore.QueryRunning == true and SkuCore.QueryData[7] == true then
       return false
    end
@@ -2725,7 +3031,22 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
    -- ohne den Cursor des Nutzers zu verschieben). Nur für normale
    -- paginierte Suchen, nicht für den getAll-Komplettscan. pcall-
    -- geschützt, falls der Client die Spalte "unitprice" nicht kennt.
-   if SkuCore.QueryData[tQAIindex.getAll] ~= true then
+   --
+   -- KAUF-FIX: Während eines Kaufs (QueryBuyData gesetzt) NICHT umsortieren.
+   -- SortAuctionSetSort ordnet die ANGEZEIGTE Liste um, die GetAuctionItemInfo
+   -- ("list", i) liest — ABER PlaceAuctionBid("list", i, ...) indiziert in die
+   -- SERVER-Reihenfolge der letzten QueryAuctionItems-Antwort. Nach einem
+   -- Re-Sort zeigen Anzeige-Index und Server-Index auf UNTERSCHIEDLICHE
+   -- Auktionen → das Gebot landet auf der falschen/nicht mehr vorhandenen
+   -- Auktion, der Server verwirft es still (das beobachtete "money diff = 0",
+   -- fast immer in vollen Kategorien mit vielen gleichen Auktionen). Ohne den
+   -- Re-Sort bleibt Anzeige-Index == Server-Index, und das Gebot trifft genau
+   -- die Auktion, die GetAuctionItemInfo zeigt. WowVision macht es genauso: es
+   -- sortiert die Live-Liste nicht selbst und bietet auf den vom Nutzer
+   -- gewählten Eintrag in der natürlichen Server-Reihenfolge. Der Kauf-Handler
+   -- durchsucht ohnehin ALLE Seiten nach exaktem Treffer (Item-ID + Buyout +
+   -- Stückzahl) — die Sortierung ist dafür unnötig.
+   if SkuCore.QueryData[tQAIindex.getAll] ~= true and SkuCore.QueryBuyData == nil then
       pcall(SortAuctionSetSort, "list", "unitprice", false)
    end
 
