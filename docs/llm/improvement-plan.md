@@ -78,18 +78,24 @@ Note: the post-bid verify only enforces the `QueryBuyData` guard for the default
 (normal-buy) path; strategy-buy has no `QueryBuyData` and guards itself via
 `sb.active`.
 
-### Known buy UX issue (being addressed)
+### First-Enter-missed issue — FIXED (confirmed, non-peak)
 
-On a busy realm the **first Enter could be missed** and a second press was
-needed. Cause: the arm used to also wait for `CanSendAuctionQuery() == true`
-before arming. That is the throttle gate for *sending a new query* and is
-irrelevant to `PlaceAuctionBid` (a bid is not a query); on a busy realm it stays
-closed for seconds, so the prompt came late and an early Enter (pressed before
-the binding existed) was lost. Fix: the arm now waits only while a Sku page query
-is genuinely in flight (`QueryWaitingPage`/`QueryRunning`); the throttle value is
-kept only as an arm-log diagnostic. Correctness is still held by query
-suppression + the click-time re-find. **This is exactly what the busy-category
-stress test must confirm.**
+Symptom: the **first Enter could be missed** and a second press was needed.
+Cause: the arm used to also wait for `CanSendAuctionQuery() == true` before
+arming. That is the throttle gate for *sending a new query* and is irrelevant to
+`PlaceAuctionBid` (a bid is not a query); on a busy realm it stays closed for
+seconds, so the prompt came late and an early Enter (pressed before the binding
+existed) was lost. Fix (commit `0447c76`): the arm now waits only while a Sku page
+query is genuinely in flight (`QueryWaitingPage`/`QueryRunning`); the throttle
+value is kept only as an arm-log diagnostic. Correctness is still held by query
+suppression + the click-time re-find.
+
+**Confirmed (2026-06-23):** normal buy and strategy-buy both still work and the
+first-Enter-missed problem is gone, tested on a non-peak realm. The base
+principles are robust (no new query under the bid; exact index re-found at the
+keypress). **Still outstanding: the full hardcore stress test at peak time in the
+busiest categories** — see the stress-test reminder above. Expected to hold, but
+not yet proven under maximum load.
 
 ---
 
