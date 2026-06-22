@@ -422,28 +422,29 @@ local function _ABRetrySamePurchase()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- Sicherer Kauf über Blizzards native Buttons (Taint-Fix)
+-- Auktions-Kauf: ein Tastendruck, direkter PlaceAuctionBid (Auctionator-Weg)
 ---------------------------------------------------------------------------------------------------------------------------------------
--- PlaceAuctionBid ist auf dem 2.5.5-Anniversary-Client taint-geschützt: ein
--- direkter Aufruf aus Sku-Code — sogar aus einem Tastendruck-Handler heraus —
--- wird vom Client STILL verworfen (kein Fehler, kein ADDON_ACTION_BLOCKED, kein
--- Geldabzug). Genau das war das beobachtete Dauer-No-Op (money diff = 0, Item
--- bleibt liegen), unabhängig von Index/Sortierung/Race.
+-- PlaceAuctionBid ist NICHT taint-/secure-geschützt, sondern HARDWARE-EVENT-
+-- gated: aus gewöhnlichem Addon-Code aufrufbar, SOLANGE der Aufruf während eines
+-- echten Hardware-Inputs läuft (Maus-/Tastendruck über einen Button). Außerhalb
+-- dieses Fensters blockt der Client mit ADDON_ACTION_BLOCKED. Skus alter Kauf rief
+-- es aus dem Editbox-OnEnterPressed (+ Timer/Closures) auf — KEIN gültiges
+-- Hardware-Event → blockiert → stilles No-Op. Auctionator (Source_LegacyAH/Tabs/
+-- Buying/Mixins/BuyDialog.lua) ruft PlaceAuctionBid direkt aus einem Button-
+-- OnClick auf → funktioniert, ohne Popup.
 --
--- Lösung wie in WowVision (core/ui/.../ProxyWidget.lua + tbc/auction/module.lua):
--- Wir rufen PlaceAuctionBid NICHT selbst auf, sondern leiten den Tastendruck des
--- Nutzers per sicherer Override-Bindung an Blizzards native, untainted Buttons:
---   Schritt 1: Enter → sicherer Klick auf BrowseBuyoutButton / BrowseBidButton
---              → Blizzard zeigt sein BUYOUT_AUCTION / BID_AUCTION-Popup
---   Schritt 2: Enter → sicherer Klick auf den Bestätigen-Button des Popups
---              → Blizzards untainted Code ruft PlaceAuctionBid auf → Kauf
--- Escape bricht in beiden Schritten ab. Die anschließende Geld-Differenz-Prüfung
--- ist NICHT taint-sensitiv und entscheidet: Erfolg → weiter/fertig, echtes Race
--- (Auktion weg) → nächste gleichwertige Auktion (wie WowVision).
+-- Lösung (Auctionator-Weg, tastaturbedienbar für Screenreader):
+--   Enter wird per SetOverrideBindingClick auf den versteckten Button
+--   SkuAuctionBuyExec gemappt; dessen OnClick ruft PlaceAuctionBid DIREKT im
+--   Hardware-Event auf. EIN Tastendruck pro Kauf, KEIN Blizzard-Popup, Escape
+--   bricht ab. Wichtig: erst scharfschalten, wenn die Server-Liste GESETZT ist
+--   (CanSendAuctionQuery true), und währenddessen keine neuen Queries zulassen —
+--   sonst zeigt der Index auf eine veraltete Auktion und der Server lehnt ab.
+--   Erfolg per Geld-Differenz: weiter/fertig, echtes Race → nächste Auktion.
 
 SkuCore.AuctionSecureBuy = SkuCore.AuctionSecureBuy or {
    active = false,
-   stage  = nil,   -- "trigger" | "confirm" | "verifying"
+   stage  = nil,   -- "settling" | "trigger" | "verifying"
    p      = nil,
    gen    = 0,
    safety = nil,
@@ -529,21 +530,8 @@ local function _ASBArmSafety()
    end)
 end
 
--- Sicherstellen, dass Blizzards Browse-Tab sichtbar ist, damit die nativen
--- Buyout/Bid-Buttons existieren und aktiviert werden.
-local function _ASBEnsureBrowseShown()
-   pcall(function()
-      if AuctionFrame and not AuctionFrame:IsShown() then
-         ShowUIPanel(AuctionFrame)
-      end
-      if AuctionFrameBrowse and not AuctionFrameBrowse:IsShown() and AuctionFrameTab1 then
-         AuctionFrameTab1:Click()
-      end
-   end)
-end
-
--- Kauf abbrechen: Bindings + Safety lösen, evtl. offene Blizzard-Popups
--- schließen, Zähler zurücksetzen. announce=true spricht die Abbruch-Meldung.
+-- Kauf abbrechen: Bindings + Safety lösen, Zähler zurücksetzen, Skus Menü-Tasten
+-- wiederherstellen. announce=true spricht die Abbruch-Meldung.
 function SkuCore:AuctionSecureBuyCancel(announce)
    local SB = SkuCore.AuctionSecureBuy
    local wasActive = SB.active
@@ -551,10 +539,6 @@ function SkuCore:AuctionSecureBuyCancel(announce)
    SB.stage  = nil
    _ASBRelease()
    _ASBClearSafety()
-   -- Offene Popups schließen. Deren OnCancel-Hook prüft SB.active (jetzt false)
-   -- und macht nichts → keine Rekursion.
-   pcall(function() StaticPopup_Hide("BUYOUT_AUCTION") end)
-   pcall(function() StaticPopup_Hide("BID_AUCTION") end)
    SkuCore.AuctionBuy.failCount = 0
    SkuCore.QueryBuyEmptyWaits = 0
    SkuCore:AuctionBuyCancel()
@@ -562,27 +546,6 @@ function SkuCore:AuctionSecureBuyCancel(announce)
       _ABLog("secure buy cancel", {})
       SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"], true, true, 0.1, nil, nil, nil, 1)
    end
-end
-
--- Schritt 2: Blizzards Bestätigungs-Popup ist da → Enter auf dessen
--- Bestätigen-Button (Button1) umbinden und ansagen.
-function SkuCore:AuctionSecureBuyArmConfirm(buttonName, which)
-   local SB = SkuCore.AuctionSecureBuy
-   if not SB.active then return end
-   SB.stage = "confirm"
-   _ASBClearBindings()
-   pcall(SetOverrideBindingClick, _ASBBinder, true, "ENTER", buttonName)
-   pcall(SetOverrideBindingClick, _ASBBinder, true, "NUMPADENTER", buttonName)
-   pcall(SetOverrideBindingClick, _ASBBinder, true, "ESCAPE", "SkuAuctionSecureCancelButton")
-   _ASBArmSafety()
-   -- Schritt 2 = Blizzards EIGENES, erzwungenes Bestätigungs-Popup. Item und
-   -- Preis kamen bereits in Schritt 1 — hier NICHT wiederholen, nur kurz sagen,
-   -- dass jetzt die (vom Client verlangte) Bestätigung ansteht. Registrierte
-   -- Locale-Keys, damit AceLocale (GetLocale "Sku", false → strikt) nicht meckert.
-   local tPrompt = L["Bestätigung: Eingabe Ja, Escape Nein."]
-   _ABLog("secure buy arm confirm", { which = which, button = buttonName })
-   PlaySound(88)
-   SkuOptions.Voice:OutputStringBTtts(tPrompt, true, true, 0.1, nil, nil, nil, 1)
 end
 
 -- Gebot ist raus (direkter PlaceAuctionBid lief im Hardware-Event). Erfolg per
@@ -694,75 +657,9 @@ function SkuCore:AuctionSecureBuyExecute()
    SkuCore:AuctionSecureBuyOnCommitted()
 end
 
--- (Vestigial) Blizzards Kauf/Gebots-Popups: im direkten Kauf-Pfad erscheint kein
--- BUYOUT_AUCTION-Popup mehr. Hook bleibt nur als Schutz erhalten, falls je ein
--- solches Popup während eines aktiven Kaufs auftaucht — er feuert dann nicht.
-local _ASBDialogHooked = {}
-local function _ASBHookDialog(which)
-   if _ASBDialogHooked[which] then return end
-   local d = StaticPopupDialogs and StaticPopupDialogs[which]
-   if not d then return end
-   _ASBDialogHooked[which] = true
-   if type(d.OnAccept) == "function" then
-      hooksecurefunc(d, "OnAccept", function()
-         if SkuCore.AuctionSecureBuy.active then
-            SkuCore:AuctionSecureBuyOnCommitted()
-         end
-      end)
-   end
-   if type(d.OnCancel) == "function" then
-      hooksecurefunc(d, "OnCancel", function()
-         if SkuCore.AuctionSecureBuy.active then
-            SkuCore:AuctionSecureBuyCancel(true)
-         end
-      end)
-   end
-end
-
-hooksecurefunc("StaticPopup_Show", function(which)
-   local SB = SkuCore.AuctionSecureBuy
-   if not SB or not SB.active then return end
-   if which ~= "BUYOUT_AUCTION" and which ~= "BID_AUCTION" then return end
-   _ASBHookDialog(which)
-   for i = 1, (STATICPOPUP_NUMDIALOGS or 4) do
-      local f = _G["StaticPopup"..i]
-      if f and f.which == which and f:IsShown() then
-         SkuCore:AuctionSecureBuyArmConfirm("StaticPopup"..i.."Button1", which)
-         break
-      end
-   end
-end)
-
--- Diagnose: bestätigt, dass Schritt 1 (der sichere Enter-Klick) Blizzards nativen
--- Button wirklich erreicht hat. Lazy gehookt, da Blizzard_AuctionUI LoadOnDemand
--- ist. Post-Hook (HookScript) → läuft NACH Blizzards sicherer OnClick-Logik,
--- taintet den eigentlichen Kauf also nicht.
-local _ASBButtonsHooked = false
-local function _ASBHookNativeButtons()
-   if _ASBButtonsHooked then return end
-   local bb = _G["BrowseBuyoutButton"]
-   local bd = _G["BrowseBidButton"]
-   if not bb and not bd then return end
-   _ASBButtonsHooked = true
-   if bb then
-      bb:HookScript("OnClick", function()
-         if SkuCore.AuctionSecureBuy.active then
-            _ABLog("native buyout button clicked", { stage = SkuCore.AuctionSecureBuy.stage })
-         end
-      end)
-   end
-   if bd then
-      bd:HookScript("OnClick", function()
-         if SkuCore.AuctionSecureBuy.active then
-            _ABLog("native bid button clicked", { stage = SkuCore.AuctionSecureBuy.stage })
-         end
-      end)
-   end
-end
-
--- Schritt 1: Match gefunden → Auktion selektieren, Details ansagen und Enter auf
--- Blizzards nativen Buyout/Bid-Button binden (Taint-frei). Ersetzt den früheren
--- direkten PlaceAuctionBid-Pfad, der auf diesem Client immer still scheiterte.
+-- Match gefunden → Liste stabilisieren lassen, Details ansagen und Enter auf den
+-- Ausführungs-Button (SkuAuctionBuyExec) binden, der PlaceAuctionBid direkt im
+-- Hardware-Event aufruft (Auctionator-Weg, ein Tastendruck, kein Popup).
 function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
    local AB = SkuCore.AuctionBuy
    -- Neue Match → alte Bestätigung/Bindings verwerfen, Generation hochziehen.
