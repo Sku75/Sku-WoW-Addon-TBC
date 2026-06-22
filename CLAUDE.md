@@ -23,31 +23,71 @@ Anniversary version (Interface 11508, currently v41.06).
   Tag per version (`v41.06`, ...). Re-import a new release here by extracting
   its zip over this branch and committing.
 - Branch `main` = our development work, branched from `upstream`.
-- To generate a contribution patch: `git diff v41.06 -- <changed paths>` (or
-  `git format-patch v41.06..main`). Patches are code-only by design.
+- **Layout note:** on `main` the addon source lives under the `Sku/` subfolder
+  (see "Repo layout" below), but the `upstream` branch and the `v41.06` tag
+  still have the source at the repo root (that's how the release zip is shaped).
+- To generate a contribution patch, diff the upstream **root** tree against our
+  `Sku/` **subtree** so the subfolder move adds no rename noise:
+  `git diff v41.06 main:Sku` (for one path: `git diff v41.06:<path>
+  main:Sku/<path>`). Patches are code-only by design. Avoid plain
+  `git format-patch v41.06..main` now — it would drag in the giant move commit.
 - No `origin` remote is configured yet — this is a local-only repo for now.
+
+## Repo layout
+
+- The repo root holds only `.git`, this `CLAUDE.md`, and the `Sku/` subfolder.
+- **All addon source lives under `Sku/`** — that folder is the addon root
+  (`Sku/Sku.toc`, `Sku/SkuCore/`, `Sku/Libs/`, etc.) and is what WoW's symlink
+  points at (see "Running in-game"). Paths elsewhere in this doc are relative to
+  `Sku/` unless stated otherwise.
+- `Sku/.gitignore` and `Sku/.gitattributes` live alongside the source so their
+  patterns stay anchored to the addon root (no edits needed after the move).
 
 ## Repo contents vs on-disk files
 
-- `.gitignore` excludes bulky **binary assets** (`*.mp3`, `*.ogg`, fonts,
+- `Sku/.gitignore` excludes bulky **binary assets** (`*.mp3`, `*.ogg`, fonts,
   images) and **large generated game-data tables** (`routedata_global_wotlk.lua`,
   everything under `SkuDB/assets/`). These remain on disk so the addon runs,
   but are not version-controlled (they are ~290 MB and rarely hand-edited).
 - ~150 Lua/XML/TOC source files ARE tracked. When you need to edit an ignored
   data file, force-add it deliberately.
-- `.gitattributes` forces LF so diffs stay clean against the upstream release.
+- `Sku/.gitattributes` forces LF so diffs stay clean against the upstream
+  release.
 
 ## Running in-game
 
-- `AddOns\Sku` is a **junction** to this repo
-  (`C:\Users\fabia\Dev\Sku-TBC`), so edits here are live in WoW after a
-  `/reload`. (Junction, not symlink, because directory symlinks in Program
-  Files need admin; a junction is equivalent for WoW.)
+- `AddOns\Sku` is a **directory symbolic link** to this repo's `Sku/` subfolder
+  (`C:\Users\fabia\Dev\Sku-TBC\Sku`), so edits here are live in WoW after a
+  `/reload`. It targets `Sku/` (the addon root), not the repo root. (A real
+  symlink, created with admin via `mklink /D` — the proven-working path here;
+  recreate it the same way if a release re-import or move ever clears it.)
 - The previously installed v41.04 is backed up at
   `AddOns\Sku.preDev-backup-v41.04`.
 - Required companion addons (already installed separately, not in this repo):
   `SkuBeaconSoundsets` (a hard dependency in the TOC), plus `SkuNavData`,
   `SkuHealthAssets`, and the `SkuAudioData_*` language pack.
+
+## Debugging (WVDebug helper addon)
+
+The sibling addon `C:\Users\fabia\Dev\WVDebug` is a shared, dependency-free
+debug helper that captures live UI/addon state into SavedVariables for
+out-of-game reading. It loads automatically alongside Sku. See
+`../WVDebug/README.md` for the full command list. The most useful for Sku:
+
+- `/wdsku` — dump the current Sku menu (focused item, breadcrumb, siblings,
+  children) **plus** what Sku would speak (`spoken`) and the last TTS reading
+  frame text (`ttsFrameText`). This is the "what Sku shows the user" capture.
+- `/wdsku3` — same idea but recursively expands the whole current level down 3
+  levels into a `tree` (builds dynamic submenus on demand); use for a fuller
+  tree dump.
+- `/wdwatchsku` — toggle continuous logging of every line Sku announces (hooks
+  `SkuOptions.Voice:OutputStringBTtts`/`:OutputString`).
+- `/wdframes`, `/wdframe <Name>`, `/wdeval <expr>`, `/wdmenu`, `/wdwatcherrors`
+  — addon-agnostic captures.
+
+Read-back loop: run a command in game, `/reload` to flush, then read
+`...\WTF\Account\1107979492#1\SavedVariables\WVDebug.lua` (`WVDebugData` =
+latest, `WVDebugLog` = history).
 
 ## Architecture
 
