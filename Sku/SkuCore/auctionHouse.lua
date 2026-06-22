@@ -1154,6 +1154,11 @@ function SkuCore:AuctionHouseMenuBuilder()
       -- am Listenanfang — die laufende Suche und der "Warten"-Eintrag
       -- sind dann unsichtbar.
       tNewMenuEntrysearch.noStepUpAfterSelect = true
+      -- Buchstaben-Filter (erste-Buchstaben-Suche) auch in der Suchergebnis-
+      -- Liste erlauben — wie bei den Kategorie-Listen ("Alle"/Einzel-Item),
+      -- die .filterable bereits setzen. Ohne das tat ApplyFilter hier nichts
+      -- (Core.lua prüft currentMenuPosition.parent.filterable == true).
+      tNewMenuEntrysearch.filterable = true
       tNewMenuEntrysearch.OnAction = function(self, aValue, aName)
          -- Menü-Eintrag in lokaler Closure für die EditBox-Callback
          -- festhalten — sonst zeigt 'self' im Callback auf die EditBox.
@@ -1187,6 +1192,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                      end)
                   end
                )
+               SkuCore.QueryResultsHost = lSearchEntry
                -- Sofort-Rebuild der Such-Entry-Children: QueryRunning
                -- ist nun true → "Warten" wird gezeigt; der Lade-Sound
                -- im OnUpdate-Ticker greift dann (er prüft auf "Warten"
@@ -2041,6 +2047,7 @@ function SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryInd
                end)
             end
          )
+         SkuCore.QueryResultsHost = self
          -- Sofort-Rebuild: nach StartQuery ist QueryRunning=true,
          -- also "Warten"-Eintrag anzeigen statt "leer". Der Lade-Sound
          -- im OnUpdate-Ticker greift nur bei "Warten" — daher wichtig.
@@ -2101,6 +2108,7 @@ function SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryInd
                         end)
                      end
                   )
+                  SkuCore.QueryResultsHost = self
                   -- Sofort-Rebuild: "Warten" + Ladeton schon beim ersten
                   -- Aufrufen statt erst nach Zurück-und-vor-Navigation.
                   self.children = {}
@@ -2118,9 +2126,215 @@ function SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryInd
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Gruppiert QueryResultsDB nach Item-Namen zu einer (nach dem aktuellen
+-- Filter) sortierten Liste eindeutiger Gegenstände, jeder mit seinen
+-- 'dupes'-Auktionen. Ausgelagert, damit Erstaufbau und das stille
+-- Nachladen weiterer Seiten (AuctionResultsAppend) dieselbe Logik nutzen.
+function SkuCore:AuctionGroupResults()
+   local tCurrentDBClean = {}
+   local tNameIndex = {}
+   for tIndex, tRecord in pairs(QueryResultsDB) do
+      if tRecord and tRecord[1] then
+         local tName = SkuCore:AuctionItemNameFormat(tRecord)
+         local existingIdx = tNameIndex[tName]
+         if existingIdx then
+            local dupes = tCurrentDBClean[existingIdx].dupes
+            dupes[#dupes + 1] = tRecord
+         else
+            local tLevel = tRecord[6]
+            if not tLevel or tLevel == 0 or tLevel > 10000 then
+               tLevel = select(4, GetItemInfo(tRecord[17])) or 0
+            end
+            local entry = {
+               name = tName,
+               level = tLevel,
+               pricePerItem = SkuCore:AuctionGetPricePerItem(tRecord),
+               pricePerAuction = { bid = tRecord[8], buy = tRecord[10] },
+               dupes = { tRecord },
+               query = tRecord.query,
+            }
+            tCurrentDBClean[#tCurrentDBClean + 1] = entry
+            tNameIndex[tName] = #tCurrentDBClean
+         end
+      end
+   end
+
+   -- Sortierung wie im Original (AuctionHouseResultsMenuBuilder): nach der
+   -- SortBy-Einstellung des Nutzers, Default 1 = Stückpreis aufsteigend.
+   -- Wichtig: Erstaufbau, Nachladen (AuctionResultsAppend) und erneutes
+   -- Betreten müssen DENSELBEN Vergleich nutzen, sonst springt die
+   -- Reihenfolge.
+   local tSortBy = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy or 1
+   local tComparators = {
+      [1] = function(a, b) return a.pricePerItem.buy    < b.pricePerItem.buy    end,
+      [2] = function(a, b) return a.pricePerAuction.buy < b.pricePerAuction.buy end,
+      [3] = function(a, b) return a.pricePerItem.bid    < b.pricePerItem.bid    end,
+      [4] = function(a, b) return a.pricePerAuction.bid < b.pricePerAuction.bid end,
+      [5] = function(a, b) return (a.level or 0) > (b.level or 0) end,
+      [6] = function(a, b) return (a.level or 0) < (b.level or 0) end,
+   }
+   table.sort(tCurrentDBClean, tComparators[tSortBy] or tComparators[1])
+   return tCurrentDBClean
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Baut EINEN Ergebnis-Menüeintrag (ein zusammengefasster Gegenstand mit
+-- seinen 'dupes'-Auktionen) im Eltern-Menü und gibt ihn zurück. Wird vom
+-- Erstaufbau und vom stillen Nachladen (AuctionResultsAppend) genutzt.
+-- HINWEIS: Die Erzeugungslogik existiert vorerst auch noch inline im
+-- AuctionHouseResultsMenuBuilder; eine spätere Aufräum-Runde sollte den
+-- Builder ebenfalls auf diesen Helper umstellen.
+function SkuCore:AuctionResultsCreateEntry(aParent, tDataTmp, tIndex)
+   local tData = tDataTmp.dupes[1]
+   tData[19] = tDataTmp.dupes
+   tData[20] = tDataTmp.level
+   if not (tData and tData[1]) then
+      return nil
+   end
+
+   local tFilter = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter
+   local tWithLevelGlobal = (tFilter.SortBy == 5 or tFilter.SortBy == 6
+      or tFilter.LevelMin or tFilter.LevelMax) and true or nil
+
+   local tNewMenuItemName = ""
+   if #tData[19] > 1 then
+      tNewMenuItemName = #tData[19]..L[" mal "]
+   end
+   local tDisplayName
+   if tWithLevelGlobal then
+      tDisplayName = tNewMenuItemName .. SkuCore:AuctionItemNameFormat(tData, nil, true)
+   else
+      tDisplayName = tNewMenuItemName .. tDataTmp.name
+   end
+
+   local tEntry = SkuOptions:InjectMenuItems(aParent, {tDisplayName}, SkuGenericMenuItem)
+   tEntry.dynamic = false
+   tEntry.data = tData
+   tEntry.tIndex = tIndex
+   tEntry.textFull = function()
+      return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))
+   end
+
+   if tData[12] ~= true then
+      tEntry.dynamic = true
+      if tData[tAIDIndex["highBidder"]] ~= true or tData[tAIDIndex["buyoutPrice"]] > 0 then
+         tEntry.BuildChildren = function(self)
+            if tData[tAIDIndex["highBidder"]] ~= true then
+               local tBidEntry = SkuOptions:InjectMenuItems(self, {L["Bieten"]}, SkuGenericMenuItem)
+               tBidEntry.dynamic = false
+               tBidEntry.data = self.parent.tData
+               tBidEntry.BuildChildren = function(self)
+                  self.children = {}
+                  for x = 1, #self.parent.data[19] do
+                     local tNo = SkuOptions:InjectMenuItems(self, {""..x..L[" Auktionen"]}, SkuGenericMenuItem)
+                     tNo.data = self.parent.data
+                     tNo.OnAction = function(self, aValue, aName)
+                        local tData = self.data
+                        SkuCore.QueryBuyData = tData
+                        SkuCore.QueryBuyAmount = x
+                        SkuCore.QueryBuyBought = 0
+                        SkuCore.QueryBuyType = 1
+                        SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
+                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
+                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax, 0,
+                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
+                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
+                           false, true, tData.query.filterData, function() end)
+                     end
+                  end
+               end
+            end
+
+            if tData[tAIDIndex["buyoutPrice"]] > 0 then
+               local tBuyEntry = SkuOptions:InjectMenuItems(self, {L["Kaufen"]}, SkuGenericMenuItem)
+               tBuyEntry.dynamic = false
+               tBuyEntry.data = self.parent.tData
+               tBuyEntry.BuildChildren = function(self)
+                  self.children = {}
+                  for x = 1, #self.parent.data[19] do
+                     local tNo = SkuOptions:InjectMenuItems(self, {""..x..L[" Auktionen"]}, SkuGenericMenuItem)
+                     tNo.data = self.parent.data
+                     tNo.OnAction = function(self, aValue, aName)
+                        local tData = self.data
+                        SkuCore.QueryBuyData = tData
+                        SkuCore.QueryBuyAmount = x
+                        SkuCore.QueryBuyBought = 0
+                        SkuCore.QueryBuyType = 2
+                        SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
+                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
+                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax, 0,
+                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
+                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
+                           false, true, tData.query.filterData, function() end)
+                     end
+                  end
+               end
+            end
+         end
+      end
+   end
+
+   return tEntry
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Hängt Ergebnisse späterer Scan-Seiten STILL an die bereits offene Liste
+-- an (append-only): bereits gezeigte Gegenstände wachsen nur in ihrer
+-- Auktions-Anzahl (Label aktualisiert), neue Gegenstände kommen ans Ende.
+-- Dadurch verschiebt sich die Cursor-Position des Nutzers nicht. Setzt
+-- voraus, dass der Server nach Stückpreis sortiert (SortAuctionSetSort
+-- "unitprice"), sodass spätere (teurere) Seiten sauber hinten anschließen.
+function SkuCore:AuctionResultsAppend()
+   local aParent = SkuCore.QueryResultsParent
+   if not aParent then
+      return
+   end
+   -- Solange ein Buchstaben-Filter aktiv ist NICHT anhängen: ApplyFilter hat
+   -- aParent.children durch die gefilterte Teilliste ersetzt (das Original
+   -- liegt in Core.lua/tOldChildren, für uns nicht erreichbar). Ein Anhängen
+   -- würde die Filteransicht verfälschen bzw. den Filter "auflösen". Die Daten
+   -- bleiben in QueryResultsDB; nach Filter-Ende und erneutem Betreten wird die
+   -- Liste vollständig neu gebaut.
+   if SkuOptions.Filterstring and #SkuOptions.Filterstring > 1 then
+      return
+   end
+   SkuCore.QueryResultsByName = SkuCore.QueryResultsByName or {}
+   local tSorted = SkuCore:AuctionGroupResults()
+   local tNextIndex = (aParent.children and #aParent.children) or 0
+   local tFilter = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter
+   local tWithLevelGlobal = (tFilter.SortBy == 5 or tFilter.SortBy == 6
+      or tFilter.LevelMin or tFilter.LevelMax) and true or nil
+   for i = 1, #tSorted do
+      local tDataTmp = tSorted[i]
+      local tExisting = SkuCore.QueryResultsByName[tDataTmp.name]
+      if tExisting then
+         local tData = tDataTmp.dupes[1]
+         tData[19] = tDataTmp.dupes
+         tData[20] = tDataTmp.level
+         tExisting.data = tData
+         local tPrefix = ""
+         if #tDataTmp.dupes > 1 then
+            tPrefix = #tDataTmp.dupes..L[" mal "]
+         end
+         if tWithLevelGlobal then
+            tExisting.name = tPrefix .. SkuCore:AuctionItemNameFormat(tData, nil, true)
+         else
+            tExisting.name = tPrefix .. tDataTmp.name
+         end
+      else
+         tNextIndex = tNextIndex + 1
+         local tEntry = SkuCore:AuctionResultsCreateEntry(aParent, tDataTmp, tNextIndex)
+         if tEntry then
+            SkuCore.QueryResultsByName[tDataTmp.name] = tEntry
+         end
+      end
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseResultsMenuBuilder(aParent)
    dprint("AuctionHouseResultsMenuBuilder", aParent.name)
-   if SkuCore.QueryRunning == true then
+   if SkuCore.QueryRunning == true and SkuCore.QueryResultsPartialReady ~= true then
       tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["Warten"]}, SkuGenericMenuItem)
       tNewMenuEntryCategorySubItem.dynamic = false
       --OnEnterAllFlag = nil
@@ -2182,7 +2396,11 @@ function SkuCore:AuctionHouseResultsMenuBuilder(aParent)
          }
          table.sort(tCurrentDBClean, tComparators[tSortBy] or tComparators[1])
          tCurrentDBCleanSorted = tCurrentDBClean
-      
+
+         -- Zustand für stilles Nachladen weiterer Seiten merken.
+         SkuCore.QueryResultsByName = {}
+         SkuCore.QueryResultsParent = aParent
+
          -- "tWithLevel" einmal außerhalb der Schleife auswerten
          -- (Filter ändert sich nicht pro Item).
          local tFilter = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter
@@ -2213,7 +2431,8 @@ function SkuCore:AuctionHouseResultsMenuBuilder(aParent)
                   tNewMenuEntryCategorySubSubItem.dynamic = false
                   tNewMenuEntryCategorySubSubItem.data = tData
                   tNewMenuEntryCategorySubSubItem.tIndex = tIndex
-                  tNewMenuEntryCategorySubSubItem.textFull = function() 
+                  SkuCore.QueryResultsByName[tDataTmp.name] = tNewMenuEntryCategorySubSubItem
+                  tNewMenuEntryCategorySubSubItem.textFull = function()
                      return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))
                   end
       
@@ -2318,6 +2537,11 @@ function SkuCore:AuctionHouseResetQuery(aForce)
    SkuCore.QueryMaxPage = nil
    SkuCore.QueryData = {}
    SkuCore.QueryCallback = nil
+   -- Inkrementelles Nachladen beenden: gebaute Liste bleibt stehen, aber
+   -- es darf nichts mehr angehängt werden (Host/Flag weg).
+   SkuCore.QueryResultsPartialReady = nil
+   SkuCore.QueryResultsHost = nil
+   SkuCore.QueryWaitingPage = nil
    --[[
    SkuCore.QueryBuyData = nil
    SkuCore.QueryBuyType = nil
@@ -2357,6 +2581,12 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
 
       QueryResultsDB = {}
 
+      -- Zustand der inkrementellen Ergebnis-Darstellung zurücksetzen.
+      SkuCore.QueryResultsPartialReady = nil
+      SkuCore.QueryResultsHost = nil
+      SkuCore.QueryResultsByName = nil
+      SkuCore.QueryResultsParent = nil
+
       SkuCore.QueryCurrentType = aType
       SkuCore.QueryCurrentPage = 0
       SkuCore.QueryData = {
@@ -2386,6 +2616,16 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
          })
       end)
    end
+   -- Server-seitig nach Stückpreis sortieren, damit die billigsten
+   -- Auktionen auf Seite 0 stehen und spätere (teurere) Seiten beim
+   -- inkrementellen Nachladen sauber HINTEN anschließen (append-only,
+   -- ohne den Cursor des Nutzers zu verschieben). Nur für normale
+   -- paginierte Suchen, nicht für den getAll-Komplettscan. pcall-
+   -- geschützt, falls der Client die Spalte "unitprice" nicht kennt.
+   if SkuCore.QueryData[tQAIindex.getAll] ~= true then
+      pcall(SortAuctionSetSort, "list", "unitprice", false)
+   end
+
    -- pcall um QueryAuctionItems: einzelne Seitenanfragen können bei
    -- Server-Hängern oder ungültigen Parametern werfen. Im Fehlerfall
    -- soll der gesamte Scan-Status sauber zurückgesetzt werden, statt
@@ -2417,6 +2657,13 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
    end
 
    SkuCore.QueryRunning = true
+   -- Genau EINE vollständige Antwort pro abgesetzter Seiten-Query einlesen.
+   -- AUCTION_ITEM_LIST_UPDATE feuert pro Server-Antwort MEHRFACH (Streaming).
+   -- Ohne diese Sperre wurde dieselbe Seite doppelt eingelesen (doppelte
+   -- Einträge / inflationierte Stückzahlen) und teils die Folgeseite
+   -- übersprungen. Wird im LIST-Handler nach erfolgreichem Einlesen wieder
+   -- auf false gesetzt; die nächste Seiten-Query setzt es erneut auf true.
+   SkuCore.QueryWaitingPage = true
    return true
 end
 
@@ -2617,6 +2864,13 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          SkuCore.QueryCallback()
          SkuCore:AuctionHouseResetQuery(true)
       else
+         -- Doppelte/Spuk-Events ignorieren: pro abgesetzter Seiten-Query nur
+         -- die erste VOLLSTÄNDIGE Antwort verarbeiten. AUCTION_ITEM_LIST_UPDATE
+         -- feuert pro Antwort mehrfach; ohne diese Sperre wurde dieselbe Seite
+         -- doppelt eingelesen und teils die Folgeseite übersprungen.
+         if SkuCore.QueryWaitingPage ~= true then
+            return
+         end
          if SkuCore.QueryMaxPage == nil then
             SkuCore.QueryMaxPage = math.floor(tCount / 50)
             if tCount - ((SkuCore.QueryMaxPage + 1) * 50) > 0 then
@@ -2629,7 +2883,15 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          local tPageData = {}
          for x = 1, tBatch do
             local tEntry = {GetAuctionItemInfo("list", x)}
-            if tEntry[14] == nil then
+            -- Anniversary-Quirk: der Owner (Feld 14) kommt oft DAUERHAFT als
+            -- nil zurück (Privacy-Backport). Der frühere Abbruch auf nil-Owner
+            -- ließ die Seite immer wieder neu anfordern → jede Seite kostete
+            -- viele Events, und große Treffermengen (mehrere tausend) liefen
+            -- ins Timeout, bevor spätere Seiten geladen waren. Wir warten jetzt
+            -- nur noch auf den NAMEN (Feld 1) als "Zeile fertig gestreamt"-
+            -- Signal; ein fehlender Owner ist für die Anzeige egal (der Kauf
+            -- re-queryt die Auktion ohnehin frisch).
+            if tEntry[1] == nil or tEntry[1] == "" then
                dprint("incomplete page data")
                return
             end
@@ -2640,6 +2902,33 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          for x = 1, #tPageData do
             QueryResultsDB[#QueryResultsDB + 1] = tPageData[x]
          end
+         -- Seite vollständig eingelesen → weitere Events DERSELBEN Antwort
+         -- ignorieren, bis die nächste Seiten-Query abgesetzt wurde.
+         SkuCore.QueryWaitingPage = false
+
+         -- Inkrementelle Darstellung: erste vollständige Seite SOFORT
+         -- zeigen, weitere Seiten still anhängen (append-only), damit der
+         -- Cursor des Nutzers nicht springt. Greift nur für die echten
+         -- Browse-Pfade, die QueryResultsHost gesetzt haben (Suche / Alle /
+         -- Einzel-Item). Andere LIST-Queries behalten das alte Verhalten
+         -- über das End-Callback weiter unten.
+         if SkuCore.QueryResultsHost then
+            if SkuCore.QueryResultsPartialReady ~= true then
+               SkuCore.QueryResultsPartialReady = true
+               SkuCore.QueryResultsHost.children = {}
+               SkuCore:AuctionHouseResultsMenuBuilder(SkuCore.QueryResultsHost)
+               -- Cursor von "Warten" in das erste Ergebnis ziehen.
+               if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name == L["Warten"] then
+                  local tHost = SkuCore.QueryResultsHost
+                  if tHost.children and tHost.children[1] then
+                     SkuOptions.currentMenuPosition = tHost.children[1]
+                     pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
+                  end
+               end
+            else
+               SkuCore:AuctionResultsAppend()
+            end
+         end
 
          dprint(" SkuCore.QueryCurrentPage", SkuCore.QueryCurrentPage)
          dprint(" SkuCore.QueryMaxPage", SkuCore.QueryMaxPage)
@@ -2649,11 +2938,18 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
             dprint("continue with next page")
          else
             dprint("query completed", SkuCore.QueryCallback)
-            if SkuOptions.currentMenuPosition.name == L["Warten"] then
+            if SkuCore.QueryResultsHost then
+               -- Bereits inkrementell dargestellt: nur Abschluss-Ton, KEIN
+               -- erneuter Komplett-Aufbau (würde den Cursor zurückwerfen).
                SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
+               SkuCore:AuctionHouseResetQuery()
+            else
+               if SkuOptions.currentMenuPosition.name == L["Warten"] then
+                  SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
+               end
+               SkuCore.QueryCallback()
+               SkuCore:AuctionHouseResetQuery()
             end
-            SkuCore.QueryCallback()
-            SkuCore:AuctionHouseResetQuery()
          end
       end
    end
