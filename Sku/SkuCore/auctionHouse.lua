@@ -408,6 +408,13 @@ function SkuCore:AuctionBuyCancel()
       local tSafety = SkuCore.AuctionSecureBuy.safety
       if tSafety and tSafety.Cancel then pcall(tSafety.Cancel, tSafety) end
       SkuCore.AuctionSecureBuy.safety = nil
+      -- Server-Meldungs-Capture lösen (Frame per Global-Name, s. o.).
+      local tMsgFrame = _G["SkuAuctionSecureMsgFrame"]
+      if tMsgFrame then
+         pcall(tMsgFrame.UnregisterEvent, tMsgFrame, "CHAT_MSG_SYSTEM")
+         pcall(tMsgFrame.UnregisterEvent, tMsgFrame, "UI_ERROR_MESSAGE")
+      end
+      SkuCore.AuctionSecureBuy.verifyTimer = nil
    end
    _ABLog("ABCancel", { newGeneration = AB.generation })
 end
@@ -577,6 +584,75 @@ if not _ASBExecBtn then
    end)
 end
 
+-- ---------------------------------------------------------------------------
+-- Kauf-Ergebnis aus den ECHTEN Server-Meldungen lesen (WowVision-Weg).
+-- WowVision (tbc/auction/ScanSession.lua) entscheidet Erfolg/Fehlschlag nicht
+-- über eine Geld-Differenz, sondern über die Spielmeldungen selbst:
+--   * CHAT_MSG_SYSTEM  == ERR_AUCTION_BID_PLACED  → Gebot/Kauf angenommen
+--   * UI_ERROR_MESSAGE (Auktions-/Geld-Fehler)    → abgelehnt
+-- Das ist die zuverlässige Quelle. Die Geld-Differenz bleibt NUR als Log-Wert
+-- erhalten und entscheidet einzig im seltenen Timeout-Fall (kein Server-Signal).
+-- Die Server-Strings sind global und bereits in Client-Sprache lokalisiert.
+local _ASBMsgFrame = _G["SkuAuctionSecureMsgFrame"]
+if not _ASBMsgFrame then
+   _ASBMsgFrame = CreateFrame("Frame", "SkuAuctionSecureMsgFrame", UIParent)
+end
+
+-- Erfolgsmeldung (Gebot/Buyout angenommen).
+local _ASBSuccessMsg = (type(ERR_AUCTION_BID_PLACED) == "string") and ERR_AUCTION_BID_PLACED or nil
+
+-- NUR Fehler, die EINDEUTIG ein abgelehntes Gebot bedeuten, als Fehlschlag
+-- werten. Unbekannte/andere UI_ERROR_MESSAGE ignorieren wir (dann greift der
+-- Geld-Diff-Timeout-Fallback), damit fremde Fehler keinen Fehlschlag vortäuschen.
+-- WICHTIG: ERR_AUCTION_DATABASE_ERROR ("Interner Auktionsfehler") gehört NICHT
+-- hierher — der Server wirft ihn in TBC laufend SPONTAN beim Scannen/Abfragen,
+-- auch wenn der Kauf klappt. Würde er als Fehlschlag zählen, meldeten wir einen
+-- gelungenen Kauf fälschlich als Fehler und lösten einen (Doppelkauf-)Retry aus.
+-- Auktions-Addons ignorieren diese Meldung bewusst.
+local _ASBFailMsgs = {}
+for _, tKey in ipairs({
+   "ERR_ITEM_NOT_FOUND",        -- Auktion ist weg (WowVision-Signal)
+   "ERR_NOT_ENOUGH_MONEY",
+   "ERR_AUCTION_HIGHER_BID",
+   "ERR_AUCTION_BID_OWN",
+   "ERR_AUCTION_BID_INCREMENT",
+}) do
+   local tVal = _G[tKey]
+   if type(tVal) == "string" then _ASBFailMsgs[tVal] = tKey end
+end
+
+local function _ASBStopMsgCapture()
+   _ASBMsgFrame:UnregisterEvent("CHAT_MSG_SYSTEM")
+   _ASBMsgFrame:UnregisterEvent("UI_ERROR_MESSAGE")
+   local SB = SkuCore.AuctionSecureBuy
+   if SB and SB.verifyTimer then
+      pcall(function() SB.verifyTimer:Cancel() end)
+      SB.verifyTimer = nil
+   end
+end
+
+local function _ASBStartMsgCapture()
+   _ASBMsgFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+   _ASBMsgFrame:RegisterEvent("UI_ERROR_MESSAGE")
+end
+
+_ASBMsgFrame:SetScript("OnEvent", function(self, event, arg1, arg2)
+   local SB = SkuCore.AuctionSecureBuy
+   -- Nur im Verifizierungsfenster eines laufenden Kaufs reagieren.
+   if not SB or not SB.active or SB.stage ~= "verifying" then return end
+   if event == "CHAT_MSG_SYSTEM" then
+      if _ASBSuccessMsg and arg1 == _ASBSuccessMsg then
+         SkuCore:AuctionSecureBuyResolve("success", "server-message", arg1)
+      end
+   elseif event == "UI_ERROR_MESSAGE" then
+      -- 2.5.5: (errorType, message); ältere Signatur: nur message.
+      local tMsg = (type(arg2) == "string") and arg2 or arg1
+      if type(tMsg) == "string" and _ASBFailMsgs[tMsg] then
+         SkuCore:AuctionSecureBuyResolve("failure", "server-message", tMsg)
+      end
+   end
+end)
+
 local function _ASBClearBindings()
    pcall(ClearOverrideBindings, _ASBBinder)
 end
@@ -633,6 +709,7 @@ function SkuCore:AuctionSecureBuyCancel(announce)
    SB.stage  = nil
    _ASBRelease()
    _ASBClearSafety()
+   _ASBStopMsgCapture()
    SkuCore.AuctionBuy.failCount = 0
    SkuCore.QueryBuyEmptyWaits = 0
    SkuCore:AuctionBuyCancel()
@@ -658,50 +735,92 @@ function SkuCore:AuctionSecureBuyOnCommitted()
    _ASBClearSafety()
    local gen = SB.gen
    _ABLog("secure buy committed", { gen = gen, itemId = p.expItemId, buyout = p.expBuyout })
-   _ABTrack(C_Timer.NewTimer(2, function()
-      if SkuCore.AuctionBuy.generation ~= gen then return end
-      -- QueryBuyData gibt es nur im normalen Kaufpfad; der Strategiekauf bringt
-      -- eigene Handler (p.onSuccess) mit und schützt sich selbst über sb.active.
-      -- Daher diesen Abbruch nur für den Standardpfad erzwingen.
-      if not p.onSuccess and not SkuCore.QueryBuyData then return end
-      SB.active = false
-      local mAfter = (type(GetMoney) == "function") and GetMoney() or 0
-      local mDiff = (p.moneyBefore or 0) - mAfter
-      local ok = mDiff >= p.bidAmount
-      _ABLog("secure buy money diff", {
-         gen = gen, moneyBefore = p.moneyBefore, moneyAfter = mAfter,
-         diff = mDiff, expectedDiff = p.bidAmount, success = ok,
-      })
-      if ok then
-         -- Kauf bestätigt. Erfolgs-Handler aus dem Spec (Strategiekauf bringt
-         -- eigene Logik mit); sonst der Standard-Kaufpfad (weiter/fertig).
-         if p.onSuccess then
-            p.onSuccess(mDiff)
-         else
-            SkuCore.AuctionBuy.failCount = 0
-            _ABContinueOrFinish()
-         end
+   -- Auf die echten Server-Meldungen horchen (WowVision-Weg). Im Normalfall löst
+   -- "Gebot akzeptiert." in <1 s auf. Backstop: kommt KEIN erkanntes Signal, erst
+   -- nach 5 s über Resolve("timeout") auflösen — dann entscheidet die Geld-Differenz.
+   -- Bewusst 5 s (nicht 2 s): das Geld-Paket hinkt dem Server-OK nach (im Log zeigte
+   -- selbst ein erfolgreicher Kauf nach 2 s noch diff=0). Erst nach dem Settle ist
+   -- die Geld-Differenz verlässlich → kein falsches "nicht bestätigt" bei verlorener
+   -- Erfolgsmeldung, aber echte stille Fehlschläge werden weiter erkannt.
+   _ASBStartMsgCapture()
+   SB.verifyTimer = C_Timer.NewTimer(5, function()
+      SkuCore:AuctionSecureBuyResolve("timeout", "money-diff", nil)
+   end)
+   _ABTrack(SB.verifyTimer)
+end
+
+-- Einmalige Auflösung eines Kaufs.
+--   outcome "success" → Server meldete ERR_AUCTION_BID_PLACED
+--   outcome "failure" → Server meldete einen Auktions-/Geld-Fehler (serverMsg)
+--   outcome "timeout" → kein Server-Signal; die Geld-Differenz entscheidet
+-- Die Geld-Differenz wird IMMER geloggt, entscheidet aber NUR beim Timeout.
+function SkuCore:AuctionSecureBuyResolve(outcome, source, serverMsg)
+   local SB = SkuCore.AuctionSecureBuy
+   if not SB or not SB.active then return end
+   local p = SB.p
+   if not p then return end
+   local gen = SB.gen
+   -- Veraltet (neuer Kauf übernahm) → still aussteigen, Capture NICHT stoppen
+   -- (der neue Kauf hat es bereits neu registriert).
+   if SkuCore.AuctionBuy.generation ~= gen then return end
+   -- QueryBuyData gibt es nur im normalen Kaufpfad; der Strategiekauf bringt
+   -- eigene Handler (p.onSuccess) mit. Nur diese beiden Pfade auflösen.
+   if not p.onSuccess and not SkuCore.QueryBuyData then
+      _ASBStopMsgCapture()
+      return
+   end
+   SB.active = false
+   _ASBStopMsgCapture()
+
+   -- Geld-Differenz NUR fürs Log (und als alleiniger Entscheider beim Timeout).
+   local mAfter  = (type(GetMoney) == "function") and GetMoney() or 0
+   local mDiff   = (p.moneyBefore or 0) - mAfter
+   local moneyOk = mDiff >= p.bidAmount
+   local ok
+   if outcome == "success" then
+      ok = true
+   elseif outcome == "failure" then
+      ok = false
+   else
+      ok = moneyOk    -- "timeout": kein Server-Signal → Geld-Diff entscheidet
+   end
+   _ABLog("secure buy resolve", {
+      gen = gen, outcome = outcome, source = source, serverMsg = serverMsg,
+      moneyBefore = p.moneyBefore, moneyAfter = mAfter, diff = mDiff,
+      expectedDiff = p.bidAmount, moneyDiffSays = moneyOk,
+   })
+
+   if ok then
+      -- Kauf bestätigt. Erfolgs-Handler aus dem Spec (Strategiekauf bringt
+      -- eigene Logik mit); sonst der Standard-Kaufpfad (weiter/fertig).
+      if p.onSuccess then
+         p.onSuccess(mDiff)
       else
-         -- Popup bestätigt, aber kein Geldabzug → die Auktion war zum Klick
-         -- schon weg (echtes Race). Wie WowVision: nächste gleichwertige nehmen.
+         SkuCore.AuctionBuy.failCount = 0
+         _ABContinueOrFinish()
+      end
+   else
+      -- Abgelehnt (echtes Race / Server-Fehler). Wie WowVision: nächste
+      -- gleichwertige nehmen bzw. die echte Servermeldung vorlesen.
+      if p.onRace then
+         _ABLog("secure buy race", { source = source, serverMsg = serverMsg, strategy = true })
+         p.onRace()
+      else
+         SkuCore.AuctionBuy.failCount = (SkuCore.AuctionBuy.failCount or 0) + 1
          _ABLog("secure buy race", {
-            failCount = (SkuCore.AuctionBuy.failCount or 0) + 1, max = AB_BUY_MAX_FAILS,
+            failCount = SkuCore.AuctionBuy.failCount, max = AB_BUY_MAX_FAILS,
+            source = source, serverMsg = serverMsg,
          })
-         if p.onRace then
-            p.onRace()
+         -- WowVision-Weg: die echte Servermeldung ansagen (sonst Standardtext).
+         local tSay = serverMsg or L["Server hat den Kauf nicht bestätigt, bitte erneut versuchen"]
+         SkuOptions.Voice:OutputStringBTtts(tSay, true, true, 0.1, nil, nil, nil, 1)
+         if SkuCore.AuctionBuy.failCount >= AB_BUY_MAX_FAILS then
+            _ABBuyGiveUp()
          else
-            SkuCore.AuctionBuy.failCount = (SkuCore.AuctionBuy.failCount or 0) + 1
-            SkuOptions.Voice:OutputStringBTtts(
-               L["Server hat den Kauf nicht bestätigt, bitte erneut versuchen"],
-               true, true, 0.1, nil, nil, nil, 1)
-            if SkuCore.AuctionBuy.failCount >= AB_BUY_MAX_FAILS then
-               _ABBuyGiveUp()
-            else
-               _ABRetrySamePurchase()
-            end
+            _ABRetrySamePurchase()
          end
       end
-   end))
+   end
 end
 
 -- Schritt 2 (jetzt der EINZIGE Kauf-Tastendruck): läuft im Hardware-Event des
@@ -751,9 +870,22 @@ function SkuCore:AuctionSecureBuyExecute()
       return
    end
 
-   -- Diagnose: war die Liste zum Gebot wirklich gesetzt? (canSend==true → ja).
+   -- Fire-Time-Gate: PlaceAuctionBid teilt den AH-Throttle mit QueryAuctionItems.
+   -- Ist CanSendAuctionQuery()==false, verwirft der Client das Gebot STILL (kein
+   -- Geldabzug, KEINE Servermeldung) — das im Log belegte Totalversagen. Dann NICHT
+   -- bieten: scharf bleiben, einmal ansagen, der Nutzer drückt gleich erneut, sobald
+   -- die Liste offen ist. Kein Fehlschlag/kein Skip — es wurde ja gar nicht geboten.
    local tCanSend = false
    pcall(function() tCanSend = (CanSendAuctionQuery() == true) end)
+   if not tCanSend then
+      _ABLog("direct bid deferred: throttle closed", {
+         gen = SB.gen, x = idx, scanState = SkuCore.AuctionScan.state,
+      })
+      SkuOptions.Voice:OutputStringBTtts(
+         L["Liste lädt noch, bitte gleich erneut Eingabe zum Kaufen"],
+         true, true, 0.1, nil, nil, nil, 1)
+      return
+   end
 
    local tArmedIdx = p.x          -- beim Scharfschalten gemerkter Index
    p.x = idx                      -- jetzt aktueller (neu gefundener) Index
@@ -833,20 +965,18 @@ function SkuCore:AuctionArmKeypressBid(aSpec)
       end
       local tSettled = false
       pcall(function() tSettled = (CanSendAuctionQuery() == true) end)
-      local tWaiting = (SkuCore.AuctionScan.state ~= "idle")
-      -- NUR warten, solange noch eine Sku-Seiten-Query unterwegs ist (tWaiting).
-      -- FRÜHER wurde zusätzlich auf CanSendAuctionQuery()==true gewartet — das ist
-      -- aber der Throttle für NEUE Queries und fürs Gebot irrelevant
-      -- (PlaceAuctionBid ist KEINE Query). Auf vollen Realms bleibt der Throttle
-      -- mehrere Sekunden zu, wodurch der Kauf-Prompt erst spät kam und ein erster,
-      -- vor dem Scharfschalten gedrückter Enter verpuffte → man musste ein zweites
-      -- Mal drücken. Die Listenstabilität ist anders abgesichert: (1) der BUY-/
-      -- Such-Handler ruft erst, wenn die Seite vollständig gestreamt ist; (2) ab
-      -- jetzt unterdrückt AuctionHouseStartQuery neue Queries (stage settling/
-      -- trigger); (3) der exakte Listen-Index wird beim Tastendruck frisch gesucht
-      -- (AuctionSecureBuyExecute, matchAt). tSettled bleibt nur als Diagnose im
-      -- Arm-Log.
-      if tWaiting and (aWaited or 0) < 4.0 then
+      local tStreaming = (SkuCore.AuctionScan.state ~= "idle")
+      -- Erst scharfschalten, wenn (a) keine Sku-Seiten-Query mehr streamt UND
+      -- (b) der AH-Throttle OFFEN ist: CanSendAuctionQuery()==true.
+      -- (b) ist ENTSCHEIDEND: das SkuErrorLog zeigt, dass bei canSend==false jeder
+      -- PlaceAuctionBid STILL verworfen wird (moneyAfter==moneyBefore, diff=0, KEINE
+      -- Servermeldung) → 100 % Totalausfall. PlaceAuctionBid teilt den Throttle mit
+      -- QueryAuctionItems; die frühere Annahme "Gebot ist keine Query, Throttle egal"
+      -- war nachweislich falsch. Da Prompt UND Bindung erst NACH dieser Schleife
+      -- kommen, entsteht kein verpuffender Vor-Enter. Deckel 6 s, falls der Throttle
+      -- ausnahmsweise lange zu bleibt — dann fängt die Fire-Time-Prüfung in
+      -- AuctionSecureBuyExecute ab (sie bietet nicht ins Leere).
+      if (tStreaming or not tSettled) and (aWaited or 0) < 6.0 then
          _ABTrack(C_Timer.NewTimer(0.2, function() tArm((aWaited or 0) + 0.2) end))
          return
       end

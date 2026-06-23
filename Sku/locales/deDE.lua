@@ -155,6 +155,7 @@ L["abgebrochen Nicht geboten"] = "abgebrochen Nicht geboten"
 L["Bestätigung veraltet, Kauf abgebrochen"] = "Bestätigung veraltet, Kauf abgebrochen"
 L["Auktion nicht mehr an dieser Stelle, Kauf abgebrochen"] = "Auktion nicht mehr an dieser Stelle, Kauf abgebrochen"
 L["Server hat den Kauf nicht bestätigt, bitte erneut versuchen"] = "Server hat den Kauf nicht bestätigt, bitte erneut versuchen"
+L["Liste lädt noch, bitte gleich erneut Eingabe zum Kaufen"] = "Liste lädt noch, bitte gleich erneut Eingabe zum Kaufen"
 L["Scan noch nicht möglich, bitte kurz warten"] = "Scan noch nicht möglich, bitte kurz warten"
 L["Abgeschlossen"] = "Abgeschlossen"
 L["Ablehnen"] = "Ablehnen"--verb
