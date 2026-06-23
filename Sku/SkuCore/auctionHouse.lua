@@ -3097,6 +3097,25 @@ function SkuCore:AuctionScanFinish(aReason, aForce)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- True, wenn der Menü-Cursor gerade IN der Ergebnisliste dieses Scans steht,
+-- d.h. currentMenuPosition ist ein Nachfahre des Hosts (der "Warten"-Platzhalter
+-- und alle Ergebniszeilen hängen als Kinder am Host). Sitzt der Cursor auf dem
+-- Item-Eintrag selbst (== Host) oder auf einem Geschwister-Item — der Normalfall,
+-- wenn der Scan nur als Prefetch beim Überfahren des Eintrags läuft — ist das
+-- Ergebnis false. Damit kann der Abschluss-Ton unterdrückt werden, solange der
+-- Nutzer nicht in genau dieser Ergebnisliste navigiert.
+function SkuCore:AuctionCursorInResults(aHost)
+   if not aHost then return false end
+   local n = SkuOptions and SkuOptions.currentMenuPosition
+   for _ = 1, 8 do
+      if not (n and n.parent) then break end
+      if n.parent == aHost then return true end
+      n = n.parent
+   end
+   return false
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMinLevel, aFilterMaxLevel, aFilterPage, aFilterUsable, aFilterRarity, aFilterGetAll, aFilterExactMatch, aFilterFilterData, aCallback)
    -- KAUF-SCHUTZ: Während ein Kauf vorbereitet ("settling") oder scharf
    -- ("trigger") ist, KEINE neue Query absetzen. Eine Query würde die
@@ -3529,7 +3548,16 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
             if SkuCore.QueryResultsHost then
                -- Bereits inkrementell dargestellt: nur Abschluss-Ton, KEIN
                -- erneuter Komplett-Aufbau (würde den Cursor zurückwerfen).
-               SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
+               -- Abschluss-Ton NUR, wenn der Nutzer diese Ergebnisliste auch
+               -- gerade ansieht (Cursor im Teilbaum des Hosts: "Warten"-Platz-
+               -- halter oder eine Ergebniszeile). Beim bloßen Überfahren eines
+               -- Item-Eintrags läuft der Scan als Prefetch im Hintergrund — dann
+               -- steht der Cursor auf einem Geschwister-Item und der Ton wäre nur
+               -- verwirrend ("Scan fertig", obwohl man gar nicht in einer
+               -- Ergebnisliste navigiert).
+               if SkuCore:AuctionCursorInResults(SkuCore.QueryResultsHost) then
+                  SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
+               end
                SkuCore:AuctionScanFinish("browse complete")
             else
                if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name == L["Warten"] then
