@@ -2712,21 +2712,36 @@ function SkuCore:AuctionResultsAppend()
    if not aParent then
       return
    end
-   -- Solange ein Buchstaben-Filter aktiv ist NICHT anhängen: ApplyFilter hat
-   -- aParent.children durch die gefilterte Teilliste ersetzt (das Original
-   -- liegt in Core.lua/tOldChildren, für uns nicht erreichbar). Ein Anhängen
-   -- würde die Filteransicht verfälschen bzw. den Filter "auflösen". Die Daten
-   -- bleiben in QueryResultsDB; nach Filter-Ende und erneutem Betreten wird die
-   -- Liste vollständig neu gebaut.
-   if SkuOptions.Filterstring and #SkuOptions.Filterstring > 1 then
-      return
+
+   -- Live filter (replaces the old "skip appending while filtering" guard):
+   -- if the user is parked on THIS results list with an active first-letter
+   -- filter, append new items into the filter's unfiltered base and refresh the
+   -- visible filtered subset in place (cursor preserved, nothing re-announced),
+   -- so the filtered list keeps growing as the scan streams in — and clearing
+   -- the filter later still shows the complete list. If no filter is active (or
+   -- it is on another menu), this is a plain append into aParent.children.
+   -- ApplyFilter stores its base in a Core.lua file-local we reach via
+   -- GetActiveFilterBase; new entries are created into that base by pointing
+   -- aParent.children at it for the duration of the build.
+   local tFilterBase = nil
+   if SkuOptions.GetActiveFilterBase and SkuOptions.currentMenuPosition
+      and SkuOptions.currentMenuPosition.parent == aParent then
+      tFilterBase = SkuOptions:GetActiveFilterBase()
    end
+
    SkuCore.QueryResultsByName = SkuCore.QueryResultsByName or {}
    local tSorted = SkuCore:AuctionGroupResults()
-   local tNextIndex = (aParent.children and #aParent.children) or 0
    local tFilter = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter
    local tWithLevelGlobal = (tFilter.SortBy == 5 or tFilter.SortBy == 6
       or tFilter.LevelMin or tFilter.LevelMax) and true or nil
+
+   local tSavedView
+   if tFilterBase then
+      tSavedView = aParent.children
+      aParent.children = tFilterBase
+   end
+
+   local tNextIndex = (aParent.children and #aParent.children) or 0
    for i = 1, #tSorted do
       local tDataTmp = tSorted[i]
       local tExisting = SkuCore.QueryResultsByName[tDataTmp.name]
@@ -2751,6 +2766,13 @@ function SkuCore:AuctionResultsAppend()
             SkuCore.QueryResultsByName[tDataTmp.name] = tEntry
          end
       end
+   end
+
+   if tFilterBase then
+      -- Restore the filtered view reference and rebuild it from the now-grown
+      -- base so newly-matching items appear (append-only, cursor preserved).
+      aParent.children = tSavedView
+      SkuOptions:RefreshActiveFilterView(aParent)
    end
 end
 

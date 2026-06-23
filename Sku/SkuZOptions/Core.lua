@@ -3627,6 +3627,48 @@ function SkuOptions:ApplyFilter(aFilterstring)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Live-filter support for menus whose children grow while a first-letter filter
+-- is active (currently the Auction House results list). ApplyFilter snapshots
+-- the unfiltered list into the file-local tOldChildren and shows a filtered
+-- subset; these helpers let such a menu append new nodes into that base and
+-- refresh the visible filtered subset in place, WITHOUT moving the cursor or
+-- re-announcing — so the filter stays live as results stream in, and clearing
+-- it later still reveals everything. (Additive: ApplyFilter/ClearFilter are
+-- unchanged; other filterable menus are unaffected.)
+function SkuOptions:GetActiveFilterBase()
+	if tOldChildren ~= false and SkuOptions.Filterstring and string.len(SkuOptions.Filterstring) > 1 then
+		return tOldChildren
+	end
+	return nil
+end
+
+function SkuOptions:RefreshActiveFilterView(aParent)
+	if tOldChildren == false or not (SkuOptions.Filterstring and string.len(SkuOptions.Filterstring) > 1) then
+		return
+	end
+	local tFilterstringLower = slower(SkuOptions.Filterstring)
+	local tChildrenFiltered = {}
+	-- Keep the existing "Filter;..." header (element 1 of the current view).
+	if aParent.children and aParent.children[1] then
+		table.insert(tChildrenFiltered, aParent.children[1])
+	end
+	for x = 1, #tOldChildren do
+		local tHayStack = slower(tOldChildren[x].name)
+		tHayStack = string.gsub(tHayStack, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
+		tHayStack = string.gsub(tHayStack, ";", " ")
+		tHayStack = string.gsub(tHayStack, "#", " ")
+		if string.find(tHayStack, tFilterstringLower) then
+			table.insert(tChildrenFiltered, tOldChildren[x])
+		end
+	end
+	for x = 1, #tChildrenFiltered do
+		tChildrenFiltered[x].next = tChildrenFiltered[x + 1] or nil
+		tChildrenFiltered[x].prev = tChildrenFiltered[x - 1] or nil
+	end
+	aParent.children = tChildrenFiltered
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnEnable()
 	--dprint("SkuOptions OnEnable")
 	if SkuCore.inCombat == true then
