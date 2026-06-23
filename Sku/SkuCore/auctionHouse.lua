@@ -112,12 +112,10 @@ SkuCore.QueryCurrentType = ""
 SkuCore.QueryCurrentPage = nil
 SkuCore.QueryMaxPage = nil
 SkuCore.QueryData = {}
-SkuCore.QueryRunning = false
 -- Scanner state machine (see AuctionScanSetState in SECTION 8).
 --   state ∈ { "idle", "waiting", "paging" }
 --   mode  ∈ { "browse", "buy", "getAll" }  (nil while idle)
--- The QueryRunning / QueryWaitingPage flags are written through SetState and
--- will be retired once every reader is migrated to read state/mode directly.
+-- Replaces the former QueryRunning / QueryWaitingPage booleans.
 SkuCore.AuctionScan = SkuCore.AuctionScan or { state = "idle", mode = nil }
 SkuCore.QueryCallback = nil
 SkuCore.QueryBuyData = nil
@@ -2949,8 +2947,8 @@ end
 -- SECTION 8 — SCANNER / QUERY ENGINE & AUCTION RESULT EVENTS
 -- The paged/getAll query driver (Reset/StartQuery) and the result-stream event
 -- handlers (OWNED / BIDDER / ITEM_LIST_UPDATE, split into the LIST scan path
--- and the BUY re-find path). This is the boolean-flag-driven scanner that the
--- planned "2b" state-machine refactor targets.
+-- and the BUY re-find path). Coordinated by the AuctionScan state machine
+-- (AuctionScanSetState below): idle / waiting / paging, mode browse/buy/getAll.
 -- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Single source of truth for the scanner's lifecycle. Collapses the scattered
@@ -2963,9 +2961,6 @@ end
 -- aMode (optional) records what kind of scan is running: "browse" | "buy" |
 -- "getAll" (cleared to nil on idle). Post-scan history serialization is tracked
 -- separately by QuerySerializeRunning — it runs after the scan is already idle.
--- NOTE: during the strangler migration this still writes through the legacy
--- QueryRunning / QueryWaitingPage booleans (the authoritative guards until the
--- readers are migrated), so behaviour is identical.
 function SkuCore:AuctionScanSetState(aState, aMode)
    local SC = SkuCore.AuctionScan
    local tPrev = SC.state
@@ -2974,17 +2969,6 @@ function SkuCore:AuctionScanSetState(aState, aMode)
       SC.mode = nil
    elseif aMode ~= nil then
       SC.mode = aMode
-   end
-
-   if aState == "idle" then
-      SkuCore.QueryRunning = false
-      SkuCore.QueryWaitingPage = nil
-   elseif aState == "waiting" then
-      SkuCore.QueryRunning = true
-      SkuCore.QueryWaitingPage = true
-   elseif aState == "paging" then
-      SkuCore.QueryRunning = true
-      SkuCore.QueryWaitingPage = false
    end
 
    if tPrev ~= aState and SkuErrorLog and SkuErrorLog.Log then
