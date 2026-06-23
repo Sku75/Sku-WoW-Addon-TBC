@@ -22,7 +22,18 @@ This plan is grounded in the reference docs in this folder
   The shipped fix calls it directly from a real keypress. See "Phase 2 (as built)".
 - **Strategy-buy now shares the same internal buy path** (was a silent
   `ADDON_ACTION_BLOCKED` no-op before, for the same hardware-event reason).
-- **NEXT: Phase 3 robustness + the 2b scanner refactor.** See "Next steps".
+- **2b scanner state-machine refactor: DONE in code, in-game stress test
+  pending.** `auctionHouse.lua` was first reorganised into nine labelled
+  sections with a table-of-contents header (commit `afe7d77`, pure
+  reorganisation, verified non-destructive). The scanner is then driven by one
+  `AuctionScan` state object — `state ∈ {idle, waiting, paging}`,
+  `mode ∈ {browse, buy, getAll}` — replacing the scattered `QueryRunning` /
+  `QueryWaitingPage` booleans (commits `ad820cf` A, `5c8f495` B, `b176b88` C, a
+  strangler migration: add write-through + transition logging, migrate readers,
+  remove the booleans). `QuerySerializeRunning` stays as a separate post-scan
+  flag. See "Phase 3" item 1.
+- **NEXT: confirm BOTH the buy path AND the new scanner under peak-time stress.**
+  See "Next steps".
 
 > **Stress-test reminder (important):** the buy path must be confirmed **at a
 > very busy time, in the most crowded categories** (many identical-price stacks,
@@ -156,16 +167,23 @@ Still open from Phase 1 (carried into Phase 3 below):
 
 ### Phase 3 — robustness cleanup (do after confirming Phase 1+2 under stress)
 
-1. **2b scanner refactor (the next major task).** The buy path already has an
-   explicit state object (`AuctionSecureBuy` with a `stage` string). The scanner
-   does **not** — it is still coordinated by scattered booleans
-   (`QueryRunning`, `QueryWaitingPage`, `QueryResultsPartialReady`,
-   `QueryCurrentPage`, `QueryMaxPage`). Reorganise the scanner into one explicit
-   state-machine object (idle / querying / waiting-page / processing / done) with
-   per-state event guards, mirroring WV's `FilteredScanner` and the buy path's
-   `stage`. **Stay in the one file** (no module split) — clearly-structured big
-   file now, easy to split later if Sku is ever fully modularised. This removes
-   the flag-soup that is the root of several remaining scan bugs.
+1. **2b scanner refactor — DONE (code); stress test pending.** The buy path
+   already had an explicit state object (`AuctionSecureBuy` with a `stage`
+   string); the scanner now matches it. Implemented as `SkuCore.AuctionScan`
+   (defined in SECTION 1, transitions via `SkuCore:AuctionScanSetState` in
+   SECTION 8): `state ∈ {idle, waiting, paging}`, `mode ∈ {browse, buy, getAll}`.
+   The former `QueryRunning` / `QueryWaitingPage` booleans are gone (their reads
+   became `state ~= "idle"` and `state == "waiting"`; the event dispatch now
+   routes on `mode == "buy"`). Every transition logs one `auction.scan / state
+   {from,to,mode}` breadcrumb. Scope notes, for honesty: `QueryCurrentPage` /
+   `QueryMaxPage` stay as pagination *data* (not folded into the state object);
+   `QueryResultsPartialReady` stays as a *display* flag; `QuerySerializeRunning`
+   stays as the orthogonal post-scan history-serialization flag. **Stayed in the
+   one file** (no module split), now clearly sectioned. The refactor is a
+   clarity/maintainability + debuggability win (illegal flag combinations are
+   now unrepresentable, one logged timeline); it does **not** by itself fix the
+   open scan items below (8.5 terminal cleanup, last-page detection, getAll
+   chunking) — those remain separate tasks.
 2. One terminal cleanup path for every scan end state (complete / abort / fail /
    AH-closed) so no `OnUpdate` or event listener leaks.
 3. The duplicate `AUCTION_ITEM_LIST_UPDATE` registration (`SkuStratBuyFrame`,

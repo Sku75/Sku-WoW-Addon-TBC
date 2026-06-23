@@ -14,11 +14,15 @@
 > - 8.9 (nil-owner page abort) — fixed in the LIST path (waits on the name field).
 > - 8.11 `HistoryMaxValues` dead var — removed (history is per-item aggregates).
 >
-> Still open (tracked in `improvement-plan.md` → Next steps): the scanner is still
-> boolean-flag-driven (the "2b" state-machine refactor is the next task),
+> The scanner is now driven by the `AuctionScan` state machine
+> (`state` idle/waiting/paging, `mode` browse/buy/getAll) — the "2b" refactor is
+> DONE in code (the `QueryRunning`/`QueryWaitingPage` booleans are gone), pending
+> the in-game stress test. The file is also now split into nine labelled
+> sections with a table-of-contents header, so the line references below are
+> approximate. Still open (tracked in `improvement-plan.md` → Next steps):
 > last-page-by-arithmetic, single-pass getAll ingest, and the duplicate
-> `SkuStratBuyFrame` event registration. The buy path must be **stress-tested in
-> the busiest categories at peak time** before it is considered solid.
+> `SkuStratBuyFrame` event registration. The buy path AND the new scanner must be
+> **stress-tested in the busiest categories at peak time** before considered solid.
 
 Scope: TBC Anniversary client, Interface 11508, legacy/classic Auction House
 API. Primary source file: `Sku/SkuCore/auctionHouse.lua`. All line references
