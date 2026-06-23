@@ -234,6 +234,19 @@ Still open from Phase 1 (carried into Phase 3 below):
    `CHAT_MSG_SYSTEM` events in addition to the money-diff (money-diff is currently
    reliable in practice; this is belt-and-suspenders).
 
+### Diagnostics capacity (supports the stress test) — DONE
+
+`SkuErrorLog` (`SkuCore/ErrorLog.lua`) had a 100-event chronological ring
+(`.recent`); a single busy AH run already emitted ~200 events, so the early half
+rolled off mid-run and the only complete record was the deduped `.unique` table
+(no chronology). Fixed: `.recent` cap 100 → **500**, each entry now carries a
+monotonic **`seq`** (tiebreak for events sharing a one-second timestamp — a busy
+AH fires several per second) and stores only a `stackHead` (full stacks stay in
+`.unique`) to stay compact. `/skulog show` prints `#seq`. **Read `.recent` for a
+timeline; `.unique` only for counts / first–last seen / full stack** (see the
+"Reading SkuErrorLog" note in the repo `CLAUDE.md`). This makes the peak-time
+stress test below actually capturable end-to-end.
+
 ### Verification (screen-reader friendly, no sighted checks)
 
 - **Buy under stress (required):** in the busiest categories at peak time, repeat

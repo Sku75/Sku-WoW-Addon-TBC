@@ -14,7 +14,7 @@
 --     so popup/other error addons keep working.
 --   * Deduplicate by message+top-stack-frame so a spammed frame error
 --     doesn't fill the log — we just bump a counter and update lastSeen.
---   * Keep size bounded (250 unique + 100 raw recent).
+--   * Keep size bounded (250 unique + 500 raw recent).
 --   * Rich context per entry (zone, combat state, open menu, talent spec)
 --     so Claude can reproduce/diagnose even without the user repeating it.
 --   * Simple slash surface for the user to inspect / clear / export.
@@ -26,7 +26,12 @@ local ADDON_NAME = "Sku"
 -- Config
 -- -----------------------------------------------------------------
 local MAX_UNIQUE       = 250   -- cap on distinct fingerprints
-local MAX_RECENT       = 100   -- cap on chronological raw events
+local MAX_RECENT       = 500   -- cap on chronological raw events. Sized for a
+                               -- busy AH stress test: a single peak-time run can
+                               -- emit a few hundred auction breadcrumbs, and the
+                               -- old 100 cap rolled the early half off mid-run.
+                               -- Recent entries store only a stack HEAD (see
+                               -- tAppend), so this stays compact.
 local MAX_STACK_CHARS  = 4000  -- truncate stacks this long
 local MAX_MSG_CHARS    = 1500  -- truncate messages this long
 local DEFAULT_SKU_ONLY = true  -- default filter: only log events that
@@ -243,13 +248,20 @@ local function tAppend(aSource, aMsg, aStack)
       }
    end
 
-   -- Recent ring
+   -- Recent ring (chronological — this is the store to read for a timeline).
+   -- seq: a monotonic counter so events sharing a one-second timestamp still
+   -- have an unambiguous order (a busy AH fires several per second). It lives in
+   -- counters so it survives across sessions and only resets on /skulog clear.
+   -- stackHead: only the first stack frame, to stay compact at the higher cap —
+   -- the FULL stack for the same message is still in tLog.unique[fp].stack.
+   tLog.counters.seq = (tLog.counters.seq or 0) + 1
    table.insert(tLog.recent, {
-      t       = tNow(),
-      source  = aSource,
-      message = aMsg,
-      stack   = aStack,
-      session = tSessionIndex,
+      seq       = tLog.counters.seq,
+      t         = tNow(),
+      source    = aSource,
+      message   = aMsg,
+      stackHead = tFirstStackLine(aStack),
+      session   = tSessionIndex,
    })
    while #tLog.recent > MAX_RECENT do
       table.remove(tLog.recent, 1)
@@ -407,8 +419,8 @@ local function tDumpRecent()
    end
    for i = tStart, tN do
       local e = tLog.recent[i]
-      DEFAULT_CHAT_FRAME:AddMessage(string.format("[%s] %s: %s",
-         e.t or "?", e.source or "?", tTruncate(e.message or "", 180)))
+      DEFAULT_CHAT_FRAME:AddMessage(string.format("#%s [%s] %s: %s",
+         tostring(e.seq or "?"), e.t or "?", e.source or "?", tTruncate(e.message or "", 180)))
    end
 end
 

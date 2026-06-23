@@ -89,6 +89,32 @@ Read-back loop: run a command in game, `/reload` to flush, then read
 `...\WTF\Account\1107979492#1\SavedVariables\WVDebug.lua` (`WVDebugData` =
 latest, `WVDebugLog` = history).
 
+### Reading SkuErrorLog (Sku's own breadcrumb/error log)
+
+Sku writes its own structured log via `SkuErrorLog:Log(module, msg, tbl)`
+(source `auction.scan` / `auction.buy` / `auction.event`, etc.; see
+`SkuCore/ErrorLog.lua`). It persists in the **`SkuErrorLog` global inside
+`...\SavedVariables\Sku.lua`** (not a file of its own). It has two stores —
+**read the right one**:
+
+- **`SkuErrorLog.recent`** — the **chronological** ring buffer (last 500
+  events). Each entry is flat and ordered: `seq` (monotonic, the tiebreak when
+  several events share a one-second `t`), `t`, `source`, `message`, `stackHead`
+  (first stack frame only), `session`. **This is the store to read for a
+  timeline.**
+- **`SkuErrorLog.unique`** — deduplicated by message+top-stack fingerprint
+  (`count`, `firstSeen`, `lastSeen`, full `stack`, `firstCtx`/`lastCtx`). Use it
+  for "how often / first–last seen / full stack of a given message", **not** for
+  ordering (chronology is lost, repeats merged). Note breadcrumbs embed payload
+  numbers, so each is its own fingerprint — they fill the 250 cap without truly
+  deduping.
+
+The file is a multi-line Lua table (one field per line, records span ~8 lines),
+so a single-line `grep` can't reconstruct a record — parse it with `py -3`
+(Python 3, bare `python` is a Store stub) or read `recent` directly. In-game:
+`/skulog show` (last 10, now prefixed with `#seq`), `/skulog export` (copyable
+window), `/skulog clear`.
+
 ## Architecture
 
 Sku is built on **Ace3** (AceAddon, AceEvent, AceConfig, AceComm, etc., under
