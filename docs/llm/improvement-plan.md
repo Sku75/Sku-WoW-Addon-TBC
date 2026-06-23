@@ -190,11 +190,36 @@ Still open from Phase 1 (carried into Phase 3 below):
    watchdogs, getAll completion, browse completion (host + no-host), and
    AH-closed. (No real leak existed once the state machine guaranteed idle stops
    the ticker; this makes the terminal path explicit and uniformly logged.)
-3. The duplicate `AUCTION_ITEM_LIST_UPDATE` registration (`SkuStratBuyFrame`,
-   separate from the main module) still exists. It is gated on `StratBuy.active`
-   and mutually exclusive with a normal scan in practice, but folding strategy-buy
-   search-result handling into the main event path would remove the second
-   registration entirely. Lower priority.
+3. **DONE.** The duplicate `AUCTION_ITEM_LIST_UPDATE` registration
+   (`SkuStratBuyFrame`, separate from the main module) is gone. Strategy buy now
+   runs entirely on the common scan infrastructure: `StrategyBuySearch` fires its
+   page-0 search through `AuctionHouseStartQuery` (with a completion callback) and
+   the hit is delivered by the main `AUCTION_ITEM_LIST_UPDATE` →
+   `AUCTION_ITEM_LIST_UPDATE_LIST` path, which then calls the callback
+   (`StrategyBuyProcessResults`). The former private frame (its second
+   `AUCTION_ITEM_LIST_UPDATE`/`AUCTION_HOUSE_CLOSED` registrations + its in-frame
+   `QueryAuctionItems` call) was removed; the AH-close cleanup moved into
+   `SkuCore:AUCTION_HOUSE_CLOSED`. To keep the live-list read + keypress re-find
+   working (the cheapest auction must stay in the live list at bid time) the
+   search is a **single page** — a new optional `aSinglePage` arg on
+   `AuctionHouseStartQuery` (flag `QuerySinglePage`) tells the LIST pager not to
+   advance past page 0. The query is now server-sorted by unit price (page 0 =
+   cheapest), a strict improvement over the old unsorted page-0 read;
+   `StrategyBuyProcessResults` still re-sorts its candidates in Lua, so behaviour
+   is identical for the common ≤50-result case. The raw result-count voice line
+   is suppressed for single-page queries so strategy buy keeps its own spoken
+   progress. Buy mechanism still shared via `AuctionArmKeypressBid` (unchanged).
+   **Behavioural — include in the stress test** (busy commodity categories with
+   >50 auctions: the search reads only the cheapest server-sorted page, which is
+   the intended target set).
+   **Verified in-game (2026-06-23, busy realm):** a strategy buy of Erstklassiger
+   Manatrank ran against a category holding **~1300 auctions of that one item**.
+   All 5 single-stack purchases succeeded — every `direct bid` had `canSend=true`,
+   `scanState=idle`, `listSize=50` (page 0 only, single-page held), money dropped
+   by exactly the buyout each time, server confirmed "Gebot akzeptiert." Zero
+   races / timeouts / errors. Confirms the single-page design keeps the cheapest
+   page live and the keypress re-find exact even under heavy load. Full hardcore
+   peak-time multi-item stress test still outstanding per the reminder above.
 4. Stop aborting a page on transient nil owner everywhere (done in the LIST path;
    re-audit the rest), per Auctionator's `GotAllOwners` gate.
 5. Chunk the full-scan ingest (e.g. 250 rows/frame) so a full realm getAll can't

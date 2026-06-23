@@ -118,6 +118,8 @@ SkuCore.QueryData = {}
 -- Replaces the former QueryRunning / QueryWaitingPage booleans.
 SkuCore.AuctionScan = SkuCore.AuctionScan or { state = "idle", mode = nil }
 SkuCore.QueryCallback = nil
+-- Wenn true: nur die angeforderte Seite holen, NICHT weiterblättern (Strategiekauf).
+SkuCore.QuerySinglePage = nil
 SkuCore.QueryBuyData = nil
 SkuCore.QueryBuyType = nil
 SkuCore.QueryBuyAmount = nil
@@ -329,7 +331,13 @@ function SkuCore:AUCTION_HOUSE_CLOSED()
    SkuCore.AuctionBuy.failCount = 0
    SkuCore.QueryBuyEmptyWaits = 0
    SkuCore.AuctionHouseOpen = false
-   -- Strategiekauf zurücksetzen bei AH-Schließung
+   -- Strategiekauf zurücksetzen bei AH-Schließung. Früher hat das eine eigene
+   -- AUCTION_HOUSE_CLOSED-Registrierung am SkuStratBuyFrame erledigt; die ist
+   -- entfallen, daher hier mit aufräumen: laufenden Lauf stoppen + Config leeren.
+   if SkuCore.StratBuy then
+      SkuCore.StratBuy.active = false
+      SkuCore.StratBuy = nil
+   end
    SkuCore.StratBuyConfig = {}
 end
 
@@ -1293,9 +1301,14 @@ end
 
 -- ===========================================================================
 -- SECTION 5 — STRATEGY BUY (automated repeated buy up to a price limit)
--- Self-contained: its own frame (SkuStratBuyFrame) with its own
--- AUCTION_ITEM_LIST_UPDATE registration, and the tStratSay helper. Reuses the
--- shared keypress buy (AuctionArmKeypressBid) via its own result handlers.
+-- Runs entirely on the COMMON scan/buy infrastructure now: the search goes
+-- through AuctionHouseStartQuery (single page-0, unit-price sorted) and the hit
+-- is delivered by the main AUCTION_ITEM_LIST_UPDATE handler's completion
+-- callback; the buy reuses the shared keypress buy (AuctionArmKeypressBid) via
+-- its own result handlers. No private event frame any more (the former
+-- SkuStratBuyFrame with its second AUCTION_ITEM_LIST_UPDATE registration and the
+-- in-frame QueryAuctionItems call are gone — that was duplicate scan
+-- infrastructure). AH-close cleanup moved into SkuCore:AUCTION_HOUSE_CLOSED.
 -- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- STRATEGIEKAUF (41.02.06e) — Automatischer AH-Kauf mit Preislimit und Retry
@@ -1303,24 +1316,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuCore.StratBuy = nil
 SkuCore.StratBuyConfig = SkuCore.StratBuyConfig or {}
-
-local tStratBuyFrame = CreateFrame("Frame", "SkuStratBuyFrame", UIParent)
-tStratBuyFrame:SetSize(1, 1)
-tStratBuyFrame:SetPoint("TOPLEFT")
-tStratBuyFrame:RegisterEvent("AUCTION_ITEM_LIST_UPDATE")
-tStratBuyFrame:RegisterEvent("AUCTION_HOUSE_CLOSED")
-tStratBuyFrame:SetScript("OnEvent", function(self, event)
-	if not SkuCore.StratBuy or not SkuCore.StratBuy.active then return end
-	if event == "AUCTION_HOUSE_CLOSED" then
-		SkuCore.StratBuy.active = false
-		SkuCore.StratBuy = nil
-		return
-	end
-	if event == "AUCTION_ITEM_LIST_UPDATE" and SkuCore.StratBuy.searching then
-		SkuCore.StratBuy.searching = false
-		SkuCore:StrategyBuyProcessResults()
-	end
-end)
 
 local function tStratSay(text)
 	pcall(function() SkuOptions.Voice:OutputStringBTtts(text, true, true, 0.2, nil, nil, nil, 2) end)
@@ -1356,6 +1351,20 @@ function SkuCore:StrategyBuySearch()
 			tStratSay(L["STRAT_PleaseWait"])
 		end
 	end)
+	-- Treffer kommen jetzt über den GEMEINSAMEN Scanner: AuctionHouseStartQuery
+	-- setzt die Seite-0-Query ab (server-seitig nach Stückpreis sortiert, genau
+	-- EINE Seite via singlePage), der reguläre AUCTION_ITEM_LIST_UPDATE-Handler
+	-- liest sie ein und ruft am Scan-Ende dieses Callback — KEIN eigener
+	-- Event-Frame und KEIN eigener QueryAuctionItems-Aufruf mehr. Wir warten nur
+	-- noch wie bisher auf den Throttle (CanSendAuctionQuery), damit die erste
+	-- Query nicht ins geschlossene Fenster fällt; das Seiten-Nachladen würde der
+	-- gemeinsame OnUpdate-Watchdog übernehmen, ist hier aber durch singlePage
+	-- abgeschaltet (der Kauf re-findet den Live-Index ohnehin am Tastendruck).
+	local tDone = function()
+		if not SkuCore.StratBuy then return end
+		SkuCore.StratBuy.searching = false
+		SkuCore:StrategyBuyProcessResults()
+	end
 	local tWait = 0
 	local f = CreateFrame("Frame")
 	f:SetScript("OnUpdate", function(self, elapsed)
@@ -1369,7 +1378,8 @@ function SkuCore:StrategyBuySearch()
 		if CanSendAuctionQuery() then
 			self:SetScript("OnUpdate", nil); self:Hide()
 			sb.searching = true
-			local ok = pcall(QueryAuctionItems, sb.itemName, nil, nil, 0, nil, nil, false, true, nil)
+			local ok = SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE",
+				sb.itemName, nil, nil, 0, nil, nil, false, true, nil, tDone, true)
 			if not ok then
 				sb.searching = false
 				tStratSay(L["STRAT_SearchError"])
@@ -3192,6 +3202,7 @@ function SkuCore:AuctionHouseResetQuery(aForce)
    SkuCore.QueryMaxPage = nil
    SkuCore.QueryData = {}
    SkuCore.QueryCallback = nil
+   SkuCore.QuerySinglePage = nil
    -- Inkrementelles Nachladen beenden: gebaute Liste bleibt stehen, aber
    -- es darf nichts mehr angehängt werden (Host/Flag weg).
    SkuCore.QueryResultsPartialReady = nil
@@ -3246,7 +3257,10 @@ function SkuCore:AuctionCursorInResults(aHost)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMinLevel, aFilterMaxLevel, aFilterPage, aFilterUsable, aFilterRarity, aFilterGetAll, aFilterExactMatch, aFilterFilterData, aCallback)
+-- aSinglePage (optional): only fetch the requested page, do not auto-advance to
+-- further pages. Used by strategy buy, which reads the live list directly and
+-- only needs the cheapest server-sorted page. Reset to nil on every fresh query.
+function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMinLevel, aFilterMaxLevel, aFilterPage, aFilterUsable, aFilterRarity, aFilterGetAll, aFilterExactMatch, aFilterFilterData, aCallback, aSinglePage)
    -- KAUF-SCHUTZ: Während ein Kauf vorbereitet ("settling") oder scharf
    -- ("trigger") ist, KEINE neue Query absetzen. Eine Query würde die
    -- Server-Liste neu aufbauen und den bereits ermittelten Kauf-Index ungültig
@@ -3316,6 +3330,7 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
          [tQAIindex.filterData] = aFilterFilterData,
       }
       SkuCore.QueryCallback = aCallback
+      SkuCore.QuerySinglePage = aSinglePage
    end
 
    dprint(" QueryAuctionItems", SkuCore.QueryData[tQAIindex.text])
@@ -3608,7 +3623,12 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
             if tCount - ((SkuCore.QueryMaxPage + 1) * 50) > 0 then
                SkuCore.QueryMaxPage = SkuCore.QueryMaxPage + 1
             end
-            SkuOptions.Voice:OutputStringBTtts(tCount, false, true, 0.2, nil, nil, nil, 2)
+            -- Trefferzahl ansagen — aber NICHT bei singlePage (Strategiekauf):
+            -- der liest die Liste selbst aus und sagt seinen eigenen Fortschritt
+            -- an; die rohe Trefferzahl wäre dort nur zusätzliches Geplapper.
+            if not SkuCore.QuerySinglePage then
+               SkuOptions.Voice:OutputStringBTtts(tCount, false, true, 0.2, nil, nil, nil, 2)
+            end
          end
 
          -- single-pass: validate and save in one loop (halves API calls per page)
@@ -3669,7 +3689,8 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          -- leere Seite ist die letzte. Robuster als die tCount/50-Arithmetik
          -- (die bei exakten Vielfachen eine leere Extraseite anfragte und auf
          -- ungenaue tCount-Werte hereinfiel). QueryMaxPage bleibt nur Diagnose.
-         if (tBatch or 0) >= 50 then
+         -- singlePage (Strategiekauf): NICHT weiterblättern — eine Seite genügt.
+         if (tBatch or 0) >= 50 and not SkuCore.QuerySinglePage then
             SkuCore.QueryCurrentPage = SkuCore.QueryCurrentPage + 1
             SkuCore.QueryData[tQAIindex.page] = SkuCore.QueryCurrentPage
             dprint("continue with next page")
