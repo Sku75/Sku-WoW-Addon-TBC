@@ -115,6 +115,19 @@ so a single-line `grep` can't reconstruct a record — parse it with `py -3`
 `/skulog show` (last 10, now prefixed with `#seq`), `/skulog export` (copyable
 window), `/skulog clear`.
 
+### Syntax-checking Lua edits
+
+No `lua`/`luac` on PATH, but the `luaparser` Python package is installed —
+syntax-check before a `/reload`:
+
+```
+py -3 -c "from luaparser import ast; ast.parse(open('Sku/SkuCore/auctionHouse.lua', encoding='utf-8-sig').read()); print('OK')"
+```
+
+Use `encoding='utf-8-sig'` — Sku's Lua files start with a UTF-8 BOM that the
+parser otherwise errors on. This validates syntax only (not runtime/logic or WoW
+API use), so it's a first gate, not a substitute for the in-game test.
+
 ## Architecture
 
 Sku is built on **Ace3** (AceAddon, AceEvent, AceConfig, AceComm, etc., under

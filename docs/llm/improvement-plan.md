@@ -220,19 +220,69 @@ Still open from Phase 1 (carried into Phase 3 below):
    races / timeouts / errors. Confirms the single-page design keeps the cheapest
    page live and the keypress re-find exact even under heavy load. Full hardcore
    peak-time multi-item stress test still outstanding per the reminder above.
-4. Stop aborting a page on transient nil owner everywhere (done in the LIST path;
-   re-audit the rest), per Auctionator's `GotAllOwners` gate.
-5. Chunk the full-scan ingest (e.g. 250 rows/frame) so a full realm getAll can't
-   freeze the client (`AUCTION_ITEM_LIST_UPDATE_LIST` getAll branch still ingests
-   in one pass).
+4. **DONE (all paths).** No page anywhere aborts on a transient/permanent nil
+   owner — verified by code audit (2026-06-23). All three page-read paths gate on
+   the **name** field (field 1), never the owner (field 14): browse/LIST
+   (`tEntry[1]` empty → wait), buy (`tResult[1]` empty → wait), getAll
+   (`tInfo[1]` empty, and only stops if there is also no itemId). The old
+   owner-based pre-validation (`if tResult[14] == nil then return`) was removed
+   (see the comment in `AUCTION_ITEM_LIST_UPDATE_BUY`); the only field-14 uses
+   left are the index map and one diagnostic log line. This was the Auctionator
+   `GotAllOwners` concern — we satisfy it by waiting on the streamed name, so it
+   is structurally a non-issue, not just patched in one place.
+5. **DONE.** Chunked full-scan ingest + WowVision-style progress feedback. The
+   getAll response (every realm auction in ONE event — thousands of rows) used to
+   be read in a single pass that froze the client, with a per-tick beep as the
+   only "still working" cue. Now `AUCTION_ITEM_LIST_UPDATE_LIST` hands the getAll
+   batch to `AuctionFullScanBeginIngest`, and the OnUpdate ticker drives
+   `AuctionFullScanProcessChunk` — `FULLSCAN_CHUNK = 250` rows per frame —
+   finishing in `AuctionFullScanFinishIngest` (price data, history, serialize,
+   callback, scan end). State (`SkuCore.FullScanIngest`) is cleared in
+   `AuctionHouseResetQuery` so an AH-close mid-ingest can't resume on a stale list.
+   Progress feedback replaces the repeated beep (modelled on WV `FullScanner` +
+   `module.lua:84`), chosen by the user (the blind end-user):
+   - **Waiting for the server response and serializing** (no percentage knowable):
+     a spoken elapsed-time status every 10 s ("komplettscan, N Sekunden") instead
+     of the beep.
+   - **Batch arrival:** announce the total ("N Auktionen").
+   - **Chunked ingest:** announce each 25%.
+   - **Completion:** "Full scan completed, N Auktionen" (the old completion beeps
+     are gone).
+   New locale key `L[" Prozent"]` added (deDE/enUS); reuses `L["full scan"]`,
+   `L[" Sekunden"]`, `L["Auktionen"]`, `L["Full scan completed"]`. NOT done (and
+   not attempted): hijacking `AUCTION_ITEM_LIST_UPDATE` from Blizzard's frames the
+   way WV does — Sku's freeze was its own single-pass loop, now chunked; revisit
+   only if Blizzard's own UI proves to still stall on the giant batch.
+   **Behavioural — include in the stress test.**
+   Post-test fixes (2026-06-23, verified against a ~165k-auction realm — chunking
+   held, no freeze): (a) **immediate "Full scan started" voice** on activation, so
+   the user gets feedback before the first 10 s tick; (b) the scan menu item's
+   **cooldown display now uses Sku's own deterministic 16-min timer**
+   (`AuctionFullScanCooldownRemaining`, from `AuctionLastFullScanTime`) for BOTH
+   the OnEnter label and the OnAction gate — `CanSendAuctionQuery`'s getAll flag
+   read "allowed" right after a scan on this server, so the item wrongly showed
+   "start full scan"; the no-freeze rewrite removed the old incidental refresh that
+   had masked it. The item is also refreshed/re-spoken on completion if the user is
+   sitting on it. (c) the per-event `auction.event`/`auction.scan` diagnostics are
+   skipped during ingest (`AUCTION_ITEM_LIST_UPDATE` returns early) — one 165k scan
+   otherwise flooded the 500-entry `recent` ring with streaming-event noise.
 6. **DONE.** Last-page-by-batch-size detection (`tBatch < 50` = last page) in
    both the LIST and BUY paged paths, replacing the `floor(tCount/50)` decision.
    `QueryMaxPage` is still computed for the count announcement + diagnostics but
    no longer drives page advance. Also done: the `AuctionGetPricePerItem`
    divide-by-zero guard (§8.11). **Behavioral — include in the stress test.**
-7. Optional: deterministic buy/sell confirmation via `ERR_AUCTION_*` /
-   `CHAT_MSG_SYSTEM` events in addition to the money-diff (money-diff is currently
-   reliable in practice; this is belt-and-suspenders).
+7. **DONE for buys; sell side optional/outstanding.** Deterministic buy
+   confirmation via server events is shipped (commit `03cf6ac`, verified in the
+   2026-06-23 logs): `_ASBMsgFrame` resolves `CHAT_MSG_SYSTEM ==
+   ERR_AUCTION_BID_PLACED` → success and `UI_ERROR_MESSAGE` fail strings →
+   failure; the money-diff is only the 5 s timeout fallback
+   (`AuctionSecureBuyOnCommitted` → `AuctionSecureBuyResolve`). Wired through the
+   shared resolve path, so it covers normal buy AND strategy buy. The 17:51 run
+   showed it rescue a case where the money-diff still read 0 at resolve time. The
+   only un-built half is **sell** confirmation: `PostAuction` has no equivalent
+   server-message check (it relies on AUCTION_OWNED_LIST_UPDATE / implicit
+   success). Low priority — selling has not shown the silent-failure problem that
+   buying did.
 
 ### Diagnostics capacity (supports the stress test) — DONE
 
