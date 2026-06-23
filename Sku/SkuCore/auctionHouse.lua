@@ -150,6 +150,7 @@ function SkuCore:AuctionHouseOnInitialize()
    local tFullScanElapsed = 0
    local tPagedScanElapsed = 0    -- Watchdog für paginierte Suchen
    local tPagedStallTime   = 0    -- Wie lange schon Server nicht geantwortet
+   local tFilterAnnounceElapsed = 0 -- 10-s-Takt für die Filter-Fortschrittsansage
    local tFrame = CreateFrame("Button", "SkuCoreSecureTabButtonAuctions", _G["UIParent"], "SecureActionButtonTemplate")
    tFrame:SetSize(1, 1)
    tFrame:SetPoint("TOPLEFT", _G["UIParent"], "TOPLEFT", 0, 0)
@@ -159,6 +160,17 @@ function SkuCore:AuctionHouseOnInitialize()
          return
       end
       tTime = tTime + time
+
+      -- Filter-Fortschrittsansage etwa alle 10 s. Eigener Akkumulator, weil die
+      -- Branches unten tTime zurücksetzen / früh zurückkehren. Die Bedingungen
+      -- (Filter aktiv, 0 Treffer, paginierter Scan läuft, Nutzer auf der Liste)
+      -- prüft AuctionAnnounceFilterProgress selbst.
+      tFilterAnnounceElapsed = tFilterAnnounceElapsed + time
+      if tFilterAnnounceElapsed >= 10 then
+         tFilterAnnounceElapsed = 0
+         pcall(function() SkuCore:AuctionAnnounceFilterProgress() end)
+      end
+
       if SkuCore.AuctionScan.state ~= "idle" or SkuCore.QuerySerializeRunning == true then
          if SkuCore.QueryData[tQAIindex.getAll] == true or SkuCore.QuerySerializeRunning == true then
             if tTime < SkuCore.AuctionTickerWaitFull then return end
@@ -2774,6 +2786,36 @@ function SkuCore:AuctionResultsAppend()
       aParent.children = tSavedView
       SkuOptions:RefreshActiveFilterView(aParent)
    end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Fortschritts-Ansage beim aktiven Buchstaben-Filter: solange auf der
+-- Ergebnisliste ein Filter aktiv ist, NOCH KEIN Treffer sichtbar ist und der
+-- paginierte Scan weiterläuft, spricht der OnUpdate-Ticker etwa alle 10 s
+-- "x von y Seiten durchsucht". So weiß der Nutzer, dass er noch warten soll,
+-- statt zu glauben, der Gegenstand fehle — der Scan-Fertig-Ton bleibt das
+-- "nicht in dieser Liste"-Signal. Gibt true zurück, wenn etwas angesagt wurde.
+function SkuCore:AuctionAnnounceFilterProgress()
+   -- nur bei laufendem, NICHT-getAll (paginiertem) Scan
+   if SkuCore.AuctionScan.state == "idle" then return false end
+   if SkuCore.QueryData and SkuCore.QueryData[tQAIindex.getAll] == true then return false end
+   -- nur wenn ein Buchstaben-Filter aktiv ist
+   if not (SkuOptions.Filterstring and string.len(SkuOptions.Filterstring) > 1) then return false end
+   -- nur wenn der Nutzer auf GENAU dieser gefilterten Ergebnisliste steht
+   local tParent = SkuCore.QueryResultsParent
+   if not tParent or not tParent.children then return false end
+   if not (SkuOptions.currentMenuPosition
+      and SkuOptions.currentMenuPosition.parent == tParent) then return false end
+   -- nur solange der Filter 0 Treffer zeigt (nur der "Filter;..."-Kopf übrig)
+   if #tParent.children > 1 then return false end
+   -- Seitenzahlen müssen bekannt sein
+   local tCur = SkuCore.QueryCurrentPage or 0
+   local tMax = SkuCore.QueryMaxPage or 0
+   if tMax <= 0 then return false end
+   SkuOptions.Voice:OutputStringBTtts(
+      string.format(L["%s von %s Seiten durchsucht"], tCur, tMax),
+      false, true, 0.1, nil, nil, nil, 2)
+   return true
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

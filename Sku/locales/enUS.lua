@@ -5,8 +5,9 @@ Instructions for translators:
 	- don't replace semicolons by spaces
 ]]
 
-local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "enUS", true)	
+local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "enUS", true)
 if not L then return end
+L["%s von %s Seiten durchsucht"] = "%s of %s pages scanned"
 L[" ("]  = " (" --
 L[" (for 1 item)"] = " for 1 item"
 L[" (Redirected from "] = " (Redirected from "

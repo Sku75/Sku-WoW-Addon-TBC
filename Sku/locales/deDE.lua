@@ -6,8 +6,9 @@ Instructions for translators:
 ]]
 ---------------------------------------------------------------------------------------------------
 
-local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "deDE")	
+local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "deDE")
 if not L then return end
+L["%s von %s Seiten durchsucht"] = "%s von %s Seiten durchsucht"
 L[" ("] = " ("
 L[" (for 1 item)"] = " pro Stück"
 L[" (Redirected from "] = " (Weitergeleitet von "
