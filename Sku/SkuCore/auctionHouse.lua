@@ -185,7 +185,7 @@ function SkuCore:AuctionHouseOnInitialize()
                         SkuErrorLog:Log("auction.scan", "watchdog: getAll timeout 600s", {})
                      end)
                   end
-                  SkuCore:AuctionHouseResetQuery(true)
+                  SkuCore:AuctionScanFinish("watchdog: getAll timeout", true)
                   tTime = 0
                   return
                end
@@ -233,7 +233,7 @@ function SkuCore:AuctionHouseOnInitialize()
                      })
                   end)
                end
-               SkuCore:AuctionHouseResetQuery(true)
+               SkuCore:AuctionScanFinish("watchdog: paged stall", true)
                tPagedScanElapsed = 0
                tPagedStallTime   = 0
                tTime = 0
@@ -249,7 +249,7 @@ function SkuCore:AuctionHouseOnInitialize()
                      SkuErrorLog:Log("auction.scan", "watchdog: paged total 180s", {})
                   end)
                end
-               SkuCore:AuctionHouseResetQuery(true)
+               SkuCore:AuctionScanFinish("watchdog: paged total", true)
                tPagedScanElapsed = 0
                tPagedStallTime   = 0
             end
@@ -311,7 +311,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_HOUSE_CLOSED()
    SkuCore:AuctionBuyCancel()
-   SkuCore:AuctionHouseResetQuery()
+   SkuCore:AuctionScanFinish("AH closed")
    -- Kauf-Fehler-/Leerzähler beim Schließen zurücksetzen, damit kein alter
    -- Zählerstand in einen späteren AH-Besuch übergreift.
    SkuCore.AuctionBuy.failCount = 0
@@ -3014,6 +3014,25 @@ function SkuCore:AuctionHouseResetQuery(aForce)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Canonical scan teardown. Every scan END — browse complete, getAll complete,
+-- watchdog abort, AH closed — routes through here, so there is one place that
+-- returns the scanner to idle (which also stops the OnUpdate ticker, since it
+-- only runs while state ~= "idle") and one "finished {reason}" breadcrumb.
+-- The breadcrumb is logged only if a scan was actually active, so an AH-close
+-- (or any reset) while already idle stays quiet. Restart-resets inside
+-- StartQuery and the buy-flow / menu pre-resets (SECTIONs 3 and 6) are NOT scan
+-- ends and keep calling AuctionHouseResetQuery directly.
+function SkuCore:AuctionScanFinish(aReason, aForce)
+   local tWasActive = SkuCore.AuctionScan.state ~= "idle"
+   if tWasActive and SkuErrorLog and SkuErrorLog.Log then
+      pcall(function()
+         SkuErrorLog:Log("auction.scan", "finished", { reason = aReason })
+      end)
+   end
+   SkuCore:AuctionHouseResetQuery(aForce)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMinLevel, aFilterMaxLevel, aFilterPage, aFilterUsable, aFilterRarity, aFilterGetAll, aFilterExactMatch, aFilterFilterData, aCallback)
    -- KAUF-SCHUTZ: Während ein Kauf vorbereitet ("settling") oder scharf
    -- ("trigger") ist, KEINE neue Query absetzen. Eine Query würde die
@@ -3362,7 +3381,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          end)
 
          SkuCore.QueryCallback()
-         SkuCore:AuctionHouseResetQuery(true)
+         SkuCore:AuctionScanFinish("getAll complete", true)
       else
          -- Doppelte/Spuk-Events ignorieren: pro abgesetzter Seiten-Query nur
          -- die erste VOLLSTÄNDIGE Antwort verarbeiten. AUCTION_ITEM_LIST_UPDATE
@@ -3447,13 +3466,13 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
                -- Bereits inkrementell dargestellt: nur Abschluss-Ton, KEIN
                -- erneuter Komplett-Aufbau (würde den Cursor zurückwerfen).
                SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
-               SkuCore:AuctionHouseResetQuery()
+               SkuCore:AuctionScanFinish("browse complete")
             else
                if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name == L["Warten"] then
                   SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
                end
                SkuCore.QueryCallback()
-               SkuCore:AuctionHouseResetQuery()
+               SkuCore:AuctionScanFinish("browse complete (no host)")
             end
          end
       end
