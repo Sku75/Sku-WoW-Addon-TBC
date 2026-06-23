@@ -1141,7 +1141,11 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionGetPricePerItem(aData)
-   local tPPIBid, tPPIBuy = aData[8] / aData[3], aData[10] / aData[3]
+   -- Schutz gegen Division durch 0 (defekte/leere Auktion mit count 0 oder nil):
+   -- sonst entstünden inf/NaN-Preise, die Sortierung und Median vergiften.
+   local tCount = aData[3] or 0
+   if tCount <= 0 then tCount = 1 end
+   local tPPIBid, tPPIBuy = (aData[8] or 0) / tCount, (aData[10] or 0) / tCount
    return {bid = tPPIBid, buy = tPPIBuy,}
 end
 
@@ -3428,7 +3432,12 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
 
          dprint(" SkuCore.QueryCurrentPage", SkuCore.QueryCurrentPage)
          dprint(" SkuCore.QueryMaxPage", SkuCore.QueryMaxPage)
-         if SkuCore.QueryCurrentPage < SkuCore.QueryMaxPage then
+         -- Letzte Seite per Batch-Größe erkennen (Auctionator-Weg): eine volle
+         -- Seite (tBatch == 50) heißt, es kann weitere geben; eine kürzere oder
+         -- leere Seite ist die letzte. Robuster als die tCount/50-Arithmetik
+         -- (die bei exakten Vielfachen eine leere Extraseite anfragte und auf
+         -- ungenaue tCount-Werte hereinfiel). QueryMaxPage bleibt nur Diagnose.
+         if (tBatch or 0) >= 50 then
             SkuCore.QueryCurrentPage = SkuCore.QueryCurrentPage + 1
             SkuCore.QueryData[tQAIindex.page] = SkuCore.QueryCurrentPage
             dprint("continue with next page")
@@ -3642,7 +3651,9 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
          })
       end)
    end
-   if SkuCore.QueryCurrentPage < SkuCore.QueryMaxPage then
+   -- Letzte Seite per Batch-Größe (siehe LIST-Handler): volle Seite (== 50) →
+   -- evtl. weitere; kürzere/leere → letzte. QueryMaxPage bleibt nur Diagnose.
+   if (tBatch or 0) >= 50 then
       SkuCore.QueryCurrentPage = SkuCore.QueryCurrentPage + 1
       SkuCore.QueryData[tQAIindex.page] = SkuCore.QueryCurrentPage
       dprint("continue with next page")
