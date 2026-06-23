@@ -120,6 +120,13 @@ SkuCore.AuctionScan = SkuCore.AuctionScan or { state = "idle", mode = nil }
 SkuCore.QueryCallback = nil
 -- Wenn true: nur die angeforderte Seite holen, NICHT weiterblättern (Strategiekauf).
 SkuCore.QuerySinglePage = nil
+-- Gestückelter getAll-Ingest (siehe AuctionFullScanProcessChunk): die getAll-
+-- Antwort liefert ALLE Auktionen des Realms in EINEM Event (mehrere Tausend
+-- Zeilen). Sie in einem Durchlauf zu lesen fror den Client ein. Wir lesen sie
+-- stattdessen in FULLSCAN_CHUNK-Blöcken pro Frame, vom OnUpdate-Ticker getrieben.
+-- nil, wenn gerade kein Komplettscan verarbeitet wird.
+SkuCore.FullScanIngest = nil
+local FULLSCAN_CHUNK = 250
 SkuCore.QueryBuyData = nil
 SkuCore.QueryBuyType = nil
 SkuCore.QueryBuyAmount = nil
@@ -153,6 +160,8 @@ function SkuCore:AuctionHouseOnInitialize()
    local tPagedScanElapsed = 0    -- Watchdog für paginierte Suchen
    local tPagedStallTime   = 0    -- Wie lange schon Server nicht geantwortet
    local tFilterAnnounceElapsed = 0 -- 10-s-Takt für die Filter-Fortschrittsansage
+   local tFullScanWorkElapsed = 0   -- verstrichene Zeit der getAll-Arbeitsphase
+   local tFullScanSpeak       = 0   -- 10-s-Takt für die getAll-Fortschrittsansage
    local tFrame = CreateFrame("Button", "SkuCoreSecureTabButtonAuctions", _G["UIParent"], "SecureActionButtonTemplate")
    tFrame:SetSize(1, 1)
    tFrame:SetPoint("TOPLEFT", _G["UIParent"], "TOPLEFT", 0, 0)
@@ -161,6 +170,15 @@ function SkuCore:AuctionHouseOnInitialize()
       if SkuCore.AuctionHouseOpen == false then
          return
       end
+
+      -- Läuft der gestückelte getAll-Ingest, dann pro Frame EINEN Block
+      -- verarbeiten (anti-freeze) und sonst nichts tun, bis er fertig ist. Die
+      -- 25-%-Ansagen macht der Chunk-Prozessor selbst.
+      if SkuCore.FullScanIngest and SkuCore.FullScanIngest.active then
+         SkuCore:AuctionFullScanProcessChunk()
+         return
+      end
+
       tTime = tTime + time
 
       -- Filter-Fortschrittsansage etwa alle 10 s. Eigener Akkumulator, weil die
@@ -171,6 +189,29 @@ function SkuCore:AuctionHouseOnInitialize()
       if tFilterAnnounceElapsed >= 10 then
          tFilterAnnounceElapsed = 0
          pcall(function() SkuCore:AuctionAnnounceFilterProgress() end)
+      end
+
+      -- Komplettscan-Arbeitsphasen OHNE Prozentangabe: auf die getAll-Antwort
+      -- des Servers warten (1-2 min auf Anniversary) bzw. die DB serialisieren.
+      -- Statt des früheren Dauer-Pieptons alle 10 s die verstrichene Zeit ansagen.
+      -- Die Ingest-Phase (mit 25-%-Ansagen) ist oben schon abgefangen.
+      local tScanWorking = SkuCore.QuerySerializeRunning == true
+         or (SkuCore.AuctionScan.state ~= "idle"
+             and SkuCore.QueryData[tQAIindex.getAll] == true)
+      if tScanWorking then
+         tFullScanWorkElapsed = tFullScanWorkElapsed + time
+         tFullScanSpeak = tFullScanSpeak + time
+         if tFullScanSpeak >= 10 then
+            tFullScanSpeak = tFullScanSpeak - 10
+            pcall(function()
+               SkuOptions.Voice:OutputStringBTtts(
+                  L["full scan"]..", "..math.floor(tFullScanWorkElapsed)..L[" Sekunden"],
+                  false, true, 0.2, nil, nil, nil, 2)
+            end)
+         end
+      else
+         tFullScanWorkElapsed = 0
+         tFullScanSpeak = 0
       end
 
       if SkuCore.AuctionScan.state ~= "idle" or SkuCore.QuerySerializeRunning == true then
@@ -207,7 +248,8 @@ function SkuCore:AuctionHouseOnInitialize()
                tFullScanElapsed = 0
             end
 
-            SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)--24
+            -- (Früher: Dauer-Piepton hier. Ersetzt durch die 10-s-Sprachansage
+            -- oben; dieser Zweig hält nur noch den getAll-Watchdog am Laufen.)
             tTime = 0
          else
             tFullScanElapsed = 0
@@ -1970,45 +2012,45 @@ OnEnterAllFlag = nil
       tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["start full scan"]}, SkuGenericMenuItem)
       tNewMenuEntry1.dynamic = false
       tNewMenuEntry1.isSelect = true
+      -- Referenz merken, damit der Komplettscan den angezeigten Namen nach dem
+      -- Abschluss aktualisieren kann (Cooldown statt "start full scan").
+      SkuCore.AuctionFullScanMenuItem = tNewMenuEntry1
+      -- Cooldown jetzt aus SkuS EIGENEM 16-Minuten-Timer (AuctionLastFullScanTime),
+      -- NICHT mehr aus CanSendAuctionQuery: dessen getAll-Flag steht direkt nach
+      -- einem Scan auf diesem Server nicht zuverlässig auf "gesperrt", wodurch der
+      -- Eintrag fälschlich "start full scan" zeigte. Der Timer ist deterministisch
+      -- und genau das, was der Nutzer als "noch N Minuten" hören will.
       tNewMenuEntry1.OnEnter = function(self, aValue, aName, aEnterFlag)
-         local _, t = CanSendAuctionQuery()
-         if t == false then
-            local tRemainingTimeString = (16 - mfloor((GetServerTime() - SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime) / 60))..L[" Minuten"]
-            SkuOptions.currentMenuPosition.name = L["full scan"].." "..L["Ready in"].." "..tRemainingTimeString
+         local tRemain = SkuCore:AuctionFullScanCooldownRemaining()
+         if tRemain > 0 then
+            SkuOptions.currentMenuPosition.name = L["full scan"].." "..L["Ready in"].." "..tRemain..L[" Minuten"]
          else
             SkuOptions.currentMenuPosition.name = L["start full scan"]
          end
       end
       tNewMenuEntry1.noStepUpAfterSelect = true
       tNewMenuEntry1.OnAction = function(self, aValue, aName)
+         -- Cooldown zuerst über den eigenen Timer prüfen (konsistent mit der
+         -- Anzeige), damit Anzeige und Aktion nicht auseinanderlaufen.
+         if SkuCore:AuctionFullScanCooldownRemaining() > 0 then
+            pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Scan noch nicht möglich, bitte kurz warten"], true, true, 0.1, nil, nil, nil, 1) end)
+            return
+         end
          local canQuery, canQueryAll = CanSendAuctionQuery()
          local tStarted = false
          if canQueryAll == true then
             -- Rückgabe true NUR wenn QueryAuctionItems wirklich rausging.
             tStarted = SkuCore:AuctionHouseStartQuery(
-               nil,
-               "AUCTION_ITEM_LIST_UPDATE",
-               "",
-               nil,
-               nil,
-               nil,
-               nil,
-               nil,
-               true,
-               false,
-               nil,
-               function()
-                  --[[
-                  C_Timer.After(0.01, function()
-
-                  end)
-                  ]]
-               end
+               nil, "AUCTION_ITEM_LIST_UPDATE", "", nil, nil, nil, nil, nil,
+               true, false, nil, function() end
             )
          end
          if tStarted == true then
-            -- 16-Minuten-Sperre NUR setzen, wenn der Scan tatsächlich lief.
+            -- 16-Minuten-Sperre setzen + SOFORTIGE Start-Ansage (vor der ersten
+            -- 10-Sekunden-Fortschrittsansage), damit der Nutzer gleich hört, dass
+            -- der Scan losgelaufen ist.
             SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime = GetServerTime()
+            pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Full scan started"], true, true, 0.1, nil, nil, nil, 1) end)
          else
             -- Kein Scan ausgelöst: hörbare, lokalisierte Meldung, KEINE Sperre.
             pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Scan noch nicht möglich, bitte kurz warten"], true, true, 0.1, nil, nil, nil, 1) end)
@@ -3203,6 +3245,11 @@ function SkuCore:AuctionHouseResetQuery(aForce)
    SkuCore.QueryData = {}
    SkuCore.QueryCallback = nil
    SkuCore.QuerySinglePage = nil
+   -- Laufenden getAll-Ingest abbrechen (z.B. AH geschlossen mitten im Scan),
+   -- damit der Chunk-Treiber beim nächsten OnUpdate nicht eine veraltete,
+   -- inzwischen geänderte Liste weiterliest. AuctionFullScanFinishIngest setzt
+   -- ihn ohnehin selbst auf nil, bevor es hierher (AuctionScanFinish) kommt.
+   SkuCore.FullScanIngest = nil
    -- Inkrementelles Nachladen beenden: gebaute Liste bleibt stehen, aber
    -- es darf nichts mehr angehängt werden (Host/Flag weg).
    SkuCore.QueryResultsPartialReady = nil
@@ -3476,6 +3523,14 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName)
+   -- Während der gestückelte getAll-Ingest läuft, treibt ihn der OnUpdate-Ticker
+   -- frame-weise; die weiter streamenden LIST_UPDATE-Events brauchen wir dann
+   -- nicht. Hier SOFORT raus — sonst flutet ein einziger Komplettscan (Tausende
+   -- Streaming-Events) mit je einer "fired"/"_LIST entry"-Diagnose den recent-
+   -- Ringpuffer und verdrängt alles andere.
+   if SkuCore.FullScanIngest and SkuCore.FullScanIngest.active then
+      return
+   end
    -- Diagnose: Event-Eintritt loggen, unabhängig vom Query-Status,
    -- damit wir sehen, ob das Event überhaupt feuert.
    if SkuErrorLog and SkuErrorLog.Log then
@@ -3500,6 +3555,163 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Gestückelter getAll-Ingest (WowVision-Vorbild). Die getAll-Antwort liefert ALLE
+-- Auktionen des Realms in EINEM Event (mehrere Tausend Zeilen); ein einziger
+-- Lese-Durchlauf fror den Client mehrere Sekunden ein. Stattdessen liest
+-- AuctionFullScanProcessChunk pro OnUpdate-Frame FULLSCAN_CHUNK Zeilen und meldet
+-- alle 25 % den Fortschritt; AuctionFullScanFinishIngest macht die Nachbereitung.
+
+-- Verbleibende Komplettscan-Sperre in Minuten (Sku-eigener 16-Minuten-Timer aus
+-- AuctionLastFullScanTime). 0 = bereit. Deterministisch — anders als das
+-- getAll-Flag von CanSendAuctionQuery, das direkt nach einem Scan unzuverlässig
+-- ist und den Menü-Eintrag fälschlich "start full scan" zeigen ließ.
+function SkuCore:AuctionFullScanCooldownRemaining()
+   local tLast = SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime or 0
+   local tRemain = 16 - mfloor((GetServerTime() - tLast) / 60)
+   if tRemain < 0 then tRemain = 0 end
+   return tRemain
+end
+
+function SkuCore:AuctionFullScanBeginIngest(aBatch, aCount)
+   local tUpper = math.max(aBatch or 0, aCount or 0)
+   -- Vor dem Einlesen zurücksetzen, damit keine Reste alter Scans durchgehen.
+   FullScanResultsDB = {}
+   SkuCore.FullScanIngest = {
+      active     = true,
+      total      = tUpper,
+      processed  = 0,
+      dbn        = 0,
+      nextPct    = 25,
+      reachedEnd = false,
+      -- Hot-Path-Locals einmal cachen (wie der frühere Einzeldurchlauf).
+      getInfo       = _G.GetAuctionItemInfo,
+      getLink       = _G.GetAuctionItemLink,
+      itemData      = SkuDB.itemDataTBC,
+      reqLevelKey   = SkuDB.WotLK.itemKeys.requiredLevel,
+      itemLookup    = SkuDB.itemLookup[Sku.Loc],
+      fallbackLevel = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
+   }
+   -- Während der Ingest läuft, ist der Scan nicht mehr "waiting" (sonst liefe die
+   -- 10-s-Warteansage weiter); "paging" markiert "Antwort da, wird verarbeitet".
+   SkuCore:AuctionScanSetState("paging", "getAll")
+   -- Start-Ansage: wie viele Auktionen jetzt verarbeitet werden.
+   pcall(function()
+      SkuOptions.Voice:OutputStringBTtts(
+         (aCount or tUpper).." "..L["Auktionen"], false, true, 0.2, nil, nil, nil, 2)
+   end)
+end
+
+function SkuCore:AuctionFullScanProcessChunk()
+   local fs = SkuCore.FullScanIngest
+   if not fs or not fs.active then return end
+   local tEnd = math.min(fs.processed + FULLSCAN_CHUNK, fs.total)
+   local tDB = FullScanResultsDB
+   local i = fs.processed
+   while i < tEnd do
+      i = i + 1
+      local tInfo = { fs.getInfo("list", i) }
+      -- Ende der Server-Liste: weder Name noch Item-ID → fertig (wie der
+      -- frühere break im Einzeldurchlauf).
+      if (not tInfo[1] or tInfo[1] == "") and not tInfo[17] then
+         fs.reachedEnd = true
+         break
+      end
+      tInfo[21] = fs.getLink("list", i)
+      local tID = tInfo[17]
+      -- Required-level normalisieren (fehlt oder absurd)
+      if tInfo[6] == nil or tInfo[6] > 10000 then
+         local row = tID and fs.itemData[tID]
+         if row then tInfo[6] = row[fs.reqLevelKey] end
+         if tInfo[6] == nil then tInfo[6] = fs.fallbackLevel end
+      end
+      -- Name aus DB nachlegen, wenn vom Server leer
+      if tInfo[1] == "" and tID and fs.itemLookup[tID] then
+         tInfo[1] = fs.itemLookup[tID]
+      end
+      fs.dbn = fs.dbn + 1
+      tDB[fs.dbn] = tInfo
+   end
+   fs.processed = i
+
+   -- 25-%-Ansagen (nur im normalen Durchlauf; beim vorzeitigen Listenende
+   -- übernimmt die Abschlussansage in FinishIngest).
+   if not fs.reachedEnd and fs.total > 0 then
+      local tPct = math.floor(fs.processed * 100 / fs.total)
+      while tPct >= fs.nextPct and fs.nextPct <= 100 do
+         local tSay = fs.nextPct
+         pcall(function()
+            SkuOptions.Voice:OutputStringBTtts(tSay..L[" Prozent"], false, true, 0.2, nil, nil, nil, 2)
+         end)
+         fs.nextPct = fs.nextPct + 25
+      end
+   end
+
+   if fs.reachedEnd or fs.processed >= fs.total then
+      SkuCore:AuctionFullScanFinishIngest()
+   end
+end
+
+function SkuCore:AuctionFullScanFinishIngest()
+   -- Erst den Treiber stoppen, dann nachbereiten.
+   SkuCore.FullScanIngest = nil
+   if SkuErrorLog and SkuErrorLog.Log then
+      pcall(function()
+         SkuErrorLog:Log("auction.scan", "getAll ingest done", {
+            rows = #FullScanResultsDB,
+            firstName = FullScanResultsDB[1] and FullScanResultsDB[1][1] or "(none)",
+            firstId = FullScanResultsDB[1] and FullScanResultsDB[1][17] or "(none)",
+         })
+      end)
+   end
+   FullScanResultsDBHistory = {}
+   -- PriceData einmal aus dem Scan berechnen und an beide History-Tabellen
+   -- weiterreichen (statt zweimal dieselbe Berechnung).
+   local tPrecomputedPriceData = SkuCore:AuctionBuildPriceData(FullScanResultsDB)
+   SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, FullScanResultsDBHistory, tPrecomputedPriceData)
+   SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, AuctionDBHistory, tPrecomputedPriceData)
+   SkuCore.QuerySerializeRunning = true
+   SkuTableToString(AuctionDBHistory, function(aString)
+      SkuCore.QuerySerializeRunning = false
+      SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = aString
+      C_Timer.After(1, function()
+         for q, w in pairs(FullScanResultsDB) do
+            if w[1] ~= "" and w[4] == -1 then
+               w[4] = C_Item.GetItemQualityByID(w[17])
+            end
+         end
+         C_Timer.After(1, function()
+            for q, w in pairs(FullScanResultsDB) do
+               if w[1] ~= "" and w[4] == -1 then
+                  w[4] = C_Item.GetItemQualityByID(w[17])
+               end
+            end
+            dprint("full query completed", SkuCore.QueryCallback)
+            -- Abschlussansage statt der früheren Abschluss-Pieptöne.
+            pcall(function()
+               SkuOptions.Voice:OutputStringBTtts(
+                  L["Full scan completed"]..", "..#FullScanResultsDB.." "..L["Auktionen"],
+                  true, true, 0.2, nil, nil, nil, 2)
+            end)
+            -- Falls der Nutzer auf dem "start full scan"-Eintrag steht, dessen
+            -- Anzeige jetzt auf den Cooldown aktualisieren (sonst bliebe der Name
+            -- von VOR dem Scan stehen — "start full scan" — bis man weg- und
+            -- wieder hinnavigiert). Erst jetzt (Serialisieren fertig, alles ruhig).
+            local tItem = SkuCore.AuctionFullScanMenuItem
+            if tItem and SkuOptions.currentMenuPosition == tItem then
+               if tItem.OnEnter then pcall(function() tItem:OnEnter() end) end
+               if SkuOptions.VocalizeCurrentMenuName then
+                  pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
+               end
+            end
+         end)
+      end)
+   end)
+
+   if SkuCore.QueryCallback then SkuCore.QueryCallback() end
+   SkuCore:AuctionScanFinish("getAll complete", true)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
    local tBatch, tCount = GetNumAuctionItems("list")
    dprint(" tBatch, tCount", tBatch, tCount, SkuCore.QueryData[tQAIindex.getAll])
@@ -3521,95 +3733,17 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
 
    if SkuCore.QueryCurrentPage ~= nil then
       if SkuCore.QueryData[tQAIindex.getAll] == true then
-         -- WICHTIG: vor dem Loop FullScanResultsDB zurücksetzen, damit
-         -- nicht alte Einträge aus früheren (kaputten) Scans persistieren
-         -- und die Liste fälschlich als "befüllt" durchgeht.
-         FullScanResultsDB = {}
-         -- Hot-Path-Optimierungen:
-         --   * lokale Variablen statt globale (LuaJIT-Hot-Loop-Style)
-         --   * Index-Counter statt #FullScanResultsDB pro Iteration
-         --   * tInfo direkt referenzieren statt FullScanResultsDB[n]
-         --     mehrfach zu indexen
-         local tUpper = math.max(tBatch or 0, tCount or 0)
-         local tGetInfo = _G.GetAuctionItemInfo
-         local tGetLink = _G.GetAuctionItemLink
-         local tItemData = SkuDB.itemDataTBC
-         local tReqLevelKey = SkuDB.WotLK.itemKeys.requiredLevel
-         local tItemLookup = SkuDB.itemLookup[Sku.Loc]
-         local tFallbackLevel = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin
-         local tDB = FullScanResultsDB
-         local tDBn = 0
-         for x = 1, tUpper do
-            local tInfo = { tGetInfo("list", x) }
-            -- Stop sobald die Server-seitige Liste keine weiteren
-            -- Einträge mehr ausliefert (häufig nach tBatch).
-            if not tInfo[1] or tInfo[1] == "" then
-               if not tInfo[17] then
-                  break
-               end
-            end
-            tInfo[21] = tGetLink("list", x)
-            local tID = tInfo[17]
-            -- Required-level normalisieren (fehlt oder absurd)
-            if tInfo[6] == nil or tInfo[6] > 10000 then
-               local row = tID and tItemData[tID]
-               if row then
-                  tInfo[6] = row[tReqLevelKey]
-               end
-               if tInfo[6] == nil then
-                  tInfo[6] = tFallbackLevel
-               end
-            end
-            -- Name aus DB nachlegen, wenn vom Server leer
-            if tInfo[1] == "" and tID and tItemLookup[tID] then
-               tInfo[1] = tItemLookup[tID]
-            end
-            tDBn = tDBn + 1
-            tDB[tDBn] = tInfo
+         -- Schon am gestückelten Einlesen? Folge-/Spuk-Events während des
+         -- Ingests ignorieren — er läuft frame-getrieben über den OnUpdate-Ticker
+         -- weiter (siehe AuctionFullScanProcessChunk).
+         if SkuCore.FullScanIngest and SkuCore.FullScanIngest.active then
+            return
          end
-         -- Diagnose: log how many items the scan actually captured.
-         if SkuErrorLog and SkuErrorLog.Log then
-            pcall(function()
-               SkuErrorLog:Log("auction.scan", "after loop", {
-                  fsdbLen = #FullScanResultsDB,
-                  firstName = FullScanResultsDB[1] and FullScanResultsDB[1][1] or "(none)",
-                  firstId = FullScanResultsDB[1] and FullScanResultsDB[1][17] or "(none)",
-               })
-            end)
-         end
-         FullScanResultsDBHistory = {}
-         -- PriceData einmal aus dem Scan berechnen und an beide
-         -- History-Tabellen weiterreichen (statt zweimal die gleiche
-         -- Berechnung). Spart bei großen Scans deutlich.
-         local tPrecomputedPriceData = SkuCore:AuctionBuildPriceData(FullScanResultsDB)
-         SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, FullScanResultsDBHistory, tPrecomputedPriceData)
-         SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, AuctionDBHistory, tPrecomputedPriceData)
-         SkuCore.QuerySerializeRunning = true
-         SkuTableToString(AuctionDBHistory, function(aString)
-            SkuCore.QuerySerializeRunning = false
-            SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = aString
-            SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)--24
-            C_Timer.After(1, function()
-               for q, w in pairs(FullScanResultsDB) do
-                  if w[1] ~= "" and w[4] == -1 then
-                     w[4] = C_Item.GetItemQualityByID(w[17])
-                  end
-               end
-               SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)--24
-               C_Timer.After(1, function()
-                  for q, w in pairs(FullScanResultsDB) do
-                     if w[1] ~= "" and w[4] == -1 then
-                        w[4] = C_Item.GetItemQualityByID(w[17])
-                     end
-                  end
-                  dprint("full query completed", SkuCore.QueryCallback)
-                  SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
-               end)
-            end)
-         end)
-
-         SkuCore.QueryCallback()
-         SkuCore:AuctionScanFinish("getAll complete", true)
+         -- getAll-Antwort NICHT in einem Durchlauf einlesen (fror den Client
+         -- ein), sondern gestückelt über den Ticker — mit 25-%-Ansagen. Das
+         -- Nachbereiten (PriceData, History, Serialisieren, Abschlussansage,
+         -- Callback, Scan-Ende) macht AuctionFullScanFinishIngest.
+         SkuCore:AuctionFullScanBeginIngest(tBatch, tCount)
       else
          -- Doppelte/Spuk-Events ignorieren: pro abgesetzter Seiten-Query nur
          -- die erste VOLLSTÄNDIGE Antwort verarbeiten. AUCTION_ITEM_LIST_UPDATE

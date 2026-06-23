@@ -36,6 +36,7 @@ L[" Minuten"]  = " Minutes" --
 L[" Nur Kauf "]  = "  only Buy " --
 L[" ok "]  = " ok " --
 L[" Prozent ("]  = " Percent (" --
+L[" Prozent"]  = " percent" --
 L[" rot "]  = " Red " --
 L[" Sekunden"]  = " Seconds" --
 L[" stück wirklich "]  = " items " --
