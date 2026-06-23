@@ -413,6 +413,18 @@ fire early and either skip steps or act on stale data.
 
 ### 8.5 Completion sound / menu refresh gated on `currentMenuPosition.name == L["Warten"]` (lines 187-189, 2652, 2822)
 
+> **MOSTLY FIXED (verified 2026-06-23).** The Phase 1 incremental rework made
+> every normal browse path (search / "Alle" / single item) set
+> `QueryResultsHost`, and in that path the completion `sound-notification16`
+> now fires **unconditionally** (current `AUCTION_ITEM_LIST_UPDATE_LIST`, the
+> `if SkuCore.QueryResultsHost then` branch) — confirmed by the user hearing it
+> after navigating away from "Warten". Only the legacy no-host `else` branch
+> (not hit by normal browsing) and the periodic *progress* tick
+> (`sound-notification24`) are still cursor-gated; the latter is arguably
+> desirable. The hard `currentMenuPosition.name` derefs are nil-guarded now.
+> Net: no dedicated fix needed. The original (pre-rework) text follows.
+
+
 If the user navigates away from the "Warten" entry while a scan runs (very likely
 for a blind user exploring), the completion `sound-notification16` and some
 menu-refresh branches simply never fire — the user gets no audible signal the

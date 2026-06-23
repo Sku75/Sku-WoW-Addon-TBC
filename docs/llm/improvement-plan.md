@@ -184,8 +184,12 @@ Still open from Phase 1 (carried into Phase 3 below):
    now unrepresentable, one logged timeline); it does **not** by itself fix the
    open scan items below (8.5 terminal cleanup, last-page detection, getAll
    chunking) — those remain separate tasks.
-2. One terminal cleanup path for every scan end state (complete / abort / fail /
-   AH-closed) so no `OnUpdate` or event listener leaks.
+2. **DONE.** One terminal cleanup path for every scan end state via
+   `SkuCore:AuctionScanFinish(reason, force)` (logs `auction.scan / finished
+   {reason}` when a scan was active, then resets). Routed: the three OnUpdate
+   watchdogs, getAll completion, browse completion (host + no-host), and
+   AH-closed. (No real leak existed once the state machine guaranteed idle stops
+   the ticker; this makes the terminal path explicit and uniformly logged.)
 3. The duplicate `AUCTION_ITEM_LIST_UPDATE` registration (`SkuStratBuyFrame`,
    separate from the main module) still exists. It is gated on `StratBuy.active`
    and mutually exclusive with a normal scan in practice, but folding strategy-buy
@@ -196,8 +200,11 @@ Still open from Phase 1 (carried into Phase 3 below):
 5. Chunk the full-scan ingest (e.g. 250 rows/frame) so a full realm getAll can't
    freeze the client (`AUCTION_ITEM_LIST_UPDATE_LIST` getAll branch still ingests
    in one pass).
-6. Last-page-by-batch-size detection (`GetNumAuctionItems("list") < 50`) instead
-   of the page-count arithmetic.
+6. **DONE.** Last-page-by-batch-size detection (`tBatch < 50` = last page) in
+   both the LIST and BUY paged paths, replacing the `floor(tCount/50)` decision.
+   `QueryMaxPage` is still computed for the count announcement + diagnostics but
+   no longer drives page advance. Also done: the `AuctionGetPricePerItem`
+   divide-by-zero guard (§8.11). **Behavioral — include in the stress test.**
 7. Optional: deterministic buy/sell confirmation via `ERR_AUCTION_*` /
    `CHAT_MSG_SYSTEM` events in addition to the money-diff (money-diff is currently
    reliable in practice; this is belt-and-suspenders).
