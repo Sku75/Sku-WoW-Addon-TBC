@@ -35,6 +35,16 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 
 local mfloor = math.floor
 
+-- Münz-Helfer: Kupfer <-> Gold/Silber/Kupfer. 1 Gold = 100 Silber = 10000 Kupfer.
+-- Ersetzt die früher mehrfach von Hand ausgeschriebene Auf-/Zerlegung.
+local function SplitCoin(aCopper)
+   aCopper = aCopper or 0
+   return mfloor(aCopper / 10000), mfloor((aCopper % 10000) / 100), aCopper % 100
+end
+local function CombineCoin(aGold, aSilver, aCopper)
+   return (aGold or 0) * 10000 + (aSilver or 0) * 100 + (aCopper or 0)
+end
+
 local tFilterInventoryTypeToGetItemInventoryTypeByID = {
 	[1] = 1,
 	[2] = 2,
@@ -496,35 +506,12 @@ function SkuCore:AuctionBuyCancel()
    AB.timers     = {}
    AB.pending    = nil
    AB.generation = AB.generation + 1
-   -- Sichere Kauf-Bindings + Safety-Timer ebenfalls lösen (Taint-Fix-Pfad).
-   -- Per Global-Name angesprochen, da die lokalen Helfer/Frames erst weiter
-   -- unten im File definiert werden (diese Funktion läuft aber erst zur
-   -- Laufzeit, da existieren sie längst).
+   -- Sichere Kauf-Bindings + Safety-Timer + Meldungs-Capture ebenfalls lösen
+   -- (Taint-Fix-Pfad). Gemeinsame Abräum-Methode statt der früheren, hier per
+   -- _G[...]-Namen duplizierten Schritte (die lokalen _ASB*-Helfer stehen weiter
+   -- unten im File, die Methode wird aber zur Laufzeit aufgelöst).
    if SkuCore.AuctionSecureBuy then
-      SkuCore.AuctionSecureBuy.active = false
-      SkuCore.AuctionSecureBuy.stage  = nil
-      local tBinder = _G["SkuAuctionSecureBinder"]
-      if tBinder then pcall(ClearOverrideBindings, tBinder) end
-      -- Skus Menü-Enter/Escape wiederherstellen (wir haben sie evtl. überschrieben).
-      pcall(function()
-         local tMain = _G["OnSkuOptionsMainOption1"]
-         if tMain and tMain.IsShown and tMain:IsShown() then
-            if _G["SecureOnSkuOptionsMainOption1"] then
-               SetOverrideBindingClick(_G["SecureOnSkuOptionsMainOption1"], true, "ENTER", "SecureOnSkuOptionsMainOption1", "ENTER")
-            end
-            SetOverrideBindingClick(tMain, true, "ESCAPE", "OnSkuOptionsMainOption1", "ESCAPE")
-         end
-      end)
-      local tSafety = SkuCore.AuctionSecureBuy.safety
-      if tSafety and tSafety.Cancel then pcall(tSafety.Cancel, tSafety) end
-      SkuCore.AuctionSecureBuy.safety = nil
-      -- Server-Meldungs-Capture lösen (Frame per Global-Name, s. o.).
-      local tMsgFrame = _G["SkuAuctionSecureMsgFrame"]
-      if tMsgFrame then
-         pcall(tMsgFrame.UnregisterEvent, tMsgFrame, "CHAT_MSG_SYSTEM")
-         pcall(tMsgFrame.UnregisterEvent, tMsgFrame, "UI_ERROR_MESSAGE")
-      end
-      SkuCore.AuctionSecureBuy.verifyTimer = nil
+      SkuCore:AuctionSecureBuyTeardown()
    end
    _ABLog("ABCancel", { newGeneration = AB.generation })
 end
@@ -797,17 +784,28 @@ local function _ASBArmSafety()
    end)
 end
 
+-- Sicheren Kauf vollständig abräumen: aktiv/stage zurücksetzen, Override-Bindings
+-- lösen + Skus Menü-Tasten wiederherstellen, Safety-Timer und Server-Meldungs-
+-- Capture stoppen. Als SkuCore-Methode definiert, damit auch das weiter oben im
+-- File stehende AuctionBuyCancel sie aufrufen kann (Methoden-Lookup zur Laufzeit)
+-- — früher hatte AuctionBuyCancel diese Schritte per _G[...]-Namen dupliziert.
+function SkuCore:AuctionSecureBuyTeardown()
+   local SB = SkuCore.AuctionSecureBuy
+   if not SB then return end
+   SB.active = false
+   SB.stage  = nil
+   _ASBRelease()
+   _ASBClearSafety()
+   _ASBStopMsgCapture()
+end
+
 -- Kauf abbrechen: Bindings + Safety lösen, Zähler zurücksetzen, Skus Menü-Tasten
 -- wiederherstellen. announce=true spricht die Abbruch-Meldung.
 function SkuCore:AuctionSecureBuyCancel(announce)
    local SB = SkuCore.AuctionSecureBuy
    local p = SB.p
    local wasActive = SB.active
-   SB.active = false
-   SB.stage  = nil
-   _ASBRelease()
-   _ASBClearSafety()
-   _ASBStopMsgCapture()
+   SkuCore:AuctionSecureBuyTeardown()
    SkuCore.AuctionBuy.failCount = 0
    SkuCore.QueryBuyEmptyWaits = 0
    SkuCore:AuctionBuyCancel()
@@ -1996,13 +1994,13 @@ function SkuCore:AuctionHouseMenuBuilder()
             pcall(function() SkuOptions.Voice:OutputStringBTtts(cfg.amount.." "..L["STRAT_Pieces"], true, true, 0.2, nil, nil, nil, 2) end)
          end
          tAmountEntry.BuildChildren = function(self)
-            local tMaxCopper = (cfg.maxGold or 0) * 10000 + (cfg.maxSilver or 0) * 100 + (cfg.maxCopper or 0)
+            local tMaxCopper = CombineCoin(cfg.maxGold, cfg.maxSilver, cfg.maxCopper)
             for x = 1, 20 do
                local tLabel = tostring(x).." "..L["STRAT_Times"].." "..(cfg.itemName or "?").." "..L["STRAT_For"].." "..SkuGetCoinText(tMaxCopper, false, true).." "..L["STRAT_PerPiece"]
                SkuOptions:InjectMenuItems(self, {tLabel}, SkuGenericMenuItem)
             end
          end
-         local tMaxCopper = (cfg.maxGold or 0) * 10000 + (cfg.maxSilver or 0) * 100 + (cfg.maxCopper or 0)
+         local tMaxCopper = CombineCoin(cfg.maxGold, cfg.maxSilver, cfg.maxCopper)
          local tStartLabel = L["STRAT_Start"]..": "..(cfg.amount or 1).." "..(cfg.itemName or "?").." "..L["STRAT_For"].." "..SkuGetCoinText(tMaxCopper, false, true).." "..L["STRAT_PerPiece"]
          local tStartEntry = SkuOptions:InjectMenuItems(self, {tStartLabel}, SkuGenericMenuItem)
          tStartEntry.OnAction = function(self, aValue, aName)
@@ -2010,7 +2008,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                pcall(function() SkuOptions.Voice:OutputStringBTtts(L["STRAT_NoItem"], true, true, 0.2, nil, nil, nil, 2) end)
                return
             end
-            local tMaxPrice = (cfg.maxGold or 0) * 10000 + (cfg.maxSilver or 0) * 100 + (cfg.maxCopper or 0)
+            local tMaxPrice = CombineCoin(cfg.maxGold, cfg.maxSilver, cfg.maxCopper)
             if tMaxPrice <= 0 then
                pcall(function() SkuOptions.Voice:OutputStringBTtts(L["STRAT_NoPrice"], true, true, 0.2, nil, nil, nil, 2) end)
                return
@@ -2409,9 +2407,7 @@ function SkuCore:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
             local tBest = select(2, SkuCore:AuctionHouseGetAuctionPriceHistoryData(tItemId))
             if tBest and tBest > 0 then
                tBest = mfloor(tBest)
-               tCfg.gold = mfloor(tBest / 10000)
-               tCfg.silver = mfloor((tBest % 10000) / 100)
-               tCfg.copper = tBest % 100
+               tCfg.gold, tCfg.silver, tCfg.copper = SplitCoin(tBest)
             end
          end
          tItemEntry.priceCfg = tCfg
@@ -2422,7 +2418,7 @@ function SkuCore:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
       if (tCfg.copper or 0) > 99 then tCfg.copper = 99 end
 
       local function tPriceCopper()
-         return (tCfg.gold or 0) * 10000 + (tCfg.silver or 0) * 100 + (tCfg.copper or 0)
+         return CombineCoin(tCfg.gold, tCfg.silver, tCfg.copper)
       end
 
       -- Anzahl Auktionen -> Dauer -> Erstellen. WICHTIG (Multisell-Regression-Fix):
