@@ -633,27 +633,17 @@ function SkuCore:AuctionPruneListAuction(aRecord)
          if tParent.children[i] == tEntry then tEntryIdx = i; break end
       end
    end
-   local tChildrenBefore = (tParent and tParent.children) and #tParent.children or -1
-   local tChildrenAfter, tStillPresent
    if #tDupes == 0 then
       -- Letzte Auktion der Gruppe -> Eintrag ganz entfernen.
       -- WICHTIG: Skus Menü-Navigation (OnNext/OnPrev) läuft über die
       -- .next/.prev-VERKETTUNG der Einträge, NICHT über den children-Array-Index.
       -- Den Eintrag daher AUCH aus dieser Kette aushängen, sonst läuft Pfeil-
-      -- hoch/runter weiter über den entfernten Geist-Eintrag (genau das Symptom).
+      -- hoch/runter weiter über den entfernten Geist-Eintrag.
       local tNeighbor = tEntry.next or tEntry.prev
       if tEntry.prev then tEntry.prev.next = tEntry.next end
       if tEntry.next then tEntry.next.prev = tEntry.prev end
       if tParent and tParent.children and tEntryIdx then
          table.remove(tParent.children, tEntryIdx)
-      end
-      -- Diagnose: ist der Eintrag jetzt wirklich raus aus der Eltern-Liste?
-      tChildrenAfter = (tParent and tParent.children) and #tParent.children or -1
-      tStillPresent = false
-      if tParent and tParent.children then
-         for i = 1, #tParent.children do
-            if tParent.children[i] == tEntry then tStillPresent = true; break end
-         end
       end
       if SkuCore.QueryResultsByName then
          for k, v in pairs(SkuCore.QueryResultsByName) do
@@ -678,14 +668,7 @@ function SkuCore:AuctionPruneListAuction(aRecord)
       pcall(function()
          SkuErrorLog:Log("auction.buy", "prune ok", {
             result = (#tDupes == 0) and "entry removed" or "label updated",
-            dupesLeft = #tDupes, newName = tEntry.name,
-            parentName = tParent and tParent.name,
-            parentDynamic = tParent and tParent.dynamic and true or false,
-            entryIdx = tEntryIdx,
-            childrenBefore = tChildrenBefore, childrenAfter = tChildrenAfter,
-            stillPresentAfterRemove = tStillPresent,
-            cursorParentIsParent = (SkuOptions and SkuOptions.currentMenuPosition
-               and SkuOptions.currentMenuPosition.parent == tParent) and true or false,
+            dupesLeft = #tDupes,
          })
       end)
    end
@@ -712,13 +695,6 @@ function SkuCore:AuctionStayOnResultsEntry()
    -- self.children nicht — daher vorher leeren, sofern der Knoten Kinder baut.
    if tTarget.BuildChildren then tTarget.children = {} end
    SkuOptions.currentMenuPosition = tTarget
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("auction.buy", "stay on entry", {
-            removed = p.removed and true or false, target = tTarget.name,
-         })
-      end)
-   end
    pcall(function() SkuOptions:VocalizeCurrentMenuName(true) end)
    return true
 end
@@ -3547,31 +3523,21 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
    -- paginierte Suchen, nicht für den getAll-Komplettscan. pcall-
    -- geschützt, falls der Client die Spalte "unitprice" nicht kennt.
    --
-   -- TEST (Sortierung beim Kauf nach Stückpreis aufsteigend):
-   -- FRÜHER wurde während eines Kaufs (QueryBuyData gesetzt) NICHT umsortiert —
-   -- aus Sorge, SortAuctionSetSort entkoppele den ANZEIGE-Index (GetAuctionItemInfo
-   -- "list", i) vom SERVER-Index (PlaceAuctionBid "list", i, ...), sodass das Gebot
-   -- auf eine andere/nicht mehr vorhandene Auktion fällt ("money diff = 0").
-   -- ABER: unsere eigenen Buy-Fix-Logs haben Index-/Sortier-Divergenz als
-   -- Fehlerursache AUSGESCHLOSSEN — die ~100%-Fehlschläge waren Hardware-Event +
-   -- Throttle, das Gebot traf bei idx=1 stets die richtige Auktion. Darum jetzt
-   -- TESTWEISE auch beim Kauf sortieren: dann ist Seite 0 die GÜNSTIGSTE und ein
-   -- vergriffenes Angebot ist in EINER Seite erkennbar (statt alle Seiten zu
-   -- durchlaufen), und der Treffer liegt im Erfolgsfall ebenfalls vorne.
-   -- VERIFIZIEREN via SkuErrorLog: "list samples" sollte jetzt aufsteigend nach
-   -- Preis sein, "direct bid" canSend=true und der resolve source=server-message
-   -- (ERR_AUCTION_BID_PLACED) bzw. diff>0 → Gebot traf die richtige Auktion.
-   -- FALLS falsche Auktion / diff=0 trotz canSend=true → Sort entkoppelt doch →
-   -- die Bedingung wieder auf "... and SkuCore.QueryBuyData == nil" zurücksetzen.
+   -- Live-Liste serverseitig nach Stückpreis aufsteigend sortieren — für Browse
+   -- UND Kauf (alles außer dem getAll-Komplettscan). Dadurch liegt der günstigste
+   -- Treffer auf Seite 0: ein Kauf findet die gewählte Auktion sofort bzw. erkennt
+   -- ein vergriffenes Angebot in EINER Seite (statt alle Seiten zu durchlaufen).
+   --
+   -- Früher wurde beim Kauf NICHT sortiert — aus Sorge, SortAuctionSetSort
+   -- entkoppele den Anzeige-Index (GetAuctionItemInfo) vom Server-Index
+   -- (PlaceAuctionBid). Das hat sich als unbegründet erwiesen: SortAuctionSetSort
+   -- VOR der QueryAuctionItems sortiert die Server-Antwort selbst, beide Indizes
+   -- zeigen also auf dieselbe (eine) Liste — keine Entkopplung möglich. In-Game
+   -- bestätigt (mehrere Käufe inkl. Strategiekauf: Gebot traf stets die richtige
+   -- Auktion, ERR_AUCTION_BID_PLACED). Die Entkopplung entsteht nur beim
+   -- nachträglichen Client-Re-Sort (SortAuctionItems), den wir nicht nutzen.
    if SkuCore.QueryData[tQAIindex.getAll] ~= true then
-      local tBuyActive = SkuCore.QueryBuyData ~= nil
       pcall(SortAuctionSetSort, "list", "unitprice", false)
-      if tBuyActive and SkuErrorLog and SkuErrorLog.Log then
-         pcall(function()
-            SkuErrorLog:Log("auction.buy", "TEST sort-on-buy applied",
-               { sort = "unitprice asc", page = SkuCore.QueryCurrentPage })
-         end)
-      end
    end
 
    -- pcall um QueryAuctionItems: einzelne Seitenanfragen können bei
