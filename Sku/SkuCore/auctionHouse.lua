@@ -3356,22 +3356,31 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
    -- paginierte Suchen, nicht für den getAll-Komplettscan. pcall-
    -- geschützt, falls der Client die Spalte "unitprice" nicht kennt.
    --
-   -- KAUF-FIX: Während eines Kaufs (QueryBuyData gesetzt) NICHT umsortieren.
-   -- SortAuctionSetSort ordnet die ANGEZEIGTE Liste um, die GetAuctionItemInfo
-   -- ("list", i) liest — ABER PlaceAuctionBid("list", i, ...) indiziert in die
-   -- SERVER-Reihenfolge der letzten QueryAuctionItems-Antwort. Nach einem
-   -- Re-Sort zeigen Anzeige-Index und Server-Index auf UNTERSCHIEDLICHE
-   -- Auktionen → das Gebot landet auf der falschen/nicht mehr vorhandenen
-   -- Auktion, der Server verwirft es still (das beobachtete "money diff = 0",
-   -- fast immer in vollen Kategorien mit vielen gleichen Auktionen). Ohne den
-   -- Re-Sort bleibt Anzeige-Index == Server-Index, und das Gebot trifft genau
-   -- die Auktion, die GetAuctionItemInfo zeigt. WowVision macht es genauso: es
-   -- sortiert die Live-Liste nicht selbst und bietet auf den vom Nutzer
-   -- gewählten Eintrag in der natürlichen Server-Reihenfolge. Der Kauf-Handler
-   -- durchsucht ohnehin ALLE Seiten nach exaktem Treffer (Item-ID + Buyout +
-   -- Stückzahl) — die Sortierung ist dafür unnötig.
-   if SkuCore.QueryData[tQAIindex.getAll] ~= true and SkuCore.QueryBuyData == nil then
+   -- TEST (Sortierung beim Kauf nach Stückpreis aufsteigend):
+   -- FRÜHER wurde während eines Kaufs (QueryBuyData gesetzt) NICHT umsortiert —
+   -- aus Sorge, SortAuctionSetSort entkoppele den ANZEIGE-Index (GetAuctionItemInfo
+   -- "list", i) vom SERVER-Index (PlaceAuctionBid "list", i, ...), sodass das Gebot
+   -- auf eine andere/nicht mehr vorhandene Auktion fällt ("money diff = 0").
+   -- ABER: unsere eigenen Buy-Fix-Logs haben Index-/Sortier-Divergenz als
+   -- Fehlerursache AUSGESCHLOSSEN — die ~100%-Fehlschläge waren Hardware-Event +
+   -- Throttle, das Gebot traf bei idx=1 stets die richtige Auktion. Darum jetzt
+   -- TESTWEISE auch beim Kauf sortieren: dann ist Seite 0 die GÜNSTIGSTE und ein
+   -- vergriffenes Angebot ist in EINER Seite erkennbar (statt alle Seiten zu
+   -- durchlaufen), und der Treffer liegt im Erfolgsfall ebenfalls vorne.
+   -- VERIFIZIEREN via SkuErrorLog: "list samples" sollte jetzt aufsteigend nach
+   -- Preis sein, "direct bid" canSend=true und der resolve source=server-message
+   -- (ERR_AUCTION_BID_PLACED) bzw. diff>0 → Gebot traf die richtige Auktion.
+   -- FALLS falsche Auktion / diff=0 trotz canSend=true → Sort entkoppelt doch →
+   -- die Bedingung wieder auf "... and SkuCore.QueryBuyData == nil" zurücksetzen.
+   if SkuCore.QueryData[tQAIindex.getAll] ~= true then
+      local tBuyActive = SkuCore.QueryBuyData ~= nil
       pcall(SortAuctionSetSort, "list", "unitprice", false)
+      if tBuyActive and SkuErrorLog and SkuErrorLog.Log then
+         pcall(function()
+            SkuErrorLog:Log("auction.buy", "TEST sort-on-buy applied",
+               { sort = "unitprice asc", page = SkuCore.QueryCurrentPage })
+         end)
+      end
    end
 
    -- pcall um QueryAuctionItems: einzelne Seitenanfragen können bei
