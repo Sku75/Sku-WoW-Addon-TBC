@@ -633,10 +633,20 @@ function SkuCore:AuctionPruneListAuction(aRecord)
          if tParent.children[i] == tEntry then tEntryIdx = i; break end
       end
    end
+   local tChildrenBefore = (tParent and tParent.children) and #tParent.children or -1
+   local tChildrenAfter, tStillPresent
    if #tDupes == 0 then
       -- Letzte Auktion der Gruppe -> Eintrag ganz entfernen.
       if tParent and tParent.children and tEntryIdx then
          table.remove(tParent.children, tEntryIdx)
+      end
+      -- Diagnose: ist der Eintrag jetzt wirklich raus aus der Eltern-Liste?
+      tChildrenAfter = (tParent and tParent.children) and #tParent.children or -1
+      tStillPresent = false
+      if tParent and tParent.children then
+         for i = 1, #tParent.children do
+            if tParent.children[i] == tEntry then tStillPresent = true; break end
+         end
       end
       if SkuCore.QueryResultsByName then
          for k, v in pairs(SkuCore.QueryResultsByName) do
@@ -662,6 +672,13 @@ function SkuCore:AuctionPruneListAuction(aRecord)
          SkuErrorLog:Log("auction.buy", "prune ok", {
             result = (#tDupes == 0) and "entry removed" or "label updated",
             dupesLeft = #tDupes, newName = tEntry.name,
+            parentName = tParent and tParent.name,
+            parentDynamic = tParent and tParent.dynamic and true or false,
+            entryIdx = tEntryIdx,
+            childrenBefore = tChildrenBefore, childrenAfter = tChildrenAfter,
+            stillPresentAfterRemove = tStillPresent,
+            cursorParentIsParent = (SkuOptions and SkuOptions.currentMenuPosition
+               and SkuOptions.currentMenuPosition.parent == tParent) and true or false,
          })
       end)
    end
