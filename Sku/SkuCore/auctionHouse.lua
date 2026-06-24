@@ -516,12 +516,8 @@ function SkuCore:AuctionBuyCancel()
    _ABLog("ABCancel", { newGeneration = AB.generation })
 end
 
--- Gemeinsamer Kauf-Abschluss: Kaufzustand säubern, Query zurücksetzen, vier
--- Ebenen im Menü hochnavigieren und nach kurzer Verzögerung den Menünamen
--- ansagen. aAnnounceText (optional) wird DANACH zusätzlich gesprochen — der
--- einzige Unterschied zwischen "alle gekauft" (Erfolgsmeldung) und "aufgegeben"
--- (keine Meldung, der Grund wurde vorher schon gesprochen).
-local function _ABCleanupAndAscend(aAnnounceText)
+-- Kaufzustand-Daten zurücksetzen (ohne Menü-Navigation).
+local function _ABClearBuyState()
    SkuCore.QueryBuyData   = nil
    SkuCore.QueryBuyType   = nil
    SkuCore.QueryBuyAmount = nil
@@ -529,7 +525,12 @@ local function _ABCleanupAndAscend(aAnnounceText)
    SkuCore.AuctionBuy.failCount = 0
    SkuCore.QueryBuyEmptyWaits = 0
    SkuCore:AuctionHouseResetQuery()
-   -- Nil-safe Menü-Hochnavigation.
+end
+
+-- Vier Ebenen im Menü hochnavigieren und nach kurzer Verzögerung den Menünamen
+-- ansagen; aAnnounceText (optional) danach zusätzlich sprechen. Fallback-Pfad,
+-- wenn das gezielte Stehenbleiben auf dem Ergebnis-Eintrag nicht möglich ist.
+local function _ABAscendAndVocalize(aAnnounceText)
    pcall(function()
       local n = SkuOptions and SkuOptions.currentMenuPosition
       for _ = 1, 4 do
@@ -548,8 +549,149 @@ local function _ABCleanupAndAscend(aAnnounceText)
    end))
 end
 
+-- Gemeinsamer Kauf-Abschluss (Daten säubern + hochnavigieren + ansagen).
+local function _ABCleanupAndAscend(aAnnounceText)
+   _ABClearBuyState()
+   _ABAscendAndVocalize(aAnnounceText)
+end
+
+-- ---------------------------------------------------------------------------
+-- Eine gekaufte/vergriffene Auktion "addonseitig" aus der angezeigten
+-- Ergebnisliste entfernen, damit keine veraltete Stückzahl stehen bleibt.
+-- ---------------------------------------------------------------------------
+-- Den Gruppen-Eintrag über den Cursor finden: vom aktuellen Menüpunkt nach oben
+-- laufen, bis ein Knoten direkt unter der Ergebnisliste (QueryResultsParent)
+-- steht — das ist der Item-Gruppen-Eintrag. nil, wenn nicht ermittelbar (z.B.
+-- Vollscan-Liste ohne QueryResultsParent) → Aufrufer macht das Hochnavigieren.
+function SkuCore:AuctionResultsItemEntryFromCursor()
+   local tParent = SkuCore.QueryResultsParent
+   if not tParent then return nil end
+   local n = SkuOptions and SkuOptions.currentMenuPosition
+   while n do
+      if n.parent == tParent then return n end
+      n = n.parent
+   end
+   return nil
+end
+
+-- aRecord aus der Gruppe des Eintrags (dupes) UND aus QueryResultsDB entfernen.
+-- Schrumpft die Gruppe -> "N mal …"-Label in place aktualisieren (wie
+-- AuctionResultsAppend). War es die letzte Auktion -> Eintrag ganz entfernen.
+-- Zielposition für den Cursor in SkuCore.AuctionPrunePos hinterlegen. Bewegt den
+-- Cursor NICHT. true bei Erfolg, false wenn nichts passte (Fallback im Aufrufer).
+function SkuCore:AuctionPruneListAuction(aRecord)
+   SkuCore.AuctionPrunePos = nil
+   if not aRecord then return false end
+   local tEntry = SkuCore:AuctionResultsItemEntryFromCursor()
+   if not (tEntry and tEntry.data and type(tEntry.data[19]) == "table") then
+      return false
+   end
+   local tDupes = tEntry.data[19]
+   -- Konkrete Auktion finden: erst per Identität, sonst per Feldern (Item-ID +
+   -- Buyout + Stückzahl), falls es ein anderes Tabellenobjekt ist.
+   local tIdx
+   for i = 1, #tDupes do
+      if tDupes[i] == aRecord then tIdx = i; break end
+   end
+   if not tIdx then
+      for i = 1, #tDupes do
+         local d = tDupes[i]
+         if d and d[tAIDIndex.itemId] == aRecord[tAIDIndex.itemId]
+            and d[tAIDIndex.buyoutPrice] == aRecord[tAIDIndex.buyoutPrice]
+            and d[tAIDIndex.count] == aRecord[tAIDIndex.count] then
+            tIdx = i; break
+         end
+      end
+   end
+   if not tIdx then return false end
+   local tRemovedRec = table.remove(tDupes, tIdx)
+   -- Aus der gespeicherten Roh-DB entfernen, damit ein Neuaufbau sie nicht
+   -- wieder zeigt.
+   if type(QueryResultsDB) == "table" then
+      for i = #QueryResultsDB, 1, -1 do
+         if QueryResultsDB[i] == tRemovedRec then table.remove(QueryResultsDB, i); break end
+      end
+   end
+   -- Listenplatz des Eintrags merken (für die Cursor-Nachpositionierung).
+   local tParent = tEntry.parent
+   local tEntryIdx
+   if tParent and tParent.children then
+      for i = 1, #tParent.children do
+         if tParent.children[i] == tEntry then tEntryIdx = i; break end
+      end
+   end
+   if #tDupes == 0 then
+      -- Letzte Auktion der Gruppe -> Eintrag ganz entfernen.
+      if tParent and tParent.children and tEntryIdx then
+         table.remove(tParent.children, tEntryIdx)
+      end
+      if SkuCore.QueryResultsByName then
+         for k, v in pairs(SkuCore.QueryResultsByName) do
+            if v == tEntry then SkuCore.QueryResultsByName[k] = nil; break end
+         end
+      end
+      SkuCore.AuctionPrunePos = { parent = tParent, index = tEntryIdx, removed = true }
+   else
+      -- Gruppe schrumpft -> Repräsentant + Label aktualisieren (wie AuctionResultsAppend).
+      local tRep = tDupes[1]
+      tRep[19] = tDupes
+      tRep[20] = tEntry.data[20]
+      tEntry.data = tRep
+      local tFilter = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter
+      local tWithLevel = (tFilter.SortBy == 5 or tFilter.SortBy == 6
+         or tFilter.LevelMin or tFilter.LevelMax) and true or nil
+      local tPrefix = (#tDupes > 1) and (#tDupes..L[" mal "]) or ""
+      tEntry.name = tPrefix .. SkuCore:AuctionItemNameFormat(tRep, nil, tWithLevel)
+      SkuCore.AuctionPrunePos = { entry = tEntry, removed = false }
+   end
+   return true
+end
+
+-- Cursor nach dem Pruning auf den (geschrumpften) Eintrag bzw. — wenn entfernt —
+-- auf dessen Listen-Nachbarn setzen und ansagen. Nutzt SkuCore.AuctionPrunePos.
+function SkuCore:AuctionStayOnResultsEntry()
+   local p = SkuCore.AuctionPrunePos
+   SkuCore.AuctionPrunePos = nil
+   if not p then return false end
+   local tTarget
+   if p.removed then
+      local tChildren = p.parent and p.parent.children
+      if tChildren and #tChildren > 0 then
+         local idx = p.index or 1
+         if idx > #tChildren then idx = #tChildren end
+         if idx < 1 then idx = 1 end
+         tTarget = tChildren[idx]
+      else
+         tTarget = p.parent
+      end
+   else
+      tTarget = p.entry
+   end
+   if not tTarget then return false end
+   -- BuildChildren-Doppelung vermeiden: VocalizeCurrentMenuName ruft
+   -- BuildChildren ungeprüft auf, und der Bieten/Kaufen-Builder löscht
+   -- self.children nicht — daher vorher leeren, sofern der Knoten Kinder baut.
+   if tTarget.BuildChildren then tTarget.children = {} end
+   SkuOptions.currentMenuPosition = tTarget
+   pcall(function() SkuOptions:VocalizeCurrentMenuName(true) end)
+   return true
+end
+
+-- Alle gewünschten Stücke gekauft: Cursor möglichst auf dem (geschrumpften)
+-- Ergebnis-Eintrag lassen statt vier Ebenen hochzuspringen. Das Pruning lief
+-- bereits pro Erfolg in _ABContinueOrFinish; AuctionPrunePos zeigt auf den
+-- aktuellen Eintrag/Listenplatz. Fallback = altes Hochnavigieren.
 local function _ABFinalizeAllBought()
-   _ABCleanupAndAscend(L["Fertig. Alle gekauft"])
+   _ABClearBuyState()
+   local tStayed = false
+   pcall(function() tStayed = SkuCore:AuctionStayOnResultsEntry() end)
+   if tStayed then
+      _ABTrack(C_Timer.NewTimer(0.4, function()
+         SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], false, true, 0.1, nil, nil, nil, 1)
+      end))
+   else
+      _ABAscendAndVocalize(L["Fertig. Alle gekauft"])
+   end
 end
 
 -- Kauf endgültig aufgeben (Retries erschöpft / echter Stellenwechsel):
@@ -582,6 +724,9 @@ end
 local function _ABContinueOrFinish()
    if not SkuCore.QueryBuyData then return end -- AH dazwischen geschlossen
    SkuCore.QueryBuyBought = SkuCore.QueryBuyBought + 1
+   -- Gekaufte Auktion aus der angezeigten Liste entfernen (Stückzahl aktuell
+   -- halten). Fehlertolerant: schlägt es fehl, bleibt nur die Stückzahl alt.
+   pcall(function() SkuCore:AuctionPruneListAuction(SkuCore.QueryBuyData) end)
    if SkuCore.QueryBuyBought < SkuCore.QueryBuyAmount then
       _ABReQueryBuy()
    else
@@ -4013,15 +4158,12 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
          })
       end)
    end
-   -- Letzte Seite per Batch-Größe (siehe LIST-Handler): volle Seite (== 50) →
-   -- evtl. weitere; kürzere/leere → letzte. QueryMaxPage bleibt nur Diagnose.
-   if (tBatch or 0) >= 50 then
-      SkuCore.QueryCurrentPage = SkuCore.QueryCurrentPage + 1
-      SkuCore.QueryData[tQAIindex.page] = SkuCore.QueryCurrentPage
-      dprint("continue with next page")
-   else
-      dprint("query completed", SkuCore.QueryCallback)
-      -- Diagnose: kein passendes Item gefunden, alle Seiten durch.
+   -- Mit Stückpreis-Sortierung der Kauf-Query (siehe AuctionHouseStartQuery)
+   -- liegt der günstigste — und damit der vom Nutzer gewählte — Treffer auf
+   -- SEITE 0. Kein Treffer dort ⇒ die Auktion ist vergriffen. Dann NICHT alle
+   -- Seiten durchlaufen, sondern sofort melden, die Auktion aus der angezeigten
+   -- Liste entfernen und (wenn möglich) auf dem geschrumpften Eintrag bleiben.
+   if SkuCore.QueryCurrentPage == 0 then
       if SkuErrorLog and SkuErrorLog.Log then
          pcall(function()
             local attemptStr = ""
@@ -4030,21 +4172,39 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
                attemptStr = attemptStr .. "[" .. a.idx .. ": miss=" .. tostring(a.miss)
                   .. " id=" .. tostring(a.resItemId) .. "] "
             end
-            SkuErrorLog:Log("auction.buy", "no match found across pages", {
+            SkuErrorLog:Log("auction.buy", "auction gone (page0 no match)", {
                batchAttempts = tBatch,
                firstFew = attemptStr,
             })
          end)
       end
-      -- Hier sind wir IMMER im Kauf-Kontext (QueryBuyData ist gesetzt, sonst
-      -- liefe der LIST-Zweig). Kein (weiteres) passendes Item gefunden →
-      -- Kauf SAUBER beenden. Sonst bliebe QueryBuyData hängen und würde bei
-      -- der nächsten, völlig anderen Suche fälschlich ein Kauf-Popup auslösen
-      -- (genau dieser Geister-Prompt nach AH-Neuöffnen + Suche).
-      SkuOptions.Voice:OutputStringBTtts(
-         L["Auktion nicht mehr an dieser Stelle, Kauf abgebrochen"],
-         true, true, 0.1, nil, nil, nil, 1)
-      _ABBuyGiveUp()
+      -- Hier sind wir IMMER im Kauf-Kontext (QueryBuyData gesetzt). Auktion
+      -- vergriffen → ansagen, aus der Liste entfernen, Kaufzustand säubern. Das
+      -- Säubern von QueryBuyData verhindert auch den Geister-Prompt bei einer
+      -- späteren, anderen Suche.
+      local tRecord = SkuCore.QueryBuyData
+      SkuOptions.Voice:OutputStringBTtts(L["Auktion vergriffen"], true, true, 0.1, nil, nil, nil, 1)
+      local tPruned = false
+      pcall(function() tPruned = SkuCore:AuctionPruneListAuction(tRecord) end)
+      _ABClearBuyState()
+      if tPruned then
+         pcall(function() SkuCore:AuctionStayOnResultsEntry() end)
+      else
+         _ABAscendAndVocalize(nil)
+      end
+   else
+      -- Defensiv (mit Sortierung praktisch nicht erreichbar): wie früher
+      -- weiterblättern bzw. nach der letzten Seite sauber abbrechen.
+      if (tBatch or 0) >= 50 then
+         SkuCore.QueryCurrentPage = SkuCore.QueryCurrentPage + 1
+         SkuCore.QueryData[tQAIindex.page] = SkuCore.QueryCurrentPage
+         dprint("continue with next page")
+      else
+         SkuOptions.Voice:OutputStringBTtts(
+            L["Auktion nicht mehr an dieser Stelle, Kauf abgebrochen"],
+            true, true, 0.1, nil, nil, nil, 1)
+         _ABBuyGiveUp()
+      end
    end
 end
 

@@ -153,6 +153,7 @@ L["Abgabe"] = "Delivery"
 L["abgebrochen Nicht geboten"]  = "canceled No bid" --
 L["Bestätigung veraltet, Kauf abgebrochen"] = "Confirmation expired, purchase canceled"
 L["Auktion nicht mehr an dieser Stelle, Kauf abgebrochen"] = "Auction no longer at this position, purchase canceled"
+L["Auktion vergriffen"] = "Auction sold out"
 L["Server hat den Kauf nicht bestätigt, bitte erneut versuchen"] = "Server did not confirm the purchase, please try again"
 L["Liste lädt noch, bitte gleich erneut Eingabe zum Kaufen"] = "List still loading, press Enter to buy again in a moment"
 L["Scan noch nicht möglich, bitte kurz warten"] = "Scan not possible yet, please wait a moment"
