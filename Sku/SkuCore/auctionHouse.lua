@@ -529,7 +529,12 @@ function SkuCore:AuctionBuyCancel()
    _ABLog("ABCancel", { newGeneration = AB.generation })
 end
 
-local function _ABFinalizeAllBought()
+-- Gemeinsamer Kauf-Abschluss: Kaufzustand säubern, Query zurücksetzen, vier
+-- Ebenen im Menü hochnavigieren und nach kurzer Verzögerung den Menünamen
+-- ansagen. aAnnounceText (optional) wird DANACH zusätzlich gesprochen — der
+-- einzige Unterschied zwischen "alle gekauft" (Erfolgsmeldung) und "aufgegeben"
+-- (keine Meldung, der Grund wurde vorher schon gesprochen).
+local function _ABCleanupAndAscend(aAnnounceText)
    SkuCore.QueryBuyData   = nil
    SkuCore.QueryBuyType   = nil
    SkuCore.QueryBuyAmount = nil
@@ -550,56 +555,48 @@ local function _ABFinalizeAllBought()
       if SkuOptions and SkuOptions.VocalizeCurrentMenuName then
          pcall(SkuOptions.VocalizeCurrentMenuName, SkuOptions)
       end
-      SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], false, true, 0.1, nil, nil, nil, 1)
+      if aAnnounceText then
+         SkuOptions.Voice:OutputStringBTtts(aAnnounceText, false, true, 0.1, nil, nil, nil, 1)
+      end
    end))
+end
+
+local function _ABFinalizeAllBought()
+   _ABCleanupAndAscend(L["Fertig. Alle gekauft"])
 end
 
 -- Kauf endgültig aufgeben (Retries erschöpft / echter Stellenwechsel):
 -- Zustand säubern und Menü hochnavigieren, OHNE Erfolgsmeldung. Die konkrete
 -- Fehlermeldung wurde vorher bereits gesprochen.
 local function _ABBuyGiveUp()
-   SkuCore.QueryBuyData   = nil
-   SkuCore.QueryBuyType   = nil
-   SkuCore.QueryBuyAmount = nil
-   SkuCore.QueryBuyBought = nil
-   SkuCore.AuctionBuy.failCount = 0
+   _ABCleanupAndAscend(nil)
+end
+
+-- Denselben Kauf erneut abfragen (Weiterkauf nach Erfolg bzw. Retry nach No-Op).
+-- Setzt QueryBuyData voraus (beide Aufrufer prüfen das). Leer-Event-Zähler je
+-- neuer Query frisch starten; die ersten Events einer Query können leer sein.
+local function _ABReQueryBuy()
    SkuCore.QueryBuyEmptyWaits = 0
-   SkuCore:AuctionHouseResetQuery()
-   pcall(function()
-      local n = SkuOptions and SkuOptions.currentMenuPosition
-      for _ = 1, 4 do
-         if not (n and n.parent) then break end
-         n = n.parent
-      end
-      if n and n.OnSelect then n:OnSelect() end
-   end)
-   _ABTrack(C_Timer.NewTimer(0.65, function()
-      if SkuOptions and SkuOptions.VocalizeCurrentMenuName then
-         pcall(SkuOptions.VocalizeCurrentMenuName, SkuOptions)
-      end
-   end))
+   SkuCore:AuctionHouseStartQuery(
+      nil,
+      "AUCTION_ITEM_LIST_UPDATE",
+      SkuCore.QueryBuyData.query[1],
+      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
+      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax,
+      0,
+      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
+      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
+      false, true,
+      SkuCore.QueryBuyData.query[9],
+      function() end
+   )
 end
 
 local function _ABContinueOrFinish()
    if not SkuCore.QueryBuyData then return end -- AH dazwischen geschlossen
    SkuCore.QueryBuyBought = SkuCore.QueryBuyBought + 1
    if SkuCore.QueryBuyBought < SkuCore.QueryBuyAmount then
-      -- Leer-Event-Zähler je neuer Kauf-Query frisch starten (Invariante explizit
-      -- machen): die ersten Events einer neuen Query können leer sein.
-      SkuCore.QueryBuyEmptyWaits = 0
-      SkuCore:AuctionHouseStartQuery(
-         nil,
-         "AUCTION_ITEM_LIST_UPDATE",
-         SkuCore.QueryBuyData.query[1],
-         SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
-         SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax,
-         0,
-         SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
-         SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
-         false, true,
-         SkuCore.QueryBuyData.query[9],
-         function() end
-      )
+      _ABReQueryBuy()
    else
       _ABFinalizeAllBought()
    end
@@ -619,21 +616,7 @@ local function _ABRetrySamePurchase()
       text = SkuCore.QueryBuyData.query and SkuCore.QueryBuyData.query[1],
       skip = SkuCore.AuctionBuy and SkuCore.AuctionBuy.failCount,
    })
-   -- Leer-Event-Zähler je neuer Kauf-Query frisch starten (s. _ABContinueOrFinish).
-   SkuCore.QueryBuyEmptyWaits = 0
-   SkuCore:AuctionHouseStartQuery(
-      nil,
-      "AUCTION_ITEM_LIST_UPDATE",
-      SkuCore.QueryBuyData.query[1],
-      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
-      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax,
-      0,
-      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
-      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
-      false, true,
-      SkuCore.QueryBuyData.query[9],
-      function() end
-   )
+   _ABReQueryBuy()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3662,62 +3645,38 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AUCTION_OWNED_LIST_UPDATE(aEventName)
-   dprint("AUCTION_OWNED_LIST_UPDATE", aEventName)
-   local tBatch, tCount = GetNumAuctionItems("owner")
-   dprint(" tBatch, tCount", tBatch, tCount)
-
-   OwnDB= {}
-
-   local _, tCount = GetNumAuctionItems("owner");
+-- Eigene/gebotene Auktionsliste einlesen (aSource "owner" bzw. "bidder"). Beide
+-- Listen werden identisch verarbeitet — früher zwei Wort-für-Wort gleiche Handler.
+-- Liefert die neu gefüllte Tabelle zurück (Aufrufer weist sie OwnDB/BidDB zu).
+local function ScanSideList(aSource)
+   local db = {}
+   local _, tCount = GetNumAuctionItems(aSource)
    for x = 1, tCount do
-      if OwnDB[x] == nil then
-         OwnDB[x] = {GetAuctionItemInfo("owner", x)}
-         OwnDB[x][21] = GetAuctionItemLink("owner", x)
+      db[x] = {GetAuctionItemInfo(aSource, x)}
+      db[x][21] = GetAuctionItemLink(aSource, x)
+   end
+   -- Zweiter Durchlauf: Zeilen ohne Namen einmal nachladen (selten — wenn der
+   -- Server die Info beim ersten Zugriff noch nicht parat hatte).
+   for x = 1, tCount do
+      if (db[x][1] or "") == "" then
+         dprint(x, "empty")
+         db[x] = {GetAuctionItemInfo(aSource, x)}
+         db[x][21] = GetAuctionItemLink(aSource, x)
       end
    end
+   return db
+end
 
-   if tCount > 0 then
-      for x = 1, tCount do
-         OwnDB[x] = OwnDB[x] or {}
-         if (OwnDB[x][1] or "") == "" then
-            dprint(x, "empty")
-            OwnDB[x] = {GetAuctionItemInfo("owner", x)}
-            OwnDB[x][21] = GetAuctionItemLink("owner", x)
-         end
-      end   
-   end
-
+function SkuCore:AUCTION_OWNED_LIST_UPDATE(aEventName)
+   dprint("AUCTION_OWNED_LIST_UPDATE", aEventName)
+   OwnDB = ScanSideList("owner")
    dprint("owned Scan completed")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_BIDDER_LIST_UPDATE(aEventName)
    dprint("AUCTION_BIDDER_LIST_UPDATE", aEventName)
-   local tBatch, tCount = GetNumAuctionItems("bidder")
-   dprint(" tBatch, tCount", tBatch, tCount)
-
-   BidDB= {}
-
-   local _, tCount = GetNumAuctionItems("bidder");
-   for x = 1, tCount do
-      if BidDB[x] == nil then
-         BidDB[x] = {GetAuctionItemInfo("bidder", x)}
-         BidDB[x][21] = GetAuctionItemLink("bidder", x)
-      end
-   end
-
-   if tCount > 0 then
-      for x = 1, tCount do
-         BidDB[x] = BidDB[x] or {}
-         if (BidDB[x][1] or "") == "" then
-            dprint(x, "empty")
-            BidDB[x] = {GetAuctionItemInfo("bidder", x)}
-            BidDB[x][21] = GetAuctionItemLink("bidder", x)
-         end
-      end   
-   end
-
+   BidDB = ScanSideList("bidder")
    dprint("bidder Scan completed")
 end
 
