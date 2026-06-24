@@ -36,6 +36,7 @@ SkuCore\Core.lua
 SkuCore\ErrorLog.lua
 SkuCore\AudioDevice.lua
 SkuCore\DualSpecProbe.lua
+SkuCore\gameOptions.lua
 SkuCore\data.lua
 SkuCore\gameWorldObjects.lua
 SkuCore\minimapScanner.lua

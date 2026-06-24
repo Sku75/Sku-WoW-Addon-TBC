@@ -1806,6 +1806,19 @@ function SkuOptions:CreateMainFrame()
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuAuras:MenuBuilder(tNewMenuEntry)
 				end
+
+				-- Spieloptionen: Blizzards eingebaute Spieloptionen (modernes
+				-- Settings-System, sonst nur per Escape-Menue erreichbar) ueber
+				-- Skus Menue zugaenglich. Logik in SkuCore/gameOptions.lua.
+				local tGameOptTitle = (GetLocale and GetLocale() == "deDE") and "Spieloptionen" or "Game Options"
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {tGameOptTitle}, SkuGenericMenuItem)
+				tNewMenuEntry.dynamic = true
+				tNewMenuEntry.BuildChildren = function(self)
+					if SkuCore and SkuCore.GameOptionsMenuBuilder then
+						SkuCore:GameOptionsMenuBuilder(self)
+					end
+				end
+
 				-- ============================================================
 				-- MENUE 7: BARRIEREFREIHEIT  (Umbau gemaess "Konzept Menue 7")
 				--   7.1 Platzhalter, 7.2 Platzhalter, 7.3 Video-Optionen

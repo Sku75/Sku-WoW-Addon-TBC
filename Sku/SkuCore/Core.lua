@@ -2441,6 +2441,10 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	--GameTooltip:HookScript("OnHide", SkuCore.CheckInteractObjectHide)
 	hooksecurefunc(GameMenuFrame, "Show", SkuCore.StartStopGameMenuBackgroundSound)
 	hooksecurefunc(GameMenuFrame, "Hide", SkuCore.StartStopGameMenuBackgroundSound)
+	-- Make the Escape game menu accessible: instead of the (retired) whale
+	-- song, open Sku's "Spieloptionen" menu in its place. See
+	-- SkuCore:GameMenuShowHandler / SkuCore/gameOptions.lua.
+	hooksecurefunc(GameMenuFrame, "Show", function() SkuCore:GameMenuShowHandler() end)
 	--[[
 	--hooksecurefunc(GameTooltip, "Hide", SkuCore.CheckInteractObjectHide)
 	--hooksecurefunc("GameTooltip_OnHide", SkuCore.CheckInteractObjectHide)
@@ -3587,50 +3591,42 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:StartStopGameMenuBackgroundSound()
-	if not GameMenuFrame then
+	-- Whale-song background cue RETIRED: the Escape game menu is now made
+	-- accessible through Sku's "Spieloptionen" menu (see
+	-- SkuCore:GameMenuShowHandler), so the placeholder loop is no longer
+	-- played. We only make sure any lingering handle/timer is stopped.
+	-- RUECKBAU: restore the old play logic from git history if ever wanted.
+	if SkuCore.currentBackgroundSoundHandle ~= nil then
+		StopSound(SkuCore.currentBackgroundSoundHandle, 0)
+		SkuCore.currentBackgroundSoundHandle = nil
+	end
+	if SkuCore.currentBackgroundSoundTimerHandle then
+		SkuCore.currentBackgroundSoundTimerHandle:Cancel()
+		SkuCore.currentBackgroundSoundTimerHandle = nil
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Escape game menu -> open Sku's accessible "Spieloptionen" menu.
+-- Mirrors how AUCTION_HOUSE_SHOW jumps the menu to the auction node: hide
+-- the inaccessible Blizzard frame and SlashFunc-navigate to our top-level
+-- entry. Deferred one frame so we do not fight Blizzard's own Show logic.
+function SkuCore:GameMenuShowHandler()
+	if not GameMenuFrame or GameMenuFrame:IsVisible() ~= true then
 		return
 	end
-	if GameMenuFrame:IsVisible() == true then
-		if SkuCore.currentBackgroundSoundHandle == nil then
-			local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuZOptions\\assets\\audio\\background\\walgesang.mp3", "Talking Head")
-			if soundHandle then
-				SkuCore.currentBackgroundSoundHandle = soundHandle
-				if SkuCore.currentBackgroundSoundTimerHandle then
-					SkuCore.currentBackgroundSoundTimerHandle:Cancel()
-					SkuCore.currentBackgroundSoundTimerHandle = nil
-				end
-				if SkuCore.currentBackgroundSoundTimerHandle == nil then
-					SkuCore.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuCore.BackgroundSoundFilesLen["walgesang.mp3"], function()
-						--StopSound(SkuCore.currentBackgroundSoundHandle, 0)
-						SkuCore.currentBackgroundSoundTimerHandle = nil
-						SkuCore.currentBackgroundSoundHandle = nil
-						SkuCore:StartStopGameMenuBackgroundSound(true)
-					end)
-				else
-					if SkuCore.currentBackgroundSoundTimerHandle then
-						SkuCore.currentBackgroundSoundTimerHandle:Cancel()
-						SkuCore.currentBackgroundSoundTimerHandle = nil
-					end
-					SkuCore.currentBackgroundSoundTimerHandle = nil
-					SkuCore.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuCore.BackgroundSoundFilesLen["walgesang.mp3"], function()
-						SkuCore.currentBackgroundSoundTimerHandle = nil
-						SkuCore.currentBackgroundSoundHandle = nil
-						SkuCore:StartStopGameMenuBackgroundSound(true)
-					end)
-				end
-			end
-		else
-			StopSound(SkuCore.currentBackgroundSoundHandle, 0)
-			SkuCore.currentBackgroundSoundHandle = nil
-		end
-	else --if aStartStop == false then
-		if SkuCore.currentBackgroundSoundHandle ~= nil then
-			StopSound(SkuCore.currentBackgroundSoundHandle, 0)
-			SkuCore.currentBackgroundSoundHandle = nil
-		end
-		if SkuCore.currentBackgroundSoundTimerHandle then
-			SkuCore.currentBackgroundSoundTimerHandle:Cancel()
-			SkuCore.currentBackgroundSoundTimerHandle = nil
-		end
+	-- Don't hijack while in combat (hiding panels / opening the menu mid
+	-- fight is undesirable; the plain Blizzard menu still works there).
+	if InCombatLockdown and InCombatLockdown() then
+		return
+	end
+	local tTitle = (GetLocale and GetLocale() == "deDE") and "Spieloptionen" or "Game Options"
+	if C_Timer and C_Timer.After then
+		C_Timer.After(0, function()
+			pcall(function()
+				if HideUIPanel then HideUIPanel(GameMenuFrame) else GameMenuFrame:Hide() end
+			end)
+			pcall(function() SkuOptions:SlashFunc("short," .. tTitle) end)
+		end)
 	end
 end
