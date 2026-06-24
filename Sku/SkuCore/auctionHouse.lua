@@ -1314,11 +1314,9 @@ function SkuGetCoinText(aCopper, aShort, aVeryShort)
       end
    end
 
-   if aShort == true then
-      --tResultString = string.gsub(tResultString, L["Gold"], L["G"])
-      --tResultString = string.gsub(tResultString, L["Silver"], L["S"])
-      --tResultString = string.gsub(tResultString, L["Copper"], L["C"])
-   end
+   -- aShort: war als Kurzform (G/S/C statt Gold/Silber/Kupfer) gedacht, wurde
+   -- aber nie umgesetzt (die gsub-Zeilen waren auskommentiert). Parameter bleibt
+   -- aus Signaturgründen erhalten, hat aber keine Wirkung.
 
    return tResultString
 end
@@ -4411,49 +4409,10 @@ function SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDa
 
    local tFullTextSections = {}
    local tSuggestedSellPrice
-   --[[
-   local function Calculate(tSource)
-
-
-      local tSeenAmount = #tSource
-      local tLastSeen
-      local tLow
-      local tHigh
-      local tAverage
-      local tCopperSum
-
-      local tMedian = {}
-      for _, tCopper in ipairs(tSource) do
-         table.insert(tMedian, tCopper)
-      end
-      tAverage = Median(tMedian)
-
-
-      for _, tCopper in ipairs(tSource) do
-         if not tLow then
-            tLow = tCopper
-         else
-            if tCopper < tLow then
-               tLow = tCopper
-            end
-         end
-         
-         if tCopper < tAverage * 10 then
-            if not tHigh then
-               tHigh = tCopper
-            else
-               if tCopper > tHigh then
-                  tHigh = tCopper
-               end
-            end
-         else
-            --print("ignored", aItemID, SkuGetCoinText(tAverage, true), SkuGetCoinText(tCopper, true))
-         end
-      end
-
-      return tSeenAmount, tLastSeen, tLow, tHigh, tAverage
-   end
-   ]]
+   -- (Früher stand hier eine lokale Calculate()-Funktion, die aus einer Roh-
+   -- Preisliste Anzahl/Niedrig/Hoch/Durchschnitt berechnete. Sie ist entfallen:
+   -- die Preisdaten liegen jetzt als vorgerechnete [1..4]-Tupel vor und werden
+   -- unten direkt ausgelesen.)
 
    --vendor price
    local void, void, Rarity, void, void, void, void, void, void, void, copperItemPrice = GetItemInfo(aItemID)
