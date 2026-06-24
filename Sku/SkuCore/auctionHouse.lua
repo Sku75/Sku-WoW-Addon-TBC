@@ -637,6 +637,13 @@ function SkuCore:AuctionPruneListAuction(aRecord)
    local tChildrenAfter, tStillPresent
    if #tDupes == 0 then
       -- Letzte Auktion der Gruppe -> Eintrag ganz entfernen.
+      -- WICHTIG: Skus Menü-Navigation (OnNext/OnPrev) läuft über die
+      -- .next/.prev-VERKETTUNG der Einträge, NICHT über den children-Array-Index.
+      -- Den Eintrag daher AUCH aus dieser Kette aushängen, sonst läuft Pfeil-
+      -- hoch/runter weiter über den entfernten Geist-Eintrag (genau das Symptom).
+      local tNeighbor = tEntry.next or tEntry.prev
+      if tEntry.prev then tEntry.prev.next = tEntry.next end
+      if tEntry.next then tEntry.next.prev = tEntry.prev end
       if tParent and tParent.children and tEntryIdx then
          table.remove(tParent.children, tEntryIdx)
       end
@@ -653,7 +660,7 @@ function SkuCore:AuctionPruneListAuction(aRecord)
             if v == tEntry then SkuCore.QueryResultsByName[k] = nil; break end
          end
       end
-      SkuCore.AuctionPrunePos = { parent = tParent, index = tEntryIdx, removed = true }
+      SkuCore.AuctionPrunePos = { neighbor = tNeighbor, parent = tParent, removed = true }
    else
       -- Gruppe schrumpft -> Repräsentant + Label aktualisieren (wie AuctionResultsAppend).
       local tRep = tDupes[1]
@@ -693,15 +700,9 @@ function SkuCore:AuctionStayOnResultsEntry()
    if not p then return false end
    local tTarget
    if p.removed then
-      local tChildren = p.parent and p.parent.children
-      if tChildren and #tChildren > 0 then
-         local idx = p.index or 1
-         if idx > #tChildren then idx = #tChildren end
-         if idx < 1 then idx = 1 end
-         tTarget = tChildren[idx]
-      else
-         tTarget = p.parent
-      end
+      -- Auf den verketteten Nachbarn (next bzw. prev) gehen; gab es keinen mehr
+      -- (war der einzige Eintrag), auf die Elternliste zurück.
+      tTarget = p.neighbor or p.parent
    else
       tTarget = p.entry
    end
