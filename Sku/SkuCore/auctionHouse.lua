@@ -378,6 +378,10 @@ function SkuCore:AUCTION_HOUSE_CLOSED()
    -- entfallen, daher hier mit aufräumen: laufenden Lauf stoppen + Config leeren.
    if SkuCore.StratBuy then
       SkuCore.StratBuy.active = false
+      -- Warte-Ticker + Such-Poll-Frame stoppen, bevor wir StratBuy verwerfen —
+      -- sonst feuert der Ticker leer weiter bzw. der Poll-Frame setzt noch eine
+      -- Query ab, nachdem das AH schon zu ist.
+      SkuCore:StrategyBuyStopTimers(SkuCore.StratBuy)
       SkuCore.StratBuy = nil
    end
    SkuCore.StratBuyConfig = {}
@@ -580,6 +584,9 @@ local function _ABContinueOrFinish()
    if not SkuCore.QueryBuyData then return end -- AH dazwischen geschlossen
    SkuCore.QueryBuyBought = SkuCore.QueryBuyBought + 1
    if SkuCore.QueryBuyBought < SkuCore.QueryBuyAmount then
+      -- Leer-Event-Zähler je neuer Kauf-Query frisch starten (Invariante explizit
+      -- machen): die ersten Events einer neuen Query können leer sein.
+      SkuCore.QueryBuyEmptyWaits = 0
       SkuCore:AuctionHouseStartQuery(
          nil,
          "AUCTION_ITEM_LIST_UPDATE",
@@ -612,6 +619,8 @@ local function _ABRetrySamePurchase()
       text = SkuCore.QueryBuyData.query and SkuCore.QueryBuyData.query[1],
       skip = SkuCore.AuctionBuy and SkuCore.AuctionBuy.failCount,
    })
+   -- Leer-Event-Zähler je neuer Kauf-Query frisch starten (s. _ABContinueOrFinish).
+   SkuCore.QueryBuyEmptyWaits = 0
    SkuCore:AuctionHouseStartQuery(
       nil,
       "AUCTION_ITEM_LIST_UPDATE",
@@ -872,6 +881,11 @@ function SkuCore:AuctionSecureBuyResolve(outcome, source, serverMsg)
    -- QueryBuyData gibt es nur im normalen Kaufpfad; der Strategiekauf bringt
    -- eigene Handler (p.onSuccess) mit. Nur diese beiden Pfade auflösen.
    if not p.onSuccess and not SkuCore.QueryBuyData then
+      -- Kaufzustand schon weg (z.B. AH dazwischen geschlossen): Zustandsmaschine
+      -- sofort beruhigen statt erst per 30-s-Safety. Bindings wurden bereits beim
+      -- Commit gelöst, hier nur Flag + Safety + Capture aufräumen.
+      SB.active = false
+      _ASBClearSafety()
       _ASBStopMsgCapture()
       return
    end
@@ -1419,6 +1433,20 @@ local function tStratSay(text)
 	pcall(function() SkuOptions.Voice:OutputStringBTtts(text, true, true, 0.2, nil, nil, nil, 2) end)
 end
 
+-- Laufende Strategiekauf-Timer/Frames stoppen (Warte-Ticker + Such-Poll-Frame).
+-- Wird beim AH-Schließen und beim Abbruch gerufen, damit nach dem Ende kein
+-- Ticker mehr feuert und der Poll-Frame keine Query mehr ins geschlossene AH
+-- absetzt. Methode auf SkuCore, damit sie auch aus AUCTION_HOUSE_CLOSED (steht
+-- im File VOR diesem Block) erreichbar ist.
+function SkuCore:StrategyBuyStopTimers(sb)
+	if not sb then return end
+	if sb.waitTimer then pcall(function() sb.waitTimer:Cancel() end); sb.waitTimer = nil end
+	if sb.searchFrame then
+		pcall(function() sb.searchFrame:SetScript("OnUpdate", nil); sb.searchFrame:Hide() end)
+		sb.searchFrame = nil
+	end
+end
+
 function SkuCore:StrategyBuyStart(itemName, maxPricePerUnit, totalAmount)
 	SkuCore.StratBuy = {
 		itemName = itemName, maxPrice = maxPricePerUnit,
@@ -1465,7 +1493,14 @@ function SkuCore:StrategyBuySearch()
 	end
 	local tWait = 0
 	local f = CreateFrame("Frame")
+	sb.searchFrame = f
 	f:SetScript("OnUpdate", function(self, elapsed)
+		-- Lauf zwischendurch beendet (AH geschlossen / abgebrochen)? Poll stoppen,
+		-- damit keine Query mehr ins geschlossene AH fällt.
+		if not SkuCore.StratBuy or not SkuCore.StratBuy.active then
+			self:SetScript("OnUpdate", nil); self:Hide()
+			return
+		end
 		tWait = tWait + elapsed
 		if tWait > 30 then
 			self:SetScript("OnUpdate", nil); self:Hide()
@@ -1595,6 +1630,7 @@ function SkuCore:StrategyBuyProcessResults()
 		end,
 		onCancel = function(wasActive)
 			if sb then sb.active = false end
+			SkuCore:StrategyBuyStopTimers(sb)
 			tStratSay(L["STRAT_Cancelled"])
 		end,
 	})
@@ -2203,6 +2239,10 @@ OnEnterAllFlag = nil
                            local tNumAuctions = tonumber(self.selectTarget.numAuctions)
                            local tCopperBuyout = tonumber(self.selectTarget.price)
                            local tCopperStartBid = tCopperBuyout and mfloor(tCopperBuyout * 0.9) or nil
+                           -- Startgebot nie auf 0 abrunden (bei 1-Kupfer-Buyout): der
+                           -- Server lehnt PostAuction mit Mindestgebot 0 ab — genau der
+                           -- stille "nicht eingestellt"-Fall. Auf >= 1 anheben.
+                           if tCopperStartBid and tCopperStartBid < 1 then tCopperStartBid = 1 end
                            local tDuration
                            if aName == L["Erstellen: 12 Stunden"] then
                               tDuration = 1
@@ -2554,9 +2594,15 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
                      end
                   end
 
-                  if tRecord[6] >= lmin and tRecord[6] <= lmax
+                  -- Nil-Schutz: Stufe (6) bzw. Qualität (4) können trotz Reparatur
+                  -- oben noch nil sein (GetItemQualityByID liefert manchmal nil).
+                  -- Ohne Coerce bräche der Vergleich den ganzen Menüaufbau ab —
+                  -- der Zwilling in SECTION 7 schützt die Stufe bereits.
+                  local tFsLvl  = tRecord[6] or 0
+                  local tFsQual = tRecord[4] or 0
+                  if tFsLvl >= lmin and tFsLvl <= lmax
                      and (isuse == false or (isuse == true and tRecord[5] == true))
-                     and tRecord[4] >= qmin
+                     and tFsQual >= qmin
                   then
                      tHasEntries = true
                      local tName = SkuCore:AuctionItemNameFormat(tRecord)
@@ -3728,6 +3774,18 @@ end
 
 function SkuCore:AuctionFullScanBeginIngest(aBatch, aCount)
    local tUpper = math.max(aBatch or 0, aCount or 0)
+   -- Verfrühte/leere getAll-Antwort: tUpper == 0 heißt, der Server hat noch
+   -- nicht wirklich geliefert (das Event feuert teils, bevor die Antwort da
+   -- ist). NICHT als abgeschlossenen Scan mit 0 Auktionen verarbeiten — sonst
+   -- gäbe es einen Phantom-Abschluss ("0 Auktionen", leere History serialisiert).
+   -- Im "waiting"-Zustand bleiben und auf die echte Antwort warten; einen echt
+   -- leeren Realm beendet der getAll-Watchdog (600 s).
+   if tUpper == 0 then
+      if SkuErrorLog and SkuErrorLog.Log then
+         pcall(function() SkuErrorLog:Log("auction.scan", "getAll empty event ignored", {}) end)
+      end
+      return
+   end
    -- Vor dem Einlesen zurücksetzen, damit keine Reste alter Scans durchgehen.
    FullScanResultsDB = {}
    SkuCore.FullScanIngest = {
@@ -4002,7 +4060,9 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
                if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name == L["Warten"] then
                   SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
                end
-               SkuCore.QueryCallback()
+               -- Nil-Schutz wie an den anderen Aufrufstellen: bei einer Browse-
+               -- Abfrage ohne Host kann QueryCallback fehlen.
+               if SkuCore.QueryCallback then SkuCore.QueryCallback() end
                SkuCore:AuctionScanFinish("browse complete (no host)")
             end
          end
@@ -4257,13 +4317,18 @@ function SkuCore:AuctionBuildPriceData(aSourceDB)
             local tCount = tData[tAIDIndex["count"]]
             if tCount and tCount > 0 then
                local tMinBid = 0
-               if tData[tAIDIndex["minBid"]] > 0 then
-                  tMinBid = mfloor(tData[tAIDIndex["minBid"]] / tCount)
+               -- Nil-Schutz: minBid/buyoutPrice können vom Server fehlen
+               -- (Anniversary-Eigenheit). Ohne Guard bräche der > 0-Vergleich
+               -- ("compare nil with number") den ganzen Preis-/History-Aufbau ab.
+               local tRawMinBid = tData[tAIDIndex["minBid"]]
+               if tRawMinBid and tRawMinBid > 0 then
+                  tMinBid = mfloor(tRawMinBid / tCount)
                   if tMinBid == 0 then tMinBid = 1 end
                end
                local tBuyoutPrice = 0
-               if tData[tAIDIndex["buyoutPrice"]] > 0 then
-                  tBuyoutPrice = mfloor(tData[tAIDIndex["buyoutPrice"]] / tCount)
+               local tRawBuyout = tData[tAIDIndex["buyoutPrice"]]
+               if tRawBuyout and tRawBuyout > 0 then
+                  tBuyoutPrice = mfloor(tRawBuyout / tCount)
                   if tBuyoutPrice == 0 then tBuyoutPrice = 1 end
                end
                local tBucket = tPriceData[tItemId]
