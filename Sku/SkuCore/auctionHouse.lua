@@ -559,16 +559,21 @@ end
 -- Eine gekaufte/vergriffene Auktion "addonseitig" aus der angezeigten
 -- Ergebnisliste entfernen, damit keine veraltete Stückzahl stehen bleibt.
 -- ---------------------------------------------------------------------------
--- Den Gruppen-Eintrag über den Cursor finden: vom aktuellen Menüpunkt nach oben
--- laufen, bis ein Knoten direkt unter der Ergebnisliste (QueryResultsParent)
--- steht — das ist der Item-Gruppen-Eintrag. nil, wenn nicht ermittelbar (z.B.
--- Vollscan-Liste ohne QueryResultsParent) → Aufrufer macht das Hochnavigieren.
+-- Den Item-Gruppen-Eintrag über den Cursor finden: vom aktuellen Menüpunkt nach
+-- oben laufen.
+-- WICHTIG: NICHT auf QueryResultsParent/QueryResultsByName verlassen — die
+-- Kauf-Query setzt diese (samt QueryResultsDB) beim Start auf nil/leer zurück
+-- (AuctionHouseStartQuery), die Menüknoten selbst leben aber weiter. Den Eintrag
+-- daher per Signatur erkennen: der Gruppen-Eintrag trägt .tIndex UND
+-- .data[19] (die Dubletten-Liste). Die Anzahl-/Kaufen-/Bieten-Knoten darüber
+-- haben zwar teils .data, aber kein .tIndex. nil, wenn nicht ermittelbar →
+-- Aufrufer macht das alte Hochnavigieren.
 function SkuCore:AuctionResultsItemEntryFromCursor()
-   local tParent = SkuCore.QueryResultsParent
-   if not tParent then return nil end
    local n = SkuOptions and SkuOptions.currentMenuPosition
    while n do
-      if n.parent == tParent then return n end
+      if n.tIndex and n.data and type(n.data[19]) == "table" then
+         return n
+      end
       n = n.parent
    end
    return nil
@@ -584,6 +589,14 @@ function SkuCore:AuctionPruneListAuction(aRecord)
    if not aRecord then return false end
    local tEntry = SkuCore:AuctionResultsItemEntryFromCursor()
    if not (tEntry and tEntry.data and type(tEntry.data[19]) == "table") then
+      if SkuErrorLog and SkuErrorLog.Log then
+         pcall(function()
+            SkuErrorLog:Log("auction.buy", "prune: no entry from cursor", {
+               cursorName = SkuOptions and SkuOptions.currentMenuPosition
+                  and SkuOptions.currentMenuPosition.name,
+            })
+         end)
+      end
       return false
    end
    local tDupes = tEntry.data[19]
@@ -644,6 +657,14 @@ function SkuCore:AuctionPruneListAuction(aRecord)
       tEntry.name = tPrefix .. SkuCore:AuctionItemNameFormat(tRep, nil, tWithLevel)
       SkuCore.AuctionPrunePos = { entry = tEntry, removed = false }
    end
+   if SkuErrorLog and SkuErrorLog.Log then
+      pcall(function()
+         SkuErrorLog:Log("auction.buy", "prune ok", {
+            result = (#tDupes == 0) and "entry removed" or "label updated",
+            dupesLeft = #tDupes, newName = tEntry.name,
+         })
+      end)
+   end
    return true
 end
 
@@ -673,6 +694,13 @@ function SkuCore:AuctionStayOnResultsEntry()
    -- self.children nicht — daher vorher leeren, sofern der Knoten Kinder baut.
    if tTarget.BuildChildren then tTarget.children = {} end
    SkuOptions.currentMenuPosition = tTarget
+   if SkuErrorLog and SkuErrorLog.Log then
+      pcall(function()
+         SkuErrorLog:Log("auction.buy", "stay on entry", {
+            removed = p.removed and true or false, target = tTarget.name,
+         })
+      end)
+   end
    pcall(function() SkuOptions:VocalizeCurrentMenuName(true) end)
    return true
 end
