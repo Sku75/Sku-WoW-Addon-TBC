@@ -85,35 +85,67 @@ out-of-game reading. It loads automatically alongside Sku. See
 - `/wdframes`, `/wdframe <Name>`, `/wdeval <expr>`, `/wdmenu`, `/wdwatcherrors`
   — addon-agnostic captures.
 
-Read-back loop: run a command in game, `/reload` to flush, then read
-`...\WTF\Account\1107979492#1\SavedVariables\WVDebug.lua` (`WVDebugData` =
-latest, `WVDebugLog` = history).
+Read-back loop: run a command in game, `/reload` to flush, then read the
+SavedVariables file. **The live TBC-Anniversary client is**
+`C:\Program Files (x86)\World of Warcraft\_anniversary_\`, so its SavedVariables
+dir is
+`C:\Program Files (x86)\World of Warcraft\_anniversary_\WTF\Account\1107979492#1\SavedVariables\`.
+The `AddOns\Sku` symlink lives under that `_anniversary_` tree — NOT under
+`C:\Users\fabia\WOW\`, which holds OTHER clients (`ERA` = Interface 11500, plus
+`mop`/`WOTLK`); never read their stale `Sku.lua`. To re-confirm the right tree,
+find which `Interface\AddOns\Sku` is a reparse point (symlink) — that one is
+`_anniversary_`. WVDebug captures land in `WVDebug.lua` (`WVDebugData` = latest,
+`WVDebugLog` = history).
 
-### Reading SkuErrorLog (Sku's own breadcrumb/error log)
+### Reading Sku's logs — TWO stores in `Sku.lua`
 
-Sku writes its own structured log via `SkuErrorLog:Log(module, msg, tbl)`
-(source `auction.scan` / `auction.buy` / `auction.event`, etc.; see
-`SkuCore/ErrorLog.lua`). It persists in the **`SkuErrorLog` global inside
-`...\SavedVariables\Sku.lua`** (not a file of its own). It has two stores —
-**read the right one**:
+Sku persists two separate logs, both as globals inside the **same**
+`...\SavedVariables\Sku.lua` (neither is a file of its own). They have different
+purposes — pick the right one:
 
-- **`SkuErrorLog.recent`** — the **chronological** ring buffer (last 500
-  events). Each entry is flat and ordered: `seq` (monotonic, the tiebreak when
-  several events share a one-second `t`), `t`, `source`, `message`, `stackHead`
-  (first stack frame only), `session`. **This is the store to read for a
-  timeline.**
-- **`SkuErrorLog.unique`** — deduplicated by message+top-stack fingerprint
-  (`count`, `firstSeen`, `lastSeen`, full `stack`, `firstCtx`/`lastCtx`). Use it
-  for "how often / first–last seen / full stack of a given message", **not** for
-  ordering (chronology is lost, repeats merged). Note breadcrumbs embed payload
-  numbers, so each is its own fingerprint — they fill the 250 cap without truly
-  deduping.
+**1. `SkuDebugLog` — the GENERAL debug ring (read this for most traces).**
+`dprint(...)` (`Sku/Core.lua`) is the project's general logger. Since
+2026-06-24 it persists: when enabled it appends each call to `SkuDebugLog.lines`
+(a ring of up to 2000 entries). Each entry is flat — `seq` (monotonic), `t`
+(`HH:MM:SS`), `msg` (all args joined; table args are shallow-serialised one
+level deep as `{k=v, ...}`). **Most module breadcrumbs now live here**, not in
+SkuErrorLog: the whole auction buy/scan/sell flow, dungeonBrowser, sockets,
+talentSwitch, atlas.menu, menu.reanchor, etc.
+- Enable in-game: `/skudebug log on` (silent, persists) or `/skudebug on`
+  (chat + log), or cycle the `SKU_KEY_DEBUGMODE` keybind (off → log only →
+  print only → print+log → off; it announces the new state by voice, no chat).
+- `Sku.debug = {print=, log=}`: `print` echoes to the chat frame (the original
+  behaviour), `log` writes the ring. Both default **OFF and reset to OFF every
+  load** — the captured DATA persists across `/reload`, the on/off STATE does
+  NOT, so re-enable each session. `/skudebug` (no args) reports the flags;
+  `/skudebug clear` empties the ring; `/skudebug show` prints the last 10.
+- `dprint` is cheap when off (one flag check; no `debugstack`, no context).
 
-The file is a multi-line Lua table (one field per line, records span ~8 lines),
-so a single-line `grep` can't reconstruct a record — parse it with `py -3`
-(Python 3, bare `python` is a Store stub) or read `recent` directly. In-game:
-`/skulog show` (last 10, now prefixed with `#seq`), `/skulog export` (copyable
-window), `/skulog clear`.
+**2. `SkuErrorLog` — ERRORS + a few deliberate diagnostics.** The error-capture
+system (`SkuCore/ErrorLog.lua`): it chains the Lua error handler and auto-logs
+`LUA_WARNING` / `ADDON_ACTION_FORBIDDEN`/`BLOCKED`, deduped by fingerprint with
+rich per-event context and a combat throttle. Leave it as the original design.
+Only a couple of hand-placed `SkuErrorLog:Log(...)` calls remain (e.g. the
+`directAction` catch). Two stores — **read the right one**:
+- **`SkuErrorLog.recent`** — chronological ring (last 500): `seq` (tiebreak when
+  several share a one-second `t`), `t`, `source`, `message`, `stackHead`,
+  `session`. **Read this for an error timeline.**
+- **`SkuErrorLog.unique`** — deduped by message+top-stack fingerprint (`count`,
+  `firstSeen`, `lastSeen`, full `stack`, `firstCtx`/`lastCtx`). Use for "how
+  often / full stack of a message", not ordering.
+In-game: `/skulog show` (last 10, `#seq`-prefixed), `/skulog export`,
+`/skulog clear`.
+
+**Parsing either log — the method that works.** Both are multi-line Lua tables
+(one field per line), so a single-line `grep` can't reconstruct a record. Parse
+with `py -3` (Python 3; bare `python`/`python3` are Store stubs). Recipe:
+locate the table's `Name = {` line, capture the block by **brace-depth
+counting**, then read fields by scanning stripped lines
+(`s.startswith('["msg"]')`) — NOT regex. **Do NOT** put a regex character class
+like `[^"\\]` inside a Bash heredoc: the backslashes get mangled and
+`re.compile` throws. If you need regex, write the script to a `.py` file first;
+otherwise use plain string ops (`.split('=',1)`, `.strip()`). Bash cwd resets
+between calls — use absolute paths.
 
 ### Syntax-checking Lua edits
 

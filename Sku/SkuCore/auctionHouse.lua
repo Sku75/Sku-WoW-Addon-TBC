@@ -245,11 +245,7 @@ function SkuCore:AuctionHouseOnInitialize()
                tFullScanElapsed = tFullScanElapsed + tTime
                if tFullScanElapsed > 600 then
                   tFullScanElapsed = 0
-                  if SkuErrorLog and SkuErrorLog.Log then
-                     pcall(function()
-                        SkuErrorLog:Log("auction.scan", "watchdog: getAll timeout 600s", {})
-                     end)
-                  end
+                  dprint("auction.scan", "watchdog: getAll timeout 600s")
                   SkuCore:AuctionScanFinish("watchdog: getAll timeout", true)
                   tTime = 0
                   return
@@ -280,11 +276,8 @@ function SkuCore:AuctionHouseOnInitialize()
                local ok, err = pcall(function()
                   SkuCore:AuctionHouseStartQuery(true)
                end)
-               if not ok and SkuErrorLog and SkuErrorLog.Log then
-                  pcall(function()
-                     SkuErrorLog:Log("auction.scan", "paged StartQuery failed",
-                        { err = tostring(err or "") })
-                  end)
+               if not ok then
+                  dprint("auction.scan", "paged StartQuery failed", { err = tostring(err or "") })
                end
                if SkuOptions.currentMenuPosition
                   and SkuOptions.currentMenuPosition.name == L["Warten"] then
@@ -292,13 +285,9 @@ function SkuCore:AuctionHouseOnInitialize()
                end
             elseif tPagedStallTime > 60 then
                -- Server liefert seit 60 s keine Bereitschaft mehr.
-               if SkuErrorLog and SkuErrorLog.Log then
-                  pcall(function()
-                     SkuErrorLog:Log("auction.scan", "watchdog: paged stall 60s", {
-                        page = SkuCore.QueryData and SkuCore.QueryData[tQAIindex.page],
-                     })
-                  end)
-               end
+               dprint("auction.scan", "watchdog: paged stall 60s", {
+                  page = SkuCore.QueryData and SkuCore.QueryData[tQAIindex.page],
+               })
                SkuCore:AuctionScanFinish("watchdog: paged stall", true)
                tPagedScanElapsed = 0
                tPagedStallTime   = 0
@@ -310,11 +299,7 @@ function SkuCore:AuctionHouseOnInitialize()
             -- gegen unerwartete Server-Hänger. Realistisch laufen
             -- normale paginierte Suchen in unter 30 s durch.
             if tPagedScanElapsed > 180 then
-               if SkuErrorLog and SkuErrorLog.Log then
-                  pcall(function()
-                     SkuErrorLog:Log("auction.scan", "watchdog: paged total 180s", {})
-                  end)
-               end
+               dprint("auction.scan", "watchdog: paged total 180s")
                SkuCore:AuctionScanFinish("watchdog: paged total", true)
                tPagedScanElapsed = 0
                tPagedStallTime   = 0
@@ -427,27 +412,19 @@ SkuCore.AuctionBuy = SkuCore.AuctionBuy or {
 local AB_BUY_MAX_FAILS = 3
 
 local function _ABLog(action, payload)
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("auction.buy", action, payload or {})
-      end)
-   end
+   dprint("auction.buy", action, payload or {})
 end
 
 -- Logging für den Verkaufs-/Einstell-Pfad (PostAuction). Bisher war dieser Pfad
 -- komplett ungeloggt und sagte "Auktion erstellt" auch dann an, wenn nichts
 -- eingestellt wurde — daher gab es keine Spur, warum eine Auktion nicht erschien.
 local function _ASLog(action, payload)
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("auction.sell", action, payload or {})
-      end)
-   end
+   dprint("auction.sell", action, payload or {})
 end
 
 -- Kurzlebiger Mithörer für die Server-Antwort direkt nach PostAuction. Loggt die
 -- echte Blizzard-Meldung (UI_ERROR_MESSAGE bei Fehlschlag bzw. "Auktion erstellt."
--- bei Erfolg), damit ein stiller Fehlschlag im SkuErrorLog seinen Grund hat.
+-- bei Erfolg), damit ein stiller Fehlschlag im Debug-Log seinen Grund hat.
 -- Reines Logging — steuert keine Logik.
 local _ASMsgFrame = _G["SkuAuctionSellMsgFrame"]
 if not _ASMsgFrame then
@@ -589,14 +566,10 @@ function SkuCore:AuctionPruneListAuction(aRecord)
    if not aRecord then return false end
    local tEntry = SkuCore:AuctionResultsItemEntryFromCursor()
    if not (tEntry and tEntry.data and type(tEntry.data[19]) == "table") then
-      if SkuErrorLog and SkuErrorLog.Log then
-         pcall(function()
-            SkuErrorLog:Log("auction.buy", "prune: no entry from cursor", {
-               cursorName = SkuOptions and SkuOptions.currentMenuPosition
-                  and SkuOptions.currentMenuPosition.name,
-            })
-         end)
-      end
+      dprint("auction.buy", "prune: no entry from cursor", {
+         cursorName = SkuOptions and SkuOptions.currentMenuPosition
+            and SkuOptions.currentMenuPosition.name,
+      })
       return false
    end
    local tDupes = tEntry.data[19]
@@ -664,14 +637,10 @@ function SkuCore:AuctionPruneListAuction(aRecord)
       tEntry.name = tPrefix .. SkuCore:AuctionItemNameFormat(tRep, nil, tWithLevel)
       SkuCore.AuctionPrunePos = { entry = tEntry, removed = false }
    end
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("auction.buy", "prune ok", {
-            result = (#tDupes == 0) and "entry removed" or "label updated",
-            dupesLeft = #tDupes,
-         })
-      end)
-   end
+   dprint("auction.buy", "prune ok", {
+      result = (#tDupes == 0) and "entry removed" or "label updated",
+      dupesLeft = #tDupes,
+   })
    return true
 end
 
@@ -1236,7 +1205,7 @@ function SkuCore:AuctionArmKeypressBid(aSpec)
       local tStreaming = (SkuCore.AuctionScan.state ~= "idle")
       -- Erst scharfschalten, wenn (a) keine Sku-Seiten-Query mehr streamt UND
       -- (b) der AH-Throttle OFFEN ist: CanSendAuctionQuery()==true.
-      -- (b) ist ENTSCHEIDEND: das SkuErrorLog zeigt, dass bei canSend==false jeder
+      -- (b) ist ENTSCHEIDEND: das Debug-Log zeigt, dass bei canSend==false jeder
       -- PlaceAuctionBid STILL verworfen wird (moneyAfter==moneyBefore, diff=0, KEINE
       -- Servermeldung) → 100 % Totalausfall. PlaceAuctionBid teilt den Throttle mit
       -- QueryAuctionItems; die frühere Annahme "Gebot ist keine Query, Throttle egal"
@@ -3343,15 +3312,6 @@ function SkuCore:AuctionScanSetState(aState, aMode)
    elseif aMode ~= nil then
       SC.mode = aMode
    end
-
-   if tPrev ~= aState and SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("auction.scan", "state", {
-            from = tPrev, to = aState, mode = SC.mode,
-            page = SkuCore.QueryCurrentPage, maxPage = SkuCore.QueryMaxPage,
-         })
-      end)
-   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3399,10 +3359,8 @@ end
 -- ends and keep calling AuctionHouseResetQuery directly.
 function SkuCore:AuctionScanFinish(aReason, aForce)
    local tWasActive = SkuCore.AuctionScan.state ~= "idle"
-   if tWasActive and SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("auction.scan", "finished", { reason = aReason })
-      end)
+   if tWasActive then
+      dprint("auction.scan", "finished", { reason = aReason })
    end
    SkuCore:AuctionHouseResetQuery(aForce)
 end
@@ -3439,13 +3397,6 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
    -- wieder frei (auch der Retry- und der Nächster-Artikel-Requery laufen dann).
    if SkuCore.AuctionSecureBuy and SkuCore.AuctionSecureBuy.active
       and (SkuCore.AuctionSecureBuy.stage == "settling" or SkuCore.AuctionSecureBuy.stage == "trigger") then
-      if SkuErrorLog and SkuErrorLog.Log then
-         pcall(function()
-            SkuErrorLog:Log("auction.buy", "query suppressed (buy armed)", {
-               stage = SkuCore.AuctionSecureBuy.stage,
-            })
-         end)
-      end
       return false
    end
 
@@ -3504,18 +3455,6 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
    end
 
    dprint(" QueryAuctionItems", SkuCore.QueryData[tQAIindex.text])
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         local cq, cqAll = CanSendAuctionQuery()
-         SkuErrorLog:Log("auction.scan", "QueryAuctionItems call", {
-            getAll = SkuCore.QueryData[tQAIindex.getAll],
-            page = SkuCore.QueryData[tQAIindex.page],
-            text = tostring(SkuCore.QueryData[tQAIindex.text]),
-            canQuery = cq,
-            canQueryAll = cqAll,
-         })
-      end)
-   end
    -- Server-seitig nach Stückpreis sortieren, damit die billigsten
    -- Auktionen auf Seite 0 stehen und spätere (teurere) Seiten beim
    -- inkrementellen Nachladen sauber HINTEN anschließen (append-only,
@@ -3557,15 +3496,11 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
       SkuCore.QueryData[tQAIindex.filterData]
    )
    if not tQOk then
-      if SkuErrorLog and SkuErrorLog.Log then
-         pcall(function()
-            SkuErrorLog:Log("auction.scan", "QueryAuctionItems threw", {
-               err = tostring(tQErr or ""),
-               getAll = SkuCore.QueryData[tQAIindex.getAll],
-               page = SkuCore.QueryData[tQAIindex.page],
-            })
-         end)
-      end
+      dprint("auction.scan", "QueryAuctionItems threw", {
+         err = tostring(tQErr or ""),
+         getAll = SkuCore.QueryData[tQAIindex.getAll],
+         page = SkuCore.QueryData[tQAIindex.page],
+      })
       pcall(function() SkuCore:AuctionHouseResetQuery(true) end)
       return false
    end
@@ -3629,18 +3564,6 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName)
    if SkuCore.FullScanIngest and SkuCore.FullScanIngest.active then
       return
    end
-   -- Diagnose: Event-Eintritt loggen, unabhängig vom Query-Status,
-   -- damit wir sehen, ob das Event überhaupt feuert.
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("auction.event", "AUCTION_ITEM_LIST_UPDATE fired", {
-            scanState = SkuCore.AuctionScan.state,
-            queryCurrentType = SkuCore.QueryCurrentType,
-            queryBuyData = SkuCore.QueryBuyData ~= nil,
-            getAll = SkuCore.QueryData and SkuCore.QueryData[tQAIindex.getAll],
-         })
-      end)
-   end
    if SkuCore.AuctionScan.state ~= "idle" and SkuCore.QueryCurrentType == "AUCTION_ITEM_LIST_UPDATE" then
       dprint("AUCTION_ITEM_LIST_UPDATE", SkuCore.QueryBuyData)
 
@@ -3679,9 +3602,6 @@ function SkuCore:AuctionFullScanBeginIngest(aBatch, aCount)
    -- Im "waiting"-Zustand bleiben und auf die echte Antwort warten; einen echt
    -- leeren Realm beendet der getAll-Watchdog (600 s).
    if tUpper == 0 then
-      if SkuErrorLog and SkuErrorLog.Log then
-         pcall(function() SkuErrorLog:Log("auction.scan", "getAll empty event ignored", {}) end)
-      end
       return
    end
    -- Vor dem Einlesen zurücksetzen, damit keine Reste alter Scans durchgehen.
@@ -3764,15 +3684,11 @@ end
 function SkuCore:AuctionFullScanFinishIngest()
    -- Erst den Treiber stoppen, dann nachbereiten.
    SkuCore.FullScanIngest = nil
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("auction.scan", "getAll ingest done", {
-            rows = #FullScanResultsDB,
-            firstName = FullScanResultsDB[1] and FullScanResultsDB[1][1] or "(none)",
-            firstId = FullScanResultsDB[1] and FullScanResultsDB[1][17] or "(none)",
-         })
-      end)
-   end
+   dprint("auction.scan", "getAll ingest done", {
+      rows = #FullScanResultsDB,
+      firstName = FullScanResultsDB[1] and FullScanResultsDB[1][1] or "(none)",
+      firstId = FullScanResultsDB[1] and FullScanResultsDB[1][17] or "(none)",
+   })
    FullScanResultsDBHistory = {}
    -- PriceData einmal aus dem Scan berechnen und an beide History-Tabellen
    -- weiterreichen (statt zweimal dieselbe Berechnung).
@@ -3825,21 +3741,6 @@ end
 function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
    local tBatch, tCount = GetNumAuctionItems("list")
    dprint(" tBatch, tCount", tBatch, tCount, SkuCore.QueryData[tQAIindex.getAll])
-
-   -- Diagnose: log every event entry so we can see in SkuErrorLog
-   -- whether the server actually delivered data.
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("auction.scan", "AUCTION_ITEM_LIST_UPDATE_LIST entry", {
-            tBatch = tBatch,
-            tCount = tCount,
-            getAll = SkuCore.QueryData and SkuCore.QueryData[tQAIindex.getAll],
-            scanState = SkuCore.AuctionScan.state,
-            queryCurrentPage = SkuCore.QueryCurrentPage,
-            fsdbLenBefore = #FullScanResultsDB,
-         })
-      end)
-   end
 
    if SkuCore.QueryCurrentPage ~= nil then
       if SkuCore.QueryData[tQAIindex.getAll] == true then
@@ -4000,37 +3901,18 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
    SkuCore.QueryBuyEmptyWaits = 0
 
    -- Diagnose: Eintritt + gesuchte Felder
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         local bd = SkuCore.QueryBuyData
-         SkuErrorLog:Log("auction.buy", "_BUY entry", {
-            tBatch = tBatch,
-            tCount = tCount,
-            queryCurrentPage = SkuCore.QueryCurrentPage,
-            queryMaxPage = SkuCore.QueryMaxPage,
-            buyDataItemId = bd and bd[17],
-            buyDataName = bd and bd[1],
-            buyDataCount = bd and bd[3],
-            buyDataBuyout = bd and bd[10],
-            buyDataMinBid = bd and bd[8],
-         })
-      end)
-   end
-   -- Snapshot: erstes paar zurückgegebene Auktionen (zum Abgleich)
-   if SkuErrorLog and SkuErrorLog.Log and tBatch and tBatch > 0 then
-      pcall(function()
-         local samples = ""
-         for s = 1, math.min(3, tBatch) do
-            local r = {GetAuctionItemInfo("list", s)}
-            samples = samples .. "[" .. s .. ": id=" .. tostring(r[17])
-                     .. " count=" .. tostring(r[3])
-                     .. " buyout=" .. tostring(r[10])
-                     .. " bid=" .. tostring(r[8])
-                     .. " owner=" .. tostring(r[14] or "?") .. "] "
-         end
-         SkuErrorLog:Log("auction.buy", "list samples", { samples = samples })
-      end)
-   end
+   local bd = SkuCore.QueryBuyData
+   dprint("auction.buy", "_BUY entry", {
+      tBatch = tBatch,
+      tCount = tCount,
+      queryCurrentPage = SkuCore.QueryCurrentPage,
+      queryMaxPage = SkuCore.QueryMaxPage,
+      buyDataItemId = bd and bd[17],
+      buyDataName = bd and bd[1],
+      buyDataCount = bd and bd[3],
+      buyDataBuyout = bd and bd[10],
+      buyDataMinBid = bd and bd[8],
+   })
 
    if SkuCore.QueryMaxPage == nil then
       SkuCore.QueryMaxPage = math.floor(tCount / 50)
@@ -4071,8 +3953,6 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
    -- (gleichwertige) Auktionen überspringen und die nächste der Gruppe nehmen.
    local tSkip = (SkuCore.AuctionBuy and SkuCore.AuctionBuy.failCount) or 0
    local tMatchSeen = 0
-   local tMatchAttempts = {}
-   local tLogOn = (SkuErrorLog and SkuErrorLog.Log) and true or false
    for x = 1, tBatch do
       --check if same item (gecachte Zeile wiederverwenden; Link erst beim Treffer)
       local tCurrentResult = tRows[x]
@@ -4100,7 +3980,6 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
          -- jede individuelle Auktion zählt (Bid-Höhe variiert).
          -- Owner (Feld 14) bleibt ausgenommen (Anniversary nil-Owner-Quirk).
          for y = 1, 17 do
-            dprint("COMPARE", x, y, tCurrentResult[y], SkuCore.QueryBuyData[y])
             if tCurrentResult[y] ~= SkuCore.QueryBuyData[y] and y ~= tAIDIndex["owner"] then
                tFound = false
                tMismatchField = tMismatchField or y
@@ -4111,19 +3990,6 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
          tFound = false
          tMismatchField = "alreadyBid(12)"
       end
-      -- Match-Versuche NUR fürs Log sammeln (und nur die ersten 5 — mehr liest
-      -- die Diagnose unten nie). Spart sonst pro Zeile eine Tabellenallokation.
-      if tLogOn and #tMatchAttempts < 5 then
-         tMatchAttempts[#tMatchAttempts + 1] = {
-            idx = x,
-            found = tFound,
-            miss = tMismatchField,
-            resItemId = tCurrentResult[tAIDIndex["itemId"]],
-            resBuyout = tCurrentResult[tAIDIndex["buyoutPrice"]],
-            resCount = tCurrentResult[tAIDIndex["count"]],
-         }
-      end
-
       -- found, buy
       if tFound == true then
          tMatchSeen = tMatchSeen + 1
@@ -4134,18 +4000,14 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
             dprint("skip already-tried match idx", x, "skip", tSkip)
          else
          dprint("bid for", SkuCore.QueryCurrentPage, x, tCurrentResult[8], tCurrentResult[9])
-         if SkuErrorLog and SkuErrorLog.Log then
-            pcall(function()
-               SkuErrorLog:Log("auction.buy", "MATCH FOUND, showing popup", {
-                  page = SkuCore.QueryCurrentPage,
-                  idx = x,
-                  itemId = tCurrentResult[17],
-                  buyout = tCurrentResult[10],
-                  count = tCurrentResult[3],
-                  type = SkuCore.QueryBuyType,
-               })
-            end)
-         end
+         dprint("auction.buy", "MATCH FOUND, showing popup", {
+            page = SkuCore.QueryCurrentPage,
+            idx = x,
+            itemId = tCurrentResult[17],
+            buyout = tCurrentResult[10],
+            count = tCurrentResult[3],
+            type = SkuCore.QueryBuyType,
+         })
          SkuCore:AuctionScanSetState("idle")
 
          -- Link erst jetzt holen (nur für die getroffene Zeile gebraucht).
@@ -4162,34 +4024,17 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
       end
    end
 
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("auction.buy", "match scan done (no bid)", {
-            tSkip = tSkip, tMatchSeen = tMatchSeen, tBatch = tBatch,
-            page = SkuCore.QueryCurrentPage, maxPage = SkuCore.QueryMaxPage,
-         })
-      end)
-   end
+   dprint("auction.buy", "match scan done (no bid)", {
+      tSkip = tSkip, tMatchSeen = tMatchSeen, tBatch = tBatch,
+      page = SkuCore.QueryCurrentPage, maxPage = SkuCore.QueryMaxPage,
+   })
    -- Mit Stückpreis-Sortierung der Kauf-Query (siehe AuctionHouseStartQuery)
    -- liegt der günstigste — und damit der vom Nutzer gewählte — Treffer auf
    -- SEITE 0. Kein Treffer dort ⇒ die Auktion ist vergriffen. Dann NICHT alle
    -- Seiten durchlaufen, sondern sofort melden, die Auktion aus der angezeigten
    -- Liste entfernen und (wenn möglich) auf dem geschrumpften Eintrag bleiben.
    if SkuCore.QueryCurrentPage == 0 then
-      if SkuErrorLog and SkuErrorLog.Log then
-         pcall(function()
-            local attemptStr = ""
-            for i = 1, math.min(#tMatchAttempts, 5) do
-               local a = tMatchAttempts[i]
-               attemptStr = attemptStr .. "[" .. a.idx .. ": miss=" .. tostring(a.miss)
-                  .. " id=" .. tostring(a.resItemId) .. "] "
-            end
-            SkuErrorLog:Log("auction.buy", "auction gone (page0 no match)", {
-               batchAttempts = tBatch,
-               firstFew = attemptStr,
-            })
-         end)
-      end
+      dprint("auction.buy", "auction gone (page0 no match)", { batchAttempts = tBatch })
       -- Hier sind wir IMMER im Kauf-Kontext (QueryBuyData gesetzt). Auktion
       -- vergriffen → ansagen, aus der Liste entfernen, Kaufzustand säubern. Das
       -- Säubern von QueryBuyData verhindert auch den Geister-Prompt bei einer

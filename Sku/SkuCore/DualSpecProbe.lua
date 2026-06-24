@@ -93,18 +93,16 @@ local function tTryApi(aGroup)
       _G.C_Timer.After(0.6, function()
          local _, tAfter = tCurrent()
          local tChanged = (tBefore ~= tAfter)
-         if SkuErrorLog and SkuErrorLog.Log then
-            SkuErrorLog:Log("dualspec.api", "SetActiveTalentGroup result", {
-               requested = aGroup,
-               before    = tBefore,
-               after     = tAfter,
-               numGroups = tBeforeNum,
-               changed   = tChanged,
-               apiExists = tExists,
-               err       = tErr,
-               inCombat  = (UnitAffectingCombat and UnitAffectingCombat("player")) and true or false,
-            })
-         end
+         dprint("dualspec.api", "SetActiveTalentGroup result", {
+            requested = aGroup,
+            before    = tBefore,
+            after     = tAfter,
+            numGroups = tBeforeNum,
+            changed   = tChanged,
+            apiExists = tExists,
+            err       = tErr,
+            inCombat  = (UnitAffectingCombat and UnitAffectingCombat("player")) and true or false,
+         })
          if tChanged then
             tSay("API-Wechsel erfolgreich: aktiv jetzt " .. tostring(tAfter))
          else
@@ -125,15 +123,13 @@ local function tTryCast(aSpellName)
       _G.C_Timer.After(2.0, function()
          local _, tAfter = tCurrent()
          local tChanged = (tBefore ~= tAfter)
-         if SkuErrorLog and SkuErrorLog.Log then
-            SkuErrorLog:Log("dualspec.cast", "CastSpellByName result", {
-               spell     = aSpellName,
-               before    = tBefore,
-               after     = tAfter,
-               numGroups = tBeforeNum,
-               changed   = tChanged,
-            })
-         end
+         dprint("dualspec.cast", "CastSpellByName result", {
+            spell     = aSpellName,
+            before    = tBefore,
+            after     = tAfter,
+            numGroups = tBeforeNum,
+            changed   = tChanged,
+         })
          if tChanged then
             tSay("Zauber-Wechsel erfolgreich via '" .. aSpellName .. "'.")
          else
@@ -157,11 +153,6 @@ local function tDumpMacros()
    tPerChar = tPerChar or 0
    local tTotal = tGlobal + tPerChar
    tSay("Makros gesamt: " .. tTotal .. " (Account " .. tGlobal .. ", Charakter " .. tPerChar .. ").")
-   if SkuErrorLog and SkuErrorLog.Log then
-      SkuErrorLog:Log("dualspec.macros", "macro scan begin", {
-         globalMacros = tGlobal, charMacros = tPerChar,
-      })
-   end
    local tPatterns = { "spec", "talent", "dual", "wechsel", "switch", "sekund", "primar", "primär", "aktivier" }
    -- Indices: 1..120 account, 121..138 per-char on Classic. We just walk
    -- everything that returns a non-nil name.
@@ -179,20 +170,11 @@ local function tDumpMacros()
          if tHit then
             tMatches = tMatches + 1
             tSay("Treffer #" .. tMatches .. " (Slot " .. i .. "): " .. tName)
-            if SkuErrorLog and SkuErrorLog.Log then
-               SkuErrorLog:Log("dualspec.macro.hit", tName, {
-                  slot = i,
-                  body = tBody or "",
-               })
-            end
          end
       end
    end
    if tMatches == 0 then
       tSay("Kein Makro mit Spec-Stichworten gefunden. Sag mir den Namen, dann log ich es gezielt.")
-      if SkuErrorLog and SkuErrorLog.Log then
-         SkuErrorLog:Log("dualspec.macros", "no matches", { hits = 0 })
-      end
    else
       tSay("Bitte /skulog export — die Makro-Inhalte stehen im Log.")
    end
@@ -211,23 +193,12 @@ local function tDumpMacroByName(aName)
    end
    local tBody = GetMacroBody(tIdx) or ""
    tSay("Makro '" .. aName .. "' geloggt. /skulog export.")
-   if SkuErrorLog and SkuErrorLog.Log then
-      SkuErrorLog:Log("dualspec.macro.named", aName, {
-         slot = tIdx, body = tBody,
-      })
-   end
 end
 
 SLASH_SKUSPEC1 = "/skuspec"
 -- Load marker: written at file-parse time, so the next SkuErrorLog export
 -- will tell us whether this file is being loaded at all (vs. silently
 -- skipped due to a .toc issue or load-order error).
-if SkuErrorLog and SkuErrorLog.Log then
-   SkuErrorLog:Log("dualspec.loaded", "DualSpecProbe.lua parsed", {
-      slashRegistered = true,
-      time            = (date and date("%H:%M:%S")) or "?",
-   })
-end
 SlashCmdList["SKUSPEC"] = function(aMsg)
    aMsg = (aMsg or ""):lower():match("^%s*(.-)%s*$")
    local tCmd, tArg = aMsg:match("^(%S+)%s*(.*)$")
@@ -243,15 +214,13 @@ SlashCmdList["SKUSPEC"] = function(aMsg)
       tSay("Befehle: probe, api N, cast N")
       -- Always log status so it shows up in the SkuErrorLog export
       -- regardless of whether the user can hear/read the chat output.
-      if SkuErrorLog and SkuErrorLog.Log then
-         SkuErrorLog:Log("dualspec.status", "skuspec status", {
-            numGroups       = tNum,
-            activeGroup     = tActive,
-            apiPresent      = tApiPresent,
-            getNumApi       = (_G.GetNumTalentGroups   ~= nil),
-            getActiveApi    = (_G.GetActiveTalentGroup ~= nil),
-         })
-      end
+      dprint("dualspec.status", "skuspec status", {
+         numGroups       = tNum,
+         activeGroup     = tActive,
+         apiPresent      = tApiPresent,
+         getNumApi       = (_G.GetNumTalentGroups   ~= nil),
+         getActiveApi    = (_G.GetActiveTalentGroup ~= nil),
+      })
       return
    end
 
@@ -259,30 +228,14 @@ SlashCmdList["SKUSPEC"] = function(aMsg)
       local tHits = tScanSpellbook()
       if #tHits == 0 then
          tSay("Kein Zauber im Buch gefunden, der nach Dual-Spec aussieht.")
-         if SkuErrorLog and SkuErrorLog.Log then
-            SkuErrorLog:Log("dualspec.probe", "spellbook scan empty", { hits = 0 })
-         end
       else
          tSay(#tHits .. " Treffer im Zauberbuch:")
          for i, h in ipairs(tHits) do
             tSay(i .. ": '" .. h.name .. "'" ..
                  (h.rank ~= "" and (" (" .. h.rank .. ")") or "") ..
                  " [" .. h.bookType .. " #" .. h.bookIndex .. "]")
-            -- Log each hit individually so they all end up in the log
-            -- export — one line per hit, easy to read.
-            if SkuErrorLog and SkuErrorLog.Log then
-               SkuErrorLog:Log("dualspec.probe.hit", h.name, {
-                  rank      = h.rank,
-                  bookIndex = h.bookIndex,
-                  bookType  = h.bookType,
-                  hitNumber = i,
-               })
-            end
          end
          tSay("Test mit: /skuspec cast <Zaubername>")
-         if SkuErrorLog and SkuErrorLog.Log then
-            SkuErrorLog:Log("dualspec.probe", "spellbook scan summary", { hits = #tHits })
-         end
       end
       return
    end

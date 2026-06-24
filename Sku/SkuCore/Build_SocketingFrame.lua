@@ -182,14 +182,14 @@ local function tCollectBagGems()
             -- Diagnose: pro Slot ein Eintrag mit classID/subClassID,
             -- damit wir sehen, was TBC-Anniversary für Edelsteine
             -- tatsächlich liefert.
-            if SkuErrorLog and SkuErrorLog.Log then
+            if Sku.debug and (Sku.debug.log or Sku.debug.print) then
                pcall(function()
                   local classID, subClassID, equipLoc, iSubType
                   if _G.GetItemInfoInstant then
                      local _, t, st, el, _, c, sc = _G.GetItemInfoInstant(id or link)
                      classID, subClassID, equipLoc, iSubType = c, sc, el, st
                   end
-                  SkuErrorLog:Log("socket.gems", "slot scan", {
+                  dprint("socket.gems", "slot scan", {
                      bag = bag, slot = slot, id = id,
                      name = (type(name) == "string") and name or tostring(name),
                      isGem = isGem,
@@ -203,14 +203,10 @@ local function tCollectBagGems()
    end
    -- Diagnose: protokollieren, wie viele Slots durchsucht und wie
    -- viele Edelsteine erkannt wurden.
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("socket.gems", "tCollectBagGems result", {
-            slotsPerBag = table.concat(tDiag, ","),
-            hits = #tHits,
-         })
-      end)
-   end
+   dprint("socket.gems", "tCollectBagGems result", {
+      slotsPerBag = table.concat(tDiag, ","),
+      hits = #tHits,
+   })
    return tHits
 end
 

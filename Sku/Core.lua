@@ -136,11 +136,116 @@ function Sku:MetricPoint(aText)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-Sku.debug = false
+-- General debug logging (dprint).
+-- Two independent switches live under Sku.debug:
+--   Sku.debug.print -> echo to the chat frame (the original dprint behaviour;
+--                      a sighted developer reads the trace live in game).
+--   Sku.debug.log   -> append to a persisted ring buffer in the SkuDebugLog
+--                      SavedVariable, readable out-of-game after a /reload
+--                      (no chat output -> no TTS spam).
+-- Either, both, or neither may be on. With both off, dprint returns after a
+-- single table+flag check and does NO further work, so the 400+ existing
+-- dprint call sites stay free in normal play. Unlike SkuErrorLog:Log, this
+-- path never calls debugstack and never builds per-event context, so it is
+-- cheap even while enabled. Toggle via the SKU_KEY_DEBUGMODE keybind (cycles
+-- the modes) or /skudebug for precise control.
+Sku.debug = { print = false, log = false }
+
+local DEBUGLOG_MAX = 2000  -- cap on persisted lines (ring buffer)
+
+-- Render one dprint argument into a readable string. Tables are shallow-
+-- serialised one level deep (k=v, ...) so the log stays informative without
+-- the cost/size of a deep walk; nested tables collapse to "{...}".
+local function tDebugArg(aVal)
+	if type(aVal) ~= "table" then
+		return tostring(aVal)
+	end
+	local tParts, tN = {}, 0
+	for k, v in pairs(aVal) do
+		tN = tN + 1
+		if tN > 30 then
+			tParts[#tParts + 1] = "..."
+			break
+		end
+		local tv = type(v)
+		if tv == "table" then
+			v = "{...}"
+		elseif tv == "string" then
+			v = (#v > 120) and (v:sub(1, 120) .. "…") or v
+		else
+			v = tostring(v)
+		end
+		tParts[#tParts + 1] = tostring(k) .. "=" .. v
+	end
+	return "{" .. table.concat(tParts, ", ") .. "}"
+end
+
+local function tDebugLogAppend(...)
+	if type(SkuDebugLog) ~= "table" then SkuDebugLog = {} end
+	local tLog = SkuDebugLog
+	tLog.lines = tLog.lines or {}
+	tLog.seq   = (tLog.seq or 0) + 1
+	local tN = select("#", ...)
+	local tParts = {}
+	for i = 1, tN do
+		tParts[i] = tDebugArg((select(i, ...)))
+	end
+	tLog.lines[#tLog.lines + 1] = {
+		seq = tLog.seq,
+		t   = date("%H:%M:%S"),
+		msg = table.concat(tParts, "  "),
+	}
+	-- Amortised trim: rebuild keeping the newest DEBUGLOG_MAX only every ~256
+	-- overflows, so a chatty scan loop never pays an O(n) table.remove per line.
+	if #tLog.lines > DEBUGLOG_MAX + 256 then
+		local tKeep, tStart = {}, #tLog.lines - DEBUGLOG_MAX + 1
+		for i = tStart, #tLog.lines do
+			tKeep[#tKeep + 1] = tLog.lines[i]
+		end
+		tLog.lines = tKeep
+	end
+end
+
 function dprint(...)
-	if Sku.debug == true then
+	local d = Sku.debug
+	if not d or (not d.print and not d.log) then return end
+	if d.print then
 		print(...)
 	end
+	if d.log then
+		tDebugLogAppend(...)
+	end
+end
+
+-- /skudebug — control the two debug channels and the persisted log.
+SLASH_SKUDEBUG1 = "/skudebug"
+SlashCmdList["SKUDEBUG"] = function(aMsg)
+	aMsg = (aMsg or ""):lower():match("^%s*(.-)%s*$")
+	local d = Sku.debug or {}
+	Sku.debug = d
+	if aMsg == "print on" then d.print = true
+	elseif aMsg == "print off" then d.print = false
+	elseif aMsg == "log on" then d.log = true
+	elseif aMsg == "log off" then d.log = false
+	elseif aMsg == "on" then d.print, d.log = true, true
+	elseif aMsg == "off" then d.print, d.log = false, false
+	elseif aMsg == "clear" then
+		if type(SkuDebugLog) == "table" then SkuDebugLog.lines = {} ; SkuDebugLog.seq = 0 end
+		print("|cff80c0ffSkuDebug|r: log cleared.")
+		return
+	elseif aMsg == "show" then
+		local tLines = (type(SkuDebugLog) == "table" and SkuDebugLog.lines) or {}
+		local tStart = math.max(1, #tLines - 9)
+		if #tLines == 0 then print("|cff80c0ffSkuDebug|r: log empty.") return end
+		for i = tStart, #tLines do
+			local e = tLines[i]
+			print(string.format("#%s [%s] %s", tostring(e.seq), e.t or "?", e.msg or ""))
+		end
+		return
+	elseif aMsg ~= "" then
+		print("|cff80c0ffSkuDebug|r: usage: /skudebug on|off|print on|print off|log on|log off|clear|show")
+	end
+	print(string.format("|cff80c0ffSkuDebug|r: print=%s log=%s", tostring(d.print), tostring(d.log)))
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

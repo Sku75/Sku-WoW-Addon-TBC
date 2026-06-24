@@ -1416,8 +1416,22 @@ function SkuOptions:CreateMainFrame()
 		end
 
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_DEBUGMODE") then
-			Sku.debug = Sku.debug == false
-			print("Debug:", Sku.debug)
+			-- Cycle: off -> log only -> print only -> print+log -> off.
+			-- Announced via voice (not chat) so it doesn't depend on TTS reading
+			-- the chat frame.
+			local d = Sku.debug or {}
+			local tState
+			if not d.print and not d.log then
+				d.print, d.log, tState = false, true, "Debug log only"
+			elseif d.log and not d.print then
+				d.print, d.log, tState = true, false, "Debug print only"
+			elseif d.print and not d.log then
+				d.print, d.log, tState = true, true, "Debug print and log"
+			else
+				d.print, d.log, tState = false, false, "Debug off"
+			end
+			Sku.debug = d
+			SkuOptions.Voice:OutputString(tState, true, true, 0.3, true)
 		end
 	
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_ROLLNEED") then
@@ -4251,11 +4265,9 @@ function SkuStepBackAndRefresh()
 				local tAnchor = tFindAttachedAncestor(SkuOptions.currentMenuPosition)
 				if tAnchor then
 					SkuOptions.currentMenuPosition = tAnchor
-					if SkuErrorLog and SkuErrorLog.Log then
-						SkuErrorLog:Log("menu.reanchor",
+					dprint("menu.reanchor",
 							"orphan after action — re-anchored to ancestor",
 							{ anchor = tostring(tAnchor.name or tAnchor.textFirstLine or "?") })
-					end
 				end
 			end
 

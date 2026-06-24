@@ -609,7 +609,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:alIntegrationMenuBuilder()
    -- Diagnose: was sieht Sku zum Zeitpunkt des Aufklappens?
-   if SkuErrorLog and SkuErrorLog.Log then
+   if Sku.debug and (Sku.debug.log or Sku.debug.print) then
       pcall(function()
          local hasAL = type(_G.AtlasLoot) == "table"
          local hasLoader = hasAL and type(_G.AtlasLoot.Loader) == "table"
@@ -621,7 +621,7 @@ function SkuCore:alIntegrationMenuBuilder()
                nMods = #m.module
             end
          end
-         SkuErrorLog:Log("atlas.menu", "MenuBuilder entry", {
+         dprint("atlas.menu", "MenuBuilder entry", {
             atlasLootType = type(_G.AtlasLoot),
             hasLoader = hasLoader,
             hasItemDB = hasItemDB,

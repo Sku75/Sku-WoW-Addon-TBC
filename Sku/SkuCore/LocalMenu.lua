@@ -1702,17 +1702,15 @@ local function tBuildInactiveSpec(aParent, groupIdx)
 			local tAfter = tGetActiveTalentGroup()
 			-- Log every attempt so we can see in SkuErrorLog whether
 			-- the call landed and whether the active group changed.
-			if SkuErrorLog and SkuErrorLog.Log then
-				SkuErrorLog:Log("talentSwitch", "spec switch attempt", {
-					requested  = groupIdx,
-					before     = tBefore,
-					after      = tAfter,
-					apiUsed    = tApiUsed,
-					callOk     = tOk,
-					inCombat   = (UnitAffectingCombat and UnitAffectingCombat("player")) and true or false,
-					err        = tErr,
-				})
-			end
+			dprint("talentSwitch", "spec switch attempt", {
+				requested  = groupIdx,
+				before     = tBefore,
+				after      = tAfter,
+				apiUsed    = tApiUsed,
+				callOk     = tOk,
+				inCombat   = (UnitAffectingCombat and UnitAffectingCombat("player")) and true or false,
+				err        = tErr,
+			})
 			-- The directAction wrapper steps to the parent and triggers
 			-- OnUpdate at +0.35s, which makes Sku read the new menu node.
 			-- We delay our confirmation past that read so it isn't

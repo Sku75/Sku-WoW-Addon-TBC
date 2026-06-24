@@ -207,14 +207,10 @@ local function tGetEligibleDungeons()
       end
    end
    if #activities == 0 then
-      if SkuErrorLog and SkuErrorLog.Log then
-         pcall(function()
-            SkuErrorLog:Log("dungeonBrowser", "no activities returned", {
-               playerLevel = playerLevel,
-               categoriesFound = "",
-            })
-         end)
-      end
+      dprint("dungeonBrowser", "no activities returned", {
+         playerLevel = playerLevel,
+         categoriesFound = "",
+      })
       return result
    end
 
@@ -237,48 +233,6 @@ local function tGetEligibleDungeons()
       return a.minLevel < b.minLevel
    end)
 
-   -- Diagnose-Log: erweitert. Loggt zusätzlich die ROHEN
-   -- Rückgabewerte von GetActivityInfo für die ersten 3 Aktivitäten,
-   -- damit wir bei "leere Liste" sehen, welches Datenformat
-   -- Anniversary tatsächlich liefert.
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         local catStr = ""
-         for i, c in ipairs(categoriesFound) do
-            if i > 1 then catStr = catStr .. "," end
-            catStr = catStr .. tostring(c)
-         end
-         local rawSample = ""
-         for i = 1, math.min(3, #activities) do
-            local id = activities[i]
-            local r1, r2, r3, r4, r5, r6, r7, r8, r9 =
-               _G.C_LFGList.GetActivityInfo(id)
-            rawSample = rawSample .. "[id=" .. tostring(id)
-               .. " t1=" .. type(r1)
-               .. " v=" .. tostring(r1):sub(1, 30)
-               .. " r5=" .. tostring(r5)
-               .. " r6=" .. tostring(r6)
-               .. " r7=" .. tostring(r7)
-               .. " r8=" .. tostring(r8) .. "] "
-         end
-         local sample = ""
-         for i = 1, math.min(3, #activities) do
-            local info = tGetActivityInfo(activities[i])
-            if info then
-               sample = sample .. "[" .. info.name
-                  .. " " .. tostring(info.minLevel) .. "-" .. tostring(info.maxLevel) .. "] "
-            end
-         end
-         SkuErrorLog:Log("dungeonBrowser", "GetEligibleDungeons", {
-            playerLevel = playerLevel,
-            rawCount = rawCount,
-            matchedCount = matchedCount,
-            categoriesFound = catStr,
-            sample = sample,
-            rawSample = rawSample,
-         })
-      end)
-   end
    return result
 end
 
@@ -314,11 +268,7 @@ function SkuCore:DungeonBrowserDoEnroll()
    -- gar nicht erst aufgerufen — dann liegt's am Menüeintrag, nicht
    -- am CreateListing-Aufruf.
    tSayChat(L["DB_DoEnrollCalled"])
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("dungeonBrowser", "DoEnroll entered", {})
-      end)
-   end
+   dprint("dungeonBrowser", "DoEnroll entered", {})
    local db = tDB()
    local eligible = tGetEligibleDungeons()
    local selectedNames = {}
@@ -370,17 +320,13 @@ function SkuCore:DungeonBrowserDoEnroll()
          primaryActivity, 0, 0, false, false)
       ok, err, variant = ok2, err2, "5args_numeric"
    end
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("dungeonBrowser", "CreateListing macrotext", {
-            primaryActivity = primaryActivity,
-            selectedCount = #selectedNames,
-            variant = variant,
-            ok = ok,
-            err = tostring(err or ""),
-         })
-      end)
-   end
+   dprint("dungeonBrowser", "CreateListing macrotext", {
+      primaryActivity = primaryActivity,
+      selectedCount = #selectedNames,
+      variant = variant,
+      ok = ok,
+      err = tostring(err or ""),
+   })
 
    if ok then
       tSayChat(string.format(L["DB_EnrollStarted"], #selectedNames))
@@ -539,23 +485,15 @@ local function tStartSearch()
       -- c) einfache Form
       triedOK = pcall(_G.C_LFGList.Search, catID)
    end
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("dungeonBrowser", "Search invoked", {
-            catID = catID, ok = triedOK,
-         })
-      end)
-   end
+   dprint("dungeonBrowser", "Search invoked", {
+      catID = catID, ok = triedOK,
+   })
    SkuCore.tDungeonBrowserSearchTime = GetTime()
 end
 
 local function tCollectSearchResults()
    if not (_G.C_LFGList and _G.C_LFGList.GetSearchResults) then
-      if SkuErrorLog and SkuErrorLog.Log then
-         pcall(function()
-            SkuErrorLog:Log("dungeonBrowser", "GetSearchResults missing", {})
-         end)
-      end
+      dprint("dungeonBrowser", "GetSearchResults missing", {})
       return {}
    end
    local list = {}
@@ -568,15 +506,6 @@ local function tCollectSearchResults()
       results = r1
    elseif type(r1) == "number" and type(r2) == "table" then
       results = r2
-   end
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("dungeonBrowser", "GetSearchResults call", {
-            r1Type = type(r1), r2Type = type(r2),
-            r1Number = (type(r1) == "number") and r1 or nil,
-            resultsCount = (type(results) == "table") and #results or -1,
-         })
-      end)
    end
    if type(results) ~= "table" then return list end
    local db = tDB()
@@ -622,18 +551,6 @@ local function tCollectSearchResults()
          info.age        = (type(s8) == "number") and s8 or nil
          info.leaderName = (type(s13) == "string") and s13 or nil
          info.numMembers = (type(s14) == "number") and s14 or nil
-         -- Diagnose nur beim ersten Result, um den Log nicht zu fluten
-         if SkuErrorLog and SkuErrorLog.Log and resID == results[1] then
-            pcall(function()
-               SkuErrorLog:Log("dungeonBrowser", "ResultInfo multi", {
-                  s1Type = type(s1),
-                  activityID = info.activityID,
-                  leaderName = tostring(info.leaderName or ""),
-                  name = tostring(info.name or ""),
-                  numMembers = info.numMembers,
-               })
-            end)
-         end
       end
       -- "Eigene Listung"-Erkennung — robust:
       -- 1) ActiveEntry-searchResultID vergleichen (klappt nur, wenn die
@@ -666,47 +583,11 @@ local function tCollectSearchResults()
                or c.HEALER_MAX or c.healerRemaining
             info.maxDamage  = c.DAMAGER_REMAINING or c.maxDamagers
                or c.DAMAGER_MAX or c.damagerRemaining
-            -- Diagnose: alle Schlüssel einmalig dumpen
-            if SkuErrorLog and SkuErrorLog.Log and resID == results[1]
-               and not SkuCore.tDungeonBrowserCountsDumped then
-               SkuCore.tDungeonBrowserCountsDumped = true
-               pcall(function()
-                  local keys = ""
-                  for k, v in pairs(c) do
-                     keys = keys .. tostring(k) .. "=" .. tostring(v) .. " | "
-                  end
-                  SkuErrorLog:Log("dungeonBrowser", "MemberCounts keys",
-                     { keys = keys })
-               end)
-            end
          end
       end
 
       -- Anführer-Info (Klasse, Level, Rolle). Position 1 ist üblicherweise
       -- der Leader. API-Form variiert: Tabelle ODER Multi-Werte.
-      -- Diagnose-Dump: alle C_LFGList-Funktionen + alle Member-Daten
-      -- für das erste Result einmalig loggen, um die echten Rollen-
-      -- Flags auf 2.5.5 zu finden.
-      if SkuErrorLog and SkuErrorLog.Log and resID == results[1]
-         and not SkuCore.tDungeonBrowserApiDumped then
-         SkuCore.tDungeonBrowserApiDumped = true
-         pcall(function()
-            local fns = ""
-            for k, v in pairs(_G.C_LFGList or {}) do
-               if type(v) == "function" then
-                  fns = fns .. k .. " | "
-               end
-            end
-            SkuErrorLog:Log("dungeonBrowser", "C_LFGList fns",
-               { fns = fns:sub(1, 1000) })
-            -- playstyle, activityIDs etc. der Search-Result-Tabelle
-            if type(s1) == "table" then
-               SkuErrorLog:Log("dungeonBrowser", "SR playstyle", {
-                  playstyle = tostring(s1.playstyle or "nil"),
-               })
-            end
-         end)
-      end
       -- GetSearchResultLeaderInfo: laut C_LFGList-Dump auf 2.5.5 vorhanden.
       -- Liefert evtl. Level/Klasse des Anführers direkt — Hauptkandidat
       -- für die Level-Anzeige ohne /who.
@@ -718,19 +599,6 @@ local function tCollectSearchResults()
                info.leaderLevel    = info.leaderLevel    or l1.level
                info.leaderClass    = info.leaderClass    or l1.classFilename or l1.class
                info.leaderClassLoc = info.leaderClassLoc or l1.className or l1.classLocalized
-               -- Diagnose: Felder einmal dumpen
-               if SkuErrorLog and SkuErrorLog.Log
-                  and not SkuCore.tDungeonBrowserLeaderInfoDumped then
-                  SkuCore.tDungeonBrowserLeaderInfoDumped = true
-                  pcall(function()
-                     local keys = ""
-                     for k, v in pairs(l1) do
-                        keys = keys .. tostring(k) .. "=" .. tostring(v):sub(1, 30) .. " | "
-                     end
-                     SkuErrorLog:Log("dungeonBrowser", "LeaderInfo table",
-                        { keys = keys })
-                  end)
-               end
             elseif l1 ~= nil then
                -- Multi-Wert-Form: irgendeine Zahl 1..80 = Level
                local lvals = { l1, l2, l3, l4, l5, l6 }
@@ -744,61 +612,10 @@ local function tCollectSearchResults()
                      end
                   end
                end
-               if SkuErrorLog and SkuErrorLog.Log
-                  and not SkuCore.tDungeonBrowserLeaderInfoDumped then
-                  SkuCore.tDungeonBrowserLeaderInfoDumped = true
-                  pcall(function()
-                     SkuErrorLog:Log("dungeonBrowser", "LeaderInfo multi", {
-                        l1=tostring(l1), l2=tostring(l2), l3=tostring(l3),
-                        l4=tostring(l4), l5=tostring(l5), l6=tostring(l6),
-                     })
-                  end)
-               end
             end
          end
       end
 
-      -- GetSearchResultPlayerInfo: ALLE Aufruf-Varianten probieren und
-      -- jedes Ergebnis dumpen, damit wir die Rollen-Flags finden.
-      if _G.C_LFGList.GetSearchResultPlayerInfo
-         and not SkuCore.tDungeonBrowserPlayerInfoDumped then
-         SkuCore.tDungeonBrowserPlayerInfoDumped = true
-         pcall(function()
-            -- Variante A: (resID, memberIdx=1) als Multi-Werte
-            local okA, a1, a2, a3, a4, a5, a6, a7, a8 =
-               pcall(_G.C_LFGList.GetSearchResultPlayerInfo, resID, 1)
-            SkuErrorLog:Log("dungeonBrowser", "PlayerInfo A (resID,1)", {
-               ok = okA, t1 = type(a1),
-               a1 = tostring(a1), a2 = tostring(a2), a3 = tostring(a3),
-               a4 = tostring(a4), a5 = tostring(a5), a6 = tostring(a6),
-               a7 = tostring(a7), a8 = tostring(a8),
-            })
-            if type(a1) == "table" then
-               local keys = ""
-               for k, v in pairs(a1) do
-                  keys = keys .. tostring(k) .. "=" .. tostring(v):sub(1, 30) .. " | "
-               end
-               SkuErrorLog:Log("dungeonBrowser", "PlayerInfo A keys",
-                  { keys = keys })
-            end
-            -- Variante B: (resID) ohne memberIdx
-            local okB, b1, b2, b3, b4, b5, b6 =
-               pcall(_G.C_LFGList.GetSearchResultPlayerInfo, resID)
-            SkuErrorLog:Log("dungeonBrowser", "PlayerInfo B (resID)", {
-               ok = okB, t1 = type(b1),
-               b1 = tostring(b1), b2 = tostring(b2), b3 = tostring(b3),
-               b4 = tostring(b4), b5 = tostring(b5), b6 = tostring(b6),
-            })
-            if type(b1) == "table" then
-               local keys = ""
-               for k, v in pairs(b1) do
-                  keys = keys .. tostring(k) .. "=" .. tostring(v):sub(1, 30) .. " | "
-               end
-               SkuErrorLog:Log("dungeonBrowser", "PlayerInfo B keys",
-                  { keys = keys })
-            end
-         end)
-      end
       if _G.C_LFGList.GetSearchResultPlayerInfo then
          local ok, p1 = pcall(_G.C_LFGList.GetSearchResultPlayerInfo, resID, 1)
          if ok and type(p1) == "table" then
@@ -821,37 +638,6 @@ local function tCollectSearchResults()
          end
       end
 
-      -- ALLE Member iterieren — vielleicht hat einer der Member-Einträge
-      -- Rollen-Flags (auch wenn Solo-Listings nur 1 Member haben).
-      if _G.C_LFGList.GetSearchResultMemberInfo
-         and not SkuCore.tDungeonBrowserMemberAllDumped then
-         SkuCore.tDungeonBrowserMemberAllDumped = true
-         pcall(function()
-            for idx = 1, 5 do
-               local okM, m1, m2, m3, m4, m5, m6, m7, m8 =
-                  pcall(_G.C_LFGList.GetSearchResultMemberInfo, resID, idx)
-               if okM and m1 ~= nil then
-                  if type(m1) == "table" then
-                     local keys = ""
-                     for k, v in pairs(m1) do
-                        keys = keys .. tostring(k) .. "=" .. tostring(v):sub(1, 30) .. " | "
-                     end
-                     SkuErrorLog:Log("dungeonBrowser",
-                        "MemberInfo idx=" .. idx .. " keys", { keys = keys })
-                  else
-                     SkuErrorLog:Log("dungeonBrowser",
-                        "MemberInfo idx=" .. idx .. " multi", {
-                           m1=tostring(m1), m2=tostring(m2), m3=tostring(m3),
-                           m4=tostring(m4), m5=tostring(m5), m6=tostring(m6),
-                           m7=tostring(m7), m8=tostring(m8),
-                        })
-                  end
-               else
-                  break
-               end
-            end
-         end)
-      end
       if _G.C_LFGList.GetSearchResultMemberInfo then
          local ok, m1, m2, m3, m4, m5, m6, m7, m8 =
             pcall(_G.C_LFGList.GetSearchResultMemberInfo, resID, 1)
@@ -861,17 +647,6 @@ local function tCollectSearchResults()
                info.leaderClassLoc = m1.className or m1.classLocalized
                info.leaderLevel  = m1.level
                info.leaderRole   = m1.role
-               -- Diagnose: tatsächliche Felder
-               if SkuErrorLog and SkuErrorLog.Log and resID == results[1] then
-                  pcall(function()
-                     local keys = ""
-                     for k, v in pairs(m1) do
-                        keys = keys .. tostring(k) .. "=" .. tostring(v):sub(1, 20) .. " | "
-                     end
-                     SkuErrorLog:Log("dungeonBrowser", "MemberInfo table",
-                        { keys = keys })
-                  end)
-               end
             elseif m1 ~= nil then
                -- Multi-Wert: erste passende Zahl 1..80 als Level werten,
                -- erste/zweite/dritte String als role/class/classLoc.
@@ -886,15 +661,6 @@ local function tCollectSearchResults()
                      and not info.leaderLevel then
                      info.leaderLevel = v
                   end
-               end
-               if SkuErrorLog and SkuErrorLog.Log and resID == results[1] then
-                  pcall(function()
-                     SkuErrorLog:Log("dungeonBrowser", "MemberInfo multi", {
-                        m1=tostring(m1), m2=tostring(m2), m3=tostring(m3),
-                        m4=tostring(m4), m5=tostring(m5), m6=tostring(m6),
-                        m7=tostring(m7), m8=tostring(m8),
-                     })
-                  end)
                end
             end
          end
@@ -933,11 +699,7 @@ function SkuCore:DungeonBrowserProcessWhoQueue()
    if #SkuCore.tDungeonBrowserWhoQueue == 0 then return end
    local sendWho = (_G.C_FriendList and _G.C_FriendList.SendWho) or _G.SendWho
    if not sendWho then
-      if SkuErrorLog and SkuErrorLog.Log then
-         pcall(function()
-            SkuErrorLog:Log("dungeonBrowser", "WhoQueue: SendWho missing", {})
-         end)
-      end
+      dprint("dungeonBrowser", "WhoQueue: SendWho missing", {})
       return
    end
    local now = GetTime()
@@ -958,15 +720,7 @@ function SkuCore:DungeonBrowserProcessWhoQueue()
       -- Nur den nackten Namen senden — der `n-"..."`-Filter wird
       -- auf Anniversary 2.5.5 oft still verworfen.
       local query = name
-      local ok, err = pcall(sendWho, query)
-      if SkuErrorLog and SkuErrorLog.Log then
-         pcall(function()
-            SkuErrorLog:Log("dungeonBrowser", "WhoQueue: sent", {
-               name = name, query = query,
-               ok = ok, err = tostring(err or ""),
-            })
-         end)
-      end
+      pcall(sendWho, query)
    end
    if #SkuCore.tDungeonBrowserWhoQueue > 0 then
       _G.C_Timer.After(5.1, function() SkuCore:DungeonBrowserProcessWhoQueue() end)
@@ -1026,16 +780,6 @@ do
 
    f:SetScript("OnEvent", function(self, event, msg)
       if event == "CHAT_MSG_SYSTEM" and type(msg) == "string" then
-         -- Diagnose: ALLE relevanten Systemzeilen mitschneiden, damit
-         -- wir das tatsächliche /who-Format sehen.
-         if SkuErrorLog and SkuErrorLog.Log
-            and (msg:find("[Ss]tufe") or msg:find("[Ll]evel")
-                 or msg:find("%[")) then
-            pcall(function()
-               SkuErrorLog:Log("dungeonBrowser", "SystemChat raw",
-                  { msg = msg:sub(1, 200) })
-            end)
-         end
          -- Chat-Pattern parsen. Beobachtete Anniversary-DE-Zeile:
          --   "|Hplayer:NAME|h[NAME]|h Stufe LEVEL CLASS"
          -- oder "[NAME] Stufe LEVEL CLASS"
@@ -1062,13 +806,6 @@ do
                SkuCore.tDungeonBrowserLevelCache[name] = {
                   level = lv, class = cls,
                }
-               if SkuErrorLog and SkuErrorLog.Log then
-                  pcall(function()
-                     SkuErrorLog:Log("dungeonBrowser", "Who chat parse", {
-                        name = name, lv = lv, cls = tostring(cls or ""),
-                     })
-                  end)
-               end
                tRefreshMenuIfTouched()
             end
          end
@@ -1243,11 +980,7 @@ local function tBuildPhaseA(aParent, aSelf)
    -- Lua-Kontext kann CreateListing zwar von Blizzard geblockt werden,
    -- aber wenigstens kriegen wir akustisches Feedback und einen Log.
    tEnroll.OnAction = function()
-      if SkuErrorLog and SkuErrorLog.Log then
-         pcall(function()
-            SkuErrorLog:Log("dungeonBrowser", "Enroll OnAction fired", {})
-         end)
-      end
+      dprint("dungeonBrowser", "Enroll OnAction fired", {})
       SkuCore:DungeonBrowserDoEnroll()
    end
 
@@ -1737,13 +1470,9 @@ function SkuCore:DungeonBrowserDoUnenroll()
       return
    end
    local ok, err = pcall(_G.C_LFGList.RemoveListing)
-   if SkuErrorLog and SkuErrorLog.Log then
-      pcall(function()
-         SkuErrorLog:Log("dungeonBrowser", "RemoveListing macrotext", {
-            ok = ok, err = tostring(err or ""),
-         })
-      end)
-   end
+   dprint("dungeonBrowser", "RemoveListing macrotext", {
+      ok = ok, err = tostring(err or ""),
+   })
    if ok then
       if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.OutputStringBTtts then
          pcall(function()
@@ -2071,11 +1800,7 @@ local function tHookLFGEvents()
    -- dieses Event feuert, sobald das Listing serverseitig aktiv ist.
    f:RegisterEvent("LFG_LIST_ACTIVE_ENTRY_UPDATE")
    f:SetScript("OnEvent", function(self, event, ...)
-      if SkuErrorLog and SkuErrorLog.Log then
-         pcall(function()
-            SkuErrorLog:Log("dungeonBrowser", "LFG event", { event = event })
-         end)
-      end
+      dprint("dungeonBrowser", "LFG event", { event = event })
       if event == "LFG_LIST_ACTIVE_ENTRY_UPDATE" then
          if SkuOptions and SkuOptions:IsMenuOpen() then
             pcall(function() SkuCore:DungeonBrowserRebuild() end)

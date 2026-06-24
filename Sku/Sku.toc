@@ -1,6 +1,6 @@
 ﻿## Interface: 11508
 ## Title: Sku v41.06
-## SavedVariables: SkuOptionsDB, SkuTranslatedData, SkuErrorLog
+## SavedVariables: SkuOptionsDB, SkuTranslatedData, SkuErrorLog, SkuDebugLog
 ## Dependencies: SkuBeaconSoundsets
 ## Version: 41.06
 
