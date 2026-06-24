@@ -2514,6 +2514,89 @@ function SkuCore:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Hängt unter einen Ergebnis-Eintrag (aEntry, dessen .data == aData und
+-- aData[19] == die Dubletten-Liste) die Kauf-/Gebots-Untermenüs "Bieten" und
+-- "Kaufen" mit der Stückzahl-Auswahl an. Früher als drei Wort-für-Wort gleiche
+-- Blöcke kopiert: Vollscan-Ergebnisliste, Live-Ergebnisliste (Erstaufbau) und
+-- Live-Ergebnisliste (Anhängen späterer Seiten).
+--
+-- Einziger echter Verhaltensunterschied steckt im KAUFEN-Zweig und hängt davon
+-- ab, WOHER der Eintrag stammt (aFullScanKaufen):
+--   * Vollscan-Eintrag (true): stammt aus dem getAll-Abzug des ganzen Realms —
+--     es gibt KEINE ursprüngliche Such-filterData. Darum beim Kauf per Item-Namen
+--     neu suchen (filterData = nil) und tData.query setzen, damit der Weiterkauf
+--     eine Query-Referenz hat.
+--   * Live-Such-Eintrag (false): stammt aus einer gezielten Suche, deren
+--     filterData bekannt ist → diese wird beim Kauf wiederverwendet.
+-- Der BIETEN-Zweig ist in allen Fällen gleich (nutzt tData.query.filterData).
+local function _AuctionAttachBuyBidChildren(aEntry, aData, aFullScanKaufen)
+   if aData[12] == true then return end
+   aEntry.dynamic = true
+   if not (aData[tAIDIndex["highBidder"]] ~= true or aData[tAIDIndex["buyoutPrice"]] > 0) then
+      return
+   end
+   aEntry.BuildChildren = function(self)
+      if aData[tAIDIndex["highBidder"]] ~= true then
+         local tBidEntry = SkuOptions:InjectMenuItems(self, {L["Bieten"]}, SkuGenericMenuItem)
+         tBidEntry.dynamic = false
+         tBidEntry.data = self.parent.tData
+         tBidEntry.BuildChildren = function(self)
+            self.children = {}
+            for x = 1, #self.parent.data[19] do
+               local tNo = SkuOptions:InjectMenuItems(self, {""..x..L[" Auktionen"]}, SkuGenericMenuItem)
+               tNo.data = self.parent.data
+               tNo.OnAction = function(self, aValue, aName)
+                  local tData = self.data
+                  SkuCore.QueryBuyData = tData
+                  SkuCore.QueryBuyAmount = x
+                  SkuCore.QueryBuyBought = 0
+                  SkuCore.QueryBuyType = 1
+                  SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
+                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
+                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax, 0,
+                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
+                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
+                     false, true, tData.query.filterData, function() end)
+               end
+            end
+         end
+      end
+      if aData[tAIDIndex["buyoutPrice"]] > 0 then
+         local tBuyEntry = SkuOptions:InjectMenuItems(self, {L["Kaufen"]}, SkuGenericMenuItem)
+         tBuyEntry.dynamic = false
+         tBuyEntry.data = self.parent.tData
+         tBuyEntry.BuildChildren = function(self)
+            self.children = {}
+            for x = 1, #self.parent.data[19] do
+               local tNo = SkuOptions:InjectMenuItems(self, {""..x..L[" Auktionen"]}, SkuGenericMenuItem)
+               tNo.data = self.parent.data
+               tNo.OnAction = function(self, aValue, aName)
+                  local tData = self.data
+                  local tFilterData
+                  if aFullScanKaufen then
+                     tData.query = self.data
+                     tFilterData = nil
+                  else
+                     tFilterData = tData.query.filterData
+                  end
+                  SkuCore.QueryBuyData = tData
+                  SkuCore.QueryBuyAmount = x
+                  SkuCore.QueryBuyBought = 0
+                  SkuCore.QueryBuyType = 2
+                  SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
+                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
+                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax, 0,
+                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
+                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
+                     false, true, tFilterData, function() end)
+               end
+            end
+         end
+      end
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tQualityDb = {}
 function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, subCategoryIndex, subSubCategoryIndex)
    --print("AuctionHouseBuildItemFullScanDBMenu", categoryIndex, subCategoryIndex, subSubCategoryIndex)
@@ -2692,89 +2775,7 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
                   return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))
                end
    
-               if tData[12] ~= true then
-                  tNewMenuEntryCategorySubSubItem.dynamic = true
-                  if tData[tAIDIndex["highBidder"]] ~= true or tData[tAIDIndex["buyoutPrice"]] > 0 then
-                     tNewMenuEntryCategorySubSubItem.BuildChildren = function(self)
-                        if tData[tAIDIndex["highBidder"]] ~= true then
-                           tNewMenuEntryCOption = SkuOptions:InjectMenuItems(self, {L["Bieten"]}, SkuGenericMenuItem)
-                           tNewMenuEntryCOption.dynamic = false
-                           tNewMenuEntryCOption.data = self.parent.tData
-                           tNewMenuEntryCOption.BuildChildren = function(self)
-                              self.children = {}
-                              for x = 1, #self.parent.data[19] do
-                                 tNewMenuEntryCOptionNo = SkuOptions:InjectMenuItems(self, {""..x..L[" Auktionen"]}, SkuGenericMenuItem)
-                                 tNewMenuEntryCOptionNo.data = self.parent.data
-                                 tNewMenuEntryCOptionNo.OnAction = function(self, aValue, aName)
-                                    local tData = self.data
-
-                                    SkuCore.QueryBuyData = tData
-                                    SkuCore.QueryBuyAmount = x
-                                    SkuCore.QueryBuyBought = 0
-                                    SkuCore.QueryBuyType = 1
-
-                                    SkuCore:AuctionHouseStartQuery(
-                                       nil, 
-                                       "AUCTION_ITEM_LIST_UPDATE", 
-                                       tData[1], 
-                                       SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin, 
-                                       SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax, 
-                                       0, 
-                                       SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable, 
-                                       SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality, 
-                                       false, 
-                                       true, 
-                                       tData.query.filterData,
-                                       function()
-
-                                       end            
-                                    )
-
-                                 end
-                              end
-                           end
-                        end
-               
-                        if tData[tAIDIndex["buyoutPrice"]] > 0 then
-                           tNewMenuEntryCOption = SkuOptions:InjectMenuItems(self, {L["Kaufen"]}, SkuGenericMenuItem)
-                           tNewMenuEntryCOption.dynamic = false
-                           tNewMenuEntryCOption.data = self.parent.tData
-                           tNewMenuEntryCOption.BuildChildren = function(self)
-                              self.children = {}
-                              for x = 1, #self.parent.data[19] do
-                                 tNewMenuEntryCOptionNo = SkuOptions:InjectMenuItems(self, {""..x..L[" Auktionen"]}, SkuGenericMenuItem)
-                                 tNewMenuEntryCOptionNo.data = self.parent.data
-                                 tNewMenuEntryCOptionNo.OnAction = function(self, aValue, aName)
-                                    local tData = self.data
-                                    tData.query = self.data
-                                    SkuCore.QueryBuyData = tData
-                                    SkuCore.QueryBuyAmount = x
-                                    SkuCore.QueryBuyBought = 0
-                                    SkuCore.QueryBuyType = 2
-
-                                    SkuCore:AuctionHouseStartQuery(
-                                       nil, 
-                                       "AUCTION_ITEM_LIST_UPDATE", 
-                                       tData[1], 
-                                       SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin, 
-                                       SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax, 
-                                       0, 
-                                       SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable, 
-                                       SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality, 
-                                       false, 
-                                       true, 
-                                       nil,--tData.query.filterData,
-                                       function()
-
-                                       end            
-                                    )
-                                 end
-                              end
-                           end
-                        end
-                     end
-                  end
-               end
+               _AuctionAttachBuyBidChildren(tNewMenuEntryCategorySubSubItem, tData, true)
             end
          end
       end
@@ -3013,64 +3014,7 @@ function SkuCore:AuctionResultsCreateEntry(aParent, tDataTmp, tIndex)
       return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))
    end
 
-   if tData[12] ~= true then
-      tEntry.dynamic = true
-      if tData[tAIDIndex["highBidder"]] ~= true or tData[tAIDIndex["buyoutPrice"]] > 0 then
-         tEntry.BuildChildren = function(self)
-            if tData[tAIDIndex["highBidder"]] ~= true then
-               local tBidEntry = SkuOptions:InjectMenuItems(self, {L["Bieten"]}, SkuGenericMenuItem)
-               tBidEntry.dynamic = false
-               tBidEntry.data = self.parent.tData
-               tBidEntry.BuildChildren = function(self)
-                  self.children = {}
-                  for x = 1, #self.parent.data[19] do
-                     local tNo = SkuOptions:InjectMenuItems(self, {""..x..L[" Auktionen"]}, SkuGenericMenuItem)
-                     tNo.data = self.parent.data
-                     tNo.OnAction = function(self, aValue, aName)
-                        local tData = self.data
-                        SkuCore.QueryBuyData = tData
-                        SkuCore.QueryBuyAmount = x
-                        SkuCore.QueryBuyBought = 0
-                        SkuCore.QueryBuyType = 1
-                        SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
-                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
-                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax, 0,
-                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
-                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
-                           false, true, tData.query.filterData, function() end)
-                     end
-                  end
-               end
-            end
-
-            if tData[tAIDIndex["buyoutPrice"]] > 0 then
-               local tBuyEntry = SkuOptions:InjectMenuItems(self, {L["Kaufen"]}, SkuGenericMenuItem)
-               tBuyEntry.dynamic = false
-               tBuyEntry.data = self.parent.tData
-               tBuyEntry.BuildChildren = function(self)
-                  self.children = {}
-                  for x = 1, #self.parent.data[19] do
-                     local tNo = SkuOptions:InjectMenuItems(self, {""..x..L[" Auktionen"]}, SkuGenericMenuItem)
-                     tNo.data = self.parent.data
-                     tNo.OnAction = function(self, aValue, aName)
-                        local tData = self.data
-                        SkuCore.QueryBuyData = tData
-                        SkuCore.QueryBuyAmount = x
-                        SkuCore.QueryBuyBought = 0
-                        SkuCore.QueryBuyType = 2
-                        SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
-                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
-                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax, 0,
-                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
-                           SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
-                           false, true, tData.query.filterData, function() end)
-                     end
-                  end
-               end
-            end
-         end
-      end
-   end
+   _AuctionAttachBuyBidChildren(tEntry, tData, false)
 
    return tEntry
 end
@@ -3286,88 +3230,7 @@ function SkuCore:AuctionHouseResultsMenuBuilder(aParent)
                      return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))
                   end
       
-                  if tData[12] ~= true then
-                     tNewMenuEntryCategorySubSubItem.dynamic = true
-                     if tData[tAIDIndex["highBidder"]] ~= true or tData[tAIDIndex["buyoutPrice"]] > 0 then
-                        tNewMenuEntryCategorySubSubItem.BuildChildren = function(self)
-                           if tData[tAIDIndex["highBidder"]] ~= true then
-                              tNewMenuEntryCOption = SkuOptions:InjectMenuItems(self, {L["Bieten"]}, SkuGenericMenuItem)
-                              tNewMenuEntryCOption.dynamic = false
-                              tNewMenuEntryCOption.data = self.parent.tData
-                              tNewMenuEntryCOption.BuildChildren = function(self)
-                                 self.children = {}
-                                 for x = 1, #self.parent.data[19] do
-                                    tNewMenuEntryCOptionNo = SkuOptions:InjectMenuItems(self, {""..x..L[" Auktionen"]}, SkuGenericMenuItem)
-                                    tNewMenuEntryCOptionNo.data = self.parent.data
-                                    tNewMenuEntryCOptionNo.OnAction = function(self, aValue, aName)
-                                       local tData = self.data
-
-                                       SkuCore.QueryBuyData = tData
-                                       SkuCore.QueryBuyAmount = x
-                                       SkuCore.QueryBuyBought = 0
-                                       SkuCore.QueryBuyType = 1
-
-                                       SkuCore:AuctionHouseStartQuery(
-                                          nil, 
-                                          "AUCTION_ITEM_LIST_UPDATE", 
-                                          tData[1], 
-                                          SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin, 
-                                          SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax, 
-                                          0, 
-                                          SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable, 
-                                          SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality, 
-                                          false, 
-                                          true, 
-                                          tData.query.filterData,
-                                          function()
-
-                                          end            
-                                       )
-                                    end
-                                 end
-                              end
-                           end
-                  
-                           if tData[tAIDIndex["buyoutPrice"]] > 0 then
-                              tNewMenuEntryCOption = SkuOptions:InjectMenuItems(self, {L["Kaufen"]}, SkuGenericMenuItem)
-                              tNewMenuEntryCOption.dynamic = false
-                              tNewMenuEntryCOption.data = self.parent.tData
-                              tNewMenuEntryCOption.BuildChildren = function(self)
-                                 self.children = {}
-                                 for x = 1, #self.parent.data[19] do
-                                    tNewMenuEntryCOptionNo = SkuOptions:InjectMenuItems(self, {""..x..L[" Auktionen"]}, SkuGenericMenuItem)
-                                    tNewMenuEntryCOptionNo.data = self.parent.data
-                                    tNewMenuEntryCOptionNo.OnAction = function(self, aValue, aName)
-                                       local tData = self.data
-
-                                       SkuCore.QueryBuyData = tData
-                                       SkuCore.QueryBuyAmount = x
-                                       SkuCore.QueryBuyBought = 0
-                                       SkuCore.QueryBuyType = 2
-
-                                       SkuCore:AuctionHouseStartQuery(
-                                          nil, 
-                                          "AUCTION_ITEM_LIST_UPDATE", 
-                                          tData[1], 
-                                          SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin, 
-                                          SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax, 
-                                          0, 
-                                          SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable, 
-                                          SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality, 
-                                          false, 
-                                          true, 
-                                          tData.query.filterData,
-                                          function()
-
-                                          end            
-                                       )
-                                    end
-                                 end
-                              end
-                           end
-                        end
-                     end
-                  end
+                  _AuctionAttachBuyBidChildren(tNewMenuEntryCategorySubSubItem, tData, false)
                end
             end
          end
