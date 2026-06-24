@@ -2699,58 +2699,21 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
          return
       end
    
-      tCurrentDBCleanSorted = {}
-   
-      if SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 1 or not SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy then
-         for k, v in SkuSpairs(tCurrentDBClean, 
-            function(t,a,b) 
-               return t[b].pricePerItem.buy > t[a].pricePerItem.buy
-            end) 
-         do 
-            table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerItem = v.pricePerItem, level = v.level, query = v.query,})
-         end
-      elseif SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 2 then
-         for k, v in SkuSpairs(tCurrentDBClean, 
-            function(t,a,b) 
-               return t[b].pricePerAuction.buy > t[a].pricePerAuction.buy
-            end) 
-         do 
-            table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerAuction = v.pricePerAuction, level = v.level, query = v.query,})
-         end
-      elseif SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 3 then
-         for k, v in SkuSpairs(tCurrentDBClean, 
-            function(t,a,b) 
-               return t[b].pricePerItem.bid > t[a].pricePerItem.bid
-            end) 
-         do 
-            table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerItem = v.pricePerItem, level = v.level, query = v.query,})
-         end      
-      elseif SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 4 then
-         for k, v in SkuSpairs(tCurrentDBClean, 
-            function(t,a,b) 
-               return t[b].pricePerAuction.bid > t[a].pricePerAuction.bid
-            end) 
-         do 
-            table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerAuction = v.pricePerAuction, level = v.level, query = v.query,})
-         end
-   
-      elseif SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 5 then
-         for k, v in SkuSpairs(tCurrentDBClean, 
-            function(t,a,b) 
-               return t[b].level < t[a].level
-            end) 
-         do 
-            table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerAuction = v.pricePerAuction, level = v.level, query = v.query,})
-         end
-      elseif SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 6 then
-         for k, v in SkuSpairs(tCurrentDBClean, 
-            function(t,a,b) 
-               return t[b].level > t[a].level
-            end) 
-         do 
-            table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerAuction = v.pricePerAuction, level = v.level, query = v.query,})
-         end
-      end
+      -- In-Place-Sort wie im Live-Listen-Pfad (AuctionGroupResults): ersetzt die
+      -- frühere Kopie-pro-Eintrag über sechs SkuSpairs-Zweige. Reihenfolge bleibt
+      -- identisch (gleiche SortBy-Bedeutung, gleiche Vergleiche; der Folge-Loop
+      -- nutzt nur name/dupes/level, die alle erhalten bleiben).
+      tCurrentDBCleanSorted = tCurrentDBClean
+      local tSortBy = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy or 1
+      local tComparators = {
+         [1] = function(a, b) return a.pricePerItem.buy    < b.pricePerItem.buy    end,
+         [2] = function(a, b) return a.pricePerAuction.buy < b.pricePerAuction.buy end,
+         [3] = function(a, b) return a.pricePerItem.bid    < b.pricePerItem.bid    end,
+         [4] = function(a, b) return a.pricePerAuction.bid < b.pricePerAuction.bid end,
+         [5] = function(a, b) return (a.level or 0) > (b.level or 0) end,
+         [6] = function(a, b) return (a.level or 0) < (b.level or 0) end,
+      }
+      table.sort(tCurrentDBCleanSorted, tComparators[tSortBy] or tComparators[1])
    
       for tIndex, tDataTmp in pairs(tCurrentDBCleanSorted) do
          local tData = tDataTmp.dupes[1]
@@ -3137,59 +3100,12 @@ function SkuCore:AuctionHouseResultsMenuBuilder(aParent)
          tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["leer"]}, SkuGenericMenuItem)
          tNewMenuEntryCategorySubItem.dynamic = false
       else
-         -- Performance: Hash-Map für Namen-Lookup, statt linearer
-         -- Suche durch tCurrentDBClean für jeden Eintrag (O(n²) → O(n)).
-         -- Bei FullScan-Ergebnissen mit ~1000+ Items spart das deutlich.
-         local tCurrentDBClean = {}
-         local tNameIndex = {}
-         for tIndex, tRecord in pairs(QueryResultsDB) do
-            if tRecord and tRecord[1] then
-               local tName = SkuCore:AuctionItemNameFormat(tRecord)
-               local existingIdx = tNameIndex[tName]
-               if existingIdx then
-                  local dupes = tCurrentDBClean[existingIdx].dupes
-                  dupes[#dupes + 1] = tRecord
-               else
-                  -- Use the required-level value already returned by the
-                  -- scan (GetAuctionItemInfo field 6) instead of calling
-                  -- GetItemInfo again per item. GetItemInfo triggers async
-                  -- server lookups on cache misses and is by far the worst
-                  -- offender when building the browse menu from a large
-                  -- FullScan result. Fall back to GetItemInfo only if the
-                  -- record genuinely lacks a level (e.g. partially-scanned
-                  -- legacy entries from a previous Sku version).
-                  local tLevel = tRecord[6]
-                  if not tLevel or tLevel == 0 or tLevel > 10000 then
-                     tLevel = select(4, GetItemInfo(tRecord[17])) or 0
-                  end
-                  local entry = {
-                     name = tName,
-                     level = tLevel,
-                     pricePerItem = SkuCore:AuctionGetPricePerItem(tRecord),
-                     pricePerAuction = { bid = tRecord[8], buy = tRecord[10] },
-                     dupes = { tRecord },
-                     query = tRecord.query,
-                  }
-                  tCurrentDBClean[#tCurrentDBClean + 1] = entry
-                  tNameIndex[tName] = #tCurrentDBClean
-               end
-            end
-         end
-         
-         -- In-Place-Sort statt Kopie-pro-Eintrag: spart ~N Tabellen-
-         -- Allokationen bei großen Resultaten. tCurrentDBClean ist
-         -- bereits ein flaches Array (1..N), table.sort O(n log n).
-         local tSortBy = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy or 1
-         local tComparators = {
-            [1] = function(a, b) return a.pricePerItem.buy    < b.pricePerItem.buy    end,
-            [2] = function(a, b) return a.pricePerAuction.buy < b.pricePerAuction.buy end,
-            [3] = function(a, b) return a.pricePerItem.bid    < b.pricePerItem.bid    end,
-            [4] = function(a, b) return a.pricePerAuction.bid < b.pricePerAuction.bid end,
-            [5] = function(a, b) return (a.level or 0) > (b.level or 0) end,
-            [6] = function(a, b) return (a.level or 0) < (b.level or 0) end,
-         }
-         table.sort(tCurrentDBClean, tComparators[tSortBy] or tComparators[1])
-         tCurrentDBCleanSorted = tCurrentDBClean
+         -- Gruppieren (Dubletten je Name zusammenfassen) + sortieren über den
+         -- gemeinsamen Helfer — exakt derselbe Code wie der Nachlade-Pfad
+         -- (AuctionResultsAppend → AuctionGroupResults). Früher stand er hier
+         -- inline kopiert, was bei einer Abweichung die Cursor-Reihenfolge
+         -- hätte springen lassen.
+         tCurrentDBCleanSorted = SkuCore:AuctionGroupResults()
 
          -- Zustand für stilles Nachladen weiterer Seiten merken.
          SkuCore.QueryResultsByName = {}
