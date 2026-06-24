@@ -217,12 +217,22 @@ function dprint(...)
 	end
 end
 
+-- Write a one-off marker line into the ring with full date+time. Called when
+-- logging is turned on, so a persisted-but-uncleared buffer shows an
+-- unmistakable "this run starts here" divider — the ring is NOT cleared on
+-- /reload and the flags reset to off each load, so without this stale lines
+-- from an earlier session can be mistaken for fresh output.
+function Sku:DebugLogMark(aText)
+	tDebugLogAppend("=== " .. tostring(aText) .. "  " .. date("%Y-%m-%d %H:%M:%S") .. " ===")
+end
+
 -- /skudebug — control the two debug channels and the persisted log.
 SLASH_SKUDEBUG1 = "/skudebug"
 SlashCmdList["SKUDEBUG"] = function(aMsg)
 	aMsg = (aMsg or ""):lower():match("^%s*(.-)%s*$")
 	local d = Sku.debug or {}
 	Sku.debug = d
+	local tWasLog = d.log
 	if aMsg == "print on" then d.print = true
 	elseif aMsg == "print off" then d.print = false
 	elseif aMsg == "log on" then d.log = true
@@ -245,6 +255,7 @@ SlashCmdList["SKUDEBUG"] = function(aMsg)
 	elseif aMsg ~= "" then
 		print("|cff80c0ffSkuDebug|r: usage: /skudebug on|off|print on|print off|log on|log off|clear|show")
 	end
+	if d.log and not tWasLog then Sku:DebugLogMark("log enabled") end
 	print(string.format("|cff80c0ffSkuDebug|r: print=%s log=%s", tostring(d.print), tostring(d.log)))
 end
 

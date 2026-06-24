@@ -1432,6 +1432,7 @@ function SkuOptions:CreateMainFrame()
 			-- Announced via voice (not chat) so it doesn't depend on TTS reading
 			-- the chat frame.
 			local d = Sku.debug or {}
+			local tWasLog = d.log
 			local tState
 			if not d.print and not d.log then
 				d.print, d.log, tState = false, true, "Debug log only"
@@ -1443,6 +1444,7 @@ function SkuOptions:CreateMainFrame()
 				d.print, d.log, tState = false, false, "Debug off"
 			end
 			Sku.debug = d
+			if d.log and not tWasLog and Sku.DebugLogMark then Sku:DebugLogMark("log enabled (keybind)") end
 			SkuOptions.Voice:OutputString(tState, true, true, 0.3, true)
 		end
 	

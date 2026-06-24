@@ -119,6 +119,10 @@ talentSwitch, atlas.menu, menu.reanchor, etc.
   load** — the captured DATA persists across `/reload`, the on/off STATE does
   NOT, so re-enable each session. `/skudebug` (no args) reports the flags;
   `/skudebug clear` empties the ring; `/skudebug show` prints the last 10.
+- Because the ring is NOT cleared on `/reload`, turning logging on writes a
+  marker line `=== log enabled  YYYY-MM-DD HH:MM:SS ===` (also `(keybind)` via
+  the keybind). Everything AFTER the last such marker is the current run —
+  use it to tell fresh lines from stale history, or `/skudebug clear` first.
 - `dprint` is cheap when off (one flag check; no `debugstack`, no context).
 
 **2. `SkuErrorLog` — ERRORS + a few deliberate diagnostics.** The error-capture
