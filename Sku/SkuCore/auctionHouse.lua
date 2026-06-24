@@ -3973,9 +3973,13 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
    -- noch nicht geladen → kein Match → Seite übersprungen → Kauf verfehlt,
    -- oder es wird auf einen noch instabilen Index geboten (das alte
    -- No-Op-Problem). Owner (Feld 14) wird weiter toleriert (Anniversary-Quirk).
+   -- Seite EINMAL komplett einlesen (Item-Infos cachen) und dabei prüfen, ob alle
+   -- Zeilen einen Namen haben. Die Match-Schleife unten nutzt diese gecachten
+   -- Zeilen wieder, statt GetAuctionItemInfo pro Zeile ein zweites Mal zu rufen.
+   local tRows = {}
    for x = 1, tBatch do
-      local tResult = {GetAuctionItemInfo("list", x)}
-      if not tResult[1] or tResult[1] == "" then
+      tRows[x] = {GetAuctionItemInfo("list", x)}
+      if not tRows[x][1] or tRows[x][1] == "" then
          dprint("buy: incomplete page data, waiting")
          return
       end
@@ -3990,10 +3994,10 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
    local tSkip = (SkuCore.AuctionBuy and SkuCore.AuctionBuy.failCount) or 0
    local tMatchSeen = 0
    local tMatchAttempts = {}
+   local tLogOn = (SkuErrorLog and SkuErrorLog.Log) and true or false
    for x = 1, tBatch do
-      --check if same item
-      local tCurrentResult = {GetAuctionItemInfo("list", x)}
-      tCurrentResult[21] = GetAuctionItemLink("list", x)
+      --check if same item (gecachte Zeile wiederverwenden; Link erst beim Treffer)
+      local tCurrentResult = tRows[x]
       local tFound = true
       local tMismatchField
       -- Lockerere Match-Kriterien für Buyout-Käufe (QueryBuyType==2):
@@ -4003,9 +4007,9 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
       -- 17-Feld-Vergleich systematisch fehlschlagen — der Pop-Up
       -- erschien dadurch nie.
       if SkuCore.QueryBuyType == 2 then
-         local sameItem = tCurrentResult[17] == SkuCore.QueryBuyData[17]
-         local sameBuy  = tCurrentResult[10] == SkuCore.QueryBuyData[10]
-         local sameCount = tCurrentResult[3] == SkuCore.QueryBuyData[3]
+         local sameItem  = tCurrentResult[tAIDIndex["itemId"]]      == SkuCore.QueryBuyData[tAIDIndex["itemId"]]
+         local sameBuy   = tCurrentResult[tAIDIndex["buyoutPrice"]] == SkuCore.QueryBuyData[tAIDIndex["buyoutPrice"]]
+         local sameCount = tCurrentResult[tAIDIndex["count"]]       == SkuCore.QueryBuyData[tAIDIndex["count"]]
          if not sameItem then
             tFound = false; tMismatchField = "itemId(17)"
          elseif not sameBuy then
@@ -4016,26 +4020,31 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
       else
          -- Bid-Käufe: weiterhin strenger Vergleich, weil hier
          -- jede individuelle Auktion zählt (Bid-Höhe variiert).
+         -- Owner (Feld 14) bleibt ausgenommen (Anniversary nil-Owner-Quirk).
          for y = 1, 17 do
             dprint("COMPARE", x, y, tCurrentResult[y], SkuCore.QueryBuyData[y])
-            if tCurrentResult[y] ~= SkuCore.QueryBuyData[y] and y ~= 14 then
+            if tCurrentResult[y] ~= SkuCore.QueryBuyData[y] and y ~= tAIDIndex["owner"] then
                tFound = false
                tMismatchField = tMismatchField or y
             end
          end
       end
-      if tCurrentResult[12] == true then
+      if tCurrentResult[tAIDIndex["highBidder"]] == true then
          tFound = false
          tMismatchField = "alreadyBid(12)"
       end
-      tMatchAttempts[#tMatchAttempts + 1] = {
-         idx = x,
-         found = tFound,
-         miss = tMismatchField,
-         resItemId = tCurrentResult[17],
-         resBuyout = tCurrentResult[10],
-         resCount = tCurrentResult[3],
-      }
+      -- Match-Versuche NUR fürs Log sammeln (und nur die ersten 5 — mehr liest
+      -- die Diagnose unten nie). Spart sonst pro Zeile eine Tabellenallokation.
+      if tLogOn and #tMatchAttempts < 5 then
+         tMatchAttempts[#tMatchAttempts + 1] = {
+            idx = x,
+            found = tFound,
+            miss = tMismatchField,
+            resItemId = tCurrentResult[tAIDIndex["itemId"]],
+            resBuyout = tCurrentResult[tAIDIndex["buyoutPrice"]],
+            resCount = tCurrentResult[tAIDIndex["count"]],
+         }
+      end
 
       -- found, buy
       if tFound == true then
@@ -4061,6 +4070,8 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
          end
          SkuCore:AuctionScanSetState("idle")
 
+         -- Link erst jetzt holen (nur für die getroffene Zeile gebraucht).
+         tCurrentResult[21] = GetAuctionItemLink("list", x)
          -- Gesamte Bestätigungs-Sequenz (Typ 1 = Gebot, Typ 2 = Kauf)
          -- läuft jetzt durch die zentrale State-Machine
          -- SkuCore:AuctionBuyConfirm. Sie kümmert sich um Generation-
@@ -4099,7 +4110,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
                   .. " id=" .. tostring(a.resItemId) .. "] "
             end
             SkuErrorLog:Log("auction.buy", "no match found across pages", {
-               batchAttempts = #tMatchAttempts,
+               batchAttempts = tBatch,
                firstFew = attemptStr,
             })
          end)
