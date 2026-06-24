@@ -1156,8 +1156,23 @@ function SkuOptions:CreateControlFrame()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Idempotenter CVar-Schreiber: schreibt (und loggt) nur bei echter Aenderung
+-- gegenueber dem zuletzt angewandten Wert. UpdateSoftTargetingSettings wird vom
+-- 0,25-s-Ticker in SkuMob 4x/s mit "all" aufgerufen, um SoftTargetInteract an
+-- den aktuellen Zielzustand (interactTempDisabled) anzugleichen; ohne Cache
+-- schrieb es dabei ~9 CVars pro Tick neu und flutete das Log. Jetzt No-Op,
+-- solange sich nichts aendert; bei Aenderung genau eine "from->to"-Zeile.
+local tSoftTargetCVarCache = {}
+local function tSetSoftTargetCVar(aName, aValue)
+	aValue = tostring(aValue)
+	if tSoftTargetCVarCache[aName] == aValue then return end
+	local tOld = tSoftTargetCVarCache[aName]
+	SetCVar(aName, aValue)
+	tSoftTargetCVarCache[aName] = aValue
+	dprint("softTarget", aName, { from = tOld, to = aValue })
+end
+
 function SkuOptions:UpdateSoftTargetingSettings(aKey)
-	dprint("UpdateSoftTargetingSettings()", aKey)
 	-- [41.05] SoftTarget-CVars sind im Kampf von Blizzard gesperrt. Schreibzugriffe im
 	-- Kampf erzeugen sonst ADDON_ACTION_BLOCKED und werden ohnehin ignoriert. Daher im
 	-- Kampf ueberspringen (Werte sind eingefroren) und nach Kampfende einmal nachholen.
@@ -1166,22 +1181,21 @@ function SkuOptions:UpdateSoftTargetingSettings(aKey)
 		return
 	end
 	SkuOptions.tSoftTargetDeferred = nil
-	SetCVar("SoftTargetForce", SkuOptions.db.profile[MODULE_NAME].softTargeting.force)
+	tSetSoftTargetCVar("SoftTargetForce", SkuOptions.db.profile[MODULE_NAME].softTargeting.force)
 	-- [41.05] Bugfix "Hardtarget vor Softtarget": beide Zweige setzten frueher
 	-- SoftTargetMatchLocked = 0, die Option hatte also nie Wirkung. Jetzt bei
 	-- aktiviertem matchLocked = 1 (Softtarget folgt dem Hardtarget -> Hardtarget zaehlt).
 	if SkuOptions.db.profile[MODULE_NAME].softTargeting.matchLocked > 0 then
-		SetCVar("SoftTargetMatchLocked", 1)
+		tSetSoftTargetCVar("SoftTargetMatchLocked", 1)
 	else
-		SetCVar("SoftTargetMatchLocked", 0)
+		tSetSoftTargetCVar("SoftTargetMatchLocked", 0)
 	end
 
 	if aKey == "SKU_KEY_ENABLESOFTTARGETINGENEMY" or aKey == "all" then
-		dprint("enemy all")
 		if SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.enabled == true then
-			SetCVar("SoftTargetEnemy", 3)
+			tSetSoftTargetCVar("SoftTargetEnemy", 3)
 		else
-			SetCVar("SoftTargetEnemy", 0)
+			tSetSoftTargetCVar("SoftTargetEnemy", 0)
 		end
 		if aKey == "SKU_KEY_ENABLESOFTTARGETINGENEMY" and SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat == true then
 			if SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.enabled == true then
@@ -1190,16 +1204,15 @@ function SkuOptions:UpdateSoftTargetingSettings(aKey)
 				print(L["Soft targeting"].." "..L["Enemies"].." "..L["disabled"])
 			end
 		end
-		SetCVar("SoftTargetEnemyArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.arc)
-		SetCVar("SoftTargetEnemyRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.range)
+		tSetSoftTargetCVar("SoftTargetEnemyArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.arc)
+		tSetSoftTargetCVar("SoftTargetEnemyRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.range)
 	end
 
 	if aKey == "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY" or aKey == "all" then
-		dprint("friend all")
 		if SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.enabled == true then
-			SetCVar("SoftTargetFriend", 3)
+			tSetSoftTargetCVar("SoftTargetFriend", 3)
 		else
-			SetCVar("SoftTargetFriend", 0)
+			tSetSoftTargetCVar("SoftTargetFriend", 0)
 		end
 		if aKey == "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY" and SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat == true then
 			if SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.enabled == true then
@@ -1208,16 +1221,15 @@ function SkuOptions:UpdateSoftTargetingSettings(aKey)
 				print(L["Soft targeting"].." "..L["Friends"].." "..L["disabled"])
 			end			
 		end
-		SetCVar("SoftTargetFriendArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.arc)
-		SetCVar("SoftTargetFriendRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.range)
+		tSetSoftTargetCVar("SoftTargetFriendArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.arc)
+		tSetSoftTargetCVar("SoftTargetFriendRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.range)
 	end
 
 	if aKey == "SKU_KEY_ENABLESOFTTARGETINGINTERACT" or aKey == "all" then
-		dprint("inter all")
 		if SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.enabled == true and not SkuMob.interactTempDisabled then
-			SetCVar("SoftTargetInteract", 3)
+			tSetSoftTargetCVar("SoftTargetInteract", 3)
 		else
-			SetCVar("SoftTargetInteract", 0)
+			tSetSoftTargetCVar("SoftTargetInteract", 0)
 		end
 		if aKey == "SKU_KEY_ENABLESOFTTARGETINGINTERACT" and SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat == true then
 			if SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.enabled == true then
@@ -1226,8 +1238,8 @@ function SkuOptions:UpdateSoftTargetingSettings(aKey)
 				print(L["Soft targeting"].." "..L["Interact"].." "..L["disabled"])
 			end
 		end
-		SetCVar("SoftTargetInteractArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.arc)
-		SetCVar("SoftTargetInteractRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.range)
+		tSetSoftTargetCVar("SoftTargetInteractArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.arc)
+		tSetSoftTargetCVar("SoftTargetInteractRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.range)
 	end
 end
 
