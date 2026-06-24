@@ -420,6 +420,62 @@ local function _ABLog(action, payload)
    end
 end
 
+-- Logging für den Verkaufs-/Einstell-Pfad (PostAuction). Bisher war dieser Pfad
+-- komplett ungeloggt und sagte "Auktion erstellt" auch dann an, wenn nichts
+-- eingestellt wurde — daher gab es keine Spur, warum eine Auktion nicht erschien.
+local function _ASLog(action, payload)
+   if SkuErrorLog and SkuErrorLog.Log then
+      pcall(function()
+         SkuErrorLog:Log("auction.sell", action, payload or {})
+      end)
+   end
+end
+
+-- Kurzlebiger Mithörer für die Server-Antwort direkt nach PostAuction. Loggt die
+-- echte Blizzard-Meldung (UI_ERROR_MESSAGE bei Fehlschlag bzw. "Auktion erstellt."
+-- bei Erfolg), damit ein stiller Fehlschlag im SkuErrorLog seinen Grund hat.
+-- Reines Logging — steuert keine Logik.
+local _ASMsgFrame = _G["SkuAuctionSellMsgFrame"]
+if not _ASMsgFrame then
+   _ASMsgFrame = CreateFrame("Frame", "SkuAuctionSellMsgFrame", UIParent)
+end
+local _ASMsgTimer
+local _ASStartedMsg = (type(ERR_AUCTION_STARTED) == "string") and ERR_AUCTION_STARTED or nil
+-- Mehrfach-Post (numStacks > 1) läuft als asynchroner Multisell über mehrere
+-- Sekunden. Diese Events mitschreiben, um zu sehen, wie weit er kommt und ob er
+-- abgebrochen wird (z.B. weil das AH schließt).
+local _ASMultisellEvents = {
+   "AUCTION_MULTISELL_START", "AUCTION_MULTISELL_UPDATE",
+   "AUCTION_MULTISELL_FAILURE", "AUCTION_HOUSE_CLOSED",
+}
+_ASMsgFrame:SetScript("OnEvent", function(self, event, arg1, arg2)
+   if event == "UI_ERROR_MESSAGE" then
+      -- 2.5.5: (errorType, message); ältere Signatur: nur message.
+      local tMsg = (type(arg2) == "string") and arg2 or arg1
+      _ASLog("server UI_ERROR_MESSAGE", { msg = (type(tMsg) == "string") and tMsg or tostring(tMsg) })
+   elseif event == "CHAT_MSG_SYSTEM" then
+      if _ASStartedMsg and arg1 == _ASStartedMsg then
+         _ASLog("server: auction started", { msg = arg1 })
+      end
+   else
+      _ASLog("event "..tostring(event), { arg1 = arg1, arg2 = arg2 })
+   end
+end)
+local function _ASStopResultCapture()
+   _ASMsgFrame:UnregisterEvent("UI_ERROR_MESSAGE")
+   _ASMsgFrame:UnregisterEvent("CHAT_MSG_SYSTEM")
+   for _, e in ipairs(_ASMultisellEvents) do pcall(_ASMsgFrame.UnregisterEvent, _ASMsgFrame, e) end
+   if _ASMsgTimer then _ASMsgTimer:Cancel() _ASMsgTimer = nil end
+end
+local function _ASCaptureResult()
+   _ASStopResultCapture()
+   _ASMsgFrame:RegisterEvent("UI_ERROR_MESSAGE")
+   _ASMsgFrame:RegisterEvent("CHAT_MSG_SYSTEM")
+   for _, e in ipairs(_ASMultisellEvents) do pcall(_ASMsgFrame.RegisterEvent, _ASMsgFrame, e) end
+   -- 8 s deckt auch einen größeren Multisell ab.
+   _ASMsgTimer = C_Timer.NewTimer(8, _ASStopResultCapture)
+end
+
 local function _ABTrack(timer)
    if timer then
       table.insert(SkuCore.AuctionBuy.timers, timer)
@@ -2137,11 +2193,16 @@ OnEnterAllFlag = nil
                         
                         tNewMenuSubSubEntry.textFull = aGossipItemTable.textFull
                      
+                        -- Post-Pfad (Original v41.06): die Dauer-Auswahl im
+                        -- Anzahl-Schritt setzt selectTarget zurück auf diesen
+                        -- Item-Eintrag und feuert daher GENAU diese OnAction. Über
+                        -- den tiefen isSelect-Anzahl-Knoten zu posten brach den
+                        -- Multisell ab — deshalb wieder hierüber.
                         tNewMenuSubSubEntry.OnAction = function(self, aValue, aName)
                            local tAmount = tonumber(self.selectTarget.amount)
                            local tNumAuctions = tonumber(self.selectTarget.numAuctions)
                            local tCopperBuyout = tonumber(self.selectTarget.price)
-                           local tCopperStartBid = mfloor(tCopperBuyout * 0.9)
+                           local tCopperStartBid = tCopperBuyout and mfloor(tCopperBuyout * 0.9) or nil
                            local tDuration
                            if aName == L["Erstellen: 12 Stunden"] then
                               tDuration = 1
@@ -2150,21 +2211,75 @@ OnEnterAllFlag = nil
                            elseif aName == L["Erstellen: 48 Stunden"] then
                               tDuration = 3
                            end
-                     
+
+                           _ASLog("post requested", {
+                              itemId = aGossipItemTable.itemId,
+                              containerFrame = aGossipItemTable.containerFrameName,
+                              amount = tAmount, numAuctions = tNumAuctions,
+                              buyout = tCopperBuyout, startBid = tCopperStartBid,
+                              durationLabel = aName, duration = tDuration,
+                           })
+
                            if not tDuration or not tCopperBuyout or not tAmount or not tNumAuctions then
+                              -- Stiller Abbruch: ein Parameter fehlt. Bisher kam hier
+                              -- gar keine Ansage/kein Log — jetzt protokollieren und ansagen.
+                              _ASLog("post aborted: missing param", {
+                                 hasDuration = tDuration ~= nil, hasBuyout = tCopperBuyout ~= nil,
+                                 hasAmount = tAmount ~= nil, hasNumAuctions = tNumAuctions ~= nil,
+                              })
+                              pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Nicht verkaufbar"], false, true, 0.1, nil, nil, nil, 1) end)
                               return
                            end
-                     
+
                            --post it
                            ClearCursor()
-                           _G["AuctionFrameTab3"]:GetScript("OnClick")(_G["AuctionFrameTab3"], "LeftButton") 
-                           _G["AuctionsItemButton"]:GetScript("OnDragStart")(_G["AuctionsItemButton"], "LeftButton") 
+                           _G["AuctionFrameTab3"]:GetScript("OnClick")(_G["AuctionFrameTab3"], "LeftButton")
+                           _G["AuctionsItemButton"]:GetScript("OnDragStart")(_G["AuctionsItemButton"], "LeftButton")
                            ClearCursor()
-                           _G[aGossipItemTable.containerFrameName]:GetScript("OnDragStart")(_G[aGossipItemTable.containerFrameName], "LeftButton") 
-                           ClickAuctionSellItemButton() 
-                     
-                           PostAuction(tCopperStartBid, tCopperBuyout, tDuration, tAmount, tNumAuctions, true)
-                     
+                           local tContainerFrame = _G[aGossipItemTable.containerFrameName]
+                           if tContainerFrame then
+                              tContainerFrame:GetScript("OnDragStart")(tContainerFrame, "LeftButton")
+                           else
+                              _ASLog("post: container frame missing", { containerFrame = aGossipItemTable.containerFrameName })
+                           end
+                           ClickAuctionSellItemButton()
+
+                           -- Prüfen, ob nach dem Drag/Klick tatsächlich ein Item im
+                           -- Verkaufsslot liegt. Ist der Slot leer, tut PostAuction
+                           -- nichts (häufige Ursache für "nichts eingestellt").
+                           local tStagedName, tStagedCount, tStagedDeposit
+                           pcall(function()
+                              local n, _, c = GetAuctionSellItemInfo()
+                              tStagedName, tStagedCount = n, c
+                              tStagedDeposit = select(1, CalculateAuctionDeposit and CalculateAuctionDeposit(tDuration) or nil)
+                           end)
+                           _ASLog("post staging", {
+                              stagedName = tStagedName, stagedCount = tStagedCount,
+                              deposit = tStagedDeposit, money = GetMoney and GetMoney() or nil,
+                              canSendQuery = (CanSendAuctionQuery and (CanSendAuctionQuery())) and true or false,
+                           })
+
+                           if not tStagedName then
+                              -- Kein Item im Slot -> PostAuction würde fehlschlagen.
+                              -- Nicht fälschlich "erstellt" ansagen.
+                              _ASLog("post aborted: sell slot empty after staging", {
+                                 containerFrame = aGossipItemTable.containerFrameName,
+                              })
+                              pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Nicht verkaufbar"], false, true, 0.1, nil, nil, nil, 1) end)
+                              GetOwnerAuctionItems()
+                              C_Timer.After(0.01, function()
+                                 SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
+                              end)
+                              C_Timer.After(0.01, function()
+                                 SkuCore:CheckFrames(nil, true)
+                              end)
+                              return
+                           end
+
+                           _ASCaptureResult()
+                           local tPostOk, tPostErr = pcall(PostAuction, tCopperStartBid, tCopperBuyout, tDuration, tAmount, tNumAuctions, true)
+                           _ASLog("PostAuction returned", { ok = tPostOk, err = tPostErr and tostring(tPostErr) or nil })
+
                            if tNumAuctions == 1 then
                               SkuOptions.Voice:OutputStringBTtts(L["Auktion erstellt"], false, true, 0.1, nil, nil, nil, 1)
                            else
@@ -2243,97 +2358,241 @@ OnEnterAllFlag = nil
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Stellt das aktuell gewählte Item ein: legt es per Drag in den Verkaufsslot,
+-- prüft die Staging (leerer Slot -> KEIN falsches "erstellt") und ruft
+-- PostAuction. Komplett geloggt (auction.sell). Wird vom verketteten
+-- Anzahl-Schritt benutzt (und bleibt Fallback für den alten Item-OnAction).
+function SkuCore:AuctionPostStagedItem(aGossipItemTable, aAmount, aNumAuctions, aCopperBuyout, aDuration, aReturnNode)
+   -- Nach dem Posten: GetOwnerAuctionItems + Menü-Refresh. WICHTIG bei
+   -- Mehrfach-Posts: den Cursor zuerst FLACH auf aReturnNode (das "Neue Auktion"
+   -- Menü) setzen, BEVOR CheckFrames die Brotkrumen neu aufbaut. Aus der tiefen
+   -- Münz-/Anzahl-Position würde CheckFrames sonst "Neue Auktion" neu betreten
+   -- -> dessen BuildChildren ruft AuctionHouseResetQuery() (eine AH-Query) MITTEN
+   -- im asynchronen Multisell auf -> der Multisell bricht ab und das AH schließt
+   -- (nur 1 statt N Auktionen). Flach wie früher = der Multisell läuft durch.
+   local function tReturnAndRefresh()
+      GetOwnerAuctionItems()
+      C_Timer.After(0.01, function()
+         if aReturnNode then SkuOptions.currentMenuPosition = aReturnNode end
+         SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
+      end)
+      C_Timer.After(0.01, function()
+         SkuCore:CheckFrames(nil, true)
+      end)
+   end
+
+   local tAmount = tonumber(aAmount)
+   local tNumAuctions = tonumber(aNumAuctions)
+   local tCopperBuyout = tonumber(aCopperBuyout)
+   local tCopperStartBid = tCopperBuyout and mfloor(tCopperBuyout * 0.9) or nil
+   local tDuration = aDuration
+
+   _ASLog("post requested", {
+      itemId = aGossipItemTable.itemId,
+      containerFrame = aGossipItemTable.containerFrameName,
+      amount = tAmount, numAuctions = tNumAuctions,
+      buyout = tCopperBuyout, startBid = tCopperStartBid,
+      duration = tDuration,
+   })
+
+   if not tDuration or not tCopperBuyout or not tAmount or not tNumAuctions then
+      _ASLog("post aborted: missing param", {
+         hasDuration = tDuration ~= nil, hasBuyout = tCopperBuyout ~= nil,
+         hasAmount = tAmount ~= nil, hasNumAuctions = tNumAuctions ~= nil,
+      })
+      pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Nicht verkaufbar"], false, true, 0.1, nil, nil, nil, 1) end)
+      return
+   end
+
+   --post it
+   ClearCursor()
+   _G["AuctionFrameTab3"]:GetScript("OnClick")(_G["AuctionFrameTab3"], "LeftButton")
+   _G["AuctionsItemButton"]:GetScript("OnDragStart")(_G["AuctionsItemButton"], "LeftButton")
+   ClearCursor()
+   local tContainerFrame = _G[aGossipItemTable.containerFrameName]
+   if tContainerFrame then
+      tContainerFrame:GetScript("OnDragStart")(tContainerFrame, "LeftButton")
+   else
+      _ASLog("post: container frame missing", { containerFrame = aGossipItemTable.containerFrameName })
+   end
+   ClickAuctionSellItemButton()
+
+   -- Liegt nach Drag/Klick wirklich ein Item im Verkaufsslot? Sonst no-op.
+   -- Zusätzlich freie Taschenplätze zählen: ein Multisell (numStacks > 1) splittet
+   -- den Stapel in Einzelstacks und braucht dafür freie Slots. Sind zu wenige
+   -- frei, bricht er SOFORT mit AUCTION_MULTISELL_FAILURE ab (START -> FAILURE,
+   -- kein UPDATE) — unabhängig vom Menü. Dieser Wert soll das belegen/widerlegen.
+   local tStagedName, tStagedCount, tStagedDeposit
+   local tFreeSlots = 0
+   pcall(function()
+      local n, _, c = GetAuctionSellItemInfo()
+      tStagedName, tStagedCount = n, c
+      tStagedDeposit = select(1, CalculateAuctionDeposit and CalculateAuctionDeposit(tDuration) or nil)
+      for b = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
+         local f = GetContainerNumFreeSlots and GetContainerNumFreeSlots(b)
+         if f then tFreeSlots = tFreeSlots + f end
+      end
+   end)
+   _ASLog("post staging", {
+      stagedName = tStagedName, stagedCount = tStagedCount,
+      deposit = tStagedDeposit, money = GetMoney and GetMoney() or nil,
+      freeBagSlots = tFreeSlots,
+      canSendQuery = (CanSendAuctionQuery and (CanSendAuctionQuery())) and true or false,
+   })
+
+   if not tStagedName then
+      _ASLog("post aborted: sell slot empty after staging", {
+         containerFrame = aGossipItemTable.containerFrameName,
+      })
+      pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Nicht verkaufbar"], false, true, 0.1, nil, nil, nil, 1) end)
+      tReturnAndRefresh()
+      return
+   end
+
+   _ASCaptureResult()
+   local tPostOk, tPostErr = pcall(PostAuction, tCopperStartBid, tCopperBuyout, tDuration, tAmount, tNumAuctions, true)
+   _ASLog("PostAuction returned", { ok = tPostOk, err = tPostErr and tostring(tPostErr) or nil })
+
+   if tNumAuctions == 1 then
+      SkuOptions.Voice:OutputStringBTtts(L["Auktion erstellt"], false, true, 0.1, nil, nil, nil, 1)
+   else
+      SkuOptions.Voice:OutputStringBTtts(tNumAuctions..L[" Auktionen erstellt"], false, true, 0.1, nil, nil, nil, 1)
+   end
+
+   tReturnAndRefresh()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
-   aSelf.GetCurrentValue = function(self, aValue, aName)
-      local tItemId
-      if _G[aGossipItemTable.containerFrameName] then
-         if _G[aGossipItemTable.containerFrameName].info then
-            tItemId = _G[aGossipItemTable.containerFrameName].info.id
-         end
-      end
-      if not tItemId then
-         tItemId = aGossipItemTable.itemId
-      end
+   -- Preis-Eingabe: EIN Menü mit Gold/Silber/Kupfer (Geschwister). In eine Münze
+   -- gehen ändert ihren Wert (vorbelegt aus dem besten Kaufpreis, startet auf dem
+   -- aktuellen Wert). ENTER bestätigt die Wertänderung und führt zurück ins
+   -- Gold/Silber/Kupfer-Menü; Pfeil-RECHTS bestätigt die GESAMTE Preis-Eingabe und
+   -- geht zum nächsten Verkaufs-Schritt (Anzahl Auktionen). Kein Extra-Knopf.
+   -- Der Item-Eintrag (aSelf.parent, isSelect) hält amount/amountMax/priceCfg.
+   local tItemEntry = aSelf.parent
 
-      if not tItemId then
-         return
-      end
-
-      local tBestBuyoutCopper = select(2, SkuCore:AuctionHouseGetAuctionPriceHistoryData(tItemId))
-
-      if not tBestBuyoutCopper then
-         return L["Sofortkauf Preis pro Stack"]
-      end
-
-      if tBestBuyoutCopper < 100 then
-         return "1#"..L["Silber"]
-      end
-
-      if tBestBuyoutCopper < 10000 then
-         return mfloor(tBestBuyoutCopper).."#"..L["Silber"]
-      end
-
-      if tBestBuyoutCopper < 10000000 then
-         return mfloor(tBestBuyoutCopper / 10000).."#"..L["Gold"]
-      end
-
-      return L["Sofortkauf Preis pro Stack"]
-   end   
+   local function tParseNum(aValue, aName)
+      local tNum = tonumber(aName)
+      if not tNum and aValue and aValue.name then tNum = tonumber(aValue.name) end
+      return tNum
+   end
 
    aSelf.BuildChildren = function(self)
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Sofortkauf Preis pro Stack"]}, SkuGenericMenuItem)
-
-      local x = 100
-      while x <= 100000000 do
-         if x < 10000 then
-            tNewMenuEntry = SkuOptions:InjectMenuItems(self, {(x / 100).."#"..L["Silber"]}, SkuGenericMenuItem)
-            tNewMenuEntry.copperValue = x
-            x = x + 100
-         elseif x < 10000000 then
-            tNewMenuEntry = SkuOptions:InjectMenuItems(self, {(x / 10000).."#"..L["Gold"]}, SkuGenericMenuItem)
-            tNewMenuEntry.copperValue = x
-            x = x + 10000
-         else
-            tNewMenuEntry = SkuOptions:InjectMenuItems(self, {(x / 10000).."#"..L["Gold"]}, SkuGenericMenuItem)
-            tNewMenuEntry.copperValue = x
-            x = x + 1000000
+      -- Preis-Bausteine pro Item halten (überlebt einen Stack-Größen-Wechsel).
+      -- Beim ersten Aufbau mit dem Marktpreis aus der Preis-Historie vorbelegen,
+      -- damit ein sinnvoller Startwert vorgeschlagen wird (frei änderbar).
+      local tCfg = tItemEntry.priceCfg
+      if not tCfg then
+         tCfg = { gold = 0, silver = 0, copper = 0 }
+         local tItemId = aGossipItemTable.itemId
+         if _G[aGossipItemTable.containerFrameName] and _G[aGossipItemTable.containerFrameName].info then
+            tItemId = _G[aGossipItemTable.containerFrameName].info.id or tItemId
          end
-         tNewMenuEntry.filterable = true
-         tNewMenuEntry.dynamic = true
-         tNewMenuEntry.OnEnter = function(self, aValue, aName)
-            self.selectTarget.price = self.copperValue
+         if tItemId then
+            local tBest = select(2, SkuCore:AuctionHouseGetAuctionPriceHistoryData(tItemId))
+            if tBest and tBest > 0 then
+               tBest = mfloor(tBest)
+               tCfg.gold = mfloor(tBest / 10000)
+               tCfg.silver = mfloor((tBest % 10000) / 100)
+               tCfg.copper = tBest % 100
+            end
          end
-         tNewMenuEntry.BuildChildren = function(self)
-            local tNewMenuEntryAuctions = SkuOptions:InjectMenuItems(self, {L["Anzahl Auktionen"]}, SkuGenericMenuItem)
-            self.selectTarget.amount = self.selectTarget.amount or 1
-            local tNumActionsMax = mfloor(self.selectTarget.amountMax / self.selectTarget.amount)
-            local tNewMenuEntryAuctions = SkuOptions:InjectMenuItems(self, {L["Alle ("]..tNumActionsMax..L[" mal "]..self.selectTarget.amount..L[")"]}, SkuGenericMenuItem)
-            tNewMenuEntryAuctions.dynamic = true
-            tNewMenuEntryAuctions.numAuctions = tNumActionsMax
-            tNewMenuEntryAuctions.OnEnter = function(self, aValue, aName)
-               self.selectTarget.numAuctions = self.numAuctions
-            end
-            tNewMenuEntryAuctions.BuildChildren = function(self)
-               local tSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Erstellen: 12 Stunden"]}, SkuGenericMenuItem)
-               local tSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Erstellen: 24 Stunden"]}, SkuGenericMenuItem)
-               local tSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Erstellen: 48 Stunden"]}, SkuGenericMenuItem)
-            end
-
-            for tNumActions = 1, tNumActionsMax do
-               local tNewMenuEntryAuctions = SkuOptions:InjectMenuItems(self, {tNumActions..L[" mal "]..self.selectTarget.amount}, SkuGenericMenuItem)
-               tNewMenuEntryAuctions.dynamic = true
-               tNewMenuEntryAuctions.numAuctions = tNumActions
-               tNewMenuEntryAuctions.OnEnter = function(self, aValue, aName)
-                  self.selectTarget.numAuctions = self.numAuctions
-               end
-               tNewMenuEntryAuctions.BuildChildren = function(self)
-                  local tSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Erstellen: 12 Stunden"]}, SkuGenericMenuItem)
-                  local tSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Erstellen: 24 Stunden"]}, SkuGenericMenuItem)
-                  local tSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Erstellen: 48 Stunden"]}, SkuGenericMenuItem)
-               end
-            end
-         end         
+         tItemEntry.priceCfg = tCfg
       end
+      -- In den Wertebereich der Listen klemmen, damit GetCurrentValue immer trifft.
+      if (tCfg.gold or 0) > 999 then tCfg.gold = 999 end
+      if (tCfg.silver or 0) > 99 then tCfg.silver = 99 end
+      if (tCfg.copper or 0) > 99 then tCfg.copper = 99 end
+
+      local function tPriceCopper()
+         return (tCfg.gold or 0) * 10000 + (tCfg.silver or 0) * 100 + (tCfg.copper or 0)
+      end
+
+      -- Anzahl Auktionen -> Dauer -> Erstellen. WICHTIG (Multisell-Regression-Fix):
+      -- selectTarget hier WIEDER auf den Item-Eintrag setzen — die Münze ist
+      -- isSelect und hat ihn auf den Münz-Knoten gezogen. So feuert die
+      -- Dauer-Auswahl den ORIGINAL-Post über tItemEntry:OnAction (selectTarget =
+      -- Item-Eintrag), exakt wie in v41.06. Über einen tiefen, frisch gebauten
+      -- isSelect-Anzahl-Knoten zu posten brach den Multisell beim Mehrfach-
+      -- Einstellen sofort ab (START -> FAILURE). numAuctions/price liegen auf dem
+      -- Item-Eintrag, von dort liest dessen OnAction.
+      local function tBuildAuctionCountFlow(aParent)
+         local tHeader = SkuOptions:InjectMenuItems(aParent, {L["Anzahl Auktionen"]}, SkuGenericMenuItem)
+         -- Auch die Kopfzeile setzt selectTarget zurück, damit ein versehentliches
+         -- Auswählen nicht über die Münz-OnAction den Münzwert verstellt.
+         tHeader.OnEnter = function(self, aValue, aName) self.selectTarget = tItemEntry end
+         local tAmount = tonumber(tItemEntry.amount) or 1
+         local tNumActionsMax = mfloor((tItemEntry.amountMax or tAmount) / tAmount)
+         if tNumActionsMax < 1 then tNumActionsMax = 1 end
+
+         local function tAddCountEntry(aLabel, aCount)
+            local tEntry = SkuOptions:InjectMenuItems(aParent, {aLabel}, SkuGenericMenuItem)
+            tEntry.dynamic = true
+            tEntry.numAuctions = aCount
+            tEntry.OnEnter = function(self, aValue, aName)
+               -- selectTarget zurück auf den Item-Eintrag (überschreibt den vom
+               -- isSelect-Münzknoten geerbten Wert). Beim Abstieg in die
+               -- Dauer-Einträge wird dieser Wert weitergereicht -> die Dauer-Auswahl
+               -- ruft tItemEntry:OnAction (bewährter Multisell-Pfad).
+               self.selectTarget = tItemEntry
+               tItemEntry.numAuctions = self.numAuctions
+               tItemEntry.price = tPriceCopper()
+            end
+            tEntry.BuildChildren = function(self)
+               SkuOptions:InjectMenuItems(self, {L["Erstellen: 12 Stunden"]}, SkuGenericMenuItem)
+               SkuOptions:InjectMenuItems(self, {L["Erstellen: 24 Stunden"]}, SkuGenericMenuItem)
+               SkuOptions:InjectMenuItems(self, {L["Erstellen: 48 Stunden"]}, SkuGenericMenuItem)
+            end
+         end
+
+         tAddCountEntry(L["Alle ("]..tNumActionsMax..L[" mal "]..tAmount..L[")"], tNumActionsMax)
+         for tNumActions = 1, tNumActionsMax do
+            tAddCountEntry(tNumActions..L[" mal "]..tAmount, tNumActions)
+         end
+      end
+
+      -- Ein Münz-Eintrag im gemeinsamen Gold/Silber/Kupfer-Menü (Geschwister).
+      -- Werteliste 0..aMax, per GetCurrentValue auf den aktuellen (vorbelegten)
+      -- Wert positioniert. ENTER auf einem Wert -> tNode:OnAction (setzt + bleibt
+      -- auf dem Münz-Eintrag, da noStepUpAfterSelect) -> zurück im Münz-Menü.
+      -- RECHTS auf einem Wert -> actionOnEnter greift NICHT, Abstieg in die Kinder
+      -- = Anzahl-Auktionen-Schritt (bestätigt die GESAMTE Preis-Eingabe mit den
+      -- aktuellen tCfg-Werten). Der Wert ist beim Betreten via OnEnter gesetzt.
+      local function tAddCoin(aKey, aLabel, aMax)
+         local tNode = SkuOptions:InjectMenuItems(self, {aLabel..": "..(tCfg[aKey] or 0)}, SkuGenericMenuItem)
+         tNode.dynamic = true
+         tNode.filterable = true
+         tNode.isSelect = true
+         tNode.noStepUpAfterSelect = true
+         tNode.GetCurrentValue = function(s) return tostring(tCfg[aKey] or 0) end
+         tNode.OnAction = function(s, aValue, aName)
+            tCfg[aKey] = tParseNum(aValue, aName) or 0
+            s.name = aLabel..": "..tCfg[aKey]
+            pcall(function() SkuOptions.Voice:OutputStringBTtts(tCfg[aKey].." "..aLabel, true, true, 0.2, nil, nil, nil, 2) end)
+         end
+         tNode.BuildChildren = function(s)
+            for x = 0, aMax do
+               local tValue = SkuOptions:InjectMenuItems(s, {tostring(x)}, SkuGenericMenuItem)
+               tValue.dynamic = true
+               tValue.filterable = true
+               tValue.actionOnEnter = true
+               tValue.OnEnter = function(vself, aV, aN)
+                  tCfg[aKey] = x
+                  tNode.name = aLabel..": "..x
+               end
+               tValue.BuildChildren = function(vself)
+                  tBuildAuctionCountFlow(vself)
+               end
+            end
+         end
+      end
+
+      -- EIN Menü mit Gold/Silber/Kupfer. Jede Münze führt (Pfeil-rechts aus ihrer
+      -- Werteliste) in denselben Anzahl-Auktionen-Schritt.
+      tAddCoin("gold", L["Gold"], 999)
+      tAddCoin("silver", L["Silver"], 99)
+      tAddCoin("copper", L["Copper"], 99)
    end
 
 end
