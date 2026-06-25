@@ -253,6 +253,23 @@ time with both styles coexisting.
     raw — they belong to SkuOptions and migrate when it does. Flat schema for
     SkuMob's 9 keys authored via `SkuSettings:Register` (all profile scope) as the
     W2 source of truth. luaparser-gated.
+  - [x] **B2 SkuQuest.** All 111 own-key sites (Core + Options) migrated to
+    `Sub`. SkuQuest *mixes scopes* (75 profile + 36 char), so `SkuSettings:Sub`
+    gained an optional **third arg `aScopeOverride`**: profile → `Sub("SkuQuest")`
+    (schema/default scope), char → `Sub("SkuQuest", nil, "char")` (explicit —
+    a whole-table char access has no single key for the schema to resolve scope
+    from). Four char lazy-init idioms (`db.char[MODULE_NAME] = … or {}` ×3 and an
+    `if not db.char[MODULE_NAME] then … = {} end` block) were special-cased: a
+    blind swap would have produced `Sub(…) = {}` (assign-to-call syntax error), and
+    they are redundant anyway since `Sub` auto-creates the section — replaced with
+    a bare `Sub("SkuQuest", nil, "char")` call. Cross-module `["SkuNav"]` (68) and
+    `["SkuOptions"]` (4) left raw. luaparser-gated; 0 `Sub(…)=` syntax errors.
+  - **Note on the flat schema:** authored for SkuMob (small/flat) as a demo, but
+    DEFERRED for the larger modules (SkuQuest onward). The `Sub`-swap migration
+    doesn't consume the flat per-key schema (scope is default/explicit), and
+    hand-flattening large nested `defaults` trees (+ enumerating char/global
+    defaults) is error-prone with no current consumer. Flat-schema authoring +
+    char/global default population becomes a focused later pass (W2 prep).
 - [ ] C1. Enable `Set` validation permanently; remove raw-path fallback.
 - [ ] C2. Publish the finalized schema as the input contract for Workstream 2.
 

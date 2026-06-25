@@ -21,10 +21,10 @@ SkuQuest.options = {
 			type = "toggle",
 			desc = "",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].showDifficultyColors = val
+				SkuSettings:Sub("SkuQuest").showDifficultyColors = val
 			end,
 			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].showDifficultyColors
+				return SkuSettings:Sub("SkuQuest").showDifficultyColors
 			end,
 		},
 		questMarkerBeacons ={
@@ -46,10 +46,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enabled = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enabled = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enabled
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enabled
 							end
 						},
 						enableBeacons = {
@@ -61,10 +61,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enableBeacons = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enableBeacons = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enableBeacons
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enableBeacons
 							end
 						},
 						enableClickClack = {
@@ -77,10 +77,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)			
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enableClickClack = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enableClickClack = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enableClickClack
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enableClickClack
 							end
 						},						
 						singlePing = {
@@ -92,10 +92,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.singlePing = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.singlePing = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.singlePing
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.singlePing
 							end
 						},
 
@@ -109,7 +109,7 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								local tPlayerPosX, tPlayerPosY = UnitPosition("player")
 								tPlayerPosX, tPlayerPosY = tPlayerPosX + 6, tPlayerPosY + 6
-								if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", "sampleBeacon", SkuNav.BeaconSoundSetNames[val], tPlayerPosX + 10, tPlayerPosY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange) then
+								if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", "sampleBeacon", SkuNav.BeaconSoundSetNames[val], tPlayerPosX + 10, tPlayerPosY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuSettings:Sub("SkuQuest").clickClackRange) then
 									return
 								end
 								SkuOptions.BeaconLib:StartBeacon("SkuOptions", "sampleBeacon")
@@ -120,10 +120,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,	
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.beaconSoundSet = SkuNav.BeaconSoundSetNames[val]
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.beaconSoundSet = SkuNav.BeaconSoundSetNames[val]
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.beaconSoundSet
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.beaconSoundSet
 							end
 						},				
 						-- beacon type
@@ -137,10 +137,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.beaconType = SkuQuest.questMarkerBeaconsTypeValues[val]
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.beaconType = SkuQuest.questMarkerBeaconsTypeValues[val]
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.beaconType
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.beaconType
 							end
 						},									
 						-- beacon volume
@@ -153,10 +153,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.beaconVolume = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.beaconVolume = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.beaconVolume
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.beaconVolume
 							end
 						},
 				
@@ -170,10 +170,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.maxRange = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.maxRange = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.maxRange
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.maxRange
 							end
 						},
 						-- chat output
@@ -186,10 +186,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.chatNotification = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.chatNotification = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.chatNotification
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.chatNotification
 							end
 						},
 						-- disable on
@@ -202,10 +202,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.disableOn = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.disableOn = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.disableOn
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.disableOn
 							end
 						},						
 						-- disable seen forever
@@ -218,10 +218,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.disableSeenForever = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.disableSeenForever = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.disableSeenForever
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.disableSeenForever
 							end
 						},
 						minLevel = {
@@ -233,10 +233,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.minLevel = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.minLevel = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.minLevel
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.minLevel
 							end
 						},						
 
@@ -256,10 +256,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enabled = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.enabled = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enabled
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.enabled
 							end
 						},
 						enableBeacons = {
@@ -271,10 +271,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enableBeacons = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.enableBeacons = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enableBeacons
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.enableBeacons
 							end
 						},
 						enableClickClack = {
@@ -287,10 +287,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)			
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enableClickClack = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.enableClickClack = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enableClickClack
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.enableClickClack
 							end
 						},						
 						singlePing = {
@@ -302,10 +302,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.singlePing = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.singlePing = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.singlePing
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.singlePing
 							end
 						},
 
@@ -318,7 +318,7 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								local tPlayerPosX, tPlayerPosY = UnitPosition("player")
 								tPlayerPosX, tPlayerPosY = tPlayerPosX + 6, tPlayerPosY + 6
-								if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", "sampleBeacon", SkuNav.BeaconSoundSetNames[val], tPlayerPosX + 10, tPlayerPosY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange) then
+								if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", "sampleBeacon", SkuNav.BeaconSoundSetNames[val], tPlayerPosX + 10, tPlayerPosY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuSettings:Sub("SkuQuest").clickClackRange) then
 									return
 								end
 								SkuOptions.BeaconLib:StartBeacon("SkuOptions", "sampleBeacon")
@@ -329,10 +329,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,	
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.beaconSoundSet = SkuNav.BeaconSoundSetNames[val]
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.beaconSoundSet = SkuNav.BeaconSoundSetNames[val]
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.beaconSoundSet
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.beaconSoundSet
 							end
 						},
 						-- beacon type
@@ -346,10 +346,10 @@ SkuQuest.options = {
 							end,
 							values = SkuQuest.questMarkerBeaconsTypeValues,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.beaconType = SkuQuest.questMarkerBeaconsTypeValues[val]
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.beaconType = SkuQuest.questMarkerBeaconsTypeValues[val]
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.beaconType
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.beaconType
 							end
 						},							
 						-- beacon volume
@@ -362,10 +362,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.beaconVolume = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.beaconVolume = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.beaconVolume
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.beaconVolume
 							end
 						},
 				
@@ -379,10 +379,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.maxRange = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.maxRange = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.maxRange
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.maxRange
 							end
 						},
 						-- chat output
@@ -395,10 +395,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.chatNotification = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.chatNotification = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.chatNotification
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.chatNotification
 							end
 						},
 						-- disable on
@@ -411,10 +411,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.disableOn = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.disableOn = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.disableOn
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.disableOn
 							end
 						},						
 						-- disable seen forever
@@ -427,10 +427,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.disableSeenForever = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.disableSeenForever = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.disableSeenForever
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.disableSeenForever
 							end
 						},						
 						minLevel = {
@@ -442,10 +442,10 @@ SkuQuest.options = {
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.minLevel = val
+								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.minLevel = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.minLevel
+								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.minLevel
 							end
 						},						
 
@@ -1198,13 +1198,13 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 				tNewMenuSubEntry1.filterable = true
 				tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
 					--dprint("OnAction Wegpunkt auswählen", self.name, aValue, aName)
-					if SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
+					if SkuSettings:Sub("SkuQuest").routeRecording == true then
 						SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
 						SkuOptions.Voice:OutputStringBTtts(L["Recording in progress"], false, true, 0.3, true)
 						return
 					end
 
-					if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
+					if SkuSettings:Sub("SkuQuest").metapathFollowing == true or SkuSettings:Sub("SkuQuest").selectedWaypoint ~= "" then
 						SkuNav:EndFollowingWpOrRt()
 					end
 
@@ -1887,7 +1887,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 				local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
 				local tAddTitle = ""
 				local tDifficultyTitle = ""
-				if SkuOptions.db.profile["SkuQuest"].showDifficultyColors == true then
+				if SkuSettings:Sub("SkuQuest").showDifficultyColors == true then
 					local tDiff = GetQuestDifficultyColor(level)
 					if tDiff and tDiff.font and tDifficultyColors[tDiff.font] then
 						tDifficultyTitle = " ("..tDifficultyColors[tDiff.font]..")"
@@ -2045,7 +2045,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true
-	SkuOptions:IterateOptionsArgs(SkuQuest.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
+	SkuOptions:IterateOptionsArgs(SkuQuest.options.args, tNewMenuEntry, SkuSettings:Sub("SkuQuest"))
 end
 
 

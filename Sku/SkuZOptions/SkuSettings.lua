@@ -192,10 +192,20 @@ end
 -- Return the live subtable at aKey (created if missing) for code that mutates
 -- many keys in a tight loop (scanners, bulk access) — keeps a fast path so the
 -- facade is not a per-key overhead in hot paths. aKey nil/"" returns the
--- module's whole scope table.
-function SkuSettings:Sub(aModule, aKey)
-	local spec = specFor(aModule, aKey)
-	local scope = spec and spec.scope or DEFAULT_SCOPE
+-- module's whole scope table. aScopeOverride forces a scope explicitly (for
+-- whole-table access spanning a scope that no single key can resolve, e.g. a
+-- module's char-scoped subtree); when omitted, scope comes from the schema.
+function SkuSettings:Sub(aModule, aKey, aScopeOverride)
+	local scope
+	if aScopeOverride ~= nil then
+		scope = VALID_SCOPES[aScopeOverride] and aScopeOverride or DEFAULT_SCOPE
+		if not VALID_SCOPES[aScopeOverride] and dprint then
+			dprint("SkuSettings:Sub: bad scope override", aModule, tostring(aScopeOverride))
+		end
+	else
+		local spec = specFor(aModule, aKey)
+		scope = spec and spec.scope or DEFAULT_SCOPE
+	end
 	local tbl = scopeTable(scope)
 	if not tbl then return nil end
 	local modTbl = tbl[aModule]

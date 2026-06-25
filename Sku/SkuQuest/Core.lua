@@ -331,12 +331,10 @@ function SkuQuest:GetQuestTitlesList()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:CheckQuestProgress(aSilent)
-	--print("CheckQuestProgress(aSilent)", aSilent, SkuOptions.db.char["SkuQuest"].CheckQuestProgressList) 
-	if not SkuOptions.db.char[MODULE_NAME] then
-		SkuOptions.db.char["SkuQuest"]  = {}
-	end
-	if not SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList then
-		SkuOptions.db.char["SkuQuest"].CheckQuestProgressList  = {}
+	--print("CheckQuestProgress(aSilent)", aSilent, SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList) 
+	SkuSettings:Sub("SkuQuest", nil, "char")
+	if not SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList then
+		SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList  = {}
 		aSilent = true
 	end
 
@@ -350,10 +348,10 @@ function SkuQuest:CheckQuestProgress(aSilent)
 
 		if not isHeader then
 
-			if not SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID] then
+			if not SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList[questID] then
 				--print(questID, "  new objective in db")
-				table.insert(SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList, questID)
-				SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID] = {
+				table.insert(SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList, questID)
+				SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList[questID] = {
 					["objectives"] = {},
 				}
 			end
@@ -367,22 +365,22 @@ function SkuQuest:CheckQuestProgress(aSilent)
 					local text, ttype, finished = GetQuestLogLeaderBoard(j, questLogID)
 					--print("    text, ttype, finished", text, ttype, finished, aSilent)
 					if not aSilent then
-						if type(SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID]) == "table" then
-							if not SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j] then
+						if type(SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList[questID]) == "table" then
+							if not SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList[questID].objectives[j] then
 								-- new objective
 								--print("      new objective", j)
-								table.insert(SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives, j)
-								SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j] = text
+								table.insert(SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList[questID].objectives, j)
+								SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList[questID].objectives[j] = text
 							else
 								-- updated objective
-								--print("      updated objective", j, SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j], "-", text)
-								if SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j] ~= text then
+								--print("      updated objective", j, SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList[questID].objectives[j], "-", text)
+								if SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList[questID].objectives[j] ~= text then
 									objectivesChanged = true
-									--print("         success 1", SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j], text)
+									--print("         success 1", SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList[questID].objectives[j], text)
 									if not aSilent then
 										SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
 									end
-									SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j] = text
+									SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList[questID].objectives[j] = text
 								end
 							end
 						end
@@ -978,22 +976,22 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:QUEST_LOG_UPDATE(...)
-	--print("QUEST_LOG_UPDATE", SkuOptions.db.char[MODULE_NAME])
-	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag, SkuOptions.db.char["SkuQuest"].CheckQuestProgressList)
+	--print("QUEST_LOG_UPDATE", SkuSettings:Sub("SkuQuest", nil, "char"))
+	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag, SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList)
 	SkuQuest:UpdateZoneAvailableQuestList()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:UPDATE_FACTION(...)
-	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
-	--print("UPDATE_FACTION", SkuOptions.db.char[MODULE_NAME])
-	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag, SkuOptions.db.char["SkuQuest"].CheckQuestProgressList)
+	SkuSettings:Sub("SkuQuest", nil, "char")
+	--print("UPDATE_FACTION", SkuSettings:Sub("SkuQuest", nil, "char"))
+	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag, SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList)
 	SkuQuest:UpdateZoneAvailableQuestList()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:UNIT_QUEST_LOG_CHANGED(...)
-	--print("UNIT_QUEST_LOG_CHANGED", SkuOptions.db.char["SkuQuest"].CheckQuestProgressList)
+	--print("UNIT_QUEST_LOG_CHANGED", SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList)
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 	SkuQuest:UpdateZoneAvailableQuestList()
 end
@@ -1196,15 +1194,15 @@ function SkuQuest:PLAYER_LOGIN(...)
 	-- do final stuff
 	SkuQuest:BuildQuestZoneCache()
 
-	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
+	SkuSettings:Sub("SkuQuest", nil, "char")
 	C_Timer.NewTimer(10, function() PLAYER_ENTERING_WORLD_flag = false end)
 
 	SkuQuest:UpdateAllQuestObjects()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:PLAYER_ENTERING_WORLD(...)
-	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
-	--print("PLAYER_ENTERING_WORLD", SkuOptions.db.char["SkuQuest"].CheckQuestProgressList)
+	SkuSettings:Sub("SkuQuest", nil, "char")
+	--print("PLAYER_ENTERING_WORLD", SkuSettings:Sub("SkuQuest", nil, "char").CheckQuestProgressList)
 
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
@@ -1528,14 +1526,14 @@ local function doQuestMarkerBeacons(aType, tUnSortedTable)
 			tQuestLevel = SkuDB.questDataTBC[v[4]][SkuDB.questKeys["questLevel"]]
 		end
 
-		if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].enabled == true 
-			and ((UnitLevel("player") - tQuestLevel <= SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].minLevel) or tQuestLevel == -1)
-			and (SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].enableBeacons == true or SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].chatNotification == true)
+		if SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].enabled == true 
+			and ((UnitLevel("player") - tQuestLevel <= SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].minLevel) or tQuestLevel == -1)
+			and (SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].enableBeacons == true or SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].chatNotification == true)
 			and not SkuQuest.activeBeaconsTmpIgnore[v[4]]
-			and not SkuOptions.db.char[MODULE_NAME].questMarkerBeacons.activeBeaconsIgnore[v[4]]
+			and not SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons.activeBeaconsIgnore[v[4]]
 		then
-			local tVolume = SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].beaconVolume
-			if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].enableBeacons ~= true then
+			local tVolume = SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].beaconVolume
+			if SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].enableBeacons ~= true then
 				tVolume = 0
 			end
 
@@ -1549,43 +1547,43 @@ local function doQuestMarkerBeacons(aType, tUnSortedTable)
 					local tCreated = SkuOptions.BeaconLib:CreateBeacon(
 						"SkuOptions", 
 						tName, 
-						SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].beaconSoundSet, 
+						SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].beaconSoundSet, 
 						math.floor(v[2]), 
 						math.floor(v[3]), 
-						SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].beaconType, 
+						SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].beaconType, 
 						0, 
 						tVolume, 
 						5, 
-						SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].maxRange,
+						SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].maxRange,
 						function(self, aDistance)
 							--print("reached callback", self.name, aDistance)
 							SkuQuest.activeBeaconsTmpIgnore[v[4]] = true
-							if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].disableSeenForever == true then
-								SkuOptions.db.char[MODULE_NAME].questMarkerBeacons.activeBeaconsIgnore[v[4]] = true
+							if SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].disableSeenForever == true then
+								SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons.activeBeaconsIgnore[v[4]] = true
 							end
 							SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", self.name)
 						end,
 						function(self, aDistance)
 							--print("distance changed callback", self.name, aDistance)
-							if aDistance < SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.disableOn then
+							if aDistance < SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.disableOn then
 								SkuQuest.activeBeaconsTmpIgnore[v[4]] = true
-								if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].disableSeenForever == true then
-									SkuOptions.db.char[MODULE_NAME].questMarkerBeacons.activeBeaconsIgnore[v[4]] = true
+								if SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].disableSeenForever == true then
+									SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons.activeBeaconsIgnore[v[4]] = true
 								end
 								SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", self.name)
 							end
 						end,
 						function(self, aDistance)
 							--print("ping callback", self.name, aDistance)
-							if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].singlePing == true then
+							if SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].singlePing == true then
 								SkuQuest.activeBeaconsTmpIgnore[v[4]] = true
-								if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].disableSeenForever == true then
-									SkuOptions.db.char[MODULE_NAME].questMarkerBeacons.activeBeaconsIgnore[v[4]] = true
+								if SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].disableSeenForever == true then
+									SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons.activeBeaconsIgnore[v[4]] = true
 								end
 								SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", self.name)
 							end
 
-							if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].chatNotification == true then
+							if SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].chatNotification == true then
 								if not SkuQuest.activeBeaconsTmpIgnoreChat[v[4]] then
 									local playerX, playerY = UnitPosition("player")
 									local tDistance = SkuNav:Distance(playerX, playerY, v[2], v[3]) or 0
@@ -1599,7 +1597,7 @@ local function doQuestMarkerBeacons(aType, tUnSortedTable)
 								end
 							end
 						end,
-						SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].enableClickClack
+						SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].enableClickClack
 					)
 					if tCreated == true then
 						SkuOptions.BeaconLib:StartBeacon("SkuOptions", tName)
@@ -1621,8 +1619,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:UpdateZoneAvailableQuestList(aForce)
-	SkuOptions.db.char[MODULE_NAME].questMarkerBeacons = SkuOptions.db.char[MODULE_NAME].questMarkerBeacons or {}
-	SkuOptions.db.char[MODULE_NAME].questMarkerBeacons.activeBeaconsIgnore = SkuOptions.db.char[MODULE_NAME].questMarkerBeacons.activeBeaconsIgnore or {}
+	SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons = SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons or {}
+	SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons.activeBeaconsIgnore = SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons.activeBeaconsIgnore or {}
 
 	local tPlayerUIMap = SkuNav:GetBestMapForUnit("player")
 	if tPlayerUIMap and tPlayerUIMap ~= SkuQuest.activeBeaconsOldUiMapId then
@@ -1648,7 +1646,7 @@ function SkuQuest:UpdateZoneAvailableQuestList(aForce)
 	end
 
 	if UnitOnTaxi("player") ~= true then
-		if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enabled == true then
+		if SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enabled == true then
 			doQuestMarkerBeacons("availableQuests", tUnSortedTable)
 
 			local tPlayerUIMap = SkuNav:GetBestMapForUnit("player")
@@ -1681,7 +1679,7 @@ function SkuQuest:UpdateZoneAvailableQuestList(aForce)
 			end
 		end
 		
-		if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enabled == true then
+		if SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.enabled == true then
 			doQuestMarkerBeacons("currentQuests", tCompleted)
 		end
 	end

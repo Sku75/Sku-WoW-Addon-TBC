@@ -22,6 +22,18 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W1 Phase B — SkuQuest migrated (B2).** All 111 of SkuQuest's own-key settings
+  accesses migrated to `SkuSettings:Sub`. SkuQuest mixes scopes (75 profile + 36
+  char), so `Sub` gained an optional third arg `aScopeOverride`: profile →
+  `Sub("SkuQuest")`, char → `Sub("SkuQuest", nil, "char")` (a whole-table char
+  access has no single key for the schema to resolve scope). Four char lazy-init
+  idioms (`db.char[MODULE_NAME] = … or {}` and an `if not … then … = {} end`
+  block) were special-cased — a blind swap would have created `Sub(…) = {}`
+  (assign-to-call syntax error), and they are redundant since `Sub` auto-creates
+  the section. Cross-module `["SkuNav"]`/`["SkuOptions"]` reads stay raw.
+  luaparser-gated; behaviour-preserving; in-game smoke test pending. (Flat per-key
+  schema authoring is deferred for the larger modules — see REFACTOR-PLAN.)
+
 - **W1 Phase B — SkuMob migrated (B1).** All 43 of SkuMob's own-key settings
   accesses (27 in Core.lua, 16 in Options.lua) moved off raw
   `SkuOptions.db.profile[MODULE_NAME]/["SkuMob"]` onto `SkuSettings:Sub("SkuMob")`
