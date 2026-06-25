@@ -710,19 +710,47 @@ External audio companion addons installed alongside Sku:
   hand-built `Interface\AddOns\...` strings across SkuVoice, SkuMob, SkuCore),
   with no single resolver.
 
-## 5.3 Why merging into core is the wrong call (the honest assessment)
+## 5.3 How WoW loading works (the cost is distribution, NOT in-game load)
 
-- Bundling ~321 MB of beacon audio + per-language voice packs into Sku would
-  bloat **every code update** with static audio that essentially never changes.
-- It breaks the **per-language swap** model (a user installs only their language
-  pack) and would force the optional 202 MB `Additional` beacon set on everyone.
+Crucial clarification, because it is easy to get backwards: **mp3/ogg files do
+not "load" when the addon loads.** WoW only reads each addon's `.toc` and
+executes the **Lua/XML files listed in it**; you cannot list an mp3 in a TOC.
+Audio is referenced by *path* and played on demand via
+`PlaySoundFile("Interface\\AddOns\\...\\x.mp3")` — WoW reads that one file from
+disk at play time and discards it. The other ~127,000 files just sit on disk,
+untouched, costing **zero load time and zero RAM** until something plays them.
+
+Consequences:
+- Bundling vs. separating the audio makes **no difference to in-game load/reload
+  time or memory** — the mp3s are lazy either way.
+- What actually costs time on every `/reload` (WoW has no incremental "changed
+  code only" loader) is the TOC-listed Lua: `routedata_global_wotlk.lua`
+  (~31 MB), the `SkuDB/assets` tables (~105 MB), the audio *index*
+  (`SkuAudioFileIndex` — tiny vs. the mp3s it points at). That cost is identical
+  regardless of where the mp3s live. (This is Workstream 3, not W5.)
+- The only dev-side cost of bundling is **filesystem**, not WoW: git stats
+  ~127k ignored files, backups/copies grow. Minor.
+
+## 5.4 Why merging into core is still the wrong call (the honest assessment)
+
+The reason is **distribution, not load**:
+- Bundling ~790 MB of audio into the code addon means **every Sku release — even
+  a one-line fix — re-ships ~790 MB** that users must re-download. Separate
+  audio addons are downloaded once; code updates stay tiny.
+- It breaks the **per-language swap** model (470 MB *per* voice pack — a user
+  installs only their language) and would force the optional 202 MB `Additional`
+  beacon set on everyone.
 - The installer already treats companions as separately-versioned downloads
   pinned on an older tag (see the download-topology notes / `SkuInstall.json`),
   precisely so audio isn't re-fetched on a code patch. That benefit is real.
+- **User-facing simplicity does not require bundling.** Sku already ships an
+  installer, so a one-click install can fetch the companions automatically — you
+  get the clean install UX *and* small code updates *and* the language model.
+  Put the simplicity in the installer, not in the addon packaging.
 
 So: **data stays external; code/index belongs in Sku.**
 
-## 5.4 Target design
+## 5.5 Target design
 
 - **Two data-only companion families, plus Sku core owning all code:**
   - *Voice:* per-language voice packs with canonical, consistent names and a
@@ -740,7 +768,7 @@ So: **data stays external; code/index belongs in Sku.**
   `Sku.AudiodataPath` string-building — and this is the same seam W4 will turn
   the voice output into a service, so design them together.
 
-## 5.5 Where it sits / why it touches other steps
+## 5.6 Where it sits / why it touches other steps
 
 This is primarily a **strategy decision that must be made early**, because:
 - **W1 (settings):** which voice pack and which beacon tiers are enabled are
@@ -754,7 +782,7 @@ distribution-only and behavior-preserving, so it can land late and independently
 — but the *target layout* should be fixed before W1's audio settings and W4's
 voice service are designed. Hence: decide W5 strategy early, execute W5 late.
 
-## 5.6 Risks & watch-outs
+## 5.7 Risks & watch-outs
 
 - **Keep exact folder/path names** the resolver builds, or sounds silently fail
   to play. Add a missing-file log to catch regressions.
@@ -764,7 +792,7 @@ voice service are designed. Hence: decide W5 strategy early, execute W5 late.
   packs separately from core so code updates don't re-ship audio.
 - **Behavior-preserving:** the same beacons/voice must play — verifiable by ear.
 
-## 5.7 Verification (screen-reader-friendly)
+## 5.8 Verification (screen-reader-friendly)
 
 - The user's "speak/play what you hear" channel: beacons and voice are audio, so
   confirm by listening that the same sounds play after repackaging.
@@ -772,7 +800,7 @@ voice service are designed. Hence: decide W5 strategy early, execute W5 late.
   so a wrong path surfaces deterministically rather than as silence.
 - `/wdwatchsku` to confirm spoken output is unchanged.
 
-## 5.8 Task checklist
+## 5.9 Task checklist
 
 - [ ] C-A1. Decide target packaging (recommend: Sku core owns all code+index; 2 data-only families — voice packs per-language, beacon sounds tiered).
 - [ ] C-A2. Resolve the voice-pack naming/path drift; define canonical folder names + one resolver with fallback. (Early — input to W1/W4.)
