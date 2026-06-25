@@ -22,6 +22,18 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W1 Phase A started — `SkuSettings` facade added (A1 + A2).** New
+  `SkuZOptions/SkuSettings.lua` (on `ns.Settings`, global alias `SkuSettings`),
+  TOC-loaded early (after `SkuUtil.lua`). Provides a schema registry
+  (`Register`) and `Get`/`Set`/`Sub` accessors over the existing single AceDB
+  (`SkuOptions.db`): scope resolved from the schema, dotted-path walk,
+  intermediate-table creation on `Set` (replacing the `x = x or {}` idiom),
+  off-by-default type validation, and `dprint` warnings on unregistered keys.
+  Purely additive — nothing calls it yet, so behaviour is unchanged. Next:
+  author the schema from the eight `Module.defaults` tables (A3) and swap the
+  hand-written `OnInitialize` defaults stitch for registry-driven assembly +
+  char/global defaults (A4), verifying the persisted `SkuOptionsDB` is unchanged.
+
 - Worktree `Sku-TBC-42` created on branch `sku42` from the v41.06 baseline
   (commit 5670b60); TOC bumped to 42.00.
 - Refactor plan moved here as `REFACTOR-PLAN.md`; rework docs separated from the

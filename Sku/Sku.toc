@@ -24,6 +24,7 @@ routedata_global_wotlk.lua
 Core.lua
 
 SkuUtil.lua
+SkuZOptions\SkuSettings.lua
 
 Libs\SkuTTS-1.0\SkuTTS-1.0.lua
 Libs\SkuVoice-1.0\SkuVoice-1.0.lua

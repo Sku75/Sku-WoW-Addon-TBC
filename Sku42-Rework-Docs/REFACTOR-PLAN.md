@@ -202,8 +202,21 @@ time with both styles coexisting.
 
 ## 1.7 Task checklist
 
-- [ ] A1. Add `Sku/SkuZOptions/SkuSettings.lua`; register it in `Sku.toc` after `SkuZOptions/Core.lua`.
-- [ ] A2. Implement registry (`Register`) + `Get`/`Set`/`Sub` + dotted-path walk + lazy-create on `Set`.
+- [x] A1. Add `Sku/SkuZOptions/SkuSettings.lua`; register it in `Sku.toc`.
+  - Created at the planned path `SkuZOptions/SkuSettings.lua`, but TOC-loaded
+    **early** (right after `SkuUtil.lua`, before all feature modules) rather than
+    after `SkuZOptions/Core.lua` as originally sketched: the registry must exist
+    before modules register their schema at load time, and the facade reads
+    `SkuOptions.db` lazily (only at accessor call-time, always post-init), so
+    early loading is safe. Lives on `ns.Settings` with a global `SkuSettings`
+    alias (mirrors SkuUtil).
+- [x] A2. Implement registry (`Register`) + `Get`/`Set`/`Sub` + dotted-path walk + lazy-create on `Set`.
+  - `schema[module][dottedKey] = {scope, default, type}`. `Get` resolves scope
+    from the schema, walks the dotted path, falls back to the schema default;
+    `Set` creates intermediate tables (replaces `x = x or {}`) with optional
+    off-by-default type validation; `Sub` returns the live subtable for hot
+    loops. Unregistered keys `dprint`-warn in debug. Purely additive — no call
+    site uses it yet, so behaviour is unchanged (Phase A "introduce, don't migrate").
 - [ ] A3. Author schema entries by extracting the eight `Module.defaults` tables (one module at a time into the registry).
 - [ ] A4. Replace `Core.lua:3483-3515` hand-stitch with registry-driven defaults assembly; add char/global defaults.
 - [ ] A5. Phase A verification: persisted `SkuOptionsDB` unchanged; ship checkpoint commit.
