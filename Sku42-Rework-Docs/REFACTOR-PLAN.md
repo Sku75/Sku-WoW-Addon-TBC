@@ -1,19 +1,22 @@
 # Sku Refactor Plan
 
 Living plan for modernizing Sku into a more flexible, maintainable, and
-performant addon **without changing its behavior for the end user**. Worked on
-the `addonrestructuring` branch. This is a roadmap to execute incrementally
-when time allows — not a one-shot rewrite.
+performant addon **without changing its behavior for the end user**. This is the
+plan for the **Sku 42** rework, developed on the `sku42` branch in the
+`Sku-TBC-42` worktree (the v41.x line continues on `main`). A roadmap to execute
+incrementally — not a one-shot rewrite.
 
 ## How to use this document
 
-- Three workstreams, tackled **one at a time** so we never juggle two
+- Five workstreams, tackled **one at a time** so we never juggle two
   half-migrated subsystems:
   1. Settings access layer  — fully specified below (ready to execute).
   2. Menu schema + registry  — investigated, design drafted (execute after W1).
   3. Performance profiling pass — investigated, candidates mapped (measure first).
   4. Modularization / boundaries — investigated; break the SkuCore god-object
      and the dependency cycles (execute after W1 + W2). See "Sequencing".
+  5. Companion addons / asset packaging — investigated; rationalize the external
+     audio addons (voice DB + beacons). Strategy is an early input to W1/W4.
 - Each workstream is independently shippable and behavior-preserving.
 - Status legend used per task: `[ ]` not started, `[~]` in progress,
   `[x]` done, `[!]` blocked/needs decision.
@@ -32,9 +35,9 @@ when time allows — not a one-shot rewrite.
   a half-done module still runs.
 - **Target client:** TBC Anniversary, Interface 11508. Don't assume retail-only
   APIs exist; verify on this client before relying on them.
-- **Keep the contribution-back path clean.** Code changes live under `Sku/`;
-  diff `v41.06` (root) vs `main:Sku` (subtree). This planning doc lives at the
-  repo root so it never enters an upstream patch.
+- **Keep the contribution-back path clean.** Code changes live under `Sku/`.
+  This planning doc and the rework docs live in `Sku42-Rework-Docs/` (outside
+  `Sku/`) so they never enter the addon or an upstream patch.
 - **Libraries stay on Ace3.** See "Library assessment" at the end: swapping the
   framework is high-cost / low-reward. The wins here are architectural, on top
   of Ace3, not a library change.
@@ -653,6 +656,133 @@ codebase. Do it as a long series of small, independently-shippable extractions:
 
 ---
 
+# Workstream 5 — Companion addons / asset packaging  (INVESTIGATED — strategy drafted)
+
+Headline conclusion: **do NOT merge the audio into the core addon.** The
+original split was driven by binary-audio size and per-language swappability,
+and those reasons still hold strongly. The right move is the leaner version of
+your fallback: keep binary audio in **data-only** companions, pull the *glue
+code* out of them into Sku, and **rationalize the messy multi-addon beacon split
++ voice-pack naming drift** into a clean, well-defined set (target: 2 audio
+companion families — voice + beacon — plus Sku core owning all code/index).
+
+Scope note: only Sku's own audio companions are in scope (voice DB + beacons).
+`SkuHealthAssets` and `SkuNavData` are out of scope — they are shared/extension
+data, not Sku-proper.
+
+## 5.1 Current state (measured)
+
+External audio companion addons installed alongside Sku:
+
+- **Beacon audio (in scope):**
+  - `SkuBeaconSoundsets` — 99 MB, 8,780 mp3, just `Core.lua` + 2 lua. A **hard
+    Dependency** of Sku (`Sku/Sku.toc:4 ## Dependencies: SkuBeaconSoundsets`).
+  - `SkuCustomBeaconsEssential` — 20 MB, 4,526 mp3. TOC `Dependencies: Sku,
+    SkuBeaconSoundsets` (reverse-depends on Sku).
+  - `SkuCustomBeaconsAdditional` — 202 MB, 15,841 mp3. Same reverse dependency.
+  - Beacon total: ~321 MB, ~29,000 mp3 files.
+- **Voice database (in scope):**
+  - `SkuAudioData_fast_de` installed — **470 MB, 98,483 mp3** (a single
+    per-language voice pack). Sku selects the folder via `Sku.AudiodataPath`
+    (`Sku/Core.lua:79-84`): `"SkuAudioData"` for deDE, `"SkuAudioData_en"` for
+    English. Paths are then built as
+    `Interface\AddOns\<AudiodataPath>\assets\audio\<file>.mp3` in
+    `Libs/SkuVoice-1.0:1283`, `SkuMob/Core.lua:16-27,140`, `SkuCore/Core.lua`.
+  - The **index** (`SkuAudioFileIndex`, `SkuAudioDataLenIndex`) lives **inside
+    Sku** (`SkuAudioData/` module, version-controlled); only the mp3 payload is
+    external.
+- **Grand total external audio: ~790 MB across ~127,000 mp3 files** (~321 MB
+  beacons + ~470 MB one voice pack). Each additional language pack adds hundreds
+  of MB more.
+
+## 5.2 Problems / why this needs rationalizing
+
+- **Naming/path drift.** Code expects folders `SkuAudioData` / `SkuAudioData_en`,
+  but the installed voice pack is `SkuAudioData_fast_de`. The selection logic and
+  the shipped pack names have diverged — exactly the kind of confusion to fix.
+- **Beacon audio is split across three addons** with a confusing **reverse
+  dependency** (the custom packs depend on `Sku`), and the glue lives in each
+  companion's `Core.lua` rather than in Sku.
+- **Logic and data are mixed in the companions.** Each ships a `Core.lua`
+  (registration/glue) next to its mp3s, so distribution and code are entangled —
+  a code fix means re-touching a 99–202 MB addon.
+- **The audio path is a de-facto scattered service** (`Sku.AudiodataPath` +
+  hand-built `Interface\AddOns\...` strings across SkuVoice, SkuMob, SkuCore),
+  with no single resolver.
+
+## 5.3 Why merging into core is the wrong call (the honest assessment)
+
+- Bundling ~321 MB of beacon audio + per-language voice packs into Sku would
+  bloat **every code update** with static audio that essentially never changes.
+- It breaks the **per-language swap** model (a user installs only their language
+  pack) and would force the optional 202 MB `Additional` beacon set on everyone.
+- The installer already treats companions as separately-versioned downloads
+  pinned on an older tag (see the download-topology notes / `SkuInstall.json`),
+  precisely so audio isn't re-fetched on a code patch. That benefit is real.
+
+So: **data stays external; code/index belongs in Sku.**
+
+## 5.4 Target design
+
+- **Two data-only companion families, plus Sku core owning all code:**
+  - *Voice:* per-language voice packs with canonical, consistent names and a
+    robust selection + fallback in one resolver (fixing the `_fast_de` /
+    `SkuAudioData` / `_en` drift).
+  - *Beacon:* consolidate `SkuBeaconSoundsets` + the two `SkuCustomBeacons*` into
+    a clean tiering (e.g. one required core-beacon pack + one optional extended
+    pack), with the dependency pointing the right way (data packs depend on Sku,
+    Sku does not hard-require an optional pack).
+- **Move companion glue/registration code into Sku.** Companions become pure mp3
+  payload. Sku discovers installed packs **data-driven** (scan for known
+  beacon/voice data addons and register their sets) instead of each pack shipping
+  registration code.
+- **One audio-path resolver** (a small service) replaces the scattered
+  `Sku.AudiodataPath` string-building — and this is the same seam W4 will turn
+  the voice output into a service, so design them together.
+
+## 5.5 Where it sits / why it touches other steps
+
+This is primarily a **strategy decision that must be made early**, because:
+- **W1 (settings):** which voice pack and which beacon tiers are enabled are
+  settings; the schema must reference the final companion layout.
+- **W4 (modularization):** the voice output / audio-path resolution becomes a
+  proper service; it should be built against the final packaging, not the current
+  drifted one.
+
+The **execution** (moving mp3s, renaming packs, updating the installer) is
+distribution-only and behavior-preserving, so it can land late and independently
+— but the *target layout* should be fixed before W1's audio settings and W4's
+voice service are designed. Hence: decide W5 strategy early, execute W5 late.
+
+## 5.6 Risks & watch-outs
+
+- **Keep exact folder/path names** the resolver builds, or sounds silently fail
+  to play. Add a missing-file log to catch regressions.
+- **Don't break per-language packs** or force optional audio on all users.
+- **Update the TOC `Dependencies`, load order, and `SkuInstall.json` / installer
+  download topology** to match any rename/consolidation; re-version the data
+  packs separately from core so code updates don't re-ship audio.
+- **Behavior-preserving:** the same beacons/voice must play — verifiable by ear.
+
+## 5.7 Verification (screen-reader-friendly)
+
+- The user's "speak/play what you hear" channel: beacons and voice are audio, so
+  confirm by listening that the same sounds play after repackaging.
+- Add and watch a missing-audio log line (PlaySoundFile failure) via `/skudebug`
+  so a wrong path surfaces deterministically rather than as silence.
+- `/wdwatchsku` to confirm spoken output is unchanged.
+
+## 5.8 Task checklist
+
+- [ ] C-A1. Decide target packaging (recommend: Sku core owns all code+index; 2 data-only families — voice packs per-language, beacon sounds tiered).
+- [ ] C-A2. Resolve the voice-pack naming/path drift; define canonical folder names + one resolver with fallback. (Early — input to W1/W4.)
+- [ ] C-B1. Move companion glue/registration code into Sku; make companions pure data; switch to data-driven discovery of installed packs.
+- [ ] C-B2. Consolidate the 3 beacon addons; fix dependency direction; update TOC deps + load order.
+- [ ] C-B3. Update `SkuInstall.json` / installer download topology; re-version data packs independently of core.
+- [ ] C-B4. Verify by ear (same sounds) + missing-file log clean.
+
+---
+
 # Sequencing — where each workstream sits in the chain
 
 The order matters because the workstreams reduce each other's surface area.
@@ -672,6 +802,15 @@ The order matters because the workstreams reduce each other's surface area.
    boundaries make profiling and targeted fixes easier, but it does not depend on
    the others. The one early tie-in: W1's cached `Sub` accessor is the fix for
    the per-tick db churn W3 identified, so that specific fix can land with W1.
+
+W5 splits across the chain rather than occupying one slot:
+- **W5 strategy decision — early, before W1's audio settings and W4's voice
+  service.** Fix the target companion layout (canonical voice-pack names + one
+  audio-path resolver, beacon consolidation) so W1's schema and W4's voice
+  service are designed against the final shape, not the current drift.
+- **W5 execution — last / independent.** Moving mp3s, renaming/consolidating
+  packs, and updating the installer is distribution-only and behavior-preserving,
+  so the heavy file work can land after the code workstreams.
 
 Rule throughout: one workstream (and within W4, one phase) in flight at a time,
 each independently shippable and behavior-preserving.

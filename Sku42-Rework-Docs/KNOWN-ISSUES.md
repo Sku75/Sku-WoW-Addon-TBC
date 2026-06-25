@@ -15,13 +15,6 @@ history.
 
 ## Setup / environment gotchas (carried from the rework setup)
 
-- **v42 worktree is missing the gitignored runtime assets.** A fresh worktree
-  contains only version-controlled source. The bulky assets that the addon needs
-  to actually RUN are gitignored and therefore absent here: `*.mp3/*.ogg/*.wav`,
-  fonts/images (`*.ttf/*.otf/*.png/*.jpg/*.tga/*.blp`), `routedata_global_wotlk.lua`,
-  and everything under `SkuDB/assets/`. Before symlinking this worktree into WoW,
-  these must be copied (or junctioned) in from the v41 tree's `Sku/` folder.
-  - Status: open — pending the asset-copy step.
 - **Shared SavedVariables with v41.** Same addon name + same account = same
   `Sku.lua` (`SkuOptionsDB`). v42's settings-schema rework (W1) can rewrite the
   saved settings v41 expects. Test v42 against the WTF backup / a copied account,
@@ -37,4 +30,9 @@ history.
 
 ## Resolved
 
-- (none yet)
+- **v42 worktree was missing the gitignored runtime assets** — fixed by copying
+  all 12,809 gitignored files (`SkuDB/assets/`, `routedata_global_wotlk.lua`,
+  `audio/`, scattered binaries) from the v41 tree into `Sku-TBC-42\Sku\`
+  (2026-06-25). The worktree is now runnable once the symlink points at it.
+  Note: the large *external* audio companions (voice DB, beacons, ~790 MB) are
+  separate installed addons and were not touched — see Workstream 5.

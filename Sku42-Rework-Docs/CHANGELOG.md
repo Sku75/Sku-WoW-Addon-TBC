@@ -26,4 +26,12 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
   (commit 5670b60); TOC bumped to 42.00.
 - Refactor plan moved here as `REFACTOR-PLAN.md`; rework docs separated from the
   v41 tree under `Sku42-Rework-Docs/`.
-- (No functional changes yet — rework not started.)
+- Copied the gitignored runtime assets (12,809 files, ~140 MB) into the worktree
+  so v42 is runnable once the symlink points at it.
+- Added **Workstream 5** to the plan (companion-addon / asset packaging) after
+  auditing the external audio addons: ~790 MB across ~127,000 mp3 (beacons
+  `SkuBeaconSoundsets` 99 MB + `SkuCustomBeacons*` 222 MB; voice
+  `SkuAudioData_fast_de` 470 MB). Conclusion: do not merge audio into core; keep
+  data-only companions, move glue code into Sku, rationalize the beacon split and
+  voice-pack naming drift.
+- (No functional code changes yet — rework not started.)
