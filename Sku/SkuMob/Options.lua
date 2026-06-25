@@ -14,10 +14,10 @@ SkuMob.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info, val) 
-				SkuOptions.db.profile[MODULE_NAME].vocalizeRaidTargetOnly = val
+				SkuSettings:Sub("SkuMob").vocalizeRaidTargetOnly = val
 			end,
 			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].vocalizeRaidTargetOnly
+				return SkuSettings:Sub("SkuMob").vocalizeRaidTargetOnly
 			end
 		},
 		dontVocalizePlayerReactionAndLevelInCombat  = {
@@ -26,10 +26,10 @@ SkuMob.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info, val) 
-				SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat  = val
+				SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat  = val
 			end,
 			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat 
+				return SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat 
 			end
 		},				
 		vocalizePlayerNamePlaceholders  = {
@@ -37,10 +37,10 @@ SkuMob.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info, val) 
-				SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders  = val
+				SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholders  = val
 			end,
 			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders 
+				return SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholders 
 			end
 		},		
 		vocalizePlayerNamePlaceholdersSkuTts = {
@@ -48,10 +48,10 @@ SkuMob.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info, val) 
-				SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts = val
+				SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts = val
 			end,
 			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts
+				return SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts
 			end
 		},
 		repeatRaidTargetMarkers = {
@@ -59,10 +59,10 @@ SkuMob.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info, val) 
-				SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers = val
+				SkuSettings:Sub("SkuMob").repeatRaidTargetMarkers = val
 			end,
 			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers
+				return SkuSettings:Sub("SkuMob").repeatRaidTargetMarkers
 			end
 		},
 		autoSetSkuRaidTargetsToInCombatCreatures = {
@@ -71,10 +71,10 @@ SkuMob.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info, val) 
-				SkuOptions.db.profile[MODULE_NAME].autoSetSkuRaidTargetsToInCombatCreatures = val
+				SkuSettings:Sub("SkuMob").autoSetSkuRaidTargetsToInCombatCreatures = val
 			end,
 			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].autoSetSkuRaidTargetsToInCombatCreatures
+				return SkuSettings:Sub("SkuMob").autoSetSkuRaidTargetsToInCombatCreatures
 			end
 		},		
 		InCombatSound={
@@ -84,10 +84,10 @@ SkuMob.options = {
 			type = "select",
 			values = SkuMob.InCombatSounds,
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].InCombatSound = val
+				SkuSettings:Sub("SkuMob").InCombatSound = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].InCombatSound
+				return SkuSettings:Sub("SkuMob").InCombatSound
 			end
 		},
 	}
@@ -104,6 +104,22 @@ SkuMob.defaults = {
 	autoSetSkuRaidTargetsToInCombatCreatures = false,
 	InCombatSound = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3",	
 }
+
+-- Settings schema for SkuMob (Sku 42 rework, W1 Phase B). All keys profile
+-- scope. Declared here as the single source of truth (scope/default/type) for
+-- W2 menu generation and future Get/Set use; SkuMob's own access currently runs
+-- through SkuSettings:Sub (see Core.lua and the option handlers above).
+SkuSettings:Register("SkuMob", {
+	["enable"]                                     = { scope = "profile", default = true,  type = "boolean" },
+	["vocalizeRaidTargetOnly"]                     = { scope = "profile", default = false, type = "boolean" },
+	["dontVocalizePlayerReactionAndLevelInCombat"] = { scope = "profile", default = true,  type = "boolean" },
+	["vocalizePlayerNamePlaceholders"]             = { scope = "profile", default = true,  type = "boolean" },
+	["vocalizePlayerNamePlaceholdersSkuTts"]       = { scope = "profile", default = false, type = "boolean" },
+	["repeatRaidTargetMarkers"]                    = { scope = "profile", default = true,  type = "boolean" },
+	["autoSetSkuRaidTargetsToInCombatCreatures"]   = { scope = "profile", default = false, type = "boolean" },
+	["InCombatSound"]                              = { scope = "profile", default = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3", type = "string" },
+	["enemyCombatStatusMode"]                      = { scope = "profile", default = "beep", type = "string" },
+})
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- =========================================================================
 -- ALTER TARGET-MENÜ-CODE (auskommentiert, Backup-Stand vor Neuaufbau)
@@ -130,7 +146,7 @@ function SkuMob:MenuBuilder(aParentEntry)
 
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true
-	SkuOptions:IterateOptionsArgs(SkuMob.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
+	SkuOptions:IterateOptionsArgs(SkuMob.options.args, tNewMenuEntry, SkuSettings:Sub("SkuMob"))
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -631,5 +647,5 @@ function SkuMob:MenuBuilder(aParentEntry)
 	-- Optionen wie gehabt
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true
-	SkuOptions:IterateOptionsArgs(SkuMob.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
+	SkuOptions:IterateOptionsArgs(SkuMob.options.args, tNewMenuEntry, SkuSettings:Sub("SkuMob"))
 end

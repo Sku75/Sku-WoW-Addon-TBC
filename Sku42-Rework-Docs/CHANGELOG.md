@@ -22,6 +22,16 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W1 Phase B — SkuMob migrated (B1).** All 43 of SkuMob's own-key settings
+  accesses (27 in Core.lua, 16 in Options.lua) moved off raw
+  `SkuOptions.db.profile[MODULE_NAME]/["SkuMob"]` onto `SkuSettings:Sub("SkuMob")`
+  — a uniform token swap that is behaviour-identical for reads and writes (Sub
+  returns the same live table), chosen over per-site Get/Set for SkuMob's
+  combat-critical hot paths. The 35 cross-module `["SkuOptions"].softTargeting`
+  reads stay raw (they migrate with SkuOptions). SkuMob's 9 keys are declared in
+  the flat schema via `SkuSettings:Register` (all profile scope). luaparser-gated;
+  behaviour-preserving by construction; in-game smoke test pending.
+
 - **W1 Phase A started — `SkuSettings` facade added (A1 + A2).** New
   `SkuZOptions/SkuSettings.lua` (on `ns.Settings`, global alias `SkuSettings`),
   TOC-loaded early (after `SkuUtil.lua`). Provides a schema registry

@@ -142,12 +142,12 @@ function SkuMob:VARIABLES_LOADED(...)
 	end
 	SkuMob.options.args.InCombatSound.values = SkuMob.InCombatSounds
 
-	if SkuOptions.db.profile[MODULE_NAME].InCombatSound == nil then
-		SkuOptions.db.profile[MODULE_NAME].InCombatSound = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
+	if SkuSettings:Sub("SkuMob").InCombatSound == nil then
+		SkuSettings:Sub("SkuMob").InCombatSound = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
 	end
 
-	if SkuMob.InCombatSounds[SkuOptions.db.profile[MODULE_NAME].InCombatSound] == nil then
-		SkuOptions.db.profile[MODULE_NAME].InCombatSound = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
+	if SkuMob.InCombatSounds[SkuSettings:Sub("SkuMob").InCombatSound] == nil then
+		SkuSettings:Sub("SkuMob").InCombatSound = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
 	end
 end
 
@@ -165,7 +165,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:GetTtsAwareUnitName(aUnitId)
-	if SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts ~= true then
+	if SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts ~= true then
 		return UnitName(aUnitId)
 	else
 		local tBestUnitId = aUnitId
@@ -348,16 +348,16 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 
 		local tIsPlayerControled = false
 		if UnitIsPlayer(aUnitId) then
-			if SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders == true then
+			if SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholders == true then
 				if UnitIsFriend("player", aUnitId) then
-					if SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
+					if SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
 						tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
 					else
 						tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["freundlicher spieler"]
 					end
 						tIsPlayerControled = true
 				else
-					if SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
+					if SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
 						tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
 					else
 						tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["feindlicher spieler"]
@@ -370,7 +370,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			end
 		end
 		if UnitPlayerControlled(aUnitId) == true and UnitIsPlayer(aUnitId) == false then
-			if SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
+			if SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
 				tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
 			else
 				tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["fremder begleiter"]
@@ -457,10 +457,10 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		end
 
 		-- [41.05] Gegnerstatus Kampf: off = kein Beep, beep/announce = Beep wie bisher.
-		local tCombatStatusMode = SkuOptions.db.profile[MODULE_NAME].enemyCombatStatusMode or "beep"
+		local tCombatStatusMode = SkuSettings:Sub("SkuMob").enemyCombatStatusMode or "beep"
 		if status and tIsPlayerControled == false and tCombatStatusMode ~= "off" then
 			--creature in combat indicator
-			local tAudioFile = SkuOptions.db.profile[MODULE_NAME].InCombatSound or "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
+			local tAudioFile = SkuSettings:Sub("SkuMob").InCombatSound or "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
 			local willPlay, soundHandle = PlaySoundFile(tAudioFile, SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
 		end
 
@@ -469,7 +469,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		local tRaidTargetString = ""
 		if tRaidtarget then
 			if SkuCore.RaidTargetValues[tRaidtarget] then
-				if SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers == true then
+				if SkuSettings:Sub("SkuMob").repeatRaidTargetMarkers == true then
 					tRaidTargetString = SkuCore.RaidTargetValues[tRaidtarget].name..";"..SkuCore.RaidTargetValues[tRaidtarget].name..";"
 				else
 					tRaidTargetString = SkuCore.RaidTargetValues[tRaidtarget].name..";"
@@ -484,7 +484,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 				tRaidTargetString = SkuCore.RaidTargetValues[SkuCore:aqCombatGetSkuRaidTarget(tUnitGUID)].color..";"
 			else
 				if UnitCanAttack("player", aUnitId) and tIsPlayerControled == false and status then
-					if SkuOptions.db.profile[MODULE_NAME].autoSetSkuRaidTargetsToInCombatCreatures == true then
+					if SkuSettings:Sub("SkuMob").autoSetSkuRaidTargetsToInCombatCreatures == true then
 						local tNewRaidTargetId = SkuCore:aqCombatSetSkuRaidTarget(tUnitGUID, 0)
 						if tNewRaidTargetId then
 							tRaidTargetString = SkuCore.RaidTargetValues[tNewRaidTargetId].color..";"
@@ -492,7 +492,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 					end
 				end
 			end
-			if SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers == true then
+			if SkuSettings:Sub("SkuMob").repeatRaidTargetMarkers == true then
 				tRaidTargetString = tRaidTargetString..tRaidTargetString
 			end
 		end
@@ -532,20 +532,20 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 
 		if tUnitName then
 			if hp == 0 then
-				if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
+				if tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true then
 					tOutputString = tRaidTargetString.." "..L["dead"].." "..tUnitName
 				else
 					tOutputStringB = tRaidTargetString.." "..L["dead"].." "..tUnitName
 				end
 			else
-				if tRaidTargetString ~= "" and SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == true then
-					if tIsPlayerControled == false  or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
+				if tRaidTargetString ~= "" and SkuSettings:Sub("SkuMob").vocalizeRaidTargetOnly == true then
+					if tIsPlayerControled == false  or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true then
 						tOutputString = tOutputString.." "..tRaidTargetString
 					else
 						tOutputStringB = tOutputStringB.." "..tRaidTargetString
 					end
 				else
-					if tIsPlayerControled == false  or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
+					if tIsPlayerControled == false  or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true then
 						tOutputString = tOutputString.." "..tRaidTargetString..tReactionText..tCombatText..tUnitName
 					else
 						tOutputStringB = tOutputStringB.." "..tRaidTargetString..tReactionText..tCombatText..tUnitName
@@ -565,28 +565,28 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			["minus"] = "",
 		}
 
-		if tRaidTargetString == "" or SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == false then
+		if tRaidTargetString == "" or SkuSettings:Sub("SkuMob").vocalizeRaidTargetOnly == false then
 			if tUnitLevel then
 				if tUnitLevel ~= -1 then
-					if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-						if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true or SkuCore.inCombat == false) then
+					if tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true then
+						if tIsPlayerControled ~= true or (SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat ~= true or SkuCore.inCombat == false) then
 							tOutputString = tOutputString.." "..L["level"]
 							tOutputString = tOutputString.." "..string.format("%02d", tUnitLevel).." "..tClassifications[tClassification]
 						end
 					else
-						if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
+						if tIsPlayerControled ~= true or (SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
 							tOutputStringB = tOutputStringB.." "..L["level"].." "..string.format("%02d", tUnitLevel)
 						end
 					end
 				else
 					if aUnitId ~= "softinteract" then
-						if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-							if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
+						if tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true then
+							if tIsPlayerControled ~= true or (SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
 								tOutputString = tOutputString.." "..L["level"]
 								tOutputString = tOutputString.." "..L["Unknown"]
 							end
 						else
-							if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
+							if tIsPlayerControled ~= true or (SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
 								tOutputStringB = tOutputStringB.." "..L["level"].." "..L["Unknown"]
 							end
 						end
@@ -613,7 +613,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			end
 			
 			--layer info
-			if SkuDB.routedata["global"].WaypointLevels and (tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true) then
+			if SkuDB.routedata["global"].WaypointLevels and (tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true) then
 				local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, nil, true))
 				if tLayerText then
 					tOutputString = tOutputString.." "..tLayerText
@@ -623,7 +623,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 
 		end
 
-		if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
+		if tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true then
 			SkuOptions.Voice:OutputString(tOutputString, true, true, 0.3)
 		else
 			SkuOptions.Voice:OutputStringBTtts(tOutputStringB, true, true, 0.3, nil, nil, nil, 1)

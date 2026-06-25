@@ -242,7 +242,17 @@ time with both styles coexisting.
 - [~] A5. Phase A verification: persisted `SkuOptionsDB` unchanged; ship checkpoint commit.
   - luaparser-gated. In-game smoke test (load clean, `moduleDefaults` identity,
     settings unchanged) pending.
-- [ ] B1..Bn. Migrate call sites per module (SkuMob → SkuQuest → SkuAuras → SkuChat → SkuNav → SkuCore), each with syntax + smoke verification + commit.
+- [~] B1..Bn. Migrate call sites per module (SkuMob → SkuQuest → SkuAuras → SkuChat → SkuNav → SkuCore), each with syntax + smoke verification + commit.
+  - [x] **B1 SkuMob.** All of SkuMob's own-key access (43 sites: 27 in Core.lua,
+    16 in Options.lua) moved off raw `SkuOptions.db.profile[MODULE_NAME]/["SkuMob"]`
+    onto `SkuSettings:Sub("SkuMob")`. Chose the `Sub`-swap (uniform token
+    replacement) over per-site `Get`/`Set` because `Sub` returns the *same live
+    table*, so the swap is behaviour-identical for reads AND writes with no
+    read/write ambiguity — ideal for SkuMob's combat-critical hot paths. The
+    cross-module `["SkuOptions"].softTargeting` reads (35) were deliberately left
+    raw — they belong to SkuOptions and migrate when it does. Flat schema for
+    SkuMob's 9 keys authored via `SkuSettings:Register` (all profile scope) as the
+    W2 source of truth. luaparser-gated.
 - [ ] C1. Enable `Set` validation permanently; remove raw-path fallback.
 - [ ] C2. Publish the finalized schema as the input contract for Workstream 2.
 
