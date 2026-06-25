@@ -22,6 +22,13 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W1 Phase B — SkuAuras migrated (B3).** 84 own-key settings accesses migrated
+  to `SkuSettings:Sub` (Core 22, Options 56, sharing 4). SkuAuras spans three
+  scopes — char (79), global (4), profile (1) — all handled by the existing
+  scope-override arg (`Sub("SkuAuras")` / `…, nil, "char"` / `…, nil, "global"`).
+  One char lazy-init idiom special-cased. Cross-module `["SkuCore"]` reads stay
+  raw. luaparser-gated; behaviour-preserving; in-game smoke test pending.
+
 - **W1 Phase B — SkuQuest migrated (B2).** All 111 of SkuQuest's own-key settings
   accesses migrated to `SkuSettings:Sub`. SkuQuest mixes scopes (75 profile + 36
   char), so `Sub` gained an optional third arg `aScopeOverride`: profile →

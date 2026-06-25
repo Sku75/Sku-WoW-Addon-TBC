@@ -61,6 +61,18 @@ investigated.
     Good candidate to reconcile during W4 (state ownership / one writer).
   - Status: open.
 
+- **SkuAuras "Optionen" submenu is an empty placeholder.**
+  - Symptom: navigating Auren → Optionen enters a menu with no children — nothing
+    to read; feels like "can't enter the options".
+  - Repro: Sku menu → Auren → Optionen.
+  - Cause: `SkuAuras.options.args` is `{}` (never populated), so the
+    `IterateOptionsArgs(SkuAuras.options.args, …)` call in `SkuAuras:MenuBuilder`
+    builds 0 children. Pre-existing (present on v41); NOT caused by the W1 settings
+    migration — confirmed during B3 testing (no Lua error logged, `/wdsku` shows
+    the entry with numChildren=0).
+  - Status: open (pre-existing). Either remove the dead entry or populate it with
+    the real SkuAuras toggles. Candidate for W2 (menu rework) / W6 cleanup.
+
 ## Feature requests / wishlist
 
 Maintainer-requested features for the v42 line. Several overlap existing

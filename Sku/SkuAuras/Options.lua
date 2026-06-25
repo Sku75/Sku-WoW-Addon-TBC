@@ -160,12 +160,12 @@ function SkuAuras:BuildAuraTooltip(aCurrentMenuItem, aAuraName)
 	end
 
 
-	if aAuraName and SkuOptions.db.char[MODULE_NAME].Auras[aAuraName] then
-		if SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].type then
-			tType = SkuAuras.Types[SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].type].friendlyName
+	if aAuraName and SkuSettings:Sub("SkuAuras", nil, "char").Auras[aAuraName] then
+		if SkuSettings:Sub("SkuAuras", nil, "char").Auras[aAuraName].type then
+			tType = SkuAuras.Types[SkuSettings:Sub("SkuAuras", nil, "char").Auras[aAuraName].type].friendlyName
 		end
 		tConditions = {}
-		for tName, tData in pairs(SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].attributes) do
+		for tName, tData in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras[aAuraName].attributes) do
 			if SkuAuras.attributes[tName] then
 				for tDataIndex, tDataData in pairs(tData) do
 					local tFname = tDataData[2]
@@ -177,9 +177,9 @@ function SkuAuras:BuildAuraTooltip(aCurrentMenuItem, aAuraName)
 				end
 			end
 		end
-		tAction = SkuAuras.actions[SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].actions[1]].friendlyName
+		tAction = SkuAuras.actions[SkuSettings:Sub("SkuAuras", nil, "char").Auras[aAuraName].actions[1]].friendlyName
 		tOutputs = {}
-		for tIndex, tData in pairs(SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].outputs) do
+		for tIndex, tData in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras[aAuraName].outputs) do
 			local tString = string.gsub(SkuAuras.outputs[RemoveTagFromValue(tData)].friendlyName, L["sound"].."#", ";")
 			tOutputs[#tOutputs + 1] = tString
 		end
@@ -573,7 +573,7 @@ function SkuAuras:UpdateAura(aAuraNameToUpdate, aNewType, aEnabled, aNewAttribut
 	--print("UpdateAura", aAuraNameToUpdate)
 	--build the new name
 	local tAuraName = SkuAuras:BuildAuraName(aNewType, aNewAttributes, aNewActions, aNewOutputs)
-	if SkuOptions.db.char[MODULE_NAME].Auras[aAuraNameToUpdate].customName == true then
+	if SkuSettings:Sub("SkuAuras", nil, "char").Auras[aAuraNameToUpdate].customName == true then
 		tAuraName = aAuraNameToUpdate
 	end
 
@@ -581,11 +581,11 @@ function SkuAuras:UpdateAura(aAuraNameToUpdate, aNewType, aEnabled, aNewAttribut
 	local tBackTo = SkuOptions.currentMenuPosition.selectTarget.backTo
 	C_Timer.After(0.01, function()
 		--remove old aura
-		local tIsCustomName = SkuOptions.db.char[MODULE_NAME].Auras[aAuraNameToUpdate].customName
-		SkuOptions.db.char[MODULE_NAME].Auras[aAuraNameToUpdate] = nil
+		local tIsCustomName = SkuSettings:Sub("SkuAuras", nil, "char").Auras[aAuraNameToUpdate].customName
+		SkuSettings:Sub("SkuAuras", nil, "char").Auras[aAuraNameToUpdate] = nil
 
 		--add new aura
-		SkuOptions.db.char[MODULE_NAME].Auras[tAuraName] = {
+		SkuSettings:Sub("SkuAuras", nil, "char").Auras[tAuraName] = {
 			type = aNewType,
 			enabled = aEnabled,
 			attributes = aNewAttributes,
@@ -619,7 +619,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 		tNewMenuEntry.OnEnter = function(self)
 			self.selectTarget.targetAuraName = self.parent.name
 		end
-		if SkuOptions.db.char[MODULE_NAME].Auras[self.selectTarget.targetAuraName] and SkuOptions.db.char[MODULE_NAME].Auras[self.selectTarget.targetAuraName].customName then
+		if SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.selectTarget.targetAuraName] and SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.selectTarget.targetAuraName].customName then
 			if SkuAuras:AuraUsedInOtherAuras(self.selectTarget.targetAuraName) ~= true then
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Set name to auto generated"]}, SkuGenericMenuItem)
 				tNewMenuEntry.OnEnter = function(self)
@@ -655,13 +655,13 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 			tNewMenuEntryCond.backTo = self.parent.parent
 			tNewMenuEntryCond.usedAttributes = {}
 			tNewMenuEntryCond.single = true
-			tNewMenuEntryCond.internalName = SkuOptions.db.char[MODULE_NAME].Auras[self.parent.name].type
+			tNewMenuEntryCond.internalName = SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.parent.name].type
 			tNewMenuEntryCond.OnAction = function(self, aValue, aName)
-				local tType = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].type
-				local tEnabled = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].enabled
-				local tAttributes = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].attributes
-				local tActions = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].actions
-				local tOutputs = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].outputs
+				local tType = SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.auraName].type
+				local tEnabled = SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.auraName].enabled
+				local tAttributes = SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.auraName].attributes
+				local tActions = SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.auraName].actions
+				local tOutputs = SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.auraName].outputs
 
 				local function tAddConditionHelper(aParent)
 					if not tAttributes[aParent.collectValuesFrom.parent.parent.internalName] then
@@ -723,7 +723,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 					self.selectTarget.newOrChanged = "new"
 				end
 				tNewMenuEntryCondVal.BuildChildren = SkuAuras:NewAuraAttributeBuilder(tNewMenuEntryCondVal)
-				for i, v in pairs(SkuOptions.db.char[MODULE_NAME].Auras[self.parent.parent.name].attributes) do
+				for i, v in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.parent.parent.name].attributes) do
 					for x = 1, #v do
 						local tNewMenuEntryCondValCon = SkuOptions:InjectMenuItems(self, {SkuAuras.attributes[i].friendlyName..";"..SkuAuras.Operators[v[x][1]].friendlyName ..";"..SkuAuras.values[v[x][2]].friendlyName}, SkuGenericMenuItem)
 						tNewMenuEntryCondValCon.dynamic = true
@@ -738,7 +738,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 							end
 							tNewMenuEntryCondValOptions.BuildChildren = SkuAuras:NewAuraAttributeBuilder(tNewMenuEntryCondValOptions)
 
-							if NoIndexTableGetn(SkuOptions.db.char[MODULE_NAME].Auras[self.parent.parent.parent.name].attributes) > 1 then
+							if NoIndexTableGetn(SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.parent.parent.parent.name].attributes) > 1 then
 								local tNewMenuEntryCondValOptions = SkuOptions:InjectMenuItems(self, {L["Löschen"]}, SkuGenericMenuItem)
 								tNewMenuEntryCondValOptions.actionOnEnter = true
 							end
@@ -761,11 +761,11 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 				--dprint("     self.auraName", self.auraName)
 				--dprint("     self.collectValuesFrom.name", self.collectValuesFrom.name)
 
-				local tType = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].type
-				local tEnabled = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].enabled
-				local tAttributes = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].attributes
-				local tActions = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].actions
-				local tOutputs = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].outputs
+				local tType = SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.auraName].type
+				local tEnabled = SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.auraName].enabled
+				local tAttributes = SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.auraName].attributes
+				local tActions = SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.auraName].actions
+				local tOutputs = SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.auraName].outputs
 
 				local tTmpOutputs = {}
 				local tCurrent = self.collectValuesFrom
@@ -790,11 +790,11 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 			--dprint("OnAction Duplizieren")
 			local tCopyCounter = 1
 			local tTestNewName = L["Kopie;"]..tCopyCounter..";"..self.parent.name
-			while SkuOptions.db.char[MODULE_NAME].Auras[tTestNewName] do
+			while SkuSettings:Sub("SkuAuras", nil, "char").Auras[tTestNewName] do
 				tCopyCounter = tCopyCounter + 1
 				tTestNewName = L["Kopie;"]..tCopyCounter..";"..self.parent.name
 			end
-			SkuOptions.db.char[MODULE_NAME].Auras[tTestNewName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[self.parent.name], true)
+			SkuSettings:Sub("SkuAuras", nil, "char").Auras[tTestNewName] = TableCopy(SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.parent.name], true)
 			SkuOptions.Voice:OutputStringBTtts(L["Dupliziert"], true, true, 0.3, true)		
 
 			C_Timer.After(0.01, function()
@@ -828,8 +828,8 @@ function SkuAuras:ExportAuraData(aAuraNamesTable)
 	}
 
 	for i, v in pairs(aAuraNamesTable) do
-		if SkuOptions.db.char[MODULE_NAME].Auras[v] then
-			tExportDataTable.auraData[v] = SkuOptions.db.char[MODULE_NAME].Auras[v]
+		if SkuSettings:Sub("SkuAuras", nil, "char").Auras[v] then
+			tExportDataTable.auraData[v] = SkuSettings:Sub("SkuAuras", nil, "char").Auras[v]
 		end
 	end
 
@@ -857,7 +857,7 @@ function SkuAuras:ImportAuraData()
 						return
 					end
 					auraData.enabled = true
-					SkuOptions.db.char[MODULE_NAME].Auras[auraName] = auraData
+					SkuSettings:Sub("SkuAuras", nil, "char").Auras[auraName] = auraData
 					print(L["Aura importiert:"])
 					print(auraName)
 					SkuOptions.Voice:OutputStringBTtts(L["Aura importiert"], false, true, 0.3)		
@@ -871,7 +871,7 @@ function SkuAuras:ImportAuraData()
 				for i, v in pairs(auraData) do
 					print(i)
 					v.enabled = true
-					SkuOptions.db.char[MODULE_NAME].Auras[i] = v
+					SkuSettings:Sub("SkuAuras", nil, "char").Auras[i] = v
 				end
 				SkuOptions.Voice:OutputStringBTtts(L["Aura importiert"], false, true, 0.3)		
 			end
@@ -946,28 +946,28 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			--print("OnAction Auren verwalten", aValue, aName, self.targetAuraName)
 			if not self.targetAuraName then return end
-			if not SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName] then return end
+			if not SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.targetAuraName] then return end
 			if aName == L["Deaktivieren"] or aName == L["Aktivieren"] then
-				if SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName].enabled == true then
-					SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName].enabled = false
+				if SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.targetAuraName].enabled == true then
+					SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.targetAuraName].enabled = false
 					SkuOptions.Voice:OutputStringBTtts(L["deaktiviert"], false, true, 0.1, true)
 				else
-					SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName].enabled = true
+					SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.targetAuraName].enabled = true
 					SkuOptions.Voice:OutputStringBTtts(L["aktiviert"], false, true, 0.1, true)
 				end			
 			elseif aName == L["Löschen"] then
-				SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName] = nil
+				SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.targetAuraName] = nil
 				SkuOptions.Voice:OutputStringBTtts(L["gelöscht"], false, true, 0.1, true)
 			elseif aName == L["Exportieren"] then				
 				SkuAuras:ExportAuraData({self.targetAuraName})
 
 			elseif aName == L["Set name to auto generated"] then		
-				local tData = SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName]
+				local tData = SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.targetAuraName]
 				local tAutoName = SkuAuras:BuildAuraName(tData.type, tData.attributes, tData.actions, tData.outputs)
 				if tAutoName ~= self.targetAuraName then
-					SkuOptions.db.char[MODULE_NAME].Auras[tAutoName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName], true)
-					SkuOptions.db.char[MODULE_NAME].Auras[tAutoName].customName = nil
-					SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName] = nil
+					SkuSettings:Sub("SkuAuras", nil, "char").Auras[tAutoName] = TableCopy(SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.targetAuraName], true)
+					SkuSettings:Sub("SkuAuras", nil, "char").Auras[tAutoName].customName = nil
+					SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.targetAuraName] = nil
 
 
 
@@ -1002,16 +1002,16 @@ function SkuAuras:MenuBuilder(aParentEntry)
 					function(self)
 						local tNewName = SkuOptionsEditBoxEditBox:GetText()
 						if tNewName and tNewName ~= "" then
-							if SkuOptions.db.char[MODULE_NAME].Auras[tNewName] then
+							if SkuSettings:Sub("SkuAuras", nil, "char").Auras[tNewName] then
 								SkuOptions.Voice:OutputStringBTtts(L["name already exists"], false, false, 0.2, true, nil, nil, 2)
 								SkuOptions.Voice:OutputStringBTtts(L["Auren verwalten"], false, false, 0.2, true, nil, nil, 2)
 								PlaySound(88)
 								return
 							end
 
-							SkuOptions.db.char[MODULE_NAME].Auras[tNewName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[tCurrentName], true)
-							SkuOptions.db.char[MODULE_NAME].Auras[tNewName].customName = true
-							SkuOptions.db.char[MODULE_NAME].Auras[tCurrentName] = nil
+							SkuSettings:Sub("SkuAuras", nil, "char").Auras[tNewName] = TableCopy(SkuSettings:Sub("SkuAuras", nil, "char").Auras[tCurrentName], true)
+							SkuSettings:Sub("SkuAuras", nil, "char").Auras[tNewName].customName = true
+							SkuSettings:Sub("SkuAuras", nil, "char").Auras[tCurrentName] = nil
 
 
 
@@ -1058,7 +1058,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 			tTypeItem.filterable = true
 			tTypeItem.BuildChildren = function(self)
 				local tHasEntries = false
-				for i, v in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do 
+				for i, v in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras) do 
 					if v.enabled == true then
 						tHasEntries = true
 						SkuAuras:BuildManageSubMenu(self, {i})
@@ -1073,7 +1073,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 			tTypeItem.filterable = true
 			tTypeItem.BuildChildren = function(self)
 				local tHasEntries = false
-				for i, v in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do 
+				for i, v in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras) do 
 					if v.enabled ~= true then
 						tHasEntries = true
 						SkuAuras:BuildManageSubMenu(self, {i})
@@ -1088,7 +1088,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 			tTypeItem.filterable = true
 			tTypeItem.BuildChildren = function(self)
 				local tHasEntries = false
-				for i, v in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do 
+				for i, v in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras) do 
 					tHasEntries = true
 					SkuAuras:BuildManageSubMenu(self, {i})
 				end
@@ -1113,7 +1113,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tdel.dynamic = false
 		tdel.isSelect = true
 		tdel.OnAction = function(self, aValue, aName)
-			SkuOptions.db.char[MODULE_NAME].Auras = {}
+			SkuSettings:Sub("SkuAuras", nil, "char").Auras = {}
 			SkuOptions.Voice:OutputStringBTtts(L["Alle auren gelöscht"], true, true, 0.1, true)
 			SkuAuras:UpdateAttributesListWithCurrentAuras()
 		end
@@ -1123,7 +1123,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tdel.isSelect = true
 		tdel.OnAction = function(self, aValue, aName)
 			local aAuraNamesTable = {}
-			for i, v in pairs(SkuOptions.db.char["SkuAuras"].Auras) do 
+			for i, v in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras) do 
 				table.insert(aAuraNamesTable, i)
 			end 
 			SkuAuras:ExportAuraData(aAuraNamesTable)
@@ -1137,17 +1137,17 @@ function SkuAuras:MenuBuilder(aParentEntry)
 			--dprint("OnAction Sets verwalten", self, aValue, aName)
 			--dprint(self.selectedSetInternalName)
 			if aName == L["Übernehmen überschreiben"] then
-				SkuOptions.db.char[MODULE_NAME].Auras = {}
+				SkuSettings:Sub("SkuAuras", nil, "char").Auras = {}
 				tSetData = SkuAuras.AuraSets[self.selectedSetInternalName]
 				for tAuraName, tAuraData in pairs(tSetData.auras) do
-					SkuOptions.db.char[MODULE_NAME].Auras[tAuraData.friendlyNameShort] = tAuraData
+					SkuSettings:Sub("SkuAuras", nil, "char").Auras[tAuraData.friendlyNameShort] = tAuraData
 				end
 				SkuOptions.Voice:OutputStringBTtts(L["Set angewendet"], false, true, 0.3, true)	
 				SkuAuras:UpdateAttributesListWithCurrentAuras()
 			elseif aName == L["Übernehmen hinzufügen"] then
 				tSetData = SkuAuras.AuraSets[self.selectedSetInternalName]
 				for tAuraName, tAuraData in pairs(tSetData.auras) do
-					SkuOptions.db.char[MODULE_NAME].Auras[tAuraData.friendlyNameShort] = tAuraData
+					SkuSettings:Sub("SkuAuras", nil, "char").Auras[tAuraData.friendlyNameShort] = tAuraData
 				end
 				SkuOptions.Voice:OutputStringBTtts(L["Set hinzugefügt"], false, true, 0.3, true)	
 				SkuAuras:UpdateAttributesListWithCurrentAuras()
@@ -1214,5 +1214,5 @@ function SkuAuras:MenuBuilder(aParentEntry)
 
 	---
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
-	SkuOptions:IterateOptionsArgs(SkuAuras.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
+	SkuOptions:IterateOptionsArgs(SkuAuras.options.args, tNewMenuEntry, SkuSettings:Sub("SkuAuras"))
 end

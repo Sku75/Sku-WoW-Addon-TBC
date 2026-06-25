@@ -33,14 +33,14 @@ local function tDeepCopy(aValue)
 end
 
 local function tEnsureSets()
-	local p = SkuOptions and SkuOptions.db and SkuOptions.db.char and SkuOptions.db.char[MODULE_NAME]
+	local p = SkuOptions and SkuOptions.db and SkuOptions.db.char and SkuSettings:Sub("SkuAuras", nil, "char")
 	if not p then return nil end
 	p.Sets = p.Sets or {}
 	return p.Sets
 end
 
 local function tEnsurePending()
-	local p = SkuOptions and SkuOptions.db and SkuOptions.db.char and SkuOptions.db.char[MODULE_NAME]
+	local p = SkuOptions and SkuOptions.db and SkuOptions.db.char and SkuSettings:Sub("SkuAuras", nil, "char")
 	if not p then return nil end
 	p.PendingSets = p.PendingSets or {}
 	return p.PendingSets
@@ -67,7 +67,7 @@ end
 function SkuAuras:SetsCreateFromAllAuras(aName)
 	local sets = tEnsureSets(); if not sets then return nil end
 	local tName = tUniqueName(sets, aName)
-	local tAuras = SkuOptions.db.char[MODULE_NAME].Auras or {}
+	local tAuras = SkuSettings:Sub("SkuAuras", nil, "char").Auras or {}
 	local tSnapshot, tCount = {}, 0
 	for k, v in pairs(tAuras) do
 		tSnapshot[k] = tDeepCopy(v)
@@ -126,7 +126,7 @@ end
 function SkuAuras:AcceptPendingSet(aKey)
 	local pending = tEnsurePending(); local p = pending and pending[aKey]
 	if not p then return end
-	local tAuras = SkuOptions.db.char[MODULE_NAME].Auras
+	local tAuras = SkuSettings:Sub("SkuAuras", nil, "char").Auras
 	if not tAuras then return end
 	if p.loc and p.loc ~= (Sku.Loc or "enUS") then
 		tSay("Achtung, Set ist fuer eine andere Sprache. Auren koennten nicht ausloesen.")

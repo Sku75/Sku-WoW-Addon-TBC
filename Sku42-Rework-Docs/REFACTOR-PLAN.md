@@ -264,6 +264,12 @@ time with both styles coexisting.
     they are redundant anyway since `Sub` auto-creates the section — replaced with
     a bare `Sub("SkuQuest", nil, "char")` call. Cross-module `["SkuNav"]` (68) and
     `["SkuOptions"]` (4) left raw. luaparser-gated; 0 `Sub(…)=` syntax errors.
+  - [x] **B3 SkuAuras.** 84 own-key sites migrated to `Sub` (Core 22, Options 56,
+    sharing 4; data/defaultAuras untouched). SkuAuras spans *three* scopes — char
+    (79), global (4), profile (1) — all handled by the existing `aScopeOverride`:
+    `Sub("SkuAuras")` / `Sub("SkuAuras", nil, "char")` / `Sub("SkuAuras", nil,
+    "global")`. One char lazy-init idiom (`Core.lua:235`) special-cased as before.
+    Cross-module `["SkuCore"]` (2) left raw. luaparser-gated; 0 `Sub(…)=` errors.
   - **Note on the flat schema:** authored for SkuMob (small/flat) as a demo, but
     DEFERRED for the larger modules (SkuQuest onward). The `Sub`-swap migration
     doesn't consume the flat per-key schema (scope is default/explicit), and

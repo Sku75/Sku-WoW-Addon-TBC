@@ -232,8 +232,8 @@ end
 local tItemHook
 function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	--print("PLAYER_ENTERING_WORLD", aEvent, aIsInitialLogin, aIsReloadingUi)
-	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
-	SkuOptions.db.char[MODULE_NAME].Auras = SkuOptions.db.char[MODULE_NAME].Auras or {}
+	SkuSettings:Sub("SkuAuras", nil, "char")
+	SkuSettings:Sub("SkuAuras", nil, "char").Auras = SkuSettings:Sub("SkuAuras", nil, "char").Auras or {}
 
 	local seen = {}
 	SkuAuras.values = TableCopy(SkuAuras.valuesDefault, true, seen)
@@ -362,14 +362,14 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	end
 
 	--update pre 32.7 renamed auras
-	if not SkuOptions.db.char[MODULE_NAME].pre327AuraUpdate then
-		for tName, tData in pairs (SkuOptions.db.char[MODULE_NAME].Auras) do
+	if not SkuSettings:Sub("SkuAuras", nil, "char").pre327AuraUpdate then
+		for tName, tData in pairs (SkuSettings:Sub("SkuAuras", nil, "char").Auras) do
 			local tCheckName = SkuAuras:BuildAuraName(tData.type, tData.attributes, tData.actions, tData.outputs)
 			if tCheckName ~= tName then
 				tData.customName = true
 			end
 		end
-		SkuOptions.db.char[MODULE_NAME].pre327AuraUpdate = true
+		SkuSettings:Sub("SkuAuras", nil, "char").pre327AuraUpdate = true
 	end
 
 
@@ -385,7 +385,7 @@ function SkuAuras:UpdateAttributesListWithCurrentAuras()
 		end
 	end
 
-	for tName, tData in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do
+	for tName, tData in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras) do
 		if tData.customName == true then
 			local tBaseName = SkuAuras:GetBaseAuraName(tName)
 			if not SkuAuras.attributes["skuAura"..tBaseName] then
@@ -416,7 +416,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:AuraUsedInOtherAuras(aAuraName)
 	local tBaseName = "skuAura"..SkuAuras:GetBaseAuraName(aAuraName)
-	for tName, tData in pairs (SkuOptions.db.char[MODULE_NAME].Auras) do
+	for tName, tData in pairs (SkuSettings:Sub("SkuAuras", nil, "char").Auras) do
 		if tName ~= aAuraName then
 			for tAttName, tAttData in pairs(tData.attributes) do
 				if tAttName == tBaseName then
@@ -430,10 +430,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:AuraHasOtherAuras(aAuraName)
 	--print("AuraHasOtherAuras", aAuraName)
-	if not SkuOptions.db.char[MODULE_NAME].Auras[aAuraName] then
+	if not SkuSettings:Sub("SkuAuras", nil, "char").Auras[aAuraName] then
 		return
 	end
-	for tAttName, tAttData in pairs(SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].attributes) do
+	for tAttName, tAttData in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras[aAuraName].attributes) do
 		if string.find(tAttName, "skuAura") ~= nil then
 			return true
 		end
@@ -445,7 +445,7 @@ function SkuAuras:UpdateAttributesWithUpdatedAuraName(aOldAuraName, aNewAuraName
 	local aOldAuraNameBaseName = "skuAura"..SkuAuras:GetBaseAuraName(aOldAuraName)
 	local aNewAuraNameBaseName = "skuAura"..SkuAuras:GetBaseAuraName(aNewAuraName)
 
-	for tName, tData in pairs (SkuOptions.db.char[MODULE_NAME].Auras) do
+	for tName, tData in pairs (SkuSettings:Sub("SkuAuras", nil, "char").Auras) do
 		local tUpdated
 		if tData.attributes[aOldAuraNameBaseName] ~= nil then
 			local tExistingData = tData.attributes[aOldAuraNameBaseName]
@@ -458,9 +458,9 @@ function SkuAuras:UpdateAttributesWithUpdatedAuraName(aOldAuraName, aNewAuraName
 			SkuAuras:UpdateAttributesListWithCurrentAuras()
 			local tAutoName = SkuAuras:BuildAuraName(tData.type, tData.attributes, tData.actions, tData.outputs)
 			if tAutoName ~= tName then
-				SkuOptions.db.char[MODULE_NAME].Auras[tAutoName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[tName], true)
-				SkuOptions.db.char[MODULE_NAME].Auras[tAutoName].customName = nil
-				SkuOptions.db.char[MODULE_NAME].Auras[tName] = nil
+				SkuSettings:Sub("SkuAuras", nil, "char").Auras[tAutoName] = TableCopy(SkuSettings:Sub("SkuAuras", nil, "char").Auras[tName], true)
+				SkuSettings:Sub("SkuAuras", nil, "char").Auras[tAutoName].customName = nil
+				SkuSettings:Sub("SkuAuras", nil, "char").Auras[tName] = nil
 				SkuAuras:UpdateAttributesWithUpdatedAuraName(tName, tAutoName)
 			end
 		end
@@ -831,8 +831,8 @@ local CombatLogFilterAttackable =  bit.bor(
 function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 	local beginTime = debugprofilestop()
 
-	if not SkuOptions.db.char[MODULE_NAME].Auras then
-		SkuOptions.db.char[MODULE_NAME].Auras = {}
+	if not SkuSettings:Sub("SkuAuras", nil, "char").Auras then
+		SkuSettings:Sub("SkuAuras", nil, "char").Auras = {}
 	end
 
 	local tRawEventData = tEventData
@@ -1058,7 +1058,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 
 	--evaluate all auras
 	local tFirst = true
-	for tAuraName, tAuraData in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do
+	for tAuraName, tAuraData in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras) do
 		if tSpecificAuraToTestIndex == nil or (tSpecificAuraToTestIndex ~= nil and tSpecificAuraToTestIndex == tAuraName) then
 			if tAuraData.enabled == true then
 				tEvaluateData.buffListTarget = toBuffListTarget
@@ -1280,7 +1280,7 @@ function SkuAuras:CreateAura(aType, aAttributes)
 	local tAuraName = SkuAuras:BuildAuraName(aType, tAttributes, tActions, tOutputs)
 
 	--add aura
-	SkuOptions.db.char[MODULE_NAME].Auras[tAuraName] = {
+	SkuSettings:Sub("SkuAuras", nil, "char").Auras[tAuraName] = {
 		type = aType,
 		enabled = true,
 		attributes = tAttributes,
@@ -1460,9 +1460,9 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:LogRecorder(aEventName, aEventData)
-	if SkuOptions.db.global[MODULE_NAME].log then
-		if SkuOptions.db.global[MODULE_NAME].log.enabled == true then
-			SkuOptions.db.global[MODULE_NAME].log.data[#SkuOptions.db.global[MODULE_NAME].log.data + 1] = {event = aEventName, data = aEventData,}
+	if SkuSettings:Sub("SkuAuras", nil, "global").log then
+		if SkuSettings:Sub("SkuAuras", nil, "global").log.enabled == true then
+			SkuSettings:Sub("SkuAuras", nil, "global").log.data[#SkuSettings:Sub("SkuAuras", nil, "global").log.data + 1] = {event = aEventName, data = aEventData,}
 		end
 	end
 end
