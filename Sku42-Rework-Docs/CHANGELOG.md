@@ -22,6 +22,13 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W1 Phase B — SkuChat migrated (B4).** 287 own-key settings accesses migrated
+  to `SkuSettings:Sub` (Core 187, Options 100). Scopes profile + global; one
+  global ensure-exists idiom special-cased. Cross-module `["SkuOptions"]` reads
+  stay raw. Verified via neutralize-parse (SkuChat/Core.lua has a pre-existing
+  `"\]"` escape that trips luaparser, unrelated to this change). In-game test
+  pending (batched with B5/B6).
+
 - **Debug logging default changed for v42.** `Sku.debug` now defaults to
   `{ print = false, log = true }` (`Core.lua`) instead of both off. The
   `SkuDebugLog` ring captures breadcrumbs every session automatically (readable

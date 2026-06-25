@@ -1535,12 +1535,12 @@ do
 end
 
 function SkuChat_SkuMessageEventHandler(self, event, tMessagetype, message)
-	for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-		if tMessagetype == "COMBATLOG" and SkuOptions.db.profile["SkuChat"].tabs[x].messageTypes["SKU"] and SkuOptions.db.profile["SkuChat"].tabs[x].messageTypes["SKU"][1] == true then
-			_G[SkuOptions.db.profile["SkuChat"].tabs[x].frameName]:AddMessage(tMessagetype, message) 
+	for x = 1, #SkuSettings:Sub("SkuChat").tabs do
+		if tMessagetype == "COMBATLOG" and SkuSettings:Sub("SkuChat").tabs[x].messageTypes["SKU"] and SkuSettings:Sub("SkuChat").tabs[x].messageTypes["SKU"][1] == true then
+			_G[SkuSettings:Sub("SkuChat").tabs[x].frameName]:AddMessage(tMessagetype, message) 
 		end
-		if tMessagetype == "AUDIOLOG" and  SkuOptions.db.profile["SkuChat"].tabs[x].messageTypes["SKU"] and SkuOptions.db.profile["SkuChat"].tabs[x].messageTypes["SKU"][2] == true then
-			_G[SkuOptions.db.profile["SkuChat"].tabs[x].frameName]:AddMessage(tMessagetype, message) 
+		if tMessagetype == "AUDIOLOG" and  SkuSettings:Sub("SkuChat").tabs[x].messageTypes["SKU"] and SkuSettings:Sub("SkuChat").tabs[x].messageTypes["SKU"][2] == true then
+			_G[SkuSettings:Sub("SkuChat").tabs[x].frameName]:AddMessage(tMessagetype, message) 
 		end
 	end
 	
@@ -1571,12 +1571,12 @@ function SkuChat_MessageEventHandler(self, event, ...)
 		local type = strsub(event, 10) 
 		local info = {r = nil, g = nil, b = nil, id = nil}
 
-		if SkuOptions.db.profile["SkuChat"].chatSettings.filter and SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms then
+		if SkuSettings:Sub("SkuChat").chatSettings.filter and SkuSettings:Sub("SkuChat").chatSettings.filter.terms then
 			if arg2 == "Rhonin" then
 				SkuOptions:StopSounds(15, true)
 				return true
 			end
-			if SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms[string.lower(arg1)] then
+			if SkuSettings:Sub("SkuChat").chatSettings.filter.terms[string.lower(arg1)] then
 				return true
 			end
 		end
@@ -2098,7 +2098,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:ShortenChannelName(aChannelName)
-	if SkuOptions.db.profile[MODULE_NAME].chatSettings.shortenChannelNames ~= true then
+	if SkuSettings:Sub("SkuChat").chatSettings.shortenChannelNames ~= true then
 		return aChannelName
 	end
 
@@ -2224,11 +2224,11 @@ function SkuChat:OnInitialize()
 	a:SetScript("OnUpdate", function(self, atime)
 		self.timeCounter = self.timeCounter + atime
 		if self.timeCounter > 5 then
-			if SkuOptions.db.profile["SkuChat"].tabs and SkuOptions.db.profile[MODULE_NAME].chatSettings.deleteWhisperTabsAfter > 1 then
-				for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-					if SkuOptions.db.profile["SkuChat"].tabs[x] then
-						if SkuOptions.db.profile["SkuChat"].tabs[x].privateMessages and #SkuOptions.db.profile["SkuChat"].tabs[x].privateMessages > 0 then
-							if (SkuOptions.db.profile["SkuChat"].tabs[x].lastActivityAt or 0) + ((SkuChat.DeleteTabTimes[SkuOptions.db.profile[MODULE_NAME].chatSettings.deleteWhisperTabsAfter] * 60)) < time() then
+			if SkuSettings:Sub("SkuChat").tabs and SkuSettings:Sub("SkuChat").chatSettings.deleteWhisperTabsAfter > 1 then
+				for x = 1, #SkuSettings:Sub("SkuChat").tabs do
+					if SkuSettings:Sub("SkuChat").tabs[x] then
+						if SkuSettings:Sub("SkuChat").tabs[x].privateMessages and #SkuSettings:Sub("SkuChat").tabs[x].privateMessages > 0 then
+							if (SkuSettings:Sub("SkuChat").tabs[x].lastActivityAt or 0) + ((SkuChat.DeleteTabTimes[SkuSettings:Sub("SkuChat").chatSettings.deleteWhisperTabsAfter] * 60)) < time() then
 								SkuChat:DeleteTab(x)
 							end
 						end
@@ -2300,11 +2300,11 @@ function SkuChat:OnInitialize()
 		SkuChat.ChatOpen = true
 		SkuOptions.Voice:StopOutputEmptyQueue()
 		SkuOptions.Voice:OutputString("sound-on3_1", true, true, 0.2, true)
-		if not SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab] then
+		if not SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab] then
 			SkuChat.currentTab = 1
 		end
-		SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine = 1
-		SkuChat:ReadLine(SkuChat.currentTab, SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine, true)
+		SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine = 1
+		SkuChat:ReadLine(SkuChat.currentTab, SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine, true)
 	end
 
 	-- Helper: löst einen rohen Quest-Link-String ("quest:12345:60") auf
@@ -2390,7 +2390,7 @@ function SkuChat:OnInitialize()
 			end
 		end
 
-		local tLineData = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history[SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine]
+		local tLineData = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history[SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine]
 		
 		if tLineData.itemLinks and #tLineData.itemLinks > 0 and self.menuOpen == false then
 			if self.menuOpen == false then
@@ -2457,7 +2457,7 @@ function SkuChat:OnInitialize()
 				self.menuOpen = true
 				SkuOptions.Menu = {}
 
-				local tLineData = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history[SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine]
+				local tLineData = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history[SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine]
 
 				--send
 				local tAccessID
@@ -2722,8 +2722,8 @@ function SkuChat:OnInitialize()
 					PlaySound(88)
 					SkuOptions.Voice:OutputStringBTtts(L["Copy text with control plus C and press escape"], true, true, 0.2, nil, nil, nil, 2)
 					local tText = ""
-					for line = 1, #SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history do
-						tText = tText..SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history[line].body.."\r\n"
+					for line = 1, #SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history do
+						tText = tText..SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history[line].body.."\r\n"
 					end
 					SkuOptions:EditBoxShow(tText, function(self)
 						PlaySound(89)
@@ -2783,8 +2783,8 @@ function SkuChat:OnInitialize()
 				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.OnAction = function(self)
 					PlaySound(88)
-					SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history = {}
-					table.insert(SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history, 1, {
+					SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history = {}
+					table.insert(SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history, 1, {
 						body = L["Empty"], 
 						messageTypeGroup = "SAY", 
 						audio = false, 
@@ -2888,12 +2888,12 @@ function SkuChat:OnInitialize()
 			
 			elseif aKey == "UP" then
 			--elseif aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_LINEPREV"].key then
-			local tHistoryCurrentLine = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine
+			local tHistoryCurrentLine = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine
 				if tHistoryCurrentLine > 1 then
-					SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine = tHistoryCurrentLine - 1
+					SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine = tHistoryCurrentLine - 1
 				end
-				SkuChat:ReadLine(SkuChat.currentTab, SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine)
-				local tLineData = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history[SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine]
+				SkuChat:ReadLine(SkuChat.currentTab, SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine)
+				local tLineData = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history[SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine]
 				if (not tLineData.itemLinks or #tLineData.itemLinks == 0)
 					and (not tLineData.questLinks or #tLineData.questLinks == 0)
 					and self.menuOpen == false then
@@ -2901,12 +2901,12 @@ function SkuChat:OnInitialize()
 				end
 
 			elseif aKey == "DOWN" then
-				local tHistoryCurrentLine = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine
-				if tHistoryCurrentLine < #SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history then
-					SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine = tHistoryCurrentLine + 1
+				local tHistoryCurrentLine = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine
+				if tHistoryCurrentLine < #SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history then
+					SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine = tHistoryCurrentLine + 1
 				end
-				SkuChat:ReadLine(SkuChat.currentTab, SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine)
-				local tLineData = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history[SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine]
+				SkuChat:ReadLine(SkuChat.currentTab, SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine)
+				local tLineData = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history[SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine]
 				if (not tLineData.itemLinks or #tLineData.itemLinks == 0)
 					and (not tLineData.questLinks or #tLineData.questLinks == 0)
 					and self.menuOpen == false then
@@ -2917,13 +2917,13 @@ function SkuChat:OnInitialize()
 				if SkuChat.currentTab > 1 then
 					SkuChat.currentTab = SkuChat.currentTab - 1
 				else
-					SkuChat.currentTab = #SkuOptions.db.profile["SkuChat"].tabs
+					SkuChat.currentTab = #SkuSettings:Sub("SkuChat").tabs
 				end
-				if SkuOptions.db.profile[MODULE_NAME].chatSettings.firstLineOnTabSwitch == true then
-					SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine = 1
+				if SkuSettings:Sub("SkuChat").chatSettings.firstLineOnTabSwitch == true then
+					SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine = 1
 				end
-				SkuChat:ReadLine(SkuChat.currentTab, SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine, true)
-				local tLineData = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history[SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine]
+				SkuChat:ReadLine(SkuChat.currentTab, SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine, true)
+				local tLineData = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history[SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine]
 				if (not tLineData.itemLinks or #tLineData.itemLinks == 0)
 					and (not tLineData.questLinks or #tLineData.questLinks == 0)
 					and self.menuOpen == false then
@@ -2931,16 +2931,16 @@ function SkuChat:OnInitialize()
 				end
 
 			elseif aKey == "RIGHT" then
-				if SkuChat.currentTab < #SkuOptions.db.profile["SkuChat"].tabs then
+				if SkuChat.currentTab < #SkuSettings:Sub("SkuChat").tabs then
 					SkuChat.currentTab = SkuChat.currentTab + 1
 				else
 					SkuChat.currentTab = 1
 				end
-				if SkuOptions.db.profile[MODULE_NAME].chatSettings.firstLineOnTabSwitch == true then
-					SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine = 1
+				if SkuSettings:Sub("SkuChat").chatSettings.firstLineOnTabSwitch == true then
+					SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine = 1
 				end
-				SkuChat:ReadLine(SkuChat.currentTab, SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine, true)
-				local tLineData = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history[SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine]
+				SkuChat:ReadLine(SkuChat.currentTab, SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine, true)
+				local tLineData = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history[SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine]
 				if (not tLineData.itemLinks or #tLineData.itemLinks == 0)
 					and (not tLineData.questLinks or #tLineData.questLinks == 0)
 					and self.menuOpen == false then
@@ -2954,7 +2954,7 @@ function SkuChat:OnInitialize()
 			--if user is leaving the line menu with SKU_KEY_CHAT_TABPREV
 			if aKey == "LEFT" and self.menuOpen == true then
 				CloseChatMenuHelper()
-				SkuChat:ReadLine(SkuChat.currentTab, SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine)
+				SkuChat:ReadLine(SkuChat.currentTab, SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine)
 			end
 
 			--more menu navigation
@@ -3050,29 +3050,29 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:ReadLine(aTab, aLine, aReadTabName)
-	if not SkuOptions.db.profile["SkuChat"].tabs[aTab] then
+	if not SkuSettings:Sub("SkuChat").tabs[aTab] then
 		return
 	end
-	if not SkuOptions.db.profile["SkuChat"].tabs[aTab].history[aLine] then
+	if not SkuSettings:Sub("SkuChat").tabs[aTab].history[aLine] then
 		return
 	end
 	
-	local tLineText = SkuOptions.db.profile["SkuChat"].tabs[aTab].history[aLine].body
+	local tLineText = SkuSettings:Sub("SkuChat").tabs[aTab].history[aLine].body
 
-	if SkuOptions.db.profile[MODULE_NAME].chatSettings.addLineNumbers == true then
+	if SkuSettings:Sub("SkuChat").chatSettings.addLineNumbers == true then
 		tLineText =  aLine.." "..tLineText
 	end
 
-	if SkuOptions.db.profile[MODULE_NAME].chatSettings.timeStamp > 1 then
-		if SkuOptions.db.profile[MODULE_NAME].chatSettings.timeStampAtLineEnd == true then
-			tLineText =  tLineText..", "..BetterDate(SkuChat.timeStampFormats[SkuOptions.db.profile[MODULE_NAME].chatSettings.timeStamp], SkuOptions.db.profile["SkuChat"].tabs[aTab].history[aLine].time or time())
+	if SkuSettings:Sub("SkuChat").chatSettings.timeStamp > 1 then
+		if SkuSettings:Sub("SkuChat").chatSettings.timeStampAtLineEnd == true then
+			tLineText =  tLineText..", "..BetterDate(SkuChat.timeStampFormats[SkuSettings:Sub("SkuChat").chatSettings.timeStamp], SkuSettings:Sub("SkuChat").tabs[aTab].history[aLine].time or time())
 		else
-			tLineText =  BetterDate(SkuChat.timeStampFormats[SkuOptions.db.profile[MODULE_NAME].chatSettings.timeStamp], SkuOptions.db.profile["SkuChat"].tabs[aTab].history[aLine].time or time())..", "..tLineText
+			tLineText =  BetterDate(SkuChat.timeStampFormats[SkuSettings:Sub("SkuChat").chatSettings.timeStamp], SkuSettings:Sub("SkuChat").tabs[aTab].history[aLine].time or time())..", "..tLineText
 		end
 	end
 
 	if aReadTabName then
-		tLineText = SkuOptions.db.profile["SkuChat"].tabs[aTab].name..", "..(tLineText or "")
+		tLineText = SkuSettings:Sub("SkuChat").tabs[aTab].name..", "..(tLineText or "")
 	end
 
 	if tLineText then
@@ -3082,7 +3082,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:NewWhisperTab(aType, ...)
-	if SkuOptions.db.profile[MODULE_NAME].chatSettings.openWhispersInNewTab == true then
+	if SkuSettings:Sub("SkuChat").chatSettings.openWhispersInNewTab == true then
 		local event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID, channelIndex, channelBaseName, languageID, lineID, guid, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox, supressRaidIcons = ...
 
 		--print("NewWhisperTab", aType, event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID, channelIndex, channelBaseName, languageID, lineID, guid, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox, supressRaidIcons)
@@ -3096,12 +3096,12 @@ function SkuChat:NewWhisperTab(aType, ...)
 		end
 
 		local tTabNumber 
-		for z = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-			if SkuOptions.db.profile["SkuChat"].tabs[z].privateMessages then
-				for x = 1, #SkuOptions.db.profile["SkuChat"].tabs[z].privateMessages do
-					if SkuOptions.db.profile["SkuChat"].tabs[z].privateMessages[x] == tSender then 
+		for z = 1, #SkuSettings:Sub("SkuChat").tabs do
+			if SkuSettings:Sub("SkuChat").tabs[z].privateMessages then
+				for x = 1, #SkuSettings:Sub("SkuChat").tabs[z].privateMessages do
+					if SkuSettings:Sub("SkuChat").tabs[z].privateMessages[x] == tSender then 
 						tTabNumber = z
-						local tTab = SkuOptions.db.profile["SkuChat"].tabs[z]
+						local tTab = SkuSettings:Sub("SkuChat").tabs[z]
 						tTab.messageTypes["PLAYER_MESSAGES"][6] = play
 						tTab.messageTypes["PLAYER_MESSAGES"][7] = play
 						tTab.messageTypes["CREATURE_MESSAGES"][4] = play
@@ -3109,7 +3109,7 @@ function SkuChat:NewWhisperTab(aType, ...)
 					end
 				end
 			else
-				local tTab = SkuOptions.db.profile["SkuChat"].tabs[z]
+				local tTab = SkuSettings:Sub("SkuChat").tabs[z]
 				tTab.messageTypes["PLAYER_MESSAGES"][6] = false
 				tTab.messageTypes["PLAYER_MESSAGES"][7] = false
 				tTab.messageTypes["CREATURE_MESSAGES"][4] = false
@@ -3126,10 +3126,10 @@ function SkuChat:NewWhisperTab(aType, ...)
 			end
 
 			tTabNumber = SkuChat:NewTab(tSender)
-			SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].privateMessages = {}
-			table.insert(SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].privateMessages, tSender)
+			SkuSettings:Sub("SkuChat").tabs[tTabNumber].privateMessages = {}
+			table.insert(SkuSettings:Sub("SkuChat").tabs[tTabNumber].privateMessages, tSender)
 
-			local tTab = SkuOptions.db.profile["SkuChat"].tabs[tTabNumber]
+			local tTab = SkuSettings:Sub("SkuChat").tabs[tTabNumber]
 			for tCatName, tData in pairs(SkuChat.ChatFrameMessageTypes) do
 				for x = 1, #tData do
 					tTab.messageTypes[tCatName][x] = false
@@ -3140,14 +3140,14 @@ function SkuChat:NewWhisperTab(aType, ...)
 			tTab.messageTypes["CREATURE_MESSAGES"][4] = play
 			tTab.messageTypes["CREATURE_MESSAGES"][6] = play
 
-			SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].channels = {}
+			SkuSettings:Sub("SkuChat").tabs[tTabNumber].channels = {}
 			SkuChat:InitTab(tTabNumber)
 
 			C_Timer.After(0.1, function() 
-				--print("cu", SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].history[1])
-				if SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].history[1] and SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].history[1].body == L["Empty"] then
-					--print("C_Timer.After", _G[SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].frameName], event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID, channelIndex, channelBaseName, languageID, lineID, guid, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox, supressRaidIcons)
-					SkuChat_MessageEventHandler(_G[SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].frameName], event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID, channelIndex, channelBaseName, languageID, lineID, guid, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox, supressRaidIcons)
+				--print("cu", SkuSettings:Sub("SkuChat").tabs[tTabNumber].history[1])
+				if SkuSettings:Sub("SkuChat").tabs[tTabNumber].history[1] and SkuSettings:Sub("SkuChat").tabs[tTabNumber].history[1].body == L["Empty"] then
+					--print("C_Timer.After", _G[SkuSettings:Sub("SkuChat").tabs[tTabNumber].frameName], event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID, channelIndex, channelBaseName, languageID, lineID, guid, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox, supressRaidIcons)
+					SkuChat_MessageEventHandler(_G[SkuSettings:Sub("SkuChat").tabs[tTabNumber].frameName], event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID, channelIndex, channelBaseName, languageID, lineID, guid, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox, supressRaidIcons)
 				end
 			end)
 		end
@@ -3173,7 +3173,7 @@ function SkuChat:DEFAULT_CHAT_FRAME_AddMessage(...)
 		return
 	end
 	--SkuCore:Debug((a or "nil").." "..(b or "nil").." "..(c or "nil").." "..(d or "nil").." "..(e or "nil").." "..(f or "nil"))
-	for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs) do
+	for i, v in pairs(SkuSettings:Sub("SkuChat").tabs) do
 
 		if v.name ~= L["Combat Log"] and v.name ~= L["Audio Log"] then
 			if _G[v.frameName] then
@@ -3196,12 +3196,12 @@ end
 function SkuChat:PLAYER_LOGIN(...)
 	SkuCore.outputSoundFiles["sound-newChatLine"] =L["aura;sound"].."#"..L["default new Chat Line sound"]
 	SkuCore.outputSoundFiles["sound-silence0.1"] = L["aura;sound"].."#"..L["silent"]
-	if SkuOptions.db.profile["SkuChat"].tabs then
-		for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-			if SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage == true then
-				SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage = "sound-newChatLine"
-			elseif SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage == false then
-				SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage = "sound-silence0.1"
+	if SkuSettings:Sub("SkuChat").tabs then
+		for x = 1, #SkuSettings:Sub("SkuChat").tabs do
+			if SkuSettings:Sub("SkuChat").tabs[x].audioOnNewMessage == true then
+				SkuSettings:Sub("SkuChat").tabs[x].audioOnNewMessage = "sound-newChatLine"
+			elseif SkuSettings:Sub("SkuChat").tabs[x].audioOnNewMessage == false then
+				SkuSettings:Sub("SkuChat").tabs[x].audioOnNewMessage = "sound-silence0.1"
 			end
 		end
 	end
@@ -3227,7 +3227,7 @@ function SkuChat:PLAYER_LOGIN(...)
 	hooksecurefunc(ChatFrame1EditBox, "Show", SkuChat.ChatFrame1EditBoxOnShow)
 	hooksecurefunc(ChatFrame1EditBox, "Hide", SkuChat.ChatFrame1EditBoxOnHide)
 
-	C_TTSSettings.SetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks, SkuOptions.db.profile[MODULE_NAME].chatSettings.audioOnMessageEnd)
+	C_TTSSettings.SetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks, SkuSettings:Sub("SkuChat").chatSettings.audioOnMessageEnd)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3252,7 +3252,7 @@ end
 function SkuChat:JoinOrLeaveSkuChatChannel()
 	local id, name, instanceID, isCommunitiesChannel = GetChannelName("SkuChat")
 
-	if SkuOptions.db.profile["SkuChat"].joinSkuChannel == true then
+	if SkuSettings:Sub("SkuChat").joinSkuChannel == true then
 		if id == 0 then
 			JoinPermanentChannel("SkuChat", nil, FCF_GetCurrentChatFrame():GetID())
 			if Sku.isTBC then
@@ -3270,8 +3270,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:CombatLogTabIndex()
-	for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-		if SkuOptions.db.profile["SkuChat"].tabs[x].name == L["Combat Log"] then
+	for x = 1, #SkuSettings:Sub("SkuChat").tabs do
+		if SkuSettings:Sub("SkuChat").tabs[x].name == L["Combat Log"] then
 			return x
 		end
 	end
@@ -3279,21 +3279,21 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:InitCombatLogTab()
-	if SkuOptions.db.profile["SkuChat"].CombatLog.enabled == true then
+	if SkuSettings:Sub("SkuChat").CombatLog.enabled == true then
 		if not SkuChat:CombatLogTabIndex() then
 
 			local tabIndex = SkuChat:NewTab(L["Combat Log"])
-			for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[tabIndex].messageTypes) do
+			for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[tabIndex].messageTypes) do
 				for u = 1, #v do
 					v[u] = false
 				end
 			end
-			for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[tabIndex].channels) do
+			for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[tabIndex].channels) do
 				v.status = false
 			end
 
-			SkuOptions.db.profile["SkuChat"].tabs[tabIndex].audioOnNewMessage = "sound-silence0.1"
-			SkuOptions.db.profile["SkuChat"].tabs[tabIndex].messageTypes["SKU"][1] = true
+			SkuSettings:Sub("SkuChat").tabs[tabIndex].audioOnNewMessage = "sound-silence0.1"
+			SkuSettings:Sub("SkuChat").tabs[tabIndex].messageTypes["SKU"][1] = true
 
 			SkuChat:InitTab(tabIndex)
 		end
@@ -3306,8 +3306,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:AudioLogTabIndex()
-	for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-		if SkuOptions.db.profile["SkuChat"].tabs[x].name == L["Audio Log"] then
+	for x = 1, #SkuSettings:Sub("SkuChat").tabs do
+		if SkuSettings:Sub("SkuChat").tabs[x].name == L["Audio Log"] then
 			return x
 		end
 	end
@@ -3315,20 +3315,20 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:InitAudioLogTab()
-	if SkuOptions.db.profile["SkuChat"].AudioLog.enabled == true then
+	if SkuSettings:Sub("SkuChat").AudioLog.enabled == true then
 		if not SkuChat:AudioLogTabIndex() then
 			local tabIndex = SkuChat:NewTab(L["Audio Log"])
-			for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[tabIndex].messageTypes) do
+			for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[tabIndex].messageTypes) do
 				for u = 1, #v do
 					v[u] = false
 				end
 			end
-			for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[tabIndex].channels) do
+			for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[tabIndex].channels) do
 				v.status = false
 			end
 
-			SkuOptions.db.profile["SkuChat"].tabs[tabIndex].audioOnNewMessage = "sound-silence0.1"
-			SkuOptions.db.profile["SkuChat"].tabs[tabIndex].messageTypes["SKU"][2] = true
+			SkuSettings:Sub("SkuChat").tabs[tabIndex].audioOnNewMessage = "sound-silence0.1"
+			SkuSettings:Sub("SkuChat").tabs[tabIndex].messageTypes["SKU"][2] = true
 
 			SkuChat:InitTab(tabIndex)
 		end
@@ -3341,8 +3341,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function CreateSkuDefaultFilters()
-	SkuOptions.db.global["SkuChat"] = SkuOptions.db.global["SkuChat"] or {}
-	SkuOptions.db.global["SkuChat"].CombatLogFilters = SkuOptions.db.global["SkuChat"].CombatLogFilters or {
+	SkuSettings:Sub("SkuChat", nil, "global")
+	SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters or {
 		[1] = {
 			custom = false,
 			name = "Everything",
@@ -3557,7 +3557,7 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 	local event, isInitialLogin, isReloadingUi = ...
 
 	--init combat log stuff
-	SkuOptions.db.profile["SkuChat"].CombatLog = SkuOptions.db.profile["SkuChat"].CombatLog or {
+	SkuSettings:Sub("SkuChat").CombatLog = SkuSettings:Sub("SkuChat").CombatLog or {
 		enabled = false,
 		currentFilter = 1,
 	}
@@ -3565,16 +3565,16 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 	-- we need to delay this to entering world because of global constants availablity
 	CreateSkuDefaultFilters()
 
-	if not SkuOptions.db.global["SkuChat"].CombatLogFilters[SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter] then
-		SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter = 1
+	if not SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter] then
+		SkuSettings:Sub("SkuChat").CombatLog.currentFilter = 1
 	end
 
-	Blizzard_CombatLog_CurrentSettings = SkuOptions.db.global["SkuChat"].CombatLogFilters[SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter]
+	Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
 	Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
 	
 
 	--init audio log stuff
-	SkuOptions.db.profile["SkuChat"].AudioLog = SkuOptions.db.profile["SkuChat"].AudioLog or {
+	SkuSettings:Sub("SkuChat").AudioLog = SkuSettings:Sub("SkuChat").AudioLog or {
 		enabled = false,
 	}
 
@@ -3589,24 +3589,24 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 	SkuChat.options.args.WowTtsVoice.values = SkuChat.WowTtsVoices
 
 	--create default tabs
-	if not SkuOptions.db.profile["SkuChat"].tabs or #SkuOptions.db.profile["SkuChat"].tabs == 0 then
-		SkuOptions.db.profile["SkuChat"].tabs = {}
+	if not SkuSettings:Sub("SkuChat").tabs or #SkuSettings:Sub("SkuChat").tabs == 0 then
+		SkuSettings:Sub("SkuChat").tabs = {}
 		SkuChat:NewTab(L["Default"])
 		SkuChat:NewTab(L["Communication"])
 		SkuChat:NewTab(L["Other"])
 	end
 
 	--init filters
-	if not SkuOptions.db.profile["SkuChat"].chatSettings.filter then
-		SkuOptions.db.profile["SkuChat"].chatSettings.filter = {}
+	if not SkuSettings:Sub("SkuChat").chatSettings.filter then
+		SkuSettings:Sub("SkuChat").chatSettings.filter = {}
 	end
-	if not SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms then
-		SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms = {}
+	if not SkuSettings:Sub("SkuChat").chatSettings.filter.terms then
+		SkuSettings:Sub("SkuChat").chatSettings.filter.terms = {}
 	end
 
 	--update types for existing tabs; just to add new types with new releases
 	for tCatName, tData in pairs(SkuChat.ChatFrameMessageTypes) do
-		for i, tTabData in pairs(SkuOptions.db.profile["SkuChat"].tabs) do
+		for i, tTabData in pairs(SkuSettings:Sub("SkuChat").tabs) do
 			tTabData.messageTypes[tCatName] = tTabData.messageTypes[tCatName] or {}
 			if #tTabData.messageTypes[tCatName] ~= #tData then
 				for x = 1, #tData do
@@ -3616,18 +3616,18 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 		end
 	end
 
-	for x = #SkuOptions.db.profile["SkuChat"].tabs, 1, -1  do
-		if _G[SkuOptions.db.profile["SkuChat"].tabs[x].frameName] then
-			_G[SkuOptions.db.profile["SkuChat"].tabs[x].frameName]:UnregisterAllEvents() 
+	for x = #SkuSettings:Sub("SkuChat").tabs, 1, -1  do
+		if _G[SkuSettings:Sub("SkuChat").tabs[x].frameName] then
+			_G[SkuSettings:Sub("SkuChat").tabs[x].frameName]:UnregisterAllEvents() 
 		end
-		if SkuOptions.db.profile["SkuChat"].tabs[x].privateMessages then
-			table.remove(SkuOptions.db.profile["SkuChat"].tabs, x)
+		if SkuSettings:Sub("SkuChat").tabs[x].privateMessages then
+			table.remove(SkuSettings:Sub("SkuChat").tabs, x)
 		end
 	end
 
-	for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
+	for x = 1, #SkuSettings:Sub("SkuChat").tabs do
 		SkuChat:InitTab(x)
-		SkuOptions.db.profile["SkuChat"].tabs[x].historyCurrentLine = 1
+		SkuSettings:Sub("SkuChat").tabs[x].historyCurrentLine = 1
 	end
 
 	SkuChat.currentTab = 1
@@ -3638,10 +3638,10 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 
 	
 	--delete history of all tabs if required
-	if SkuOptions.db.profile["SkuChat"].chatSettings.deleteHistoryOnLogin == true  and isInitialLogin == true then
-		for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-			SkuOptions.db.profile["SkuChat"].tabs[x].history = {}
-			table.insert(SkuOptions.db.profile["SkuChat"].tabs[x].history, 1, {
+	if SkuSettings:Sub("SkuChat").chatSettings.deleteHistoryOnLogin == true  and isInitialLogin == true then
+		for x = 1, #SkuSettings:Sub("SkuChat").tabs do
+			SkuSettings:Sub("SkuChat").tabs[x].history = {}
+			table.insert(SkuSettings:Sub("SkuChat").tabs[x].history, 1, {
 				body = L["Empty"], 
 				messageTypeGroup = "SAY", 
 				audio = false, 
@@ -3701,10 +3701,10 @@ function SkuChat:CHAT_MSG_CHANNEL_NOTICE(...)
 	end
 
 	if tAction == "YOU_CHANGED" then
-		for z = 1, #SkuOptions.db.profile["SkuChat"].tabs do
+		for z = 1, #SkuSettings:Sub("SkuChat").tabs do
 			local tExists
-			for y = 1, #SkuOptions.db.profile["SkuChat"].tabs[1].channels do
-				if tInternalChannelName and SkuOptions.db.profile["SkuChat"].tabs[1].channels[y] and SkuOptions.db.profile["SkuChat"].tabs[1].channels[y].name and string.lower(SkuOptions.db.profile["SkuChat"].tabs[1].channels[y].name) == string.lower(tInternalChannelName) then
+			for y = 1, #SkuSettings:Sub("SkuChat").tabs[1].channels do
+				if tInternalChannelName and SkuSettings:Sub("SkuChat").tabs[1].channels[y] and SkuSettings:Sub("SkuChat").tabs[1].channels[y].name and string.lower(SkuSettings:Sub("SkuChat").tabs[1].channels[y].name) == string.lower(tInternalChannelName) then
 					tExists = true
 					break
 				end
@@ -3716,9 +3716,9 @@ function SkuChat:CHAT_MSG_CHANNEL_NOTICE(...)
 						tStatus = play
 					end
 					
-					SkuOptions.db.profile["SkuChat"].tabs[1].channels[#SkuOptions.db.profile["SkuChat"].tabs[1].channels + 1] = {name = tInternalChannelName, status = tStatus}
+					SkuSettings:Sub("SkuChat").tabs[1].channels[#SkuSettings:Sub("SkuChat").tabs[1].channels + 1] = {name = tInternalChannelName, status = tStatus}
 				else
-					SkuOptions.db.profile["SkuChat"].tabs[1].channels[#SkuOptions.db.profile["SkuChat"].tabs[1].channels + 1] = {name = tInternalChannelName, status = false}
+					SkuSettings:Sub("SkuChat").tabs[1].channels[#SkuSettings:Sub("SkuChat").tabs[1].channels + 1] = {name = tInternalChannelName, status = false}
 				end
 			end
 		end
@@ -3732,10 +3732,10 @@ function SkuChat:CHAT_MSG_CHANNEL_NOTICE(...)
 		-- Tooltip-/OnUpdate-Code läuft danach mit nil-currentMenuPosition).
 		if not tInternalChannelName then return end
 		C_Timer.After(0, function() --we need to delay this to the next frame, as we first need the message to be processed with the channel still active for the tab
-			for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-				for y = 1, #SkuOptions.db.profile["SkuChat"].tabs[x].channels do
-					if SkuOptions.db.profile["SkuChat"].tabs[x] ~= nil and SkuOptions.db.profile["SkuChat"].tabs[x].channels[y] ~= nil and SkuOptions.db.profile["SkuChat"].tabs[x].channels[y].name and string.lower(SkuOptions.db.profile["SkuChat"].tabs[x].channels[y].name) == string.lower(tInternalChannelName) then
-						table.remove(SkuOptions.db.profile["SkuChat"].tabs[x].channels, y)
+			for x = 1, #SkuSettings:Sub("SkuChat").tabs do
+				for y = 1, #SkuSettings:Sub("SkuChat").tabs[x].channels do
+					if SkuSettings:Sub("SkuChat").tabs[x] ~= nil and SkuSettings:Sub("SkuChat").tabs[x].channels[y] ~= nil and SkuSettings:Sub("SkuChat").tabs[x].channels[y].name and string.lower(SkuSettings:Sub("SkuChat").tabs[x].channels[y].name) == string.lower(tInternalChannelName) then
+						table.remove(SkuSettings:Sub("SkuChat").tabs[x].channels, y)
 						break
 					end
 				end
@@ -3743,11 +3743,11 @@ function SkuChat:CHAT_MSG_CHANNEL_NOTICE(...)
 		end)
 	end
 
-	for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-		if SkuOptions.db.profile["SkuChat"].tabs[x].frameName and _G[SkuOptions.db.profile["SkuChat"].tabs[x].frameName] then
-			_G[SkuOptions.db.profile["SkuChat"].tabs[x].frameName]:UnregisterAllEvents() 
+	for x = 1, #SkuSettings:Sub("SkuChat").tabs do
+		if SkuSettings:Sub("SkuChat").tabs[x].frameName and _G[SkuSettings:Sub("SkuChat").tabs[x].frameName] then
+			_G[SkuSettings:Sub("SkuChat").tabs[x].frameName]:UnregisterAllEvents() 
 		end
-		SkuOptions.db.profile["SkuChat"].tabs[x].frameName = "SkuChatChatFrame"..x
+		SkuSettings:Sub("SkuChat").tabs[x].frameName = "SkuChatChatFrame"..x
 		SkuChat:InitTab(x)	
 	end
 end
@@ -3756,12 +3756,12 @@ end
 function SkuChat:ResetTab(aIndex)
 	--print("ResetTab", aIndex)
 	--set default message groups
-	if not SkuOptions.db.profile["SkuChat"].tabs[aIndex] then
+	if not SkuSettings:Sub("SkuChat").tabs[aIndex] then
 		return
 	end
 
 	-- set default message types
-	local tTab = SkuOptions.db.profile["SkuChat"].tabs[aIndex]
+	local tTab = SkuSettings:Sub("SkuChat").tabs[aIndex]
 	for tCatName, tData in pairs(SkuChat.ChatFrameMessageTypes) do
 		for x = 1, #tData do
 			if SkuChat.ChatFrameDefaultTabs[tTab.name] and SkuChat.ChatFrameDefaultTabs[tTab.name][tCatName] then
@@ -3834,16 +3834,16 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:DeleteTab(aIndex)
-	if SkuOptions.db.profile["SkuChat"].tabs[aIndex] then
+	if SkuSettings:Sub("SkuChat").tabs[aIndex] then
 		local tIsCurrent = SkuChat.currentTab == aIndex
 
-		local tFrame = _G[SkuOptions.db.profile["SkuChat"].tabs[aIndex].frameName]
+		local tFrame = _G[SkuSettings:Sub("SkuChat").tabs[aIndex].frameName]
 		tFrame:UnregisterAllEvents() 
-		table.remove(SkuOptions.db.profile["SkuChat"].tabs, aIndex)
+		table.remove(SkuSettings:Sub("SkuChat").tabs, aIndex)
 
-		for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-			_G[SkuOptions.db.profile["SkuChat"].tabs[x].frameName]:UnregisterAllEvents() 
-			SkuOptions.db.profile["SkuChat"].tabs[x].frameName = "SkuChatChatFrame"..x
+		for x = 1, #SkuSettings:Sub("SkuChat").tabs do
+			_G[SkuSettings:Sub("SkuChat").tabs[x].frameName]:UnregisterAllEvents() 
+			SkuSettings:Sub("SkuChat").tabs[x].frameName = "SkuChatChatFrame"..x
 			SkuChat:InitTab(x)
 		end
 
@@ -3852,7 +3852,7 @@ function SkuChat:DeleteTab(aIndex)
 		end
 
 		if SkuChat.ChatOpen == true and tIsCurrent == true then
-			SkuChat:ReadLine(SkuChat.currentTab, SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine, true)
+			SkuChat:ReadLine(SkuChat.currentTab, SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine, true)
 		end
 
 		return true
@@ -3863,17 +3863,17 @@ end
 function SkuChat:InitTab(tNewTabIndex)
 	--print("InitTab")
 	--build virtual chat frame that is registering chat events
-	local a = _G[SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].frameName] or CreateFrame("Button", SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].frameName, UIParent, "SecureActionButtonTemplate")
-	a.tab = SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex]
-	a.name = SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].name
+	local a = _G[SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].frameName] or CreateFrame("Button", SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].frameName, UIParent, "SecureActionButtonTemplate")
+	a.tab = SkuSettings:Sub("SkuChat").tabs[tNewTabIndex]
+	a.name = SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].name
 	a:SetScript("OnEvent", function(self, aEvent, ...)
 		SkuChat_OnEvent(self, aEvent, ...)
 	end)
 
 	--join private messages
 	SkuChat_RemoveAllPrivateMessageTargets(a)
-	if SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].privateMessages then
-		for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].privateMessages) do
+	if SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].privateMessages then
+		for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].privateMessages) do
 			--a.privateMessageList = nil--a.privateMessageList or {}
 			SkuChat_AddPrivateMessageTarget(a, v)
 		end
@@ -3882,8 +3882,8 @@ function SkuChat:InitTab(tNewTabIndex)
 	--exclude private messages
 	--SkuChat_ReceiveAllPrivateMessages(a)
 	a.excludePrivateMessageList = nil
-	if SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].excludePrivateMessages then
-		for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].excludePrivateMessages) do
+	if SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].excludePrivateMessages then
+		for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].excludePrivateMessages) do
 			a.excludePrivateMessageList = a.excludePrivateMessageList or {}
 			SkuChat_ExcludePrivateMessageTarget(a, v)
 		end
@@ -3893,7 +3893,7 @@ function SkuChat:InitTab(tNewTabIndex)
 	a.channelList = {}
 	a.zoneChannelList = {}
 	SkuChat_RemoveAllChannels(a)
-	for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].channels) do
+	for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].channels) do
 		if v.status ~= false then
 			if SkuChat_ContainsChannel(a, v.name) ~= true then
 				if v and v.name then
@@ -3906,7 +3906,7 @@ function SkuChat:InitTab(tNewTabIndex)
 	--register message types
 	a.messageTypeList = {}
 	SkuChat_RemoveAllMessageGroups(a)
-	for tCName, tData in pairs(SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].messageTypes) do
+	for tCName, tData in pairs(SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].messageTypes) do
 		for x = 1, #tData do
 			if tData[x] ~= false or (tCName == "CREATURE_MESSAGES" and x == 4) then
 				if SkuChatChatTypeGroup[SkuChat.ChatFrameMessageTypes[tCName][x].type] then
@@ -4011,8 +4011,8 @@ function SkuChat:InitTab(tNewTabIndex)
 				if SkuCore.inCombat == true then
 					SkuChatNewLineInCombat = true
 				else
-					if SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].audioOnNewMessage ~= "sound-silence0.1" then
-						SkuOptions.Voice:OutputString(SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].audioOnNewMessage, false, true, 0.1)
+					if SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].audioOnNewMessage ~= "sound-silence0.1" then
+						SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].audioOnNewMessage, false, true, 0.1)
 					end
 				end
 			end
@@ -4050,10 +4050,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:NewTab(aName)
-	if #SkuOptions.db.profile["SkuChat"].tabs < SkuChat.maxTabs then
-		local tNewTabIndex = #SkuOptions.db.profile["SkuChat"].tabs + 1
+	if #SkuSettings:Sub("SkuChat").tabs < SkuChat.maxTabs then
+		local tNewTabIndex = #SkuSettings:Sub("SkuChat").tabs + 1
 
-		SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex] = {
+		SkuSettings:Sub("SkuChat").tabs[tNewTabIndex] = {
 			name = aName or L["Default Tab"],
 			frameName = "SkuChatChatFrame"..tNewTabIndex,
 			enabled = true,
@@ -4072,7 +4072,7 @@ function SkuChat:NewTab(aName)
 			history = {},
 			historyCurrentLine = 1,
 			historyMax = SkuChat.defaultHistoryMax,
-			audioOnNewMessage = "sound-newChatLine",--SkuOptions.db.profile[MODULE_NAME].chatSettings.audioOnNewMessage,
+			audioOnNewMessage = "sound-newChatLine",--SkuSettings:Sub("SkuChat").chatSettings.audioOnNewMessage,
 			createdAt = time(),
 			lastActivityAt = time(),
 		}
@@ -4080,11 +4080,11 @@ function SkuChat:NewTab(aName)
 		SkuChat:ResetTab(tNewTabIndex)
 
 		--re-initialise all tabs, just in case
-		for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-			if _G[SkuOptions.db.profile["SkuChat"].tabs[x].frameName] then
-				_G[SkuOptions.db.profile["SkuChat"].tabs[x].frameName]:UnregisterAllEvents() 
+		for x = 1, #SkuSettings:Sub("SkuChat").tabs do
+			if _G[SkuSettings:Sub("SkuChat").tabs[x].frameName] then
+				_G[SkuSettings:Sub("SkuChat").tabs[x].frameName]:UnregisterAllEvents() 
 			end
-			SkuOptions.db.profile["SkuChat"].tabs[x].frameName = "SkuChatChatFrame"..x
+			SkuSettings:Sub("SkuChat").tabs[x].frameName = "SkuChatChatFrame"..x
 			SkuChat:InitTab(x)
 		end
 
@@ -4096,7 +4096,7 @@ end
 function SkuChat:RegisterChatFrame(aFrameIndex)
 	local tFrameList = {}
 
-	for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
+	for x = 1, #SkuSettings:Sub("SkuChat").tabs do
 		table.insert(tFrameList, x)
 	end
 	if aFrameIndex then
@@ -4105,7 +4105,7 @@ function SkuChat:RegisterChatFrame(aFrameIndex)
 	end
 
 	for _, tFrameIndex in pairs(tFrameList) do
-		SkuChat_OnLoad(_G[SkuOptions.db.profile["SkuChat"].tabs[tFrameIndex].frameName])
-		SkuChat_ConfigEventHandler(_G[SkuOptions.db.profile["SkuChat"].tabs[tFrameIndex].frameName], "UPDATE_CHAT_WINDOWS")
+		SkuChat_OnLoad(_G[SkuSettings:Sub("SkuChat").tabs[tFrameIndex].frameName])
+		SkuChat_ConfigEventHandler(_G[SkuSettings:Sub("SkuChat").tabs[tFrameIndex].frameName], "UPDATE_CHAT_WINDOWS")
 	end
 end

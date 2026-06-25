@@ -220,10 +220,10 @@ SkuChat.options = {
 					type = "toggle",
 					desc = "",
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].chatSettings.shortenChannelNames = val
+						SkuSettings:Sub("SkuChat").chatSettings.shortenChannelNames = val
 					end,
 					get = function(info) 
-						return SkuOptions.db.profile[MODULE_NAME].chatSettings.shortenChannelNames
+						return SkuSettings:Sub("SkuChat").chatSettings.shortenChannelNames
 					end,
 				},
 
@@ -234,10 +234,10 @@ SkuChat.options = {
 					type = "toggle",
 					desc = "",
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].chatSettings.addLineNumbers = val
+						SkuSettings:Sub("SkuChat").chatSettings.addLineNumbers = val
 					end,
 					get = function(info) 
-						return SkuOptions.db.profile[MODULE_NAME].chatSettings.addLineNumbers
+						return SkuSettings:Sub("SkuChat").chatSettings.addLineNumbers
 					end,
 				},
 
@@ -257,10 +257,10 @@ SkuChat.options = {
 						[7] = L["Format"].." 6: "..BetterDate(SkuChat.timeStampFormats[6], time(exampleTime)),
 					},
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].chatSettings.timeStamp = val
+						SkuSettings:Sub("SkuChat").chatSettings.timeStamp = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].chatSettings.timeStamp
+						return SkuSettings:Sub("SkuChat").chatSettings.timeStamp
 					end,
 				},
 
@@ -270,10 +270,10 @@ SkuChat.options = {
 					type = "toggle",
 					desc = "",
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].chatSettings.timeStampAtLineEnd = val
+						SkuSettings:Sub("SkuChat").chatSettings.timeStampAtLineEnd = val
 					end,
 					get = function(info) 
-						return SkuOptions.db.profile[MODULE_NAME].chatSettings.timeStampAtLineEnd
+						return SkuSettings:Sub("SkuChat").chatSettings.timeStampAtLineEnd
 					end,
 				},
 
@@ -284,10 +284,10 @@ SkuChat.options = {
 					type = "toggle",
 					desc = "",
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].chatSettings.firstLineOnTabSwitch = val
+						SkuSettings:Sub("SkuChat").chatSettings.firstLineOnTabSwitch = val
 					end,
 					get = function(info) 
-						return SkuOptions.db.profile[MODULE_NAME].chatSettings.firstLineOnTabSwitch
+						return SkuSettings:Sub("SkuChat").chatSettings.firstLineOnTabSwitch
 					end,
 				},
 
@@ -298,10 +298,10 @@ SkuChat.options = {
 					type = "toggle",
 					desc = "",
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].chatSettings.deleteHistoryOnLogin = val
+						SkuSettings:Sub("SkuChat").chatSettings.deleteHistoryOnLogin = val
 					end,
 					get = function(info) 
-						return SkuOptions.db.profile[MODULE_NAME].chatSettings.deleteHistoryOnLogin
+						return SkuSettings:Sub("SkuChat").chatSettings.deleteHistoryOnLogin
 					end,
 				},
 
@@ -312,24 +312,24 @@ SkuChat.options = {
 					type = "toggle",
 					desc = "",
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].chatSettings.openWhispersInNewTab = val
+						SkuSettings:Sub("SkuChat").chatSettings.openWhispersInNewTab = val
 					end,
 					get = function(info) 
-						return SkuOptions.db.profile[MODULE_NAME].chatSettings.openWhispersInNewTab
+						return SkuSettings:Sub("SkuChat").chatSettings.openWhispersInNewTab
 					end,
 					OnAction = function(self, info, val)
 						C_Timer.After(0.1, function()
-							if SkuOptions.db.profile[MODULE_NAME].chatSettings.openWhispersInNewTab == false then
-								if SkuOptions.db.profile["SkuChat"].tabs[1] then
-									local tTab = SkuOptions.db.profile["SkuChat"].tabs[1]
+							if SkuSettings:Sub("SkuChat").chatSettings.openWhispersInNewTab == false then
+								if SkuSettings:Sub("SkuChat").tabs[1] then
+									local tTab = SkuSettings:Sub("SkuChat").tabs[1]
 									tTab.messageTypes["PLAYER_MESSAGES"][6] = 2
 									tTab.messageTypes["PLAYER_MESSAGES"][7] = 2
 									tTab.messageTypes["CREATURE_MESSAGES"][4] = 2
 									tTab.messageTypes["CREATURE_MESSAGES"][6] = 2		
 								end
 
-								for z = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-									if SkuOptions.db.profile["SkuChat"].tabs[z].privateMessages then
+								for z = 1, #SkuSettings:Sub("SkuChat").tabs do
+									if SkuSettings:Sub("SkuChat").tabs[z].privateMessages then
 										SkuChat:DeleteTab(z)
 									else
 										SkuChat:InitTab(z)
@@ -355,10 +355,10 @@ SkuChat.options = {
 						[8] = SkuChat.DeleteTabTimes[8]..L[" Minuten"],
 					},
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].chatSettings.deleteWhisperTabsAfter = val
+						SkuSettings:Sub("SkuChat").chatSettings.deleteWhisperTabsAfter = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].chatSettings.deleteWhisperTabsAfter
+						return SkuSettings:Sub("SkuChat").chatSettings.deleteWhisperTabsAfter
 					end,
 				},				
 				audioOnNewMessage = {
@@ -367,15 +367,15 @@ SkuChat.options = {
 					type = "toggle",
 					desc = L["Enables / disables audio on new line"],
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].chatSettings.audioOnNewMessage = val
+						SkuSettings:Sub("SkuChat").chatSettings.audioOnNewMessage = val
 					end,
 					get = function(info) 
-						return SkuOptions.db.profile[MODULE_NAME].chatSettings.audioOnNewMessage
+						return SkuSettings:Sub("SkuChat").chatSettings.audioOnNewMessage
 					end,
 					OnAction = function() 
-						if SkuOptions.db.profile["SkuChat"].tabs then
-							for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs) do
-								v.audioOnNewMessage = SkuOptions.db.profile[MODULE_NAME].chatSettings.audioOnNewMessage
+						if SkuSettings:Sub("SkuChat").tabs then
+							for i, v in pairs(SkuSettings:Sub("SkuChat").tabs) do
+								v.audioOnNewMessage = SkuSettings:Sub("SkuChat").chatSettings.audioOnNewMessage
 							end
 						end
 					end,
@@ -392,7 +392,7 @@ SkuChat.options = {
 						return C_TTSSettings.GetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks)
 					end,
 					OnAction = function() 
-						C_TTSSettings.SetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks, SkuOptions.db.profile[MODULE_NAME].chatSettings.audioOnMessageEnd)
+						C_TTSSettings.SetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks, SkuSettings:Sub("SkuChat").chatSettings.audioOnMessageEnd)
 					end,
 				},
 
@@ -405,10 +405,10 @@ SkuChat.options = {
 			type = "select",
 			values = SkuChat.WowTtsVoices,
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].WowTtsVoice = val
+				SkuSettings:Sub("SkuChat").WowTtsVoice = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].WowTtsVoice
+				return SkuSettings:Sub("SkuChat").WowTtsVoice
 			end,
 		},
 		WowTtsSpeed = {
@@ -417,10 +417,10 @@ SkuChat.options = {
 			desc = "",
 			type = "range",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed = val
+				SkuSettings:Sub("SkuChat").WowTtsSpeed = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed
+				return SkuSettings:Sub("SkuChat").WowTtsSpeed
 			end,
 		},
 		WowTtsVolume = {
@@ -429,10 +429,10 @@ SkuChat.options = {
 			desc = "",
 			type = "range",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].WowTtsVolume = val
+				SkuSettings:Sub("SkuChat").WowTtsVolume = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].WowTtsVolume
+				return SkuSettings:Sub("SkuChat").WowTtsVolume
 			end,
 		},
 		WowTtsTags = {
@@ -441,10 +441,10 @@ SkuChat.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].WowTtsTags = val
+				SkuSettings:Sub("SkuChat").WowTtsTags = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].WowTtsTags
+				return SkuSettings:Sub("SkuChat").WowTtsTags
 			end,
 		},
 		joinSkuChannel = {
@@ -453,10 +453,10 @@ SkuChat.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].joinSkuChannel = val
+				SkuSettings:Sub("SkuChat").joinSkuChannel = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].joinSkuChannel
+				return SkuSettings:Sub("SkuChat").joinSkuChannel
 			end,
 			OnAction = function()
 				C_Timer.After(0.1, function()
@@ -470,10 +470,10 @@ SkuChat.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].neverResetQueues = val
+				SkuSettings:Sub("SkuChat").neverResetQueues = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].neverResetQueues
+				return SkuSettings:Sub("SkuChat").neverResetQueues
 			end,
 		},
 		allChatViaBlizzardTts = {
@@ -482,10 +482,10 @@ SkuChat.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].allChatViaBlizzardTts = val
+				SkuSettings:Sub("SkuChat").allChatViaBlizzardTts = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].allChatViaBlizzardTts
+				return SkuSettings:Sub("SkuChat").allChatViaBlizzardTts
 			end,
 		},
 		doNotReadoutEmojis = {
@@ -494,10 +494,10 @@ SkuChat.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].doNotReadoutEmojis = val
+				SkuSettings:Sub("SkuChat").doNotReadoutEmojis = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].doNotReadoutEmojis
+				return SkuSettings:Sub("SkuChat").doNotReadoutEmojis
 			end
 		},
 
@@ -556,9 +556,9 @@ function SkuChat:MenuBuilder(aParentEntry)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.filterable = true
 	tNewMenuSubEntry.BuildChildren = function(self)
-		for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-			local tTabEntry = SkuOptions:InjectMenuItems(self, {SkuOptions.db.profile["SkuChat"].tabs[x].name}, SkuGenericMenuItem)
-			if SkuOptions.db.profile["SkuChat"].tabs[x].name == L["Combat Log"] or SkuOptions.db.profile["SkuChat"].tabs[x].name == L["Audio Log"] then
+		for x = 1, #SkuSettings:Sub("SkuChat").tabs do
+			local tTabEntry = SkuOptions:InjectMenuItems(self, {SkuSettings:Sub("SkuChat").tabs[x].name}, SkuGenericMenuItem)
+			if SkuSettings:Sub("SkuChat").tabs[x].name == L["Combat Log"] or SkuSettings:Sub("SkuChat").tabs[x].name == L["Audio Log"] then
 				tTabEntry.dynamic = false
 				
 
@@ -579,7 +579,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 							PlaySound(89)
 							local tText = CleanStringHelper(SkuOptionsEditBoxEditBox:GetText())
 							if tText ~= "" then
-								SkuOptions.db.profile["SkuChat"].tabs[SkuOptions.currentMenuPosition.tabIndex].name = tText
+								SkuSettings:Sub("SkuChat").tabs[SkuOptions.currentMenuPosition.tabIndex].name = tText
 								SkuChat:InitTab(SkuOptions.currentMenuPosition.tabIndex)
 								SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
 								SkuOptions.Voice:OutputStringBTtts(L["Umbenannt"], false, true, 0.2, nil, nil, nil, 2)
@@ -599,12 +599,12 @@ function SkuChat:MenuBuilder(aParentEntry)
 					tNewTabEntry.isSelect = true
 					tNewTabEntry.tabIndex = x
 					tNewTabEntry.OnAction = function(self, aValue, aName)
-						for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[self.tabIndex].messageTypes) do
+						for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[self.tabIndex].messageTypes) do
 							for u = 1, #v do
 								v[u] = false
 							end
 						end
-						for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[self.tabIndex].channels) do
+						for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[self.tabIndex].channels) do
 							v.status = false
 						end
 
@@ -616,12 +616,12 @@ function SkuChat:MenuBuilder(aParentEntry)
 					tNewTabEntry.isSelect = true
 					tNewTabEntry.tabIndex = x
 					tNewTabEntry.OnAction = function(self, aValue, aName)
-						for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[self.tabIndex].messageTypes) do
+						for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[self.tabIndex].messageTypes) do
 							for u = 1, #v do
 								v[u] = true
 							end
 						end
-						for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[self.tabIndex].channels) do
+						for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[self.tabIndex].channels) do
 							v.status = true
 						end
 
@@ -646,7 +646,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 											tName = v[w].text
 										end
 
-										local tActive = SkuOptions.db.profile["SkuChat"].tabs[x].messageTypes[i][w]
+										local tActive = SkuSettings:Sub("SkuChat").tabs[x].messageTypes[i][w]
 										if tActive == true then
 											tName = tName.." ("..L["Text"]..")"
 										elseif tActive == play then
@@ -673,7 +673,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 												tNewValue = false
 											end
 											
-											SkuOptions.db.profile["SkuChat"].tabs[self.tabIndex].messageTypes[self.parent.catType][self.typeType] = tNewValue
+											SkuSettings:Sub("SkuChat").tabs[self.tabIndex].messageTypes[self.parent.catType][self.typeType] = tNewValue
 
 											SkuChat:InitTab(self.tabIndex)
 
@@ -707,13 +707,13 @@ function SkuChat:MenuBuilder(aParentEntry)
 							local tStatus = L["Inactive"]
 							local tActive = false
 							local tFoundC
-							for y = 1, #SkuOptions.db.profile["SkuChat"].tabs[x].channels do
-								if SkuOptions.db.profile["SkuChat"].tabs[x].channels[y].name == tChannelList[q + 1] then
+							for y = 1, #SkuSettings:Sub("SkuChat").tabs[x].channels do
+								if SkuSettings:Sub("SkuChat").tabs[x].channels[y].name == tChannelList[q + 1] then
 									tNumber = tChannelList[q]
-									if SkuOptions.db.profile["SkuChat"].tabs[x].channels[y].status == true then
+									if SkuSettings:Sub("SkuChat").tabs[x].channels[y].status == true then
 										tStatus = L["Text"]
 										tActive = true
-									elseif SkuOptions.db.profile["SkuChat"].tabs[x].channels[y].status == play then
+									elseif SkuSettings:Sub("SkuChat").tabs[x].channels[y].status == play then
 										tStatus = L["Audio"]
 										tActive = play
 									end
@@ -721,7 +721,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 								end
 							end
 							if not tFoundC then
-								SkuOptions.db.profile["SkuChat"].tabs[x].channels[#SkuOptions.db.profile["SkuChat"].tabs[x].channels + 1] = {name = tChannelList[q + 1], status = false}
+								SkuSettings:Sub("SkuChat").tabs[x].channels[#SkuSettings:Sub("SkuChat").tabs[x].channels + 1] = {name = tChannelList[q + 1], status = false}
 							end
 
 							local tTypeEntry = SkuOptions:InjectMenuItems(self, {tNumber.."#"..tChannelList[q + 1].." ("..tStatus..")"}, SkuGenericMenuItem)
@@ -730,14 +730,14 @@ function SkuChat:MenuBuilder(aParentEntry)
 							tTypeEntry.shortName = tChannelList[q + 1] 
 							tTypeEntry.tabIndex = x
 							tTypeEntry.OnAction = function(self, aValue, aName)
-								for y = 1, #SkuOptions.db.profile["SkuChat"].tabs[x].channels do
-									if SkuOptions.db.profile["SkuChat"].tabs[x].channels[y].name == self.shortName then
+								for y = 1, #SkuSettings:Sub("SkuChat").tabs[x].channels do
+									if SkuSettings:Sub("SkuChat").tabs[x].channels[y].name == self.shortName then
 										if aName == L["Audio"] then
-											SkuOptions.db.profile["SkuChat"].tabs[x].channels[y].status = play
+											SkuSettings:Sub("SkuChat").tabs[x].channels[y].status = play
 										elseif aName == L["Text"] then
-											SkuOptions.db.profile["SkuChat"].tabs[x].channels[y].status = true
+											SkuSettings:Sub("SkuChat").tabs[x].channels[y].status = true
 										elseif aName == L["Inactive"] then
-											SkuOptions.db.profile["SkuChat"].tabs[x].channels[y].status = false
+											SkuSettings:Sub("SkuChat").tabs[x].channels[y].status = false
 										end
 									end
 								end									
@@ -767,7 +767,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 					tNewMenuEntry.OnAction = function(self, aValue, aName)
 						for i, v in pairs(SkuCore.outputSoundFiles) do
 							if "aura;sound#"..aName == v then
-								SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage = i
+								SkuSettings:Sub("SkuChat").tabs[x].audioOnNewMessage = i
 							end
 						end
 					end
@@ -778,7 +778,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 					end
 					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 						for i, v in pairs(SkuCore.outputSoundFiles) do
-							if SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage == i then
+							if SkuSettings:Sub("SkuChat").tabs[x].audioOnNewMessage == i then
 								return v
 							end
 						end
@@ -789,9 +789,9 @@ function SkuChat:MenuBuilder(aParentEntry)
 					tNewMenuEntry.isSelect = true
 					tNewMenuEntry.OnAction = function(self, aValue, aName)
 						if aName == L["On"] then
-							SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage = true
+							SkuSettings:Sub("SkuChat").tabs[x].audioOnNewMessage = true
 						elseif aName == L["Off"] then
-							SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage = false
+							SkuSettings:Sub("SkuChat").tabs[x].audioOnNewMessage = false
 						end
 					end
 					tNewMenuEntry.BuildChildren = function(self)
@@ -800,7 +800,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 					end
 					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 						local tValue = L["On"]
-						if SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage == true then
+						if SkuSettings:Sub("SkuChat").tabs[x].audioOnNewMessage == true then
 							tValue = L["On"]
 						else
 							tValue = L["Off"]
@@ -842,7 +842,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 			SkuOptions:EditBoxShow("", function() 
 				local tText = SkuOptionsEditBoxEditBox:GetText()
 				if tText and tText ~= "" then
-					SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms[string.lower(tText)] = true
+					SkuSettings:Sub("SkuChat").chatSettings.filter.terms[string.lower(tText)] = true
 					C_Timer.After(0.001, function()
 						SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
 					end)
@@ -858,8 +858,8 @@ function SkuChat:MenuBuilder(aParentEntry)
 		else
 			if self.deleteName then
 				self.deleteName = string.lower(self.deleteName)
-				if SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms[self.deleteName] then
-					SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms[self.deleteName] = nil
+				if SkuSettings:Sub("SkuChat").chatSettings.filter.terms[self.deleteName] then
+					SkuSettings:Sub("SkuChat").chatSettings.filter.terms[self.deleteName] = nil
 				end
 			end
 			C_Timer.After(0.001, function()
@@ -873,7 +873,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 			self.selectTarget.deleteName = nil
 		end			
 
-		for i, v in pairs(SkuOptions.db.profile[MODULE_NAME].chatSettings.filter.terms) do
+		for i, v in pairs(SkuSettings:Sub("SkuChat").chatSettings.filter.terms) do
 			local tEntry = SkuOptions:InjectMenuItems(self, {i}, SkuGenericMenuItem)
 			tEntry.dynamic = true
 			tEntry.OnEnter = function(self, aValue, aName)
@@ -893,7 +893,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 		tEntry.dynamic = true
 		tEntry.isSelect = true
 		tEntry.GetCurrentValue = function(self, aValue, aName)
-			if SkuOptions.db.profile["SkuChat"].CombatLog.enabled == true then
+			if SkuSettings:Sub("SkuChat").CombatLog.enabled == true then
 				return L["Yes"]
 			else
 				return L["No"]
@@ -901,9 +901,9 @@ function SkuChat:MenuBuilder(aParentEntry)
 		end
 		tEntry.OnAction = function(self, aValue, aName)
 			if aName == L["No"] then
-				SkuOptions.db.profile["SkuChat"].CombatLog.enabled = false
+				SkuSettings:Sub("SkuChat").CombatLog.enabled = false
 			elseif aName == L["Yes"] then
-				SkuOptions.db.profile["SkuChat"].CombatLog.enabled = true
+				SkuSettings:Sub("SkuChat").CombatLog.enabled = true
 			end
 			SkuChat:InitCombatLogTab()	
 		end
@@ -915,9 +915,9 @@ function SkuChat:MenuBuilder(aParentEntry)
 		local tFiltersEntry = SkuOptions:InjectMenuItems(self, {L["Filters"]}, SkuGenericMenuItem)
 		tFiltersEntry.dynamic = true
 		tFiltersEntry.BuildChildren = function(self)
-			for i, v in pairs(SkuOptions.db.global["SkuChat"].CombatLogFilters) do
+			for i, v in pairs(SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters) do
 				local tName = v.name .. (v.custom == true and " ("..L["custom"]..")" or "")
-				if i == SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter then
+				if i == SkuSettings:Sub("SkuChat").CombatLog.currentFilter then
 					tName = tName.." ("..L["current filter"]..")"
 				end
 
@@ -927,8 +927,8 @@ function SkuChat:MenuBuilder(aParentEntry)
 					local tNewFilterEntry = SkuOptions:InjectMenuItems(self, {L["Select"]}, SkuGenericMenuItem)
 					tNewFilterEntry.isSelect = true
 					tNewFilterEntry.OnAction = function(self, aValue, aName)
-						SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter = i
-						Blizzard_CombatLog_CurrentSettings = SkuOptions.db.global["SkuChat"].CombatLogFilters[SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter]
+						SkuSettings:Sub("SkuChat").CombatLog.currentFilter = i
+						Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
 						Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
 
 						C_Timer.After(0.001, function()
@@ -967,7 +967,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 										v.filters[2].eventList[vEvent] = true
 									end
 								end
-								Blizzard_CombatLog_CurrentSettings = SkuOptions.db.global["SkuChat"].CombatLogFilters[SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter]
+								Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
 								Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
 							
 								C_Timer.After(0.001, function()
@@ -1008,7 +1008,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 								elseif aName == L["Yes"] then
 									v.filters[1].sourceFlags[vMainMtype.type] = true
 								end
-								Blizzard_CombatLog_CurrentSettings = SkuOptions.db.global["SkuChat"].CombatLogFilters[SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter]
+								Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
 								Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
 							
 								C_Timer.After(0.001, function()
@@ -1049,7 +1049,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 								elseif aName == L["Yes"] then
 									v.filters[2].destFlags[vMainMtype.type] = true
 								end
-								Blizzard_CombatLog_CurrentSettings = SkuOptions.db.global["SkuChat"].CombatLogFilters[SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter]
+								Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
 								Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
 							
 								C_Timer.After(0.001, function()
@@ -1068,13 +1068,13 @@ function SkuChat:MenuBuilder(aParentEntry)
 						local tNewFilterEntry = SkuOptions:InjectMenuItems(self, {L["Delete this filter"]}, SkuGenericMenuItem)
 						tNewFilterEntry.isSelect = true
 						tNewFilterEntry.OnAction = function(self, aValue, aName)
-							SkuOptions.db.global["SkuChat"].CombatLogFilters[i] = nil
+							SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[i] = nil
 
-							if SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter == i then
-								SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter = 1
+							if SkuSettings:Sub("SkuChat").CombatLog.currentFilter == i then
+								SkuSettings:Sub("SkuChat").CombatLog.currentFilter = 1
 							end
 							
-							Blizzard_CombatLog_CurrentSettings = SkuOptions.db.global["SkuChat"].CombatLogFilters[SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter]
+							Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
 							Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
 
 							C_Timer.After(0.001, function()
@@ -1094,7 +1094,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 					function(self)
 						local tFilterName = SkuOptionsEditBoxEditBox:GetText()
 						if tFilterName and tFilterName ~= "" then
-							table.insert(SkuOptions.db.global["SkuChat"].CombatLogFilters, {
+							table.insert(SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters, {
 								custom = true,
 								name = tFilterName,
 								hasQuickButton = true,
@@ -1139,7 +1139,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 								},
 							})
 			
-							Blizzard_CombatLog_CurrentSettings = SkuOptions.db.global["SkuChat"].CombatLogFilters[SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter]
+							Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
 							Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
 						
 							C_Timer.After(0.001, function()
@@ -1166,7 +1166,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 		tEntry.dynamic = true
 		tEntry.isSelect = true
 		tEntry.GetCurrentValue = function(self, aValue, aName)
-			if SkuOptions.db.profile["SkuChat"].AudioLog.enabled == true then
+			if SkuSettings:Sub("SkuChat").AudioLog.enabled == true then
 				return L["Yes"]
 			else
 				return L["No"]
@@ -1174,9 +1174,9 @@ function SkuChat:MenuBuilder(aParentEntry)
 		end
 		tEntry.OnAction = function(self, aValue, aName)
 			if aName == L["No"] then
-				SkuOptions.db.profile["SkuChat"].AudioLog.enabled = false
+				SkuSettings:Sub("SkuChat").AudioLog.enabled = false
 			elseif aName == L["Yes"] then
-				SkuOptions.db.profile["SkuChat"].AudioLog.enabled = true
+				SkuSettings:Sub("SkuChat").AudioLog.enabled = true
 			end
 			SkuChat:InitAudioLogTab()
 		end
@@ -1189,5 +1189,5 @@ function SkuChat:MenuBuilder(aParentEntry)
 
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true
-	SkuOptions:IterateOptionsArgs(SkuChat.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
+	SkuOptions:IterateOptionsArgs(SkuChat.options.args, tNewMenuEntry, SkuSettings:Sub("SkuChat"))
 end

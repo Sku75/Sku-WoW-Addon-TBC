@@ -270,6 +270,11 @@ time with both styles coexisting.
     `Sub("SkuAuras")` / `Sub("SkuAuras", nil, "char")` / `Sub("SkuAuras", nil,
     "global")`. One char lazy-init idiom (`Core.lua:235`) special-cased as before.
     Cross-module `["SkuCore"]` (2) left raw. luaparser-gated; 0 `Sub(…)=` errors.
+  - [x] **B4 SkuChat.** 287 own-key sites migrated (Core 187, Options 100).
+    Scopes: profile + global. One global `or {}` ensure-exists idiom → bare `Sub`.
+    Cross-module `["SkuOptions"]` (7) left raw. SkuChat/Core.lua trips luaparser
+    on a PRE-EXISTING `"\]"` escape in `ShortenChannelName` (unrelated) — verified
+    via neutralize-parse that baseline and current both parse, so no new errors.
   - **Note on the flat schema:** authored for SkuMob (small/flat) as a demo, but
     DEFERRED for the larger modules (SkuQuest onward). The `Sub`-swap migration
     doesn't consume the flat per-key schema (scope is default/explicit), and
