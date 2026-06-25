@@ -62,9 +62,17 @@ C_AddOns.LoadAddOn("Blizzard_EngravingUI")
 ]]
 ---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME = "Sku"
-local ADDON_NAME = ...
+-- WoW passes (addonName, privateNamespace) to every file of this addon; the
+-- second value is one table shared across all Sku files. Sku historically
+-- discarded it and put everything in _G. The Sku 42 rework (W4 Phase A) adopts
+-- it as the addon-private namespace `ns` for internal-only state/helpers, while
+-- the published API (Sku and the module tables) stays global. It is also exposed
+-- as Sku.ns so any module holding `Sku` can reach it without re-reading `...`.
+local ADDON_NAME, ns = ...
+ns = ns or {}
 
 Sku = {}
+Sku.ns = ns
 Sku.L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
 Sku.Loc = Sku.L["locale"]
 Sku.Locs = {"enUS", "deDE",}

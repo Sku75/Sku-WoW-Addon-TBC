@@ -7,7 +7,15 @@
 -- before every module) and is therefore always available — no load-order guards
 -- needed at the call sites.
 
-SkuUtil = SkuUtil or {}
+local ADDON_NAME, ns = ...
+ns = ns or {}
+
+-- SkuUtil is the first resident of the addon-private namespace (W4 Phase A): the
+-- canonical helpers live on `ns.Util`, and the global `SkuUtil` is a thin
+-- published alias so existing call sites keep working unchanged. Future
+-- internal-only helpers can live on `ns` with no global surface at all.
+ns.Util = ns.Util or {}
+SkuUtil = ns.Util
 
 -- WoW UI escape/markup-stripping patterns. `escapes` is the full set;
 -- `escapesChat` omits raid-target-icon stripping (chat keeps the {rtN} tokens).

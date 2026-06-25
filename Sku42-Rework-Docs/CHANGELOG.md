@@ -47,9 +47,20 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
   `SkuUtil:Unescape`, and the `minimapScanner` `if SkuChat and SkuChat.Unescape`
   load-order guard was removed (SkuUtil always loads first). Behavior-preserving;
   collapses the largest *fake* cross-module cycle (SkuCore→SkuChat). luaparser
-  syntax-gated; in-game `/wdwatchsku` smoke test still pending. The two
+  syntax-gated; in-game smoke test **passed** (2026-06-26, v42 live via the
+  symlink): no behaviour change — item tooltips, chat, and gossip/quest-giver
+  windows spoken unchanged, and `/wdeval SkuUtil:Unescape(...)` resolved and
+  stripped link markup (confirming `SkuUtil` loads and works). The two
   private-local `Unescape` duplicates were also collapsed onto `SkuUtil`:
   `LocalMenu` (direct swap) and `gameWorldObjects` (via a `tostring(...)` wrapper
   that preserves its nil→`"nil"` contract the downstream `~= "nil"` checks rely
   on). `SkuChat:Unescape` and `SkuUtil:Unescape` are now the only `Unescape`
   definitions besides the vendored `SkuVoice-1.0` lib-local. (X-A2 complete.)
+- **W4 Phase A (X-A1) — addon-private namespace adopted.** `Core.lua` now
+  captures WoW's second addon vararg (the per-addon shared table it previously
+  discarded) as `ns` and exposes it as `Sku.ns`. `SkuUtil` becomes the first
+  resident — it lives on `ns.Util` with the global `SkuUtil` kept as a thin
+  published alias (no call-site churn), establishing the pattern for future
+  internal-only helpers. The published API (`Sku` + module tables) intentionally
+  stays global; bulk `_G`→`ns` migration is deferred to W4 Phases C/D. luaparser
+  syntax-gated; behavior-preserving. **W4 Phase A is now complete (X-A1 + X-A2).**

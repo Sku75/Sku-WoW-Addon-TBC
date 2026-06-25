@@ -648,7 +648,19 @@ codebase. Do it as a long series of small, independently-shippable extractions:
 
 ## 4.8 Task checklist
 
-- [ ] X-A1. Adopt `local addonName, ns = ...`; move shared internals off `_G`.
+- [x] X-A1. Adopt `local addonName, ns = ...`; move shared internals off `_G`. (Phase-A scope: seam established.)
+  - `Core.lua` previously did `local ADDON_NAME = ...`, discarding WoW's second
+    addon vararg — the per-addon private table shared across every Sku file. Now
+    captured as `ns` and exposed as `Sku.ns` so any module can reach it.
+  - `SkuUtil` is the first resident: it lives on `ns.Util`, with the global
+    `SkuUtil` kept as a thin published alias (zero call-site churn). This is the
+    canonical pattern for future internal helpers (live on `ns`; add a global
+    alias only if published).
+  - Deliberately NOT done here: bulk-moving the existing published globals
+    (`Sku`, `SkuCore`, `SkuChat`, … and frame-name globals) off `_G` — they are
+    the published surface (~283 cross-refs + external addons like AtlasLoot/WVDebug
+    reference them by name). That migration is incremental and belongs to W4
+    Phases C/D (state service / submodules), not a Phase-A big-bang.
 - [x] X-A2. Create `SkuUtil`; move `Unescape` (SkuChat/Core.lua:2108) + other stateless utils; repoint callers.
   - Added `Sku/SkuUtil.lua` (global `SkuUtil`, owns `escapes`/`escapesChat`
     + `SkuUtil:Unescape`), TOC-registered right after `Core.lua`. `SkuChat:Unescape`
