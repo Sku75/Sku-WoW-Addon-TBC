@@ -1,0 +1,705 @@
+# Sku Refactor Plan
+
+Living plan for modernizing Sku into a more flexible, maintainable, and
+performant addon **without changing its behavior for the end user**. Worked on
+the `addonrestructuring` branch. This is a roadmap to execute incrementally
+when time allows — not a one-shot rewrite.
+
+## How to use this document
+
+- Three workstreams, tackled **one at a time** so we never juggle two
+  half-migrated subsystems:
+  1. Settings access layer  — fully specified below (ready to execute).
+  2. Menu schema + registry  — investigated, design drafted (execute after W1).
+  3. Performance profiling pass — investigated, candidates mapped (measure first).
+  4. Modularization / boundaries — investigated; break the SkuCore god-object
+     and the dependency cycles (execute after W1 + W2). See "Sequencing".
+- Each workstream is independently shippable and behavior-preserving.
+- Status legend used per task: `[ ]` not started, `[~]` in progress,
+  `[x]` done, `[!]` blocked/needs decision.
+
+## Guiding principles & hard constraints
+
+- **Behavior must stay identical.** Sku is a daily-driver accessibility tool.
+  No user-visible change in what is spoken, no change to keybinds, no change to
+  the persisted `SkuOptionsDB` shape unless explicitly planned and migrated.
+- **Screen-reader-only verification.** Every checkpoint must be verifiable
+  without sighted inspection: luaparser syntax check, `/skudebug` ring traces,
+  WVDebug captures (`/wdsku`, `/wdeval`, `/wdwatchsku`), deterministic
+  before/after dumps of known values. No "look at the screen" steps.
+- **Incremental & reversible.** Migrate module-by-module. Commit a checkpoint
+  before each risky step. Old and new code paths coexist during a migration so
+  a half-done module still runs.
+- **Target client:** TBC Anniversary, Interface 11508. Don't assume retail-only
+  APIs exist; verify on this client before relying on them.
+- **Keep the contribution-back path clean.** Code changes live under `Sku/`;
+  diff `v41.06` (root) vs `main:Sku` (subtree). This planning doc lives at the
+  repo root so it never enters an upstream patch.
+- **Libraries stay on Ace3.** See "Library assessment" at the end: swapping the
+  framework is high-cost / low-reward. The wins here are architectural, on top
+  of Ace3, not a library change.
+
+---
+
+# Workstream 1 — Settings access layer  (READY TO EXECUTE)
+
+## 1.1 Current state (measured)
+
+- One SavedVariable, `SkuOptionsDB`, wrapped by AceDB-3.0 at
+  `Sku/SkuZOptions/Core.lua:3525`:
+  `SkuOptions.db = LibStub("AceDB-3.0"):New("SkuOptionsDB", defaults, true)`.
+- Defaults are defined **per module** as `Module.defaults` (e.g.
+  `Sku/SkuCore/Options.lua:759` `SkuCore.defaults = {...}`) and then stitched
+  together by hand in `SkuOptions:OnInitialize()`
+  (`Sku/SkuZOptions/Core.lua:3483-3515`) as
+  `defaults.profile["SkuCore"] = SkuCore.defaults`, one `if Module then` block
+  per module.
+- Access is raw deep-path, everywhere. Measured occurrences (excluding `Libs/`):
+  - `SkuOptions.db.profile[...]` — 1,429 occurrences
+  - `SkuOptions.db.char[...]`   — 1,153 occurrences
+  - `SkuOptions.db.global[...]` — 83 occurrences
+  - Spread across **40 source files**.
+- **No getter/setter layer exists** — confirmed by search; every read and write
+  is an inline deep path like
+  `SkuOptions.db.profile[MODULE_NAME].ressourceScanning.gasCollector[x]`.
+
+## 1.2 Problems this causes
+
+- **No single source of truth for the schema.** Defaults are scattered across
+  the eight `Options.lua` files; some state is never in any defaults table and
+  is initialized lazily at read time (`x = x or {}`).
+- **`char` and `global` scopes have no declared defaults at all.** Only
+  `defaults.profile` is registered (`Core.lua:3486-3514`); the 1,153 `db.char`
+  reads and 83 `db.global` reads rely entirely on ad-hoc lazy init. This is the
+  single biggest correctness smell in settings.
+- **No encapsulation.** Renaming or restructuring any key means hand-editing
+  every one of ~2,665 call sites; miss one and it silently desyncs.
+- **profile vs char vs global is used inconsistently**, sometimes within one
+  module, with no documented rule for which scope a setting belongs to.
+- **Settings double as an implicit message bus** between modules (modules sync
+  by reading each other's keys), so the schema is load-bearing coupling.
+
+## 1.3 Target design
+
+A thin facade over AceDB plus a **central schema registry**. The schema is the
+keystone: it is the single source of truth for every setting's scope, default,
+type, and (optionally) human label — and it is what Workstream 2 will later
+read to auto-generate menu entries.
+
+New module: `Sku/SkuZOptions/SkuSettings.lua` (loaded right after
+`SkuZOptions/Core.lua` in the TOC). Global `SkuSettings` to match the existing
+naming convention (a private namespace is a separate, later concern tracked in
+Workstream 2's notes).
+
+### Schema registry
+
+Each module registers its settings once, declaratively:
+
+```lua
+SkuSettings:Register("SkuCore", {
+  ["turnToUnit.speed"]              = { scope = "profile", default = 6,     type = "number" },
+  ["turnToUnit.soundOnSuccess"]     = { scope = "profile", default = "sound-waterdrop5", type = "string" },
+  ["readAllTooltips"]               = { scope = "profile", default = false, type = "boolean" },
+  ["AuctionCurrentFilter.LevelMin"] = { scope = "char",    default = 1,     type = "number" },
+  -- ...
+})
+```
+
+- `scope` resolves profile / char / global so callers never name a scope again
+  (kills the profile-vs-char confusion).
+- The registry builds the AceDB `defaults` table for **all three scopes**, fixing
+  the missing char/global defaults.
+- `type` enables optional validation in `Set` (off by default, on under
+  `/skudebug` to catch bad writes during migration).
+
+### Accessor API
+
+```lua
+local v = SkuSettings:Get("SkuCore", "turnToUnit.speed")      -- read
+SkuSettings:Set("SkuCore", "turnToUnit.speed", 8)             -- write
+SkuSettings:Sub("SkuCore", "AuctionCurrentFilter")            -- returns the live subtable
+                                                              -- (for hot loops / bulk access)
+```
+
+- `Get`/`Set` resolve scope from the schema, walk the dotted path, and (for
+  `Set`) create intermediate tables as needed — replacing the `or {}` idiom.
+- `Sub` returns the live table reference for code that must mutate many keys in
+  a tight loop (e.g. scanners); this keeps a fast path so the layer never
+  becomes a performance regression.
+- Unknown keys: in debug mode, log a `dprint` warning (catches typos and
+  un-migrated paths); in normal mode, fall back gracefully to the raw path so a
+  missed key never breaks the user.
+
+## 1.4 Migration strategy (incremental, non-breaking)
+
+The layer wraps the **same** AceDB tables, so old raw paths and new accessor
+calls read/write the identical storage. That lets us migrate one module at a
+time with both styles coexisting.
+
+- **Phase A — Introduce, don't migrate (lowest risk, no call-site edits).**
+  - Add `SkuSettings.lua` with the registry + Get/Set/Sub.
+  - Replace the eight hand-written `defaults.profile[X] = X.defaults` blocks in
+    `Core.lua:3483-3515` with registry-driven assembly, and **add char/global
+    defaults** derived from the schema. Net persisted shape unchanged.
+  - Verify the persisted `SkuOptionsDB` is byte-identical before/after (see
+    1.6). Ship this alone first.
+
+- **Phase B — Migrate call sites, module by module, smallest first.**
+  - Suggested order (low risk → high): SkuMob, SkuQuest, SkuAuras, SkuChat,
+    SkuNav, then SkuCore last (it is the biggest, ~16 files).
+  - Per module: convert raw deep paths to `Get`/`Set`/`Sub`. A regex codemod can
+    assist (`SkuOptions.db.profile["X"].a.b` → `SkuSettings:Get("X","a.b")`),
+    but reads vs writes and `or {}` init differ, so every change gets a human
+    review + luaparser syntax check + in-game smoke test before commit.
+  - Keep the raw-path fallback active so a not-yet-migrated key still works.
+
+- **Phase C — Lock it down.**
+  - Once all modules are migrated, turn on schema validation in `Set`
+    permanently (reject/clamp out-of-type writes, log via `dprint`).
+  - Remove the raw-path fallback; unknown key becomes a hard `dprint` error in
+    debug builds.
+  - The completed schema is then handed to Workstream 2 as the menu-generation
+    source of truth.
+
+## 1.5 Risks & watch-outs
+
+- **AceDB strips default-equal values on logout.** Introducing defaults for
+  `char`/`global` keys whose stored value equals the new default will cause
+  AceDB to drop them from the saved file. That is correct/desired, but means a
+  raw byte-diff of `SkuOptionsDB` will differ after a logout — compare
+  *effective values*, not file bytes, past Phase A.
+- **Lazy `or {}` sites that build structure on read.** Some code relies on the
+  side effect of creating a subtable. `Set`/`Sub` must replicate that creation
+  so behavior is preserved.
+- **Hot paths.** Scanners (minimapScanner, gameWorldObjects, aq/aqCombat) read
+  settings every tick. Use `Sub` to grab the subtable once, not `Get` per key
+  per tick, to avoid added overhead. This overlaps with Workstream 3.
+- **Profile switching.** AceDB fires `OnProfileChanged`; any cached `Sub`
+  references must be re-fetched. The layer should invalidate caches on that
+  callback (Sku already registers it at `Core.lua:3532`).
+
+## 1.6 Verification (screen-reader-friendly)
+
+- **Syntax gate:** after each file,
+  `py -3 -c "from luaparser import ast; ast.parse(open('<file>', encoding='utf-8-sig').read()); print('OK')"`.
+- **Before/after value dump:** pick ~15 representative keys across scopes; dump
+  via `/wdeval` (WVDebug) pre- and post-migration and diff the printed values —
+  must be identical.
+- **Phase A storage check:** `/reload`, then compare the persisted
+  `SkuOptionsDB` table in SavedVariables before vs after the defaults-assembly
+  change (parse with `py -3`, brace-depth method per CLAUDE.md). Expect no
+  change in Phase A.
+- **Live behavior:** `/skudebug log on`, exercise the migrated module's menu
+  (`/wdsku`), confirm reads/writes land via the ring trace; `/wdwatchsku` to
+  confirm spoken output is unchanged.
+- **Regression smoke:** one scripted pass per migrated module that sets a known
+  value through the menu, `/reload`, reads it back.
+
+## 1.7 Task checklist
+
+- [ ] A1. Add `Sku/SkuZOptions/SkuSettings.lua`; register it in `Sku.toc` after `SkuZOptions/Core.lua`.
+- [ ] A2. Implement registry (`Register`) + `Get`/`Set`/`Sub` + dotted-path walk + lazy-create on `Set`.
+- [ ] A3. Author schema entries by extracting the eight `Module.defaults` tables (one module at a time into the registry).
+- [ ] A4. Replace `Core.lua:3483-3515` hand-stitch with registry-driven defaults assembly; add char/global defaults.
+- [ ] A5. Phase A verification: persisted `SkuOptionsDB` unchanged; ship checkpoint commit.
+- [ ] B1..Bn. Migrate call sites per module (SkuMob → SkuQuest → SkuAuras → SkuChat → SkuNav → SkuCore), each with syntax + smoke verification + commit.
+- [ ] C1. Enable `Set` validation permanently; remove raw-path fallback.
+- [ ] C2. Publish the finalized schema as the input contract for Workstream 2.
+
+---
+
+# Workstream 2 — Menu schema + registry  (INVESTIGATED — design drafted)
+
+Headline conclusion: the biggest win here is **decoupling the user-facing menu
+organization from the code/module structure.** Today the menu tree *is* the
+module list (see 2.3), so re-organizing menus by purpose instead of by module is
+brittle and expensive; after this workstream it becomes a data edit. The
+boilerplate reduction is real but secondary.
+
+Do not start coding until Workstream 1 is at least through Phase B; the menu
+generator should consume the settings schema, so the two must not be in flight
+together. The investigation below is complete enough to design against.
+
+## 2.1 Current state (measured)
+
+- All entries derive from one template, `SkuGenericMenuItem`
+  (`Sku/SkuZOptions/templates.lua:62-470`). The full field contract:
+  - **Data fields:** `name` (label, also the navigation match key), `type`
+    (MENU_MENU=1/dropdown constants — set once, effectively vestigial after
+    init), `parent`, `children`, `prev`, `next`, `isSelect` (terminal decision
+    node), `isMultiselect`, `selectTarget` (node that collects the chosen value;
+    defaults to self), `dynamic` (rebuild children on each visit), `filterable`
+    (first-letter/text search), `noStepUpAfterSelect`, `macrotext` + `secureMacro`
+    (run secured action on Enter via SecureActionButtonTemplate).
+  - **Behavior hooks:** `OnEnter`/`OnLeave` (cursor land/leave; sound + secure
+    macro binding), `OnSelect`/`OnPostSelect` (Enter handling; the execution
+    core at `templates.lua:337-469`), `OnAction(self, cleanValue, parentName)`
+    (the business-logic write), `OnPrev`/`OnNext`/`OnFirst`/`OnLast`/`OnBack`
+    (arrow/home/end/escape navigation), `OnKey` (alphanumeric quick-jump),
+    `BuildChildren` (the per-node factory; default no-op), `GetCurrentValue`
+    (optional; pre-positions the cursor on the child whose name matches),
+    `OnUpdate` (re-focus after a rebuild, `templates.lua:74-127`).
+  - Likely-vestigial: `type` after init, the commented `ttsEngine`, the
+    serialization-excluded `frame`.
+- `InjectMenuItems(aParentMenu, aNewItems, aItemTemplate)`
+  (`Sku/SkuZOptions/Core.lua:4149`): clones the template via the `MenuMT`
+  `__add` metatable (`templates.lua:11-35`), sets `name`/`parent`, and — when a
+  template is given — **wires the `prev`/`next` sibling chain centrally**
+  (`Core.lua:4158-4161`). When `aItemTemplate` is nil it assigns a pre-made
+  `children` array and does **not** wire the chain.
+- **Linked-list maintenance is centralized for insertion** (only
+  `InjectMenuItems` wires it). Removal/pruning is the asymmetric risk: at least
+  the AH buy "gone/prune" flow and the sell re-anchor
+  (`Core.lua` ~613-620 and `SkuCaptureSellState`/`SkuRestoreSellPosition`
+  ~4322-4388) re-derive position by index/array rather than through a shared
+  splice helper. Confirm the exact removal sites before refactoring.
+- **No central registry.** When the menu first opens, the root is assembled by a
+  hardcoded inline sequence in `Sku/SkuZOptions/Core.lua:1775-1808`: one
+  `InjectMenuItems(SkuOptions.Menu, {L["...MenuEntry"]}, ...)` block per module
+  (SkuNav, SkuMob, SkuChat, SkuQuest, SkuCore, SkuAuras) plus the Game-Options
+  (1814) and Accessibility (1831) built-ins, each with `dynamic = true` and a
+  `BuildChildren` that calls `Module:MenuBuilder(entry)`. The per-module
+  `MenuBuilder` then hand-builds its subtree (e.g. `SkuZOptions/Options.lua:989`).
+- **Estimated scale:** ~500-600 live menu nodes; the same ~6-line property block
+  is repeated 50+ times across ~14 files.
+
+## 2.2 Entry archetypes (the future declarative node types)
+
+Every hand-built entry collapses into one of seven recurring shapes. Concrete
+example sites:
+
+- **Toggle** (on/off, Ein/Aus) — e.g. pet autocast `SkuCore/Options.lua:1614`.
+  ~8-10 instances.
+- **Numeric range** (1..N loop) — e.g. range checks `SkuCore/Options.lua:1663`.
+  ~3-5 instances.
+- **Enum select** (pick one of several) — e.g. chat message-type
+  `SkuChat/Options.lua:660`. ~20+ instances.
+- **Dynamic list** (BuildChildren loops live data) — e.g. bag items
+  `SkuCore/Options.lua:1280`, plus friends/auctions/dungeons/spells/waypoints.
+  ~15-20 instances.
+- **Action/button** (Enter executes, no children) — e.g. delete tab
+  `SkuChat/Options.lua:590`. ~30-40 instances.
+- **Submenu container** (holds children only) — the most common; ~50-70.
+- **Macro/secure** (`macrotext`+`secureMacro`) — pet/camera/keybind actions;
+  ~10-15.
+
+The first three (toggle, numeric range, enum select) are pure settings views:
+their `OnAction`/`GetCurrentValue` just read/write one `SkuOptions.db` path. They
+are the prime candidates for auto-generation from the Workstream 1 schema.
+
+## 2.3 Problems this causes
+
+- **The user-facing menu tree is hard-wired to the code/module structure — the
+  biggest limitation.** The entire top level is built as one node per code
+  module at `SkuZOptions/Core.lua:1775-1808`: `L["SkuNavMenuEntry"]` ->
+  `SkuNav:MenuBuilder`, `L["SkuMobMenuEntry"]` -> `SkuMob:MenuBuilder`, ...
+  `SkuCore`, `SkuAuras`. Each module's `MenuBuilder(parent)` then builds its
+  entries under *that* parent, so a setting physically lives wherever its owning
+  module's builder puts it. Grouping by purpose (e.g. one "Combat" menu drawing
+  from SkuAuras + SkuCore + SkuMob) requires one module's closure to reach into
+  and inject under a node another module owns, in the right load order, while
+  hand-maintaining the sibling linked list.
+  - **Evidence it is already painful:** the "Menü 7 / Barrierefreiheit"
+    (Accessibility) grouping at `SkuZOptions/Core.lua:1822-1837` is a hand-built
+    workaround — a wrapper node with placeholders, the Video-Options menu moved
+    "1:1 one level deeper" by hand, sub-entries explicitly labelled
+    `Verknüpfungen, KEIN Duplikat der Logik` ("links, NOT a duplicate of the
+    logic") because they had to manually reference logic owned elsewhere, plus an
+    in-code "RUECKBAU" (rollback) note and a separate concept doc. A purpose-based
+    grouping needed a design document and undo instructions — that is the cost of
+    fighting the module-coupled structure.
+- **No declarative form.** A toggle takes a dynamic parent + a `BuildChildren`
+  closure that injects two children, each with its own `OnAction` — many lines
+  to express one boolean. The same boilerplate is copy-pasted per setting.
+- **Settings and menu are two hand-kept copies.** Each toggle/enum re-encodes
+  the db path, the value mapping, and the current-value read that already exist
+  (or will, after Workstream 1) in the schema.
+- **Module registration is hardcoded**, not a registry: a new module must be
+  inserted into the inline root-assembly sequence in `SkuCore/Core.lua`, and the
+  TOC load order must place it before SkuZOptions.
+- **Removal/prune is an unguarded invariant.** Insertion wires `prev`/`next`
+  centrally, but the removal paths re-derive position ad hoc; this is where
+  "arrow navigation silently broke" bugs originate.
+
+## 2.4 Target design
+
+Keep `SkuGenericMenuItem` and `InjectMenuItems` as the **rendering layer**
+(behavior-preserving), and add a thin **declarative layer** on top.
+
+- **A node-spec format** — a plain table describing a menu node by archetype:
+  ```lua
+  { kind = "toggle",   label = L["Read all tooltips"], setting = "SkuCore.readAllTooltips" }
+  { kind = "enum",     label = L["Quality"], setting = "SkuCore.AuctionCurrentFilter.Quality",
+                       choices = QUALITY_CHOICES }
+  { kind = "range",    label = L["Min level"], setting = "...", min = 1, max = 80 }
+  { kind = "list",     label = L["Friends"], build = function(add) ... end }   -- dynamic
+  { kind = "action",   label = L["Send"], run = function() ... end }
+  { kind = "submenu",  label = L["Tabs"], children = { ... } | builder = fn }
+  ```
+- **A compiler** `SkuMenu:Build(parentEntry, specList)` that translates each
+  spec into the existing template node via `InjectMenuItems`, attaching the
+  right `OnAction`/`GetCurrentValue`/`BuildChildren` for the archetype. For
+  `toggle`/`enum`/`range` with a `setting`, the handlers are generated from the
+  Workstream 1 schema (read `SkuSettings:Get`, write `SkuSettings:Set`,
+  current-value from the schema) — so settings and menu share one source.
+- **Separate contribution from layout (the key decoupling).** Two distinct
+  concerns that are fused today:
+  - *Contribution:* a module declares its nodes under a stable id/key and owns
+    their logic (`SkuMenu:Register("combat.auras", spec)`).
+  - *Layout:* a central menu map declares *where in the user-facing tree* each
+    id appears, independent of which module produced it. Re-organizing the menu
+    (e.g. a "Combat" branch gathering `combat.auras` + `combat.softTarget` +
+    `combat.mobs`) becomes editing the layout table — no code moves, no
+    cross-module reach-in, no linked-list splicing, no logic duplication. This is
+    what makes "Menü 7"-style groupings a data edit instead of a documented,
+    rollback-noted code surgery. It also enables alternate layouts (by-purpose
+    vs by-module) and user-reorderable menus.
+- **A registry** `SkuMenu:RegisterModule(name, order, builderFn)` replacing the
+  hardcoded root sequence (`SkuZOptions/Core.lua:1775-1808`); the root assembly
+  iterates the registry/layout map. Adding a module becomes one registration
+  call, no edit to the central assembly.
+- **Central list helpers** `SkuMenu:Insert`/`SkuMenu:Remove` that own `prev`/`next`
+  splicing for both add and remove, so no caller hand-maintains the chain.
+
+This is additive: existing `MenuBuilder` closures keep working; modules migrate
+to specs one menu at a time.
+
+## 2.5 Migration strategy (incremental, non-breaking)
+
+- **Phase A — Plumbing.** Add `SkuMenu` (compiler + registry + list helpers)
+  alongside the current code; route the existing hardcoded root sequence through
+  `RegisterModule` without changing the rendered tree.
+- **Phase B — Convert archetypes, smallest menus first.** Replace hand-built
+  toggle/enum/range entries with specs (these gain the most and are lowest
+  risk). Then containers and action buttons. Dynamic lists last (most behavior
+  to preserve).
+- **Phase C — Schema-link.** Point generated handlers at `SkuSettings`; delete
+  the now-redundant inline `OnAction`/`GetCurrentValue` for settings-backed nodes.
+- **Phase D — Lock the invariant.** Make all removal paths go through
+  `SkuMenu:Remove`; audit for any remaining hand `prev`/`next` writes.
+
+## 2.6 Risks & watch-outs
+
+- **Exact navigation semantics must be preserved** — Enter-sets-and-stays vs
+  right-arrow-descends, `GetCurrentValue` cursor pre-positioning, `isSelect`
+  vs `actionOnEnter`, `noStepUpAfterSelect`. The compiler must reproduce these
+  per archetype exactly (see the `sku-menu-key-semantics` memory note).
+- **Secure/macro entries** can only run from a hardware event; the compiler must
+  keep `macrotext`/`secureMacro` on the actual template node (no wrapping that
+  breaks the secure path).
+- **Dynamic-list rebuild timing** (`self.children = {}` then `BuildChildren`,
+  then `OnUpdate` re-focus) is subtle; convert these last and test focus
+  restoration carefully.
+- **Removal sites** are the highest-bug-risk area; enumerate them all before
+  Phase D.
+
+## 2.7 Verification (screen-reader-friendly)
+
+- `/wdsku` and `/wdsku3` tree dumps of representative menus (one per archetype:
+  a toggle, an enum, the AH filter tree, the friends dynamic list, a container)
+  captured **before** and **after** each conversion — the `tree`, `spoken`, and
+  `ttsFrameText` must match.
+- `/wdwatchsku` while navigating the converted menu — the announced lines must be
+  identical to baseline.
+- luaparser syntax gate per file; in-game set-a-value-then-`/reload`-and-read-back
+  smoke test per converted setting node.
+
+## 2.8 Task checklist
+
+- [ ] M-A1. Add `SkuMenu` module (compiler + registry + layout map + Insert/Remove helpers); TOC-register after SkuZOptions.
+- [ ] M-A2. Route the hardcoded root sequence (`SkuZOptions/Core.lua:1775-1808`) through `RegisterModule` + layout map; verify identical tree via `/wdsku3`.
+- [ ] M-A3. Prove the decoupling: re-home one existing entry to a different branch via a layout-map edit only (no module-code change); verify with `/wdsku3`.
+- [ ] M-B1. Implement `toggle`/`enum`/`range` archetypes in the compiler; convert a handful of settings menus; verify.
+- [ ] M-B2. Implement `submenu`/`action`/`list`/`macro` archetypes; convert remaining menus module-by-module.
+- [ ] M-C1. Link generated settings handlers to `SkuSettings` (depends on Workstream 1 Phase C); remove redundant inline handlers.
+- [ ] M-D1. Enumerate all node-removal sites; route through `SkuMenu:Remove`; remove any remaining hand `prev`/`next` writes.
+
+---
+
+# Workstream 3 — Performance profiling pass  (INVESTIGATED — candidates mapped)
+
+Static read-through is done; the hot-spot list below is **inferred from code,
+not yet measured**. The rule stands: measure first, optimize only what the
+baseline confirms.
+
+## 3.1 Existing instrumentation (use this to measure)
+
+- `Sku.MetricPoint()` via `debugprofilestop()` (`Core.lua:134-135`) + an
+  on-screen performance OnUpdate (`Core.lua:314-329`, every 0.1s when enabled).
+- `Sku.PerformanceData[name]` rolling averages already wired around the combat
+  hot paths: ~25 `debugprofilestop()` probes in `SkuCore/aqCombat.lua` (lines
+  253-832) and one around `EvaluateAllAuras` (`SkuAuras/Core.lua:832`,
+  storage line 1248 currently commented out).
+- So Sku already has a timing harness — the baseline work is mostly enabling and
+  reading it, not building it.
+
+## 3.2 Inventory (by category, with file:line)
+
+- **OnUpdate handlers** — most self-throttle with an elapsed accumulator, a few
+  run raw every frame:
+  - `SkuCore/aq.lua:468` — health/power monitor, 50ms throttle but does 8-12
+    deep `SkuOptions.db.char[...][talentSet]...` lookups per tick plus per-tick
+    string concatenation (`aq.lua:512`). **Per-tick db churn — ties to W1 `Sub`.**
+  - `SkuNav/Core.lua:2152` — waypoint drawing; `EnumerateActive` loops appear to
+    run **every frame** (DrawAll gated to 0.2s, but the enumerator loops at
+    2166/2195 are not obviously throttled) + per-frame tooltip/color table allocs
+    (2172-2217). **Verify the throttle boundary.**
+  - `SkuAuras/Core.lua:93` — aura eval, 0.25s; scans ~45 units (player/focus/
+    target/pet/4 party/40 raid) each tick.
+  - `SkuZOptions/utilities.lua` — 8 coroutine-driven builder OnUpdates (lines
+    59/354/1000/1037/1118/1191/1292/1384) at 1-100ms; plus cursor-blink raw every
+    frame (`Core.lua:5722`).
+  - Low-risk/gated: `Core.lua:314`, `auctionHouse.lua:179/1612`,
+    `SkuChat/Core.lua:2247` (5s), `visualAids.lua:294`, the SkuMM drag handlers.
+- **Timers/tickers** — ~250 `C_Timer` calls, mostly one-shot UI nudges. Notable
+  self-rescheduling: the AH `StrategyBuySearch` retry loop
+  (`auctionHouse.lua:1669/1690/1731`, guarded by maxFails). Persistent ticker:
+  `LibRangeCheck` `C_Timer.NewTicker(5, ...)` cache invalidation.
+- **High-frequency events:**
+  - `COMBAT_LOG_EVENT_UNFILTERED` registered **twice** — `aqCombat.lua:1215`
+    (GUID-cached, cheap on hit; ~29-unit loop on cache miss via
+    `aqCombatIsPartyOrRaidMember`) and `SkuAuras/Core.lua:799` → chains to
+    `EvaluateAllAuras` which allocates a `tBuffList {}` and loops `UnitAura`
+    1..40 per call. In raids CLEU fires 100s/sec. **Highest suspected cost.**
+  - `UNIT_AURA` (`aq.lua:1577`), `UNIT_HEALTH` (`aq.lua:1263`, lean),
+    `BAG_UPDATE` (`SkuCore/Core.lua:356`, can fire many times per vendor action).
+- **Scanners** — mostly manual/bursty, not continuous: `minimapScanner.lua`
+  (loops `Minimap:GetChildren`, tooltip lines, scan results — 239/421/524/585),
+  `gameWorldObjects.lua` (DB-lookup loops, manual), `auctionHouse.lua:1648`
+  (sorts 50-200+ results per search).
+- **Load-time** — `aqCombat.lua:19-100` builds audio tables with 50+
+  `string.format` and ~69 `table.insert` at file load; the gitignored
+  `routedata_global_wotlk.lua` (~1.1M lines) and SkuDB asset tables load once at
+  init (the dominant startup cost to confirm).
+- **Allocation churn in hot paths** — `tBuffList {}` per CLEU
+  (`SkuAuras/Core.lua:869`), per-result table per auction
+  (`auctionHouse.lua:1653`), per-frame color/tooltip tables in nav OnUpdate,
+  per-tick strings in aq monitor.
+
+## 3.3 Top suspected hot spots (hypotheses, ranked)
+
+1. `EvaluateAllAuras` on every CLEU — `SkuAuras/Core.lua:799/831` (alloc + 40-deep loop, raid-frequency).
+2. `aq.lua` monitor OnUpdate — deep per-tick db lookups + string churn (`aq.lua:468-800`).
+3. Nav drawing OnUpdate — possible per-frame enumerator loops + allocations (`SkuNav/Core.lua:2152-2269`).
+4. `aqCombat` CLEU handler cache-miss path — 29-unit loop (`aqCombat.lua:1215`, `aqCombatIsPartyOrRaidMember`).
+5. Menu coroutine OnUpdates + raw cursor blink (`SkuZOptions/utilities.lua` ×8, `Core.lua:5722`).
+6. AH result processing — sort over 50-200+ rows + retry loop (`auctionHouse.lua:1648`).
+7. LibRangeCheck OnUpdate + 5s cache ticker (`Libs/LibRangeCheck-3.0:4630/4620`).
+8. Startup cost of `routedata_global_wotlk.lua` + SkuDB assets.
+
+## 3.4 Approach
+
+- **Measure first.** Enable `scriptProfile` (CVar) for `GetAddOnCPUUsage`, turn
+  on `Sku.PerformanceData` (un-comment the aura store), and add temporary
+  `dprint` timing breadcrumbs around the ranked suspects.
+- **Baseline scenarios** (deterministic, logged): idle in town, solo combat,
+  raid/heavy CLEU, navigating a route, AH search open, menu navigation.
+- **Optimize only confirmed costs**, cheapest-fix first: hoist deep db reads to
+  a cached `Sub` (W1 synergy), reuse scratch tables instead of per-event allocs,
+  add/raise throttles where correctness allows, early-filter CLEU before work.
+- **Regression guard:** re-run the baseline scenarios after each fix; compare
+  logged `PerformanceData` numbers; no behavior change in what is spoken.
+
+## 3.5 Verification (screen-reader-friendly)
+
+- Numbers, not visuals: read `Sku.PerformanceData` / `GetAddOnCPUUsage` via
+  `/wdeval` and `/skudebug` ring timings before vs after.
+- `/wdwatchsku` to confirm announcements are unchanged after each optimization.
+
+## 3.6 Task checklist
+
+- [ ] P1. Enable measurement harness (scriptProfile, PerformanceData store, dprint timers); document how to read it.
+- [ ] P2. Capture baselines for the six scenarios; record numbers in this file.
+- [ ] P3. Confirm/replace the ranked hypotheses with measured costs.
+- [ ] P4. Fix top confirmed costs cheapest-first; re-baseline after each; guard announcements unchanged.
+
+---
+
+# Workstream 4 — Modularization / boundaries  (INVESTIGATED — design drafted)
+
+The headline conclusion: **splitting big files into smaller ones brings no
+real gain — it is already done and it did not help.** `SkuCore` is already 24
+files, yet it is still one object that every other module tangles with. The
+gains come from introducing *boundaries*, not from moving code blocks.
+
+## 4.1 Current state (measured)
+
+- **God-object, not modules.** Ace3's real submodule system
+  (`NewModule`/`GetModule`) is used **nowhere** (the only `GetModule` hits are
+  AtlasLoot's external API). All 24 `SkuCore/*.lua` files attach functions to
+  the single global `SkuCore` table — **352 `SkuCore:` method definitions** span
+  unrelated features (mail, auction house, combat, sockets, dungeon browser,
+  minimap scanner, junk/repair, dialog, ...).
+- **Cyclic dependency graph with SkuCore as the hub.** Cross-module reference
+  counts (caller folder -> referenced global, excluding self and the shared
+  `SkuOptions`/`SkuDB` infrastructure):
+  - SkuCore -> SkuChat 117, SkuNav 38, SkuDispatcher 89, SkuQuest 8, SkuAuras 6, SkuMob 1
+  - SkuNav -> SkuQuest 26, SkuCore 7
+  - SkuQuest -> SkuNav 91, SkuCore 5
+  - SkuAuras -> SkuCore 14
+  - SkuMob -> SkuCore 26
+  - SkuChat -> SkuCore 14
+  - This makes SkuCore <-> {Chat, Nav, Quest, Auras, Mob} all **mutual cycles**,
+    plus SkuNav <-> SkuQuest. No module can be reasoned about, tested, or
+    replaced in isolation.
+- **No addon-private namespace** anywhere (`local name, ns = ...` is unused) —
+  everything lives in `_G`.
+- **SkuDispatcher is clean but underused** — it references only itself (good,
+  pure infrastructure), but 89 of its inbound references come from SkuCore alone;
+  other modules barely route through it.
+
+## 4.2 The coupling is three distinct kinds (this is the key insight)
+
+Not all the edges above are equal. Treat them differently:
+
+- **(A) Misplaced utilities masquerading as coupling.** The large SkuCore->SkuChat
+  edge (117) is **113 calls to `SkuChat:Unescape`** (defined at
+  `SkuChat/Core.lua:2108`) — one stateless string helper that merely lives in the
+  chat file. Extracting it to a shared util collapses that "cycle" almost
+  entirely. Cheap, mechanical.
+- **(B) Legitimate service calls — keep, just name them.** SkuQuest->SkuNav (91)
+  is almost all clean, stateless geo/map queries: `GetBestMapForUnit`,
+  `GetWaypointData`, `Distance`, `GetDirectionToAsString`, area/continent/uimap
+  conversions. This is a real navigation service. The dependency is healthy; it
+  only needs to be declared as a named interface, not broken.
+- **(C) Shared mutable state read directly — the real rot.** Other modules reach
+  straight into SkuCore's live fields: `SkuCore.inCombat` (24), `SkuCore.talentSet`
+  (24), `SkuCore.isMoving` (8), `SkuCore.SkuRaidTargetIndex` (8),
+  `openMenuAfterCombat`/`openMenuAfterMoving`, `GossipList`, ... State owned by one
+  module is read all over the codebase. This is where the genuine gains are, and
+  it is exactly what the underused dispatcher was meant to solve.
+
+## 4.3 Real gains (why this is not cosmetic)
+
+Breaking the cycles and the god-object delivers, concretely:
+- A bug in auction code can no longer silently corrupt navigation/quests.
+- Each feature becomes testable / disablable / replaceable in isolation.
+- The regression blast-radius of any change shrinks dramatically.
+- Clear ownership of state (one writer per field) removes a class of order-of-
+  load and stale-state bugs.
+- Parallel work on features stops stepping on a shared global table.
+
+None of these come from file-splitting; all come from boundaries + contracts.
+
+## 4.4 Target design
+
+- **Addon-private namespace.** Adopt `local addonName, ns = ...` and hang shared
+  internals off `ns` instead of `_G`; keep the public globals (`Sku`, module
+  tables) as a thin published surface.
+- **Extract misplaced utilities (category A)** into a `SkuUtil` lib
+  (`Unescape` first). Mechanical, removes fake cycles immediately.
+- **Name the legitimate services (category B).** Declare explicit interface
+  tables, e.g. `SkuNav.Geo` (map/coord/direction queries) that SkuQuest depends
+  on by contract; no behavior change, just an honest, stable surface.
+- **Replace shared-state reads (category C)** with either:
+  - a small **state/query service** (e.g. `SkuState:IsInCombat()`,
+    `:GetTalentSet()`, `:IsMoving()`) with one writer, or
+  - **dispatcher events** for change notifications (combat enter/leave, talent
+    switch, movement start/stop) — finally using `SkuDispatcher` as intended.
+- **Promote SkuCore's features to real submodules.** Use AceAddon
+  `SkuCore:NewModule("AuctionHouse", ...)` etc., one feature at a time, so each
+  feature owns its state and lifecycle instead of sharing the `SkuCore` table.
+
+## 4.5 Migration strategy (incremental, never a big-bang)
+
+SkuCore is the hub of every cycle, so a rewrite is the highest-risk move in the
+codebase. Do it as a long series of small, independently-shippable extractions:
+
+- **Phase A — Cheap foundation (low risk, do early).** Add the private namespace;
+  extract `Unescape` and any other stateless misplaced utilities to `SkuUtil`.
+  Verify nothing changed.
+- **Phase B — Inventory and freeze the contracts.** Enumerate every category-B
+  service edge and every category-C shared-state field (the lists in 4.1/4.2 are
+  the starting point). Declare interface tables for B without changing callers.
+- **Phase C — State service / events for category C.** Introduce `SkuState`
+  and/or dispatcher events; migrate readers of each field one field at a time
+  (combat, talentSet, isMoving, ...), removing the direct `SkuCore.<field>` read
+  as each is covered.
+- **Phase D — Promote features to submodules.** Convert SkuCore features to
+  `NewModule` one at a time (start with the most self-contained: e.g.
+  JunkAndRepair, mail, sockets), moving their state off the shared table.
+
+## 4.6 Risks & watch-outs
+
+- **Load order.** Real submodules and a namespace change touch `embeds.xml` /
+  TOC ordering; get the load sequence right or globals are nil at use.
+- **Hidden writers.** Before turning a field into a one-writer service, confirm
+  there is genuinely one writer (grep writes vs reads); some fields may be
+  written from several places today.
+- **Secure/taint.** Moving code must not change which path runs from a hardware
+  event (see the AH-buy hardware-event gating note); keep secure handlers intact.
+- **This depends on W1 + W2 being done first** (see Sequencing) so two of the
+  largest coupling channels are already gone before untangling the rest.
+
+## 4.7 Verification (screen-reader-friendly)
+
+- After each extraction: luaparser syntax gate; `/reload`; `/wdwatchsku` to
+  confirm announcements are unchanged; `/skudebug` ring to confirm the feature's
+  breadcrumbs still fire.
+- Re-run the relevant feature's smoke test (e.g. open AH, run a combat scenario,
+  navigate a route) and confirm identical spoken behavior.
+- Track the cycle count going down: re-run the cross-module reference matrix
+  (the grep in 4.1) after each phase; the off-diagonal counts should fall.
+
+## 4.8 Task checklist
+
+- [ ] X-A1. Adopt `local addonName, ns = ...`; move shared internals off `_G`.
+- [ ] X-A2. Create `SkuUtil`; move `Unescape` (SkuChat/Core.lua:2108) + other stateless utils; repoint callers.
+- [ ] X-B1. Enumerate category-B service edges; declare interface tables (start with `SkuNav.Geo`).
+- [ ] X-B2. Enumerate category-C shared-state fields and confirm single-writer for each.
+- [ ] X-C1. Introduce `SkuState` / dispatcher events; migrate field readers one field at a time.
+- [ ] X-D1. Promote SkuCore features to `NewModule`, most self-contained first; move state off the shared table.
+- [ ] X-V. Re-run the reference matrix after each phase; record the falling cycle counts here.
+
+---
+
+# Sequencing — where each workstream sits in the chain
+
+The order matters because the workstreams reduce each other's surface area.
+
+1. **W4 Phase A first (cheap foundation, low risk):** private namespace +
+   extract misplaced utilities. De-risks everything after it; no behavior change.
+2. **W1 — Settings access layer.** Removes the "settings as implicit message bus"
+   coupling and centralizes the schema. Foundational for both W2 and W4.
+3. **W2 — Menu schema + registry.** Consumes W1's schema to auto-generate
+   settings nodes; its registry removes the hardcoded menu root-assembly coupling
+   (itself a modularization win). Run after W1 is through Phase B.
+4. **W4 Phases B-D — the real modularization.** Break category-C shared state and
+   promote features to submodules. Done now because W1 and W2 have already
+   removed two of the largest coupling channels, leaving less to untangle.
+   Strictly incremental, one field/feature at a time.
+5. **W3 — Performance.** Can run last or interleave at any point; clean
+   boundaries make profiling and targeted fixes easier, but it does not depend on
+   the others. The one early tie-in: W1's cached `Sub` accessor is the fix for
+   the per-tick db churn W3 identified, so that specific fix can land with W1.
+
+Rule throughout: one workstream (and within W4, one phase) in flight at a time,
+each independently shippable and behavior-preserving.
+
+---
+
+# Library assessment (reference)
+
+- **Foundation: Ace3** (AceAddon r12, AceEvent r4, AceDB r26, AceConfig r3,
+  AceGUI r36, plus AceConsole/Comm/Locale/Serializer, CallbackHandler, LibStub).
+  Also LibSharedMedia-3.0, LibRangeCheck-3.0, LibGearScore-1.0.
+- **Sku's own libs:** SkuTTS-1.0, SkuVoice-1.0, SkuBeacon-1.0 (the screen-reader
+  core — keep).
+- **Verdict:** Ace3 is mature and current, not obsolete; it is the right
+  foundation and runs fine on the Anniversary client. The "more modern"
+  alternatives seen elsewhere (middleclass/InfoClass OOP, Blizzard's
+  `EventRegistry`/`CallbackRegistryMixin`, the Settings API) are style/coupling
+  choices, not a newer generation — and the Settings API is irrelevant since a
+  blind user never uses the visual options panel. **Swapping the framework is
+  high-cost / low-reward.** All planned wins are architectural, layered on top
+  of Ace3.
+
+## Cross-cutting issues (now folded into Workstream 4)
+
+- **No private namespace** — everything is in `_G` (`Sku`, `SkuCore`, ...,
+  plus frames by hardcoded name). Collision-prone; hides coupling. (W4 Phase A.)
+- **SkuDispatcher is bypassed** — only ~15 custom `SKU_*` events flow through
+  it while ~283 native events are registered directly; modules call each other's
+  globals directly. (W4 Phase C uses it for shared-state change events.)
+- **Frame-name coupling** — UI parts find each other via hardcoded global frame
+  names. (Address opportunistically during W4 feature extraction.)

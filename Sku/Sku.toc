@@ -1,8 +1,8 @@
 ﻿## Interface: 11508
-## Title: Sku v41.06
+## Title: Sku v42.00
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData, SkuErrorLog, SkuDebugLog
 ## Dependencies: SkuBeaconSoundsets
-## Version: 41.06
+## Version: 42.00
 
 SkuAudioData\assets\SkuAudioFileIndex.lua
 SkuAudioData\assets\SkuAudioDataLenIndex.lua
