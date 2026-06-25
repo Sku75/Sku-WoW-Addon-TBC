@@ -2090,33 +2090,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- start of sku code
 --------------------------------------------------------------------------------------------------------------------------------------
-local escapes = {
-	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
-	["|r"] = "", -- color end
-	["|H.-|h(.-)|h"] = "%1", -- links
-	["|T.-|t"] = "", -- textures
-	["|A.-|a"] = "", -- textures
-	["{.-}"] = "", -- raid target icons
-}
-local escapesChat = {
-	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
-	["|r"] = "", -- color end
-	["|H.-|h(.-)|h"] = "%1", -- links
-	["|T.-|t"] = "", -- textures
-	--["{.-}"] = "", -- raid target icons
-}
+-- Moved to SkuUtil (Sku 42 rework, W4 Phase A). Kept as a thin delegating shim
+-- so any remaining/external "SkuChat:Unescape" callers keep working unchanged.
 function SkuChat:Unescape(str, aChatSpecific)
-	if not str then return nil end
-
-	local tEscapeStrings = escapes
-	if aChatSpecific then
-		tEscapeStrings = escapesChat
-	end
-	
-	for k, v in pairs(tEscapeStrings) do
-		str = string.gsub(str, k, v)
-	end
-	return str
+	return SkuUtil:Unescape(str, aChatSpecific)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2423,7 +2400,7 @@ function SkuChat:OnInitialize()
 
 					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-							local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+							local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 							ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
 						end
 					end
@@ -2519,7 +2496,7 @@ function SkuChat:OnInitialize()
 
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-								local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+								local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 								ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
 							end
 						end
@@ -2631,7 +2608,7 @@ function SkuChat:OnInitialize()
 						for slotId = 1, tNumSlots do
 							local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(bagId, slotId)
 							if itemLink then
-								local tNewMenuEntryItem = SkuOptions:InjectMenuItems(self, {SkuChat:Unescape(itemLink).." ("..L["Bag"]..")"}, SkuGenericMenuItem)
+								local tNewMenuEntryItem = SkuOptions:InjectMenuItems(self, {SkuUtil:Unescape(itemLink).." ("..L["Bag"]..")"}, SkuGenericMenuItem)
 								tNewMenuEntryItem.OnAction = function(self, a, b)
 									if tAccessID then
 										SkuChat:SetEditboxToCustom("CHANNEL", tAccessID, itemLink)
@@ -2648,7 +2625,7 @@ function SkuChat:OnInitialize()
 					for slotId = 1, 40 do
 						local itemLink = GetInventoryItemLink("player", slotId)
 						if itemLink then
-							local tNewMenuEntryItem = SkuOptions:InjectMenuItems(self, {SkuChat:Unescape(itemLink).." ("..L["Equipped"]..")"}, SkuGenericMenuItem)
+							local tNewMenuEntryItem = SkuOptions:InjectMenuItems(self, {SkuUtil:Unescape(itemLink).." ("..L["Equipped"]..")"}, SkuGenericMenuItem)
 							tNewMenuEntryItem.OnAction = function(self, a, b)
 								if tAccessID then
 									SkuChat:SetEditboxToCustom("CHANNEL", tAccessID, itemLink)
@@ -4022,7 +3999,7 @@ function SkuChat:InitTab(tNewTabIndex)
 				end
 			end
 
-			local tFlatBody = string.gsub(SkuChat:Unescape(body), "|", "")
+			local tFlatBody = string.gsub(SkuUtil:Unescape(body), "|", "")
 			tFlatBody = SkuChat:ShortenChannelName(tFlatBody)
 
 			--audio output

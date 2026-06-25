@@ -1292,7 +1292,7 @@ local function ItemsMenuBuilder(aParentEntry)
 						_G["SkuScanningTooltip"]:SetItemByID(itemID)
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-								local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+								local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 							end
 						end
@@ -1358,7 +1358,7 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 								_G["SkuScanningTooltip"]:SetSpellByID(spellID)
 								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-										local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+										local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 										SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 									end
 								end
@@ -1378,7 +1378,7 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 						_G["SkuScanningTooltip"]:SetPetAction(v)
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-								local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+								local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 							end
 						end						
@@ -1430,7 +1430,7 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					_G["SkuScanningTooltip"]:SetAction(self.buttonObj.action)
 					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-							local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+							local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 						end
 					end
@@ -1561,7 +1561,7 @@ local function PetActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					_G["SkuScanningTooltip"]:SetPetAction(x)
 					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-							local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+							local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 						end
 					end
@@ -2156,7 +2156,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 													_G["SkuScanningTooltip"]:SetItemByID(itemID)
 													if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 														if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-															local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+															local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 															SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 														end
 													end

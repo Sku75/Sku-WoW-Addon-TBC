@@ -752,16 +752,15 @@ function SkuCore:MinimapScanFast()
       -- Verwendet denselben string.find-Substring-Match wie der aktive Scan
       -- (MinimapScanFindActiveRessource). Die alte Logik (gmatch-Zerlegung
       -- + exakte Gleichheit) konnte Ressourcen mit Sonderzeichen nie finden
-      -- und war an SkuChat:Unescape gekoppelt — fiel SkuChat weg, wurden
-      -- alle Zeilen still uebersprungen.
+      -- und war an Unescape gekoppelt — fiel SkuChat weg, wurden alle Zeilen
+      -- still uebersprungen. Unescape lebt jetzt in SkuUtil (laedt immer zuerst),
+      -- daher braucht es keinen SkuChat-Vorhandensein-Guard mehr.
       local foundResult = nil
       for i = 1, GameTooltip:NumLines() do
          local lineFrame = _G['GameTooltipTextLeft' .. i]
          local lineRaw = lineFrame and lineFrame:GetText()
          if lineRaw then
-            if SkuChat and SkuChat.Unescape then
-               lineRaw = SkuChat:Unescape(lineRaw)
-            end
+            lineRaw = SkuUtil:Unescape(lineRaw)
             local line = string.lower(lineRaw)
             for r = 1, #tRessourceTypes do
                for x = 1, #tRessourceTypes[r] do

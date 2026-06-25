@@ -53,7 +53,7 @@ local function DialogkeyCreateControlFrame()
                      tGossipOptions[tData.index] = tData.gossipOptionID or tData.titleOptionButton
                      tHasGossipOptions = true
                   elseif tData.buttonType == 4 then
-                     local tQuestName = SkuChat:Unescape(tData.activeQuestButton:GetText())
+                     local tQuestName = SkuUtil:Unescape(tData.activeQuestButton:GetText())
                      if tQuestName then
                         local _, tResult = SkuQuest:CheckQuestProgress(true, tQuestName)
                         if tResult == true then
@@ -75,7 +75,7 @@ local function DialogkeyCreateControlFrame()
                   local tButton = _G["QuestTitleButton"..x]
                   if tButton:GetText() and tButton:GetText() ~= "" then
                      if tButton.isActive == 1 then
-                        local tQuestName = SkuChat:Unescape(tButton:GetText())
+                        local tQuestName = SkuUtil:Unescape(tButton:GetText())
                         local _, tResult = SkuQuest:CheckQuestProgress(true, tQuestName)
                         if tResult == true then
                            tActiveQuests[x] = tButton

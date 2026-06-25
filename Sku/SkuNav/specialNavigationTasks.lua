@@ -68,7 +68,7 @@ function SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aStringToCheck, arg1
 	--print("NavigationModeWoCoordinatesCheckTaskTrigger", aStringToCheck, arg1)
 	local tTaskId
 
-	aStringToCheck = SkuChat:Unescape(aStringToCheck)
+	aStringToCheck = SkuUtil:Unescape(aStringToCheck)
 
 	if tCurrentTask then
 		for i, v in pairs(SkuDB.Tasks[tCurrentTask].endTriggers) do

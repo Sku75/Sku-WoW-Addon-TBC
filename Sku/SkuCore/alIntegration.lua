@@ -384,17 +384,17 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
       tNewSubMenuEntry.dynamic = true
       tNewSubMenuEntry.filterable = true
       tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
-         local tTextFirstLine = SkuChat:Unescape(AtlasLoot.Data.ItemSet.GetSetName(aId))
+         local tTextFirstLine = SkuUtil:Unescape(AtlasLoot.Data.ItemSet.GetSetName(aId))
          local tString = AtlasLoot.Data.ItemSet.GetSetBonusString(aId)
          if type(tString) == "boolean" then
             C_Timer.After(0.1, function()
                tString = AtlasLoot.Data.ItemSet.GetSetBonusString(aId)
-               local textFull = tTextFirstLine.."\r\n"..SkuChat:Unescape((AtlasLoot.Data.ItemSet.GetSetDescriptionString(aId).."\r\n" or ""))..SkuChat:Unescape((AtlasLoot.Data.ItemSet.GetSetBonusString(aId) or ""))
+               local textFull = tTextFirstLine.."\r\n"..SkuUtil:Unescape((AtlasLoot.Data.ItemSet.GetSetDescriptionString(aId).."\r\n" or ""))..SkuUtil:Unescape((AtlasLoot.Data.ItemSet.GetSetBonusString(aId) or ""))
                textFull = string.gsub(textFull, "iLvlAvg", L["iLvlAvg"])
                SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, textFull
             end)
          end
-         local textFull = tTextFirstLine.."\r\n"..SkuChat:Unescape((AtlasLoot.Data.ItemSet.GetSetDescriptionString(aId).."\r\n" or ""))..SkuChat:Unescape((AtlasLoot.Data.ItemSet.GetSetBonusString(aId) or ""))
+         local textFull = tTextFirstLine.."\r\n"..SkuUtil:Unescape((AtlasLoot.Data.ItemSet.GetSetDescriptionString(aId).."\r\n" or ""))..SkuUtil:Unescape((AtlasLoot.Data.ItemSet.GetSetBonusString(aId) or ""))
          textFull = string.gsub(textFull, "iLvlAvg", L["iLvlAvg"])
          SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, textFull
       end
@@ -421,9 +421,9 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
       if not C_Item.GetItemNameByID(aId) then
          return
       end
-      --print("7)", "        ", "item", SkuChat:Unescape(C_Item.GetItemNameByID(aId)))
+      --print("7)", "        ", "item", SkuUtil:Unescape(C_Item.GetItemNameByID(aId)))
       --print(itemID, itemType, itemSubType, itemEquipLoc, icon, classID, subclassID)
-      local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuChat:Unescape(C_Item.GetItemNameByID(aId))}, SkuGenericMenuItem)
+      local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuUtil:Unescape(C_Item.GetItemNameByID(aId))}, SkuGenericMenuItem)
       tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
          SkuCore:getItemComparisnSections(aId)
          C_Timer.After(0.1, function()
@@ -453,7 +453,7 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
             _G["SkuScanningTooltip"]:SetItemByID(aId)
             if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
                if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-                  local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+                  local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
                   tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
                end
             end
@@ -550,7 +550,7 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
       local tName = GetSpellInfo(aId)
       if tName then
          --print("7)", "        ", "spell", aId, tName)
-         local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuChat:Unescape(tName)}, SkuGenericMenuItem)
+         local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuUtil:Unescape(tName)}, SkuGenericMenuItem)
          tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
             _G["SkuScanningTooltip"]:SetSpellByID(aId)
 
@@ -578,7 +578,7 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
                _G["SkuScanningTooltip"]:SetSpellByID(aId)
                if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
                   if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-                     local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+                     local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
                      tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
                   end
                end
@@ -729,7 +729,7 @@ function SkuCore:alIntegrationMenuBuilder()
                -- Lokale tBuildModuleEntry analog zur Standard-Variante
                local function tBuildModuleEntry(aSelf, contentInteralName)
                   local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aSelf,
-                     {SkuChat:Unescape(moduleData[contentInteralName]:GetName())}, SkuGenericMenuItem)
+                     {SkuUtil:Unescape(moduleData[contentInteralName]:GetName())}, SkuGenericMenuItem)
                   tNewSubMenuEntry.dynamic = true
                   tNewSubMenuEntry.filterable = true
                   tNewSubMenuEntry.BuildChildren = function(self)
@@ -737,7 +737,7 @@ function SkuCore:alIntegrationMenuBuilder()
                         local tabVal = moduleData[contentInteralName].items[bossIndex]
                         if tabVal then
                            local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self,
-                              {SkuChat:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))}, SkuGenericMenuItem)
+                              {SkuUtil:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))}, SkuGenericMenuItem)
                            tNewSubMenuEntry.dynamic = true
                            tNewSubMenuEntry.filterable = true
                            tNewSubMenuEntry.BuildChildren = function(self)
@@ -857,7 +857,7 @@ function SkuCore:alIntegrationMenuBuilder()
                         local tt_title	= moduleData[contentInteralName]:GetName()
                         local tt_text		= moduleData[contentInteralName]:GetInfo()
 
-                        local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aSelf, {SkuChat:Unescape(moduleData[contentInteralName]:GetName())}, SkuGenericMenuItem)
+                        local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aSelf, {SkuUtil:Unescape(moduleData[contentInteralName]:GetName())}, SkuGenericMenuItem)
                         tNewSubMenuEntry.dynamic = true
                         tNewSubMenuEntry.filterable = true
                         tNewSubMenuEntry.BuildChildren = function(self)
@@ -894,7 +894,7 @@ function SkuCore:alIntegrationMenuBuilder()
                                  end
 
                                  --print("4)", "   ", bossIndex, tabVal.ExtraList, moduleData[contentInteralName].__numDiffEntrys, name, coinTexture, tt_title, tt_text)
-                                 local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {SkuChat:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))}, SkuGenericMenuItem)
+                                 local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {SkuUtil:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))}, SkuGenericMenuItem)
                                  tNewSubMenuEntry.dynamic = true
                                  tNewSubMenuEntry.filterable = true
                                  tNewSubMenuEntry.BuildChildren = function(self)
@@ -905,7 +905,7 @@ function SkuCore:alIntegrationMenuBuilder()
                                           local tt_title = bossData[difficultyIndex].diffName or tDifficulties[difficultyIndex].name
                   
                                           --print("5)", "    ", difficultyIndex, name, tt_title, moduleData:GetDifficulty(contentInteralName, bossIndex, difficultyIndex))
-                                          local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {SkuChat:Unescape(bossData[difficultyIndex].diffName or tDifficulties[difficultyIndex].name)}, SkuGenericMenuItem)
+                                          local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {SkuUtil:Unescape(bossData[difficultyIndex].diffName or tDifficulties[difficultyIndex].name)}, SkuGenericMenuItem)
                                           tNewSubMenuEntry.dynamic = true
                                           tNewSubMenuEntry.filterable = true
                                           tNewSubMenuEntry.BuildChildren = function(self)
@@ -927,7 +927,7 @@ function SkuCore:alIntegrationMenuBuilder()
 
                                                       elseif (C_Item.GetItemNameByID(items[itemIndex][2])) and AtlasLoot.Data.Profession.IsProfessionSpell(items[itemIndex][2]) ~= true then
                                                       --elseif C_Item.GetItemNameByID(items[itemIndex][2]) then
-                                                            --print("7)", "        ", "item", SkuChat:Unescape(items[itemIndex][1]), SkuChat:Unescape(items[itemIndex][2]), SkuChat:Unescape(C_Item.GetItemNameByID(items[itemIndex][2])), tSkuName)
+                                                            --print("7)", "        ", "item", SkuUtil:Unescape(items[itemIndex][1]), SkuUtil:Unescape(items[itemIndex][2]), SkuUtil:Unescape(C_Item.GetItemNameByID(items[itemIndex][2])), tSkuName)
 
                                                                                                 --aParent, aType, aId,                aNpcId,       aDungeonName,     aBossIndex, aTypeId, aDiffId
                                                             SkuCore:alIntegrationItemMenuBuilder(self, "item", items[itemIndex][2], tabVal.npcID, contentInteralName, bossIndex, nil, difficultyIndex)
@@ -940,7 +940,7 @@ function SkuCore:alIntegrationMenuBuilder()
                                                       end
                         
                                                       if SkuDB.itemDataTBC[items[itemIndex][2]] then
-                                                         --print("8)", "          ", SkuChat:Unescape(SkuDB.itemDataTBC[items[itemIndex][2]][1]))
+                                                         --print("8)", "          ", SkuUtil:Unescape(SkuDB.itemDataTBC[items[itemIndex][2]][1]))
                                                       end
                                                       if items[itemIndex][2] > 1000000 then
                                                          local tSetId = tostring(items[itemIndex][2])
@@ -1023,7 +1023,7 @@ function SkuCore:alIntegrationMenuBuilder()
                               local tabVal = moduleData[contentInteralName].items[bossIndex]
                               if tabVal then
                                  local tBossEntry = SkuOptions:InjectMenuItems(aSelf,
-                                    {SkuChat:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))},
+                                    {SkuUtil:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))},
                                     SkuGenericMenuItem)
                                  tBossEntry.dynamic = true
                                  tBossEntry.filterable = true
@@ -1032,7 +1032,7 @@ function SkuCore:alIntegrationMenuBuilder()
                                     for difficultyIndex = 1, #tDifficulties do
                                        if bossData[difficultyIndex] then
                                           local tDiffEntry = SkuOptions:InjectMenuItems(self,
-                                             {SkuChat:Unescape(bossData[difficultyIndex].diffName or tDifficulties[difficultyIndex].name)},
+                                             {SkuUtil:Unescape(bossData[difficultyIndex].diffName or tDifficulties[difficultyIndex].name)},
                                              SkuGenericMenuItem)
                                           tDiffEntry.dynamic = true
                                           tDiffEntry.filterable = true
@@ -1105,7 +1105,7 @@ function SkuCore:alIntegrationMenuBuilder()
                         for _, difficultyIndex in ipairs(sortedDiffs) do
                            local tDiffName = tDifficulties[difficultyIndex].name or (L["AL_DifficultyFallback"].." "..difficultyIndex)
                            local tDiffEntry = SkuOptions:InjectMenuItems(aSelf,
-                              {SkuChat:Unescape(tDiffName)}, SkuGenericMenuItem)
+                              {SkuUtil:Unescape(tDiffName)}, SkuGenericMenuItem)
                            tDiffEntry.dynamic = true
                            tDiffEntry.filterable = true
                            tDiffEntry.BuildChildren = function(self2)
@@ -1132,7 +1132,7 @@ function SkuCore:alIntegrationMenuBuilder()
                                  end
                                  if hasDiff then
                                     local tInstEntry = SkuOptions:InjectMenuItems(self2,
-                                       {SkuChat:Unescape(moduleData[contentInteralName]:GetName())},
+                                       {SkuUtil:Unescape(moduleData[contentInteralName]:GetName())},
                                        SkuGenericMenuItem)
                                     tInstEntry.dynamic = true
                                     tInstEntry.filterable = true
@@ -1154,7 +1154,7 @@ function SkuCore:alIntegrationMenuBuilder()
                                           local bossData = moduleData[contentInteralName].items[bossIndex]
                                           if tabVal and bossData[difficultyIndex] then
                                              local tBossEntry = SkuOptions:InjectMenuItems(self3,
-                                                {SkuChat:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))},
+                                                {SkuUtil:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))},
                                                 SkuGenericMenuItem)
                                              tBossEntry.dynamic = true
                                              tBossEntry.filterable = true
@@ -1302,7 +1302,7 @@ function SkuCore:alIntegrationMenuBuilder()
                tNewMenuEntry.BuildChildren = function(self)
                   if #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] > 0 then
                      for y = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] do
-                        local tPlainName = SkuChat:Unescape(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x][y])
+                        local tPlainName = SkuUtil:Unescape(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x][y])
                         tPlainName = string.gsub(tPlainName, "%[", "")
                         tPlainName = string.gsub(tPlainName, "%]", "")
                         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {y.." "..tPlainName}, SkuGenericMenuItem)
@@ -1366,7 +1366,7 @@ function SkuCore:alIntegrationMenuBuilder()
                               _G["SkuScanningTooltip"]:SetItemByID(aId)
                               if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
                                  if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-                                    local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+                                    local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
                                     tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
                                  end
                               end
@@ -1446,7 +1446,7 @@ function SkuCore:alIntegrationMenuBuilder()
                      _G["SkuScanningTooltip"]:SetItemByID(aId)
                      if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
                         if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-                           local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+                           local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
                            tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
                         end
                      end
@@ -1622,16 +1622,16 @@ function SkuCore:alIntegrationQueryAll()
                                  local dn = tBossDiffData[di].diffName
                                     or tDifficulties[di].name
                                  if dn and dn ~= "" then
-                                    tDiffNames[#tDiffNames + 1] = SkuChat:Unescape(dn)
+                                    tDiffNames[#tDiffNames + 1] = SkuUtil:Unescape(dn)
                                  end
                               end
                            end
-                           SkuCore.alLookupBosses[SkuChat:Unescape(tBossName)] = {
+                           SkuCore.alLookupBosses[SkuUtil:Unescape(tBossName)] = {
                               pluginTitle  = tModules.module[pluginIndex].tt_title,
                               gameVersion  = selectedGameVersion,
                               contentIndex = contentIndex,
                               instanceName = name,
-                              bossName     = SkuChat:Unescape(tBossName),
+                              bossName     = SkuUtil:Unescape(tBossName),
                               isWorldBoss  = isWorldBoss,
                               difficulties = tDiffNames,
                            }
@@ -1682,7 +1682,7 @@ function SkuCore:alIntegrationQueryAll()
                                     SkuCore.alDropsByInstance[tInstName] = SkuCore.alDropsByInstance[tInstName] or {}
                                  end
                                  if tBossName then
-                                    SkuCore.alDropsByBoss[SkuChat:Unescape(tBossName)] = SkuCore.alDropsByBoss[SkuChat:Unescape(tBossName)] or {}
+                                    SkuCore.alDropsByBoss[SkuUtil:Unescape(tBossName)] = SkuCore.alDropsByBoss[SkuUtil:Unescape(tBossName)] or {}
                                  end
                                  local function tRecordDrop(itemID)
                                     if type(itemID) ~= "number" or itemID <= 0 then return end
@@ -1690,7 +1690,7 @@ function SkuCore:alIntegrationQueryAll()
                                        SkuCore.alDropsByInstance[tInstName][itemID] = true
                                     end
                                     if tBossName then
-                                       SkuCore.alDropsByBoss[SkuChat:Unescape(tBossName)][itemID] = true
+                                       SkuCore.alDropsByBoss[SkuUtil:Unescape(tBossName)][itemID] = true
                                     end
                                  end
 
@@ -1719,7 +1719,7 @@ function SkuCore:alIntegrationQueryAll()
                                           end
                                        elseif (C_Item.GetItemNameByID(items[itemIndex][2]) or tSkuName ~= "") and AtlasLoot.Data.Profession.IsProfessionSpell(items[itemIndex][2]) ~= true then
                                           --if tprint == true then
-                                             --print("7)", "        ", "item", SkuChat:Unescape(items[itemIndex][1]), SkuChat:Unescape(items[itemIndex][2]), SkuChat:Unescape(C_Item.GetItemNameByID(items[itemIndex][2])), tSkuName)
+                                             --print("7)", "        ", "item", SkuUtil:Unescape(items[itemIndex][1]), SkuUtil:Unescape(items[itemIndex][2]), SkuUtil:Unescape(C_Item.GetItemNameByID(items[itemIndex][2])), tSkuName)
                                           --end
                                           addToItemsRepos(items[itemIndex][2], tabVal.npcID, contentInteralName, bossIndex, nil, difficultyIndex)
 
@@ -1734,7 +1734,7 @@ function SkuCore:alIntegrationQueryAll()
                                        end
          
                                        --if SkuDB.itemDataTBC[items[itemIndex][2]] then
-                                          --print("8)", "          ", SkuChat:Unescape(SkuDB.itemDataTBC[items[itemIndex][2]][1]))
+                                          --print("8)", "          ", SkuUtil:Unescape(SkuDB.itemDataTBC[items[itemIndex][2]][1]))
                                        --end
                                        if items[itemIndex][2] > 1000000 then
                                           local tSetId = tostring(items[itemIndex][2])

@@ -1642,7 +1642,7 @@ function getlocdataEN()
 
 				local tText = _G["GameTooltipTextLeft1"]:GetText()
 				if tText then
-					tText = SkuChat:Unescape(tText)
+					tText = SkuUtil:Unescape(tText)
 					print("tText", tText)
 					if tText ~= "Frage Gegenstandsinformationen ab" and tText ~= "" then
 						SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] = tText

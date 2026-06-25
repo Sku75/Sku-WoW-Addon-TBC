@@ -1415,7 +1415,7 @@ function SkuCore:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPriceData
    
    if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
       if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-         local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+         local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
          tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
       end
    end

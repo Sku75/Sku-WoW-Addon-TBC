@@ -36,23 +36,12 @@ local tBagSlotListSorted = {
 -- helpers
 ---------------------------------------------------------------------------------------------------------------------------------------
 
-local escapes = {
-	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
-	["|r"] = "", -- color end
-	["|H.-|h(.-)|h"] = "%1", -- links
-	["|T.-|t"] = "", -- textures
-	["{.-}"] = "", -- raid target icons
-}
-local function unescape(str)
-	if not str then return end
-	for k, v in pairs(escapes) do
-		str = string.gsub(str, k, v)
-	end
-	return str
-end
+-- Local escapes/unescape removed in the Sku 42 rework (W4 Phase A) — now uses the
+-- shared SkuUtil:Unescape. Behaviour is identical: SkuUtil's pattern set is this
+-- same set plus an extra |A.-|a atlas pattern that is inert on TBC.
 
 local function ItemName_helper(aText)
-	aText = unescape(aText)
+	aText = SkuUtil:Unescape(aText)
 	local tShort, tLong = aText, ""
 
 	local tStart, tEnd = string.find(tShort, "\r\n")
@@ -151,7 +140,7 @@ local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
 	
 	if tTooltipText ~= "asd" then
 		if tTooltipText ~= "" then
-			tTooltipText = SkuChat:Unescape(tTooltipText)
+			tTooltipText = SkuUtil:Unescape(tTooltipText)
 			if tTooltipText then
 				local tText, tTextf = SkuCore:ItemName_helper(tTooltipText)
 				return tText, tTextf, ItemLink
@@ -179,7 +168,7 @@ local function getItemTooltipTextHelper(tooltipSetter)
 	tooltipSetter(tooltip)
 	local getEscapedText = function() return TooltipLines_helper(tooltip:GetRegions()) end
 	if getEscapedText() ~= "asd" and getEscapedText() ~= "" then
-		return SkuChat:Unescape(getEscapedText())
+		return SkuUtil:Unescape(getEscapedText())
 	end
 end
 
@@ -233,7 +222,7 @@ local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
 					tooltip:SetBagItem(bag, slot)
 				end
 			end)
-			return SkuChat:Unescape(tTooltipText)
+			return SkuUtil:Unescape(tTooltipText)
 		end
 	else
 
@@ -428,7 +417,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 		end
 		
 		
-	local friendlyName = L["current Bank box"] --.." "..SkuChat:Unescape(tgbf.TabTitle:GetText())
+	local friendlyName = L["current Bank box"] --.." "..SkuUtil:Unescape(tgbf.TabTitle:GetText())
 	table.insert(aParentChilds, friendlyName)
 	aParentChilds[friendlyName] = {
 		frameName = "",
@@ -524,7 +513,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 						bagItemButton.obj:ShowTooltip()
 						if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
 							if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
-								local tText = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+								local tText = SkuUtil:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
 								bagItemButton.textFirstLine, bagItemButton.textFull = SkuCore:ItemName_helper(tText)
 								isEmpty = false
 							end
@@ -588,11 +577,11 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 		if tMaxMsg > 100 then tMaxMsg = 100 end
 		for q = tMaxMsg, 1, -1 do
 			local ttype, name, itemLink, count = GetGuildBankTransaction(tSelectedBankTab, q)
-			tMessageFull = tMessageFull..ttype.." "..name.." "..(SkuChat:Unescape(itemLink) or "").." "..count.."\r\n"
+			tMessageFull = tMessageFull..ttype.." "..name.." "..(SkuUtil:Unescape(itemLink) or "").." "..count.."\r\n"
 		end
 
 		local tFrameName = "GuildBankMessageFrame"
-		local tFriendlyName = SkuChat:Unescape(tgbf.TabTitle:GetText()).." ..."
+		local tFriendlyName = SkuUtil:Unescape(tgbf.TabTitle:GetText()).." ..."
 		table.insert(aParentChilds[tName].childs, "GuildBankMessageFrame")
 		aParentChilds[tName].childs["GuildBankMessageFrame"] = {
 			frameName = tFrameName,
@@ -645,7 +634,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 		end
 		
 		local tFrameName = "GuildBankMessageFrame"
-		local tFriendlyName = SkuChat:Unescape(tgbf.TabTitle:GetText()).." ..."
+		local tFriendlyName = SkuUtil:Unescape(tgbf.TabTitle:GetText()).." ..."
 		table.insert(aParentChilds[tName].childs, "GuildBankMessageFrame")
 		aParentChilds[tName].childs["GuildBankMessageFrame"] = {
 			frameName = tFrameName,
@@ -1227,7 +1216,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 						bagItemButton.obj:ShowTooltip()
 						if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
 							if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
-								local tText = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+								local tText = SkuUtil:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
 								bagItemButton.textFirstLine, bagItemButton.textFull = SkuCore:ItemName_helper(tText)
 								isEmpty = false
 							end
@@ -1390,7 +1379,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				aParentChilds[tFriendlyName].obj:GetScript("OnEnter")(aParentChilds[tFriendlyName].obj)
 				if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
 					if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
-						local tText = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+						local tText = SkuUtil:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
 						--[[
 						if string.find(tText, "Equip Container") then
 							tText = L["Empty"]
@@ -1438,7 +1427,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				aParentChilds[tFriendlyName].obj:GetScript("OnEnter")(aParentChilds[tFriendlyName].obj)
 				if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
 					if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
-						local tText = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+						local tText = SkuUtil:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
 						tText = x.." "..tText
 						aParentChilds[tFriendlyName].textFirstLine, aParentChilds[tFriendlyName].textFull = SkuCore:ItemName_helper(tText)
 						aParentChilds[tFriendlyName].textFirstLine = L["Bank"].. " "..aParentChilds[tFriendlyName].textFirstLine
@@ -1862,7 +1851,7 @@ local function tBuildActiveSpecUI(aParentChilds)
 
 		local tFrameName = "PlayerTalentFrameSpentPointsText"
 		if _G[tFrameName]:IsVisible() == true then
-			local tFriendlyName = SkuChat:Unescape("Text: "..L["Spent for"].." ".._G[tFrameName]:GetText())
+			local tFriendlyName = SkuUtil:Unescape("Text: "..L["Spent for"].." ".._G[tFrameName]:GetText())
 			table.insert(aParentChilds, tFriendlyName)
 			aParentChilds[tFriendlyName] = {
 				frameName = tFrameName,
@@ -1876,7 +1865,7 @@ local function tBuildActiveSpecUI(aParentChilds)
 		end
 		local tFrameName = "PlayerTalentFrameTalentPointsText"
 		if _G[tFrameName]:IsVisible() == true then
-			local tFriendlyName = SkuChat:Unescape("Text: ".._G[tFrameName]:GetText())
+			local tFriendlyName = SkuUtil:Unescape("Text: ".._G[tFrameName]:GetText())
 			table.insert(aParentChilds, tFriendlyName)
 			aParentChilds[tFriendlyName] = {
 				frameName = tFrameName,
@@ -2037,7 +2026,7 @@ function SkuCore:Build_RolePollPopup(aParentChilds)
 				RoC = "Child",
 				type = "Button",
 				obj = tButtons[x],
-				textFirstLine = SkuChat:Unescape(tFriendlyName),
+				textFirstLine = SkuUtil:Unescape(tFriendlyName),
 				textFull = "",
 				childs = {},
 				directAction = true,
@@ -2094,13 +2083,13 @@ function SkuCore:BuildEngravingFrame(aParentChilds)
 			_G["SkuScanningTooltip"]:SetEngravingRune(rune.skillLineAbilityID)
 			if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 				if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-					local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+					local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 					_, tFull = SkuCore:ItemName_helper(tText)
 				end
 			end
 		
 			local tFrameName = tindex
-			local tFriendlyName = SkuChat:Unescape(rune.name)
+			local tFriendlyName = SkuUtil:Unescape(rune.name)
 			table.insert(tParentEngravingFrame, tFriendlyName)
 			tParentEngravingFrame[tFriendlyName] = {
 				frameName = tFrameName,
@@ -2239,7 +2228,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 
 			for i, v in pairs(tStatFrames) do
 				local tFrameName = v
-				local tFriendlyName = SkuChat:Unescape(_G[v.."Label"]:GetText().." ".._G[v.."StatText"]:GetText())
+				local tFriendlyName = SkuUtil:Unescape(_G[v.."Label"]:GetText().." ".._G[v.."StatText"]:GetText())
 				table.insert(tParentStats, tFriendlyName)
 				tParentStats[tFriendlyName] = {
 					frameName = tFrameName,
@@ -2317,7 +2306,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				
 					if PlayerStatFrameLeft1Label:GetText() and PlayerStatFrameLeft1Label:GetText() ~= "" then
 						local tFrameName = v
-						local tFriendlyName = SkuChat:Unescape(PlayerStatFrameLeft1Label:GetText().." "..PlayerStatFrameLeft1StatText:GetText())
+						local tFriendlyName = SkuUtil:Unescape(PlayerStatFrameLeft1Label:GetText().." "..PlayerStatFrameLeft1StatText:GetText())
 						--local tName, tFullText = GetButtonTooltipLines(PlayerStatFrameLeft1, GameTooltip)
 
 						table.insert(tParentStatsValues, tFriendlyName)
@@ -2359,7 +2348,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 			local tName, tFullText = GetButtonTooltipLines(frame)
 
 			local tFrameName = ""
-			local tFriendlyName = SkuChat:Unescape(tName)
+			local tFriendlyName = SkuUtil:Unescape(tName)
 			table.insert(tParentStatsValues, tFriendlyName)
 			tParentStatsValues[tFriendlyName] = {
 				frameName = tFrameName,
@@ -2367,7 +2356,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				type = "Button",
 				obj = _G[tFrameName],
 				textFirstLine = tFriendlyName,
-				textFull = SkuChat:Unescape(tFullText),
+				textFull = SkuUtil:Unescape(tFullText),
 				childs = {},
 				--click = true,
 			}
@@ -2401,7 +2390,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 			if name and isHeader ~= true then
 				--print(, itemID)
 				local tFrameName = ""
-				local tFriendlyName = SkuChat:Unescape(name.." "..count)
+				local tFriendlyName = SkuUtil:Unescape(name.." "..count)
 				table.insert(tParentCurrency, tFriendlyName)
 				tParentCurrency[tFriendlyName] = {
 					frameName = tFrameName,
@@ -2804,7 +2793,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 					end
 				end
 
-				local tFriendlyName = SkuChat:Unescape(_G[tFrameName].text:GetText())
+				local tFriendlyName = SkuUtil:Unescape(_G[tFrameName].text:GetText())
 				local tText, tFullText = "", ""
 				if _G[tFrameName]:IsEnabled() == true then
 					table.insert(aParentChilds, tFriendlyName)
@@ -2859,7 +2848,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 
 	local tName = ""
 	if _G["ClassTrainerSkillName"] and _G["ClassTrainerSkillName"]:IsVisible() == true then
-		tName = SkuChat:Unescape(_G["ClassTrainerSkillName"]:GetText()) or ""
+		tName = SkuUtil:Unescape(_G["ClassTrainerSkillName"]:GetText()) or ""
 	end
 	local tRequirements = ""
 	if _G["ClassTrainerSkillRequirements"] and _G["ClassTrainerSkillRequirements"]:IsVisible() and _G["ClassTrainerSkillRequirements"]:GetText() then
@@ -2867,7 +2856,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 			if string.sub(i, 1, 1) == " " then
 				i = string.sub(i, 2)
 			end
-			local tReqStr = SkuChat:Unescape(i) or ""
+			local tReqStr = SkuUtil:Unescape(i) or ""
 			if string.find(i, "ff2020") then
 				tReqStr = tReqStr.." ("..L["missing"]..")"
 			end
@@ -2902,7 +2891,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 	if _G[tFrameName] then
 		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
 			if _G[tFrameName]:GetText() then
-				local tFriendlyName = SkuChat:Unescape(_G[tFrameName]:GetText())
+				local tFriendlyName = SkuUtil:Unescape(_G[tFrameName]:GetText())
 				table.insert(aParentChilds, tFriendlyName)
 				aParentChilds[tFriendlyName] = {
 					frameName = tFrameName,
@@ -2925,7 +2914,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 											and _G["ClassTrainerTrainButton"]:IsEnabled()
 											and _G["ClassTrainerTrainButton"]:GetText()
 										if tTarget then
-											tTarget = SkuChat:Unescape(tTarget)
+											tTarget = SkuUtil:Unescape(tTarget)
 											for _, child in ipairs(SkuOptions.currentMenuPosition.children) do
 												if child.name == tTarget then
 													SkuOptions.currentMenuPosition = child
@@ -3010,7 +2999,7 @@ function SkuCore:Build_TradeFrame(aParentChilds)
 				type = "FontString",
 				obj = _G["TradeFrame"],
 				textFirstLine = tDisplay,
-				textFull = tLink and SkuChat:Unescape(tLink) or tDisplay,
+				textFull = tLink and SkuUtil:Unescape(tLink) or tDisplay,
 				childs = {},
 			}
 			tHasPartnerItems = true
@@ -3076,7 +3065,7 @@ function SkuCore:Build_TradeFrame(aParentChilds)
 				type = "FontString",
 				obj = _G["TradeFrame"],
 				textFirstLine = tDisplay,
-				textFull = tLink and SkuChat:Unescape(tLink) or tDisplay,
+				textFull = tLink and SkuUtil:Unescape(tLink) or tDisplay,
 				childs = {},
 			}
 		end
@@ -3113,7 +3102,7 @@ function SkuCore:Build_TradeFrame(aParentChilds)
 			type = "FontString",
 			obj = _G["TradeFrame"],
 			textFirstLine = tDisplay,
-			textFull = tPartnerEnchantLink and SkuChat:Unescape(tPartnerEnchantLink) or tDisplay,
+			textFull = tPartnerEnchantLink and SkuUtil:Unescape(tPartnerEnchantLink) or tDisplay,
 			childs = {},
 		}
 	end
@@ -3374,7 +3363,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 				end
 
 				--local tCountText = _G[tFrameName.."Count"]:GetText()
-				local tFriendlyName = SkuChat:Unescape(_G[tFrameName].text:GetText())
+				local tFriendlyName = SkuUtil:Unescape(_G[tFrameName].text:GetText())
 				--[[
 				if tCountText then
 					tFriendlyName = tFriendlyName.." "..tCountText
@@ -3432,7 +3421,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 
 	local tName = ""
 	if _G["TradeSkillSkillName"] then
-		tName = SkuChat:Unescape(_G["TradeSkillSkillName"]:GetText()) or ""
+		tName = SkuUtil:Unescape(_G["TradeSkillSkillName"]:GetText()) or ""
 	end
 	local tRequirements = ""
 	if _G["TradeSkillRequirementText"] and _G["TradeSkillRequirementText"]:IsVisible() and _G["TradeSkillRequirementText"]:GetText() then
@@ -3440,7 +3429,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 			if string.sub(i, 1, 1) == " " then
 				i = string.sub(i, 2)
 			end
-			local tReqStr = SkuChat:Unescape(i) or ""
+			local tReqStr = SkuUtil:Unescape(i) or ""
 			if string.find(i, "ff2020") then
 				tReqStr = tReqStr.." ("..L["missing"]..")"
 			end
@@ -3450,12 +3439,12 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 	--[[
 	local tCost = ""
 	if _G["CraftCost"] and _G["CraftCost"]:GetText() then
-		tCost = SkuChat:Unescape(_G["CraftCost"]:GetText()) or ""
+		tCost = SkuUtil:Unescape(_G["CraftCost"]:GetText()) or ""
 	end
 ]]	
 	local tDescription = ""
 	if _G["TradeSkillDescription"] and _G["TradeSkillDescription"]:GetText() then
-		tDescription = SkuChat:Unescape(_G["TradeSkillDescription"]:GetText()) or ""
+		tDescription = SkuUtil:Unescape(_G["TradeSkillDescription"]:GetText()) or ""
 	end
 	
 
@@ -3466,8 +3455,8 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 	for x = 1, 15 do
 		if _G["TradeSkillReagent"..x] then
 			if _G["TradeSkillReagent"..x]:IsVisible() == true then
-				tReagents = tReagents.."\r\n"..SkuChat:Unescape(_G["TradeSkillReagent"..x.."Name"]:GetText())
-				tReagents = tReagents.." "..SkuChat:Unescape(_G["TradeSkillReagent"..x.."Count"]:GetText())
+				tReagents = tReagents.."\r\n"..SkuUtil:Unescape(_G["TradeSkillReagent"..x.."Name"]:GetText())
+				tReagents = tReagents.." "..SkuUtil:Unescape(_G["TradeSkillReagent"..x.."Count"]:GetText())
 			end
 		end   
 	end
@@ -3494,7 +3483,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 	if _G[tFrameName] then
 		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
 			if _G[tFrameName]:GetText() then
-				local tFriendlyName = SkuChat:Unescape(_G[tFrameName]:GetText())
+				local tFriendlyName = SkuUtil:Unescape(_G[tFrameName]:GetText())
 				table.insert(aParentChilds, tFriendlyName)
 				aParentChilds[tFriendlyName] = {
 					frameName = tFrameName,
@@ -3516,7 +3505,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 	if _G[tFrameName] then
 		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
 			if _G[tFrameName]:GetText() then
-				local tFriendlyName = SkuChat:Unescape(_G[tFrameName]:GetText())
+				local tFriendlyName = SkuUtil:Unescape(_G[tFrameName]:GetText())
 				table.insert(aParentChilds, tFriendlyName)
 				aParentChilds[tFriendlyName] = {
 					frameName = tFrameName,
@@ -3632,7 +3621,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 					end
 				end
 
-				local tFriendlyName = SkuChat:Unescape(_G[tFrameName.."Text"]:GetText()).." ".. (SkuChat:Unescape(_G[tFrameName.."SubText"]:GetText()) or "").." ".. (SkuChat:Unescape(_G[tFrameName.."Cost"]:GetText()) or "").." "..tKnown
+				local tFriendlyName = SkuUtil:Unescape(_G[tFrameName.."Text"]:GetText()).." ".. (SkuUtil:Unescape(_G[tFrameName.."SubText"]:GetText()) or "").." ".. (SkuUtil:Unescape(_G[tFrameName.."Cost"]:GetText()) or "").." "..tKnown
 				local tText, tFullText = "", ""
 				if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
 					table.insert(aParentChilds, tFriendlyName)
@@ -3683,22 +3672,22 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 
 	local tName = ""
 	if _G["CraftName"] then
-		tName = SkuChat:Unescape(_G["CraftName"]:GetText()) or ""
+		tName = SkuUtil:Unescape(_G["CraftName"]:GetText()) or ""
 	end
 	local tRequirements = ""
 	if _G["CraftRequirements"] and _G["CraftRequirements"]:IsVisible() and _G["CraftRequirements"]:GetText() then
-		tRequirements = SkuChat:Unescape(_G["CraftRequirements"]:GetText()) or ""
+		tRequirements = SkuUtil:Unescape(_G["CraftRequirements"]:GetText()) or ""
 		if string.find(_G["CraftRequirements"]:GetText(), "ff2020") then
 			tRequirements = tRequirements.." ("..L["missing"]..")"
 		end
 	end
 	local tCost = ""
 	if _G["CraftCost"] and _G["CraftCost"]:GetText() then
-		tCost = SkuChat:Unescape(_G["CraftCost"]:GetText()) or ""
+		tCost = SkuUtil:Unescape(_G["CraftCost"]:GetText()) or ""
 	end
 	local tDescription = ""
 	if _G["CraftDescription"] and _G["CraftDescription"]:GetText() then
-		tDescription = SkuChat:Unescape(_G["CraftDescription"]:GetText()) or ""
+		tDescription = SkuUtil:Unescape(_G["CraftDescription"]:GetText()) or ""
 	end
 
 	local tReagents = ""
@@ -3708,8 +3697,8 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 	for x = 1, 15 do
 		if _G["CraftReagent"..x] then
 			if _G["CraftReagent"..x]:IsVisible() == true then
-				tReagents = tReagents.."\r\n"..SkuChat:Unescape(_G["CraftReagent"..x.."Name"]:GetText())
-				tReagents = tReagents.." "..SkuChat:Unescape(_G["CraftReagent"..x.."Count"]:GetText())
+				tReagents = tReagents.."\r\n"..SkuUtil:Unescape(_G["CraftReagent"..x.."Name"]:GetText())
+				tReagents = tReagents.." "..SkuUtil:Unescape(_G["CraftReagent"..x.."Count"]:GetText())
 			end
 		end   
 	end
@@ -3737,7 +3726,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 	if _G[tFrameName] then
 		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
 			if _G[tFrameName]:GetText() then
-				local tFriendlyName = SkuChat:Unescape(_G[tFrameName]:GetText())
+				local tFriendlyName = SkuUtil:Unescape(_G[tFrameName]:GetText())
 				table.insert(aParentChilds, tFriendlyName)
 				aParentChilds[tFriendlyName] = {
 					frameName = tFrameName,
@@ -3899,7 +3888,7 @@ function SkuCore:ItemTextFrame(aParent)
 		local tText = ""
 		for i, v in pairs(tHtmlTable) do
 			if v.text then
-				tText = SkuChat:Unescape(v.text).."\r\n"
+				tText = SkuUtil:Unescape(v.text).."\r\n"
 			end
 		end
 
@@ -3991,9 +3980,9 @@ function SkuCore:GossipFrame(aParentChilds)
 			if _G[tFrameName] then
 				if _G[tFrameName]:IsShown() == true  then
 					if _G[tFrameName]:GetText() then
-						local tFriendlyName = unescape(_G[tFrameName]:GetText())
+						local tFriendlyName = SkuUtil:Unescape(_G[tFrameName]:GetText())
 						if _G["GossipTitleButton"..x.."GossipIcon"]:IsShown() == true then
-							tFriendlyName = (tIconStrings[_G["GossipTitleButton"..x.."GossipIcon"]:GetTextureFileID()] or "").." "..unescape(_G[tFrameName]:GetText())
+							tFriendlyName = (tIconStrings[_G["GossipTitleButton"..x.."GossipIcon"]:GetTextureFileID()] or "").." "..SkuUtil:Unescape(_G[tFrameName]:GetText())
 						end
 						local tText, tFullText = "", ""
 						if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
@@ -4164,7 +4153,7 @@ function SkuCore:QuestFrame(aParentChilds)
 								if tButton.GetText then
 									local tText = tButton:GetText()
 									if tText then
-										local tFriendlyName = SkuChat:Unescape(tText)
+										local tFriendlyName = SkuUtil:Unescape(tText)
 										table.insert(tQuestInfoRewardsFrameChilds, tFriendlyName)
 										tQuestInfoRewardsFrameChilds[tFriendlyName] = {
 											frameName = "",
@@ -4196,7 +4185,7 @@ function SkuCore:QuestFrame(aParentChilds)
 								local tText, tFullText = GetButtonTooltipLines(tButton)
 								if tText then
 									tText = tText.." "..(tButton.count or "")
-									local tFriendlyName = SkuChat:Unescape(tText)
+									local tFriendlyName = SkuUtil:Unescape(tText)
 									table.insert(tQuestInfoRewardsFrameChilds, tFriendlyName)
 									tQuestInfoRewardsFrameChilds[tFriendlyName] = {
 										frameName = tFrameName,
@@ -4245,7 +4234,7 @@ function SkuCore:QuestFrame(aParentChilds)
 									end
 									tTaken[x] = true
 									tText = tText.." "..(_G[tFrameName].count or "")
-									local tFriendlyName = SkuChat:Unescape(tText)
+									local tFriendlyName = SkuUtil:Unescape(tText)
 									if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
 										table.insert(tQuestInfoRewardsFrameChilds, tFriendlyName)
 										tQuestInfoRewardsFrameChilds[tFriendlyName] = {
@@ -4301,7 +4290,7 @@ function SkuCore:QuestFrame(aParentChilds)
 										end
 										tTaken[x] = true
 										tText = tText.." "..(_G[tFrameName].count or "")
-										local tFriendlyName = SkuChat:Unescape(tText)
+										local tFriendlyName = SkuUtil:Unescape(tText)
 										if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
 											table.insert(tQuestInfoRewardsFrameChilds, tFriendlyName)
 											tQuestInfoRewardsFrameChilds[tFriendlyName] = {
@@ -4461,9 +4450,9 @@ function SkuCore:QuestFrame(aParentChilds)
 				if _G[tFrameName] then
 					if _G[tFrameName]:IsVisible() == true then
 						if _G[tFrameName]:GetText() then
-							local tFriendlyName = SkuChat:Unescape(_G[tFrameName]:GetText())
+							local tFriendlyName = SkuUtil:Unescape(_G[tFrameName]:GetText())
 							if _G["QuestTitleButton"..x.."QuestIcon"]:IsVisible() == true  then
-								tFriendlyName = (tIconStrings[_G["QuestTitleButton"..x.."QuestIcon"]:GetTextureFileID()] or "").." "..SkuChat:Unescape(_G[tFrameName]:GetText())
+								tFriendlyName = (tIconStrings[_G["QuestTitleButton"..x.."QuestIcon"]:GetTextureFileID()] or "").." "..SkuUtil:Unescape(_G[tFrameName]:GetText())
 							end
 							local tText, tFullText = "", ""
 							if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
@@ -4553,7 +4542,7 @@ function SkuCore:QuestFrame(aParentChilds)
 							local tText, tFullText = GetButtonTooltipLines(_G[tFrameName])
 							if tText then
 								tText = tText.." "..(_G[tFrameName].count or "")
-								local tFriendlyName = SkuChat:Unescape(tText)
+								local tFriendlyName = SkuUtil:Unescape(tText)
 								--if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
 									table.insert(tProgressChilds, tFriendlyName)
 									tProgressChilds[tFriendlyName] = {

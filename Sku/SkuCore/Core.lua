@@ -1154,7 +1154,7 @@ function SkuCore:OnEnable()
 				if infoType == "merchant" then
 					tResult = GetMerchantItemInfo(itemID)
 				elseif infoType == "item" then
-					tResult = string.sub(SkuChat:Unescape(itemLink), 2, string.len(SkuChat:Unescape(itemLink))-1)
+					tResult = string.sub(SkuUtil:Unescape(itemLink), 2, string.len(SkuUtil:Unescape(itemLink))-1)
 				else
 					tResult = infoType
 				end
@@ -2856,7 +2856,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:ItemName_helper(aText)
-	aText = SkuChat:Unescape(aText)
+	aText = SkuUtil:Unescape(aText)
 	local tShort, tLong = aText, ""
 
 	local tStart, tEnd = string.find(tShort, "\r\n")
@@ -2911,7 +2911,7 @@ function SkuCore:IterateChildren(t, tab)
 					}
 					if dtc[x].GetText then
 						if dtc[x]:GetText() then
-							local tText = SkuChat:Unescape(dtc[x]:GetText())
+							local tText = SkuUtil:Unescape(dtc[x]:GetText())
 							tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
 							if tResults[fName].type == "Button" then
 								tResults[fName].textFirstLine = tResults[fName].textFirstLine
@@ -2999,7 +2999,7 @@ function SkuCore:IterateChildren(t, tab)
 							--text from fs available?
 							if dtc[x].GetText then
 								if dtc[x]:GetText() then
-									local tText = SkuChat:Unescape(dtc[x]:GetText())
+									local tText = SkuUtil:Unescape(dtc[x]:GetText())
 									tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
 								end
 							end
@@ -3011,7 +3011,7 @@ function SkuCore:IterateChildren(t, tab)
 									local hsd, rc = _G["SkuScanningTooltip"]:SetBagItem(tResults[fName].obj:GetParent():GetID(), tResults[fName].obj:GetID())
 									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 										if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-											local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+											local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 											
 											if tResults[fName].obj.info then
 												if tResults[fName].obj.info.id then
@@ -3037,7 +3037,7 @@ function SkuCore:IterateChildren(t, tab)
 										tResults[fName].obj:ShowTooltip()
 										if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
 											if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
-												local tText = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+												local tText = SkuUtil:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
 												tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
 											end
 										end
@@ -3048,7 +3048,7 @@ function SkuCore:IterateChildren(t, tab)
 									local hsd, rc = _G["SkuScanningTooltip"]:SetMerchantItem(tResults[fName].obj:GetID())
 									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 										if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-											local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+											local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 											tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
 											if "table" ~= type(tResults[fName].textFull) then
 												tResults[fName].textFull = {tResults[fName].textFull}
@@ -3068,7 +3068,7 @@ function SkuCore:IterateChildren(t, tab)
 									end
 									if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
 										if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
-											local tText = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+											local tText = SkuUtil:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
 											tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
 										end
 									end

@@ -6,15 +6,11 @@ local _G = _G
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function Unescape(String)
-	local Result = tostring(String)
-	Result = gsub(Result, "|c........", "") -- Remove color start.
-	Result = gsub(Result, "|r", "") -- Remove color end.
-	Result = gsub(Result, "|H.-|h(.-)|h", "%1") -- Remove links.
-	Result = gsub(Result, "|T.-|t", "") -- Remove textures.
-	Result = gsub(Result, "{.-}", "") -- Remove raid target icons.
-	return Result
-end
+-- Local Unescape removed in the Sku 42 rework (W4 Phase A) — now uses the shared
+-- SkuUtil:Unescape. The tostring() wrapper at the call sites preserves this
+-- module's contract that a nil tooltip line becomes the string "nil": the
+-- downstream output logic in GameWorldObjectsCheckResult compares against "nil"
+-- (e.g. `if aTextLeft2 ~= "nil"`), so SkuUtil's real-nil return must be coerced.
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GameWorldObjectsOnInitialize()
@@ -178,9 +174,9 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
    local tIsUpdateMouseoverUnitFrame = SkuCore.lastUpdateMouseoverUnitFrame == SkuCore.gameWorldObjectsFrameCounter
    local tIsCursorUpdate = SkuCore.lastCursorUpdateFrame == SkuCore.gameWorldObjectsFrameCounter
    
-   aTextLeft1 = Unescape(aTextLeft1)
-   aTextLeft2 = Unescape(aTextLeft2)
-   aTextLeft3 = Unescape(aTextLeft3)
+   aTextLeft1 = tostring(SkuUtil:Unescape(aTextLeft1))
+   aTextLeft2 = tostring(SkuUtil:Unescape(aTextLeft2))
+   aTextLeft3 = tostring(SkuUtil:Unescape(aTextLeft3))
 
    dprint("GameWorldObjectsCheckResult", aTextLeft1, aTextLeft2, aTextLeft3, tIsUpdateMouseoverUnitFrame, tIsCursorUpdate)
 

@@ -649,7 +649,20 @@ codebase. Do it as a long series of small, independently-shippable extractions:
 ## 4.8 Task checklist
 
 - [ ] X-A1. Adopt `local addonName, ns = ...`; move shared internals off `_G`.
-- [ ] X-A2. Create `SkuUtil`; move `Unescape` (SkuChat/Core.lua:2108) + other stateless utils; repoint callers.
+- [x] X-A2. Create `SkuUtil`; move `Unescape` (SkuChat/Core.lua:2108) + other stateless utils; repoint callers.
+  - Added `Sku/SkuUtil.lua` (global `SkuUtil`, owns `escapes`/`escapesChat`
+    + `SkuUtil:Unescape`), TOC-registered right after `Core.lua`. `SkuChat:Unescape`
+    is now a thin delegating shim; all 125 `SkuChat:Unescape` call sites across 10
+    files repointed to `SkuUtil:Unescape`; the `minimapScanner` load-order guard
+    (`if SkuChat and SkuChat.Unescape`) removed since `SkuUtil` always loads first.
+    This collapses the SkuCore→SkuChat fake cycle (was 117, ~113 of them Unescape).
+  - Both **private local** duplicates also collapsed onto `SkuUtil`:
+    `SkuCore/LocalMenu.lua` (`local function unescape` + its own `escapes`) — direct
+    swap (identical save for SkuUtil's inert-on-TBC `|A.-|a`); and
+    `SkuCore/gameWorldObjects.lua` (`local function Unescape`) — swapped via a
+    `tostring(SkuUtil:Unescape(x))` wrapper to preserve its load-bearing contract
+    that a nil tooltip line becomes the string `"nil"` (downstream compares `~= "nil"`).
+    (The `Libs/SkuVoice-1.0` lib-local `Unescape` is a vendored lib — left as-is.)
 - [ ] X-B1. Enumerate category-B service edges; declare interface tables (start with `SkuNav.Geo`).
 - [ ] X-B2. Enumerate category-C shared-state fields and confirm single-writer for each.
 - [ ] X-C1. Introduce `SkuState` / dispatcher events; migrate field readers one field at a time.

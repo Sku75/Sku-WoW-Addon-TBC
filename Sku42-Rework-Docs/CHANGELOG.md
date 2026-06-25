@@ -38,4 +38,18 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
   whole addon, then agent-batched high-level (architectural) and low-level
   (per-file) cleanup, each producing a plain-text findings list gated by explicit
   approval before execution.
-- (No functional code changes yet — rework not started.)
+- **W4 Phase A (X-A2) started — `SkuUtil` extraction.** Added a new
+  dependency-free `Sku/SkuUtil.lua` (global `SkuUtil`) loaded right after
+  `Core.lua`, and moved the stateless `Unescape` string helper into it
+  (`SkuUtil:Unescape`, byte-identical logic + the `escapes`/`escapesChat`
+  tables). `SkuChat:Unescape` is kept as a thin delegating shim for safety;
+  all 125 `SkuChat:Unescape` call sites across 10 files were repointed to
+  `SkuUtil:Unescape`, and the `minimapScanner` `if SkuChat and SkuChat.Unescape`
+  load-order guard was removed (SkuUtil always loads first). Behavior-preserving;
+  collapses the largest *fake* cross-module cycle (SkuCore→SkuChat). luaparser
+  syntax-gated; in-game `/wdwatchsku` smoke test still pending. The two
+  private-local `Unescape` duplicates were also collapsed onto `SkuUtil`:
+  `LocalMenu` (direct swap) and `gameWorldObjects` (via a `tostring(...)` wrapper
+  that preserves its nil→`"nil"` contract the downstream `~= "nil"` checks rely
+  on). `SkuChat:Unescape` and `SkuUtil:Unescape` are now the only `Unescape`
+  definitions besides the vendored `SkuVoice-1.0` lib-local. (X-A2 complete.)

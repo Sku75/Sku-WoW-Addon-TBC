@@ -755,7 +755,7 @@ function SkuOptions:UpdateOverviewText(aPageId)
 
 			GameTooltip:SetOwner(UIParent, "Center")
 			GameTooltip:SetUnitAura("player", x, "HELPFUL")
-			local tToolstring = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+			local tToolstring = SkuUtil:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
 			if tToolstring then
 				if string.find(tToolstring, "\r\n") then
 					tToolstring = string.sub(tToolstring, string.find(tToolstring, "\r\n") + 2)
@@ -838,7 +838,7 @@ function SkuOptions:UpdateOverviewText(aPageId)
 
 				GameTooltip:SetOwner(UIParent, "Center")
 				GameTooltip:SetSpellByID(mainHandEnchantID)
-				local tToolstring = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+				local tToolstring = SkuUtil:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
 				if tToolstring then
 					if string.find(tToolstring, "\r\n") then
 						tToolstring = string.sub(tToolstring, string.find(tToolstring, "\r\n") + 2)
@@ -893,7 +893,7 @@ function SkuOptions:UpdateOverviewText(aPageId)
 
 				GameTooltip:SetOwner(UIParent, "Center")
 				GameTooltip:SetSpellByID(offHandEnchantID)
-				local tToolstring = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+				local tToolstring = SkuUtil:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
 				if tToolstring then
 					if string.find(tToolstring, "\r\n") then
 						tToolstring = string.sub(tToolstring, string.find(tToolstring, "\r\n") + 2)
@@ -941,7 +941,7 @@ function SkuOptions:UpdateOverviewText(aPageId)
 
 			GameTooltip:SetOwner(UIParent, "Center")
 			GameTooltip:SetUnitAura("player", x, "HARMFUL")
-			local tToolstring = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+			local tToolstring = SkuUtil:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
 			if tToolstring then
 				if string.find(tToolstring, "\r\n") then
 					tToolstring = string.sub(tToolstring, string.find(tToolstring, "\r\n") + 2)
@@ -1506,7 +1506,7 @@ function SkuOptions:CreateMainFrame()
 			if GameTooltip:IsVisible() == true then
 				if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
 					if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
-						local tText = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+						local tText = SkuUtil:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
 						if tText then
 							if string.len(tText) > 0 then
 								SkuOptions.TooltipReaderText = tText
@@ -1525,7 +1525,7 @@ function SkuOptions:CreateMainFrame()
 					SkuScanningTooltip:Show()
 					if TooltipLines_helper(SkuScanningTooltip:GetRegions()) ~= "asd" then
 						if TooltipLines_helper(SkuScanningTooltip:GetRegions()) ~= "" then
-							local tText = SkuChat:Unescape(TooltipLines_helper(SkuScanningTooltip:GetRegions()))
+							local tText = SkuUtil:Unescape(TooltipLines_helper(SkuScanningTooltip:GetRegions()))
 							if tText then
 								if string.len(tText) > 0 then
 									SkuOptions.TooltipReaderText =  {tText}
