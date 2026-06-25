@@ -3481,38 +3481,48 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnInitialize()
+	-- Settings defaults are assembled through SkuSettings (Sku 42 rework, W1
+	-- Phase A) instead of the old inline `defaults.profile[X] = X.defaults`
+	-- stitch. Each module's whole defaults tree is registered for the profile
+	-- scope, then BuildDefaults assigns them into `defaults` by reference — net
+	-- result byte-identical to before. This routes all default knowledge through
+	-- one registry (the foundation for char/global defaults and W2). The
+	-- options.args[X] = X.options assignments (AceConfig UI) are unrelated and
+	-- stay inline.
 	if SkuOptions then
 		options.args["SkuOptions"] = SkuOptions.options
-		defaults.profile["SkuOptions"] = SkuOptions.defaults
+		SkuSettings:RegisterModuleDefaults("SkuOptions", "profile", SkuOptions.defaults)
 	end
 	if SkuCore then
 		options.args["SkuCore"] = SkuCore.options
-		defaults.profile["SkuCore"] = SkuCore.defaults
+		SkuSettings:RegisterModuleDefaults("SkuCore", "profile", SkuCore.defaults)
 	end
 	if SkuAuras then
 		options.args["SkuAuras"] = SkuAuras.options
-		defaults.profile["SkuAuras"] = SkuAuras.defaults
+		SkuSettings:RegisterModuleDefaults("SkuAuras", "profile", SkuAuras.defaults)
 	end
 	if SkuChat then
 		options.args["SkuChat"] = SkuChat.options
-		defaults.profile["SkuChat"] = SkuChat.defaults
+		SkuSettings:RegisterModuleDefaults("SkuChat", "profile", SkuChat.defaults)
 	end
 	if SkuAdventureGuide then
 		options.args["SkuAdventureGuide"] = SkuAdventureGuide.options
-		defaults.profile["SkuAdventureGuide"] = SkuAdventureGuide.defaults
+		SkuSettings:RegisterModuleDefaults("SkuAdventureGuide", "profile", SkuAdventureGuide.defaults)
 	end
 	if SkuMob then
 		options.args["SkuMob"] = SkuMob.options
-		defaults.profile["SkuMob"] = SkuMob.defaults
+		SkuSettings:RegisterModuleDefaults("SkuMob", "profile", SkuMob.defaults)
 	end
 	if SkuNav then
 		options.args["SkuNav"] = SkuNav.options
-		defaults.profile["SkuNav"] = SkuNav.defaults
+		SkuSettings:RegisterModuleDefaults("SkuNav", "profile", SkuNav.defaults)
 	end
 	if SkuQuest then
 		options.args["SkuQuest"] = SkuQuest.options
-		defaults.profile["SkuQuest"] = SkuQuest.defaults
+		SkuSettings:RegisterModuleDefaults("SkuQuest", "profile", SkuQuest.defaults)
 	end
+
+	SkuSettings:BuildDefaults(defaults)
 
 	SkuOptions:RegisterChatCommand("pquit", "SlashFuncPquit")
 	SkuOptions:RegisterChatCommand("Sku", "SlashFunc")

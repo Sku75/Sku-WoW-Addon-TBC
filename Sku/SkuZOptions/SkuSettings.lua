@@ -33,6 +33,14 @@ SkuSettings.schema = SkuSettings.schema or {}
 -- during migration to catch out-of-type writes. Never hard-fails the user.
 SkuSettings.validate = false
 
+-- moduleDefaults[scope][module] = the module's whole defaults tree. Used to
+-- assemble the AceDB defaults table BY REFERENCE (lossless for any contents —
+-- numeric keys, nested tables, entries added by post-processing loops — unlike a
+-- flatten/rebuild, which would corrupt non-string keys). This is intentionally
+-- separate from the flat per-key `schema` above (which serves accessor scope
+-- resolution + W2 menu generation and is authored per module during Phase B).
+SkuSettings.moduleDefaults = SkuSettings.moduleDefaults or {}
+
 local VALID_SCOPES = { profile = true, char = true, global = true }
 local DEFAULT_SCOPE = "profile"
 
@@ -96,6 +104,47 @@ function SkuSettings:Register(aModule, aEntries)
 		end
 	end
 	return self
+end
+
+-- Register a module's whole defaults tree for a scope. Stored by reference, so
+-- whatever the table is at assembly time (including entries added by load-time
+-- post-processing) is what gets used.
+function SkuSettings:RegisterModuleDefaults(aModule, aScope, aDefaultsTable)
+	if not VALID_SCOPES[aScope] then
+		if dprint then dprint("SkuSettings:RegisterModuleDefaults: bad scope", aModule, tostring(aScope)) end
+		return self
+	end
+	if type(aDefaultsTable) ~= "table" then
+		if dprint then dprint("SkuSettings:RegisterModuleDefaults: defaults not a table", aModule, aScope) end
+		return self
+	end
+	local byScope = self.moduleDefaults[aScope]
+	if not byScope then
+		byScope = {}
+		self.moduleDefaults[aScope] = byScope
+	end
+	byScope[aModule] = aDefaultsTable
+	return self
+end
+
+-- Assemble the registered module default trees into an AceDB-style defaults
+-- table: target[scope][module] = registeredTree (by reference). Only scopes with
+-- registered defaults get a subtable, so an unpopulated scope (e.g. char/global
+-- in Phase A) stays absent — keeping the net persisted shape identical to the
+-- old hand-stitched profile-only defaults.
+function SkuSettings:BuildDefaults(aTarget)
+	aTarget = aTarget or {}
+	for scope, mods in pairs(self.moduleDefaults) do
+		local dest = aTarget[scope]
+		if not dest then
+			dest = {}
+			aTarget[scope] = dest
+		end
+		for module, tbl in pairs(mods) do
+			dest[module] = tbl
+		end
+	end
+	return aTarget
 end
 
 -- Read a setting. Resolves scope from the schema and walks the dotted path.

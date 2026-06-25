@@ -33,6 +33,18 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
   author the schema from the eight `Module.defaults` tables (A3) and swap the
   hand-written `OnInitialize` defaults stitch for registry-driven assembly +
   char/global defaults (A4), verifying the persisted `SkuOptionsDB` is unchanged.
+- **W1 Phase A — registry-driven defaults assembly (A3 + A4).** Added
+  `SkuSettings:RegisterModuleDefaults(module, scope, tree)` + `:BuildDefaults()`.
+  `SkuOptions:OnInitialize` now registers each module's whole `defaults` tree (by
+  reference) and calls `BuildDefaults(defaults)` before the AceDB `:New`, instead
+  of the eight inline `defaults.profile[X] = X.defaults` lines. Output is
+  byte-identical (by-reference assembly is lossless — `SkuCore.defaults` has
+  numeric keys added by load-time loops, so a flatten/rebuild was deliberately
+  avoided). The `options.args[X]` AceConfig assignments stay inline. char/global
+  defaults: mechanism ready, but population (and the flat per-key schema) is
+  deferred to Phase B per module — enumerating ~1,236 char/global keys safely
+  needs the same per-module pass that migrates call sites. luaparser-gated;
+  behaviour-preserving by construction; in-game smoke test pending.
 
 - Worktree `Sku-TBC-42` created on branch `sku42` from the v41.06 baseline
   (commit 5670b60); TOC bumped to 42.00.

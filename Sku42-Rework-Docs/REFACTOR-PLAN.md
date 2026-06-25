@@ -217,9 +217,31 @@ time with both styles coexisting.
     off-by-default type validation; `Sub` returns the live subtable for hot
     loops. Unregistered keys `dprint`-warn in debug. Purely additive — no call
     site uses it yet, so behaviour is unchanged (Phase A "introduce, don't migrate").
-- [ ] A3. Author schema entries by extracting the eight `Module.defaults` tables (one module at a time into the registry).
-- [ ] A4. Replace `Core.lua:3483-3515` hand-stitch with registry-driven defaults assembly; add char/global defaults.
-- [ ] A5. Phase A verification: persisted `SkuOptionsDB` unchanged; ship checkpoint commit.
+- [x] A3. Extract the eight `Module.defaults` tables into the registry.
+  - Registered each module's whole defaults **tree** (by reference) via
+    `SkuSettings:RegisterModuleDefaults(M, "profile", M.defaults)` rather than
+    hand-flattening into per-key schema entries. Reason: `SkuCore.defaults` is
+    post-processed at load (loops add **numeric** keys like
+    `ressourceScanning.miningNodes[1..N]`), so a flatten→rebuild to dotted string
+    keys would corrupt it. By-reference is lossless for any contents.
+  - The flat per-key `schema` (dotted keys for `Get`/`Set` scope + W2 menu gen)
+    is therefore NOT mass-authored here; it is authored per module during Phase B
+    as call sites migrate (lower risk, natural place to learn each key's default).
+- [x] A4. Replace `Core.lua:3483-3515` hand-stitch with registry-driven defaults assembly.
+  - The eight `defaults.profile[X] = X.defaults` lines are replaced by
+    `RegisterModuleDefaults` + a single `SkuSettings:BuildDefaults(defaults)`
+    before the AceDB `:New`. Output is byte-identical (same tables by reference);
+    the `options.args[X] = X.options` AceConfig lines stay inline.
+  - char/global defaults: the **mechanism** is in place (`RegisterModuleDefaults`
+    accepts any scope; `BuildDefaults` only creates a scope subtable when it has
+    registered defaults, so char/global stay absent = identical to today).
+    POPULATING char/global defaults is deferred to Phase B per module — safely
+    enumerating the ~1,236 char/global keys + their correct defaults requires the
+    same per-module pass that migrates the call sites; doing it blind now would
+    risk the "behaviour identical" constraint.
+- [~] A5. Phase A verification: persisted `SkuOptionsDB` unchanged; ship checkpoint commit.
+  - luaparser-gated. In-game smoke test (load clean, `moduleDefaults` identity,
+    settings unchanged) pending.
 - [ ] B1..Bn. Migrate call sites per module (SkuMob → SkuQuest → SkuAuras → SkuChat → SkuNav → SkuCore), each with syntax + smoke verification + commit.
 - [ ] C1. Enable `Set` validation permanently; remove raw-path fallback.
 - [ ] C2. Publish the finalized schema as the input contract for Workstream 2.
