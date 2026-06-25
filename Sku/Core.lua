@@ -157,7 +157,10 @@ end
 -- path never calls debugstack and never builds per-event context, so it is
 -- cheap even while enabled. Toggle via the SKU_KEY_DEBUGMODE keybind (cycles
 -- the modes) or /skudebug for precise control.
-Sku.debug = { print = false, log = false }
+-- Sku 42 default: log ON (capture breadcrumbs to the SkuDebugLog ring every
+-- session, so traces are available after a /reload without re-enabling), print
+-- OFF (no chat echo / no TTS spam). Override per session via /skudebug.
+Sku.debug = { print = false, log = true }
 
 local DEBUGLOG_MAX = 2000  -- cap on persisted lines (ring buffer)
 

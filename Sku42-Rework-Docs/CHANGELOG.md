@@ -22,6 +22,13 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **Debug logging default changed for v42.** `Sku.debug` now defaults to
+  `{ print = false, log = true }` (`Core.lua`) instead of both off. The
+  `SkuDebugLog` ring captures breadcrumbs every session automatically (readable
+  after a `/reload` without re-enabling), while chat `print` stays off (no TTS
+  spam). `/skudebug` still overrides per session. Note: the project `CLAUDE.md`
+  and `sku-logging-system` memory still say "both default OFF" — stale for v42.
+
 - **W1 Phase B — SkuAuras migrated (B3).** 84 own-key settings accesses migrated
   to `SkuSettings:Sub` (Core 22, Options 56, sharing 4). SkuAuras spans three
   scopes — char (79), global (4), profile (1) — all handled by the existing
