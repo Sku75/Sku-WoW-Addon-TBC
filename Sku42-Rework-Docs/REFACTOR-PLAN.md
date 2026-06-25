@@ -8,7 +8,7 @@ incrementally — not a one-shot rewrite.
 
 ## How to use this document
 
-- Five workstreams, tackled **one at a time** so we never juggle two
+- Six workstreams, tackled **one at a time** so we never juggle two
   half-migrated subsystems:
   1. Settings access layer  — fully specified below (ready to execute).
   2. Menu schema + registry  — investigated, design drafted (execute after W1).
@@ -17,6 +17,8 @@ incrementally — not a one-shot rewrite.
      and the dependency cycles (execute after W1 + W2). See "Sequencing".
   5. Companion addons / asset packaging — investigated; rationalize the external
      audio addons (voice DB + beacons). Strategy is an early input to W1/W4.
+  6. Documentation index + cleanup — POST-REWORK: build an LLM/doc index, then
+     agent-batched high-level then low-level cleanup, each gated by your approval.
 - Each workstream is independently shippable and behavior-preserving.
 - Status legend used per task: `[ ]` not started, `[~]` in progress,
   `[x]` done, `[!]` blocked/needs decision.
@@ -811,6 +813,95 @@ voice service are designed. Hence: decide W5 strategy early, execute W5 late.
 
 ---
 
+# Workstream 6 — Documentation index + high/low-level cleanup  (POST-REWORK)
+
+Runs **only after W1–W5 are complete**, so it documents and polishes the final
+reworked architecture rather than the old one. Three phases, and **every code
+change is gated by your explicit approval** — agents propose, you confirm or
+discuss, then approved lists are executed. Behavior-preserving throughout;
+cleanup is not feature change.
+
+## 6.1 Phase A — Build the addon documentation index ("LLM index")
+
+(Interpreting "lmn index" as an **LLM index** — a complete, agent-readable map
+of the whole addon. Correct me if you meant something else.)
+
+- A structured, addon-wide index: one entry per module and per file, capturing
+  purpose, public API/exports, dependencies (in and out), key data structures,
+  events subscribed/published, settings keys touched, entry points, and notable
+  invariants.
+- Stored in `Sku42-Rework-Docs/` (e.g. `INDEX.md` or a small `index/` tree) and
+  kept as **living documentation** of the addon as a whole.
+- Dual purpose: (1) human-facing documentation; (2) the **shared base context
+  every cleanup agent reads**, so findings are consistent and deduplicated and
+  no agent has to re-explore the codebase from scratch.
+- Built after the rework so it reflects the final boundaries (W4 submodules,
+  W2 menu registry, W1 settings schema, W5 audio layout).
+
+## 6.2 Phase B — High-level cleanup (architectural, whole-addon)
+
+- Scope: cross-file / cross-module structure. Hunt for big structures that
+  remain awkward after the rework, bad coding practices that survived, and
+  module/file **splits or merges that bring real gain** in addon or code quality
+  — only where the gain is genuine, not cosmetic file-shuffling (per W4's lesson
+  that splitting alone buys nothing).
+- Output: a deduped, prioritized **findings list** — plain-text linear bullets
+  (no tables — screen-reader reviewable), each item with rationale, affected
+  files, risk, and rough effort.
+- Gate: presented to you to confirm / discuss / drop before anything runs.
+
+## 6.3 Phase C — Low-level cleanup (per-file)
+
+- Scope: within each file. Find duplicated or near-duplicate methods, dead code,
+  inconsistent naming/structure, unnecessary or redundant loops, repeated work,
+  style inconsistencies, etc.
+- Method and output: same as Phase B but batched **file-by-file**, against the
+  index updated to reflect any Phase-B structural changes.
+- Gate: same plain-text findings list for your approval before execution.
+
+## 6.4 How the agent batching works
+
+- **Fan out** review agents over a work-list (modules for B, files for C); each
+  agent reads the index plus its batch and returns **structured findings**, not
+  prose.
+- **Synthesize:** merge, dedupe, rank; flag overlaps/conflicts between findings.
+- **Approval gate (mandatory):** you review the linear list and confirm, edit, or
+  drop items. Nothing is auto-applied.
+- **Execute** approved items as a second batched pass — one coherent change-set
+  at a time, behavior-preserving, with the standard verification (luaparser gate,
+  `/reload`, `/wdwatchsku`, feature smoke tests) and a commit per group.
+- The existing `/code-review` and `/simplify` skills and the Workflow
+  orchestration are usable building blocks for each batch.
+
+## 6.5 Order & why
+
+- **Phase A before B/C:** agents need the index as their shared map.
+- **B before C:** high-level splits/merges change which files exist, so do the
+  structural work before per-file polishing (don't polish a file that is about
+  to be split or merged).
+- **Whole workstream last:** it operates on the finished, reworked code.
+
+## 6.6 Risks & watch-outs
+
+- **Approval gate is non-negotiable** — findings never auto-apply; you decide.
+- **Keep the index in sync** as Phase B changes structure, so Phase C agents read
+  current truth.
+- **Findings must be plain-text linear lists** (screen-reader), never tables.
+- **Guard against agent over-eagerness:** a "bad practice" claim must be
+  justified against the index and a real gain, not a style preference; you
+  arbitrate. Behavior must not change.
+
+## 6.7 Task checklist
+
+- [ ] D-A1. Build the documentation/LLM index (per-module + per-file map); store in `Sku42-Rework-Docs/`; verify coverage.
+- [ ] D-B1. Batched high-level review against the index; produce a deduped, prioritized findings list.
+- [ ] D-B2. Approval gate; then execute approved structural items, behavior-preserving, with verification + commits; update the index.
+- [ ] D-C1. Batched per-file review against the updated index; produce a findings list.
+- [ ] D-C2. Approval gate; then execute approved per-file items, with verification + commits.
+- [ ] D-V. Keep the index maintained as the addon's living documentation.
+
+---
+
 # Sequencing — where each workstream sits in the chain
 
 The order matters because the workstreams reduce each other's surface area.
@@ -839,6 +930,11 @@ W5 splits across the chain rather than occupying one slot:
 - **W5 execution — last / independent.** Moving mp3s, renaming/consolidating
   packs, and updating the installer is distribution-only and behavior-preserving,
   so the heavy file work can land after the code workstreams.
+
+6. **W6 — Documentation index + cleanup — strictly last.** Only after W1–W5 are
+   done, since it documents and polishes the final architecture. Phase A (index)
+   → Phase B (high-level cleanup) → Phase C (low-level cleanup), each agent-batched
+   and gated by your approval before any change runs.
 
 Rule throughout: one workstream (and within W4, one phase) in flight at a time,
 each independently shippable and behavior-preserving.

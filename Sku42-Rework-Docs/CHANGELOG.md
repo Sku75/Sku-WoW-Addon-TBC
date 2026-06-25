@@ -34,4 +34,8 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
   `SkuAudioData_fast_de` 470 MB). Conclusion: do not merge audio into core; keep
   data-only companions, move glue code into Sku, rationalize the beacon split and
   voice-pack naming drift.
+- Added **Workstream 6** (post-rework): build an LLM/documentation index of the
+  whole addon, then agent-batched high-level (architectural) and low-level
+  (per-file) cleanup, each producing a plain-text findings list gated by explicit
+  approval before execution.
 - (No functional code changes yet — rework not started.)
