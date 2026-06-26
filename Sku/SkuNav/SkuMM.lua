@@ -93,7 +93,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function SkuNav:DrawTerrainData(aFrame)
 	--SkuNav:ClearLines(aFrame)
-	if SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap ~= true or not SkuCoreDB.TerrainData then
+	if SkuSettings:Sub("SkuNav").showRoutesOnMinimap ~= true or not SkuCoreDB.TerrainData then
 		return
 	end
 	local tExtMap = SkuNav:GetBestMapForUnit("player")
@@ -165,7 +165,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 local function DrawWaypoints(aFrame)
 	--dprint("DrawWaypoints")
-	if SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap ~= true then
+	if SkuSettings:Sub("SkuNav").showRoutesOnMinimap ~= true then
 		return
 	end
 	local fPlayerPosX, fPlayerPosY = UnitPosition("player")
@@ -226,7 +226,7 @@ local function DrawWaypoints(aFrame)
 					tWpFrames[v].hasLine = false
 				end
 
-				if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint == v then
+				if SkuSettings:Sub("SkuNav").selectedWaypoint == v then
 					tWpFrames[v]:SetSize(6, 6)
 					--tWidgetTexture:SetColorTexture(0, 1, 0)
 				else
@@ -455,7 +455,7 @@ function SkuNavDrawWaypointsMM(aFrame)
 	--dprint("SkuNavDrawWaypointsMM")
 	--local beginTime = debugprofilestop()
 
-	if SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap ~= true then
+	if SkuSettings:Sub("SkuNav").showRoutesOnMinimap ~= true then
 		--return
 	end
 	local fPlayerPosX, fPlayerPosY = UnitPosition("player")
@@ -547,7 +547,7 @@ function SkuNavDrawWaypointsMM(aFrame)
 							end
 						end
 
-						if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint == v then
+						if SkuSettings:Sub("SkuNav").selectedWaypoint == v then
 							tWpFrames[v]:SetSize(tFinalSize * 1.5, tFinalSize * 1.5)--5 * (tSkuNavMMZoom) - tSkuNavMMZoom * 2 + (3 - tSkuNavMMZoom), (tSize + 2) * (tSkuNavMMZoom) - tSkuNavMMZoom * 2  + (3 - tSkuNavMMZoom))
 							--tWidgetTexture:SetColorTexture(0, 1, 0)
 						else
@@ -649,13 +649,13 @@ local function StartPolyRecording(aType, aSubtype)
 end
 
 function SkuNav:SkuNavMMOpen()
-	SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainIsCollapsed = SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainIsCollapsed or true
-	SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainWidth = SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainWidth or 200
-	SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainHeight = SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainHeight or 200
-	SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosX = SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosX or UIParent:GetWidth() / 2
-	SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosY = SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosY or UIParent:GetHeight() / 2
+	SkuSettings:Sub("SkuNav").SkuNavMMMainIsCollapsed = SkuSettings:Sub("SkuNav").SkuNavMMMainIsCollapsed or true
+	SkuSettings:Sub("SkuNav").SkuNavMMMainWidth = SkuSettings:Sub("SkuNav").SkuNavMMMainWidth or 200
+	SkuSettings:Sub("SkuNav").SkuNavMMMainHeight = SkuSettings:Sub("SkuNav").SkuNavMMMainHeight or 200
+	SkuSettings:Sub("SkuNav").SkuNavMMMainPosX = SkuSettings:Sub("SkuNav").SkuNavMMMainPosX or UIParent:GetWidth() / 2
+	SkuSettings:Sub("SkuNav").SkuNavMMMainPosY = SkuSettings:Sub("SkuNav").SkuNavMMMainPosY or UIParent:GetHeight() / 2
 
-	if SkuOptions.db.profile[MODULE_NAME].showSkuMM == true then
+	if SkuSettings:Sub("SkuNav").showSkuMM == true then
 		SkuNavMMShowCustomWo = false
 		SkuNavMMShowDefaultWo = false
 
@@ -670,10 +670,10 @@ function SkuNav:SkuNavMMOpen()
 			MainFrameObj:SetScript("OnDragStart", function(self) self:StartMoving() end)
 			MainFrameObj:SetScript("OnDragStop", function(self)
 				self:StopMovingOrSizing()
-				SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosX = _G["SkuNavMMMainFrame"]:GetLeft()
-				SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosY = _G["SkuNavMMMainFrame"]:GetBottom()
+				SkuSettings:Sub("SkuNav").SkuNavMMMainPosX = _G["SkuNavMMMainFrame"]:GetLeft()
+				SkuSettings:Sub("SkuNav").SkuNavMMMainPosY = _G["SkuNavMMMainFrame"]:GetBottom()
 				_G["SkuNavMMMainFrame"]:ClearAllPoints()
-				_G["SkuNavMMMainFrame"]:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosX, SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosY)
+				_G["SkuNavMMMainFrame"]:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", SkuSettings:Sub("SkuNav").SkuNavMMMainPosX, SkuSettings:Sub("SkuNav").SkuNavMMMainPosY)
 
 			end)
 			MainFrameObj:SetScript("OnShow", function(self)
@@ -717,7 +717,7 @@ function SkuNav:SkuNavMMOpen()
 			rb:SetPushedTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\resize_hightlighted.tga")
 			local tRbIsDrag = false
 			rb:SetScript("OnUpdate", function(self, button)
-				if SkuOptions.db.profile[MODULE_NAME].showSkuMM == true then
+				if SkuSettings:Sub("SkuNav").showSkuMM == true then
 					if tRbIsDrag == true then
 						self:GetHighlightTexture():Show()
 						if self:GetParent():GetWidth() < 200 +  _G["SkuNavMMMainFrameOptionsParent"]:GetWidth() then self:GetParent():SetWidth(200  + _G["SkuNavMMMainFrameOptionsParent"]:GetWidth()) end
@@ -732,8 +732,8 @@ function SkuNav:SkuNavMMOpen()
 						_G["SkuNavMMMainFrameScrollFrameContent1"]:SetWidth(self:GetParent():GetWidth() - _G["SkuNavMMMainFrameOptionsParent"]:GetWidth() - 10)
 						_G["SkuNavMMMainFrameScrollFrameContent1"]:SetHeight(self:GetParent():GetHeight() - 10)
 
-						--SkuOptions.db.profile["SkuNav"].SkuNavMMMainWidth = self:GetParent():GetWidth()
-						--SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainHeight = self:GetParent():GetHeight()
+						--SkuSettings:Sub("SkuNav").SkuNavMMMainWidth = self:GetParent():GetWidth()
+						--SkuSettings:Sub("SkuNav").SkuNavMMMainHeight = self:GetParent():GetHeight()
 					end
 				end
 			end)
@@ -758,8 +758,8 @@ function SkuNav:SkuNavMMOpen()
 				_G["SkuNavMMMainFrameScrollFrameContent1"]:SetWidth(self:GetParent():GetWidth() - _G["SkuNavMMMainFrameOptionsParent"]:GetWidth() - 10)
 				_G["SkuNavMMMainFrameScrollFrameContent1"]:SetHeight(self:GetParent():GetHeight() - 10)
 		
-				SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainWidth = self:GetParent():GetWidth()
-				SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainHeight = self:GetParent():GetHeight()
+				SkuSettings:Sub("SkuNav").SkuNavMMMainWidth = self:GetParent():GetWidth()
+				SkuSettings:Sub("SkuNav").SkuNavMMMainHeight = self:GetParent():GetHeight()
 
 				tRbIsDrag = false
 			end)
@@ -782,7 +782,7 @@ function SkuNav:SkuNavMMOpen()
 
 					_G["SkuNavMMMainFrameScrollFrame"]:SetPoint("TOPLEFT", _G["SkuNavMMMainFrame"], "TOPLEFT", _G["SkuNavMMMainFrameOptionsParent"]:GetWidth() + 5, -5)
 					_G["SkuNavMMMainFrameScrollFrame1"]:SetPoint("TOPLEFT", _G["SkuNavMMMainFrame"], "TOPLEFT", _G["SkuNavMMMainFrameOptionsParent"]:GetWidth() + 5, -5)
-					SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainIsCollapsed = true
+					SkuSettings:Sub("SkuNav").SkuNavMMMainIsCollapsed = true
 		
 				else
 					_G["SkuNavMMMainFrameOptionsParent"]:Show()
@@ -792,7 +792,7 @@ function SkuNav:SkuNavMMOpen()
 					_G["SkuNavMMMainFrame"]:SetWidth(_G["SkuNavMMMainFrame"]:GetWidth() + 300)
 					_G["SkuNavMMMainFrameScrollFrame"]:SetPoint("TOPLEFT", _G["SkuNavMMMainFrame"], "TOPLEFT", _G["SkuNavMMMainFrameOptionsParent"]:GetWidth() + 5, -5)
 					_G["SkuNavMMMainFrameScrollFrame1"]:SetPoint("TOPLEFT", _G["SkuNavMMMainFrame"], "TOPLEFT", _G["SkuNavMMMainFrameOptionsParent"]:GetWidth() + 5, -5)
-					SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainIsCollapsed = false
+					SkuSettings:Sub("SkuNav").SkuNavMMMainIsCollapsed = false
 				end
 			end)
 
@@ -1263,7 +1263,7 @@ function SkuNav:SkuNavMMOpen()
 			contentObj:Show()
 			local SkuNavMMMainFrameScrollFrameContenttTime1 = 0
 			contentObj:SetScript("OnUpdate", function(self, time)
-				if SkuOptions.db.profile[MODULE_NAME].showSkuMM == true then
+				if SkuSettings:Sub("SkuNav").showSkuMM == true then
 					SkuNavMMMainFrameScrollFrameContenttTime1 = SkuNavMMMainFrameScrollFrameContenttTime1 + time
 					if SkuNavMMMainFrameScrollFrameContentDraging == true then
 						ClearWaypointsMM()
@@ -1325,7 +1325,7 @@ function SkuNav:SkuNavMMOpen()
 		end
 
 		--restore mm visual from saved vars
-		if SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainIsCollapsed == true then
+		if SkuSettings:Sub("SkuNav").SkuNavMMMainIsCollapsed == true then
 			_G["SkuNavMMMainFrameOptionsParent"]:SetWidth(0)
 			_G["SkuNavMMMainFrameOptionsParent"]:Hide()
 			_G["SkuNavMMMainFrameScrollFrame"]:SetPoint("TOPLEFT", _G["SkuNavMMMainFrame"], "TOPLEFT", _G["SkuNavMMMainFrameOptionsParent"]:GetWidth() + 5, -5)
@@ -1339,9 +1339,9 @@ function SkuNav:SkuNavMMOpen()
 		end
 
 		_G["SkuNavMMMainFrame"]:ClearAllPoints()
-		_G["SkuNavMMMainFrame"]:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosX - _G["SkuNavMMMainFrameOptionsParent"]:GetWidth(), SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosY)
-		_G["SkuNavMMMainFrame"]:SetWidth(SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainWidth + _G["SkuNavMMMainFrameOptionsParent"]:GetWidth())
-		_G["SkuNavMMMainFrame"]:SetHeight(SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainHeight)
+		_G["SkuNavMMMainFrame"]:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", SkuSettings:Sub("SkuNav").SkuNavMMMainPosX - _G["SkuNavMMMainFrameOptionsParent"]:GetWidth(), SkuSettings:Sub("SkuNav").SkuNavMMMainPosY)
+		_G["SkuNavMMMainFrame"]:SetWidth(SkuSettings:Sub("SkuNav").SkuNavMMMainWidth + _G["SkuNavMMMainFrameOptionsParent"]:GetWidth())
+		_G["SkuNavMMMainFrame"]:SetHeight(SkuSettings:Sub("SkuNav").SkuNavMMMainHeight)
 
 		_G["SkuNavMMMainFrameScrollFrame"]:SetWidth(_G["SkuNavMMMainFrame"]:GetWidth() - _G["SkuNavMMMainFrameOptionsParent"]:GetWidth() - 10)
 		_G["SkuNavMMMainFrameScrollFrame"]:SetHeight(_G["SkuNavMMMainFrame"]:GetHeight() - 10)

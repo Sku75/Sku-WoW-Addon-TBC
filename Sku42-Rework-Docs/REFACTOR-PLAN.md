@@ -275,6 +275,10 @@ time with both styles coexisting.
     Cross-module `["SkuOptions"]` (7) left raw. SkuChat/Core.lua trips luaparser
     on a PRE-EXISTING `"\]"` escape in `ShortenChannelName` (unrelated) — verified
     via neutralize-parse that baseline and current both parse, so no new errors.
+  - [x] **B5 SkuNav.** 554 own-key sites migrated across 7 files. Scopes profile
+    + global. Two special cases: a global guard-init block (`if not … then … = {}
+    end`) → bare `Sub`, and a global ensure-exists `or {}` → bare `Sub`.
+    Cross-module `["SkuOptions"]` (42) left raw. neutralize-parse clean.
   - **Note on the flat schema:** authored for SkuMob (small/flat) as a demo, but
     DEFERRED for the larger modules (SkuQuest onward). The `Sub`-swap migration
     doesn't consume the flat per-key schema (scope is default/explicit), and

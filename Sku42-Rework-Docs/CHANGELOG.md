@@ -22,6 +22,12 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W1 Phase B — SkuNav migrated (B5).** 554 own-key settings accesses migrated
+  across 7 files. Scopes profile + global; a global guard-init block and a global
+  ensure-exists idiom special-cased to bare `Sub` calls. Cross-module
+  `["SkuOptions"]` reads stay raw. neutralize-parse clean; in-game test batched
+  with B4/B6.
+
 - **W1 Phase B — SkuChat migrated (B4).** 287 own-key settings accesses migrated
   to `SkuSettings:Sub` (Core 187, Options 100). Scopes profile + global; one
   global ensure-exists idiom special-cased. Cross-module `["SkuOptions"]` reads

@@ -6,7 +6,7 @@ local L = Sku.L
 local waypointVisitedDict = {}
 -- string -> nil
 function SkuNav:setWaypointVisited(wpName)
-	if not SkuOptions.db.profile[MODULE_NAME].trackVisited then return end
+	if not SkuSettings:Sub("SkuNav").trackVisited then return end
 	-- only track visited for things players would be interested in farming, like hostile NPCs and objects
 	-- assuming if NPC has no role, then hostile, but some friendly NPCs also don't have a role, like guards
 	-- could identify hostile creatures accurately if had access to "friendlyMask", but in SkuDB.NpcData only have access to "hostileMask" (as "factionID")
@@ -27,10 +27,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- string -> boolean
 function SkuNav:waypointWasVisited(wpName)
-	if not SkuOptions.db.profile[MODULE_NAME].trackVisited then return false end
+	if not SkuSettings:Sub("SkuNav").trackVisited then return false end
 	local lastVisited = waypointVisitedDict[wpName]
 	if lastVisited == nil then return false end
-	local timeToExpire = (SkuOptions.db.profile[MODULE_NAME].timeForVisitedToExpire - 1) * 60
+	local timeToExpire = (SkuSettings:Sub("SkuNav").timeForVisitedToExpire - 1) * 60
 	-- 0 = refresh disabled
 	if timeToExpire == 0 then return true end
 	if GetServerTime() - lastVisited > timeToExpire then
