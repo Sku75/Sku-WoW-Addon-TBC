@@ -22,6 +22,20 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W1 Phase B COMPLETE and verified in-game (2026-06-26).** All six modules
+  (SkuMob, SkuQuest, SkuAuras, SkuChat, SkuNav, SkuCore — ~2700 own-key call
+  sites) migrated onto `SkuSettings:Sub`. Exercised on v42: SkuChat (chat /
+  channels), SkuNav (waypoints / routes / beacons), SkuCore (menu, auction house
+  + filters, mail, vendor junk-sell / repair, equipment sets, scanning, combat) —
+  **behaviour identical to before, zero regressions, no Lua errors captured.**
+  Settings access for these modules now goes through the SkuSettings facade;
+  cross-module `["SkuOptions"]` reads remain raw by design.
+  - Remaining W1 work (next session): **Phase C** — turn on `Set` type validation
+    permanently, remove the raw-path fallback, and publish the finalised schema as
+    the input contract for Workstream 2. Also still open: migrating SkuOptions'
+    OWN settings access (the SkuZOptions module) and authoring the flat per-key
+    schema for the larger modules (deferred during Phase B).
+
 - **W1 Phase B — SkuCore migrated (B6); Phase B (B1–B6) complete.** 1320 own-key
   settings accesses migrated across 31 files. SkuCore's files do NOT all share one
   namespace: many sub-features (`AuctionHouse`, `RangeCheck`, `TurnToUnit`,

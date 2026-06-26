@@ -239,10 +239,10 @@ time with both styles coexisting.
     enumerating the ~1,236 char/global keys + their correct defaults requires the
     same per-module pass that migrates the call sites; doing it blind now would
     risk the "behaviour identical" constraint.
-- [~] A5. Phase A verification: persisted `SkuOptionsDB` unchanged; ship checkpoint commit.
-  - luaparser-gated. In-game smoke test (load clean, `moduleDefaults` identity,
-    settings unchanged) pending.
-- [~] B1..Bn. Migrate call sites per module (SkuMob → SkuQuest → SkuAuras → SkuChat → SkuNav → SkuCore), each with syntax + smoke verification + commit.
+- [x] A5. Phase A verification: persisted `SkuOptionsDB` unchanged; checkpoint shipped.
+  - luaparser-gated; in-game verified (load clean, `moduleDefaults` identity true,
+    settings unchanged).
+- [x] B1..Bn. Migrate call sites per module (SkuMob → SkuQuest → SkuAuras → SkuChat → SkuNav → SkuCore). **DONE + verified in-game (2026-06-26): all six modules exercised on v42, behaviour identical, zero regressions, no Lua errors captured.** ~2700 own-key call sites moved onto `SkuSettings:Sub` (scope-explicit where needed); cross-module reads (esp. `["SkuOptions"]`) intentionally left raw.
   - [x] **B1 SkuMob.** All of SkuMob's own-key access (43 sites: 27 in Core.lua,
     16 in Options.lua) moved off raw `SkuOptions.db.profile[MODULE_NAME]/["SkuMob"]`
     onto `SkuSettings:Sub("SkuMob")`. Chose the `Sub`-swap (uniform token
