@@ -3912,6 +3912,34 @@ function SkuNav:GetClosestWaypointFromBaseName(aBaseName, aOriginWaypointName)
 					end
 				end
 			end
-		end		
+		end
 	end
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- SkuNav.Geo — declared navigation/geo service interface  (W4 Phase B, category-B; X-B1).
+--
+-- These are the stateless map / coordinate / area / direction queries that other
+-- modules legitimately depend on (SkuQuest and SkuCore are the current callers; see
+-- the W4 reference matrix). They read static SkuDB tables and WoW C_Map APIs and
+-- return values without mutating shared state — a real navigation *service*, not a
+-- cycle to break.
+--
+-- This declaration is purely ADDITIVE: every member delegates to the existing
+-- SkuNav:* implementation, so behaviour is byte-identical and NO caller has to change
+-- yet. The contract simply gives that service an explicit, stable name. Callers are
+-- repointed to SkuNav.Geo:* incrementally in a later step (still W4), not here.
+--
+-- Delegation (rather than copying function refs) keeps self-binding correct no matter
+-- how the underlying method resolves SkuNav, and `return SkuNav:X(...)` is tail-call
+-- safe and preserves every return value (e.g. GetAreaData returns six).
+SkuNav.Geo = SkuNav.Geo or {}
+function SkuNav.Geo:GetBestMapForUnit(...)               return SkuNav:GetBestMapForUnit(...) end
+function SkuNav.Geo:GetCurrentAreaId(...)                return SkuNav:GetCurrentAreaId(...) end
+function SkuNav.Geo:GetAreaData(...)                     return SkuNav:GetAreaData(...) end
+function SkuNav.Geo:GetUiMapIdFromAreaId(...)            return SkuNav:GetUiMapIdFromAreaId(...) end
+function SkuNav.Geo:GetAreaIdFromUiMapId(...)            return SkuNav:GetAreaIdFromUiMapId(...) end
+function SkuNav.Geo:GetContinentNameFromContinentId(...) return SkuNav:GetContinentNameFromContinentId(...) end
+function SkuNav.Geo:GetDirectionTo(...)                  return SkuNav:GetDirectionTo(...) end
+function SkuNav.Geo:GetDirectionToAsString(...)          return SkuNav:GetDirectionToAsString(...) end
+function SkuNav.Geo:Distance(...)                        return SkuNav:Distance(...) end

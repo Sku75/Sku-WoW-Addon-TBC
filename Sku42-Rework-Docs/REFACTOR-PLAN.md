@@ -817,11 +817,88 @@ codebase. Do it as a long series of small, independently-shippable extractions:
     `tostring(SkuUtil:Unescape(x))` wrapper to preserve its load-bearing contract
     that a nil tooltip line becomes the string `"nil"` (downstream compares `~= "nil"`).
     (The `Libs/SkuVoice-1.0` lib-local `Unescape` is a vendored lib — left as-is.)
-- [ ] X-B1. Enumerate category-B service edges; declare interface tables (start with `SkuNav.Geo`).
-- [ ] X-B2. Enumerate category-C shared-state fields and confirm single-writer for each.
+- [x] X-B1. Enumerate category-B service edges; declare interface tables (start with `SkuNav.Geo`).
+  - **Inventory method correction:** the 4.1/4.2 counts are *qualified member
+    accesses* (`Target:method` / `Target.field`), NOT bare token greps. A bare
+    `\bSkuNav\b` grep over SkuQuest gives 119 lines / 159 matches (comments,
+    strings, the definition); counting only `SkuNav:`/`SkuNav.` accesses gives
+    **exactly 91**, matching 4.1. Reproduce with `_members.py <caller> <target>`.
+  - **SkuQuest→SkuNav (91)** decomposes into three services, not one:
+    - *Geo* (stateless map/coord/area/direction): `GetBestMapForUnit`,
+      `GetCurrentAreaId`, `GetAreaData`, `GetUiMapIdFromAreaId`,
+      `GetAreaIdFromUiMapId`, `GetContinentNameFromContinentId`,
+      `GetDirectionToAsString`, `Distance` (+ `GetDirectionTo` from SkuCore).
+    - *Route/Waypoint* (`GetWaypointData2`, `SelectWP`, `EndFollowingWpOrRt`,
+      `GetAllMetaTargetsFromWp5`, `getAnnotatedWaypointLabel`,
+      `GetNearestWpsWithLinksToWp`, `GetAllLinkedWPsInRangeToCoords`,
+      `GetNpcRoles`, `GetLayerText`, `GetNonAutoLevel`).
+    - *Config/constants* read directly (`BeaconSoundSetNames`,
+      `ClickClackSoundsets`, `MaxMetaWPs`, `MaxMetaEntryRange`,
+      `BestRouteWeightedLengthModForMetaDistance`).
+  - **`SkuNav.Geo` declared** (additive) at the end of `SkuNav/Core.lua`: a
+    delegating facade — `function SkuNav.Geo:X(...) return SkuNav:X(...) end` for
+    the 9 geo members above. Behaviour byte-identical, self-binding correct,
+    multi-return preserved (`GetAreaData` returns 6). **No caller changed** —
+    callers get repointed incrementally later in W4. Other consumer of these:
+    SkuCore (`Core.lua`, `gameWorldObjects.lua`, `minimapScanner.lua`).
+  - Route/Waypoint + the constants reads are the NEXT category-B interfaces
+    (e.g. `SkuNav.Route`); deferred until there is a reason to formalize them
+    (same "no speculative layer" discipline as W1/W2). Geo first because it is
+    the cleanest, largest, purely-stateless slice.
+- [x] X-B2. Enumerate category-C shared-state fields and confirm single-writer for each.
+  - Method: `_writers.py <field…>` classifies every `SkuCore.<field>` occurrence
+    across all source (excl. Libs/SkuDB/SkuAudioData) as write (LHS of a real
+    `=`) vs read, per file. Results (sku42 HEAD, post-Phase-A):
+  - **Single-writer, SAFE to wrap with a state service (Phase C):**
+    - `inCombat` — 3 writes ALL in `SkuCore/Core.lua` (init + the combat
+      enter/leave handler @2473/2479); 15 reader files, 51 reads. The prime
+      `SkuState:IsInCombat()` + combat-event candidate.
+    - `isMoving` — 3 writes ALL in `SkuCore/Core.lua` (init + @1173/1175);
+      readers: SkuZOptions 6, SkuCore 4. Clean.
+    - `talentSet` — written **once**, `SkuCore/Core.lua:38 = 1`. In this TBC
+      build it is effectively a write-once constant; the ~591 "reads" are all
+      table-key uses in `aq.lua`/`aqCombat.lua` (`SkuCore.aq[SkuCore.talentSet]`).
+      Single-writer trivially; low migration value.
+    - `SkuRaidTargetIndex` — 1 write, `SkuCore/aqCombat.lua:41` (table init; owner
+      is aqCombat, NOT Core). Readers: SkuZOptions 8, aqCombat 5. Table contents
+      mutated in place (identity stable).
+  - **MULTI-writer — do NOT model as a one-writer field; use a dispatcher
+    request/event instead (Phase C):**
+    - `openMenuAfterCombat` — writers in BOTH `SkuCore/Core.lua` (3) AND
+      `SkuZOptions/Core.lua` (6); only 1 reader (Core consumes it). It is a
+      cross-module *command flag* ("open the menu once combat ends"), not state.
+    - `openMenuAfterMoving` — same shape: writers in SkuCore (3) + SkuZOptions
+      (7); 1 reader. Same dispatcher-event treatment.
+  - **Single-owner + one defensive guard:**
+    - `GossipList` — written in `SkuCore/Core.lua` (4×) plus a lazy-init guard
+      `SkuCore.GossipList = SkuCore.GossipList or {}` in `SkuZOptions/Core.lua:5047`;
+      5 reads in SkuZOptions. Treat SkuCore as owner; the guard folds away once a
+      service owns init.
+  - **Misfiled state (stored on SkuCore but owned elsewhere) — relocate, don't
+    service-wrap:**
+    - `pendingPetRename` — written AND read only by `SkuMob/Options.lua`. Belongs
+      on SkuMob; move it there (trivial) rather than routing through SkuState.
+  - **Shared read-only data tables (single init-writer; published data, not
+    rot):** `Monitor` (aq.lua), `Keys` (data.lua), `outputSoundFiles` (Core.lua),
+    `RaidTargetValues` (aqCombat.lua). Low risk; candidates for a data module
+    later, not for the state service.
 - [ ] X-C1. Introduce `SkuState` / dispatcher events; migrate field readers one field at a time.
+  - **Ordering (from X-B2):** start with `inCombat` (single-writer, most readers
+    → biggest decoupling win), then `isMoving`. Handle `openMenuAfter*` as
+    dispatcher events (multi-writer command flags), not `SkuState` getters.
+    `pendingPetRename` is a separate trivial relocation to SkuMob. **BLOCKED on
+    user checkpoint (Phase C is the first behaviour-touching step).**
 - [ ] X-D1. Promote SkuCore features to `NewModule`, most self-contained first; move state off the shared table.
 - [ ] X-V. Re-run the reference matrix after each phase; record the falling cycle counts here.
+  - **Post-Phase-A baseline (qualified-access counts, the 4.1 method):**
+    - SkuCore → SkuDispatcher 89, SkuNav 38, **SkuChat 3** (was 117 — Unescape
+      extraction collapsed it; only `SetEditboxToCustom`×2 +
+      `JoinOrLeaveSkuChatChannel`×1 remain), SkuQuest 8, SkuAuras 8, SkuMob 3.
+    - SkuQuest → SkuNav 91, SkuCore 5.  SkuNav → SkuQuest 26, SkuCore 7.
+    - SkuMob → SkuCore 26.  SkuAuras → SkuCore 14.  SkuChat → SkuCore 14.
+    - The only Phase-A delta is the SkuCore→SkuChat collapse; everything else is
+      unchanged (Phase A was additive). Re-run `_matrix.py` (token counts, fast
+      trend) + `_members.py` (precise per-member) after each later phase.
 
 ---
 
