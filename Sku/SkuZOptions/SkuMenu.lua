@@ -156,9 +156,17 @@ end
 -- `options.args` table (the "settings" kind delegates to it), NOT reimplemented
 -- here, so their exact navigation semantics are preserved by reuse.
 --
--- Kinds (more added as conversions consume them — no speculative kinds):
---   { kind = "list",     label=, filterable=?, build=fn(entry) }   -- dynamic, rebuilt each visit
---   { kind = "settings", label=, filterable=?, args=<options.args>, db=<subtable> }
+-- Kinds:
+--   { kind = "list",     label=, build=fn(entry) }                       -- dynamic, rebuilt each visit
+--   { kind = "submenu",  label=, build=fn(entry) | children=specList }   -- dynamic container
+--   { kind = "action",   label=, run=fn(self,value,name,parentName) }    -- leaf; Enter runs run()
+--   { kind = "settings", label=, args=<options.args>, db=<subtable> }    -- IterateOptionsArgs container
+--
+-- Any spec may ALSO carry these optional fields, copied verbatim onto the node so
+-- a converted hand-built entry keeps its EXACT property set (faithful, mechanical
+-- conversion): filterable, dynamic, isSelect, isMultiselect, noStepUpAfterSelect,
+-- macrotext, secureMacro, tooltip (-> textFull), and the handlers onAction
+-- (-> OnAction), onEnter, onLeave, getCurrentValue, onUpdate, onKey.
 local function specLabel(aSpec)
 	local lbl = aSpec.label
 	if type(lbl) == "function" then
@@ -169,34 +177,80 @@ local function specLabel(aSpec)
 	return lbl ~= nil and lbl or ""
 end
 
+local PASSTHROUGH_FLAGS = {
+	"filterable", "dynamic", "isSelect", "isMultiselect",
+	"noStepUpAfterSelect", "macrotext", "secureMacro",
+}
+local PASSTHROUGH_HANDLERS = {
+	onAction = "OnAction", onEnter = "OnEnter", onLeave = "OnLeave",
+	getCurrentValue = "GetCurrentValue", onUpdate = "OnUpdate", onKey = "OnKey",
+}
+
+-- Copy the optional flags/handlers a spec carries onto the template node, so a
+-- converted entry reproduces its hand-built property set exactly.
+local function applyCommon(aEntry, aSpec)
+	for _, f in ipairs(PASSTHROUGH_FLAGS) do
+		if aSpec[f] ~= nil then aEntry[f] = aSpec[f] end
+	end
+	if aSpec.tooltip ~= nil then aEntry.textFull = aSpec.tooltip end
+	for specKey, nodeKey in pairs(PASSTHROUGH_HANDLERS) do
+		if aSpec[specKey] ~= nil then aEntry[nodeKey] = aSpec[specKey] end
+	end
+end
+
 function SkuMenu:BuildNode(aParent, aSpec)
 	if type(aSpec) ~= "table" then return nil end
 	local kind = aSpec.kind
+	local tEntry = SkuOptions:InjectMenuItems(aParent, {specLabel(aSpec)}, SkuGenericMenuItem)
+	applyCommon(tEntry, aSpec)
 
 	if kind == "list" then
 		-- Dynamic container: children rebuilt on each visit by spec.build(entry).
-		local tEntry = SkuOptions:InjectMenuItems(aParent, {specLabel(aSpec)}, SkuGenericMenuItem)
 		tEntry.dynamic = true
-		if aSpec.filterable then tEntry.filterable = true end
 		local build = aSpec.build
 		tEntry.BuildChildren = function(self)
 			if build then build(self) end
 		end
-		return tEntry
+
+	elseif kind == "submenu" then
+		-- Container: either a custom build closure or a nested spec list. When
+		-- neither is given it is a static container the caller fills itself.
+		if aSpec.build or aSpec.children then
+			tEntry.dynamic = true
+			local build, children = aSpec.build, aSpec.children
+			tEntry.BuildChildren = function(self)
+				if build then
+					build(self)
+				elseif children then
+					SkuMenu:Build(self, children)
+				end
+			end
+		end
+
+	elseif kind == "action" then
+		-- Leaf: Enter runs run(); flags like macrotext/secureMacro come via
+		-- applyCommon. An explicit onAction (set above) wins over run.
+		if aSpec.run and aSpec.onAction == nil then
+			local run = aSpec.run
+			tEntry.OnAction = function(self, aValue, aName, aParentMenuName)
+				run(self, aValue, aName, aParentMenuName)
+			end
+		end
 
 	elseif kind == "settings" then
 		-- Named container populated immediately from an AceConfig args table via
 		-- the existing IterateOptionsArgs (toggle/select/range/execute children).
-		local tEntry = SkuOptions:InjectMenuItems(aParent, {specLabel(aSpec)}, SkuGenericMenuItem)
-		if aSpec.filterable ~= false then tEntry.filterable = true end
+		if aSpec.filterable == nil then tEntry.filterable = true end
 		if aSpec.args then
 			SkuOptions:IterateOptionsArgs(aSpec.args, tEntry, aSpec.db)
 		end
-		return tEntry
+
+	else
+		if dprint then dprint("SkuMenu:BuildNode: unknown kind", tostring(kind)) end
+		return nil
 	end
 
-	if dprint then dprint("SkuMenu:BuildNode: unknown kind", tostring(kind)) end
-	return nil
+	return tEntry
 end
 
 -- Compile a flat list of specs under aParent, in order (prev/next wired centrally
