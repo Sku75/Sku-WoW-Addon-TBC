@@ -1772,52 +1772,14 @@ function SkuOptions:CreateMainFrame()
 			SkuChat:CloseChat()
 
 			if #SkuOptions.Menu == 0 then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuNavMenuEntry"]}, SkuGenericMenuItem)
-				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.BuildChildren = function(self)
-					SkuNav:MenuBuilder(tNewMenuEntry)
-				end
-
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuMobMenuEntry"]}, SkuGenericMenuItem)
-				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.BuildChildren = function(self)
-					SkuMob:MenuBuilder(tNewMenuEntry)
-				end
-
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuChatMenuEntry"]}, SkuGenericMenuItem)
-				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.BuildChildren = function(self)
-					SkuChat:MenuBuilder(tNewMenuEntry)
-				end
-
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuQuestMenuEntry"]}, SkuGenericMenuItem)
-				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.BuildChildren = function(self)
-					SkuQuest:MenuBuilder(tNewMenuEntry)
-				end
-
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuCoreMenuEntry"]}, SkuGenericMenuItem)
-				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.BuildChildren = function(self)
-					SkuCore:MenuBuilder(tNewMenuEntry)
-				end
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuAurasMenuEntry"]}, SkuGenericMenuItem)
-				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.BuildChildren = function(self)
-					SkuAuras:MenuBuilder(tNewMenuEntry)
-				end
-
-				-- Spieloptionen: Blizzards eingebaute Spieloptionen (modernes
-				-- Settings-System, sonst nur per Escape-Menue erreichbar) ueber
-				-- Skus Menue zugaenglich. Logik in SkuCore/gameOptions.lua.
-				local tGameOptTitle = (GetLocale and GetLocale() == "deDE") and "Spieloptionen" or "Game Options"
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {tGameOptTitle}, SkuGenericMenuItem)
-				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.BuildChildren = function(self)
-					if SkuCore and SkuCore.GameOptionsMenuBuilder then
-						SkuCore:GameOptionsMenuBuilder(self)
-					end
-				end
+				-- Root menu modules + Game Options are assembled from the SkuMenu
+				-- registry in layout order (SkuMenu.rootLayout / SkuZOptions/SkuMenu.lua),
+				-- replacing the old hardcoded per-module InjectMenuItems sequence.
+				-- Re-ordering the root is now a data edit to that layout list (the
+				-- contribution/layout decoupling, W2 Phase A). Injecting one entry at a
+				-- time reproduces the original prev/next sibling chain exactly. The
+				-- Accessibility ("Menue 7") grouping below stays inline for now.
+				SkuMenu:AssembleRoot(SkuOptions.Menu)
 
 				-- ============================================================
 				-- MENUE 7: BARRIEREFREIHEIT  (Umbau gemaess "Konzept Menue 7")

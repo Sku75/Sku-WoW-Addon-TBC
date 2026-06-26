@@ -22,6 +22,28 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W2 Phase A — menu registry + layout decoupling (M-A1, M-A2; M-A3 mechanism).**
+  New `Sku/SkuZOptions/SkuMenu.lua` (`ns.Menu`, global `SkuMenu`, TOC-loaded right
+  after `SkuSettings.lua`). It makes the ROOT menu data-driven: a **registry** of
+  module contributions (`RegisterModule(id, {label, build})`) plus a **layout**
+  list (`rootLayout`) deciding what appears at root and in what order. The old
+  hardcoded inline sequence in `SkuZOptions/Core.lua` (6 module entries + Game
+  Options, ~46 lines) is replaced by one `SkuMenu:AssembleRoot(SkuOptions.Menu)`
+  call. Behaviour-identical by construction — same 7 entries, same order, labels
+  resolved at open time (incl. Game Options' locale-computed title), `dynamic` +
+  `BuildChildren -> Module:MenuBuilder(entry)` reproduced, and one-at-a-time
+  injection reproduces the original prev/next sibling chain. Also ships central
+  `Insert`/`Remove` sibling-list helpers (Remove additive, for the later M-D
+  removal-path cleanup). The Accessibility ("Menue 7") grouping stays inline and
+  untouched. The toggle/enum/range "compiler" the plan sketched is deliberately
+  NOT built here — that capability already exists as `IterateOptionsArgs`; a
+  declarative archetype layer is deferred to M-B, shaped by the first real
+  conversion (avoiding a speculative layer with no consumer, per W1's lesson).
+  Both files luaparser-clean. **Decoupling proven by construction:** reordering
+  the root is now a one-line edit to `rootLayout` with no module-code change.
+  In-game `/wdsku3` before/after verification pending (open the menu, confirm the
+  7 top entries appear in the same order and each descends into the same subtree).
+
 - **W1 Phase B — SkuOptions migrated (B7); Phase B now fully complete.** The
   follow-up that closes out Phase B: the SkuZOptions module's OWN settings access
   (259 sites — Core 110, Options 121, SkuKeyBinds 25) moved off raw

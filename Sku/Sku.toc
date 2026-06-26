@@ -25,6 +25,7 @@ Core.lua
 
 SkuUtil.lua
 SkuZOptions\SkuSettings.lua
+SkuZOptions\SkuMenu.lua
 
 Libs\SkuTTS-1.0\SkuTTS-1.0.lua
 Libs\SkuVoice-1.0\SkuVoice-1.0.lua
