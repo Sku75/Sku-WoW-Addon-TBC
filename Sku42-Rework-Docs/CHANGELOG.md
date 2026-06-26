@@ -22,6 +22,19 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W2 Phase D — node removal centralized through `SkuMenu:Remove` (M-D1).**
+  Enumerated every menu-node removal / `prev`-`next` write site. There is exactly ONE
+  genuine node *removal*: the AH buy-prune in `SkuCore/auctionHouse.lua`
+  (`AuctionPruneListAuction`), which hand-spliced `prev`/`next` and `table.remove`d the
+  entry from `children`. Routed it through the central `SkuMenu:Remove(tEntry)`
+  (behaviour-identical splice + remove); dropped the now-dead manual index loop;
+  `tNeighbor` (cursor re-position) still captured before removal. Everything else that
+  writes `prev`/`next` is NOT a removal and stays: `InjectMenuItems` (central insertion)
+  and the text-filter re-link in `ApplyFilter` (rebuilds the whole filtered chain — a
+  re-link, not a splice). This closes the "removal is an unguarded invariant" gap that
+  caused the "arrow navigation skips onto a ghost entry" bug class. luaparser-clean;
+  in-game test = an AH multi-buy where the last of a duplicate group is pruned.
+
 - **W2 Phase B — all remaining module MenuBuilders converted to specs (M-B2).**
   In one batch (fan-out, one agent per file, strict behaviour-preservation rules,
   each luaparser-gated and diff-reviewed): SkuNav, SkuChat, SkuQuest, SkuCore, and

@@ -598,26 +598,18 @@ function SkuCore:AuctionPruneListAuction(aRecord)
          if QueryResultsDB[i] == tRemovedRec then table.remove(QueryResultsDB, i); break end
       end
    end
-   -- Listenplatz des Eintrags merken (für die Cursor-Nachpositionierung).
+   -- Nachbarn fuer die Cursor-Nachpositionierung merken (vor dem Entfernen).
    local tParent = tEntry.parent
-   local tEntryIdx
-   if tParent and tParent.children then
-      for i = 1, #tParent.children do
-         if tParent.children[i] == tEntry then tEntryIdx = i; break end
-      end
-   end
    if #tDupes == 0 then
       -- Letzte Auktion der Gruppe -> Eintrag ganz entfernen.
       -- WICHTIG: Skus Menü-Navigation (OnNext/OnPrev) läuft über die
       -- .next/.prev-VERKETTUNG der Einträge, NICHT über den children-Array-Index.
       -- Den Eintrag daher AUCH aus dieser Kette aushängen, sonst läuft Pfeil-
-      -- hoch/runter weiter über den entfernten Geist-Eintrag.
+      -- hoch/runter weiter über den entfernten Geist-Eintrag. Das uebernimmt
+      -- jetzt zentral SkuMenu:Remove (haengt aus children + .prev/.next aus,
+      -- EIN Splice-Punkt statt handgepflegter Verkettung -- W2 M-D).
       local tNeighbor = tEntry.next or tEntry.prev
-      if tEntry.prev then tEntry.prev.next = tEntry.next end
-      if tEntry.next then tEntry.next.prev = tEntry.prev end
-      if tParent and tParent.children and tEntryIdx then
-         table.remove(tParent.children, tEntryIdx)
-      end
+      SkuMenu:Remove(tEntry)
       if SkuCore.QueryResultsByName then
          for k, v in pairs(SkuCore.QueryResultsByName) do
             if v == tEntry then SkuCore.QueryResultsByName[k] = nil; break end

@@ -545,7 +545,21 @@ to specs one menu at a time.
   across all files; **one big in-game test pending** (navigate every module menu + Game
   Options; behaviour must be unchanged).
 - [ ] M-C1. Link generated settings handlers to `SkuSettings` (depends on Workstream 1 Phase C); remove redundant inline handlers.
-- [ ] M-D1. Enumerate all node-removal sites; route through `SkuMenu:Remove`; remove any remaining hand `prev`/`next` writes.
+- [x] M-D1. Enumerated all node-removal / `prev`-`next` write sites. Finding: there is
+  exactly ONE genuine menu-node *removal* — the AH buy-prune in
+  `SkuCore/auctionHouse.lua` (`AuctionPruneListAuction`), which hand-spliced
+  `prev`/`next` + `table.remove`d from `children`. Routed it through the central
+  `SkuMenu:Remove(tEntry)` (behaviour-identical: same splice + remove, plus it nils the
+  ghost's pointers); dropped the now-dead manual index loop; `tNeighbor` for the cursor
+  re-position is still captured before removal. The OTHER `prev`/`next` writes are NOT
+  removals and stay by design: `SkuZOptions/Core.lua` `InjectMenuItems` (the canonical
+  central INSERTION wiring) and the text-filter **re-link** (`ApplyFilter`, ~3599-3628 /
+  ~3678-3679) which rebuilds the whole visible chain over the filtered subset — a full
+  re-link, not a per-node splice, so `SkuMenu:Remove` does not apply (a future
+  `SkuMenu:Relink` could centralize it, but it has one behaviour-critical consumer and is
+  out of M-D scope). The `linksHistory` `table.remove`s are breadcrumb history, not menu
+  nodes. luaparser-clean; in-game test = an AH multi-buy where the last of a group goes
+  "vergriffen" and is pruned (arrow up/down must skip the removed entry).
 
 ---
 
