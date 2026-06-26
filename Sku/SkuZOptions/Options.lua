@@ -1,4 +1,4 @@
-local MODULE_NAME = "SkuOptions"
+﻿local MODULE_NAME = "SkuOptions"
 local L = Sku.L
 
 
@@ -44,10 +44,10 @@ SkuOptions.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].vocalizeMenuNumbers = val
+				SkuSettings:Sub("SkuOptions").vocalizeMenuNumbers = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].vocalizeMenuNumbers
+				return SkuSettings:Sub("SkuOptions").vocalizeMenuNumbers
 			end
 		},
 		vocalizeSubmenus = {
@@ -56,10 +56,10 @@ SkuOptions.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].vocalizeSubmenus = val
+				SkuSettings:Sub("SkuOptions").vocalizeSubmenus = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].vocalizeSubmenus
+				return SkuSettings:Sub("SkuOptions").vocalizeSubmenus
 			end
 		},
 		TTSSepPause = {
@@ -68,10 +68,10 @@ SkuOptions.options = {
 			desc = "",
 			type = "range",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].TTSSepPause = val
+				SkuSettings:Sub("SkuOptions").TTSSepPause = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].TTSSepPause
+				return SkuSettings:Sub("SkuOptions").TTSSepPause
 			end
 		},
 		backgroundSound = {
@@ -81,10 +81,10 @@ SkuOptions.options = {
 			type = "select",
 			values = SkuCore.BackgroundSoundFiles,
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].backgroundSound = val
+				SkuSettings:Sub("SkuOptions").backgroundSound = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].backgroundSound
+				return SkuSettings:Sub("SkuOptions").backgroundSound
 			end
 		},
 		localActive = {
@@ -93,10 +93,10 @@ SkuOptions.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].localActive = val
+				SkuSettings:Sub("SkuOptions").localActive = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].localActive
+				return SkuSettings:Sub("SkuOptions").localActive
 			end
 		},
 		--[[
@@ -106,10 +106,10 @@ SkuOptions.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu = val
+				SkuSettings:Sub("SkuOptions").useBlizzTtsInMenu = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].useBlizzTtsInMenu
+				return SkuSettings:Sub("SkuOptions").useBlizzTtsInMenu
 			end
 		},
 		]]
@@ -124,11 +124,11 @@ SkuOptions.options = {
 						desc = "",
 						type = "range",
 						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].soundChannels.MasterVolume = val
-							C_CVar.SetCVar("Sound_MasterVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.MasterVolume / 100)
+							SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume = val
+							C_CVar.SetCVar("Sound_MasterVolume", SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume / 100)
 						end,
 						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].soundChannels.MasterVolume
+							return SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume
 						end
 					},
 					SFXVolume = {
@@ -137,11 +137,11 @@ SkuOptions.options = {
 						desc = "",
 						type = "range",
 						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].soundChannels.SFXVolume = val
-							C_CVar.SetCVar("Sound_SFXVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.SFXVolume / 100)
+							SkuSettings:Sub("SkuOptions").soundChannels.SFXVolume = val
+							C_CVar.SetCVar("Sound_SFXVolume", SkuSettings:Sub("SkuOptions").soundChannels.SFXVolume / 100)
 						end,
 						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].soundChannels.SFXVolume
+							return SkuSettings:Sub("SkuOptions").soundChannels.SFXVolume
 						end
 					},
 					MusicVolume = {
@@ -150,11 +150,11 @@ SkuOptions.options = {
 						desc = "",
 						type = "range",
 						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].soundChannels.MusicVolume = val
-							C_CVar.SetCVar("Sound_MusicVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.MusicVolume / 100)
+							SkuSettings:Sub("SkuOptions").soundChannels.MusicVolume = val
+							C_CVar.SetCVar("Sound_MusicVolume", SkuSettings:Sub("SkuOptions").soundChannels.MusicVolume / 100)
 						end,
 						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].soundChannels.MusicVolume
+							return SkuSettings:Sub("SkuOptions").soundChannels.MusicVolume
 						end
 					},
 					AmbienceVolume = {
@@ -163,11 +163,11 @@ SkuOptions.options = {
 						desc = "",
 						type = "range",
 						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].soundChannels.AmbienceVolume = val
-							C_CVar.SetCVar("Sound_AmbienceVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.AmbienceVolume / 100)
+							SkuSettings:Sub("SkuOptions").soundChannels.AmbienceVolume = val
+							C_CVar.SetCVar("Sound_AmbienceVolume", SkuSettings:Sub("SkuOptions").soundChannels.AmbienceVolume / 100)
 						end,
 						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].soundChannels.AmbienceVolume
+							return SkuSettings:Sub("SkuOptions").soundChannels.AmbienceVolume
 						end
 					},
 					DialogVolume = {
@@ -176,11 +176,11 @@ SkuOptions.options = {
 						desc = "",
 						type = "range",
 						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].soundChannels.DialogVolume = val
-							C_CVar.SetCVar("Sound_DialogVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.DialogVolume / 100)
+							SkuSettings:Sub("SkuOptions").soundChannels.DialogVolume = val
+							C_CVar.SetCVar("Sound_DialogVolume", SkuSettings:Sub("SkuOptions").soundChannels.DialogVolume / 100)
 						end,
 						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].soundChannels.DialogVolume
+							return SkuSettings:Sub("SkuOptions").soundChannels.DialogVolume
 						end
 					},
 					SkuChannel = {
@@ -190,10 +190,10 @@ SkuOptions.options = {
 						type = "select",
 						values = SKU_CONSTANTS.SOUNDCHANNELS,
 						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].soundChannels.SkuChannel = val
+							SkuSettings:Sub("SkuOptions").soundChannels.SkuChannel = val
 						end,
 						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].soundChannels.SkuChannel
+							return SkuSettings:Sub("SkuOptions").soundChannels.SkuChannel
 						end
 					},
 				},
@@ -216,7 +216,7 @@ SkuOptions.options = {
 						end
 					end,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnableReverb = val
+						SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableReverb = val
 						if val == true then
 							C_CVar.SetCVar("Sound_EnableReverb", 1)
 						else
@@ -224,7 +224,7 @@ SkuOptions.options = {
 						end
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnableReverb
+						return SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableReverb
 					end
 				},
 				Sound_EnablePositionalLowPassFilter = {
@@ -240,7 +240,7 @@ SkuOptions.options = {
 						end
 					end,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnablePositionalLowPassFilter = val
+						SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnablePositionalLowPassFilter = val
 						if val == true then
 							C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", 1)
 						else
@@ -248,7 +248,7 @@ SkuOptions.options = {
 						end
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnablePositionalLowPassFilter
+						return SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnablePositionalLowPassFilter
 					end
 				},
 				Sound_EnableDSPEffects = {
@@ -264,7 +264,7 @@ SkuOptions.options = {
 						end
 					end,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnableDSPEffects = val
+						SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableDSPEffects = val
 						if val == true then
 							C_CVar.SetCVar("Sound_EnableDSPEffects", 1)
 						else
@@ -272,7 +272,7 @@ SkuOptions.options = {
 						end
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnableDSPEffects
+						return SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableDSPEffects
 					end
 				},
 				Sound_EnableSoundWhenGameIsInBG = {
@@ -288,7 +288,7 @@ SkuOptions.options = {
 						end
 					end,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnableSoundWhenGameIsInBG = val
+						SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableSoundWhenGameIsInBG = val
 						if val == true then
 							C_CVar.SetCVar("Sound_EnableSoundWhenGameIsInBG", 1)
 						else
@@ -296,7 +296,7 @@ SkuOptions.options = {
 						end
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnableSoundWhenGameIsInBG
+						return SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableSoundWhenGameIsInBG
 					end
 				},
 				Sound_ZoneMusicNoDelay = {
@@ -312,7 +312,7 @@ SkuOptions.options = {
 						end
 					end,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_ZoneMusicNoDelay = val
+						SkuSettings:Sub("SkuOptions").soundSettings.Sound_ZoneMusicNoDelay = val
 						if val == true then
 							C_CVar.SetCVar("Sound_ZoneMusicNoDelay", 1)
 						else
@@ -320,7 +320,7 @@ SkuOptions.options = {
 						end
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_ZoneMusicNoDelay
+						return SkuSettings:Sub("SkuOptions").soundSettings.Sound_ZoneMusicNoDelay
 					end
 				},
 			},
@@ -338,10 +338,10 @@ SkuOptions.options = {
 					desc = "",
 					type = "toggle",
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].debugOptions.soundOnError = val
+						SkuSettings:Sub("SkuOptions").debugOptions.soundOnError = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].debugOptions.soundOnError
+						return SkuSettings:Sub("SkuOptions").debugOptions.soundOnError
 					end
 				},
 				--[[
@@ -351,10 +351,10 @@ SkuOptions.options = {
 					desc = "",
 					type = "execute",
 					set = function(info,val)
-						--SkuOptions.db.profile[MODULE_NAME].debugOptions.showError = val
+						--SkuSettings:Sub("SkuOptions").debugOptions.showError = val
 					end,
 					get = function(info)
-						--return SkuOptions.db.profile[MODULE_NAME].debugOptions.showError
+						--return SkuSettings:Sub("SkuOptions").debugOptions.showError
 					end,
 					func = function(info,val)
 						if SkuOpenSack then
@@ -379,10 +379,10 @@ SkuOptions.options = {
 						desc = "",
 						type = "input",
 						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect1 = val
+							SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect1 = val
 						end,
 						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect1
+							return SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect1
 						end
 					},
 					MenuQuickSelect2 = {
@@ -391,10 +391,10 @@ SkuOptions.options = {
 						desc = "",
 						type = "input",
 						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect2 = val
+							SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect2 = val
 						end,
 						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect2
+							return SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect2
 						end
 					},
 					MenuQuickSelect3 = {
@@ -403,10 +403,10 @@ SkuOptions.options = {
 						desc = "",
 						type = "input",
 						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect3 = val
+							SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect3 = val
 						end,
 						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect3
+							return SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect3
 						end
 					},
 					MenuQuickSelect4 = {
@@ -415,10 +415,10 @@ SkuOptions.options = {
 						desc = "",
 						type = "input",
 						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect4 = val
+							SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect4 = val
 						end,
 						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect4
+							return SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect4
 						end
 					},
 				},
@@ -442,10 +442,10 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.enabled = val
+									SkuSettings:Sub("SkuOptions").softTargeting.enemy.enabled = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.enabled
+									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.enabled
 								end
 							},
 							arc = {
@@ -458,10 +458,10 @@ SkuOptions.options = {
 								end,
 								values = SkuCore.SoftTargetingArcValues,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.arc = val
+									SkuSettings:Sub("SkuOptions").softTargeting.enemy.arc = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.arc
+									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.arc
 								end
 							},							
 							range = {
@@ -475,10 +475,10 @@ SkuOptions.options = {
 								min = 1,
 								max = 60,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.range = val
+									SkuSettings:Sub("SkuOptions").softTargeting.enemy.range = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.range
+									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.range
 								end
 							},		
 							forPlayers = {
@@ -490,10 +490,10 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPlayers = val
+									SkuSettings:Sub("SkuOptions").softTargeting.enemy.forPlayers = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPlayers
+									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.forPlayers
 								end
 							},
 							forPets = {
@@ -505,10 +505,10 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPets = val
+									SkuSettings:Sub("SkuOptions").softTargeting.enemy.forPets = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPets
+									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.forPets
 								end
 							},							
 							forPassive = {
@@ -520,10 +520,10 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPassive = val
+									SkuSettings:Sub("SkuOptions").softTargeting.enemy.forPassive = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPassive
+									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.forPassive
 								end
 							},
 							sound = {
@@ -536,10 +536,10 @@ SkuOptions.options = {
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.sound = val
+									SkuSettings:Sub("SkuOptions").softTargeting.enemy.sound = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.sound
+									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.sound
 								end
 							},									
 							soundNoTarget = {
@@ -552,10 +552,10 @@ SkuOptions.options = {
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.soundNoTarget = val
+									SkuSettings:Sub("SkuOptions").softTargeting.enemy.soundNoTarget = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.soundNoTarget
+									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.soundNoTarget
 								end
 							},									
 
@@ -568,10 +568,10 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.outputName = val
+									SkuSettings:Sub("SkuOptions").softTargeting.enemy.outputName = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.outputName
+									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.outputName
 								end
 							},
 							muteInCombat = {
@@ -583,10 +583,10 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.muteInCombat = val
+									SkuSettings:Sub("SkuOptions").softTargeting.enemy.muteInCombat = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.muteInCombat
+									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.muteInCombat
 								end
 							},
 						},
@@ -605,10 +605,10 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.enabled = val
+									SkuSettings:Sub("SkuOptions").softTargeting.friend.enabled = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.enabled
+									return SkuSettings:Sub("SkuOptions").softTargeting.friend.enabled
 								end
 							},
 							arc = {
@@ -621,10 +621,10 @@ SkuOptions.options = {
 								end,
 								values = SkuCore.SoftTargetingArcValues,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.arc = val
+									SkuSettings:Sub("SkuOptions").softTargeting.friend.arc = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.arc
+									return SkuSettings:Sub("SkuOptions").softTargeting.friend.arc
 								end
 							},							
 							range = {
@@ -638,10 +638,10 @@ SkuOptions.options = {
 								min = 1,
 								max = 60,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.range = val
+									SkuSettings:Sub("SkuOptions").softTargeting.friend.range = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.range
+									return SkuSettings:Sub("SkuOptions").softTargeting.friend.range
 								end
 							},		
 							forPlayers = {
@@ -653,10 +653,10 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.forPlayers = val
+									SkuSettings:Sub("SkuOptions").softTargeting.friend.forPlayers = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.forPlayers
+									return SkuSettings:Sub("SkuOptions").softTargeting.friend.forPlayers
 								end
 							},
 							forPets = {
@@ -668,10 +668,10 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.forPets = val
+									SkuSettings:Sub("SkuOptions").softTargeting.friend.forPets = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.forPets
+									return SkuSettings:Sub("SkuOptions").softTargeting.friend.forPets
 								end
 							},
 							sound = {
@@ -684,10 +684,10 @@ SkuOptions.options = {
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.sound = val
+									SkuSettings:Sub("SkuOptions").softTargeting.friend.sound = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.sound
+									return SkuSettings:Sub("SkuOptions").softTargeting.friend.sound
 								end
 							},			
 							soundNoTarget = {
@@ -700,10 +700,10 @@ SkuOptions.options = {
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.soundNoTarget = val
+									SkuSettings:Sub("SkuOptions").softTargeting.friend.soundNoTarget = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.soundNoTarget
+									return SkuSettings:Sub("SkuOptions").softTargeting.friend.soundNoTarget
 								end
 							},									
 
@@ -716,10 +716,10 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.outputName = val
+									SkuSettings:Sub("SkuOptions").softTargeting.friend.outputName = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.outputName
+									return SkuSettings:Sub("SkuOptions").softTargeting.friend.outputName
 								end
 							},													
 						},
@@ -738,10 +738,10 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.enabled = val
+									SkuSettings:Sub("SkuOptions").softTargeting.interact.enabled = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.enabled
+									return SkuSettings:Sub("SkuOptions").softTargeting.interact.enabled
 								end
 							},
 							arc = {
@@ -754,10 +754,10 @@ SkuOptions.options = {
 								end,
 								values = SkuCore.SoftTargetingArcValues,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.arc = val
+									SkuSettings:Sub("SkuOptions").softTargeting.interact.arc = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.arc
+									return SkuSettings:Sub("SkuOptions").softTargeting.interact.arc
 								end
 							},							
 							range = {
@@ -771,10 +771,10 @@ SkuOptions.options = {
 								min = 1,
 								max = 15,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.range = val
+									SkuSettings:Sub("SkuOptions").softTargeting.interact.range = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.range
+									return SkuSettings:Sub("SkuOptions").softTargeting.interact.range
 								end
 							},		
 							soundfor = {
@@ -787,10 +787,10 @@ SkuOptions.options = {
 								end,
 								values = SkuCore.SofttargetingInteractNameForValues,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.soundfor = val
+									SkuSettings:Sub("SkuOptions").softTargeting.interact.soundfor = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.soundfor
+									return SkuSettings:Sub("SkuOptions").softTargeting.interact.soundfor
 								end
 							},				
 							sound = {
@@ -803,10 +803,10 @@ SkuOptions.options = {
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.sound = val
+									SkuSettings:Sub("SkuOptions").softTargeting.interact.sound = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.sound
+									return SkuSettings:Sub("SkuOptions").softTargeting.interact.sound
 								end
 							},			
 							soundNoTarget = {
@@ -819,10 +819,10 @@ SkuOptions.options = {
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.soundNoTarget = val
+									SkuSettings:Sub("SkuOptions").softTargeting.interact.soundNoTarget = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.soundNoTarget
+									return SkuSettings:Sub("SkuOptions").softTargeting.interact.soundNoTarget
 								end
 							},																								
 							unitNameFor = {
@@ -835,10 +835,10 @@ SkuOptions.options = {
 								end,
 								values = SkuCore.SofttargetingInteractNameForValues,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.unitNameFor = val
+									SkuSettings:Sub("SkuOptions").softTargeting.interact.unitNameFor = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.unitNameFor
+									return SkuSettings:Sub("SkuOptions").softTargeting.interact.unitNameFor
 								end
 							},							
 
@@ -851,10 +851,10 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.outputBTTS = val
+									SkuSettings:Sub("SkuOptions").softTargeting.interact.outputBTTS = val
 								end,
 								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.outputBTTS
+									return SkuSettings:Sub("SkuOptions").softTargeting.interact.outputBTTS
 								end
 							},									
 						},
@@ -869,10 +869,10 @@ SkuOptions.options = {
 						end,
 						values = SkuCore.SofttargetingForceValues,
 						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].softTargeting.force = val
+							SkuSettings:Sub("SkuOptions").softTargeting.force = val
 						end,
 						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].softTargeting.force
+							return SkuSettings:Sub("SkuOptions").softTargeting.force
 						end
 					},							
 					matchLocked = {
@@ -885,10 +885,10 @@ SkuOptions.options = {
 						end,
 						values = SkuCore.SofttargetingMatchLockedValues,
 						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].softTargeting.matchLocked = val
+							SkuSettings:Sub("SkuOptions").softTargeting.matchLocked = val
 						end,
 						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].softTargeting.matchLocked
+							return SkuSettings:Sub("SkuOptions").softTargeting.matchLocked
 						end
 					},		
 					enableDisableOutputInChat = {
@@ -900,10 +900,10 @@ SkuOptions.options = {
 							SkuOptions:UpdateSoftTargetingSettings("all")
 						end,
 						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat = val
+							SkuSettings:Sub("SkuOptions").softTargeting.enableDisableOutputInChat = val
 						end,
 						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat
+							return SkuSettings:Sub("SkuOptions").softTargeting.enableDisableOutputInChat
 						end
 					},									
 
@@ -989,7 +989,7 @@ SkuOptions.defaults = {
 function SkuOptions:MenuBuilder(aParentEntry)
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true
-	SkuOptions:IterateOptionsArgs(SkuOptions.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
+	SkuOptions:IterateOptionsArgs(SkuOptions.options.args, tNewMenuEntry, SkuSettings:Sub("SkuOptions"))
 
 
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Overview pages"]}, SkuGenericMenuItem)
@@ -1003,27 +1003,27 @@ function SkuOptions:MenuBuilder(aParentEntry)
 			tNewMenuParentEntry.tEntry = nil
 			tNewMenuParentEntry.OnAction = function(self, aValue, aName)
 				local tlName, tPos = string.split(";", self.tEntry)
-				for i, v in pairs(SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections) do
+				for i, v in pairs(SkuSettings:Sub("SkuOptions").overviewPages[self.pageId].overviewSections) do
 					if v.locName == tlName then
 						if aName == L["Up"] then
-							for i1, v1 in pairs(SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections) do
+							for i1, v1 in pairs(SkuSettings:Sub("SkuOptions").overviewPages[self.pageId].overviewSections) do
 								if v1.pos == (tonumber(tPos) - 1) then
 									v1.pos = tonumber(tPos)
-									SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections[i].pos = tonumber(tPos) - 1
+									SkuSettings:Sub("SkuOptions").overviewPages[self.pageId].overviewSections[i].pos = tonumber(tPos) - 1
 									break
 								end
 							end
 						elseif aName == L["Down"] then
-							for i1, v1 in pairs(SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections) do
+							for i1, v1 in pairs(SkuSettings:Sub("SkuOptions").overviewPages[self.pageId].overviewSections) do
 								if v1.pos == (tonumber(tPos) + 1) then
 									v1.pos = tonumber(tPos)
-									SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections[i].pos = tonumber(tPos) + 1
+									SkuSettings:Sub("SkuOptions").overviewPages[self.pageId].overviewSections[i].pos = tonumber(tPos) + 1
 									break
 								end
 							end
 						elseif aName == L["Show"] then
 							local tMax = 0
-							for i1, v1 in pairs(SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections) do
+							for i1, v1 in pairs(SkuSettings:Sub("SkuOptions").overviewPages[self.pageId].overviewSections) do
 								if tonumber(v1.pos) > tMax and tonumber(v1.pos) ~= 999 then
 									tMax = v1.pos
 								end
@@ -1031,7 +1031,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 							v.pos = tMax + 1
 						elseif aName == L["Hide"] then
 							local tFrom = tonumber(v.pos)
-							for i1, v1 in pairs(SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections) do
+							for i1, v1 in pairs(SkuSettings:Sub("SkuOptions").overviewPages[self.pageId].overviewSections) do
 								if v1.pos >= tFrom and v1.pos ~= 999 then
 									v1.pos = v1.pos - 1
 								end
@@ -1045,22 +1045,22 @@ function SkuOptions:MenuBuilder(aParentEntry)
 			end
 			tNewMenuParentEntry.BuildChildren = function(self)
 				local tSorted = {}
-				for k, v in SkuSpairs(SkuOptions.db.profile[MODULE_NAME].overviewPages[q].overviewSections, function(t,a,b) return t[b].pos > t[a].pos end) do
+				for k, v in SkuSpairs(SkuSettings:Sub("SkuOptions").overviewPages[q].overviewSections, function(t,a,b) return t[b].pos > t[a].pos end) do
 					table.insert(tSorted, k)
 				end
 				local tNumberItems = #tSorted
 				for x = 1, #tSorted do
-					local tPos = SkuOptions.db.profile[MODULE_NAME].overviewPages[q].overviewSections[tSorted[x]].pos
+					local tPos = SkuSettings:Sub("SkuOptions").overviewPages[q].overviewSections[tSorted[x]].pos
 					local tPosName = tPos
 					if tPosName == 999 then
 						tPosName = L["hidden"]
 						tNumberItems = tNumberItems - 1
 					end
-					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {SkuOptions.db.profile[MODULE_NAME].overviewPages[q].overviewSections[tSorted[x]].locName..";"..tPosName}, SkuGenericMenuItem)
+					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {SkuSettings:Sub("SkuOptions").overviewPages[q].overviewSections[tSorted[x]].locName..";"..tPosName}, SkuGenericMenuItem)
 					tNewMenuSubEntry.dynamic = true
 					tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.pageId = q
-						self.selectTarget.tEntry = SkuOptions.db.profile[MODULE_NAME].overviewPages[q].overviewSections[tSorted[x]].locName..";"..tPosName
+						self.selectTarget.tEntry = SkuSettings:Sub("SkuOptions").overviewPages[q].overviewSections[tSorted[x]].locName..";"..tPosName
 					end
 
 					tNewMenuSubEntry.BuildChildren = function(self)

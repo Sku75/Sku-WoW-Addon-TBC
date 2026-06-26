@@ -22,6 +22,25 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W1 Phase B — SkuOptions migrated (B7); Phase B now fully complete.** The
+  follow-up that closes out Phase B: the SkuZOptions module's OWN settings access
+  (259 sites — Core 110, Options 121, SkuKeyBinds 25) moved off raw
+  `SkuOptions.db.<scope>[MODULE_NAME]/["SkuOptions"]` onto `SkuSettings:Sub`.
+  Scopes profile (248) + global (11), char 0; three lazy-init `or {}` idioms
+  special-cased to bare `Sub` calls. No path-in-string labels here (unlike
+  SkuCore), so no masking needed. The 71 cross-module reads inside these files
+  (`["SkuCore"]`, `["SkuNav"]`, …) and the lone top-level `db.profile.testtext`
+  stay raw by design. All three files luaparser-clean; 0 assign-to-call; clean
+  248/248 one-for-one diff. In-game smoke test pending (exercise the options /
+  voice-config / keybind menus). With B7, every module's own settings access —
+  SkuOptions included — now goes through the facade; the only remaining raw
+  `["SkuOptions"]` paths are intentional cross-module reads in OTHER modules.
+  - Remaining W1 work: **Phase C** (C1 validation + remove raw-path fallback, C2
+    publish the schema) is blocked on the flat per-key schema, which was
+    deliberately deferred to W2 prep (no consumer until the menu generator). The
+    natural next step is therefore **W2 Phase A** plumbing, authoring the flat
+    schema lazily as W2's archetype conversions consume it.
+
 - **W1 Phase B COMPLETE and verified in-game (2026-06-26).** All six modules
   (SkuMob, SkuQuest, SkuAuras, SkuChat, SkuNav, SkuCore — ~2700 own-key call
   sites) migrated onto `SkuSettings:Sub`. Exercised on v42: SkuChat (chat /

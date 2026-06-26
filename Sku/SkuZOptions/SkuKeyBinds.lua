@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuOptions", "SkuKeyBinds"  
 local L = Sku.L
 
@@ -136,37 +136,37 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsResetBindings()
-   SkuOptions.db.profile["SkuOptions"].SkuKeyBinds = {}
+   SkuSettings:Sub("SkuOptions").SkuKeyBinds = {}
    SkuOptions:SkuKeyBindsUpdate()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsGetBinding(aBindingConst)
-   return SkuOptions.db.profile[MODULE_NAME].SkuKeyBinds[aBindingConst].key
+   return SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst].key
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsGetBinding2(aBindingConst)
-   local tEntry = SkuOptions.db.profile[MODULE_NAME].SkuKeyBinds[aBindingConst]
+   local tEntry = SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst]
    return tEntry and tEntry.key2 or ""
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsSetBinding(aBindingConst, aNewKey)
-   if not SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[aBindingConst] then
+   if not SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst] then
       return
    end
-   SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[aBindingConst].key = aNewKey
+   SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst].key = aNewKey
    SkuOptions:SkuKeyBindsUpdate()
    return true
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsSetBinding2(aBindingConst, aNewKey)
-   if not SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[aBindingConst] then
+   if not SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst] then
       return
    end
-   SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[aBindingConst].key2 = aNewKey
+   SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst].key2 = aNewKey
    SkuOptions:SkuKeyBindsUpdate()
    return true
 end
@@ -174,10 +174,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsDeleteBinding(aBindingConst)
    dprint("SkuKeyBindsDeleteBinding", aBindingConst)
-   if not SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[aBindingConst] then
+   if not SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst] then
       return
    end
-   SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[aBindingConst].key = ""
+   SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst].key = ""
    SkuOptions:SkuKeyBindsUpdate()
    return true
 end
@@ -185,10 +185,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsDeleteBinding2(aBindingConst)
    dprint("SkuKeyBindsDeleteBinding2", aBindingConst)
-   if not SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[aBindingConst] then
+   if not SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst] then
       return
    end
-   SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[aBindingConst].key2 = ""
+   SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst].key2 = ""
    SkuOptions:SkuKeyBindsUpdate()
    return true
 end
@@ -198,10 +198,10 @@ end
 -- Wenn aConflictKey angegeben ist, wird geprueft ob sie in .key oder .key2
 -- liegt und nur das passende Feld geleert. Ohne aConflictKey: .key leeren (Rueckwaertskompatibel).
 function SkuOptions:SkuKeyBindsDeleteConflictingKey(aBindingConst, aConflictKey)
-   if not SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[aBindingConst] then
+   if not SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst] then
       return
    end
-   local tEntry = SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[aBindingConst]
+   local tEntry = SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst]
    if aConflictKey then
       if tEntry.key2 and tEntry.key2 == aConflictKey then
          tEntry.key2 = ""
@@ -218,11 +218,11 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsCheckBound(aKey)
    for i, v in pairs(SkuOptions.skuDefaultKeyBindings) do
-      if SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[i] then
-         if SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[i].key == aKey then
+      if SkuSettings:Sub("SkuOptions").SkuKeyBinds[i] then
+         if SkuSettings:Sub("SkuOptions").SkuKeyBinds[i].key == aKey then
             return i
          end
-         if SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[i].key2 and SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[i].key2 == aKey then
+         if SkuSettings:Sub("SkuOptions").SkuKeyBinds[i].key2 and SkuSettings:Sub("SkuOptions").SkuKeyBinds[i].key2 == aKey then
             return i
          end
       end
@@ -231,7 +231,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsMatchKey(aKey, aBindingConst)
-   local tEntry = SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[aBindingConst]
+   local tEntry = SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst]
    if not tEntry then return false end
    if aKey == tEntry.key then return true end
    if tEntry.key2 and tEntry.key2 ~= "" and aKey == tEntry.key2 then return true end
@@ -240,20 +240,20 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsUpdate(aInitializeFlag)
-   SkuOptions.db.profile["SkuOptions"] = SkuOptions.db.profile["SkuOptions"] or {}
+   SkuSettings:Sub("SkuOptions")
 
    --default settings if no data
-   if not SkuOptions.db.profile["SkuOptions"].SkuKeyBinds then
-      SkuOptions.db.profile["SkuOptions"].SkuKeyBinds = {}
+   if not SkuSettings:Sub("SkuOptions").SkuKeyBinds then
+      SkuSettings:Sub("SkuOptions").SkuKeyBinds = {}
    end
    for i, v in pairs(SkuOptions.skuDefaultKeyBindings) do
-      if not SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[i] then
-         SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[i] = {key = v.key or "", key2 = v.key2 or ""}
+      if not SkuSettings:Sub("SkuOptions").SkuKeyBinds[i] then
+         SkuSettings:Sub("SkuOptions").SkuKeyBinds[i] = {key = v.key or "", key2 = v.key2 or ""}
          dprint("set default", i, v)
       end
       -- Migration: key2 hinzufuegen fuer bestehende Profile ohne key2
-      if SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[i].key2 == nil then
-         SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[i].key2 = ""
+      if SkuSettings:Sub("SkuOptions").SkuKeyBinds[i].key2 == nil then
+         SkuSettings:Sub("SkuOptions").SkuKeyBinds[i].key2 = ""
       end
    end
 

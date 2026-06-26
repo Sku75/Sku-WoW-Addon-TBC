@@ -1,4 +1,4 @@
----@diagnostic disable: undefined-field, undefined-doc-name, undefined-doc-param
+﻿---@diagnostic disable: undefined-field, undefined-doc-name, undefined-doc-param
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME = "SkuOptions"
@@ -58,7 +58,7 @@ local defaults = {
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:CloseMenu()
 	if SkuOptions:IsMenuOpen() == true then
-		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
+		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_OPENMENU"].key)
 	end
 end
 
@@ -140,13 +140,13 @@ function SkuOptions:SlashFunc(input, aSilent)
 			-- Oh, hai there. You've found the secrect dev mode switch. Good boy. :P
 			-- I would suggest to not use it, if you don't know what that is leading to.
 			-- If you are ignoring this advice, I will not help you to fix any damage that may result from its use. :)
-			SkuOptions.db.global["SkuOptions"] = SkuOptions.db.global["SkuOptions"] or {}
-			if not SkuOptions.db.global["SkuOptions"].devmode or SkuOptions.db.global["SkuOptions"].devmode == false then
-				SkuOptions.db.global["SkuOptions"].devmode = true
+			SkuSettings:Sub("SkuOptions", nil, "global")
+			if not SkuSettings:Sub("SkuOptions", nil, "global").devmode or SkuSettings:Sub("SkuOptions", nil, "global").devmode == false then
+				SkuSettings:Sub("SkuOptions", nil, "global").devmode = true
 			else
-				SkuOptions.db.global["SkuOptions"].devmode = false
+				SkuSettings:Sub("SkuOptions", nil, "global").devmode = false
 			end
-			print("Sku devmode", (SkuOptions.db.global["SkuOptions"].devmode == true and "on" or "off"))
+			print("Sku devmode", (SkuSettings:Sub("SkuOptions", nil, "global").devmode == true and "on" or "off"))
 		end
 
 		if fields[1] == "errors" then
@@ -262,7 +262,7 @@ function SkuOptions:SlashFunc(input, aSilent)
 				return
 			end
 			if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
-				_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
+				_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_OPENMENU"].key)
 			end
 
 			local tMenu = SkuOptions.Menu
@@ -439,7 +439,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aStartStop bool
 function SkuOptions:StartStopBackgroundSound(aStartStop, aSoundFile, aHandle)
-	aSoundFile = aSoundFile or SkuOptions.db.profile[MODULE_NAME].backgroundSound
+	aSoundFile = aSoundFile or SkuSettings:Sub("SkuOptions").backgroundSound
 
 	aHandle = aHandle or "default"
 	SkuOptions.currentBackgroundSoundTimerHandle = SkuOptions.currentBackgroundSoundTimerHandle or {}
@@ -492,7 +492,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:UpdateOverviewText(aPageId)
-	--SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections
+	--SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections
 	aPageId = aPageId or 1
 	local tSectionRepo = {}
 
@@ -548,8 +548,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 		tTmpText = L["Not in raid"]
 	end
 
-	if tTmpText and SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["raid"].pos ~= 999 then
-		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["raid"].pos] = L["Raid"].."\r\n"..tTmpText
+	if tTmpText and SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["raid"].pos ~= 999 then
+		tSectionRepo[SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["raid"].pos] = L["Raid"].."\r\n"..tTmpText
 	end
 
 	--party
@@ -610,8 +610,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 	}
 	local lootmethod, masterlooterPartyID, masterlooterRaidID = C_PartyInfo.GetLootMethod()
 
-	if tTmpText and SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["party"].pos ~= 999 then
-		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["party"].pos] = L["Gruppe"].."\r\n"..tTmpText..L["\r\nPlündern: "]..lootStrings[lootmethod]
+	if tTmpText and SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["party"].pos ~= 999 then
+		tSectionRepo[SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["party"].pos] = L["Gruppe"].."\r\n"..tTmpText..L["\r\nPlündern: "]..lootStrings[lootmethod]
 	end
 
 	--general
@@ -724,8 +724,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 	end
 
 	--table.insert(tSections, tGeneral)
-	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["general"].pos ~= 999 then
-		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["general"].pos] = tGeneral
+	if SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["general"].pos ~= 999 then
+		tSectionRepo[SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["general"].pos] = tGeneral
 	end
 
 
@@ -912,8 +912,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 	if not tFound then
 		tBuffs = tBuffs.."\r\n"..L["Keine"]
 	end
-	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["buffs"].pos ~= 999 then
-		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["buffs"].pos] = tBuffs
+	if SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["buffs"].pos ~= 999 then
+		tSectionRepo[SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["buffs"].pos] = tBuffs
 	end
 
 	local tDebuffs = L["Debuffs"]
@@ -958,8 +958,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 	if not tFound then
 		tDebuffs = tDebuffs.."\r\n"..L["Keine"]
 	end
-	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["debuffs"].pos ~= 999 then
-		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["debuffs"].pos] = tDebuffs
+	if SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["debuffs"].pos ~= 999 then
+		tSectionRepo[SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["debuffs"].pos] = tDebuffs
 	end
 
 	--skills
@@ -970,8 +970,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 			tTmpText = tTmpText.."\r\n"..skillName.." ("..skillRank.." / "..skillMaxRank..")"
 		end
 	end
-	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["skills"].pos ~= 999 then
-		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["skills"].pos] = L["Fertigkeiten:\r\n"]..tTmpText
+	if SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["skills"].pos ~= 999 then
+		tSectionRepo[SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["skills"].pos] = L["Fertigkeiten:\r\n"]..tTmpText
 	end
 
 	--reputation
@@ -1003,8 +1003,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 			end
 		end
 	end
-	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["reputation"].pos ~= 999 then
-		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["reputation"].pos] = L["Ruf:\r\n"]..tTmpText
+	if SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["reputation"].pos ~= 999 then
+		tSectionRepo[SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["reputation"].pos] = L["Ruf:\r\n"]..tTmpText
 	end
 
 	--guild members
@@ -1053,8 +1053,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 	end
 
 	tTmpText = tTmpText or ""
-	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["guild"].pos ~= 999 then
-		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["guild"].pos] = L["Gilde:\r\n"]..tTmpText
+	if SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["guild"].pos ~= 999 then
+		tSectionRepo[SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["guild"].pos] = L["Gilde:\r\n"]..tTmpText
 	end
 
 	--pet
@@ -1073,11 +1073,11 @@ function SkuOptions:UpdateOverviewText(aPageId)
 			petSection = petSection .. "\r\n" .. L["Unspent pet talent points"]..": "..UnitCharacterPoints("pet")
 		end
 
-		if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["pet"].pos ~= 999 then
-			tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["pet"].pos] = petSection
+		if SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["pet"].pos ~= 999 then
+			tSectionRepo[SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["pet"].pos] = petSection
 		end
 	else
-		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["pet"].pos] = ""
+		tSectionRepo[SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["pet"].pos] = ""
 	end
 
 	--CDs
@@ -1106,8 +1106,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 		end
 	end
 	tTmpText = tTmpText or ""
-	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["Cooldowns"].pos ~= 999 then
-		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["Cooldowns"].pos] = L["Cooldowns"]..":\r\n"..tTmpText
+	if SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["Cooldowns"].pos ~= 999 then
+		tSectionRepo[SkuSettings:Sub("SkuOptions").overviewPages[aPageId].overviewSections["Cooldowns"].pos] = L["Cooldowns"]..":\r\n"..tTmpText
 	end
 
 	local tSections = {}
@@ -1181,65 +1181,65 @@ function SkuOptions:UpdateSoftTargetingSettings(aKey)
 		return
 	end
 	SkuOptions.tSoftTargetDeferred = nil
-	tSetSoftTargetCVar("SoftTargetForce", SkuOptions.db.profile[MODULE_NAME].softTargeting.force)
+	tSetSoftTargetCVar("SoftTargetForce", SkuSettings:Sub("SkuOptions").softTargeting.force)
 	-- [41.05] Bugfix "Hardtarget vor Softtarget": beide Zweige setzten frueher
 	-- SoftTargetMatchLocked = 0, die Option hatte also nie Wirkung. Jetzt bei
 	-- aktiviertem matchLocked = 1 (Softtarget folgt dem Hardtarget -> Hardtarget zaehlt).
-	if SkuOptions.db.profile[MODULE_NAME].softTargeting.matchLocked > 0 then
+	if SkuSettings:Sub("SkuOptions").softTargeting.matchLocked > 0 then
 		tSetSoftTargetCVar("SoftTargetMatchLocked", 1)
 	else
 		tSetSoftTargetCVar("SoftTargetMatchLocked", 0)
 	end
 
 	if aKey == "SKU_KEY_ENABLESOFTTARGETINGENEMY" or aKey == "all" then
-		if SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.enabled == true then
+		if SkuSettings:Sub("SkuOptions").softTargeting.enemy.enabled == true then
 			tSetSoftTargetCVar("SoftTargetEnemy", 3)
 		else
 			tSetSoftTargetCVar("SoftTargetEnemy", 0)
 		end
-		if aKey == "SKU_KEY_ENABLESOFTTARGETINGENEMY" and SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat == true then
-			if SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.enabled == true then
+		if aKey == "SKU_KEY_ENABLESOFTTARGETINGENEMY" and SkuSettings:Sub("SkuOptions").softTargeting.enableDisableOutputInChat == true then
+			if SkuSettings:Sub("SkuOptions").softTargeting.enemy.enabled == true then
 				print(L["Soft targeting"].." "..L["Enemies"].." "..L["Enabled"])
 			else
 				print(L["Soft targeting"].." "..L["Enemies"].." "..L["disabled"])
 			end
 		end
-		tSetSoftTargetCVar("SoftTargetEnemyArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.arc)
-		tSetSoftTargetCVar("SoftTargetEnemyRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.range)
+		tSetSoftTargetCVar("SoftTargetEnemyArc", SkuSettings:Sub("SkuOptions").softTargeting.enemy.arc)
+		tSetSoftTargetCVar("SoftTargetEnemyRange", SkuSettings:Sub("SkuOptions").softTargeting.enemy.range)
 	end
 
 	if aKey == "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY" or aKey == "all" then
-		if SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.enabled == true then
+		if SkuSettings:Sub("SkuOptions").softTargeting.friend.enabled == true then
 			tSetSoftTargetCVar("SoftTargetFriend", 3)
 		else
 			tSetSoftTargetCVar("SoftTargetFriend", 0)
 		end
-		if aKey == "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY" and SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat == true then
-			if SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.enabled == true then
+		if aKey == "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY" and SkuSettings:Sub("SkuOptions").softTargeting.enableDisableOutputInChat == true then
+			if SkuSettings:Sub("SkuOptions").softTargeting.friend.enabled == true then
 				print(L["Soft targeting"].." "..L["Friends"].." "..L["Enabled"])
 			else
 				print(L["Soft targeting"].." "..L["Friends"].." "..L["disabled"])
 			end			
 		end
-		tSetSoftTargetCVar("SoftTargetFriendArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.arc)
-		tSetSoftTargetCVar("SoftTargetFriendRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.range)
+		tSetSoftTargetCVar("SoftTargetFriendArc", SkuSettings:Sub("SkuOptions").softTargeting.friend.arc)
+		tSetSoftTargetCVar("SoftTargetFriendRange", SkuSettings:Sub("SkuOptions").softTargeting.friend.range)
 	end
 
 	if aKey == "SKU_KEY_ENABLESOFTTARGETINGINTERACT" or aKey == "all" then
-		if SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.enabled == true and not SkuMob.interactTempDisabled then
+		if SkuSettings:Sub("SkuOptions").softTargeting.interact.enabled == true and not SkuMob.interactTempDisabled then
 			tSetSoftTargetCVar("SoftTargetInteract", 3)
 		else
 			tSetSoftTargetCVar("SoftTargetInteract", 0)
 		end
-		if aKey == "SKU_KEY_ENABLESOFTTARGETINGINTERACT" and SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat == true then
-			if SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.enabled == true then
+		if aKey == "SKU_KEY_ENABLESOFTTARGETINGINTERACT" and SkuSettings:Sub("SkuOptions").softTargeting.enableDisableOutputInChat == true then
+			if SkuSettings:Sub("SkuOptions").softTargeting.interact.enabled == true then
 				print(L["Soft targeting"].." "..L["Interact"].." "..L["Enabled"])
 			else
 				print(L["Soft targeting"].." "..L["Interact"].." "..L["disabled"])
 			end
 		end
-		tSetSoftTargetCVar("SoftTargetInteractArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.arc)
-		tSetSoftTargetCVar("SoftTargetInteractRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.range)
+		tSetSoftTargetCVar("SoftTargetInteractArc", SkuSettings:Sub("SkuOptions").softTargeting.interact.arc)
+		tSetSoftTargetCVar("SoftTargetInteractRange", SkuSettings:Sub("SkuOptions").softTargeting.interact.range)
 	end
 end
 
@@ -1389,15 +1389,15 @@ function SkuOptions:CreateMainFrame()
 
 		--soft targeting
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_ENABLESOFTTARGETINGENEMY") then
-			SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.enabled = SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.enabled == false
+			SkuSettings:Sub("SkuOptions").softTargeting.enemy.enabled = SkuSettings:Sub("SkuOptions").softTargeting.enemy.enabled == false
 			SkuOptions:UpdateSoftTargetingSettings("SKU_KEY_ENABLESOFTTARGETINGENEMY")
 		end
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY") then
-			SkuOptions.db.profile["SkuOptions"].softTargeting.friend.enabled = SkuOptions.db.profile["SkuOptions"].softTargeting.friend.enabled == false
+			SkuSettings:Sub("SkuOptions").softTargeting.friend.enabled = SkuSettings:Sub("SkuOptions").softTargeting.friend.enabled == false
 			SkuOptions:UpdateSoftTargetingSettings("SKU_KEY_ENABLESOFTTARGETINGFRIENDLY")
 		end
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_ENABLESOFTTARGETINGINTERACT") then
-			SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled = SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled == false
+			SkuSettings:Sub("SkuOptions").softTargeting.interact.enabled = SkuSettings:Sub("SkuOptions").softTargeting.interact.enabled == false
 			SkuOptions:UpdateSoftTargetingSettings("SKU_KEY_ENABLESOFTTARGETINGINTERACT")
 		end
 
@@ -1851,7 +1851,7 @@ function SkuOptions:CreateMainFrame()
 							MusicVolume    = tCh.MusicVolume,
 							AmbienceVolume = tCh.AmbienceVolume,
 							DialogVolume   = tCh.DialogVolume,
-						}, self, SkuOptions.db.profile["SkuOptions"].soundChannels)
+						}, self, SkuSettings:Sub("SkuOptions").soundChannels)
 
 						SkuOptions:IterateOptionsArgs({
 							beaconVolume = SkuNav.options.args.beaconVolume,
@@ -1864,7 +1864,7 @@ function SkuOptions:CreateMainFrame()
 							Sound_EnableDSPEffects              = tSs.Sound_EnableDSPEffects,
 							Sound_EnableSoundWhenGameIsInBG     = tSs.Sound_EnableSoundWhenGameIsInBG,
 							Sound_ZoneMusicNoDelay              = tSs.Sound_ZoneMusicNoDelay,
-						}, self, SkuOptions.db.profile["SkuOptions"].soundSettings)
+						}, self, SkuSettings:Sub("SkuOptions").soundSettings)
 
 						-- [41.02.08] Fokus bleibt nach Wertaenderung auf dem Regler stehen
 						-- (nur 7er-Menue; geteilter Renderer/templates.lua bleibt unberuehrt).
@@ -2249,7 +2249,7 @@ function SkuOptions:CreateMainFrame()
 						SkuOptions:IterateOptionsArgs({
 							vocalizeMenuNumbers = SkuOptions.options.args.vocalizeMenuNumbers,
 							vocalizeSubmenus    = SkuOptions.options.args.vocalizeSubmenus,
-						}, self, SkuOptions.db.profile["SkuOptions"])
+						}, self, SkuSettings:Sub("SkuOptions"))
 
 							-- [41.05] Anzahl der Gegner ansagen: koppelt zwei vorhandene Einstellungen
 							-- aus Core, Monitor feindlich (relativeNumberUnitsInCombat.value + ignoreNonElite).
@@ -2471,8 +2471,8 @@ function SkuOptions:CreateMainFrame()
 
 		for q = 1, 10 do
 			if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_MENUQUICK"..q) then
-				if SkuOptions.db.profile[MODULE_NAME].allModules["MenuQuickSelect"..q] and SkuOptions.db.profile[MODULE_NAME].allModules["MenuQuickSelect"..q] ~= "" then
-					SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules["MenuQuickSelect"..q])
+				if SkuSettings:Sub("SkuOptions").allModules["MenuQuickSelect"..q] and SkuSettings:Sub("SkuOptions").allModules["MenuQuickSelect"..q] ~= "" then
+					SkuOptions:SlashFunc(L["short"]..","..SkuSettings:Sub("SkuOptions").allModules["MenuQuickSelect"..q])
 				end
 			end
 
@@ -2485,7 +2485,7 @@ function SkuOptions:CreateMainFrame()
 						tBread = tTable.name..","..tBread
 					end
 	
-					SkuOptions.db.profile[MODULE_NAME].allModules["MenuQuickSelect"..q] = tBread
+					SkuSettings:Sub("SkuOptions").allModules["MenuQuickSelect"..q] = tBread
 					SkuOptions.Voice:OutputStringBTtts(L["SKU_KEY_MENUQUICK"..q]..";"..L["updated;to"]..";"..tBread, true, true, 0.3, nil, nil, nil, 2)
 				end
 			end
@@ -2512,7 +2512,7 @@ function SkuOptions:CreateMainFrame()
 		SkuOptions:HideVisualMenu()
 	end)
 
-	local tKbds = SkuOptions.db.profile["SkuOptions"].SkuKeyBinds
+	local tKbds = SkuSettings:Sub("SkuOptions").SkuKeyBinds
 	--SetOverrideBindingClick(tFrame, true, "SHIFT-U", tFrame:GetName(), "SHIFT-U")
 	--SetOverrideBindingClick(tFrame, true, "SHIFT-J", tFrame:GetName(), "SHIFT-J")
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_QUESTSHARE"].key, tFrame:GetName(), tKbds["SKU_KEY_QUESTSHARE"].key)
@@ -2922,7 +2922,7 @@ function SkuOptions:CreateMenuFrame()
 			SkuQuest:OnSkuQuestAbandon()
 		end
 		--[[
-		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTSHARE"].key then
+		if aKey == SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTSHARE"].key then
 			SkuQuest:OnSkuQuestPush()
 		end
 		]]
@@ -3153,8 +3153,8 @@ function SkuOptions:CreateMenuFrame()
 		SkuCore.openMenuAfterCombat = false
 		SkuCore.openMenuAfterMoving = false	
 		PlaySound(88)
-		SetOverrideBindingClick(self, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTABANDON"].key, "SkuQuestMainOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTABANDON"].key)
-		if SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2 and SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2 ~= "" then SetOverrideBindingClick(self, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2, "SkuQuestMainOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2) end
+		SetOverrideBindingClick(self, true, SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key, "SkuQuestMainOption1", SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key)
+		if SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2 and SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2 ~= "" then SetOverrideBindingClick(self, true, SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2, "SkuQuestMainOption1", SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2) end
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-UP", "OnSkuOptionsMainOption1", "CTRL-SHIFT-UP")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-DOWN", "OnSkuOptionsMainOption1", "CTRL-SHIFT-DOWN")
 		SetOverrideBindingClick(self, true, "SHIFT-UP", "OnSkuOptionsMainOption1", "SHIFT-UP")
@@ -3727,40 +3727,40 @@ function SkuOptions:OnEnable()
 	end
 
 	--safety: if MasterVolume is 0 (corrupted profile), reset sentinel to re-read from Blizzard
-	if SkuOptions.db.profile["SkuOptions"].soundChannels.MasterVolume == 0 then
-		SkuOptions.db.profile["SkuOptions"].soundChannels.MasterVolume = -1
+	if SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume == 0 then
+		SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume = -1
 	end
 
-	if SkuOptions.db.profile["SkuOptions"].soundChannels.MasterVolume == -1 then
-		SkuOptions.db.profile["SkuOptions"].soundChannels.MasterVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_MasterVolume")) or 1) * 100)
-		SkuOptions.db.profile["SkuOptions"].soundChannels.SFXVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_SFXVolume")) or 1) * 100)
-		SkuOptions.db.profile["SkuOptions"].soundChannels.MusicVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_MusicVolume")) or 1) * 100)
-		SkuOptions.db.profile["SkuOptions"].soundChannels.AmbienceVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_AmbienceVolume")) or 1) * 100)
-		SkuOptions.db.profile["SkuOptions"].soundChannels.DialogVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_DialogVolume")) or 1) * 100)
+	if SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume == -1 then
+		SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_MasterVolume")) or 1) * 100)
+		SkuSettings:Sub("SkuOptions").soundChannels.SFXVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_SFXVolume")) or 1) * 100)
+		SkuSettings:Sub("SkuOptions").soundChannels.MusicVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_MusicVolume")) or 1) * 100)
+		SkuSettings:Sub("SkuOptions").soundChannels.AmbienceVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_AmbienceVolume")) or 1) * 100)
+		SkuSettings:Sub("SkuOptions").soundChannels.DialogVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_DialogVolume")) or 1) * 100)
 
-		SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableReverb = C_CVar.GetCVar("Sound_EnableReverb") == "1"
-		SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnablePositionalLowPassFilter = C_CVar.GetCVar("Sound_EnablePositionalLowPassFilter") == "1"
-		SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableDSPEffects = C_CVar.GetCVar("Sound_EnableDSPEffects") == "1"
-		SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableSoundWhenGameIsInBG = C_CVar.GetCVar("Sound_EnableSoundWhenGameIsInBG") == "1"
-		SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_ZoneMusicNoDelay = C_CVar.GetCVar("Sound_ZoneMusicNoDelay") == "1"
+		SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableReverb = C_CVar.GetCVar("Sound_EnableReverb") == "1"
+		SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnablePositionalLowPassFilter = C_CVar.GetCVar("Sound_EnablePositionalLowPassFilter") == "1"
+		SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableDSPEffects = C_CVar.GetCVar("Sound_EnableDSPEffects") == "1"
+		SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableSoundWhenGameIsInBG = C_CVar.GetCVar("Sound_EnableSoundWhenGameIsInBG") == "1"
+		SkuSettings:Sub("SkuOptions").soundSettings.Sound_ZoneMusicNoDelay = C_CVar.GetCVar("Sound_ZoneMusicNoDelay") == "1"
 
 	end
 
 	--set the sound channel volumes
-	C_CVar.SetCVar("Sound_MasterVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.MasterVolume / 100)
-	C_CVar.SetCVar("Sound_SFXVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.SFXVolume / 100)
-	C_CVar.SetCVar("Sound_MusicVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.MusicVolume / 100)
-	C_CVar.SetCVar("Sound_AmbienceVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.AmbienceVolume / 100)
-	C_CVar.SetCVar("Sound_DialogVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.DialogVolume / 100)
+	C_CVar.SetCVar("Sound_MasterVolume", SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume / 100)
+	C_CVar.SetCVar("Sound_SFXVolume", SkuSettings:Sub("SkuOptions").soundChannels.SFXVolume / 100)
+	C_CVar.SetCVar("Sound_MusicVolume", SkuSettings:Sub("SkuOptions").soundChannels.MusicVolume / 100)
+	C_CVar.SetCVar("Sound_AmbienceVolume", SkuSettings:Sub("SkuOptions").soundChannels.AmbienceVolume / 100)
+	C_CVar.SetCVar("Sound_DialogVolume", SkuSettings:Sub("SkuOptions").soundChannels.DialogVolume / 100)
 
 	--set more sound options
 	local tbValues = {["true"] = "1", ["false"] = "0"}
 	
-	C_CVar.SetCVar("Sound_EnableReverb", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableReverb)])
-	C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnablePositionalLowPassFilter)])
-	C_CVar.SetCVar("Sound_EnableDSPEffects", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableDSPEffects)])
-	C_CVar.SetCVar("Sound_EnableSoundWhenGameIsInBG", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableSoundWhenGameIsInBG)])
-	C_CVar.SetCVar("Sound_ZoneMusicNoDelay", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_ZoneMusicNoDelay)])
+	C_CVar.SetCVar("Sound_EnableReverb", tbValues[tostring(SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableReverb)])
+	C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", tbValues[tostring(SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnablePositionalLowPassFilter)])
+	C_CVar.SetCVar("Sound_EnableDSPEffects", tbValues[tostring(SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableDSPEffects)])
+	C_CVar.SetCVar("Sound_EnableSoundWhenGameIsInBG", tbValues[tostring(SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableSoundWhenGameIsInBG)])
+	C_CVar.SetCVar("Sound_ZoneMusicNoDelay", tbValues[tostring(SkuSettings:Sub("SkuOptions").soundSettings.Sound_ZoneMusicNoDelay)])
 
 	local overviewSectionsAll = {
 		["party"] = {pos = 1, locName = L["Party"], },
@@ -3795,25 +3795,25 @@ function SkuOptions:OnEnable()
 		},
 	}
 
-	if not SkuOptions.db.profile["SkuOptions"].overviewPages then
-		SkuOptions.db.profile["SkuOptions"].overviewPages = {}
+	if not SkuSettings:Sub("SkuOptions").overviewPages then
+		SkuSettings:Sub("SkuOptions").overviewPages = {}
 	end
 
 	for x = 1, 4 do
-		if not SkuOptions.db.profile["SkuOptions"].overviewPages[x] then
-			SkuOptions.db.profile["SkuOptions"].overviewPages[x] = {}
+		if not SkuSettings:Sub("SkuOptions").overviewPages[x] then
+			SkuSettings:Sub("SkuOptions").overviewPages[x] = {}
 		end
 		for i, v in pairs(overviewSectionsAll) do
-			if not SkuOptions.db.profile["SkuOptions"].overviewPages[x].overviewSections then
-				SkuOptions.db.profile["SkuOptions"].overviewPages[x].overviewSections = {}
+			if not SkuSettings:Sub("SkuOptions").overviewPages[x].overviewSections then
+				SkuSettings:Sub("SkuOptions").overviewPages[x].overviewSections = {}
 			end
-			if not SkuOptions.db.profile["SkuOptions"].overviewPages[x].overviewSections[i] then
-				SkuOptions.db.profile["SkuOptions"].overviewPages[x].overviewSections[i] = {pos = 999, locName = v.locName, }
+			if not SkuSettings:Sub("SkuOptions").overviewPages[x].overviewSections[i] then
+				SkuSettings:Sub("SkuOptions").overviewPages[x].overviewSections[i] = {pos = 999, locName = v.locName, }
 				if overviewSectionsDefaults[x][i] then
-					SkuOptions.db.profile["SkuOptions"].overviewPages[x].overviewSections[i].pos = overviewSectionsDefaults[x][i].pos
+					SkuSettings:Sub("SkuOptions").overviewPages[x].overviewSections[i].pos = overviewSectionsDefaults[x][i].pos
 				end
 			end
-			SkuOptions.db.profile["SkuOptions"].overviewPages[x].overviewSections[i].locName = v.locName
+			SkuSettings:Sub("SkuOptions").overviewPages[x].overviewSections[i].locName = v.locName
 		end
 
 	end
@@ -3904,8 +3904,8 @@ function SkuOptions:PLAYER_ENTERING_WORLD(...)
 		SkuMob:PLAYER_TARGET_CHANGED()
 		SkuOptions:UpdateSoftTargetingSettings("all")
 
-		SkuOptions.db.global["SkuOptions"] = SkuOptions.db.global["SkuOptions"] or {}
-		SkuOptions.db.global["SkuOptions"].devmode = SkuOptions.db.global["SkuOptions"].devmode or false
+		SkuSettings:Sub("SkuOptions", nil, "global")
+		SkuSettings:Sub("SkuOptions", nil, "global").devmode = SkuSettings:Sub("SkuOptions", nil, "global").devmode or false
 
 		-- request guild roster after a short delay so the client is ready
 		C_Timer.After(3, function()
@@ -4024,7 +4024,7 @@ function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoN
 	--local tTempHayStack = string.gsub(aStr, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
 	--aStr = tTempHayStack
 
-	--if SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu == true then
+	--if SkuSettings:Sub("SkuOptions").useBlizzTtsInMenu == true then
 	SkuOptions.Voice:OutputStringBTtts(aStr, aReset, aWait, 0.2, aDoNotOverride, false, nil, true, 2, aVocalizeAsIs)
 	return
 	--end
@@ -4124,14 +4124,14 @@ function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString)
 
 	tMenuNumber = tMenuNumber or ""
 
-	if SkuOptions.db.profile[MODULE_NAME].vocalizeMenuNumbers == true and  SkuOptions.currentMenuPosition.noMenuNumbers ~= true then
+	if SkuSettings:Sub("SkuOptions").vocalizeMenuNumbers == true and  SkuOptions.currentMenuPosition.noMenuNumbers ~= true then
 		tFinalString = tFinalString..tMenuNumber..";"
 	end
 	if tPrefix then
 		tFinalString = tFinalString..tPrefix..";"
 	end
 	tFinalString = tFinalString..tCleanValue
-	if SkuOptions.db.profile[MODULE_NAME].vocalizeSubmenus == true then
+	if SkuSettings:Sub("SkuOptions").vocalizeSubmenus == true then
 		if #SkuOptions.currentMenuPosition.children > 0 then
 			tFinalString = tFinalString..";"..L["plus"]
 		end
@@ -5545,7 +5545,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tInMenuFlag = false
 function SkuOptions:ShowVisualMenu()
-	if SkuOptions.db.profile["SkuOptions"].visualAudioMenu ~= true then
+	if SkuSettings:Sub("SkuOptions").visualAudioMenu ~= true then
 		if SkuOptions.SkuOptionsVisualMenuContainer then
 			if SkuOptions.SkuOptionsVisualMenuContainer:IsVisible() then
 				SkuOptions:HideVisualMenu()
@@ -5648,7 +5648,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ShowVisualMenuSelectByPath(...)
-	if SkuOptions.db.profile["SkuOptions"].visualAudioMenu == true then
+	if SkuSettings:Sub("SkuOptions").visualAudioMenu == true then
 		--dprint("SelectByPath", ...)
 		SkuOptions.SkuOptionsVisualMenuContainer.tree:SetStatusTable({
 			groups = {},

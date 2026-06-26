@@ -292,10 +292,23 @@ time with both styles coexisting.
     cases (5 ensure-exists `or {}`, 2 guard-init `if not…then…={}` blocks) handled.
     Scopes char + profile + global. Cross-module reads kept raw: `["SkuOptions"]`
     99, `["SkuNav"]` 4, `["SkuAuras"]` 2. neutralize-parse clean; no assign-to-call.
-  - **Phase B (planned modules B1–B6) complete.** Remaining settings coupling: the
-    heavily-referenced `["SkuOptions"]` keys (owned by the SkuZOptions/SkuOptions
-    module) are still raw everywhere — migrating SkuOptions' own access is a
-    follow-up not in the original B list.
+  - [x] **B7 SkuOptions (SkuZOptions module).** The follow-up that finishes Phase B:
+    259 own-key sites migrated across `SkuZOptions/Core.lua` (110), `Options.lua`
+    (121), `SkuKeyBinds.lua` (25). All under module name `"SkuOptions"`
+    (`[MODULE_NAME]` and `["SkuOptions"]` both resolve there, incl. SkuKeyBinds whose
+    `MODULE_NAME="SkuOptions"`/`MODULE_PART="SkuKeyBinds"`). Scopes profile (248) +
+    global (11), char 0 → `Sub("SkuOptions")` / `Sub("SkuOptions", nil, "global")`.
+    Three global/profile lazy-init `or {}` idioms (Core 143/3907, SkuKeyBinds 243)
+    special-cased to bare `Sub` calls. No string-literal path-labels here (unlike
+    SkuCore), so no masking needed. Cross-module reads kept raw (71: `["SkuCore"]`
+    41, `["SkuNav"]`/`["SkuChat"]` 11 each, `["SkuAuras"]` 6, `["SkuMob"]`/
+    `["SkuAdventureGuide"]` 1 each) and the lone top-level `db.profile.testtext` left
+    raw. luaparser-gated (all 3 parse); 0 assign-to-call; in-game smoke test pending.
+  - **Phase B now fully complete (B1–B7).** Every module's own settings access —
+    including SkuOptions itself — goes through `SkuSettings:Sub`. The remaining
+    raw `["SkuOptions"]` paths are intentional **cross-module** reads inside OTHER
+    modules (they read SkuOptions' table; `Sub` returns the same live storage, so
+    they are behaviour-identical and need no change).
   - **Note on the flat schema:** authored for SkuMob (small/flat) as a demo, but
     DEFERRED for the larger modules (SkuQuest onward). The `Sub`-swap migration
     doesn't consume the flat per-key schema (scope is default/explicit), and
