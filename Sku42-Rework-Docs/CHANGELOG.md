@@ -22,6 +22,23 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W2 Phase B started — declarative node compiler + first conversion (M-B1).**
+  Added `SkuMenu:Build(parent, specs)` / `BuildNode`: a flat list of node SPECS
+  compiles into template nodes via the existing renderer, so a `MenuBuilder` can
+  be expressed as data instead of repeated hand-written `InjectMenuItems` blocks.
+  Two kinds so far (added only as conversions need them — no speculative kinds):
+  `list` (dynamic container, `build=fn(entry)`, rebuilt each visit) and `settings`
+  (named container populated from an AceConfig `options.args` + db subtable via the
+  existing `IterateOptionsArgs`). toggle/enum/range are deliberately NOT separate
+  kinds — they are the children `IterateOptionsArgs` already renders, so `settings`
+  delegates to it (preserving their exact nav semantics by reuse). First real
+  conversion: **SkuMob:MenuBuilder** is now a `SkuMenu:Build` spec (Target menu =
+  `list`, Options = `settings`) — behaviour-identical (same entries, order,
+  dynamic/filterable flags, same IterateOptionsArgs call). Both files
+  luaparser-clean; in-game verified at the W2-A stage, M-B1 `/wdsku3` before/after
+  pending. Next: convert more module menus (M-B2), adding `submenu`/`action`/`macro`
+  kinds as each is first needed.
+
 - **W2 Phase A — menu registry + layout decoupling (M-A1, M-A2; M-A3 mechanism).**
   New `Sku/SkuZOptions/SkuMenu.lua` (`ns.Menu`, global `SkuMenu`, TOC-loaded right
   after `SkuSettings.lua`). It makes the ROOT menu data-driven: a **registry** of

@@ -148,6 +148,68 @@ function SkuMenu:Remove(aEntry)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Declarative node compiler (W2 Phase B, M-B). Translates a flat list of node
+-- SPECS into template nodes via the existing renderer, so a MenuBuilder can be
+-- expressed as DATA instead of repeated hand-written InjectMenuItems blocks.
+-- This is the composition layer only — SETTINGS-backed nodes (toggle/enum/range)
+-- are produced by the existing SkuOptions:IterateOptionsArgs from an AceConfig
+-- `options.args` table (the "settings" kind delegates to it), NOT reimplemented
+-- here, so their exact navigation semantics are preserved by reuse.
+--
+-- Kinds (more added as conversions consume them — no speculative kinds):
+--   { kind = "list",     label=, filterable=?, build=fn(entry) }   -- dynamic, rebuilt each visit
+--   { kind = "settings", label=, filterable=?, args=<options.args>, db=<subtable> }
+local function specLabel(aSpec)
+	local lbl = aSpec.label
+	if type(lbl) == "function" then
+		local ok, r = pcall(lbl)
+		if ok and r ~= nil then return r end
+		return ""
+	end
+	return lbl ~= nil and lbl or ""
+end
+
+function SkuMenu:BuildNode(aParent, aSpec)
+	if type(aSpec) ~= "table" then return nil end
+	local kind = aSpec.kind
+
+	if kind == "list" then
+		-- Dynamic container: children rebuilt on each visit by spec.build(entry).
+		local tEntry = SkuOptions:InjectMenuItems(aParent, {specLabel(aSpec)}, SkuGenericMenuItem)
+		tEntry.dynamic = true
+		if aSpec.filterable then tEntry.filterable = true end
+		local build = aSpec.build
+		tEntry.BuildChildren = function(self)
+			if build then build(self) end
+		end
+		return tEntry
+
+	elseif kind == "settings" then
+		-- Named container populated immediately from an AceConfig args table via
+		-- the existing IterateOptionsArgs (toggle/select/range/execute children).
+		local tEntry = SkuOptions:InjectMenuItems(aParent, {specLabel(aSpec)}, SkuGenericMenuItem)
+		if aSpec.filterable ~= false then tEntry.filterable = true end
+		if aSpec.args then
+			SkuOptions:IterateOptionsArgs(aSpec.args, tEntry, aSpec.db)
+		end
+		return tEntry
+	end
+
+	if dprint then dprint("SkuMenu:BuildNode: unknown kind", tostring(kind)) end
+	return nil
+end
+
+-- Compile a flat list of specs under aParent, in order (prev/next wired centrally
+-- by InjectMenuItems, exactly as a hand-built sequence would be).
+function SkuMenu:Build(aParent, aSpecs)
+	if type(aSpecs) ~= "table" then return self end
+	for i = 1, #aSpecs do
+		self:BuildNode(aParent, aSpecs[i])
+	end
+	return self
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- Root contributions. Centralised here for this first construct (lowest risk,
 -- one reviewable file); moving each RegisterModule call into its owning module is
 -- a trivial follow-up — the mechanism is identical, since builders resolve their

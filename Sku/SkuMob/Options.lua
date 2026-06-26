@@ -634,18 +634,14 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:MenuBuilder(aParentEntry)
-	-- Ziel-Aktionsmenü (neu, direkte API-Calls)
-	local tTargetEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Target menu"]}, SkuGenericMenuItem)
-	tTargetEntry.dynamic = true
-	tTargetEntry.filterable = true
-	-- BuildChildren wird bei jedem Öffnen neu aufgerufen — damit ist die
-	-- Liste immer auf das aktuelle Ziel/den aktuellen Status zugeschnitten.
-	tTargetEntry.BuildChildren = function(self)
-		tBuildTargetMenu(self)
-	end
-
-	-- Optionen wie gehabt
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
-	tNewMenuEntry.filterable = true
-	SkuOptions:IterateOptionsArgs(SkuMob.options.args, tNewMenuEntry, SkuSettings:Sub("SkuMob"))
+	-- Declarative spec (W2 M-B, first conversion): Ziel-Aktionsmenue (dynamische
+	-- API-Liste, BuildChildren bei jedem Oeffnen neu auf das aktuelle Ziel/den
+	-- Status zugeschnitten) + Optionen (AceConfig-Args via IterateOptionsArgs).
+	-- Verhalten identisch zur frueheren hand-gebauten Fassung.
+	SkuMenu:Build(aParentEntry, {
+		{ kind = "list", label = L["Target menu"], filterable = true,
+			build = function(entry) tBuildTargetMenu(entry) end },
+		{ kind = "settings", label = L["Options"], filterable = true,
+			args = SkuMob.options.args, db = SkuSettings:Sub("SkuMob") },
+	})
 end
