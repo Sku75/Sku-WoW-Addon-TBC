@@ -102,10 +102,10 @@ SkuCore.options = {
 			type = "select",
 			values = SkuCore.BackgroundSoundFiles,
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].scanBackgroundSound = val
+				SkuSettings:Sub("SkuCore").scanBackgroundSound = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].scanBackgroundSound
+				return SkuSettings:Sub("SkuCore").scanBackgroundSound
 			end
 		},		
 		ressourceScanning={
@@ -138,10 +138,10 @@ SkuCore.options = {
 					type = "select",
 					values = scanAccuracyValues,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].ressourceScanning.scanAccuracyS = val
+						SkuSettings:Sub("SkuCore").ressourceScanning.scanAccuracyS = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].ressourceScanning.scanAccuracyS
+						return SkuSettings:Sub("SkuCore").ressourceScanning.scanAccuracyS
 					end
 				},	
 				notifyOnRessources = {
@@ -150,10 +150,10 @@ SkuCore.options = {
 					desc = "",
 					type = "toggle",
 					set = function(info, val)
-						SkuOptions.db.profile[MODULE_NAME].ressourceScanning.notifyOnRessources = val
+						SkuSettings:Sub("SkuCore").ressourceScanning.notifyOnRessources = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].ressourceScanning.notifyOnRessources
+						return SkuSettings:Sub("SkuCore").ressourceScanning.notifyOnRessources
 					end
 				},					
 			},
@@ -163,10 +163,10 @@ SkuCore.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
-				SkuOptions.db.profile[MODULE_NAME].readAllTooltips = val
+				SkuSettings:Sub("SkuCore").readAllTooltips = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].readAllTooltips
+				return SkuSettings:Sub("SkuCore").readAllTooltips
 			end
 		},
 		--[[
@@ -175,10 +175,10 @@ SkuCore.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
-				SkuOptions.db.profile[MODULE_NAME].autoFollow = val
+				SkuSettings:Sub("SkuCore").autoFollow = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].autoFollow
+				return SkuSettings:Sub("SkuCore").autoFollow
 			end
 		},
 		endFollowOnCast = {
@@ -186,10 +186,10 @@ SkuCore.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
-				SkuOptions.db.profile[MODULE_NAME].endFollowOnCast = val
+				SkuSettings:Sub("SkuCore").endFollowOnCast = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].endFollowOnCast
+				return SkuSettings:Sub("SkuCore").endFollowOnCast
 			end
 		},
 		]]
@@ -198,10 +198,10 @@ SkuCore.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
-				SkuOptions.db.profile[MODULE_NAME].interactMove = val
+				SkuSettings:Sub("SkuCore").interactMove = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].interactMove
+				return SkuSettings:Sub("SkuCore").interactMove
 			end
 		},
 		turnToUnit = {
@@ -217,10 +217,10 @@ SkuCore.options = {
 					min = 1,
 					max = 10,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].turnToUnit.speed = val
+						SkuSettings:Sub("SkuCore").turnToUnit.speed = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].turnToUnit.speed
+						return SkuSettings:Sub("SkuCore").turnToUnit.speed
 					end
 				},
 				soundOnSuccess = {
@@ -230,10 +230,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.outputSoundFiles,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].turnToUnit.soundOnSuccess = val
+						SkuSettings:Sub("SkuCore").turnToUnit.soundOnSuccess = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].turnToUnit.soundOnSuccess
+						return SkuSettings:Sub("SkuCore").turnToUnit.soundOnSuccess
 					end
 				},	
 				soundOnFail = {
@@ -243,10 +243,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.outputSoundFiles,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].turnToUnit.soundOnFail = val
+						SkuSettings:Sub("SkuCore").turnToUnit.soundOnFail = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].turnToUnit.soundOnFail
+						return SkuSettings:Sub("SkuCore").turnToUnit.soundOnFail
 					end
 				},	
 				targetSelection={
@@ -261,10 +261,10 @@ SkuCore.options = {
 							type = "select",
 							values = SkuCore.TurnToUnit.availableTargetsListNames,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key1 = val
+								SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key1 = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key1
+								return SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key1
 							end
 						},
 						key2 = {
@@ -274,10 +274,10 @@ SkuCore.options = {
 							type = "select",
 							values = SkuCore.TurnToUnit.availableTargetsListNames,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key2 = val
+								SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key2 = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key2
+								return SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key2
 							end
 						},
 						key3 = {
@@ -287,10 +287,10 @@ SkuCore.options = {
 							type = "select",
 							values = SkuCore.TurnToUnit.availableTargetsListNames,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key3 = val
+								SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key3 = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key3
+								return SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key3
 							end
 						},
 						key4 = {
@@ -300,10 +300,10 @@ SkuCore.options = {
 							type = "select",
 							values = SkuCore.TurnToUnit.availableTargetsListNames,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key4 = val
+								SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key4 = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key4
+								return SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key4
 							end
 						},
 						key5 = {
@@ -313,10 +313,10 @@ SkuCore.options = {
 							type = "select",
 							values = SkuCore.TurnToUnit.availableTargetsListNames,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key5 = val
+								SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key5 = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key5
+								return SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key5
 							end
 						},
 						key6 = {
@@ -326,10 +326,10 @@ SkuCore.options = {
 							type = "select",
 							values = SkuCore.TurnToUnit.availableTargetsListNames,
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key6 = val
+								SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key6 = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key6
+								return SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key6
 							end
 						},
 
@@ -349,10 +349,10 @@ SkuCore.options = {
 							min = 1,
 							max = 10,
 									set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].turnToUnit.enhancedSettings.delayOnPlate = val
+								SkuSettings:Sub("SkuCore").turnToUnit.enhancedSettings.delayOnPlate = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.enhancedSettings.delayOnPlate
+								return SkuSettings:Sub("SkuCore").turnToUnit.enhancedSettings.delayOnPlate
 							end
 						},
 					},
@@ -364,10 +364,10 @@ SkuCore.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
-				SkuOptions.db.profile[MODULE_NAME].playNPCGreetings = val
+				SkuSettings:Sub("SkuCore").playNPCGreetings = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].playNPCGreetings
+				return SkuSettings:Sub("SkuCore").playNPCGreetings
 			end
 		},
 		doNotHideTooltip = {
@@ -375,10 +375,10 @@ SkuCore.options = {
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
-				SkuOptions.db.profile[MODULE_NAME].doNotHideTooltip = val
+				SkuSettings:Sub("SkuCore").doNotHideTooltip = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].doNotHideTooltip
+				return SkuSettings:Sub("SkuCore").doNotHideTooltip
 			end
 		},
 		classes={
@@ -397,10 +397,10 @@ SkuCore.options = {
 							desc = "",
 							type = "toggle",
 							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness = val
+								SkuSettings:Sub("SkuCore").classes.hunter.petHappyness = val
 							end,
 							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness
+								return SkuSettings:Sub("SkuCore").classes.hunter.petHappyness
 							end
 						},
 					},
@@ -418,10 +418,10 @@ SkuCore.options = {
 					desc = "",
 					type = "toggle",
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].itemSettings.ShowItemQality = val
+						SkuSettings:Sub("SkuCore").itemSettings.ShowItemQality = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].itemSettings.ShowItemQality
+						return SkuSettings:Sub("SkuCore").itemSettings.ShowItemQality
 					end
 				},
 				autoSellJunk = {
@@ -430,10 +430,10 @@ SkuCore.options = {
 					desc = "",
 					type = "toggle",
 					set = function(info, val)
-						SkuOptions.db.profile[MODULE_NAME].itemSettings.autoSellJunk = val
+						SkuSettings:Sub("SkuCore").itemSettings.autoSellJunk = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].itemSettings.autoSellJunk
+						return SkuSettings:Sub("SkuCore").itemSettings.autoSellJunk
 					end
 				},
 				autoRepair = {
@@ -442,10 +442,10 @@ SkuCore.options = {
 					desc = "",
 					type = "toggle",
 					set = function(info, val)
-						SkuOptions.db.profile[MODULE_NAME].itemSettings.autoRepair = val
+						SkuSettings:Sub("SkuCore").itemSettings.autoRepair = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].itemSettings.autoRepair
+						return SkuSettings:Sub("SkuCore").itemSettings.autoRepair
 					end
 				},
 	
@@ -464,10 +464,10 @@ SkuCore.options = {
 					min = 0,
 					max = 1000,
 					set = function(info, val)
-						SkuOptions.db.profile[MODULE_NAME].fallSettings.delay = val
+						SkuSettings:Sub("SkuCore").fallSettings.delay = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].fallSettings.delay
+						return SkuSettings:Sub("SkuCore").fallSettings.delay
 					end
 				},
 				ignoreJumps = {
@@ -476,10 +476,10 @@ SkuCore.options = {
 					desc = "",
 					type = "toggle",
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].fallSettings.ignoreJumps = val
+						SkuSettings:Sub("SkuCore").fallSettings.ignoreJumps = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].fallSettings.ignoreJumps
+						return SkuSettings:Sub("SkuCore").fallSettings.ignoreJumps
 					end
 				},
 
@@ -489,10 +489,10 @@ SkuCore.options = {
 					desc = "",
 					type = "toggle",
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].fallSettings.voiceOutput = val
+						SkuSettings:Sub("SkuCore").fallSettings.voiceOutput = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].fallSettings.voiceOutput
+						return SkuSettings:Sub("SkuCore").fallSettings.voiceOutput
 					end
 				},
 				soundOutput = {
@@ -501,10 +501,10 @@ SkuCore.options = {
 					desc = "",
 					type = "toggle",
 					set = function(info, val)
-						SkuOptions.db.profile[MODULE_NAME].fallSettings.soundOutput = val
+						SkuSettings:Sub("SkuCore").fallSettings.soundOutput = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].fallSettings.soundOutput
+						return SkuSettings:Sub("SkuCore").fallSettings.soundOutput
 					end
 				},
 	
@@ -523,10 +523,10 @@ SkuCore.options = {
 					type = "select",
 					values = SKU_CONSTANTS.SOUNDCHANNELS,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.ErrorSoundChannel = val
+						SkuSettings:Sub("SkuCore").UIErrors.ErrorSoundChannel = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.ErrorSoundChannel
+						return SkuSettings:Sub("SkuCore").UIErrors.ErrorSoundChannel
 					end
 				},
 				OutOfRangeMelee={
@@ -536,10 +536,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRangeMelee = val
+						SkuSettings:Sub("SkuCore").UIErrors.OutOfRangeMelee = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRangeMelee
+						return SkuSettings:Sub("SkuCore").UIErrors.OutOfRangeMelee
 					end
 				},
 				OutOfRangeCast={
@@ -549,10 +549,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRangeCast = val
+						SkuSettings:Sub("SkuCore").UIErrors.OutOfRangeCast = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRangeCast
+						return SkuSettings:Sub("SkuCore").UIErrors.OutOfRangeCast
 					end
 				},
 				Moving={
@@ -562,10 +562,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.Moving = val
+						SkuSettings:Sub("SkuCore").UIErrors.Moving = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.Moving
+						return SkuSettings:Sub("SkuCore").UIErrors.Moving
 					end
 				},
 				NoLoS={
@@ -575,10 +575,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.NoLoS = val
+						SkuSettings:Sub("SkuCore").UIErrors.NoLoS = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.NoLoS
+						return SkuSettings:Sub("SkuCore").UIErrors.NoLoS
 					end
 				},
 				BadTarget={
@@ -588,10 +588,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.BadTarget = val
+						SkuSettings:Sub("SkuCore").UIErrors.BadTarget = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.BadTarget
+						return SkuSettings:Sub("SkuCore").UIErrors.BadTarget
 					end
 				},
 				InCombat={
@@ -601,10 +601,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.InCombat = val
+						SkuSettings:Sub("SkuCore").UIErrors.InCombat = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.InCombat
+						return SkuSettings:Sub("SkuCore").UIErrors.InCombat
 					end
 				},
 				NoMana={
@@ -614,10 +614,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.NoMana = val
+						SkuSettings:Sub("SkuCore").UIErrors.NoMana = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.NoMana
+						return SkuSettings:Sub("SkuCore").UIErrors.NoMana
 					end
 				},
 				ObjectBusy={
@@ -627,10 +627,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.ObjectBusy = val
+						SkuSettings:Sub("SkuCore").UIErrors.ObjectBusy = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.ObjectBusy
+						return SkuSettings:Sub("SkuCore").UIErrors.ObjectBusy
 					end
 				},
 				NotFacing={
@@ -640,10 +640,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.NotFacing = val
+						SkuSettings:Sub("SkuCore").UIErrors.NotFacing = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.NotFacing
+						return SkuSettings:Sub("SkuCore").UIErrors.NotFacing
 					end
 				},
 				CrowdControlled={
@@ -653,10 +653,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled = val
+						SkuSettings:Sub("SkuCore").UIErrors.CrowdControlled = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled
+						return SkuSettings:Sub("SkuCore").UIErrors.CrowdControlled
 					end
 				},
 				Interrupted={
@@ -666,10 +666,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.Interrupted = val
+						SkuSettings:Sub("SkuCore").UIErrors.Interrupted = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.Interrupted
+						return SkuSettings:Sub("SkuCore").UIErrors.Interrupted
 					end
 				},
 				Other={
@@ -679,10 +679,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.Other = val
+						SkuSettings:Sub("SkuCore").UIErrors.Other = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.Other
+						return SkuSettings:Sub("SkuCore").UIErrors.Other
 					end
 				},
 				Cooldown={
@@ -692,10 +692,10 @@ SkuCore.options = {
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.Cooldown = val
+						SkuSettings:Sub("SkuCore").UIErrors.Cooldown = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.Cooldown
+						return SkuSettings:Sub("SkuCore").UIErrors.Cooldown
 					end
 				},				
 				
@@ -712,10 +712,10 @@ do
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].ressourceScanning.miningNodes[x] = val
+				SkuSettings:Sub("SkuCore").ressourceScanning.miningNodes[x] = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].ressourceScanning.miningNodes[x]
+				return SkuSettings:Sub("SkuCore").ressourceScanning.miningNodes[x]
 			end
 		}
 	end
@@ -729,10 +729,10 @@ do
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].ressourceScanning.herbs[x] = val
+				SkuSettings:Sub("SkuCore").ressourceScanning.herbs[x] = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].ressourceScanning.herbs[x]
+				return SkuSettings:Sub("SkuCore").ressourceScanning.herbs[x]
 			end
 		}
 	end
@@ -746,10 +746,10 @@ do
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].ressourceScanning.gasCollector[x] = val
+				SkuSettings:Sub("SkuCore").ressourceScanning.gasCollector[x] = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].ressourceScanning.gasCollector[x]
+				return SkuSettings:Sub("SkuCore").ressourceScanning.gasCollector[x]
 			end
 		}
 	end
@@ -1663,11 +1663,11 @@ local function RangecheckMenuBuilder(aParent, aType)
 	for i = 1, 100 do 
 		if SkuCore.RangeCheckValues.Ranges[aType][i] then 
 			local tIsConfiguredWith = ";"..L["silent"]
-			if SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][i] then
-				if SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][i].sound == L["vocalized"] then
+			if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[aType][i] then
+				if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[aType][i].sound == L["vocalized"] then
 					tIsConfiguredWith = ";"..L["vocalized"]
 				else
-					tIsConfiguredWith = ";"..SkuCore.RangeCheckSounds[SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][i].sound]
+					tIsConfiguredWith = ";"..SkuCore.RangeCheckSounds[SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[aType][i].sound]
 				end
 			end
 			local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {i..tIsConfiguredWith}, SkuGenericMenuItem)
@@ -1677,11 +1677,11 @@ local function RangecheckMenuBuilder(aParent, aType)
 			tNewSubMenuEntry.OnAction = function(self, aValue, aName, aParentMenuName)
 				local tRange = string.split(";", aParentMenuName)
 				if aName == L["vocalized"] then
-					SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][tonumber(tRange)] = {sound = L["vocalized"],}
+					SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[aType][tonumber(tRange)] = {sound = L["vocalized"],}
 				else
 					for qi, qv in pairs(SkuCore.RangeCheckSounds) do
 						if string.find(qv, aName) then
-							SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][tonumber(tRange)] = {sound = qi,}
+							SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[aType][tonumber(tRange)] = {sound = qi,}
 						end
 					end
 				end
@@ -2353,7 +2353,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 				tBindings[tCurrentCategory][tCommand] = {key1 = tKey1, key2 = tKey2, index = x}
 			end			
 
-			SkuOptions.db.profile[MODULE_NAME].tBindings = tBindings
+			SkuSettings:Sub("SkuCore").tBindings = tBindings
 
 			for categoryConst, v in pairsByKeys(tBindings) do
 			--for categoryConst, v in pairs(tBindings) do
@@ -2753,8 +2753,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.BuildChildren = function(self)
 		for x = 1, 8 do
-			local tText = SkuCore.ScanTypes[SkuOptions.db.char["SkuCore"].scanConfigs[x].type].name
-			for iDb, vDb in pairs(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects) do
+			local tText = SkuCore.ScanTypes[SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[x].type].name
+			for iDb, vDb in pairs(SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[x].objects) do
 				tText = tText..", "..L[SkuCore.ScanObjects[vDb]]
 			end
 
@@ -2771,7 +2771,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 				if self.tAction == "type" then
 					for i, v in pairs(SkuCore.ScanTypes) do
 						if v.name == aName then
-							SkuOptions.db.char["SkuCore"].scanConfigs[x].type = i
+							SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[x].type = i
 							self:OnUpdate(self)
 							return
 						end
@@ -2780,13 +2780,13 @@ function SkuCore:MenuBuilder(aParentEntry)
 					for i, v in pairs(SkuCore.ScanObjects) do
 						if aName == L[v] then
 							local tFound = false
-							for iDb, vDb in pairs(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects) do
+							for iDb, vDb in pairs(SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[x].objects) do
 								if i == vDb then
 									tFound = true
 								end
 							end
 							if tFound == false then
-								table.insert(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects, i)
+								table.insert(SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[x].objects, i)
 								self:OnUpdate(self)
 								return
 							end
@@ -2796,9 +2796,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 				elseif self.tAction == "remove" then
 					for i, v in pairs(SkuCore.ScanObjects) do
 						if aName == L[v] then
-							for iDb, vDb in pairs(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects) do
+							for iDb, vDb in pairs(SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[x].objects) do
 								if i == vDb then
-									table.remove(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects, iDb)
+									table.remove(SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[x].objects, iDb)
 									self:OnUpdate(self)
 									return
 								end
@@ -2832,7 +2832,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 					local tEmpty = true
 					for i, v in pairs(SkuCore.ScanObjects) do
 						local tFound = false
-						for iDb, vDb in pairs(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects) do
+						for iDb, vDb in pairs(SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[x].objects) do
 							if i == vDb then
 								tFound = true
 							end
@@ -2856,7 +2856,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 					local tEmpty = true
 					for i, v in pairs(SkuCore.ScanObjects) do
 						local tFound = false
-						for iDb, vDb in pairs(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects) do
+						for iDb, vDb in pairs(SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[x].objects) do
 							if i == vDb then
 								tFound = true
 							end
@@ -2931,7 +2931,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true
-	SkuOptions:IterateOptionsArgs(SkuCore.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
+	SkuOptions:IterateOptionsArgs(SkuCore.options.args, tNewMenuEntry, SkuSettings:Sub("SkuCore"))
 end
 
 

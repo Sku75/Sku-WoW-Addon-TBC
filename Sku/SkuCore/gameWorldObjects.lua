@@ -37,15 +37,15 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GameWorldObjectsOnLogin()
    -- set default values for scans to profile
-   SkuOptions.db.char[MODULE_NAME].scanConfigs = SkuOptions.db.char[MODULE_NAME].scanConfigs or {}
-   SkuOptions.db.char[MODULE_NAME].scanConfigs[1] = SkuOptions.db.char[MODULE_NAME].scanConfigs[1] or {type = 2, objects = {7, 8,},}
-   SkuOptions.db.char[MODULE_NAME].scanConfigs[2] = SkuOptions.db.char[MODULE_NAME].scanConfigs[2] or {type = 1, objects = {9,},}
-   SkuOptions.db.char[MODULE_NAME].scanConfigs[3] = SkuOptions.db.char[MODULE_NAME].scanConfigs[3] or {type = 2, objects = {10,},}
-   SkuOptions.db.char[MODULE_NAME].scanConfigs[4] = SkuOptions.db.char[MODULE_NAME].scanConfigs[4] or {type = 2, objects = {1, 2,},}
-   SkuOptions.db.char[MODULE_NAME].scanConfigs[5] = SkuOptions.db.char[MODULE_NAME].scanConfigs[5] or {type = 3, objects = {7, 8,},}
-   SkuOptions.db.char[MODULE_NAME].scanConfigs[6] = SkuOptions.db.char[MODULE_NAME].scanConfigs[6] or {type = 3, objects = {10,},}
-   SkuOptions.db.char[MODULE_NAME].scanConfigs[7] = SkuOptions.db.char[MODULE_NAME].scanConfigs[7] or {type = 3, objects = {1, 2,},}
-   SkuOptions.db.char[MODULE_NAME].scanConfigs[8] = SkuOptions.db.char[MODULE_NAME].scanConfigs[8] or {type = 5, objects = {12,},}
+   SkuSettings:Sub("SkuCore", nil, "char").scanConfigs = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs or {}
+   SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[1] = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[1] or {type = 2, objects = {7, 8,},}
+   SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[2] = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[2] or {type = 1, objects = {9,},}
+   SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[3] = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[3] or {type = 2, objects = {10,},}
+   SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[4] = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[4] or {type = 2, objects = {1, 2,},}
+   SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[5] = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[5] or {type = 3, objects = {7, 8,},}
+   SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[6] = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[6] or {type = 3, objects = {10,},}
+   SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[7] = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[7] or {type = 3, objects = {1, 2,},}
+   SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[8] = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[8] or {type = 5, objects = {12,},}
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -355,7 +355,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
                local tTextLeftLower = slower(aTextLeft1)
                for x = 1, #SkuCore.RessourceTypes.herbs do
                   if slower(SkuCore.RessourceTypes.herbs[x][Sku.LocP]) == tTextLeftLower then
-                     if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.herbs[x] == true then
+                     if SkuSettings:Sub("SkuCore").ressourceScanning.herbs[x] == true then
                         SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                         GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                         return true
@@ -377,7 +377,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
                local tTextLeftLower = slower(aTextLeft1)
                for x = 1, #SkuCore.RessourceTypes.mining do
                   if slower(SkuCore.RessourceTypes.mining[x][Sku.LocP]) == tTextLeftLower then
-                     if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.miningNodes[x] == true then
+                     if SkuSettings:Sub("SkuCore").ressourceScanning.miningNodes[x] == true then
                         SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                         GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                         return true
@@ -533,6 +533,6 @@ function SkuCore:GameWorldObjectsScan(aContinue, aFindList, aHStepSizeDeg, aHSte
    ]]
 
    tFrame.isScanningActive = true
-   SkuOptions:StartStopBackgroundSound(true, SkuOptions.db.profile["SkuCore"].scanBackgroundSound)
+   SkuOptions:StartStopBackgroundSound(true, SkuSettings:Sub("SkuCore").scanBackgroundSound)
    tFrame.isScanningPaused = false
 end

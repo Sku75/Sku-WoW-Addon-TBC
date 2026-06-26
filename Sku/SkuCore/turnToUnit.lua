@@ -94,7 +94,7 @@ local function CreateControlFrame()
             if ttime > SkuCore.TurnToUnit.time then
                StopSearch()
                dprint("found nothing")
-               SkuOptions.Voice:OutputString(SkuOptions.db.profile[MODULE_NAME].turnToUnit.soundOnFail, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
+               SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuCore").turnToUnit.soundOnFail, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
                ttime = 0
                return
             end
@@ -110,7 +110,7 @@ local function CreateControlFrame()
                if tFound == true then
                   StopSearch()
                   dprint("found mouseover")
-                  SkuOptions.Voice:OutputString(SkuOptions.db.profile[MODULE_NAME].turnToUnit.soundOnSuccess, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
+                  SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuCore").turnToUnit.soundOnSuccess, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
                   ttime = 0
                   return
                end
@@ -158,7 +158,7 @@ function SkuCore:TurnToUnit_UPDATE_MOUSEOVER_UNIT(aEvent)
 
          if tFound == true then
             StopSearch()
-            SkuOptions.Voice:OutputString(SkuOptions.db.profile[MODULE_NAME].turnToUnit.soundOnSuccess, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})            
+            SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuCore").turnToUnit.soundOnSuccess, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})            
          end
       end
    end
@@ -191,8 +191,8 @@ function SkuCore:TurnToUnit_NAME_PLATE_UNIT_ADDED(aEvent, aNameplateId)
          dprint("found NAME_PLATE")
          SkuCore.TurnToUnit.time = -1
          SkuCore.TurnToUnit.searching = false
-         SkuOptions.Voice:OutputString(SkuOptions.db.profile[MODULE_NAME].turnToUnit.soundOnSuccess, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
-         C_Timer.After((0.4 / SkuOptions.db.profile[MODULE_NAME].turnToUnit.enhancedSettings.delayOnPlate) / SkuOptions.db.profile[MODULE_NAME].turnToUnit.speed, function()
+         SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuCore").turnToUnit.soundOnSuccess, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
+         C_Timer.After((0.4 / SkuSettings:Sub("SkuCore").turnToUnit.enhancedSettings.delayOnPlate) / SkuSettings:Sub("SkuCore").turnToUnit.speed, function()
             StopSearch()
          end)
       end
@@ -202,7 +202,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
    if (aUnitId and UnitName(aUnitId) == nil) or SkuCore.TurnToUnit.searching == true then
-      SkuOptions.Voice:OutputString(SkuOptions.db.profile[MODULE_NAME].turnToUnit.soundOnFail, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
+      SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuCore").turnToUnit.soundOnFail, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
       return
    end
 
@@ -221,7 +221,7 @@ function SkuCore:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
          SkuCore.TurnToUnit.skuMarker = aSkuMarker
       
          SkuCore.TurnToUnit.searching = true
-         SkuCore.TurnToUnit.time = 1.5 / SkuOptions.db.profile[MODULE_NAME].turnToUnit.speed
+         SkuCore.TurnToUnit.time = 1.5 / SkuSettings:Sub("SkuCore").turnToUnit.speed
          -- [Kamera-Entkopplung 41.02.07] Kamera-Snap NUR im SkuStandard.
          -- Bei Freigabe (skuStandard==false) bleibt die freie Kamera des
          -- Nutzers erhalten; die Drehung selbst (MoveViewRightStart unten)
@@ -235,7 +235,7 @@ function SkuCore:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
          C_CVar.SetCVar("cameraZoomSpeed", 1000)
       
          CameraZoomIn(50)
-         MoveViewRightStart(1 * SkuOptions.db.profile[MODULE_NAME].turnToUnit.speed)
+         MoveViewRightStart(1 * SkuSettings:Sub("SkuCore").turnToUnit.speed)
          MoveViewDownStart(0)
          MoveViewUpStart(0)
       end)

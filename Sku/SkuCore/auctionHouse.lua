@@ -344,8 +344,8 @@ function SkuCore:AUCTION_HOUSE_SHOW()
    PriceDropdown = BrowsePrevPageButton
    --
 
-   SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime = SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime or 0
-   SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter = {
+   SkuSettings:Sub("SkuCore", nil, "char").AuctionLastFullScanTime = SkuSettings:Sub("SkuCore", nil, "char").AuctionLastFullScanTime or 0
+   SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter = {
       ["LevelMin"] = nil,
       ["LevelMax"] = nil,
       ["MinQuality"] = nil,
@@ -630,7 +630,7 @@ function SkuCore:AuctionPruneListAuction(aRecord)
       tRep[19] = tDupes
       tRep[20] = tEntry.data[20]
       tEntry.data = tRep
-      local tFilter = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter
+      local tFilter = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter
       local tWithLevel = (tFilter.SortBy == 5 or tFilter.SortBy == 6
          or tFilter.LevelMin or tFilter.LevelMax) and true or nil
       local tPrefix = (#tDupes > 1) and (#tDupes..L[" mal "]) or ""
@@ -701,11 +701,11 @@ local function _ABReQueryBuy()
       nil,
       "AUCTION_ITEM_LIST_UPDATE",
       SkuCore.QueryBuyData.query[1],
-      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
-      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax,
+      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
+      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax,
       0,
-      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
-      SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
+      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable,
+      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality,
       false, true,
       SkuCore.QueryBuyData.query[9],
       function() end
@@ -1774,7 +1774,7 @@ function SkuCore:AuctionHouseMenuBuilder()
          tNewMenuEntryFilterOption.dynamic = false
          tNewMenuEntryFilterOption.OnAction = function(self, aValue, aName)
             dprint("reset all OnAction", self, aValue, aName)
-            SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter = {
+            SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter = {
                ["LevelMin"] = nil,
                ["LevelMax"] = nil,
                ["MinQuality"] = nil,
@@ -1792,11 +1792,11 @@ function SkuCore:AuctionHouseMenuBuilder()
             tNewMenuEntryFilterOption.isSelect = true
             tNewMenuEntryFilterOption.noStepUpAfterSelect = true
             tNewMenuEntryFilterOption.GetCurrentValue = function(self, aValue, aName)
-               return SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin or 1
+               return SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin or 1
             end
             tNewMenuEntryFilterOption.OnAction = function(self, aValue, aName)
                dprint("Level Min OnAction", self, aValue, aName)
-               SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin = tonumber(aName)
+               SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin = tonumber(aName)
             end
             tNewMenuEntryFilterOption.BuildChildren = function(self)
                for x = 1, 80 do
@@ -1810,11 +1810,11 @@ function SkuCore:AuctionHouseMenuBuilder()
             tNewMenuEntryFilterOption.isSelect = true
             tNewMenuEntryFilterOption.noStepUpAfterSelect = true
             tNewMenuEntryFilterOption.GetCurrentValue = function(self, aValue, aName)
-               return SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax or 70
+               return SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax or 70
             end
             tNewMenuEntryFilterOption.OnAction = function(self, aValue, aName)
                dprint("Level Max OnAction", self, aValue, aName)
-               SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax = tonumber(aName)
+               SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax = tonumber(aName)
             end
             tNewMenuEntryFilterOption.BuildChildren = function(self)
                for x = 1, 80 do
@@ -1828,8 +1828,8 @@ function SkuCore:AuctionHouseMenuBuilder()
             tNewMenuEntryFilterOption.isSelect = true
             tNewMenuEntryFilterOption.noStepUpAfterSelect = true
             tNewMenuEntryFilterOption.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality then
-                  return _G["ITEM_QUALITY"..SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality.."_DESC"]
+               if SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality then
+                  return _G["ITEM_QUALITY"..SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality.."_DESC"]
                else
                   return _G["ITEM_QUALITY0_DESC"]
                end
@@ -1838,7 +1838,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                dprint("quality OnAction", self, aValue, aName)
                for i=0, getn(ITEM_QUALITY_COLORS)-4  do
                   if _G["ITEM_QUALITY"..i.."_DESC"] == aName then
-                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality = i
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality = i
                   end
                end   
             end
@@ -1854,7 +1854,7 @@ function SkuCore:AuctionHouseMenuBuilder()
             tNewMenuEntryFilterOption.isSelect = true
             tNewMenuEntryFilterOption.noStepUpAfterSelect = true
             tNewMenuEntryFilterOption.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable == true then
+               if SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable == true then
                   return L["Ein"]
                else
                   return L["Aus"]
@@ -1863,9 +1863,9 @@ function SkuCore:AuctionHouseMenuBuilder()
             tNewMenuEntryFilterOption.OnAction = function(self, aValue, aName)
                dprint("Ein OnAction", self, aValue, aName)
                if aName == L["Ein"] then 
-                  SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable = true
+                  SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable = true
                else
-                  SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable = false
+                  SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable = false
                end
             end
             tNewMenuEntryFilterOption.BuildChildren = function(self)
@@ -1880,8 +1880,8 @@ function SkuCore:AuctionHouseMenuBuilder()
          tNewMenuEntryCategorySub.isSelect = true
          tNewMenuEntryCategorySub.noStepUpAfterSelect = true
          tNewMenuEntryCategorySub.GetCurrentValue = function(self, aValue, aName)
-            if SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy then
-               return tSortByValues[SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy]
+            if SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.SortBy then
+               return tSortByValues[SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.SortBy]
             else
                return tSortByValues[1]
             end
@@ -1890,7 +1890,7 @@ function SkuCore:AuctionHouseMenuBuilder()
             dprint("quality OnAction", self, aValue, aName)
             for i = 1, #tSortByValues  do
                if tSortByValues[i] == aName then
-                  SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy = i
+                  SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.SortBy = i
                end
             end   
          end
@@ -1989,11 +1989,11 @@ function SkuCore:AuctionHouseMenuBuilder()
                   nil,
                   "AUCTION_ITEM_LIST_UPDATE",
                   tText,
-                  SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
-                  SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax,
+                  SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
+                  SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax,
                   0,
-                  SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
-                  SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
+                  SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable,
+                  SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality,
                   false,
                   false,
                   nil,
@@ -2256,7 +2256,7 @@ OnEnterAllFlag = nil
             -- 16-Minuten-Sperre setzen + SOFORTIGE Start-Ansage (vor der ersten
             -- 10-Sekunden-Fortschrittsansage), damit der Nutzer gleich hört, dass
             -- der Scan losgelaufen ist.
-            SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime = GetServerTime()
+            SkuSettings:Sub("SkuCore", nil, "char").AuctionLastFullScanTime = GetServerTime()
             pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Full scan started"], true, true, 0.1, nil, nil, nil, 1) end)
          else
             -- Kein Scan ausgelöst: hörbare, lokalisierte Meldung, KEINE Sperre.
@@ -2684,10 +2684,10 @@ local function _AuctionAttachBuyBidChildren(aEntry, aData, aFullScanKaufen)
                   SkuCore.QueryBuyBought = 0
                   SkuCore.QueryBuyType = 1
                   SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
-                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
-                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax, 0,
-                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
-                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax, 0,
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable,
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality,
                      false, true, tData.query.filterData, function() end)
                end
             end
@@ -2716,10 +2716,10 @@ local function _AuctionAttachBuyBidChildren(aEntry, aData, aFullScanKaufen)
                   SkuCore.QueryBuyBought = 0
                   SkuCore.QueryBuyType = 2
                   SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
-                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
-                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax, 0,
-                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
-                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax, 0,
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable,
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality,
                      false, true, tFilterData, function() end)
                end
             end
@@ -2762,7 +2762,7 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
       tNewMenuEntryCategorySubItem.dynamic = false
    else
       tCurrentDBClean = {}
-      local lmin, lmax, isuse, qmin = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin or 1, SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax or 1000, SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable or false, SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality or 1
+      local lmin, lmax, isuse, qmin = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin or 1, SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax or 1000, SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable or false, SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality or 1
 
       for tIndex, tRecord in pairs(FullScanResultsDB) do
          if tRecord then
@@ -2836,7 +2836,7 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
       -- identisch (gleiche SortBy-Bedeutung, gleiche Vergleiche; der Folge-Loop
       -- nutzt nur name/dupes/level, die alle erhalten bleiben).
       tCurrentDBCleanSorted = tCurrentDBClean
-      local tSortBy = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy or 1
+      local tSortBy = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.SortBy or 1
       local tComparators = {
          [1] = function(a, b) return a.pricePerItem.buy    < b.pricePerItem.buy    end,
          [2] = function(a, b) return a.pricePerAuction.buy < b.pricePerAuction.buy end,
@@ -2858,7 +2858,7 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
                   tNewMenuItemName = #tData[19]..L[" mal "]
                end
                local tWithLevel = nil
-               if SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 5 or SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 6 or SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin or SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax then
+               if SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.SortBy == 5 or SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.SortBy == 6 or SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin or SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax then
                   tWithLevel = true
                end
    
@@ -2914,11 +2914,11 @@ function SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryInd
 
          SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE",
             "",
-            SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
-            SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax,
+            SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
+            SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax,
             0,
-            SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable,
-            SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality,
+            SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable,
+            SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality,
             false,
             false,
             filterData,
@@ -2976,11 +2976,11 @@ function SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryInd
 
                   SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", 
                      tLocName, 
-                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin, 
-                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax, 
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin, 
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax, 
                      0, 
-                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable, 
-                     SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality, 
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable, 
+                     SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality, 
                      false, 
                      true, 
                      filterData,
@@ -3058,7 +3058,7 @@ function SkuCore:AuctionGroupResults()
    -- Wichtig: Erstaufbau, Nachladen (AuctionResultsAppend) und erneutes
    -- Betreten müssen DENSELBEN Vergleich nutzen, sonst springt die
    -- Reihenfolge.
-   local tSortBy = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy or 1
+   local tSortBy = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.SortBy or 1
    local tComparators = {
       [1] = function(a, b) return a.pricePerItem.buy    < b.pricePerItem.buy    end,
       [2] = function(a, b) return a.pricePerAuction.buy < b.pricePerAuction.buy end,
@@ -3086,7 +3086,7 @@ function SkuCore:AuctionResultsCreateEntry(aParent, tDataTmp, tIndex)
       return nil
    end
 
-   local tFilter = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter
+   local tFilter = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter
    local tWithLevelGlobal = (tFilter.SortBy == 5 or tFilter.SortBy == 6
       or tFilter.LevelMin or tFilter.LevelMax) and true or nil
 
@@ -3145,7 +3145,7 @@ function SkuCore:AuctionResultsAppend()
 
    SkuCore.QueryResultsByName = SkuCore.QueryResultsByName or {}
    local tSorted = SkuCore:AuctionGroupResults()
-   local tFilter = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter
+   local tFilter = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter
    local tWithLevelGlobal = (tFilter.SortBy == 5 or tFilter.SortBy == 6
       or tFilter.LevelMin or tFilter.LevelMax) and true or nil
 
@@ -3245,7 +3245,7 @@ function SkuCore:AuctionHouseResultsMenuBuilder(aParent)
 
          -- "tWithLevel" einmal außerhalb der Schleife auswerten
          -- (Filter ändert sich nicht pro Item).
-         local tFilter = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter
+         local tFilter = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter
          local tWithLevelGlobal = (tFilter.SortBy == 5 or tFilter.SortBy == 6
             or tFilter.LevelMin or tFilter.LevelMax) and true or nil
 
@@ -3587,7 +3587,7 @@ end
 -- getAll-Flag von CanSendAuctionQuery, das direkt nach einem Scan unzuverlässig
 -- ist und den Menü-Eintrag fälschlich "start full scan" zeigen ließ.
 function SkuCore:AuctionFullScanCooldownRemaining()
-   local tLast = SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime or 0
+   local tLast = SkuSettings:Sub("SkuCore", nil, "char").AuctionLastFullScanTime or 0
    local tRemain = 16 - mfloor((GetServerTime() - tLast) / 60)
    if tRemain < 0 then tRemain = 0 end
    return tRemain
@@ -3619,7 +3619,7 @@ function SkuCore:AuctionFullScanBeginIngest(aBatch, aCount)
       itemData      = SkuDB.itemDataTBC,
       reqLevelKey   = SkuDB.WotLK.itemKeys.requiredLevel,
       itemLookup    = SkuDB.itemLookup[Sku.Loc],
-      fallbackLevel = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin,
+      fallbackLevel = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
    }
    -- Während der Ingest läuft, ist der Scan nicht mehr "waiting" (sonst liefe die
    -- 10-s-Warteansage weiter); "paging" markiert "Antwort da, wird verarbeitet".

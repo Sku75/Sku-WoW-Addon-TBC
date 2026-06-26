@@ -9,10 +9,10 @@ SkuCore.DialTargeting = {}
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DialTargetingOnLogin()
-   SkuOptions.db.profile[MODULE_NAME].dialTargeting = SkuOptions.db.profile[MODULE_NAME].dialTargeting or {}
-   SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled = SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled or L["Off"]
-   SkuOptions.db.profile[MODULE_NAME].dialTargeting.keySound = SkuOptions.db.profile[MODULE_NAME].dialTargeting.keySound or L["On first and second key"]
-   SkuOptions.db.profile[MODULE_NAME].dialTargeting.singleKeyinRaid10 = SkuOptions.db.profile[MODULE_NAME].dialTargeting.singleKeyinRaid10 or L["Off"]
+   SkuSettings:Sub("SkuCore").dialTargeting = SkuSettings:Sub("SkuCore").dialTargeting or {}
+   SkuSettings:Sub("SkuCore").dialTargeting.enabled = SkuSettings:Sub("SkuCore").dialTargeting.enabled or L["Off"]
+   SkuSettings:Sub("SkuCore").dialTargeting.keySound = SkuSettings:Sub("SkuCore").dialTargeting.keySound or L["On first and second key"]
+   SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10 = SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10 or L["Off"]
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ function SkuCore:DialTargetingOnInitialize()
       end
    end
    tSkuSecureTargetingFrame:HookScript("OnClick", function()
-      if SkuOptions.db.profile[MODULE_NAME].dialTargeting.keySound == L["On second key"] or SkuOptions.db.profile[MODULE_NAME].dialTargeting.keySound == L["On first and second key"] then
+      if SkuSettings:Sub("SkuCore").dialTargeting.keySound == L["On second key"] or SkuSettings:Sub("SkuCore").dialTargeting.keySound == L["On first and second key"] then
          PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\blip_low.mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
       end
    end)
@@ -140,7 +140,7 @@ function SkuCore:DialTargetingOnInitialize()
       end
 	]=])
    tSkuSecureTargetingToggleHandler:HookScript("OnClick", function()
-      if SkuOptions.db.profile[MODULE_NAME].dialTargeting.keySound == L["On first key"] or SkuOptions.db.profile[MODULE_NAME].dialTargeting.keySound == L["On first and second key"] then
+      if SkuSettings:Sub("SkuCore").dialTargeting.keySound == L["On first key"] or SkuSettings:Sub("SkuCore").dialTargeting.keySound == L["On first and second key"] then
          PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\blip.mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
       end
    end)
@@ -173,9 +173,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DialTargetingRosterUpdate()
    if 
-      ((UnitInRaid("player") and (SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled == L["Raid"] or SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled == L["Party and Raid"]))) 
+      ((UnitInRaid("player") and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Raid"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))) 
       or 
-      (UnitInParty("player") == true  and (SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled == L["Party"] or SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled == L["Party and Raid"]))  
+      (UnitInParty("player") == true  and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))  
    then
 
       dprint("DialTargetingRosterUpdate")
@@ -203,7 +203,7 @@ function SkuCore:DialTargetingRosterUpdate()
             end
          end
 
-         if SkuOptions.db.profile[MODULE_NAME].dialTargeting.singleKeyinRaid10 == L["Off"] or tNumCurMembers > 10 then
+         if SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10 == L["Off"] or tNumCurMembers > 10 then
             _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "raid")
             
             for x = 1, 10 do
@@ -390,9 +390,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DialTargeting_EndableDisable()
    if 
-      ((UnitInRaid("player") and (SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled == L["Raid"] or SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled == L["Party and Raid"]))) 
+      ((UnitInRaid("player") and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Raid"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))) 
       or 
-      (UnitInParty("player") == true  and (SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled == L["Party"] or SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled == L["Party and Raid"]))  
+      (UnitInParty("player") == true  and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))  
    then
       SkuCore:DialTargetingEnable()
    else
@@ -407,10 +407,10 @@ function SkuCore:DialTargetingMenuBuilder()
    tNewMenuEntry.filterable = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-      return SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled
+      return SkuSettings:Sub("SkuCore").dialTargeting.enabled
    end
    tNewMenuEntry.OnAction = function(self, aValue, aName)
-      SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled = aName
+      SkuSettings:Sub("SkuCore").dialTargeting.enabled = aName
       SkuCore:DialTargeting_EndableDisable()
    end
    tNewMenuEntry.BuildChildren = function(self)
@@ -425,10 +425,10 @@ function SkuCore:DialTargetingMenuBuilder()
    tNewMenuEntry.filterable = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-      return SkuOptions.db.profile[MODULE_NAME].dialTargeting.keySound
+      return SkuSettings:Sub("SkuCore").dialTargeting.keySound
    end
    tNewMenuEntry.OnAction = function(self, aValue, aName)
-      SkuOptions.db.profile[MODULE_NAME].dialTargeting.keySound = aName
+      SkuSettings:Sub("SkuCore").dialTargeting.keySound = aName
    end
    tNewMenuEntry.BuildChildren = function(self)
       SkuOptions:InjectMenuItems(self, {L["No sound"]}, SkuGenericMenuItem)
@@ -442,10 +442,10 @@ function SkuCore:DialTargetingMenuBuilder()
    tNewMenuEntry.filterable = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-      return SkuOptions.db.profile["SkuCore"].dialTargeting.singleKeyinRaid10
+      return SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10
    end
    tNewMenuEntry.OnAction = function(self, aValue, aName)
-      SkuOptions.db.profile["SkuCore"].dialTargeting.singleKeyinRaid10 = aName
+      SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10 = aName
       SkuCore:DialTargeting_EndableDisable()
    end
    tNewMenuEntry.BuildChildren = function(self)

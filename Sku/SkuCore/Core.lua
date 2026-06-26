@@ -429,7 +429,7 @@ function SkuCore:CameraSkuStandardActive()
    local tActive = true
    pcall(function()
       local co = SkuOptions and SkuOptions.db and SkuOptions.db.char
-         and SkuOptions.db.char["SkuCore"] and SkuOptions.db.char["SkuCore"].cameraOptions
+         and SkuSettings:Sub("SkuCore", nil, "char") and SkuSettings:Sub("SkuCore", nil, "char").cameraOptions
       if co and co.skuStandard == false then
          tActive = false
       end
@@ -648,12 +648,12 @@ function SkuCore:PanicModeStart()
 								SkuCorePanicCurrentPoint = x
 								if not SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", tPanicBeaconName) then
 									local tBeaconType = SkuNav:GetBeaconSoundSetName(1)
-									if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", tPanicBeaconName, tBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange, nil, nil, nil, nil, SkuOptions.db.profile["SkuNav"].clickClackSoundset) then
+									if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", tPanicBeaconName, tBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuSettings:Sub("SkuCore").clickClackRange, nil, nil, nil, nil, SkuOptions.db.profile["SkuNav"].clickClackSoundset) then
 										return
 									end
 									SkuOptions.BeaconLib:StartBeacon("SkuOptions", tPanicBeaconName)
 								else
-									SkuOptions.BeaconLib:UpdateBeacon("SkuOptions", tPanicBeaconName, tBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange)
+									SkuOptions.BeaconLib:UpdateBeacon("SkuOptions", tPanicBeaconName, tBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuSettings:Sub("SkuCore").clickClackRange)
 								end
 		
 								break
@@ -923,9 +923,9 @@ function SkuCore:UpdateInteractMove(aForceFlag)
 		return
 	end
 
-	SkuOptions.db.profile[MODULE_NAME].interactMove = SkuOptions.db.profile[MODULE_NAME].interactMove or false
+	SkuSettings:Sub("SkuCore").interactMove = SkuSettings:Sub("SkuCore").interactMove or false
 	local interactMoveVal = "0"
-	if SkuOptions.db.profile[MODULE_NAME].interactMove == true then
+	if SkuSettings:Sub("SkuCore").interactMove == true then
 		interactMoveVal = "1"
 	end
 
@@ -936,16 +936,16 @@ function SkuCore:UpdateInteractMove(aForceFlag)
 	-- [41.05] Additive WorldFrame-Haken statt SetScript-Ueberschreiben, GENAU EINMAL
 	-- installiert (nicht im Per-Tick-Pfad). Die Handler tun nichts, solange
 	-- interactMove aus ist (Default), und stoeren so die normale Maus nicht.
-	if SkuOptions.db.profile[MODULE_NAME].interactMove == true and SkuCore.tWorldFrameInteractHooked ~= true then
+	if SkuSettings:Sub("SkuCore").interactMove == true and SkuCore.tWorldFrameInteractHooked ~= true then
 		SkuCore.tWorldFrameInteractHooked = true
 		WorldFrame:HookScript("OnMouseDown", function()
-			local tDb = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuOptions.db.profile[MODULE_NAME]
+			local tDb = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuSettings:Sub("SkuCore")
 			if not tDb or tDb.interactMove ~= true then return end
 			SkuInteractMoveTmpFlag = true
 			C_CVar.SetCVar("AutoInteract", "0")
 		end)
 		WorldFrame:HookScript("OnMouseUp", function()
-			local tDb = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuOptions.db.profile[MODULE_NAME]
+			local tDb = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuSettings:Sub("SkuCore")
 			if not tDb or tDb.interactMove ~= true then return end
 			C_Timer.After(0.0, function()
 				C_CVar.SetCVar("AutoInteract", "1")
@@ -1001,7 +1001,7 @@ function SkuCore:OnEnable()
 			-- [41.05] Freundliche Plaketten nur erzwingen, wenn die Kamera im
 			-- SkuStandard (gesperrt) ist. Bei freigegebenem Kameramenue
 			-- (skuStandard == false) bleibt die Plaketten-Sicht aenderbar.
-			local tCamCo = SkuOptions.db and SkuOptions.db.char and SkuOptions.db.char["SkuCore"] and SkuOptions.db.char["SkuCore"].cameraOptions
+			local tCamCo = SkuOptions.db and SkuOptions.db.char and SkuSettings:Sub("SkuCore", nil, "char") and SkuSettings:Sub("SkuCore", nil, "char").cameraOptions
 			local tCamLocked = (not tCamCo) or (tCamCo.skuStandard ~= false)
 			-- [41.05] nameplateShowFriends ist im Kampf von Blizzard gesperrt. Das aeussere
 			-- Gate nutzt SkuCore.inCombat (Skus eigenes Flag), das bei KampfBEGINN kurz
@@ -1088,7 +1088,7 @@ function SkuCore:OnEnable()
 
 		--hunter pet happiness
 		if SkuCore:PlayerIsHunter()
-			and SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness == true
+			and SkuSettings:Sub("SkuCore").classes.hunter.petHappyness == true
 			-- make sure player isn't dead and pet exists
 			and UnitHealth("player") ~= 0
 			and UnitHealth("pet") ~= 0
@@ -1110,16 +1110,16 @@ function SkuCore:OnEnable()
 			end
 		end
 
-		if SkuOptions.db.profile[MODULE_NAME].fallSettings.soundOutput == true then
+		if SkuSettings:Sub("SkuCore").fallSettings.soundOutput == true then
 			if IsFalling() == true and SkuStatus.fallingSoundJump ~= true then
 				SkuStatus.fallingSound = SkuStatus.fallingSound or GetTime()
-				if (GetTime() - SkuStatus.fallingSound) > (SkuOptions.db.profile[MODULE_NAME].fallSettings.delay / 1000) then
-					if tLastFallSoundNum and (math.floor(((GetTime() - SkuStatus.fallingSound) - (SkuOptions.db.profile[MODULE_NAME].fallSettings.delay / 1000)) / 0.05) > tLastFallSoundNum) then
+				if (GetTime() - SkuStatus.fallingSound) > (SkuSettings:Sub("SkuCore").fallSettings.delay / 1000) then
+					if tLastFallSoundNum and (math.floor(((GetTime() - SkuStatus.fallingSound) - (SkuSettings:Sub("SkuCore").fallSettings.delay / 1000)) / 0.05) > tLastFallSoundNum) then
 						tLastFallSoundNum = tLastFallSoundNum + 1
 						if tLastFallSoundNum > 99 then
 							tLastFallSoundNum = 99
 						end
-						if tLastFallSoundNum == 1 and SkuOptions.db.profile[MODULE_NAME].fallSettings.voiceOutput == true then
+						if tLastFallSoundNum == 1 and SkuSettings:Sub("SkuCore").fallSettings.voiceOutput == true then
 							SkuOptions.Voice:OutputString("male-Fallen", true, true, 0.2)
 						end
 						PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\fall_sound\\1\\fall_sound-"..string.format("%02d", tLastFallSoundNum)..".mp3", "Talking Head")
@@ -1417,7 +1417,7 @@ function SkuCore:OnEnable()
 
 		for x = 1, 6 do
 			if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_TURNTOUNIT"..x) then
-				local tValues = SkuCore.TurnToUnit.availableTargetsList[SkuCore.TurnToUnit.availableTargetsListNames[SkuOptions.db.profile["SkuCore"].turnToUnit.targetSelection["key"..x]]]
+				local tValues = SkuCore.TurnToUnit.availableTargetsList[SkuCore.TurnToUnit.availableTargetsListNames[SkuSettings:Sub("SkuCore").turnToUnit.targetSelection["key"..x]]]
 				SkuCore:TurnToUnitStartTuring(tValues[1], tValues[2], tValues[3])
 			end
 		end
@@ -1468,10 +1468,10 @@ function SkuCore:OnEnable()
 
 		local function tStartScan(aScanNumber)
 			local tScanObjects = {}
-			for i, v in pairs(SkuOptions.db.char[MODULE_NAME].scanConfigs[aScanNumber].objects) do
+			for i, v in pairs(SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[aScanNumber].objects) do
 				tScanObjects[SkuCore.ScanObjects[v]] = true
 			end
-			local tScanParameters = SkuCore.ScanTypes[SkuOptions.db.char[MODULE_NAME].scanConfigs[aScanNumber].type]
+			local tScanParameters = SkuCore.ScanTypes[SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[aScanNumber].type]
 
 			if SkuCore.MinimapScanFastRunning == true then
 				SkuCore:MinimapScanFastStop()
@@ -1517,11 +1517,11 @@ function SkuCore:OnEnable()
 
 		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_NOTIFYONRESOURCES") then
 			dprint("SKU_KEY_NOTIFYONRESOURCES")
-			if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.notifyOnRessources == true then
-				SkuOptions.db.profile[MODULE_NAME].ressourceScanning.notifyOnRessources = false
+			if SkuSettings:Sub("SkuCore").ressourceScanning.notifyOnRessources == true then
+				SkuSettings:Sub("SkuCore").ressourceScanning.notifyOnRessources = false
 				SkuOptions.Voice:OutputStringBTtts(L["notify On Ressources"].." "..L["Off"], true, true, 0.2, true, nil, nil, 2)
 			else
-				SkuOptions.db.profile[MODULE_NAME].ressourceScanning.notifyOnRessources = true
+				SkuSettings:Sub("SkuCore").ressourceScanning.notifyOnRessources = true
 				SkuOptions.Voice:OutputStringBTtts(L["notify On Ressources"].." "..L["On"], true, true, 0.2, true, nil, nil, 2)
 			end
 		end
@@ -1641,7 +1641,7 @@ function SkuCore:OnEnable()
 	hooksecurefunc("TurnLeftStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("TurnLeftStop") end)
 	hooksecurefunc("TurnRightStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("TurnRightStop") end)
 	hooksecurefunc("JumpOrAscendStart", function()
-		if SkuOptions.db.profile[MODULE_NAME].fallSettings.ignoreJumps == true then
+		if SkuSettings:Sub("SkuCore").fallSettings.ignoreJumps == true then
 			SkuStatus.fallingSoundJump = true
 			C_Timer.After(0.8, function()
 				SkuStatus.fallingSoundJump = false	
@@ -1702,7 +1702,7 @@ function SkuCore:AUTOFOLLOW_BEGIN(event, target, ...)
 	if SkuStatus.follow == 0 then
 		SkuStatus.followUnitName = target or UnitName("TARGET")
 		SkuStatus.follow = GetTime()
-		if SkuOptions.db.profile[MODULE_NAME].autoFollow == true then
+		if SkuSettings:Sub("SkuCore").autoFollow == true then
 			SkuStatus.followUnitId = ""
 			SkuStatus.followUnitName = ""
 			local tTargetName = UnitName("TARGET")
@@ -1949,14 +1949,14 @@ function SkuCore:PLAYER_LOGIN(...)
 	CraftFrame:Show()
 	CraftFrame:Hide()
 
-	SkuOptions.db.profile[MODULE_NAME].trainerSkillsUnavailableDisabled = false
+	SkuSettings:Sub("SkuCore").trainerSkillsUnavailableDisabled = false
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local unfollowOnCastWasOnFollowUnitName = nil
 function SkuCore:UnfollowOnCast()
 	--[[
-	if SkuOptions.db.profile[MODULE_NAME].endFollowOnCast == true and SkuStatus.followUnitName ~= "" then
+	if SkuSettings:Sub("SkuCore").endFollowOnCast == true and SkuStatus.followUnitName ~= "" then
 		unfollowOnCastWasOnFollowUnitName = SkuStatus.followUnitName
 		FollowUnit("player")
 	end
@@ -1965,7 +1965,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:FollowOnCast()
 	--[[
-	if SkuOptions.db.profile[MODULE_NAME].endFollowOnCast == true and unfollowOnCastWasOnFollowUnitName then
+	if SkuSettings:Sub("SkuCore").endFollowOnCast == true and unfollowOnCastWasOnFollowUnitName then
 		if UnitName("TARGET") == unfollowOnCastWasOnFollowUnitName then
 			FollowUnit("TARGET")
 		end
@@ -2078,7 +2078,7 @@ function SkuCore:CheckInteractObjectShow()
 		if not tFirstLine or tFirstLine == "" then
 			return
 		end
-		if SkuOptions.db.profile[MODULE_NAME].readAllTooltips == true then
+		if SkuSettings:Sub("SkuCore").readAllTooltips == true then
 			SkuOptions.Voice:OutputStringBTtts(tFirstLine, true, true, 0.2, true, nil, nil, 2)
 			C_Timer.After(0.1, function() GameTooltip:Hide() end)
 			return
@@ -2093,7 +2093,7 @@ function SkuCore:CheckInteractObjectShow()
 			end
 		end
 	end
-	if SkuOptions.db.profile[MODULE_NAME].doNotHideTooltip ~= true then
+	if SkuSettings:Sub("SkuCore").doNotHideTooltip ~= true then
 		C_Timer.After(0.1, function() GameTooltip:Hide() end)
 	end
 end
@@ -2122,8 +2122,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 
 
-	SkuOptions.db.global[MODULE_NAME] = SkuOptions.db.global[MODULE_NAME] or {}
-	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
+	SkuSettings:Sub("SkuCore", nil, "global")
+	SkuSettings:Sub("SkuCore", nil, "char")
 	SkuOptions.db.char["SkuAuras"] = SkuOptions.db.char["SkuAuras"] or {}
 
 	SetCVar("nameplateShowEnemies", 1)
@@ -2153,9 +2153,9 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 		SkuOptions.db:SetProfile(tCurrentP)
 
-		dprint(SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin, SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin)
-		if SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin ~= false then
-			dprint("SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin", SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin)
+		dprint(SkuSettings:Sub("SkuCore", nil, "global").IsFirstAccountLogin, SkuSettings:Sub("SkuCore", nil, "char").IsFirstCharLogin)
+		if SkuSettings:Sub("SkuCore", nil, "global").IsFirstAccountLogin ~= false then
+			dprint("SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin", SkuSettings:Sub("SkuCore", nil, "global").IsFirstAccountLogin)
 			--this is the first load of wow ever
 			--set up account wide things
 			
@@ -2167,11 +2167,11 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
 			--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
 
-			SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin = false
+			SkuSettings:Sub("SkuCore", nil, "global").IsFirstAccountLogin = false
 		end
 
-		if SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin ~= false then
-			dprint("SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin", SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin)
+		if SkuSettings:Sub("SkuCore", nil, "char").IsFirstCharLogin ~= false then
+			dprint("SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin", SkuSettings:Sub("SkuCore", nil, "char").IsFirstCharLogin)
 			--first load with character
 			--set up char specific things
 			--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
@@ -2217,9 +2217,9 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 					-- SkuStandart bei Login erzwingen
 					pcall(function()
-						SkuOptions.db.char["SkuCore"] = SkuOptions.db.char["SkuCore"] or {}
-						SkuOptions.db.char["SkuCore"].cameraOptions = SkuOptions.db.char["SkuCore"].cameraOptions or { skuStandard = true, userValues = {} }
-						SkuOptions.db.char["SkuCore"].cameraOptions.skuStandard = true
+						SkuSettings:Sub("SkuCore", nil, "char")
+						SkuSettings:Sub("SkuCore", nil, "char").cameraOptions = SkuSettings:Sub("SkuCore", nil, "char").cameraOptions or { skuStandard = true, userValues = {} }
+						SkuSettings:Sub("SkuCore", nil, "char").cameraOptions.skuStandard = true
 					end)
 
 
@@ -2265,7 +2265,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 				end
 			end)
 
-			SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
+			SkuSettings:Sub("SkuCore", nil, "char").IsFirstCharLogin = false
 		end
 		--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
 		--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
@@ -2278,9 +2278,9 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	if isInitialLogin == true or isReloadingUi == true then
 
 		--update profile for sku r28 error output change
-		for i, v in pairs(SkuOptions.db.profile["SkuCore"].UIErrors) do
+		for i, v in pairs(SkuSettings:Sub("SkuCore").UIErrors) do
 			if string.find(v, "marlene_") or string.find(v, "hans_")then
-				SkuOptions.db.profile["SkuCore"].UIErrors[i] = "voice"
+				SkuSettings:Sub("SkuCore").UIErrors[i] = "voice"
 			end
 		end
 		--
@@ -2347,11 +2347,11 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuCore:DialogKeyLogin()
 		SkuCore:alItegrationLogin()
 
-		if not SkuOptions.db.char[MODULE_NAME] then
-			SkuOptions.db.char[MODULE_NAME] = {}
+		if not SkuSettings:Sub("SkuCore", nil, "char") then
+			SkuSettings:Sub("SkuCore", nil, "char")
 		end
-		if not SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter then
-			SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter = {
+		if not SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter then
+			SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter = {
 				["LevelMin"] = nil,
 				["LevelMax"] = nil,
 				["MinQuality"] = nil,
@@ -2407,9 +2407,9 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 			-- SkuStandart bei jedem Login erzwingen
 			pcall(function()
-				SkuOptions.db.char["SkuCore"] = SkuOptions.db.char["SkuCore"] or {}
-				SkuOptions.db.char["SkuCore"].cameraOptions = SkuOptions.db.char["SkuCore"].cameraOptions or { skuStandard = true, userValues = {} }
-				SkuOptions.db.char["SkuCore"].cameraOptions.skuStandard = true
+				SkuSettings:Sub("SkuCore", nil, "char")
+				SkuSettings:Sub("SkuCore", nil, "char").cameraOptions = SkuSettings:Sub("SkuCore", nil, "char").cameraOptions or { skuStandard = true, userValues = {} }
+				SkuSettings:Sub("SkuCore", nil, "char").cameraOptions.skuStandard = true
 			end)
 
 			-- ==================================================================
@@ -2424,7 +2424,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			-- DOKU: Nachschlagewerke/"Kamera Freigabe Entkopplung.txt"
 			-- ==================================================================
 			pcall(function()
-				local co = SkuOptions.db.char["SkuCore"].cameraOptions
+				local co = SkuSettings:Sub("SkuCore", nil, "char").cameraOptions
 				if co and co.preferFree == true and co.userValues and next(co.userValues) ~= nil then
 					co.skuStandard = false
 					for cvar, val in pairs(co.userValues) do
@@ -2478,7 +2478,7 @@ end
 function SkuCore:PLAYER_REGEN_ENABLED(...)
 	SkuCore.inCombat = false
 	SkuOptions.Voice:OutputString(L["Combat end"], true, true, 0.2)
-	if SkuOptions.db.profile[MODULE_NAME].autoFollow == true then
+	if SkuSettings:Sub("SkuCore").autoFollow == true then
 		if SkuStatus.followUnitId then
 			if SkuStatus.followUnitId ~= "" then
 				--FollowUnit(SkuStatus.followUnitId)

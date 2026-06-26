@@ -9,8 +9,8 @@ local SellJunkFrame
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:JunkAndRepairInitialize()
 
-   if not SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter then
-      SkuOptions.db.char[MODULE_NAME].SellJunkCustomItemIds = {}
+   if not SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter then
+      SkuSettings:Sub("SkuCore", nil, "char").SellJunkCustomItemIds = {}
    end
 
    -- Declarations
@@ -32,7 +32,7 @@ function SkuCore:JunkAndRepairInitialize()
 
    -- Vendor function
    local function SellJunkFunc()
-      SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds = SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds or {}
+      SkuSettings:Sub("SkuCore", nil, "char").SellJunkCustomItemIds = SkuSettings:Sub("SkuCore", nil, "char").SellJunkCustomItemIds or {}
       -- Variables
       local SoldCount, Rarity, ItemPrice = 0, 0, 0
       local CurrentItemLink, void
@@ -45,7 +45,7 @@ function SkuCore:JunkAndRepairInitialize()
             if CurrentItemLink then
                void, void, Rarity, void, void, void, void, void, void, void, ItemPrice = GetItemInfo(CurrentItemLink)
                local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(BagID, BagSlot)
-               if itemID and (Rarity == 0 or SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[itemID]) and ItemPrice ~= 0 then
+               if itemID and (Rarity == 0 or SkuSettings:Sub("SkuCore", nil, "char").SellJunkCustomItemIds[itemID]) and ItemPrice ~= 0 then
                   SoldCount = SoldCount + 1
                   if MerchantFrame:IsShown() then
                      -- If merchant frame is open, vendor the item
@@ -87,7 +87,7 @@ function SkuCore:JunkAndRepairInitialize()
          if CanMerchantRepair() then -- If merchant is capable of repair 
             local RepairCost, CanRepair = GetRepairAllCost()
             if CanRepair then -- If merchant is offering repair
-               if SkuOptions.db.profile[MODULE_NAME].itemSettings.autoRepair == true then
+               if SkuSettings:Sub("SkuCore").itemSettings.autoRepair == true then
                   if RepairCost > GetMoney() then
                      SkuOptions.Voice:OutputString(L["Nicht genug Gold zum Reparieren"], false, true, 1, true)
                   else
@@ -98,7 +98,7 @@ function SkuCore:JunkAndRepairInitialize()
             end
          end
 
-         if SkuOptions.db.profile[MODULE_NAME].itemSettings.autoSellJunk == true then
+         if SkuSettings:Sub("SkuCore").itemSettings.autoSellJunk == true then
             -- Reset variables
             totalPrice, mBagID, mBagSlot = 0, -1, -1
             -- Cancel existing ticker if present
@@ -110,11 +110,11 @@ function SkuCore:JunkAndRepairInitialize()
             SellJunkFrame:RegisterEvent("ITEM_UNLOCKED")
          end
       elseif event == "ITEM_LOCKED" then
-         if SkuOptions.db.profile[MODULE_NAME].itemSettings.autoSellJunk == true then
+         if SkuSettings:Sub("SkuCore").itemSettings.autoSellJunk == true then
             SellJunkFrame:UnregisterEvent("ITEM_LOCKED")
          end
       elseif event == "ITEM_UNLOCKED" then
-         if SkuOptions.db.profile[MODULE_NAME].itemSettings.autoSellJunk == true then
+         if SkuSettings:Sub("SkuCore").itemSettings.autoSellJunk == true then
             SellJunkFrame:UnregisterEvent("ITEM_UNLOCKED")
             -- Check whether vendor refuses to buy items
             if mBagID and mBagSlot and mBagID ~= -1 and mBagSlot ~= -1 then

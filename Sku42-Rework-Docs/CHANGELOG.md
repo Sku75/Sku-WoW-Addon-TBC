@@ -22,6 +22,18 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W1 Phase B — SkuCore migrated (B6); Phase B (B1–B6) complete.** 1320 own-key
+  settings accesses migrated across 31 files. SkuCore's files do NOT all share one
+  namespace: many sub-features (`AuctionHouse`, `RangeCheck`, `TurnToUnit`,
+  `Socketing`, `dungeonBrowser`, …) store settings under their OWN `MODULE_NAME`
+  key, so each file was migrated with its own name; literal `["SkuCore"]` →
+  `Sub("SkuCore", …)`. The migration script now masks string literals first,
+  because some `dprint` labels spell out the db path verbatim and a naive swap
+  injected quotes (the 2 remaining raw paths are inside such cosmetic labels). All
+  7 special cases (ensure-exists + guard-init) handled; three scopes. Cross-module
+  `["SkuOptions"]`/`["SkuNav"]`/`["SkuAuras"]` reads kept raw. neutralize-parse
+  clean. In-game smoke test for B4–B6 pending (one batched cycle).
+
 - **W1 Phase B — SkuNav migrated (B5).** 554 own-key settings accesses migrated
   across 7 files. Scopes profile + global; a global guard-init block and a global
   ensure-exists idiom special-cased to bare `Sub` calls. Cross-module

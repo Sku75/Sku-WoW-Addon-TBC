@@ -279,6 +279,23 @@ time with both styles coexisting.
     + global. Two special cases: a global guard-init block (`if not … then … = {}
     end`) → bare `Sub`, and a global ensure-exists `or {}` → bare `Sub`.
     Cross-module `["SkuOptions"]` (42) left raw. neutralize-parse clean.
+  - [x] **B6 SkuCore.** 1320 own-key sites migrated across 31 files. Two findings
+    made this the hardest: (1) SkuCore files do NOT all use `MODULE_NAME =
+    "SkuCore"` — many sub-features store settings under their OWN key
+    (`"AuctionHouse"`, `"RangeCheck"`, `"TurnToUnit"`, `"Socketing"`,
+    `"dungeonBrowser"`, …; only 23/31 use `"SkuCore"`), so each file was migrated
+    with ITS OWN module name (`db.X[MODULE_NAME]` → `Sub("<that file's name>", …)`);
+    literal `["SkuCore"]` everywhere → `Sub("SkuCore", …)`. (2) Several `dprint`
+    labels are STRING literals that spell out the db path — a byte-swap injected
+    quotes and broke them, so the script now masks string literals before swapping
+    (the 2 remaining raw paths are inside such labels — cosmetic). All 7 special
+    cases (5 ensure-exists `or {}`, 2 guard-init `if not…then…={}` blocks) handled.
+    Scopes char + profile + global. Cross-module reads kept raw: `["SkuOptions"]`
+    99, `["SkuNav"]` 4, `["SkuAuras"]` 2. neutralize-parse clean; no assign-to-call.
+  - **Phase B (planned modules B1–B6) complete.** Remaining settings coupling: the
+    heavily-referenced `["SkuOptions"]` keys (owned by the SkuZOptions/SkuOptions
+    module) are still raw everywhere — migrating SkuOptions' own access is a
+    follow-up not in the original B list.
   - **Note on the flat schema:** authored for SkuMob (small/flat) as a demo, but
     DEFERRED for the larger modules (SkuQuest onward). The `Sub`-swap migration
     doesn't consume the flat per-key schema (scope is default/explicit), and

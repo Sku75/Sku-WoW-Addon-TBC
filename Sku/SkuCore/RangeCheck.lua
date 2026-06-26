@@ -33,19 +33,19 @@ function SkuCore:RangeCheckUpdateRanges()
       C_Timer.After(0.1, SkuCore.RangeCheckUpdateRanges)
       return
    end
-   if not SkuOptions.db.char[MODULE_NAME] then
-      SkuOptions.db.char[MODULE_NAME] = {}
+   if not SkuSettings:Sub("SkuCore", nil, "char") then
+      SkuSettings:Sub("SkuCore", nil, "char")
    end
 
-   if not SkuOptions.db.char[MODULE_NAME].RangeChecks then
+   if not SkuSettings:Sub("SkuCore", nil, "char").RangeChecks then
       --[[
-      SkuOptions.db.char[MODULE_NAME].RangeChecks = {
+      SkuSettings:Sub("SkuCore", nil, "char").RangeChecks = {
          Friendly = {},
          Hostile = {},
          Misc = {},
       }
       ]]
-      SkuOptions.db.char[MODULE_NAME].RangeChecks= {
+      SkuSettings:Sub("SkuCore", nil, "char").RangeChecks= {
          ["Misc"] = {
             [8] = {
                ["sound"] = L["vocalized"],
@@ -139,27 +139,27 @@ function SkuCore:RangeCheckUpdateRanges()
       SkuCore.RangeCheckValues.Ranges.Friendly[i] = v
    end
    --remove configured checks that a not longer available
-   for i, v in pairs(SkuOptions.db.char[MODULE_NAME].RangeChecks.Friendly) do
+   for i, v in pairs(SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Friendly) do
       if not SkuCore.RangeCheckValues.Ranges.Friendly[i] then
-         SkuOptions.db.char[MODULE_NAME].RangeChecks.Friendly[i] = nil
+         SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Friendly[i] = nil
       end
    end
 
    for i, v in SkuOptions.RangeCheck:GetHarmCheckers() do 
       SkuCore.RangeCheckValues.Ranges.Hostile[i] = v
    end
-   for i, v in pairs(SkuOptions.db.char[MODULE_NAME].RangeChecks.Hostile) do
+   for i, v in pairs(SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Hostile) do
       if not SkuCore.RangeCheckValues.Ranges.Hostile[i] then
-         SkuOptions.db.char[MODULE_NAME].RangeChecks.Hostile[i] = nil
+         SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Hostile[i] = nil
       end
    end   
 
    for i, v in SkuOptions.RangeCheck:GetMiscCheckers() do 
       SkuCore.RangeCheckValues.Ranges.Misc[i] = v
    end
-   for i, v in pairs(SkuOptions.db.char[MODULE_NAME].RangeChecks.Misc) do
+   for i, v in pairs(SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Misc) do
       if not SkuCore.RangeCheckValues.Ranges.Misc[i] then
-         SkuOptions.db.char[MODULE_NAME].RangeChecks.Misc[i] = nil
+         SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Misc[i] = nil
       end
    end   
 
@@ -169,7 +169,7 @@ end
 local tRangeCheckLastTarget
 local tRangeCheckLastTargetminRange = 0
 function SkuCore:DoRangeCheck(aForceFlag)
-   if not SkuOptions.db.char[MODULE_NAME] then
+   if not SkuSettings:Sub("SkuCore", nil, "char") then
       return
    end
 
@@ -200,10 +200,10 @@ function SkuCore:DoRangeCheck(aForceFlag)
          end
       end
 
-      if SkuOptions.db.char[MODULE_NAME].RangeChecks then
-         if SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType][tRangeCheckLastTargetminRange] then
+      if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks then
+         if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[tCheckType][tRangeCheckLastTargetminRange] then
             local tSoundChannel = SkuOptions.db.profile.SkuCore.UIErrors.ErrorSoundChannel or "Talking Head"
-            if SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType][tRangeCheckLastTargetminRange].sound == L["vocalized"] then
+            if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[tCheckType][tRangeCheckLastTargetminRange].sound == L["vocalized"] then
                --PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_de-de\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
                if Sku.Loc == "deDE" then
                   PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
@@ -211,7 +211,7 @@ function SkuCore:DoRangeCheck(aForceFlag)
                   PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_en-us\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
                end
             else
-               PlaySoundFile(SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType][tRangeCheckLastTargetminRange].sound, tSoundChannel)
+               PlaySoundFile(SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[tCheckType][tRangeCheckLastTargetminRange].sound, tSoundChannel)
             end
             
          end

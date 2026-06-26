@@ -117,7 +117,7 @@ local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
 		if region and region:GetObjectType() == "FontString" then
 			local text = region:GetText() -- string or nil
 			if text then
-				if tLineCounter == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
+				if tLineCounter == 1 and tQualityString and SkuSettings:Sub("SkuCore").itemSettings.ShowItemQality == true then
 					tTooltipText = tTooltipText..text.." ("..tQualityString..")\r\n"
 				elseif tLineCounter == 2 and tEffectiveILvl then
 					tTooltipText = tTooltipText..L["Item Level"]..": "..tEffectiveILvl.."\r\n"
@@ -203,7 +203,7 @@ local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
 				if region and region:GetObjectType() == "FontString" then
 					local text = region:GetText() -- string or nil
 					if text then
-						if tLineCounter == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
+						if tLineCounter == 1 and tQualityString and SkuSettings:Sub("SkuCore").itemSettings.ShowItemQality == true then
 							tTooltipText = tTooltipText..text.." ("..tQualityString..")\r\n"
 						elseif tLineCounter == 2 and tEffectiveILvl then
 							tTooltipText = tTooltipText..L["Item Level"]..": "..tEffectiveILvl.."\r\n"
@@ -1536,7 +1536,7 @@ local function GetTooltipLines(aObj, aTooltipObject)
 				if not tFirstText then
 					tFirstText = text
 				end
-				if i == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
+				if i == 1 and tQualityString and SkuSettings:Sub("SkuCore").itemSettings.ShowItemQality == true then
 					tTooltipText = tTooltipText..text.." ("..tQualityString..")\r\n"
 				else
 					tTooltipText = tTooltipText..text.."\r\n"

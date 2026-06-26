@@ -69,16 +69,16 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:alItegrationLogin()
-	SkuOptions.db.char[MODULE_NAME].alIntegration = SkuOptions.db.char[MODULE_NAME].alIntegration or {}
-   SkuOptions.db.char[MODULE_NAME].alIntegration.favorites = SkuOptions.db.char[MODULE_NAME].alIntegration.favorites or {}
-   SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory = SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory or {}
+	SkuSettings:Sub("SkuCore", nil, "char").alIntegration = SkuSettings:Sub("SkuCore", nil, "char").alIntegration or {}
+   SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites = SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites or {}
+   SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory = SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory or {}
    for x = 1, #SkuCore.favoriteSlots do
-      SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] = SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] or {}
+      SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x] = SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x] or {}
    end
 
-   for y = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites do
-      for x = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[y] do
-         C_Item.GetItemNameByID(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[y][x])
+   for y = 1, #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites do
+      for x = 1, #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[y] do
+         C_Item.GetItemNameByID(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[y][x])
       end
    end
 
@@ -115,9 +115,9 @@ function SkuCore:CHAT_MSG_LOOT(_, text, _, _, _, playerName)
 
    local tQuality = C_Item.GetItemQualityByID(itemid)
    if tQuality and tQuality > 2 then
-      SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory[#SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory + 1] = itemid
-      if #SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory > 1000 then
-         SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory[#SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory] = nil
+      SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory[#SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory + 1] = itemid
+      if #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory > 1000 then
+         SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory[#SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory] = nil
       end
    end
 
@@ -142,9 +142,9 @@ SkuCore.wishlistCacheDirty = true
 function SkuCore:RebuildWishlistCache()
    local tCache = {}
    local tFavs = SkuOptions and SkuOptions.db and SkuOptions.db.char
-      and SkuOptions.db.char[MODULE_NAME]
-      and SkuOptions.db.char[MODULE_NAME].alIntegration
-      and SkuOptions.db.char[MODULE_NAME].alIntegration.favorites
+      and SkuSettings:Sub("SkuCore", nil, "char")
+      and SkuSettings:Sub("SkuCore", nil, "char").alIntegration
+      and SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites
    if tFavs then
       for invType = 1, #SkuCore.favoriteSlots do
          local list = tFavs[invType]
@@ -178,9 +178,9 @@ end
 function SkuCore:RemoveItemFromWishlist(itemID)
    if not itemID then return 0 end
    local tFavs = SkuOptions and SkuOptions.db and SkuOptions.db.char
-      and SkuOptions.db.char[MODULE_NAME]
-      and SkuOptions.db.char[MODULE_NAME].alIntegration
-      and SkuOptions.db.char[MODULE_NAME].alIntegration.favorites
+      and SkuSettings:Sub("SkuCore", nil, "char")
+      and SkuSettings:Sub("SkuCore", nil, "char").alIntegration
+      and SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites
    if not tFavs then return 0 end
    local tIdStr = "item:" .. tostring(itemID) .. ":"
    local tRemoved = 0
@@ -469,26 +469,26 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
       tNewSubMenuEntry.OnAction = function(self, aValue, aName)
          local invType = C_Item.GetItemInventoryTypeByID(aId)
          if not invType or invType == 0 then invType = 27 end
-         if invType and SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] then
+         if invType and SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType] then
             local _, itemLink = GetItemInfo(aId)
             if not itemLink then
                -- Item not yet cached — request and retry once after short delay
                C_Item.RequestLoadItemDataByID(aId)
                C_Timer.After(0.3, function()
                   local _, tRetryLink = GetItemInfo(aId)
-                  if tRetryLink and SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] then
+                  if tRetryLink and SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType] then
                      if aName == L["AL_WishlistAddToFavorites"] then
-                        for q = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] do
-                           if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][q] == tRetryLink then
+                        for q = 1, #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType] do
+                           if SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType][q] == tRetryLink then
                               return
                            end
                         end
-                        SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][#SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] + 1] = tRetryLink
+                        SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType][#SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType] + 1] = tRetryLink
                         pcall(function() SkuOptions.Voice:OutputStringBTtts(L["AL_WishlistItemAdded"], true, true, 0.2, nil, nil, nil, 2) end)
                      else
-                        for q = #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType], 1, -1 do
-                           if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][q] == tRetryLink then
-                              table.remove(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType], q)
+                        for q = #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType], 1, -1 do
+                           if SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType][q] == tRetryLink then
+                              table.remove(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType], q)
                            end
                         end
                         pcall(function() SkuOptions.Voice:OutputStringBTtts(L["AL_WishlistItemRemoved"], true, true, 0.2, nil, nil, nil, 2) end)
@@ -505,17 +505,17 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
                return
             end
             if aName == L["AL_WishlistAddToFavorites"] then
-               for q = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] do
-                  if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][q] == itemLink then
+               for q = 1, #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType] do
+                  if SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType][q] == itemLink then
                      return
                   end
                end
-               SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][#SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] + 1] = itemLink
+               SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType][#SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType] + 1] = itemLink
                C_Timer.After(0.1, function() pcall(function() SkuOptions.Voice:OutputStringBTtts(L["AL_WishlistItemAdded"], true, true, 0.2, nil, nil, nil, 2) end) end)
             else
-               for q = #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType], 1, -1 do
-                  if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][q] == itemLink then
-                     table.remove(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType], q)
+               for q = #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType], 1, -1 do
+                  if SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType][q] == itemLink then
+                     table.remove(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType], q)
                   end
                end
                C_Timer.After(0.1, function() pcall(function() SkuOptions.Voice:OutputStringBTtts(L["AL_WishlistItemRemoved"], true, true, 0.2, nil, nil, nil, 2) end) end)
@@ -534,9 +534,9 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
          if not invType or invType == 0 then invType = 27 end
          if invType then
             local _, itemLink = GetItemInfo(aId) 
-            if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] then
-               for q = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] do
-                  if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][q] == itemLink then
+            if SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType] then
+               for q = 1, #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType] do
+                  if SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[invType][q] == itemLink then
                      local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["AL_WishlistRemoveFromFavorites"]}, SkuGenericMenuItem)
                      return
                   end
@@ -1233,9 +1233,9 @@ function SkuCore:alIntegrationMenuBuilder()
       tByDungeon.filterable = true
       tByDungeon.BuildChildren = function(self)
          local tFavs = SkuOptions and SkuOptions.db and SkuOptions.db.char
-            and SkuOptions.db.char[MODULE_NAME]
-            and SkuOptions.db.char[MODULE_NAME].alIntegration
-            and SkuOptions.db.char[MODULE_NAME].alIntegration.favorites or {}
+            and SkuSettings:Sub("SkuCore", nil, "char")
+            and SkuSettings:Sub("SkuCore", nil, "char").alIntegration
+            and SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites or {}
          -- Sammle alle Wunschlisten-Items nach Dungeon gruppiert
          local tDungeonItems = {} -- [dungeonKey] = { itemIDs = {id1,id2,...}, label = "Dungeonname" }
          local tDungeonOrder = {}
@@ -1300,40 +1300,40 @@ function SkuCore:alIntegrationMenuBuilder()
                tNewMenuEntry.dynamic = true
                tNewMenuEntry.filterable = true
                tNewMenuEntry.BuildChildren = function(self)
-                  if #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] > 0 then
-                     for y = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] do
-                        local tPlainName = SkuUtil:Unescape(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x][y])
+                  if #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x] > 0 then
+                     for y = 1, #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x] do
+                        local tPlainName = SkuUtil:Unescape(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x][y])
                         tPlainName = string.gsub(tPlainName, "%[", "")
                         tPlainName = string.gsub(tPlainName, "%]", "")
                         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {y.." "..tPlainName}, SkuGenericMenuItem)
                         tNewMenuEntry.dynamic = true
                         tNewMenuEntry.isSelect = true
                         tNewMenuEntry.OnAction = function(self, aValue, aName)
-                           local tCurrentValue = SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x][y]
+                           local tCurrentValue = SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x][y]
                            if aName == L["Up"] then
-                              table.remove(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x], y)
-                              table.insert(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x], y - 1, tCurrentValue)
+                              table.remove(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x], y)
+                              table.insert(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x], y - 1, tCurrentValue)
                               C_Timer.After(0.001, function()
                                  SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
                               end)
                            elseif aName == L["Down"] then
-                              table.remove(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x], y)
-                              table.insert(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x], y + 1, tCurrentValue)
+                              table.remove(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x], y)
+                              table.insert(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x], y + 1, tCurrentValue)
                               C_Timer.After(0.001, function()
                                  SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
                               end)
                            elseif aName == L["remove"] then
-                              table.remove(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x], y)
+                              table.remove(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x], y)
                               C_Timer.After(0.001, function()
                                  SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
                               end)
                            end
                         end
                         tNewMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
-                           if not SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x][y] then
+                           if not SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x][y] then
                               return
                            end
-                           local aId = GetItemInfoInstant(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x][y])
+                           local aId = GetItemInfoInstant(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x][y])
                            SkuCore:getItemComparisnSections(aId)
                            -- [41.03] Boss-/Quelle-Tooltip auch in "Nach Slot" sicherstellen:
                            -- tItemDropTable bei Bedarf befuellen (Lazy-Load via QueryAll),
@@ -1381,7 +1381,7 @@ function SkuCore:alIntegrationMenuBuilder()
                            if y > 1 then
                               local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Up"]}, SkuGenericMenuItem)
                            end
-                           if y < #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] then
+                           if y < #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x] then
                               local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Down"]}, SkuGenericMenuItem)
                            end
                         end
@@ -1399,24 +1399,24 @@ function SkuCore:alIntegrationMenuBuilder()
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true
    tNewMenuEntry.BuildChildren = function(self)
-      if #SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory > 0 then
+      if #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory > 0 then
          local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Clear list"]}, SkuGenericMenuItem)
          tNewSubMenuEntry.isSelect = true
          tNewSubMenuEntry.OnAction = function(self, aValue, aName)
             if aName == L["Clear list"] then
-               SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory = {}
+               SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory = {}
                C_Timer.After(0.001, function()
                   SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
                end)
             end
          end
 
-         for q = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory do
-            local itemName = GetItemInfo(SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory[q]) 
+         for q = 1, #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory do
+            local itemName = GetItemInfo(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory[q]) 
             if itemName then
                local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {itemName}, SkuGenericMenuItem)
                tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
-                  local aId = SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory[q]
+                  local aId = SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory[q]
                   
                   SkuCore:getItemComparisnSections(aId)
                   C_Timer.After(0.1, function()
@@ -1524,9 +1524,9 @@ function SkuCore:BuildContextualWishlistEntry(aParent, aDropMap)
    tEntry.filterable = true
    tEntry.BuildChildren = function(self)
       local tFavs = SkuOptions and SkuOptions.db and SkuOptions.db.char
-         and SkuOptions.db.char[MODULE_NAME]
-         and SkuOptions.db.char[MODULE_NAME].alIntegration
-         and SkuOptions.db.char[MODULE_NAME].alIntegration.favorites or {}
+         and SkuSettings:Sub("SkuCore", nil, "char")
+         and SkuSettings:Sub("SkuCore", nil, "char").alIntegration
+         and SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites or {}
       local tFound = false
       -- favorites ist [invType][1..n] = itemLink. itemID per
       -- GetItemInfoInstant extrahieren.

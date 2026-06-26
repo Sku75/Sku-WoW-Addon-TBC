@@ -9,7 +9,7 @@
 -- Lazy-sichere Default-Struktur. Auch NEUE Profile starten mit allem AUS, ohne
 -- bestehende Nutzerwerte zu ueberschreiben.
 local function tEnsureVA()
-	local p = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuOptions.db.profile["SkuCore"]
+	local p = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuSettings:Sub("SkuCore")
 	if not p then return nil end
 	p.visualAids = p.visualAids or {}
 	local va = p.visualAids
@@ -491,12 +491,12 @@ end
 -- nicht zuverlaessig moeglich; daher nur die Abbruch-Erkennung des Folgen-Status.
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:FollowWarnGetEnabled()
-	local p = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuOptions.db.profile["SkuCore"]
+	local p = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuSettings:Sub("SkuCore")
 	return p ~= nil and p.followBreakWarn == true
 end
 
 function SkuCore:FollowWarnSetEnabled(aOn)
-	local p = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuOptions.db.profile["SkuCore"]
+	local p = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuSettings:Sub("SkuCore")
 	if not p then return end
 	p.followBreakWarn = (aOn == true)
 end

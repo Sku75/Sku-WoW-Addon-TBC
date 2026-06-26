@@ -113,7 +113,7 @@ local tCurrentUpdateRate = 1
 function SkuCoreAqCombatGetVoiceString(aString, aTable)
    local tResult = (aString:gsub('($%b{})', function(w) 
       local tFinalString = aTable[w:sub(3, -2)] or w
-      if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].global.numberOnly == true then
+      if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberOnly == true then
          if sfind(tFinalString, "raidpet") then
             tFinalString = string.gsub(tFinalString, "raidpet", "")
          elseif sfind(tFinalString, "raid") then
@@ -132,7 +132,7 @@ function SkuCoreAqCombatGetVoiceString(aString, aTable)
       return tFinalString
    end))
 
-   if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.notificationVolume == 1 then
+   if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.notificationVolume == 1 then
       tResult = string.gsub(tResult, "sound%-combat%-notification%d%d;", "sound-combat-notification-low%d%d;")
    end
 
@@ -156,7 +156,7 @@ local function SkuCoreAqCombatOutput(aPattern, aValuesTable, aQueueSettings, aSk
       end
    end
 
-   local tVoice = aqCombatVoices[SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.voice] or "brian"
+   local tVoice = aqCombatVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.voice] or "brian"
    aValuesTable.voice = tVoice
 
    local tSound = ""
@@ -172,7 +172,7 @@ local function SkuCoreAqCombatOutput(aPattern, aValuesTable, aQueueSettings, aSk
    aValuesTable.sound = tSound
    aPattern = string.gsub(aPattern, ";", ";${voice}-")
 
-   if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.voiceVolume == 1 then
+   if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.voiceVolume == 1 then
       aPattern = string.gsub(aPattern, ";", "-low;")
       aPattern = aPattern.."-low"
    end
@@ -252,7 +252,7 @@ local function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
 
    local beginTime6 = debugprofilestop() 
 
-   if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.ignoreNonElite == true then   
+   if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.ignoreNonElite == true then   
 
       if aUnitGUID and tUnitClassificationCache[aUnitGUID] then
          return tUnitClassificationCache[aUnitGUID]
@@ -406,7 +406,7 @@ local function aqCombatCreateControlFrame()
          return
       end
 
-      local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
+      local tCurrentSettings = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet]
       tCurrentUpdateRate = (21 - tCurrentSettings.combat.updateRate)
 
       if tCurrentSettings.combat.friendly.outOfRangeEnabled.value == true and tCurrentSettings.combat.enabled == true then
@@ -648,7 +648,7 @@ local function aqCombatCreateControlFrame()
    end
 
    f:SetScript("OnUpdate", function(self, time)
-      local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
+      local tCurrentSettings = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet]
 
       if tCurrentSettings.combat.enabled == true then
          local beginTime = debugprofilestop()
@@ -888,185 +888,185 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombatOnLogin()
    for x = 1, 2 do
-      SkuOptions.db.char[MODULE_NAME].aq[x].combat = SkuOptions.db.char[MODULE_NAME].aq[x].combat or {}
+      SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat or {}
 
-      if SkuOptions.db.char[MODULE_NAME].aq[x].combat.enabled == nil then
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.enabled = false
+      if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.enabled == nil then
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.enabled = false
       end
 
-      if SkuOptions.db.char[MODULE_NAME].aq[x].combat.updateRate == nil then
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.updateRate = 20
+      if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.updateRate == nil then
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.updateRate = 20
       end
 
-      if SkuOptions.db.char[MODULE_NAME].aq[x].combat.voice == nil then
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.voice = 1
+      if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.voice == nil then
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.voice = 1
       end
 
-      if SkuOptions.db.char[MODULE_NAME].aq[x].combat.notificationVolume == nil then
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.notificationVolume = 1
+      if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.notificationVolume == nil then
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.notificationVolume = 1
       end
 
-      if SkuOptions.db.char[MODULE_NAME].aq[x].combat.voiceVolume == nil then
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.voiceVolume = 2
+      if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.voiceVolume == nil then
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.voiceVolume = 2
       end
       
 
       --hostile
-         if SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile == nil then
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile = {}
+         if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile == nil then
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile = {}
          end
 
          --ignoreNonElite
-            if SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.ignoreNonElite == nil then
-               SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.ignoreNonElite = true
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.ignoreNonElite == nil then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.ignoreNonElite = true
             end
 
          --threat
             --Output target of target on target change
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.threatOutputTot = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.threatOutputTot or 
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.threatOutputTot = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.threatOutputTot or 
             {
                value = 1,
                sound = "vocalized",
             }
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.threatOutputTot.voiceOutput = "${sound};target;${unit1}"
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.threatOutputTot.voiceOutput = "${sound};target;${unit1}"
 
             --Threat warning if you are not first place (not tanking) and your threat percentage is higher than
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.threatWarningNotFirstHigherThan = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.threatWarningNotFirstHigherThan or 
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.threatWarningNotFirstHigherThan = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.threatWarningNotFirstHigherThan or 
             {
                value = 0,
                sound = "vocalized",
             }
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.threatWarningNotFirstHigherThan.voiceOutput = "${sound};threat;high"
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.threatWarningNotFirstHigherThan.voiceOutput = "${sound};threat;high"
 
             --Threat warning if you are first place (tanking) and second place threat percentage is higher than
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.threatWarningIsFirstSecondHigherThan = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.threatWarningIsFirstSecondHigherThan or
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.threatWarningIsFirstSecondHigherThan = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.threatWarningIsFirstSecondHigherThan or
             {
                value = 0,
                sound = "vocalized",
             }
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.threatWarningIsFirstSecondHigherThan.voiceOutput = "${sound};threat;low"
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.threatWarningIsFirstSecondHigherThan.voiceOutput = "${sound};threat;low"
 
             --threatWarningInterval
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.threatWarningInterval = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.threatWarningInterval or 0
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.threatWarningInterval = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.threatWarningInterval or 0
 
             --Warning if your target is switching from you to party member
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.warnIfTargetSwitchingToParty = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.warnIfTargetSwitchingToParty or 
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.warnIfTargetSwitchingToParty = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.warnIfTargetSwitchingToParty or 
             {
                value = false,
                sound = "vocalized",
             }
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.warnIfTargetSwitchingToParty.voiceOutput = "${sound};target;lost"
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.warnIfTargetSwitchingToParty.voiceOutput = "${sound};target;lost"
             
             --Warning if your target is switching from party member to you
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.warnIfTargetSwitchingToYou = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.warnIfTargetSwitchingToYou or 
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.warnIfTargetSwitchingToYou = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.warnIfTargetSwitchingToYou or 
             {
                value = false,
                sound = "vocalized",
             }
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.warnIfTargetSwitchingToYou.voiceOutput = "${sound};target;gained"
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.warnIfTargetSwitchingToYou.voiceOutput = "${sound};target;gained"
             
          --casting
             --Output your target casting
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.yourTargetCasting = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.yourTargetCasting or 
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.yourTargetCasting = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.yourTargetCasting or 
             {
                value = 0,
                sound = "vocalized",
             }
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.yourTargetCasting.voiceOutput = "${sound};target;casting"
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.yourTargetCasting.voiceOutput = "${sound};target;casting"
             
             --Output all enemies casting
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.allEnemiesCasting = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.allEnemiesCasting or 
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.allEnemiesCasting = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.allEnemiesCasting or 
             {
                value = 0,
                sound = "vocalized",
             }
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.allEnemiesCasting.voiceOutput = "${sound};creature;casting"
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.allEnemiesCasting.voiceOutput = "${sound};creature;casting"
             
             --minimumCastDuration
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.minimumCastDuration = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.minimumCastDuration or 0
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.minimumCastDuration = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.minimumCastDuration or 0
 
          
          --deaths
             --ignore dead units not in combat
-            if SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.deathsIgnoreUnitsNotInCombat == nil then
-               SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.deathsIgnoreUnitsNotInCombat = true
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.deathsIgnoreUnitsNotInCombat == nil then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.deathsIgnoreUnitsNotInCombat = true
             end
 
             --Output dead units
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.outputDeadUnits = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.outputDeadUnits or 
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.outputDeadUnits = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.outputDeadUnits or 
             {
                value = 1,
                sound = "vocalized",
             }
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.outputDeadUnits.voiceOutput = "${sound};${unit1};dead"
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.outputDeadUnits.voiceOutput = "${sound};${unit1};dead"
 
 
          --units in combat
             --Announce enemies entering combat
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.unitsAddedToCombat = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.unitsAddedToCombat or 
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.unitsAddedToCombat = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.unitsAddedToCombat or 
             {
                value = 1,
                sound = "vocalized",
             }
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.unitsAddedToCombat.voiceOutput = "${sound};${number1};${action1}"
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.unitsAddedToCombat.voiceOutput = "${sound};${number1};${action1}"
 
             --Announce enemies leaving combat
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.unitsLeavingCombat = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.unitsLeavingCombat or 
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.unitsLeavingCombat = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.unitsLeavingCombat or 
             {
                value = 1,
                sound = "vocalized",
             }
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.unitsLeavingCombat.voiceOutput = "${sound};${number1};${action1}"
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.unitsLeavingCombat.voiceOutput = "${sound};${number1};${action1}"
 
-            if SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages == nil then
-               SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages = false
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages == nil then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages = false
             end
 
             --Announce relative number of enemies in combat
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.relativeNumberUnitsInCombat = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.relativeNumberUnitsInCombat or 
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.relativeNumberUnitsInCombat = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.relativeNumberUnitsInCombat or 
             {
                value = 1,
                sound = "vocalized",
             }
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.relativeNumberUnitsInCombat.voiceOutput = "${sound};${number1}"
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.relativeNumberUnitsInCombat.voiceOutput = "${sound};${number1}"
 
       --friendly
-      SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly = SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly or {}
+      SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly or {}
          --
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.partyDead = SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.partyDead or
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.partyDead = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.partyDead or
          {
             value = false,
             sound = "vocalized",
          }
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.partyDead.voiceOutput = "${sound};${unit1};dead"
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.partyDead.voiceOutput = "${sound};${unit1};dead"
 
          --
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.partyDeadCount = SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.partyDeadCount or
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.partyDeadCount = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.partyDeadCount or
          {
             value = false,
             sound = "vocalized",
          }
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.partyDeadCount.voiceOutput = "${sound};${number1};dead"
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.partyDeadCount.voiceOutput = "${sound};${number1};dead"
 
          --
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.outOfRangeEnabled = SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.outOfRangeEnabled or
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.outOfRangeEnabled = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.outOfRangeEnabled or
          {
             value = false,
             sound = "vocalized",
          }
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.outOfRangeEnabled.voiceOutput = "${sound};${unit1};leaving"
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.outOfRangeEnabled.voiceOutput = "${sound};${unit1};leaving"
 
          --
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.ignoreDeadPartyPets = SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.ignoreDeadPartyPets or true
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.ignoreDeadPartyPets = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.ignoreDeadPartyPets or true
 
          --
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.oorAt = SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.oorAt or 10
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.oorAt = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.oorAt or 10
 
          --
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.oorUnitName = SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.oorUnitName or L["Nothing selected"]
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.oorUnitName = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.oorUnitName or L["Nothing selected"]
 
          --
-         SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.oorInterval = SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.oorInterval or 0
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.oorInterval = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.oorInterval or 0
 
    end
 end
@@ -1108,7 +1108,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombatPLAYER_TARGET_CHANGED(aEvent, a, b, c, d)
-   local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
+   local tCurrentSettings = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet]
    if tCurrentSettings.combat.enabled == true then
       if tCurrentSettings.combat.hostile.threatOutputTot.value > 1 then
          if UnitExists("playertargettarget") then
@@ -1258,7 +1258,7 @@ function SkuCore:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
 	spellName = 13,
    ]]
 
-   local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
+   local tCurrentSettings = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet]
 
    if tCurrentSettings.combat.enabled == true then
       if aqCombatCheckElite(aEventData[4]) == true then
@@ -1316,7 +1316,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
-   local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
+   local tCurrentSettings = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet]
 
    if tCurrentSettings.combat.enabled == true then
       if aqCombatCheckElite(aUnitGUID) == true then
@@ -1410,7 +1410,7 @@ function SkuCore:aqCombat_PLAYER_REGEN_ENABLED()
    -- where mobs evade/leash silently after a wipe or pull-break.
    if SkuCore.inOutCombatQueue and (SkuCore.inOutCombatQueue.current or 0) > 0 then
       local tOk, tSettings = pcall(function()
-         return SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
+         return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet]
       end)
       if tOk and tSettings and tSettings.combat and tSettings.combat.enabled == true
          and tSettings.combat.hostile and tSettings.combat.hostile.relativeNumberUnitsInCombat
@@ -1576,7 +1576,7 @@ function SkuCore:aqCombatMenuBuilder()
    tNewMenuEntry.filterable = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-      if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
+      if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.enabled == true then
          return L["Yes"]
       else
          return L["No"]
@@ -1584,9 +1584,9 @@ function SkuCore:aqCombatMenuBuilder()
    end
    tNewMenuEntry.OnAction = function(self, aValue, aName)
       if aName == L["No"] then
-         SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled = false
+         SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.enabled = false
       elseif aName == L["Yes"] then
-         SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled = true
+         SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.enabled = true
       end
    end
    tNewMenuEntry.BuildChildren = function(self)
@@ -1600,11 +1600,11 @@ function SkuCore:aqCombatMenuBuilder()
    tNewMenuEntry.filterable = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-      return SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.updateRate
+      return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.updateRate
    end
    tNewMenuEntry.OnAction = function(self, aValue, aName)
-      SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.updateRate = tonumber(aName)
-      tCurrentUpdateRate = (21 - SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.updateRate)
+      SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.updateRate = tonumber(aName)
+      tCurrentUpdateRate = (21 - SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.updateRate)
    end
    tNewMenuEntry.BuildChildren = function(self)
       for x = 1, 20 do
@@ -1618,12 +1618,12 @@ function SkuCore:aqCombatMenuBuilder()
    tNewMenuEntry.filterable = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-      return aqCombatVoices[SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.voice]
+      return aqCombatVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.voice]
    end
    tNewMenuEntry.OnAction = function(self, aValue, aName)
       for x = 1, #aqCombatVoices do
          if aqCombatVoices[x] == aName then
-            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.voice = x
+            SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.voice = x
          end
       end
    end
@@ -1638,7 +1638,7 @@ function SkuCore:aqCombatMenuBuilder()
    tNewMenuEntry.filterable = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-      if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.notificationVolume == 1 then
+      if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.notificationVolume == 1 then
          return L["Low"]
       else
          return L["High"]
@@ -1646,9 +1646,9 @@ function SkuCore:aqCombatMenuBuilder()
    end
    tNewMenuEntry.OnAction = function(self, aValue, aName)
       if aName == L["Low"] then
-         SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.notificationVolume = 1
+         SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.notificationVolume = 1
       elseif aName == L["High"] then
-         SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.notificationVolume = 2
+         SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.notificationVolume = 2
       end
    end
    tNewMenuEntry.BuildChildren = function(self)
@@ -1661,7 +1661,7 @@ function SkuCore:aqCombatMenuBuilder()
    tNewMenuEntry.filterable = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-      if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.voiceVolume == 1 then
+      if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.voiceVolume == 1 then
          return L["Low"]
       else
          return L["High"]
@@ -1669,9 +1669,9 @@ function SkuCore:aqCombatMenuBuilder()
    end
    tNewMenuEntry.OnAction = function(self, aValue, aName)
       if aName == L["Low"] then
-         SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.voiceVolume = 1
+         SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.voiceVolume = 1
       elseif aName == L["High"] then
-         SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.voiceVolume = 2
+         SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.voiceVolume = 2
       end
    end
    tNewMenuEntry.BuildChildren = function(self)
@@ -1691,7 +1691,7 @@ function SkuCore:aqCombatMenuBuilder()
       tNewMenuEntry.filterable = true
       tNewMenuEntry.isSelect = true
       tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-         if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.ignoreNonElite == true then
+         if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.ignoreNonElite == true then
             return L["Yes"]
          else
             return L["No"]
@@ -1699,9 +1699,9 @@ function SkuCore:aqCombatMenuBuilder()
       end
       tNewMenuEntry.OnAction = function(self, aValue, aName)
          if aName == L["No"] then
-            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.ignoreNonElite = false
+            SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.ignoreNonElite = false
          elseif aName == L["Yes"] then
-            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.ignoreNonElite = true
+            SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.ignoreNonElite = true
          end
       end
       tNewMenuEntry.BuildChildren = function(self)
@@ -1722,21 +1722,21 @@ function SkuCore:aqCombatMenuBuilder()
             tNewMenuEntry.dynamic = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value == 1 then
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value == 1 then
                   return L["Never"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value == 2 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value == 2 then
                   return L["Always"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value == 3 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value == 3 then
                   return L["If target of target isn't you"]
                end
             end
             tNewMenuEntry.OnAction = function(self, aValue, aName)
                if aName == L["Never"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value = 1
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value = 1
                elseif aName == L["Always"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value = 2
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value = 2
                elseif aName == L["If target of target isn't you"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value = 3
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value = 3
                end
             end
             tNewMenuEntry.BuildChildren = function(self)
@@ -1744,7 +1744,7 @@ function SkuCore:aqCombatMenuBuilder()
                SkuOptions:InjectMenuItems(self, {L["Always"]}, SkuGenericMenuItem)
                SkuOptions:InjectMenuItems(self, {L["If target of target isn't you"]}, SkuGenericMenuItem)
             end     
-            tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatOutputTot)
+            tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatOutputTot)
          end
 
          ---
@@ -1756,17 +1756,17 @@ function SkuCore:aqCombatMenuBuilder()
             tNewMenuEntry.filterable = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan.value == 0 then
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan.value == 0 then
                   return L["Off"]
                else
-                  return SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan.value
+                  return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan.value
                end
             end
             tNewMenuEntry.OnAction = function(self, aValue, aName)
                if tonumber(aName) then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan.value = tonumber(aName)
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan.value = tonumber(aName)
                else
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan.value = 0
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan.value = 0
                end
             end
             tNewMenuEntry.BuildChildren = function(self)
@@ -1775,7 +1775,7 @@ function SkuCore:aqCombatMenuBuilder()
                   SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
                end
             end
-            tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan)
+            tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan)
          end
 
          ---
@@ -1787,17 +1787,17 @@ function SkuCore:aqCombatMenuBuilder()
             tNewMenuEntry.filterable = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan.value == 0 then
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan.value == 0 then
                   return L["Off"]
                else
-                  return SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan.value
+                  return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan.value
                end
             end
             tNewMenuEntry.OnAction = function(self, aValue, aName)
                if tonumber(aName) then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan.value = tonumber(aName)
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan.value = tonumber(aName)
                else
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan.value = 0
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan.value = 0
                end
             end
             tNewMenuEntry.BuildChildren = function(self)
@@ -1806,7 +1806,7 @@ function SkuCore:aqCombatMenuBuilder()
                   SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
                end
             end   
-            tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan)
+            tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan)
          end
 
          ---
@@ -1815,10 +1815,10 @@ function SkuCore:aqCombatMenuBuilder()
          tNewMenuEntry.filterable = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            return SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningInterval
+            return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningInterval
          end
          tNewMenuEntry.OnAction = function(self, aValue, aName)
-            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningInterval = tonumber(aName)
+            SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningInterval = tonumber(aName)
          end
          tNewMenuEntry.BuildChildren = function(self)
             for x = 0, 30 do
@@ -1835,7 +1835,7 @@ function SkuCore:aqCombatMenuBuilder()
             tNewSubMenuEntry.dynamic = true
             tNewSubMenuEntry.isSelect = true
             tNewSubMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToParty.value == true then
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToParty.value == true then
                   return L["On"]
                else
                   return L["Off"]
@@ -1843,9 +1843,9 @@ function SkuCore:aqCombatMenuBuilder()
             end
             tNewSubMenuEntry.OnAction = function(self, aValue, aName)
                if aName == L["Off"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToParty.value = false
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToParty.value = false
                elseif aName == L["On"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToParty.value = true
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToParty.value = true
                end
             end
             tNewSubMenuEntry.BuildChildren = function(self)
@@ -1853,7 +1853,7 @@ function SkuCore:aqCombatMenuBuilder()
                SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
             end
 
-			   tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToParty)
+			   tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToParty)
          end
 
          ----
@@ -1865,7 +1865,7 @@ function SkuCore:aqCombatMenuBuilder()
             tNewSubMenuEntry.dynamic = true
             tNewSubMenuEntry.isSelect = true
             tNewSubMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToYou.value == true then
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToYou.value == true then
                   return L["On"]
                else
                   return L["Off"]
@@ -1873,9 +1873,9 @@ function SkuCore:aqCombatMenuBuilder()
             end
             tNewSubMenuEntry.OnAction = function(self, aValue, aName)
                if aName == L["Off"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToYou.value = false
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToYou.value = false
                elseif aName == L["On"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToYou.value = true
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToYou.value = true
                end
             end
             tNewSubMenuEntry.BuildChildren = function(self)
@@ -1883,7 +1883,7 @@ function SkuCore:aqCombatMenuBuilder()
                SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
             end
 
-			   tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToYou)
+			   tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToYou)
          end         
       end
 
@@ -1900,21 +1900,21 @@ function SkuCore:aqCombatMenuBuilder()
             tNewMenuEntry.dynamic = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 1 then
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 1 then
                   return L["Off"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 2 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 2 then
                   return L["If cast target is you"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 3 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 3 then
                   return L["If cast target is any party member"]
                end
             end
             tNewMenuEntry.OnAction = function(self, aValue, aName)
                if aName == L["Off"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value = 1
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value = 1
                elseif aName == L["If cast target is you"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value = 2
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value = 2
                elseif aName == L["If cast target is any party member"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value = 3
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value = 3
                end
             end
             tNewMenuEntry.BuildChildren = function(self)
@@ -1922,7 +1922,7 @@ function SkuCore:aqCombatMenuBuilder()
                SkuOptions:InjectMenuItems(self, {L["If cast target is you"]}, SkuGenericMenuItem)
                SkuOptions:InjectMenuItems(self, {L["If cast target is any party member"]}, SkuGenericMenuItem)
             end     
-            tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.yourTargetCasting)
+            tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetCasting)
          end
          
          ---
@@ -1934,21 +1934,21 @@ function SkuCore:aqCombatMenuBuilder()
             tNewMenuEntry.dynamic = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 1 then
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 1 then
                   return L["Off"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 2 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 2 then
                   return L["Only in combat"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 3 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 3 then
                   return L["All"]
                end
             end
             tNewMenuEntry.OnAction = function(self, aValue, aName)
                if aName == L["Off"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value = 1
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value = 1
                elseif aName == L["Only in combat"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value = 2
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value = 2
                elseif aName == L["All"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value = 3
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value = 3
                end
             end
             tNewMenuEntry.BuildChildren = function(self)
@@ -1956,7 +1956,7 @@ function SkuCore:aqCombatMenuBuilder()
                SkuOptions:InjectMenuItems(self, {L["Only in combat"]}, SkuGenericMenuItem)
                SkuOptions:InjectMenuItems(self, {L["All"]}, SkuGenericMenuItem)
             end     
-            tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting)
+            tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting)
          end
 
          ---
@@ -1965,10 +1965,10 @@ function SkuCore:aqCombatMenuBuilder()
          tNewMenuEntry.filterable = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            return SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.minimumCastDuration
+            return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.minimumCastDuration
          end
          tNewMenuEntry.OnAction = function(self, aValue, aName)
-            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.minimumCastDuration = tonumber(aName)
+            SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.minimumCastDuration = tonumber(aName)
          end
          tNewMenuEntry.BuildChildren = function(self)
             for x = 0, 30 do
@@ -1987,7 +1987,7 @@ function SkuCore:aqCombatMenuBuilder()
          tNewMenuEntry.filterable = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat == true then
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat == true then
                return L["Yes"]
             else
                return L["No"]
@@ -1995,9 +1995,9 @@ function SkuCore:aqCombatMenuBuilder()
          end
          tNewMenuEntry.OnAction = function(self, aValue, aName)
             if aName == L["No"] then
-               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat = false
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat = false
             elseif aName == L["Yes"] then
-               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat = true
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat = true
             end
          end
          tNewMenuEntry.BuildChildren = function(self)
@@ -2014,25 +2014,25 @@ function SkuCore:aqCombatMenuBuilder()
             tNewMenuEntry.dynamic = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 1 then
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 1 then
                   return L["Never"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 2 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 2 then
                   return L["Always"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 3 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 3 then
                   return L["If unit was attacking you"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 4 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 4 then
                   return L["If unit was attacking any party member"]
                end
             end
             tNewMenuEntry.OnAction = function(self, aValue, aName)
                if aName == L["Never"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 1
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 1
                elseif aName == L["Always"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 2
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 2
                elseif aName == L["If unit was attacking you"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 3
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 3
                elseif aName == L["If unit was attacking any party member"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 4
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value = 4
                end
             end
             tNewMenuEntry.BuildChildren = function(self)
@@ -2041,7 +2041,7 @@ function SkuCore:aqCombatMenuBuilder()
                SkuOptions:InjectMenuItems(self, {L["If unit was attacking you"]}, SkuGenericMenuItem)
                SkuOptions:InjectMenuItems(self, {L["If unit was attacking any party member"]}, SkuGenericMenuItem)
             end     
-            tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits)
+            tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputDeadUnits)
          end         
       end         
 
@@ -2058,25 +2058,25 @@ function SkuCore:aqCombatMenuBuilder()
             tNewMenuEntry.dynamic = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value == 1 then
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value == 1 then
                   return L["Off"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value == 2 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value == 2 then
                   return L["All enemies"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value == 3 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value == 3 then
                   return L["Enemies attacking party or you"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value == 4 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value == 4 then
                   return L["Enemies attacking you"]
                end
             end
             tNewMenuEntry.OnAction = function(self, aValue, aName)
                if aName == L["Off"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value = 1
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value = 1
                elseif aName == L["All enemies"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value = 2
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value = 2
                elseif aName == L["Enemies attacking party or you"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value = 3
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value = 3
                elseif aName == L["Enemies attacking you"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value = 4
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value = 4
                end
             end
             tNewMenuEntry.BuildChildren = function(self)
@@ -2085,7 +2085,7 @@ function SkuCore:aqCombatMenuBuilder()
                SkuOptions:InjectMenuItems(self, {L["Enemies attacking party or you"]}, SkuGenericMenuItem)
                SkuOptions:InjectMenuItems(self, {L["Enemies attacking you"]}, SkuGenericMenuItem)
             end     
-            tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat)
+            tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat)
          end   
 
          ---
@@ -2097,25 +2097,25 @@ function SkuCore:aqCombatMenuBuilder()
             tNewMenuEntry.dynamic = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value == 1 then
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value == 1 then
                   return L["Off"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value == 2 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value == 2 then
                   return L["All enemies"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value == 3 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value == 3 then
                   return L["Enemies attacking party or you"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value == 4 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value == 4 then
                   return L["Enemies attacking you"]
                end
             end
             tNewMenuEntry.OnAction = function(self, aValue, aName)
                if aName == L["Off"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value = 1
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value = 1
                elseif aName == L["All enemies"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value = 2
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value = 2
                elseif aName == L["Enemies attacking party or you"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value = 3
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value = 3
                elseif aName == L["Enemies attacking you"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value = 4
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value = 4
                end
             end
             tNewMenuEntry.BuildChildren = function(self)
@@ -2124,7 +2124,7 @@ function SkuCore:aqCombatMenuBuilder()
                SkuOptions:InjectMenuItems(self, {L["Enemies attacking party or you"]}, SkuGenericMenuItem)
                SkuOptions:InjectMenuItems(self, {L["Enemies attacking you"]}, SkuGenericMenuItem)
             end     
-            tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat)
+            tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat)
          end            
 
          ---
@@ -2136,25 +2136,25 @@ function SkuCore:aqCombatMenuBuilder()
             tNewMenuEntry.dynamic = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value == 1 then
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value == 1 then
                   return L["Off"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value == 2 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value == 2 then
                   return L["All enemies"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value == 3 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value == 3 then
                   return L["Enemies attacking party or you"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value == 4 then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value == 4 then
                   return L["Enemies attacking you"]
                end
             end
             tNewMenuEntry.OnAction = function(self, aValue, aName)
                if aName == L["Off"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value = 1
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value = 1
                elseif aName == L["All enemies"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value = 2
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value = 2
                elseif aName == L["Enemies attacking party or you"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value = 3
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value = 3
                elseif aName == L["Enemies attacking you"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value = 4
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value = 4
                end
             end
             tNewMenuEntry.BuildChildren = function(self)
@@ -2163,7 +2163,7 @@ function SkuCore:aqCombatMenuBuilder()
                SkuOptions:InjectMenuItems(self, {L["Enemies attacking party or you"]}, SkuGenericMenuItem)
                SkuOptions:InjectMenuItems(self, {L["Enemies attacking you"]}, SkuGenericMenuItem)
             end     
-            tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat)
+            tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat)
          end          
          
          --[[
@@ -2173,7 +2173,7 @@ function SkuCore:aqCombatMenuBuilder()
          tNewMenuEntry.filterable = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages == true then
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages == true then
                return L["Yes"]
             else
                return L["No"]
@@ -2181,9 +2181,9 @@ function SkuCore:aqCombatMenuBuilder()
          end
          tNewMenuEntry.OnAction = function(self, aValue, aName)
             if aName == L["No"] then
-               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages = false
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages = false
             elseif aName == L["Yes"] then
-               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages = true
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages = true
             end
          end
          tNewMenuEntry.BuildChildren = function(self)
@@ -2208,24 +2208,24 @@ function SkuCore:aqCombatMenuBuilder()
          tNewMenuEntry.dynamic = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDead.value == false then
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDead.value == false then
                return L["Off"]
-            elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDead.value == true then
+            elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDead.value == true then
                return L["On"]
             end
          end
          tNewMenuEntry.OnAction = function(self, aValue, aName)
             if aName == L["Off"] then
-               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDead.value = false
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDead.value = false
             elseif aName == L["On"] then
-               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDead.value = true
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDead.value = true
             end
          end
          tNewMenuEntry.BuildChildren = function(self)
             SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
             SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
          end     
-         tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDead)
+         tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDead)
       end
 
       ----
@@ -2237,24 +2237,24 @@ function SkuCore:aqCombatMenuBuilder()
          tNewMenuEntry.dynamic = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value == false then
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value == false then
                return L["Off"]
-            elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value == true then
+            elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value == true then
                return L["On"]
             end
          end
          tNewMenuEntry.OnAction = function(self, aValue, aName)
             if aName == L["Off"] then
-               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value = false
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value = false
             elseif aName == L["On"] then
-               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value = true
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value = true
             end
          end
          tNewMenuEntry.BuildChildren = function(self)
             SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
             SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
          end     
-         tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDeadCount)
+         tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.partyDeadCount)
       end
 
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Ignore dead party pets"]}, SkuGenericMenuItem)
@@ -2262,7 +2262,7 @@ function SkuCore:aqCombatMenuBuilder()
       tNewMenuEntry.filterable = true
       tNewMenuEntry.isSelect = true
       tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-         if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets == true then
+         if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets == true then
             return L["Yes"]
          else
             return L["No"]
@@ -2270,9 +2270,9 @@ function SkuCore:aqCombatMenuBuilder()
       end
       tNewMenuEntry.OnAction = function(self, aValue, aName)
          if aName == L["No"] then
-            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets = false
+            SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets = false
          elseif aName == L["Yes"] then
-            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets = true
+            SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets = true
          end
       end
       tNewMenuEntry.BuildChildren = function(self)
@@ -2292,24 +2292,24 @@ function SkuCore:aqCombatMenuBuilder()
             tNewMenuEntry.dynamic = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.outOfRangeEnabled.value == false then
+               if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.outOfRangeEnabled.value == false then
                   return L["Off"]
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.outOfRangeEnabled.value == true then
+               elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.outOfRangeEnabled.value == true then
                   return L["On"]
                end
             end
             tNewMenuEntry.OnAction = function(self, aValue, aName)
                if aName == L["Off"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.outOfRangeEnabled.value = false
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.outOfRangeEnabled.value = false
                elseif aName == L["On"] then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.outOfRangeEnabled.value = true
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.outOfRangeEnabled.value = true
                end
             end
             tNewMenuEntry.BuildChildren = function(self)
                SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
                SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
             end     
-            tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.outOfRangeEnabled)
+            tSoundMenuBuilder(self, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.outOfRangeEnabled)
          end
 
          ---
@@ -2318,10 +2318,10 @@ function SkuCore:aqCombatMenuBuilder()
          tNewMenuEntry.filterable = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            return SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorAt
+            return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.oorAt
          end
          tNewMenuEntry.OnAction = function(self, aValue, aName)
-            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorAt = tonumber(aName)
+            SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.oorAt = tonumber(aName)
          end
          tNewMenuEntry.BuildChildren = function(self)
             for x = 1, 100 do
@@ -2330,26 +2330,26 @@ function SkuCore:aqCombatMenuBuilder()
          end
 
          ---
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Set unit for out of range"].." ("..L["current"]..": "..(SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorUnitName or L["Nothing selected"])..")"}, SkuGenericMenuItem)
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Set unit for out of range"].." ("..L["current"]..": "..(SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.oorUnitName or L["Nothing selected"])..")"}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.OnAction = function(self, aValue, aName)
             if aName == L["Current target"] then
                if UnitName("target") and UnitIsPlayer("target") then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorUnitName = UnitName("target")
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.oorUnitName = UnitName("target")
                end
             elseif aName == L["Clear"] then
-               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorUnitName = L["Nothing selected"]
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.oorUnitName = L["Nothing selected"]
             elseif aName == L["Current focus target"] then
                if UnitName("focus") and UnitIsPlayer("focus") then
-                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorUnitName = UnitName("focus")
+                  SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.oorUnitName = UnitName("focus")
                end
             elseif sfind(aName, L["Party"]) then
                local tName = strsplit(";", aName)
-               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorUnitName = tName
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.oorUnitName = tName
             elseif sfind(aName, L["Raid"]) then
                local tName = strsplit(";", aName)
-               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorUnitName = tName
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.oorUnitName = tName
             end
 				C_Timer.After(0.001, function()
 					SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
@@ -2378,10 +2378,10 @@ function SkuCore:aqCombatMenuBuilder()
          tNewMenuEntry.filterable = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            return SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorInterval
+            return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.oorInterval
          end
          tNewMenuEntry.OnAction = function(self, aValue, aName)
-            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorInterval = tonumber(aName)
+            SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.oorInterval = tonumber(aName)
          end
          tNewMenuEntry.BuildChildren = function(self)
             for x = 0, 30 do

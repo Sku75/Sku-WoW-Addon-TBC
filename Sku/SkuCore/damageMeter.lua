@@ -63,7 +63,7 @@ local function SkuDetailsCloseAssistant()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DamageMeterOnLogin()
-	SkuOptions.db.char[MODULE_NAME].damageMeter = SkuOptions.db.char[MODULE_NAME].damageMeter or {}
+	SkuSettings:Sub("SkuCore", nil, "char").damageMeter = SkuSettings:Sub("SkuCore", nil, "char").damageMeter or {}
 
    C_Timer.After(15, function()
       SkuDetailsCloseAssistant()

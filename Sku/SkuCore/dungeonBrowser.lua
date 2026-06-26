@@ -54,8 +54,8 @@ local LFG_CATEGORY_DUNGEON = 2
 -- Persistenz
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function tDB()
-   SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
-   local db = SkuOptions.db.char[MODULE_NAME]
+   SkuSettings:Sub("SkuCore", nil, "char")
+   local db = SkuSettings:Sub("SkuCore", nil, "char")
    db.dungeonBrowser = db.dungeonBrowser or {}
    db.dungeonBrowser.selection = db.dungeonBrowser.selection or {}
    -- Mehrfach-Rollen-Auswahl: pro Rolle ein Boolean. Standard: nur DPS.

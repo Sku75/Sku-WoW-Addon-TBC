@@ -250,7 +250,7 @@ function SkuCore:MinimapScanChildFrames()
                      local line = string.lower(lineRaw)
                      for r = 1, #tChildRessourceTypes do
                         for x = 1, #tChildRessourceTypes[r] do
-                           if SkuOptions.db.profile[MODULE_NAME].ressourceScanning[toptionTypes[r]][x] ~= false then
+                           if SkuSettings:Sub("SkuCore").ressourceScanning[toptionTypes[r]][x] ~= false then
                               local resourceName = tChildRessourceTypes[r][x][Sku.LocP]
                               if resourceName and string.find(line, string.lower(resourceName), 1, true) then
                                  local cx, cy = child:GetCenter()
@@ -289,7 +289,7 @@ function SkuCore:MinimapScanFindActiveRessource(aX, aY)
          local line = string.lower(lineRaw)
          for r = 1, #tRessourceTypes do
             for x = 1, #tRessourceTypes[r] do
-               if SkuOptions.db.profile[MODULE_NAME].ressourceScanning[toptionTypes[r]][x] ~= false then
+               if SkuSettings:Sub("SkuCore").ressourceScanning[toptionTypes[r]][x] ~= false then
                   for w in string.gmatch(tRessourceTypes[r][x][Sku.LocP], ".+") do
                      if string.find(line, string.lower(w), 1, true) and not string.find(line, string.lower(w .. '|'), 1, true) then
                         if not tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ] then
@@ -373,10 +373,10 @@ local function MinimapScanStep()
       return
    end
 
-   tCurrentMMPosX = tCurrentMMPosX + SkuOptions.db.profile[MODULE_NAME].ressourceScanning.scanAccuracyS
+   tCurrentMMPosX = tCurrentMMPosX + SkuSettings:Sub("SkuCore").ressourceScanning.scanAccuracyS
    if tCurrentMMPosX > (tRange / 2) then
       tCurrentMMPosX = -(tRange / 2)
-      tCurrentMMPosY = tCurrentMMPosY + SkuOptions.db.profile[MODULE_NAME].ressourceScanning.scanAccuracyS
+      tCurrentMMPosY = tCurrentMMPosY + SkuSettings:Sub("SkuCore").ressourceScanning.scanAccuracyS
    end
 
    if tCurrentMMPosY > (tRange / 2) then
@@ -548,7 +548,7 @@ function SkuCore:MinimapScan(aRange)
    end
 
    -- Fallback: slow grid scan via minimap tooltip
-   SkuOptions:StartStopBackgroundSound(true, SkuOptions.db.profile["SkuCore"].scanBackgroundSound)
+   SkuOptions:StartStopBackgroundSound(true, SkuSettings:Sub("SkuCore").scanBackgroundSound)
    tRange = aRange
    SkuCore:StoreMinimap()
    tCurrentMMPosX, tCurrentMMPosY = (aRange / 2) * -1, (aRange / 2) * -1
@@ -764,7 +764,7 @@ function SkuCore:MinimapScanFast()
             local line = string.lower(lineRaw)
             for r = 1, #tRessourceTypes do
                for x = 1, #tRessourceTypes[r] do
-                  if SkuOptions.db.profile[MODULE_NAME].ressourceScanning[toptionTypes[r]][x] ~= false then
+                  if SkuSettings:Sub("SkuCore").ressourceScanning[toptionTypes[r]][x] ~= false then
                      for w in string.gmatch(tRessourceTypes[r][x][Sku.LocP], ".+") do
                         if string.find(line, string.lower(w), 1, true)
                            and not string.find(line, string.lower(w .. "|"), 1, true) then
@@ -848,7 +848,7 @@ function SkuCore:MinimapScannerOnLogin()
    local a = SkuCore.minimapScannerFrame
    a.timeCounter = 0
    a:SetScript("OnUpdate", function(self, atime)
-      if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.notifyOnRessources ~= true then
+      if SkuSettings:Sub("SkuCore").ressourceScanning.notifyOnRessources ~= true then
          return
       end
       if SkuCore.inCombat == true then
