@@ -374,25 +374,27 @@ function SkuCore:GameOptionsMenuBuilder(aParentEntry)
       return
    end
 
+   -- Declarative top-level entries (W2 M-B): the entry COUNT/labels/kinds are
+   -- runtime-driven (one per live game-menu button), so the static spec list is
+   -- built up in order inside the same loop/conditionals as before and compiled
+   -- node-by-node with SkuMenu:BuildNode. Each spec reproduces the exact property
+   -- set of its former hand-built entry; closure bodies are moved verbatim.
    local buttons = CollectGameMenuButtons()
    local addedOptions = false
    for _, btn in ipairs(buttons) do
       local label = tostring(tCall(btn, "GetText"))
       if IsSettingsButton(label) then
          -- "Optionen" -> the settings categories (not a frame click).
-         local e = Inject(aParentEntry, label)
-         e.dynamic = true
-         e.filterable = true
-         e.BuildChildren = function(self) BuildCategoryList(self) end
+         SkuMenu:BuildNode(aParentEntry, { kind = "list", label = label, filterable = true,
+            build = function(self) BuildCategoryList(self) end })
          addedOptions = true
       else
          -- Every other game-menu action (Shop, Addons, Makros, Ausloggen,
          -- Spiel verlassen, ...) -> click the live button. Sku's menu keys
          -- arrive via hardware-event override bindings, so :Click() counts
          -- as a hardware event (protected Logout/Quit are allowed).
-         local e = Inject(aParentEntry, label)
-         e.dynamic = false
-         e.OnAction = function() pcall(function() btn:Click() end) end
+         SkuMenu:BuildNode(aParentEntry, { kind = "action", label = label, dynamic = false,
+            onAction = function() pcall(function() btn:Click() end) end })
       end
    end
 
@@ -400,9 +402,7 @@ function SkuCore:GameOptionsMenuBuilder(aParentEntry)
    -- been opened this session (or the settings button was not recognised),
    -- still expose the options so the main feature always works.
    if not addedOptions then
-      local e = Inject(aParentEntry, _G.SETTINGS or "Optionen")
-      e.dynamic = true
-      e.filterable = true
-      e.BuildChildren = function(self) BuildCategoryList(self) end
+      SkuMenu:BuildNode(aParentEntry, { kind = "list", label = _G.SETTINGS or "Optionen", filterable = true,
+         build = function(self) BuildCategoryList(self) end })
    end
 end

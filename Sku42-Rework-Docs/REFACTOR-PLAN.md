@@ -521,19 +521,29 @@ to specs one menu at a time.
 - [x] M-A1. Add `SkuMenu` module (registry + layout map + Insert/Remove helpers); TOC-register **early** (after `SkuSettings.lua`, line 28) not after SkuZOptions — the registry must exist before the open handler calls it, and the renderer/builders resolve lazily at open time. `ns.Menu` + global `SkuMenu` alias (mirrors SkuUtil/SkuSettings). Provides `RegisterModule(id,{label,build})`, `SetRootLayout(ids)`, `InjectModuleEntry`/`AssembleRoot`, and central `Insert`/`Remove` sibling-list helpers (Remove additive, not yet wired into callers — that is M-D1). The toggle/enum/range **compiler is intentionally NOT built yet**: that capability already exists as `SkuOptions:IterateOptionsArgs` (auto-generates toggle/select/range/execute nodes from an AceConfig `options.args` table over a db subtable); a declarative archetype layer is deferred to M-B, shaped by the first real conversion rather than guessed now (W1's "no speculative layer without a consumer" lesson).
 - [x] M-A2. Routed the hardcoded root sequence (was `SkuZOptions/Core.lua:1775-1820`: 6 module entries + Game Options) through `SkuMenu:AssembleRoot(SkuOptions.Menu)` driven by the registry + `rootLayout`. Behaviour-identical by construction: same 7 entries, same order, labels resolved at open time (incl. Game Options' locale-computed title), `dynamic = true` + `BuildChildren -> Module:MenuBuilder(entry)` reproduced, and one-at-a-time injection reproduces the original prev/next sibling chain exactly. The Accessibility ("Menue 7") grouping stays inline/untouched (a special hand-built grouping; folding it into the registry is a later step). luaparser-clean; in-game `/wdsku3` before/after pending.
 - [~] M-A3. Decoupling mechanism IN PLACE: `SkuMenu.rootLayout` is a plain ordered id list, separate from the `RegisterModule` contributions — reordering the root is now a one-line data edit with no module-code change and no hand-maintained sibling chain. Default layout kept identical (behaviour-preserving). Full "re-home into a different branch" needs the layout map extended to nesting (all root entries are siblings today) — that arrives with M-B. The reorder can be demonstrated in-game by permuting `rootLayout` and diffing `/wdsku3`.
-- [~] M-B1. Declarative node compiler added to `SkuMenu` (`Build(parent, specs)` /
-  `BuildNode`). First conversion done: **SkuMob:MenuBuilder** now expressed as specs.
-  Kinds implemented so far (no speculative kinds — added as conversions consume them):
-  `list` (dynamic container, `build=fn(entry)`, rebuilt each visit) and `settings`
-  (named container populated via the existing `SkuOptions:IterateOptionsArgs` from an
-  AceConfig `options.args` + db subtable). toggle/enum/range are NOT separate kinds —
-  they are the children `IterateOptionsArgs` already renders, so the `settings` kind
-  delegates rather than reimplementing their nav semantics (SkuMob's Options exercises
-  a toggle set + a select through it). Behaviour-identical by construction (same two
-  entries, same order, same dynamic/filterable flags, same IterateOptionsArgs call);
-  luaparser-clean; in-game `/wdsku3` before/after pending. Remaining: convert more
-  module menus (M-B2), adding `submenu`/`action`/`macro` kinds as each first needs them.
-- [ ] M-B2. Implement `submenu`/`action`/`list`/`macro` archetypes; convert remaining menus module-by-module.
+- [x] M-B1. Declarative node compiler added to `SkuMenu` (`Build(parent, specs)` /
+  `BuildNode`), then generalized: kinds `list` (dynamic, `build`), `settings`
+  (IterateOptionsArgs container), `submenu` (build closure or nested specs), `action`
+  (leaf; `run`), plus a passthrough of optional flags/handlers (filterable, dynamic,
+  isSelect, isMultiselect, noStepUpAfterSelect, macrotext, secureMacro,
+  tooltip→textFull, onAction, onEnter, onLeave, getCurrentValue, onUpdate, onKey) so any
+  hand-built entry reproduces exactly. toggle/enum/range are NOT separate kinds — they
+  are the children `IterateOptionsArgs` already renders, so `settings` delegates. First
+  conversion: **SkuMob:MenuBuilder**. **Key invariant:** `list`/`submenu` assign `build`
+  DIRECTLY as `BuildChildren` so a colon-method build ref (e.g. `SkuCore.AuctionHouseMenuBuilder`)
+  still receives `(entry, entry)` from `self:BuildChildren(self)` (a one-arg wrapper would
+  nil out its `aParentEntry`).
+- [x] M-B2. Converted the remaining top-level MenuBuilders to specs (one agent per file,
+  strict behaviour-preserving rules, luaparser-gated, diff-reviewed): **SkuNav** (4 entries
+  + a dead `if false` "Daten" block left in place), **SkuChat** (5), **SkuQuest** (3),
+  **SkuCore** (14, incl. the 7 colon-method-ref submenus), **SkuAuras** (1; its "Options"
+  left hand-built because it is `filterable=nil` and the `settings` kind would force it
+  true), and **SkuCore:GameOptionsMenuBuilder** (node-by-node inside its runtime loop).
+  Inner closures moved verbatim; order/flags preserved; no live refs to removed top-level
+  locals. The `macro` archetype was not needed as a separate kind — macro entries are
+  `action` specs carrying `macrotext`/`secureMacro` via the passthrough. luaparser-clean
+  across all files; **one big in-game test pending** (navigate every module menu + Game
+  Options; behaviour must be unchanged).
 - [ ] M-C1. Link generated settings handlers to `SkuSettings` (depends on Workstream 1 Phase C); remove redundant inline handlers.
 - [ ] M-D1. Enumerate all node-removal sites; route through `SkuMenu:Remove`; remove any remaining hand `prev`/`next` writes.
 

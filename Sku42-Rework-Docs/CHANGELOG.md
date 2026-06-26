@@ -22,6 +22,34 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W2 Phase B — all remaining module MenuBuilders converted to specs (M-B2).**
+  In one batch (fan-out, one agent per file, strict behaviour-preservation rules,
+  each luaparser-gated and diff-reviewed): SkuNav, SkuChat, SkuQuest, SkuCore, and
+  SkuAuras `:MenuBuilder`, plus `SkuCore:GameOptionsMenuBuilder`, now express their
+  TOP-LEVEL entries as `SkuMenu:Build` specs. Inner BuildChildren/OnAction closures
+  were moved VERBATIM into spec `build`/`onAction` fields; order, names, count,
+  conditions, and every flag are reproduced exactly. Counts: SkuCore 14 entries,
+  SkuChat 5, SkuNav 4 (+ a dead `if false` "Daten" block left in place), SkuQuest 3,
+  SkuAuras 1 (its "Options" left hand-built on purpose — see below), GameOptions
+  built node-by-node inside its runtime loop.
+  - **Compiler generalized first** (`submenu` + `action` kinds, and a passthrough of
+    optional flags/handlers — filterable, dynamic, isSelect, isMultiselect,
+    noStepUpAfterSelect, macrotext, secureMacro, tooltip→textFull, onAction, onEnter,
+    onLeave, getCurrentValue, onUpdate, onKey) so any hand-built entry reproduces
+    exactly.
+  - **Critical fix:** `list`/`submenu` now assign `build` DIRECTLY as `BuildChildren`
+    (not wrapped in a one-arg closure). The renderer invokes `self:BuildChildren(self)`
+    = two args `(entry, entry)`; SkuCore has 7 entries whose build is a colon-method
+    reference (`SkuCore.AuctionHouseMenuBuilder`, …) needing `aParentEntry` as its
+    second positional — a one-arg wrapper would have passed it `nil` and broken those
+    submenus. Direct assignment matches the original hand-assignment exactly.
+  - **Fidelity notes:** the `settings` kind forces `filterable=true` when omitted, so
+    a settings container that was NOT filterable (SkuAuras "Options", `filterable=nil`)
+    is left hand-built rather than converted. SkuChat had an accidental BOM added by
+    the edit — stripped back to match the original (no BOM). All files luaparser-clean;
+    no live references to removed top-level locals. **One big in-game test pending**
+    (navigate every module's menu + Game Options; behaviour must be unchanged).
+
 - **W2 Phase B started — declarative node compiler + first conversion (M-B1).**
   Added `SkuMenu:Build(parent, specs)` / `BuildNode`: a flat list of node SPECS
   compiles into template nodes via the existing renderer, so a `MenuBuilder` can

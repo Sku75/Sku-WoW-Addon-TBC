@@ -1858,17 +1858,18 @@ local tDifficultyColors = {
 }
 
 function SkuQuest:MenuBuilder(aParentEntry)
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Aktuelle Quests"]}, SkuGenericMenuItem)
+	local tSpecs = {}
+
 	--Alle
 	--Zonen
 	--Entfernung Questgeber
 	--Level
-	tNewMenuParentEntry.dynamic = true
 	--tNewMenuParentEntry.isSelect = true
-	tNewMenuParentEntry.OnAction = function(self, aValue, aName)
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Aktuelle Quests"],
+		onAction = function(self, aValue, aName)
 
-	end
-	tNewMenuParentEntry.BuildChildren = function(self)
+		end,
+		build = function(self)
 		if QuestLogFrame:IsVisible() ~= true then
 			ToggleQuestLog()
 		end
@@ -1953,13 +1954,12 @@ function SkuQuest:MenuBuilder(aParentEntry)
 				end
 			end
 		end
-	end
+		end }
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Questdatenbank"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.OnAction = function(self, aValue, aName)
-	end
-	tNewMenuParentEntry.BuildChildren = function(self)	
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Questdatenbank"],
+		onAction = function(self, aValue, aName)
+		end,
+		build = function(self)
 		local tNewMenuSubEntry =SkuOptions:InjectMenuItems(self, {L["Start in Zone"]}, SkuGenericMenuItem)
 		tNewMenuSubEntry.dynamic = true
 		tNewMenuSubEntry.filterable = true
@@ -2040,12 +2040,13 @@ function SkuQuest:MenuBuilder(aParentEntry)
 				end
 			end
 		end
-	end
+		end }
 
 
-	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
-	tNewMenuEntry.filterable = true
-	SkuOptions:IterateOptionsArgs(SkuQuest.options.args, tNewMenuEntry, SkuSettings:Sub("SkuQuest"))
+	tSpecs[#tSpecs+1] = { kind = "settings", label = L["Options"], filterable = true,
+		args = SkuQuest.options.args, db = SkuSettings:Sub("SkuQuest") }
+
+	SkuMenu:Build(aParentEntry, tSpecs)
 end
 
 

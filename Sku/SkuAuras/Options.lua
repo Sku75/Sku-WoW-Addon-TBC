@@ -881,11 +881,15 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:MenuBuilder(aParentEntry)
-	---
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Auren"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.filterable = true
-	tNewMenuParentEntry.BuildChildren = function(self)
+	-- W2 M-B: top-level "Auren" entry expressed as a declarative SkuMenu "list"
+	-- spec (dynamic + filterable, BuildChildren rebuilt each visit). The deeper
+	-- entries built inside the closure stay hand-built/verbatim. The "Optionen"
+	-- entry below is left hand-built on purpose: it carries filterable=nil and the
+	-- "settings" kind would force filterable=true, so converting it would change
+	-- its property set.
+	local tSpecs = {}
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Auren"], filterable = true,
+		build = function(self)
 		-- [41.05] Sets anlegen/teilen (Stufe 1+2), isoliert in SkuAuras\sharing.lua
 		-- [41.06] Sets-Menue an Position 3 verschoben (siehe weiter unten, vor Aura importieren)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Neue aura"]}, SkuGenericMenuItem)
@@ -1195,7 +1199,8 @@ function SkuAuras:MenuBuilder(aParentEntry)
 			SkuOptions.Voice:OutputStringBTtts(L["noch nicht implementiert"], false, true, 0.1, true)
 		end
 		
-	end
+	end }
+	SkuMenu:Build(aParentEntry, tSpecs)
 	--[[
 	---
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {"Zauberdatenbank"}, SkuGenericMenuItem)

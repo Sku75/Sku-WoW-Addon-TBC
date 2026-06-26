@@ -1720,12 +1720,12 @@ end
 
 function SkuCore:MenuBuilder(aParentEntry)
 	--dprint("SkuCore:MenuBuilder", aParentEntry)
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Mail"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.filterable = true
-	tNewMenuParentEntry.OnAction = function(self, aValue, aName)
-	end
-	tNewMenuParentEntry.BuildChildren = function(self)
+	local tSpecs = {}
+
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Mail"], filterable = true,
+		onAction = function(self, aValue, aName)
+	end,
+		build = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["New letter"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		-- isSelect entfernt: jedes Kind hat jetzt eine eigene OnAction,
@@ -2176,11 +2176,10 @@ function SkuCore:MenuBuilder(aParentEntry)
 				end
 			end
 		end
-	end
+	end }
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Action bars"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.BuildChildren = function(self)
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Action bars"],
+		build = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MainMenuBar"].friendlyName}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
@@ -2295,11 +2294,10 @@ function SkuCore:MenuBuilder(aParentEntry)
 		--tNewMenuEntry.dynamic = true
 		--tNewMenuEntry.BuildChildren = function(self)
 		--end
-	end
+	end }
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Entfernung"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.BuildChildren = function(self)
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Entfernung"],
+		build = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Freundlich"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -2315,11 +2313,10 @@ function SkuCore:MenuBuilder(aParentEntry)
 		tNewMenuEntry.BuildChildren = function(self)
 			RangecheckMenuBuilder(self, "Misc")
 		end
-	end
+	end }
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Spiel Tastenbelegung"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.BuildChildren = function(self)
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Spiel Tastenbelegung"],
+		build = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alles zurücksetzen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Wirklich zurücksetzen? (keine weitere Warnung)"]}, SkuGenericMenuItem)
@@ -2433,11 +2430,10 @@ function SkuCore:MenuBuilder(aParentEntry)
 				end
 			end
 		end
-	end
+	end }
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Sku Tastenbelegung"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.BuildChildren = function(self)
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Sku Tastenbelegung"],
+		build = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alles zurücksetzen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Wirklich zurücksetzen? (keine weitere Warnung)"]}, SkuGenericMenuItem)
@@ -2747,11 +2743,10 @@ function SkuCore:MenuBuilder(aParentEntry)
 				end
 			end
 		end
-	end
+	end }
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Scan settings"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.BuildChildren = function(self)
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Scan settings"],
+		build = function(self)
 		for x = 1, 8 do
 			local tText = SkuCore.ScanTypes[SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[x].type].name
 			for iDb, vDb in pairs(SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[x].objects) do
@@ -2878,46 +2873,32 @@ function SkuCore:MenuBuilder(aParentEntry)
 			end
 		end
 
-	end
+	end }
 
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Auktionshaus"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.filterable = true
-	tNewMenuParentEntry.BuildChildren = SkuCore.AuctionHouseMenuBuilder
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Auktionshaus"], filterable = true,
+		build = SkuCore.AuctionHouseMenuBuilder }
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Monitor"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.filterable = true
-	tNewMenuParentEntry.BuildChildren = SkuCore.MonitorMenuBuilder
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Monitor"], filterable = true,
+		build = SkuCore.MonitorMenuBuilder }
 
 	-- DIAL-TARGETING (41.02.06e) — Entfernbar: Block löschen + DialTargeting.lua + TOC + Core.lua Init
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Dial Targeting"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.filterable = true
-	tNewMenuParentEntry.BuildChildren = SkuCore.DialTargetingMenuBuilder
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Dial Targeting"], filterable = true,
+		build = SkuCore.DialTargetingMenuBuilder }
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Social"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.filterable = true
-	tNewMenuParentEntry.BuildChildren = SkuCore.FriendsMenuBuilder
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Social"], filterable = true,
+		build = SkuCore.FriendsMenuBuilder }
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Damage Meter"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.filterable = true
-	tNewMenuParentEntry.BuildChildren = SkuCore.DamageMeterMenuBuilder
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Damage Meter"], filterable = true,
+		build = SkuCore.DamageMeterMenuBuilder }
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Macros"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.filterable = true
-	tNewMenuParentEntry.BuildChildren = SkuCore.MacroMenuBuilder
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Macros"], filterable = true,
+		build = SkuCore.MacroMenuBuilder }
 
-	
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Atlas Loot"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.filterable = true
-	tNewMenuParentEntry.BuildChildren = SkuCore.alIntegrationMenuBuilder	
-	
+
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Atlas Loot"], filterable = true,
+		build = SkuCore.alIntegrationMenuBuilder }
+
 
 	--[[
 	if Sku.IsEraSoD == true then
@@ -2929,9 +2910,10 @@ function SkuCore:MenuBuilder(aParentEntry)
 	]]
 
 
-	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
-	tNewMenuEntry.filterable = true
-	SkuOptions:IterateOptionsArgs(SkuCore.options.args, tNewMenuEntry, SkuSettings:Sub("SkuCore"))
+	tSpecs[#tSpecs+1] = { kind = "settings", label = L["Options"], filterable = true,
+		args = SkuCore.options.args, db = SkuSettings:Sub("SkuCore") }
+
+	SkuMenu:Build(aParentEntry, tSpecs)
 end
 
 

@@ -580,18 +580,19 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:MenuBuilder(aParentEntry)
 	--dprint("SkuNav:MenuBuilder", aParentEntry)
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Deselect all"]}, SkuGenericMenuItem)
-	tNewMenuEntry.OnAction = function(self, aValue, aName)
+	local tSpecs = {}
+
+	tSpecs[#tSpecs+1] = { kind = "action", label = L["Deselect all"],
+		onAction = function(self, aValue, aName)
 		--dprint("Route und Wegpunkt abwählen", self.name, aName)
 		SkuNav:EndFollowingWpOrRt()
 		SkuNav:ClearWaypointsTemporary()
 		PlaySound(835)
-	end
+	end }
 
 	--wps
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Waypoint"]}, SkuGenericMenuItem)
-	tNewMenuEntry.dynamic = true
-	tNewMenuEntry.BuildChildren = function(self)
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Waypoint"],
+		build = function(self)
 		--[[
 		local tNewMenuEntry = SkuOptions:BuildMenuSegment_TitleBuilder(self, L["New"])
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
@@ -1014,12 +1015,11 @@ function SkuNav:MenuBuilder(aParentEntry)
 			end
 		end
 		]]
-	end
+	end }
+
 	--rts
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Route folgen"]}, SkuGenericMenuItem)
-	tNewMenuEntry.dynamic = true
-	tNewMenuEntry.isSelect = true
-	tNewMenuEntry.OnAction = function(self, aValue, aName)
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Route folgen"], isSelect = true,
+		onAction = function(self, aValue, aName)
 		dprint("OnAction", self.name, aValue, aName)
 
 		SkuNav:ClearWaypointsTemporary()
@@ -1118,8 +1118,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 				SkuDispatcher:TriggerSkuEvent("SKU_ROUTE_STARTED")
 			end
 		end
-	end
-	tNewMenuEntry.BuildChildren = function(self)
+	end,
+		build = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Ziele Entfernung"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
@@ -1284,7 +1284,9 @@ function SkuNav:MenuBuilder(aParentEntry)
 				end
 			end
 		end
-	end
+	end }
+
+	SkuMenu:Build(aParentEntry, tSpecs)
 
 	-- [41.02.08] Menuepunkt "Daten" vollstaendig ausgeblendet (Nutzerwunsch).
 	-- RUECKBAU: dieses "if false then" und das zugehoerige "end" weiter unten entfernen.
@@ -1334,7 +1336,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 	end
 	end -- [41.02.08] schliesst das ausblendende "if false then" fuer "Daten"
 
-	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
-	tNewMenuEntry.filterable = true
-	SkuOptions:IterateOptionsArgs(SkuNav.options.args, tNewMenuEntry, SkuSettings:Sub("SkuNav"))
+	SkuMenu:Build(aParentEntry, {
+		{ kind = "settings", label = L["Options"], filterable = true,
+			args = SkuNav.options.args, db = SkuSettings:Sub("SkuNav") },
+	})
 end

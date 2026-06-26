@@ -205,25 +205,29 @@ function SkuMenu:BuildNode(aParent, aSpec)
 	applyCommon(tEntry, aSpec)
 
 	if kind == "list" then
-		-- Dynamic container: children rebuilt on each visit by spec.build(entry).
+		-- Dynamic container: children rebuilt on each visit. `build` is assigned
+		-- DIRECTLY as BuildChildren (not wrapped) so it receives the exact same
+		-- args the renderer passes (`self:BuildChildren(self)` -> (entry, entry)).
+		-- This matters for a build that is a colon-method reference
+		-- (e.g. SkuCore.AuctionHouseMenuBuilder, which needs aParentEntry as its
+		-- second positional) — a one-arg wrapper would pass it nil.
 		tEntry.dynamic = true
-		local build = aSpec.build
-		tEntry.BuildChildren = function(self)
-			if build then build(self) end
+		if aSpec.build then
+			tEntry.BuildChildren = aSpec.build
 		end
 
 	elseif kind == "submenu" then
-		-- Container: either a custom build closure or a nested spec list. When
-		-- neither is given it is a static container the caller fills itself.
-		if aSpec.build or aSpec.children then
+		-- Container: either a custom build closure/method (assigned directly, as
+		-- above) or a nested spec list. When neither is given it is a static
+		-- container the caller fills itself.
+		if aSpec.build then
 			tEntry.dynamic = true
-			local build, children = aSpec.build, aSpec.children
+			tEntry.BuildChildren = aSpec.build
+		elseif aSpec.children then
+			tEntry.dynamic = true
+			local children = aSpec.children
 			tEntry.BuildChildren = function(self)
-				if build then
-					build(self)
-				elseif children then
-					SkuMenu:Build(self, children)
-				end
+				SkuMenu:Build(self, children)
 			end
 		end
 
