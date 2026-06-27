@@ -2058,11 +2058,11 @@ function SkuCore:CURRENT_SPELL_CAST_CHANGED(aCancelledCast)
 	]]
 end
 
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore.Aq:UNIT_POWER_UPDATE(eventName, unitType)
-
-end
-
+-- (W4-E1b) The dead empty UNIT_POWER_UPDATE stub that used to live here was
+-- removed: aq.lua defines the real Aq:UNIT_POWER_UPDATE handler (loaded after
+-- Core.lua, so it always won — this stub was never active). Keeping it as
+-- `function SkuCore.Aq:...` would also crash at load, since SkuCore.Aq does not
+-- exist yet when Core.lua loads (aq.lua is later in the TOC).
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UNIT_HAPPINESS(unitTarget)
 
