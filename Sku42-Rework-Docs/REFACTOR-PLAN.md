@@ -1148,6 +1148,82 @@ codebase. Do it as a long series of small, independently-shippable extractions:
 
 ---
 
+# Workstream 4 — Phase E: namespace extraction (the unified module model)  (APPROVED 2026-06-27 — executing)
+
+## Why (decided after comparing against WowVision)
+
+Rework A+B gave every feature an independent **on/off lifecycle** + uniform
+management (one Features menu toggles all ~29). But it deliberately left each
+SkuCore feature's CODE and STATE on the shared `SkuCore` table
+(`SkuCore:AuctionHouseOnLogin`, `SkuCore.AuctionScan`, ...) — the methods were
+kept in place for safe migration. That shared table is the actual god-object
+(352+ methods across unrelated features) — the real source of cross-feature
+blast-radius, accidental collisions, and "can't reason about one feature in
+isolation". Phase E finishes the job.
+
+**Comparison input — WowVision** (sibling addon, middleclass not Ace3): it is a
+SINGLE-ROOT tree (`WowVision.base` manages every feature as a submodule). So "a
+managing core" is normal and fine — its real weaknesses are (a) the root is a
+god-object reached *through* to siblings, and (b) heavy service-locator coupling
+(modules grab `WowVision.Foo` globals). Lesson: a lean managing core is good; the
+danger is shared code/state on it and modules reaching into each other's tables.
+
+## Target model (the long-term design)
+
+- **Every feature is an AceAddon module with its OWN namespace** — methods on the
+  module table (`M:Method`), state on `M` — not on `SkuCore`. (AceAddon `NewModule`
+  already returns a private table per module; Rework A/B just didn't use it for the
+  method bodies. Phase E moves them onto it.)
+- **`SkuCore` stays a LEAN manager/registry** — lifecycle, the toggle registry
+  (`ModuleManager`), and the genuinely-core plumbing that isn't a feature. Not a
+  code dump. (Equivalent to `WowVision.base`, kept thin.)
+- **Cross-module comms via services/events/interfaces** — `SkuState` (combat/move),
+  `SkuNav.Geo` (map/coord), `SkuDispatcher` (WoW + custom `SKU_*` domain events),
+  and small interface tables — NEVER reaching into another feature's table. This is
+  where we beat WowVision; lean on `SkuDispatcher` MORE (it is underused).
+- **SkuDispatcher is NOT redundant with the manager** — different planes: the
+  manager owns *lifecycle* (who's enabled), the dispatcher owns *communication*
+  (how modules talk without direct refs). Both stay.
+
+After Phase E, AuctionHouse and SkuQuest are "the same level" in every way that
+matters: each an isolated own-namespace toggleable feature. The 5 standalone
+addons (SkuChat/Nav/Quest/Auras/Mob) are ALREADY at the clean end-state (own
+namespace) and already uniformly managed/toggled (Rework B-2), so Phase E does
+NOT re-parent them (re-parenting the 5 biggest, most-coupled units for a cosmetic
+keyword change is not worth the risk); they stay top-level peers, uniformly
+managed. The only remaining cross-feature asymmetry is an internal registration
+keyword (submodule vs addon), which is cosmetic once every feature owns its table.
+
+## Approach (incremental, behaviour-preserving, pilot-first)
+
+Per feature (the recipe to prove on a pilot, then mass-apply via fan-out + codemod):
+1. Move `function SkuCore:X(...)` definitions in the feature file to
+   `function M:X(...)` (M = the module's own table).
+2. Move `SkuCore.<field>` feature state to `M.<field>`.
+3. Repoint callers: in-file → `M:X` / `self:X`; cross-file/cross-module → via the
+   published handle `SkuCore.<Feature>:X` (already set in Rework A/B). A codemod
+   handles the bulk, human review + luaparser per file.
+4. Keep the published handle `SkuCore.<Feature> = M` (external API surface).
+5. Route any remaining shared-state reads through services (SkuState/Geo/Dispatcher).
+6. luaparser gate + in-game smoke per feature/batch; re-run `_members.py` (the
+   SkuCore inbound count should fall sharply as the table empties).
+
+Scale: ~24 features, ~1,300 method-definition moves + caller repoints — comparable
+to the W1 settings migration (~2,700 sites) which landed cleanly with this method.
+
+## Task checklist
+
+- [~] E0. PILOT the extraction recipe on ONE feature (Mail — clean, one external
+  caller file) to prove SkuCore:X→Mail:X + caller repoint + published handle, before
+  mass rollout. (In progress.)
+- [ ] E1. Extract the remaining SkuCore-table features to their own namespaces, in
+  risk order (trivial first; AuctionHouse / aq / aqCombat last), batched + verified.
+- [ ] E2. Slim `SkuCore/Core.lua` to the manager + genuine core plumbing; confirm no
+  feature method/state remains on the `SkuCore` table (other than published handles).
+- [ ] E3. Re-run `_members.py`/`_matrix.py`; record the collapsed SkuCore coupling.
+
+---
+
 # Workstream 5 — Companion addons / asset packaging  (INVESTIGATED — strategy drafted)
 
 Headline conclusion: **do NOT merge the audio into the core addon.** The

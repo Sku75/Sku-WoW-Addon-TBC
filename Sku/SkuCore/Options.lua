@@ -1742,11 +1742,11 @@ function SkuCore:MenuBuilder(aParentEntry)
 			end
 
 			if aName == L["Recepient"] then
-				SkuCore:MailEditor("TmpTo")
+				SkuCore.Mail:MailEditor("TmpTo")
 			elseif aName == L["Topic"] then
-				SkuCore:MailEditor("TmpSubject")
+				SkuCore.Mail:MailEditor("TmpSubject")
 			elseif aName == L["Text"] then
-				SkuCore:MailEditor("TmpBody")
+				SkuCore.Mail:MailEditor("TmpBody")
 			elseif aName == L["Send"] then
 				if self.TmpTo and self.TmpSubject then --and tNewMenuEntry.TmpBody then
 					--versenden
@@ -1880,7 +1880,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 			-- 3. Versendevorgang starten (Name, Betreff, Text eingeben und direkt senden)
 			local tSendEntry = SkuOptions:InjectMenuItems(self, {L["MAIL_StartSending"]}, SkuGenericMenuItem)
 			tSendEntry.OnAction = function()
-				SkuCore:MailEditorCombined(tNeuerBrief)
+				SkuCore.Mail:MailEditorCombined(tNeuerBrief)
 			end
 		end
 
@@ -2046,11 +2046,11 @@ function SkuCore:MenuBuilder(aParentEntry)
 						--dprint(aName)
 						--open the specific edit box for aname and write result to current mi.tmpx
 						if aName ==L["Recepient"] then
-							SkuCore:MailEditor("TmpTo")
+							SkuCore.Mail:MailEditor("TmpTo")
 						elseif aName == L["Topic"] then
-							SkuCore:MailEditor("TmpSubject")
+							SkuCore.Mail:MailEditor("TmpSubject")
 						elseif aName == L["Text"] then
-							SkuCore:MailEditor("TmpBody")
+							SkuCore.Mail:MailEditor("TmpBody")
 						elseif aName == L["Send"] then
 							if self.TmpTo and self.TmpSubject then --and tNewMenuEntry.TmpBody then
 								--versenden

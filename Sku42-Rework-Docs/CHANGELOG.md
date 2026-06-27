@@ -22,6 +22,19 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W4 Phase E — E0 pilot: Mail namespace extraction.** First feature moved OFF the
+  shared `SkuCore` god-table onto its own module namespace: 12 `SkuCore:Mail*` methods
+  → `Mail:` (module table), the `Mail` module gained the AceEvent-3.0 mixin (events
+  registered/unregistered on `Mail` itself), and the 7 external callers in
+  `SkuCore/Options.lua` were repointed to the published handle `SkuCore.Mail:`. No
+  feature state to move (already file-upvalues). Behaviour byte-identical; both files
+  luaparser-clean; verified in-game (mailbox read + send work, error log clean). This
+  proves the W4-E recipe. Gotchas captured for the mass rollout: always pass the
+  explicit AceEvent handler-name; auto-detect duplicate `function SkuCore:X` defs;
+  grep each method tree-wide incl. dynamic `SkuCore[...]` dispatch; flag `SkuCore.<field>`
+  state that crosses module boundaries; AceEvent dispatch order is not guaranteed
+  (watch combat handlers in aq).
+
 - **W4 Phase D — X-D3 Rework B-step-2 (5 standalone addons made toggleable).**
   Extended the toggle framework in `SkuCore/ModuleManager.lua` to handle TOP-LEVEL
   AceAddons as well as SkuCore submodules: `RegisterToggleableAddon` + a

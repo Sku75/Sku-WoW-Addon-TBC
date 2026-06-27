@@ -5,17 +5,20 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 local L = Sku.L
 
 -- W4 Phase D: Mail is a real AceAddon SUBMODULE of SkuCore so it can be turned
--- on/off at runtime. All SkuCore:Method definitions and module state stay exactly
--- where they were (external callers in Options.lua keep working); only the
--- lifecycle moves:
---   * OnEnable  arms the mailbox (registers the 10 MAIL_* events + installs the
---     UIErrorsFrame hook once). This replaces the old explicit
---     SkuCore:MailOnInitialize() call in Core.lua, so mail now re-arms on every
---     /reload, not only on the initial login.
---   * OnDisable unregisters all 10 events (the hooksecurefunc hook cannot be
---     removed, so its body is guarded with IsEnabled()).
+-- on/off at runtime.
+-- W4 Phase E (namespace extraction): all of Mail's own methods and module state
+-- now live on the module table `Mail` itself (function Mail:Method) instead of on
+-- the shared SkuCore god-object. The module mixes in AceEvent-3.0 and owns its own
+-- event registrations; external callers use the published handle SkuCore.Mail.
+-- Lifecycle:
+--   * OnEnable  arms the mailbox (registers the 10 MAIL_* events on the module via
+--     AceEvent + installs the UIErrorsFrame hook once). This replaces the old
+--     explicit SkuCore:MailOnInitialize() call in Core.lua, so mail now re-arms on
+--     every /reload, not only on the initial login.
+--   * OnDisable unregisters all the module's events (the hooksecurefunc hook cannot
+--     be removed, so its body is guarded with IsEnabled()).
 -- Settings/SavedVariables shape is unchanged.
-local Mail = SkuCore:NewModule("Mail")
+local Mail = SkuCore:NewModule("Mail", "AceEvent-3.0")
 SkuCore.Mail = Mail   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
@@ -32,18 +35,18 @@ local gMailHookInstalled = false
 ------------------------------------------------------------------------------------------------------------
 -- Arm the feature. Called by AceAddon when the module is enabled (at SkuCore
 -- enable, and whenever the user toggles it back on). Body = the old
--- SkuCore:MailOnInitialize arming.
+-- MailOnInitialize arming.
 function Mail:OnEnable()
-	SkuCore:RegisterEvent("MAIL_SHOW")
-	SkuCore:RegisterEvent("MAIL_INBOX_UPDATE")
-	SkuCore:RegisterEvent("MAIL_CLOSED")
-	SkuCore:RegisterEvent("MAIL_SEND_INFO_UPDATE")
-	SkuCore:RegisterEvent("MAIL_SEND_SUCCESS")
-	SkuCore:RegisterEvent("MAIL_FAILED")
-	SkuCore:RegisterEvent("MAIL_SUCCESS")
-	SkuCore:RegisterEvent("CLOSE_INBOX_ITEM")
-	SkuCore:RegisterEvent("MAIL_LOCK_SEND_ITEMS")
-	SkuCore:RegisterEvent("MAIL_UNLOCK_SEND_ITEMS")
+	Mail:RegisterEvent("MAIL_SHOW", "MAIL_SHOW")
+	Mail:RegisterEvent("MAIL_INBOX_UPDATE", "MAIL_INBOX_UPDATE")
+	Mail:RegisterEvent("MAIL_CLOSED", "MAIL_CLOSED")
+	Mail:RegisterEvent("MAIL_SEND_INFO_UPDATE", "MAIL_SEND_INFO_UPDATE")
+	Mail:RegisterEvent("MAIL_SEND_SUCCESS", "MAIL_SEND_SUCCESS")
+	Mail:RegisterEvent("MAIL_FAILED", "MAIL_FAILED")
+	Mail:RegisterEvent("MAIL_SUCCESS", "MAIL_SUCCESS")
+	Mail:RegisterEvent("CLOSE_INBOX_ITEM", "CLOSE_INBOX_ITEM")
+	Mail:RegisterEvent("MAIL_LOCK_SEND_ITEMS", "MAIL_LOCK_SEND_ITEMS")
+	Mail:RegisterEvent("MAIL_UNLOCK_SEND_ITEMS", "MAIL_UNLOCK_SEND_ITEMS")
 
    if not gMailHookInstalled then
       gMailHookInstalled = true
@@ -57,28 +60,19 @@ end
 -- Disarm the feature: unregister all 10 MAIL_* events so a disabled Mail does
 -- nothing. The UIErrorsFrame hook stays installed but is gated by IsEnabled().
 function Mail:OnDisable()
-	SkuCore:UnregisterEvent("MAIL_SHOW")
-	SkuCore:UnregisterEvent("MAIL_INBOX_UPDATE")
-	SkuCore:UnregisterEvent("MAIL_CLOSED")
-	SkuCore:UnregisterEvent("MAIL_SEND_INFO_UPDATE")
-	SkuCore:UnregisterEvent("MAIL_SEND_SUCCESS")
-	SkuCore:UnregisterEvent("MAIL_FAILED")
-	SkuCore:UnregisterEvent("MAIL_SUCCESS")
-	SkuCore:UnregisterEvent("CLOSE_INBOX_ITEM")
-	SkuCore:UnregisterEvent("MAIL_LOCK_SEND_ITEMS")
-	SkuCore:UnregisterEvent("MAIL_UNLOCK_SEND_ITEMS")
+	Mail:UnregisterAllEvents()
 end
 
 ------------------------------------------------------------------------------------------------------------
 local MailboxOpenFlag = false
-function SkuCore:MAIL_SHOW(...)
+function Mail:MAIL_SHOW(...)
    --print("MAIL_SHOW", ...)
    SkuOptions:SlashFunc(L["short"]..",Core,"..L["Mail"])
    MailboxOpenFlag = true
 end
 
 ------------------------------------------------------------------------------------------------------------
-function SkuCore:MAIL_INBOX_UPDATE(...)
+function Mail:MAIL_INBOX_UPDATE(...)
    --print("MAIL_INBOX_UPDATE", ...)
    if MailboxOpenFlag == true then
       if SkuOptions.currentMenuPosition then
@@ -90,7 +84,7 @@ function SkuCore:MAIL_INBOX_UPDATE(...)
 end
 
 ------------------------------------------------------------------------------------------------------------
-function SkuCore:MAIL_CLOSED(...)
+function Mail:MAIL_CLOSED(...)
    --dprint("MAIL_CLOSED", ...)
    if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
       _G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
@@ -98,48 +92,48 @@ function SkuCore:MAIL_CLOSED(...)
 end
 
 ------------------------------------------------------------------------------------------------------------
-function SkuCore:MAIL_SEND_INFO_UPDATE(...)
+function Mail:MAIL_SEND_INFO_UPDATE(...)
    --dprint("MAIL_SEND_INFO_UPDATE", ...)
 end
 
 ------------------------------------------------------------------------------------------------------------
-function SkuCore:MAIL_SEND_SUCCESS(...)
+function Mail:MAIL_SEND_SUCCESS(...)
    --dprint("MAIL_SEND_SUCCESS", ...)
    SkuOptions.Voice:OutputStringBTtts(L["Sent"], false, true, 0.2)
 end
 
 ------------------------------------------------------------------------------------------------------------
-function SkuCore:MAIL_SUCCESS(...)
+function Mail:MAIL_SUCCESS(...)
    --dprint("MAIL_SUCCESS", ...)
 end
 
 ------------------------------------------------------------------------------------------------------------
-function SkuCore:CLOSE_INBOX_ITEM(...)
+function Mail:CLOSE_INBOX_ITEM(...)
    --dprint("CLOSE_INBOX_ITEM", ...)
 end
 
 ------------------------------------------------------------------------------------------------------------
-function SkuCore:MAIL_LOCK_SEND_ITEMS(...)
+function Mail:MAIL_LOCK_SEND_ITEMS(...)
    --dprint("MAIL_LOCK_SEND_ITEMS", ...)
 end
 
 ------------------------------------------------------------------------------------------------------------
-function SkuCore:MAIL_UNLOCK_SEND_ITEMS(...)
+function Mail:MAIL_UNLOCK_SEND_ITEMS(...)
    --dprint("MAIL_UNLOCK_SEND_ITEMS", ...)
 end
 
 ------------------------------------------------------------------------------------------------------------
-function SkuCore:MAIL_UNLOCK_SEND_ITEMS(...)
+function Mail:MAIL_UNLOCK_SEND_ITEMS(...)
    --dprint("MAIL_UNLOCK_SEND_ITEMS", ...)
 end
 
 ------------------------------------------------------------------------------------------------------------
-function SkuCore:MAIL_FAILED(...)
+function Mail:MAIL_FAILED(...)
    --dprint("MAIL_FAILED", ...)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MailEditor(aTargetValue)
+function Mail:MailEditor(aTargetValue)
 	PlaySound(88)
 	SkuOptions.Voice:OutputStringBTtts(L["Enter text and press ENTER key"], false, true, 0.2)
 
@@ -164,7 +158,7 @@ end
 -- Menue bleibt offen (MailFrame muss offen bleiben fuer SendMail).
 -- OnKeyDown faengt Tab und Enter ab, unabhaengig vom Enter-Override-Binding.
 -- aParentEntry: Referenz auf den "Neuer Brief"-Menueeintrag fuer Fokus-Rueckkehr nach Senden.
-function SkuCore:MailEditorCombined(aParentEntry)
+function Mail:MailEditorCombined(aParentEntry)
 	local tField = 1
 	local tValues = {"", "", ""}
 
