@@ -1253,13 +1253,25 @@ to the W1 settings migration (~2,700 sites) which landed cleanly with this metho
     benign addon_action_blocked taint class + intentional auction/dungeon diagnostics). The
     one first-fight error the user sees is pre-existing and unrelated (not captured by
     SkuErrorLog, not in any changed file).
-- [ ] E2. Slim `SkuCore/Core.lua` to the manager + genuine core plumbing; decide what
-  legitimately stays core (Core.lua manager 106 defs, ModuleManager 6, LocalMenu Tier-1 20,
-  voiceOutput 2); confirm no toggleable-feature method/state remains on `SkuCore`. The
-  remaining 138 `function SkuCore:` defs are now almost entirely Core.lua (106) + LocalMenu
-  (20) — the genuine-core surface — plus a few shared-helper/shim leftovers (ConfirmButtonShow,
-  visualAids 1, alIntegration 1, Options 1) to relocate or accept. Also delete the dead
-  UNIT_POWER_UPDATE Core.lua stub.
+- [x] **E2. Core.lua slimmed; genuine-core surface confirmed (commit pending in-game smoke).**
+  - **Relocated** the one misplaced shared helper: `ConfirmButtonShow` auctionHouse.lua →
+    Core.lua (generic confirm/editbox popup used by 5 call sites across modules via the public
+    `SkuCore:ConfirmButtonShow` name — core plumbing, not an AH method). Pure relocation, name
+    unchanged, all callers runtime-guarded, Core loads first → 0 caller edits, no load-order
+    risk; its two `SkuAuctionConfirm*Script` file-local upvalues moved with it. **auctionHouse.lua
+    now has 0 `function SkuCore:` defs.** Core.lua = 106 (the plan's genuine-core target).
+  - **Dead `UNIT_POWER_UPDATE` stub: already removed** in the E1b load-order fix (10883b7);
+    only a comment + the dispatcher registration remain — confirmed, no further action.
+  - **Decision — stays core (137 total):** Core.lua 106 (lifecycle + keybindings + Debug/util +
+    always-on window/event hooks: nameplates, panic mode, autofollow, taxi, gossip/merchant/
+    trade/petstable, game-menu), LocalMenu 20 (Blizzard-window menu builders = core UI),
+    ModuleManager 6 (the toggle registry), voiceOutput 2 (Tier-1 voice/TTS), Options 1
+    (`MenuBuilder` root menu). Lean managing-core surface, kept by design — not a dump.
+  - **Kept by design (intentional shims):** `visualAids:UpdateNextCombatEnemyBinding` and
+    `alIntegration:AtlasLootApplyKeyBinding` stay `function SkuCore:` one-line forwarders
+    because `SkuKeyBinds` string-dispatch resolves `{object="SkuCore", func="…"}` by name; the
+    real methods live on the module tables. Same exception class as E1's forwarder shims.
+  - luaparser OK both files. **No toggleable-feature method/state remains on `SkuCore`.**
 - [ ] E3. Re-run `_members.py`/`_matrix.py`; record the collapsed SkuCore coupling.
 
 ---

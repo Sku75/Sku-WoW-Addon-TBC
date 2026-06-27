@@ -3631,3 +3631,106 @@ function SkuCore:GameMenuShowHandler()
 		end)
 	end
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Shared confirm-dialog helper (W4-E2: relocated here from auctionHouse.lua).
+-- Generic editbox/confirm popup used by several modules (equipmentSets, mob
+-- rename, LocalMenu destroy-item, SkuZOptions, the auction buy flow) via the
+-- public name SkuCore:ConfirmButtonShow. It is core plumbing, not an
+-- AuctionHouse method, so it lives in Core.lua now that the AH feature owns
+-- its own namespace (W4-E1b). The two SkuAuctionConfirm*Script upvalues hold
+-- the current OK/ESC callbacks and are reassigned per call below.
+local function SkuAuctionConfirmOkScript(...) end
+local function SkuAuctionConfirmEscScript(...) end
+function SkuCore:ConfirmButtonShow(aText, aOkScript, aEscScript)
+	if not SkuAuctionConfirm then
+		local f = CreateFrame("Frame", "SkuAuctionConfirm", UIParent, "DialogBoxFrame")
+		f:SetPoint("CENTER")
+		f:SetSize(50, 50)
+
+		f:SetBackdrop({
+			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+			edgeFile = "Interface\\PVPFrame\\UI-Character-PVP-Highlight", -- this one is neat
+			edgeSize = 16,
+			insets = { left = 8, right = 6, top = 8, bottom = 8 },
+		})
+		f:SetBackdropBorderColor(0, .44, .87, 0.5) -- darkblue
+
+		-- Movable
+		f:SetMovable(true)
+		f:SetClampedToScreen(true)
+		f:SetScript("OnMouseDown", function(self, button)
+			if button == "LeftButton" then
+				self:StartMoving()
+			end
+		end)
+		f:SetScript("OnMouseUp", f.StopMovingOrSizing)
+
+		-- ScrollFrame
+		local sf = CreateFrame("ScrollFrame", "SkuAuctionConfirmScrollFrame", SkuAuctionConfirm, "UIPanelScrollFrameTemplate")
+		sf:SetPoint("LEFT", 16, 0)
+		sf:SetPoint("RIGHT", -32, 0)
+		sf:SetPoint("TOP", 0, -16)
+		sf:SetPoint("BOTTOM", SkuAuctionConfirmButton, "TOP", 0, 0)
+
+		-- EditBox
+		local eb = CreateFrame("EditBox", "SkuAuctionConfirmEditBox", SkuAuctionConfirmScrollFrame)
+		eb:SetSize(sf:GetSize())
+		--eb:SetMultiLine(true)
+		eb:SetAutoFocus(false) -- dont automatically focus
+		eb:SetFontObject("ChatFontNormal")
+		eb:SetScript("OnEscapePressed", function()
+			PlaySound(89)
+			f:Hide()
+		end)
+		eb:SetScript("OnTextSet", function(self)
+			self:HighlightText()
+		end)
+
+		sf:SetScrollChild(eb)
+
+		local rb = CreateFrame("Button", "SkuAuctionConfirmResizeButton", SkuAuctionConfirm)
+		rb:SetPoint("BOTTOMRIGHT", -6, 7)
+		rb:SetSize(16, 16)
+
+		rb:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
+		rb:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight")
+		rb:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Down")
+
+		rb:SetScript("OnMouseDown", function(self, button)
+			if button == "LeftButton" then
+				f:StartSizing("BOTTOMRIGHT")
+				self:GetHighlightTexture():Hide() -- more noticeable
+			end
+		end)
+		rb:SetScript("OnMouseUp", function(self, button)
+			f:StopMovingOrSizing()
+			self:GetHighlightTexture():Show()
+			eb:SetWidth(sf:GetWidth())
+		end)
+
+		SkuAuctionConfirmEditBox:HookScript("OnEnterPressed", function(...) SkuAuctionConfirmOkScript(...) SkuAuctionConfirm:Hide() end)
+		SkuAuctionConfirmEditBox:HookScript("OnEscapePressed", function(...) SkuAuctionConfirmEscScript(...) SkuAuctionConfirm:Hide() end)
+		SkuAuctionConfirmButton:HookScript("OnClick", SkuAuctionConfirmOkScript)
+
+		f:Show()
+	end
+
+	SkuAuctionConfirmEditBox:Hide()
+	SkuAuctionConfirmEditBox:SetText("")
+	if aText then
+		SkuAuctionConfirmEditBox:SetText(aText)
+		SkuAuctionConfirmEditBox:HighlightText()
+	end
+	SkuAuctionConfirmEditBox:Show()
+	if aOkScript then
+		SkuAuctionConfirmOkScript = aOkScript
+	end
+	if aEscScript then
+		SkuAuctionConfirmEscScript = aEscScript
+	end
+
+	SkuAuctionConfirm:Show()
+
+	SkuAuctionConfirmEditBox:SetFocus()
+end

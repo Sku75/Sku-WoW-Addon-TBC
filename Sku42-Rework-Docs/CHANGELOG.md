@@ -22,6 +22,39 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W4 Phase E — E2: Core.lua slimmed, no toggleable-feature method left on `SkuCore`.**
+  After E1b the god-table was already down to 137 `function SkuCore:` defs. E2 confirmed
+  what legitimately stays core and relocated the one misplaced shared helper:
+  - **`ConfirmButtonShow` relocated** auctionHouse.lua → Core.lua. It is a generic
+    confirm/editbox popup used by **five** call sites across modules (equipmentSets,
+    SkuMob rename, LocalMenu destroy-item, SkuZOptions, and the AH buy flow) via the
+    public name `SkuCore:ConfirmButtonShow` — core plumbing, not an AuctionHouse method.
+    Pure relocation: name unchanged (still `function SkuCore:`), all callers invoke it at
+    runtime behind `if not SkuCore.ConfirmButtonShow` guards, Core.lua loads before every
+    caller → zero caller edits, no load-order risk. Its two `SkuAuctionConfirm*Script`
+    upvalues moved with it (file-local, only used inside the function). **auctionHouse.lua
+    now has 0 `function SkuCore:` defs** — a fully self-namespaced feature file. Core.lua
+    is now **106** defs, matching the plan's genuine-core target exactly.
+  - **Dead `UNIT_POWER_UPDATE` Core.lua stub: already gone** (removed in the E1b load-order
+    fix 10883b7); only an explanatory comment + the dispatcher registration line remain. No
+    action needed in E2 beyond confirming.
+  - **Genuine-core decision (what stays on `SkuCore`, 137 defs):** Core.lua 106 (lifecycle
+    OnInitialize/OnEnable/OnDisable + PLAYER_ENTERING_WORLD etc., the keybinding plumbing,
+    Debug/IterateChildren/Distance, and the always-on window/event hooks — nameplates, panic
+    mode, autofollow/cast, taxi, gossip/merchant/trade/petstable frame handlers, game-menu),
+    LocalMenu 20 (Blizzard-window accessibility menu builders — core UI), ModuleManager 6
+    (the toggle registry — the manager itself), voiceOutput 2 (voice/TTS = Tier-1 always-on),
+    Options 1 (`MenuBuilder`, the root menu). These are the lean managing-core surface, kept
+    by design (= WowVision.base, kept thin) — NOT a code dump.
+  - **Two `function SkuCore:` defs in feature files are intentional and KEPT:**
+    `visualAids:UpdateNextCombatEnemyBinding` and `alIntegration:AtlasLootApplyKeyBinding`
+    are one-line forwarding shims, because the `SkuKeyBinds` string-dispatch table resolves
+    `{object="SkuCore", func="…"}` by name. The real methods live on the `VisualAids` /
+    `AtlasLootIntegration` module tables; the shim just forwards. Same exception class as the
+    E1 forwarder shims — accepted, not relocated.
+  - luaparser OK on both changed files. In-game smoke pending (low risk: pure relocation,
+    no name/caller/control-flow change).
+
 - **W4 Phase E — E1b VERIFIED in-game (2026-06-28) + load-order fix.** All three
   extractions pass; behaviour unchanged. One regression was caught and fixed first
   (commit 10883b7): the aq codemod rewrote a DEAD empty `UNIT_POWER_UPDATE` stub in
