@@ -7,6 +7,36 @@ local sfind = string.find
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: aqCombat is a real AceAddon SUBMODULE of SkuCore, so the combat
+-- monitor can be turned on/off at runtime (OnEnable/OnDisable), mirroring the
+-- JunkAndRepair pilot. Every existing SkuCore:aqCombat* method and SkuCore.*
+-- state stays EXACTLY where it is so external callers keep working unchanged
+-- (TurnToUnit + SkuMob call SkuCore:aqCombatGetSkuRaidTarget; SkuZOptions reads
+-- SkuCore.inOutCombatQueue); the module only owns the LIFECYCLE:
+--   * OnEnable  arms the monitor (SkuCore:aqCombatOnInitialize registers the
+--     SkuDispatcher event callbacks + 2 control OnUpdate frames + the
+--     SetRaidTarget hooksecurefunc, then SkuCore:aqCombatOnLogin seeds the
+--     settings defaults).
+--   * OnDisable unregisters every dispatcher callback and stops both control
+--     OnUpdate frames, so a disabled monitor genuinely does nothing.
+-- The SetRaidTarget hooksecurefunc cannot be removed once installed, so its body
+-- is IsEnabled-guarded instead.
+-- AceAddon auto-enables the module at SkuCore enable (≈ PLAYER_LOGIN) and again
+-- on every /reload, replacing the old explicit Core.lua aqCombatOnInitialize /
+-- aqCombatOnLogin calls (so it re-arms on every load, not just initial login).
+-- Registered AFTER aq in TOC order, so aqCombat enables after aq.
+local aqCombat = SkuCore:NewModule(MODULE_PART)
+SkuCore.aqCombat = aqCombat   -- keep the published handle
+-- NOTE: the combat-monitor STATE table is SkuCore.aq.combat (set below), a
+-- distinct field; SkuCore.aqCombat (no dot) was previously unused, so taking it
+-- for the module handle clashes with nothing.
+
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule(MODULE_PART, function()
+   return (GetLocale and GetLocale() == "deDE") and "Kampf-Monitor" or "Combat monitor"
+end)
+
 local aqCombatVoices = {
    "emma",
    "brian",
@@ -875,14 +905,21 @@ function SkuCore:aqCombatOnInitialize()
    SkuDispatcher:RegisterEventCallback("GROUP_JOINED", SkuCore.aqCombat_GROUP_ROSTER_UPDATE)
 
    
-   hooksecurefunc("SetRaidTarget", function(aUnit, aIconIndex)
-      if aIconIndex == 0 then
-         local tGUID = UnitGUID(aUnit)
-         if tGUID then
-            SkuCore:aqCombatSetSkuRaidTarget(tGUID)
+   -- hooksecurefunc can't be unhooked; guard with IsEnabled so a disabled
+   -- monitor is a no-op. Install only once (OnEnable may run again after a
+   -- toggle/reload) to avoid stacking duplicate hooks.
+   if not SkuCore.aqCombatSetRaidTargetHooked then
+      SkuCore.aqCombatSetRaidTargetHooked = true
+      hooksecurefunc("SetRaidTarget", function(aUnit, aIconIndex)
+         if not aqCombat:IsEnabled() then return end
+         if aIconIndex == 0 then
+            local tGUID = UnitGUID(aUnit)
+            if tGUID then
+               SkuCore:aqCombatSetSkuRaidTarget(tGUID)
+            end
          end
-      end
-   end)
+      end)
+   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1068,6 +1105,45 @@ function SkuCore:aqCombatOnLogin()
          --
          SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.oorInterval = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.friendly.oorInterval or 0
 
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Module lifecycle (W4 Phase D). AceAddon calls OnEnable at SkuCore enable, on
+-- every /reload, and whenever the user toggles the feature back on; OnDisable
+-- when toggled off. The combat-on/off SETTING (aq[talentSet].combat.enabled)
+-- is unchanged and independent of this module on/off.
+---------------------------------------------------------------------------------------------------------------------------------------
+function aqCombat:OnEnable()
+   -- Arm: register the dispatcher callbacks + control OnUpdate frames + the
+   -- SetRaidTarget hook (idempotent: dispatcher callbacks key by function so
+   -- re-registering is a no-op, control frames are reused via _G[...], and the
+   -- hook installs only once), then seed the settings defaults.
+   SkuCore:aqCombatOnInitialize()
+   SkuCore:aqCombatOnLogin()
+end
+
+function aqCombat:OnDisable()
+   -- Real teardown: unregister every dispatcher callback this feature armed and
+   -- stop both control OnUpdate frames so a disabled monitor does nothing. The
+   -- SetRaidTarget hooksecurefunc can't be removed; its body is IsEnabled-guarded.
+   SkuDispatcher:UnregisterEventCallback("COMBAT_LOG_EVENT_UNFILTERED", SkuCore.aqCombat_COMBAT_LOG_EVENT_UNFILTERED)
+   SkuDispatcher:UnregisterEventCallback("SKU_UNIT_DIED", SkuCore.aqCombat_SKU_UNIT_DIED)
+   SkuDispatcher:UnregisterEventCallback("SKU_SPELL_CAST_START", SkuCore.aqCombat_SKU_SPELL_CAST_START)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_ENTERING_WORLD", SkuCore.aqCombat_PLAYER_ENTERING_WORLD)
+   SkuDispatcher:UnregisterEventCallback("RAID_TARGET_UPDATE", SkuCore.aqCombatCheckGameRaidTargets)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_DISABLED", SkuCore.aqCombat_PLAYER_REGEN_DISABLED)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.aqCombat_PLAYER_REGEN_ENABLED)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_TARGET_CHANGED", SkuCore.aqCombatPLAYER_TARGET_CHANGED)
+   SkuDispatcher:UnregisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.aqCombat_GROUP_ROSTER_UPDATE)
+   SkuDispatcher:UnregisterEventCallback("GROUP_FORMED", SkuCore.aqCombat_GROUP_ROSTER_UPDATE)
+   SkuDispatcher:UnregisterEventCallback("GROUP_JOINED", SkuCore.aqCombat_GROUP_ROSTER_UPDATE)
+
+   if _G["SkuCoreaqCombatControl"] then
+      _G["SkuCoreaqCombatControl"]:SetScript("OnUpdate", nil)
+   end
+   if _G["SkuCoreaqCombatQueueControl"] then
+      _G["SkuCoreaqCombatQueueControl"]:SetScript("OnUpdate", nil)
    end
 end
 

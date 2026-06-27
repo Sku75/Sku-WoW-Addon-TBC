@@ -22,6 +22,27 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W4 Phase D — X-D3 Rework B-step-1 (AuctionHouse, aq, aqCombat promoted).**
+  The three higher-risk SkuCore features are now runtime-toggleable AceAddon
+  submodules (same behaviour-safe recipe as Rework A). **AuctionHouse** OnDisable does
+  full teardown: stops the SkuCoreSecureTabButtonAuctions watchdog ticker, unregisters
+  the 5 AUCTION_* events, runs AuctionSecureBuyTeardown (clears the Enter-key buy
+  override bindings, cancels the safety timer); the hardware-event PlaceAuctionBid path
+  is byte-for-byte untouched. **aq** (health/power) + **aqCombat** (combat/threat) with
+  the SkuAuras coupling made safe: SkuCore.Monitor.UnitNumbersIndexedRaid is built
+  unconditionally (file scope + Aq:OnInitialize) and never nilled, so disabling aq can't
+  break SkuAuras; aq's 5 RoleCheckerGetUnitRole calls are guarded so a future-disabled
+  SkuAuras can't break aq; and the internal aqCombatOnLogin call was removed from
+  AqOnLogin (aqCombat self-enables in TOC order — no double-init). Core.lua reconciled:
+  6 calls removed (Aq/aqCombat/AuctionHouse OnInitialize + OnLogin); the SkuCore feature
+  init sequence is now empty except VoiceOutput (Tier-1). All 4 files luaparser-clean.
+  **Verified in-game (2026-06-27): works as intended, SkuErrorLog clean of Lua errors**
+  (only intentional auction/dungeon diagnostic breadcrumbs + the pre-existing benign
+  addon_action_blocked taint class). Added `_readerrlog.py` (screen-reader-friendly live
+  SkuErrorLog reader). Remaining for Rework B-step-2: top-level-addon toggle framework +
+  OnDisable for SkuMob/SkuNav/SkuQuest/SkuChat/SkuAuras + the SkuAuras side of the aq
+  coupling.
+
 - **W4 Phase D — X-D2 modularization map + X-D3 Rework A (21 features promoted).**
   Produced the modularization map from a 33-agent feature inventory and recorded the
   two-tier classification + risk-ranked checklist in `REFACTOR-PLAN.md` (X-D2). Then

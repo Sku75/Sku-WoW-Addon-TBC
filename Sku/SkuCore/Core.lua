@@ -406,13 +406,10 @@ function SkuCore:OnInitialize()
 	SkuDispatcher:RegisterEventCallback("PET_STABLE_UPDATE", SkuCore.PET_STABLE_UPDATE)
 
 
-	-- W4 Phase D / Rework A: Mail, UIErrors, RangeCheck, DialTargeting, DamageMeter,
-	-- Friends, GameWorldObjects, TurnToUnit, SkuFocus are now AceAddon submodules that
-	-- arm via their own OnEnable; their explicit *OnInitialize calls were removed here.
-	SkuCore:AqOnInitialize()
-	SkuCore:aqCombatOnInitialize()
-
-	SkuCore:AuctionHouseOnInitialize()
+	-- W4 Phase D / Rework A+B: Mail, UIErrors, RangeCheck, DialTargeting, DamageMeter,
+	-- Friends, GameWorldObjects, TurnToUnit, SkuFocus, Aq, aqCombat, AuctionHouse are
+	-- now AceAddon submodules that arm via their own OnEnable; their explicit
+	-- *OnInitialize calls were removed here.
 	-- LfgOnInitialize entfernt (Dungeon-Browser-Modul wird neu aufgebaut)
 	if SkuCore.VoiceOutputOnInitialize then pcall(SkuCore.VoiceOutputOnInitialize, SkuCore) end
 
@@ -2352,9 +2349,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			end
 		end
 
-		SkuCore:AuctionHouseOnLogin()
-		-- MinimapScanner, DialogKey, AtlasLootIntegration now arm via their own
-		-- module OnEnable (W4 Rework A).
+		-- AuctionHouse, MinimapScanner, DialogKey, AtlasLootIntegration now arm via
+		-- their own module OnEnable (W4 Rework A+B).
 
 		if not SkuSettings:Sub("SkuCore", nil, "char") then
 			SkuSettings:Sub("SkuCore", nil, "char")
@@ -2376,10 +2372,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		-- JunkAndRepair is now an AceAddon submodule; AceAddon arms it via its
 		-- OnEnable at SkuCore enable, so no explicit init call here (W4 Phase D).
 		SkuCore:UpdateInteractMove(true)
-		SkuCore:AqOnLogin()
-		SkuCore:aqCombatOnLogin()
-		-- GameWorldObjects, DialTargeting, DamageMeter, TurnToUnit, SkuFocus now arm
-		-- via their own module OnEnable (W4 Rework A).
+		-- Aq, aqCombat, GameWorldObjects, DialTargeting, DamageMeter, TurnToUnit,
+		-- SkuFocus now arm via their own module OnEnable (W4 Rework A+B).
 
 		--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
 		--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)

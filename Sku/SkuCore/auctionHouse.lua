@@ -33,6 +33,35 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: AuctionHouse is a real AceAddon SUBMODULE of SkuCore, so it can be
+-- turned on/off at runtime (OnEnable/OnDisable), mirroring the JunkAndRepair pilot
+-- and the RangeCheck shared-service convert. Every existing SkuCore:Auction* method
+-- and SkuCore.Auction* state stays EXACTLY where it is so external callers
+-- (SkuZOptions menu builders, the result-stream events) keep working unchanged; the
+-- module only owns the LIFECYCLE:
+--   * OnEnable  arms the feature: SkuCore:AuctionHouseOnInitialize (creates the
+--     SkuCoreSecureTabButtonAuctions OnUpdate watchdog ticker frame + registers the
+--     5 AUCTION_* events) then SkuCore:AuctionHouseOnLogin (restores the price-
+--     history DB).
+--   * OnDisable disarms it: stop the OnUpdate ticker, unregister the 5 AUCTION_*
+--     events, and run the secure-buy teardown (AuctionSecureBuyTeardown) so no
+--     stale hardware-event Enter/Escape override binding from the direct-keypress
+--     PlaceAuctionBid buy path persists.
+-- AceAddon auto-enables the module at SkuCore enable (≈ PLAYER_LOGIN) and again on
+-- every /reload, replacing the old explicit AuctionHouseOnInitialize (OnInitialize)
+-- and AuctionHouseOnLogin (isInitialLogin) calls in Core.lua. SkuCore.AuctionHouseOpen
+-- stays a published field (SkuZOptions reads it); while disabled it just stays false.
+-- The hardware-event-gated PlaceAuctionBid buy path is left byte-for-byte unchanged
+-- (only its event/ticker REGISTRATION moves into OnEnable/OnDisable).
+local AuctionHouse = SkuCore:NewModule(MODULE_PART)
+SkuCore.AuctionHouse = AuctionHouse   -- keep the published handle
+
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule(MODULE_PART, function()
+   return (GetLocale and GetLocale() == "deDE") and "Auktionshaus" or "Auction house"
+end)
+
 local mfloor = math.floor
 
 -- Münz-Helfer: Kupfer <-> Gold/Silber/Kupfer. 1 Gold = 100 Silber = 10000 Kupfer.
@@ -333,6 +362,41 @@ function SkuCore:AuctionHouseOnLogin()
    SkuOptions.db.factionrealm[MODULE_NAME].First31_13Load = true
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Arm the AuctionHouse feature. Called automatically by AceAddon when the module is
+-- enabled (at SkuCore enable, on every /reload, and whenever the user toggles it
+-- back on). Mirrors the old Core.lua AuctionHouseOnInitialize + AuctionHouseOnLogin
+-- calls: AuctionHouseOnInitialize registers the 5 AUCTION_* events and creates the
+-- SkuCoreSecureTabButtonAuctions OnUpdate watchdog ticker frame; AuctionHouseOnLogin
+-- restores the saved price-history DB.
+function AuctionHouse:OnEnable()
+   SkuCore:AuctionHouseOnInitialize()
+   SkuCore:AuctionHouseOnLogin()
+end
+
+-- Disarm: stop the OnUpdate watchdog ticker on the SkuCoreSecureTabButtonAuctions
+-- frame, unregister the 5 AUCTION_* events, and run the secure-buy teardown so no
+-- stale Enter/Escape hardware-event override binding from the direct-keypress
+-- PlaceAuctionBid buy path persists. A disabled feature then genuinely does nothing
+-- (the AUCTION_HOUSE_SHOW guard makes the AH auto-open a no-op as well).
+function AuctionHouse:OnDisable()
+   local tTicker = _G["SkuCoreSecureTabButtonAuctions"]
+   if tTicker then
+      tTicker:SetScript("OnUpdate", nil)
+   end
+   SkuCore:UnregisterEvent("AUCTION_HOUSE_SHOW")
+   SkuCore:UnregisterEvent("AUCTION_HOUSE_CLOSED")
+   SkuCore:UnregisterEvent("AUCTION_OWNED_LIST_UPDATE")
+   SkuCore:UnregisterEvent("AUCTION_BIDDER_LIST_UPDATE")
+   SkuCore:UnregisterEvent("AUCTION_ITEM_LIST_UPDATE")
+   -- Secure-buy teardown: release any active Enter/Escape override bindings + safety
+   -- timer + server-message capture left by the hardware-event PlaceAuctionBid path.
+   if SkuCore.AuctionSecureBuyTeardown then
+      pcall(SkuCore.AuctionSecureBuyTeardown, SkuCore)
+   end
+   SkuCore.AuctionHouseOpen = false
+end
+
 -- ---------------------------------------------------------------------------
 -- AH open/close session events (fire when the player opens / leaves an AH NPC).
 -- Kept here with the lifecycle hooks; the result-stream events
@@ -340,6 +404,10 @@ end
 -- ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_HOUSE_SHOW()
+   -- Safe no-op while the AuctionHouse module is disabled: the event is normally
+   -- unregistered in OnDisable, but guard the entry so a disabled feature never
+   -- flips AuctionHouseOpen or auto-opens the AH menu.
+   if SkuCore.AuctionHouse and not SkuCore.AuctionHouse:IsEnabled() then return end
    -- this is a temp fix to avoid some blizzard bug
    PriceDropdown = BrowsePrevPageButton
    --

@@ -5,6 +5,35 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: Aq (the health & power monitor — the largest SkuCore feature) is now
+-- a real AceAddon SUBMODULE of SkuCore, so it can be turned on/off at runtime
+-- (OnEnable/OnDisable), mirroring the JunkAndRepair pilot. Every existing
+-- SkuCore:* method and SkuCore.* state stays exactly where it is so external
+-- callers (keybinds, the menu builder, SkuAuras) keep working; the module only
+-- owns the LIFECYCLE:
+--   * OnInitialize builds SkuCore.Monitor.UnitNumbersIndexedRaid UNCONDITIONALLY
+--     (AceAddon runs OnInitialize even for a module that will be disabled),
+--     because SkuAuras READS that table even while Aq is off.
+--   * OnEnable  arms the feature (AqCreateControlFrame OnUpdate + 7 events + 6
+--     dispatcher callbacks via SkuCore:AqOnInitialize, then the settings schema
+--     migration/defaults via SkuCore:AqOnLogin).
+--   * OnDisable disarms it: unregister those events + dispatcher callbacks and
+--     stop the OnUpdate, so a disabled monitor genuinely does nothing.
+-- AceAddon auto-enables the module at SkuCore enable (≈ PLAYER_LOGIN) and again
+-- on every /reload, replacing the old explicit AqOnInitialize/AqOnLogin calls in
+-- Core.lua. SkuAuras coupling is handled defensively (RoleCheckerGetUnitRole
+-- calls are guarded; the existing nil-role handling stands).
+local Aq = SkuCore:NewModule("Aq")
+SkuCore.Aq = Aq   -- keep the published handle
+
+-- Make this feature user-toggleable (Features menu + persisted on/off).
+SkuCore:RegisterToggleableModule("Aq", function()
+	return (GetLocale and GetLocale() == "deDE") and "Lebens- & Energiemonitor" or "Health & power monitor"
+end)
+
+-- Frame handle for the AqCreateControlFrame OnUpdate driver, so OnDisable can stop it.
+local AqControlFrame
+
 SkuCore.aq = {}
 SkuCore.aq.mirrorBars = {}
 
@@ -158,7 +187,7 @@ local function monitorPartyHealth2ContiOutput(aForce)
 		if tUnitGUID then
 			local tRoleID = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.roleAssigments[tUnitNumbers[tUnitID]]
 			if tRoleID == 0 then
-				tRoleID = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
+				tRoleID = (SkuAuras and SkuAuras.RoleCheckerGetUnitRole and (not SkuAuras.IsEnabled or SkuAuras:IsEnabled())) and SkuAuras:RoleCheckerGetUnitRole(tUnitGUID) or nil
 			end
 			local tHealthAbsoluteValue = math.floor((UnitHealth(tUnitID) / UnitHealthMax(tUnitID)) * 100)
 			local tHealthStepsValue = math.floor(tHealthAbsoluteValue / (100 / 15))
@@ -193,6 +222,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MonitorPartyHealth2Conti()
+	if not Aq:IsEnabled() then return end
 	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.enabled == true then
 		monitorPartyHealth2ContiOutput(true)
 	end
@@ -293,7 +323,7 @@ local function monitorRaidHealth2ContiOutput(aForce)
 				if tUnitGUID then
 					local tRoleID = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments[tUnitNumbersRaid[tUnitID]]
 					if tRoleID == 0 then
-						tRoleID = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
+						tRoleID = (SkuAuras and SkuAuras.RoleCheckerGetUnitRole and (not SkuAuras.IsEnabled or SkuAuras:IsEnabled())) and SkuAuras:RoleCheckerGetUnitRole(tUnitGUID) or nil
 					end
 					local tHealthAbsoluteValue = math.floor((UnitHealth(tUnitID) / UnitHealthMax(tUnitID)) * 100)
 					local tHealthStepsValue = math.floor(tHealthAbsoluteValue / (100 / 15))
@@ -327,6 +357,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MonitorRaidHealth2Conti()
+	if not Aq:IsEnabled() then return end
 	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.enabled == true then
 		monitorRaidHealth2ContiOutput(true)
 	end
@@ -391,6 +422,10 @@ function SkuCore:MonitorRaidRosterUpdate()
       return
    end
 	]]
+	if not Aq:IsEnabled() then
+		SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.MonitorRaidRosterUpdate)
+		return
+	end
 
    if SkuCore.inCombat == true then
       SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.MonitorRaidRosterUpdate, true)
@@ -453,6 +488,7 @@ local tPrevHpPetDir = false
 
 local function AqCreateControlFrame()
    local f = _G["SkuCoreAqControl"] or CreateFrame("Frame", "SkuCoreAqControl", UIParent)
+   AqControlFrame = f
    local ttime = 0
    local ttimeMonHp = 0
    local ttimeMonHpPet = 0
@@ -1218,7 +1254,54 @@ function SkuCore:AqOnLogin()
 		end	
 	end
 
-	SkuCore:aqCombatOnLogin()
+	-- W4 Phase D: aqCombat is now its own self-enabling AceAddon module; it
+	-- arms via its own OnEnable, so Aq no longer calls aqCombatOnLogin here
+	-- (calling it would double-init it).
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- AceAddon runs OnInitialize for EVERY module, even one that will be disabled.
+-- SkuCore.Monitor.UnitNumbersIndexedRaid is READ by SkuAuras and must exist even
+-- when Aq is OFF, so (re)build it here unconditionally (it is also built at file
+-- scope; this keeps it present across enable/disable cycles).
+function Aq:OnInitialize()
+	SkuCore.Monitor = SkuCore.Monitor or {}
+	SkuCore.Monitor.UnitNumbersIndexedRaid = SkuCore.Monitor.UnitNumbersIndexedRaid or {}
+	for x = 1, MAX_RAID_MEMBERS do
+		SkuCore.Monitor.UnitNumbersIndexedRaid[x] = "raid"..x
+	end
+end
+
+-- Arm the monitor. Called automatically by AceAddon when the module is enabled
+-- (at SkuCore enable, on every /reload, and whenever the user toggles it back on).
+-- Mirrors the old Core.lua AqOnInitialize + AqOnLogin calls.
+function Aq:OnEnable()
+	SkuCore:AqOnInitialize()
+	SkuCore:AqOnLogin()
+end
+
+-- Disarm: stop the OnUpdate driver and drop every event + dispatcher callback
+-- armed by AqOnInitialize, so a disabled monitor genuinely does nothing.
+-- SkuCore.Monitor is intentionally NOT nilled (SkuAuras still reads it).
+function Aq:OnDisable()
+	if AqControlFrame then
+		AqControlFrame:SetScript("OnUpdate", nil)
+	end
+
+	SkuCore:UnregisterEvent("MIRROR_TIMER_START")
+	SkuCore:UnregisterEvent("MIRROR_TIMER_STOP")
+	SkuCore:UnregisterEvent("MIRROR_TIMER_PAUSE")
+	SkuCore:UnregisterEvent("UNIT_HEALTH")
+	SkuCore:UnregisterEvent("UNIT_POWER_FREQUENT")
+	SkuCore:UnregisterEvent("UNIT_POWER_UPDATE")
+	SkuCore:UnregisterEvent("UNIT_AURA")
+
+	SkuDispatcher:UnregisterEventCallback("PLAYER_ENTERING_WORLD", SkuCore.Monitor_PLAYER_ENTERING_WORLD)
+	SkuDispatcher:UnregisterEventCallback("PARTY_LEADER_CHANGED", SkuCore.Monitor_PARTY_LEADER_CHANGED)
+	SkuDispatcher:UnregisterEventCallback("GROUP_FORMED", SkuCore.Monitor_GROUP_FORMED)
+	SkuDispatcher:UnregisterEventCallback("GROUP_JOINED", SkuCore.Monitor_GROUP_JOINED)
+	SkuDispatcher:UnregisterEventCallback("GROUP_LEFT", SkuCore.Monitor_GROUP_LEFT)
+	SkuDispatcher:UnregisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.Monitor_GROUP_ROSTER_UPDATE)
 end
 
 --Monitor
@@ -1252,7 +1335,7 @@ function SkuCore:AqSlashHandler(aFieldsTable)
 			if tUnitGUID then
 				local tRoleID = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.roleAssigments[tUnitNumbers[aUnitID]]
 				if tRoleID == 0 or tRoleID == nil then
-					tRoleID = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
+					tRoleID = (SkuAuras and SkuAuras.RoleCheckerGetUnitRole and (not SkuAuras.IsEnabled or SkuAuras:IsEnabled())) and SkuAuras:RoleCheckerGetUnitRole(tUnitGUID) or nil
 				end
 			end
 		end
@@ -1351,7 +1434,7 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 				local tUnitGUID = UnitGUID(aUnitID)
 				local tRoleID = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.roleAssigments[tUnitNumbers[aUnitID]]
 				if tRoleID == 0 then
-					tRoleID = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
+					tRoleID = (SkuAuras and SkuAuras.RoleCheckerGetUnitRole and (not SkuAuras.IsEnabled or SkuAuras:IsEnabled())) and SkuAuras:RoleCheckerGetUnitRole(tUnitGUID) or nil
 				end
 				
 				SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.prevHealth = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.prevHealth or {
@@ -1416,7 +1499,7 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 				local tUnitGUID = UnitGUID(aUnitID)
 				local tRoleID = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments[tUnitNumbersRaid[aUnitID]]
 				if tRoleID == 0 then
-					tRoleID = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
+					tRoleID = (SkuAuras and SkuAuras.RoleCheckerGetUnitRole and (not SkuAuras.IsEnabled or SkuAuras:IsEnabled())) and SkuAuras:RoleCheckerGetUnitRole(tUnitGUID) or nil
 				end
 				
 				if not SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.prevHealth then
