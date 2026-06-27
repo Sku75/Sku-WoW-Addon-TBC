@@ -15,15 +15,24 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 --     (AceAddon runs OnInitialize even for a module that will be disabled),
 --     because SkuAuras READS that table even while Aq is off.
 --   * OnEnable  arms the feature (AqCreateControlFrame OnUpdate + 7 events + 6
---     dispatcher callbacks via SkuCore:AqOnInitialize, then the settings schema
---     migration/defaults via SkuCore:AqOnLogin).
+--     dispatcher callbacks via Aq:AqOnInitialize, then the settings schema
+--     migration/defaults via Aq:AqOnLogin).
 --   * OnDisable disarms it: unregister those events + dispatcher callbacks and
 --     stop the OnUpdate, so a disabled monitor genuinely does nothing.
 -- AceAddon auto-enables the module at SkuCore enable (≈ PLAYER_LOGIN) and again
 -- on every /reload, replacing the old explicit AqOnInitialize/AqOnLogin calls in
 -- Core.lua. SkuAuras coupling is handled defensively (RoleCheckerGetUnitRole
 -- calls are guarded; the existing nil-role handling stands).
-local Aq = SkuCore:NewModule("Aq")
+-- W4 Phase E (namespace extraction): every former `function SkuCore:Monitor*`/
+-- `Aq*`/`UNIT_*`/`MIRROR_*` method now lives on this module table
+-- (`function Aq:Method`); the published handle `SkuCore.Aq` IS this table, so
+-- external callers use `SkuCore.Aq:Method`. The module mixes in AceEvent-3.0 and
+-- owns its 7 AceEvent registrations (MIRROR_TIMER_*, UNIT_HEALTH/AURA/POWER_*);
+-- the 6 group/roster dispatcher callbacks stay on SkuDispatcher (dot-ref values).
+-- Feature STATE stays on `SkuCore.<field>` — notably `SkuCore.Monitor` (the combat
+-- monitor index, read by SkuAuras) keeps its location untouched, so SkuAuras needs
+-- no repoint; moving state onto a service is a later pass.
+local Aq = SkuCore:NewModule("Aq", "AceEvent-3.0")
 SkuCore.Aq = Aq   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
@@ -221,7 +230,7 @@ local function monitorPartyHealth2ContiOutput(aForce)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MonitorPartyHealth2Conti()
+function Aq:MonitorPartyHealth2Conti()
 	if not Aq:IsEnabled() then return end
 	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.enabled == true then
 		monitorPartyHealth2ContiOutput(true)
@@ -356,7 +365,7 @@ local function monitorRaidHealth2ContiOutput(aForce)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MonitorRaidHealth2Conti()
+function Aq:MonitorRaidHealth2Conti()
 	if not Aq:IsEnabled() then return end
 	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.enabled == true then
 		monitorRaidHealth2ContiOutput(true)
@@ -364,74 +373,74 @@ function SkuCore:MonitorRaidHealth2Conti()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:Monitor_PLAYER_ENTERING_WORLD()
+function Aq:Monitor_PLAYER_ENTERING_WORLD()
 	C_Timer.After(5, function()
-		SkuCore:MonitorRaidRosterUpdate()
+		Aq:MonitorRaidRosterUpdate()
 	end)
 	C_Timer.After(15, function()
-		SkuCore:MonitorRaidRosterUpdate()
+		Aq:MonitorRaidRosterUpdate()
 	end)
 	C_Timer.After(25, function()
-		SkuCore:MonitorRaidRosterUpdate()
+		Aq:MonitorRaidRosterUpdate()
 	end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:Monitor_PARTY_LEADER_CHANGED()
+function Aq:Monitor_PARTY_LEADER_CHANGED()
    dprint("Monitor_PARTY_LEADER_CHANGED", UnitInRaid("player"), UnitInParty("player"))
    if UnitInRaid("player") then
-   	SkuCore:MonitorRaidRosterUpdate()
+   	Aq:MonitorRaidRosterUpdate()
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:Monitor_GROUP_FORMED()
+function Aq:Monitor_GROUP_FORMED()
    dprint("Monitor_PARTY_LEADER_CHANGED")
    if UnitInRaid("player") then
-   	SkuCore:MonitorRaidRosterUpdate()
+   	Aq:MonitorRaidRosterUpdate()
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:Monitor_GROUP_JOINED()
+function Aq:Monitor_GROUP_JOINED()
    dprint("Monitor_PARTY_LEADER_CHANGED")
    if UnitInRaid("player") then
-   	SkuCore:MonitorRaidRosterUpdate()
+   	Aq:MonitorRaidRosterUpdate()
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:Monitor_GROUP_LEFT()
+function Aq:Monitor_GROUP_LEFT()
    dprint("Monitor_PARTY_LEADER_CHANGED")
    if UnitInRaid("player") then
-   	SkuCore:MonitorRaidRosterUpdate()
+   	Aq:MonitorRaidRosterUpdate()
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:Monitor_GROUP_ROSTER_UPDATE()
+function Aq:Monitor_GROUP_ROSTER_UPDATE()
    dprint("Monitor_PARTY_LEADER_CHANGED")
    if UnitInRaid("player") then
-   	SkuCore:MonitorRaidRosterUpdate()
+   	Aq:MonitorRaidRosterUpdate()
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MonitorRaidRosterUpdate()
+function Aq:MonitorRaidRosterUpdate()
 	--[[
    if SkuCore.Monitor.enabled == false then
       return
    end
 	]]
 	if not Aq:IsEnabled() then
-		SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.MonitorRaidRosterUpdate)
+		SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", Aq.MonitorRaidRosterUpdate)
 		return
 	end
 
    if SkuCore.inCombat == true then
-      SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.MonitorRaidRosterUpdate, true)
+      SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", Aq.MonitorRaidRosterUpdate, true)
       return
    end
-   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.MonitorRaidRosterUpdate)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", Aq.MonitorRaidRosterUpdate)
 
    if UnitInRaid("player") then
 		local tRaidRoster = {}
@@ -513,7 +522,7 @@ local beginTime = debugprofilestop()
 			if ttimeMonParty2QueueCurrentTime <= 0 then
 				local tUnitNumber, tVolume, tPitch, tLength = ttimeMonParty2Queue[1].tUnitNumber , ttimeMonParty2Queue[1].tVolume , ttimeMonParty2Queue[1].tPitch , ttimeMonParty2Queue[1].lenght
 				ttimeMonParty2QueueCurrentTime = tLength
-				SkuCore:MonitorOutputPartyPercent2(tUnitNumber, tVolume, tPitch)
+				Aq:MonitorOutputPartyPercent2(tUnitNumber, tVolume, tPitch)
 				table.remove(ttimeMonParty2Queue, 1)
 			else
 				ttimeMonParty2QueueCurrentTime = ttimeMonParty2QueueCurrentTime - time
@@ -525,7 +534,7 @@ local beginTime = debugprofilestop()
 			if ttimeMonRaid2QueueCurrentTime <= 0 then
 				local tUnitNumber, tVolume, tPitch, tLength = ttimeMonRaid2Queue[1].tUnitNumber , ttimeMonRaid2Queue[1].tVolume , ttimeMonRaid2Queue[1].tPitch , ttimeMonRaid2Queue[1].lenght
 				ttimeMonRaid2QueueCurrentTime = tLength
-				SkuCore:MonitorOutputRaidPercent2(tUnitNumber, tVolume, tPitch)
+				Aq:MonitorOutputRaidPercent2(tUnitNumber, tVolume, tPitch)
 				table.remove(ttimeMonRaid2Queue, 1)
 			else
 				ttimeMonRaid2QueueCurrentTime = ttimeMonRaid2QueueCurrentTime - time
@@ -572,7 +581,7 @@ local beginTime = debugprofilestop()
 							tPrevHpPer = healthPer
 
 							if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.silentOn100and0 == false or (tPrevNumberToUtteranceOutput < 10 and tPrevNumberToUtteranceOutput > 0) then
-								SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.voice].path)
+								Aq:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.voice].path)
 							end							
 						end
 					end
@@ -604,7 +613,7 @@ local beginTime = debugprofilestop()
 						tPrevHpPetPer = healthPer
 
 						if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.silentOn100and0 == false or (tPrevNumberToUtteranceOutput < 10 and tPrevNumberToUtteranceOutput > 0) then
-							SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.voice].path, "pet")
+							Aq:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.voice].path, "pet")
 						end							
 					end
 
@@ -633,7 +642,7 @@ local beginTime = debugprofilestop()
 
 						if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.silentOn100and0 == false or (tPrevNumberToUtteranceOutput < 10 and tPrevNumberToUtteranceOutput > 0) then
 							C_Timer.After(0.25, function()
-								SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.voice].path)
+								Aq:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.voice].path)
 							end)
 						end							
 					end
@@ -684,7 +693,7 @@ local beginTime = debugprofilestop()
 						end
 
 						if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.silentAtAll100 == false or tAll100 == false then
-							SkuCore:MonitorOutputPartyPercent(tUtterances, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.instancesOnly, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.continouslySpeed)
+							Aq:MonitorOutputPartyPercent(tUtterances, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.instancesOnly, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.continouslySpeed)
 						end
 
 						ttimeMonParty = 0
@@ -704,7 +713,7 @@ local beginTime = debugprofilestop()
 								if tAuraRepo["player"][tUnitGUID][i].start > 0 and tAuraRepo["player"][tUnitGUID][i].count > 0 and (GetTime() - tAuraRepo["player"][tUnitGUID][i].start > SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.continouslyStartAfter) then
 									if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.types[i] == true then									
 										C_Timer.After(tPause, function()
-											SkuCore:MonitorOutputPlayerStatus({[1] = i}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.voice].path)
+											Aq:MonitorOutputPlayerStatus({[1] = i}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.voice].path)
 										end)
 										tPause = tPause + 0.3
 									end
@@ -720,7 +729,7 @@ local beginTime = debugprofilestop()
 				ttimeMonPartyDebuff = ttimeMonPartyDebuff + time
 				if ttimeMonPartyDebuff > SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.continouslyTimer and tPartyDebuffsMonitorPause == false then
 					if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.continouslyStartAfter > -1 then
-						local tUnitIdList = SkuCore:UnitIsInUnitGroup("party", "player")
+						local tUnitIdList = Aq:UnitIsInUnitGroup("party", "player")
 						if tUnitIdList then
 							local tPause = 0
 							for _, tUnitID in pairs(tUnitIdList) do
@@ -750,9 +759,9 @@ local beginTime = debugprofilestop()
 													end
 													C_Timer.After(tPause, function()
 														if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberFirst == true then
-															SkuCore:MonitorOutputPlayerStatus({[1] = tNumber, [2] = tTypeString}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.voice].path)
+															Aq:MonitorOutputPlayerStatus({[1] = tNumber, [2] = tTypeString}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.voice].path)
 														else
-															SkuCore:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.voice].path)
+															Aq:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.voice].path)
 														end
 													end)
 													tPause = tPause + ((string.len(tTypeString) + string.len(tNumber)) * 0.4)
@@ -781,7 +790,7 @@ local beginTime = debugprofilestop()
 				ttimeMonRaidDebuff = ttimeMonRaidDebuff + time
 				if ttimeMonRaidDebuff > SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.continouslyTimer and tRaidDebuffsMonitorPause == false then
 					if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.continouslyStartAfter > -1 then
-						local tUnitIdList = SkuCore:UnitIsInUnitGroup("raid", "player")
+						local tUnitIdList = Aq:UnitIsInUnitGroup("raid", "player")
 						if tUnitIdList then
 							local tPause = 0
 							for _, tUnitID in pairs(tUnitIdList) do
@@ -804,9 +813,9 @@ local beginTime = debugprofilestop()
 													end
 													C_Timer.After(tPause, function()
 														if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberFirst == true then
-															SkuCore:MonitorOutputPlayerStatus({[1] = tNumber, [2] = tTypeString}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.voice].path)
+															Aq:MonitorOutputPlayerStatus({[1] = tNumber, [2] = tTypeString}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.voice].path)
 														else
-															SkuCore:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.voice].path)
+															Aq:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.voice].path)
 														end
 													end)
 													tPause = tPause + ((string.len(tTypeString) + string.len(tNumber)) * 0.4)
@@ -837,7 +846,7 @@ end
 
 --mirror bars
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MIRROR_TIMER_START(eventName, timerName, value, maxValue, scale, paused, timerLabel)
+function Aq:MIRROR_TIMER_START(eventName, timerName, value, maxValue, scale, paused, timerLabel)
 	SkuCore.aq.mirrorBars[timerName] = {}
 	SkuCore.aq.mirrorBars[timerName].name = timerName
 	SkuCore.aq.mirrorBars[timerName].value = value
@@ -851,42 +860,42 @@ function SkuCore:MIRROR_TIMER_START(eventName, timerName, value, maxValue, scale
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MIRROR_TIMER_STOP(eventName, timerName)
+function Aq:MIRROR_TIMER_STOP(eventName, timerName)
 	SkuCore.aq.mirrorBars[timerName] = nil
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MIRROR_TIMER_PAUSE(eventName, timerName, pause)
+function Aq:MIRROR_TIMER_PAUSE(eventName, timerName, pause)
 	SkuCore.aq.mirrorBars[timerName].paused = true
 	SkuCore.aq.mirrorBars[timerName].pausedDuration = pause
 end
 
 --global
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AqOnInitialize()
+function Aq:AqOnInitialize()
 	AqCreateControlFrame()
 
-	SkuCore:RegisterEvent("MIRROR_TIMER_START")
-	SkuCore:RegisterEvent("MIRROR_TIMER_STOP")
-	SkuCore:RegisterEvent("MIRROR_TIMER_PAUSE")
-	SkuCore:RegisterEvent("UNIT_HEALTH")
-	SkuCore:RegisterEvent("UNIT_POWER_FREQUENT")
-	SkuCore:RegisterEvent("UNIT_POWER_UPDATE")
+	Aq:RegisterEvent("MIRROR_TIMER_START")
+	Aq:RegisterEvent("MIRROR_TIMER_STOP")
+	Aq:RegisterEvent("MIRROR_TIMER_PAUSE")
+	Aq:RegisterEvent("UNIT_HEALTH")
+	Aq:RegisterEvent("UNIT_POWER_FREQUENT")
+	Aq:RegisterEvent("UNIT_POWER_UPDATE")
 
-	SkuCore:RegisterEvent("UNIT_AURA")
+	Aq:RegisterEvent("UNIT_AURA")
 
-   SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", SkuCore.Monitor_PLAYER_ENTERING_WORLD)
-   SkuDispatcher:RegisterEventCallback("PARTY_LEADER_CHANGED", SkuCore.Monitor_PARTY_LEADER_CHANGED)
-   SkuDispatcher:RegisterEventCallback("GROUP_FORMED", SkuCore.Monitor_GROUP_FORMED)
-   SkuDispatcher:RegisterEventCallback("GROUP_JOINED", SkuCore.Monitor_GROUP_JOINED)
-   SkuDispatcher:RegisterEventCallback("GROUP_LEFT", SkuCore.Monitor_GROUP_LEFT)
-   SkuDispatcher:RegisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.Monitor_GROUP_ROSTER_UPDATE)	
+   SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", Aq.Monitor_PLAYER_ENTERING_WORLD)
+   SkuDispatcher:RegisterEventCallback("PARTY_LEADER_CHANGED", Aq.Monitor_PARTY_LEADER_CHANGED)
+   SkuDispatcher:RegisterEventCallback("GROUP_FORMED", Aq.Monitor_GROUP_FORMED)
+   SkuDispatcher:RegisterEventCallback("GROUP_JOINED", Aq.Monitor_GROUP_JOINED)
+   SkuDispatcher:RegisterEventCallback("GROUP_LEFT", Aq.Monitor_GROUP_LEFT)
+   SkuDispatcher:RegisterEventCallback("GROUP_ROSTER_UPDATE", Aq.Monitor_GROUP_ROSTER_UPDATE)	
 
 	--SkuCore.aqCombat:aqCombatOnInitialize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AqOnLogin()
+function Aq:AqOnLogin()
 
 	if SkuSettings:Sub("SkuCore", nil, "char").aq and not SkuSettings:Sub("SkuCore", nil, "char").aq[1] then
 		local tExisting = SkuSettings:Sub("SkuCore", nil, "char").aq
@@ -1276,8 +1285,8 @@ end
 -- (at SkuCore enable, on every /reload, and whenever the user toggles it back on).
 -- Mirrors the old Core.lua AqOnInitialize + AqOnLogin calls.
 function Aq:OnEnable()
-	SkuCore:AqOnInitialize()
-	SkuCore:AqOnLogin()
+	Aq:AqOnInitialize()
+	Aq:AqOnLogin()
 end
 
 -- Disarm: stop the OnUpdate driver and drop every event + dispatcher callback
@@ -1288,25 +1297,25 @@ function Aq:OnDisable()
 		AqControlFrame:SetScript("OnUpdate", nil)
 	end
 
-	SkuCore:UnregisterEvent("MIRROR_TIMER_START")
-	SkuCore:UnregisterEvent("MIRROR_TIMER_STOP")
-	SkuCore:UnregisterEvent("MIRROR_TIMER_PAUSE")
-	SkuCore:UnregisterEvent("UNIT_HEALTH")
-	SkuCore:UnregisterEvent("UNIT_POWER_FREQUENT")
-	SkuCore:UnregisterEvent("UNIT_POWER_UPDATE")
-	SkuCore:UnregisterEvent("UNIT_AURA")
+	Aq:UnregisterEvent("MIRROR_TIMER_START")
+	Aq:UnregisterEvent("MIRROR_TIMER_STOP")
+	Aq:UnregisterEvent("MIRROR_TIMER_PAUSE")
+	Aq:UnregisterEvent("UNIT_HEALTH")
+	Aq:UnregisterEvent("UNIT_POWER_FREQUENT")
+	Aq:UnregisterEvent("UNIT_POWER_UPDATE")
+	Aq:UnregisterEvent("UNIT_AURA")
 
-	SkuDispatcher:UnregisterEventCallback("PLAYER_ENTERING_WORLD", SkuCore.Monitor_PLAYER_ENTERING_WORLD)
-	SkuDispatcher:UnregisterEventCallback("PARTY_LEADER_CHANGED", SkuCore.Monitor_PARTY_LEADER_CHANGED)
-	SkuDispatcher:UnregisterEventCallback("GROUP_FORMED", SkuCore.Monitor_GROUP_FORMED)
-	SkuDispatcher:UnregisterEventCallback("GROUP_JOINED", SkuCore.Monitor_GROUP_JOINED)
-	SkuDispatcher:UnregisterEventCallback("GROUP_LEFT", SkuCore.Monitor_GROUP_LEFT)
-	SkuDispatcher:UnregisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.Monitor_GROUP_ROSTER_UPDATE)
+	SkuDispatcher:UnregisterEventCallback("PLAYER_ENTERING_WORLD", Aq.Monitor_PLAYER_ENTERING_WORLD)
+	SkuDispatcher:UnregisterEventCallback("PARTY_LEADER_CHANGED", Aq.Monitor_PARTY_LEADER_CHANGED)
+	SkuDispatcher:UnregisterEventCallback("GROUP_FORMED", Aq.Monitor_GROUP_FORMED)
+	SkuDispatcher:UnregisterEventCallback("GROUP_JOINED", Aq.Monitor_GROUP_JOINED)
+	SkuDispatcher:UnregisterEventCallback("GROUP_LEFT", Aq.Monitor_GROUP_LEFT)
+	SkuDispatcher:UnregisterEventCallback("GROUP_ROSTER_UPDATE", Aq.Monitor_GROUP_ROSTER_UPDATE)
 end
 
 --Monitor
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AqSlashHandler(aFieldsTable)
+function Aq:AqSlashHandler(aFieldsTable)
 	if aFieldsTable[2] == "player" and aFieldsTable[3] == "health" then
 		SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.enabled = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.enabled == false		
 	elseif aFieldsTable[2] == "combat" and aFieldsTable[3] == "follow" and aFieldsTable[4] == "target" then
@@ -1343,7 +1352,7 @@ function SkuCore:AqSlashHandler(aFieldsTable)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:UNIT_HEALTH(eventName, aUnitID)
+function Aq:UNIT_HEALTH(eventName, aUnitID)
 	local tIncomingHealAmount = 0
 	if aUnitID == "player" and SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.factorInIncomingHeals == true then
 		local tIncomingHealAll = UnitGetIncomingHeals(aUnitID) or 0
@@ -1381,7 +1390,7 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 					tPrevNumberToUtteranceOutput = tPrevNumberToUtteranceOutput + 1
 				end
 				if tNumberToUtterance ~= tPrevNumberToUtterance then
-					SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.voice].path)
+					Aq:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.voice].path)
 					tHealthMonitorPause = true
 					tPowerMonitorPause = true
 					C_Timer.After(SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.continouslyTimer, function()
@@ -1413,7 +1422,7 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 				end
 
 				if tNumberToUtterance ~= tPrevNumberToUtterancePet then
-					SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.voice].path, "pet")
+					Aq:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.voice].path, "pet")
 					tHealthMonitorPause = true
 					tPowerMonitorPause = true
 					C_Timer.After(SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.continouslyTimer, function()
@@ -1558,10 +1567,10 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:UNIT_POWER_FREQUENT(eventName, unitTarget, powerType)
-	--SkuCore:UNIT_POWER_UPDATE("UNIT_POWER_FREQUENT", unitTarget, powerType)
+function Aq:UNIT_POWER_FREQUENT(eventName, unitTarget, powerType)
+	--Aq:UNIT_POWER_UPDATE("UNIT_POWER_FREQUENT", unitTarget, powerType)
 end
-function SkuCore:UNIT_POWER_UPDATE(eventName, unitTarget, powerType)
+function Aq:UNIT_POWER_UPDATE(eventName, unitTarget, powerType)
 	if unitTarget == "player" then
 		if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet] then
 			if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.enabled == true then
@@ -1581,7 +1590,7 @@ function SkuCore:UNIT_POWER_UPDATE(eventName, unitTarget, powerType)
 					end
 
 					if tNumberToUtterance ~= tPrevNumberToUtterancePlPwr then
-						SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.voice].path)
+						Aq:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.voice].path)
 						tHealthMonitorPause = true
 						tPowerMonitorPause = true
 						C_Timer.After(SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.continouslyTimer, function()
@@ -1605,7 +1614,7 @@ end
 ---@param aFilter string "raid"
 ---@param aFilter string "raidandpets"
 ---@param aUnitID string
-function SkuCore:UnitIsInUnitGroup(aFilter, aUnitID)
+function Aq:UnitIsInUnitGroup(aFilter, aUnitID)
 	if not aUnitID then
 		return
 	end
@@ -1657,16 +1666,16 @@ function SkuCore:UnitIsInUnitGroup(aFilter, aUnitID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:UNIT_AURA(aEventName, aUnitID)
+function Aq:UNIT_AURA(aEventName, aUnitID)
 	local tSubR
 	local tUnitIdList = {}
-	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.enabled == true and SkuCore:UnitIsInUnitGroup("party", aUnitID) then
+	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.enabled == true and Aq:UnitIsInUnitGroup("party", aUnitID) then
 		tSubR = "party"
 	end
-	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.enabled == true and SkuCore:UnitIsInUnitGroup("raid", aUnitID) then
+	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.enabled == true and Aq:UnitIsInUnitGroup("raid", aUnitID) then
 		tSubR = "raid"
 	end
-	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.enabled == true and SkuCore:UnitIsInUnitGroup("player", aUnitID) then
+	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.enabled == true and Aq:UnitIsInUnitGroup("player", aUnitID) then
 		tSubR = "player"
 	end
 
@@ -1723,7 +1732,7 @@ function SkuCore:UNIT_AURA(aEventName, aUnitID)
 					if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.types[i] == true then
 						C_Timer.After(tPause, function()
 							if tSubR == "player" then
-								SkuCore:MonitorOutputPlayerStatus({[1] = i,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)
+								Aq:MonitorOutputPlayerStatus({[1] = i,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)
 							elseif tSubR == "party" then
 								local tNumber
 								if string.sub(aUnitID, 1, 6) == "player" then
@@ -1741,9 +1750,9 @@ function SkuCore:UNIT_AURA(aEventName, aUnitID)
 									end
 
 									if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberFirst == true then
-										SkuCore:MonitorOutputPlayerStatus({[1] = tNumber, [2] = tTypeString,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)								
+										Aq:MonitorOutputPlayerStatus({[1] = tNumber, [2] = tTypeString,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)								
 									else
-										SkuCore:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)								
+										Aq:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)								
 									end
 
 
@@ -1764,9 +1773,9 @@ function SkuCore:UNIT_AURA(aEventName, aUnitID)
 										tTypeString = i
 									end
 									if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberFirst == true then
-										SkuCore:MonitorOutputPlayerStatus({[1] = tNumber, [2] = tTypeString,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)								
+										Aq:MonitorOutputPlayerStatus({[1] = tNumber, [2] = tTypeString,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)								
 									else
-										SkuCore:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)								
+										Aq:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)								
 									end
 									tPause = tPause + 0.3
 								end
@@ -1789,7 +1798,7 @@ function SkuCore:UNIT_AURA(aEventName, aUnitID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MonitorOutputPlayerStatus(aStatusTable, aVol, aInstancesOnly, aVoice)
+function Aq:MonitorOutputPlayerStatus(aStatusTable, aVol, aInstancesOnly, aVoice)
 	local inInstance = IsInInstance() 
 	if aInstancesOnly == true and inInstance ~= true then
 		return
@@ -1814,7 +1823,7 @@ local tSounds = {
 	[6] = {min = 84, max = 99,},
 	[7] = {min = 100, max = 100,},
 }
-function SkuCore:MonitorOutputPartyPercent(aHealthValues, aVolume, aInstancesOnly, aSpeed)
+function Aq:MonitorOutputPartyPercent(aHealthValues, aVolume, aInstancesOnly, aSpeed)
 	local inInstance = IsInInstance() 
 	if aInstancesOnly == true and inInstance ~= true then
 		return
@@ -1838,12 +1847,12 @@ function SkuCore:MonitorOutputPartyPercent(aHealthValues, aVolume, aInstancesOnl
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MonitorOutputPartyPercent2(aUnitNumber, aVolume, aPitch)
+function Aq:MonitorOutputPartyPercent2(aUnitNumber, aVolume, aPitch)
 	PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\jus\\pitch\\jus_"..aUnitNumber.."_"..aVolume.."_"..aPitch..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MonitorOutputRaidPercent2(aUnitNumber, aVolume, aPitch)
+function Aq:MonitorOutputRaidPercent2(aUnitNumber, aVolume, aPitch)
 	if aUnitNumber ~= "full" and aUnitNumber ~= "dead" then
 		aUnitNumber = tDTRaidRoster["raid"..aUnitNumber]
 	else
@@ -1866,7 +1875,7 @@ local tRandomSt = {
 	[7] = "arewedoneyet",
 }
 local tPrevOutputHandle = {}
-function SkuCore:MonitorOutputPlayerPercent(aValue, aVol, aInstancesOnly, aVoice, aPrefix)
+function Aq:MonitorOutputPlayerPercent(aValue, aVol, aInstancesOnly, aVoice, aPrefix)
 	local inInstance = IsInInstance() 
 	if aInstancesOnly == true and inInstance ~= true then
 		return
@@ -1971,7 +1980,7 @@ local function MonitorSpellMenuBuilder(self)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MonitorMenuBuilder()
+function Aq:MonitorMenuBuilder()
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Global"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.BuildChildren = function(self)

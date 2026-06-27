@@ -238,7 +238,7 @@ function SkuOptions:SlashFunc(input, aSilent)
 
 
 		if fields[1] == "mon" then
-			SkuCore:AqSlashHandler(fields)
+			SkuCore.Aq:AqSlashHandler(fields)
 		end
 
 		if fields[1] == "import" then
@@ -417,7 +417,7 @@ function SkuOptions:OnProfileReset()
 	SkuOptions:SkuKeyBindsResetBindings()
 	SkuOptions:SkuKeyBindsUpdate(true)
 	SkuCore.GameWorldObjects:GameWorldObjectsOnLogin()
-	SkuCore:AqOnLogin()
+	SkuCore.Aq:AqOnLogin()
 	SkuCore.DamageMeter:DamageMeterOnLogin()
 	
   	if SkuCore then pcall(function() SkuCore:OnEnable() end) end

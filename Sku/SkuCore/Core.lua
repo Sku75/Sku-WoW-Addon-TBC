@@ -372,7 +372,7 @@ function SkuCore:OnInitialize()
 	-- register them either. Registering them caused the menu to be
 	-- rebuilt during merchant / flight master interactions, breaking
 	-- navigation into those frames.
-	SkuDispatcher:RegisterEventCallback("UNIT_POWER_UPDATE", SkuCore.UNIT_POWER_UPDATE)
+	SkuDispatcher:RegisterEventCallback("UNIT_POWER_UPDATE", SkuCore.Aq.UNIT_POWER_UPDATE)
 	SkuDispatcher:RegisterEventCallback("UNIT_HAPPINESS", SkuCore.UNIT_HAPPINESS)
 	SkuDispatcher:RegisterEventCallback("PLAYER_TARGET_CHANGED", SkuCore.PLAYER_TARGET_CHANGED)
 	SkuDispatcher:RegisterEventCallback("CURRENT_SPELL_CAST_CHANGED", SkuCore.CURRENT_SPELL_CAST_CHANGED)
@@ -1434,7 +1434,7 @@ function SkuCore:OnEnable()
 		end
 
 		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_DOMONITORPARTYHEALTH2CONTI") then
-			SkuCore:MonitorPartyHealth2Conti()
+			SkuCore.Aq:MonitorPartyHealth2Conti()
 		end
 
 
@@ -1448,9 +1448,9 @@ function SkuCore:OnEnable()
 
 		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_DOMONITORPARTYHEALTH2CONTI") then
 			if UnitInRaid("player") ~= nil then
-				SkuCore:MonitorRaidHealth2Conti(true)
+				SkuCore.Aq:MonitorRaidHealth2Conti(true)
 			elseif UnitInParty("player") == true then
-				SkuCore:MonitorPartyHealth2Conti(true)
+				SkuCore.Aq:MonitorPartyHealth2Conti(true)
 			end
 		end
 
@@ -2059,7 +2059,7 @@ function SkuCore:CURRENT_SPELL_CAST_CHANGED(aCancelledCast)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:UNIT_POWER_UPDATE(eventName, unitType)
+function SkuCore.Aq:UNIT_POWER_UPDATE(eventName, unitType)
 
 end
 

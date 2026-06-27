@@ -2880,7 +2880,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		build = SkuCore.AuctionHouse.AuctionHouseMenuBuilder }
 
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Monitor"], filterable = true,
-		build = SkuCore.MonitorMenuBuilder }
+		build = SkuCore.Aq.MonitorMenuBuilder }
 
 	-- DIAL-TARGETING (41.02.06e) — Entfernbar: Block löschen + DialTargeting.lua + TOC + Core.lua Init
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Dial Targeting"], filterable = true,

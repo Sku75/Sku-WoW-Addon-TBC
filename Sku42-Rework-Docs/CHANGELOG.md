@@ -22,6 +22,30 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W4 Phase E — E1b (hard-3), part 3 of 3: aq extracted — hard-3 COMPLETE.** The
+  26 `function SkuCore:Monitor*`/`Aq*`/`UNIT_*`/`MIRROR_*` methods now live on the
+  `Aq` module table; published handle `SkuCore.Aq` keeps external callers working.
+  78 in-file + 8 cross-file rewrites across 4 files: Core.lua (Monitor*Health2Conti
+  calls + the UNIT_POWER_UPDATE dispatcher reg/def), Options.lua (MonitorMenuBuilder),
+  SkuZOptions (AqOnLogin, AqSlashHandler).
+  - **Hybrid events (AuctionHouse pattern):** module gained the `AceEvent-3.0` mixin;
+    the 7 AceEvent events (MIRROR_TIMER_START/STOP/PAUSE, UNIT_HEALTH, UNIT_POWER_FREQUENT,
+    UNIT_POWER_UPDATE, UNIT_AURA) now register/unregister on `Aq`. The 6 group/roster
+    callbacks + MonitorRaidRosterUpdate stay on `SkuDispatcher` (dot-ref values, reg+unreg
+    rewritten in lockstep).
+  - **`SkuCore.Monitor` STATE left in place** — the combat-monitor index
+    `SkuCore.Monitor.UnitNumbersIndexedRaid` read by SkuAuras (Core.lua:1446+) is a *field*,
+    not a method, so it was untouched and **SkuAuras needs no repoint** (the payoff of the
+    state-stays decision). Built unconditionally as before, so a disabled Aq can't break SkuAuras.
+  - **Pre-existing duplicate noted (not introduced):** `UNIT_POWER_UPDATE` is defined in BOTH
+    aq.lua (real handler) and SkuCore/Core.lua:2062 (empty stub). TOC loads Core.lua before
+    aq.lua, so aq's real handler has ALWAYS won — the Core.lua stub is dead code. The codemod
+    moved BOTH defs onto the `Aq` table with identical load-order precedence, so behaviour is
+    byte-identical (same as the E1 UNIT_SPELLCAST_INTERRUPTED core-stub-vs-handler case). Left
+    as-is to preserve behaviour; a cleanup can delete the dead stub later.
+  - Verified no aq method uses its own `self` to reach SkuCore. All 4 files luaparser-clean.
+    **In-game health/power-monitor test pending.**
+
 - **W4 Phase E — E1b (hard-3), part 2 of 3: aqCombat extracted.** The 23
   `function SkuCore:aqCombat*` methods now live on the `aqCombat` module table;
   published handle `SkuCore.aqCombat` keeps external callers working. 72 in-file
