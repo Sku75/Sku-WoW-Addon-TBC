@@ -7,6 +7,19 @@ local L = Sku.L
 
 local PLAYER_ENTERING_WORLD_flag = true
 
+-- W4 Phase D step 2: SkuQuest is runtime-toggleable. Lifecycle (events, frame
+-- drivers, override bindings, scheduled timers, the ToggleQuestLog hook) is armed
+-- in OnEnable and torn down in OnDisable so a disabled SkuQuest genuinely does
+-- nothing. The query/data API (GetTTSText, CheckQuestProgress, GetAllQuestObjects,
+-- BuildQuestZoneCache + the QuestZoneCache/QuestWpCache/questObjects caches) that
+-- SkuNav/SkuChat/SkuCore read stays defined and callable even while disabled — it
+-- is NOT guarded; disabling only disarms the lifecycle, it does not remove the API.
+-- Handles for the deferred PLAYER_ENTERING_WORLD setup so OnDisable can cancel
+-- pending work and re-enable can re-run it.
+local SkuQuestSoundSetTimer        -- +0.01s: populate beacon sound-set option values
+local SkuQuestDeferredSetupTimer   -- +40s: LoadEventHandler + UpdateZoneAvailableQuestList
+local SkuQuestToggleQuestLogHooked -- one-shot guard so the ToggleQuestLog hook installs only once
+
 SkuQuest.MenuAccessKeysNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9"}
 
 local EnumItemQuality = {
@@ -64,9 +77,13 @@ SkuDB.QuestFlagsFriendly = {
 }
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuQuest:OnInitialize()
-	--dprint("SkuQuest OnInitialize")
-	
+-- Register every WoW event SkuQuest reacts to. Extracted from the old
+-- OnInitialize body so it can run on EVERY enable (AceAddon runs OnInitialize once
+-- per session but OnEnable on every enable). Re-registering an already-registered
+-- AceEvent is harmless, so calling this again after a /reload or a re-enable is
+-- idempotent. On first load OnEnable runs right after OnInitialize, so first-load
+-- behaviour is preserved exactly.
+function SkuQuest:RegisterQuestEvents()
 	--SkuQuest:RegisterChatCommand("skuquest", "SlashFunc")
 
 	SkuQuest:RegisterEvent("VARIABLES_LOADED")
@@ -83,7 +100,11 @@ function SkuQuest:OnInitialize()
 	SkuQuest:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	SkuQuest:RegisterEvent("ZONE_CHANGED")
 	SkuQuest:RegisterEvent("ZONE_CHANGED_INDOORS")
+end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuQuest:OnInitialize()
+	--dprint("SkuQuest OnInitialize")
 
 	--SkuQuestDB = SkuQuestDB or {}
 	--SkuQuestDB = LibStub("AceDB-3.0"):New("SkuQuestDB", defaults) -- TODO: fix default values for subgroups
@@ -109,10 +130,36 @@ end
 function SkuQuest:OnEnable()
 	--dprint("SkuQuest OnEnable")
 
+	-- Arm the WoW events on every enable (re-armable; see RegisterQuestEvents).
+	SkuQuest:RegisterQuestEvents()
+
+	-- Install the ToggleQuestLog hook here (once). It used to be installed in the
+	-- VARIABLES_LOADED handler, which fires once per session; doing it here ensures
+	-- a mid-session enable (after VARIABLES_LOADED already fired) still arms the
+	-- quest-log open/close interception. The hook body is IsEnabled-guarded
+	-- (hooksecurefunc cannot be removed), and the one-shot flag stops repeated
+	-- OnEnable from stacking duplicate hooks.
+	if not SkuQuestToggleQuestLogHooked then
+		SkuQuestToggleQuestLogHooked = true
+		hooksecurefunc("ToggleQuestLog", SkuQuest.ToggleQuestLogHook)
+	end
+
+	-- Re-enabling mid-session: the one-time PLAYER_ENTERING_WORLD / +40s path that
+	-- normally builds the beacon sound-set option values and loads the event handler
+	-- has already fired this session, so AceEvent will not re-deliver it. Run that
+	-- setup directly so a mid-session enable rebuilds the same state. (On first
+	-- load this is harmless: PLAYER_ENTERING_WORLD fires right after and does the
+	-- same work; both paths are idempotent.) Guarded on SkuNav existing because the
+	-- setup reads SkuNav data.
+	if SkuNav then
+		SkuQuest:SetupBeaconSoundSetOptions()
+		SkuQuest:ScheduleDeferredSetup()
+	end
+
 	if SkuState:IsInCombat() == true then
 		return
 	end
-	
+
 	local tFrame = _G["SkuQuestMain"] or CreateFrame("Button", "SkuQuestMain", UIParent, "UIPanelButtonTemplate")
 	tFrame:SetSize(80, 22)
 	tFrame:SetText("SkuQuestMain")
@@ -237,8 +284,36 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:OnDisable()
-	-- Called when the addon is disabled
-	
+	-- Real teardown so a disabled SkuQuest genuinely does nothing.
+
+	-- 1) Drop every WoW event this addon registered.
+	SkuQuest:UnregisterAllEvents()
+
+	-- 2) Cancel the deferred PLAYER_ENTERING_WORLD setup timers if still pending.
+	if SkuQuestSoundSetTimer then
+		SkuQuestSoundSetTimer:Cancel()
+		SkuQuestSoundSetTimer = nil
+	end
+	if SkuQuestDeferredSetupTimer then
+		SkuQuestDeferredSetupTimer:Cancel()
+		SkuQuestDeferredSetupTimer = nil
+	end
+
+	-- 3) Tear down the frame drivers: clear their override bindings (CTRL-Q,
+	-- ESCAPE, ...) and hide them so the quest-log keybinds no longer fire.
+	if _G["SkuQuestMainOption1"] then
+		ClearOverrideBindings(_G["SkuQuestMainOption1"])
+		_G["SkuQuestMainOption1"]:Hide()
+	end
+	if _G["SkuQuestMain"] then
+		ClearOverrideBindings(_G["SkuQuestMain"])
+		_G["SkuQuestMain"]:Hide()
+	end
+
+	-- NOTE: the ToggleQuestLog hooksecurefunc cannot be removed; its body is
+	-- IsEnabled-guarded (see ToggleQuestLogHook) so it is a no-op while disabled.
+	-- Query/data API (GetTTSText, CheckQuestProgress, GetAllQuestObjects, the
+	-- caches) stays intact for SkuNav/SkuChat/SkuCore.
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -935,6 +1010,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:ToggleQuestLogHook(...)
 	--dprint("ToggleQuestLogHook", ...)
+	-- hooksecurefunc can't be removed; no-op when the addon is disabled so a
+	-- disabled SkuQuest does not intercept the quest log.
+	if not SkuQuest:IsEnabled() then return end
 	if ( QuestLogFrame:IsVisible() ) then
 		ExpandQuestHeader(0)
 	end
@@ -1207,8 +1285,23 @@ function SkuQuest:PLAYER_ENTERING_WORLD(...)
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 
-	-- populate sound set options
-	C_Timer.After(0.01, function()
+	-- populate sound set options + schedule the deferred load. Extracted into
+	-- helpers so OnEnable can re-run them when the addon is enabled mid-session
+	-- (after PLAYER_ENTERING_WORLD has already fired this session).
+	SkuQuest:SetupBeaconSoundSetOptions()
+	SkuQuest:ScheduleDeferredSetup()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Populate the beacon sound-set / type / click-clack option values from SkuNav.
+-- Run on a short delay so SkuNav's sound-set list is ready. Called from
+-- PLAYER_ENTERING_WORLD on first load and from OnEnable on a mid-session enable.
+function SkuQuest:SetupBeaconSoundSetOptions()
+	if SkuQuestSoundSetTimer then
+		SkuQuestSoundSetTimer:Cancel()
+	end
+	SkuQuestSoundSetTimer = C_Timer.NewTimer(0.01, function()
+		SkuQuestSoundSetTimer = nil
 		SkuNav.BeaconSoundSetNames = {}
 		for key, value in ipairs(SkuOptions.BeaconLib:GetSoundSets()) do
 			SkuNav.BeaconSoundSetNames[value] = value
@@ -1224,10 +1317,19 @@ function SkuQuest:PLAYER_ENTERING_WORLD(...)
 
 		SkuQuest.options.args.questMarkerBeacons.args.availableQuests.args.enableClickClack.values = SkuNav.ClickClackSoundsets
 		SkuQuest.options.args.questMarkerBeacons.args.currentQuests.args.enableClickClack.values = SkuNav.ClickClackSoundsets
-	
-	end)	
+	end)
+end
 
-	C_Timer.After(40, function()
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Schedule the deferred (+40s) load of the Questie event handler + the first
+-- zone-quest list update. Stored as a cancelable handle so OnDisable can drop a
+-- pending run; re-enable re-schedules it.
+function SkuQuest:ScheduleDeferredSetup()
+	if SkuQuestDeferredSetupTimer then
+		SkuQuestDeferredSetupTimer:Cancel()
+	end
+	SkuQuestDeferredSetupTimer = C_Timer.NewTimer(40, function()
+		SkuQuestDeferredSetupTimer = nil
 		SkuQuest:LoadEventHandler()
 		SkuQuest:UpdateZoneAvailableQuestList()
 	end)
@@ -1238,7 +1340,8 @@ function SkuQuest:VARIABLES_LOADED(...)
 	--dprint(...)
 	HideUIPanel(QuestLogFrame)
 	--hooksecurefunc("QuestLog_Update", SkuQuest.OnQuestLog_OnEvent)
-	hooksecurefunc("ToggleQuestLog", SkuQuest.ToggleQuestLogHook)
+	-- The ToggleQuestLog hook is now installed in OnEnable (once, IsEnabled-guarded)
+	-- so it survives a mid-session enable; it used to be installed here.
 	--hooksecurefunc("HideUIPanel", SkuQuest.ToggleQuestLogHook)
 end
 

@@ -45,7 +45,23 @@ SkuAuras.UnitRepo = {}
 SkuAuras.thingsNamesOnCd = {}
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- W4 Phase D (Rework B-step-2): SkuAuras is a runtime-toggleable top-level
+-- AceAddon. AceAddon runs OnInitialize ONCE per session but OnEnable on EVERY
+-- enable (initial login, /reload, and every time the user toggles the feature
+-- back on). So the WoW EVENT registration must run on every enable, not only
+-- once -- it lives in SkuAuras:RegisterAuraEvents() (called from OnEnable)
+-- instead of OnInitialize, so a mid-session re-enable re-arms the events.
+-- OnInitialize is now empty: there is no one-time pure-data setup here (the
+-- attributes/values tables are static in data.lua and the per-DB build runs in
+-- PLAYER_ENTERING_WORLD, which OnEnable ensures below for mid-session enable).
 function SkuAuras:OnInitialize()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Register every WoW event this addon consumes. Re-armable: called from
+-- OnEnable on every enable. On first load OnEnable runs right after
+-- OnInitialize, so this preserves the original first-load behaviour exactly.
+function SkuAuras:RegisterAuraEvents()
 	SkuAuras:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuAuras:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	SkuAuras:RegisterEvent("BAG_UPDATE_COOLDOWN")
@@ -60,6 +76,23 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:OnEnable()
 	--dprint("SkuAuras OnEnable")
+
+	-- Re-arm the WoW events (relocated from OnInitialize so a mid-session
+	-- re-enable re-registers them).
+	SkuAuras:RegisterAuraEvents()
+
+	-- Mid-session enable safety net: the attributes/values lists are LAZILY
+	-- built in the one-time PLAYER_ENTERING_WORLD handler (deep-copy of
+	-- valuesDefault + populate from SkuDB + install the use-item hooks + add
+	-- existing auras to the attributes list). If the feature is enabled AFTER
+	-- PEW already fired, that handler will not run again, so build it now if it
+	-- has not been built yet. We detect "not built" by the still-empty
+	-- itemId.values list (data.lua ships it as {}; PEW fills it). On first
+	-- login this is a no-op (PEW fires right after) -- behaviour preserved.
+	if SkuAuras.attributes and SkuAuras.attributes.itemId
+		and #SkuAuras.attributes.itemId.values == 0 then
+		SkuAuras:PLAYER_ENTERING_WORLD("PLAYER_ENTERING_WORLD")
+	end
 
 	--frame to trigger custom "keypress" event
 	local f = _G["SkuAurasKeypressTrigger"] or CreateFrame("Frame", "SkuAurasKeypressTrigger", UIParent)
@@ -87,6 +120,9 @@ function SkuAuras:OnEnable()
 
 		SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
 	end)
+	-- Re-show after a disable/enable cycle (OnDisable hides + EnableKeyboard
+	-- false). New frames are shown by default, so this is a no-op on first load.
+	f:Show()
 
 	local ttime = 0
 	local f = _G["SkuAurasControl"] or CreateFrame("Frame", "SkuAurasControl", UIParent)
@@ -132,7 +168,36 @@ function SkuAuras:OnEnable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Real teardown so a disabled SkuAuras genuinely does nothing. Enabled
+-- behaviour is unchanged; only this disabled path is new.
 function SkuAuras:OnDisable()
+	-- Drop every WoW event registration this addon made (re-added in OnEnable).
+	SkuAuras:UnregisterAllEvents()
+
+	-- Stop the per-unit / cooldown OnUpdate ticker.
+	if _G["SkuAurasControl"] then
+		_G["SkuAurasControl"]:SetScript("OnUpdate", nil)
+		_G["SkuAurasControl"]:Hide()
+	end
+
+	-- Stop the keypress trigger from swallowing/forwarding keys: stop
+	-- propagating, drop the key handler, and hide it.
+	if _G["SkuAurasKeypressTrigger"] then
+		_G["SkuAurasKeypressTrigger"]:SetPropagateKeyboardInput(true)
+		_G["SkuAurasKeypressTrigger"]:SetScript("OnKeyDown", nil)
+		_G["SkuAurasKeypressTrigger"]:EnableKeyboard(false)
+		_G["SkuAurasKeypressTrigger"]:Hide()
+	end
+
+	-- Hide the override-binding helper (its OnHide clears any override bindings).
+	if _G["SkuAurasControlOption1"] then
+		ClearOverrideBindings(_G["SkuAurasControlOption1"])
+		_G["SkuAurasControlOption1"]:Hide()
+	end
+
+	-- The UseContainerItem/UseAction/RunMacro hooksecurefunc hooks cannot be
+	-- removed; their bodies are IsEnabled-guarded (see PLAYER_ENTERING_WORLD) so
+	-- they are inert while disabled.
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -294,8 +359,9 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	SkuAuras.attributes.weaponEnchantOffHand.values = SkuAuras.attributes.weaponEnchantMainHand.values
 	
 	if not tItemHook then
-		hooksecurefunc("UseContainerItem", function(aBagID, aSlot, aTarget, aReagentBankAccessible) 
-			dprint("UseContainerItem", aBagID, aSlot, aTarget, aReagentBankAccessible) 
+		hooksecurefunc("UseContainerItem", function(aBagID, aSlot, aTarget, aReagentBankAccessible)
+			if not SkuAuras:IsEnabled() then return end
+			dprint("UseContainerItem", aBagID, aSlot, aTarget, aReagentBankAccessible)
 			local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(aBagID, aSlot)
 			if itemID then	
 				local aEventData =  {
@@ -318,7 +384,8 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 				SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
 			end
 		end)
-		hooksecurefunc("UseAction", function(aSlot, aCheckCursor, aOnSelf) 
+		hooksecurefunc("UseAction", function(aSlot, aCheckCursor, aOnSelf)
+			if not SkuAuras:IsEnabled() then return end
 			local actionType, id, subType = GetActionInfo(aSlot)
 			--dprint("to implement UseAction", aSlot, aCheckCursor, aOnSelf, actionType, id, subType) 
 			if actionType == "item" then
@@ -342,16 +409,18 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 				SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
 			end
 		end)
-		hooksecurefunc("RunMacro", function(aMacroIdOrName) 
-			--dprint("to implement RunMacro", aMacroIdOrName) 
+		hooksecurefunc("RunMacro", function(aMacroIdOrName)
+			if not SkuAuras:IsEnabled() then return end
+			--dprint("to implement RunMacro", aMacroIdOrName)
 
 
 
 
 
 		end)
-		hooksecurefunc("RunMacro", function(aMacroText) 
-			--dprint("to implement RunMacroText", aMacroText) 
+		hooksecurefunc("RunMacro", function(aMacroText)
+			if not SkuAuras:IsEnabled() then return end
+			--dprint("to implement RunMacroText", aMacroText)
 
 
 

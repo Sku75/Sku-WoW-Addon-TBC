@@ -27,16 +27,42 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 -- file (e.g. JunkAndRepair) so adding a feature needs no edit here.
 SkuCore.toggleableModules = SkuCore.toggleableModules or {}
 
-function SkuCore:RegisterToggleableModule(aName, aLabel)
+local function registerToggleable(aName, aLabel, aExternal)
 	if type(aName) ~= "string" then return end
 	-- guard against double registration (e.g. a /reload re-running file scope)
 	for _, m in ipairs(SkuCore.toggleableModules) do
 		if m.name == aName then
 			m.label = aLabel
+			m.external = aExternal and true or false
 			return
 		end
 	end
-	table.insert(SkuCore.toggleableModules, { name = aName, label = aLabel })
+	table.insert(SkuCore.toggleableModules, { name = aName, label = aLabel, external = aExternal and true or false })
+end
+
+-- Register a SkuCore AceAddon SUBMODULE (JunkAndRepair, Mail, AuctionHouse, ...).
+function SkuCore:RegisterToggleableModule(aName, aLabel)
+	registerToggleable(aName, aLabel, false)
+end
+
+-- Register a STANDALONE top-level AceAddon (SkuChat, SkuNav, SkuQuest, SkuMob,
+-- SkuAuras). Same on/off UX, but resolved via LibStub("AceAddon-3.0"):GetAddon
+-- instead of SkuCore:GetModule (W4 Rework B).
+function SkuCore:RegisterToggleableAddon(aName, aLabel)
+	registerToggleable(aName, aLabel, true)
+end
+
+-- Resolve a registered entry's live AceAddon object (submodule OR top-level addon).
+local function ResolveToggleObject(aName)
+	for _, m in ipairs(SkuCore.toggleableModules) do
+		if m.name == aName then
+			if m.external then
+				return LibStub("AceAddon-3.0"):GetAddon(aName, true)
+			end
+			return SkuCore:GetModule(aName, true)
+		end
+	end
+	return SkuCore:GetModule(aName, true)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -56,7 +82,7 @@ function SkuCore:SetModuleEnabled(aName, aEnabled)
 	tSub.moduleEnabled = tSub.moduleEnabled or {}
 	tSub.moduleEnabled[aName] = aEnabled
 
-	local tModule = SkuCore:GetModule(aName, true)
+	local tModule = ResolveToggleObject(aName)
 	if tModule then
 		if aEnabled then
 			if not tModule:IsEnabled() then tModule:Enable() end
@@ -72,9 +98,16 @@ end
 -- arms). Enabled modules keep the default true state and arm normally.
 function SkuCore:ApplyModuleEnabledStates()
 	for _, m in ipairs(SkuCore.toggleableModules) do
-		local tModule = SkuCore:GetModule(m.name, true)
+		local tModule = ResolveToggleObject(m.name)
 		if tModule then
-			tModule:SetEnabledState(SkuCore:IsModuleEnabled(m.name))
+			local tWant = SkuCore:IsModuleEnabled(m.name)
+			tModule:SetEnabledState(tWant)
+			-- A standalone addon may already have been enabled (it loaded before
+			-- SkuCore in the TOC), so SetEnabledState alone won't disarm it — tear it
+			-- down explicitly when it should start disabled (W4 Rework B).
+			if not tWant and tModule.IsEnabled and tModule:IsEnabled() then
+				tModule:Disable()
+			end
 		end
 	end
 end
@@ -139,3 +172,19 @@ if SkuMenu then
 		table.insert(SkuMenu.rootLayout, "Features")
 	end
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Make the standalone top-level Sku addons toggleable too (W4 Rework B). Registered
+-- here CENTRALLY rather than self-registering, because some load BEFORE SkuCore in
+-- the TOC (e.g. SkuChat) and so cannot call SkuCore:Register* at their own file
+-- scope. Registration only records name + label; the live addon object is resolved
+-- lazily (LibStub("AceAddon-3.0"):GetAddon) at enable/toggle time, so it does not
+-- matter that these addons load after this file.
+local function deEn(aDe, aEn)
+	return function() return (GetLocale and GetLocale() == "deDE") and aDe or aEn end
+end
+SkuCore:RegisterToggleableAddon("SkuChat",  deEn("Chat", "Chat"))
+SkuCore:RegisterToggleableAddon("SkuNav",   deEn("Navigation", "Navigation"))
+SkuCore:RegisterToggleableAddon("SkuQuest", deEn("Quests", "Quests"))
+SkuCore:RegisterToggleableAddon("SkuMob",   deEn("Ziele & Gegner", "Targets & mobs"))
+SkuCore:RegisterToggleableAddon("SkuAuras", deEn("Auren", "Auras"))

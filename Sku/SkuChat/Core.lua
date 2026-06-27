@@ -1275,6 +1275,11 @@ function SkuChat_ReceiveAllPrivateMessages(chatFrame)
 end
 
 function SkuChat_OnEvent(self, event, ...)
+	-- W4 Rework B-step-2: the per-tab chat frames keep their CHAT_MSG_* event
+	-- registrations alive even while SkuChat is disabled (we do not tear those
+	-- frames down). Guard the single choke so a disabled SkuChat ignores all
+	-- incoming chat events. No-op cost when enabled (IsEnabled() == true).
+	if SkuChat.IsEnabled and not SkuChat:IsEnabled() then return end
 	if ( self.customEventHandler and self.customEventHandler(self, event, ...) ) then
 		return 
 	end
@@ -2166,7 +2171,39 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:OnDisable()
-	
+	-- Real teardown so a disabled SkuChat genuinely goes quiet. The secure toggle
+	-- frames (OnSkuChatToggle / OnSkuChatToggleSecureHandler) are deliberately
+	-- left alive in _G; we only clear their override bindings. All query/helper
+	-- methods (SetEditboxToCustom, GetTTSText, MenuBuilder, etc.) stay defined and
+	-- callable while disabled.
+
+	-- 1) Close the chat UI if it is currently open and release the in-chat
+	-- navigation bindings (CloseChat itself InCombatLockdown-guards the
+	-- SecureHandlerExecute and sets SkuChat.ChatOpen = false). Only call it when
+	-- open so we do not play the close sound on an already-closed chat.
+	if SkuChat.ChatOpen == true then
+		SkuChat:CloseChat()
+	end
+
+	-- 2) Drop every AceEvent registration this addon armed (CHAT_MSG_WHISPER,
+	-- CHAT_MSG_WHISPER_INFORM, CHAT_MSG_CHANNEL_NOTICE, COMBAT_LOG_EVENT,
+	-- PLAYER_ENTERING_WORLD, PLAYER_LOGIN).
+	SkuChat:UnregisterAllEvents()
+
+	-- 3) Drop the dispatcher callbacks for the synthetic Sku chat streams.
+	SkuDispatcher:UnregisterEventCallback("SKU_COMBATLOG", SkuChat_SkuMessageEventHandler)
+	SkuDispatcher:UnregisterEventCallback("SKU_AUDIOLOG", SkuChat_SkuMessageEventHandler)
+
+	-- 4) Clear the SKU_KEY_CHATOPEN override binding on the secure handler frame
+	-- so the chat-open key no longer fires. Override bindings can only be changed
+	-- out of combat; if we are in combat, leave them (re-enable would re-apply).
+	local b = _G["OnSkuChatToggleSecureHandler"]
+	if b and SkuState:IsInCombat() ~= true then
+		ClearOverrideBindings(b)
+	end
+
+	-- Belt-and-braces: make sure the open flag is down.
+	SkuChat.ChatOpen = false
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2201,7 +2238,12 @@ function SkuChat:COMBAT_LOG_EVENT()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuChat:OnInitialize()
+-- W4 Rework B-step-2: AceEvent registrations used to live in OnInitialize (which
+-- runs ONCE per session). To make SkuChat re-armable (runtime on/off), the event
+-- registration moved into a re-armable helper that OnEnable calls on EVERY enable.
+-- On first load OnEnable runs right after OnInitialize, so first-load behaviour is
+-- byte-identical. OnDisable drops these again via UnregisterAllEvents.
+function SkuChat:ArmEvents()
 	SkuChat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuChat:RegisterEvent("PLAYER_LOGIN")
 	SkuChat:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
@@ -2209,6 +2251,16 @@ function SkuChat:OnInitialize()
 	SkuChat:RegisterEvent("CHAT_MSG_WHISPER_INFORM")
 	SkuChat:RegisterEvent("COMBAT_LOG_EVENT")
 
+	-- Dispatcher callbacks for the synthetic Sku chat streams (Combat/Audio log
+	-- tabs). These are otherwise wired by tab init at PLAYER_ENTERING_WORLD;
+	-- re-registering here makes a mid-session re-enable resume them without
+	-- rebuilding tabs. RegisterEventCallback is idempotent (skips duplicates).
+	SkuDispatcher:RegisterEventCallback("SKU_COMBATLOG", SkuChat_SkuMessageEventHandler)
+	SkuDispatcher:RegisterEventCallback("SKU_AUDIOLOG", SkuChat_SkuMessageEventHandler)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuChat:OnInitialize()
 	local function CloseChatMenuHelper()
 		_G["OnSkuChatToggle"].menuOpen = false
 		SkuOptions.Menu = {}
@@ -2993,6 +3045,11 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:OnEnable()
+	-- (Re-)arm all WoW/dispatcher event registrations. On first load this runs
+	-- right after OnInitialize; on a mid-session re-enable it restores the
+	-- registrations that OnDisable dropped.
+	SkuChat:ArmEvents()
+
 	--we need a secure handler to use setbindingclick/ClearBinding IC
 	local b = _G["OnSkuChatToggleSecureHandler"] or CreateFrame("Button", "OnSkuChatToggleSecureHandler", UIParent, "SecureHandlerClickTemplate")
 	b:SetFrameRef("OnSkuChatToggle", OnSkuChatToggle)
@@ -3168,6 +3225,9 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:DEFAULT_CHAT_FRAME_AddMessage(...)
+	-- Installed as a persistent hooksecurefunc (cannot be unhooked); guard the
+	-- body so a disabled SkuChat does not mirror DEFAULT_CHAT_FRAME messages.
+	if SkuChat.IsEnabled and not SkuChat:IsEnabled() then return end
 	local a, b, c, d, e, f = ...
 	if a == "" or a == " " then
 		return
@@ -3234,6 +3294,7 @@ end
 --hooks to play the chateditbox sounds
 local ChatFrame1EditBoxIsShown = false
 function SkuChat:ChatFrame1EditBoxOnShow()
+	if SkuChat.IsEnabled and not SkuChat:IsEnabled() then return end
 	if ChatFrame1EditBoxIsShown == false  then
 		ChatFrame1EditBoxIsShown = true
 		PlaySoundFile("Interface\\AddOns\\Sku\\SkuChat\\assets\\audio\\chateditbox_open.mp3", "Talking Head")
@@ -3242,6 +3303,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:ChatFrame1EditBoxOnHide()
+	if SkuChat.IsEnabled and not SkuChat:IsEnabled() then return end
 	if ChatFrame1EditBoxIsShown == true  then
 		ChatFrame1EditBoxIsShown = false
 		PlaySoundFile("Interface\\AddOns\\Sku\\SkuChat\\assets\\audio\\chateditbox_close.mp3", "Talking Head")

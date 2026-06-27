@@ -22,6 +22,28 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W4 Phase D — X-D3 Rework B-step-2 (5 standalone addons made toggleable).**
+  Extended the toggle framework in `SkuCore/ModuleManager.lua` to handle TOP-LEVEL
+  AceAddons as well as SkuCore submodules: `RegisterToggleableAddon` + a
+  `ResolveToggleObject` helper that resolves either `SkuCore:GetModule` (submodule)
+  or `LibStub("AceAddon-3.0"):GetAddon` (top-level addon); `SetModuleEnabled` /
+  `ApplyModuleEnabledStates` updated to use it (with a Disable-if-already-enabled
+  fallback for addons that loaded before SkuCore, e.g. SkuChat). SkuChat, SkuNav,
+  SkuQuest, SkuMob, SkuAuras are registered centrally (they can't all self-register —
+  some load before SkuCore). Then each got a REAL OnDisable teardown + re-armable
+  OnEnable (event registration moved OnInitialize→OnEnable; OnDisable does
+  UnregisterAllEvents + stops OnUpdate frames + clears SetOverrideBindings + hides UI;
+  hooksecurefunc bodies IsEnabled-guarded; SkuAuras rebuilds its PEW-built attribute
+  data on mid-session enable). All cross-addon QUERY methods stay callable when
+  disabled (SkuNav.Geo etc.) — disabling only disarms lifecycle. All 6 files
+  luaparser-clean. Default ON, so default behaviour unchanged. In-game smoke pending
+  (bundled with the W4-E pilot test).
+  - **Architecture decision recorded:** adopt a UNIFIED module model (every feature a
+    module with its OWN namespace, a lean SkuCore as lifecycle manager/registry,
+    cross-module comms via SkuState/SkuNav.Geo/SkuDispatcher — never reaching into
+    another feature's table). SkuDispatcher stays (comms plane, distinct from the
+    lifecycle plane) and should be used MORE. See REFACTOR-PLAN W4 Phase E.
+
 - **W4 Phase D — X-D3 Rework B-step-1 (AuctionHouse, aq, aqCombat promoted).**
   The three higher-risk SkuCore features are now runtime-toggleable AceAddon
   submodules (same behaviour-safe recipe as Rework A). **AuctionHouse** OnDisable does

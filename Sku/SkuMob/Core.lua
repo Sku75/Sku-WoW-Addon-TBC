@@ -30,8 +30,14 @@ local SkuMobDB = {
 
 
 	---------------------------------------------------------------------------------------------------------------------------------------
-function SkuMob:OnInitialize()
-	--dprint("SkuMob OnInitialize")
+-- W4 Phase D (B-step-2): SkuMob is centrally registered as a runtime-toggleable
+-- AceAddon. To make "off" genuinely disarm it and "on" (incl. mid-session
+-- re-enable) fully re-arm, the WoW-event registration that used to live in
+-- OnInitialize (which AceAddon runs ONCE per session) now runs on EVERY enable.
+-- Extracted into a helper so OnEnable calls it; AceEvent:RegisterEvent is
+-- idempotent (re-registering the same event just replaces), so the repeated
+-- OnEnable calls from SkuZOptions profile-switch handlers stay safe.
+local function RegisterSkuMobEvents()
 	--SkuMob:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuMob:RegisterEvent("VARIABLES_LOADED")
 	SkuMob:RegisterEvent("PLAYER_TARGET_CHANGED")
@@ -39,6 +45,35 @@ function SkuMob:OnInitialize()
 	SkuMob:RegisterEvent("PLAYER_SOFT_ENEMY_CHANGED")
 	SkuMob:RegisterEvent("PLAYER_SOFT_FRIEND_CHANGED")
 	SkuMob:RegisterEvent("PLAYER_SOFT_INTERACT_CHANGED")
+end
+
+-- Build the InCombatSounds lookup + wire it into the options menu. Originally
+-- only built at VARIABLES_LOADED; extracted so OnEnable can ensure it exists for
+-- a mid-session enable that happens AFTER VARIABLES_LOADED already fired. Safe to
+-- call repeatedly (rebuilds the table from current SkuAuras/SkuAudio data).
+local function EnsureInCombatSounds()
+	SkuMob.InCombatSounds = {}
+	SkuMob.InCombatSounds["Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"] = L["Default beep sound"]
+	for i, v in pairs(SkuAuras.outputSoundFiles) do
+		if SkuAudioFileIndex[i] then
+			SkuMob.InCombatSounds["Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..SkuAudioFileIndex[i]] = v
+		end
+	end
+	SkuMob.options.args.InCombatSound.values = SkuMob.InCombatSounds
+
+	if SkuSettings:Sub("SkuMob").InCombatSound == nil then
+		SkuSettings:Sub("SkuMob").InCombatSound = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
+	end
+
+	if SkuMob.InCombatSounds[SkuSettings:Sub("SkuMob").InCombatSound] == nil then
+		SkuSettings:Sub("SkuMob").InCombatSound = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuMob:OnInitialize()
+	--dprint("SkuMob OnInitialize")
+	-- Event registration moved to OnEnable (re-armable) — see RegisterSkuMobEvents.
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -86,10 +121,23 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:OnEnable()
 	--dprint("SkuMob OnEnable")
-	-- Called when the addon is enabled
+	-- Called when the addon is enabled. Re-arm the WoW events on every enable so
+	-- a re-enable (toggle / profile switch / reload) restores them.
+	RegisterSkuMobEvents()
+
+	-- Ensure the InCombatSounds lookup exists. Normally built at VARIABLES_LOADED,
+	-- but if this enable happens mid-session (after that event already fired) the
+	-- table may be stale/missing, so (re)build it here too. Guarded against
+	-- SkuAuras not yet being available on the very first load (VARIABLES_LOADED
+	-- will then build it as before).
+	if SkuAuras and SkuAuras.outputSoundFiles and SkuAudioFileIndex then
+		EnsureInCombatSounds()
+	end
+
 	local ttime = 0
 	local f = _G["SkuMobControl"] or CreateFrame("Frame", "SkuMobControl", UIParent)
-	f:SetScript("OnUpdate", function(self, time) 
+	SkuMob.controlFrame = f
+	f:SetScript("OnUpdate", function(self, time)
 		ttime = ttime + time 
 		if ttime > 0.25 then 
 			if SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled == true then
@@ -116,8 +164,16 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:OnDisable()
-	-- Called when the addon is disabled
-	
+	-- Real teardown so a disabled SkuMob genuinely does nothing: drop all of this
+	-- addon's WoW-event registrations and stop the SkuMobControl OnUpdate driver
+	-- (target-health + soft-target polling). The query/menu API (CreateAndUpdate-
+	-- SkuMenuFrame, MenuBuilder, PLAYER_TARGET_CHANGED, GetTtsAwareUnitName, ...)
+	-- stays defined and callable — disabling only disarms the lifecycle.
+	SkuMob:UnregisterAllEvents()
+
+	if SkuMob.controlFrame then
+		SkuMob.controlFrame:SetScript("OnUpdate", nil)
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -133,22 +189,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:VARIABLES_LOADED(...)
-	SkuMob.InCombatSounds = {}
-	SkuMob.InCombatSounds["Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"] = L["Default beep sound"]
-	for i, v in pairs(SkuAuras.outputSoundFiles) do
-		if SkuAudioFileIndex[i] then
-			SkuMob.InCombatSounds["Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..SkuAudioFileIndex[i]] = v
-		end
-	end
-	SkuMob.options.args.InCombatSound.values = SkuMob.InCombatSounds
-
-	if SkuSettings:Sub("SkuMob").InCombatSound == nil then
-		SkuSettings:Sub("SkuMob").InCombatSound = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
-	end
-
-	if SkuMob.InCombatSounds[SkuSettings:Sub("SkuMob").InCombatSound] == nil then
-		SkuSettings:Sub("SkuMob").InCombatSound = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
-	end
+	EnsureInCombatSounds()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

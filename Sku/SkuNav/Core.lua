@@ -1135,8 +1135,13 @@ function SkuNav:PlayWpComments(aWpName)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:OnInitialize()
-	--dprint("SkuNav OnInitialize")
+-- W4 Phase D (rework B step 2): event registration is the addon's *arming*, so it
+-- must run on EVERY enable (OnInitialize runs once per session, OnEnable on every
+-- enable incl. mid-session re-enable). Extracted into a helper so OnEnable can
+-- (re-)arm it and OnDisable can drop it via UnregisterAllEvents. On the first
+-- load OnEnable runs immediately after OnInitialize, so first-load behaviour is
+-- byte-identical to the old OnInitialize body.
+function SkuNav:RegisterNavEvents()
 	SkuNav:RegisterEvent("PLAYER_LOGIN")
 	SkuNav:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuNav:RegisterEvent("PLAYER_LEAVING_WORLD")
@@ -1145,6 +1150,12 @@ function SkuNav:OnInitialize()
 	SkuNav:RegisterEvent("ZONE_CHANGED_INDOORS")
 	SkuNav:RegisterEvent("PLAYER_DEAD")
 	SkuNav:RegisterEvent("PLAYER_UNGHOST")
+end
+
+function SkuNav:OnInitialize()
+	--dprint("SkuNav OnInitialize")
+	-- Event registration moved to OnEnable (see RegisterNavEvents) so it re-arms
+	-- on every enable. Nothing one-time/data-only needs to happen here.
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2466,6 +2477,9 @@ end
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnEnable()
 	--dprint("SkuNav OnEnable")
+	-- Arm WoW events first (relocated from OnInitialize so a mid-session re-enable
+	-- re-registers them). AceEvent re-registering the same event is a safe no-op.
+	SkuNav:RegisterNavEvents()
 	SkuSettings:Sub("SkuNav", nil, "global")
 	if not SkuDB.SessionRouteData.Waypoints then
 		SkuSettings:Sub("SkuNav").Waypoints = nil
@@ -3024,7 +3038,43 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnDisable()
+	-- Real teardown so a disabled SkuNav genuinely stops navigating. NOTE: this
+	-- only disarms the LIFECYCLE (events, the OnUpdate driver, the keybind binder,
+	-- UI, beacons). Every query/data method (SkuNav.Geo, waypoint/route lookups)
+	-- stays defined and callable while disabled because SkuQuest / SkuCore / SkuMob
+	-- rely on them — they are NOT guarded here.
 
+	-- 1) Drop all WoW event registrations this addon armed (PLAYER_LOGIN,
+	--    PLAYER_ENTERING_WORLD/LEAVING_WORLD, ZONE_CHANGED*, PLAYER_DEAD,
+	--    PLAYER_UNGHOST). Re-armed by RegisterNavEvents() on the next OnEnable.
+	SkuNav:UnregisterAllEvents()
+
+	-- 2) Stop the navigation OnUpdate driver (beacons/direction/distance/reach
+	--    processing, route drawing, recording-mouse handling). Reused on re-enable.
+	if _G["SkuNavControl"] then
+		_G["SkuNavControl"]:SetScript("OnUpdate", nil)
+	end
+
+	-- 3) Clear the ~20 navigation keybind override-bindings on the binder frame
+	--    and hide it so no nav keypress is handled while disabled. ClearOverrideBindings
+	--    is combat-protected, exactly like the SetOverrideBindingClick arming in
+	--    CreateSkuNavMain (which is itself gated on SkuState:IsInCombat() == false),
+	--    so mirror that gate to avoid a protected-call error in combat.
+	if _G["OnSkuNavMain"] and SkuState:IsInCombat() == false then
+		ClearOverrideBindings(_G["OnSkuNavMain"])
+		_G["OnSkuNavMain"]:Hide()
+	end
+
+	-- 4) Stop any active route/waypoint following + beacons and clear temporary
+	--    waypoints, so a disabled SkuNav makes no sound and tracks nothing.
+	--    (EndFollowingWpOrRt already deselects the waypoint and destroys its beacon.)
+	SkuNav:EndFollowingWpOrRt()
+	SkuNav:ClearWaypointsTemporary()
+
+	-- 5) Hide the SkuMM minimap UI frame if it was opened.
+	if _G["SkuNavMMMainFrame"] and _G["SkuNavMMMainFrame"]:IsShown() then
+		_G["SkuNavMMMainFrame"]:Hide()
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
