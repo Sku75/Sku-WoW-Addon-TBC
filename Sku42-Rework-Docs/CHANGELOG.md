@@ -22,6 +22,36 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W4 Phase E — E1: 20 features extracted off the SkuCore god-table.** Sequential
+  per-feature namespace extraction (one agent at a time to avoid shared caller-file
+  conflicts): every feature's `function SkuCore:X` methods + `SkuCore.<field>` state
+  moved onto its own module table, all callers repointed via the published handle
+  `SkuCore.<Feature>`. Features: Macro, DamageMeter, DialogKey, Socketing, GameOptions,
+  Friends, UIErrors, VisualAids, DungeonBrowser, TurnToUnit, MinimapScanner,
+  GameWorldObjects, SkuFocus, DialTargeting, AtlasLootIntegration, RangeCheck (plus
+  DualSpecProbe/AudioDevice/UpdateCheck/EquipmentSets which were already clean). Result:
+  the SkuCore method-table dropped from ~352 to **237** `function SkuCore:` defs; the 20
+  extracted features now contribute ~0 (only 2 intentional forwarder shims remain). All
+  22 changed files luaparser-clean; **verified in-game — all gates passed, behaviour
+  unchanged, error log clean.**
+  - Notable fixes the agents caught: a missing `SkuCore.UIErrors` published handle + a
+    `UNIT_SPELLCAST_INTERRUPTED` double-definition collision (core stub vs UIErrors
+    handler — dispatcher callback repointed to the handle); and a latent TurnToUnit bug
+    where `SkuCore.TurnToUnit` (handle) and the state table were two separate tables
+    (now unified onto the module).
+  - Patterns established: AceEvent-3.0 mixin added to modules that owned WoW events
+    (Friends, UIErrors, GameWorldObjects, AtlasLootIntegration) so they register/
+    unregister on their own table; AceConsole-3.0 mixin for MinimapScanner's chat
+    commands; **forwarder shims** (`function SkuCore:X() return Module:X() end`) for the
+    two keybinds whose dispatch (`_G[object][func]`) only resolves single-level globals
+    (VisualAids next-combat-enemy, AtlasLoot keybind); live macrotext `/run` strings are
+    real call sites and were repointed (Socketing, DungeonBrowser).
+  - **Remaining (W4-E): the hard-3** — AuctionHouse (50), aq (26), aqCombat (23) still
+    define ~99 methods on the SkuCore table; extract next with extra care (combat
+    hot-path, AH hardware-event buy + secure teardown, the SkuAuras coupling). Then E2
+    (assess what legitimately stays core: Core.lua manager + LocalMenu Tier-1 +
+    voiceOutput) and E3 (record final coupling).
+
 - **W4 Phase E — E0 pilot: Mail namespace extraction.** First feature moved OFF the
   shared `SkuCore` god-table onto its own module namespace: 12 `SkuCore:Mail*` methods
   → `Mail:` (module table), the `Mail` module gained the AceEvent-3.0 mixin (events

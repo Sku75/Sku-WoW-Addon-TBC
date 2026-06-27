@@ -163,7 +163,7 @@ local function DialogkeyCreateControlFrame()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialogKeyLogin()
+function DialogKey:DialogKeyLogin()
 	DialogkeyCreateControlFrame()
 end
 

@@ -1,4 +1,4 @@
-local MODULE_NAME, MODULE_PART = "SkuCore", "DialTargeting"
+﻿local MODULE_NAME, MODULE_PART = "SkuCore", "DialTargeting"
 local L = Sku.L
 local _G = _G
 
@@ -25,7 +25,7 @@ end)
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargetingOnLogin()
+function DialTargeting:DialTargetingOnLogin()
    SkuSettings:Sub("SkuCore").dialTargeting = SkuSettings:Sub("SkuCore").dialTargeting or {}
    SkuSettings:Sub("SkuCore").dialTargeting.enabled = SkuSettings:Sub("SkuCore").dialTargeting.enabled or L["Off"]
    SkuSettings:Sub("SkuCore").dialTargeting.keySound = SkuSettings:Sub("SkuCore").dialTargeting.keySound or L["On first and second key"]
@@ -33,7 +33,7 @@ function SkuCore:DialTargetingOnLogin()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargetingOnInitialize()
+function DialTargeting:DialTargetingOnInitialize()
    dprint("DialTargetingOnInitialize")
 
    -- Create the secure frames + register the dispatcher callbacks only once; on a
@@ -178,26 +178,26 @@ end
 -- (Re)register the 6 group/roster dispatcher callbacks. Idempotent enough to call on
 -- every OnEnable; mirrored by DialTargetingUnregisterCallbacks in OnDisable.
 function DialTargeting:DialTargetingRegisterCallbacks()
-	SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", SkuCore.DialTargeting_PLAYER_ENTERING_WORLD)
-   SkuDispatcher:RegisterEventCallback("PARTY_LEADER_CHANGED", SkuCore.DialTargeting_PARTY_LEADER_CHANGED)
-   SkuDispatcher:RegisterEventCallback("GROUP_FORMED", SkuCore.DialTargeting_GROUP_FORMED)
-   SkuDispatcher:RegisterEventCallback("GROUP_JOINED", SkuCore.DialTargeting_GROUP_JOINED)
-   SkuDispatcher:RegisterEventCallback("GROUP_LEFT", SkuCore.DialTargeting_GROUP_LEFT)
-   SkuDispatcher:RegisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.DialTargeting_GROUP_ROSTER_UPDATE)
+	SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", DialTargeting.DialTargeting_PLAYER_ENTERING_WORLD)
+   SkuDispatcher:RegisterEventCallback("PARTY_LEADER_CHANGED", DialTargeting.DialTargeting_PARTY_LEADER_CHANGED)
+   SkuDispatcher:RegisterEventCallback("GROUP_FORMED", DialTargeting.DialTargeting_GROUP_FORMED)
+   SkuDispatcher:RegisterEventCallback("GROUP_JOINED", DialTargeting.DialTargeting_GROUP_JOINED)
+   SkuDispatcher:RegisterEventCallback("GROUP_LEFT", DialTargeting.DialTargeting_GROUP_LEFT)
+   SkuDispatcher:RegisterEventCallback("GROUP_ROSTER_UPDATE", DialTargeting.DialTargeting_GROUP_ROSTER_UPDATE)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function DialTargeting:DialTargetingUnregisterCallbacks()
-   SkuDispatcher:UnregisterEventCallback("PLAYER_ENTERING_WORLD", SkuCore.DialTargeting_PLAYER_ENTERING_WORLD)
-   SkuDispatcher:UnregisterEventCallback("PARTY_LEADER_CHANGED", SkuCore.DialTargeting_PARTY_LEADER_CHANGED)
-   SkuDispatcher:UnregisterEventCallback("GROUP_FORMED", SkuCore.DialTargeting_GROUP_FORMED)
-   SkuDispatcher:UnregisterEventCallback("GROUP_JOINED", SkuCore.DialTargeting_GROUP_JOINED)
-   SkuDispatcher:UnregisterEventCallback("GROUP_LEFT", SkuCore.DialTargeting_GROUP_LEFT)
-   SkuDispatcher:UnregisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.DialTargeting_GROUP_ROSTER_UPDATE)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_ENTERING_WORLD", DialTargeting.DialTargeting_PLAYER_ENTERING_WORLD)
+   SkuDispatcher:UnregisterEventCallback("PARTY_LEADER_CHANGED", DialTargeting.DialTargeting_PARTY_LEADER_CHANGED)
+   SkuDispatcher:UnregisterEventCallback("GROUP_FORMED", DialTargeting.DialTargeting_GROUP_FORMED)
+   SkuDispatcher:UnregisterEventCallback("GROUP_JOINED", DialTargeting.DialTargeting_GROUP_JOINED)
+   SkuDispatcher:UnregisterEventCallback("GROUP_LEFT", DialTargeting.DialTargeting_GROUP_LEFT)
+   SkuDispatcher:UnregisterEventCallback("GROUP_ROSTER_UPDATE", DialTargeting.DialTargeting_GROUP_ROSTER_UPDATE)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargetingGetCurrentRoster()
+function DialTargeting:DialTargetingGetCurrentRoster()
    dprint("DialTargetingGetCurrentRoster")
    local tRoster = {}
    for x = 1, 10 do
@@ -213,7 +213,7 @@ function SkuCore:DialTargetingGetCurrentRoster()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargetingRosterUpdate()
+function DialTargeting:DialTargetingRosterUpdate()
    if 
       ((UnitInRaid("player") and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Raid"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))) 
       or 
@@ -228,10 +228,10 @@ function SkuCore:DialTargetingRosterUpdate()
       end
 
       if SkuCore.inCombat == true then
-         SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.DialTargetingRosterUpdate, true)
+         SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", DialTargeting.DialTargetingRosterUpdate, true)
          return
       end
-      SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.DialTargetingRosterUpdate)
+      SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", DialTargeting.DialTargetingRosterUpdate)
 
       local tPlayerName = UnitName("player")
       _G["SkuSecureTargetingFrame"]:SetAttribute("playername", tPlayerName)
@@ -342,14 +342,14 @@ function SkuCore:DialTargetingRosterUpdate()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargetingEnable()
+function DialTargeting:DialTargetingEnable()
    dprint("DialTargetingEnable")
    if SkuCore.inCombat == true then
-      SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.DialTargetingEnable, true)
+      SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", DialTargeting.DialTargetingEnable, true)
       return
    end
-   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.DialTargetingEnable)
-   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.DialTargetingDisable)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", DialTargeting.DialTargetingEnable)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", DialTargeting.DialTargetingDisable)
 
    if _G["SkuSkriptRecognizer"] and _G["SkuSkriptRecognizer"]:IsShown() == true then
       _G["SkuSkriptRecognizer"]:Hide()
@@ -365,18 +365,18 @@ function SkuCore:DialTargetingEnable()
 
    _G["SkuSecureTargetingFrame"]:SetAttribute("enabled", true)
 
-   SkuCore:DialTargetingRosterUpdate()
+   DialTargeting:DialTargetingRosterUpdate()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargetingDisable()
+function DialTargeting:DialTargetingDisable()
    dprint("DialTargetingDisable")
    if SkuCore.inCombat == true then
-      SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.DialTargetingDisable, true)
+      SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", DialTargeting.DialTargetingDisable, true)
       return
    end
-   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.DialTargetingEnable)
-   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.DialTargetingDisable)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", DialTargeting.DialTargetingEnable)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", DialTargeting.DialTargetingDisable)
 
    _G["SkuSecureTargetingFrame"]:SetAttribute("enabled", false)
    _G["SkuSecureTargetingFrame"]:Disable()
@@ -392,59 +392,59 @@ function SkuCore:DialTargetingDisable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargeting_PLAYER_ENTERING_WORLD()
+function DialTargeting:DialTargeting_PLAYER_ENTERING_WORLD()
    dprint("DialTargeting_PLAYER_ENTERING_WORLD")
-   SkuCore:DialTargeting_EndableDisable()
+   DialTargeting:DialTargeting_EndableDisable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargeting_PARTY_LEADER_CHANGED()
+function DialTargeting:DialTargeting_PARTY_LEADER_CHANGED()
    dprint("DialTargeting_PARTY_LEADER_CHANGED", UnitInRaid("player"), UnitInParty("player"))
-   SkuCore:DialTargeting_EndableDisable()
-   SkuCore:DialTargetingRosterUpdate()
+   DialTargeting:DialTargeting_EndableDisable()
+   DialTargeting:DialTargetingRosterUpdate()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargeting_GROUP_FORMED()
+function DialTargeting:DialTargeting_GROUP_FORMED()
    dprint("DialTargeting_PARTY_LEADER_CHANGED")
-   SkuCore:DialTargeting_EndableDisable()
+   DialTargeting:DialTargeting_EndableDisable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargeting_GROUP_JOINED()
+function DialTargeting:DialTargeting_GROUP_JOINED()
    dprint("DialTargeting_PARTY_LEADER_CHANGED")
-   SkuCore:DialTargeting_EndableDisable() 
+   DialTargeting:DialTargeting_EndableDisable() 
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargeting_GROUP_LEFT()
+function DialTargeting:DialTargeting_GROUP_LEFT()
    dprint("DialTargeting_PARTY_LEADER_CHANGED")
-   SkuCore:DialTargeting_EndableDisable()
+   DialTargeting:DialTargeting_EndableDisable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargeting_GROUP_ROSTER_UPDATE()
+function DialTargeting:DialTargeting_GROUP_ROSTER_UPDATE()
    dprint("DialTargeting_PARTY_LEADER_CHANGED")
-   SkuCore:DialTargeting_EndableDisable()
-   SkuCore:DialTargetingRosterUpdate()
+   DialTargeting:DialTargeting_EndableDisable()
+   DialTargeting:DialTargetingRosterUpdate()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargeting_EndableDisable()
+function DialTargeting:DialTargeting_EndableDisable()
    if not DialTargeting:IsEnabled() then return end
    if
       ((UnitInRaid("player") and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Raid"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))) 
       or 
       (UnitInParty("player") == true  and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))  
    then
-      SkuCore:DialTargetingEnable()
+      DialTargeting:DialTargetingEnable()
    else
-      SkuCore:DialTargetingDisable()
+      DialTargeting:DialTargetingDisable()
    end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DialTargetingMenuBuilder()
+function DialTargeting:DialTargetingMenuBuilder()
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true
@@ -454,7 +454,7 @@ function SkuCore:DialTargetingMenuBuilder()
    end
    tNewMenuEntry.OnAction = function(self, aValue, aName)
       SkuSettings:Sub("SkuCore").dialTargeting.enabled = aName
-      SkuCore:DialTargeting_EndableDisable()
+      DialTargeting:DialTargeting_EndableDisable()
    end
    tNewMenuEntry.BuildChildren = function(self)
       SkuOptions:InjectMenuItems(self, {L["Party"]}, SkuGenericMenuItem)
@@ -489,7 +489,7 @@ function SkuCore:DialTargetingMenuBuilder()
    end
    tNewMenuEntry.OnAction = function(self, aValue, aName)
       SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10 = aName
-      SkuCore:DialTargeting_EndableDisable()
+      DialTargeting:DialTargeting_EndableDisable()
    end
    tNewMenuEntry.BuildChildren = function(self)
       SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
@@ -506,12 +506,12 @@ end
 -- creates the secure frames once and (re)registers the 6 group/roster dispatcher
 -- callbacks; PLAYER_ENTERING_WORLD then resolves enable/disable per the user's setting.
 function DialTargeting:OnEnable()
-   SkuCore:DialTargetingOnLogin()
-   SkuCore:DialTargetingOnInitialize()
+   DialTargeting:DialTargetingOnLogin()
+   DialTargeting:DialTargetingOnInitialize()
    -- Resolve the current group state immediately so re-enabling mid-session takes
    -- effect without waiting for the next group event (the in-combat deferral inside
    -- DialTargetingEnable/Disable is preserved).
-   SkuCore:DialTargeting_EndableDisable()
+   DialTargeting:DialTargeting_EndableDisable()
 end
 
 -- Disarm the feature: unregister the group/roster dispatcher callbacks so a disabled
@@ -519,5 +519,5 @@ end
 -- helper (which itself defers to PLAYER_REGEN_ENABLED while in combat).
 function DialTargeting:OnDisable()
    DialTargeting:DialTargetingUnregisterCallbacks()
-   SkuCore:DialTargetingDisable()
+   DialTargeting:DialTargetingDisable()
 end

@@ -20,9 +20,14 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 --   * OnDisable hides the lazy frames (line bar / mouse finder / plate colour driver /
 --     follow-warn frame / next-enemy button) and clears the next-enemy override
 --     binding, so a disabled VisualAids genuinely does nothing.
--- The public SkuCore:VisualAids* methods stay where they are (called by SkuZOptions
--- and a Core.lua keybind); the show/activate entry points are guarded with
--- IsEnabled so "off" is a safe no-op without editing those callers.
+-- W4 Phase E (namespace extraction): the feature's own methods now live on the
+-- module table `VisualAids` (function VisualAids:Method) instead of the shared
+-- SkuCore god-object; external callers use the published handle SkuCore.VisualAids
+-- (SkuZOptions menu + the SKU_KEY_MOUSEFINDER keybind in SkuCore/Core.lua). The one
+-- exception is the SKU_KEY_NEXTCOMBATENEMY override-binding dispatch, whose generic
+-- resolver only handles _G globals (object "SkuCore"); for that path a thin SkuCore
+-- forwarder (below) delegates to the module. The show/activate entry points are
+-- guarded with IsEnabled so "off" is a safe no-op.
 -- Settings stay under the "SkuCore" SkuSettings namespace, so there is no
 -- SavedVariables migration.
 local VisualAids = SkuCore:NewModule(MODULE_PART)
@@ -100,7 +105,7 @@ local function tEnsureLineBar()
 	return f
 end
 
-function SkuCore:VisualAidsLineBarLayout()
+function VisualAids:VisualAidsLineBarLayout()
 	if not VisualAids:IsEnabled() then return end
 	local va = tEnsureVA(); if not va then return end
 	local f = tEnsureLineBar()
@@ -134,7 +139,7 @@ local function tMenuIsOpen()
 	return ok and res == true
 end
 
-function SkuCore:VisualAidsLineBarSet(aText)
+function VisualAids:VisualAidsLineBarSet(aText)
 	if not VisualAids:IsEnabled() then if tLineBar then tLineBar:Hide() end return end
 	local va = tEnsureVA(); if not va then return end
 	if va.lineBar.enabled ~= true or tMenuIsOpen() ~= true then
@@ -144,12 +149,12 @@ function SkuCore:VisualAidsLineBarSet(aText)
 	-- nur den AKTUELLEN Menuepunkt anzeigen, nicht den ganzen Pfad
 	local txt = (SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name) or aText or ""
 	local f = tEnsureLineBar()
-	SkuCore:VisualAidsLineBarLayout()
+	VisualAids:VisualAidsLineBarLayout()
 	f.fs:SetText(tostring(txt))
 	f:Show()
 end
 
-function SkuCore:VisualAidsLineBarHide()
+function VisualAids:VisualAidsLineBarHide()
 	if tLineBar then tLineBar:Hide() end
 end
 
@@ -169,13 +174,13 @@ local function tGetPlateTex(np)
 	return np.SkuVAColor
 end
 
-function SkuCore:VisualAidsColorClearPlate(aUnit)
+function VisualAids:VisualAidsColorClearPlate(aUnit)
 	if not aUnit or not C_NamePlate then return end
 	local ok, np = pcall(C_NamePlate.GetNamePlateForUnit, aUnit)
 	if ok and np and np.SkuVAColor then np.SkuVAColor:Hide() end
 end
 
-function SkuCore:VisualAidsColorOnePlate(aUnit)
+function VisualAids:VisualAidsColorOnePlate(aUnit)
 	if not VisualAids:IsEnabled() then return end
 	local va = tEnsureVA(); if not va or va.plateColors.enabled ~= true then return end
 	if not aUnit or not C_NamePlate then return end
@@ -208,14 +213,14 @@ function SkuCore:VisualAidsColorOnePlate(aUnit)
 	tex:Show()
 end
 
-function SkuCore:VisualAidsColorRefreshAll()
+function VisualAids:VisualAidsColorRefreshAll()
 	if not VisualAids:IsEnabled() then return end
 	if not C_NamePlate or not C_NamePlate.GetNamePlates then return end
 	local ok, plates = pcall(C_NamePlate.GetNamePlates)
 	if not ok or not plates then return end
 	for _, np in ipairs(plates) do
 		if np and np.namePlateUnitToken then
-			pcall(SkuCore.VisualAidsColorOnePlate, SkuCore, np.namePlateUnitToken)
+			pcall(VisualAids.VisualAidsColorOnePlate, VisualAids, np.namePlateUnitToken)
 		elseif np and np.SkuVAColor then
 			np.SkuVAColor:Hide()
 		end
@@ -231,7 +236,7 @@ local function tClearAllPlates()
 	end
 end
 
-function SkuCore:VisualAidsPlateSetActive(aOn)
+function VisualAids:VisualAidsPlateSetActive(aOn)
 	if not VisualAids:IsEnabled() then aOn = false end
 	if not tPlateEventFrame then
 		tPlateEventFrame = CreateFrame("Frame")
@@ -239,11 +244,11 @@ function SkuCore:VisualAidsPlateSetActive(aOn)
 			local va = tEnsureVA(); if not va or va.plateColors.enabled ~= true then return end
 			pcall(function()
 				if event == "NAME_PLATE_UNIT_ADDED" then
-					SkuCore:VisualAidsColorOnePlate(unit)
+					VisualAids:VisualAidsColorOnePlate(unit)
 				elseif event == "NAME_PLATE_UNIT_REMOVED" then
-					SkuCore:VisualAidsColorClearPlate(unit)
+					VisualAids:VisualAidsColorClearPlate(unit)
 				elseif event == "PLAYER_TARGET_CHANGED" then
-					SkuCore:VisualAidsColorRefreshAll()
+					VisualAids:VisualAidsColorRefreshAll()
 				end
 			end)
 		end)
@@ -252,7 +257,7 @@ function SkuCore:VisualAidsPlateSetActive(aOn)
 		tPlateEventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 		tPlateEventFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
 		tPlateEventFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
-		pcall(SkuCore.VisualAidsColorRefreshAll, SkuCore)
+		pcall(VisualAids.VisualAidsColorRefreshAll, VisualAids)
 	else
 		tPlateEventFrame:UnregisterAllEvents()
 		pcall(tClearAllPlates)
@@ -310,7 +315,7 @@ local function tMouseFinderLayout(quarter)
 	end
 end
 
-function SkuCore:VisualAidsMouseFinderFlash()
+function VisualAids:VisualAidsMouseFinderFlash()
 	if not VisualAids:IsEnabled() then return end
 	local va = tEnsureVA(); if not va or va.mouseFinder.enabled ~= true then return end
 	local x, y = GetCursorPosition()
@@ -524,12 +529,12 @@ end
 -- Eine kontinuierliche Distanzverfolgung eines beliebigen Spielers ist auf 2.5.5
 -- nicht zuverlaessig moeglich; daher nur die Abbruch-Erkennung des Folgen-Status.
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:FollowWarnGetEnabled()
+function VisualAids:FollowWarnGetEnabled()
 	local p = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuSettings:Sub("SkuCore")
 	return p ~= nil and p.followBreakWarn == true
 end
 
-function SkuCore:FollowWarnSetEnabled(aOn)
+function VisualAids:FollowWarnSetEnabled(aOn)
 	local p = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuSettings:Sub("SkuCore")
 	if not p then return end
 	p.followBreakWarn = (aOn == true)
@@ -552,7 +557,7 @@ local function tEnsureFollowWarn()
 				-- (erneutes Druecken von Folgen unterbricht und baut sofort neu auf)
 				tFollowWarnEndPending = false
 			elseif event == "AUTOFOLLOW_END" then
-				if tFollowWarnActive == true and SkuCore:FollowWarnGetEnabled() then
+				if tFollowWarnActive == true and VisualAids:FollowWarnGetEnabled() then
 					-- nicht sofort ansagen: kurz warten, ob direkt ein neues Folgen
 					-- beginnt. Nur wenn nicht, ist es ein echter Abbruch.
 					tFollowWarnEndPending = true
@@ -601,7 +606,7 @@ end
 local tNextEnemyBindPending = false
 -- Wird von SkuKeyBindsUpdate aufgerufen (object SkuCore, func diese Methode):
 -- setzt die Override-Bindung der gewaehlten Taste auf den sicheren Button.
-function SkuCore:UpdateNextCombatEnemyBinding()
+function VisualAids:UpdateNextCombatEnemyBinding()
 	if not VisualAids:IsEnabled() then return end
 	local b = tEnsureNextEnemyButton()
 	if not b then return end
@@ -619,13 +624,23 @@ function SkuCore:UpdateNextCombatEnemyBinding()
 	if k2 ~= "" then pcall(SetOverrideBindingClick, b, true, k2, "SkuNextCombatEnemyButton", k2) end
 end
 
+-- The SkuKeyBinds override-binding dispatcher (SkuZOptions/SkuKeyBinds.lua) is
+-- generic and resolves its target via _G[object][func](_G[object]); the
+-- SKU_KEY_NEXTCOMBATENEMY entry uses object "SkuCore". Since the method now lives
+-- on the VisualAids module table (not a _G global), keep a thin SkuCore forwarder
+-- so that one dynamic-dispatch path still reaches it. (self is the SkuCore table
+-- the dispatcher passes; the body ignores it and delegates to the module.)
+function SkuCore:UpdateNextCombatEnemyBinding()
+	return VisualAids:UpdateNextCombatEnemyBinding()
+end
+
 -- Regen-Frame nur ERSTELLEN (Skript setzen); das eigentliche Event wird beim
 -- Aktivieren des Moduls registriert (VisualAids:OnEnable) und beim Deaktivieren
 -- wieder abgemeldet (VisualAids:OnDisable).
 local tNextEnemyRegenFrame = CreateFrame("Frame")
 tNextEnemyRegenFrame:SetScript("OnEvent", function()
 	if tNextEnemyBindPending == true then
-		pcall(function() SkuCore:UpdateNextCombatEnemyBinding() end)
+		pcall(function() VisualAids:UpdateNextCombatEnemyBinding() end)
 	end
 end)
 
@@ -642,10 +657,10 @@ local function tBuildBar(self)
 				pcall(function()
 					local v = tEnsureVA()
 					if v and v.lineBar.enabled == true then
-						SkuCore:VisualAidsLineBarLayout()
-						SkuCore:VisualAidsLineBarSet((SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name) or "")
+						VisualAids:VisualAidsLineBarLayout()
+						VisualAids:VisualAidsLineBarSet((SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name) or "")
 					else
-						SkuCore:VisualAidsLineBarHide()
+						VisualAids:VisualAidsLineBarHide()
 					end
 				end)
 			end,
@@ -654,19 +669,19 @@ local function tBuildBar(self)
 			order = 2, name = L["Schriftgroesse"], type = "select",
 			values = {[1] = L["winzig"], [2] = L["klein"], [3] = L["mittel"], [4] = L["gross"], [5] = L["sehr gross"], [6] = L["riesig"]},
 			get = function() local v = tEnsureVA(); return (v and v.lineBar.size) or 3 end,
-			OnAction = function() pcall(function() SkuCore:VisualAidsLineBarLayout() end) end,
+			OnAction = function() pcall(function() VisualAids:VisualAidsLineBarLayout() end) end,
 		},
 		position = {
 			order = 3, name = L["Position"], type = "select",
 			values = {top = L["oben"], bottom = L["unten"]},
 			get = function() local v = tEnsureVA(); return (v and v.lineBar.position) or "top" end,
-			OnAction = function() pcall(function() SkuCore:VisualAidsLineBarLayout() end) end,
+			OnAction = function() pcall(function() VisualAids:VisualAidsLineBarLayout() end) end,
 		},
 		opacity = {
 			order = 4, name = L["Deckkraft"], type = "select",
 			values = {[1] = L["40 Prozent"], [2] = L["55 Prozent"], [3] = L["70 Prozent"], [4] = L["85 Prozent"], [5] = L["100 Prozent"]},
 			get = function() local v = tEnsureVA(); return (v and v.lineBar.opacity) or 5 end,
-			OnAction = function() pcall(function() SkuCore:VisualAidsLineBarLayout() end) end,
+			OnAction = function() pcall(function() VisualAids:VisualAidsLineBarLayout() end) end,
 		},
 	}
 	SkuOptions:IterateOptionsArgs(tArgs, self, va.lineBar)
@@ -683,40 +698,40 @@ local function tBuildPlates(self)
 		enabled = {
 			order = 1, name = L["Plaketten einfaerben"], type = "toggle",
 			get = function() local v = tEnsureVA(); return v ~= nil and v.plateColors.enabled == true end,
-			OnAction = function() pcall(function() local v = tEnsureVA(); SkuCore:VisualAidsPlateSetActive(v and v.plateColors.enabled == true) end) end,
+			OnAction = function() pcall(function() local v = tEnsureVA(); VisualAids:VisualAidsPlateSetActive(v and v.plateColors.enabled == true) end) end,
 		},
 		mode = {
 			order = 2, name = L["Modus"], type = "select",
 			values = {target = L["nur Ziel"], all = L["alle Plaketten"]},
 			get = function() local v = tEnsureVA(); return (v and v.plateColors.mode) or "target" end,
-			OnAction = function() pcall(function() SkuCore:VisualAidsColorRefreshAll() end) end,
+			OnAction = function() pcall(function() VisualAids:VisualAidsColorRefreshAll() end) end,
 		},
 		colorEnemy = {
 			order = 3, name = L["Farbe Feind"], type = "select", values = tColors,
 			get = function() local v = tEnsureVA(); return (v and v.plateColors.colorEnemy) or "red" end,
-			OnAction = function() pcall(function() SkuCore:VisualAidsColorRefreshAll() end) end,
+			OnAction = function() pcall(function() VisualAids:VisualAidsColorRefreshAll() end) end,
 		},
 		colorNeutral = {
 			order = 4, name = L["Farbe Neutral"], type = "select", values = tColors,
 			get = function() local v = tEnsureVA(); return (v and v.plateColors.colorNeutral) or "yellow" end,
-			OnAction = function() pcall(function() SkuCore:VisualAidsColorRefreshAll() end) end,
+			OnAction = function() pcall(function() VisualAids:VisualAidsColorRefreshAll() end) end,
 		},
 		colorFriend = {
 			order = 5, name = L["Farbe Freund"], type = "select", values = tColors,
 			get = function() local v = tEnsureVA(); return (v and v.plateColors.colorFriend) or "green" end,
-			OnAction = function() pcall(function() SkuCore:VisualAidsColorRefreshAll() end) end,
+			OnAction = function() pcall(function() VisualAids:VisualAidsColorRefreshAll() end) end,
 		},
 		size = {
 			order = 6, name = L["Groesse"], type = "select",
 			values = {[20] = L["klein"], [30] = L["mittel"], [40] = L["gross"], [60] = L["sehr gross"]},
 			get = function() local v = tEnsureVA(); return (v and v.plateColors.size) or 40 end,
-			OnAction = function() pcall(function() SkuCore:VisualAidsColorRefreshAll() end) end,
+			OnAction = function() pcall(function() VisualAids:VisualAidsColorRefreshAll() end) end,
 		},
 		alpha = {
 			order = 7, name = L["Deckkraft"], type = "select",
 			values = {[3] = L["dezent"], [4] = L["mittel"], [5] = L["kraeftig"]},
 			get = function() local v = tEnsureVA(); return (v and v.plateColors.alpha) or 4 end,
-			OnAction = function() pcall(function() SkuCore:VisualAidsColorRefreshAll() end) end,
+			OnAction = function() pcall(function() VisualAids:VisualAidsColorRefreshAll() end) end,
 		},
 	}
 	SkuOptions:IterateOptionsArgs(tArgs, self, va.plateColors)
@@ -744,7 +759,7 @@ local function tBuildMouse(self)
 	pcall(tBuildSingleKeyBindEntry, self, "SKU_KEY_MOUSEFINDER")
 end
 
-function SkuCore:VisualAidsBuildMenu(aParentSelf)
+function VisualAids:VisualAidsBuildMenu(aParentSelf)
 	if not aParentSelf then return end
 
 	local tBar = SkuOptions:InjectMenuItems(aParentSelf, {L["Lesebalken"]}, SkuGenericMenuItem)
@@ -773,7 +788,7 @@ function VisualAids:OnEnable()
 	-- Naechster-Gegner-Button: Regen-Event scharfschalten und Bindung anwenden.
 	if tNextEnemyRegenFrame then tNextEnemyRegenFrame:RegisterEvent("PLAYER_REGEN_ENABLED") end
 	if tNextEnemyButton then tNextEnemyButton:Show() end
-	pcall(function() SkuCore:UpdateNextCombatEnemyBinding() end)
+	pcall(function() VisualAids:UpdateNextCombatEnemyBinding() end)
 end
 
 -- Disarm the umbrella: hide the lazy frames, unregister all driver events and clear

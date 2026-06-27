@@ -388,7 +388,7 @@ end
 -- Escape Game Menu: its children are the live game-menu actions, and the
 -- "Optionen" entry descends into the Blizzard settings categories.
 -- ---------------------------------------------------------------------
-function SkuCore:GameOptionsMenuBuilder(aParentEntry)
+function GameOptions:GameOptionsMenuBuilder(aParentEntry)
    -- Feature off: yield nothing (the Game-Options menu entry stays empty).
    if not GameOptions:IsEnabled() then return end
    if not HasSettings() then

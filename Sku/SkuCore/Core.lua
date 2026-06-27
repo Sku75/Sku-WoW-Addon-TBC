@@ -294,7 +294,7 @@ SkuCore.interactFramesListManual = {
 	-- Build_SocketingFrame.lua. The Sockeln entry in the item context
 	-- menu opens the ItemSocketingFrame via macrotext (Vorlage-Stil),
 	-- and this builder produces the accessible per-socket / gem menu.
-	["ItemSocketingFrame"] = function(...) if SkuCore.Build_SocketingFrame then SkuCore:Build_SocketingFrame(...) end end,
+	["ItemSocketingFrame"] = function(...) if SkuCore.Socketing and SkuCore.Socketing.Build_SocketingFrame then SkuCore.Socketing:Build_SocketingFrame(...) end end,
 
 }
 
@@ -383,7 +383,7 @@ function SkuCore:OnInitialize()
 	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_DELAYED", SkuCore.UNIT_SPELLCAST_DELAYED)
 	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_FAILED", SkuCore.UNIT_SPELLCAST_FAILED)
 	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_FAILED_QUIET", SkuCore.UNIT_SPELLCAST_FAILED_QUIET)
-	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_INTERRUPTED", SkuCore.UNIT_SPELLCAST_INTERRUPTED)
+	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_INTERRUPTED", SkuCore.UIErrors.UNIT_SPELLCAST_INTERRUPTED)
 	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_STOP", SkuCore.UNIT_SPELLCAST_STOP)
 	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_SUCCEEDED", SkuCore.UNIT_SPELLCAST_SUCCEEDED)
 	SkuDispatcher:RegisterEventCallback("NAME_PLATE_CREATED", SkuCore.NAME_PLATE_CREATED)
@@ -442,11 +442,11 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_STARTED_MOVING()
-   if SkuCore.gameWorldObjectsScanFrame then
-      SkuCore:GameWorldObjectsRestoreView()
+   if SkuCore.GameWorldObjects.gameWorldObjectsScanFrame then
+      SkuCore.GameWorldObjects:GameWorldObjectsRestoreView()
    end
-   if SkuCore.IsMMScanning == true then
-		SkuCore:MinimapStopScan()
+   if SkuCore.MinimapScanner.IsMMScanning == true then
+		SkuCore.MinimapScanner:MinimapStopScan()
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1002,7 +1002,7 @@ function SkuCore:OnEnable()
 
 		SkuCore:UpdateInteractMove()
 
-		SkuCore:DoRangeCheck()
+		SkuCore.RangeCheck:DoRangeCheck()
 
 		if SkuCore.inCombat ~= true then
 			-- [41.05] Freundliche Plaketten nur erzwingen, wenn die Kamera im
@@ -1418,19 +1418,19 @@ function SkuCore:OnEnable()
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
 		dprint("SkuCoreControlOption1", self, aKey, aB)
 
-		if SkuCore.IsMMScanning == true then
+		if SkuCore.MinimapScanner.IsMMScanning == true then
 			return
 		end
 
 		for x = 1, 6 do
 			if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_TURNTOUNIT"..x) then
 				local tValues = SkuCore.TurnToUnit.availableTargetsList[SkuCore.TurnToUnit.availableTargetsListNames[SkuSettings:Sub("SkuCore").turnToUnit.targetSelection["key"..x]]]
-				SkuCore:TurnToUnitStartTuring(tValues[1], tValues[2], tValues[3])
+				SkuCore.TurnToUnit:TurnToUnitStartTuring(tValues[1], tValues[2], tValues[3])
 			end
 		end
 
 		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_TURNTOUNITTURN180") then
-			SkuCore:TurnToUnitTurn180()
+			SkuCore.TurnToUnit:TurnToUnitTurn180()
 		end
 
 		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_DOMONITORPARTYHEALTH2CONTI") then
@@ -1439,7 +1439,7 @@ function SkuCore:OnEnable()
 
 
 		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_TARGETDISTANCE") then
-			SkuCore:DoRangeCheck(true)
+			SkuCore.RangeCheck:DoRangeCheck(true)
 		end
 
 		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_GROUPMEMBERSRANGECHECK") then
@@ -1456,7 +1456,7 @@ function SkuCore:OnEnable()
 
 
 		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_TARGETDISTANCE") then
-			SkuCore:DoRangeCheck(true)
+			SkuCore.RangeCheck:DoRangeCheck(true)
 		end
 
 		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_PANICMODE") then
@@ -1464,13 +1464,13 @@ function SkuCore:OnEnable()
 		end
 
 		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_MOUSEFINDER") then
-			if SkuCore.VisualAidsMouseFinderFlash then SkuCore:VisualAidsMouseFinderFlash() end
+			if SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsMouseFinderFlash then SkuCore.VisualAids:VisualAidsMouseFinderFlash() end
 		end
 
 		
 		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_SCANCONTINUE") then
 			dprint("SKU_KEY_SCANCONTINUE", L["SKU_KEY_SCANCONTINUE"])
-			SkuCore:GameWorldObjectsScan(true)
+			SkuCore.GameWorldObjects:GameWorldObjectsScan(true)
 		end
 
 		local function tStartScan(aScanNumber)
@@ -1480,13 +1480,13 @@ function SkuCore:OnEnable()
 			end
 			local tScanParameters = SkuCore.ScanTypes[SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[aScanNumber].type]
 
-			if SkuCore.MinimapScanFastRunning == true then
-				SkuCore:MinimapScanFastStop()
+			if SkuCore.MinimapScanner.MinimapScanFastRunning == true then
+				SkuCore.MinimapScanner:MinimapScanFastStop()
 				C_Timer.After(2.2, function()
-					SkuCore:GameWorldObjectsScan(false, tScanObjects, tScanParameters.hStepSizeDeg, tScanParameters.hStepsMax, tScanParameters.vMoveSpeed, tScanParameters.vStepsMax, nil, tScanParameters.hStart)
+					SkuCore.GameWorldObjects:GameWorldObjectsScan(false, tScanObjects, tScanParameters.hStepSizeDeg, tScanParameters.hStepsMax, tScanParameters.vMoveSpeed, tScanParameters.vStepsMax, nil, tScanParameters.hStart)
 				end)
 			else
-				SkuCore:GameWorldObjectsScan(false, tScanObjects, tScanParameters.hStepSizeDeg, tScanParameters.hStepsMax, tScanParameters.vMoveSpeed, tScanParameters.vStepsMax, nil, tScanParameters.hStart)
+				SkuCore.GameWorldObjects:GameWorldObjectsScan(false, tScanObjects, tScanParameters.hStepSizeDeg, tScanParameters.hStepsMax, tScanParameters.vMoveSpeed, tScanParameters.vStepsMax, nil, tScanParameters.hStart)
 			end
 		end
 		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_SCAN1") then
@@ -1545,24 +1545,24 @@ function SkuCore:OnEnable()
 
 		if SkuCore.inCombat ~= true and (_G["SkuCoreGameWorldObjectsScanTicker"] == nil or _G["SkuCoreGameWorldObjectsScanTicker"].isScanningActive ~= true or _G["SkuCoreGameWorldObjectsScanTicker"].isScanningPaused == true) then
 			if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_MMSCANWIDE") then
-				if SkuCore.MinimapScanFastRunning == true then
-					SkuCore:MinimapScanFastStop()
+				if SkuCore.MinimapScanner.MinimapScanFastRunning == true then
+					SkuCore.MinimapScanner:MinimapScanFastStop()
 					C_Timer.After(2.2, function()
-						SkuCore:MinimapScan(50) --120
+						SkuCore.MinimapScanner:MinimapScan(50) --120
 					end)
 				else
-					SkuCore:MinimapScan(50) --120
+					SkuCore.MinimapScanner:MinimapScan(50) --120
 				end
 			end
 			if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_MMSCANNARROW") then
-				--SkuCore:MinimapScan(20) --50
-				if SkuCore.MinimapScanFastRunning == true then
-					SkuCore:MinimapScanFastStop()
+				--SkuCore.MinimapScanner:MinimapScan(20) --50
+				if SkuCore.MinimapScanner.MinimapScanFastRunning == true then
+					SkuCore.MinimapScanner:MinimapScanFastStop()
 					C_Timer.After(2.2, function()
-						SkuCore:MinimapScan(20) --120
+						SkuCore.MinimapScanner:MinimapScan(20) --120
 					end)
 				else
-					SkuCore:MinimapScan(20) --120
+					SkuCore.MinimapScanner:MinimapScan(20) --120
 				end
 			end
 		end
@@ -2072,12 +2072,12 @@ end
 --local tSkuCoreTooltipCheckerControlPrevOpac = 1
 --SkuCore.CheckInteractObjectShowIsShown = false
 function SkuCore:CheckInteractObjectShow()
-	--print("CheckInteractObjectShow", SkuCore.noMouseOverNotification)
+	--print("CheckInteractObjectShow", SkuCore.MinimapScanner.noMouseOverNotification)
 	--tSkuCoreTooltipCheckerControlPrevOpac = 1
 	if SkuOptions:IsMenuOpen() == true then
 		return
 	end	
-	if SkuCore.noMouseOverNotification ~= true then
+	if SkuCore.MinimapScanner.noMouseOverNotification ~= true then
 		if not GameTooltipTextLeft1.GetText then
 			return
 		end
@@ -2107,7 +2107,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:CheckInteractObjectHide()
-	dprint("CheckInteractObjectHide", SkuCore.noMouseOverNotification)
+	dprint("CheckInteractObjectHide", SkuCore.MinimapScanner.noMouseOverNotification)
 
 	--if SkuCore.CheckInteractObjectShowIsShown == true then
 		--SkuCore.CheckInteractObjectShowIsShown = false
@@ -2468,8 +2468,8 @@ end
 function SkuCore:PLAYER_REGEN_DISABLED(...)
 	SkuOptions:CloseMenu()
 	_G["SkuCoreControlOption1"]:Hide()
-	if SkuCore.IsMMScanning == true then
-		SkuCore:MinimapStopScan()
+	if SkuCore.MinimapScanner.IsMMScanning == true then
+		SkuCore.MinimapScanner:MinimapStopScan()
 	end
 	SkuCore.inCombat = true
 	SkuOptions.Voice:OutputString(L["Combat start"], true, true, 0.2)

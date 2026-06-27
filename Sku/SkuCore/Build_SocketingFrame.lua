@@ -578,7 +578,7 @@ end
 -- KEINE Manipulation von Edelstein-Setz- oder Navigation-Pfad — die
 -- funktionieren bereits einwandfrei und werden bewusst nicht angefasst.
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:SuppressMinimapMapPingBriefly()
+function Socketing:SuppressMinimapMapPingBriefly()
    local mm = _G.Minimap
    if not (mm and mm.SetMouseClickEnabled) then return end
    pcall(mm.SetMouseClickEnabled, mm, false)
@@ -591,7 +591,7 @@ function SkuCore:SuppressMinimapMapPingBriefly()
    end
 end
 
-function SkuCore:OpenSocketingMenuFollowUp()
+function Socketing:OpenSocketingMenuFollowUp()
    -- Cursor-Navigation in das frisch gebaute Sockelmenü. Wird vom
    -- Macrotext-Pfad in SkuZOptions/Core.lua nach SocketContainerItem/
    -- SocketInventoryItem + CheckFrames + delayed OnUpdate aufgerufen.
@@ -603,7 +603,7 @@ function SkuCore:OpenSocketingMenuFollowUp()
       and _G.ItemSocketingFrame:IsVisible()) then
       if _G.C_Timer and _G.C_Timer.After then
          _G.C_Timer.After(0.5, function()
-            pcall(function() SkuCore:OpenSocketingMenuFollowUp() end)
+            pcall(function() Socketing:OpenSocketingMenuFollowUp() end)
          end)
       end
       return
@@ -632,7 +632,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Top-level builder, called by SkuCore.interactFramesListManual.
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:Build_SocketingFrame(aParent)
+function Socketing:Build_SocketingFrame(aParent)
    -- When the feature is toggled off, the socketing window is left as the plain
    -- (inaccessible) Blizzard UI: build nothing.
    if not Socketing:IsEnabled() then return end

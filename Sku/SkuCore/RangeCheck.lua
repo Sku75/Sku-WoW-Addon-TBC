@@ -7,14 +7,16 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 
 -- W4 Phase D: RangeCheck is a real AceAddon SUBMODULE of SkuCore, so it can be
 -- turned on/off at runtime (OnEnable/OnDisable), mirroring the JunkAndRepair
--- pilot. RangeCheck is a SHARED SERVICE: SkuMob, SkuNav, aqCombat and a Core.lua
--- OnUpdate all call SkuCore:DoRangeCheck. To keep those external callers working
--- unchanged, every existing SkuCore:* method and SkuCore.* state stays exactly
--- where it is; the module only owns the LIFECYCLE:
+-- pilot. RangeCheck is a SHARED SERVICE: SkuMob, SkuNav and a Core.lua OnUpdate
+-- all call into it.
+-- W4 Phase E (namespace extraction): all of RangeCheck's own methods and module
+-- state now live on the module table `RangeCheck` (function RangeCheck:Method)
+-- instead of on the shared SkuCore god-object. External callers use the published
+-- handle SkuCore.RangeCheck (e.g. SkuCore.RangeCheck:DoRangeCheck).
 --   * OnEnable  arms the feature (registers the LibRangeCheck CHECKERS_CHANGED
---     callback + runs the existing SkuCore:RangeCheckOnEnable).
+--     callback + runs RangeCheck:RangeCheckOnEnable).
 --   * OnDisable unregisters that callback, and the IsEnabled guard at the top of
---     SkuCore:DoRangeCheck makes the service a safe no-op while disabled.
+--     RangeCheck:DoRangeCheck makes the service a safe no-op while disabled.
 -- AceAddon auto-enables the module at SkuCore enable (≈ PLAYER_LOGIN) and again
 -- on every /reload, replacing the old explicit RangeCheckOnInitialize/OnEnable
 -- calls in Core.lua (so it re-arms on every load, not just the initial login).
@@ -27,7 +29,7 @@ SkuCore:RegisterToggleableModule(MODULE_PART, function()
    return (GetLocale and GetLocale() == "deDE") and "Reichweitenprüfung" or "Range check"
 end)
 
-SkuCore.RangeCheckValues = {
+RangeCheck.RangeCheckValues = {
    Ranges = {
       Friendly = {},
       Hostile = {},
@@ -36,23 +38,23 @@ SkuCore.RangeCheckValues = {
 }
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:RangeCheckOnInitialize()
-   SkuOptions.RangeCheck.RegisterCallback(self, SkuOptions.RangeCheck.CHECKERS_CHANGED, SkuCore.CHECKERS_CHANGED)
+function RangeCheck:RangeCheckOnInitialize()
+   SkuOptions.RangeCheck.RegisterCallback(self, SkuOptions.RangeCheck.CHECKERS_CHANGED, "CHECKERS_CHANGED")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:CHECKERS_CHANGED()
-   SkuCore:RangeCheckUpdateRanges()
+function RangeCheck:CHECKERS_CHANGED()
+   RangeCheck:RangeCheckUpdateRanges()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:RangeCheckOnEnable()
+function RangeCheck:RangeCheckOnEnable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tFirstRangeUpdateSilent = true
-function SkuCore:RangeCheckUpdateRanges()
+function RangeCheck:RangeCheckUpdateRanges()
    if SkuOptions.RangeCheck.frame:IsVisible() == true then
-      C_Timer.After(0.1, SkuCore.RangeCheckUpdateRanges)
+      C_Timer.After(0.1, function() RangeCheck:RangeCheckUpdateRanges() end)
       return
    end
    if not SkuSettings:Sub("SkuCore", nil, "char") then
@@ -155,32 +157,32 @@ function SkuCore:RangeCheckUpdateRanges()
       SkuOptions.Voice:OutputString(L["Neue Reichweite verfügbar"], true, true, 0.2)
    end
 
-   SkuCore.RangeCheckValues.Ranges.Friendly = {}
+   RangeCheck.RangeCheckValues.Ranges.Friendly = {}
    --query available ranges
-   for i, v in SkuOptions.RangeCheck:GetFriendCheckers() do 
-      SkuCore.RangeCheckValues.Ranges.Friendly[i] = v
+   for i, v in SkuOptions.RangeCheck:GetFriendCheckers() do
+      RangeCheck.RangeCheckValues.Ranges.Friendly[i] = v
    end
    --remove configured checks that a not longer available
    for i, v in pairs(SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Friendly) do
-      if not SkuCore.RangeCheckValues.Ranges.Friendly[i] then
+      if not RangeCheck.RangeCheckValues.Ranges.Friendly[i] then
          SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Friendly[i] = nil
       end
    end
 
-   for i, v in SkuOptions.RangeCheck:GetHarmCheckers() do 
-      SkuCore.RangeCheckValues.Ranges.Hostile[i] = v
+   for i, v in SkuOptions.RangeCheck:GetHarmCheckers() do
+      RangeCheck.RangeCheckValues.Ranges.Hostile[i] = v
    end
    for i, v in pairs(SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Hostile) do
-      if not SkuCore.RangeCheckValues.Ranges.Hostile[i] then
+      if not RangeCheck.RangeCheckValues.Ranges.Hostile[i] then
          SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Hostile[i] = nil
       end
-   end   
+   end
 
-   for i, v in SkuOptions.RangeCheck:GetMiscCheckers() do 
-      SkuCore.RangeCheckValues.Ranges.Misc[i] = v
+   for i, v in SkuOptions.RangeCheck:GetMiscCheckers() do
+      RangeCheck.RangeCheckValues.Ranges.Misc[i] = v
    end
    for i, v in pairs(SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Misc) do
-      if not SkuCore.RangeCheckValues.Ranges.Misc[i] then
+      if not RangeCheck.RangeCheckValues.Ranges.Misc[i] then
          SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Misc[i] = nil
       end
    end   
@@ -193,8 +195,8 @@ end
 -- toggles it back on). Mirrors the old Core.lua RangeCheckOnInitialize +
 -- RangeCheckOnEnable calls.
 function RangeCheck:OnEnable()
-   SkuCore:RangeCheckOnInitialize()
-   SkuCore:RangeCheckOnEnable()
+   RangeCheck:RangeCheckOnInitialize()
+   RangeCheck:RangeCheckOnEnable()
 end
 
 -- Disarm: drop the LibRangeCheck CHECKERS_CHANGED subscription so a disabled
@@ -202,14 +204,14 @@ end
 -- SkuCore:DoRangeCheck makes the per-target service itself a safe no-op.
 function RangeCheck:OnDisable()
    if SkuOptions and SkuOptions.RangeCheck and SkuOptions.RangeCheck.UnregisterCallback then
-      SkuOptions.RangeCheck.UnregisterCallback(SkuCore, SkuOptions.RangeCheck.CHECKERS_CHANGED)
+      SkuOptions.RangeCheck.UnregisterCallback(RangeCheck, SkuOptions.RangeCheck.CHECKERS_CHANGED)
    end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tRangeCheckLastTarget
 local tRangeCheckLastTargetminRange = 0
-function SkuCore:DoRangeCheck(aForceFlag)
+function RangeCheck:DoRangeCheck(aForceFlag)
    if not RangeCheck:IsEnabled() then
       return
    end

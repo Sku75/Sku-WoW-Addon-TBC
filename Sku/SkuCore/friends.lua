@@ -10,13 +10,16 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 --   * OnEnable  arms it (registers FRIENDLIST_UPDATE + installs the FriendsFrame
 --     "Show" hook once).
 --   * OnDisable disarms it (unregisters FRIENDLIST_UPDATE; the hooksecurefunc hook
---     cannot be removed so SkuCore:ONSHOW guards itself with IsEnabled()).
+--     cannot be removed so Friends:ONSHOW guards itself with IsEnabled()).
 -- AceAddon auto-enables the module when SkuCore enables (≈ PLAYER_LOGIN), replacing
 -- the old explicit SkuCore:FriendsOnInitialize() call in SkuCore:OnInitialize
 -- (which only ran once, so this also re-arms after every /reload).
--- The FriendsMenuBuilder ("Social") handle stays a SkuCore method (referenced from
--- SkuCore/Options.lua), unchanged.
-local Friends = SkuCore:NewModule("Friends")
+-- W4 Phase E (namespace extraction): all of Friends' own methods now live on the
+-- module table `Friends` (function Friends:Method) instead of the shared SkuCore
+-- god-object. The module mixes in AceEvent-3.0 and owns its own FRIENDLIST_UPDATE
+-- registration; external callers use the published handle SkuCore.Friends (e.g.
+-- the FriendsMenuBuilder "Social" build reference in SkuCore/Options.lua).
+local Friends = SkuCore:NewModule("Friends", "AceEvent-3.0")
 SkuCore.Friends = Friends   -- keep a published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
@@ -31,28 +34,28 @@ local gShowHookInstalled = false
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Arm the feature. Called automatically by AceAddon when the module is enabled.
 function Friends:OnEnable()
-   SkuCore:RegisterEvent("FRIENDLIST_UPDATE")
+   Friends:RegisterEvent("FRIENDLIST_UPDATE", "FRIENDLIST_UPDATE")
 
    if not gShowHookInstalled then
-      hooksecurefunc(FriendsFrame, "Show", SkuCore.ONSHOW)
+      hooksecurefunc(FriendsFrame, "Show", Friends.ONSHOW)
       gShowHookInstalled = true
    end
 end
 
 -- Disarm the feature: unregister the event. The "Show" hook cannot be removed, so
--- SkuCore:ONSHOW no-ops itself when the module is disabled (see its IsEnabled guard).
+-- Friends:ONSHOW no-ops itself when the module is disabled (see its IsEnabled guard).
 function Friends:OnDisable()
-   SkuCore:UnregisterEvent("FRIENDLIST_UPDATE")
+   Friends:UnregisterAllEvents()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:ONSHOW()
+function Friends:ONSHOW()
    if not Friends:IsEnabled() then return end
    SkuOptions:SlashFunc(L["short"]..",Core,"..L["Social"])
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:FRIENDLIST_UPDATE()
+function Friends:FRIENDLIST_UPDATE()
    --print("FRIENDLIST_UPDATE")
 end
 
@@ -346,7 +349,7 @@ local function tAddBnetFriend(aParent, aIndex, aOnline)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:FriendsMenuBuilder()
+function Friends:FriendsMenuBuilder()
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Contacts"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.BuildChildren = function(self)

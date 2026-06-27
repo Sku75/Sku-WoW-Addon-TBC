@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 -- Sku Dungeon Browser
 --
 -- Zwei-Phasen-Menü, getrennt vom Lokal-Menü:
@@ -27,8 +27,8 @@ local _G = _G
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
 -- W4 Phase D: DungeonBrowser is a real AceAddon SUBMODULE of SkuCore so it can be
--- turned on/off independently at runtime. All public SkuCore:DungeonBrowser*
--- methods and SkuCore.tDungeonBrowser* state stay exactly where they are
+-- turned on/off independently at runtime. All public DungeonBrowser:DungeonBrowser*
+-- methods and DungeonBrowser.tDungeonBrowser* state stay exactly where they are
 -- (external callers — keybind handlers, macrotext, the WHO chat parser — keep
 -- working unchanged). Only the LIFECYCLE moved:
 --   * OnEnable  arms the feature: schedules DungeonBrowserInit + LFG event hooks
@@ -287,7 +287,7 @@ end
 -- in Hardware-Event-Kontext. Nur DA wird C_LFGList.CreateListing
 -- vom Sicherheitssystem akzeptiert. Aus normalem Lua-Kontext blockt
 -- WoW's "addon_action_blocked"-Mechanik.
-function SkuCore:DungeonBrowserDoEnroll()
+function DungeonBrowser:DungeonBrowserDoEnroll()
    -- Diagnose-Ping ganz vorn: hören wir das nicht, wurde die Funktion
    -- gar nicht erst aufgerufen — dann liegt's am Menüeintrag, nicht
    -- am CreateListing-Aufruf.
@@ -378,7 +378,7 @@ function SkuCore:DungeonBrowserDoEnroll()
          _G.C_Timer.After(0.7, function()
             if tIsListed() then
                tFirstDidRebuild = true
-               pcall(function() SkuCore:DungeonBrowserRebuild() end)
+               pcall(function() DungeonBrowser:DungeonBrowserRebuild() end)
             end
          end)
          _G.C_Timer.After(1.6, function()
@@ -386,11 +386,11 @@ function SkuCore:DungeonBrowserDoEnroll()
             if tFirstDidRebuild then
                -- Phase B steht schon, Status-Ansage läuft. Liste der
                -- Spieler stumm nachziehen.
-               pcall(function() SkuCore:DungeonBrowserRebuildSilent() end)
+               pcall(function() DungeonBrowser:DungeonBrowserRebuildSilent() end)
             else
                -- Erster Pass war noch zu früh — jetzt mit Vokalisierung
                -- aufbauen.
-               pcall(function() SkuCore:DungeonBrowserRebuild() end)
+               pcall(function() DungeonBrowser:DungeonBrowserRebuild() end)
             end
          end)
       end
@@ -414,7 +414,7 @@ end
 -- mit OnPostSelect des Templates und schließt das Menü — daher der
 -- Umweg über Macrotext.
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DungeonBrowserSetSelection(activityID, value)
+function DungeonBrowser:DungeonBrowserSetSelection(activityID, value)
    local db = tDB()
    if value then
       db.selection[activityID] = true
@@ -423,12 +423,12 @@ function SkuCore:DungeonBrowserSetSelection(activityID, value)
    end
 end
 
-function SkuCore:DungeonBrowserDeselectAll()
+function DungeonBrowser:DungeonBrowserDeselectAll()
    local db = tDB()
    db.selection = {}
 end
 
-function SkuCore:DungeonBrowserToggleRole(role)
+function DungeonBrowser:DungeonBrowserToggleRole(role)
    local db = tDB()
    if db.roles[role] == true then
       db.roles[role] = nil
@@ -460,7 +460,7 @@ end
 -- für Ja/Nein, weil das Framework dort NICHT automatisch zur Parent-
 -- Ebene zurücksteppt (im Gegensatz zum Rolle-Submenü). Wir setzen den
 -- Cursor manuell auf die gespeicherte Eintrags-Referenz.
-SkuCore.tDungeonBrowserDungeonEntries = SkuCore.tDungeonBrowserDungeonEntries or {}
+DungeonBrowser.tDungeonBrowserDungeonEntries = DungeonBrowser.tDungeonBrowserDungeonEntries or {}
 function SkuCoreDungeonStepBackTo(activityID)
    if not _G.C_Timer or not _G.C_Timer.After then return end
    -- Mehrere Re-Tries: das Sku-Template setzt nach OnPostSelect den
@@ -468,7 +468,7 @@ function SkuCoreDungeonStepBackTo(activityID)
    -- unsere Position am Ende gewinnt.
    local function setCursor(speak)
       if not SkuOptions then return end
-      local target = SkuCore.tDungeonBrowserDungeonEntries[activityID]
+      local target = DungeonBrowser.tDungeonBrowserDungeonEntries[activityID]
       if target then
          SkuOptions.currentMenuPosition = target
          if speak and SkuOptions.Voice and SkuOptions.Voice.OutputStringBTtts then
@@ -488,8 +488,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Suche: andere Spieler abfragen
 ---------------------------------------------------------------------------------------------------------------------------------------
-SkuCore.tDungeonBrowserSearchResults = SkuCore.tDungeonBrowserSearchResults or {}
-SkuCore.tDungeonBrowserSearchTime = 0
+DungeonBrowser.tDungeonBrowserSearchResults = DungeonBrowser.tDungeonBrowserSearchResults or {}
+DungeonBrowser.tDungeonBrowserSearchTime = 0
 
 local function tStartSearch()
    if not (_G.C_LFGList and _G.C_LFGList.Search) then return end
@@ -512,7 +512,7 @@ local function tStartSearch()
    dprint("dungeonBrowser", "Search invoked", {
       catID = catID, ok = triedOK,
    })
-   SkuCore.tDungeonBrowserSearchTime = GetTime()
+   DungeonBrowser.tDungeonBrowserSearchTime = GetTime()
 end
 
 local function tCollectSearchResults()
@@ -692,11 +692,11 @@ local function tCollectSearchResults()
 
       -- Level aus /who-Cache ziehen oder Lookup einreihen.
       if info.leaderName and info.leaderName ~= "" then
-         local cached = SkuCore.tDungeonBrowserLevelCache[info.leaderName]
+         local cached = DungeonBrowser.tDungeonBrowserLevelCache[info.leaderName]
          if cached and cached.level then
             info.leaderLevel = cached.level
          else
-            SkuCore:DungeonBrowserQueueWho(info.leaderName)
+            DungeonBrowser:DungeonBrowserQueueWho(info.leaderName)
          end
       end
 
@@ -713,14 +713,14 @@ end
 -- Workaround: asynchroner /who-Lookup. Ergebnisse werden gecached und
 -- bei Eintreffen wird das Menü refresht.
 ---------------------------------------------------------------------------------------------------------------------------------------
-SkuCore.tDungeonBrowserLevelCache = SkuCore.tDungeonBrowserLevelCache or {}
-SkuCore.tDungeonBrowserWhoQueue = SkuCore.tDungeonBrowserWhoQueue or {}
-SkuCore.tDungeonBrowserWhoLastSent = SkuCore.tDungeonBrowserWhoLastSent or 0
+DungeonBrowser.tDungeonBrowserLevelCache = DungeonBrowser.tDungeonBrowserLevelCache or {}
+DungeonBrowser.tDungeonBrowserWhoQueue = DungeonBrowser.tDungeonBrowserWhoQueue or {}
+DungeonBrowser.tDungeonBrowserWhoLastSent = DungeonBrowser.tDungeonBrowserWhoLastSent or 0
 
 -- Methoden auf SkuCore (statt local function) — vermeiden Forward-
 -- Reference-Probleme, weil tCollectSearchResults oben den Lookup nutzt.
-function SkuCore:DungeonBrowserProcessWhoQueue()
-   if #SkuCore.tDungeonBrowserWhoQueue == 0 then return end
+function DungeonBrowser:DungeonBrowserProcessWhoQueue()
+   if #DungeonBrowser.tDungeonBrowserWhoQueue == 0 then return end
    local sendWho = (_G.C_FriendList and _G.C_FriendList.SendWho) or _G.SendWho
    if not sendWho then
       dprint("dungeonBrowser", "WhoQueue: SendWho missing", {})
@@ -730,14 +730,14 @@ function SkuCore:DungeonBrowserProcessWhoQueue()
    -- TBC/Anniversary: /who hat striktes Flood-Limit (~5 s). Bei zu
    -- schnellem Senden wird die Anfrage stillschweigend verworfen.
    local THROTTLE = 5
-   if now - SkuCore.tDungeonBrowserWhoLastSent < THROTTLE then
-      _G.C_Timer.After(THROTTLE - (now - SkuCore.tDungeonBrowserWhoLastSent),
-         function() SkuCore:DungeonBrowserProcessWhoQueue() end)
+   if now - DungeonBrowser.tDungeonBrowserWhoLastSent < THROTTLE then
+      _G.C_Timer.After(THROTTLE - (now - DungeonBrowser.tDungeonBrowserWhoLastSent),
+         function() DungeonBrowser:DungeonBrowserProcessWhoQueue() end)
       return
    end
-   local name = table.remove(SkuCore.tDungeonBrowserWhoQueue, 1)
+   local name = table.remove(DungeonBrowser.tDungeonBrowserWhoQueue, 1)
    if name and name ~= "" then
-      SkuCore.tDungeonBrowserWhoLastSent = now
+      DungeonBrowser.tDungeonBrowserWhoLastSent = now
       -- Sicherstellen, dass die Wer-Liste-UI das Ergebnis nicht abfängt.
       if _G.SetWhoToUi then pcall(_G.SetWhoToUi, false) end
       -- Mehrere Query-Formate probieren, je nach Build:
@@ -746,19 +746,19 @@ function SkuCore:DungeonBrowserProcessWhoQueue()
       local query = name
       pcall(sendWho, query)
    end
-   if #SkuCore.tDungeonBrowserWhoQueue > 0 then
-      _G.C_Timer.After(5.1, function() SkuCore:DungeonBrowserProcessWhoQueue() end)
+   if #DungeonBrowser.tDungeonBrowserWhoQueue > 0 then
+      _G.C_Timer.After(5.1, function() DungeonBrowser:DungeonBrowserProcessWhoQueue() end)
    end
 end
 
-function SkuCore:DungeonBrowserQueueWho(name)
+function DungeonBrowser:DungeonBrowserQueueWho(name)
    if not name or name == "" then return end
-   if SkuCore.tDungeonBrowserLevelCache[name] then return end
-   for _, q in ipairs(SkuCore.tDungeonBrowserWhoQueue) do
+   if DungeonBrowser.tDungeonBrowserLevelCache[name] then return end
+   for _, q in ipairs(DungeonBrowser.tDungeonBrowserWhoQueue) do
       if q == name then return end
    end
-   table.insert(SkuCore.tDungeonBrowserWhoQueue, name)
-   SkuCore:DungeonBrowserProcessWhoQueue()
+   table.insert(DungeonBrowser.tDungeonBrowserWhoQueue, name)
+   DungeonBrowser:DungeonBrowserProcessWhoQueue()
 end
 
 -- Globaler WHO_LIST_UPDATE- und CHAT_MSG_SYSTEM-Handler
@@ -775,20 +775,20 @@ do
    -- Menüstruktur bleiben dadurch unangetastet — egal wo der Spieler
    -- gerade steht.
    local function tPatchPlayerLabels()
-      local entries = SkuCore.tDungeonBrowserPlayerEntries
+      local entries = DungeonBrowser.tDungeonBrowserPlayerEntries
       if type(entries) ~= "table" then return end
       for name, ref in pairs(entries) do
          if ref.entry and ref.result then
             -- Aktuelles Level/Klasse aus Cache nachziehen
-            local cached = SkuCore.tDungeonBrowserLevelCache[name]
+            local cached = DungeonBrowser.tDungeonBrowserLevelCache[name]
             if cached and cached.level then
                ref.result.leaderLevel = cached.level
                if cached.class and not ref.result.leaderClassLoc then
                   ref.result.leaderClassLoc = cached.class
                end
             end
-            local newLabel = SkuCore.tDungeonBrowserBuildLabel
-               and SkuCore.tDungeonBrowserBuildLabel(ref.result) or nil
+            local newLabel = DungeonBrowser.tDungeonBrowserBuildLabel
+               and DungeonBrowser.tDungeonBrowserBuildLabel(ref.result) or nil
             if newLabel then
                ref.entry.name = newLabel
                ref.entry.textFirstLine = newLabel
@@ -827,7 +827,7 @@ do
                local cls = msg:match("[Ss]tufe%s+%d+%s+([%a%s]+)")
                   or msg:match("[Ll]evel%s+%d+%s+([%a%s]+)")
                if cls then cls = cls:match("^%s*(.-)%s*$") end
-               SkuCore.tDungeonBrowserLevelCache[name] = {
+               DungeonBrowser.tDungeonBrowserLevelCache[name] = {
                   level = lv, class = cls,
                }
                tRefreshMenuIfTouched()
@@ -846,7 +846,7 @@ do
             local nm = info.fullName or info.name
             local lv = info.level
             if nm and lv then
-               SkuCore.tDungeonBrowserLevelCache[nm] = {
+               DungeonBrowser.tDungeonBrowserLevelCache[nm] = {
                   level = lv,
                   class = info.classStr or info.filename or info.class,
                }
@@ -862,7 +862,7 @@ do
    if _G.SetWhoToUi then pcall(_G.SetWhoToUi, false) end
 end
 
-SkuCore.tDungeonBrowserRefreshTicker = SkuCore.tDungeonBrowserRefreshTicker or nil
+DungeonBrowser.tDungeonBrowserRefreshTicker = DungeonBrowser.tDungeonBrowserRefreshTicker or nil
 
 -- Auto-Refresh-Ticker bewusst deaktiviert.
 -- Vorher: NewTicker(10, …) hat alle 10 s tStartSearch + einen Rebuild
@@ -875,18 +875,18 @@ SkuCore.tDungeonBrowserRefreshTicker = SkuCore.tDungeonBrowserRefreshTicker or n
 -- Der manuelle Aktualisieren-Button in Phase B ruft tStartSearch +
 -- einen lokalen Rebuild gezielt auf — siehe tBuildPhaseB unten.
 local function tStartRefreshTicker(aRebuildFn)
-   if SkuCore.tDungeonBrowserRefreshTicker then
-      SkuCore.tDungeonBrowserRefreshTicker:Cancel()
-      SkuCore.tDungeonBrowserRefreshTicker = nil
+   if DungeonBrowser.tDungeonBrowserRefreshTicker then
+      DungeonBrowser.tDungeonBrowserRefreshTicker:Cancel()
+      DungeonBrowser.tDungeonBrowserRefreshTicker = nil
    end
    -- bewusst kein NewTicker mehr — Funktion bleibt als No-op, damit
    -- bestehende Aufrufstellen weiter funktionieren.
 end
 
 local function tStopRefreshTicker()
-   if SkuCore.tDungeonBrowserRefreshTicker then
-      SkuCore.tDungeonBrowserRefreshTicker:Cancel()
-      SkuCore.tDungeonBrowserRefreshTicker = nil
+   if DungeonBrowser.tDungeonBrowserRefreshTicker then
+      DungeonBrowser.tDungeonBrowserRefreshTicker:Cancel()
+      DungeonBrowser.tDungeonBrowserRefreshTicker = nil
    end
 end
 
@@ -896,7 +896,7 @@ end
 local function tBuildPhaseA(aParent, aSelf)
    local db = tDB()
    -- Eintrag-Referenzen für Step-Back-Helper neu aufbauen.
-   SkuCore.tDungeonBrowserDungeonEntries = {}
+   DungeonBrowser.tDungeonBrowserDungeonEntries = {}
 
    -- Status-Eintrag (read-only)
    local tStatus = SkuOptions:InjectMenuItems(aParent, {L["DB_StatusNotListed"]}, SkuGenericMenuItem)
@@ -923,7 +923,7 @@ local function tBuildPhaseA(aParent, aSelf)
          local tRole = SkuOptions:InjectMenuItems(self, {label}, SkuGenericMenuItem)
          local lRole = r
          -- Toggle via Macrotext: erst Mutation, dann verzögerter Step-Back.
-         tRole.macrotext = "/run SkuCore:DungeonBrowserToggleRole(\""
+         tRole.macrotext = "/run SkuCore.DungeonBrowser:DungeonBrowserToggleRole(\""
             .. lRole .. "\") SkuCoreDungeonStepBack()"
       end
    end
@@ -965,15 +965,15 @@ local function tBuildPhaseA(aParent, aSelf)
             tDungeon.filterable = true
             local lDungeonId = dun.id
             local lDungeonName = dun.shortName or dun.name
-            SkuCore.tDungeonBrowserDungeonEntries[lDungeonId] = tDungeon
+            DungeonBrowser.tDungeonBrowserDungeonEntries[lDungeonId] = tDungeon
             tDungeon.BuildChildren = function(self)
                local tYes = SkuOptions:InjectMenuItems(self, {L["DB_Yes"]}, SkuGenericMenuItem)
-               tYes.macrotext = "/run SkuCore:DungeonBrowserSetSelection("
+               tYes.macrotext = "/run SkuCore.DungeonBrowser:DungeonBrowserSetSelection("
                   .. tostring(lDungeonId) .. ", true) SkuCoreDungeonStepBackTo("
                   .. tostring(lDungeonId) .. ")"
 
                local tNo = SkuOptions:InjectMenuItems(self, {L["DB_No"]}, SkuGenericMenuItem)
-               tNo.macrotext = "/run SkuCore:DungeonBrowserSetSelection("
+               tNo.macrotext = "/run SkuCore.DungeonBrowser:DungeonBrowserSetSelection("
                   .. tostring(lDungeonId) .. ", false) SkuCoreDungeonStepBackTo("
                   .. tostring(lDungeonId) .. ")"
             end
@@ -993,19 +993,19 @@ local function tBuildPhaseA(aParent, aSelf)
 
    -- Alle abwählen
    local tDeselectAll = SkuOptions:InjectMenuItems(aParent, {L["DB_DeselectAll"]}, SkuGenericMenuItem)
-   tDeselectAll.macrotext = "/run SkuCore:DungeonBrowserDeselectAll() SkuCoreDungeonStepBack()"
+   tDeselectAll.macrotext = "/run SkuCore.DungeonBrowser:DungeonBrowserDeselectAll() SkuCoreDungeonStepBack()"
 
    -- Selbst anmelden -- via macrotext, damit der Aufruf aus Hardware-Event-Kontext erfolgt
    -- (andernfalls blockiert Blizzard CreateListing als geschützte Aktion -> addon_action_blocked)
    local tEnroll = SkuOptions:InjectMenuItems(aParent, {L["DB_Enroll"]}, SkuGenericMenuItem)
-   tEnroll.macrotext = "/run SkuCore:DungeonBrowserDoEnroll()"
+   tEnroll.macrotext = "/run SkuCore.DungeonBrowser:DungeonBrowserDoEnroll()"
    -- Fallback OnAction: falls macrotext bei InjectMenuItems-Einträgen
    -- nicht greift, springt zumindest dieser Pfad an. Aus normalem
    -- Lua-Kontext kann CreateListing zwar von Blizzard geblockt werden,
    -- aber wenigstens kriegen wir akustisches Feedback und einen Log.
    tEnroll.OnAction = function()
       dprint("dungeonBrowser", "Enroll OnAction fired", {})
-      SkuCore:DungeonBrowserDoEnroll()
+      DungeonBrowser:DungeonBrowserDoEnroll()
    end
 
    -- Schließen
@@ -1065,7 +1065,7 @@ local function tBuildPhaseB(aParent)
 
       -- Label-Builder als SkuCore-Funktion, damit der globale
       -- /who-Handler ihn beim In-Place-Update erreichen kann.
-      SkuCore.tDungeonBrowserBuildLabel = function(p)
+      DungeonBrowser.tDungeonBrowserBuildLabel = function(p)
          local parts = {}
          parts[#parts + 1] = p.leaderName or "?"
          if p.leaderLevel then
@@ -1102,9 +1102,9 @@ local function tBuildPhaseB(aParent)
          if p.isSelf then label = label .. L["DB_SelfMarker"] end
          return label
       end
-      local buildLabel = SkuCore.tDungeonBrowserBuildLabel
+      local buildLabel = DungeonBrowser.tDungeonBrowserBuildLabel
       -- Map für In-Place-Patching der Spieler-Einträge bei /who-Trefferpacks.
-      SkuCore.tDungeonBrowserPlayerEntries = {}
+      DungeonBrowser.tDungeonBrowserPlayerEntries = {}
 
       for _, p in ipairs(players) do
          if p._skip then
@@ -1114,7 +1114,7 @@ local function tBuildPhaseB(aParent)
          local tPlayer = SkuOptions:InjectMenuItems(aParent, {label}, SkuGenericMenuItem)
          -- Referenz für späteres In-Place-Update
          if p.leaderName and p.leaderName ~= "" then
-            SkuCore.tDungeonBrowserPlayerEntries[p.leaderName] = {
+            DungeonBrowser.tDungeonBrowserPlayerEntries[p.leaderName] = {
                entry = tPlayer, result = p,
             }
          end
@@ -1211,7 +1211,7 @@ local function tBuildPhaseB(aParent)
                   end
                   if not stillInBrowser then return end
                   local tCount = 0
-                  local entries = SkuCore.tDungeonBrowserPlayerEntries
+                  local entries = DungeonBrowser.tDungeonBrowserPlayerEntries
                   if type(entries) == "table" then
                      for _ in pairs(entries) do tCount = tCount + 1 end
                   end
@@ -1243,10 +1243,10 @@ local function tBuildPhaseB(aParent)
 
    -- Anmeldung zurückziehen — wie CreateListing protected, daher Macrotext.
    local tUnlist = SkuOptions:InjectMenuItems(aParent, {L["DB_Unenroll"]}, SkuGenericMenuItem)
-   tUnlist.macrotext = "/run SkuCore:DungeonBrowserDoUnenroll()"
+   tUnlist.macrotext = "/run SkuCore.DungeonBrowser:DungeonBrowserDoUnenroll()"
    tUnlist.OnAction = function()
       -- Fallback (falls macrotext bei diesem Eintragstyp nicht greift)
-      SkuCore:DungeonBrowserDoUnenroll()
+      DungeonBrowser:DungeonBrowserDoUnenroll()
    end
 
    -- Schließen
@@ -1260,7 +1260,7 @@ end
 -- Hauptmenü-Builder: entscheidet anhand des Listing-Status, welche Phase
 -- gezeigt wird.
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DungeonBrowserBuildMenu(aParent)
+function DungeonBrowser:DungeonBrowserBuildMenu(aParent)
    if not SkuCore.DungeonBrowser:IsEnabled() then return end
    if tIsListed() then
       tBuildPhaseB(aParent)
@@ -1326,11 +1326,11 @@ local function tEnsureDungeonBrowserEntry()
    tEntry.dynamic = true
    tEntry.filterable = true
    tEntry.BuildChildren = function(self)
-      SkuCore:DungeonBrowserBuildMenu(self)
+      DungeonBrowser:DungeonBrowserBuildMenu(self)
    end
 end
 
-function SkuCore:DungeonBrowserOpen()
+function DungeonBrowser:DungeonBrowserOpen()
    if not SkuCore.DungeonBrowser:IsEnabled() then return end
    if not SkuOptions then return end
 
@@ -1381,7 +1381,7 @@ end
 -- Cursor-Verhalten: wenn der aktuelle Cursor-Eintrag (anhand .name)
 -- nach dem Rebuild noch existiert, bleibt der Cursor dort. Sonst wird
 -- er konservativ auf den Top-Entry zurückgesetzt — keine Vokalisierung.
-function SkuCore:DungeonBrowserRebuildSilent()
+function DungeonBrowser:DungeonBrowserRebuildSilent()
    if not SkuOptions or not SkuOptions.Menu then return end
 
    local topEntry
@@ -1416,7 +1416,7 @@ function SkuCore:DungeonBrowserRebuildSilent()
       end
    end
 
-   pcall(function() SkuCore:DungeonBrowserBuildMenu(topEntry) end)
+   pcall(function() DungeonBrowser:DungeonBrowserBuildMenu(topEntry) end)
 
    -- Cursor-Restoration ohne Vokalisierung.
    if tPrevName then
@@ -1438,7 +1438,7 @@ function SkuCore:DungeonBrowserRebuildSilent()
    end
 end
 
-function SkuCore:DungeonBrowserRebuild()
+function DungeonBrowser:DungeonBrowserRebuild()
    if not SkuOptions or not SkuOptions.Menu then return end
 
    -- Top-Eintrag finden
@@ -1452,7 +1452,7 @@ function SkuCore:DungeonBrowserRebuild()
    end
    if not topEntry then
       -- noch nicht injiziert → einfacher Open-Pfad
-      pcall(function() SkuCore:DungeonBrowserOpen() end)
+      pcall(function() DungeonBrowser:DungeonBrowserOpen() end)
       return
    end
 
@@ -1475,7 +1475,7 @@ function SkuCore:DungeonBrowserRebuild()
    end
 
    -- Frische Kinder gemäß aktuellem Listing-Status.
-   pcall(function() SkuCore:DungeonBrowserBuildMenu(topEntry) end)
+   pcall(function() DungeonBrowser:DungeonBrowserBuildMenu(topEntry) end)
 
    -- Cursor zurück auf den Top-Eintrag und reingehen, damit die neuen
    -- Kinder vorgelesen werden. SlashFunc öffnet das Menü auch, falls
@@ -1490,7 +1490,7 @@ end
 -- Globale Methode für Macrotext-Abmeldung. RemoveListing ist genauso
 -- protected wie CreateListing — nur aus Hardware-Event-Kontext fliegt
 -- der Aufruf nicht still ins Leere.
-function SkuCore:DungeonBrowserDoUnenroll()
+function DungeonBrowser:DungeonBrowserDoUnenroll()
    if not (_G.C_LFGList and _G.C_LFGList.RemoveListing) then
       print("|cffff8800" .. L["DB_ChatPrefixShort"] .. "|r " .. L["DB_RemoveListingUnavailable"])
       return
@@ -1517,27 +1517,27 @@ function SkuCore:DungeonBrowserDoUnenroll()
             if tDidRebuild then return end
             if not tIsListed() then
                tDidRebuild = true
-               pcall(function() SkuCore:DungeonBrowserRebuild() end)
+               pcall(function() DungeonBrowser:DungeonBrowserRebuild() end)
             end
          end)
          _G.C_Timer.After(1.6, function()
             if tDidRebuild then return end
             if not tIsListed() then
                tDidRebuild = true
-               pcall(function() SkuCore:DungeonBrowserRebuild() end)
+               pcall(function() DungeonBrowser:DungeonBrowserRebuild() end)
             end
          end)
       end
    end
 end
 
-function SkuCore:DungeonBrowserToggle()
+function DungeonBrowser:DungeonBrowserToggle()
    if not SkuCore.DungeonBrowser:IsEnabled() then return end
    if SkuOptions and SkuOptions:IsMenuOpen() then
       SkuOptions:CloseMenu()
       return
    end
-   SkuCore:DungeonBrowserOpen()
+   DungeonBrowser:DungeonBrowserOpen()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1550,9 +1550,9 @@ end
 -- TOGGLEGROUPFINDER), Micro-Button oder Slash-Command der User dafür
 -- nutzt. Eine Bindung an die Taste "I" wird damit überflüssig.
 ---------------------------------------------------------------------------------------------------------------------------------------
-SkuCore.tDungeonBrowserHookedFrames = SkuCore.tDungeonBrowserHookedFrames or {}
-SkuCore.tDungeonBrowserHookedToggles = SkuCore.tDungeonBrowserHookedToggles or false
-SkuCore.tInDungeonBrowserOpen = SkuCore.tInDungeonBrowserOpen or false
+DungeonBrowser.tDungeonBrowserHookedFrames = DungeonBrowser.tDungeonBrowserHookedFrames or {}
+DungeonBrowser.tDungeonBrowserHookedToggles = DungeonBrowser.tDungeonBrowserHookedToggles or false
+DungeonBrowser.tInDungeonBrowserOpen = DungeonBrowser.tInDungeonBrowserOpen or false
 
 -- Wir probieren alle bekannten Group-Finder-Container-Frames durch und
 -- hooken jedes, das gerade existiert. Reason: WoW-Anniversary (TBC
@@ -1586,14 +1586,14 @@ local function tFireOpen()
    -- Sku's Standard-Pfad (CheckFrames + interactFramesList) hängt sich
    -- automatisch an StaticPopup1 dran, sobald PARTY_INVITE_REQUEST
    -- das Popup öffnet.
-   if SkuCore.tDungeonBrowserPartyInviteActive == true
+   if DungeonBrowser.tDungeonBrowserPartyInviteActive == true
       or (tIsPartyInviteOpen and tIsPartyInviteOpen()) then
       return
    end
-   if SkuCore.tInDungeonBrowserOpen == true then return end
-   SkuCore.tInDungeonBrowserOpen = true
-   pcall(function() SkuCore:DungeonBrowserOpen() end)
-   SkuCore.tInDungeonBrowserOpen = false
+   if DungeonBrowser.tInDungeonBrowserOpen == true then return end
+   DungeonBrowser.tInDungeonBrowserOpen = true
+   pcall(function() DungeonBrowser:DungeonBrowserOpen() end)
+   DungeonBrowser.tInDungeonBrowserOpen = false
 end
 
 -- Erkennt, ob aktuell ein Gruppeneinladungs-Popup offen ist. WoW blendet
@@ -1621,7 +1621,7 @@ end
 -- Aktiv-Flag während eines offenen Einladungs-Popups.
 -- Wird auf PARTY_INVITE_REQUEST true gesetzt, beim Hide des Popups
 -- (egal ob durch Annehmen, Ablehnen oder Timeout) wieder false.
-SkuCore.tDungeonBrowserPartyInviteActive = false
+DungeonBrowser.tDungeonBrowserPartyInviteActive = false
 
 local function tFireClose()
    -- Disabled feature → the Blizzard-frame OnHide hook becomes a no-op.
@@ -1629,7 +1629,7 @@ local function tFireClose()
    -- Während Einladung NICHT schließen — die PVEFrame-OnHide-Welle
    -- ist nur Blizzards Layout-Reaktion auf das Popup, kein echter
    -- Close-Wunsch des Users.
-   if SkuCore.tDungeonBrowserPartyInviteActive == true
+   if DungeonBrowser.tDungeonBrowserPartyInviteActive == true
       or tIsPartyInviteOpen() then
       return
    end
@@ -1645,7 +1645,7 @@ end
 -- exakt das vom User gewünschte „heften ans Verhalten des normalen
 -- Dungeon-Browser-Fensters".
 local function tReevaluateMenuAfterInvite()
-   if SkuCore.tDungeonBrowserPartyInviteActive == true then
+   if DungeonBrowser.tDungeonBrowserPartyInviteActive == true then
       return -- noch ein Popup offen, später nochmal
    end
    if tIsPartyInviteOpen() then return end
@@ -1681,7 +1681,7 @@ local function tEnsureInvitePopupHooks()
             -- Aktiv-Flag löschen, wenn KEIN anderes Einladungs-Popup
             -- mehr offen ist.
             if not tIsPartyInviteOpen() then
-               SkuCore.tDungeonBrowserPartyInviteActive = false
+               DungeonBrowser.tDungeonBrowserPartyInviteActive = false
             end
             -- Verzögert re-evaluieren, damit Blizzards Container-
             -- Sichtbarkeitsänderung (PVEFrame schließt bei Annehmen,
@@ -1704,13 +1704,13 @@ end
 local tInviteWatchFrame = CreateFrame("Frame")
 tInviteWatchFrame:SetScript("OnEvent", function(self, event)
    if event == "PARTY_INVITE_REQUEST" then
-      SkuCore.tDungeonBrowserPartyInviteActive = true
+      DungeonBrowser.tDungeonBrowserPartyInviteActive = true
       tEnsureInvitePopupHooks()
    elseif event == "PARTY_INVITE_CANCEL" then
       -- Falls das Popup ohne sichtbares Hide weggegangen ist
       -- (Timeout, externes Cancel) — Flag clearen + re-evaluieren.
       if not tIsPartyInviteOpen() then
-         SkuCore.tDungeonBrowserPartyInviteActive = false
+         DungeonBrowser.tDungeonBrowserPartyInviteActive = false
       end
       if _G.C_Timer and _G.C_Timer.After then
          _G.C_Timer.After(0.3, function()
@@ -1725,7 +1725,7 @@ local function tHookPVEFrame()
 
    -- 1) Frame-Hooks (OnShow/OnHide) auf alle existierenden Kandidaten
    for _, frameName in ipairs(DUNGEON_FRAME_CANDIDATES) do
-      if not SkuCore.tDungeonBrowserHookedFrames[frameName] then
+      if not DungeonBrowser.tDungeonBrowserHookedFrames[frameName] then
          local f = _G[frameName]
          if f and f.HookScript then
             -- Re-Entrancy-Schutz: DungeonBrowserOpen ruft selbst
@@ -1735,7 +1735,7 @@ local function tHookPVEFrame()
             -- Codepfad-Konstellation dies ändert.
             f:HookScript("OnShow", function() tFireOpen() end)
             f:HookScript("OnHide", function() tFireClose() end)
-            SkuCore.tDungeonBrowserHookedFrames[frameName] = true
+            DungeonBrowser.tDungeonBrowserHookedFrames[frameName] = true
             anyNewHook = true
          end
       end
@@ -1747,7 +1747,7 @@ local function tHookPVEFrame()
    -- innerhalb), greifen die Frame-Hooks oben nicht — die Toggle-
    -- Funktionen aber schon. hooksecurefunc ist additiv und kollidiert
    -- nicht mit anderen Addons.
-   if not SkuCore.tDungeonBrowserHookedToggles and _G.hooksecurefunc then
+   if not DungeonBrowser.tDungeonBrowserHookedToggles and _G.hooksecurefunc then
       local hookedAny = false
       if type(_G.ToggleLFDParentFrame) == "function" then
          pcall(_G.hooksecurefunc, "ToggleLFDParentFrame", function()
@@ -1781,7 +1781,7 @@ local function tHookPVEFrame()
          hookedAny = true
       end
       if hookedAny then
-         SkuCore.tDungeonBrowserHookedToggles = true
+         DungeonBrowser.tDungeonBrowserHookedToggles = true
          anyNewHook = true
       end
    end
@@ -1791,16 +1791,16 @@ end
 
 -- Helper: prüft, ob alle möglichen Hooks bereits gesetzt sind.
 local function tAllHooksDone()
-   if not SkuCore.tDungeonBrowserHookedToggles then return false end
+   if not DungeonBrowser.tDungeonBrowserHookedToggles then return false end
    for _, frameName in ipairs(DUNGEON_FRAME_CANDIDATES) do
-      if _G[frameName] and not SkuCore.tDungeonBrowserHookedFrames[frameName] then
+      if _G[frameName] and not DungeonBrowser.tDungeonBrowserHookedFrames[frameName] then
          return false
       end
    end
    return true
 end
 
-function SkuCore:DungeonBrowserInit()
+function DungeonBrowser:DungeonBrowserInit()
    -- WICHTIG: KEINE Top-Level-Eintrag-Injektion hier. Würden wir das
    -- jetzt tun, ändert sich #SkuOptions.Menu von 0 auf 1, und Skus
    -- Standard-Top-Level-Aufbau (Lokal/SkuNav/SkuMob/...) wird NICHT
@@ -1844,7 +1844,7 @@ local function tHookLFGEvents()
       dprint("dungeonBrowser", "LFG event", { event = event })
       if event == "LFG_LIST_ACTIVE_ENTRY_UPDATE" then
          if SkuOptions and SkuOptions:IsMenuOpen() then
-            pcall(function() SkuCore:DungeonBrowserRebuild() end)
+            pcall(function() DungeonBrowser:DungeonBrowserRebuild() end)
          end
          return
       end
@@ -1875,7 +1875,7 @@ tInitFrame:SetScript("OnEvent", function(self, event, arg1)
       self:UnregisterEvent("PLAYER_ENTERING_WORLD")
       if _G.C_Timer and _G.C_Timer.After then
          _G.C_Timer.After(2, function()
-            pcall(function() SkuCore:DungeonBrowserInit() end)
+            pcall(function() DungeonBrowser:DungeonBrowserInit() end)
             pcall(tHookLFGEvents)
          end)
       end
@@ -1912,11 +1912,11 @@ function DungeonBrowser:OnEnable()
    if _G.C_Timer and _G.C_Timer.After then
       _G.C_Timer.After(2, function()
          if not DungeonBrowser:IsEnabled() then return end
-         pcall(function() SkuCore:DungeonBrowserInit() end)
+         pcall(function() DungeonBrowser:DungeonBrowserInit() end)
          pcall(tHookLFGEvents)
       end)
    else
-      pcall(function() SkuCore:DungeonBrowserInit() end)
+      pcall(function() DungeonBrowser:DungeonBrowserInit() end)
       pcall(tHookLFGEvents)
    end
 end

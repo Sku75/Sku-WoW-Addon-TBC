@@ -1661,7 +1661,7 @@ end
 local function RangecheckMenuBuilder(aParent, aType)
 	local tEntriesFound = false
 	for i = 1, 100 do 
-		if SkuCore.RangeCheckValues.Ranges[aType][i] then 
+		if SkuCore.RangeCheck.RangeCheckValues.Ranges[aType][i] then
 			local tIsConfiguredWith = ";"..L["silent"]
 			if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[aType][i] then
 				if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[aType][i].sound == L["vocalized"] then
@@ -2884,20 +2884,20 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 	-- DIAL-TARGETING (41.02.06e) — Entfernbar: Block löschen + DialTargeting.lua + TOC + Core.lua Init
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Dial Targeting"], filterable = true,
-		build = SkuCore.DialTargetingMenuBuilder }
+		build = SkuCore.DialTargeting.DialTargetingMenuBuilder }
 
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Social"], filterable = true,
-		build = SkuCore.FriendsMenuBuilder }
+		build = SkuCore.Friends.FriendsMenuBuilder }
 
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Damage Meter"], filterable = true,
-		build = SkuCore.DamageMeterMenuBuilder }
+		build = SkuCore.DamageMeter.DamageMeterMenuBuilder }
 
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Macros"], filterable = true,
-		build = SkuCore.MacroMenuBuilder }
+		build = SkuCore.Macro.MacroMenuBuilder }
 
 
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Atlas Loot"], filterable = true,
-		build = SkuCore.alIntegrationMenuBuilder }
+		build = SkuCore.AtlasLootIntegration.alIntegrationMenuBuilder }
 
 
 	--[[

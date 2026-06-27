@@ -2296,7 +2296,7 @@ function SkuNav:CreateSkuNavMain()
 	tFrame:SetScript("OnClick", function(self, a, b)
 
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_TURNTOBEACON") then
-			SkuCore:GameWorldObjectsTurnToWp()
+			SkuCore.GameWorldObjects:GameWorldObjectsTurnToWp()
 		end
 
 
@@ -3820,7 +3820,7 @@ function SkuNav:GetNonAutoLevel(aUid, aUnitName, aSkuWaypointName, aForTarget)
 		end
 
 	elseif aUid == nil and aForTarget ~= nil then
-		local tDistanceToTarget = SkuCore:DoRangeCheck(true, true)
+		local tDistanceToTarget = SkuCore.RangeCheck:DoRangeCheck(true, true)
 		local fPlayerPosX, fPlayerPosY = UnitPosition("player")
 	
 		if fPlayerPosX and tDistanceToTarget and UnitPlayerControlled("target") == false and UnitIsPlayer("target") == false then

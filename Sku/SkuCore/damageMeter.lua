@@ -5,8 +5,6 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
-SkuCore.damageMeter = {}
-
 -- W4 Phase D: DamageMeter is a real AceAddon SUBMODULE of SkuCore so it can be
 -- turned on/off at runtime. Its only lifecycle action is the deferred
 -- SkuDetailsCloseAssistant pass (previously scheduled in DamageMeterOnLogin),
@@ -14,10 +12,15 @@ SkuCore.damageMeter = {}
 -- on the initial login. There are no WoW events, frames, hooks or override
 -- bindings to tear down, so OnDisable has nothing to unwire; the menu/slash entry
 -- points self-guard with IsEnabled() so a disabled feature is a safe no-op.
--- The existing SkuCore:DamageMeter* methods stay in place so external callers
--- (Options.lua menu, slash dispatch) keep working unchanged.
+-- The DamageMeter* methods now live on the module table (DamageMeter:Method);
+-- external callers reach them via the published handle SkuCore.DamageMeter.
 local DamageMeter = SkuCore:NewModule("DamageMeter")
 SkuCore.DamageMeter = DamageMeter   -- keep a published handle (harmless)
+
+-- W4 Phase E (namespace extraction): the feature's methods and own state now live
+-- on the module table `DamageMeter` itself instead of on the shared SkuCore
+-- god-object. External callers use the published handle SkuCore.DamageMeter.
+DamageMeter.damageMeter = {}
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("DamageMeter", function()
@@ -25,7 +28,7 @@ SkuCore:RegisterToggleableModule("DamageMeter", function()
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DamageMeterOnInitialize()
+function DamageMeter:DamageMeterOnInitialize()
 	--SkuCore:RegisterEvent("")
 end
 
@@ -79,7 +82,7 @@ local function SkuDetailsCloseAssistant()
    end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DamageMeterOnLogin()
+function DamageMeter:DamageMeterOnLogin()
 	SkuSettings:Sub("SkuCore", nil, "char").damageMeter = SkuSettings:Sub("SkuCore", nil, "char").damageMeter or {}
 
    C_Timer.After(15, function()
@@ -93,7 +96,7 @@ end
 -- same arming the old DamageMeterOnLogin Core.lua call did, so it now also re-runs
 -- after a /reload.
 function DamageMeter:OnEnable()
-   SkuCore:DamageMeterOnLogin()
+   DamageMeter:DamageMeterOnLogin()
 end
 
 -- Disarm the feature. DamageMeter registers no WoW events, frames, hooks or
@@ -103,7 +106,7 @@ function DamageMeter:OnDisable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DamageMeterSlashHandler(aFieldsTable)
+function DamageMeter:DamageMeterSlashHandler(aFieldsTable)
 	if SkuCore.DamageMeter and not SkuCore.DamageMeter:IsEnabled() then return end
 	if aFieldsTable[2] == "" then
 		
@@ -197,7 +200,7 @@ local function BuildCombatTooltip(aCombat, aName, aAll)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:DamageMeterMenuBuilder()
+function DamageMeter:DamageMeterMenuBuilder()
    if SkuCore.DamageMeter and not SkuCore.DamageMeter:IsEnabled() then return end
    if Details == nil then
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Details addon not installed"]}, SkuGenericMenuItem)

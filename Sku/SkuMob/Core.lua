@@ -352,7 +352,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		dprint("SkuMob PLAYER_TARGET_CHANGED(event, ", event, aUnitId)
 
 		if aUnitId == "target" then
-			SkuCore:DoRangeCheck(true, nil, "target")
+			SkuCore.RangeCheck:DoRangeCheck(true, nil, "target")
 
 			if SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled == true then
 				if UnitExists("target") == true then

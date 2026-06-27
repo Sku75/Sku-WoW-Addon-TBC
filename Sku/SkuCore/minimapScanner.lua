@@ -6,14 +6,22 @@ local _G = _G
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
 -- W4 Phase D: MinimapScanner is a real AceAddon SUBMODULE of SkuCore so it can be
--- turned on/off at runtime. All SkuCore:Minimap* methods stay where they are (the
--- Core.lua keybind handlers and the OnUpdate frame still call them); the feature
+-- turned on/off at runtime. The Core.lua keybind handlers and the OnUpdate frame
+-- call its scan methods via the published handle SkuCore.MinimapScanner; the feature
 -- turns "off" purely because OnDisable stops the active scan and removes the
 -- OnUpdate driver. OnEnable arms it (chat command + OnUpdate frame), replacing the
--- old explicit SkuCore:MinimapScannerOnLogin() call in PLAYER_ENTERING_WORLD (which
+-- old explicit MinimapScannerOnLogin() call in PLAYER_ENTERING_WORLD (which
 -- only ran on the initial login, so the scanner did not re-arm after a /reload —
 -- OnEnable fixes that by arming on every load).
-local MinimapScanner = SkuCore:NewModule("MinimapScanner")
+-- W4 Phase E (namespace extraction): all of MinimapScanner's own methods and
+-- module state now live on the module table `MinimapScanner` itself
+-- (function MinimapScanner:Method) instead of on the shared SkuCore god-object.
+-- The module mixes in AceConsole-3.0 so its /as + /activeSeekings chat commands
+-- resolve their handler (SlashActiveSeekings) on the module. External callers use
+-- the published handle SkuCore.MinimapScanner, and the cross-module scan-state
+-- flags (IsMMScanning, MinimapScanFastRunning, noMouseOverNotification) are read
+-- via SkuCore.MinimapScanner.<field>.
+local MinimapScanner = SkuCore:NewModule("MinimapScanner", "AceConsole-3.0")
 SkuCore.MinimapScanner = MinimapScanner   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
@@ -127,7 +135,7 @@ SkuCore.RessourceTypes = {
 }
 
 
-SkuCore.IsScanning = false
+MinimapScanner.IsScanning = false
 
 local tMinimapYardsMod = 3.125
 local tScanResults = {}
@@ -246,7 +254,7 @@ local tChildRessourceTypes = {
 
 -- Scans minimap child frames by calling their OnEnter scripts directly.
 -- Returns a table {resourceName = {dx, dy}} where dx/dy are pixel offsets from minimap center.
-function SkuCore:MinimapScanChildFrames()
+function MinimapScanner:MinimapScanChildFrames()
    local tResults = {}
    local mmCX, mmCY = Minimap:GetCenter()
    if not mmCX then return tResults end
@@ -291,7 +299,7 @@ function SkuCore:MinimapScanChildFrames()
    return tResults
 end
 
-function SkuCore:MinimapScanFindActiveRessource(aX, aY)
+function MinimapScanner:MinimapScanFindActiveRessource(aX, aY)
     tRessourceTypes = {
       SkuCore.RessourceTypes.mining,
       SkuCore.RessourceTypes.herbs,
@@ -380,11 +388,11 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tNotificationTicker
 local function MinimapScanStep()
-   if SkuCore.IsMMScanning == false and SkuCore.inCombat ~= true then
-      SkuCore:RestoreMinimap()
-      SkuCore.noMouseOverNotification = nil
+   if MinimapScanner.IsMMScanning == false and SkuCore.inCombat ~= true then
+      MinimapScanner:RestoreMinimap()
+      MinimapScanner.noMouseOverNotification = nil
       C_Timer.After(1.1, function()
-         SkuCore.noMouseOverNotification = nil
+         MinimapScanner.noMouseOverNotification = nil
       end)
       return
    end
@@ -397,17 +405,17 @@ local function MinimapScanStep()
 
    if tCurrentMMPosY > (tRange / 2) then
       tCurrentMMPosX, tCurrentMMPosY = -(tRange / 2), -(tRange / 2)
-      SkuCore.IsMMScanning = false
+      MinimapScanner.IsMMScanning = false
       C_Timer.After(1, function()
-         SkuCore.noMouseOverNotification = true
+         MinimapScanner.noMouseOverNotification = true
       end)
-      SkuCore:MinimapScanProcessResults()
+      MinimapScanner:MinimapScanProcessResults()
    end
 
    SetMinimapPosition(tCurrentMMPosX, tCurrentMMPosY)
 
    C_Timer.After(0, function()
-      local tResultString = SkuCore:MinimapScanFindActiveRessource(tCurrentMMPosX, tCurrentMMPosY)
+      local tResultString = MinimapScanner:MinimapScanFindActiveRessource(tCurrentMMPosX, tCurrentMMPosY)
       if tResultString then
          --fx, fy = tCurrentMMPosX, tCurrentMMPosY
          --print(tResultString, fx, fy)
@@ -423,7 +431,7 @@ local function MinimapScanStep()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:StoreMinimap()
+function MinimapScanner:StoreMinimap()
    tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y = Minimap:GetPoint()
    tMinimapStore.parent = Minimap:GetParent()
    tMinimapStore.scale = Minimap:GetScale()
@@ -433,8 +441,8 @@ function SkuCore:StoreMinimap()
    tMinimapStore.frameLevel = MinimapCluster:GetFrameLevel()
    tMinimapStore.frameStrata = MinimapCluster:GetFrameStrata()
 
-   SkuCore.minimapChildren = { Minimap:GetChildren() }
-   for k, v in pairs(SkuCore.minimapChildren) do
+   MinimapScanner.minimapChildren = { Minimap:GetChildren() }
+   for k, v in pairs(MinimapScanner.minimapChildren) do
       v.MMA_VISIBLE = v:IsVisible()
       v.MMA_FRAME_LEVEL = v:GetFrameLevel()
       v.MMA_FRAME_STRATA = v:GetFrameStrata()
@@ -442,7 +450,7 @@ function SkuCore:StoreMinimap()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:RestoreMinimap()
+function MinimapScanner:RestoreMinimap()
    if InCombatLockdown() == true then
       return
    end
@@ -462,7 +470,7 @@ function SkuCore:RestoreMinimap()
       Minimap:SetMouseClickEnabled(true)
       MinimapCluster:SetMouseClickEnabled(true)
 
-      for k, v in pairs(SkuCore.minimapChildren) do
+      for k, v in pairs(MinimapScanner.minimapChildren) do
          if v.MMA_VISIBLE then
             v:Show()
          end
@@ -482,7 +490,7 @@ function SkuCore:RestoreMinimap()
       Minimap:SetMouseClickEnabled(true)
       MinimapCluster:SetMouseClickEnabled(true)
 
-      for k, v in pairs(SkuCore.minimapChildren) do
+      for k, v in pairs(MinimapScanner.minimapChildren) do
          if v.MMA_VISIBLE then
             v:Show()
          end
@@ -494,48 +502,48 @@ function SkuCore:RestoreMinimap()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MinimapStopScan()
+function MinimapScanner:MinimapStopScan()
    SkuOptions:StartStopBackgroundSound(false)
-   SkuCore:RestoreMinimap()
-   SkuCore.noMouseOverNotification = nil
-   SkuCore.IsMMScanning = false
-   SkuCore:RestoreMinimap()
-   SkuCore.noMouseOverNotification = nil
+   MinimapScanner:RestoreMinimap()
+   MinimapScanner.noMouseOverNotification = nil
+   MinimapScanner.IsMMScanning = false
+   MinimapScanner:RestoreMinimap()
+   MinimapScanner.noMouseOverNotification = nil
    -- Auch Zoom/Rotation/Altitude-Hint zurücksetzen, falls vor dem Scan
    -- erfasst (sonst bleibt Minimap in Scan-Konfiguration zoom=0 etc.).
-   if SkuCore.tMinimapScanPrevState then
-      pcall(tApplyMinimapState, SkuCore.tMinimapScanPrevState)
-      SkuCore.tMinimapScanPrevState = nil
+   if MinimapScanner.tMinimapScanPrevState then
+      pcall(tApplyMinimapState, MinimapScanner.tMinimapScanPrevState)
+      MinimapScanner.tMinimapScanPrevState = nil
    end
    if tNotificationTicker then
       tNotificationTicker:Cancel()
    end
-   SkuCore.noMouseOverNotification = nil
+   MinimapScanner.noMouseOverNotification = nil
    SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MinimapScan(aRange)
+function MinimapScanner:MinimapScan(aRange)
    if not MinimapScanner:IsEnabled() then return end
    dprint("MinimapScan", aRange)
    if Questie then
       Questie.db.global.enableMiniMapIcons = false
    end
 
-   SkuCore:GameWorldObjectsCenterMouseCursor(0.5)
+   SkuCore.GameWorldObjects:GameWorldObjectsCenterMouseCursor(0.5)
    -- Vor-Scan-Zustand merken — wird wieder hergestellt, sobald der
    -- Child-Frame-Scan Treffer liefert oder der Grid-Scan endet.
-   SkuCore.tMinimapScanPrevState = tCaptureMinimapState()
+   MinimapScanner.tMinimapScanPrevState = tCaptureMinimapState()
    -- Scan-Zustand erzwingen: Zoom 0, keine Rotation, kein Höhenmodus.
    pcall(tEnterScanState)
 
    aRange = aRange or 20
    tScanResults = {}
    tFoundPositions = {}
-   SkuCore.noMouseOverNotification = true
+   MinimapScanner.noMouseOverNotification = true
 
    -- Try fast child-frame scan first (works if blips are interactive frames)
-   local ok, tChildResults = pcall(SkuCore.MinimapScanChildFrames, SkuCore)
+   local ok, tChildResults = pcall(MinimapScanner.MinimapScanChildFrames, MinimapScanner)
    if not ok then tChildResults = {} end
    if next(tChildResults) then
       for name, pos in pairs(tChildResults) do
@@ -558,25 +566,25 @@ function SkuCore:MinimapScan(aRange)
       end
       -- Vor-Scan-Zustand wiederherstellen, weil wir gar nicht in den
       -- disruptiven Grid-Scan-Pfad einsteigen.
-      pcall(tApplyMinimapState, SkuCore.tMinimapScanPrevState)
-      SkuCore.tMinimapScanPrevState = nil
-      SkuCore:MinimapScanProcessResults()
+      pcall(tApplyMinimapState, MinimapScanner.tMinimapScanPrevState)
+      MinimapScanner.tMinimapScanPrevState = nil
+      MinimapScanner:MinimapScanProcessResults()
       return
    end
 
    -- Fallback: slow grid scan via minimap tooltip
    SkuOptions:StartStopBackgroundSound(true, SkuSettings:Sub("SkuCore").scanBackgroundSound)
    tRange = aRange
-   SkuCore:StoreMinimap()
+   MinimapScanner:StoreMinimap()
    tCurrentMMPosX, tCurrentMMPosY = (aRange / 2) * -1, (aRange / 2) * -1
-   SkuCore.IsMMScanning = true
+   MinimapScanner.IsMMScanning = true
 
    print("Ressourcen-Scan gestartet (" .. aRange .. " Einheiten)")
    MinimapScanStep()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MinimapScanProcessResults()
+function MinimapScanner:MinimapScanProcessResults()
    if tNotificationTicker then
       tNotificationTicker:Cancel()
    end
@@ -587,9 +595,9 @@ function SkuCore:MinimapScanProcessResults()
    -- Falls noch ein gespeicherter Vor-Scan-Minimap-Zustand existiert
    -- (manueller Scan via Hotkey), zurückspielen — verhindert, dass die
    -- Minimap in zoom=0/no-rotation hängenbleibt.
-   if SkuCore.tMinimapScanPrevState then
-      pcall(tApplyMinimapState, SkuCore.tMinimapScanPrevState)
-      SkuCore.tMinimapScanPrevState = nil
+   if MinimapScanner.tMinimapScanPrevState then
+      pcall(tApplyMinimapState, MinimapScanner.tMinimapScanPrevState)
+      MinimapScanner.tMinimapScanPrevState = nil
    end
 
    if next(tScanResults) == nil then
@@ -666,13 +674,13 @@ local tRessourceTypes = {
 local tInitialCenterMouse
 local tPrevResult = ""
 local mmx, mmy
-function SkuCore:MinimapScanFast()
+function MinimapScanner:MinimapScanFast()
    if not MinimapScanner:IsEnabled() then return end
-   if SkuCore.MinimapScanFastRunning == true then return end
+   if MinimapScanner.MinimapScanFastRunning == true then return end
    if Questie then Questie.db.global.enableMiniMapIcons = false end
 
-   SkuCore.noMouseOverNotification = true
-   SkuCore.MinimapScanFastRunning = true
+   MinimapScanner.noMouseOverNotification = true
+   MinimapScanner.MinimapScanFastRunning = true
    tFoundPositions = {}
 
    -- Vor-Scan-Zustand sichern, damit wir nach dem Scan exakt zurück-
@@ -682,14 +690,14 @@ function SkuCore:MinimapScanFast()
    -- durchführen, sonst bleibt das Addon hängen.
    local function tFinalize(aResultName)
       pcall(tApplyMinimapState, tPrevState)
-      pcall(SkuCore.MinimapScanFastStop, SkuCore, aResultName)
+      pcall(MinimapScanner.MinimapScanFastStop, MinimapScanner, aResultName)
    end
 
    -- ── Schnellpfad: Child-Frame-Scan ───────────────────────────────────────
    -- Vor dem Scan zwingend Zoom 0 + Rotation aus, damit alle Blips als
    -- Children sichtbar sind und ihre Center-Koordinaten stabil bleiben.
    pcall(tEnterScanState)
-   local ok, tChildResults = pcall(SkuCore.MinimapScanChildFrames, SkuCore)
+   local ok, tChildResults = pcall(MinimapScanner.MinimapScanChildFrames, MinimapScanner)
    if not ok then tChildResults = {} end
    local nChild = 0
    for _ in pairs(tChildResults) do nChild = nChild + 1 end
@@ -712,7 +720,7 @@ function SkuCore:MinimapScanFast()
    -- und gleichen ihn gegen die aktivierten Ressourcen ab.
    if not tInitialCenterMouse then
       tInitialCenterMouse = true
-      pcall(SkuCore.GameWorldObjectsCenterMouseCursor, SkuCore, 0.5)
+      pcall(SkuCore.GameWorldObjects.GameWorldObjectsCenterMouseCursor, SkuCore.GameWorldObjects, 0.5)
    end
 
    if Questie then Questie.db.global.enableMiniMapIcons = false end
@@ -738,14 +746,14 @@ function SkuCore:MinimapScanFast()
       end
    end)
 
-   pcall(SkuCore.StoreMinimap, SkuCore)
+   pcall(MinimapScanner.StoreMinimap, MinimapScanner)
 
    -- Schutz gegen Klick-Abfangen: Alle Minimap-Kinder verstecken,
    -- solange die Minimap unter dem Cursor liegt. Ohne das fangen
    -- Kind-Frames (z.B. MiniMapTrackingFrame) Klicks ab und erzeugen
    -- ein Ping-Geraeusch. Portiert aus 1.x (Zeilen 479-484).
    -- RestoreMinimap stellt die Sichtbarkeit per MMA_VISIBLE her.
-   for k, v in pairs(SkuCore.minimapChildren) do
+   for k, v in pairs(MinimapScanner.minimapChildren) do
       if v:IsShown() then
          pcall(v.Hide, v)
       end
@@ -806,16 +814,16 @@ function SkuCore:MinimapScanFast()
       if mmx and mmy then
          pcall(Minimap.SetSize, Minimap, mmx, mmy)
       end
-      pcall(SkuCore.RestoreMinimap, SkuCore)
+      pcall(MinimapScanner.RestoreMinimap, MinimapScanner)
       Minimap:SetAlpha(1)
       C_Timer.After(0.1, function() GameTooltip:SetAlpha(1) end)
       pcall(tApplyMinimapState, tPrevState)
-      pcall(SkuCore.MinimapScanFastStop, SkuCore, foundResult)
+      pcall(MinimapScanner.MinimapScanFastStop, MinimapScanner, foundResult)
    end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MinimapScanFastStop(aResult)
+function MinimapScanner:MinimapScanFastStop(aResult)
    if aResult then
       if tPrevResult ~= aResult then
          aResult = string.gsub(aResult, "\\", " slash")
@@ -826,17 +834,17 @@ function SkuCore:MinimapScanFastStop(aResult)
    else
       tPrevResult = ""
    end
-   SkuCore.noMouseOverNotification = nil
-   SkuCore.IsMMScanning = false
-   SkuCore.MinimapScanFastRunning = false
+   MinimapScanner.noMouseOverNotification = nil
+   MinimapScanner.IsMMScanning = false
+   MinimapScanner.MinimapScanFastRunning = false
    -- Timer zurücksetzen, damit der nächste Scan erst nach vollem Intervall startet
-   if SkuCore.minimapScannerFrame then
-      SkuCore.minimapScannerFrame.timeCounter = 0
+   if MinimapScanner.minimapScannerFrame then
+      MinimapScanner.minimapScannerFrame.timeCounter = 0
    end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MinimapScannerOnLogin()
+function MinimapScanner:MinimapScannerOnLogin()
    tMinimapDefaults.point, tMinimapDefaults.relativeTo, tMinimapDefaults.relativePoint, tMinimapDefaults.x, tMinimapDefaults.y = Minimap:GetPoint()
    tMinimapDefaults.parent = Minimap:GetParent()
    tMinimapDefaults.scale = Minimap:GetScale()
@@ -846,24 +854,24 @@ function SkuCore:MinimapScannerOnLogin()
    tMinimapDefaults.frameLevel = MinimapCluster:GetFrameLevel()
    tMinimapDefaults.frameStrata = MinimapCluster:GetFrameStrata()
 
-   SkuCore.minimapChildren = { Minimap:GetChildren() }
-   for k, v in pairs(SkuCore.minimapChildren) do
+   MinimapScanner.minimapChildren = { Minimap:GetChildren() }
+   for k, v in pairs(MinimapScanner.minimapChildren) do
       v.MMA_VISIBLE = v:IsVisible()
       v.MMA_FRAME_LEVEL = v:GetFrameLevel()
       v.MMA_FRAME_STRATA = v:GetFrameStrata()
    end
 
 
-   SkuCore:RegisterChatCommand("activeSeekings", "SlashActiveSeekings")
-   SkuCore:RegisterChatCommand("as", "SlashActiveSeekings")
+   MinimapScanner:RegisterChatCommand("activeSeekings", "SlashActiveSeekings")
+   MinimapScanner:RegisterChatCommand("as", "SlashActiveSeekings")
 
    -- Normaler Frame (kein SecureActionButtonTemplate) – verhindert Lua-Taint
    -- beim Manipulieren von Minimap und MinimapCluster aus dem OnUpdate heraus.
-   if SkuCore.minimapScannerFrame then
-      SkuCore.minimapScannerFrame:SetScript("OnUpdate", nil)
+   if MinimapScanner.minimapScannerFrame then
+      MinimapScanner.minimapScannerFrame:SetScript("OnUpdate", nil)
    end
-   SkuCore.minimapScannerFrame = CreateFrame("Frame", nil, UIParent)
-   local a = SkuCore.minimapScannerFrame
+   MinimapScanner.minimapScannerFrame = CreateFrame("Frame", nil, UIParent)
+   local a = MinimapScanner.minimapScannerFrame
    a.timeCounter = 0
    a:SetScript("OnUpdate", function(self, atime)
       if SkuSettings:Sub("SkuCore").ressourceScanning.notifyOnRessources ~= true then
@@ -878,12 +886,12 @@ function SkuCore:MinimapScannerOnLogin()
       end
       self.timeCounter = self.timeCounter + atime
       if self.timeCounter > 0.5 then   -- wie Vorlage: alle 0,5 s scannen
-         if SkuCore.IsMMScanning ~= true then
-            SkuCore.IsMMScanning = true
-            local ok = pcall(SkuCore.MinimapScanFast, SkuCore)
+         if MinimapScanner.IsMMScanning ~= true then
+            MinimapScanner.IsMMScanning = true
+            local ok = pcall(MinimapScanner.MinimapScanFast, MinimapScanner)
             if not ok then
-               SkuCore.IsMMScanning = false
-               SkuCore.MinimapScanFastRunning = false
+               MinimapScanner.IsMMScanning = false
+               MinimapScanner.MinimapScanFastRunning = false
             end
             self.timeCounter = 0
          end
@@ -891,14 +899,14 @@ function SkuCore:MinimapScannerOnLogin()
    end)
 end
 
-function SkuCore:MinimapScannerCURSOR_CHANGED(aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
+function MinimapScanner:MinimapScannerCURSOR_CHANGED(aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
    --print("CURSOR_CHANGED", aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
 
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- /activeSeekings – gibt aktive Minimap-Suchen (Mineralien, Kräuter, ...) im Chat aus und per TTS
-function SkuCore:SlashActiveSeekings()
+function MinimapScanner:SlashActiveSeekings()
    local found = false
    local numTypes = GetNumTrackingTypes and GetNumTrackingTypes() or 0
    for i = 1, numTypes do
@@ -928,7 +936,7 @@ end
 -- the arming body is unchanged (it lives in MinimapScannerOnLogin, which we call
 -- here so the method stays exactly where external callers expect it).
 function MinimapScanner:OnEnable()
-   SkuCore:MinimapScannerOnLogin()
+   MinimapScanner:MinimapScannerOnLogin()
 end
 
 -- Disarm the feature: stop any in-progress scan and remove the OnUpdate driver so
@@ -936,8 +944,8 @@ end
 -- manual scan). The chat command stays registered (AceConsole cannot unregister),
 -- but MinimapScan/MinimapScanFast no-op via their IsEnabled guards.
 function MinimapScanner:OnDisable()
-   SkuCore:MinimapStopScan()
-   if SkuCore.minimapScannerFrame then
-      SkuCore.minimapScannerFrame:SetScript("OnUpdate", nil)
+   MinimapScanner:MinimapStopScan()
+   if MinimapScanner.minimapScannerFrame then
+      MinimapScanner.minimapScannerFrame:SetScript("OnUpdate", nil)
    end
 end

@@ -79,7 +79,7 @@ local function setupHelper()
    tFrame:SetScript("OnClick", function(self, aKey, aB)
       for x = 1, 8 do
          if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_FOCUSSET"..x) then
-            SkuCore.SkuFocus:SetFocusUnitName(x, UnitName("target"))
+            SkuFocus:SetFocusUnitName(x, UnitName("target"))
             return
          end
       end
@@ -118,12 +118,12 @@ local function setupHelper()
       SkuOptions:RegisterChatCommand("focus"..x, function(msg)
          if msg and msg ~= "" then
             if tFocusUnitIds[string.lower(msg)] then
-               SkuCore.SkuFocus:SetFocusUnitName(x, UnitName(string.lower(msg)))
+               SkuFocus:SetFocusUnitName(x, UnitName(string.lower(msg)))
             else
-               SkuCore.SkuFocus:SetFocusUnitName(x, msg)
+               SkuFocus:SetFocusUnitName(x, msg)
             end
          else
-            SkuCore.SkuFocus:SetFocusUnitName(x, UnitName("target"))
+            SkuFocus:SetFocusUnitName(x, UnitName("target"))
          end
       end)
    end
@@ -164,7 +164,7 @@ function SkuFocus:OnDisable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore.SkuFocus:SetFocusUnitName(aFocusNumber, aFocusTargetName)
+function SkuFocus:SetFocusUnitName(aFocusNumber, aFocusTargetName)
    if not SkuFocus:IsEnabled() then return end
    if not InCombatLockdown() then
       if not aFocusTargetName or aFocusTargetName == "" then

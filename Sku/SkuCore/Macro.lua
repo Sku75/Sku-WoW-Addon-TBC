@@ -76,7 +76,7 @@ function MacroMenuBuilderNew(aParent)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MacroMenuBuilder()
+function Macro:MacroMenuBuilder()
     local aParent = self
     local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["NewMacro"] }, SkuGenericMenuItem)
     tNewMenuEntry.dynamic = true

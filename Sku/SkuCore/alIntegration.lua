@@ -1,4 +1,4 @@
-local MODULE_NAME, MODULE_PART = "SkuCore", "alIntegration"
+﻿local MODULE_NAME, MODULE_PART = "SkuCore", "alIntegration"
 local L = Sku.L
 local _G = _G
 
@@ -15,10 +15,19 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 -- old explicit SkuCore:alItegrationLogin() call in the isInitialLogin block (which
 -- only ran on the very first login, so the loot/wishlist listeners did not re-arm
 -- after a /reload — OnEnable fixes that by arming on every load).
--- All methods and state stay on SkuCore (SkuZOptions reads SkuCore.favoriteSlots and
--- the per-char alIntegration.favorites), and settings stay under the "SkuCore"
--- SkuSettings namespace, so there is no SavedVariables migration.
-local AtlasLootIntegration = SkuCore:NewModule("AtlasLootIntegration")
+-- W4 Phase E (namespace extraction): all of AtlasLootIntegration's own methods and
+-- module state now live on the module table `AtlasLootIntegration` itself
+-- (function AtlasLootIntegration:Method) instead of on the shared SkuCore god-object.
+-- The module mixes in AceEvent-3.0 and owns its own loot/chat event registrations.
+-- External callers use the published handle SkuCore.AtlasLootIntegration
+-- (SkuZOptions reads SkuCore.AtlasLootIntegration.favoriteSlots; the Atlas-Loot menu
+-- build hook in Options.lua points at SkuCore.AtlasLootIntegration.alIntegrationMenuBuilder).
+-- The SkuKeyBinds string-dispatch (object="SkuCore", func="AtlasLootApplyKeyBinding")
+-- is kept working via a thin SkuCore:AtlasLootApplyKeyBinding forwarding shim, because
+-- that dispatch can only reach a _G global object, not the nested module handle.
+-- Settings stay under the "SkuCore" SkuSettings namespace, so there is no
+-- SavedVariables migration.
+local AtlasLootIntegration = SkuCore:NewModule("AtlasLootIntegration", "AceEvent-3.0")
 SkuCore.AtlasLootIntegration = AtlasLootIntegration   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
@@ -42,7 +51,7 @@ local tExpansions = {
 }
 
 INVTYPE_RANGEDRIGHT = RANGED
-SkuCore.favoriteSlots = {
+AtlasLootIntegration.favoriteSlots = {
    [1] = {"INVTYPE_HEAD", {1},},
    [2] = {"INVTYPE_NECK", {2},},
    [3] = {"INVTYPE_SHOULDER", {3},},
@@ -76,13 +85,13 @@ local tItemDropTable = nil
 local tItemNameTable = nil
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:alItegrationGetItemDropTable(aId)
+function AtlasLootIntegration:alItegrationGetItemDropTable(aId)
    if not aId then
       return
    end
 
    if not tItemDropTable then
-      SkuCore:alIntegrationQueryAll()
+      AtlasLootIntegration:alIntegrationQueryAll()
    end
 
    if tItemDropTable then
@@ -91,11 +100,11 @@ function SkuCore:alItegrationGetItemDropTable(aId)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:alItegrationLogin()
+function AtlasLootIntegration:alItegrationLogin()
 	SkuSettings:Sub("SkuCore", nil, "char").alIntegration = SkuSettings:Sub("SkuCore", nil, "char").alIntegration or {}
    SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites = SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites or {}
    SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory = SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory or {}
-   for x = 1, #SkuCore.favoriteSlots do
+   for x = 1, #AtlasLootIntegration.favoriteSlots do
       SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x] = SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x] or {}
    end
 
@@ -106,16 +115,16 @@ function SkuCore:alItegrationLogin()
    end
 
    -- Wunschlisten-Cache einmalig aufbauen (statt im Kampf lazy nachzuladen).
-   pcall(function() SkuCore:RebuildWishlistCache() end)
+   pcall(function() AtlasLootIntegration:RebuildWishlistCache() end)
 
-   SkuCore:RegisterEvent("CHAT_MSG_LOOT")
-   SkuCore:RegisterEvent("START_LOOT_ROLL")
-   SkuCore:RegisterEvent("CHAT_MSG_PARTY")
-   SkuCore:RegisterEvent("CHAT_MSG_PARTY_LEADER")
-   SkuCore:RegisterEvent("CHAT_MSG_RAID")
-   SkuCore:RegisterEvent("CHAT_MSG_RAID_LEADER")
-   SkuCore:RegisterEvent("CHAT_MSG_SAY")
-   SkuCore:RegisterEvent("CHAT_MSG_YELL")
+   AtlasLootIntegration:RegisterEvent("CHAT_MSG_LOOT")
+   AtlasLootIntegration:RegisterEvent("START_LOOT_ROLL")
+   AtlasLootIntegration:RegisterEvent("CHAT_MSG_PARTY")
+   AtlasLootIntegration:RegisterEvent("CHAT_MSG_PARTY_LEADER")
+   AtlasLootIntegration:RegisterEvent("CHAT_MSG_RAID")
+   AtlasLootIntegration:RegisterEvent("CHAT_MSG_RAID_LEADER")
+   AtlasLootIntegration:RegisterEvent("CHAT_MSG_SAY")
+   AtlasLootIntegration:RegisterEvent("CHAT_MSG_YELL")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -124,28 +133,21 @@ end
 -- runs the same arming the old login path did (settings init + event registration),
 -- and (re)applies the open-AtlasLoot keybind override so it is active after a /reload.
 function AtlasLootIntegration:OnEnable()
-   SkuCore:alItegrationLogin()
-   pcall(function() SkuCore:AtlasLootApplyKeyBinding() end)
+   AtlasLootIntegration:alItegrationLogin()
+   pcall(function() AtlasLootIntegration:AtlasLootApplyKeyBinding() end)
 end
 
 -- Disarm the feature: unregister the loot/chat listeners and drop the keybind
 -- override so a disabled AtlasLootIntegration does nothing.
 function AtlasLootIntegration:OnDisable()
-   SkuCore:UnregisterEvent("CHAT_MSG_LOOT")
-   SkuCore:UnregisterEvent("START_LOOT_ROLL")
-   SkuCore:UnregisterEvent("CHAT_MSG_PARTY")
-   SkuCore:UnregisterEvent("CHAT_MSG_PARTY_LEADER")
-   SkuCore:UnregisterEvent("CHAT_MSG_RAID")
-   SkuCore:UnregisterEvent("CHAT_MSG_RAID_LEADER")
-   SkuCore:UnregisterEvent("CHAT_MSG_SAY")
-   SkuCore:UnregisterEvent("CHAT_MSG_YELL")
+   AtlasLootIntegration:UnregisterAllEvents()
    if _G["SkuAtlasLootShortcutButton"] then
       pcall(ClearOverrideBindings, _G["SkuAtlasLootShortcutButton"])
    end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:CHAT_MSG_LOOT(_, text, _, _, _, playerName)
+function AtlasLootIntegration:CHAT_MSG_LOOT(_, text, _, _, _, playerName)
    if not playerName or playerName ~= UnitName("player") then
       return
    end
@@ -173,11 +175,11 @@ function SkuCore:CHAT_MSG_LOOT(_, text, _, _, _, playerName)
    -- Wunschlisten-Treffer? Dann "I feel Good"-Sound abspielen
    -- UND das Item aus der Wunschliste entfernen — es liegt jetzt
    -- im Inventar des Spielers, der Wunsch ist erfüllt.
-   if SkuCore:IsItemInWishlist(itemid) then
+   if AtlasLootIntegration:IsItemInWishlist(itemid) then
       pcall(_G.PlaySoundFile,
          "Interface\\AddOns\\Sku\\audio\\I feel Good.mp3",
          "Master")
-      pcall(function() SkuCore:RemoveItemFromWishlist(itemid) end)
+      pcall(function() AtlasLootIntegration:RemoveItemFromWishlist(itemid) end)
    end
 end
 
@@ -185,17 +187,17 @@ end
 -- die Wunschliste geändert hat (wishlistCacheDirty). Verhindert, dass im
 -- Raid-Kampf pro Chat-Zeile bzw. pro Item-Link die gesamte Favoritenliste
 -- mit GetItemInfoInstant durchlaufen wird (war die Lag-Quelle).
-SkuCore.wishlistIdCache = SkuCore.wishlistIdCache or {}
-SkuCore.wishlistCacheDirty = true
+AtlasLootIntegration.wishlistIdCache = AtlasLootIntegration.wishlistIdCache or {}
+AtlasLootIntegration.wishlistCacheDirty = true
 
-function SkuCore:RebuildWishlistCache()
+function AtlasLootIntegration:RebuildWishlistCache()
    local tCache = {}
    local tFavs = SkuOptions and SkuOptions.db and SkuOptions.db.char
       and SkuSettings:Sub("SkuCore", nil, "char")
       and SkuSettings:Sub("SkuCore", nil, "char").alIntegration
       and SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites
    if tFavs then
-      for invType = 1, #SkuCore.favoriteSlots do
+      for invType = 1, #AtlasLootIntegration.favoriteSlots do
          local list = tFavs[invType]
          if type(list) == "table" then
             for _, favLink in ipairs(list) do
@@ -205,15 +207,15 @@ function SkuCore:RebuildWishlistCache()
          end
       end
    end
-   SkuCore.wishlistIdCache = tCache
-   SkuCore.wishlistCacheDirty = false
+   AtlasLootIntegration.wishlistIdCache = tCache
+   AtlasLootIntegration.wishlistCacheDirty = false
 end
 
 -- true, wenn die Wunschliste leer ist (baut den Cache bei Bedarf neu).
 -- Wird als früher Abbruch in den Chat-Handlern genutzt.
-function SkuCore:WishlistEmpty()
-   if SkuCore.wishlistCacheDirty then SkuCore:RebuildWishlistCache() end
-   return next(SkuCore.wishlistIdCache) == nil
+function AtlasLootIntegration:WishlistEmpty()
+   if AtlasLootIntegration.wishlistCacheDirty then AtlasLootIntegration:RebuildWishlistCache() end
+   return next(AtlasLootIntegration.wishlistIdCache) == nil
 end
 
 -- Entfernt alle Vorkommen einer itemID aus der globalen Wunschliste
@@ -224,7 +226,7 @@ end
 -- Vergleich primär per itemID (GetItemInfoInstant über den
 -- gespeicherten Link), Fallback per Substring-Match auf der itemID
 -- im Link, falls GetItemInfoInstant transient fehlschlägt.
-function SkuCore:RemoveItemFromWishlist(itemID)
+function AtlasLootIntegration:RemoveItemFromWishlist(itemID)
    if not itemID then return 0 end
    local tFavs = SkuOptions and SkuOptions.db and SkuOptions.db.char
       and SkuSettings:Sub("SkuCore", nil, "char")
@@ -233,7 +235,7 @@ function SkuCore:RemoveItemFromWishlist(itemID)
    if not tFavs then return 0 end
    local tIdStr = "item:" .. tostring(itemID) .. ":"
    local tRemoved = 0
-   for invType = 1, #SkuCore.favoriteSlots do
+   for invType = 1, #AtlasLootIntegration.favoriteSlots do
       local list = tFavs[invType]
       if type(list) == "table" then
          for q = #list, 1, -1 do
@@ -252,29 +254,29 @@ function SkuCore:RemoveItemFromWishlist(itemID)
          end
       end
    end
-   if tRemoved > 0 then SkuCore.wishlistCacheDirty = true end
+   if tRemoved > 0 then AtlasLootIntegration.wishlistCacheDirty = true end
    return tRemoved
 end
 
 -- Hilfsfunktion: prüft ob eine itemID auf der globalen Wunschliste
 -- (db.char.alIntegration.favorites) steht.
-function SkuCore:IsItemInWishlist(itemID)
+function AtlasLootIntegration:IsItemInWishlist(itemID)
    if not itemID then return false end
    -- O(1)-Lookup über den Cache; nur bei Änderung wird er neu gebaut.
-   if SkuCore.wishlistCacheDirty then SkuCore:RebuildWishlistCache() end
-   return SkuCore.wishlistIdCache[itemID] == true
+   if AtlasLootIntegration.wishlistCacheDirty then AtlasLootIntegration:RebuildWishlistCache() end
+   return AtlasLootIntegration.wishlistIdCache[itemID] == true
 end
 
 -- START_LOOT_ROLL: Beute-Würfel-Dialog erscheint (Bedarf/Gier/Passen).
 -- Sobald der dort gezeigte Gegenstand auf der Wunschliste steht,
 -- spielen wir den Tutorial-Success-Sound ab.
-function SkuCore:START_LOOT_ROLL(_, rollID)
+function AtlasLootIntegration:START_LOOT_ROLL(_, rollID)
    if not rollID then return end
    local link = _G.GetLootRollItemLink and _G.GetLootRollItemLink(rollID)
    if not link then return end
    local itemID = tonumber(link:match("item:(%d+):"))
    if not itemID then return end
-   if SkuCore:IsItemInWishlist(itemID) then
+   if AtlasLootIntegration:IsItemInWishlist(itemID) then
       -- deDE/enUS-Variante je nach Spieler-Locale auswählen.
       local tLocale = (Sku and Sku.LocP) or "deDE"
       local tBase   = "Interface\\AddOns\\Sku\\SkuAudioData\\assets\\audio\\"
@@ -290,14 +292,14 @@ end
 
 -- CHAT_MSG_PARTY / RAID / SAY / YELL: Wenn ein verlinkter Gegenstand
 -- auf der Wunschliste steht, Tutorial-Success-Sound abspielen.
-function SkuCore:CHAT_MSG_PARTY(_, text, playerName, ...)
+function AtlasLootIntegration:CHAT_MSG_PARTY(_, text, playerName, ...)
    if not text then return end
    -- Früher Abbruch: bei leerer Wunschliste keinerlei Arbeit (kein gmatch).
    -- Das ist der Kampf-Spam-Pfad (RAID/PARTY) -> hält die Performance grün.
-   if SkuCore:WishlistEmpty() then return end
+   if AtlasLootIntegration:WishlistEmpty() then return end
    for itemIDStr in text:gmatch("|Hitem:(%d+):") do
       local itemID = tonumber(itemIDStr)
-      if itemID and SkuCore:IsItemInWishlist(itemID) then
+      if itemID and AtlasLootIntegration:IsItemInWishlist(itemID) then
          local tLocale = (Sku and Sku.LocP) or "deDE"
          local tBase   = "Interface\\AddOns\\Sku\\SkuAudioData\\assets\\audio\\"
          local tPath   = tBase .. tLocale .. "\\Tutorial_Success_01.mp3"
@@ -310,11 +312,11 @@ function SkuCore:CHAT_MSG_PARTY(_, text, playerName, ...)
       end
    end
 end
-SkuCore.CHAT_MSG_PARTY_LEADER = SkuCore.CHAT_MSG_PARTY
-SkuCore.CHAT_MSG_RAID         = SkuCore.CHAT_MSG_PARTY
-SkuCore.CHAT_MSG_RAID_LEADER  = SkuCore.CHAT_MSG_PARTY
-SkuCore.CHAT_MSG_SAY          = SkuCore.CHAT_MSG_PARTY
-SkuCore.CHAT_MSG_YELL         = SkuCore.CHAT_MSG_PARTY
+AtlasLootIntegration.CHAT_MSG_PARTY_LEADER = AtlasLootIntegration.CHAT_MSG_PARTY
+AtlasLootIntegration.CHAT_MSG_RAID         = AtlasLootIntegration.CHAT_MSG_PARTY
+AtlasLootIntegration.CHAT_MSG_RAID_LEADER  = AtlasLootIntegration.CHAT_MSG_PARTY
+AtlasLootIntegration.CHAT_MSG_SAY          = AtlasLootIntegration.CHAT_MSG_PARTY
+AtlasLootIntegration.CHAT_MSG_YELL         = AtlasLootIntegration.CHAT_MSG_PARTY
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local DIFFICULTY
@@ -419,7 +421,7 @@ local function BuildSource(ini, boss, typ, item, diffID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInternalDungeonName, aBossIndex, aTypeId, aDiffId)
+function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInternalDungeonName, aBossIndex, aTypeId, aDiffId)
    if not aId then
       return
    end
@@ -456,12 +458,12 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
          if tExtraFrameData then
             for i, v in pairs(AtlasLoot.Data.ItemSet.GetSetItems(aId)) do
                print("tExtraFrameData --------", i, v)
-               SkuCore:alIntegrationItemMenuBuilder(self, "item", v)
+               AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", v)
             end
          end
          ]]
          for i, v in pairs(AtlasLoot.Data.ItemSet.GetSetItems(aId)) do
-            SkuCore:alIntegrationItemMenuBuilder(self, "item", v)
+            AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", v)
          end
       end
 
@@ -543,7 +545,7 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
                         pcall(function() SkuOptions.Voice:OutputStringBTtts(L["AL_WishlistItemRemoved"], true, true, 0.2, nil, nil, nil, 2) end)
                      end
                      -- Wunschliste geändert -> Cache neu bauen.
-                     SkuCore.wishlistCacheDirty = true
+                     AtlasLootIntegration.wishlistCacheDirty = true
                      pcall(function()
                         if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then
                            SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
@@ -570,7 +572,7 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
                C_Timer.After(0.1, function() pcall(function() SkuOptions.Voice:OutputStringBTtts(L["AL_WishlistItemRemoved"], true, true, 0.2, nil, nil, nil, 2) end) end)
             end
             -- Wunschliste geändert -> Cache beim nächsten Lookup neu bauen.
-            SkuCore.wishlistCacheDirty = true
+            AtlasLootIntegration.wishlistCacheDirty = true
             pcall(function()
                if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then
                   SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
@@ -656,7 +658,7 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:alIntegrationMenuBuilder()
+function AtlasLootIntegration:alIntegrationMenuBuilder()
    -- Diagnose: was sieht Sku zum Zeitpunkt des Aufklappens?
    if Sku.debug and (Sku.debug.log or Sku.debug.print) then
       pcall(function()
@@ -695,7 +697,7 @@ function SkuCore:alIntegrationMenuBuilder()
    end
 
    if tItemDropTable == nil then
-      SkuCore:alIntegrationQueryAll()
+      AtlasLootIntegration:alIntegrationQueryAll()
    end
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Search"]}, SkuGenericMenuItem)
@@ -703,7 +705,7 @@ function SkuCore:alIntegrationMenuBuilder()
    tNewMenuEntry.filterable = true
    tNewMenuEntry.BuildChildren = function(self)
       for i, v in pairs(tItemNameTable) do
-         SkuCore:alIntegrationItemMenuBuilder(self, "item", v.itemID, v.npcId, v.internalName, v.bossIndex, nil, v.difficultyIndex)
+         AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", v.itemID, v.npcId, v.internalName, v.bossIndex, nil, v.difficultyIndex)
       end
    end
 
@@ -828,21 +830,21 @@ function SkuCore:alIntegrationMenuBuilder()
                                     local row = entry.row
                                     if type(row[2]) == "number" then
                                        if AtlasLoot.Data.ItemSet.GetSetName(row[2]) then
-                                          SkuCore:alIntegrationItemMenuBuilder(self, "set", row[2])
+                                          AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "set", row[2])
                                        elseif (C_Item.GetItemNameByID(row[2])) and AtlasLoot.Data.Profession.IsProfessionSpell(row[2]) ~= true then
-                                          SkuCore:alIntegrationItemMenuBuilder(self, "item", row[2], tabVal.npcID, contentInteralName, bossIndex, nil, difficultyIndex)
+                                          AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", row[2], tabVal.npcID, contentInteralName, bossIndex, nil, difficultyIndex)
                                        else
                                           local tName = GetSpellInfo(row[2])
                                           if tName then
-                                             SkuCore:alIntegrationItemMenuBuilder(self, "spell", row[2])
+                                             AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "spell", row[2])
                                           end
                                        end
                                        if row[2] > 1000000 then
                                           local tSetId = tonumber(string.sub(tostring(row[2]), 5))
-                                          SkuCore:alIntegrationItemMenuBuilder(self, "set", tSetId)
+                                          AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "set", tSetId)
                                        end
                                     else
-                                       SkuCore:alIntegrationItemMenuBuilder(self, "collection", row[2])
+                                       AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "collection", row[2])
                                     end
                                  end
                               else
@@ -913,13 +915,13 @@ function SkuCore:alIntegrationMenuBuilder()
                            -- Kontextuelle Wunschliste (mode="boss"): Geschwister
                            -- der Bosse, wenn der getargetete Boss in dieser
                            -- Instanz/diesem Raid liegt.
-                           local ctx = SkuCore.alShortcutContext
+                           local ctx = AtlasLootIntegration.alShortcutContext
                            if ctx and ctx.mode == "boss"
                               and ctx.instanceName == moduleData[contentInteralName]:GetName()
                               and ctx.pluginTitle == tModules.module[pluginIndex].tt_title
                               and ctx.gameVersion == selectedGameVersion then
-                              SkuCore:BuildContextualWishlistEntry(self,
-                                 SkuCore.alDropsByBoss[ctx.bossName])
+                              AtlasLootIntegration:BuildContextualWishlistEntry(self,
+                                 AtlasLootIntegration.alDropsByBoss[ctx.bossName])
                            end
                            --bosses
                            for bossIndex = 1, #moduleData[contentInteralName].items do
@@ -972,19 +974,19 @@ function SkuCore:alIntegrationMenuBuilder()
                                                       
                                                       if AtlasLoot.Data.ItemSet.GetSetName(items[itemIndex][2]) then
                                                          --print("7)", "        ", "set", items[itemIndex][2], AtlasLoot.Data.ItemSet.GetSetName(items[itemIndex][2]))
-                                                         SkuCore:alIntegrationItemMenuBuilder(self, "set", items[itemIndex][2])
+                                                         AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "set", items[itemIndex][2])
 
                                                       elseif (C_Item.GetItemNameByID(items[itemIndex][2])) and AtlasLoot.Data.Profession.IsProfessionSpell(items[itemIndex][2]) ~= true then
                                                       --elseif C_Item.GetItemNameByID(items[itemIndex][2]) then
                                                             --print("7)", "        ", "item", SkuUtil:Unescape(items[itemIndex][1]), SkuUtil:Unescape(items[itemIndex][2]), SkuUtil:Unescape(C_Item.GetItemNameByID(items[itemIndex][2])), tSkuName)
 
                                                                                                 --aParent, aType, aId,                aNpcId,       aDungeonName,     aBossIndex, aTypeId, aDiffId
-                                                            SkuCore:alIntegrationItemMenuBuilder(self, "item", items[itemIndex][2], tabVal.npcID, contentInteralName, bossIndex, nil, difficultyIndex)
+                                                            AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", items[itemIndex][2], tabVal.npcID, contentInteralName, bossIndex, nil, difficultyIndex)
                                                       else
                                                          local tName = GetSpellInfo(items[itemIndex][2])
                                                          --print("7)", "        ", "spell", items[itemIndex][2], tName)
                                                          if tName then
-                                                            SkuCore:alIntegrationItemMenuBuilder(self, "spell", items[itemIndex][2])
+                                                            AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "spell", items[itemIndex][2])
                                                          end
                                                       end
                         
@@ -996,11 +998,11 @@ function SkuCore:alIntegrationMenuBuilder()
                                                          tSetId = string.sub(tSetId, 5)
                                                          tSetId = tonumber(tSetId)
                                                          --print("9)", "          ", "set", tSetId, AtlasLoot.Data.ItemSet.GetSetName(tSetId))
-                                                         SkuCore:alIntegrationItemMenuBuilder(self, "set", tSetId)
+                                                         AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "set", tSetId)
                                                       end
                                                    else
                                                       --print("7)", "        ", "coll", items[itemIndex][2], tName)
-                                                      SkuCore:alIntegrationItemMenuBuilder(self, "collection", items[itemIndex][2])
+                                                      AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "collection", items[itemIndex][2])
                                                    end
                                                 end
                                              else
@@ -1029,14 +1031,14 @@ function SkuCore:alIntegrationMenuBuilder()
                         -- Geschwister der Raids einfügen, wenn der
                         -- Spieler in einer Raid-Instanz ist und der
                         -- Plugin-/Erweiterungs-Kontext passt.
-                        local ctx = SkuCore.alShortcutContext
+                        local ctx = AtlasLootIntegration.alShortcutContext
                         if ctx and ctx.mode == "instance"
                            and ctx.contentIndex ~= 1
                            and not ctx.isWorldBoss
                            and ctx.pluginTitle == tModules.module[pluginIndex].tt_title
                            and ctx.gameVersion == selectedGameVersion then
-                           SkuCore:BuildContextualWishlistEntry(aSelf,
-                              SkuCore.alDropsByInstance[ctx.instanceName])
+                           AtlasLootIntegration:BuildContextualWishlistEntry(aSelf,
+                              AtlasLootIntegration.alDropsByInstance[ctx.instanceName])
                         end
                         for _, contentInteralName in ipairs(aList) do
                            tBuildModuleEntry(aSelf, contentInteralName)
@@ -1060,12 +1062,12 @@ function SkuCore:alIntegrationMenuBuilder()
                         -- Kontextuelle Wunschliste für Welt-Bosse:
                         -- Geschwister der Bosse, wenn der gezielte Boss
                         -- ein Welt-Boss ist.
-                        local ctx = SkuCore.alShortcutContext
+                        local ctx = AtlasLootIntegration.alShortcutContext
                         if ctx and ctx.mode == "boss" and ctx.isWorldBoss
                            and ctx.pluginTitle == tModules.module[pluginIndex].tt_title
                            and ctx.gameVersion == selectedGameVersion then
-                           SkuCore:BuildContextualWishlistEntry(aSelf,
-                              SkuCore.alDropsByBoss[ctx.bossName])
+                           AtlasLootIntegration:BuildContextualWishlistEntry(aSelf,
+                              AtlasLootIntegration.alDropsByBoss[ctx.bossName])
                         end
                         for _, contentInteralName in ipairs(aList) do
                            for bossIndex = 1, #moduleData[contentInteralName].items do
@@ -1091,21 +1093,21 @@ function SkuCore:alIntegrationMenuBuilder()
                                                 for itemIndex = 1, #items do
                                                    if type(items[itemIndex][2]) == "number" then
                                                       if AtlasLoot.Data.ItemSet.GetSetName(items[itemIndex][2]) then
-                                                         SkuCore:alIntegrationItemMenuBuilder(self, "set", items[itemIndex][2])
+                                                         AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "set", items[itemIndex][2])
                                                       elseif (C_Item.GetItemNameByID(items[itemIndex][2])) and AtlasLoot.Data.Profession.IsProfessionSpell(items[itemIndex][2]) ~= true then
-                                                         SkuCore:alIntegrationItemMenuBuilder(self, "item", items[itemIndex][2], tabVal.npcID, contentInteralName, bossIndex, nil, difficultyIndex)
+                                                         AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", items[itemIndex][2], tabVal.npcID, contentInteralName, bossIndex, nil, difficultyIndex)
                                                       else
                                                          local tName = GetSpellInfo(items[itemIndex][2])
                                                          if tName then
-                                                            SkuCore:alIntegrationItemMenuBuilder(self, "spell", items[itemIndex][2])
+                                                            AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "spell", items[itemIndex][2])
                                                          end
                                                       end
                                                       if items[itemIndex][2] > 1000000 then
                                                          local tSetId = tonumber(string.sub(tostring(items[itemIndex][2]), 5))
-                                                         SkuCore:alIntegrationItemMenuBuilder(self, "set", tSetId)
+                                                         AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "set", tSetId)
                                                       end
                                                    else
-                                                      SkuCore:alIntegrationItemMenuBuilder(self, "collection", items[itemIndex][2])
+                                                      AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "collection", items[itemIndex][2])
                                                    end
                                                 end
                                              else
@@ -1161,14 +1163,14 @@ function SkuCore:alIntegrationMenuBuilder()
                               -- Kontextuelle Wunschliste (mode="instance"):
                               -- Geschwister der Instanzen, wenn der Spieler
                               -- in einer Instanz ist und Schwierigkeit passt.
-                              local ctx = SkuCore.alShortcutContext
+                              local ctx = AtlasLootIntegration.alShortcutContext
                               if ctx and ctx.mode == "instance"
                                  and ctx.contentIndex == 1
                                  and ctx.pluginTitle == tModules.module[pluginIndex].tt_title
                                  and ctx.gameVersion == selectedGameVersion
                                  and (not ctx.difficulty or ctx.difficulty == tDiffName) then
-                                 SkuCore:BuildContextualWishlistEntry(self2,
-                                    SkuCore.alDropsByInstance[ctx.instanceName])
+                                 AtlasLootIntegration:BuildContextualWishlistEntry(self2,
+                                    AtlasLootIntegration.alDropsByInstance[ctx.instanceName])
                               end
                               for _, contentInteralName in ipairs(aList) do
                                  -- Hat dieses Modul diese Schwierigkeit?
@@ -1189,14 +1191,14 @@ function SkuCore:alIntegrationMenuBuilder()
                                        -- Kontextuelle Wunschliste (mode="boss"):
                                        -- Geschwister der Bosse, wenn der gezielte
                                        -- Boss in dieser Instanz liegt.
-                                       local ctx2 = SkuCore.alShortcutContext
+                                       local ctx2 = AtlasLootIntegration.alShortcutContext
                                        if ctx2 and ctx2.mode == "boss"
                                           and ctx2.instanceName == moduleData[contentInteralName]:GetName()
                                           and ctx2.contentIndex == 1
                                           and ctx2.pluginTitle == tModules.module[pluginIndex].tt_title
                                           and ctx2.gameVersion == selectedGameVersion then
-                                          SkuCore:BuildContextualWishlistEntry(self3,
-                                             SkuCore.alDropsByBoss[ctx2.bossName])
+                                          AtlasLootIntegration:BuildContextualWishlistEntry(self3,
+                                             AtlasLootIntegration.alDropsByBoss[ctx2.bossName])
                                        end
                                        for bossIndex = 1, #moduleData[contentInteralName].items do
                                           local tabVal = moduleData[contentInteralName].items[bossIndex]
@@ -1213,21 +1215,21 @@ function SkuCore:alIntegrationMenuBuilder()
                                                    for itemIndex = 1, #items do
                                                       if type(items[itemIndex][2]) == "number" then
                                                          if AtlasLoot.Data.ItemSet.GetSetName(items[itemIndex][2]) then
-                                                            SkuCore:alIntegrationItemMenuBuilder(self4, "set", items[itemIndex][2])
+                                                            AtlasLootIntegration:alIntegrationItemMenuBuilder(self4, "set", items[itemIndex][2])
                                                          elseif (C_Item.GetItemNameByID(items[itemIndex][2])) and AtlasLoot.Data.Profession.IsProfessionSpell(items[itemIndex][2]) ~= true then
-                                                            SkuCore:alIntegrationItemMenuBuilder(self4, "item", items[itemIndex][2], tabVal.npcID, contentInteralName, bossIndex, nil, difficultyIndex)
+                                                            AtlasLootIntegration:alIntegrationItemMenuBuilder(self4, "item", items[itemIndex][2], tabVal.npcID, contentInteralName, bossIndex, nil, difficultyIndex)
                                                          else
                                                             local tName = GetSpellInfo(items[itemIndex][2])
                                                             if tName then
-                                                               SkuCore:alIntegrationItemMenuBuilder(self4, "spell", items[itemIndex][2])
+                                                               AtlasLootIntegration:alIntegrationItemMenuBuilder(self4, "spell", items[itemIndex][2])
                                                             end
                                                          end
                                                          if items[itemIndex][2] > 1000000 then
                                                             local tSetId = tonumber(string.sub(tostring(items[itemIndex][2]), 5))
-                                                            SkuCore:alIntegrationItemMenuBuilder(self4, "set", tSetId)
+                                                            AtlasLootIntegration:alIntegrationItemMenuBuilder(self4, "set", tSetId)
                                                          end
                                                       else
-                                                         SkuCore:alIntegrationItemMenuBuilder(self4, "collection", items[itemIndex][2])
+                                                         AtlasLootIntegration:alIntegrationItemMenuBuilder(self4, "collection", items[itemIndex][2])
                                                       end
                                                    end
                                                 else
@@ -1288,7 +1290,7 @@ function SkuCore:alIntegrationMenuBuilder()
          -- Sammle alle Wunschlisten-Items nach Dungeon gruppiert
          local tDungeonItems = {} -- [dungeonKey] = { itemIDs = {id1,id2,...}, label = "Dungeonname" }
          local tDungeonOrder = {}
-         for invType = 1, #SkuCore.favoriteSlots do
+         for invType = 1, #AtlasLootIntegration.favoriteSlots do
             local list = tFavs[invType] or {}
             for _, itemLink in ipairs(list) do
                local itemID = _G.GetItemInfoInstant and _G.GetItemInfoInstant(itemLink)
@@ -1328,7 +1330,7 @@ function SkuCore:alIntegrationMenuBuilder()
                tDungeonEntry.filterable = true
                tDungeonEntry.BuildChildren = function(self)
                   for _, itemID in ipairs(items) do
-                     SkuCore:alIntegrationItemMenuBuilder(self, "item", itemID)
+                     AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", itemID)
                   end
                end
             end
@@ -1342,9 +1344,9 @@ function SkuCore:alIntegrationMenuBuilder()
       tBySlot.dynamic = true
       tBySlot.filterable = true
       tBySlot.BuildChildren = function(self)
-         for x = 1, #SkuCore.favoriteSlots do
-            if SkuCore.favoriteSlots[x][1] then
-               local tSlotLabel = _G[SkuCore.favoriteSlots[x][1]] or L[SkuCore.favoriteSlots[x][1]] or SkuCore.favoriteSlots[x][1]
+         for x = 1, #AtlasLootIntegration.favoriteSlots do
+            if AtlasLootIntegration.favoriteSlots[x][1] then
+               local tSlotLabel = _G[AtlasLootIntegration.favoriteSlots[x][1]] or L[AtlasLootIntegration.favoriteSlots[x][1]] or AtlasLootIntegration.favoriteSlots[x][1]
                local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tSlotLabel}, SkuGenericMenuItem)
                tNewMenuEntry.dynamic = true
                tNewMenuEntry.filterable = true
@@ -1388,7 +1390,7 @@ function SkuCore:alIntegrationMenuBuilder()
                            -- tItemDropTable bei Bedarf befuellen (Lazy-Load via QueryAll),
                            -- damit "Dropped by ..." nicht fehlt, wenn man direkt hierher geht.
                            -- RUECKBAU: naechste Zeile entfernen.
-                           SkuCore:alItegrationGetItemDropTable(aId)
+                           AtlasLootIntegration:alItegrationGetItemDropTable(aId)
                            C_Timer.After(0.1, function()
                               local tSections = SkuCore:getItemComparisnSections(aId) or {}
                               if tSections[1] then
@@ -1536,38 +1538,38 @@ end
 -- Werden in QueryAll befüllt. Mehrfache Treffer überschreiben sich
 -- gegenseitig — meist gewinnt der jüngere Eintrag (höhere Erweiterung
 -- / aktuellere Daten), für unsere Zwecke ausreichend.
-SkuCore.alLookupBosses    = SkuCore.alLookupBosses    or {}
-SkuCore.alLookupInstances = SkuCore.alLookupInstances or {}
+AtlasLootIntegration.alLookupBosses    = AtlasLootIntegration.alLookupBosses    or {}
+AtlasLootIntegration.alLookupInstances = AtlasLootIntegration.alLookupInstances or {}
 
 -- Kontext-Flag für die Strg+Shift+L-aktivierte Wunschliste-Einblendung.
 -- Wird beim Shortcut gesetzt (sofern Boss/Instanz-Bedingung erfüllt) und
 -- nach 120 s automatisch geleert.
-SkuCore.alShortcutContext = nil
-SkuCore.alShortcutContextTimer = nil
+AtlasLootIntegration.alShortcutContext = nil
+AtlasLootIntegration.alShortcutContextTimer = nil
 
 local function tSetShortcutContext(aCtx)
-   SkuCore.alShortcutContext = aCtx
-   if SkuCore.alShortcutContextTimer then
-      pcall(function() SkuCore.alShortcutContextTimer:Cancel() end)
-      SkuCore.alShortcutContextTimer = nil
+   AtlasLootIntegration.alShortcutContext = aCtx
+   if AtlasLootIntegration.alShortcutContextTimer then
+      pcall(function() AtlasLootIntegration.alShortcutContextTimer:Cancel() end)
+      AtlasLootIntegration.alShortcutContextTimer = nil
    end
    if aCtx and _G.C_Timer and _G.C_Timer.NewTimer then
-      SkuCore.alShortcutContextTimer = _G.C_Timer.NewTimer(120, function()
-         SkuCore.alShortcutContext = nil
-         SkuCore.alShortcutContextTimer = nil
+      AtlasLootIntegration.alShortcutContextTimer = _G.C_Timer.NewTimer(120, function()
+         AtlasLootIntegration.alShortcutContext = nil
+         AtlasLootIntegration.alShortcutContextTimer = nil
       end)
    end
 end
 
 -- Drop-Lookup-Tabellen: itemID-Listen pro Boss bzw. pro Instanz.
 -- Werden in QueryAll befüllt; Wunschliste-Filter nutzt sie.
-SkuCore.alDropsByBoss     = SkuCore.alDropsByBoss     or {}
-SkuCore.alDropsByInstance = SkuCore.alDropsByInstance or {}
+AtlasLootIntegration.alDropsByBoss     = AtlasLootIntegration.alDropsByBoss     or {}
+AtlasLootIntegration.alDropsByInstance = AtlasLootIntegration.alDropsByInstance or {}
 
 -- Baut einen "Wunschliste"-Eintrag, dessen Kinder die Schnittmenge
 -- zwischen den globalen Favoriten und dem übergebenen Drop-Filter sind.
---   aDropMap: { [itemID]=true, ... } — z. B. SkuCore.alDropsByBoss[name]
-function SkuCore:BuildContextualWishlistEntry(aParent, aDropMap)
+--   aDropMap: { [itemID]=true, ... } — z. B. AtlasLootIntegration.alDropsByBoss[name]
+function AtlasLootIntegration:BuildContextualWishlistEntry(aParent, aDropMap)
    local tEntry = SkuOptions:InjectMenuItems(aParent, {L["AL_Wishlist"]}, SkuGenericMenuItem)
    tEntry.dynamic = true
    tEntry.filterable = true
@@ -1579,13 +1581,13 @@ function SkuCore:BuildContextualWishlistEntry(aParent, aDropMap)
       local tFound = false
       -- favorites ist [invType][1..n] = itemLink. itemID per
       -- GetItemInfoInstant extrahieren.
-      for invType = 1, #SkuCore.favoriteSlots do
+      for invType = 1, #AtlasLootIntegration.favoriteSlots do
          local list = tFavs[invType] or {}
          for _, itemLink in ipairs(list) do
             local itemID = _G.GetItemInfoInstant and _G.GetItemInfoInstant(itemLink)
             if itemID and aDropMap and aDropMap[itemID] then
                -- Item in Wunschliste UND es droppt im Scope → anzeigen
-               SkuCore:alIntegrationItemMenuBuilder(self, "item", itemID)
+               AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", itemID)
                tFound = true
             end
          end
@@ -1596,17 +1598,17 @@ function SkuCore:BuildContextualWishlistEntry(aParent, aDropMap)
    end
 end
 
-function SkuCore:alIntegrationQueryAll()
+function AtlasLootIntegration:alIntegrationQueryAll()
    if not AtlasLoot then
       return
    end
 
    tItemDropTable = tItemDropTable or {}
    tItemNameTable = tItemNameTable or {}
-   SkuCore.alLookupBosses     = {}
-   SkuCore.alLookupInstances  = {}
-   SkuCore.alDropsByBoss      = {}
-   SkuCore.alDropsByInstance  = {}
+   AtlasLootIntegration.alLookupBosses     = {}
+   AtlasLootIntegration.alLookupInstances  = {}
+   AtlasLootIntegration.alDropsByBoss      = {}
+   AtlasLootIntegration.alDropsByInstance  = {}
 
    --plugins
    local tModules = AtlasLoot.Loader:GetLootModuleList()
@@ -1645,7 +1647,7 @@ function SkuCore:alIntegrationQueryAll()
                   local isWorldBoss = lowerName:find("welt")
                      or lowerName:find("world boss")
                   if name and name ~= "" and contentIndex == 1 then
-                     SkuCore.alLookupInstances[name] = {
+                     AtlasLootIntegration.alLookupInstances[name] = {
                         pluginTitle  = tModules.module[pluginIndex].tt_title,
                         gameVersion  = selectedGameVersion,
                         contentIndex = contentIndex,
@@ -1675,7 +1677,7 @@ function SkuCore:alIntegrationQueryAll()
                                  end
                               end
                            end
-                           SkuCore.alLookupBosses[SkuUtil:Unescape(tBossName)] = {
+                           AtlasLootIntegration.alLookupBosses[SkuUtil:Unescape(tBossName)] = {
                               pluginTitle  = tModules.module[pluginIndex].tt_title,
                               gameVersion  = selectedGameVersion,
                               contentIndex = contentIndex,
@@ -1728,18 +1730,18 @@ function SkuCore:alIntegrationQueryAll()
                                  local tInstName = moduleData[contentInteralName]:GetName()
                                  local tBossName = moduleData[contentInteralName]:GetNameForItemTable(bossIndex)
                                  if tInstName then
-                                    SkuCore.alDropsByInstance[tInstName] = SkuCore.alDropsByInstance[tInstName] or {}
+                                    AtlasLootIntegration.alDropsByInstance[tInstName] = AtlasLootIntegration.alDropsByInstance[tInstName] or {}
                                  end
                                  if tBossName then
-                                    SkuCore.alDropsByBoss[SkuUtil:Unescape(tBossName)] = SkuCore.alDropsByBoss[SkuUtil:Unescape(tBossName)] or {}
+                                    AtlasLootIntegration.alDropsByBoss[SkuUtil:Unescape(tBossName)] = AtlasLootIntegration.alDropsByBoss[SkuUtil:Unescape(tBossName)] or {}
                                  end
                                  local function tRecordDrop(itemID)
                                     if type(itemID) ~= "number" or itemID <= 0 then return end
                                     if tInstName then
-                                       SkuCore.alDropsByInstance[tInstName][itemID] = true
+                                       AtlasLootIntegration.alDropsByInstance[tInstName][itemID] = true
                                     end
                                     if tBossName then
-                                       SkuCore.alDropsByBoss[SkuUtil:Unescape(tBossName)][itemID] = true
+                                       AtlasLootIntegration.alDropsByBoss[SkuUtil:Unescape(tBossName)][itemID] = true
                                     end
                                  end
 
@@ -1902,7 +1904,7 @@ local function tFindAtlasLootContext()
       and _G.UnitName and not _G.UnitIsPlayer("target") then
       local tName = _G.UnitName("target")
       if tName then
-         local tInfo = SkuCore.alLookupBosses[tName]
+         local tInfo = AtlasLootIntegration.alLookupBosses[tName]
          if tInfo then
             return tInfo, "boss", tDiff
          end
@@ -1914,7 +1916,7 @@ local function tFindAtlasLootContext()
       if isInInstance then
          local instName = _G.GetInstanceInfo()
          if instName then
-            local tInfo = SkuCore.alLookupInstances[instName]
+            local tInfo = AtlasLootIntegration.alLookupInstances[instName]
             if tInfo then
                return tInfo, "instance", tDiff
             end
@@ -1924,7 +1926,7 @@ local function tFindAtlasLootContext()
    return nil, "default", nil
 end
 
-function SkuCore:AtlasLootShortcut()
+function AtlasLootIntegration:AtlasLootShortcut()
    if AtlasLootIntegration and not AtlasLootIntegration:IsEnabled() then return end
    if not SkuOptions then return end
    -- Sku-Menü öffnen, falls geschlossen
@@ -1953,13 +1955,13 @@ end
 --      skuDefaultKeyBindings auf object="SkuCore", func="AtlasLootApplyKeyBinding"
 --      zeigt — d.h. nach jedem „Neu belegen" wird diese Methode erneut
 --      aufgerufen, sodass die neue Taste sofort aktiv ist.
-function SkuCore:AtlasLootApplyKeyBinding()
+function AtlasLootIntegration:AtlasLootApplyKeyBinding()
    if not _G["SkuAtlasLootShortcutButton"] then
       local f = CreateFrame("Button", "SkuAtlasLootShortcutButton", UIParent)
       f:SetSize(1, 1)
       f:SetPoint("CENTER")
       f:Hide()
-      f:SetScript("OnClick", function() SkuCore:AtlasLootShortcut() end)
+      f:SetScript("OnClick", function() AtlasLootIntegration:AtlasLootShortcut() end)
    end
    -- Vorherige Bindung dieses Buttons lösen, damit ein „Neu belegen"
    -- nicht zwei Tasten parallel aktiv lässt.
@@ -1983,13 +1985,23 @@ function SkuCore:AtlasLootApplyKeyBinding()
    end
 end
 
+-- W4 Phase E: thin forwarding shim kept on the SkuCore god-object so the
+-- SkuKeyBinds string-dispatch (skuDefaultKeyBindings["SKU_KEY_OPENATLASLOOT"] =
+-- {object="SkuCore", func="AtlasLootApplyKeyBinding"}) still resolves. That
+-- dispatch does _G[object][func](_G[object]) and can therefore only reach a
+-- _G global table (SkuCore), not the nested module handle SkuCore.AtlasLootIntegration.
+-- The real implementation lives on the module table above.
+function SkuCore:AtlasLootApplyKeyBinding()
+   return AtlasLootIntegration:AtlasLootApplyKeyBinding()
+end
+
 local tAlInitFrame = CreateFrame("Frame")
 tAlInitFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 tAlInitFrame:SetScript("OnEvent", function(self)
    self:UnregisterEvent("PLAYER_ENTERING_WORLD")
    if _G.C_Timer and _G.C_Timer.After then
       _G.C_Timer.After(2, function()
-         pcall(function() SkuCore:AtlasLootApplyKeyBinding() end)
+         pcall(function() AtlasLootIntegration:AtlasLootApplyKeyBinding() end)
       end)
    end
 end)
@@ -2006,8 +2018,8 @@ end)
 local tAlLookupInitFrame = CreateFrame("Frame")
 tAlLookupInitFrame.attempts = 0
 local function tTryPopulateAlLookups(self)
-   if SkuCore and SkuCore.alLookupBosses
-      and next(SkuCore.alLookupBosses) ~= nil then
+   if SkuCore and AtlasLootIntegration.alLookupBosses
+      and next(AtlasLootIntegration.alLookupBosses) ~= nil then
       return true -- bereits gefüllt
    end
    if not _G.AtlasLoot or not _G.AtlasLoot.Loader
@@ -2015,12 +2027,12 @@ local function tTryPopulateAlLookups(self)
       return false
    end
    local ok = pcall(function()
-      if SkuCore and SkuCore.alIntegrationQueryAll then
-         SkuCore:alIntegrationQueryAll()
+      if AtlasLootIntegration and AtlasLootIntegration.alIntegrationQueryAll then
+         AtlasLootIntegration:alIntegrationQueryAll()
       end
    end)
-   if ok and SkuCore.alLookupBosses
-      and next(SkuCore.alLookupBosses) ~= nil then
+   if ok and AtlasLootIntegration.alLookupBosses
+      and next(AtlasLootIntegration.alLookupBosses) ~= nil then
       return true
    end
    return false
@@ -2030,8 +2042,8 @@ local function tScheduleLookupRetries(self)
    if not _G.C_Timer or not _G.C_Timer.After then return end
    for _, t in ipairs({5, 10, 20, 35, 60}) do
       _G.C_Timer.After(t, function()
-         if SkuCore and SkuCore.alLookupBosses
-            and next(SkuCore.alLookupBosses) ~= nil then
+         if SkuCore and AtlasLootIntegration.alLookupBosses
+            and next(AtlasLootIntegration.alLookupBosses) ~= nil then
             return
          end
          pcall(tTryPopulateAlLookups, tAlLookupInitFrame)
@@ -2051,8 +2063,8 @@ tAlLookupInitFrame:SetScript("OnEvent", function(self, event)
    -- (AtlasLoot z. B. erst durch ein anderes Modul nachgeladen),
    -- beim Zonenwechsel erneut probieren — insbesondere relevant
    -- beim Betreten einer Instanz, wo der User das Feature braucht.
-   if SkuCore and SkuCore.alLookupBosses
-      and next(SkuCore.alLookupBosses) ~= nil then
+   if SkuCore and AtlasLootIntegration.alLookupBosses
+      and next(AtlasLootIntegration.alLookupBosses) ~= nil then
       return
    end
    if _G.C_Timer and _G.C_Timer.After then

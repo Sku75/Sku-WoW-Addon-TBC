@@ -288,8 +288,8 @@ SkuMenu:RegisterModule("SkuAuras", { label = function() return L()["SkuAurasMenu
 SkuMenu:RegisterModule("GameOptions", {
 	label = function() return (GetLocale and GetLocale() == "deDE") and "Spieloptionen" or "Game Options" end,
 	build = function(entry)
-		if SkuCore and SkuCore.GameOptionsMenuBuilder then
-			SkuCore:GameOptionsMenuBuilder(entry)
+		if SkuCore and SkuCore.GameOptions and SkuCore.GameOptions.GameOptionsMenuBuilder then
+			SkuCore.GameOptions:GameOptionsMenuBuilder(entry)
 		end
 	end,
 })

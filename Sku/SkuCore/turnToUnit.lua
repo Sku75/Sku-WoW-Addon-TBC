@@ -1,4 +1,4 @@
-local MODULE_NAME, MODULE_PART = "SkuCore", "TurnToUnit"
+﻿local MODULE_NAME, MODULE_PART = "SkuCore", "TurnToUnit"
 local L = Sku.L
 local _G = _G
 
@@ -14,26 +14,32 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 -- AceAddon auto-enables modules when SkuCore enables (≈ PLAYER_LOGIN), replacing
 -- the old explicit TurnToUnitOnInitialize/TurnToUnitOnLogin calls in Core.lua
 -- (so the feature now re-arms on every /reload, not only the initial login).
--- The published SkuCore.TurnToUnit state table and the SkuCore:TurnToUnit*
--- methods (called by Core.lua keybinds) stay exactly where they are.
+-- W4 Phase E (namespace extraction): the feature's own state and methods now live
+-- on the module table TurnToUnit itself (function TurnToUnit:Method); the published
+-- handle SkuCore.TurnToUnit IS that module table, so external callers (Core.lua
+-- keybinds via SkuCore.TurnToUnit:TurnToUnit*, Options.lua reads of
+-- availableTargetsListNames) are unchanged in reach.
 local TurnToUnit = SkuCore:NewModule(MODULE_PART)
+SkuCore.TurnToUnit = TurnToUnit   -- keep the published handle (also the state table)
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
    return (GetLocale and GetLocale() == "deDE") and "Zu Einheit drehen" or "Turn to unit"
 end)
 
-SkuCore.TurnToUnit = {
-   searching = false,
-   time = -1,
-   CameraZoomSpeed = C_CVar.GetCVar("cameraZoomSpeed"),
-   CameraZoom = GetCameraZoom(),
-   unit = nil,
-   gameMarker = nil,
-   skuMarker = nil,
-}
+-- W4 Phase E (namespace extraction): the feature's own state and methods now live
+-- directly on the module table `TurnToUnit` (== SkuCore.TurnToUnit), not split onto
+-- the shared SkuCore god-object. External callers use the published handle
+-- SkuCore.TurnToUnit; in-file references use `TurnToUnit` / `self`.
+TurnToUnit.searching = false
+TurnToUnit.time = -1
+TurnToUnit.CameraZoomSpeed = C_CVar.GetCVar("cameraZoomSpeed")
+TurnToUnit.CameraZoom = GetCameraZoom()
+TurnToUnit.unit = nil
+TurnToUnit.gameMarker = nil
+TurnToUnit.skuMarker = nil
 
-SkuCore.TurnToUnit.availableTargetsListNames = {
+TurnToUnit.availableTargetsListNames = {
    [1] = "target",
    [2] = "party member 1",
    [3] = "party member 2",
@@ -59,7 +65,7 @@ SkuCore.TurnToUnit.availableTargetsListNames = {
 
 }
 
-SkuCore.TurnToUnit.availableTargetsList = {
+TurnToUnit.availableTargetsList = {
    ["target"] = {"target", nil, nil,},
    ["party member 1"] = {"party1", nil, nil,},
    ["party member 2"] = {"party2", nil, nil,},
@@ -86,19 +92,19 @@ SkuCore.TurnToUnit.availableTargetsList = {
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function StopSearch()
-   SkuCore.TurnToUnit.time = -1
-   SkuCore.TurnToUnit.searching = false
-   SkuCore.TurnToUnit.unit = nil
-   SkuCore.TurnToUnit.gameMarker = nil
-   SkuCore.TurnToUnit.skuMarker = nil
+   TurnToUnit.time = -1
+   TurnToUnit.searching = false
+   TurnToUnit.unit = nil
+   TurnToUnit.gameMarker = nil
+   TurnToUnit.skuMarker = nil
 
    MoveViewRightStart(0)
    MoveViewUpStart(0)
    MoveViewDownStart(0)
    MouselookStart()
    MouselookStop() 
-   CameraZoomOut(SkuCore.TurnToUnit.CameraZoom)
-   C_CVar.SetCVar("cameraZoomSpeed", SkuCore.TurnToUnit.CameraZoomSpeed)
+   CameraZoomOut(TurnToUnit.CameraZoom)
+   C_CVar.SetCVar("cameraZoomSpeed", TurnToUnit.CameraZoomSpeed)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -107,10 +113,10 @@ local function CreateControlFrame()
    local ttime = 0
 
    f:SetScript("OnUpdate", function(self, time)
-      if SkuCore.TurnToUnit.searching == true then
-         if SkuCore.TurnToUnit.time ~= -1 then
+      if TurnToUnit.searching == true then
+         if TurnToUnit.time ~= -1 then
             ttime = ttime + time
-            if ttime > SkuCore.TurnToUnit.time then
+            if ttime > TurnToUnit.time then
                StopSearch()
                dprint("found nothing")
                SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuCore").turnToUnit.soundOnFail, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
@@ -119,11 +125,11 @@ local function CreateControlFrame()
             end
             if UnitName("mouseover") then
                local tFound = false
-               if SkuCore.TurnToUnit.unit and UnitIsUnit("mouseover", SkuCore.TurnToUnit.unit) then
+               if TurnToUnit.unit and UnitIsUnit("mouseover", TurnToUnit.unit) then
                   tFound = true
-               elseif SkuCore.TurnToUnit.gameMarker and GetRaidTargetIndex("mouseover") and SkuCore.TurnToUnit.gameMarker == GetRaidTargetIndex("mouseover") then
+               elseif TurnToUnit.gameMarker and GetRaidTargetIndex("mouseover") and TurnToUnit.gameMarker == GetRaidTargetIndex("mouseover") then
                   tFound = true
-               elseif SkuCore.TurnToUnit.skuMarker and SkuCore:aqCombatGetSkuRaidTarget(UnitGUID("mouseover")) == SkuCore.TurnToUnit.skuMarker then
+               elseif TurnToUnit.skuMarker and SkuCore:aqCombatGetSkuRaidTarget(UnitGUID("mouseover")) == TurnToUnit.skuMarker then
                   tFound = true
                end      
                if tFound == true then
@@ -149,8 +155,8 @@ end
 -- TurnToUnitOnLogin (nameplate CVar).
 function TurnToUnit:OnEnable()
    CreateControlFrame()
-   SkuDispatcher:RegisterEventCallback("NAME_PLATE_UNIT_ADDED", SkuCore.TurnToUnit_NAME_PLATE_UNIT_ADDED)
-   SkuDispatcher:RegisterEventCallback("UPDATE_MOUSEOVER_UNIT", SkuCore.TurnToUnit_UPDATE_MOUSEOVER_UNIT)
+   SkuDispatcher:RegisterEventCallback("NAME_PLATE_UNIT_ADDED", TurnToUnit.TurnToUnit_NAME_PLATE_UNIT_ADDED)
+   SkuDispatcher:RegisterEventCallback("UPDATE_MOUSEOVER_UNIT", TurnToUnit.TurnToUnit_UPDATE_MOUSEOVER_UNIT)
    SetCVar("nameplateMaxDistance", 41)
 end
 
@@ -158,26 +164,26 @@ end
 -- callbacks so a disabled TurnToUnit does nothing.
 function TurnToUnit:OnDisable()
    StopSearch()
-   SkuDispatcher:UnregisterEventCallback("NAME_PLATE_UNIT_ADDED", SkuCore.TurnToUnit_NAME_PLATE_UNIT_ADDED)
-   SkuDispatcher:UnregisterEventCallback("UPDATE_MOUSEOVER_UNIT", SkuCore.TurnToUnit_UPDATE_MOUSEOVER_UNIT)
+   SkuDispatcher:UnregisterEventCallback("NAME_PLATE_UNIT_ADDED", TurnToUnit.TurnToUnit_NAME_PLATE_UNIT_ADDED)
+   SkuDispatcher:UnregisterEventCallback("UPDATE_MOUSEOVER_UNIT", TurnToUnit.TurnToUnit_UPDATE_MOUSEOVER_UNIT)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:TurnToUnit_UPDATE_MOUSEOVER_UNIT(aEvent)
-   if SkuCore.TurnToUnit.searching == true then
-      if SkuCore.TurnToUnit.time ~= -1 then
+function TurnToUnit:TurnToUnit_UPDATE_MOUSEOVER_UNIT(aEvent)
+   if TurnToUnit.searching == true then
+      if TurnToUnit.time ~= -1 then
          local tFound = false
-         if SkuCore.TurnToUnit.unit and UnitIsUnit("mouseover",  SkuCore.TurnToUnit.unit) then
+         if TurnToUnit.unit and UnitIsUnit("mouseover",  TurnToUnit.unit) then
             dprint("found UPDATE_MOUSEOVER_UNIT")
             tFound = true
          end
 
          if UnitName("mouseover") then
-            if SkuCore.TurnToUnit.gameMarker and GetRaidTargetIndex("mouseover") and SkuCore.TurnToUnit.gameMarker == GetRaidTargetIndex("mouseover") then
+            if TurnToUnit.gameMarker and GetRaidTargetIndex("mouseover") and TurnToUnit.gameMarker == GetRaidTargetIndex("mouseover") then
                tFound = true
             end
-            if SkuCore.TurnToUnit.skuMarker then
-               if SkuCore:aqCombatGetSkuRaidTarget(UnitGUID("mouseover")) == SkuCore.TurnToUnit.skuMarker then
+            if TurnToUnit.skuMarker then
+               if SkuCore:aqCombatGetSkuRaidTarget(UnitGUID("mouseover")) == TurnToUnit.skuMarker then
                   tFound = true
                end
             end      
@@ -192,32 +198,32 @@ function SkuCore:TurnToUnit_UPDATE_MOUSEOVER_UNIT(aEvent)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:TurnToUnit_NAME_PLATE_UNIT_ADDED(aEvent, aNameplateId)
-   if SkuCore.TurnToUnit.searching == true then
+function TurnToUnit:TurnToUnit_NAME_PLATE_UNIT_ADDED(aEvent, aNameplateId)
+   if TurnToUnit.searching == true then
       local tFound = false
-      if SkuCore.TurnToUnit.unit then
-         if C_NamePlate.GetNamePlateForUnit(SkuCore.TurnToUnit.unit) then 
-            if aNameplateId == C_NamePlate.GetNamePlateForUnit(SkuCore.TurnToUnit.unit).UnitFrame.unit then
+      if TurnToUnit.unit then
+         if C_NamePlate.GetNamePlateForUnit(TurnToUnit.unit) then 
+            if aNameplateId == C_NamePlate.GetNamePlateForUnit(TurnToUnit.unit).UnitFrame.unit then
                tFound = true
             end
          end
       end
 
       local tUnitFrame = C_NamePlate.GetNamePlateForUnit(aNameplateId).UnitFrame
-      if SkuCore.TurnToUnit.gameMarker and GetRaidTargetIndex(aNameplateId) and SkuCore.TurnToUnit.gameMarker == GetRaidTargetIndex(aNameplateId) then
+      if TurnToUnit.gameMarker and GetRaidTargetIndex(aNameplateId) and TurnToUnit.gameMarker == GetRaidTargetIndex(aNameplateId) then
          tFound = true
       end
 
-      if SkuCore.TurnToUnit.skuMarker then
-         if SkuCore:aqCombatGetSkuRaidTarget(UnitGUID(aNameplateId)) == SkuCore.TurnToUnit.skuMarker then
+      if TurnToUnit.skuMarker then
+         if SkuCore:aqCombatGetSkuRaidTarget(UnitGUID(aNameplateId)) == TurnToUnit.skuMarker then
             tFound = true
          end
       end      
 
       if tFound == true then
          dprint("found NAME_PLATE")
-         SkuCore.TurnToUnit.time = -1
-         SkuCore.TurnToUnit.searching = false
+         TurnToUnit.time = -1
+         TurnToUnit.searching = false
          SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuCore").turnToUnit.soundOnSuccess, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
          C_Timer.After((0.4 / SkuSettings:Sub("SkuCore").turnToUnit.enhancedSettings.delayOnPlate) / SkuSettings:Sub("SkuCore").turnToUnit.speed, function()
             StopSearch()
@@ -227,9 +233,9 @@ function SkuCore:TurnToUnit_NAME_PLATE_UNIT_ADDED(aEvent, aNameplateId)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
+function TurnToUnit:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
    if not TurnToUnit:IsEnabled() then return end
-   if (aUnitId and UnitName(aUnitId) == nil) or SkuCore.TurnToUnit.searching == true then
+   if (aUnitId and UnitName(aUnitId) == nil) or TurnToUnit.searching == true then
       SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuCore").turnToUnit.soundOnFail, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
       return
    end
@@ -244,12 +250,12 @@ function SkuCore:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
       SetCVar("CursorStickyCentering", 0)
 
       C_Timer.After(0.01, function() 
-         SkuCore.TurnToUnit.unit = aUnitId
-         SkuCore.TurnToUnit.gameMarker = aGameMarker
-         SkuCore.TurnToUnit.skuMarker = aSkuMarker
+         TurnToUnit.unit = aUnitId
+         TurnToUnit.gameMarker = aGameMarker
+         TurnToUnit.skuMarker = aSkuMarker
       
-         SkuCore.TurnToUnit.searching = true
-         SkuCore.TurnToUnit.time = 1.5 / SkuSettings:Sub("SkuCore").turnToUnit.speed
+         TurnToUnit.searching = true
+         TurnToUnit.time = 1.5 / SkuSettings:Sub("SkuCore").turnToUnit.speed
          -- [Kamera-Entkopplung 41.02.07] Kamera-Snap NUR im SkuStandard.
          -- Bei Freigabe (skuStandard==false) bleibt die freie Kamera des
          -- Nutzers erhalten; die Drehung selbst (MoveViewRightStart unten)
@@ -258,8 +264,8 @@ function SkuCore:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
          -- RUECKBAU: naechste Zeile wieder durch  SetView(2)  ersetzen.
          -- DOKU: Nachschlagewerke/"Kamera Freigabe Entkopplung.txt"
          if not SkuCore.CameraSkuStandardActive or SkuCore:CameraSkuStandardActive() then SetView(2) end
-         SkuCore.TurnToUnit.CameraZoom = GetCameraZoom()
-         SkuCore.TurnToUnit.CameraZoomSpeed = C_CVar.GetCVar("cameraZoomSpeed")
+         TurnToUnit.CameraZoom = GetCameraZoom()
+         TurnToUnit.CameraZoomSpeed = C_CVar.GetCVar("cameraZoomSpeed")
          C_CVar.SetCVar("cameraZoomSpeed", 1000)
       
          CameraZoomIn(50)
@@ -271,18 +277,18 @@ function SkuCore:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:TurnToUnitTurn180()
+function TurnToUnit:TurnToUnitTurn180()
    if not TurnToUnit:IsEnabled() then return end
-   if SkuCore.TurnToUnit.searching == true then
+   if TurnToUnit.searching == true then
       return
    end
 
-   SkuCore.TurnToUnit.searching = true
+   TurnToUnit.searching = true
    MoveViewRightStart(6.7)
    MoveViewDownStart(0)
    MoveViewUpStart(0)
    C_Timer.After(0.1, function()
-      SkuCore.TurnToUnit.searching = false
+      TurnToUnit.searching = false
       MoveViewRightStart(0)
       MoveViewUpStart(0)
       MoveViewDownStart(0)

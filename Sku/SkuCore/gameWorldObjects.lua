@@ -13,12 +13,18 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 --   * OnDisable disarms it (unregisters the events; stops any active scan).
 -- AceAddon auto-enables modules when SkuCore enables, so this now re-arms on every
 -- load (incl. /reload), replacing the explicit Core.lua init/login calls (which only
--- ran on the initial login). All SkuCore:GameWorldObjects* methods stay in place so
--- external callers (Core.lua keybind, MinimapScanner) keep working; the scan START
--- (GameWorldObjectsScan) becomes a safe no-op while disabled (IsEnabled guard).
--- Settings stay under the "SkuCore" SkuSettings namespace, so no SavedVariables migration.
-local GameWorldObjects = SkuCore:NewModule("GameWorldObjects")
-SkuCore.GameWorldObjects = GameWorldObjects   -- published handle (harmless; mirrors the pilot)
+-- ran on the initial login). The scan START (GameWorldObjectsScan) is a safe no-op
+-- while disabled (IsEnabled guard).
+-- W4 Phase E1 (namespace extraction): every method and mutable state field now lives
+-- on the module table `GameWorldObjects` (function GameWorldObjects:Method,
+-- GameWorldObjects.gameWorldObjectsScanFrame, etc.) instead of on the shared SkuCore
+-- god-object. The module mixes in AceEvent-3.0 and owns its own CURSOR_CHANGED /
+-- CURSOR_UPDATE / UPDATE_MOUSEOVER_UNIT registrations. External callers use the
+-- published handle SkuCore.GameWorldObjects (Core.lua keybind/PLAYER_STARTED_MOVING,
+-- SkuNav, SkuZOptions, MinimapScanner). Settings stay under the "SkuCore" SkuSettings
+-- namespace, so no SavedVariables migration.
+local GameWorldObjects = SkuCore:NewModule("GameWorldObjects", "AceEvent-3.0")
+SkuCore.GameWorldObjects = GameWorldObjects   -- published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("GameWorldObjects", function()
@@ -37,31 +43,31 @@ end)
 -- cycles). Module upvalue so OnEnable/OnDisable can start/stop its OnUpdate.
 local gameWorldObjectsFrameCounter
 
-function SkuCore:GameWorldObjectsOnInitialize()
+function GameWorldObjects:GameWorldObjectsOnInitialize()
    if Sku.toc > 11403 then
-      SkuCore:RegisterEvent("CURSOR_CHANGED")
+      GameWorldObjects:RegisterEvent("CURSOR_CHANGED", "CURSOR_CHANGED")
    else
-      SkuCore:RegisterEvent("CURSOR_UPDATE")
+      GameWorldObjects:RegisterEvent("CURSOR_UPDATE", "CURSOR_UPDATE")
    end
 
-   SkuCore:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
+   GameWorldObjects:RegisterEvent("UPDATE_MOUSEOVER_UNIT", "UPDATE_MOUSEOVER_UNIT")
 
    if not gameWorldObjectsFrameCounter then
       gameWorldObjectsFrameCounter = CreateFrame("Frame", "SkuCoregameWorldObjectsFrameCounter", _G["UIParent"])
       gameWorldObjectsFrameCounter:SetSize(1, 1)
       gameWorldObjectsFrameCounter:SetPoint("TOPLEFT", _G["UIParent"], "TOPLEFT", 0, 0)
    end
-   SkuCore.gameWorldObjectsFrameCounter = 0
+   GameWorldObjects.gameWorldObjectsFrameCounter = 0
    gameWorldObjectsFrameCounter:SetScript("OnUpdate", function(self, time)
-      SkuCore.gameWorldObjectsFrameCounter = SkuCore.gameWorldObjectsFrameCounter + 1
-      if SkuCore.gameWorldObjectsFrameCounter > 40000 then
-         SkuCore.gameWorldObjectsFrameCounter = 0
+      GameWorldObjects.gameWorldObjectsFrameCounter = GameWorldObjects.gameWorldObjectsFrameCounter + 1
+      if GameWorldObjects.gameWorldObjectsFrameCounter > 40000 then
+         GameWorldObjects.gameWorldObjectsFrameCounter = 0
       end
    end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:GameWorldObjectsOnLogin()
+function GameWorldObjects:GameWorldObjectsOnLogin()
    -- set default values for scans to profile
    SkuSettings:Sub("SkuCore", nil, "char").scanConfigs = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs or {}
    SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[1] = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[1] or {type = 2, objects = {7, 8,},}
@@ -80,57 +86,52 @@ end
 -- former Core.lua init+login arming (the 3 events + frame-counter OnUpdate +
 -- scanConfigs defaults), so the feature now re-arms on every /reload.
 function GameWorldObjects:OnEnable()
-   SkuCore:GameWorldObjectsOnInitialize()
-   SkuCore:GameWorldObjectsOnLogin()
+   GameWorldObjects:GameWorldObjectsOnInitialize()
+   GameWorldObjects:GameWorldObjectsOnLogin()
 end
 
 -- Disarm the feature: stop any active scan, unregister the cursor/mouseover events,
 -- and stop the frame-counter OnUpdate so a disabled feature genuinely does nothing.
 function GameWorldObjects:OnDisable()
    -- stop any in-progress scan / restore the camera
-   if SkuCore.GameWorldObjectsRestoreView then
-      SkuCore:GameWorldObjectsRestoreView()
+   if GameWorldObjects.GameWorldObjectsRestoreView then
+      GameWorldObjects:GameWorldObjectsRestoreView()
    end
-   if Sku.toc > 11403 then
-      SkuCore:UnregisterEvent("CURSOR_CHANGED")
-   else
-      SkuCore:UnregisterEvent("CURSOR_UPDATE")
-   end
-   SkuCore:UnregisterEvent("UPDATE_MOUSEOVER_UNIT")
+   GameWorldObjects:UnregisterAllEvents()
    if gameWorldObjectsFrameCounter then
       gameWorldObjectsFrameCounter:SetScript("OnUpdate", nil)
    end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:CURSOR_CHANGED(aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
+function GameWorldObjects:CURSOR_CHANGED(aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
    --print("CURSOR_CHANGED", aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
-   if SkuCore.gameWorldObjectsScanFrame and SkuCore.gameWorldObjectsScanFrame.isScanningActive == true and SkuCore.gameWorldObjectsScanFrame.isScanningPaused == false then
-      
-      SkuCore.lastCursorUpdateFrame = SkuCore.gameWorldObjectsFrameCounter
+   if GameWorldObjects.gameWorldObjectsScanFrame and GameWorldObjects.gameWorldObjectsScanFrame.isScanningActive == true and GameWorldObjects.gameWorldObjectsScanFrame.isScanningPaused == false then
+
+      GameWorldObjects.lastCursorUpdateFrame = GameWorldObjects.gameWorldObjectsFrameCounter
    end
-   SkuCore:MinimapScannerCURSOR_CHANGED(aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
+   SkuCore.MinimapScanner:MinimapScannerCURSOR_CHANGED(aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
 end
-   
-function SkuCore:CURSOR_UPDATE()
+
+function GameWorldObjects:CURSOR_UPDATE(aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
    --print("CURSOR_UPDATE")
-   if SkuCore.gameWorldObjectsScanFrame and SkuCore.gameWorldObjectsScanFrame.isScanningActive == true and SkuCore.gameWorldObjectsScanFrame.isScanningPaused == false then
-      
-      SkuCore.lastCursorUpdateFrame = SkuCore.gameWorldObjectsFrameCounter
+   if GameWorldObjects.gameWorldObjectsScanFrame and GameWorldObjects.gameWorldObjectsScanFrame.isScanningActive == true and GameWorldObjects.gameWorldObjectsScanFrame.isScanningPaused == false then
+
+      GameWorldObjects.lastCursorUpdateFrame = GameWorldObjects.gameWorldObjectsFrameCounter
    end
-   SkuCore:MinimapScannerCURSOR_CHANGED(aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
+   SkuCore.MinimapScanner:MinimapScannerCURSOR_CHANGED(aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:UPDATE_MOUSEOVER_UNIT()
-   --print("UPDATE_MOUSEOVER_UNIT", SkuCore.gameWorldObjectsFrameCounter, GetTime())
-   if SkuCore.gameWorldObjectsScanFrame and SkuCore.gameWorldObjectsScanFrame.isScanningActive == true and SkuCore.gameWorldObjectsScanFrame.isScanningPaused == false then
-      SkuCore.lastUpdateMouseoverUnitFrame = SkuCore.gameWorldObjectsFrameCounter
+function GameWorldObjects:UPDATE_MOUSEOVER_UNIT()
+   --print("UPDATE_MOUSEOVER_UNIT", GameWorldObjects.gameWorldObjectsFrameCounter, GetTime())
+   if GameWorldObjects.gameWorldObjectsScanFrame and GameWorldObjects.gameWorldObjectsScanFrame.isScanningActive == true and GameWorldObjects.gameWorldObjectsScanFrame.isScanningPaused == false then
+      GameWorldObjects.lastUpdateMouseoverUnitFrame = GameWorldObjects.gameWorldObjectsFrameCounter
    end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:GameWorldObjectsCenterMouseCursor(aPos)
+function GameWorldObjects:GameWorldObjectsCenterMouseCursor(aPos)
    dprint("GameWorldObjectsCenterMouseCursor", aPos)
    SetCVar("CursorCenteredYPos", aPos)
    SetCVar("CursorFreelookCentering", 1)
@@ -145,16 +146,16 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tResetRequired
-function SkuCore:GameWorldObjectsRestoreView()
-   if SkuCore.gameWorldObjectsScanFrame and tResetRequired then
+function GameWorldObjects:GameWorldObjectsRestoreView()
+   if GameWorldObjects.gameWorldObjectsScanFrame and tResetRequired then
       tResetRequired = nil
-      SkuCore.gameWorldObjectsScanFrame.isScanningActive = false
-      SkuCore.gameWorldObjectsScanFrame.isScanningPaused = true
+      GameWorldObjects.gameWorldObjectsScanFrame.isScanningActive = false
+      GameWorldObjects.gameWorldObjectsScanFrame.isScanningPaused = true
       MoveViewUpStop()
-      FlipCameraYaw(SkuCore.gameWorldObjectsScanFrame.CameraYaw * -1)
-      SkuCore.gameWorldObjectsScanFrame.CameraYaw = 0
-      SkuCore.noMouseOverNotification = nil
-      SetCVar("cameraPitchMoveSpeed", SkuCore.gameWorldObjectsScanFrame.oldCameraPitchMoveSpeed)
+      FlipCameraYaw(GameWorldObjects.gameWorldObjectsScanFrame.CameraYaw * -1)
+      GameWorldObjects.gameWorldObjectsScanFrame.CameraYaw = 0
+      SkuCore.MinimapScanner.noMouseOverNotification = nil
+      SetCVar("cameraPitchMoveSpeed", GameWorldObjects.gameWorldObjectsScanFrame.oldCameraPitchMoveSpeed)
       SetView(2)
       --[[
       if Questie_BaseFrame and SkuCore.inCombat == false then
@@ -166,7 +167,7 @@ function SkuCore:GameWorldObjectsRestoreView()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:GameWorldObjectsTurnToWp(aWaypointName)
+function GameWorldObjects:GameWorldObjectsTurnToWp(aWaypointName)
    aWaypointName = aWaypointName or SkuOptions.db.profile["SkuNav"].selectedWaypoint
    if aWaypointName and aWaypointName ~= "" then
       local fPlayerPosX, fPlayerPosY = UnitPosition("player")
@@ -223,10 +224,10 @@ end
 
 local slower = string.lower
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
+function GameWorldObjects:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
    dprint("GameWorldObjectsCheckResult", aTextLeft1, aTextLeft2, aTextLeft3)
-   local tIsUpdateMouseoverUnitFrame = SkuCore.lastUpdateMouseoverUnitFrame == SkuCore.gameWorldObjectsFrameCounter
-   local tIsCursorUpdate = SkuCore.lastCursorUpdateFrame == SkuCore.gameWorldObjectsFrameCounter
+   local tIsUpdateMouseoverUnitFrame = GameWorldObjects.lastUpdateMouseoverUnitFrame == GameWorldObjects.gameWorldObjectsFrameCounter
+   local tIsCursorUpdate = GameWorldObjects.lastCursorUpdateFrame == GameWorldObjects.gameWorldObjectsFrameCounter
    
    aTextLeft1 = tostring(SkuUtil:Unescape(aTextLeft1))
    aTextLeft2 = tostring(SkuUtil:Unescape(aTextLeft2))
@@ -234,7 +235,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
 
    dprint("GameWorldObjectsCheckResult", aTextLeft1, aTextLeft2, aTextLeft3, tIsUpdateMouseoverUnitFrame, tIsCursorUpdate)
 
-   local tFind = SkuCore.gameWorldObjectsScanFrame.findList
+   local tFind = GameWorldObjects.gameWorldObjectsScanFrame.findList
    --local tFound = false
 
    local tSoundFile = "sound-on3_1"
@@ -251,7 +252,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
    end
 
    local tId = UnitGUID("mouseover") or "NoId"
-   if not SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] then
+   if not GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1..tId] then
       local taTextLeft1InCreatures
       local function taTextLeft1InCreaturesCheck()
          if not taTextLeft1InCreatures then
@@ -275,7 +276,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
          then
             taTextLeft1InCreatures = taTextLeft1InCreaturesCheck()
             if taTextLeft1InCreatures then
-               SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
+               GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
@@ -292,7 +293,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
          then
             taTextLeft1InCreatures = taTextLeft1InCreaturesCheck()
             if taTextLeft1InCreatures then
-               SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
+               GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
@@ -308,7 +309,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
          then
             taTextLeft1InCreatures = taTextLeft1InCreaturesCheck()
             if taTextLeft1InCreatures then
-               SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
+               GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
@@ -325,7 +326,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
          then
             taTextLeft1InCreatures = taTextLeft1InCreaturesCheck()
             if taTextLeft1InCreatures then
-               SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
+               GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
@@ -341,7 +342,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
          then
             taTextLeft1InCreatures = taTextLeft1InCreaturesCheck()
             if taTextLeft1InCreatures then
-               SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
+               GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
@@ -389,7 +390,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
                if not tIsherb and not tIsMining then
                   local tQuestObjects = SkuQuest:GetAllQuestObjects()
                   if tQuestObjects[aTextLeft1] then
-                     SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
+                     GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                      GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                      return true
                   end
@@ -410,7 +411,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
                for x = 1, #SkuCore.RessourceTypes.herbs do
                   if slower(SkuCore.RessourceTypes.herbs[x][Sku.LocP]) == tTextLeftLower then
                      if SkuSettings:Sub("SkuCore").ressourceScanning.herbs[x] == true then
-                        SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
+                        GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                         GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                         return true
                      end
@@ -432,7 +433,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
                for x = 1, #SkuCore.RessourceTypes.mining do
                   if slower(SkuCore.RessourceTypes.mining[x][Sku.LocP]) == tTextLeftLower then
                      if SkuSettings:Sub("SkuCore").ressourceScanning.miningNodes[x] == true then
-                        SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
+                        GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                         GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                         return true
                      end
@@ -449,8 +450,8 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             tIsUpdateMouseoverUnitFrame == false and
             aTextLeft1 == L["Fishing Bobber"]
          then
-            SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1] = aTextLeft1
-            SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
+            GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1] = aTextLeft1
+            GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
             GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
             return true
          end
@@ -464,7 +465,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
          then
             taTextLeft1InObjects = taTextLeft1InObjectsCheck()
             if taTextLeft1InObjects then
-               SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
+               GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
@@ -478,7 +479,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
          then
             taTextLeft1InObjects = taTextLeft1InObjectsCheck()
             if taTextLeft1InObjects then
-               SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
+               GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
@@ -486,7 +487,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
       end
 
       if tFind["Any"] then
-         SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
+         GameWorldObjects.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
          GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
          return true
       end
@@ -495,21 +496,21 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:GameWorldObjectsScan(aContinue, aFindList, aHStepSizeDeg, aHStepsMax, aVMoveSpeed, aVStepsMax, aCallback, aHStart)
+function GameWorldObjects:GameWorldObjectsScan(aContinue, aFindList, aHStepSizeDeg, aHStepsMax, aVMoveSpeed, aVStepsMax, aCallback, aHStart)
    if not GameWorldObjects:IsEnabled() then return end
    dprint("GameWorldObjectsScan", aContinue, aFindList, aHStepSizeDeg, aHStepsMax, aVMoveSpeed, aVStepsMax, aCallback, aHStart)
    local tFrame = _G["SkuCoreGameWorldObjectsScanTicker"] or CreateFrame("Frame", "SkuCoreGameWorldObjectsScanTicker", _G["UIParent"])
    tFrame:SetSize(1, 1)
    tFrame:SetPoint("TOPLEFT", _G["UIParent"], "TOPLEFT", 0, 0)
 
-   SkuCore.gameWorldObjectsScanFrame = tFrame
+   GameWorldObjects.gameWorldObjectsScanFrame = tFrame
 
    if aContinue == true and tFrame.isScanningActive ~= true then
       return
    end
 
    if aContinue ~= true and tFrame.isScanningActive == true then
-      SkuCore:GameWorldObjectsRestoreView()
+      GameWorldObjects:GameWorldObjectsRestoreView()
    end
 
    tFrame.stopUpFlag = false
@@ -540,7 +541,7 @@ function SkuCore:GameWorldObjectsScan(aContinue, aFindList, aHStepSizeDeg, aHSte
 
          local t = (self.hStepSizeDeg * self.CameraYawMod) * (((self.DownSteps + 1) / self.vStepsMax) * 0.75)
          dprint(t, self.hStepSizeDeg * self.CameraYawMod, ((self.DownSteps + 1) / self.vStepsMax), (((self.DownSteps + 1) / self.vStepsMax) * 5), self.DownSteps, self.vStepsMax)
-         if tTextLeft1 and SkuCore:GameWorldObjectsCheckResult(tTextLeft1, tTextLeft2, tTextLeft3) then
+         if tTextLeft1 and GameWorldObjects:GameWorldObjectsCheckResult(tTextLeft1, tTextLeft2, tTextLeft3) then
             MoveViewUpStop()
             FlipCameraYaw((t) * -1)
             self.CameraYaw = self.CameraYaw + ((t) * -1)
@@ -562,7 +563,7 @@ function SkuCore:GameWorldObjectsScan(aContinue, aFindList, aHStepSizeDeg, aHSte
                self.stopUpFlag = true
                
                if self.DownSteps > self.vStepsMax then
-                  SkuCore:GameWorldObjectsRestoreView()
+                  GameWorldObjects:GameWorldObjectsRestoreView()
                end
             end
          end
@@ -570,11 +571,11 @@ function SkuCore:GameWorldObjectsScan(aContinue, aFindList, aHStepSizeDeg, aHSte
    end)
    tFrame:Show()
 
-   SkuCore.noMouseOverNotification = true
+   SkuCore.MinimapScanner.noMouseOverNotification = true
 
    if aContinue ~= true then
       SetView(2)
-      SkuCore:GameWorldObjectsCenterMouseCursor(aHStart)
+      GameWorldObjects:GameWorldObjectsCenterMouseCursor(aHStart)
       tFrame.CameraYawMod = 1
       tFrame.CameraYaw = 0
       tFrame.DownSteps = 0

@@ -352,7 +352,7 @@ function SkuOptions:OnProfileChanged()
 	SkuNav:PLAYER_ENTERING_WORLD()
 
 	SkuOptions:SkuKeyBindsUpdate(true)
-	SkuCore:GameWorldObjectsOnLogin()
+	SkuCore.GameWorldObjects:GameWorldObjectsOnLogin()
 	
   	if SkuCore then pcall(function() SkuCore:OnEnable() end) end
 	if SkuChat then pcall(function() SkuChat:OnEnable() end) end
@@ -375,7 +375,7 @@ function SkuOptions:OnProfileCopied()
 	SkuNav:PLAYER_ENTERING_WORLD()
 
 	SkuOptions:SkuKeyBindsUpdate(true)
-	SkuCore:GameWorldObjectsOnLogin()
+	SkuCore.GameWorldObjects:GameWorldObjectsOnLogin()
 
   	if SkuCore then pcall(function() SkuCore:OnEnable() end) end
 	if SkuChat then pcall(function() SkuChat:OnEnable() end) end
@@ -416,9 +416,9 @@ function SkuOptions:OnProfileReset()
 
 	SkuOptions:SkuKeyBindsResetBindings()
 	SkuOptions:SkuKeyBindsUpdate(true)
-	SkuCore:GameWorldObjectsOnLogin()
+	SkuCore.GameWorldObjects:GameWorldObjectsOnLogin()
 	SkuCore:AqOnLogin()
-	SkuCore:DamageMeterOnLogin()
+	SkuCore.DamageMeter:DamageMeterOnLogin()
 	
   	if SkuCore then pcall(function() SkuCore:OnEnable() end) end
 	if SkuChat then pcall(function() SkuChat:OnEnable() end) end
@@ -2275,15 +2275,15 @@ function SkuOptions:CreateMainFrame()
 							tFollowWarnEntry.dynamic = true
 							tFollowWarnEntry.isSelect = true
 							tFollowWarnEntry.GetCurrentValue = function(self, aValue, aName)
-								if SkuCore and SkuCore.FollowWarnGetEnabled and SkuCore:FollowWarnGetEnabled() then
+								if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.FollowWarnGetEnabled and SkuCore.VisualAids:FollowWarnGetEnabled() then
 									return L["ein"]
 								else
 									return L["aus"]
 								end
 							end
 							tFollowWarnEntry.OnAction = function(self, aValue, aName)
-								if SkuCore and SkuCore.FollowWarnSetEnabled then
-									SkuCore:FollowWarnSetEnabled(aName == L["ein"])
+								if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.FollowWarnSetEnabled then
+									SkuCore.VisualAids:FollowWarnSetEnabled(aName == L["ein"])
 								end
 							end
 							tFollowWarnEntry.BuildChildren = function(self)
@@ -2333,8 +2333,8 @@ function SkuOptions:CreateMainFrame()
 						local tVisualAidsEntry = SkuOptions:InjectMenuItems(self, {L["Visuelle Hilfen"]}, SkuGenericMenuItem)
 						tVisualAidsEntry.dynamic = true
 						tVisualAidsEntry.BuildChildren = function(self)
-							if SkuCore and SkuCore.VisualAidsBuildMenu then
-								pcall(function() SkuCore:VisualAidsBuildMenu(self) end)
+							if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsBuildMenu then
+								pcall(function() SkuCore.VisualAids:VisualAidsBuildMenu(self) end)
 							end
 						end
 					end --[Menue7] schliesst tAccessMenuEntry.BuildChildren (Barrierefreiheit-Umbau; RUECKBAU: diese Zeile entfernen)
@@ -2413,7 +2413,7 @@ function SkuOptions:CreateMainFrame()
 				
 
 				SkuOptions.Voice:OutputStringBTtts(L["Menu;closed"], false, true, 0.3, true, nil, nil, 2)
-				pcall(function() if SkuCore and SkuCore.VisualAidsLineBarHide then SkuCore:VisualAidsLineBarHide() end end)
+				pcall(function() if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsLineBarHide then SkuCore.VisualAids:VisualAidsLineBarHide() end end)
 				SkuCore.Debug("", L["Menu;closed"], true)
 
 			else
@@ -2422,13 +2422,13 @@ function SkuOptions:CreateMainFrame()
 				PlaySound(811)
 				SkuOptions.Voice:OutputStringBTtts(L["Menu;open"], true, true, 0.3, true, nil, nil, 2)
 				SkuOptions.Voice:OutputStringBTtts(SkuOptions.Menu[1].name, false, true, 0.3, nil, nil, nil, 2)
-				pcall(function() if SkuCore and SkuCore.VisualAidsLineBarSet then SkuCore:VisualAidsLineBarSet(SkuOptions.Menu[1].name) end end)
+				pcall(function() if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsLineBarSet then SkuCore.VisualAids:VisualAidsLineBarSet(SkuOptions.Menu[1].name) end end)
 				SkuCore.Debug("", SkuOptions.currentMenuPosition.name, true)
 			end
 		end
 
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_OPENDUNGEONBROWSER") then
-			SkuCore:DungeonBrowserOpen()
+			SkuCore.DungeonBrowser:DungeonBrowserOpen()
 		end
 
 		for q = 1, 10 do
@@ -3945,12 +3945,12 @@ function SkuOptions:GetCurrentRollItem()
 				local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent = GetItemInfo(GetLootRollItemLink(_G["GroupLootFrame"..x].rollID))
 				local tAlFavoriteString = ""
 				local invType = C_Item.GetItemInventoryTypeByID(itemLink)
-				if SkuCore.favoriteSlots then
+				if SkuCore.AtlasLootIntegration and SkuCore.AtlasLootIntegration.favoriteSlots then
 					if invType and itemLink then
-						if SkuCore.favoriteSlots[invType] and SkuCore.favoriteSlots[invType][1] and #SkuOptions.db.char["SkuCore"].alIntegration.favorites[invType] > 0 then
+						if SkuCore.AtlasLootIntegration.favoriteSlots[invType] and SkuCore.AtlasLootIntegration.favoriteSlots[invType][1] and #SkuOptions.db.char["SkuCore"].alIntegration.favorites[invType] > 0 then
 							for q = 1, #SkuOptions.db.char["SkuCore"].alIntegration.favorites[invType] do
 								if SkuOptions.db.char["SkuCore"].alIntegration.favorites[invType][q] == itemLink then
-									tAlFavoriteString = L["Prio"].." "..q.." "..L["in AtlasLoot favorites for"].." ".._G[SkuCore.favoriteSlots[invType][1]]
+									tAlFavoriteString = L["Prio"].." "..q.." "..L["in AtlasLoot favorites for"].." ".._G[SkuCore.AtlasLootIntegration.favoriteSlots[invType][1]]
 								end
 							end
 						end
@@ -4105,7 +4105,7 @@ function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString)
 		return tFinalString
 	else
 		SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, 2, SkuOptions.currentMenuPosition.vocalizeAsIs)
-		pcall(function() if SkuCore and SkuCore.VisualAidsLineBarSet then SkuCore:VisualAidsLineBarSet(tFinalString) end end)
+		pcall(function() if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsLineBarSet then SkuCore.VisualAids:VisualAidsLineBarSet(tFinalString) end end)
 	end
 
 	--debug as text
@@ -4794,7 +4794,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										-- navigiert. KEIN Wrapper, KEINE Suppression — das
 										-- hatte gestern einwandfrei funktioniert (kein
 										-- MapPing, Edelsteine setzbar).
-										tNewSubMenuEntrySocket.macrotext = "/script SkuCore:SuppressMinimapMapPingBriefly() SocketContainerItem(".._G[aGossipListTable[index].containerFrameName]:GetBag()..", ".._G[aGossipListTable[index].containerFrameName]:GetID()..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() SkuCore:OpenSocketingMenuFollowUp() end)"
+										tNewSubMenuEntrySocket.macrotext = "/script SkuCore.Socketing:SuppressMinimapMapPingBriefly() SocketContainerItem(".._G[aGossipListTable[index].containerFrameName]:GetBag()..", ".._G[aGossipListTable[index].containerFrameName]:GetID()..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() SkuCore.Socketing:OpenSocketingMenuFollowUp() end)"
 									end
 								else
 									local tContainerSlotIDs = {
@@ -4830,7 +4830,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 												-- Timer-Callback, das den Cursor in das frisch
 												-- gebaute Sockelmenü auf die Item-Bezeichnung
 												-- navigiert.
-												tNewSubMenuEntrySocket.macrotext = "/script SkuCore:SuppressMinimapMapPingBriefly() SocketInventoryItem("..x..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() SkuCore:OpenSocketingMenuFollowUp() end)"
+												tNewSubMenuEntrySocket.macrotext = "/script SkuCore.Socketing:SuppressMinimapMapPingBriefly() SocketInventoryItem("..x..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() SkuCore.Socketing:OpenSocketingMenuFollowUp() end)"
 											end
 
 											local itemLink = GetInventoryItemLink("player", x)

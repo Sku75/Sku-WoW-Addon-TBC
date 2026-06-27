@@ -1213,13 +1213,29 @@ to the W1 settings migration (~2,700 sites) which landed cleanly with this metho
 
 ## Task checklist
 
-- [~] E0. PILOT the extraction recipe on ONE feature (Mail — clean, one external
-  caller file) to prove SkuCore:X→Mail:X + caller repoint + published handle, before
-  mass rollout. (In progress.)
-- [ ] E1. Extract the remaining SkuCore-table features to their own namespaces, in
-  risk order (trivial first; AuctionHouse / aq / aqCombat last), batched + verified.
-- [ ] E2. Slim `SkuCore/Core.lua` to the manager + genuine core plumbing; confirm no
-  feature method/state remains on the `SkuCore` table (other than published handles).
+- [x] E0. PILOT — Mail extracted (commit e6223a0). Recipe proven.
+- [~] E1. 20 features extracted (commit pending this session's end), verified in-game.
+  god-table 352→237 `function SkuCore:` defs; extracted features ~0 left (2 forwarder
+  shims by design). Recipe/patterns recorded in CHANGELOG. **Remaining: the hard-3.**
+- [ ] **E1b — NEXT SESSION STARTS HERE: extract the hard-3 (AuctionHouse, aq, aqCombat).**
+  These still hold ~99 `function SkuCore:` defs (auctionHouse 50, aq 26, aqCombat 23).
+  Same recipe (move `SkuCore:X`→`Module:X` + `SkuCore.<field>`→`Module.<field>`, repoint
+  callers via the published handle, luaparser-gate, in-game test). EXTRA CARE:
+  - **AuctionHouse:** hardware-event-gated PlaceAuctionBid buy path + secure-buy
+    teardown — relocate onto the module without disturbing the secure sequence; the
+    OnUpdate watchdog ticker frame; `SkuCore.AuctionHouseOpen` read by SkuZOptions.
+  - **aq:** `SkuCore.Monitor.UnitNumbersIndexedRaid` is READ by SkuAuras — keep it
+    reachable via the handle (`SkuCore.Aq.Monitor...`) and repoint SkuAuras, OR keep
+    Monitor built unconditionally; the 5 `RoleCheckerGetUnitRole` calls are already
+    guarded. aqCombat methods (`aqCombatGetSkuRaidTarget`) are called by TurnToUnit/SkuMob.
+  - **aqCombat:** combat hot path; AceEvent dispatch order is not guaranteed — verify
+    no handler relied on SkuCore-registration order; SetRaidTarget hooksecurefunc guard.
+  - Do these likely ONE AT A TIME (sequential), each luaparser-gated, then one in-game
+    combat + AH test. Watch for cross-module state fields (`SkuRaidTargetRepo`,
+    `inOutCombatQueue`, `threatTable`) read by SkuMob/SkuZOptions — repoint via handle.
+- [ ] E2. Slim `SkuCore/Core.lua` to the manager + genuine core plumbing; decide what
+  legitimately stays core (Core.lua manager, ModuleManager, LocalMenu Tier-1,
+  voiceOutput); confirm no toggleable-feature method/state remains on `SkuCore`.
 - [ ] E3. Re-run `_members.py`/`_matrix.py`; record the collapsed SkuCore coupling.
 
 ---
