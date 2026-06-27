@@ -1214,28 +1214,43 @@ to the W1 settings migration (~2,700 sites) which landed cleanly with this metho
 ## Task checklist
 
 - [x] E0. PILOT — Mail extracted (commit e6223a0). Recipe proven.
-- [~] E1. 20 features extracted (commit pending this session's end), verified in-game.
+- [x] E1. 20 features extracted (commit 1664344), verified in-game.
   god-table 352→237 `function SkuCore:` defs; extracted features ~0 left (2 forwarder
-  shims by design). Recipe/patterns recorded in CHANGELOG. **Remaining: the hard-3.**
-- [ ] **E1b — NEXT SESSION STARTS HERE: extract the hard-3 (AuctionHouse, aq, aqCombat).**
-  These still hold ~99 `function SkuCore:` defs (auctionHouse 50, aq 26, aqCombat 23).
-  Same recipe (move `SkuCore:X`→`Module:X` + `SkuCore.<field>`→`Module.<field>`, repoint
-  callers via the published handle, luaparser-gate, in-game test). EXTRA CARE:
-  - **AuctionHouse:** hardware-event-gated PlaceAuctionBid buy path + secure-buy
-    teardown — relocate onto the module without disturbing the secure sequence; the
-    OnUpdate watchdog ticker frame; `SkuCore.AuctionHouseOpen` read by SkuZOptions.
-  - **aq:** `SkuCore.Monitor.UnitNumbersIndexedRaid` is READ by SkuAuras — keep it
-    reachable via the handle (`SkuCore.Aq.Monitor...`) and repoint SkuAuras, OR keep
-    Monitor built unconditionally; the 5 `RoleCheckerGetUnitRole` calls are already
-    guarded. aqCombat methods (`aqCombatGetSkuRaidTarget`) are called by TurnToUnit/SkuMob.
-  - **aqCombat:** combat hot path; AceEvent dispatch order is not guaranteed — verify
-    no handler relied on SkuCore-registration order; SetRaidTarget hooksecurefunc guard.
-  - Do these likely ONE AT A TIME (sequential), each luaparser-gated, then one in-game
-    combat + AH test. Watch for cross-module state fields (`SkuRaidTargetRepo`,
-    `inOutCombatQueue`, `threatTable`) read by SkuMob/SkuZOptions — repoint via handle.
+  shims by design). Recipe/patterns recorded in CHANGELOG.
+- [x] **E1b — hard-3 extracted (AuctionHouse 0032c5a, aqCombat 496c55f, aq 4f59123).**
+  All ~99 methods moved off `SkuCore` onto their module tables, ONE AT A TIME, each
+  luaparser-gated. god-table **237 → 138** `function SkuCore:` defs. Done via a
+  reviewable codemod (`_e1b_codemod.py`) + a per-feature safety analyzer
+  (`_e1b_analyze.py`) that PROVED no moved method uses its own `self` to reach SkuCore
+  (every `self` is an inner-closure frame / menu-entry / dispatcher self), so relocating
+  the method table is behaviour-identical regardless of call style.
+  - **Scope decision (recorded):** E1b moved the METHODS + their event/dispatch
+    registrations only. Scattered top-level `SkuCore.<field>` feature STATE was LEFT in
+    place (methods reference it as globals; cross-module reads like `SkuCore.AuctionHouseOpen`
+    and `SkuCore.Monitor.UnitNumbersIndexedRaid` keep working untouched, so SkuAuras/SkuZOptions
+    needed NO repoint). Moving that scattered, partly-cross-module state belongs to the
+    state-service pass (category C / step 5), not method extraction — splitting it out kept
+    each checkpoint small and the cross-module reads zero-risk.
+  - **Event ownership:** AuctionHouse + aq gained the `AceEvent-3.0` mixin and own their
+    AceEvent registrations (Mail pattern); aqCombat is dispatcher-only. All dispatcher
+    reg+unreg pairs rewritten in lockstep so callback-table keys stay matched. The AH
+    hardware-event PlaceAuctionBid secure path + the SetRaidTarget hooksecurefunc are
+    byte-for-byte unchanged.
+  - **`ConfirmButtonShow` kept on `SkuCore`** (generic confirm-dialog helper used by 4 other
+    modules; not an AH method) — the one remaining `function SkuCore:` def in auctionHouse.lua.
+  - **Pre-existing duplicate observed:** `UNIT_POWER_UPDATE` (aq real handler + dead Core.lua
+    stub); TOC loads Core before aq so aq's handler has always won. Left as-is (behaviour
+    identical); a cleanup can delete the stub in E2.
+  - **In-game test PENDING** (deferred to the user — see handoff): AH buy/sell/scan +
+    solo/group combat + raid markers + health/power monitor. The three commits are
+    independent checkpoints so a failed test isolates to one feature.
 - [ ] E2. Slim `SkuCore/Core.lua` to the manager + genuine core plumbing; decide what
-  legitimately stays core (Core.lua manager, ModuleManager, LocalMenu Tier-1,
-  voiceOutput); confirm no toggleable-feature method/state remains on `SkuCore`.
+  legitimately stays core (Core.lua manager 106 defs, ModuleManager 6, LocalMenu Tier-1 20,
+  voiceOutput 2); confirm no toggleable-feature method/state remains on `SkuCore`. The
+  remaining 138 `function SkuCore:` defs are now almost entirely Core.lua (106) + LocalMenu
+  (20) — the genuine-core surface — plus a few shared-helper/shim leftovers (ConfirmButtonShow,
+  visualAids 1, alIntegration 1, Options 1) to relocate or accept. Also delete the dead
+  UNIT_POWER_UPDATE Core.lua stub.
 - [ ] E3. Re-run `_members.py`/`_matrix.py`; record the collapsed SkuCore coupling.
 
 ---
