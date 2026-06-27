@@ -39,9 +39,9 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 -- and SkuCore.Auction* state stays EXACTLY where it is so external callers
 -- (SkuZOptions menu builders, the result-stream events) keep working unchanged; the
 -- module only owns the LIFECYCLE:
---   * OnEnable  arms the feature: SkuCore:AuctionHouseOnInitialize (creates the
+--   * OnEnable  arms the feature: AuctionHouse:AuctionHouseOnInitialize (creates the
 --     SkuCoreSecureTabButtonAuctions OnUpdate watchdog ticker frame + registers the
---     5 AUCTION_* events) then SkuCore:AuctionHouseOnLogin (restores the price-
+--     5 AUCTION_* events) then AuctionHouse:AuctionHouseOnLogin (restores the price-
 --     history DB).
 --   * OnDisable disarms it: stop the OnUpdate ticker, unregister the 5 AUCTION_*
 --     events, and run the secure-buy teardown (AuctionSecureBuyTeardown) so no
@@ -53,7 +53,14 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 -- stays a published field (SkuZOptions reads it); while disabled it just stays false.
 -- The hardware-event-gated PlaceAuctionBid buy path is left byte-for-byte unchanged
 -- (only its event/ticker REGISTRATION moves into OnEnable/OnDisable).
-local AuctionHouse = SkuCore:NewModule(MODULE_PART)
+-- W4 Phase E (namespace extraction): every former `function SkuCore:Auction*`
+-- method now lives on this module table (`function AuctionHouse:Method`); the
+-- published handle `SkuCore.AuctionHouse` IS this table, so external callers use
+-- `SkuCore.AuctionHouse:Method`. The module mixes in AceEvent-3.0 and owns its own
+-- AH event registrations (the 5 AUCTION_* events register/unregister on the module).
+-- Feature STATE stays on `SkuCore.<field>` for now (scattered, partly cross-module-
+-- read e.g. SkuCore.AuctionHouseOpen) — moving it onto a state service is a later pass.
+local AuctionHouse = SkuCore:NewModule(MODULE_PART, "AceEvent-3.0")
 SkuCore.AuctionHouse = AuctionHouse   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
@@ -187,12 +194,12 @@ local OnEnterAllFlag = nil
 -- saved price history. AUCTION_HOUSE_SHOW/CLOSED handle entering/leaving an AH.
 -- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionHouseOnInitialize()
-   SkuCore:RegisterEvent("AUCTION_HOUSE_SHOW")
-   SkuCore:RegisterEvent("AUCTION_HOUSE_CLOSED")
-   SkuCore:RegisterEvent("AUCTION_OWNED_LIST_UPDATE")
-   SkuCore:RegisterEvent("AUCTION_BIDDER_LIST_UPDATE")
-   SkuCore:RegisterEvent("AUCTION_ITEM_LIST_UPDATE")
+function AuctionHouse:AuctionHouseOnInitialize()
+   AuctionHouse:RegisterEvent("AUCTION_HOUSE_SHOW")
+   AuctionHouse:RegisterEvent("AUCTION_HOUSE_CLOSED")
+   AuctionHouse:RegisterEvent("AUCTION_OWNED_LIST_UPDATE")
+   AuctionHouse:RegisterEvent("AUCTION_BIDDER_LIST_UPDATE")
+   AuctionHouse:RegisterEvent("AUCTION_ITEM_LIST_UPDATE")
 
    local tTime = 0
    local tFullScanElapsed = 0
@@ -214,7 +221,7 @@ function SkuCore:AuctionHouseOnInitialize()
       -- verarbeiten (anti-freeze) und sonst nichts tun, bis er fertig ist. Die
       -- 25-%-Ansagen macht der Chunk-Prozessor selbst.
       if SkuCore.FullScanIngest and SkuCore.FullScanIngest.active then
-         SkuCore:AuctionFullScanProcessChunk()
+         AuctionHouse:AuctionFullScanProcessChunk()
          return
       end
 
@@ -227,7 +234,7 @@ function SkuCore:AuctionHouseOnInitialize()
       tFilterAnnounceElapsed = tFilterAnnounceElapsed + time
       if tFilterAnnounceElapsed >= 10 then
          tFilterAnnounceElapsed = 0
-         pcall(function() SkuCore:AuctionAnnounceFilterProgress() end)
+         pcall(function() AuctionHouse:AuctionAnnounceFilterProgress() end)
       end
 
       -- Komplettscan-Arbeitsphasen OHNE Prozentangabe: auf die getAll-Antwort
@@ -275,7 +282,7 @@ function SkuCore:AuctionHouseOnInitialize()
                if tFullScanElapsed > 600 then
                   tFullScanElapsed = 0
                   dprint("auction.scan", "watchdog: getAll timeout 600s")
-                  SkuCore:AuctionScanFinish("watchdog: getAll timeout", true)
+                  AuctionHouse:AuctionScanFinish("watchdog: getAll timeout", true)
                   tTime = 0
                   return
                end
@@ -303,7 +310,7 @@ function SkuCore:AuctionHouseOnInitialize()
                -- Server bereit für nächste Seite — Stall-Zähler reset
                tPagedStallTime = 0
                local ok, err = pcall(function()
-                  SkuCore:AuctionHouseStartQuery(true)
+                  AuctionHouse:AuctionHouseStartQuery(true)
                end)
                if not ok then
                   dprint("auction.scan", "paged StartQuery failed", { err = tostring(err or "") })
@@ -317,7 +324,7 @@ function SkuCore:AuctionHouseOnInitialize()
                dprint("auction.scan", "watchdog: paged stall 60s", {
                   page = SkuCore.QueryData and SkuCore.QueryData[tQAIindex.page],
                })
-               SkuCore:AuctionScanFinish("watchdog: paged stall", true)
+               AuctionHouse:AuctionScanFinish("watchdog: paged stall", true)
                tPagedScanElapsed = 0
                tPagedStallTime   = 0
                tTime = 0
@@ -329,7 +336,7 @@ function SkuCore:AuctionHouseOnInitialize()
             -- normale paginierte Suchen in unter 30 s durch.
             if tPagedScanElapsed > 180 then
                dprint("auction.scan", "watchdog: paged total 180s")
-               SkuCore:AuctionScanFinish("watchdog: paged total", true)
+               AuctionHouse:AuctionScanFinish("watchdog: paged total", true)
                tPagedScanElapsed = 0
                tPagedStallTime   = 0
             end
@@ -345,12 +352,12 @@ function SkuCore:AuctionHouseOnInitialize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionHouseOnPLAYER_LEAVING_WORLD()
+function AuctionHouse:AuctionHouseOnPLAYER_LEAVING_WORLD()
 
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionHouseOnLogin()
+function AuctionHouse:AuctionHouseOnLogin()
    SkuOptions.db.factionrealm[MODULE_NAME] = SkuOptions.db.factionrealm[MODULE_NAME] or {}
    if (SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory and type(SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory) == "string") and SkuOptions.db.factionrealm[MODULE_NAME].First31_13Load == true then
       SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory or ""--{}
@@ -370,8 +377,8 @@ end
 -- SkuCoreSecureTabButtonAuctions OnUpdate watchdog ticker frame; AuctionHouseOnLogin
 -- restores the saved price-history DB.
 function AuctionHouse:OnEnable()
-   SkuCore:AuctionHouseOnInitialize()
-   SkuCore:AuctionHouseOnLogin()
+   AuctionHouse:AuctionHouseOnInitialize()
+   AuctionHouse:AuctionHouseOnLogin()
 end
 
 -- Disarm: stop the OnUpdate watchdog ticker on the SkuCoreSecureTabButtonAuctions
@@ -384,15 +391,15 @@ function AuctionHouse:OnDisable()
    if tTicker then
       tTicker:SetScript("OnUpdate", nil)
    end
-   SkuCore:UnregisterEvent("AUCTION_HOUSE_SHOW")
-   SkuCore:UnregisterEvent("AUCTION_HOUSE_CLOSED")
-   SkuCore:UnregisterEvent("AUCTION_OWNED_LIST_UPDATE")
-   SkuCore:UnregisterEvent("AUCTION_BIDDER_LIST_UPDATE")
-   SkuCore:UnregisterEvent("AUCTION_ITEM_LIST_UPDATE")
+   AuctionHouse:UnregisterEvent("AUCTION_HOUSE_SHOW")
+   AuctionHouse:UnregisterEvent("AUCTION_HOUSE_CLOSED")
+   AuctionHouse:UnregisterEvent("AUCTION_OWNED_LIST_UPDATE")
+   AuctionHouse:UnregisterEvent("AUCTION_BIDDER_LIST_UPDATE")
+   AuctionHouse:UnregisterEvent("AUCTION_ITEM_LIST_UPDATE")
    -- Secure-buy teardown: release any active Enter/Escape override bindings + safety
    -- timer + server-message capture left by the hardware-event PlaceAuctionBid path.
-   if SkuCore.AuctionSecureBuyTeardown then
-      pcall(SkuCore.AuctionSecureBuyTeardown, SkuCore)
+   if AuctionHouse.AuctionSecureBuyTeardown then
+      pcall(AuctionHouse.AuctionSecureBuyTeardown, AuctionHouse)
    end
    SkuCore.AuctionHouseOpen = false
 end
@@ -403,7 +410,7 @@ end
 -- (AUCTION_*_LIST_UPDATE) live with the scanner in SECTION 8.
 -- ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AUCTION_HOUSE_SHOW()
+function AuctionHouse:AUCTION_HOUSE_SHOW()
    -- Safe no-op while the AuctionHouse module is disabled: the event is normally
    -- unregistered in OnDisable, but guard the entry so a disabled feature never
    -- flips AuctionHouseOpen or auto-opens the AH menu.
@@ -428,9 +435,9 @@ function SkuCore:AUCTION_HOUSE_SHOW()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AUCTION_HOUSE_CLOSED()
-   SkuCore:AuctionBuyCancel()
-   SkuCore:AuctionScanFinish("AH closed")
+function AuctionHouse:AUCTION_HOUSE_CLOSED()
+   AuctionHouse:AuctionBuyCancel()
+   AuctionHouse:AuctionScanFinish("AH closed")
    -- Kauf-Fehler-/Leerzähler beim Schließen zurücksetzen, damit kein alter
    -- Zählerstand in einen späteren AH-Besuch übergreift.
    SkuCore.AuctionBuy.failCount = 0
@@ -444,7 +451,7 @@ function SkuCore:AUCTION_HOUSE_CLOSED()
       -- Warte-Ticker + Such-Poll-Frame stoppen, bevor wir StratBuy verwerfen —
       -- sonst feuert der Ticker leer weiter bzw. der Poll-Frame setzt noch eine
       -- Query ab, nachdem das AH schon zu ist.
-      SkuCore:StrategyBuyStopTimers(SkuCore.StratBuy)
+      AuctionHouse:StrategyBuyStopTimers(SkuCore.StratBuy)
       SkuCore.StratBuy = nil
    end
    SkuCore.StratBuyConfig = {}
@@ -542,7 +549,7 @@ local function _ABTrack(timer)
    return timer
 end
 
-function SkuCore:AuctionBuyCancel()
+function AuctionHouse:AuctionBuyCancel()
    local AB = SkuCore.AuctionBuy
    for i = 1, #AB.timers do
       local t = AB.timers[i]
@@ -556,7 +563,7 @@ function SkuCore:AuctionBuyCancel()
    -- _G[...]-Namen duplizierten Schritte (die lokalen _ASB*-Helfer stehen weiter
    -- unten im File, die Methode wird aber zur Laufzeit aufgelöst).
    if SkuCore.AuctionSecureBuy then
-      SkuCore:AuctionSecureBuyTeardown()
+      AuctionHouse:AuctionSecureBuyTeardown()
    end
    _ABLog("ABCancel", { newGeneration = AB.generation })
 end
@@ -569,7 +576,7 @@ local function _ABClearBuyState()
    SkuCore.QueryBuyBought = nil
    SkuCore.AuctionBuy.failCount = 0
    SkuCore.QueryBuyEmptyWaits = 0
-   SkuCore:AuctionHouseResetQuery()
+   AuctionHouse:AuctionHouseResetQuery()
 end
 
 -- Vier Ebenen im Menü hochnavigieren und nach kurzer Verzögerung den Menünamen
@@ -613,7 +620,7 @@ end
 -- .data[19] (die Dubletten-Liste). Die Anzahl-/Kaufen-/Bieten-Knoten darüber
 -- haben zwar teils .data, aber kein .tIndex. nil, wenn nicht ermittelbar →
 -- Aufrufer macht das alte Hochnavigieren.
-function SkuCore:AuctionResultsItemEntryFromCursor()
+function AuctionHouse:AuctionResultsItemEntryFromCursor()
    local n = SkuOptions and SkuOptions.currentMenuPosition
    while n do
       if n.tIndex and n.data and type(n.data[19]) == "table" then
@@ -629,10 +636,10 @@ end
 -- AuctionResultsAppend). War es die letzte Auktion -> Eintrag ganz entfernen.
 -- Zielposition für den Cursor in SkuCore.AuctionPrunePos hinterlegen. Bewegt den
 -- Cursor NICHT. true bei Erfolg, false wenn nichts passte (Fallback im Aufrufer).
-function SkuCore:AuctionPruneListAuction(aRecord)
+function AuctionHouse:AuctionPruneListAuction(aRecord)
    SkuCore.AuctionPrunePos = nil
    if not aRecord then return false end
-   local tEntry = SkuCore:AuctionResultsItemEntryFromCursor()
+   local tEntry = AuctionHouse:AuctionResultsItemEntryFromCursor()
    if not (tEntry and tEntry.data and type(tEntry.data[19]) == "table") then
       dprint("auction.buy", "prune: no entry from cursor", {
          cursorName = SkuOptions and SkuOptions.currentMenuPosition
@@ -694,7 +701,7 @@ function SkuCore:AuctionPruneListAuction(aRecord)
       local tWithLevel = (tFilter.SortBy == 5 or tFilter.SortBy == 6
          or tFilter.LevelMin or tFilter.LevelMax) and true or nil
       local tPrefix = (#tDupes > 1) and (#tDupes..L[" mal "]) or ""
-      tEntry.name = tPrefix .. SkuCore:AuctionItemNameFormat(tRep, nil, tWithLevel)
+      tEntry.name = tPrefix .. AuctionHouse:AuctionItemNameFormat(tRep, nil, tWithLevel)
       SkuCore.AuctionPrunePos = { entry = tEntry, removed = false }
    end
    dprint("auction.buy", "prune ok", {
@@ -706,7 +713,7 @@ end
 
 -- Cursor nach dem Pruning auf den (geschrumpften) Eintrag bzw. — wenn entfernt —
 -- auf dessen Listen-Nachbarn setzen und ansagen. Nutzt SkuCore.AuctionPrunePos.
-function SkuCore:AuctionStayOnResultsEntry()
+function AuctionHouse:AuctionStayOnResultsEntry()
    local p = SkuCore.AuctionPrunePos
    SkuCore.AuctionPrunePos = nil
    if not p then return false end
@@ -735,7 +742,7 @@ end
 local function _ABFinalizeAllBought()
    _ABClearBuyState()
    local tStayed = false
-   pcall(function() tStayed = SkuCore:AuctionStayOnResultsEntry() end)
+   pcall(function() tStayed = AuctionHouse:AuctionStayOnResultsEntry() end)
    if tStayed then
       _ABTrack(C_Timer.NewTimer(0.4, function()
          SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], false, true, 0.1, nil, nil, nil, 1)
@@ -757,7 +764,7 @@ end
 -- neuer Query frisch starten; die ersten Events einer Query können leer sein.
 local function _ABReQueryBuy()
    SkuCore.QueryBuyEmptyWaits = 0
-   SkuCore:AuctionHouseStartQuery(
+   AuctionHouse:AuctionHouseStartQuery(
       nil,
       "AUCTION_ITEM_LIST_UPDATE",
       SkuCore.QueryBuyData.query[1],
@@ -777,7 +784,7 @@ local function _ABContinueOrFinish()
    SkuCore.QueryBuyBought = SkuCore.QueryBuyBought + 1
    -- Gekaufte Auktion aus der angezeigten Liste entfernen (Stückzahl aktuell
    -- halten). Fehlertolerant: schlägt es fehl, bleibt nur die Stückzahl alt.
-   pcall(function() SkuCore:AuctionPruneListAuction(SkuCore.QueryBuyData) end)
+   pcall(function() AuctionHouse:AuctionPruneListAuction(SkuCore.QueryBuyData) end)
    if SkuCore.QueryBuyBought < SkuCore.QueryBuyAmount then
       _ABReQueryBuy()
    else
@@ -843,7 +850,7 @@ if not _ASBCancelBtn then
    _ASBCancelBtn = CreateFrame("Button", "SkuAuctionSecureCancelButton", UIParent)
    _ASBCancelBtn:RegisterForClicks("AnyDown", "AnyUp")
    _ASBCancelBtn:SetScript("OnClick", function()
-      SkuCore:AuctionSecureBuyCancel(true)
+      AuctionHouse:AuctionSecureBuyCancel(true)
    end)
 end
 
@@ -861,7 +868,7 @@ if not _ASBExecBtn then
    _ASBExecBtn = CreateFrame("Button", "SkuAuctionBuyExec", UIParent)
    _ASBExecBtn:RegisterForClicks("AnyDown", "AnyUp")
    _ASBExecBtn:SetScript("OnClick", function()
-      SkuCore:AuctionSecureBuyExecute()
+      AuctionHouse:AuctionSecureBuyExecute()
    end)
 end
 
@@ -923,13 +930,13 @@ _ASBMsgFrame:SetScript("OnEvent", function(self, event, arg1, arg2)
    if not SB or not SB.active or SB.stage ~= "verifying" then return end
    if event == "CHAT_MSG_SYSTEM" then
       if _ASBSuccessMsg and arg1 == _ASBSuccessMsg then
-         SkuCore:AuctionSecureBuyResolve("success", "server-message", arg1)
+         AuctionHouse:AuctionSecureBuyResolve("success", "server-message", arg1)
       end
    elseif event == "UI_ERROR_MESSAGE" then
       -- 2.5.5: (errorType, message); ältere Signatur: nur message.
       local tMsg = (type(arg2) == "string") and arg2 or arg1
       if type(tMsg) == "string" and _ASBFailMsgs[tMsg] then
-         SkuCore:AuctionSecureBuyResolve("failure", "server-message", tMsg)
+         AuctionHouse:AuctionSecureBuyResolve("failure", "server-message", tMsg)
       end
    end
 end)
@@ -975,7 +982,7 @@ local function _ASBArmSafety()
    SkuCore.AuctionSecureBuy.safety = C_Timer.NewTimer(30, function()
       if SkuCore.AuctionSecureBuy.active then
          _ABLog("secure buy safety timeout", {})
-         SkuCore:AuctionSecureBuyCancel(false)
+         AuctionHouse:AuctionSecureBuyCancel(false)
       end
    end)
 end
@@ -985,7 +992,7 @@ end
 -- Capture stoppen. Als SkuCore-Methode definiert, damit auch das weiter oben im
 -- File stehende AuctionBuyCancel sie aufrufen kann (Methoden-Lookup zur Laufzeit)
 -- — früher hatte AuctionBuyCancel diese Schritte per _G[...]-Namen dupliziert.
-function SkuCore:AuctionSecureBuyTeardown()
+function AuctionHouse:AuctionSecureBuyTeardown()
    local SB = SkuCore.AuctionSecureBuy
    if not SB then return end
    SB.active = false
@@ -997,14 +1004,14 @@ end
 
 -- Kauf abbrechen: Bindings + Safety lösen, Zähler zurücksetzen, Skus Menü-Tasten
 -- wiederherstellen. announce=true spricht die Abbruch-Meldung.
-function SkuCore:AuctionSecureBuyCancel(announce)
+function AuctionHouse:AuctionSecureBuyCancel(announce)
    local SB = SkuCore.AuctionSecureBuy
    local p = SB.p
    local wasActive = SB.active
-   SkuCore:AuctionSecureBuyTeardown()
+   AuctionHouse:AuctionSecureBuyTeardown()
    SkuCore.AuctionBuy.failCount = 0
    SkuCore.QueryBuyEmptyWaits = 0
-   SkuCore:AuctionBuyCancel()
+   AuctionHouse:AuctionBuyCancel()
    -- Abbruch-Handler aus dem Spec (Strategiekauf sagt eigene Meldung an und
    -- beendet seine Schleife); sonst der Standard-Kaufpfad.
    if p and p.onCancel then
@@ -1018,7 +1025,7 @@ end
 
 -- Gebot ist raus (direkter PlaceAuctionBid lief im Hardware-Event). Erfolg per
 -- Geld-Differenz prüfen → weiter/fertig oder (echtes Race) erneut.
-function SkuCore:AuctionSecureBuyOnCommitted()
+function AuctionHouse:AuctionSecureBuyOnCommitted()
    local SB = SkuCore.AuctionSecureBuy
    if not SB.active then return end
    local p = SB.p
@@ -1036,7 +1043,7 @@ function SkuCore:AuctionSecureBuyOnCommitted()
    -- Erfolgsmeldung, aber echte stille Fehlschläge werden weiter erkannt.
    _ASBStartMsgCapture()
    SB.verifyTimer = C_Timer.NewTimer(5, function()
-      SkuCore:AuctionSecureBuyResolve("timeout", "money-diff", nil)
+      AuctionHouse:AuctionSecureBuyResolve("timeout", "money-diff", nil)
    end)
    _ABTrack(SB.verifyTimer)
 end
@@ -1046,7 +1053,7 @@ end
 --   outcome "failure" → Server meldete einen Auktions-/Geld-Fehler (serverMsg)
 --   outcome "timeout" → kein Server-Signal; die Geld-Differenz entscheidet
 -- Die Geld-Differenz wird IMMER geloggt, entscheidet aber NUR beim Timeout.
-function SkuCore:AuctionSecureBuyResolve(outcome, source, serverMsg)
+function AuctionHouse:AuctionSecureBuyResolve(outcome, source, serverMsg)
    local SB = SkuCore.AuctionSecureBuy
    if not SB or not SB.active then return end
    local p = SB.p
@@ -1124,7 +1131,7 @@ end
 -- Enter→Klicks auf SkuAuctionBuyExec. Findet den aktuellen Listen-Index der
 -- exakten Auktion (wie Auctionator: FindAuctionOnCurrentPage kurz vor dem Kauf),
 -- ruft PlaceAuctionBid DIREKT auf (kein Blizzard-Popup) und verifiziert dann.
-function SkuCore:AuctionSecureBuyExecute()
+function AuctionHouse:AuctionSecureBuyExecute()
    local SB = SkuCore.AuctionSecureBuy
    if not SB.active or SB.stage ~= "trigger" then return end
    local p = SB.p
@@ -1198,7 +1205,7 @@ function SkuCore:AuctionSecureBuyExecute()
       scanState = SkuCore.AuctionScan.state,
    })
    -- Erfolg/Race per Geld-Differenz auswerten und ggf. weiter/fertig.
-   SkuCore:AuctionSecureBuyOnCommitted()
+   AuctionHouse:AuctionSecureBuyOnCommitted()
 end
 
 -- Geteilter Tastendruck-Kauf (Auctionator-Weg). Wird vom normalen Kauf
@@ -1221,10 +1228,10 @@ end
 --     = optionale Ergebnis-Handler. Fehlen sie, greift der Standard-Kaufpfad
 --       (weiter/fertig bzw. failCount-Retry) — so bleibt der normale Kauf
 --       verhaltensgleich, der Strategiekauf bringt eigene Handler mit.
-function SkuCore:AuctionArmKeypressBid(aSpec)
+function AuctionHouse:AuctionArmKeypressBid(aSpec)
    local AB = SkuCore.AuctionBuy
    -- Neue Match → alte Bestätigung/Bindings verwerfen, Generation hochziehen.
-   SkuCore:AuctionBuyCancel()
+   AuctionHouse:AuctionBuyCancel()
    AB.generation = AB.generation + 1
    local thisGen = AB.generation
 
@@ -1302,7 +1309,7 @@ end
 -- scharfschalten. Dünner Wrapper: baut nur den Spec aus dem normalen Kaufpfad
 -- (QueryBuyType/-Bought/-Amount) und delegiert an AuctionArmKeypressBid. Ohne
 -- eigene Ergebnis-Handler → Standardverhalten (weiter/fertig, failCount-Retry).
-function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
+function AuctionHouse:AuctionBuyConfirm(x, tCurrentResult)
    local tType      = SkuCore.QueryBuyType
    local tItemName  = tCurrentResult[1]
    local tItemCount = tCurrentResult[3]
@@ -1320,7 +1327,7 @@ function SkuCore:AuctionBuyConfirm(x, tCurrentResult)
       tPrompt = L["Kauf "]..(SkuCore.QueryBuyBought + 1)..L[" von "]..SkuCore.QueryBuyAmount..": "..tItemName.." "..tItemCount..L[" stück"]..L[" für "]..SkuGetCoinText(tBidAmount, false, true)..". "..L["Eingabe zum Kaufen, Escape zum Abbrechen"]
    end
 
-   SkuCore:AuctionArmKeypressBid({
+   AuctionHouse:AuctionArmKeypressBid({
       x = x, type = tType, itemName = tItemName, itemCount = tItemCount,
       expItemId = tExpItemId, expBuyout = tExpBuyout, expCount = tExpCount,
       bidAmount = tBidAmount, prompt = tPrompt,
@@ -1462,7 +1469,7 @@ local function Median(t)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPriceData, aAddHistoryPriceData)
+function AuctionHouse:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPriceData, aAddHistoryPriceData)
    --print("AuctionBuildItemTooltip",aItemData, aIndex, aAddCurrentPriceData, aAddHistoryPriceData)   
    local tTextFirstLine, tTextFull = "", ""
    _G["SkuScanningTooltip"]:ClearLines()
@@ -1480,7 +1487,7 @@ function SkuCore:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPriceData
       end
    end
 
-   local tPriceHistoryData, tBestBuyoutPriceCopper = SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemData[17])
+   local tPriceHistoryData, tBestBuyoutPriceCopper = AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(aItemData[17])
 
    table.insert(tPriceHistoryData, 1, tTextFull)
 
@@ -1531,7 +1538,7 @@ function SkuEpochValueHelper(aValue)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionItemNameFormat(aItemData, aIndex, aAddLevel)
+function AuctionHouse:AuctionItemNameFormat(aItemData, aIndex, aAddLevel)
    if not aItemData then
       return
    end
@@ -1577,7 +1584,7 @@ function SkuCore:AuctionItemNameFormat(aItemData, aIndex, aAddLevel)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionGetPricePerItem(aData)
+function AuctionHouse:AuctionGetPricePerItem(aData)
    -- Schutz gegen Division durch 0 (defekte/leere Auktion mit count 0 oder nil):
    -- sonst entstünden inf/NaN-Preise, die Sortierung und Median vergiften.
    local tCount = aData[3] or 0
@@ -1595,7 +1602,7 @@ end
 -- its own result handlers. No private event frame any more (the former
 -- SkuStratBuyFrame with its second AUCTION_ITEM_LIST_UPDATE registration and the
 -- in-frame QueryAuctionItems call are gone — that was duplicate scan
--- infrastructure). AH-close cleanup moved into SkuCore:AUCTION_HOUSE_CLOSED.
+-- infrastructure). AH-close cleanup moved into AuctionHouse:AUCTION_HOUSE_CLOSED.
 -- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- STRATEGIEKAUF (41.02.06e) — Automatischer AH-Kauf mit Preislimit und Retry
@@ -1613,7 +1620,7 @@ end
 -- Ticker mehr feuert und der Poll-Frame keine Query mehr ins geschlossene AH
 -- absetzt. Methode auf SkuCore, damit sie auch aus AUCTION_HOUSE_CLOSED (steht
 -- im File VOR diesem Block) erreichbar ist.
-function SkuCore:StrategyBuyStopTimers(sb)
+function AuctionHouse:StrategyBuyStopTimers(sb)
 	if not sb then return end
 	if sb.waitTimer then pcall(function() sb.waitTimer:Cancel() end); sb.waitTimer = nil end
 	if sb.searchFrame then
@@ -1622,7 +1629,7 @@ function SkuCore:StrategyBuyStopTimers(sb)
 	end
 end
 
-function SkuCore:StrategyBuyStart(itemName, maxPricePerUnit, totalAmount)
+function AuctionHouse:StrategyBuyStart(itemName, maxPricePerUnit, totalAmount)
 	SkuCore.StratBuy = {
 		itemName = itemName, maxPrice = maxPricePerUnit,
 		totalWanted = totalAmount, bought = 0, fails = 0,
@@ -1630,10 +1637,10 @@ function SkuCore:StrategyBuyStart(itemName, maxPricePerUnit, totalAmount)
 		purchaseLog = {}, skipCount = 0, triedPrices = {},
 	}
 	tStratSay(L["STRAT_Starting"]..": "..totalAmount.." "..itemName)
-	C_Timer.After(1.5, function() SkuCore:StrategyBuySearch() end)
+	C_Timer.After(1.5, function() AuctionHouse:StrategyBuySearch() end)
 end
 
-function SkuCore:StrategyBuySearch()
+function AuctionHouse:StrategyBuySearch()
 	local sb = SkuCore.StratBuy
 	if not sb or not sb.active then return end
 	if not AuctionFrame or not AuctionFrame:IsShown() then
@@ -1642,7 +1649,7 @@ function SkuCore:StrategyBuySearch()
 		return
 	end
 	if SkuCore.AuctionScan.state ~= "idle" then
-		C_Timer.After(3, function() SkuCore:StrategyBuySearch() end)
+		C_Timer.After(3, function() AuctionHouse:StrategyBuySearch() end)
 		return
 	end
 	tStratSay(L["STRAT_Searching"])
@@ -1664,7 +1671,7 @@ function SkuCore:StrategyBuySearch()
 	local tDone = function()
 		if not SkuCore.StratBuy then return end
 		SkuCore.StratBuy.searching = false
-		SkuCore:StrategyBuyProcessResults()
+		AuctionHouse:StrategyBuyProcessResults()
 	end
 	local tWait = 0
 	local f = CreateFrame("Frame")
@@ -1686,7 +1693,7 @@ function SkuCore:StrategyBuySearch()
 		if CanSendAuctionQuery() then
 			self:SetScript("OnUpdate", nil); self:Hide()
 			sb.searching = true
-			local ok = SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE",
+			local ok = AuctionHouse:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE",
 				sb.itemName, nil, nil, 0, nil, nil, false, true, nil, tDone, true)
 			if not ok then
 				sb.searching = false
@@ -1698,7 +1705,7 @@ function SkuCore:StrategyBuySearch()
 	f:Show()
 end
 
-function SkuCore:StrategyBuyProcessResults()
+function AuctionHouse:StrategyBuyProcessResults()
 	local sb = SkuCore.StratBuy
 	if not sb or not sb.active then return end
 	local numResults = GetNumAuctionItems("list")
@@ -1726,7 +1733,7 @@ function SkuCore:StrategyBuyProcessResults()
 			tStratSay(L["STRAT_NoneFound"].." "..L["STRAT_MaxFails"]); sb.active = false
 		else
 			tStratSay(L["STRAT_NoneFound"].." "..L["STRAT_Retrying"].." "..sb.fails..L[" von "]..sb.maxFails)
-			C_Timer.After(3, function() SkuCore:StrategyBuySearch() end)
+			C_Timer.After(3, function() AuctionHouse:StrategyBuySearch() end)
 		end
 		return
 	end
@@ -1747,7 +1754,7 @@ function SkuCore:StrategyBuyProcessResults()
 			tStratSay(L["STRAT_MaxFails"]); sb.active = false
 		else
 			tStratSay((reason or L["STRAT_BuyFail"]).." "..sb.fails..L[" von "]..sb.maxFails..". "..L["STRAT_TryNext"])
-			C_Timer.After(2, function() SkuCore:StrategyBuySearch() end)
+			C_Timer.After(2, function() AuctionHouse:StrategyBuySearch() end)
 		end
 	end
 
@@ -1764,7 +1771,7 @@ function SkuCore:StrategyBuyProcessResults()
 	-- PlaceAuctionBid AUSSERHALB eines Hardware-Events auf → ADDON_ACTION_BLOCKED,
 	-- der Kauf passierte nie. Die Strategie-spezifische Schleife (weiter suchen,
 	-- Preislimit, Zusammenfassung) lebt in den Ergebnis-Handlern.
-	SkuCore:AuctionArmKeypressBid({
+	AuctionHouse:AuctionArmKeypressBid({
 		x = bestIdx, type = 2,
 		itemName = bestName, itemCount = 1,
 		expItemId = bestItemId, expBuyout = bestBuyout, expCount = 1,
@@ -1788,7 +1795,7 @@ function SkuCore:StrategyBuyProcessResults()
 				C_Timer.After(1, function() tStratSay(tSummary) end)
 				sb.active = false
 			else
-				C_Timer.After(1.5, function() SkuCore:StrategyBuySearch() end)
+				C_Timer.After(1.5, function() AuctionHouse:StrategyBuySearch() end)
 			end
 		end,
 		onRace = function()
@@ -1801,11 +1808,11 @@ function SkuCore:StrategyBuyProcessResults()
 			sb.skipCount = sb.skipCount + 1
 			sb.triedPrices[bestBuyout.."-"..bestIdx] = true
 			tStratSay(L["STRAT_AuctionGone"])
-			C_Timer.After(1, function() SkuCore:StrategyBuySearch() end)
+			C_Timer.After(1, function() AuctionHouse:StrategyBuySearch() end)
 		end,
 		onCancel = function(wasActive)
 			if sb then sb.active = false end
-			SkuCore:StrategyBuyStopTimers(sb)
+			AuctionHouse:StrategyBuyStopTimers(sb)
 			tStratSay(L["STRAT_Cancelled"])
 		end,
 	})
@@ -1819,7 +1826,7 @@ end
 -- menu, the full-scan browse menu, and the per-item category browse menu.
 -- ===========================================================================
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionHouseMenuBuilder()
+function AuctionHouse:AuctionHouseMenuBuilder()
    --auctions
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Auktionen"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
@@ -1968,7 +1975,7 @@ function SkuCore:AuctionHouseMenuBuilder()
       --tNewMenuEntry.filterable = true
       tNewMenuEntry.BuildChildren = function(self)
          --categories
-         SkuCore:AuctionHouseResetQuery()
+         AuctionHouse:AuctionHouseResetQuery()
          if not AuctionCategories then
             SkuOptions:InjectMenuItems(self, {L["AH_CategoriesLoading"]}, SkuGenericMenuItem)
             return
@@ -1985,7 +1992,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                end
                tNewMenuEntryCategory.BuildChildren = function(self)
                   OnEnterAllFlag = nil
-                  SkuCore:AuctionHouseResetQuery()
+                  AuctionHouse:AuctionHouseResetQuery()
                   if categoryInfo.subCategories then
                      for subCategoryIndex, subCategoryInfo in ipairs(categoryInfo.subCategories) do
                         tNewMenuEntryCategorySub = SkuOptions:InjectMenuItems(self, {subCategoryInfo.name}, SkuGenericMenuItem)
@@ -1993,7 +2000,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                         tNewMenuEntryCategorySub.filterable = true
                         tNewMenuEntryCategorySub.BuildChildren = function(self)
                            OnEnterAllFlag = nil
-                           SkuCore:AuctionHouseResetQuery()
+                           AuctionHouse:AuctionHouseResetQuery()
 
                            if subCategoryInfo.subCategories then
                               for subSubCategoryIndex, subSubCategoryInfo in ipairs(subCategoryInfo.subCategories) do
@@ -2003,18 +2010,18 @@ function SkuCore:AuctionHouseMenuBuilder()
                                  tNewMenuEntryCategorySubSub.BuildChildren = function(self)
                                     OnEnterAllFlag = nil
                                     -- query categoryIndex, subCategoryIndex, subSubCategoryIndex
-                                    SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryIndex, subSubCategoryIndex)                                         
+                                    AuctionHouse:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryIndex, subSubCategoryIndex)                                         
                                  end
                               end
                            else
                               -- query categoryIndex, subCategoryIndex
-                              SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryIndex)
+                              AuctionHouse:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryIndex)
                            end
                         end
                      end
                   else
                      --query categoryIndex
-                     SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex)
+                     AuctionHouse:AuctionHouseBuildItemDBMenu(self, categoryIndex)
                   end
                end
             end
@@ -2045,7 +2052,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                local tText = SkuOptionsEditBoxEditBox:GetText()
                print(L["searching for "]..(tText or ""))
 
-               SkuCore:AuctionHouseStartQuery(
+               AuctionHouse:AuctionHouseStartQuery(
                   nil,
                   "AUCTION_ITEM_LIST_UPDATE",
                   tText,
@@ -2058,7 +2065,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                   false,
                   nil,
                   function()
-                     SkuCore:AuctionHouseResetQuery()
+                     AuctionHouse:AuctionHouseResetQuery()
                      C_Timer.After(0.01, function()
                         if SkuOptions.currentMenuPosition.name == L["Warten"] or SkuOptions.currentMenuPosition.name == L["enter search string"] then
                            SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
@@ -2101,7 +2108,7 @@ function SkuCore:AuctionHouseMenuBuilder()
          else
             local tNewMenuEntry1 = SkuOptions:InjectMenuItems(tNewMenuEntrysearch, {L["enter search string"]}, SkuGenericMenuItem)
             tNewMenuEntry1.dynamic = false
-            SkuCore:AuctionHouseResultsMenuBuilder(tNewMenuEntrysearch)
+            AuctionHouse:AuctionHouseResultsMenuBuilder(tNewMenuEntrysearch)
          end
       end
 
@@ -2209,7 +2216,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                pcall(function() SkuOptions.Voice:OutputStringBTtts(L["STRAT_NoPrice"], true, true, 0.2, nil, nil, nil, 2) end)
                return
             end
-            SkuCore:StrategyBuyStart(cfg.itemName, tMaxPrice, cfg.amount or 1)
+            AuctionHouse:StrategyBuyStart(cfg.itemName, tMaxPrice, cfg.amount or 1)
          end
       end
 
@@ -2220,7 +2227,7 @@ function SkuCore:AuctionHouseMenuBuilder()
 
       tNewMenuEntry.BuildChildren = function(self)
          --categories
-         SkuCore:AuctionHouseResetQuery()
+         AuctionHouse:AuctionHouseResetQuery()
          if #FullScanResultsDB == 0 then
             tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(self, {L["leer"]}, SkuGenericMenuItem)
             tNewMenuEntryCategorySubItem.dynamic = false
@@ -2239,7 +2246,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                   end
                   tNewMenuEntryCategory.BuildChildren = function(self)
 OnEnterAllFlag = nil
-                     SkuCore:AuctionHouseResetQuery()
+                     AuctionHouse:AuctionHouseResetQuery()
                      if categoryInfo.subCategories then
                         for subCategoryIndex, subCategoryInfo in ipairs(categoryInfo.subCategories) do
                            tNewMenuEntryCategorySub = SkuOptions:InjectMenuItems(self, {subCategoryInfo.name}, SkuGenericMenuItem)
@@ -2247,7 +2254,7 @@ OnEnterAllFlag = nil
                            tNewMenuEntryCategorySub.filterable = true
                            tNewMenuEntryCategorySub.BuildChildren = function(self)
 OnEnterAllFlag = nil
-                              SkuCore:AuctionHouseResetQuery()
+                              AuctionHouse:AuctionHouseResetQuery()
 
                               if subCategoryInfo.subCategories then
                                  for subSubCategoryIndex, subSubCategoryInfo in ipairs(subCategoryInfo.subCategories) do
@@ -2257,18 +2264,18 @@ OnEnterAllFlag = nil
                                     tNewMenuEntryCategorySubSub.BuildChildren = function(self)
 OnEnterAllFlag = nil
                                        -- query categoryIndex subCategoryIndex
-                                       SkuCore:AuctionHouseBuildItemFullScanDBMenu(self, categoryIndex, subCategoryIndex, subSubCategoryIndex)                                         
+                                       AuctionHouse:AuctionHouseBuildItemFullScanDBMenu(self, categoryIndex, subCategoryIndex, subSubCategoryIndex)                                         
                                     end
                                  end
                               else
                                  -- query categoryIndex subCategoryIndex
-                                 SkuCore:AuctionHouseBuildItemFullScanDBMenu(self, categoryIndex, subCategoryIndex)
+                                 AuctionHouse:AuctionHouseBuildItemFullScanDBMenu(self, categoryIndex, subCategoryIndex)
                               end
                            end
                         end
                      else
                         --query categoryIndex
-                        SkuCore:AuctionHouseBuildItemFullScanDBMenu(self, categoryIndex)
+                        AuctionHouse:AuctionHouseBuildItemFullScanDBMenu(self, categoryIndex)
                      end
                   end
                end
@@ -2288,7 +2295,7 @@ OnEnterAllFlag = nil
       -- Eintrag fälschlich "start full scan" zeigte. Der Timer ist deterministisch
       -- und genau das, was der Nutzer als "noch N Minuten" hören will.
       tNewMenuEntry1.OnEnter = function(self, aValue, aName, aEnterFlag)
-         local tRemain = SkuCore:AuctionFullScanCooldownRemaining()
+         local tRemain = AuctionHouse:AuctionFullScanCooldownRemaining()
          if tRemain > 0 then
             SkuOptions.currentMenuPosition.name = L["full scan"].." "..L["Ready in"].." "..tRemain..L[" Minuten"]
          else
@@ -2299,7 +2306,7 @@ OnEnterAllFlag = nil
       tNewMenuEntry1.OnAction = function(self, aValue, aName)
          -- Cooldown zuerst über den eigenen Timer prüfen (konsistent mit der
          -- Anzeige), damit Anzeige und Aktion nicht auseinanderlaufen.
-         if SkuCore:AuctionFullScanCooldownRemaining() > 0 then
+         if AuctionHouse:AuctionFullScanCooldownRemaining() > 0 then
             pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Scan noch nicht möglich, bitte kurz warten"], true, true, 0.1, nil, nil, nil, 1) end)
             return
          end
@@ -2307,7 +2314,7 @@ OnEnterAllFlag = nil
          local tStarted = false
          if canQueryAll == true then
             -- Rückgabe true NUR wenn QueryAuctionItems wirklich rausging.
-            tStarted = SkuCore:AuctionHouseStartQuery(
+            tStarted = AuctionHouse:AuctionHouseStartQuery(
                nil, "AUCTION_ITEM_LIST_UPDATE", "", nil, nil, nil, nil, nil,
                true, false, nil, function() end
             )
@@ -2335,10 +2342,10 @@ OnEnterAllFlag = nil
       if #BidDB > 0 then
          for tIndex, tData in pairs(BidDB) do
             if tData then
-               tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuCore:AuctionItemNameFormat(tData, tIndex)}, SkuGenericMenuItem)
+               tNewMenuEntry = SkuOptions:InjectMenuItems(self, {AuctionHouse:AuctionItemNameFormat(tData, tIndex)}, SkuGenericMenuItem)
                tNewMenuEntry.dynamic = false
                tNewMenuEntry.filterable = true
-               tNewMenuEntry.textFull = select(2, SkuCore:AuctionBuildItemTooltip(tData, tIndex, true, true))
+               tNewMenuEntry.textFull = select(2, AuctionHouse:AuctionBuildItemTooltip(tData, tIndex, true, true))
             end
          end
       else
@@ -2361,7 +2368,7 @@ OnEnterAllFlag = nil
       tNewMenuEntry.dynamic = true
       tNewMenuEntry.BuildChildren = function(self)
          --we need this query to stop all running scans, as PostAuction will fail otherwise
-         SkuCore:AuctionHouseResetQuery()
+         AuctionHouse:AuctionHouseResetQuery()
         
          local tCountItems = {}
          for tbag = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
@@ -2397,7 +2404,7 @@ OnEnterAllFlag = nil
                         tNewMenuSubSubEntry.amountMax = tCountItems[itemID]
 
                         local aGossipItemTable = {
-                           textFull = select(2, SkuCore:AuctionBuildItemTooltip({[17] = itemID}, nil, true, true)),
+                           textFull = select(2, AuctionHouse:AuctionBuildItemTooltip({[17] = itemID}, nil, true, true)),
                            itemId = itemID,
                            containerFrameName = "ContainerFrame"..(bag + 1).."Item"..(GetContainerNumSlots(bag) - slot + 1),
                         }
@@ -2528,7 +2535,7 @@ OnEnterAllFlag = nil
                               tStackMenuEntry.OnEnter = function(self, aValue, aName)
                                  self.selectTarget.amount = z
                               end
-                              SkuCore:AuctionHouseBuildItemSellMenuSub(tStackMenuEntry, aGossipItemTable)
+                              AuctionHouse:AuctionHouseBuildItemSellMenuSub(tStackMenuEntry, aGossipItemTable)
                            end
                         end
                         tHasEntries = true
@@ -2547,10 +2554,10 @@ OnEnterAllFlag = nil
       if #OwnDB > 0 then
          for tIndex, tData in pairs(OwnDB) do
             if tData then
-               tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuCore:AuctionItemNameFormat(tData, tIndex)}, SkuGenericMenuItem)
+               tNewMenuEntry = SkuOptions:InjectMenuItems(self, {AuctionHouse:AuctionItemNameFormat(tData, tIndex)}, SkuGenericMenuItem)
                tNewMenuEntry.dynamic = false
                tNewMenuEntry.filterable = true
-               tNewMenuEntry.textFull = select(2, SkuCore:AuctionBuildItemTooltip(tData, tIndex, true, true))
+               tNewMenuEntry.textFull = select(2, AuctionHouse:AuctionBuildItemTooltip(tData, tIndex, true, true))
                tNewMenuEntry.ownerID = tIndex
                tNewMenuEntry.BuildChildren = function(self)
                   local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Abbrechen"]}, SkuGenericMenuItem)
@@ -2573,7 +2580,7 @@ OnEnterAllFlag = nil
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
+function AuctionHouse:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
    -- Preis-Eingabe: EIN Menü mit Gold/Silber/Kupfer (Geschwister). In eine Münze
    -- gehen ändert ihren Wert (vorbelegt aus dem besten Kaufpreis, startet auf dem
    -- aktuellen Wert). ENTER bestätigt die Wertänderung und führt zurück ins
@@ -2600,7 +2607,7 @@ function SkuCore:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
             tItemId = _G[aGossipItemTable.containerFrameName].info.id or tItemId
          end
          if tItemId then
-            local tBest = select(2, SkuCore:AuctionHouseGetAuctionPriceHistoryData(tItemId))
+            local tBest = select(2, AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(tItemId))
             if tBest and tBest > 0 then
                tBest = mfloor(tBest)
                tCfg.gold, tCfg.silver, tCfg.copper = SplitCoin(tBest)
@@ -2743,7 +2750,7 @@ local function _AuctionAttachBuyBidChildren(aEntry, aData, aFullScanKaufen)
                   SkuCore.QueryBuyAmount = x
                   SkuCore.QueryBuyBought = 0
                   SkuCore.QueryBuyType = 1
-                  SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
+                  AuctionHouse:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
                      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
                      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax, 0,
                      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable,
@@ -2775,7 +2782,7 @@ local function _AuctionAttachBuyBidChildren(aEntry, aData, aFullScanKaufen)
                   SkuCore.QueryBuyAmount = x
                   SkuCore.QueryBuyBought = 0
                   SkuCore.QueryBuyType = 2
-                  SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
+                  AuctionHouse:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
                      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
                      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax, 0,
                      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable,
@@ -2790,7 +2797,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tQualityDb = {}
-function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, subCategoryIndex, subSubCategoryIndex)
+function AuctionHouse:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, subCategoryIndex, subSubCategoryIndex)
    --print("AuctionHouseBuildItemFullScanDBMenu", categoryIndex, subCategoryIndex, subSubCategoryIndex)
    local classID, subClassID, inventoryType
    if categoryIndex and subCategoryIndex and subSubCategoryIndex then
@@ -2861,7 +2868,7 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
                      and tFsQual >= qmin
                   then
                      tHasEntries = true
-                     local tName = SkuCore:AuctionItemNameFormat(tRecord)
+                     local tName = AuctionHouse:AuctionItemNameFormat(tRecord)
                      local tFound = false
                      for x = 1, #tCurrentDBClean do
                         if tCurrentDBClean[x].name == tName then
@@ -2873,7 +2880,7 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
                         tCurrentDBClean[#tCurrentDBClean + 1] = {}
                         tCurrentDBClean[#tCurrentDBClean].name = tName
                         tCurrentDBClean[#tCurrentDBClean].level = select(4, GetItemInfo(tRecord[17])) or 0
-                        tCurrentDBClean[#tCurrentDBClean].pricePerItem = SkuCore:AuctionGetPricePerItem(tRecord)
+                        tCurrentDBClean[#tCurrentDBClean].pricePerItem = AuctionHouse:AuctionGetPricePerItem(tRecord)
                         tCurrentDBClean[#tCurrentDBClean].pricePerAuction = {bid = tRecord[8], buy = tRecord[10],}
                         tCurrentDBClean[#tCurrentDBClean].dupes = {}
                         tCurrentDBClean[#tCurrentDBClean].dupes[#tCurrentDBClean[#tCurrentDBClean].dupes + 1] = tRecord
@@ -2922,12 +2929,12 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
                   tWithLevel = true
                end
    
-               tNewMenuEntryCategorySubSubItem = SkuOptions:InjectMenuItems(aParent, {tNewMenuItemName..SkuCore:AuctionItemNameFormat(tData, nil, tWithLevel)}, SkuGenericMenuItem)
+               tNewMenuEntryCategorySubSubItem = SkuOptions:InjectMenuItems(aParent, {tNewMenuItemName..AuctionHouse:AuctionItemNameFormat(tData, nil, tWithLevel)}, SkuGenericMenuItem)
                tNewMenuEntryCategorySubSubItem.dynamic = false
                tNewMenuEntryCategorySubSubItem.data = tData
                tNewMenuEntryCategorySubSubItem.tIndex = tIndex
                tNewMenuEntryCategorySubSubItem.textFull = function() 
-                  return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))
+                  return select(2, AuctionHouse:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))
                end
    
                _AuctionAttachBuyBidChildren(tNewMenuEntryCategorySubSubItem, tData, true)
@@ -2938,7 +2945,7 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryIndex, subSubCategoryIndex)
+function AuctionHouse:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryIndex, subSubCategoryIndex)
    dprint("AuctionHouseBuildItemDBMenu", categoryIndex, subCategoryIndex, subSubCategoryIndex)
    local classID, subClassID, inventoryType
    if categoryIndex and subCategoryIndex and subSubCategoryIndex then
@@ -2972,7 +2979,7 @@ function SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryInd
             filterData = AuctionCategories[categoryIndex].filters
          end
 
-         SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE",
+         AuctionHouse:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE",
             "",
             SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
             SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax,
@@ -3004,7 +3011,7 @@ function SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryInd
    end
    tNewMenuEntryCategorySubSubItem.BuildChildren = function(self)
       -- query categoryIndex subCategoryIndex
-      SkuCore:AuctionHouseResultsMenuBuilder(self)
+      AuctionHouse:AuctionHouseResultsMenuBuilder(self)
    end
 
 
@@ -3034,7 +3041,7 @@ function SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryInd
                      filterData = AuctionCategories[categoryIndex].filters
                   end
 
-                  SkuCore:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", 
+                  AuctionHouse:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", 
                      tLocName, 
                      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin, 
                      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax, 
@@ -3065,7 +3072,7 @@ function SkuCore:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCategoryInd
             end
             tNewMenuEntryCategorySubSubItem.BuildChildren = function(self)
                -- query categoryIndex subCategoryIndex
-               SkuCore:AuctionHouseResultsMenuBuilder(self)
+               AuctionHouse:AuctionHouseResultsMenuBuilder(self)
             end
          end
       end
@@ -3084,12 +3091,12 @@ end
 -- Filter) sortierten Liste eindeutiger Gegenstände, jeder mit seinen
 -- 'dupes'-Auktionen. Ausgelagert, damit Erstaufbau und das stille
 -- Nachladen weiterer Seiten (AuctionResultsAppend) dieselbe Logik nutzen.
-function SkuCore:AuctionGroupResults()
+function AuctionHouse:AuctionGroupResults()
    local tCurrentDBClean = {}
    local tNameIndex = {}
    for tIndex, tRecord in pairs(QueryResultsDB) do
       if tRecord and tRecord[1] then
-         local tName = SkuCore:AuctionItemNameFormat(tRecord)
+         local tName = AuctionHouse:AuctionItemNameFormat(tRecord)
          local existingIdx = tNameIndex[tName]
          if existingIdx then
             local dupes = tCurrentDBClean[existingIdx].dupes
@@ -3102,7 +3109,7 @@ function SkuCore:AuctionGroupResults()
             local entry = {
                name = tName,
                level = tLevel,
-               pricePerItem = SkuCore:AuctionGetPricePerItem(tRecord),
+               pricePerItem = AuctionHouse:AuctionGetPricePerItem(tRecord),
                pricePerAuction = { bid = tRecord[8], buy = tRecord[10] },
                dupes = { tRecord },
                query = tRecord.query,
@@ -3138,7 +3145,7 @@ end
 -- HINWEIS: Die Erzeugungslogik existiert vorerst auch noch inline im
 -- AuctionHouseResultsMenuBuilder; eine spätere Aufräum-Runde sollte den
 -- Builder ebenfalls auf diesen Helper umstellen.
-function SkuCore:AuctionResultsCreateEntry(aParent, tDataTmp, tIndex)
+function AuctionHouse:AuctionResultsCreateEntry(aParent, tDataTmp, tIndex)
    local tData = tDataTmp.dupes[1]
    tData[19] = tDataTmp.dupes
    tData[20] = tDataTmp.level
@@ -3156,7 +3163,7 @@ function SkuCore:AuctionResultsCreateEntry(aParent, tDataTmp, tIndex)
    end
    local tDisplayName
    if tWithLevelGlobal then
-      tDisplayName = tNewMenuItemName .. SkuCore:AuctionItemNameFormat(tData, nil, true)
+      tDisplayName = tNewMenuItemName .. AuctionHouse:AuctionItemNameFormat(tData, nil, true)
    else
       tDisplayName = tNewMenuItemName .. tDataTmp.name
    end
@@ -3166,7 +3173,7 @@ function SkuCore:AuctionResultsCreateEntry(aParent, tDataTmp, tIndex)
    tEntry.data = tData
    tEntry.tIndex = tIndex
    tEntry.textFull = function()
-      return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))
+      return select(2, AuctionHouse:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))
    end
 
    _AuctionAttachBuyBidChildren(tEntry, tData, false)
@@ -3181,7 +3188,7 @@ end
 -- Dadurch verschiebt sich die Cursor-Position des Nutzers nicht. Setzt
 -- voraus, dass der Server nach Stückpreis sortiert (SortAuctionSetSort
 -- "unitprice"), sodass spätere (teurere) Seiten sauber hinten anschließen.
-function SkuCore:AuctionResultsAppend()
+function AuctionHouse:AuctionResultsAppend()
    local aParent = SkuCore.QueryResultsParent
    if not aParent then
       return
@@ -3204,7 +3211,7 @@ function SkuCore:AuctionResultsAppend()
    end
 
    SkuCore.QueryResultsByName = SkuCore.QueryResultsByName or {}
-   local tSorted = SkuCore:AuctionGroupResults()
+   local tSorted = AuctionHouse:AuctionGroupResults()
    local tFilter = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter
    local tWithLevelGlobal = (tFilter.SortBy == 5 or tFilter.SortBy == 6
       or tFilter.LevelMin or tFilter.LevelMax) and true or nil
@@ -3229,13 +3236,13 @@ function SkuCore:AuctionResultsAppend()
             tPrefix = #tDataTmp.dupes..L[" mal "]
          end
          if tWithLevelGlobal then
-            tExisting.name = tPrefix .. SkuCore:AuctionItemNameFormat(tData, nil, true)
+            tExisting.name = tPrefix .. AuctionHouse:AuctionItemNameFormat(tData, nil, true)
          else
             tExisting.name = tPrefix .. tDataTmp.name
          end
       else
          tNextIndex = tNextIndex + 1
-         local tEntry = SkuCore:AuctionResultsCreateEntry(aParent, tDataTmp, tNextIndex)
+         local tEntry = AuctionHouse:AuctionResultsCreateEntry(aParent, tDataTmp, tNextIndex)
          if tEntry then
             SkuCore.QueryResultsByName[tDataTmp.name] = tEntry
          end
@@ -3257,7 +3264,7 @@ end
 -- "x von y Seiten durchsucht". So weiß der Nutzer, dass er noch warten soll,
 -- statt zu glauben, der Gegenstand fehle — der Scan-Fertig-Ton bleibt das
 -- "nicht in dieser Liste"-Signal. Gibt true zurück, wenn etwas angesagt wurde.
-function SkuCore:AuctionAnnounceFilterProgress()
+function AuctionHouse:AuctionAnnounceFilterProgress()
    -- nur bei laufendem, NICHT-getAll (paginiertem) Scan
    if SkuCore.AuctionScan.state == "idle" then return false end
    if SkuCore.QueryData and SkuCore.QueryData[tQAIindex.getAll] == true then return false end
@@ -3281,7 +3288,7 @@ function SkuCore:AuctionAnnounceFilterProgress()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionHouseResultsMenuBuilder(aParent)
+function AuctionHouse:AuctionHouseResultsMenuBuilder(aParent)
    dprint("AuctionHouseResultsMenuBuilder", aParent.name)
    if SkuCore.AuctionScan.state ~= "idle" and SkuCore.QueryResultsPartialReady ~= true then
       tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["Warten"]}, SkuGenericMenuItem)
@@ -3297,7 +3304,7 @@ function SkuCore:AuctionHouseResultsMenuBuilder(aParent)
          -- (AuctionResultsAppend → AuctionGroupResults). Früher stand er hier
          -- inline kopiert, was bei einer Abweichung die Cursor-Reihenfolge
          -- hätte springen lassen.
-         tCurrentDBCleanSorted = SkuCore:AuctionGroupResults()
+         tCurrentDBCleanSorted = AuctionHouse:AuctionGroupResults()
 
          -- Zustand für stilles Nachladen weiterer Seiten merken.
          SkuCore.QueryResultsByName = {}
@@ -3325,7 +3332,7 @@ function SkuCore:AuctionHouseResultsMenuBuilder(aParent)
                   local tDisplayName
                   if tWithLevelGlobal then
                      tDisplayName = tNewMenuItemName
-                        .. SkuCore:AuctionItemNameFormat(tData, nil, true)
+                        .. AuctionHouse:AuctionItemNameFormat(tData, nil, true)
                   else
                      tDisplayName = tNewMenuItemName .. tDataTmp.name
                   end
@@ -3335,7 +3342,7 @@ function SkuCore:AuctionHouseResultsMenuBuilder(aParent)
                   tNewMenuEntryCategorySubSubItem.tIndex = tIndex
                   SkuCore.QueryResultsByName[tDataTmp.name] = tNewMenuEntryCategorySubSubItem
                   tNewMenuEntryCategorySubSubItem.textFull = function()
-                     return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))
+                     return select(2, AuctionHouse:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))
                   end
       
                   _AuctionAttachBuyBidChildren(tNewMenuEntryCategorySubSubItem, tData, false)
@@ -3363,7 +3370,7 @@ end
 -- aMode (optional) records what kind of scan is running: "browse" | "buy" |
 -- "getAll" (cleared to nil on idle). Post-scan history serialization is tracked
 -- separately by QuerySerializeRunning — it runs after the scan is already idle.
-function SkuCore:AuctionScanSetState(aState, aMode)
+function AuctionHouse:AuctionScanSetState(aState, aMode)
    local SC = SkuCore.AuctionScan
    local tPrev = SC.state
    SC.state = aState
@@ -3375,13 +3382,13 @@ function SkuCore:AuctionScanSetState(aState, aMode)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionHouseResetQuery(aForce)
+function AuctionHouse:AuctionHouseResetQuery(aForce)
    dprint("AuctionHouseResetQuery")
    if SkuCore.AuctionScan.state ~= "idle" and SkuCore.QueryData[7] == true and aForce ~= true then
       return
    end
 
-   SkuCore:AuctionScanSetState("idle")
+   AuctionHouse:AuctionScanSetState("idle")
    SkuCore.QueryCurrentType = ""
    SkuCore.QueryCurrentPage = nil
    SkuCore.QueryMaxPage = nil
@@ -3417,12 +3424,12 @@ end
 -- (or any reset) while already idle stays quiet. Restart-resets inside
 -- StartQuery and the buy-flow / menu pre-resets (SECTIONs 3 and 6) are NOT scan
 -- ends and keep calling AuctionHouseResetQuery directly.
-function SkuCore:AuctionScanFinish(aReason, aForce)
+function AuctionHouse:AuctionScanFinish(aReason, aForce)
    local tWasActive = SkuCore.AuctionScan.state ~= "idle"
    if tWasActive then
       dprint("auction.scan", "finished", { reason = aReason })
    end
-   SkuCore:AuctionHouseResetQuery(aForce)
+   AuctionHouse:AuctionHouseResetQuery(aForce)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3433,7 +3440,7 @@ end
 -- wenn der Scan nur als Prefetch beim Überfahren des Eintrags läuft — ist das
 -- Ergebnis false. Damit kann der Abschluss-Ton unterdrückt werden, solange der
 -- Nutzer nicht in genau dieser Ergebnisliste navigiert.
-function SkuCore:AuctionCursorInResults(aHost)
+function AuctionHouse:AuctionCursorInResults(aHost)
    if not aHost then return false end
    local n = SkuOptions and SkuOptions.currentMenuPosition
    for _ = 1, 8 do
@@ -3448,7 +3455,7 @@ end
 -- aSinglePage (optional): only fetch the requested page, do not auto-advance to
 -- further pages. Used by strategy buy, which reads the live list directly and
 -- only needs the cheapest server-sorted page. Reset to nil on every fresh query.
-function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMinLevel, aFilterMaxLevel, aFilterPage, aFilterUsable, aFilterRarity, aFilterGetAll, aFilterExactMatch, aFilterFilterData, aCallback, aSinglePage)
+function AuctionHouse:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMinLevel, aFilterMaxLevel, aFilterPage, aFilterUsable, aFilterRarity, aFilterGetAll, aFilterExactMatch, aFilterFilterData, aCallback, aSinglePage)
    -- KAUF-SCHUTZ: Während ein Kauf vorbereitet ("settling") oder scharf
    -- ("trigger") ist, KEINE neue Query absetzen. Eine Query würde die
    -- Server-Liste neu aufbauen und den bereits ermittelten Kauf-Index ungültig
@@ -3474,14 +3481,14 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
    if aFilterGetAll == true then
       local _, tCanAll = CanSendAuctionQuery()
       if tCanAll ~= true then
-         pcall(function() SkuCore:AuctionHouseResetQuery(true) end)
+         pcall(function() AuctionHouse:AuctionHouseResetQuery(true) end)
          return false
       end
    end
 
    if aContinue ~= true then
       if SkuCore.AuctionScan.state ~= "idle" then
-         SkuCore:AuctionHouseResetQuery()
+         AuctionHouse:AuctionHouseResetQuery()
       end
 
       QueryResultsDB = {}
@@ -3561,7 +3568,7 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
          getAll = SkuCore.QueryData[tQAIindex.getAll],
          page = SkuCore.QueryData[tQAIindex.page],
       })
-      pcall(function() SkuCore:AuctionHouseResetQuery(true) end)
+      pcall(function() AuctionHouse:AuctionHouseResetQuery(true) end)
       return false
    end
 
@@ -3574,7 +3581,7 @@ function SkuCore:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFilterMi
    -- nach "waiting" zurück.
    local tMode = (SkuCore.QueryData[tQAIindex.getAll] == true) and "getAll"
       or (SkuCore.QueryBuyData ~= nil) and "buy" or "browse"
-   SkuCore:AuctionScanSetState("waiting", tMode)
+   AuctionHouse:AuctionScanSetState("waiting", tMode)
    return true
 end
 
@@ -3601,21 +3608,21 @@ local function ScanSideList(aSource)
    return db
 end
 
-function SkuCore:AUCTION_OWNED_LIST_UPDATE(aEventName)
+function AuctionHouse:AUCTION_OWNED_LIST_UPDATE(aEventName)
    dprint("AUCTION_OWNED_LIST_UPDATE", aEventName)
    OwnDB = ScanSideList("owner")
    dprint("owned Scan completed")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AUCTION_BIDDER_LIST_UPDATE(aEventName)
+function AuctionHouse:AUCTION_BIDDER_LIST_UPDATE(aEventName)
    dprint("AUCTION_BIDDER_LIST_UPDATE", aEventName)
    BidDB = ScanSideList("bidder")
    dprint("bidder Scan completed")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName)
+function AuctionHouse:AUCTION_ITEM_LIST_UPDATE(aEventName)
    -- Während der gestückelte getAll-Ingest läuft, treibt ihn der OnUpdate-Ticker
    -- frame-weise; die weiter streamenden LIST_UPDATE-Events brauchen wir dann
    -- nicht. Hier SOFORT raus — sonst flutet ein einziger Komplettscan (Tausende
@@ -3628,9 +3635,9 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName)
       dprint("AUCTION_ITEM_LIST_UPDATE", SkuCore.QueryBuyData)
 
       if SkuCore.AuctionScan.mode == "buy" then
-         SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
+         AuctionHouse:AUCTION_ITEM_LIST_UPDATE_BUY()
       else
-         SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
+         AuctionHouse:AUCTION_ITEM_LIST_UPDATE_LIST()
       end
    end
 end
@@ -3646,14 +3653,14 @@ end
 -- AuctionLastFullScanTime). 0 = bereit. Deterministisch — anders als das
 -- getAll-Flag von CanSendAuctionQuery, das direkt nach einem Scan unzuverlässig
 -- ist und den Menü-Eintrag fälschlich "start full scan" zeigen ließ.
-function SkuCore:AuctionFullScanCooldownRemaining()
+function AuctionHouse:AuctionFullScanCooldownRemaining()
    local tLast = SkuSettings:Sub("SkuCore", nil, "char").AuctionLastFullScanTime or 0
    local tRemain = 16 - mfloor((GetServerTime() - tLast) / 60)
    if tRemain < 0 then tRemain = 0 end
    return tRemain
 end
 
-function SkuCore:AuctionFullScanBeginIngest(aBatch, aCount)
+function AuctionHouse:AuctionFullScanBeginIngest(aBatch, aCount)
    local tUpper = math.max(aBatch or 0, aCount or 0)
    -- Verfrühte/leere getAll-Antwort: tUpper == 0 heißt, der Server hat noch
    -- nicht wirklich geliefert (das Event feuert teils, bevor die Antwort da
@@ -3683,7 +3690,7 @@ function SkuCore:AuctionFullScanBeginIngest(aBatch, aCount)
    }
    -- Während der Ingest läuft, ist der Scan nicht mehr "waiting" (sonst liefe die
    -- 10-s-Warteansage weiter); "paging" markiert "Antwort da, wird verarbeitet".
-   SkuCore:AuctionScanSetState("paging", "getAll")
+   AuctionHouse:AuctionScanSetState("paging", "getAll")
    -- Start-Ansage: wie viele Auktionen jetzt verarbeitet werden.
    pcall(function()
       SkuOptions.Voice:OutputStringBTtts(
@@ -3691,7 +3698,7 @@ function SkuCore:AuctionFullScanBeginIngest(aBatch, aCount)
    end)
 end
 
-function SkuCore:AuctionFullScanProcessChunk()
+function AuctionHouse:AuctionFullScanProcessChunk()
    local fs = SkuCore.FullScanIngest
    if not fs or not fs.active then return end
    local tEnd = math.min(fs.processed + FULLSCAN_CHUNK, fs.total)
@@ -3737,11 +3744,11 @@ function SkuCore:AuctionFullScanProcessChunk()
    end
 
    if fs.reachedEnd or fs.processed >= fs.total then
-      SkuCore:AuctionFullScanFinishIngest()
+      AuctionHouse:AuctionFullScanFinishIngest()
    end
 end
 
-function SkuCore:AuctionFullScanFinishIngest()
+function AuctionHouse:AuctionFullScanFinishIngest()
    -- Erst den Treiber stoppen, dann nachbereiten.
    SkuCore.FullScanIngest = nil
    dprint("auction.scan", "getAll ingest done", {
@@ -3752,9 +3759,9 @@ function SkuCore:AuctionFullScanFinishIngest()
    FullScanResultsDBHistory = {}
    -- PriceData einmal aus dem Scan berechnen und an beide History-Tabellen
    -- weiterreichen (statt zweimal dieselbe Berechnung).
-   local tPrecomputedPriceData = SkuCore:AuctionBuildPriceData(FullScanResultsDB)
-   SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, FullScanResultsDBHistory, tPrecomputedPriceData)
-   SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, AuctionDBHistory, tPrecomputedPriceData)
+   local tPrecomputedPriceData = AuctionHouse:AuctionBuildPriceData(FullScanResultsDB)
+   AuctionHouse:AuctionUpdateAuctionDBHistory(FullScanResultsDB, FullScanResultsDBHistory, tPrecomputedPriceData)
+   AuctionHouse:AuctionUpdateAuctionDBHistory(FullScanResultsDB, AuctionDBHistory, tPrecomputedPriceData)
    SkuCore.QuerySerializeRunning = true
    SkuTableToString(AuctionDBHistory, function(aString)
       SkuCore.QuerySerializeRunning = false
@@ -3794,11 +3801,11 @@ function SkuCore:AuctionFullScanFinishIngest()
    end)
 
    if SkuCore.QueryCallback then SkuCore.QueryCallback() end
-   SkuCore:AuctionScanFinish("getAll complete", true)
+   AuctionHouse:AuctionScanFinish("getAll complete", true)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
+function AuctionHouse:AUCTION_ITEM_LIST_UPDATE_LIST()
    local tBatch, tCount = GetNumAuctionItems("list")
    dprint(" tBatch, tCount", tBatch, tCount, SkuCore.QueryData[tQAIindex.getAll])
 
@@ -3814,7 +3821,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          -- ein), sondern gestückelt über den Ticker — mit 25-%-Ansagen. Das
          -- Nachbereiten (PriceData, History, Serialisieren, Abschlussansage,
          -- Callback, Scan-Ende) macht AuctionFullScanFinishIngest.
-         SkuCore:AuctionFullScanBeginIngest(tBatch, tCount)
+         AuctionHouse:AuctionFullScanBeginIngest(tBatch, tCount)
       else
          -- Doppelte/Spuk-Events ignorieren: pro abgesetzter Seiten-Query nur
          -- die erste VOLLSTÄNDIGE Antwort verarbeiten. AUCTION_ITEM_LIST_UPDATE
@@ -3861,7 +3868,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          end
          -- Seite vollständig eingelesen → weitere Events DERSELBEN Antwort
          -- ignorieren, bis die nächste Seiten-Query abgesetzt wurde.
-         SkuCore:AuctionScanSetState("paging")
+         AuctionHouse:AuctionScanSetState("paging")
 
          -- Inkrementelle Darstellung: erste vollständige Seite SOFORT
          -- zeigen, weitere Seiten still anhängen (append-only), damit der
@@ -3873,7 +3880,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
             if SkuCore.QueryResultsPartialReady ~= true then
                SkuCore.QueryResultsPartialReady = true
                SkuCore.QueryResultsHost.children = {}
-               SkuCore:AuctionHouseResultsMenuBuilder(SkuCore.QueryResultsHost)
+               AuctionHouse:AuctionHouseResultsMenuBuilder(SkuCore.QueryResultsHost)
                -- Cursor von "Warten" in das erste Ergebnis ziehen.
                if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name == L["Warten"] then
                   local tHost = SkuCore.QueryResultsHost
@@ -3883,7 +3890,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
                   end
                end
             else
-               SkuCore:AuctionResultsAppend()
+               AuctionHouse:AuctionResultsAppend()
             end
          end
 
@@ -3911,10 +3918,10 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
                -- steht der Cursor auf einem Geschwister-Item und der Ton wäre nur
                -- verwirrend ("Scan fertig", obwohl man gar nicht in einer
                -- Ergebnisliste navigiert).
-               if SkuCore:AuctionCursorInResults(SkuCore.QueryResultsHost) then
+               if AuctionHouse:AuctionCursorInResults(SkuCore.QueryResultsHost) then
                   SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
                end
-               SkuCore:AuctionScanFinish("browse complete")
+               AuctionHouse:AuctionScanFinish("browse complete")
             else
                if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name == L["Warten"] then
                   SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
@@ -3922,7 +3929,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
                -- Nil-Schutz wie an den anderen Aufrufstellen: bei einer Browse-
                -- Abfrage ohne Host kann QueryCallback fehlen.
                if SkuCore.QueryCallback then SkuCore.QueryCallback() end
-               SkuCore:AuctionScanFinish("browse complete (no host)")
+               AuctionHouse:AuctionScanFinish("browse complete (no host)")
             end
          end
       end
@@ -3930,7 +3937,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
+function AuctionHouse:AUCTION_ITEM_LIST_UPDATE_BUY()
    dprint("AUCTION_ITEM_LIST_UPDATE_BUY")
    -- Doppelte/Spuk-Events ignorieren: pro abgesetzter Kauf-Query nur die erste
    -- VOLLSTÄNDIGE Antwort verarbeiten (wie in der Browse-Liste via
@@ -4006,7 +4013,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
    end
    -- Seite vollständig → genau EINMAL verarbeiten (weitere Events derselben
    -- Antwort ignorieren, bis die nächste Kauf-Query abgesetzt wurde).
-   SkuCore:AuctionScanSetState("paging")
+   AuctionHouse:AuctionScanSetState("paging")
 
    -- Bei wiederholten Fehlschlägen (No-Op) NICHT dieselbe Auktion erneut
    -- versuchen: failCount = bisherige Fehlschläge → so viele passende
@@ -4068,17 +4075,17 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
             count = tCurrentResult[3],
             type = SkuCore.QueryBuyType,
          })
-         SkuCore:AuctionScanSetState("idle")
+         AuctionHouse:AuctionScanSetState("idle")
 
          -- Link erst jetzt holen (nur für die getroffene Zeile gebraucht).
          tCurrentResult[21] = GetAuctionItemLink("list", x)
          -- Gesamte Bestätigungs-Sequenz (Typ 1 = Gebot, Typ 2 = Kauf)
          -- läuft jetzt durch die zentrale State-Machine
-         -- SkuCore:AuctionBuyConfirm. Sie kümmert sich um Generation-
+         -- AuctionHouse:AuctionBuyConfirm. Sie kümmert sich um Generation-
          -- Tracking, Re-Validierung, synchronen PlaceAuctionBid-Aufruf
          -- und das Aufräumen aller Timer bei AH-Schließen / ESC /
          -- neuer Match.
-         SkuCore:AuctionBuyConfirm(x, tCurrentResult)
+         AuctionHouse:AuctionBuyConfirm(x, tCurrentResult)
          return
          end
       end
@@ -4102,10 +4109,10 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
       local tRecord = SkuCore.QueryBuyData
       SkuOptions.Voice:OutputStringBTtts(L["Auktion vergriffen"], true, true, 0.1, nil, nil, nil, 1)
       local tPruned = false
-      pcall(function() tPruned = SkuCore:AuctionPruneListAuction(tRecord) end)
+      pcall(function() tPruned = AuctionHouse:AuctionPruneListAuction(tRecord) end)
       _ABClearBuyState()
       if tPruned then
-         pcall(function() SkuCore:AuctionStayOnResultsEntry() end)
+         pcall(function() AuctionHouse:AuctionStayOnResultsEntry() end)
       else
          _ABAscendAndVocalize(nil)
       end
@@ -4136,7 +4143,7 @@ end
 -- from an auction source DB in a single O(n) pass. Separated so that the
 -- result can be reused for multiple target tables (full-scan cache AND
 -- cross-session history), halving the per-scan aggregation cost.
-function SkuCore:AuctionBuildPriceData(aSourceDB)
+function AuctionHouse:AuctionBuildPriceData(aSourceDB)
    local tPriceData = {}
    if not aSourceDB then return tPriceData end
    for _, tData in pairs(aSourceDB) do
@@ -4174,7 +4181,7 @@ function SkuCore:AuctionBuildPriceData(aSourceDB)
    return tPriceData
 end
 
-function SkuCore:AuctionUpdateAuctionDBHistory(aSourceDB, aTargetTable, aPrecomputedPriceData)
+function AuctionHouse:AuctionUpdateAuctionDBHistory(aSourceDB, aTargetTable, aPrecomputedPriceData)
    --dprint("AuctionUpdateAuctionDBHistory", aSourceDB, aTargetTable)
    if not aSourceDB then
       return
@@ -4184,7 +4191,7 @@ function SkuCore:AuctionUpdateAuctionDBHistory(aSourceDB, aTargetTable, aPrecomp
       return
    end
 
-   local tPriceData = aPrecomputedPriceData or SkuCore:AuctionBuildPriceData(aSourceDB)
+   local tPriceData = aPrecomputedPriceData or AuctionHouse:AuctionBuildPriceData(aSourceDB)
 
    for tItemId, tData in pairs(tPriceData) do
       local tBidOldLow, tBidOldMedian, tBidOldHigh, tBidOldPoints
@@ -4270,7 +4277,7 @@ function SkuCore:AuctionUpdateAuctionDBHistory(aSourceDB, aTargetTable, aPrecomp
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDataDB, aHistoryPriceDataDB)
+function AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDataDB, aHistoryPriceDataDB)
    --dprint("AuctionPriceHistoryData")
    if not aItemID then
       return

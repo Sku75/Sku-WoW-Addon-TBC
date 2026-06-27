@@ -1,4 +1,4 @@
-local MODULE_NAME = "SkuCore"
+﻿local MODULE_NAME = "SkuCore"
 local L = Sku.L
 
 local tAdditionalTotemBarNameParts = {
@@ -2877,7 +2877,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Auktionshaus"], filterable = true,
-		build = SkuCore.AuctionHouseMenuBuilder }
+		build = SkuCore.AuctionHouse.AuctionHouseMenuBuilder }
 
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Monitor"], filterable = true,
 		build = SkuCore.MonitorMenuBuilder }

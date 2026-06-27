@@ -2118,7 +2118,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_LEAVING_WORLD(...)
 	local event = ...
-	SkuCore:AuctionHouseOnPLAYER_LEAVING_WORLD()
+	SkuCore.AuctionHouse:AuctionHouseOnPLAYER_LEAVING_WORLD()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3018,7 +3018,7 @@ function SkuCore:IterateChildren(t, tab)
 												if tResults[fName].obj.info.id then
 													tResults[fName].itemId = tResults[fName].obj.info.id
 													tResults[fName].textFirstLine = SkuCore:ItemName_helper(tText)
-													tResults[fName].textFull = SkuCore:AuctionHouseGetAuctionPriceHistoryData(tResults[fName].obj.info.id)
+													tResults[fName].textFull = SkuCore.AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(tResults[fName].obj.info.id)
 												end
 											end
 											if not tResults[fName].textFull then

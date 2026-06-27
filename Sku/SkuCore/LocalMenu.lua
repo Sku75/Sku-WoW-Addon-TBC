@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "LocalMenu"
 local L = Sku.L
 local _G = _G
@@ -490,7 +490,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 							if bagItemButton.obj.info.id then
 								bagItemButton.itemId = bagItemButton.obj.info.id
 								bagItemButton.textFirstLine = SkuCore:ItemName_helper(tText)
-								bagItemButton.textFull = SkuCore:AuctionHouseGetAuctionPriceHistoryData(bagItemButton.obj.info.id)
+								bagItemButton.textFull = SkuCore.AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(bagItemButton.obj.info.id)
 							end
 						end
 
@@ -1193,7 +1193,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 							if bagItemButton.obj.info.id then
 								bagItemButton.itemId = bagItemButton.obj.info.id
 								bagItemButton.textFirstLine = SkuCore:ItemName_helper(tText)
-								bagItemButton.textFull = SkuCore:AuctionHouseGetAuctionPriceHistoryData(bagItemButton.obj.info.id)
+								bagItemButton.textFull = SkuCore.AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(bagItemButton.obj.info.id)
 							end
 						end
 						if not bagItemButton.textFull then

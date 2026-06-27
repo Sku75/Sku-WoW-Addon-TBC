@@ -22,6 +22,39 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W4 Phase E — E1b (hard-3), part 1 of 3: AuctionHouse extracted.** The 49
+  `function SkuCore:Auction*`/`Strategy*`/`AUCTION_*` methods now live on the
+  `AuctionHouse` module table (`function AuctionHouse:Method`); the published
+  handle `SkuCore.AuctionHouse` IS that table, so external callers use
+  `SkuCore.AuctionHouse:Method`. Done with a reviewable codemod
+  (`_e1b_codemod.py`: rename in-file `SkuCore`→`AuctionHouse`, cross-file
+  `SkuCore`→`SkuCore.AuctionHouse`, for the file's own method names only;
+  ConfirmButtonShow excluded). 169 in-file + 8 cross-file rewrites across 6 files.
+  - **Safe by construction:** verified (`_e1b_analyze.py`) that NOT ONE AuctionHouse
+    method uses its own `self` to touch SkuCore — every `self` is an inner-closure
+    frame/event-handler param or a comment — so relocating the method's table cannot
+    change behaviour regardless of how each is called (dispatcher/AceEvent self is
+    unchanged; menu-builder self stays the entry).
+  - **Event ownership moved (Mail pattern):** module gained the `AceEvent-3.0` mixin;
+    the 5 `AUCTION_*` events now register/unregister on `AuctionHouse` (was
+    `SkuCore:RegisterEvent`), matching the handlers that moved to the module. The
+    hardware-event-gated `PlaceAuctionBid` secure-buy path + its teardown are
+    byte-for-byte unchanged (only the table they hang on changed).
+  - **`ConfirmButtonShow` deliberately KEPT on `SkuCore`** — it is a generic confirm-
+    dialog helper called by 4 OTHER modules (equipmentSets, LocalMenu, SkuMob,
+    SkuZOptions), not an AH feature method; moving it would invent fake coupling.
+    It is the one remaining `function SkuCore:` def in auctionHouse.lua (a shared
+    helper to relocate in E2, analogous to E1's forwarder-shim exceptions).
+  - **Feature STATE left on `SkuCore.<field>`** (QueryData/AuctionScan/StratBuy/…,
+    incl. the cross-module-read `SkuCore.AuctionHouseOpen`): the methods reference it
+    explicitly as globals so it keeps working untouched, and moving the scattered,
+    partly cross-module state belongs to the state-service pass (category C / step 5),
+    not this method-extraction. Documented as an intentional E1b scope boundary.
+  - All 6 changed files luaparser-clean (SkuChat/Core.lua's failure is the PRE-EXISTING
+    `"\]"` escape at L2111 in ShortenChannelName — baseline and current fail at the
+    identical point, my edits at L2467/2560 add nothing). **In-game AH test pending**
+    (bundled with the aq/aqCombat tests at the end of E1b).
+
 - **W4 Phase E — E1: 20 features extracted off the SkuCore god-table.** Sequential
   per-feature namespace extraction (one agent at a time to avoid shared caller-file
   conflicts): every feature's `function SkuCore:X` methods + `SkuCore.<field>` state

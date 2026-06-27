@@ -1,4 +1,4 @@
--- SkuMenu — menu contribution registry + layout map, root assembly, and central
+﻿-- SkuMenu — menu contribution registry + layout map, root assembly, and central
 -- sibling-list helpers. Workstream 2 (menu rework) of the Sku 42 rework.
 --
 -- PHASE A — additive plumbing that makes the ROOT menu assembly data-driven
@@ -209,7 +209,7 @@ function SkuMenu:BuildNode(aParent, aSpec)
 		-- DIRECTLY as BuildChildren (not wrapped) so it receives the exact same
 		-- args the renderer passes (`self:BuildChildren(self)` -> (entry, entry)).
 		-- This matters for a build that is a colon-method reference
-		-- (e.g. SkuCore.AuctionHouseMenuBuilder, which needs aParentEntry as its
+		-- (e.g. SkuCore.AuctionHouse.AuctionHouseMenuBuilder, which needs aParentEntry as its
 		-- second positional) — a one-arg wrapper would pass it nil.
 		tEntry.dynamic = true
 		if aSpec.build then

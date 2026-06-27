@@ -2464,7 +2464,7 @@ function SkuChat:OnInitialize()
 							tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull = ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull
 							tSkuCurrentLineDatalinktTextFull = tSkuCurrentLineDatalinktTextFirstLine.."\r\n"..tSkuCurrentLineDatalinktTextFull
 
-							local ttf = SkuCore:AuctionHouseGetAuctionPriceHistoryData(tSkuCurrentLineDatalinktItemId)
+							local ttf = SkuCore.AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(tSkuCurrentLineDatalinktItemId)
 							if not ttf then
 								ttf = {}
 							end
@@ -2557,7 +2557,7 @@ function SkuChat:OnInitialize()
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["link"].." "..w.." "..ltSkuCurrentLineDatalinktTextFirstLine}, SkuGenericMenuItem)
 							tNewMenuEntry.tSkuCurrentLineDatalinktTextFirstLine = ltSkuCurrentLineDatalinktTextFirstLine
 							tNewMenuEntry.tSkuCurrentLineDatalinktItemId = SkuGetItemIdFromItemLink(tLineDataitemLinks[w])
-							local ttf = SkuCore:AuctionHouseGetAuctionPriceHistoryData(tNewMenuEntry.tSkuCurrentLineDatalinktItemId)
+							local ttf = SkuCore.AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(tNewMenuEntry.tSkuCurrentLineDatalinktItemId)
 							if not ttf then
 								ttf = {}
 							end
