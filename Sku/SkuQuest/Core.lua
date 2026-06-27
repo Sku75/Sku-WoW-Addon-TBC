@@ -109,7 +109,7 @@ end
 function SkuQuest:OnEnable()
 	--dprint("SkuQuest OnEnable")
 
-	if SkuCore.inCombat == true then
+	if SkuState:IsInCombat() == true then
 		return
 	end
 	
@@ -144,7 +144,7 @@ function SkuQuest:OnEnable()
 	tFrame:SetPoint("TOP", _G["SkuQuestMain"], "BOTTOM", 0, 0)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
 		--dprint("SkuQuestMainOption1 OnClick", aKey, aB)
-		if SkuCore.inCombat == true then
+		if SkuState:IsInCombat() == true then
 			return
 		end
 		
@@ -196,7 +196,7 @@ function SkuQuest:OnEnable()
 	end)
 	tFrame:SetScript("OnShow", function(self)
 		--dprint("SkuQuestMainOption1 OnShow")
-		if SkuCore.inCombat == true then
+		if SkuState:IsInCombat() == true then
 			return
 		end
 		
@@ -220,7 +220,7 @@ function SkuQuest:OnEnable()
 	end)
 	tFrame:SetScript("OnHide", function(self)
 		--dprint("SkuQuestMainOption1 OnHide")
-		if SkuCore.inCombat == true then
+		if SkuState:IsInCombat() == true then
 			return
 		end
 		
@@ -940,7 +940,7 @@ function SkuQuest:ToggleQuestLogHook(...)
 	end
 	--if 1 == 1 then return end
 
-	if SkuCore.inCombat == true then
+	if SkuState:IsInCombat() == true then
 		return
 	end
 

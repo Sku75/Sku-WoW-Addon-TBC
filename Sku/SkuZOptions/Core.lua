@@ -251,14 +251,14 @@ function SkuOptions:SlashFunc(input, aSilent)
 
 
 		if fields[1] == L["short"] then
-			if SkuCore.inCombat == true then
-				SkuCore.openMenuAfterCombat = true
-				SkuCore.openMenuAfterPath = input
+			if SkuState:IsInCombat() == true then
+				SkuCore:SetOpenMenuAfterCombat(true)
+				SkuCore:SetOpenMenuAfterPath(input)
 				return
 			end
-			if SkuCore.isMoving == true then
-				SkuCore.openMenuAfterMoving = true
-				SkuCore.openMenuAfterPath = input
+			if SkuState:IsMoving() == true then
+				SkuCore:SetOpenMenuAfterMoving(true)
+				SkuCore:SetOpenMenuAfterPath(input)
 				return
 			end
 			if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
@@ -1423,7 +1423,7 @@ function SkuOptions:CreateMainFrame()
 		end
 
 		if SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true then
-			SkuCore.openMenuAfterMoving = true
+			SkuCore:SetOpenMenuAfterMoving(true)
 			return
 		end
 
@@ -1756,17 +1756,17 @@ function SkuOptions:CreateMainFrame()
 			end					
 		end
 
-		if SkuCore.inCombat == true then
-			--SkuCore.openMenuAfterCombat = true
+		if SkuState:IsInCombat() == true then
+			--SkuCore:SetOpenMenuAfterCombat(true)
 			return
 		end
-		if SkuCore.isMoving == true then
+		if SkuState:IsMoving() == true then
 			--dprint("SkuCore.isMoving", SkuCore.isMoving)
-			SkuCore.openMenuAfterMoving = true
+			SkuCore:SetOpenMenuAfterMoving(true)
 			return
 		end
-		SkuCore.openMenuAfterCombat = false
-		SkuCore.openMenuAfterMoving = false
+		SkuCore:SetOpenMenuAfterCombat(false)
+		SkuCore:SetOpenMenuAfterMoving(false)
 		--dprint("SkuCore.isMoving1", SkuCore.isMoving)
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_OPENMENU") or a == nil then
 			SkuChat:CloseChat()
@@ -2736,16 +2736,16 @@ function SkuOptions:CreateMenuFrame()
 			aKey = " "
 		end
 
-		if SkuCore.inCombat == true then
-			SkuCore.openMenuAfterCombat = true
+		if SkuState:IsInCombat() == true then
+			SkuCore:SetOpenMenuAfterCombat(true)
 			return
 		end
-		if SkuCore.isMoving == true then
-			SkuCore.openMenuAfterMoving = true
+		if SkuState:IsMoving() == true then
+			SkuCore:SetOpenMenuAfterMoving(true)
 			return
 		end
-		SkuCore.openMenuAfterCombat = false
-		SkuCore.openMenuAfterMoving = false
+		SkuCore:SetOpenMenuAfterCombat(false)
+		SkuCore:SetOpenMenuAfterMoving(false)
 
 		if SkuOptions.currentMenuPosition then
 			if SkuOptions.currentMenuPosition.parent then
@@ -3103,17 +3103,17 @@ function SkuOptions:CreateMenuFrame()
 
 	tFrame:SetScript("OnShow", function(self)
 		--dprint("OnSkuOptionsMainOption1 OnShow")
-		if SkuCore.inCombat == true then
-			SkuCore.openMenuAfterCombat = true
+		if SkuState:IsInCombat() == true then
+			SkuCore:SetOpenMenuAfterCombat(true)
 			return
 		end
-		if SkuCore.isMoving == true then
-			SkuCore.openMenuAfterMoving = true
+		if SkuState:IsMoving() == true then
+			SkuCore:SetOpenMenuAfterMoving(true)
 			return
 		end
 
-		SkuCore.openMenuAfterCombat = false
-		SkuCore.openMenuAfterMoving = false	
+		SkuCore:SetOpenMenuAfterCombat(false)
+		SkuCore:SetOpenMenuAfterMoving(false)	
 		PlaySound(88)
 		SetOverrideBindingClick(self, true, SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key, "SkuQuestMainOption1", SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key)
 		if SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2 and SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2 ~= "" then SetOverrideBindingClick(self, true, SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2, "SkuQuestMainOption1", SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2) end
@@ -3170,7 +3170,7 @@ function SkuOptions:CreateMenuFrame()
 
 	tFrame:SetScript("OnHide", function(self)
 		--dprint("OnSkuOptionsMainOption1 OnHide")
-		if SkuCore.inCombat == true then
+		if SkuState:IsInCombat() == true then
 			return
 		end
 
@@ -3684,7 +3684,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnEnable()
 	--dprint("SkuOptions OnEnable")
-	if SkuCore.inCombat == true then
+	if SkuState:IsInCombat() == true then
 		return
 	end
 

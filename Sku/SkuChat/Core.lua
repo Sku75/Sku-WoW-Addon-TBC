@@ -2274,7 +2274,7 @@ function SkuChat:OnInitialize()
 		SkuOptions.Voice:OutputString("sound-off2", true, true, 0.2)
 
 		--unbind chat keys
-		if SkuCore.inCombat ~= true then
+		if SkuState:IsInCombat() ~= true then
 			if _G["OnSkuChatToggleSecureHandler"] then
 				SecureHandlerExecute(_G["OnSkuChatToggleSecureHandler"], [=[
 					if self:GetAttribute("ChatOpen") == true then
@@ -4008,7 +4008,7 @@ function SkuChat:InitTab(tNewTabIndex)
 			end
 
 			if a.tab.audioOnNewMessage then
-				if SkuCore.inCombat == true then
+				if SkuState:IsInCombat() == true then
 					SkuChatNewLineInCombat = true
 				else
 					if SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].audioOnNewMessage ~= "sound-silence0.1" then

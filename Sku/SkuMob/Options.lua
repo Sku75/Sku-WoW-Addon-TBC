@@ -165,7 +165,7 @@ MenuUtil.CreateContextMenu = hooknew
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- build SABs to be mapped to unnamed menu entries to reference them by a name
 function SkuMob:CreateAndUpdateSkuMenuFrame()
-	if SkuCore.inCombat == true then
+	if SkuState:IsInCombat() == true then
 		return
 	end
 
@@ -539,9 +539,9 @@ local function tBuildTargetMenu(aParent)
 							local ok = pcall(PetRename, tSafeName)
 							if ok then
 								SkuOptions.Voice:OutputStringBTtts(L["MOB_PetRenamed"]..tSafeName, true, true, 0.2)
-								SkuCore.pendingPetRename = nil
+								SkuMob.pendingPetRename = nil
 							else
-								SkuCore.pendingPetRename = tSafeName
+								SkuMob.pendingPetRename = tSafeName
 								SkuOptions.Voice:OutputStringBTtts(L["MOB_PetRenameSaved"], true, true, 0.2)
 							end
 						end
@@ -550,8 +550,8 @@ local function tBuildTargetMenu(aParent)
 				end)
 			end, L["MOB_PetRenameTip"])
 
-			if SkuCore.pendingPetRename then
-				local tSafeName = SkuCore.pendingPetRename:gsub('["\\\r\n]', '')
+			if SkuMob.pendingPetRename then
+				local tSafeName = SkuMob.pendingPetRename:gsub('["\\\r\n]', '')
 				local tConfirmLabel = L["MOB_PetRenameConfirm"] .. tSafeName
 				local tEntry = SkuOptions:InjectMenuItems(aParent, {tConfirmLabel}, SkuGenericMenuItem)
 				tEntry.filterable = true
@@ -560,7 +560,7 @@ local function tBuildTargetMenu(aParent)
 				tEntry.secureMacro = true
 				tEntry.OnAction = function()
 					tSay(L["MOB_PetRenamed"] .. tSafeName)
-					SkuCore.pendingPetRename = nil
+					SkuMob.pendingPetRename = nil
 				end
 			end
 

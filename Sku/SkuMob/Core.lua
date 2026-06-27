@@ -350,14 +350,14 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		if UnitIsPlayer(aUnitId) then
 			if SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholders == true then
 				if UnitIsFriend("player", aUnitId) then
-					if SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
+					if SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat == true and SkuState:IsInCombat() == true then
 						tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
 					else
 						tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["freundlicher spieler"]
 					end
 						tIsPlayerControled = true
 				else
-					if SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
+					if SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat == true and SkuState:IsInCombat() == true then
 						tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
 					else
 						tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["feindlicher spieler"]
@@ -370,7 +370,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			end
 		end
 		if UnitPlayerControlled(aUnitId) == true and UnitIsPlayer(aUnitId) == false then
-			if SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
+			if SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat == true and SkuState:IsInCombat() == true then
 				tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
 			else
 				tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["fremder begleiter"]
@@ -569,24 +569,24 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			if tUnitLevel then
 				if tUnitLevel ~= -1 then
 					if tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true then
-						if tIsPlayerControled ~= true or (SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat ~= true or SkuCore.inCombat == false) then
+						if tIsPlayerControled ~= true or (SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat ~= true or SkuState:IsInCombat() == false) then
 							tOutputString = tOutputString.." "..L["level"]
 							tOutputString = tOutputString.." "..string.format("%02d", tUnitLevel).." "..tClassifications[tClassification]
 						end
 					else
-						if tIsPlayerControled ~= true or (SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
+						if tIsPlayerControled ~= true or (SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuState:IsInCombat() == false) then
 							tOutputStringB = tOutputStringB.." "..L["level"].." "..string.format("%02d", tUnitLevel)
 						end
 					end
 				else
 					if aUnitId ~= "softinteract" then
 						if tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true then
-							if tIsPlayerControled ~= true or (SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
+							if tIsPlayerControled ~= true or (SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuState:IsInCombat() == false) then
 								tOutputString = tOutputString.." "..L["level"]
 								tOutputString = tOutputString.." "..L["Unknown"]
 							end
 						else
-							if tIsPlayerControled ~= true or (SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
+							if tIsPlayerControled ~= true or (SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuState:IsInCombat() == false) then
 								tOutputStringB = tOutputStringB.." "..L["level"].." "..L["Unknown"]
 							end
 						end

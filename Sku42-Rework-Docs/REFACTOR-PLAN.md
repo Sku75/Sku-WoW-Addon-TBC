@@ -882,12 +882,53 @@ codebase. Do it as a long series of small, independently-shippable extractions:
     rot):** `Monitor` (aq.lua), `Keys` (data.lua), `outputSoundFiles` (Core.lua),
     `RaidTargetValues` (aqCombat.lua). Low risk; candidates for a data module
     later, not for the state service.
-- [ ] X-C1. Introduce `SkuState` / dispatcher events; migrate field readers one field at a time.
+- [x] X-C1. Introduce `SkuState` / dispatcher events; migrate field readers one field at a time. (Pending the user's combined in-game smoke.)
   - **Ordering (from X-B2):** start with `inCombat` (single-writer, most readers
     → biggest decoupling win), then `isMoving`. Handle `openMenuAfter*` as
     dispatcher events (multi-writer command flags), not `SkuState` getters.
-    `pendingPetRename` is a separate trivial relocation to SkuMob. **BLOCKED on
-    user checkpoint (Phase C is the first behaviour-touching step).**
+    `pendingPetRename` is a separate trivial relocation to SkuMob.
+  - **DONE — `SkuState` created** (`Sku/SkuState.lua`, `ns.State` + global alias,
+    TOC-loaded right after `SkuUtil.lua`): pure-infra query service, no load-time
+    deps (SkuCore lookups happen at call time). Two accessors so far —
+    `IsInCombat()` returns `SkuCore.inCombat`, `IsMoving()` returns
+    `SkuCore.isMoving` (drop-in, identical boolean). Storage still lives on +
+    is written only by SkuCore; this only removes the cross-module *reads* of
+    SkuCore's field name. Canonical storage can move onto SkuState later without
+    touching any reader.
+  - **DONE — `inCombat` cross-module reads migrated** (24 reads, 8 files →
+    `SkuState:IsInCombat()`): SkuMob/Core (7) + Options (1), SkuZOptions/Core (6)
+    + templates (1), SkuQuest/Core (5), SkuChat/Core (2), SkuAuras/Core (1),
+    SkuNav/Core (1). SkuCore's own internal reads left as direct field access (it
+    owns the field; no cross-module reach there). Verified: clean identical-position
+    diffs, luaparser OK on all (SkuChat via the pre-existing-escape neutralize trick,
+    `_lintchat.py`), no `SkuCore.inCombat` left outside SkuCore/SkuState. **In-game
+    smoke pending.**
+  - **DONE — `isMoving` cross-module reads migrated** (4 real reads in
+    SkuZOptions/Core → `SkuState:IsMoving()`; 2 `--dprint` comments left as
+    historical). SkuCore-internal reads left direct.
+  - **DONE — `openMenuAfter*` cross-module WRITES encapsulated.** These are
+    SkuCore-owned deferred-action flags (`openMenuAfterCombat`/`openMenuAfterMoving`
+    /`openMenuAfterPath`); only SkuCore's update loop reads/acts on them, but
+    SkuZOptions used to set them by raw cross-module field writes. Added a
+    byte-identical owner-side write API on SkuCore (`SetOpenMenuAfterCombat`,
+    `SetOpenMenuAfterMoving`, `SetOpenMenuAfterPath`) and routed all SkuZOptions
+    writes through it. Note: this is the *write-side* category-C fix — the fields
+    are now private to SkuCore. The SkuZOptions→SkuCore *edge* remains (now method
+    calls), but as a legitimate service call ("defer this menu-open"), not a raw
+    field poke. A later dispatcher-event pass could drop the edge entirely if
+    desired; not needed for the state-ownership goal. (Did NOT attempt to unify
+    the per-site defer logic — the sites are asymmetric, e.g. the combat-defer at
+    SkuZOptions/Core:1760 is commented out — so a control-flow rewrite was avoided
+    in favour of the safe 1:1 encapsulation.)
+  - **DONE — `pendingPetRename` relocated** off SkuCore onto SkuMob. It was
+    read+written ONLY by SkuMob/Options.lua (just parked on the SkuCore table);
+    all 5 sites now use `SkuMob.pendingPetRename`. Pure relocation, no behaviour
+    change.
+  - **Verification:** luaparser OK on every touched file; all diffs are clean
+    identical-position swaps; full-tree scan confirms zero live cross-module raw
+    read/write of `inCombat`/`isMoving`/`openMenuAfter*`/`pendingPetRename`
+    remains (only inert `--dprint` comments). **One combined in-game smoke
+    pending (user-run).** X-C1 complete pending that smoke.
 - [ ] X-D1. Promote SkuCore features to `NewModule`, most self-contained first; move state off the shared table.
 - [ ] X-V. Re-run the reference matrix after each phase; record the falling cycle counts here.
   - **Post-Phase-A baseline (qualified-access counts, the 4.1 method):**
@@ -899,6 +940,18 @@ codebase. Do it as a long series of small, independently-shippable extractions:
     - The only Phase-A delta is the SkuCore→SkuChat collapse; everything else is
       unchanged (Phase A was additive). Re-run `_matrix.py` (token counts, fast
       trend) + `_members.py` (precise per-member) after each later phase.
+  - **Post-Phase-C inbound-to-SkuCore drops (qualified accesses):**
+    - SkuQuest → SkuCore **5 → 0** (fully decoupled; all were `inCombat` reads).
+    - SkuMob → SkuCore **26 → 13** (`inCombat` ×8 + `pendingPetRename` removed).
+    - SkuChat → SkuCore 14 → 12, SkuAuras → SkuCore 14 → 13, SkuNav → SkuCore
+      7 → 6 (each lost its `inCombat` read).
+    - SkuZOptions → SkuCore dropped its 6 `inCombat` + 4 `isMoving` reads; the
+      `openMenuAfter*` writes became `SkuCore:Set*` calls (edge kept as a service
+      call, fields now private). New healthy hub edges appeared into `SkuState`
+      (combat/movement queries) — pure infra, no back-edges.
+    - Remaining inbound-to-SkuCore category-C not yet migrated: `talentSet`
+      (write-once constant; low value), the data tables (`Monitor`/`Keys`/
+      `outputSoundFiles`/`RaidTargetValues`), `SkuRaidTargetIndex`, `GossipList`.
 
 ---
 

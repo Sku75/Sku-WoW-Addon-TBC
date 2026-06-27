@@ -959,7 +959,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 		tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
 		tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
 		targetCanAttack = UnitCanAttack("player", "target"),
-		tInCombat = SkuCore.inCombat,
+		tInCombat = SkuState:IsInCombat(),
 		pressedKey = tEventData[50],
 		spellNameOnCd = SkuAuras.thingsNamesOnCd,
 		spellNameUsable = SkuAuras:GetSpellNamesUsable(),

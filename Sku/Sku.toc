@@ -24,6 +24,7 @@ routedata_global_wotlk.lua
 Core.lua
 
 SkuUtil.lua
+SkuState.lua
 SkuZOptions\SkuSettings.lua
 SkuZOptions\SkuMenu.lua
 

@@ -128,6 +128,18 @@ SkuCore.isMoving = false
 SkuCore.openMenuAfterMoving = false
 SkuCore.openMenuAfterPath = ""
 
+-- Deferred-menu-open write API (W4 Phase C). The openMenuAfter* fields are
+-- SkuCore-owned deferred-action flags: other code (SkuZOptions) used to set them
+-- by reaching straight into SkuCore's table — a cross-module raw write, the
+-- write-side of the category-C coupling. These setters give SkuCore sole control
+-- of the writes (so the storage can later move or fire a change-event) while
+-- staying byte-identical to the former direct assignments. The consumer stays
+-- SkuCore's own update loop. SkuCore's internal writes keep using the fields
+-- directly (it is the owner).
+function SkuCore:SetOpenMenuAfterCombat(aValue) SkuCore.openMenuAfterCombat = aValue end
+function SkuCore:SetOpenMenuAfterMoving(aValue) SkuCore.openMenuAfterMoving = aValue end
+function SkuCore:SetOpenMenuAfterPath(aValue) SkuCore.openMenuAfterPath = aValue end
+
 local EnumItemQuality = {
 	[0] = ITEM_QUALITY0_DESC,
 	[1] = ITEM_QUALITY1_DESC,

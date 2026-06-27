@@ -271,7 +271,7 @@ SkuGenericMenuItem = {
 			end
 		end
 
-		if SkuCore.inCombat ~= true then
+		if SkuState:IsInCombat() ~= true then
 			if _G["SecureOnSkuOptionsMainOption1"] then
 				if self.macrotext then
 					--dprint("macrotext", self.macrotext)

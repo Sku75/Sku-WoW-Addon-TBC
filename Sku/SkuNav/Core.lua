@@ -2485,7 +2485,7 @@ function SkuNav:OnEnable()
 	--SkuNav:SkuNavMMOpen()
 	SkuNav:CreateSkuNavControl()
 
-	if SkuCore.inCombat == false then
+	if SkuState:IsInCombat() == false then
 		SkuNav:CreateSkuNavMain()		
 	end
 end
