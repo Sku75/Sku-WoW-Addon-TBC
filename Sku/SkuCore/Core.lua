@@ -2376,7 +2376,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB or {}
 		SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory or {}
 
-		SkuCore.JunkAndRepair:Initialize()
+		-- JunkAndRepair is now an AceAddon submodule; AceAddon arms it via its
+		-- OnEnable at SkuCore enable, so no explicit init call here (W4 Phase D).
 		SkuCore:UpdateInteractMove(true)
 		SkuCore:GameWorldObjectsOnLogin()
 		SkuCore:AqOnLogin()

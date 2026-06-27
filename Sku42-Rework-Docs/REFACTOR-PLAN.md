@@ -929,27 +929,70 @@ codebase. Do it as a long series of small, independently-shippable extractions:
     read/write of `inCombat`/`isMoving`/`openMenuAfter*`/`pendingPetRename`
     remains (only inert `--dprint` comments). **One combined in-game smoke
     pending (user-run).** X-C1 complete pending that smoke.
-- [~] X-D1. Promote SkuCore features to their own namespace, most self-contained first; move state off the shared table.
-  - **Mechanism chosen: the existing `SkuCore.SkuFocus` sub-table idiom**, NOT
-    AceAddon `NewModule`. AceAddon submodules are used nowhere in this codebase;
-    introducing them (new lifecycle, auto-enable timing) would be the novel/risky
-    move. `skuFocus.lua` already shows the safe local pattern: `SkuCore.<Feature> =
-    {}` holding the feature's methods/state, called explicitly (same init timing).
-    This gives each feature an explicit boundary + state ownership with minimal
-    risk and full codebase consistency. (Can still escalate specific features to
-    AceAddon later if a real enable/disable lifecycle is ever needed.)
-  - **DONE — `JunkAndRepair`** extracted to `SkuCore.JunkAndRepair` (commit
-    pending in-game smoke). It was the most self-contained feature: one entry
-    method (`JunkAndRepairInitialize`, the only caller at SkuCore/Core.lua:2379),
-    state already private (the `SellJunkFrame` upvalue + closure locals), reads NO
-    SkuCore shared-state fields. Change: added `SkuCore.JunkAndRepair = {}`,
-    renamed `SkuCore:JunkAndRepairInitialize` → `SkuCore.JunkAndRepair:Initialize`
-    (+ the commented `Enable`), updated the one caller. Settings left under the
-    "SkuCore" SkuSettings namespace (shared with the SkuZOptions junk-list menu)
-    to avoid a SavedVariables migration. Behaviour-identical; luaparser OK.
-  - **TODO next (same idiom, ascending coupling):** `mail` (179 lines),
-    `Build_SocketingFrame`/sockets (656), then larger features. Re-measure the
-    SkuCore method-count / inbound edges after each.
+- [~] X-D1. Promote SkuCore features to AceAddon submodules with runtime enable/disable, most self-contained first; move state off the shared table.
+  - **DIRECTION (user decision):** the goal is **per-feature runtime on/off** so
+    users can run only the parts they want (or coexist with other addons). So the
+    target is AceAddon `NewModule` (real lifecycle: OnEnable arms, OnDisable tears
+    down — clean on/off) PLUS state ownership, applied **consistently to most
+    features** (even ones a mere setting could gate, e.g. JunkAndRepair, for a
+    uniform model). This supersedes the earlier "sub-table only" plan.
+  - **Framework (the template for every feature):**
+    - `local M = SkuCore:NewModule("Feature")`; feature state lives as module
+      upvalues / on `M`. `M:OnEnable()` registers events + sets up; `M:OnDisable()`
+      tears down (true on/off).
+    - **Persisted on/off:** a per-feature `enabled` flag under the "SkuCore"
+      SkuSettings namespace (`moduleEnabled.<Feature>`, default true; no
+      SavedVariables migration). On load, apply persisted disables at a point
+      where settings exist (avoid reading settings in module `OnInitialize` —
+      SkuCore's modules init before SkuOptions.db across addons; do it in OnEnable
+      or a late apply-states pass). A generic **"Features" toggle menu** (built
+      once for all modules) is the surfacing — follow-up after the mechanism is
+      proven. A `SkuCore:SetModuleEnabled(name, bool)` helper flips live + persists.
+    - **Main risk — init timing/order.** Feature init moves from the explicit
+      ordered PLAYER_ENTERING_WORLD sequence (only ran on `isInitialLogin`!) to
+      AceAddon auto-enable (every load, incl. /reload). Convert ONE feature at a
+      time, test each; auto-enable only features with no ordering dependency, else
+      keep an explicit init step.
+  - **DONE (pilot, commit pending in-game smoke) — `JunkAndRepair` is now a real
+    `SkuCore:NewModule`.** OnEnable arms the merchant frame (MERCHANT_SHOW/CLOSED),
+    OnDisable stops selling + unregisters. Removed the explicit init call in
+    PLAYER_ENTERING_WORLD. State lifted to module upvalues; selling logic
+    unchanged. **Behaviour delta to verify:** junk-sell/repair now also re-arms
+    after a /reload (the old isInitialLogin-only call did not). luaparser OK.
+    Persisted enable-flag + Features menu NOT yet wired — test on/off for now via
+    `SkuCore:GetModule("JunkAndRepair"):Disable()/:Enable()`.
+  - **TODO next (same framework, ascending coupling):** `mail` (179),
+    `Build_SocketingFrame`/sockets (656), then larger features; then wire the
+    persisted enable-flag + generic Features toggle menu. Re-measure SkuCore
+    method-count / inbound edges after each.
+  - **BIGGER-SPLIT — target two-tier architecture (decided model; execute LATE).**
+    The current top-level carving (Sku / SkuCore / SkuChat / SkuNav / SkuQuest /
+    SkuAuras / SkuMob / SkuDispatcher / SkuZOptions) is grown, not designed. The
+    agreed end-state model to re-chart toward:
+
+    - **Tier 1 — always-on core / plumbing + UI (NOT toggleable).** The
+      cross-cutting machinery every feature needs; it has no business being turned
+      off. Members: the event dispatcher (SkuDispatcher), the settings layer
+      (SkuSettings), the menu framework (SkuMenu / SkuZOptions), voice/TTS output
+      (voiceOutput + SkuTTS/SkuVoice libs), error logging (ErrorLog/UIErrors),
+      shared utils + runtime state (SkuUtil, SkuState). These live as submodules
+      of a central core and load first. UI/menu functionality belongs HERE, not as
+      a toggleable feature.
+    - **Tier 2 — toggleable features (each an AceAddon submodule, on/off).**
+      Auction house, mail, junk/repair, sockets, dungeon browser, damage meter,
+      friends, quests, auras, mob/target, nav/beacons, minimap scanner, game
+      world objects, equipment sets, dial targeting, turn-to-unit, etc. These are
+      what the per-feature enable/disable framework (this workstream) governs.
+    - **Tier 3 (selective) — promote a feature to its OWN top-level addon** ONLY
+      where it clearly pays: data-heavy / standalone features that benefit from
+      separate loading or shipping (the big DBs, nav data). Costly (separate
+      SavedVariables, no shared state) — do NOT do it by default; justify per case.
+
+    **Execution rule (important):** do NOT re-chart up front. Finish modularizing
+    a healthy batch of Tier-2 features first; the module boundaries that emerge
+    reveal the natural Tier-1/Tier-2 line and the few Tier-3 candidates. Only then
+    physically move files / split addons, one move at a time, each verified. The
+    classification above is the map to execute against when that time comes.
 - [ ] X-V. Re-run the reference matrix after each phase; record the falling cycle counts here.
   - **Post-Phase-A baseline (qualified-access counts, the 4.1 method):**
     - SkuCore → SkuDispatcher 89, SkuNav 38, **SkuChat 3** (was 117 — Unescape
