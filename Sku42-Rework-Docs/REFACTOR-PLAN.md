@@ -1241,9 +1241,18 @@ to the W1 settings migration (~2,700 sites) which landed cleanly with this metho
   - **Pre-existing duplicate observed:** `UNIT_POWER_UPDATE` (aq real handler + dead Core.lua
     stub); TOC loads Core before aq so aq's handler has always won. Left as-is (behaviour
     identical); a cleanup can delete the stub in E2.
-  - **In-game test PENDING** (deferred to the user — see handoff): AH buy/sell/scan +
-    solo/group combat + raid markers + health/power monitor. The three commits are
-    independent checkpoints so a failed test isolates to one feature.
+  - **In-game VERIFIED (2026-06-28):** all gates passed, behaviour unchanged. One load
+    bug was caught and fixed first (commit 10883b7): the codemod had rewritten a DEAD
+    empty `UNIT_POWER_UPDATE` stub in SkuCore/Core.lua to `function SkuCore.Aq:...`, but
+    Core.lua loads before aq.lua so `SkuCore.Aq` was nil there — the line threw at load
+    and aborted the rest of Core.lua (~3000 lines), causing the load + continuous-error
+    symptom. Removing the dead stub fixed it (aq.lua's real handler always won anyway).
+    **Lesson for future extractions: after the codemod, grep `^function SkuCore\.<Handle>[:.]`
+    tree-wide — a duplicate method DEF in an earlier-loading file becomes a load-order crash.**
+    Post-fix SkuErrorLog is clean of any combat/aq/aqCombat/AuctionHouse error (only the
+    benign addon_action_blocked taint class + intentional auction/dungeon diagnostics). The
+    one first-fight error the user sees is pre-existing and unrelated (not captured by
+    SkuErrorLog, not in any changed file).
 - [ ] E2. Slim `SkuCore/Core.lua` to the manager + genuine core plumbing; decide what
   legitimately stays core (Core.lua manager 106 defs, ModuleManager 6, LocalMenu Tier-1 20,
   voiceOutput 2); confirm no toggleable-feature method/state remains on `SkuCore`. The

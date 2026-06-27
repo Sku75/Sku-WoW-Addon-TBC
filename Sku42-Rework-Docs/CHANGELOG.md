@@ -22,6 +22,19 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W4 Phase E — E1b VERIFIED in-game (2026-06-28) + load-order fix.** All three
+  extractions pass; behaviour unchanged. One regression was caught and fixed first
+  (commit 10883b7): the aq codemod rewrote a DEAD empty `UNIT_POWER_UPDATE` stub in
+  `SkuCore/Core.lua` to `function SkuCore.Aq:…`, but Core.lua loads before aq.lua, so
+  `SkuCore.Aq` was nil there — the line threw at load and aborted the rest of Core.lua
+  (~3000 lines), which is what produced the "errors on login + every frame while standing"
+  report. Removed the dead stub (aq.lua's real handler always won). **Rule added for future
+  extractions: grep `^function SkuCore\.<Handle>[:.]` tree-wide after each codemod — a
+  duplicate method DEF in an earlier-loading file is a load-order crash.** Post-fix
+  SkuErrorLog is clean (only the benign addon_action_blocked taint + intentional auction/
+  dungeon diagnostics); no combat/aq/aqCombat/AuctionHouse error. The user's first-fight
+  error is pre-existing and unrelated (not in any changed file, not even captured by SkuErrorLog).
+
 - **W4 Phase E — E1b (hard-3), part 3 of 3: aq extracted — hard-3 COMPLETE.** The
   26 `function SkuCore:Monitor*`/`Aq*`/`UNIT_*`/`MIRROR_*` methods now live on the
   `Aq` module table; published handle `SkuCore.Aq` keeps external callers working.
