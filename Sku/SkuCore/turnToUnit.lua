@@ -4,6 +4,25 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: TurnToUnit is a real AceAddon SUBMODULE of SkuCore so it can be
+-- turned on/off at runtime:
+--   * OnEnable  arms the feature (control OnUpdate frame, the two SkuDispatcher
+--     callbacks NAME_PLATE_UNIT_ADDED/UPDATE_MOUSEOVER_UNIT, and the
+--     nameplateMaxDistance CVar) — formerly TurnToUnitOnInitialize/OnLogin.
+--   * OnDisable disarms it (stop the search + frame OnUpdate, unregister the two
+--     dispatcher callbacks), so a disabled feature genuinely does nothing.
+-- AceAddon auto-enables modules when SkuCore enables (≈ PLAYER_LOGIN), replacing
+-- the old explicit TurnToUnitOnInitialize/TurnToUnitOnLogin calls in Core.lua
+-- (so the feature now re-arms on every /reload, not only the initial login).
+-- The published SkuCore.TurnToUnit state table and the SkuCore:TurnToUnit*
+-- methods (called by Core.lua keybinds) stay exactly where they are.
+local TurnToUnit = SkuCore:NewModule(MODULE_PART)
+
+-- Make this feature user-toggleable (Features menu + persisted on/off).
+SkuCore:RegisterToggleableModule(MODULE_PART, function()
+   return (GetLocale and GetLocale() == "deDE") and "Zu Einheit drehen" or "Turn to unit"
+end)
+
 SkuCore.TurnToUnit = {
    searching = false,
    time = -1,
@@ -124,15 +143,23 @@ local function CreateControlFrame()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:TurnToUnitOnInitialize()
-	CreateControlFrame()
+-- Arm the feature. Called automatically by AceAddon when the module is enabled
+-- (at SkuCore enable, and again whenever the user toggles it back on). Combines
+-- the old TurnToUnitOnInitialize (frame + dispatcher callbacks) and
+-- TurnToUnitOnLogin (nameplate CVar).
+function TurnToUnit:OnEnable()
+   CreateControlFrame()
    SkuDispatcher:RegisterEventCallback("NAME_PLATE_UNIT_ADDED", SkuCore.TurnToUnit_NAME_PLATE_UNIT_ADDED)
    SkuDispatcher:RegisterEventCallback("UPDATE_MOUSEOVER_UNIT", SkuCore.TurnToUnit_UPDATE_MOUSEOVER_UNIT)
+   SetCVar("nameplateMaxDistance", 41)
 end
 
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:TurnToUnitOnLogin()
-   SetCVar("nameplateMaxDistance", 41)
+-- Disarm the feature: stop any in-progress turn and unregister the dispatcher
+-- callbacks so a disabled TurnToUnit does nothing.
+function TurnToUnit:OnDisable()
+   StopSearch()
+   SkuDispatcher:UnregisterEventCallback("NAME_PLATE_UNIT_ADDED", SkuCore.TurnToUnit_NAME_PLATE_UNIT_ADDED)
+   SkuDispatcher:UnregisterEventCallback("UPDATE_MOUSEOVER_UNIT", SkuCore.TurnToUnit_UPDATE_MOUSEOVER_UNIT)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -201,6 +228,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
+   if not TurnToUnit:IsEnabled() then return end
    if (aUnitId and UnitName(aUnitId) == nil) or SkuCore.TurnToUnit.searching == true then
       SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuCore").turnToUnit.soundOnFail, {overwrite = false, wait = false, length = 0.3, doNotOverwrite = true,})
       return
@@ -244,6 +272,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:TurnToUnitTurn180()
+   if not TurnToUnit:IsEnabled() then return end
    if SkuCore.TurnToUnit.searching == true then
       return
    end

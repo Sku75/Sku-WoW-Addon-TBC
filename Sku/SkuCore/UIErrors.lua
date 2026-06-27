@@ -5,20 +5,55 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: UIErrors is a real AceAddon SUBMODULE of SkuCore so it can be turned
+-- on/off independently at runtime:
+--   * OnEnable  arms the feature (registers UI_ERROR_MESSAGE / UI_INFO_MESSAGE /
+--     UNIT_SPELLCAST_INTERRUPTED), replacing the old explicit
+--     SkuCore:UIErrorsOnInitialize() call in Core.lua's OnInitialize. Because
+--     AceAddon auto-enables modules on every load (not just the initial login),
+--     UI-error announcements now re-arm after a /reload too.
+--   * OnDisable disarms it (unregisters those events) so a disabled feature is
+--     silent.
+-- The event-handler methods stay defined on SkuCore exactly where they were, so
+-- external callers (Core.lua's UNIT_SPELLCAST_INTERRUPTED dispatcher callback,
+-- RangeCheck/templates reading the settings) keep working unchanged; the public
+-- entry methods short-circuit when the module is disabled. Settings stay under the
+-- "SkuCore".UIErrors SkuSettings namespace (Options.lua reads them), so there is no
+-- SavedVariables migration.
+local UIErrors = SkuCore:NewModule(MODULE_PART)
+
+-- Make this feature user-toggleable (Features menu + persisted on/off).
+SkuCore:RegisterToggleableModule(MODULE_PART, function()
+   return (GetLocale and GetLocale() == "deDE") and "Oberflächenfehler" or "UI errors"
+end)
+
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:UIErrorsOnInitialize()
+-- Arm the feature. Called automatically by AceAddon when the module is enabled.
+function UIErrors:OnEnable()
    SkuCore:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED")
    SkuCore:RegisterEvent("UI_ERROR_MESSAGE")
    SkuCore:RegisterEvent("UI_INFO_MESSAGE")
 end
 
+-- Disarm the feature: unregister the UI-error events so a disabled UIErrors is
+-- silent. (SkuCore's UNIT_SPELLCAST_INTERRUPTED is also driven via a Core.lua
+-- dispatcher callback that cannot be unregistered from here; its handler body is
+-- guarded with an IsEnabled() check below so it is a no-op when disabled.)
+function UIErrors:OnDisable()
+   SkuCore:UnregisterEvent("UNIT_SPELLCAST_INTERRUPTED")
+   SkuCore:UnregisterEvent("UI_ERROR_MESSAGE")
+   SkuCore:UnregisterEvent("UI_INFO_MESSAGE")
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UI_INFO_MESSAGE(aEvent, tMessage, tMessage1)
+   if not UIErrors:IsEnabled() then return end
    SkuCore:UIErrorEventHandler(aEvent, tMessage, tMessage1)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UI_ERROR_MESSAGE(aEvent, tMessage, tMessage1)
+   if not UIErrors:IsEnabled() then return end
    SkuCore:UIErrorEventHandler(aEvent, tMessage, tMessage1)
 end
 
@@ -27,6 +62,7 @@ local tPrevError
 local tPrevErrorLimit = 1
 local tPrevErrorTime = time()
 function SkuCore:UIErrorEventHandler(aEvent, tMessage, tMessage1)
+   if not UIErrors:IsEnabled() then return end
       --https://wowwiki-archive.fandom.com/wiki/WoW_Constants/Errors#ERR_SPELL
 
    local tSoundChannel = SkuOptions.db.profile.SkuCore.UIErrors.ErrorSoundChannel or "Talking Head"
@@ -150,6 +186,7 @@ function SkuCore:UIErrorEventHandler(aEvent, tMessage, tMessage1)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UNIT_SPELLCAST_INTERRUPTED(aEvent, aUnit)
+   if not UIErrors:IsEnabled() then return end
    local tSoundChannel = SkuOptions.db.profile.SkuCore.UIErrors.ErrorSoundChannel or "Talking Head"
    local tOff = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3"
    

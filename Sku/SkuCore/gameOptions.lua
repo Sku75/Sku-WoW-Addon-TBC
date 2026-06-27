@@ -24,6 +24,26 @@
 -- the top-level Sku menu from SkuZOptions/Core.lua.
 -- =====================================================================
 
+-- W4 Phase D: GameOptions is a real AceAddon SUBMODULE of SkuCore so it can be
+-- turned on/off independently at runtime (Features menu). This feature has no
+-- WoW events/frames/timers of its own — it is purely a menu builder reached via
+-- SkuCore:GameOptionsMenuBuilder. So there is nothing to arm in OnEnable and
+-- nothing to tear down in OnDisable; "off" is enforced by an IsEnabled guard at
+-- the top of GameOptionsMenuBuilder (the menu entry then yields nothing).
+-- NOTE: the GameMenuFrame Escape-hook (SkuCore:GameMenuShowHandler, installed by
+-- hooksecurefunc in SkuCore/Core.lua) is core Escape-menu UX and is intentionally
+-- LEFT in Core.lua — it is not part of this feature's on/off lifecycle.
+SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
+
+local GameOptions = SkuCore:NewModule("GameOptions")
+SkuCore.GameOptions = GameOptions   -- keep a published handle (harmless)
+
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule("GameOptions", function()
+   return (GetLocale and GetLocale() == "deDE") and "Spieloptionen" or "Game options"
+end)
+
 -- Locale: tiny self-contained table (no global locale-file edits needed;
 -- the category/setting NAMES come already-localised from the live data).
 local _DE = (GetLocale and GetLocale() == "deDE")
@@ -369,6 +389,8 @@ end
 -- "Optionen" entry descends into the Blizzard settings categories.
 -- ---------------------------------------------------------------------
 function SkuCore:GameOptionsMenuBuilder(aParentEntry)
+   -- Feature off: yield nothing (the Game-Options menu entry stays empty).
+   if not GameOptions:IsEnabled() then return end
    if not HasSettings() then
       Inject(aParentEntry, _L.unavailable)
       return

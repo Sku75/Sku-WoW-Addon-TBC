@@ -1004,7 +1004,7 @@ codebase. Do it as a long series of small, independently-shippable extractions:
     reveal the natural Tier-1/Tier-2 line and the few Tier-3 candidates. Only then
     physically move files / split addons, one move at a time, each verified. The
     classification above is the map to execute against when that time comes.
-- [ ] X-D2. **Modularization map (NEXT SESSION STARTS HERE — design pass, mostly read-only).**
+- [x] X-D2. **Modularization map — DONE 2026-06-27 (deliverable appended below).**
   Produce the concrete plan before mass migration:
   1. **Inventory every SkuCore feature** (the ~24 `SkuCore/*.lua` files / 352
      methods grouped into features). For each: entry points (the `*OnLogin` /
@@ -1021,7 +1021,89 @@ codebase. Do it as a long series of small, independently-shippable extractions:
   4. Optional: a small inventory helper (extend `_members.py`/`_writers.py`) to
      list each feature's entry points + state.
   Deliverable: an ordered migration checklist (one line per feature) appended here.
-- [ ] X-D3. **Full migration — convert each feature, one at a time, in the X-D2 order.**
+
+  **X-D2 DELIVERABLE (2026-06-27) — modularization map + ordered migration checklist.**
+  Produced from a 33-agent feature inventory (entry points, owned state, inbound
+  refs, init-order, taint, risk). **User decisions this session:** 1a (Rework A =
+  clean SkuCore features first + one in-game test, then a separate Rework B for the
+  risky tail + the standalone addons); 2a (keep SkuChat/Nav/Quest/Auras/Mob
+  top-level, make them toggleable IN PLACE + implement their OnDisable — NOT
+  re-parented under SkuCore: re-parenting is pure churn with no code-quality gain);
+  3a (every converted feature gets a REAL OnDisable teardown + IsEnabled guards,
+  done together with promotion); 4 (LocalMenu = Tier-1/not toggleable — toggling the
+  menu would lock the user out of the addon; UIErrors = Tier-2 toggleable;
+  updateCheck = Tier-2 toggleable).
+
+  **Tier 1 — always-on, NOT toggleable:** SkuDispatcher, SkuSettings, SkuMenu,
+  SkuZOptions, SkuUtil, SkuState, ModuleManager, ErrorLog, Core, voiceOutput,
+  data.lua, LocalMenu.
+  **Tier 3 — own addon:** none (not justified by the data).
+
+  **Conversion recipe refinement (vs the X-D3 sketch) for behaviour-safety:** KEEP
+  each feature's existing `SkuCore:Method` definitions and `SkuCore.field` state
+  where they are — do NOT rename/relocate them. Move ONLY the lifecycle: arming
+  (RegisterEvent / hooksecurefunc installs / frame + OnUpdate creation /
+  SetOverrideBinding / slash registration) into `M:OnEnable`; disarming into
+  `M:OnDisable`. Keep the published handle `SkuCore.Feature = M`. Add
+  `if not <module>:IsEnabled() then return end` no-op guards at the top of public
+  entry methods that a keybind or Core.lua OnUpdate may still call while disabled —
+  this makes "off" safe WITHOUT nil-erroring external callers, because the methods
+  still exist. Real OnDisable = `SkuCore:UnregisterEvent` /
+  `SkuDispatcher:UnregisterEventCallback`, cancel `C_Timer` tickers, clear
+  `SetOverrideBinding`s, hide/teardown frames (`SetScript("OnUpdate", nil)`).
+  hooksecurefunc hooks cannot be removed → guard their body with IsEnabled instead.
+
+  **Rework A — ordered checklist (risk-ascending; this is the actionable X-D3 work
+  for this pass).** Each feature: NewModule + published handle + OnEnable/OnDisable
+  (real teardown) + RegisterToggleableModule + remove its explicit init/login/enable
+  call from Core.lua + luaparser gate.
+  - Batch 1 (risk 1, trivial): EquipmentSets, Macro, DamageMeter, DualSpecProbe,
+    AudioDevice, DialogKey, Mail, updateCheck.
+  - Batch 2 (risk 2, events/frames): Socketing, Friends, TurnToUnit, VisualAids,
+    UIErrors, DungeonBrowser.
+  - Batch 3 (secure/taint — preserve binding patterns + in-combat defer): SkuFocus,
+    DialTargeting.
+  - Batch 4 (shared state / coordination): MinimapScanner + GameWorldObjects
+    (convert together — coupled), RangeCheck (a shared SERVICE: callers SkuMob /
+    SkuNav / aqCombat must no-op safely when off — IsEnabled-guard DoRangeCheck),
+    AtlasLootIntegration, GameOptions (keep the GameMenuFrame Escape-hook in
+    Core.lua; the module owns only the menu entry).
+
+  **Rework B — deferred (its own session + test):**
+  - Aq + aqCombat (coupled pair; `SkuCore.Monitor.UnitNumbersIndexedRaid` is read by
+    SkuAuras; settings-schema migration runs in OnLogin).
+  - AuctionHouse (hardware-event-gated buy + OnUpdate ticker; OnDisable MUST release
+    SetOverrideBindingClick bindings, stop the ticker, unregister the 5 AUCTION_*
+    events).
+  - The five standalone AceAddons SkuMob / SkuNav / SkuQuest / SkuChat / SkuAuras —
+    make toggleable IN PLACE (extend the toggle framework to handle a top-level
+    AceAddon by name; they already have Enable/Disable) and IMPLEMENT their OnDisable
+    (SkuNav/SkuQuest/SkuMob/SkuAuras OnDisable are stubs today).
+  - **Cross-coupling to fix in B:** aq ↔ SkuAuras both ways (aq calls
+    `SkuAuras:RoleCheckerGetUnitRole`; SkuAuras reads `SkuCore.Monitor`) — add
+    nil-guards/fallbacks so disabling one does not break the other.
+
+  **Other cleanups surfaced (do opportunistically when the file is touched):**
+  `ItemName_helper` is duplicated (LocalMenu local vs SkuCore published) — fold;
+  EquipmentSets still uses `SkuOptions.db.char` directly instead of SkuSettings.
+- [~] X-D3. **Full migration — convert each feature, in the X-D2 order.**
+  - **Rework A DONE & verified in-game (2026-06-27).** 21 SkuCore features promoted
+    to runtime-toggleable AceAddon submodules in one fan-out (one agent per feature
+    file, behaviour-safe recipe: keep `SkuCore:Method`/`SkuCore.field` in place, move
+    only lifecycle into OnEnable/OnDisable, IsEnabled-guard the public entry points;
+    Core.lua reconciled centrally — 18 dead `*OnInitialize`/`*OnLogin`/`*OnEnable`
+    calls removed, the Aq/aqCombat/AuctionHouse/VoiceOutput calls kept for Rework B).
+    Features: EquipmentSets, Macro, DamageMeter, DualSpecProbe, AudioDevice,
+    DialogKey, Mail, UpdateCheck, Socketing, Friends, TurnToUnit, VisualAids,
+    UIErrors, DungeonBrowser, SkuFocus, DialTargeting, MinimapScanner,
+    GameWorldObjects, RangeCheck, AtlasLootIntegration, GameOptions. All luaparser-
+    clean. **In-game test passed all 3 gates** (clean load / Features-menu on-off +
+    persistence / secure+shared-state spot-checks). Uniform behaviour delta: each
+    re-arms on every /reload (was initial-login only) — confirmed harmless.
+  - **Rework B (NEXT):** Aq + aqCombat (coupled pair; SkuCore.Monitor read by
+    SkuAuras), AuctionHouse (hardware-event buy + ticker teardown), and the five
+    standalone AceAddons SkuMob/SkuNav/SkuQuest/SkuChat/SkuAuras (toggleable in place
+    + implement their stub OnDisable). Fix the aq↔SkuAuras cross-coupling both ways.
   Repeatable recipe per feature (the JunkAndRepair pattern, proven):
   1. `local M = SkuCore:NewModule("Feature")`; keep `SkuCore.Feature = M` if a
      published handle is referenced elsewhere.

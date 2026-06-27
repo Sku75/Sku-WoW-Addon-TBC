@@ -4,7 +4,24 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
-SkuCore.DialTargeting = {}
+-- W4 Phase D: DialTargeting is a real AceAddon SUBMODULE of SkuCore so it can be
+-- turned on/off at runtime. The lifecycle is split into OnEnable (arm) / OnDisable
+-- (disarm); all existing SkuCore:DialTargeting* methods and the SkuCore.DialTargeting
+-- handle stay exactly where they are, so external callers (keybinds, menu) are
+-- unchanged. OnEnable runs the former DialTargetingOnLogin settings defaults plus the
+-- former DialTargetingOnInitialize arming (secure-frame creation + the 6 dispatcher
+-- callbacks); OnDisable unregisters those callbacks and tears the feature down via the
+-- existing DialTargetingDisable helper. The in-combat deferral to PLAYER_REGEN_ENABLED
+-- inside Enable/Disable/RosterUpdate is preserved unchanged.
+-- Behaviour delta: arms on every /reload via OnEnable (previously only on initial
+-- login via the explicit Core.lua calls).
+local DialTargeting = SkuCore:NewModule(MODULE_PART)
+SkuCore.DialTargeting = DialTargeting   -- keep the published handle
+
+-- Make this feature user-toggleable (Features menu + persisted on/off).
+SkuCore:RegisterToggleableModule(MODULE_PART, function()
+   return (GetLocale and GetLocale() == "deDE") and "Zielwahl per Tastenfeld" or "Dial targeting"
+end)
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -18,6 +35,14 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DialTargetingOnInitialize()
    dprint("DialTargetingOnInitialize")
+
+   -- Create the secure frames + register the dispatcher callbacks only once; on a
+   -- runtime re-enable the frames already exist (secure frames must not be recreated
+   -- in combat, and duplicate dispatcher callbacks would double-fire).
+   if _G["SkuSecureTargetingFrame"] then
+      DialTargeting:DialTargetingRegisterCallbacks()
+      return
+   end
 
    --SkuSecureStateDriveFrame
    local tSkuSecureStateDriveFrame = CreateFrame("Frame", "SkuSecureStateDriveFrame", UIParent, "SecureHandlerStateTemplate")
@@ -145,13 +170,30 @@ function SkuCore:DialTargetingOnInitialize()
       end
    end)
 
+	DialTargeting:DialTargetingRegisterCallbacks()
+
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- (Re)register the 6 group/roster dispatcher callbacks. Idempotent enough to call on
+-- every OnEnable; mirrored by DialTargetingUnregisterCallbacks in OnDisable.
+function DialTargeting:DialTargetingRegisterCallbacks()
 	SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", SkuCore.DialTargeting_PLAYER_ENTERING_WORLD)
    SkuDispatcher:RegisterEventCallback("PARTY_LEADER_CHANGED", SkuCore.DialTargeting_PARTY_LEADER_CHANGED)
    SkuDispatcher:RegisterEventCallback("GROUP_FORMED", SkuCore.DialTargeting_GROUP_FORMED)
    SkuDispatcher:RegisterEventCallback("GROUP_JOINED", SkuCore.DialTargeting_GROUP_JOINED)
    SkuDispatcher:RegisterEventCallback("GROUP_LEFT", SkuCore.DialTargeting_GROUP_LEFT)
    SkuDispatcher:RegisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.DialTargeting_GROUP_ROSTER_UPDATE)
+end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+function DialTargeting:DialTargetingUnregisterCallbacks()
+   SkuDispatcher:UnregisterEventCallback("PLAYER_ENTERING_WORLD", SkuCore.DialTargeting_PLAYER_ENTERING_WORLD)
+   SkuDispatcher:UnregisterEventCallback("PARTY_LEADER_CHANGED", SkuCore.DialTargeting_PARTY_LEADER_CHANGED)
+   SkuDispatcher:UnregisterEventCallback("GROUP_FORMED", SkuCore.DialTargeting_GROUP_FORMED)
+   SkuDispatcher:UnregisterEventCallback("GROUP_JOINED", SkuCore.DialTargeting_GROUP_JOINED)
+   SkuDispatcher:UnregisterEventCallback("GROUP_LEFT", SkuCore.DialTargeting_GROUP_LEFT)
+   SkuDispatcher:UnregisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.DialTargeting_GROUP_ROSTER_UPDATE)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -389,7 +431,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DialTargeting_EndableDisable()
-   if 
+   if not DialTargeting:IsEnabled() then return end
+   if
       ((UnitInRaid("player") and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Raid"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))) 
       or 
       (UnitInParty("player") == true  and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))  
@@ -452,6 +495,29 @@ function SkuCore:DialTargetingMenuBuilder()
       SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
       SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
    end
-   
 
+
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Arm the feature. Called automatically by AceAddon when the module is enabled (at
+-- SkuCore enable ~PLAYER_LOGIN, and again when the user toggles it back on). Runs the
+-- former DialTargetingOnLogin settings defaults, then DialTargetingOnInitialize, which
+-- creates the secure frames once and (re)registers the 6 group/roster dispatcher
+-- callbacks; PLAYER_ENTERING_WORLD then resolves enable/disable per the user's setting.
+function DialTargeting:OnEnable()
+   SkuCore:DialTargetingOnLogin()
+   SkuCore:DialTargetingOnInitialize()
+   -- Resolve the current group state immediately so re-enabling mid-session takes
+   -- effect without waiting for the next group event (the in-combat deferral inside
+   -- DialTargetingEnable/Disable is preserved).
+   SkuCore:DialTargeting_EndableDisable()
+end
+
+-- Disarm the feature: unregister the group/roster dispatcher callbacks so a disabled
+-- DialTargeting does nothing, then tear down the secure bindings via the existing
+-- helper (which itself defers to PLAYER_REGEN_ENABLED while in combat).
+function DialTargeting:OnDisable()
+   DialTargeting:DialTargetingUnregisterCallbacks()
+   SkuCore:DialTargetingDisable()
 end

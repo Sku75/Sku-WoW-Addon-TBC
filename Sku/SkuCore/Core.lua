@@ -406,21 +406,15 @@ function SkuCore:OnInitialize()
 	SkuDispatcher:RegisterEventCallback("PET_STABLE_UPDATE", SkuCore.PET_STABLE_UPDATE)
 
 
-	SkuCore:MailOnInitialize()
-	SkuCore:UIErrorsOnInitialize()
-	SkuCore:RangeCheckOnInitialize()
+	-- W4 Phase D / Rework A: Mail, UIErrors, RangeCheck, DialTargeting, DamageMeter,
+	-- Friends, GameWorldObjects, TurnToUnit, SkuFocus are now AceAddon submodules that
+	-- arm via their own OnEnable; their explicit *OnInitialize calls were removed here.
 	SkuCore:AqOnInitialize()
 	SkuCore:aqCombatOnInitialize()
-	SkuCore:DialTargetingOnInitialize()
 
-	SkuCore:DamageMeterOnInitialize()
 	SkuCore:AuctionHouseOnInitialize()
-	SkuCore:FriendsOnInitialize()
 	-- LfgOnInitialize entfernt (Dungeon-Browser-Modul wird neu aufgebaut)
 	if SkuCore.VoiceOutputOnInitialize then pcall(SkuCore.VoiceOutputOnInitialize, SkuCore) end
-	SkuCore:GameWorldObjectsOnInitialize()
-	SkuCore:TurnToUnitOnInitialize()
-	SkuCore.SkuFocus:OnInitialize()
 
 end
 
@@ -988,7 +982,7 @@ function SkuCore:OnEnable()
 	-- (this runs inside SkuCore's OnEnable, ahead of the module-enable loop), so a
 	-- feature the user turned off never arms. W4 Phase D.
 	SkuCore:ApplyModuleEnabledStates()
-	SkuCore:RangeCheckOnEnable()
+	-- RangeCheck now arms via its own module OnEnable (W4 Rework A).
 
 	--fake ctrl shift tab for untargetable units in starting areas	
 	local tFrame = CreateFrame("Button", "SkuCoreSecureTabButton", _G["UIParent"], "SecureActionButtonTemplate")
@@ -2359,9 +2353,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		end
 
 		SkuCore:AuctionHouseOnLogin()
-		SkuCore:MinimapScannerOnLogin()
-		SkuCore:DialogKeyLogin()
-		SkuCore:alItegrationLogin()
+		-- MinimapScanner, DialogKey, AtlasLootIntegration now arm via their own
+		-- module OnEnable (W4 Rework A).
 
 		if not SkuSettings:Sub("SkuCore", nil, "char") then
 			SkuSettings:Sub("SkuCore", nil, "char")
@@ -2383,13 +2376,10 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		-- JunkAndRepair is now an AceAddon submodule; AceAddon arms it via its
 		-- OnEnable at SkuCore enable, so no explicit init call here (W4 Phase D).
 		SkuCore:UpdateInteractMove(true)
-		SkuCore:GameWorldObjectsOnLogin()
 		SkuCore:AqOnLogin()
 		SkuCore:aqCombatOnLogin()
-		SkuCore:DialTargetingOnLogin()
-		SkuCore:DamageMeterOnLogin()
-		SkuCore:TurnToUnitOnLogin()
-		SkuCore.SkuFocus:OnLogin()
+		-- GameWorldObjects, DialTargeting, DamageMeter, TurnToUnit, SkuFocus now arm
+		-- via their own module OnEnable (W4 Rework A).
 
 		--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
 		--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)

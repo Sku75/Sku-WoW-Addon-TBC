@@ -22,6 +22,32 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W4 Phase D — X-D2 modularization map + X-D3 Rework A (21 features promoted).**
+  Produced the modularization map from a 33-agent feature inventory and recorded the
+  two-tier classification + risk-ranked checklist in `REFACTOR-PLAN.md` (X-D2). Then
+  executed **Rework A**: 21 SkuCore features promoted to runtime-toggleable AceAddon
+  submodules in one fan-out batch (one agent per feature file) — EquipmentSets,
+  Macro, DamageMeter, DualSpecProbe, AudioDevice, DialogKey, Mail, UpdateCheck,
+  Socketing, Friends, TurnToUnit, VisualAids, UIErrors, DungeonBrowser, SkuFocus,
+  DialTargeting, MinimapScanner, GameWorldObjects, RangeCheck, AtlasLootIntegration,
+  GameOptions. Behaviour-safe recipe: existing `SkuCore:Method` definitions and
+  `SkuCore.field` state stay in place; only the lifecycle moves into OnEnable (arm) /
+  OnDisable (real teardown), with `IsEnabled` no-op guards on public entry points so
+  a disabled feature is safe without editing external callers. `Core.lua` reconciled
+  centrally: 18 dead `*OnInitialize`/`*OnLogin`/`*OnEnable` calls removed; the
+  Aq/aqCombat/AuctionHouse/VoiceOutput calls kept (Rework B / Tier-1). Each feature
+  self-registers via `SkuCore:RegisterToggleableModule`, so the Features menu now
+  lists all 22 (incl. JunkAndRepair). Uniform behaviour delta: features re-arm on
+  every /reload instead of only initial login (proven harmless by the pilot). All
+  files luaparser-clean. **Verified in-game (2026-06-27): all 3 test gates passed**
+  — clean load (no Lua errors), Features-menu toggle on/off + persistence across
+  /reload, and secure/shared-state spot-checks (SkuFocus, DialTargeting, RangeCheck,
+  MinimapScanner+GameWorldObjects, Mail, UIErrors, DialogKey). Decisions this pass:
+  1a (Rework A first, one test), 2a (keep the 5 standalone addons top-level, toggle
+  in place — not re-parented), 3a (real OnDisable + guards with the promotion), 4
+  (LocalMenu stays Tier-1/non-toggleable — toggling the menu would lock the user out;
+  UIErrors + UpdateCheck are toggleable).
+
 - **W2 Phase D — node removal centralized through `SkuMenu:Remove` (M-D1).**
   Enumerated every menu-node removal / `prev`-`next` write site. There is exactly ONE
   genuine node *removal*: the AH buy-prune in `SkuCore/auctionHouse.lua`

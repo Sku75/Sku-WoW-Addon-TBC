@@ -5,6 +5,26 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: GameWorldObjects is a real AceAddon SUBMODULE of SkuCore so it can be
+-- turned on/off at runtime (mirrors the JunkAndRepair pilot):
+--   * OnEnable  arms the feature (the 3 cursor/mouseover events + the frame-counter
+--     OnUpdate driver, plus the per-char scanConfigs defaults) — formerly done by
+--     SkuCore:GameWorldObjectsOnInitialize / :GameWorldObjectsOnLogin.
+--   * OnDisable disarms it (unregisters the events; stops any active scan).
+-- AceAddon auto-enables modules when SkuCore enables, so this now re-arms on every
+-- load (incl. /reload), replacing the explicit Core.lua init/login calls (which only
+-- ran on the initial login). All SkuCore:GameWorldObjects* methods stay in place so
+-- external callers (Core.lua keybind, MinimapScanner) keep working; the scan START
+-- (GameWorldObjectsScan) becomes a safe no-op while disabled (IsEnabled guard).
+-- Settings stay under the "SkuCore" SkuSettings namespace, so no SavedVariables migration.
+local GameWorldObjects = SkuCore:NewModule("GameWorldObjects")
+SkuCore.GameWorldObjects = GameWorldObjects   -- published handle (harmless; mirrors the pilot)
+
+-- Make this feature user-toggleable (Features menu + persisted on/off).
+SkuCore:RegisterToggleableModule("GameWorldObjects", function()
+   return (GetLocale and GetLocale() == "deDE") and "Spielweltobjekte" or "World objects"
+end)
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Local Unescape removed in the Sku 42 rework (W4 Phase A) — now uses the shared
 -- SkuUtil:Unescape. The tostring() wrapper at the call sites preserves this
@@ -13,20 +33,26 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 -- (e.g. `if aTextLeft2 ~= "nil"`), so SkuUtil's real-nil return must be coerced.
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- The frame-counter driver frame (created once, reused across enable/disable
+-- cycles). Module upvalue so OnEnable/OnDisable can start/stop its OnUpdate.
+local gameWorldObjectsFrameCounter
+
 function SkuCore:GameWorldObjectsOnInitialize()
    if Sku.toc > 11403 then
       SkuCore:RegisterEvent("CURSOR_CHANGED")
    else
       SkuCore:RegisterEvent("CURSOR_UPDATE")
    end
-   
+
    SkuCore:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 
-   local tFrame = CreateFrame("Frame", "SkuCoregameWorldObjectsFrameCounter", _G["UIParent"])
+   if not gameWorldObjectsFrameCounter then
+      gameWorldObjectsFrameCounter = CreateFrame("Frame", "SkuCoregameWorldObjectsFrameCounter", _G["UIParent"])
+      gameWorldObjectsFrameCounter:SetSize(1, 1)
+      gameWorldObjectsFrameCounter:SetPoint("TOPLEFT", _G["UIParent"], "TOPLEFT", 0, 0)
+   end
    SkuCore.gameWorldObjectsFrameCounter = 0
-   tFrame:SetSize(1, 1)
-   tFrame:SetPoint("TOPLEFT", _G["UIParent"], "TOPLEFT", 0, 0)
-   tFrame:SetScript("OnUpdate", function(self, time)
+   gameWorldObjectsFrameCounter:SetScript("OnUpdate", function(self, time)
       SkuCore.gameWorldObjectsFrameCounter = SkuCore.gameWorldObjectsFrameCounter + 1
       if SkuCore.gameWorldObjectsFrameCounter > 40000 then
          SkuCore.gameWorldObjectsFrameCounter = 0
@@ -46,6 +72,34 @@ function SkuCore:GameWorldObjectsOnLogin()
    SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[6] = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[6] or {type = 3, objects = {10,},}
    SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[7] = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[7] or {type = 3, objects = {1, 2,},}
    SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[8] = SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[8] or {type = 5, objects = {12,},}
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Arm the feature. Called automatically by AceAddon when the module is enabled
+-- (at SkuCore enable, and again whenever the user toggles it back on). Re-runs the
+-- former Core.lua init+login arming (the 3 events + frame-counter OnUpdate +
+-- scanConfigs defaults), so the feature now re-arms on every /reload.
+function GameWorldObjects:OnEnable()
+   SkuCore:GameWorldObjectsOnInitialize()
+   SkuCore:GameWorldObjectsOnLogin()
+end
+
+-- Disarm the feature: stop any active scan, unregister the cursor/mouseover events,
+-- and stop the frame-counter OnUpdate so a disabled feature genuinely does nothing.
+function GameWorldObjects:OnDisable()
+   -- stop any in-progress scan / restore the camera
+   if SkuCore.GameWorldObjectsRestoreView then
+      SkuCore:GameWorldObjectsRestoreView()
+   end
+   if Sku.toc > 11403 then
+      SkuCore:UnregisterEvent("CURSOR_CHANGED")
+   else
+      SkuCore:UnregisterEvent("CURSOR_UPDATE")
+   end
+   SkuCore:UnregisterEvent("UPDATE_MOUSEOVER_UNIT")
+   if gameWorldObjectsFrameCounter then
+      gameWorldObjectsFrameCounter:SetScript("OnUpdate", nil)
+   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -442,6 +496,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GameWorldObjectsScan(aContinue, aFindList, aHStepSizeDeg, aHStepsMax, aVMoveSpeed, aVStepsMax, aCallback, aHStart)
+   if not GameWorldObjects:IsEnabled() then return end
    dprint("GameWorldObjectsScan", aContinue, aFindList, aHStepSizeDeg, aHStepsMax, aVMoveSpeed, aVStepsMax, aCallback, aHStart)
    local tFrame = _G["SkuCoreGameWorldObjectsScanTicker"] or CreateFrame("Frame", "SkuCoreGameWorldObjectsScanTicker", _G["UIParent"])
    tFrame:SetSize(1, 1)

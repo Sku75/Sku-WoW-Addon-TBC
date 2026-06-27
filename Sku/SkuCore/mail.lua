@@ -4,9 +4,36 @@ local MODULE_NAME = "SkuCore"
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 local L = Sku.L
 
+-- W4 Phase D: Mail is a real AceAddon SUBMODULE of SkuCore so it can be turned
+-- on/off at runtime. All SkuCore:Method definitions and module state stay exactly
+-- where they were (external callers in Options.lua keep working); only the
+-- lifecycle moves:
+--   * OnEnable  arms the mailbox (registers the 10 MAIL_* events + installs the
+--     UIErrorsFrame hook once). This replaces the old explicit
+--     SkuCore:MailOnInitialize() call in Core.lua, so mail now re-arms on every
+--     /reload, not only on the initial login.
+--   * OnDisable unregisters all 10 events (the hooksecurefunc hook cannot be
+--     removed, so its body is guarded with IsEnabled()).
+-- Settings/SavedVariables shape is unchanged.
+local Mail = SkuCore:NewModule("Mail")
+SkuCore.Mail = Mail   -- keep the published handle
+
+-- Make this feature user-toggleable (Features menu + persisted on/off).
+SkuCore:RegisterToggleableModule("Mail", function()
+	return (GetLocale and GetLocale() == "deDE") and "Post" or "Mail"
+end)
+
 local gLastError = ""
+
+-- The UIErrorsFrame hook is installed once and never removed (hooksecurefunc
+-- hooks are permanent); it is a no-op while the feature is disabled.
+local gMailHookInstalled = false
+
 ------------------------------------------------------------------------------------------------------------
-function SkuCore:MailOnInitialize()
+-- Arm the feature. Called by AceAddon when the module is enabled (at SkuCore
+-- enable, and whenever the user toggles it back on). Body = the old
+-- SkuCore:MailOnInitialize arming.
+function Mail:OnEnable()
 	SkuCore:RegisterEvent("MAIL_SHOW")
 	SkuCore:RegisterEvent("MAIL_INBOX_UPDATE")
 	SkuCore:RegisterEvent("MAIL_CLOSED")
@@ -18,9 +45,28 @@ function SkuCore:MailOnInitialize()
 	SkuCore:RegisterEvent("MAIL_LOCK_SEND_ITEMS")
 	SkuCore:RegisterEvent("MAIL_UNLOCK_SEND_ITEMS")
 
-   hooksecurefunc(UIErrorsFrame, "AddMessage", function(self, text, r, g, b, messageGroup, holdTime)
-      gLastError = text
-	end)
+   if not gMailHookInstalled then
+      gMailHookInstalled = true
+      hooksecurefunc(UIErrorsFrame, "AddMessage", function(self, text, r, g, b, messageGroup, holdTime)
+         if not Mail:IsEnabled() then return end
+         gLastError = text
+      end)
+   end
+end
+
+-- Disarm the feature: unregister all 10 MAIL_* events so a disabled Mail does
+-- nothing. The UIErrorsFrame hook stays installed but is gated by IsEnabled().
+function Mail:OnDisable()
+	SkuCore:UnregisterEvent("MAIL_SHOW")
+	SkuCore:UnregisterEvent("MAIL_INBOX_UPDATE")
+	SkuCore:UnregisterEvent("MAIL_CLOSED")
+	SkuCore:UnregisterEvent("MAIL_SEND_INFO_UPDATE")
+	SkuCore:UnregisterEvent("MAIL_SEND_SUCCESS")
+	SkuCore:UnregisterEvent("MAIL_FAILED")
+	SkuCore:UnregisterEvent("MAIL_SUCCESS")
+	SkuCore:UnregisterEvent("CLOSE_INBOX_ITEM")
+	SkuCore:UnregisterEvent("MAIL_LOCK_SEND_ITEMS")
+	SkuCore:UnregisterEvent("MAIL_UNLOCK_SEND_ITEMS")
 end
 
 ------------------------------------------------------------------------------------------------------------

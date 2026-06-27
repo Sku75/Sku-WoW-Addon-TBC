@@ -1,6 +1,28 @@
-local MODULE_NAME = "SkuCore"
+local MODULE_NAME, MODULE_PART = "SkuCore", "Macro"
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 local L = Sku.L
+
+-- W4 Phase D: Macro is a real AceAddon SUBMODULE of SkuCore so it can be turned
+-- on/off at runtime via the Features menu. This feature is a pure menu-builder
+-- (SkuCore:MacroMenuBuilder, referenced by Options.lua) with no events, hooks, or
+-- timers to arm, so OnEnable/OnDisable are intentional no-ops — toggling it off
+-- simply removes it from the Features list / leaves its menu inert. The menu
+-- methods stay exactly where they are so external callers keep working.
+local Macro = SkuCore:NewModule(MODULE_PART)
+SkuCore.Macro = Macro   -- keep the published handle
+
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule(MODULE_PART, function()
+    return (GetLocale and GetLocale() == "deDE") and "Makros" or "Macros"
+end)
+
+-- No lifecycle to arm/disarm: this is a pure menu-builder feature.
+function Macro:OnEnable()
+end
+
+function Macro:OnDisable()
+end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function MacroMenuBuilderNew(aParent)
     CreateTextBox(aParent, L["MacroName"], L["EnterMacroName"], function(value)

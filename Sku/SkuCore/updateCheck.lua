@@ -37,6 +37,25 @@
   the spoken string; tune the cadence constants below.
 ]]
 
+-- W4 Phase D: UpdateCheck is a real AceAddon SUBMODULE of SkuCore so it can be
+-- turned on/off at runtime. Previously it self-wired via a file-scope frame that
+-- registered PLAYER_ENTERING_WORLD + CHAT_MSG_ADDON forever. Now:
+--   * OnEnable  arms the driver frame (registers those two events) — this runs on
+--     every load (AceAddon auto-enables modules at SkuCore enable), so unlike the
+--     old _booted one-shot it re-arms after a /reload too.
+--   * OnDisable disarms it (unregisters the events, cancels the clock ticker), so
+--     a disabled UpdateCheck does nothing — no listening, no announcing.
+SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
+
+local UpdateCheck = SkuCore:NewModule("UpdateCheck")
+SkuCore.UpdateCheck = UpdateCheck   -- keep a published handle (harmless if unused)
+
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule("UpdateCheck", function()
+  return (GetLocale and GetLocale() == "deDE") and "Aktualisierungspr\195\188fung" or "Update check"
+end)
+
 local ADDON_NAME   = "Sku"
 local COMM_PREFIX  = "SkuVer"       -- <= 16 chars
 local CHANNEL_NAME = "SkuChat"      -- the shared channel every Sku user joins
@@ -89,6 +108,7 @@ local _highestSeen                  -- highest version string heard (or own)
 local _lastSentAt = -MIN_SEND_GAP   -- so the FIRST broadcast isn't blocked by the gap
 local _nudgedThisSession = false
 local _now = 0                       -- maintained from a 1s ticker (no os.time reliance)
+local _clockTicker                   -- handle for the 1s clock ticker (cancelled on disable)
 
 local function Now() return _now end
 
@@ -130,6 +150,7 @@ end
 
 -- Send our version once, unless we should stay silent.
 local function MaybeAnnounceVersion()
+  if not UpdateCheck:IsEnabled() then return end   -- disabled: a pending timer must be a no-op
   -- Suppress: enough peers already advertised a version >= ours this window.
   if _heardConsistent >= REDUNDANCY_K then
     _heardConsistent = 0
@@ -151,6 +172,7 @@ end
 local function RandDelay(lo, hi) return math.random(lo, hi) end
 
 local function ScheduleSteady()
+  if not UpdateCheck:IsEnabled() then return end   -- stop the steady re-schedule loop when disabled
   if not C_Timer then return end
   C_Timer.After(RandDelay(STEADY_MIN, STEADY_MAX), function()
     MaybeAnnounceVersion()
@@ -161,6 +183,7 @@ end
 -- --- receiving -------------------------------------------------------------
 
 local function OnPeerVersion(peerVersion)
+  if not UpdateCheck:IsEnabled() then return end
   if type(peerVersion) ~= "string" or peerVersion == "" then return end
   local cmp = CompareVersions(peerVersion, GetOwnVersionString())
   Trace("heard peer version", peerVersion, "cmp", cmp, "consistentSoFar", _heardConsistent)
@@ -193,32 +216,19 @@ end
 
 -- --- wiring ----------------------------------------------------------------
 
+-- The hidden driver frame. Created once and reused across enable/disable cycles;
+-- OnEnable registers its events, OnDisable unregisters them.
 local frame = CreateFrame("Frame")
 local _booted = false
 
-frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-frame:RegisterEvent("CHAT_MSG_ADDON")
 frame:SetScript("OnEvent", function(_, event, arg1, arg2)
   if event == "PLAYER_ENTERING_WORLD" then
+    -- Boot once per session. (OnEnable already armed the per-load listening when
+    -- the module enabled; this just seeds session state on the first PEW.)
     if _booted then return end
     _booted = true
     _highestSeen = GetOwnVersionString()
     Trace("boot, own version", GetOwnVersionString())
-
-    if C_ChatInfo and C_ChatInfo.RegisterAddonMessagePrefix then
-      C_ChatInfo.RegisterAddonMessagePrefix(COMM_PREFIX)
-    end
-
-    -- 1-second ticker just to advance our clock (avoids os.time / date()).
-    if C_Timer then C_Timer.NewTicker(1, function() _now = _now + 1 end) end
-
-    -- Listen first; consider speaking only after a long, randomized delay.
-    if C_Timer then
-      C_Timer.After(RandDelay(FIRST_ANNOUNCE_MIN, FIRST_ANNOUNCE_MAX), function()
-        MaybeAnnounceVersion()
-        ScheduleSteady()
-      end)
-    end
 
   elseif event == "CHAT_MSG_ADDON" then
     local prefix, message = arg1, arg2
@@ -228,6 +238,46 @@ frame:SetScript("OnEvent", function(_, event, arg1, arg2)
   end
 end)
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Arm the feature. Called automatically by AceAddon when the module is enabled
+-- (at SkuCore enable, and again whenever the user toggles it back on). Unlike the
+-- old _booted one-shot, this re-arms on every load (incl. /reload).
+function UpdateCheck:OnEnable()
+  _highestSeen = _highestSeen or GetOwnVersionString()
+
+  frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+  frame:RegisterEvent("CHAT_MSG_ADDON")
+
+  if C_ChatInfo and C_ChatInfo.RegisterAddonMessagePrefix then
+    C_ChatInfo.RegisterAddonMessagePrefix(COMM_PREFIX)
+  end
+
+  -- 1-second ticker just to advance our clock (avoids os.time / date()).
+  if C_Timer and not _clockTicker then
+    _clockTicker = C_Timer.NewTicker(1, function() _now = _now + 1 end)
+  end
+
+  -- Listen first; consider speaking only after a long, randomized delay.
+  if C_Timer then
+    C_Timer.After(RandDelay(FIRST_ANNOUNCE_MIN, FIRST_ANNOUNCE_MAX), function()
+      MaybeAnnounceVersion()
+      ScheduleSteady()
+    end)
+  end
+end
+
+-- Disarm the feature: unregister events and cancel the clock ticker so a disabled
+-- UpdateCheck does nothing. Any already-pending C_Timer callbacks become no-ops
+-- via the IsEnabled() guards in MaybeAnnounceVersion/ScheduleSteady/OnPeerVersion.
+function UpdateCheck:OnDisable()
+  frame:UnregisterEvent("PLAYER_ENTERING_WORLD")
+  frame:UnregisterEvent("CHAT_MSG_ADDON")
+  if _clockTicker then
+    _clockTicker:Cancel()
+    _clockTicker = nil
+  end
+end
+
 -- --- diagnostic slash command ----------------------------------------------
 -- /skuver — prints the update-check status (NVDA reads it) AND logs it via
 -- dprint, and does a one-off test broadcast to exercise the send path. Handy to
@@ -236,6 +286,10 @@ end)
 
 SLASH_SKUVER1 = "/skuver"
 SlashCmdList["SKUVER"] = function()
+  if not UpdateCheck:IsEnabled() then
+    print("|cffffd200SkuVer:|r update check is disabled (Features menu).")
+    return
+  end
   local own = GetOwnVersionString()
   local cid = ChannelId()
   local onChannel = cid ~= 0

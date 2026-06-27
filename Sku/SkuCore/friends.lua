@@ -5,15 +5,49 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: Friends is a real AceAddon SUBMODULE of SkuCore so it can be turned
+-- on/off at runtime:
+--   * OnEnable  arms it (registers FRIENDLIST_UPDATE + installs the FriendsFrame
+--     "Show" hook once).
+--   * OnDisable disarms it (unregisters FRIENDLIST_UPDATE; the hooksecurefunc hook
+--     cannot be removed so SkuCore:ONSHOW guards itself with IsEnabled()).
+-- AceAddon auto-enables the module when SkuCore enables (≈ PLAYER_LOGIN), replacing
+-- the old explicit SkuCore:FriendsOnInitialize() call in SkuCore:OnInitialize
+-- (which only ran once, so this also re-arms after every /reload).
+-- The FriendsMenuBuilder ("Social") handle stays a SkuCore method (referenced from
+-- SkuCore/Options.lua), unchanged.
+local Friends = SkuCore:NewModule("Friends")
+SkuCore.Friends = Friends   -- keep a published handle
+
+-- Make this feature user-toggleable (Features menu + persisted on/off).
+SkuCore:RegisterToggleableModule("Friends", function()
+   return (GetLocale and GetLocale() == "deDE") and "Freunde" or "Friends"
+end)
+
+-- Track whether the FriendsFrame "Show" hook has been installed (a hooksecurefunc
+-- hook is permanent; install it only once across enable/disable cycles).
+local gShowHookInstalled = false
+
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:FriendsOnInitialize()
+-- Arm the feature. Called automatically by AceAddon when the module is enabled.
+function Friends:OnEnable()
    SkuCore:RegisterEvent("FRIENDLIST_UPDATE")
-   
-   hooksecurefunc(FriendsFrame, "Show", SkuCore.ONSHOW)
+
+   if not gShowHookInstalled then
+      hooksecurefunc(FriendsFrame, "Show", SkuCore.ONSHOW)
+      gShowHookInstalled = true
+   end
+end
+
+-- Disarm the feature: unregister the event. The "Show" hook cannot be removed, so
+-- SkuCore:ONSHOW no-ops itself when the module is disabled (see its IsEnabled guard).
+function Friends:OnDisable()
+   SkuCore:UnregisterEvent("FRIENDLIST_UPDATE")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:ONSHOW()
+   if not Friends:IsEnabled() then return end
    SkuOptions:SlashFunc(L["short"]..",Core,"..L["Social"])
 end
 

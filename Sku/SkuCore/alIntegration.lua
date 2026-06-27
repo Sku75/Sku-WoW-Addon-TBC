@@ -4,6 +4,29 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: AtlasLootIntegration is a real AceAddon SUBMODULE of SkuCore so it
+-- can be turned on/off independently at runtime:
+--   * OnEnable  arms the feature (initialises the wishlist tables, rebuilds the
+--     wishlist cache, registers the loot/chat events and applies the open-AtlasLoot
+--     keybind) — exactly what the old SkuCore:alItegrationLogin() did on login.
+--   * OnDisable disarms it (unregisters the loot/chat events and clears the keybind
+--     override) so a disabled feature genuinely does nothing.
+-- AceAddon auto-enables modules when SkuCore enables (≈ PLAYER_LOGIN), replacing the
+-- old explicit SkuCore:alItegrationLogin() call in the isInitialLogin block (which
+-- only ran on the very first login, so the loot/wishlist listeners did not re-arm
+-- after a /reload — OnEnable fixes that by arming on every load).
+-- All methods and state stay on SkuCore (SkuZOptions reads SkuCore.favoriteSlots and
+-- the per-char alIntegration.favorites), and settings stay under the "SkuCore"
+-- SkuSettings namespace, so there is no SavedVariables migration.
+local AtlasLootIntegration = SkuCore:NewModule("AtlasLootIntegration")
+SkuCore.AtlasLootIntegration = AtlasLootIntegration   -- keep the published handle
+
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule("AtlasLootIntegration", function()
+   return (GetLocale and GetLocale() == "deDE") and "AtlasLoot-Integration" or "AtlasLoot integration"
+end)
+
 -- Erweiterung-Reiter, identisch zur AtlasLoot-Game-Version-Numerierung:
 --   [1] = Classic (Vanilla)
 --   [2] = The Burning Crusade (TBC)
@@ -93,6 +116,32 @@ function SkuCore:alItegrationLogin()
    SkuCore:RegisterEvent("CHAT_MSG_RAID_LEADER")
    SkuCore:RegisterEvent("CHAT_MSG_SAY")
    SkuCore:RegisterEvent("CHAT_MSG_YELL")
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- W4 Phase D lifecycle. Arm the feature: AceAddon calls this when the module is
+-- enabled (at SkuCore enable, and again whenever the user toggles it back on). It
+-- runs the same arming the old login path did (settings init + event registration),
+-- and (re)applies the open-AtlasLoot keybind override so it is active after a /reload.
+function AtlasLootIntegration:OnEnable()
+   SkuCore:alItegrationLogin()
+   pcall(function() SkuCore:AtlasLootApplyKeyBinding() end)
+end
+
+-- Disarm the feature: unregister the loot/chat listeners and drop the keybind
+-- override so a disabled AtlasLootIntegration does nothing.
+function AtlasLootIntegration:OnDisable()
+   SkuCore:UnregisterEvent("CHAT_MSG_LOOT")
+   SkuCore:UnregisterEvent("START_LOOT_ROLL")
+   SkuCore:UnregisterEvent("CHAT_MSG_PARTY")
+   SkuCore:UnregisterEvent("CHAT_MSG_PARTY_LEADER")
+   SkuCore:UnregisterEvent("CHAT_MSG_RAID")
+   SkuCore:UnregisterEvent("CHAT_MSG_RAID_LEADER")
+   SkuCore:UnregisterEvent("CHAT_MSG_SAY")
+   SkuCore:UnregisterEvent("CHAT_MSG_YELL")
+   if _G["SkuAtlasLootShortcutButton"] then
+      pcall(ClearOverrideBindings, _G["SkuAtlasLootShortcutButton"])
+   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1876,6 +1925,7 @@ local function tFindAtlasLootContext()
 end
 
 function SkuCore:AtlasLootShortcut()
+   if AtlasLootIntegration and not AtlasLootIntegration:IsEnabled() then return end
    if not SkuOptions then return end
    -- Sku-Menü öffnen, falls geschlossen
    if not SkuOptions:IsMenuOpen() and _G["OnSkuOptionsMain"] then
@@ -1914,6 +1964,12 @@ function SkuCore:AtlasLootApplyKeyBinding()
    -- Vorherige Bindung dieses Buttons lösen, damit ein „Neu belegen"
    -- nicht zwei Tasten parallel aktiv lässt.
    pcall(ClearOverrideBindings, _G["SkuAtlasLootShortcutButton"])
+   -- W4 Phase D: ist das Feature ausgeschaltet, nur lösen (kein Re-Arm).
+   -- Dieser Pfad wird auch vom Datei-Frame (PLAYER_ENTERING_WORLD) und aus
+   -- SkuKeyBindsUpdate aufgerufen, also hier gegen einen Disable absichern.
+   if AtlasLootIntegration and not AtlasLootIntegration:IsEnabled() then
+      return
+   end
    local tKey
    if SkuOptions and SkuOptions.db and SkuOptions.db.profile
       and SkuOptions.db.profile["SkuOptions"]

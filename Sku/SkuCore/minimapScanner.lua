@@ -5,6 +5,22 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: MinimapScanner is a real AceAddon SUBMODULE of SkuCore so it can be
+-- turned on/off at runtime. All SkuCore:Minimap* methods stay where they are (the
+-- Core.lua keybind handlers and the OnUpdate frame still call them); the feature
+-- turns "off" purely because OnDisable stops the active scan and removes the
+-- OnUpdate driver. OnEnable arms it (chat command + OnUpdate frame), replacing the
+-- old explicit SkuCore:MinimapScannerOnLogin() call in PLAYER_ENTERING_WORLD (which
+-- only ran on the initial login, so the scanner did not re-arm after a /reload —
+-- OnEnable fixes that by arming on every load).
+local MinimapScanner = SkuCore:NewModule("MinimapScanner")
+SkuCore.MinimapScanner = MinimapScanner   -- keep the published handle
+
+-- Make this feature user-toggleable (Features menu + persisted on/off).
+SkuCore:RegisterToggleableModule("MinimapScanner", function()
+   return (GetLocale and GetLocale() == "deDE") and "Minikarten-Scanner" or "Minimap scanner"
+end)
+
 SkuCore.RessourceTypes = {
    chests = {
       [1] = { deDE = "Beschädigte Truhe", enUS = "Damaged Chest", zhCN = "破损的箱子", ruRU = "Повреждённый сундук",},
@@ -500,6 +516,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MinimapScan(aRange)
+   if not MinimapScanner:IsEnabled() then return end
    dprint("MinimapScan", aRange)
    if Questie then
       Questie.db.global.enableMiniMapIcons = false
@@ -650,6 +667,7 @@ local tInitialCenterMouse
 local tPrevResult = ""
 local mmx, mmy
 function SkuCore:MinimapScanFast()
+   if not MinimapScanner:IsEnabled() then return end
    if SkuCore.MinimapScanFastRunning == true then return end
    if Questie then Questie.db.global.enableMiniMapIcons = false end
 
@@ -900,5 +918,26 @@ function SkuCore:SlashActiveSeekings()
    if not found then
       print("Keine Suche aktiv.")
       SkuOptions.Voice:OutputStringBTtts("Keine Suche aktiv", false, true, 0.2)
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Arm the feature. Called automatically by AceAddon when the module is enabled
+-- (at SkuCore enable, and again whenever the user toggles it back on). Replaces
+-- the old explicit SkuCore:MinimapScannerOnLogin() call in PLAYER_ENTERING_WORLD;
+-- the arming body is unchanged (it lives in MinimapScannerOnLogin, which we call
+-- here so the method stays exactly where external callers expect it).
+function MinimapScanner:OnEnable()
+   SkuCore:MinimapScannerOnLogin()
+end
+
+-- Disarm the feature: stop any in-progress scan and remove the OnUpdate driver so
+-- a disabled MinimapScanner does nothing (no passive resource notifications, no
+-- manual scan). The chat command stays registered (AceConsole cannot unregister),
+-- but MinimapScan/MinimapScanFast no-op via their IsEnabled guards.
+function MinimapScanner:OnDisable()
+   SkuCore:MinimapStopScan()
+   if SkuCore.minimapScannerFrame then
+      SkuCore.minimapScannerFrame:SetScript("OnUpdate", nil)
    end
 end

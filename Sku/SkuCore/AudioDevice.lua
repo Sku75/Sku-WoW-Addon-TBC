@@ -20,6 +20,25 @@
 -- is used additionally for direct TTS, as a belt-and-braces fallback.
 -- =====================================================================
 
+local MODULE_NAME, MODULE_PART = "SkuCore", "AudioDevice"
+
+SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
+
+-- W4 Phase D: AudioDevice is a real AceAddon SUBMODULE of SkuCore so it can be
+-- turned on/off at runtime. The only thing this feature "arms" is its slash
+-- command (/skuaudio, /audio). The slash handler stays registered for the whole
+-- session (a SlashCmdList entry cannot be cleanly removed), but its body is gated
+-- by IsEnabled(): when the module is disabled the command is a harmless no-op.
+-- OnEnable installs the slash entry (idempotent across enable/disable cycles).
+local AudioDevice = SkuCore:NewModule(MODULE_PART)
+SkuCore.AudioDevice = AudioDevice   -- keep a published handle (harmless if unused elsewhere)
+
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule(MODULE_PART, function()
+   return (GetLocale and GetLocale() == "deDE") and "Audiogerät" or "Audio device"
+end)
+
 local function tSay(aText)
    if type(aText) ~= "string" then aText = tostring(aText) end
    -- Go through default chat frame so SkuChat reads it.
@@ -138,10 +157,10 @@ local function tFindAndSet(aQuery)
    tSetDevice(tMatches[1].idx)
 end
 
-SLASH_SKUAUDIO1 = "/skuaudio"
-SLASH_SKUAUDIO2 = "/audio"
-
-SlashCmdList["SKUAUDIO"] = function(aMsg)
+-- The slash handler. Gated by IsEnabled() so a disabled feature is a safe no-op
+-- (the SlashCmdList entry itself is installed once in OnEnable and left in place).
+local function SkuAudioSlashHandler(aMsg)
+   if not AudioDevice:IsEnabled() then return end
    aMsg = aMsg or ""
    local tCmd, tArg = aMsg:match("^%s*(%S+)%s*(.*)$")
    tCmd = (tCmd or ""):lower()
@@ -172,4 +191,20 @@ SlashCmdList["SKUAUDIO"] = function(aMsg)
    else
       tSay("Unbekannt. Verfügbar: list, current, set N, find <text>, restart")
    end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Arm the feature: install the slash command. Called automatically by AceAddon
+-- when the module is enabled (at SkuCore enable, and again on user re-enable).
+-- Installing is idempotent, so re-enabling does no harm.
+function AudioDevice:OnEnable()
+   SLASH_SKUAUDIO1 = "/skuaudio"
+   SLASH_SKUAUDIO2 = "/audio"
+   SlashCmdList["SKUAUDIO"] = SkuAudioSlashHandler
+end
+
+-- Disarm the feature. The slash entry stays registered (SlashCmdList entries
+-- cannot be cleanly removed), but its handler body short-circuits via IsEnabled(),
+-- so a disabled AudioDevice does nothing.
+function AudioDevice:OnDisable()
 end

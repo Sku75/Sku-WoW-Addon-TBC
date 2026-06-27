@@ -5,6 +5,28 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: RangeCheck is a real AceAddon SUBMODULE of SkuCore, so it can be
+-- turned on/off at runtime (OnEnable/OnDisable), mirroring the JunkAndRepair
+-- pilot. RangeCheck is a SHARED SERVICE: SkuMob, SkuNav, aqCombat and a Core.lua
+-- OnUpdate all call SkuCore:DoRangeCheck. To keep those external callers working
+-- unchanged, every existing SkuCore:* method and SkuCore.* state stays exactly
+-- where it is; the module only owns the LIFECYCLE:
+--   * OnEnable  arms the feature (registers the LibRangeCheck CHECKERS_CHANGED
+--     callback + runs the existing SkuCore:RangeCheckOnEnable).
+--   * OnDisable unregisters that callback, and the IsEnabled guard at the top of
+--     SkuCore:DoRangeCheck makes the service a safe no-op while disabled.
+-- AceAddon auto-enables the module at SkuCore enable (≈ PLAYER_LOGIN) and again
+-- on every /reload, replacing the old explicit RangeCheckOnInitialize/OnEnable
+-- calls in Core.lua (so it re-arms on every load, not just the initial login).
+local RangeCheck = SkuCore:NewModule(MODULE_PART)
+SkuCore.RangeCheck = RangeCheck   -- keep the published handle
+
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule(MODULE_PART, function()
+   return (GetLocale and GetLocale() == "deDE") and "Reichweitenprüfung" or "Range check"
+end)
+
 SkuCore.RangeCheckValues = {
    Ranges = {
       Friendly = {},
@@ -166,9 +188,32 @@ function SkuCore:RangeCheckUpdateRanges()
 end
    
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Arm the shared range-check service. Called automatically by AceAddon when the
+-- module is enabled (at SkuCore enable, on every /reload, and whenever the user
+-- toggles it back on). Mirrors the old Core.lua RangeCheckOnInitialize +
+-- RangeCheckOnEnable calls.
+function RangeCheck:OnEnable()
+   SkuCore:RangeCheckOnInitialize()
+   SkuCore:RangeCheckOnEnable()
+end
+
+-- Disarm: drop the LibRangeCheck CHECKERS_CHANGED subscription so a disabled
+-- feature stops reacting to checker changes. The IsEnabled guard in
+-- SkuCore:DoRangeCheck makes the per-target service itself a safe no-op.
+function RangeCheck:OnDisable()
+   if SkuOptions and SkuOptions.RangeCheck and SkuOptions.RangeCheck.UnregisterCallback then
+      SkuOptions.RangeCheck.UnregisterCallback(SkuCore, SkuOptions.RangeCheck.CHECKERS_CHANGED)
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tRangeCheckLastTarget
 local tRangeCheckLastTargetminRange = 0
 function SkuCore:DoRangeCheck(aForceFlag)
+   if not RangeCheck:IsEnabled() then
+      return
+   end
+
    if not SkuSettings:Sub("SkuCore", nil, "char") then
       return
    end

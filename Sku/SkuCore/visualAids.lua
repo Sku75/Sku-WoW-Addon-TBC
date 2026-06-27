@@ -6,6 +6,34 @@
 -- Enthalten: Lesebalken, Plaketten-Farben (nach Reaktion), Maus-Finder (Aufleuchten).
 ---------------------------------------------------------------------------------------------------------------------------------------
 
+local MODULE_NAME, MODULE_PART = "SkuCore", "VisualAids"
+
+SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
+
+-- W4 Phase D: VisualAids is a real AceAddon SUBMODULE of SkuCore (umbrella for the
+-- reading bar, nameplate colours, mouse finder, follow-break warning and the secure
+-- next-combat-enemy button). Promoting it to a module gives it its own lifecycle so
+-- the whole feature set can be turned on/off at runtime:
+--   * OnEnable  arms the always-loaded driver frames/events (follow-break warning +
+--     the next-enemy regen frame) exactly as the old file-scope code did; the per-
+--     sub-feature lazy frames stay lazy and remain individually DB-gated.
+--   * OnDisable hides the lazy frames (line bar / mouse finder / plate colour driver /
+--     follow-warn frame / next-enemy button) and clears the next-enemy override
+--     binding, so a disabled VisualAids genuinely does nothing.
+-- The public SkuCore:VisualAids* methods stay where they are (called by SkuZOptions
+-- and a Core.lua keybind); the show/activate entry points are guarded with
+-- IsEnabled so "off" is a safe no-op without editing those callers.
+-- Settings stay under the "SkuCore" SkuSettings namespace, so there is no
+-- SavedVariables migration.
+local VisualAids = SkuCore:NewModule(MODULE_PART)
+SkuCore.VisualAids = VisualAids   -- published handle (harmless; entry points use it)
+
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule(MODULE_PART, function()
+	return (GetLocale and GetLocale() == "deDE") and "Visuelle Hilfen" or "Visual aids"
+end)
+
 -- Lazy-sichere Default-Struktur. Auch NEUE Profile starten mit allem AUS, ohne
 -- bestehende Nutzerwerte zu ueberschreiben.
 local function tEnsureVA()
@@ -73,6 +101,7 @@ local function tEnsureLineBar()
 end
 
 function SkuCore:VisualAidsLineBarLayout()
+	if not VisualAids:IsEnabled() then return end
 	local va = tEnsureVA(); if not va then return end
 	local f = tEnsureLineBar()
 	local size = tonumber(va.lineBar.size) or 3
@@ -106,6 +135,7 @@ local function tMenuIsOpen()
 end
 
 function SkuCore:VisualAidsLineBarSet(aText)
+	if not VisualAids:IsEnabled() then if tLineBar then tLineBar:Hide() end return end
 	local va = tEnsureVA(); if not va then return end
 	if va.lineBar.enabled ~= true or tMenuIsOpen() ~= true then
 		if tLineBar then tLineBar:Hide() end
@@ -146,6 +176,7 @@ function SkuCore:VisualAidsColorClearPlate(aUnit)
 end
 
 function SkuCore:VisualAidsColorOnePlate(aUnit)
+	if not VisualAids:IsEnabled() then return end
 	local va = tEnsureVA(); if not va or va.plateColors.enabled ~= true then return end
 	if not aUnit or not C_NamePlate then return end
 	local ok, np = pcall(C_NamePlate.GetNamePlateForUnit, aUnit)
@@ -178,6 +209,7 @@ function SkuCore:VisualAidsColorOnePlate(aUnit)
 end
 
 function SkuCore:VisualAidsColorRefreshAll()
+	if not VisualAids:IsEnabled() then return end
 	if not C_NamePlate or not C_NamePlate.GetNamePlates then return end
 	local ok, plates = pcall(C_NamePlate.GetNamePlates)
 	if not ok or not plates then return end
@@ -200,6 +232,7 @@ local function tClearAllPlates()
 end
 
 function SkuCore:VisualAidsPlateSetActive(aOn)
+	if not VisualAids:IsEnabled() then aOn = false end
 	if not tPlateEventFrame then
 		tPlateEventFrame = CreateFrame("Frame")
 		tPlateEventFrame:SetScript("OnEvent", function(self, event, unit)
@@ -278,6 +311,7 @@ local function tMouseFinderLayout(quarter)
 end
 
 function SkuCore:VisualAidsMouseFinderFlash()
+	if not VisualAids:IsEnabled() then return end
 	local va = tEnsureVA(); if not va or va.mouseFinder.enabled ~= true then return end
 	local x, y = GetCursorPosition()
 	local s = UIParent:GetEffectiveScale()
@@ -538,8 +572,8 @@ local function tEnsureFollowWarn()
 	tFollowWarnFrame = f
 	return f
 end
--- Beim Laden registrieren; die Aktion selbst ist durch den DB-Schalter gegated.
-pcall(tEnsureFollowWarn)
+-- Beim Aktivieren des Moduls registrieren (siehe VisualAids:OnEnable); die Aktion
+-- selbst ist zusaetzlich durch den DB-Schalter gegated.
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Naechster Gegner im Kampf: SICHERER Button mit /targetenemy (im Kampf erlaubt,
@@ -568,6 +602,7 @@ local tNextEnemyBindPending = false
 -- Wird von SkuKeyBindsUpdate aufgerufen (object SkuCore, func diese Methode):
 -- setzt die Override-Bindung der gewaehlten Taste auf den sicheren Button.
 function SkuCore:UpdateNextCombatEnemyBinding()
+	if not VisualAids:IsEnabled() then return end
 	local b = tEnsureNextEnemyButton()
 	if not b then return end
 	if InCombatLockdown() then
@@ -584,8 +619,10 @@ function SkuCore:UpdateNextCombatEnemyBinding()
 	if k2 ~= "" then pcall(SetOverrideBindingClick, b, true, k2, "SkuNextCombatEnemyButton", k2) end
 end
 
+-- Regen-Frame nur ERSTELLEN (Skript setzen); das eigentliche Event wird beim
+-- Aktivieren des Moduls registriert (VisualAids:OnEnable) und beim Deaktivieren
+-- wieder abgemeldet (VisualAids:OnDisable).
 local tNextEnemyRegenFrame = CreateFrame("Frame")
-tNextEnemyRegenFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 tNextEnemyRegenFrame:SetScript("OnEvent", function()
 	if tNextEnemyBindPending == true then
 		pcall(function() SkuCore:UpdateNextCombatEnemyBinding() end)
@@ -721,4 +758,51 @@ function SkuCore:VisualAidsBuildMenu(aParentSelf)
 	local tMouse = SkuOptions:InjectMenuItems(aParentSelf, {L["Maus-Finder"]}, SkuGenericMenuItem)
 	tMouse.dynamic = true
 	tMouse.BuildChildren = function(self) pcall(tBuildMouse, self) end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Modul-Lebenszyklus (W4 Phase D)
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Arm the umbrella. AceAddon calls this when SkuCore enables (≈ PLAYER_LOGIN) and
+-- again whenever the user toggles VisualAids back on. Arms only the always-loaded
+-- driver frames/events that the old file-scope code armed at load; the per-sub-
+-- feature lazy frames stay lazy and remain individually DB-gated.
+function VisualAids:OnEnable()
+	-- Folgen-Abbruch-Warnung: Frame anlegen + AUTOFOLLOW_BEGIN/END registrieren.
+	pcall(tEnsureFollowWarn)
+	-- Naechster-Gegner-Button: Regen-Event scharfschalten und Bindung anwenden.
+	if tNextEnemyRegenFrame then tNextEnemyRegenFrame:RegisterEvent("PLAYER_REGEN_ENABLED") end
+	if tNextEnemyButton then tNextEnemyButton:Show() end
+	pcall(function() SkuCore:UpdateNextCombatEnemyBinding() end)
+end
+
+-- Disarm the umbrella: hide the lazy frames, unregister all driver events and clear
+-- the next-enemy override binding, so a disabled VisualAids genuinely does nothing.
+function VisualAids:OnDisable()
+	-- Lesebalken
+	if tLineBar then tLineBar:Hide() end
+	-- Maus-Finder
+	if tMouseFinder then
+		tMouseFinder.tShown = false
+		tMouseFinder:SetScript("OnUpdate", nil)
+		tMouseFinder:Hide()
+	end
+	-- Plaketten-Farben: Events abmelden und vorhandene Faerbungen entfernen.
+	if tPlateEventFrame then
+		tPlateEventFrame:UnregisterAllEvents()
+		pcall(tClearAllPlates)
+	end
+	-- Folgen-Abbruch-Warnung: Frame ausblenden und Events abmelden.
+	if tFollowWarnFrame then
+		tFollowWarnFrame:UnregisterAllEvents()
+		tFollowWarnFrame:Hide()
+	end
+	tFollowWarnActive = false
+	tFollowWarnEndPending = false
+	-- Naechster-Gegner-Button: Regen-Event abmelden und Override-Bindung loeschen.
+	if tNextEnemyRegenFrame then tNextEnemyRegenFrame:UnregisterEvent("PLAYER_REGEN_ENABLED") end
+	if tNextEnemyButton then
+		pcall(ClearOverrideBindings, tNextEnemyButton)
+		tNextEnemyButton:Hide()
+	end
 end

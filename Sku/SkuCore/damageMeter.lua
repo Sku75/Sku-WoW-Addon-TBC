@@ -7,6 +7,23 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 
 SkuCore.damageMeter = {}
 
+-- W4 Phase D: DamageMeter is a real AceAddon SUBMODULE of SkuCore so it can be
+-- turned on/off at runtime. Its only lifecycle action is the deferred
+-- SkuDetailsCloseAssistant pass (previously scheduled in DamageMeterOnLogin),
+-- which OnEnable now arms on every load — so it re-runs after a /reload, not only
+-- on the initial login. There are no WoW events, frames, hooks or override
+-- bindings to tear down, so OnDisable has nothing to unwire; the menu/slash entry
+-- points self-guard with IsEnabled() so a disabled feature is a safe no-op.
+-- The existing SkuCore:DamageMeter* methods stay in place so external callers
+-- (Options.lua menu, slash dispatch) keep working unchanged.
+local DamageMeter = SkuCore:NewModule("DamageMeter")
+SkuCore.DamageMeter = DamageMeter   -- keep a published handle (harmless)
+
+-- Make this feature user-toggleable (Features menu + persisted on/off).
+SkuCore:RegisterToggleableModule("DamageMeter", function()
+	return (GetLocale and GetLocale() == "deDE") and "Schadensmesser" or "Damage meter"
+end)
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DamageMeterOnInitialize()
 	--SkuCore:RegisterEvent("")
@@ -71,7 +88,23 @@ function SkuCore:DamageMeterOnLogin()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Arm the feature. AceAddon calls this when the module is enabled (at SkuCore
+-- enable ≈ PLAYER_LOGIN, and again whenever the user toggles it back on). Runs the
+-- same arming the old DamageMeterOnLogin Core.lua call did, so it now also re-runs
+-- after a /reload.
+function DamageMeter:OnEnable()
+   SkuCore:DamageMeterOnLogin()
+end
+
+-- Disarm the feature. DamageMeter registers no WoW events, frames, hooks or
+-- override bindings, so there is nothing to tear down; the deferred timer fires at
+-- most once and the public entry points self-guard with IsEnabled().
+function DamageMeter:OnDisable()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DamageMeterSlashHandler(aFieldsTable)
+	if SkuCore.DamageMeter and not SkuCore.DamageMeter:IsEnabled() then return end
 	if aFieldsTable[2] == "" then
 		
 	end
@@ -165,6 +198,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DamageMeterMenuBuilder()
+   if SkuCore.DamageMeter and not SkuCore.DamageMeter:IsEnabled() then return end
    if Details == nil then
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Details addon not installed"]}, SkuGenericMenuItem)
       return

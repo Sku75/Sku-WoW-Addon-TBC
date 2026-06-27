@@ -1,19 +1,49 @@
-local MODULE_NAME, MODULE_PART = "SkuCore", "dialogkey"
+local MODULE_NAME, MODULE_PART = "SkuCore", "DialogKey"
 local L = Sku.L
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: DialogKey is a real AceAddon SUBMODULE of SkuCore, so the
+-- space/number dialog-key handler can be turned on/off independently at runtime:
+--   * OnEnable  arms the feature (creates the hidden OnKeyDown driver frame).
+--   * OnDisable disarms it (hides/disables the frame), so a disabled feature
+--     genuinely does nothing.
+-- AceAddon auto-enables modules when SkuCore enables (≈ PLAYER_LOGIN), replacing
+-- the old explicit SkuCore:DialogKeyLogin() call in the isInitialLogin block
+-- (which only ran on the initial login, so the dialog key did not re-arm after a
+-- /reload — OnEnable fixes that by arming on every load).
+local DialogKey = SkuCore:NewModule(MODULE_PART)
+SkuCore.DialogKey = DialogKey   -- keep the published handle
+
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule(MODULE_PART, function()
+	return (GetLocale and GetLocale() == "deDE") and "Dialogtaste" or "Dialog key"
+end)
+
+-- Feature-private state: the hidden OnKeyDown driver frame, reused across
+-- enable/disable cycles.
+local DialogkeyControlFrame
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function DialogkeyCreateControlFrame()
+	-- Idempotent: create the driver frame once, reuse it across enable/disable.
+	if DialogkeyControlFrame then
+		return DialogkeyControlFrame
+	end
 	local tFrame = CreateFrame("Frame", "SkuCoreDialogkeyControl", UIParent)
    tFrame:EnableKeyboard(true)
    tFrame:SetPropagateKeyboardInput(true)
    tFrame:SetScript("OnKeyDown", function(self, a, b)
+      -- Disabled feature is a safe no-op.
+      if not DialogKey:IsEnabled() then
+         return
+      end
       if SkuCore.inCombat == true then
          return
       end
-      
+
       if a == "SPACE" then
          if QuestFrameAcceptButton and QuestFrameAcceptButton:IsShown() and QuestFrameAcceptButton:IsVisible() then
             if QuestFrameAcceptButton:IsEnabled() then
@@ -128,9 +158,31 @@ local function DialogkeyCreateControlFrame()
    end)
    tFrame:Hide()
    tFrame:Show()
+   DialogkeyControlFrame = tFrame
+   return tFrame
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DialogKeyLogin()
 	DialogkeyCreateControlFrame()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Arm the feature. Called automatically by AceAddon when the module is enabled
+-- (at SkuCore enable, and again whenever the user toggles it back on).
+function DialogKey:OnEnable()
+	DialogkeyCreateControlFrame()
+	if DialogkeyControlFrame then
+		DialogkeyControlFrame:EnableKeyboard(true)
+		DialogkeyControlFrame:Show()
+	end
+end
+
+-- Disarm the feature: hide and disable the driver frame so a disabled DialogKey
+-- swallows nothing and clicks nothing.
+function DialogKey:OnDisable()
+	if DialogkeyControlFrame then
+		DialogkeyControlFrame:EnableKeyboard(false)
+		DialogkeyControlFrame:Hide()
+	end
 end

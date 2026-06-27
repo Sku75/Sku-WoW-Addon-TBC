@@ -18,6 +18,29 @@
 --   /skuspec api N     -> try SetActiveTalentGroup(N) and log result
 --   /skuspec cast N    -> try /cast on a probed spell + check result
 -- =====================================================================
+--
+-- W4 Phase D: DualSpecProbe is a real AceAddon SUBMODULE of SkuCore, so it can be
+-- turned on/off independently at runtime:
+--   * OnEnable  arms the /skuspec slash command (was registered at file scope).
+--   * OnDisable disarms it (removes the slash handler), so a disabled feature does
+--     nothing.
+-- AceAddon auto-enables modules when SkuCore enables (≈ PLAYER_LOGIN); there was no
+-- explicit Core.lua call to remove (the feature self-wired via file scope).
+
+SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
+
+local DualSpecProbe = SkuCore:NewModule("DualSpecProbe")
+SkuCore.DualSpecProbe = DualSpecProbe   -- keep the published handle
+
+-- Make this feature user-toggleable (Features menu + persisted on/off).
+SkuCore:RegisterToggleableModule("DualSpecProbe", function()
+   return (GetLocale and GetLocale() == "deDE") and "Dualspec-Test" or "Dual-spec probe"
+end)
+
+-- The /skuspec handler, defined as an upvalue so OnEnable can install it into
+-- SlashCmdList and OnDisable can remove it. (Body unchanged from the old file-scope
+-- SlashCmdList["SKUSPEC"] assignment.)
+local SkuSpecHandler
 
 local function tSay(aText)
    if DEFAULT_CHAT_FRAME then
@@ -195,11 +218,8 @@ local function tDumpMacroByName(aName)
    tSay("Makro '" .. aName .. "' geloggt. /skulog export.")
 end
 
-SLASH_SKUSPEC1 = "/skuspec"
--- Load marker: written at file-parse time, so the next SkuErrorLog export
--- will tell us whether this file is being loaded at all (vs. silently
--- skipped due to a .toc issue or load-order error).
-SlashCmdList["SKUSPEC"] = function(aMsg)
+SkuSpecHandler = function(aMsg)
+   if not DualSpecProbe:IsEnabled() then return end
    aMsg = (aMsg or ""):lower():match("^%s*(.-)%s*$")
    local tCmd, tArg = aMsg:match("^(%S+)%s*(.*)$")
    tCmd = tCmd or ""
@@ -267,4 +287,20 @@ SlashCmdList["SKUSPEC"] = function(aMsg)
    end
 
    tSay("Unbekannt. /skuspec, /skuspec probe, /skuspec api N, /skuspec cast Name")
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Arm the feature: register the /skuspec slash command. Called automatically by
+-- AceAddon when the module is enabled (at SkuCore enable, and again whenever the
+-- user toggles it back on).
+function DualSpecProbe:OnEnable()
+   SLASH_SKUSPEC1 = "/skuspec"
+   SlashCmdList["SKUSPEC"] = SkuSpecHandler
+end
+
+-- Disarm the feature: remove the /skuspec handler so a disabled DualSpecProbe does
+-- nothing. (The IsEnabled guard at the top of the handler is a belt-and-braces
+-- no-op safeguard in case the slash entry survives.)
+function DualSpecProbe:OnDisable()
+   SlashCmdList["SKUSPEC"] = nil
 end

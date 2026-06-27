@@ -5,9 +5,30 @@
 -- Set: ..." erweitert.
 ---------------------------------------------------------------------------------------------------------------------------------------
 local L = Sku.L
+local _G = _G
 
-SkuCore.EquipmentSets = SkuCore.EquipmentSets or {}
+SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
+
+-- W4 Phase D: EquipmentSets is a real AceAddon SUBMODULE of SkuCore, so it can be
+-- turned on/off independently at runtime:
+--   * OnEnable  arms the feature (installs the item-tooltip "belongs to set" hook).
+--   * OnDisable disarms it (the tooltip hook is a hooksecurefunc-style HookScript
+--     that cannot be unhooked, so it is guarded by IsEnabled() and becomes a no-op).
+-- AceAddon auto-enables modules when SkuCore enables (≈ PLAYER_LOGIN), replacing the
+-- old file-scope PLAYER_LOGIN frame that armed the tooltip hook (which only ran on the
+-- initial login). OnEnable now arms on every load, so the feature re-arms after /reload.
+-- The published SkuCore.EquipmentSets handle is kept because LocalMenu/BuildChilds and
+-- the generated /run macros reference it. Settings stay lazily under
+-- SkuOptions.db.char.equipmentSets, so there is no SavedVariables migration.
+local EquipmentSets = SkuCore:NewModule("EquipmentSets")
+SkuCore.EquipmentSets = EquipmentSets   -- keep the published handle
 local M = SkuCore.EquipmentSets
+
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule("EquipmentSets", function()
+   return (GetLocale and GetLocale() == "deDE") and "Ausrüstungssets" or "Equipment sets"
+end)
 
 -- Slot-Reihenfolge fürs Anlegen. INVSLOT 4 (Hemd) und 19 (Tabard) sind
 -- mit dabei, damit komplette Sets unterstützt werden.
@@ -229,6 +250,9 @@ local function tEquipFromLocator(locator, invSlot)
 end
 
 function M:Equip(aName)
+   -- A generated /run macro can call this while the feature is disabled; make "off"
+   -- a safe no-op instead of equipping.
+   if EquipmentSets.IsEnabled and not EquipmentSets:IsEnabled() then return end
    local db = tDB(); if not db then return end
    local set = db[aName]
    if not set then tSay(L["EQ_SetNotFoundColon"] .. aName); return end
@@ -411,6 +435,9 @@ local function tInsertSetLineAtTop(tooltip, sets)
 end
 
 local function tAppendSetLine(tooltip)
+   -- The OnTooltipSetItem HookScript cannot be removed, so when the feature is
+   -- disabled this guard makes the hook a no-op (no set line is appended).
+   if EquipmentSets.IsEnabled and not EquipmentSets:IsEnabled() then return end
    if not tooltip or not tooltip.GetItem then return end
    local _, link = tooltip:GetItem()
    if not link then return end
@@ -822,11 +849,18 @@ function M:RefreshMenu()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- Initialisierung
----------------------------------------------------------------------------------------------------------------------------------------
-local tInitFrame = CreateFrame("Frame")
-tInitFrame:RegisterEvent("PLAYER_LOGIN")
-tInitFrame:SetScript("OnEvent", function(self)
-   self:UnregisterEvent("PLAYER_LOGIN")
+-- Lebenszyklus (AceAddon-Submodul)
+-- Arm the feature: install the item-tooltip "belongs to set" hook. Called by
+-- AceAddon when the module is enabled (at SkuCore enable ≈ PLAYER_LOGIN, and again
+-- whenever the user toggles it back on). The HookScript is installed once and
+-- guarded by IsEnabled() (see tAppendSetLine), so re-enabling needs no re-hook.
+function EquipmentSets:OnEnable()
    tHookTooltips()
-end)
+end
+
+-- Disarm the feature. The tooltip hook cannot be removed; tAppendSetLine bails out
+-- via IsEnabled() so a disabled EquipmentSets adds no tooltip line. The menu/CRUD
+-- entry methods remain callable but the Features-menu toggle stops AceAddon from
+-- enabling the module, so the menu builder is not reached while disabled.
+function EquipmentSets:OnDisable()
+end

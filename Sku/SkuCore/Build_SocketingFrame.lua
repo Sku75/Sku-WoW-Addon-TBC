@@ -29,6 +29,24 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: Socketing is a real AceAddon SUBMODULE of SkuCore so it can be
+-- turned on/off at runtime. The feature is purely frame-reactive: it has no WoW
+-- events of its own and is reached only when SkuCore.interactFramesListManual
+-- ["ItemSocketingFrame"] (set in Core.lua) drives Build_SocketingFrame on the
+-- visible socketing window. There is therefore nothing to arm/disarm in
+-- OnEnable/OnDisable — the feature is gated entirely by an IsEnabled check at the
+-- top of SkuCore:Build_SocketingFrame, so when disabled the builder is a no-op
+-- and the window is simply not made accessible. Settings stay under the
+-- "SkuCore" SkuSettings namespace; no SavedVariables migration.
+local Socketing = SkuCore:NewModule(MODULE_PART)
+SkuCore.Socketing = Socketing   -- keep the published handle
+
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule(MODULE_PART, function()
+   return (GetLocale and GetLocale() == "deDE") and "Sockeln" or "Socketing"
+end)
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Helpers
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -615,6 +633,9 @@ end
 -- Top-level builder, called by SkuCore.interactFramesListManual.
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:Build_SocketingFrame(aParent)
+   -- When the feature is toggled off, the socketing window is left as the plain
+   -- (inaccessible) Blizzard UI: build nothing.
+   if not Socketing:IsEnabled() then return end
    pcall(function()
       if not _G.GetNumSockets then
          tAddText(aParent, L["Sockel-API nicht verfuegbar"])

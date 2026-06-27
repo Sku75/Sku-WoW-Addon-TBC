@@ -26,6 +26,30 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: DungeonBrowser is a real AceAddon SUBMODULE of SkuCore so it can be
+-- turned on/off independently at runtime. All public SkuCore:DungeonBrowser*
+-- methods and SkuCore.tDungeonBrowser* state stay exactly where they are
+-- (external callers — keybind handlers, macrotext, the WHO chat parser — keep
+-- working unchanged). Only the LIFECYCLE moved:
+--   * OnEnable  arms the feature: schedules DungeonBrowserInit + LFG event hooks
+--     (previously the PLAYER_ENTERING_WORLD branch of tInitFrame), and registers
+--     the invite-watch + init driver frames. Runs on every load, so the feature
+--     re-arms after a /reload (the old self-wiring only ran the init schedule once).
+--   * OnDisable unregisters the 4 LFG events + invite-watch events + init-frame
+--     events and stops the refresh ticker. The hooksecurefunc / HookScript hooks
+--     cannot be removed, so their bodies are guarded with IsEnabled().
+-- Public entry points (DungeonBrowserOpen/Toggle/BuildMenu) early-return when the
+-- module is disabled, so a Blizzard-frame OnShow while "off" is a safe no-op.
+-- Settings stay under the "SkuCore" SkuSettings namespace — no SavedVariables change.
+local DungeonBrowser = SkuCore:NewModule("DungeonBrowser")
+SkuCore.DungeonBrowser = DungeonBrowser   -- keep the published handle
+
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule("DungeonBrowser", function()
+   return (GetLocale and GetLocale() == "deDE") and "Dungeonbrowser" or "Dungeon browser"
+end)
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Klassen-Rolle-Mapping. Nur diese Rollen werden zur Auswahl angeboten.
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1237,6 +1261,7 @@ end
 -- gezeigt wird.
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DungeonBrowserBuildMenu(aParent)
+   if not SkuCore.DungeonBrowser:IsEnabled() then return end
    if tIsListed() then
       tBuildPhaseB(aParent)
       tStartSearch()
@@ -1306,6 +1331,7 @@ local function tEnsureDungeonBrowserEntry()
 end
 
 function SkuCore:DungeonBrowserOpen()
+   if not SkuCore.DungeonBrowser:IsEnabled() then return end
    if not SkuOptions then return end
 
    -- 0) Aktivitäten-Cache vom Server holen (asynchron). Beim allerersten
@@ -1506,6 +1532,7 @@ function SkuCore:DungeonBrowserDoUnenroll()
 end
 
 function SkuCore:DungeonBrowserToggle()
+   if not SkuCore.DungeonBrowser:IsEnabled() then return end
    if SkuOptions and SkuOptions:IsMenuOpen() then
       SkuOptions:CloseMenu()
       return
@@ -1552,6 +1579,8 @@ local function tIsAnyDungeonContainerShown()
 end
 
 local function tFireOpen()
+   -- Disabled feature → the Blizzard-frame OnShow / toggle hooks become no-ops.
+   if not DungeonBrowser:IsEnabled() then return end
    -- Während aktiver Gruppeneinladung NICHT in den Dungeon-Browser
    -- navigieren — der User soll das Einladungs-Popup im Fokus haben.
    -- Sku's Standard-Pfad (CheckFrames + interactFramesList) hängt sich
@@ -1595,6 +1624,8 @@ end
 SkuCore.tDungeonBrowserPartyInviteActive = false
 
 local function tFireClose()
+   -- Disabled feature → the Blizzard-frame OnHide hook becomes a no-op.
+   if not DungeonBrowser:IsEnabled() then return end
    -- Während Einladung NICHT schließen — die PVEFrame-OnHide-Welle
    -- ist nur Blizzards Layout-Reaktion auf das Popup, kein echter
    -- Close-Wunsch des Users.
@@ -1669,9 +1700,8 @@ end
 -- Event-Listener für PARTY_INVITE_REQUEST: aktiviert das Suppression-
 -- Flag und stellt sicher, dass die OnHide-Hooks der StaticPopups
 -- gesetzt sind.
+-- Created once; its events are (un)registered by OnEnable/OnDisable.
 local tInviteWatchFrame = CreateFrame("Frame")
-tInviteWatchFrame:RegisterEvent("PARTY_INVITE_REQUEST")
-tInviteWatchFrame:RegisterEvent("PARTY_INVITE_CANCEL")
 tInviteWatchFrame:SetScript("OnEvent", function(self, event)
    if event == "PARTY_INVITE_REQUEST" then
       SkuCore.tDungeonBrowserPartyInviteActive = true
@@ -1788,8 +1818,19 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- LFG-Events: Suchergebnisse cachen
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Handle to the LFG-events driver frame, so OnDisable can unregister its events.
+local tLFGEventsFrame
 local function tHookLFGEvents()
+   -- Create the driver frame once; reuse it across enable/disable cycles.
+   if tLFGEventsFrame then
+      tLFGEventsFrame:RegisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
+      tLFGEventsFrame:RegisterEvent("LFG_LIST_SEARCH_RESULT_UPDATED")
+      tLFGEventsFrame:RegisterEvent("LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED")
+      tLFGEventsFrame:RegisterEvent("LFG_LIST_ACTIVE_ENTRY_UPDATE")
+      return
+   end
    local f = CreateFrame("Frame")
+   tLFGEventsFrame = f
    f:RegisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
    f:RegisterEvent("LFG_LIST_SEARCH_RESULT_UPDATED")
    -- Wichtig: Aktivitätsliste lädt asynchron; Event triggert, sobald
@@ -1823,9 +1864,12 @@ end
 -- on-demand geladen hat. Sobald der Hook gesetzt ist, deregistrieren
 -- wir das ADDON_LOADED-Event, um Last-Triggers auf jedes weitere
 -- ladende Addon zu vermeiden.
+-- Created once; its events are (un)registered by OnEnable/OnDisable. The 2 s
+-- delayed init schedule that used to live in the PLAYER_ENTERING_WORLD branch now
+-- runs from OnEnable (so the feature also re-arms after a /reload), but we keep
+-- listening to PLAYER_ENTERING_WORLD as a late safety net and to ADDON_LOADED to
+-- pull the PVEFrame hook once Blizzard's Group-Finder UI loads on demand.
 local tInitFrame = CreateFrame("Frame")
-tInitFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-tInitFrame:RegisterEvent("ADDON_LOADED")
 tInitFrame:SetScript("OnEvent", function(self, event, arg1)
    if event == "PLAYER_ENTERING_WORLD" then
       self:UnregisterEvent("PLAYER_ENTERING_WORLD")
@@ -1850,3 +1894,46 @@ tInitFrame:SetScript("OnEvent", function(self, event, arg1)
       return
    end
 end)
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Lifecycle: arm/disarm the feature. AceAddon calls OnEnable at SkuCore enable
+-- (≈ PLAYER_LOGIN) and again whenever the user toggles the feature back on.
+---------------------------------------------------------------------------------------------------------------------------------------
+function DungeonBrowser:OnEnable()
+   -- Driver-frame events (previously registered at file scope).
+   tInitFrame:RegisterEvent("ADDON_LOADED")
+   tInitFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+   tInviteWatchFrame:RegisterEvent("PARTY_INVITE_REQUEST")
+   tInviteWatchFrame:RegisterEvent("PARTY_INVITE_CANCEL")
+
+   -- Arm directly too, so the feature re-arms on a /reload (or a runtime toggle)
+   -- even though PLAYER_ENTERING_WORLD may have already fired. The hook installers
+   -- are idempotent, so this is safe alongside the PLAYER_ENTERING_WORLD branch.
+   if _G.C_Timer and _G.C_Timer.After then
+      _G.C_Timer.After(2, function()
+         if not DungeonBrowser:IsEnabled() then return end
+         pcall(function() SkuCore:DungeonBrowserInit() end)
+         pcall(tHookLFGEvents)
+      end)
+   else
+      pcall(function() SkuCore:DungeonBrowserInit() end)
+      pcall(tHookLFGEvents)
+   end
+end
+
+-- Disarm: unregister every event we armed and stop the refresh ticker. The
+-- hooksecurefunc / HookScript hooks cannot be removed — their bodies are guarded
+-- with DungeonBrowser:IsEnabled() so they become no-ops while disabled.
+function DungeonBrowser:OnDisable()
+   tStopRefreshTicker()
+   tInitFrame:UnregisterEvent("ADDON_LOADED")
+   tInitFrame:UnregisterEvent("PLAYER_ENTERING_WORLD")
+   tInviteWatchFrame:UnregisterEvent("PARTY_INVITE_REQUEST")
+   tInviteWatchFrame:UnregisterEvent("PARTY_INVITE_CANCEL")
+   if tLFGEventsFrame then
+      tLFGEventsFrame:UnregisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
+      tLFGEventsFrame:UnregisterEvent("LFG_LIST_SEARCH_RESULT_UPDATED")
+      tLFGEventsFrame:UnregisterEvent("LFG_LIST_AVAILABLE_ACTIVITY_LIST_UPDATED")
+      tLFGEventsFrame:UnregisterEvent("LFG_LIST_ACTIVE_ENTRY_UPDATE")
+   end
+end
