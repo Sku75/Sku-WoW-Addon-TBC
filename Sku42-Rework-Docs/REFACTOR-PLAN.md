@@ -961,10 +961,21 @@ codebase. Do it as a long series of small, independently-shippable extractions:
     after a /reload (the old isInitialLogin-only call did not). luaparser OK.
     Persisted enable-flag + Features menu NOT yet wired — test on/off for now via
     `SkuCore:GetModule("JunkAndRepair"):Disable()/:Enable()`.
-  - **TODO next (same framework, ascending coupling):** `mail` (179),
-    `Build_SocketingFrame`/sockets (656), then larger features; then wire the
-    persisted enable-flag + generic Features toggle menu. Re-measure SkuCore
-    method-count / inbound edges after each.
+  - **DONE — portable on/off framework + Features menu** (`SkuCore/ModuleManager.lua`,
+    commit pending in-game test). Reusable glue so any submodule gets on/off for
+    one line: `SkuCore:RegisterToggleableModule(name, label)` (modules self-register
+    from their own file). Persisted flag = `SkuSettings:Sub("SkuCore").moduleEnabled[name]`
+    (absent = enabled; new field, no SV migration). `SkuCore:ApplyModuleEnabledStates()`
+    runs in `SkuCore:OnEnable` (BEFORE AceAddon's module-enable loop, so a disabled
+    feature never arms — via `module:SetEnabledState`). `SkuCore:SetModuleEnabled`
+    flips live (`:Enable()/:Disable()`) + persists. Generic **"Features on/off"**
+    root menu (registered via SkuMenu, appended to rootLayout) renders one On/Off
+    toggle per registered module (mirrors the IterateOptionsArgs toggle shape but
+    routes writes through SetModuleEnabled). JunkAndRepair self-registers as the
+    first entry. luaparser OK.
+  - **TODO next (same framework, ascending coupling):** convert `mail` (179),
+    `Build_SocketingFrame`/sockets (656), then larger features — each one line to
+    make it toggleable. Re-measure SkuCore method-count / inbound edges after each.
   - **BIGGER-SPLIT — target two-tier architecture (decided model; execute LATE).**
     The current top-level carving (Sku / SkuCore / SkuChat / SkuNav / SkuQuest /
     SkuAuras / SkuMob / SkuDispatcher / SkuZOptions) is grown, not designed. The

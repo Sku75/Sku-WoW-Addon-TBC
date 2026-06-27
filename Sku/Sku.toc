@@ -38,6 +38,7 @@ SkuChat\Core.lua
 SkuChat\Options.lua
 
 SkuCore\Core.lua
+SkuCore\ModuleManager.lua
 SkuCore\ErrorLog.lua
 SkuCore\AudioDevice.lua
 SkuCore\DualSpecProbe.lua

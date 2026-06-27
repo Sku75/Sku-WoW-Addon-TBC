@@ -19,6 +19,12 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 local JunkAndRepair = SkuCore:NewModule(MODULE_PART)
 SkuCore.JunkAndRepair = JunkAndRepair   -- keep the published handle
 
+-- Make this feature user-toggleable (Features menu + persisted on/off). One line;
+-- the framework (SkuCore/ModuleManager.lua) handles the rest.
+SkuCore:RegisterToggleableModule(MODULE_PART, function()
+	return (GetLocale and GetLocale() == "deDE") and "Schrott verkaufen & reparieren" or "Sell junk & repair"
+end)
+
 -- Feature-private state (module upvalues, shared by OnEnable/OnDisable and the
 -- merchant event handler; previously locals inside Initialize).
 local SellJunkFrame

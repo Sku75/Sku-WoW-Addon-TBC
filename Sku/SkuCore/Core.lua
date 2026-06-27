@@ -984,6 +984,10 @@ local SkuCoreOldPetHappinessCounter = 0
 local SkuCoreOldPetHappiness = nil
 function SkuCore:OnEnable()
 	--dprint("SkuCore OnEnable")
+	-- Apply persisted per-feature on/off BEFORE AceAddon auto-enables our modules
+	-- (this runs inside SkuCore's OnEnable, ahead of the module-enable loop), so a
+	-- feature the user turned off never arms. W4 Phase D.
+	SkuCore:ApplyModuleEnabledStates()
 	SkuCore:RangeCheckOnEnable()
 
 	--fake ctrl shift tab for untargetable units in starting areas	
