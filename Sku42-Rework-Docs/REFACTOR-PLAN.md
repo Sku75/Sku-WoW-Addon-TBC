@@ -962,7 +962,7 @@ codebase. Do it as a long series of small, independently-shippable extractions:
     Persisted enable-flag + Features menu NOT yet wired — test on/off for now via
     `SkuCore:GetModule("JunkAndRepair"):Disable()/:Enable()`.
   - **DONE — portable on/off framework + Features menu** (`SkuCore/ModuleManager.lua`,
-    commit pending in-game test). Reusable glue so any submodule gets on/off for
+    verified in-game incl. persistence across /reload, commit `11b0baf`). Reusable glue so any submodule gets on/off for
     one line: `SkuCore:RegisterToggleableModule(name, label)` (modules self-register
     from their own file). Persisted flag = `SkuSettings:Sub("SkuCore").moduleEnabled[name]`
     (absent = enabled; new field, no SV migration). `SkuCore:ApplyModuleEnabledStates()`
@@ -973,9 +973,9 @@ codebase. Do it as a long series of small, independently-shippable extractions:
     toggle per registered module (mirrors the IterateOptionsArgs toggle shape but
     routes writes through SetModuleEnabled). JunkAndRepair self-registers as the
     first entry. luaparser OK.
-  - **TODO next (same framework, ascending coupling):** convert `mail` (179),
-    `Build_SocketingFrame`/sockets (656), then larger features — each one line to
-    make it toggleable. Re-measure SkuCore method-count / inbound edges after each.
+  - **Pilot + framework COMPLETE.** The repeatable machinery now exists and is
+    proven. Remaining Phase D work is split into a design pass (X-D2) and the bulk
+    migration (X-D3) below — that is where next session starts.
   - **BIGGER-SPLIT — target two-tier architecture (decided model; execute LATE).**
     The current top-level carving (Sku / SkuCore / SkuChat / SkuNav / SkuQuest /
     SkuAuras / SkuMob / SkuDispatcher / SkuZOptions) is grown, not designed. The
@@ -1004,6 +1004,43 @@ codebase. Do it as a long series of small, independently-shippable extractions:
     reveal the natural Tier-1/Tier-2 line and the few Tier-3 candidates. Only then
     physically move files / split addons, one move at a time, each verified. The
     classification above is the map to execute against when that time comes.
+- [ ] X-D2. **Modularization map (NEXT SESSION STARTS HERE — design pass, mostly read-only).**
+  Produce the concrete plan before mass migration:
+  1. **Inventory every SkuCore feature** (the ~24 `SkuCore/*.lua` files / 352
+     methods grouped into features). For each: entry points (the `*OnLogin` /
+     `*Initialize` / `*OnEnable` calls — most are in the `SkuCore:PLAYER_ENTERING_WORLD`
+     `isInitialLogin` sequence ~Core.lua:2357-2387 and in `SkuCore:OnEnable`),
+     feature-owned state, inbound cross-module refs (use `_members.py`), and any
+     init-order dependency on earlier entries in that sequence.
+  2. **Classify each into the two-tier map** (Tier 1 always-on core/plumbing+UI;
+     Tier 2 toggleable feature; Tier 3 own-addon candidate). Also classify the
+     non-SkuCore modules (SkuChat/Nav/Quest/Auras/Mob) — they are already separate
+     AceAddons; decide which become toggleable and whether any are Tier-1.
+  3. **Rank conversion order by ascending risk** (most self-contained first; defer
+     order-dependent / heavy-state ones). Record the order + per-feature notes here.
+  4. Optional: a small inventory helper (extend `_members.py`/`_writers.py`) to
+     list each feature's entry points + state.
+  Deliverable: an ordered migration checklist (one line per feature) appended here.
+- [ ] X-D3. **Full migration — convert each feature, one at a time, in the X-D2 order.**
+  Repeatable recipe per feature (the JunkAndRepair pattern, proven):
+  1. `local M = SkuCore:NewModule("Feature")`; keep `SkuCore.Feature = M` if a
+     published handle is referenced elsewhere.
+  2. Move setup → `M:OnEnable()`, teardown → `M:OnDisable()` (register/unregister
+     events; AceEvent mixin if it uses many events). Lift feature state to module
+     upvalues / onto `M`.
+  3. Remove the explicit init call from the PLAYER_ENTERING_WORLD sequence —
+     UNLESS it is order-dependent (then keep an explicit init step instead of pure
+     auto-enable; note in X-D2).
+  4. `SkuCore:RegisterToggleableModule("Feature", labelFn)` in the feature file
+     (one line — Features menu + persistence come free).
+  5. Route any cross-module reads of the feature's state through accessors (rare;
+     most features own their state). luaparser gate.
+  6. In-game smoke: works enabled; Disable stops it; Enable restores; persists
+     across /reload. Commit per feature (or small batch). Re-run `_members.py`.
+  Watch-outs: load order (NewModule needs SkuCore loaded — feature files already
+  load after SkuCore/Core.lua); settings available at OnEnable (SkuOptions.db is
+  created in SkuOptions:OnInitialize, before any OnEnable) but NOT necessarily at a
+  module's OnInitialize; keep secure/taint paths intact (AH-buy hardware-event).
 - [ ] X-V. Re-run the reference matrix after each phase; record the falling cycle counts here.
   - **Post-Phase-A baseline (qualified-access counts, the 4.1 method):**
     - SkuCore → SkuDispatcher 89, SkuNav 38, **SkuChat 3** (was 117 — Unescape
