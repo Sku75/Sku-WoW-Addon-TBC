@@ -22,6 +22,24 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W4 Phase E — E1b (hard-3), part 2 of 3: aqCombat extracted.** The 23
+  `function SkuCore:aqCombat*` methods now live on the `aqCombat` module table;
+  published handle `SkuCore.aqCombat` keeps external callers working. 72 in-file
+  + 10 cross-file/cross-module rewrites (codemod) across 5 files: TurnToUnit (3)
+  + SkuMob (3) + SkuZOptions (2) call `aqCombatGetSkuRaidTarget`/`Set*`/`Clear*`,
+  and aq.lua references `aqCombatMenuBuilder` (menu) + a commented `aqCombatOnInitialize`.
+  - **No AceEvent change:** aqCombat owns no AceEvent registrations — all its WoW +
+    `SKU_*` events route through `SkuDispatcher` (dot-ref function values). The codemod
+    rewrote register AND unregister sides identically (`SkuCore.aqCombat_X` →
+    `aqCombat.aqCombat_X`), so the callback-table keys stay matched. Dispatcher invokes
+    callbacks as `cb(SkuDispatcher, event, ...)`, so `self` inside these handlers was
+    already SkuDispatcher (never SkuCore) — relocating the method's table changes nothing.
+  - **Safe by construction:** verified none of the 23 methods uses its own `self` to
+    reach SkuCore (the 3 flagged are inner-closure frame `self` + menu-entry `self`).
+  - The `SetRaidTarget` hooksecurefunc (can't be unhooked; IsEnabled-guarded) and the
+    combat hot path are untouched apart from the table the methods hang on. All 5 files
+    luaparser-clean. **In-game combat/raid-marker test pending.**
+
 - **W4 Phase E — E1b (hard-3), part 1 of 3: AuctionHouse extracted.** The 49
   `function SkuCore:Auction*`/`Strategy*`/`AUCTION_*` methods now live on the
   `AuctionHouse` module table (`function AuctionHouse:Method`); the published

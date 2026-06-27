@@ -1316,7 +1316,7 @@ function SkuOptions:CreateMainFrame()
 					tMarkerIndex = SkuCore.SkuRaidTargetIndex[8]
 				end
 				if tMarkerIndex ~= nil then
-					SkuCore:aqCombatSetSkuRaidTarget(tTargetGUID, tMarkerIndex)
+					SkuCore.aqCombat:aqCombatSetSkuRaidTarget(tTargetGUID, tMarkerIndex)
 					C_Timer.After(0.1, function()
 						SkuMob:PLAYER_TARGET_CHANGED("PLAYER_TARGET_CHANGED", "target")
 					end)
@@ -1325,7 +1325,7 @@ function SkuOptions:CreateMainFrame()
 		end
 
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_SKUMARKERCLEARALL") then
-			SkuCore:aqCombatClearSkuRaidTargets()
+			SkuCore.aqCombat:aqCombatClearSkuRaidTargets()
 			local tTargetGUID = UnitGUID("target")
 			if tTargetGUID then
 				C_Timer.After(0.1, function()

@@ -521,12 +521,12 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		local tUnitGUID = UnitGUID(aUnitId)
 		--sku raid target
 		if tRaidtarget == nil or tRaidtarget == "" then
-			if SkuCore:aqCombatGetSkuRaidTarget(tUnitGUID) ~= nil then
-				tRaidTargetString = SkuCore.RaidTargetValues[SkuCore:aqCombatGetSkuRaidTarget(tUnitGUID)].color..";"
+			if SkuCore.aqCombat:aqCombatGetSkuRaidTarget(tUnitGUID) ~= nil then
+				tRaidTargetString = SkuCore.RaidTargetValues[SkuCore.aqCombat:aqCombatGetSkuRaidTarget(tUnitGUID)].color..";"
 			else
 				if UnitCanAttack("player", aUnitId) and tIsPlayerControled == false and status then
 					if SkuSettings:Sub("SkuMob").autoSetSkuRaidTargetsToInCombatCreatures == true then
-						local tNewRaidTargetId = SkuCore:aqCombatSetSkuRaidTarget(tUnitGUID, 0)
+						local tNewRaidTargetId = SkuCore.aqCombat:aqCombatSetSkuRaidTarget(tUnitGUID, 0)
 						if tNewRaidTargetId then
 							tRaidTargetString = SkuCore.RaidTargetValues[tNewRaidTargetId].color..";"
 						end

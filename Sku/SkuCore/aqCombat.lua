@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "aqCombat"
 local L = Sku.L
 local _G = _G
@@ -11,11 +11,11 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 -- monitor can be turned on/off at runtime (OnEnable/OnDisable), mirroring the
 -- JunkAndRepair pilot. Every existing SkuCore:aqCombat* method and SkuCore.*
 -- state stays EXACTLY where it is so external callers keep working unchanged
--- (TurnToUnit + SkuMob call SkuCore:aqCombatGetSkuRaidTarget; SkuZOptions reads
+-- (TurnToUnit + SkuMob call aqCombat:aqCombatGetSkuRaidTarget; SkuZOptions reads
 -- SkuCore.inOutCombatQueue); the module only owns the LIFECYCLE:
---   * OnEnable  arms the monitor (SkuCore:aqCombatOnInitialize registers the
+--   * OnEnable  arms the monitor (aqCombat:aqCombatOnInitialize registers the
 --     SkuDispatcher event callbacks + 2 control OnUpdate frames + the
---     SetRaidTarget hooksecurefunc, then SkuCore:aqCombatOnLogin seeds the
+--     SetRaidTarget hooksecurefunc, then aqCombat:aqCombatOnLogin seeds the
 --     settings defaults).
 --   * OnDisable unregisters every dispatcher callback and stops both control
 --     OnUpdate frames, so a disabled monitor genuinely does nothing.
@@ -211,7 +211,7 @@ local function SkuCoreAqCombatOutput(aPattern, aValuesTable, aQueueSettings, aSk
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatCreatureGuidToUnitId(aUnitGUID)
+function aqCombat:aqCombatCreatureGuidToUnitId(aUnitGUID)
    for i = 1, #tUnitsToTestOnGameRaidTargets do
       local tCreatureGUID = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
       if UnitGUID(tUnitsToTestOnGameRaidTargets[i]) then
@@ -223,7 +223,7 @@ function SkuCore:aqCombatCreatureGuidToUnitId(aUnitGUID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatGroupGuidToUnitId(aUnitGUID)
+function aqCombat:aqCombatGroupGuidToUnitId(aUnitGUID)
    if aqCombatIsPartyOrRaidMemberCache[aUnitGUID] then
       return aqCombatIsPartyOrRaidMemberCache[aUnitGUID]
    end
@@ -240,7 +240,7 @@ function SkuCore:aqCombatGroupGuidToUnitId(aUnitGUID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatGroupNameToUnitId(aName)
+function aqCombat:aqCombatGroupNameToUnitId(aName)
    for i = 1, #tAllPartyRaidUnits do
       local tTargetUnitIdToTest = tAllPartyRaidUnits[i]
       local tName = UnitName(tTargetUnitIdToTest)
@@ -290,7 +290,7 @@ local function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
 
 
       if aTargetUnitIdToTest == nil then
-         local tUnitId = SkuCore:aqCombatCreatureGuidToUnitId(aUnitGUID)
+         local tUnitId = aqCombat:aqCombatCreatureGuidToUnitId(aUnitGUID)
          if tUnitId then
             aTargetUnitIdToTest = tUnitId
          end
@@ -331,7 +331,7 @@ local function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
          end
       end
 
-      local tUnitId = SkuCore:aqCombatCreatureGuidToUnitId(aUnitGUID)
+      local tUnitId = aqCombat:aqCombatCreatureGuidToUnitId(aUnitGUID)
       if tUnitId then
          aUnitGUID = UnitGUID(aTargetUnitIdToTest)
          local t = UnitClassification(tUnitId)
@@ -352,7 +352,7 @@ local function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
+function aqCombat:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
    local beginTime2 = debugprofilestop()   
 
    if aUnitId then
@@ -443,7 +443,7 @@ local function aqCombatCreateControlFrame()
          local beginTime1 = debugprofilestop()
 
          if tCurrentSettings.combat.friendly.oorUnitName ~= L["Nothing selected"] then
-            local tUniId = SkuCore:aqCombatGroupNameToUnitId(tCurrentSettings.combat.friendly.oorUnitName)
+            local tUniId = aqCombat:aqCombatGroupNameToUnitId(tCurrentSettings.combat.friendly.oorUnitName)
             if tUniId then
                local _, tMinRange = SkuOptions.RangeCheck:GetRange(tUniId)
                if tMinRange and tMinRange > tCurrentSettings.combat.friendly.oorAt then
@@ -488,7 +488,7 @@ local function aqCombatCreateControlFrame()
             if tCreatureGUID then
                if aqCombatCheckElite(tCreatureGUID, tTargetUnitIdToTest) == true then
                   if tCreatureGUID and SkuCore.threatTable[tCreatureGUID] ~= false then
-                     local t = SkuCore:aqCombatIsPartyOrRaidMember(tTargetUnitIdToTest)
+                     local t = aqCombat:aqCombatIsPartyOrRaidMember(tTargetUnitIdToTest)
                      if t == nil then
                         -- is mob
                         for q = 1, #tAllPartyRaidUnits do
@@ -497,7 +497,7 @@ local function aqCombatCreateControlFrame()
                            if status then
                               local tPartyGuid = UnitGUID(tPartyUnitToTest)
                               if UnitIsDeadOrGhost(tPartyUnitToTest) ~= true then
-                                 SkuCore:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tTargetUnitIdToTest, UnitName(tTargetUnitIdToTest), UnitGUID(tPartyUnitToTest), tPartyUnitToTest, UnitName(tPartyUnitToTest))
+                                 aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tTargetUnitIdToTest, UnitName(tTargetUnitIdToTest), UnitGUID(tPartyUnitToTest), tPartyUnitToTest, UnitName(tPartyUnitToTest))
 
                                  local tPlayerGUID = UnitGUID("player")
                                  if tCreatureGUID == UnitGUID("target") and tPartyGuid == tPlayerGUID then
@@ -724,7 +724,7 @@ local function aqCombatCreateControlFrame()
 
                                        tChanged = true
                                     end
-                                 elseif SkuCore:aqCombatIsPartyOrRaidMember(SkuCore.inOutCombatQueue.combatIn[creatureGUID]) then
+                                 elseif aqCombat:aqCombatIsPartyOrRaidMember(SkuCore.inOutCombatQueue.combatIn[creatureGUID]) then
                                     if not tAdded then
                                        tAdded = creatureGUID
                                        SkuCore.inOutCombatQueue.current = SkuCore.inOutCombatQueue.current + 1
@@ -810,7 +810,7 @@ local function aqCombatCreateControlFrame()
                                           tChanged = true
                                        end
                                     end
-                                 elseif SkuCore:aqCombatIsPartyOrRaidMember(SkuCore.inOutCombatQueue.combatIn[creatureGUID]) then
+                                 elseif aqCombat:aqCombatIsPartyOrRaidMember(SkuCore.inOutCombatQueue.combatIn[creatureGUID]) then
                                     if not tAdded then
                                        tAdded = creatureGUID
                                        tCountIn = tCountIn + 1
@@ -865,7 +865,7 @@ local function aqCombatCreateControlFrame()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombat_CREATURE_REMOVED_FROM_COMBAT(aCreatureGuid, aCreatureUnitId, aCreatureName)
+function aqCombat:aqCombat_CREATURE_REMOVED_FROM_COMBAT(aCreatureGuid, aCreatureUnitId, aCreatureName)
    if SkuCore.threatTable[aCreatureGuid] == nil then
       return
    end
@@ -874,7 +874,7 @@ function SkuCore:aqCombat_CREATURE_REMOVED_FROM_COMBAT(aCreatureGuid, aCreatureU
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombat_CREATURE_ADDED_TO_COMBAT(aCreatureGuid, aCreatureUnitId, aCreatureName, aPartyGuid, aPartyUnitId, aPartyName)
+function aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(aCreatureGuid, aCreatureUnitId, aCreatureName, aPartyGuid, aPartyUnitId, aPartyName)
    if SkuCore.threatTable[aCreatureGuid] then
       return
    end
@@ -883,26 +883,26 @@ function SkuCore:aqCombat_CREATURE_ADDED_TO_COMBAT(aCreatureGuid, aCreatureUnitI
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatOnInitialize()
+function aqCombat:aqCombatOnInitialize()
    tKeysRank = SkuDB.NpcData.Keys.rank
 
 	aqCombatCreateControlFrame()
 
-   SkuDispatcher:RegisterEventCallback("COMBAT_LOG_EVENT_UNFILTERED", SkuCore.aqCombat_COMBAT_LOG_EVENT_UNFILTERED)
-   SkuDispatcher:RegisterEventCallback("SKU_UNIT_DIED", SkuCore.aqCombat_SKU_UNIT_DIED)
-   SkuDispatcher:RegisterEventCallback("SKU_SPELL_CAST_START", SkuCore.aqCombat_SKU_SPELL_CAST_START)
+   SkuDispatcher:RegisterEventCallback("COMBAT_LOG_EVENT_UNFILTERED", aqCombat.aqCombat_COMBAT_LOG_EVENT_UNFILTERED)
+   SkuDispatcher:RegisterEventCallback("SKU_UNIT_DIED", aqCombat.aqCombat_SKU_UNIT_DIED)
+   SkuDispatcher:RegisterEventCallback("SKU_SPELL_CAST_START", aqCombat.aqCombat_SKU_SPELL_CAST_START)
    
-   SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", SkuCore.aqCombat_PLAYER_ENTERING_WORLD)
-   SkuDispatcher:RegisterEventCallback("RAID_TARGET_UPDATE", SkuCore.aqCombatCheckGameRaidTargets)
-	SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_DISABLED", SkuCore.aqCombat_PLAYER_REGEN_DISABLED)
-	SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.aqCombat_PLAYER_REGEN_ENABLED)
-	--SkuDispatcher:RegisterEventCallback("UNIT_THREAT_LIST_UPDATE", SkuCore.aqCombatUNIT_THREAT_LIST_UPDATE)
-	--SkuDispatcher:RegisterEventCallback("UNIT_THREAT_SITUATION_UPDATE", SkuCore.aqCombatUNIT_THREAT_SITUATION_UPDATE)
+   SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", aqCombat.aqCombat_PLAYER_ENTERING_WORLD)
+   SkuDispatcher:RegisterEventCallback("RAID_TARGET_UPDATE", aqCombat.aqCombatCheckGameRaidTargets)
+	SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_DISABLED", aqCombat.aqCombat_PLAYER_REGEN_DISABLED)
+	SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", aqCombat.aqCombat_PLAYER_REGEN_ENABLED)
+	--SkuDispatcher:RegisterEventCallback("UNIT_THREAT_LIST_UPDATE", aqCombat.aqCombatUNIT_THREAT_LIST_UPDATE)
+	--SkuDispatcher:RegisterEventCallback("UNIT_THREAT_SITUATION_UPDATE", aqCombat.aqCombatUNIT_THREAT_SITUATION_UPDATE)
 
-	SkuDispatcher:RegisterEventCallback("PLAYER_TARGET_CHANGED", SkuCore.aqCombatPLAYER_TARGET_CHANGED)
-   SkuDispatcher:RegisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.aqCombat_GROUP_ROSTER_UPDATE)
-   SkuDispatcher:RegisterEventCallback("GROUP_FORMED", SkuCore.aqCombat_GROUP_ROSTER_UPDATE)
-   SkuDispatcher:RegisterEventCallback("GROUP_JOINED", SkuCore.aqCombat_GROUP_ROSTER_UPDATE)
+	SkuDispatcher:RegisterEventCallback("PLAYER_TARGET_CHANGED", aqCombat.aqCombatPLAYER_TARGET_CHANGED)
+   SkuDispatcher:RegisterEventCallback("GROUP_ROSTER_UPDATE", aqCombat.aqCombat_GROUP_ROSTER_UPDATE)
+   SkuDispatcher:RegisterEventCallback("GROUP_FORMED", aqCombat.aqCombat_GROUP_ROSTER_UPDATE)
+   SkuDispatcher:RegisterEventCallback("GROUP_JOINED", aqCombat.aqCombat_GROUP_ROSTER_UPDATE)
 
    
    -- hooksecurefunc can't be unhooked; guard with IsEnabled so a disabled
@@ -915,7 +915,7 @@ function SkuCore:aqCombatOnInitialize()
          if aIconIndex == 0 then
             local tGUID = UnitGUID(aUnit)
             if tGUID then
-               SkuCore:aqCombatSetSkuRaidTarget(tGUID)
+               aqCombat:aqCombatSetSkuRaidTarget(tGUID)
             end
          end
       end)
@@ -923,7 +923,7 @@ function SkuCore:aqCombatOnInitialize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatOnLogin()
+function aqCombat:aqCombatOnLogin()
    for x = 1, 2 do
       SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat or {}
 
@@ -1119,25 +1119,25 @@ function aqCombat:OnEnable()
    -- SetRaidTarget hook (idempotent: dispatcher callbacks key by function so
    -- re-registering is a no-op, control frames are reused via _G[...], and the
    -- hook installs only once), then seed the settings defaults.
-   SkuCore:aqCombatOnInitialize()
-   SkuCore:aqCombatOnLogin()
+   aqCombat:aqCombatOnInitialize()
+   aqCombat:aqCombatOnLogin()
 end
 
 function aqCombat:OnDisable()
    -- Real teardown: unregister every dispatcher callback this feature armed and
    -- stop both control OnUpdate frames so a disabled monitor does nothing. The
    -- SetRaidTarget hooksecurefunc can't be removed; its body is IsEnabled-guarded.
-   SkuDispatcher:UnregisterEventCallback("COMBAT_LOG_EVENT_UNFILTERED", SkuCore.aqCombat_COMBAT_LOG_EVENT_UNFILTERED)
-   SkuDispatcher:UnregisterEventCallback("SKU_UNIT_DIED", SkuCore.aqCombat_SKU_UNIT_DIED)
-   SkuDispatcher:UnregisterEventCallback("SKU_SPELL_CAST_START", SkuCore.aqCombat_SKU_SPELL_CAST_START)
-   SkuDispatcher:UnregisterEventCallback("PLAYER_ENTERING_WORLD", SkuCore.aqCombat_PLAYER_ENTERING_WORLD)
-   SkuDispatcher:UnregisterEventCallback("RAID_TARGET_UPDATE", SkuCore.aqCombatCheckGameRaidTargets)
-   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_DISABLED", SkuCore.aqCombat_PLAYER_REGEN_DISABLED)
-   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.aqCombat_PLAYER_REGEN_ENABLED)
-   SkuDispatcher:UnregisterEventCallback("PLAYER_TARGET_CHANGED", SkuCore.aqCombatPLAYER_TARGET_CHANGED)
-   SkuDispatcher:UnregisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.aqCombat_GROUP_ROSTER_UPDATE)
-   SkuDispatcher:UnregisterEventCallback("GROUP_FORMED", SkuCore.aqCombat_GROUP_ROSTER_UPDATE)
-   SkuDispatcher:UnregisterEventCallback("GROUP_JOINED", SkuCore.aqCombat_GROUP_ROSTER_UPDATE)
+   SkuDispatcher:UnregisterEventCallback("COMBAT_LOG_EVENT_UNFILTERED", aqCombat.aqCombat_COMBAT_LOG_EVENT_UNFILTERED)
+   SkuDispatcher:UnregisterEventCallback("SKU_UNIT_DIED", aqCombat.aqCombat_SKU_UNIT_DIED)
+   SkuDispatcher:UnregisterEventCallback("SKU_SPELL_CAST_START", aqCombat.aqCombat_SKU_SPELL_CAST_START)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_ENTERING_WORLD", aqCombat.aqCombat_PLAYER_ENTERING_WORLD)
+   SkuDispatcher:UnregisterEventCallback("RAID_TARGET_UPDATE", aqCombat.aqCombatCheckGameRaidTargets)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_DISABLED", aqCombat.aqCombat_PLAYER_REGEN_DISABLED)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", aqCombat.aqCombat_PLAYER_REGEN_ENABLED)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_TARGET_CHANGED", aqCombat.aqCombatPLAYER_TARGET_CHANGED)
+   SkuDispatcher:UnregisterEventCallback("GROUP_ROSTER_UPDATE", aqCombat.aqCombat_GROUP_ROSTER_UPDATE)
+   SkuDispatcher:UnregisterEventCallback("GROUP_FORMED", aqCombat.aqCombat_GROUP_ROSTER_UPDATE)
+   SkuDispatcher:UnregisterEventCallback("GROUP_JOINED", aqCombat.aqCombat_GROUP_ROSTER_UPDATE)
 
    if _G["SkuCoreaqCombatControl"] then
       _G["SkuCoreaqCombatControl"]:SetScript("OnUpdate", nil)
@@ -1152,7 +1152,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombat_GROUP_ROSTER_UPDATE()
+function aqCombat:aqCombat_GROUP_ROSTER_UPDATE()
    aqCombatIsPartyOrRaidMemberCache = {}
    
    if UnitGUID("player") then
@@ -1183,7 +1183,7 @@ function SkuCore:aqCombat_GROUP_ROSTER_UPDATE()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatPLAYER_TARGET_CHANGED(aEvent, a, b, c, d)
+function aqCombat:aqCombatPLAYER_TARGET_CHANGED(aEvent, a, b, c, d)
    local tCurrentSettings = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet]
    if tCurrentSettings.combat.enabled == true then
       if tCurrentSettings.combat.hostile.threatOutputTot.value > 1 then
@@ -1209,7 +1209,7 @@ function SkuCore:aqCombatPLAYER_TARGET_CHANGED(aEvent, a, b, c, d)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatUNIT_THREAT_LIST_UPDATE(aEven, aUnitId)
+function aqCombat:aqCombatUNIT_THREAT_LIST_UPDATE(aEven, aUnitId)
    --print("TankingUNIT_THREAT_LIST_UPDATE", aEven, aUnitId)
    --for i = 1, #tUnitsToTestOnGameRaidTargets do
       --local tguid = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
@@ -1229,7 +1229,7 @@ function SkuCore:aqCombatUNIT_THREAT_LIST_UPDATE(aEven, aUnitId)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatUNIT_THREAT_SITUATION_UPDATE(aEven, aUnitId)
+function aqCombat:aqCombatUNIT_THREAT_SITUATION_UPDATE(aEven, aUnitId)
    --print("TankingUNIT_THREAT_SITUATION_UPDATE", aEven, aUnitId)
    --for i = 1, #tUnitsToTestOnGameRaidTargets do
       --local tguid = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
@@ -1253,8 +1253,8 @@ local function tAddHelper(event, tCreatureGUID, tMobName, tPartyGuid, tPartyname
       sfind(event, "_CAST_FAILED")
    then      
       C_Timer.After(0.5, function()
-         local tMobUnitId = SkuCore:aqCombatCreatureGuidToUnitId(tCreatureGUID)
-         local tPartyUnitId = SkuCore:aqCombatCreatureGuidToUnitId(tPartyGuid)
+         local tMobUnitId = aqCombat:aqCombatCreatureGuidToUnitId(tCreatureGUID)
+         local tPartyUnitId = aqCombat:aqCombatCreatureGuidToUnitId(tPartyGuid)
 
          --local isTanking, status, scaledPercentage, rawPercentage, threatValue
          
@@ -1262,7 +1262,7 @@ local function tAddHelper(event, tCreatureGUID, tMobName, tPartyGuid, tPartyname
             --isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation(tPartyUnitId, tMobUnitId)
          
             if UnitIsDeadOrGhost(tMobUnitId) ~= true then
-               SkuCore:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tMobUnitId, tMobName, tPartyGuid, tPartyUnitId, tPartyname)
+               aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tMobUnitId, tMobName, tPartyGuid, tPartyUnitId, tPartyname)
 
                SkuCore.threatTable[tCreatureGUID].name = tMobName
                SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec() 
@@ -1288,11 +1288,11 @@ end
 
 local tGUIDCache = {creatures = {}, nonCreatures = {}}
 local tNonCreatureGUIDCache = {}
-function SkuCore:aqCombat_COMBAT_LOG_EVENT_UNFILTERED()
+function aqCombat:aqCombat_COMBAT_LOG_EVENT_UNFILTERED()
    local arg1, event, arg3, sourceGUID, sourceName, arg6, arg7, targetGUID, targetName = CombatLogGetCurrentEventInfo()
 
    if sourceGUID and targetGUID then
-      if SkuCore:aqCombatIsPartyOrRaidMember(nil, sourceGUID) then
+      if aqCombat:aqCombatIsPartyOrRaidMember(nil, sourceGUID) then
          if not tGUIDCache.nonCreatures[targetGUID] then
             if sfind(targetGUID, "Creature-") then
                tGUIDCache.creatures[targetGUID] = true
@@ -1303,7 +1303,7 @@ function SkuCore:aqCombat_COMBAT_LOG_EVENT_UNFILTERED()
          if tGUIDCache.creatures[targetGUID] then
             tAddHelper(event, targetGUID, targetName, sourceGUID, sourceName)
          end
-      elseif SkuCore:aqCombatIsPartyOrRaidMember(nil, targetGUID) then
+      elseif aqCombat:aqCombatIsPartyOrRaidMember(nil, targetGUID) then
          if not tGUIDCache.creatures[sourceGUID] then
             if sfind(sourceGUID, "Creature-") then
                tGUIDCache.creatures[sourceGUID] = true
@@ -1320,7 +1320,7 @@ function SkuCore:aqCombat_COMBAT_LOG_EVENT_UNFILTERED()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
+function aqCombat:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
    --[[
 	sourceGUID = 4,
 	sourceName = 5,
@@ -1354,7 +1354,7 @@ function SkuCore:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
                            SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                         end
                      elseif tCurrentSettings.combat.hostile.yourTargetCasting.value == 3 then
-                        if SkuCore:aqCombatIsPartyOrRaidMember(nil, tTargetTargetGuid) then
+                        if aqCombat:aqCombatIsPartyOrRaidMember(nil, tTargetTargetGuid) then
                            local tSetting = tCurrentSettings.combat.hostile.yourTargetCasting
                            SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                         end
@@ -1367,7 +1367,7 @@ function SkuCore:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
          if tCurrentSettings.combat.hostile.allEnemiesCasting.value > 1 then
             local tUnitGUID = aEventData[4]
             if tUnitGUID then
-               if SkuCore:aqCombatGroupGuidToUnitId(tUnitGUID) == nil then
+               if aqCombat:aqCombatGroupGuidToUnitId(tUnitGUID) == nil then
                   local name, rank, icon, castTime
                   if aEventData[12] then
                      name, rank, icon, castTime = GetSpellInfo(aEventData[12])
@@ -1391,14 +1391,14 @@ function SkuCore:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
+function aqCombat:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
    local tCurrentSettings = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet]
 
    if tCurrentSettings.combat.enabled == true then
       if aqCombatCheckElite(aUnitGUID) == true then
          if tCurrentSettings.combat.hostile.outputDeadUnits.value > 1 then
             if (tCurrentSettings.combat.hostile.deathsIgnoreUnitsNotInCombat == true and SkuCore.threatTable[aUnitGUID] ~= nil) or tCurrentSettings.combat.hostile.deathsIgnoreUnitsNotInCombat == false then
-               local tCreateUnitId = SkuCore:aqCombatCreatureGuidToUnitId(aUnitGUID)
+               local tCreateUnitId = aqCombat:aqCombatCreatureGuidToUnitId(aUnitGUID)
                if tCreateUnitId == nil then
                   tCreateUnitId = "creature"
                end
@@ -1431,12 +1431,12 @@ function SkuCore:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
    end
 
    if tCurrentSettings.combat.enabled == true then
-      if SkuCore:aqCombatIsPartyOrRaidMember(nil, aUnitGUID) == nil then
+      if aqCombat:aqCombatIsPartyOrRaidMember(nil, aUnitGUID) == nil then
          if sfind(aUnitGUID, "Creature-") then
-            SkuCore:aqCombat_CREATURE_REMOVED_FROM_COMBAT(aUnitGUID, nil, aUnitName)
+            aqCombat:aqCombat_CREATURE_REMOVED_FROM_COMBAT(aUnitGUID, nil, aUnitName)
          end
       else
-         local tPartyUnitId = SkuCore:aqCombatGroupGuidToUnitId(aUnitGUID)
+         local tPartyUnitId = aqCombat:aqCombatGroupGuidToUnitId(aUnitGUID)
          if tPartyUnitId == nil then
             tPartyUnitId = ""
          end
@@ -1469,15 +1469,15 @@ function SkuCore:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombat_PLAYER_REGEN_DISABLED()
+function aqCombat:aqCombat_PLAYER_REGEN_DISABLED()
    SkuCore.aqCombatCheckThreat = true
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombat_PLAYER_REGEN_ENABLED()
+function aqCombat:aqCombat_PLAYER_REGEN_ENABLED()
    SkuCore.partyDeadCountCounter = 0
    SkuCore.aqCombatCheckThreat = nil
-   SkuCore:aqCombatClearSkuRaidTargets()
+   aqCombat:aqCombatClearSkuRaidTargets()
 
    -- If the enemy-in-combat counter is active and was still above zero when
    -- the player leaves combat, the user never hears the final "0" because
@@ -1507,7 +1507,7 @@ function SkuCore:aqCombat_PLAYER_REGEN_ENABLED()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombat_PLAYER_ENTERING_WORLD()
+function aqCombat:aqCombat_PLAYER_ENTERING_WORLD()
 
 
 end
@@ -1515,7 +1515,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Sku raid target
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatGetSkuRaidTarget(aUnitGUID)
+function aqCombat:aqCombatGetSkuRaidTarget(aUnitGUID)
    for i, v in pairs(SkuCore.SkuRaidTargetRepo) do
       if i == aUnitGUID then
          return v
@@ -1529,7 +1529,7 @@ function SkuCore:aqCombatGetSkuRaidTarget(aUnitGUID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatSetSkuRaidTarget(aUnitGUID, aRaidTargetId)
+function aqCombat:aqCombatSetSkuRaidTarget(aUnitGUID, aRaidTargetId)
    if not aUnitGUID then
       return
    end
@@ -1572,13 +1572,13 @@ function SkuCore:aqCombatSetSkuRaidTarget(aUnitGUID, aRaidTargetId)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatClearSkuRaidTargets()
+function aqCombat:aqCombatClearSkuRaidTargets()
    SkuCore.SkuRaidTargetRepo = {}
    SkuCore.SkuRaidTargetRepoDead = {}
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatCheckGameRaidTargets()
+function aqCombat:aqCombatCheckGameRaidTargets()
    for i = 1, #tUnitsToTestOnGameRaidTargets do
       local tguid = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
       if tguid then
@@ -1646,7 +1646,7 @@ local function tSoundMenuBuilder(self, aSetting)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombatMenuBuilder()
+function aqCombat:aqCombatMenuBuilder()
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true

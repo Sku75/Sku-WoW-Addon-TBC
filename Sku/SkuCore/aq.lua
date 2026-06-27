@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "aq"
 local L = Sku.L
 local _G = _G
@@ -882,7 +882,7 @@ function SkuCore:AqOnInitialize()
    SkuDispatcher:RegisterEventCallback("GROUP_LEFT", SkuCore.Monitor_GROUP_LEFT)
    SkuDispatcher:RegisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.Monitor_GROUP_ROSTER_UPDATE)	
 
-	--SkuCore:aqCombatOnInitialize()
+	--SkuCore.aqCombat:aqCombatOnInitialize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -4179,7 +4179,7 @@ function SkuCore:MonitorMenuBuilder()
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Combat"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
-	tNewMenuEntry.BuildChildren = SkuCore.aqCombatMenuBuilder
+	tNewMenuEntry.BuildChildren = SkuCore.aqCombat.aqCombatMenuBuilder
 
 
 	
