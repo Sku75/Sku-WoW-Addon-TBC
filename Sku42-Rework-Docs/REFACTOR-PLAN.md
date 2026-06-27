@@ -1272,7 +1272,26 @@ to the W1 settings migration (~2,700 sites) which landed cleanly with this metho
     because `SkuKeyBinds` string-dispatch resolves `{object="SkuCore", func="…"}` by name; the
     real methods live on the module tables. Same exception class as E1's forwarder shims.
   - luaparser OK both files. **No toggleable-feature method/state remains on `SkuCore`.**
-- [ ] E3. Re-run `_members.py`/`_matrix.py`; record the collapsed SkuCore coupling.
+- [x] **E3. Coupling re-measured & recorded (read-only audit; full numbers in CHANGELOG).**
+  Two complementary metrics, both improved vs §4.1:
+  - **God-table def count:** 352 → 237 (E1) → 138 (E1b) → 137 (E2) `function SkuCore:` defs
+    (−61%). This is where Phase E's win shows (the matrix can't, see blind spot below).
+  - **Reference matrix (matching-lines, same as §4.1):** the rot edges collapsed —
+    SkuCore→SkuChat **117→13** (Phase A Unescape), SkuMob→SkuCore **26→11** (Phase C
+    state services), SkuQuest→SkuCore 5→2, SkuAuras/SkuChat→SkuCore 14→12.
+  - **Rose by design (not rot):** SkuQuest→SkuNav 91→126 & SkuCore→SkuNav 38→47 = the
+    legit geo service (category B, `SkuNav.Geo` facade declared, callers repoint deferred);
+    SkuCore→SkuDispatcher 89→121 = the intended "use the dispatcher more".
+  - **Matrix blind spot (recorded):** it counts the literal token `SkuCore`; E moved 215
+    methods onto isolated tables but callers reach features via the handle `SkuCore.Feature:X`
+    (still "SkuCore"), so the matrix understates E — the def-count is E's true metric.
+  - **Largest residual edge:** SkuZOptions→SkuCore (202 lines / 47 members) — expected (the
+    menu is the universal consumer); weight is menu plumbing + service API + published feature
+    handles + a few low-value read-only category-C state fields (talentSet const, GossipList,
+    SkuRaidTargetIndex) deferred by design.
+  - **Verdict: W4 decoupling goal met.** Optional deferred follow-ups: repoint geo callers
+    onto `SkuNav.Geo`; migrate the last category-C read-only state; dispatcher-event pass to
+    drop the `SetOpenMenuAfter*` edge.
 
 ---
 

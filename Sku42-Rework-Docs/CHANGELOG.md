@@ -22,6 +22,58 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W4 Phase E — E3: coupling re-measured, collapse recorded (closes Workstream 4
+  decoupling).** Read-only audit — re-ran `_matrix.py` (cross-module global-token
+  reference grid) and `_members.py` (per-edge member breakdown) now that A–E2 are
+  done, against the §4.1 baseline. No code changed.
+  - **Two complementary metrics, both improved:**
+    - *God-table def count* (the "is SkuCore still a god-object" metric):
+      **352 → 237 (E1) → 138 (E1b) → 137 (E2)** `function SkuCore:` defs, −61%.
+      This is where Phase E's win actually shows.
+    - *Cross-module reference matrix* ("who reaches into whom", matching-lines
+      metric, same as §4.1):
+  - **Cycle rot collapsed (category A — the real win):**
+    - **SkuCore → SkuChat: 117 → 13** — the single biggest edge, gone. Phase A
+      `Unescape`→`SkuUtil` extraction (≈113 calls were one stateless string helper).
+    - **SkuMob → SkuCore: 26 → 11** — Phase C state services (`SkuState:IsInCombat/
+      IsMoving`) + `pendingPetRename` relocated off SkuCore.
+    - **SkuQuest → SkuCore: 5 → 2**, SkuAuras → SkuCore 14 → 12, SkuChat → SkuCore
+      14 → 12 — all down.
+  - **Healthy service edges kept (category B — not rot, by design):**
+    - **SkuQuest → SkuNav: 91 → 126** and **SkuCore → SkuNav: 38 → 47** *rose*
+      (normal code growth). These are the legit stateless geo/map service calls
+      (`GetBestMapForUnit`, `Distance`, area/continent conversions). The `SkuNav.Geo`
+      facade is declared (Phase B) but callers are not yet repointed — a deferred,
+      low-value cosmetic pass. The dependency is healthy; the plan said name it, not
+      break it.
+  - **Dispatcher routing rose on purpose:** **SkuCore → SkuDispatcher 89 → 121** (+
+    other modules now route through it too: SkuNav 8, SkuChat 6, SkuAuras 2, SkuQuest
+    1). The plan explicitly wanted MORE dispatcher use ("it is underused") — rising
+    here is the intended decoupled-comms direction, not coupling.
+  - **The matrix's blind spot (recorded for honesty):** the matrix counts the literal
+    token `SkuCore`. Phase E moved 215 methods onto isolated module tables but external
+    callers still reach features via the published handle `SkuCore.Feature:X`, which
+    still contains "SkuCore". So the token-matrix UNDERSTATES E; the def-count is E's
+    true metric. (Visible in `_members.py SkuZOptions SkuCore`: much of that 47-member,
+    197-access edge is now calls THROUGH feature handles — `SkuCore.VisualAids` 18,
+    `SkuCore.AtlasLootIntegration` 5, `SkuCore.Socketing` 4, `.GameWorldObjects` 3,
+    `.Aq`/`.aqCombat`/`.GameOptions` — i.e. the menu reaching features by their public
+    handle, the expected post-E shape, not raw internal pokes.)
+  - **Largest residual edge: SkuZOptions → SkuCore (202 lines / 47 members)** — not in
+    the §4.1 baseline (SkuZOptions wasn't measured then), recorded now as the post-W4
+    baseline. Expected: the options/menu system is the universal consumer that builds
+    UI for every feature. Its weight is menu plumbing (`CheckFrames` 31, `Debug` 16),
+    the deferred-action service API (`SetOpenMenuAfter*` 17, the good kind), published
+    feature handles (above), and a few un-migrated read-only state fields (`talentSet`
+    22 = write-once const, `SkuRaidTargetIndex` 8, `GossipList` 8) noted in the plan as
+    low-value category-C deferrals.
+  - **Verdict:** every cyclic "rot" edge into SkuCore is down or eliminated; the
+    god-table shrank 61%; remaining heavy edges are either the universal menu consumer
+    or named geo/dispatcher services. Workstream 4's decoupling goal is met. Deferred
+    follow-ups (all optional, recorded in the plan): repoint geo callers onto
+    `SkuNav.Geo`; migrate the last read-only category-C state fields; a dispatcher-event
+    pass to drop the `SetOpenMenuAfter*` edge.
+
 - **W4 Phase E — E2: Core.lua slimmed, no toggleable-feature method left on `SkuCore`.**
   After E1b the god-table was already down to 137 `function SkuCore:` defs. E2 confirmed
   what legitimately stays core and relocated the one misplaced shared helper:
