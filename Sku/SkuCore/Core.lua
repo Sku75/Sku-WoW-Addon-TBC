@@ -2376,7 +2376,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB or {}
 		SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory or {}
 
-		SkuCore:JunkAndRepairInitialize()
+		SkuCore.JunkAndRepair:Initialize()
 		SkuCore:UpdateInteractMove(true)
 		SkuCore:GameWorldObjectsOnLogin()
 		SkuCore:AqOnLogin()

@@ -929,7 +929,27 @@ codebase. Do it as a long series of small, independently-shippable extractions:
     read/write of `inCombat`/`isMoving`/`openMenuAfter*`/`pendingPetRename`
     remains (only inert `--dprint` comments). **One combined in-game smoke
     pending (user-run).** X-C1 complete pending that smoke.
-- [ ] X-D1. Promote SkuCore features to `NewModule`, most self-contained first; move state off the shared table.
+- [~] X-D1. Promote SkuCore features to their own namespace, most self-contained first; move state off the shared table.
+  - **Mechanism chosen: the existing `SkuCore.SkuFocus` sub-table idiom**, NOT
+    AceAddon `NewModule`. AceAddon submodules are used nowhere in this codebase;
+    introducing them (new lifecycle, auto-enable timing) would be the novel/risky
+    move. `skuFocus.lua` already shows the safe local pattern: `SkuCore.<Feature> =
+    {}` holding the feature's methods/state, called explicitly (same init timing).
+    This gives each feature an explicit boundary + state ownership with minimal
+    risk and full codebase consistency. (Can still escalate specific features to
+    AceAddon later if a real enable/disable lifecycle is ever needed.)
+  - **DONE — `JunkAndRepair`** extracted to `SkuCore.JunkAndRepair` (commit
+    pending in-game smoke). It was the most self-contained feature: one entry
+    method (`JunkAndRepairInitialize`, the only caller at SkuCore/Core.lua:2379),
+    state already private (the `SellJunkFrame` upvalue + closure locals), reads NO
+    SkuCore shared-state fields. Change: added `SkuCore.JunkAndRepair = {}`,
+    renamed `SkuCore:JunkAndRepairInitialize` → `SkuCore.JunkAndRepair:Initialize`
+    (+ the commented `Enable`), updated the one caller. Settings left under the
+    "SkuCore" SkuSettings namespace (shared with the SkuZOptions junk-list menu)
+    to avoid a SavedVariables migration. Behaviour-identical; luaparser OK.
+  - **TODO next (same idiom, ascending coupling):** `mail` (179 lines),
+    `Build_SocketingFrame`/sockets (656), then larger features. Re-measure the
+    SkuCore method-count / inbound edges after each.
 - [ ] X-V. Re-run the reference matrix after each phase; record the falling cycle counts here.
   - **Post-Phase-A baseline (qualified-access counts, the 4.1 method):**
     - SkuCore → SkuDispatcher 89, SkuNav 38, **SkuChat 3** (was 117 — Unescape

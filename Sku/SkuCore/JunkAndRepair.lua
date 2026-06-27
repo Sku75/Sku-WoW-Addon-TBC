@@ -4,10 +4,18 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- W4 Phase D: JunkAndRepair is its own feature namespace on SkuCore (mirroring the
+-- existing SkuCore.SkuFocus sub-table idiom) instead of hanging a bare
+-- SkuCore:JunkAndRepair* method on the shared SkuCore method table. Its state was
+-- already private (the SellJunkFrame upvalue + closure locals); this just gives the
+-- feature an explicit boundary. Settings stay under the "SkuCore" SkuSettings
+-- namespace (shared with the SkuZOptions junk-list menu), so no SavedVariables move.
+SkuCore.JunkAndRepair = {}
+
 local SellJunkFrame
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:JunkAndRepairInitialize()
+function SkuCore.JunkAndRepair:Initialize()
 
    if not SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter then
       SkuSettings:Sub("SkuCore", nil, "char").SellJunkCustomItemIds = {}
@@ -137,7 +145,7 @@ function SkuCore:JunkAndRepairInitialize()
 end
 --[[
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:JunkAndRepairEnable()
+function SkuCore.JunkAndRepair:Enable()
    local tAutoSellJunk = "On"
    if tAutoSellJunk == "On" then
       SellJunkFrame:RegisterEvent("MERCHANT_SHOW")
