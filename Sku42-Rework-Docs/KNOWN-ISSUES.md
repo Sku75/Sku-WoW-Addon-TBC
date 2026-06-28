@@ -73,6 +73,33 @@ investigated.
   - Status: open (pre-existing). Either remove the dead entry or populate it with
     the real SkuAuras toggles. Candidate for W2 (menu rework) / W6 cleanup.
 
+## Code quality (deferred — documented, not scheduled)
+
+Low-value cleanups left after W4. Recorded so they aren't rediscovered as
+"surprises"; intentionally not fixed (cost/risk > benefit).
+
+- **Geo callers not repointed onto `SkuNav.Geo`.** ~59 external calls still use
+  `SkuNav:X` directly. The facade is declared (W4-B) but repointing gives ZERO
+  coupling-metric change (still the token `SkuNav`) and adds a delegation call on
+  hot geo paths (`Distance`, `GetCurrentAreaId`) — mild perf cost vs W3. Leave.
+- **Last category-C read-only state on SkuCore.** `talentSet` (write-once const in
+  TBC), `GossipList`, `SkuRaidTargetIndex` are still bare `SkuCore.<field>` reads
+  cross-module. Benign single-owner read-only data; wrapping in services is churn
+  for no real decoupling. Leave (revisit only if one becomes mutable).
+- **`SetOpenMenuAfter*` is shared state, not an event.** SkuZOptions sets these via
+  the SkuCore owner-API (already the clean form, W4-C). A dispatcher-event rewrite
+  would obscure that it's persistent state SkuCore reads+clears, and the call sites
+  are asymmetric (one commented out, Core.lua:1760). Leave as the owner-API edge.
+- **Solo addons stay top-level AceAddons, not SkuCore submodules** (SkuChat / Nav /
+  Quest / Auras / Mob). NOT just a cosmetic keyword: `NewAddon`→`NewModule` moves
+  AceAddon **lifecycle ownership** (init/enable ordering) under SkuCore and forces
+  `GetAddon`→`GetModule` at every resolver — real blast-radius on the 5 biggest,
+  most-coupled units for no functional gain. They are ALREADY unified where it
+  matters: own namespace + one Features menu + one toggle API; the dual-path
+  knowledge is contained to `ModuleManager:ResolveToggleObject` (the `external`
+  flag), so consumers treat all features uniformly. Treat THIS note as the answer
+  to "wait, are these special?" — they're peers by design, managed identically.
+
 ## Feature requests / wishlist
 
 Maintainer-requested features for the v42 line. Several overlap existing
