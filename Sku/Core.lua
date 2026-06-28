@@ -274,6 +274,29 @@ end
 -- Performance monitoring
 Sku.PerformanceStart = false
 Sku.PerformanceData = {}
+
+-- Richer probe recorder. The legacy Sku.PerformanceData[name] holds only a noisy
+-- 2-sample rolling figure ((old+new)/2), which can't confirm a small change.
+-- Sku:Probe additionally tracks count / total / max / last per name in
+-- Sku.PerfStats, and sets Sku.PerformanceData[name] to the TRUE running average
+-- (total/count) so the on-screen frame and /skuperf stay populated. Cheap: a few
+-- adds and one compare, no allocation after the first call per name. Use it for
+-- probes we want to measure optimizations against; the other probe sites keep
+-- the legacy EWMA write until/unless they need the same treatment.
+Sku.PerfStats = {}
+function Sku:Probe(aName, aMs)
+	local s = Sku.PerfStats[aName]
+	if not s then
+		s = {count = 0, total = 0, max = 0, last = 0}
+		Sku.PerfStats[aName] = s
+	end
+	s.count = s.count + 1
+	s.total = s.total + aMs
+	s.last = aMs
+	if aMs > s.max then s.max = aMs end
+	Sku.PerformanceData[aName] = s.total / s.count
+end
+
 function Sku:Performance()
 	if not _G["SkuPerformance"] then
 		local f = _G["SkuPerformance"] or CreateFrame("Frame", "SkuPerformance", UIParent, BackdropTemplateMixin and "BackdropTemplate")
@@ -442,7 +465,15 @@ function Sku:PerformanceDumpCombat(aEmit)
 	end
 	table.sort(tRows, function(a, b) return a[2] > b[2] end)
 	for _, r in ipairs(tRows) do
-		aEmit(string.format("  %.3f ms  %s", r[2], r[1]))
+		local s = Sku.PerfStats[r[1]]
+		if s then
+			-- Stable, measurable numbers: true average + how many calls, the
+			-- worst single call, and the total time spent across the run.
+			aEmit(string.format("  %.3f ms avg  %s  (n=%d, max=%.3f ms, total=%.1f ms)",
+				r[2], r[1], s.count, s.max, s.total))
+		else
+			aEmit(string.format("  %.3f ms  %s", r[2], r[1]))
+		end
 	end
 end
 
@@ -505,6 +536,7 @@ SlashCmdList["SKUPERF"] = function(aMsg)
 		Sku:PerformanceDumpCpu(nil, true)
 	elseif aMsg == "reset" then
 		Sku.PerformanceData = {}
+		Sku.PerfStats = {}
 		tPerfEmitChat("|cff80c0ffSkuPerf|r combat probe averages cleared.")
 	elseif aMsg == "frame" then
 		Sku:Performance()
