@@ -906,6 +906,21 @@ local tAuraDurationAtts = {
 	buffListTarget = {"target", "HELPFUL"},
 	debuffListTarget = {"target", "HARMFUL"},
 }
+-- [W3/P4 #2] Reusable scratch buffers for the four fixed getAuraList() calls per
+-- event, so EvaluateAllAuras stops allocating four tables on every combat-log
+-- event (GC churn -> frame spikes in raids). Each fixed list has its own buffer
+-- (all four are alive at once inside tEvaluateData); getAuraList wipes the buffer
+-- before refilling. SAFE: the lists are read only synchronously within
+-- EvaluateAllAuras (membership checks); no reference escapes for async use
+-- (buffListTarget/debuffListTarget are even replaced by a string before any
+-- output runs), and the function is never re-entered mid-call. The per-aura
+-- duration-lookup getAuraList calls pass NO scratch, so they never clobber these.
+local tAuraScratch = {
+	buffTarget = {},
+	debuffTarget = {},
+	buffPlayer = {},
+	debuffPlayer = {},
+}
 function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 	local beginTime = debugprofilestop()
 
@@ -942,9 +957,25 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 		tSourceUnitIDCannAttack = CombatLog_Object_IsA(tEventData[CleuBase.sourceFlags], CombatLogFilterAttackable)
 	end
 
-	local function getAuraList(unit, filter, durationForAuraName)
+	-- [W3/P4 #4] Snapshot the temporary weapon-enchant state ONCE per call; it is
+	-- read in getAuraList (player/HELPFUL) and again in the weapon-buff do-block
+	-- below (and, wastefully, on buffListPlayer duration misses). It is a single
+	-- synchronous snapshot, so caching it is behaviour-identical.
+	local tWE_hasMH, tWE_mhExp, tWE_mhCharges, tWE_mhId,
+	      tWE_hasOH, tWE_ohExp, tWE_ohCharges, tWE_ohId = GetWeaponEnchantInfo()
+
+	local function getAuraList(unit, filter, durationForAuraName, aScratch)
 		filter = filter or "HELPFUL|HARMFUL"
-		local tBuffList = {}
+		-- [W3/P4 #2] Reuse a caller-supplied scratch buffer (wiped) instead of
+		-- allocating, for the four fixed per-event lists. The duration-lookup path
+		-- passes no scratch (it returns a number and must NOT touch the shared
+		-- buffers, which stay live in tEvaluateData during the per-aura loop).
+		local tBuffList = aScratch
+		if tBuffList then
+			for k in pairs(tBuffList) do tBuffList[k] = nil end
+		else
+			tBuffList = {}
+		end
 		for x = 1, 40  do
 			local name, icon, count, dispelType, duration, expirationTime = UnitAura(unit, x, filter)
 			-- UnitAura indices are contiguous then nil: once name is nil there are
@@ -962,7 +993,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 
 		--add weapon enchants
 		if unit == "player" and filter == "HELPFUL" then
-			local hasMainHandEnchant, mainHandExpiration, mainHandCharges, mainHandEnchantID, hasOffHandEnchant, offHandExpiration, offHandCharges, offHandEnchantID = GetWeaponEnchantInfo()
+			local hasMainHandEnchant, mainHandExpiration, mainHandCharges, mainHandEnchantID, hasOffHandEnchant, offHandExpiration, offHandCharges, offHandEnchantID = tWE_hasMH, tWE_mhExp, tWE_mhCharges, tWE_mhId, tWE_hasOH, tWE_ohExp, tWE_ohCharges, tWE_ohId
 			if hasMainHandEnchant == true then
 				if mainHandEnchantID and mainHandEnchantID > 0 and SkuDB.WotLK.enchantIDs[mainHandEnchantID] then
 					local tName
@@ -1033,10 +1064,10 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 		unitComboPlayer = tEventData[51],
 		unitHealthTarget = UnitName("target") and mfloor(UnitHealth("target") / (UnitHealthMax("target") / 100)),
 		unitHealthOrPowerUpdate = tEventData[35] or tEventData[36],
-		buffListTarget = getAuraList("target", "HELPFUL"),
-		debuffListTarget = getAuraList("target", "HARMFUL"),
-		buffListPlayer = getAuraList("player", "HELPFUL"),
-		debuffListPlayer = getAuraList("player", "HARMFUL"),
+		buffListTarget = getAuraList("target", "HELPFUL", nil, tAuraScratch.buffTarget),
+		debuffListTarget = getAuraList("target", "HARMFUL", nil, tAuraScratch.debuffTarget),
+		buffListPlayer = getAuraList("player", "HELPFUL", nil, tAuraScratch.buffPlayer),
+		debuffListPlayer = getAuraList("player", "HARMFUL", nil, tAuraScratch.debuffPlayer),
 		tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
 		tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
 		targetCanAttack = UnitCanAttack("player", "target"),
@@ -1083,7 +1114,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 	-- Spiegelt die Namensaufloesung aus getAuraList (859-879), OHNE getAuraList zu
 	-- teilen. Setzt NUR neue tEvaluateData-Felder. RUECKBAU: diesen do-Block entfernen.
 	do
-		local hasMH, mhExp, _, mhId, hasOH, ohExp, _, ohId = GetWeaponEnchantInfo()
+		local hasMH, mhExp, _, mhId, hasOH, ohExp, _, ohId = tWE_hasMH, tWE_mhExp, tWE_mhCharges, tWE_mhId, tWE_hasOH, tWE_ohExp, tWE_ohCharges, tWE_ohId
 		local function tResolveEnchantName(aEnchantId)
 			-- [41.03 Fix] zentral aufloesen (gleiche Quelle wie die Werteliste)
 			return SkuAuras:ResolveWeaponEnchantName(aEnchantId)
