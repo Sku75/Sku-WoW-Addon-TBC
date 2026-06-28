@@ -654,7 +654,9 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			end
 			
 			--layer info
-			if SkuDB.routedata["global"].WaypointLevels and (tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true) then
+			-- Route data is lazily built (SkuDeferredData.lua); guard against it
+			-- not being constructed yet so an early scan tick can't nil-error.
+			if SkuDB.routedata and SkuDB.routedata["global"] and SkuDB.routedata["global"].WaypointLevels and (tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true) then
 				local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, nil, true))
 				if tLayerText then
 					tOutputString = tOutputString.." "..tLayerText

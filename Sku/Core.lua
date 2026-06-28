@@ -297,6 +297,72 @@ function Sku:Probe(aName, aMs)
 	Sku.PerformanceData[aName] = s.total / s.count
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Per-module load timing  [Workstream 3 / load profiling]
+--
+-- Sku is built from ~10 AceAddon addons plus their sub-modules. AceAddon routes
+-- every one of them through AceAddon:InitializeAddon (OnInitialize, fired at the
+-- ADDON_LOADED sweep) and AceAddon:EnableAddon (OnEnable, fired at PLAYER_LOGIN).
+-- We wrap those two so each addon/module's load cost is timed automatically - no
+-- need to hand-instrument every file. InitializeAddon is non-recursive, so its
+-- number is clean per addon. EnableAddon recurses into child modules, so we keep
+-- a tiny per-depth stack and subtract child time to report a clean SELF figure
+-- (plus the inclusive total). Results: Sku.PerfModules[name] = {init=, enableSelf=,
+-- enableTotal=}. AceAddon is shared by ALL Ace3 addons in the client, so this also
+-- captures other addons' modules (their OnEnable all runs at the single
+-- PLAYER_LOGIN after Sku loaded) - useful for the general picture. We snapshot the
+-- table at first PLAYER_ENTERING_WORLD into Sku.PerfModulesLoad so later
+-- enable/disable toggles can't overwrite the load-time reading.
+Sku.PerfModules = Sku.PerfModules or {}
+do
+	local AceAddon = LibStub and LibStub("AceAddon-3.0", true)
+	if AceAddon and not Sku._perfHookedAce then
+		Sku._perfHookedAce = true
+
+		local function tModRec(aName)
+			local r = Sku.PerfModules[aName]
+			if not r then r = {init = 0, enableSelf = 0, enableTotal = 0}; Sku.PerfModules[aName] = r end
+			return r
+		end
+
+		local tOrigInit = AceAddon.InitializeAddon
+		AceAddon.InitializeAddon = function(self, aAddon)
+			local tName = (type(aAddon) == "table" and aAddon.name) or tostring(aAddon)
+			local t0 = debugprofilestop()
+			tOrigInit(self, aAddon)
+			local dt = debugprofilestop() - t0
+			if dt < 0 then dt = 0 end
+			tModRec(tName).init = dt
+		end
+
+		-- EnableAddon recurses into child modules; keep per-depth child-time
+		-- accumulators so each entry reports SELF time (total minus children).
+		local tEnableStack = {}
+		local tOrigEnable = AceAddon.EnableAddon
+		AceAddon.EnableAddon = function(self, aAddon)
+			local tName = (type(aAddon) == "string" and aAddon)
+				or (type(aAddon) == "table" and aAddon.name) or tostring(aAddon)
+			local tDepth = #tEnableStack + 1
+			tEnableStack[tDepth] = 0
+			local t0 = debugprofilestop()
+			local tRet = tOrigEnable(self, aAddon)
+			local tTotal = debugprofilestop() - t0
+			if tTotal < 0 then tTotal = 0 end
+			local tChild = tEnableStack[tDepth] or 0
+			tEnableStack[tDepth] = nil
+			if tDepth > 1 then
+				tEnableStack[tDepth - 1] = (tEnableStack[tDepth - 1] or 0) + tTotal
+			end
+			local tSelf = tTotal - tChild
+			if tSelf < 0 then tSelf = 0 end
+			local r = tModRec(tName)
+			r.enableTotal = tTotal
+			r.enableSelf = tSelf
+			return tRet
+		end
+	end
+end
+
 function Sku:Performance()
 	if not _G["SkuPerformance"] then
 		local f = _G["SkuPerformance"] or CreateFrame("Frame", "SkuPerformance", UIParent, BackdropTemplateMixin and "BackdropTemplate")
@@ -406,12 +472,24 @@ end
 -- out-of-game after a /reload, like the rest of Sku's logging). All combat
 -- probe numbers are milliseconds; load milestones are seconds since core load.
 --
---   /skuperf            -- dump everything (load + combat + cpu, read-only)
+--   /skuperf            -- dump everything (load + modules + combat + addons + mem, read-only)
+--   /skuperf load       -- Sku.metric load-time milestones (the coarse freeze timeline)
+--   /skuperf files      -- per-file load time from the _ps*.lua TOC stubs (which data file is slow)
+--   /skuperf modules    -- per Sku module/addon init+enable time (what in Sku is slow)
+--   /skuperf addons     -- ALL addons by load CPU, slowest first (needs scriptProfile; enables it)
+--   /skuperf mem        -- ALL addons by memory, largest first (no setup; a load-cost proxy)
 --   /skuperf combat     -- Sku.PerformanceData probes, slowest first
---   /skuperf load       -- Sku.metric load-time milestones
---   /skuperf cpu        -- per-addon CPU usage (needs scriptProfile; enables it)
+--   /skuperf cpu        -- Sku-family CPU usage (needs scriptProfile; enables it)
 --   /skuperf reset      -- clear the rolling combat probe averages
 --   /skuperf frame      -- toggle the old on-screen frame (sighted devs)
+--
+-- TWO views answer "why is my login slow":
+--   * the GENERAL picture -> /skuperf addons (CPU) or /skuperf mem (no setup):
+--     which of ALL your addons cost the most at load.
+--   * the SKU picture -> /skuperf modules + /skuperf load: which Sku module and
+--     which load phase (file-load -> login -> first frame) cost the most.
+-- Both are auto-captured to the SkuDebugLog ring at first PEW (read back after a
+-- /reload), so the load story is always recorded without typing a command.
 --
 -- The combat probes (Sku.PerformanceData[...]) are reset to {} every load and
 -- are NOT persisted, so read them in the same session you captured them (run
@@ -489,6 +567,107 @@ function Sku:PerformanceDumpLoad(aEmit)
 	end
 end
 
+-- Per-file load time (TEMPORARY measurement) from the SkuFileLoadStamps harness
+-- (SkuPerfFileStamp.lua + the _ps*.lua TOC stubs). Each line is the gap between
+-- two consecutive stamps = the load time (parse + table construction) of the TOC
+-- files between them. This is how we attribute the file-load freeze to the big
+-- route files. Negative numbers mean GetTimePreciseSec was unavailable and the
+-- fallback clock straddled Core.lua's debugprofilestart reset - ignore those.
+function Sku:PerformanceDumpFiles(aEmit)
+	aEmit = aEmit or tPerfEmitChat
+	aEmit("|cff80c0ffSkuPerf|r per-file load time (seconds, gaps between TOC stamps):")
+	local s = SkuFileLoadStamps
+	if not s or #s < 2 then
+		aEmit("  (no file stamps - measurement stubs not loaded)")
+		return
+	end
+	for i = 2, #s do
+		aEmit(string.format("  %.3f s  %s  ->  %s", (s[i][2] or 0) - (s[i-1][2] or 0), tostring(s[i-1][1]), tostring(s[i][1])))
+	end
+	aEmit(string.format("  %.3f s  TOTAL stamped span", (s[#s][2] or 0) - (s[1][2] or 0)))
+end
+
+-- Per-module load timing from the AceAddon init/enable hook. Reads the PEW
+-- snapshot when present (the load-time picture) so post-login toggles don't skew
+-- it; otherwise the live table. Ranked by init+enableSelf (the work charged to
+-- THAT module). Capped to the top 30 so the chat/ring stays readable.
+function Sku:PerformanceDumpModules(aEmit)
+	aEmit = aEmit or tPerfEmitChat
+	local tSrc = Sku.PerfModulesLoad or Sku.PerfModules
+	aEmit("|cff80c0ffSkuPerf|r module load timing (ms, slowest first, top 30):")
+	local tRows = {}
+	for k, v in pairs(tSrc) do
+		tRows[#tRows + 1] = {k, (v.enableSelf or 0) + (v.init or 0), v}
+	end
+	if #tRows == 0 then
+		aEmit("  (no module timing captured - hook not installed?)")
+		return
+	end
+	table.sort(tRows, function(a, b) return a[2] > b[2] end)
+	for i = 1, math.min(30, #tRows) do
+		local v = tRows[i][3]
+		aEmit(string.format("  %.1f ms  %s  (init=%.1f, enable=%.1f)",
+			tRows[i][2], tRows[i][1], v.init or 0, v.enableSelf or 0))
+	end
+end
+
+-- All-addon load cost (CPU ms) - the "what is slowing my login in general" view.
+-- Needs scriptProfile (same gate/recipe as the Sku-family CPU dump). The number
+-- is cumulative-this-session, but the auto-snapshot runs at first PEW so it then
+-- reflects load-time execution. Top 30 plus an all-addons total.
+function Sku:PerformanceDumpAddons(aEmit, aAllowEnable)
+	aEmit = aEmit or tPerfEmitChat
+	local tEnabled = (GetCVar and GetCVar("scriptProfile") == "1")
+	if not tEnabled then
+		if aAllowEnable and SetCVar then
+			SetCVar("scriptProfile", "1")
+			aEmit("|cff80c0ffSkuPerf|r CPU profiling was OFF. Enabled scriptProfile - type /reload, then /skuperf addons.")
+		else
+			aEmit("|cff80c0ffSkuPerf|r all-addon CPU needs scriptProfile (run /skuperf addons to enable, needs /reload).")
+		end
+		return
+	end
+	tUpdateAddOnCpu()
+	aEmit("|cff80c0ffSkuPerf|r all-addon load CPU (ms, slowest first, top 30):")
+	local tRows, tTotal = {}, 0
+	for i = 1, tGetNumAddOns() do
+		local tUse = tGetAddOnCpu(i) or 0
+		tTotal = tTotal + tUse
+		tRows[#tRows + 1] = {tGetAddOnName(i) or ("#" .. i), tUse}
+	end
+	table.sort(tRows, function(a, b) return a[2] > b[2] end)
+	for i = 1, math.min(30, #tRows) do
+		aEmit(string.format("  %.1f ms  %s", tRows[i][2], tRows[i][1]))
+	end
+	aEmit(string.format("  %.1f ms  (all %d addons total)", tTotal, #tRows))
+end
+
+-- All-addon memory footprint (KB) - a no-setup proxy for "heavy" addons. This is
+-- memory, not time, but a large footprint usually tracks a large load cost, and
+-- unlike the CPU view it needs no scriptProfile/reload. Top 30 plus a total.
+function Sku:PerformanceDumpMem(aEmit)
+	aEmit = aEmit or tPerfEmitChat
+	local tUpdate = (C_AddOns and C_AddOns.UpdateAddOnMemoryUsage) or UpdateAddOnMemoryUsage
+	local tGet = (C_AddOns and C_AddOns.GetAddOnMemoryUsage) or GetAddOnMemoryUsage
+	if not tGet then
+		aEmit("|cff80c0ffSkuPerf|r addon memory API not available on this client.")
+		return
+	end
+	if tUpdate then tUpdate() end
+	aEmit("|cff80c0ffSkuPerf|r all-addon memory (KB, largest first, top 30):")
+	local tRows, tTotal = {}, 0
+	for i = 1, tGetNumAddOns() do
+		local tKb = tGet(i) or 0
+		tTotal = tTotal + tKb
+		tRows[#tRows + 1] = {tGetAddOnName(i) or ("#" .. i), tKb}
+	end
+	table.sort(tRows, function(a, b) return a[2] > b[2] end)
+	for i = 1, math.min(30, #tRows) do
+		aEmit(string.format("  %.0f KB  %s", tRows[i][2], tRows[i][1]))
+	end
+	aEmit(string.format("  %.0f KB  (all %d addons total)", tTotal, #tRows))
+end
+
 -- aAllowEnable: only the explicit "/skuperf cpu" flips the scriptProfile CVar
 -- (it needs a /reload to take effect); the catch-all dump stays read-only.
 function Sku:PerformanceDumpCpu(aEmit, aAllowEnable)
@@ -532,6 +711,14 @@ SlashCmdList["SKUPERF"] = function(aMsg)
 		Sku:PerformanceDumpCombat()
 	elseif aMsg == "load" then
 		Sku:PerformanceDumpLoad()
+	elseif aMsg == "files" then
+		Sku:PerformanceDumpFiles()
+	elseif aMsg == "modules" then
+		Sku:PerformanceDumpModules()
+	elseif aMsg == "addons" then
+		Sku:PerformanceDumpAddons(nil, true)
+	elseif aMsg == "mem" then
+		Sku:PerformanceDumpMem()
 	elseif aMsg == "cpu" then
 		Sku:PerformanceDumpCpu(nil, true)
 	elseif aMsg == "reset" then
@@ -542,10 +729,13 @@ SlashCmdList["SKUPERF"] = function(aMsg)
 		Sku:Performance()
 	elseif aMsg == "" or aMsg == "all" then
 		Sku:PerformanceDumpLoad()
+		Sku:PerformanceDumpFiles()
+		Sku:PerformanceDumpModules()
 		Sku:PerformanceDumpCombat()
-		Sku:PerformanceDumpCpu(nil, false)
+		Sku:PerformanceDumpAddons(nil, false)
+		Sku:PerformanceDumpMem()
 	else
-		print("|cff80c0ffSkuPerf|r usage: /skuperf [combat|load|cpu|reset|frame]")
+		print("|cff80c0ffSkuPerf|r usage: /skuperf [load|files|modules|combat|addons|mem|cpu|reset|frame]")
 	end
 end
 
@@ -555,17 +745,51 @@ end
 -- timeline to the ring once the world is ready (silent - no chat spam).
 local tPerfLoadFrame = CreateFrame("Frame")
 tPerfLoadFrame.tFirstPew = true
+tPerfLoadFrame:RegisterEvent("ADDON_LOADED")
 tPerfLoadFrame:RegisterEvent("PLAYER_LOGIN")
 tPerfLoadFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-tPerfLoadFrame:SetScript("OnEvent", function(self, aEvent)
-	if aEvent == "PLAYER_LOGIN" then
+tPerfLoadFrame:SetScript("OnEvent", function(self, aEvent, aArg1)
+	if aEvent == "ADDON_LOADED" then
+		-- Fires once all of Sku's files have loaded+compiled+run their top-level
+		-- chunks. The gap from t0 (Core.lua load) to here is the file-load cost -
+		-- where the giant SkuDB data tables are paid.
+		if aArg1 == "Sku" and not self.tStampedSku then
+			self.tStampedSku = true
+			Sku:MetricPoint("ADDON_LOADED (Sku files compiled)")
+		end
+	elseif aEvent == "PLAYER_LOGIN" then
 		Sku:MetricPoint("PLAYER_LOGIN")
 	elseif aEvent == "PLAYER_ENTERING_WORLD" then
 		if self.tFirstPew then
 			self.tFirstPew = false
 			Sku:MetricPoint("PLAYER_ENTERING_WORLD (first)")
-			Sku:DebugLogMark("perf load milestones")
-			Sku:PerformanceDumpLoad(tPerfEmitQuiet)
+			-- Freeze the per-module timing now, before any later enable/disable
+			-- toggle can overwrite the load-time reading.
+			Sku.PerfModulesLoad = {}
+			for k, v in pairs(Sku.PerfModules) do
+				Sku.PerfModulesLoad[k] = {init = v.init, enableSelf = v.enableSelf, enableTotal = v.enableTotal}
+			end
+			-- One frame later control has returned to the user, so this stamp marks
+			-- roughly where the visible /reload freeze ends. Auto-persist the whole
+			-- load story to the ring (silent - no chat/TTS spam).
+			local function tCapture()
+				Sku:DebugLogMark("perf load milestones")
+				Sku:PerformanceDumpLoad(tPerfEmitQuiet)
+				Sku:PerformanceDumpFiles(tPerfEmitQuiet)
+				Sku:PerformanceDumpModules(tPerfEmitQuiet)
+				Sku:PerformanceDumpMem(tPerfEmitQuiet)
+				if GetCVar and GetCVar("scriptProfile") == "1" then
+					Sku:PerformanceDumpAddons(tPerfEmitQuiet, false)
+				end
+			end
+			if C_Timer and C_Timer.After then
+				C_Timer.After(0, function()
+					Sku:MetricPoint("first frame after PEW")
+					tCapture()
+				end)
+			else
+				tCapture()
+			end
 		end
 	end
 end)

@@ -4,6 +4,8 @@
 ## Dependencies: SkuBeaconSoundsets
 ## Version: 42.00
 
+SkuPerfFileStamp.lua
+
 SkuAudioData\assets\SkuAudioFileIndex.lua
 SkuAudioData\assets\SkuAudioDataLenIndex.lua
 SkuAudioData\Core.lua
@@ -19,9 +21,12 @@ Libs\LibGearScore-1.0\LibGearScore.lua
 locales\enUS.lua
 locales\deDE.lua
 
+_psA_start.lua
 routedata_global_wotlk.lua
+_psB_postWotlkRoutes.lua
 
 Core.lua
+SkuDeferredData.lua
 
 SkuUtil.lua
 SkuState.lua
@@ -72,6 +77,7 @@ SkuCore\equipmentSets.lua
 SkuCore\updateCheck.lua
 
 
+_psC_preSkuDB.lua
 SkuDB\Core.lua
 SkuDB\assets\maps.lua
 SkuDB\assets\default_waypoints.lua
@@ -85,7 +91,9 @@ SkuDB\assets\objects.lua
 SkuDB\assets\objects_fixes.lua
 SkuDB\assets\spells.lua
 SkuDB\assets\polygons.lua
+_psD_preGlobalRoutes.lua
 SkuDB\assets\routedata_global.lua
+_psE_postGlobalRoutes.lua
 SkuDB\assets\tasks.lua
 
 SkuDB\assets\WotLK\quests.lua
@@ -107,6 +115,7 @@ SkuDB\assets\SoD\items_fixes.lua
 SkuDB\assets\SoD\objects.lua
 SkuDB\assets\SoD\objects_fixes.lua
 SkuDB\assets\SoD\spells.lua
+_psF_postSkuDB.lua
 
 
 SkuMob\Core.lua

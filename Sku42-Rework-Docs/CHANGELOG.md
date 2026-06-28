@@ -598,3 +598,28 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
   internal-only helpers. The published API (`Sku` + module tables) intentionally
   stays global; bulk `_G`→`ns` migration is deferred to W4 Phases C/D. luaparser
   syntax-gated; behavior-preserving. **W4 Phase A is now complete (X-A1 + X-A2).**
+- **W3 load-time profiling — measure what makes the /reload freeze long.** All in
+  `Sku/Core.lua`'s perf block, building on the existing `Sku:MetricPoint` clock
+  and `/skuperf`. Two complementary views:
+  * **GENERAL (all addons, not just Sku).** `/skuperf addons` ranks every addon by
+    load CPU (needs `scriptProfile`; the command enables it and asks for a
+    `/reload`, same recipe as `/skuperf cpu`). `/skuperf mem` ranks every addon by
+    memory with **no setup** — a no-scriptProfile proxy for load weight. Both
+    top-30 + an all-addons total.
+  * **SKU (which module / which phase).** `/skuperf modules` reports per-module
+    init+enable time, captured automatically by **wrapping
+    `AceAddon:InitializeAddon`/`EnableAddon`** (no per-file instrumentation).
+    InitializeAddon is non-recursive (clean per-module init); EnableAddon recurses
+    into child modules, so a per-depth stack subtracts child time to report clean
+    SELF time. AceAddon is shared by all Ace3 addons, so other addons' modules are
+    timed too. Results in `Sku.PerfModules`, snapshotted to `Sku.PerfModulesLoad`
+    at first PEW so post-login toggles can't skew the reading.
+  * **Coarser timeline.** Added milestones `ADDON_LOADED (Sku files compiled)` (gap
+    from `t0`/Core.lua = the file-load+compile cost where the big SkuDB tables are
+    paid) and `first frame after PEW` via `C_Timer.After(0)` (≈ where the visible
+    freeze ends).
+  * **Auto-capture** at first PEW persists load + modules + mem (+ addons when
+    scriptProfile is on) to the `SkuDebugLog` ring — readable out-of-game after a
+    `/reload` with the generic `_readperf.py` (no parser change needed). New
+    subcommands wired into `/skuperf` and `/skuperf all`. luaparser syntax-gated;
+    in-game test pending.

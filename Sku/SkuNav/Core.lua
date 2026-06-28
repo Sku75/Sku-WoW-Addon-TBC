@@ -3163,6 +3163,11 @@ end
 function SkuNav:LoadDefaultMapData(aForce)
 	dprint("LoadDefaultMapData", aForce, SkuSettings:Sub("SkuNav", nil, "global").hasCustomMapData)
 
+	-- Route data is deferred (see SkuDeferredData.lua): the route files now only
+	-- define builder functions at load. This is the single chokepoint every
+	-- navigation path passes, so build the tables here on first use.
+	Sku:EnsureData("routes")
+
 	if SkuDB.routedata["global"].WaypointsNew then
 		SkuDB.routedata["global"].Waypoints = {}
 		for x = 1, #SkuDB.routedata["global"].WaypointsNew do
