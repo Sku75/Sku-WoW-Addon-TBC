@@ -2317,13 +2317,20 @@ function SkuChat:OnInitialize()
 	a.menuOpen = false
 
 	a.CloseChat = function(self)
+		local tWasOpen = SkuChat.ChatOpen
 		SkuChat.ChatOpen = false
 
 		--close the line menu if open
 		CloseChatMenuHelper()
 
-		SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
-		SkuOptions.Voice:OutputString("sound-off2", true, true, 0.2)
+		-- Only give the "chat closed" feedback (queue flush + close ping) when
+		-- the chat actually was open. The menu calls CloseChat defensively on
+		-- every open/close, so playing sound-off2 unconditionally leaked the
+		-- chat-close ping into normal menu open/close.
+		if tWasOpen then
+			SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
+			SkuOptions.Voice:OutputString("sound-off2", true, true, 0.2)
+		end
 
 		--unbind chat keys
 		if SkuState:IsInCombat() ~= true then

@@ -2419,7 +2419,10 @@ function SkuOptions:CreateMainFrame()
 			else
 				self:Show()
 				SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
-				PlaySound(811)
+				-- No open-click here: the nav frame's OnShow (PlaySound(88)) is the
+				-- single canonical open sound, symmetric with OnHide's PlaySound(89)
+				-- on close. This 811 was a redundant second open sound (the
+				-- per-keystroke nav click at the OnClick handler still uses 811).
 				SkuOptions.Voice:OutputStringBTtts(L["Menu;open"], true, true, 0.3, true, nil, nil, 2)
 				SkuOptions.Voice:OutputStringBTtts(SkuOptions.Menu[1].name, false, true, 0.3, nil, nil, nil, 2)
 				pcall(function() if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsLineBarSet then SkuCore.VisualAids:VisualAidsLineBarSet(SkuOptions.Menu[1].name) end end)
