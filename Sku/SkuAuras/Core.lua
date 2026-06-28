@@ -1012,6 +1012,24 @@ end
 function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 	local beginTime = debugprofilestop()
 
+	-- [W3/Tier2 #5] Frame-accurate cache invalidation. By the time this runs the
+	-- aura-changing combat-log event has ALREADY updated UnitAura state, but the
+	-- matching UNIT_AURA may dispatch only AFTER this (and later) events in the
+	-- same frame -> a UNIT_AURA-only cache reads one batch stale (verify mode
+	-- proved this). Every aura-list change carries an _AURA_ / DISPEL / STOLEN
+	-- subevent, so invalidate the affected unit here too; this makes the cached
+	-- lists identical to the pre-cache per-event rebuild. Weapon enchants (no
+	-- combat-log event) stay covered by WEAPON_ENCHANT_CHANGED. Non-aura events
+	-- (damage/swing/heal, the bulk) still skip the rebuild, preserving the win.
+	if tAuraListCache.enabled then
+		local tSub = tEventData[CleuBase.subevent]
+		if tSub and (sfind(tSub, "_AURA_") or sfind(tSub, "DISPEL") or sfind(tSub, "STOLEN")) then
+			local tDestGuid = tEventData[CleuBase.destGUID]
+			if tDestGuid == UnitGUID("player") then SkuAuras:InvalidateAuraListCache("player") end
+			if tDestGuid == UnitGUID("target") then SkuAuras:InvalidateAuraListCache("target") end
+		end
+	end
+
 	if not SkuSettings:Sub("SkuAuras", nil, "char").Auras then
 		SkuSettings:Sub("SkuAuras", nil, "char").Auras = {}
 	end
