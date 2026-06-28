@@ -690,9 +690,57 @@ baseline confirms.
     `scriptProfile` already on at load (run `/skuperf cpu` once, /reload, it
     measures from then on). Add more milestones anywhere with `Sku:MetricPoint("label")`.
   - luaparser-gated; **in-game smoke test pending** (folds into P2 baselines).
-- [ ] P2. Capture baselines for the six scenarios; record numbers in this file.
-- [ ] P3. Confirm/replace the ranked hypotheses with measured costs.
-- [ ] P4. Fix top confirmed costs cheapest-first; re-baseline after each; guard announcements unchanged.
+- [~] P2. **Tooling built + solo baselines captured; raid/six-scenario baselines pending.**
+  - **Measurement tooling (all on `sku42`, committed):**
+    - `/skuperf [combat|load|cpu|reset|frame]` (`Sku/Core.lua`) — every line goes to
+      chat (live TTS) AND the `SkuDebugLog` ring.
+    - `Sku:Probe(name, ms)` → `Sku.PerfStats[name] = {count,total,max,last}` and sets
+      `Sku.PerformanceData[name]` to the TRUE average (`total/count`). Added because the
+      legacy `(old+new)/2` EWMA was too noisy to confirm a small change (an unchanged
+      probe swung +120% between solo fights). `EvaluateAllAuras` reports through it; the
+      other ~25 probe sites keep the EWMA.
+    - **Read-back recipe:** combat probes reset every load and are NOT persisted → run
+      scenario, `/skuperf combat` SAME session (copies into ring), `/reload`, then parse
+      with `py -3 Sku42-Rework-Docs/_readperf.py` (groups each `SkuPerf` header + its
+      indented rows from `SkuDebugLog`). Load milestones auto-persist at first PEW.
+  - **Solo baselines measured (target dummy / world mobs, reset-then-fight):**
+    - `EvaluateAllAuras`: **0.779 ms avg, n≈89/fight, max≈1.95 ms** (pre-Tier2; the
+      reset-then-fight number — earlier 0.944/0.853 were the noisy EWMA, not comparable).
+    - Load: PLAYER_LOGIN ≈ 3.95 s, PLAYER_ENTERING_WORLD ≈ 5.88 s since core load.
+    - CPU (scriptProfile on): Sku ≈ 3835 ms cumulative ≈ 55% of all-addon CPU (mostly
+      one-time DB-table load; companions ≈ 0).
+  - PENDING: a group/raid baseline (the decisive `n`-heavy case) and load milestones
+    around the big DB tables (`routedata`/SkuDB) to pin the 3.8 s startup.
+- [x] P3. **Top hypothesis confirmed by measurement.** `EvaluateAllAuras` (plan 3.3 #1)
+  is the dominant combat cost (~10× every other probe even solo), runs on every CLEU.
+  Cost driver is per-event frequency `n` (explodes in raids), not per-call magnitude;
+  raw damage-number size is NOT a cost factor (Lua number ops are fixed-cost — magnitude
+  correlates with lag only as a marker of high-event-rate bursts).
+- [~] P4. **Tier-1 done; Tier-2 cache done + correctness-verified; perf-vs-raid pending.**
+  All in `Sku/SkuAuras/Core.lua`, behaviour-preserving, each independently revertible.
+  - **Tier-1 (per-call cost, safe micro-opts):** #1 early-break `getAuraList` (stop the
+    `UnitAura` 1..40 loop at first nil), #3 hoist the constant per-aura `{unit,filter}`
+    map, #2 reuse four scratch buffers instead of allocating per event, #4 snapshot
+    `GetWeaponEnchantInfo()` once. Commits `8578f63`, `93a9aeb`.
+  - **Tier-2 #5 (the real raid win): cross-event aura-list cache** (`tAuraListCache` +
+    `getFixed` wrapper). Rebuilds a list only when invalidated, else returns the stored
+    table. Invalidation set confirmed against THIS client's Blizzard code
+    (`...\_anniversary_\BlizzardInterfaceCode`: TargetFrame uses `UNIT_AURA(target)` +
+    `PLAYER_TARGET_CHANGED`; BuffFrame registers `WEAPON_ENCHANT_CHANGED` +
+    `WEAPON_SLOT_CHANGED` for temp weapon enchants) PLUS frame-accurate invalidation in
+    `EvaluateAllAuras` on any `_AURA_`/`DISPEL`/`STOLEN` subevent (by destGUID) — needed
+    because CLEU events fire before `UNIT_AURA` in a frame. Commits `26e789a`, `d5a389c`.
+    - **Toggle/verify:** `/skuauracache [on|off|verify on|verify off|status]`. `off`
+      instantly reverts to the per-event rebuild. **verify** rebuilds a fresh copy each
+      event and `dprint`s `AURACACHE MISMATCH` on any divergence (screen-reader
+      correctness net). Grep `SkuDebugLog` for `AURACACHE MISMATCH` to read it.
+    - **Correctness VERIFIED:** single-fight verify run with target swaps + buff
+      gain/lose + a temp weapon enchant: first pass found 22 mismatches (the
+      CLEU-before-`UNIT_AURA` lag), the frame-accurate fix took it to **0**.
+  - PENDING (when a raid is available): `/skuauracache verify off`, `/skuperf reset`,
+    fight, `/skuperf combat`, `/reload` → measure the cache payoff vs the 0.779 ms
+    baseline. THEN decide whether further work (e.g. caching beyond player/target) is
+    warranted. The solo perf read with verify OFF is the immediate next step.
 
 ---
 
