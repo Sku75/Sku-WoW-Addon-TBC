@@ -328,6 +328,24 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 		WaypointCacheLookupPerContintent[i] = {}
 	end
 
+	-- [W3] Time-slice the build so the ~1.5s creature pass no longer blocks the
+	-- login freeze. The body runs inside a coroutine that yields ~10ms per frame;
+	-- PEW calls CreateWaypointCache(nil, true) to pump it in the background, while
+	-- every other caller leaves aAsync nil and the build is drained synchronously
+	-- (unchanged behaviour). SkuNav:EnsureWaypointCacheComplete() force-finishes a
+	-- pending async build for any path that needs the whole cache at once.
+	local tWpcSliceStart
+	local function tWpcYield()
+		if debugprofilestop() - tWpcSliceStart > 10 then
+			coroutine.yield()
+			tWpcSliceStart = debugprofilestop()
+		end
+	end
+	SkuNav._wpcGen = (SkuNav._wpcGen or 0) + 1
+	local tWpcMyGen = SkuNav._wpcGen
+	SkuNav._wpcCo = coroutine.create(function()
+		tWpcSliceStart = debugprofilestop()
+
 	--add creatures
 	for i, v in pairs(SkuDB.NpcData.Names[Sku.Loc]) do		
 		if SkuDB.NpcData.Data[i] then
@@ -408,11 +426,11 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 				end
 			end
 		end
+		tWpcYield()
 	end
 
-
-	C_Timer.After(1, function() --this is to avoid script timeouts as the full cache building could take to long
-		--add objects
+	coroutine.yield()
+	--add objects
 		for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
 			--we don't want stuff like ores, herbs, etc. as default
 			if not SkuDB.objectResourceNames[Sku.Loc][v] or SkuSettings:Sub("SkuNav").showGatherWaypoints == true then
@@ -479,8 +497,8 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 			end
 		end
 
-		C_Timer.After(1, function() --this is to avoid script timeouts
-			--add custom
+		coroutine.yield()
+		--add custom
 			if SkuDB.SessionRouteData.Waypoints then
 				for tIndex, tData in ipairs(SkuDB.SessionRouteData.Waypoints) do
 					--check if that wp was deleted
@@ -547,8 +565,42 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 			end
 
 			SkuNav:LoadLinkDataFromProfile()
-		end)
 	end)
+
+	-- aAsync (the PEW login path): pump the build a few ms per frame so login is
+	-- not blocked. Otherwise (settings/menu callers): drain it now, preserving the
+	-- old synchronous behaviour.
+	if aAsync then
+		local function tWpcPump()
+			if SkuNav._wpcGen ~= tWpcMyGen then return end   -- superseded by a newer build
+			local co = SkuNav._wpcCo
+			if co and coroutine.status(co) ~= "dead" then
+				local ok, err = coroutine.resume(co)
+				if not ok then
+					dprint("CreateWaypointCache coroutine error", err)
+				elseif coroutine.status(co) ~= "dead" then
+					C_Timer.After(0, tWpcPump)
+				end
+			end
+		end
+		tWpcPump()
+	else
+		SkuNav:EnsureWaypointCacheComplete()
+	end
+end
+
+-- Force-complete a pending async waypoint-cache build by draining the coroutine
+-- now. No-op once the cache is built. For any path that needs the whole cache at
+-- once (e.g. a synchronous CreateWaypointCache caller, or link loading).
+function SkuNav:EnsureWaypointCacheComplete()
+	local co = SkuNav._wpcCo
+	while co and coroutine.status(co) ~= "dead" do
+		local ok, err = coroutine.resume(co)
+		if not ok then
+			dprint("EnsureWaypointCacheComplete coroutine error", err)
+			break
+		end
+	end
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -3232,11 +3284,8 @@ function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	end
 
 	if aIsInitialLogin == true or aIsReloadingUi == true then
-		-- [W3] time the waypoint-cache build: it is the other route-data consumer
-		-- inside the login freeze, so we need its cost to size the deferral prize.
-		local tWpcT0 = debugprofilestop()
-		SkuNav:CreateWaypointCache()
-		if Sku.MetricPoint then Sku:MetricPoint(string.format("CreateWaypointCache = %.1f ms", debugprofilestop() - tWpcT0)) end
+		-- [W3] stream the waypoint-cache build off the login freeze (async).
+		SkuNav:CreateWaypointCache(nil, true)
 	end
 
 	if _G["SkuNavMMMainFrameZoneSelect"] then
