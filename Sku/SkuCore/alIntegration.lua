@@ -1941,9 +1941,10 @@ function AtlasLootIntegration:AtlasLootShortcut()
    -- zum Boss im Ziel) wurde entfernt: sie war unzuverlässig und konnte
    -- je nach Zonen-/Zielzustand Fehler auslösen. Das Kontext-Flag wird
    -- geleert, damit keine kontextuelle Wunschliste mehr eingeblendet wird.
-   local tCore = (L and L["SkuCoreMenuEntry"]) or "Core"
+   -- W7: Atlas Loot now lives under the top-level "Addons" menu, not "Core".
+   local tAddons = "Addons"
    local tAL   = (L and L["Atlas Loot"]) or "Atlas Loot"
-   local tBase = L["short"] .. "," .. string.lower(tCore) .. "," .. string.lower(tAL)
+   local tBase = L["short"] .. "," .. string.lower(tAddons) .. "," .. string.lower(tAL)
    tSetShortcutContext(nil)
    SkuOptions:SlashFunc(tBase)
 end

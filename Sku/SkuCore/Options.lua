@@ -1539,6 +1539,22 @@ local function pairsByKeys (t, f)
 end
 
 
+-- W7: top-level "Addons" menu — addon integrations that used to sit directly under
+-- "Core". Each child reuses its existing builder (called with the entry as `self`,
+-- as the old Core specs did). Module refs resolve at open time.
+function SkuCore:AddonsMenuBuilder(aParentEntry)
+	local tSpecs = {}
+	if SkuCore.AtlasLootIntegration and SkuCore.AtlasLootIntegration.alIntegrationMenuBuilder then
+		tSpecs[#tSpecs+1] = { kind = "list", label = L["Atlas Loot"], filterable = true,
+			build = SkuCore.AtlasLootIntegration.alIntegrationMenuBuilder }
+	end
+	if SkuCore.DamageMeter and SkuCore.DamageMeter.DamageMeterMenuBuilder then
+		tSpecs[#tSpecs+1] = { kind = "list", label = L["Damage Meter"], filterable = true,
+			build = SkuCore.DamageMeter.DamageMeterMenuBuilder }
+	end
+	SkuMenu:Build(aParentEntry, tSpecs)
+end
+
 -- W7: Mail menu lifted to file scope so it can be a Local window contributor
 -- (opened via the contextual "Local" menu when the mailbox is shown) instead
 -- of a permanent Core "Mail" child. Body is the unchanged inline build closure.
@@ -2700,25 +2716,16 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 
 	-- Auktionshaus: now a Local window contributor (AuctionHouseMenuBuilder) -- W7
-
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Monitor"], filterable = true,
-		build = SkuCore.Aq.MonitorMenuBuilder }
+	-- Monitor: promoted to a top-level entry (SkuMenu "Monitor") -- W7
 
 	-- DIAL-TARGETING (41.02.06e) — Entfernbar: Block löschen + DialTargeting.lua + TOC + Core.lua Init
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Dial Targeting"], filterable = true,
 		build = SkuCore.DialTargeting.DialTargetingMenuBuilder }
 
 	-- Social: now a Local window contributor (FriendsMenuBuilder) -- W7
-
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Damage Meter"], filterable = true,
-		build = SkuCore.DamageMeter.DamageMeterMenuBuilder }
-
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Macros"], filterable = true,
-		build = SkuCore.Macro.MacroMenuBuilder }
-
-
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Atlas Loot"], filterable = true,
-		build = SkuCore.AtlasLootIntegration.alIntegrationMenuBuilder }
+	-- Damage Meter + Atlas Loot: moved into the top-level "Addons" menu
+	-- (SkuCore:AddonsMenuBuilder) -- W7
+	-- Macros: promoted to a top-level entry (SkuMenu "Macros") -- W7
 
 
 	--[[

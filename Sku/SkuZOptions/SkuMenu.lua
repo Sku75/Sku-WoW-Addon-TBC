@@ -294,13 +294,41 @@ SkuMenu:RegisterModule("GameOptions", {
 	end,
 })
 
--- Default root layout — IDENTICAL order to the old hardcoded sequence.
+-- W7: Monitor and Macros promoted from children of "Core" to top-level entries.
+-- Builders resolve lazily and are called via a DOT (not colon) so their implicit
+-- `self` is the menu entry (the convention their bodies rely on), matching the old
+-- `build = SkuCore.X.YMenuBuilder` specs.
+SkuMenu:RegisterModule("Monitor", {
+	label = function() return L()["Monitor"] end,
+	build = function(entry) if SkuCore.Aq and SkuCore.Aq.MonitorMenuBuilder then SkuCore.Aq.MonitorMenuBuilder(entry) end end,
+})
+SkuMenu:RegisterModule("Macros", {
+	label = function() return L()["Macros"] end,
+	build = function(entry) if SkuCore.Macro and SkuCore.Macro.MacroMenuBuilder then SkuCore.Macro.MacroMenuBuilder(entry) end end,
+})
+
+-- W7: addons container — collects addon integrations (Atlas Loot, Damage Meter, ...)
+-- that previously lived directly under "Core". Subtree built by SkuCore:AddonsMenuBuilder.
+SkuMenu:RegisterModule("Addons", {
+	label = function() return "Addons" end,
+	build = function(entry) if SkuCore and SkuCore.AddonsMenuBuilder then SkuCore:AddonsMenuBuilder(entry) end end,
+})
+
+-- W7 root layout: target/nav/chat/monitor/macros/auren/addons up front (the intended
+-- order), with the still-transitional "Core" + "GameOptions" kept reachable until they
+-- fold into the Einstellungen tree in the next batch. SkuQuest dropped from the root —
+-- quests are now reached by opening the quest-log window (a Local contributor).
+-- "Features", Barrierefreiheit and the old "Optionen" are still appended after this
+-- (ModuleManager / SkuZOptions Core.lua); "Lokal" is spliced in last when a window is open.
 SkuMenu:SetRootLayout({
-	"SkuNav",
-	"SkuMob",
-	"SkuChat",
-	"SkuQuest",
+	"SkuMob",      -- target
+	"SkuNav",      -- nav
+	"SkuChat",     -- chat
+	"Monitor",
+	"Macros",
+	"SkuAuras",    -- auren
+	"Addons",
+	-- transitional (folded into Einstellungen / dismantled next batch):
 	"SkuCore",
-	"SkuAuras",
 	"GameOptions",
 })
