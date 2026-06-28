@@ -64,6 +64,11 @@ end
 function SkuAuras:RegisterAuraEvents()
 	SkuAuras:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuAuras:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	-- [W3/Tier2 #5] aura-list cache invalidation (see tAuraListCache)
+	SkuAuras:RegisterEvent("UNIT_AURA")
+	SkuAuras:RegisterEvent("PLAYER_TARGET_CHANGED")
+	SkuAuras:RegisterEvent("WEAPON_ENCHANT_CHANGED")
+	SkuAuras:RegisterEvent("WEAPON_SLOT_CHANGED")
 	SkuAuras:RegisterEvent("BAG_UPDATE_COOLDOWN")
 	SkuAuras:RegisterEvent("UNIT_INVENTORY_CHANGED")
 
@@ -297,6 +302,7 @@ end
 local tItemHook
 function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	--print("PLAYER_ENTERING_WORLD", aEvent, aIsInitialLogin, aIsReloadingUi)
+	SkuAuras:InvalidateAuraListCache()
 	SkuSettings:Sub("SkuAuras", nil, "char")
 	SkuSettings:Sub("SkuAuras", nil, "char").Auras = SkuSettings:Sub("SkuAuras", nil, "char").Auras or {}
 
@@ -921,6 +927,88 @@ local tAuraScratch = {
 	buffPlayer = {},
 	debuffPlayer = {},
 }
+
+-- [W3/Tier2 #5] Cross-event cache of the four fixed UnitAura name-scans.
+-- EvaluateAllAuras runs once per combat-log event (hundreds/sec in raids) but a
+-- unit's auras change only on a few events, so we rebuild a list only when it has
+-- been invalidated and otherwise reuse the stored table. The invalidation event
+-- set is taken from Blizzard's own frames on THIS client:
+--   * target HELPFUL/HARMFUL -> UNIT_AURA("target") + PLAYER_TARGET_CHANGED
+--     (Blizzard TargetFrame).
+--   * player HELPFUL/HARMFUL -> UNIT_AURA("player"); plus, for the player-HELPFUL
+--     temporary weapon enchants, WEAPON_ENCHANT_CHANGED + WEAPON_SLOT_CHANGED
+--     (Blizzard BuffFrameMixin:OnLoad registers exactly these two).
+-- The stored list table is returned BY REFERENCE and read-only downstream
+-- (membership checks only; buffListTarget/debuffListTarget are replaced by a
+-- string before any output runs), and EvaluateAllAuras is never re-entered
+-- mid-call, so sharing the table across events is safe.
+--   enabled=false -> instant revert to the per-event rebuild (Tier-1 behaviour).
+--   verify=true   -> ALSO rebuild a fresh copy each event and dprint any
+--                    divergence (the screen-reader correctness net for the
+--                    single-fight test; turn OFF for the raid perf run, it
+--                    negates the speed win). Toggle both via /skuauracache.
+local tAuraListCache = {
+	enabled = true,
+	verify  = true,
+	player = { HELPFUL = {valid = false, list = {}}, HARMFUL = {valid = false, list = {}} },
+	target = { HELPFUL = {valid = false, list = {}}, HARMFUL = {valid = false, list = {}} },
+	_verifyBuf = {},
+}
+SkuAuras.auraListCache = tAuraListCache
+
+-- Mark cached lists stale. aUnit nil = both units; aFilter nil = both filters.
+function SkuAuras:InvalidateAuraListCache(aUnit, aFilter)
+	local function tInv(aUnitTab)
+		if not aUnitTab then return end
+		if aFilter then
+			if aUnitTab[aFilter] then aUnitTab[aFilter].valid = false end
+		else
+			if aUnitTab.HELPFUL then aUnitTab.HELPFUL.valid = false end
+			if aUnitTab.HARMFUL then aUnitTab.HARMFUL.valid = false end
+		end
+	end
+	if aUnit == nil then
+		tInv(tAuraListCache.player)
+		tInv(tAuraListCache.target)
+	elseif aUnit == "player" or aUnit == "target" then
+		tInv(tAuraListCache[aUnit])
+	end
+end
+
+function SkuAuras:UNIT_AURA(aEvent, aUnit)
+	if aUnit == "player" or aUnit == "target" then
+		SkuAuras:InvalidateAuraListCache(aUnit)
+	end
+end
+
+function SkuAuras:PLAYER_TARGET_CHANGED()
+	SkuAuras:InvalidateAuraListCache("target")
+end
+
+-- Temporary weapon enchants are part of the player-HELPFUL list; UNIT_AURA does
+-- not signal them, so Blizzard's BuffFrame listens to these two instead.
+function SkuAuras:WEAPON_ENCHANT_CHANGED()
+	SkuAuras:InvalidateAuraListCache("player", "HELPFUL")
+end
+SkuAuras.WEAPON_SLOT_CHANGED = SkuAuras.WEAPON_ENCHANT_CHANGED
+
+-- /skuauracache — toggle the Tier-2 aura-list cache and its verify mode.
+SLASH_SKUAURACACHE1 = "/skuauracache"
+SlashCmdList["SKUAURACACHE"] = function(aMsg)
+	aMsg = (aMsg or ""):lower():match("^%s*(.-)%s*$")
+	local c = SkuAuras.auraListCache
+	if aMsg == "on" then c.enabled = true
+	elseif aMsg == "off" then c.enabled = false
+	elseif aMsg == "verify on" then c.verify = true
+	elseif aMsg == "verify off" then c.verify = false
+	elseif aMsg ~= "" and aMsg ~= "status" then
+		print("|cff80c0ffSkuAuraCache|r usage: /skuauracache on|off|verify on|verify off|status")
+		return
+	end
+	SkuAuras:InvalidateAuraListCache()
+	print(string.format("|cff80c0ffSkuAuraCache|r enabled=%s verify=%s", tostring(c.enabled), tostring(c.verify)))
+end
+
 function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 	local beginTime = debugprofilestop()
 
@@ -1047,6 +1135,35 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 		end
 	end
 
+	-- [W3/Tier2 #5] Cached accessor for the four fixed per-event lists: return the
+	-- stored table when valid, else rebuild it in place via getAuraList and mark
+	-- valid. Cache off -> a plain per-event rebuild onto the Tier-1 fallback buffer
+	-- (behaviour-identical to pre-cache). verify -> rebuild fresh and diff.
+	local function getFixed(unit, filter, aFallbackScratch)
+		local tUnit = tAuraListCache.enabled and tAuraListCache[unit]
+		local tSlot = tUnit and tUnit[filter]
+		if not tSlot then
+			return getAuraList(unit, filter, nil, aFallbackScratch)
+		end
+		if not tSlot.valid then
+			getAuraList(unit, filter, nil, tSlot.list)   -- rebuild in place (wipes + fills)
+			tSlot.valid = true
+		end
+		if tAuraListCache.verify then
+			local tFresh = tAuraListCache._verifyBuf
+			getAuraList(unit, filter, nil, tFresh)        -- fresh rebuild for comparison
+			local tBad = false
+			for k in pairs(tFresh) do if tSlot.list[k] == nil then tBad = true break end end
+			if not tBad then
+				for k in pairs(tSlot.list) do if tFresh[k] == nil then tBad = true break end end
+			end
+			if tBad then
+				dprint("AURACACHE MISMATCH", unit, filter, "cached", tSlot.list, "fresh", tFresh)
+			end
+		end
+		return tSlot.list
+	end
+
 	local subevent = tEventData[CleuBase.subevent]
 
 	--build event related data to evaluate
@@ -1064,10 +1181,10 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 		unitComboPlayer = tEventData[51],
 		unitHealthTarget = UnitName("target") and mfloor(UnitHealth("target") / (UnitHealthMax("target") / 100)),
 		unitHealthOrPowerUpdate = tEventData[35] or tEventData[36],
-		buffListTarget = getAuraList("target", "HELPFUL", nil, tAuraScratch.buffTarget),
-		debuffListTarget = getAuraList("target", "HARMFUL", nil, tAuraScratch.debuffTarget),
-		buffListPlayer = getAuraList("player", "HELPFUL", nil, tAuraScratch.buffPlayer),
-		debuffListPlayer = getAuraList("player", "HARMFUL", nil, tAuraScratch.debuffPlayer),
+		buffListTarget = getFixed("target", "HELPFUL", tAuraScratch.buffTarget),
+		debuffListTarget = getFixed("target", "HARMFUL", tAuraScratch.debuffTarget),
+		buffListPlayer = getFixed("player", "HELPFUL", tAuraScratch.buffPlayer),
+		debuffListPlayer = getFixed("player", "HARMFUL", tAuraScratch.debuffPlayer),
 		tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
 		tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
 		targetCanAttack = UnitCanAttack("player", "target"),
