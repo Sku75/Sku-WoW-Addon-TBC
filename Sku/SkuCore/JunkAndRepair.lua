@@ -39,6 +39,15 @@ local function StopSelling()
       SellJunkFrame:UnregisterEvent("ITEM_LOCKED")
       SellJunkFrame:UnregisterEvent("ITEM_UNLOCKED")
    end
+   -- Auto-sell changed the bags without a Sku menu action, so nothing else
+   -- refreshes an open bag list — it would keep showing the already-sold junk.
+   -- Once selling has settled, silently re-sync the list and re-pin the cursor
+   -- by identity (no announce; the user hears fresh data on next navigation).
+   if _G.C_Timer and _G.C_Timer.After then
+      _G.C_Timer.After(0.3, function()
+         if _G.SkuBagIdleRefresh then pcall(_G.SkuBagIdleRefresh) end
+      end)
+   end
 end
 
 -- Vendor function

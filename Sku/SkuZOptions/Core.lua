@@ -4507,6 +4507,64 @@ function SkuBagConfirmRefresh()
 	end)
 end
 
+-- Silent idle re-sync of the bag list (no pending per-item action). Used after
+-- an external change that Sku triggered outside the action path — currently
+-- auto-sell-junk (SkuCore/JunkAndRepair.lua). Only acts when the cursor is on a
+-- bag entry, so it never disturbs other menus (the failure mode that got the old
+-- blanket BAG_UPDATE auto-refresh removed). Quietly rebuilds and re-pins the
+-- cursor by identity; NO announce — the user hears fresh data on next navigation.
+function SkuBagIdleRefresh()
+	local cur = SkuOptions and SkuOptions.currentMenuPosition
+	if not cur then return end
+	if not (SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen() == true) then return end
+
+	-- Gate on "inside the Local (vendor/bag) menu" — NOT on the cursor being a
+	-- bag item. The user is often on a bag CONTAINER node (no bagSlot/itemId)
+	-- when auto-sell fires; the stale data is in the shared GossipList, so we
+	-- must rebuild regardless. Requiring an L["Local"] ancestor keeps the
+	-- CheckFrames re-anchor below from ever yanking an unrelated menu.
+	local inLocal, node = false, cur
+	while node do
+		if node.name == L["Local"] then inLocal = true; break end
+		node = node.parent
+	end
+	dprint("bag idle refresh", "cur=", tostring(cur.name), "inLocal=", tostring(inLocal))
+	if not inLocal then return end
+
+	-- On a bag ITEM the numbered display name shifts on rebuild → capture its
+	-- identity to re-pin precisely. On a container node, CheckFrames' breadcrumb
+	-- re-anchor (stable name) already lands the cursor correctly.
+	local sel
+	if cur.bagSlot or cur.itemId then
+		sel = { bagSlot = cur.bagSlot, itemId = cur.itemId }
+		local path, n = {}, cur.parent
+		while n and n.name do
+			table.insert(path, 1, n.name)
+			n = n.parent
+		end
+		sel.path = path
+		if cur.parent and cur.parent.children then
+			for i, v in ipairs(cur.parent.children) do
+				if v == cur then sel.origIdx = i; break end
+			end
+		end
+	end
+
+	-- Quiet rebuild of the shared GossipList + re-rendered nodes (fresh
+	-- closures), so a later descend into the all-items view shows current bags.
+	pcall(function() SkuCore:CheckFrames(nil, nil, true) end)
+
+	if sel and _G.C_Timer and _G.C_Timer.After then
+		_G.C_Timer.After(0.2, function()
+			local tTarget = tPickBagTarget(tFindMenuNodeByPath(sel.path), sel)
+			if not tTarget then return end
+			SkuOptions.currentMenuPosition = tTarget
+			if tTarget.OnEnter then pcall(function() tTarget:OnEnter() end) end
+			dprint("bag idle refresh", "re-pin ->", tostring(tTarget.name))
+		end)
+	end
+end
+
 local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
  
 	for x = 1, #aGossipListTable do
