@@ -1169,7 +1169,9 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 						noMenuNumbers = true,
 						childs = {},
 						isNewItem = C_NewItems.IsNewItem(bagId, slotId),
-					}   
+						-- stable per-slot identity for view-aware cursor restore
+						bagSlot = bagId .. ":" .. slotId,
+					}
 					bagItemButton = aParentChilds[tFriendlyName]
 					--get the onclick func if there is one
 					if bagItemButton.obj:IsMouseClickEnabled() == true then
@@ -1260,6 +1262,10 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 						copy[k] = v
 					end
 					copy.textFirstLine = string.sub(copy.textFirstLine, string.find(copy.textFirstLine, " ") + 1)
+					-- The all-items view is a packed, slot-less list; drop the
+					-- physical-slot identity so its cursor follows the ITEM
+					-- (itemId), not a slot that has no meaning in this view.
+					copy.bagSlot = nil
 					table.insert(allBagResults, copy)
 					allBagResults[copy] = copy
 				end

@@ -4323,6 +4323,11 @@ function SkuCaptureSellState()
 	Sku.tLastSellState = {
 		path = path,
 		origIdx = origIdx,
+		-- stable identity of the focused item, for a view-aware restore:
+		-- bagSlot pins the per-bag cursor to the physical slot; itemId lets
+		-- the all-items cursor follow the item if it still exists.
+		bagSlot = itemEntry and itemEntry.bagSlot,
+		itemId = itemEntry and itemEntry.itemId,
 	}
 end
 
@@ -4359,9 +4364,39 @@ function SkuRestoreSellPosition()
 		return
 	end
 
-	local idx = math.min(s.origIdx, #listNode.children)
-	if idx < 1 then idx = 1 end
-	SkuOptions.currentMenuPosition = listNode.children[idx]
+	-- View-aware restore. Prefer stable identity over the volatile numbered
+	-- display name / raw index:
+	--   1) per-bag: pin to the same physical slot (bagSlot) — you land on the
+	--      now-empty slot if you removed the item you were standing on;
+	--   2) all-items: follow the same item (itemId) if it still exists
+	--      (e.g. a partial-stack sale);
+	--   3) fallback: the entry now at the original index — packed-list
+	--      semantics, i.e. the next item that filled the gap.
+	local tTarget
+	if s.bagSlot then
+		for i = 1, #listNode.children do
+			if listNode.children[i].bagSlot == s.bagSlot then
+				tTarget = listNode.children[i]
+				break
+			end
+		end
+	end
+	if not tTarget and s.itemId then
+		for i = 1, #listNode.children do
+			if listNode.children[i].itemId == s.itemId then
+				tTarget = listNode.children[i]
+				break
+			end
+		end
+	end
+	if not tTarget then
+		local idx = math.min(s.origIdx, #listNode.children)
+		if idx < 1 then idx = 1 end
+		tTarget = listNode.children[idx]
+	end
+	dprint("sell restore", "bagSlot=", tostring(s.bagSlot), "itemId=", tostring(s.itemId),
+		"->", tTarget and tTarget.name or "?")
+	SkuOptions.currentMenuPosition = tTarget
 	if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then
 		pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
 	end
@@ -4420,6 +4455,18 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 						self.name = val
 					end
 				end
+			end
+
+			-- Stable cursor identity for bag entries (see SkuRestoreSellPosition):
+			-- per-bag entries carry their physical bagSlot ("bagId:slotId"); all
+			-- item entries carry itemId. The restore prefers these over the
+			-- volatile numbered display name so the cursor lands correctly after
+			-- a rebuild.
+			if aGossipListTable[index].bagSlot then
+				tNewMenuEntry.bagSlot = aGossipListTable[index].bagSlot
+			end
+			if aGossipListTable[index].itemId and not tNewMenuEntry.itemId then
+				tNewMenuEntry.itemId = aGossipListTable[index].itemId
 			end
 
 			-- "directAction" path: an entry that should fire its `func`
