@@ -64,12 +64,6 @@ SkuNav.options = {
 			name = L["Beacon Volume"],
 			desc = "",
 			type = "range",
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").beaconVolume = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").beaconVolume
-			end
 		},
 		beaconSoundSetNarrow = {
 			order = 3,
@@ -124,24 +118,12 @@ SkuNav.options = {
 			type = "toggle",
 			OnAction = function(self, info, val)
 			end,
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").clickClackEnabled = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").clickClackEnabled
-			end
 		},
 		clickClackRange = {
 			order = 6,
 			name = L["Winkel für Klick bei Beacons"],
 			desc = "",
 			type = "range",
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").clickClackRange = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").clickClackRange
-			end
 		},
 		clickClackSoundset = {
 			order = 7,
@@ -151,48 +133,24 @@ SkuNav.options = {
 			values = SkuNav.ClickClackSoundsets,
 			OnAction = function(self, info, val)
 			end,
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").clickClackSoundset = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").clickClackSoundset
-			end
 		},
 		vocalizeFullDirectionDistance = {
 			order = 8,
 			name = L["Detailed direction and distance"],
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").vocalizeFullDirectionDistance = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").vocalizeFullDirectionDistance
-			end
 		},
 		vocalizeZoneNames = {
 			order = 9,
 			name = L["Announce zone names"],
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").vocalizeZoneNames = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").vocalizeZoneNames
-			end
 		},
 		nearbyWpRange = {
 			order = 10,
 			name = L["Range for near route starts"],
 			desc = "",
 			type = "range",
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").nearbyWpRange = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").nearbyWpRange
-			end
 		},
 		standardWpReachedRange = {
 			order = 11,
@@ -200,48 +158,24 @@ SkuNav.options = {
 			desc = "",
 			type = "select",
 			values = SkuNav.StandardWpReachedRanges,
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").standardWpReachedRange = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").standardWpReachedRange
-			end
 		},
 		autoGlobalDirection = {
 			order = 12,
 			name = L["Auto announce global direction"],
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").autoGlobalDirection = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").autoGlobalDirection
-			end
 		},
 		showGlobalDirectionInWaypointLists = {
 			order = 13,
 			name = L["Show global direction in waypoint lists"],
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").showGlobalDirectionInWaypointLists = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").showGlobalDirectionInWaypointLists
-			end
 		},
 		trackVisited = {
 			order = 14,
 			name = L["Track whether waypoints were visited"],
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").trackVisited = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").trackVisited
-			end
 		},
 		timeForVisitedToExpire = {
 			order = 15,
@@ -249,12 +183,6 @@ SkuNav.options = {
 			desc = "",
 			type = "select",
 			values = timeForVisitedToExpireValues,
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").timeForVisitedToExpire = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").timeForVisitedToExpire
-			end
 		},
 		showGatherWaypoints = {
 			order = 16,
@@ -286,24 +214,12 @@ SkuNav.options = {
 			name = L["Show routes on minimap"],
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").showRoutesOnMinimap = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").showRoutesOnMinimap
-			end
 		},
 		showSkuMM = {
 			order = 18,
 			name = L["Show extra minimap"],
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").showSkuMM = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").showSkuMM
-			end
 		},
 
 		tomtomWp = {
@@ -311,12 +227,6 @@ SkuNav.options = {
 			name = L["Auto sound on Tom Tom arrow"],
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").tomtomWp = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").tomtomWp
-			end
 		},		
 		
 		autoNextWaypoint={
@@ -329,24 +239,12 @@ SkuNav.options = {
 					name = L["Don't announce waypoint switching"],
 					desc = "",
 					type = "toggle",
-					set = function(info, val)
-						SkuSettings:Sub("SkuNav").autoNextWaypoint.nonVocalized = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuNav").autoNextWaypoint.nonVocalized
-					end
-				},		
+				},
 				reachRange = {
 					order = 10,
 					name = L["Range for counting a waypoint as reached and switching to next waypoint"],
 					desc = "",
 					type = "range",
-					set = function(info,val)
-						SkuSettings:Sub("SkuNav").autoNextWaypoint.reachRange = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuNav").autoNextWaypoint.reachRange
-					end
 				},
 			},
 		},
@@ -355,26 +253,14 @@ SkuNav.options = {
 			name = L["output Distance to next waypoint"],
 			desc = "",
 			type = "range",
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").outputDistance = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").outputDistance
-			end
-		},		
+		},
 		routesMaxDistance = {
 			order = 20,
 			name = L["Maximum distance for destinations in routes list"],
 			desc = "",
 			type = "select",
 			values = SkuNav.RoutesMaxDistances,
-			set = function(info,val)
-				SkuSettings:Sub("SkuNav").routesMaxDistance = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuNav").routesMaxDistance
-			end
-		},		
+		},
 	}
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -411,6 +297,40 @@ SkuNav.defaults = {
 	outputDistance = 0,
 	routesMaxDistance = 5000,
 }
+
+-- Settings schema for SkuNav (Sku 42 rework, W2 M-C1 / W1 Phase C). Single
+-- source of truth (scope/default/type) for the menu's schema-managed get/set.
+-- All keys profile scope (the menu's options.args only touch SkuSettings:Sub(
+-- "SkuNav") -- profile). Kept nodes (beaconSoundSetNarrow/Wide transform the
+-- value + play a sample beacon; showGatherWaypoints rebuilds the waypoint cache)
+-- still carry inline get/set, but are declared here too for completeness.
+-- Select value tables are keyed by the stored value: StandardWpReachedRanges,
+-- timeForVisitedToExpireValues and RoutesMaxDistances use number keys (=> number),
+-- ClickClackSoundsets and the beacon sets use string keys (=> string).
+SkuSettings:Register("SkuNav", {
+	["beaconVolume"]                       = { scope = "profile", default = 35,         type = "number"  },
+	["beaconSoundSetNarrow"]               = { scope = "profile", default = "Beacon 2", type = "string"  },
+	["beaconSoundSetWide"]                 = { scope = "profile", default = "Beacon 4", type = "string"  },
+	["clickClackEnabled"]                  = { scope = "profile", default = true,       type = "boolean" },
+	["clickClackRange"]                    = { scope = "profile", default = 5,          type = "number"  },
+	["clickClackSoundset"]                 = { scope = "profile", default = "click",    type = "string"  },
+	["vocalizeFullDirectionDistance"]      = { scope = "profile", default = true,       type = "boolean" },
+	["vocalizeZoneNames"]                  = { scope = "profile", default = true,       type = "boolean" },
+	["nearbyWpRange"]                      = { scope = "profile", default = 30,         type = "number"  },
+	["standardWpReachedRange"]             = { scope = "profile", default = 4,          type = "number"  },
+	["autoGlobalDirection"]                = { scope = "profile", default = false,      type = "boolean" },
+	["showGlobalDirectionInWaypointLists"] = { scope = "profile", default = true,       type = "boolean" },
+	["trackVisited"]                       = { scope = "profile", default = true,       type = "boolean" },
+	["timeForVisitedToExpire"]             = { scope = "profile", default = 6,          type = "number"  },
+	["showGatherWaypoints"]                = { scope = "profile", default = false,      type = "boolean" },
+	["showRoutesOnMinimap"]                = { scope = "profile", default = false,      type = "boolean" },
+	["showSkuMM"]                          = { scope = "profile", default = false,      type = "boolean" },
+	["tomtomWp"]                           = { scope = "profile", default = false,      type = "boolean" },
+	["autoNextWaypoint.nonVocalized"]      = { scope = "profile", default = true,       type = "boolean" },
+	["autoNextWaypoint.reachRange"]        = { scope = "profile", default = 3,          type = "number"  },
+	["outputDistance"]                     = { scope = "profile", default = 0,          type = "number"  },
+	["routesMaxDistance"]                  = { scope = "profile", default = 5000,       type = "number"  },
+})
 
 local slower = string.lower
 local sfind = string.find
@@ -1338,6 +1258,6 @@ function SkuNav:MenuBuilder(aParentEntry)
 
 	SkuMenu:Build(aParentEntry, {
 		{ kind = "settings", label = L["Options"], filterable = true,
-			args = SkuNav.options.args, db = SkuSettings:Sub("SkuNav") },
+			args = SkuNav.options.args, db = SkuSettings:Sub("SkuNav"), module = "SkuNav" },
 	})
 end
