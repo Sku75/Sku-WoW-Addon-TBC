@@ -101,11 +101,13 @@ SkuCore.options = {
 			desc = "",
 			type = "select",
 			values = SkuCore.BackgroundSoundFiles,
+			forAudioMenu = false,   -- W7: surfaced under Einstellungen -> Scan
 		},
 		ressourceScanning={
 			name = L["Ressource Scanning"],
 			type = "group",
 			order = 1,
+			forAudioMenu = false,   -- W7: surfaced under Einstellungen -> Scan
 			args= {
 				miningNodes={
 					order = 1,
@@ -178,6 +180,7 @@ SkuCore.options = {
 			name = L["Turn to unit"],
 			order = 5,
 			type = "group",
+			forAudioMenu = false,   -- W7: surfaced under Einstellungen -> Scan
 			args = {
 				speed = {
 					order = 1,
@@ -278,11 +281,13 @@ SkuCore.options = {
 			name = L["do not hide tooltip"],
 			desc = "",
 			type = "toggle",
+			forAudioMenu = false,   -- W7: surfaced under Einstellungen -> Scan
 		},
 		classes={
 			name = L["Classes"],
 			type = "group",
 			order = 2,
+			forAudioMenu = false,   -- W7: Classes menu removed; pet-starving toggle moved to Sonstiges
 			args= {
 				hunter={
 					name = L["Hunter"],
@@ -2018,7 +2023,7 @@ end
 -- only their assignment heads; their build closures are unchanged.
 function SkuCore:MenuBuilder(aParentEntry)
 	--dprint("SkuCore:MenuBuilder", aParentEntry)
-	local tKampf, tKeybinds, tSonstiges = {}, {}, {}
+	local tKampf, tKeybinds, tSonstiges, tScan = {}, {}, {}, {}
 
 	-- Mail: now a Local window contributor (SkuCore.MailMenuBuilder) -- W7
 
@@ -2589,7 +2594,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		end
 	end }
 
-	tSonstiges[#tSonstiges+1] = { kind = "list", label = L["Scan settings"],
+	tScan[#tScan+1] = { kind = "list", label = L["Scan settings"],
 		build = function(self)
 		for x = 1, 8 do
 			local tText = SkuCore.ScanTypes[SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[x].type].name
@@ -2760,16 +2765,50 @@ function SkuCore:MenuBuilder(aParentEntry)
 	-- Module reuses the per-feature on/off list (the old "Funktionen an/aus"). Kampf /
 	-- Tastenbelegungen / Sonstiges are the regrouped Core leftovers from above.
 	local function tDeEn(de, en) return function() return (GetLocale and GetLocale() == "deDE") and de or en end end
+
+	-- W7: relocated AceConfig entries are rendered via IterateOptionsArgs with
+	-- aIncludeHidden=true and their ORIGINAL keyPrefix, so their saved values are
+	-- preserved (they only moved menu category, not storage). Each source entry is
+	-- flagged forAudioMenu=false so it does NOT also appear in its old place.
+	local tSub = SkuSettings:Sub("SkuCore")
 	local tSpecs = {
 		{ kind = "submenu", label = tDeEn("Allgemein", "General"),
 			build = function(self) SkuOptions:MenuBuilder(self) end },
 		{ kind = "submenu", label = tDeEn("Spieleinstellungen", "Game options"),
 			build = function(self) if SkuCore.GameOptions and SkuCore.GameOptions.GameOptionsMenuBuilder then SkuCore.GameOptions:GameOptionsMenuBuilder(self) end end },
-		{ kind = "submenu", label = tDeEn("Kampf", "Combat"), children = tKampf },
+		{ kind = "submenu", label = tDeEn("Kampf", "Combat"),
+			build = function(self)
+				SkuMenu:Build(self, tKampf)
+				-- Soft targeting, relocated from SkuOptions options (keyPrefix preserved).
+				if SkuOptions.options and SkuOptions.options.args and SkuOptions.options.args.softTargeting then
+					SkuOptions:IterateOptionsArgs({ softTargeting = SkuOptions.options.args.softTargeting }, self, SkuSettings:Sub("SkuOptions"), "SkuOptions", "", true)
+				end
+			end },
+		{ kind = "submenu", label = tDeEn("Scan", "Scan"),
+			build = function(self)
+				-- Scan-related settings relocated from the SkuCore "Options" group.
+				local tScanArgs = {
+					scanBackgroundSound = SkuCore.options.args.scanBackgroundSound,
+					ressourceScanning   = SkuCore.options.args.ressourceScanning,
+					doNotHideTooltip    = SkuCore.options.args.doNotHideTooltip,
+					turnToUnit          = SkuCore.options.args.turnToUnit,
+				}
+				SkuOptions:IterateOptionsArgs(tScanArgs, self, tSub, "SkuCore", "", true)
+				SkuMenu:Build(self, tScan)
+			end },
 		{ kind = "submenu", label = tDeEn("Tastenbelegungen", "Key bindings"), children = tKeybinds },
 		{ kind = "submenu", label = tDeEn("Module", "Modules"),
 			build = function(self) if SkuCore.FeaturesMenuBuilder then SkuCore:FeaturesMenuBuilder(self) end end },
-		{ kind = "submenu", label = tDeEn("Sonstiges", "Other"), children = tSonstiges },
+		{ kind = "submenu", label = tDeEn("Sonstiges", "Other"),
+			build = function(self)
+				SkuMenu:Build(self, tSonstiges)
+				-- "Notice on pet starving", relocated out of the removed Classes menu
+				-- (keyPrefix "classes.hunter." preserved so the saved value survives).
+				if SkuCore.options.args.classes and SkuCore.options.args.classes.args
+					and SkuCore.options.args.classes.args.hunter then
+					SkuOptions:IterateOptionsArgs(SkuCore.options.args.classes.args.hunter.args, self, tSub, "SkuCore", "classes.hunter.", true)
+				end
+			end },
 	}
 
 	SkuMenu:Build(aParentEntry, tSpecs)

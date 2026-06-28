@@ -361,6 +361,7 @@ SkuOptions.options = {
 				name = L["Soft targeting"],
 				type = "group",
 				order = 10,
+				forAudioMenu = false,   -- W7: surfaced under Einstellungen -> Kampf
 				args= {
 					enemy={
 						name = L["Enemies"],

@@ -5328,9 +5328,16 @@ end
 -- key) instead of an inline handler, so the redundant per-key get/set closures can
 -- be deleted from the module's options.args. Nodes that DO carry get/set behave
 -- exactly as before (byte-identical), so modules migrate one at a time.
-function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPath, aModule, aKeyPrefix)
+-- aIncludeHidden (W7): when true, also render entries flagged `forAudioMenu = false`.
+-- Such entries are hidden from the DEFAULT rendering so they can be surfaced in a
+-- different menu category via an explicit call. Because the relocated call keeps the
+-- same args sub-table, db path, module and keyPrefix, the entry's stored value is
+-- untouched (skuKey is identical) — this only changes WHERE it appears, not its storage.
+function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPath, aModule, aKeyPrefix, aIncludeHidden)
 	for i, v in SkuSpairs(aArgTable, function(t, a, b) if t[b].order and t[a].order then return t[b].order > t[a].order end end) do
-		if v.args and v.forAudioMenu ~= false then
+		if v.forAudioMenu == false and not aIncludeHidden then
+			-- hidden from this menu; surfaced elsewhere (see aIncludeHidden)
+		elseif v.args then
 			local tParentMenu =  SkuOptions:InjectMenuItems(aParentMenu, {v.name}, SkuGenericMenuItem)
 			--tParentMenu.dynamic = true
 			tParentMenu.filterable = true
