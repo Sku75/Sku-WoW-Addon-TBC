@@ -219,12 +219,6 @@ SkuChat.options = {
 					order = 1,
 					type = "toggle",
 					desc = "",
-					set = function(info,val)
-						SkuSettings:Sub("SkuChat").chatSettings.shortenChannelNames = val
-					end,
-					get = function(info) 
-						return SkuSettings:Sub("SkuChat").chatSettings.shortenChannelNames
-					end,
 				},
 
 				--line numbers
@@ -233,12 +227,6 @@ SkuChat.options = {
 					order = 2,
 					type = "toggle",
 					desc = "",
-					set = function(info,val)
-						SkuSettings:Sub("SkuChat").chatSettings.addLineNumbers = val
-					end,
-					get = function(info) 
-						return SkuSettings:Sub("SkuChat").chatSettings.addLineNumbers
-					end,
 				},
 
 				--timestamp (pre, post, off)
@@ -256,12 +244,6 @@ SkuChat.options = {
 						[6] = L["Format"].." 5: "..BetterDate(SkuChat.timeStampFormats[5], time(exampleTime)),
 						[7] = L["Format"].." 6: "..BetterDate(SkuChat.timeStampFormats[6], time(exampleTime)),
 					},
-					set = function(info,val)
-						SkuSettings:Sub("SkuChat").chatSettings.timeStamp = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuChat").chatSettings.timeStamp
-					end,
 				},
 
 				timeStampAtLineEnd = {
@@ -269,12 +251,6 @@ SkuChat.options = {
 					order = 4,
 					type = "toggle",
 					desc = "",
-					set = function(info,val)
-						SkuSettings:Sub("SkuChat").chatSettings.timeStampAtLineEnd = val
-					end,
-					get = function(info) 
-						return SkuSettings:Sub("SkuChat").chatSettings.timeStampAtLineEnd
-					end,
 				},
 
 				--go to 1st line
@@ -283,12 +259,6 @@ SkuChat.options = {
 					order = 5,
 					type = "toggle",
 					desc = "",
-					set = function(info,val)
-						SkuSettings:Sub("SkuChat").chatSettings.firstLineOnTabSwitch = val
-					end,
-					get = function(info) 
-						return SkuSettings:Sub("SkuChat").chatSettings.firstLineOnTabSwitch
-					end,
 				},
 
 				--delete history on login
@@ -297,12 +267,6 @@ SkuChat.options = {
 					order = 6,
 					type = "toggle",
 					desc = "",
-					set = function(info,val)
-						SkuSettings:Sub("SkuChat").chatSettings.deleteHistoryOnLogin = val
-					end,
-					get = function(info) 
-						return SkuSettings:Sub("SkuChat").chatSettings.deleteHistoryOnLogin
-					end,
 				},
 
 				--whispers in new tab
@@ -311,12 +275,6 @@ SkuChat.options = {
 					order = 7,
 					type = "toggle",
 					desc = "",
-					set = function(info,val)
-						SkuSettings:Sub("SkuChat").chatSettings.openWhispersInNewTab = val
-					end,
-					get = function(info) 
-						return SkuSettings:Sub("SkuChat").chatSettings.openWhispersInNewTab
-					end,
 					OnAction = function(self, info, val)
 						C_Timer.After(0.1, function()
 							if SkuSettings:Sub("SkuChat").chatSettings.openWhispersInNewTab == false then
@@ -354,25 +312,13 @@ SkuChat.options = {
 						[7] = SkuChat.DeleteTabTimes[7]..L[" Minuten"],
 						[8] = SkuChat.DeleteTabTimes[8]..L[" Minuten"],
 					},
-					set = function(info,val)
-						SkuSettings:Sub("SkuChat").chatSettings.deleteWhisperTabsAfter = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuChat").chatSettings.deleteWhisperTabsAfter
-					end,
-				},				
+				},
 				audioOnNewMessage = {
 					name = L["Audio notification on chat message"],
 					order = 8,
 					type = "toggle",
 					desc = L["Enables / disables audio on new line"],
-					set = function(info,val)
-						SkuSettings:Sub("SkuChat").chatSettings.audioOnNewMessage = val
-					end,
-					get = function(info) 
-						return SkuSettings:Sub("SkuChat").chatSettings.audioOnNewMessage
-					end,
-					OnAction = function() 
+					OnAction = function()
 						if SkuSettings:Sub("SkuChat").tabs then
 							for i, v in pairs(SkuSettings:Sub("SkuChat").tabs) do
 								v.audioOnNewMessage = SkuSettings:Sub("SkuChat").chatSettings.audioOnNewMessage
@@ -404,60 +350,30 @@ SkuChat.options = {
 			desc = "",
 			type = "select",
 			values = SkuChat.WowTtsVoices,
-			set = function(info,val)
-				SkuSettings:Sub("SkuChat").WowTtsVoice = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuChat").WowTtsVoice
-			end,
 		},
 		WowTtsSpeed = {
 			order = 4,
 			name = L["TTS speed"],
 			desc = "",
 			type = "range",
-			set = function(info,val)
-				SkuSettings:Sub("SkuChat").WowTtsSpeed = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuChat").WowTtsSpeed
-			end,
 		},
 		WowTtsVolume = {
 			order = 5,
 			name = L["TTS volume"],
 			desc = "",
 			type = "range",
-			set = function(info,val)
-				SkuSettings:Sub("SkuChat").WowTtsVolume = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuChat").WowTtsVolume
-			end,
 		},
 		WowTtsTags = {
 			order = 5,
 			name = L["TTS pause tags"],
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuChat").WowTtsTags = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuChat").WowTtsTags
-			end,
 		},
 		joinSkuChannel = {
 			order = 7,
 			name = L["Sku Chat Channel beitreten"],
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuChat").joinSkuChannel = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuChat").joinSkuChannel
-			end,
 			OnAction = function()
 				C_Timer.After(0.1, function()
 					SkuChat:JoinOrLeaveSkuChatChannel()
@@ -469,36 +385,18 @@ SkuChat.options = {
 			name = L["Never reset audio queues"],
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuChat").neverResetQueues = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuChat").neverResetQueues
-			end,
 		},
 		allChatViaBlizzardTts = {
 			order = 9,
 			name = L["All voice output via blizzard tts"],
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuChat").allChatViaBlizzardTts = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuChat").allChatViaBlizzardTts
-			end,
 		},
 		doNotReadoutEmojis = {
 			order = 20,
 			name = L["Do not read out emojis"] ,
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuChat").doNotReadoutEmojis = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuChat").doNotReadoutEmojis
-			end
 		},
 
 	},
@@ -527,6 +425,34 @@ SkuChat.defaults = {
 	allChatViaBlizzardTts = false,
 	doNotReadoutEmojis = false,
 }
+
+-- Settings schema for SkuChat (Sku 42 rework, W1 Phase C / W2 M-C1). All keys are
+-- profile scope (the options menu only ever read/wrote SkuSettings:Sub("SkuChat",
+-- ...) with no scope override). Declared here as the single source of truth
+-- (scope/default/type) for the schema-managed menu generation in
+-- SkuOptions:IterateOptionsArgs. audioOnMessageEnd is registered for
+-- completeness but its node KEEPS its own get/set (they go through C_TTSSettings,
+-- not the db), so it stays non-managed.
+SkuSettings:Register("SkuChat", {
+	["chatSettings.shortenChannelNames"]  = { scope = "profile", default = false, type = "boolean" },
+	["chatSettings.addLineNumbers"]       = { scope = "profile", default = true,  type = "boolean" },
+	["chatSettings.timeStamp"]            = { scope = "profile", default = 6,      type = "number"  },
+	["chatSettings.timeStampAtLineEnd"]   = { scope = "profile", default = true,  type = "boolean" },
+	["chatSettings.firstLineOnTabSwitch"] = { scope = "profile", default = true,  type = "boolean" },
+	["chatSettings.deleteHistoryOnLogin"] = { scope = "profile", default = false, type = "boolean" },
+	["chatSettings.openWhispersInNewTab"] = { scope = "profile", default = true,  type = "boolean" },
+	["chatSettings.deleteWhisperTabsAfter"] = { scope = "profile", default = 3,   type = "number"  },
+	["chatSettings.audioOnNewMessage"]    = { scope = "profile", default = false, type = "boolean" },
+	["chatSettings.audioOnMessageEnd"]    = { scope = "profile", default = false, type = "boolean" },
+	["WowTtsVoice"]                       = { scope = "profile", default = 1,      type = "number"  },
+	["WowTtsSpeed"]                       = { scope = "profile", default = 3,      type = "number"  },
+	["WowTtsVolume"]                      = { scope = "profile", default = 50,     type = "number"  },
+	["WowTtsTags"]                        = { scope = "profile", default = true,  type = "boolean" },
+	["joinSkuChannel"]                    = { scope = "profile", default = true,  type = "boolean" },
+	["neverResetQueues"]                  = { scope = "profile", default = false, type = "boolean" },
+	["allChatViaBlizzardTts"]             = { scope = "profile", default = false, type = "boolean" },
+	["doNotReadoutEmojis"]                = { scope = "profile", default = false, type = "boolean" },
+})
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function CleanStringHelper(aString)
@@ -1182,7 +1108,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 
 
 	tSpecs[#tSpecs+1] = { kind = "settings", label = L["Options"], filterable = true,
-		args = SkuChat.options.args, db = SkuSettings:Sub("SkuChat") }
+		args = SkuChat.options.args, db = SkuSettings:Sub("SkuChat"), module = "SkuChat" }
 
 	SkuMenu:Build(aParentEntry, tSpecs)
 end
