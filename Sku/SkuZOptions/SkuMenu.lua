@@ -160,7 +160,7 @@ end
 --   { kind = "list",     label=, build=fn(entry) }                       -- dynamic, rebuilt each visit
 --   { kind = "submenu",  label=, build=fn(entry) | children=specList }   -- dynamic container
 --   { kind = "action",   label=, run=fn(self,value,name,parentName) }    -- leaf; Enter runs run()
---   { kind = "settings", label=, args=<options.args>, db=<subtable> }    -- IterateOptionsArgs container
+--   { kind = "settings", label=, args=<options.args>, db=<subtable>, module=<name> } -- IterateOptionsArgs container; module enables schema-managed get/set (W2-MC1)
 --
 -- Any spec may ALSO carry these optional fields, copied verbatim onto the node so
 -- a converted hand-built entry keeps its EXACT property set (faithful, mechanical
@@ -246,7 +246,7 @@ function SkuMenu:BuildNode(aParent, aSpec)
 		-- the existing IterateOptionsArgs (toggle/select/range/execute children).
 		if aSpec.filterable == nil then tEntry.filterable = true end
 		if aSpec.args then
-			SkuOptions:IterateOptionsArgs(aSpec.args, tEntry, aSpec.db)
+			SkuOptions:IterateOptionsArgs(aSpec.args, tEntry, aSpec.db, aSpec.module)
 		end
 
 	else

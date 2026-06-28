@@ -1,4 +1,4 @@
-local MODULE_NAME = "SkuMob"
+﻿local MODULE_NAME = "SkuMob"
 local L = Sku.L
 
 SkuMob.InCombatSounds = {
@@ -8,87 +8,49 @@ SkuMob.InCombatSounds = {
 SkuMob.options = {
 	name = MODULE_NAME,
 	type = "group",
+	-- W2-MC1: per-key storage get/set removed — these nodes are schema-managed.
+	-- The menu reads/writes via SkuSettings:Get/Set("SkuMob", key); scope/type/
+	-- default come from the SkuSettings:Register schema below. Re-add get/set on a
+	-- node ONLY if it needs a side effect (it then uses the inline handler again).
 	args = {
 		vocalizeRaidTargetOnly = {
 			name = L["Only raid icon for targets with icon"],
 			desc = "",
 			type = "toggle",
-			set = function(info, val) 
-				SkuSettings:Sub("SkuMob").vocalizeRaidTargetOnly = val
-			end,
-			get = function(info) 
-				return SkuSettings:Sub("SkuMob").vocalizeRaidTargetOnly
-			end
 		},
 		dontVocalizePlayerReactionAndLevelInCombat  = {
 			name = L["Don't vocalize reaction and level for players in combat"],
 			order = 2,
 			desc = "",
 			type = "toggle",
-			set = function(info, val) 
-				SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat  = val
-			end,
-			get = function(info) 
-				return SkuSettings:Sub("SkuMob").dontVocalizePlayerReactionAndLevelInCombat 
-			end
-		},				
+		},
 		vocalizePlayerNamePlaceholders  = {
 			name = L["Announce friendly and hostile players"],
 			desc = "",
 			type = "toggle",
-			set = function(info, val) 
-				SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholders  = val
-			end,
-			get = function(info) 
-				return SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholders 
-			end
-		},		
+		},
 		vocalizePlayerNamePlaceholdersSkuTts = {
 			name = L["Announce player controled units with generic descriptions"],
 			desc = "",
 			type = "toggle",
-			set = function(info, val) 
-				SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts = val
-			end,
-			get = function(info) 
-				return SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts
-			end
 		},
 		repeatRaidTargetMarkers = {
 			name = L["Repeat raid target markers on units"],
 			desc = "",
 			type = "toggle",
-			set = function(info, val) 
-				SkuSettings:Sub("SkuMob").repeatRaidTargetMarkers = val
-			end,
-			get = function(info) 
-				return SkuSettings:Sub("SkuMob").repeatRaidTargetMarkers
-			end
 		},
 		autoSetSkuRaidTargetsToInCombatCreatures = {
 			name = L["Auto set private Sku raid targets on in combat targets without a raid target"],
 			order = 6,
 			desc = "",
 			type = "toggle",
-			set = function(info, val) 
-				SkuSettings:Sub("SkuMob").autoSetSkuRaidTargetsToInCombatCreatures = val
-			end,
-			get = function(info) 
-				return SkuSettings:Sub("SkuMob").autoSetSkuRaidTargetsToInCombatCreatures
-			end
-		},		
+		},
 		InCombatSound={
 			name = L["Sound if target is in combat"],
 			order = 7,
 			desc = "",
 			type = "select",
 			values = SkuMob.InCombatSounds,
-			set = function(info,val)
-				SkuSettings:Sub("SkuMob").InCombatSound = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuMob").InCombatSound
-			end
 		},
 	}
 }
@@ -642,6 +604,6 @@ function SkuMob:MenuBuilder(aParentEntry)
 		{ kind = "list", label = L["Target menu"], filterable = true,
 			build = function(entry) tBuildTargetMenu(entry) end },
 		{ kind = "settings", label = L["Options"], filterable = true,
-			args = SkuMob.options.args, db = SkuSettings:Sub("SkuMob") },
+			args = SkuMob.options.args, db = SkuSettings:Sub("SkuMob"), module = "SkuMob" },
 	})
 end

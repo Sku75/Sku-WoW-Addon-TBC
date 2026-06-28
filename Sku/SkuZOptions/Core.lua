@@ -5064,13 +5064,19 @@ function SkuOptions:MenuBuilderLocal(aParentEntry, aEntryDataTable, aOnActionFun
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPath)
+-- aModule (W1-C / W2-MC1): the SkuSettings module name this options table belongs
+-- to. When passed, a leaf node that carries NO inline get/set closure is treated
+-- as "schema-managed": its storage is read/written via SkuSettings:Get/Set(aModule,
+-- key) instead of an inline handler, so the redundant per-key get/set closures can
+-- be deleted from the module's options.args. Nodes that DO carry get/set behave
+-- exactly as before (byte-identical), so modules migrate one at a time.
+function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPath, aModule)
 	for i, v in SkuSpairs(aArgTable, function(t, a, b) if t[b].order and t[a].order then return t[b].order > t[a].order end end) do
 		if v.args and v.forAudioMenu ~= false then
 			local tParentMenu =  SkuOptions:InjectMenuItems(aParentMenu, {v.name}, SkuGenericMenuItem)
 			--tParentMenu.dynamic = true
 			tParentMenu.filterable = true
-			SkuOptions:IterateOptionsArgs(v.args, tParentMenu, tProfileParentPath[i])
+			SkuOptions:IterateOptionsArgs(v.args, tParentMenu, tProfileParentPath[i], aModule)
 		else
 			if v.type == "toggle" then
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentMenu, {v.name}, SkuGenericMenuItem)
@@ -5079,11 +5085,21 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				tNewMenuEntry.profileIndex = i
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.isSelect = true
+				tNewMenuEntry.skuModule = aModule
+				tNewMenuEntry.skuManaged = (v.get == nil and v.set == nil and aModule ~= nil)
 				tNewMenuEntry.OnAction = function(self, aValue, aName)
+					local tNewToggleValue
 					if aName == L["On"] then
-						self.profilePath[self.profileIndex] = true
+						tNewToggleValue = true
 					elseif aName == L["Off"] then
-						self.profilePath[self.profileIndex] = false
+						tNewToggleValue = false
+					end
+					if tNewToggleValue ~= nil then
+						if self.skuManaged then
+							SkuSettings:Set(self.skuModule, self.profileIndex, tNewToggleValue)
+						else
+							self.profilePath[self.profileIndex] = tNewToggleValue
+						end
 					end
 					
 					if self.optionsPath[self.profileIndex].OnAction then
@@ -5096,14 +5112,17 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 					tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
 				end
 				tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-					local tValue = L["On"]
-					--if self.profilePath[self.profileIndex] == true then
-					if self.optionsPath[self.profileIndex]:get() == true then
-						tValue = L["On"]
+					local tStored
+					if self.skuManaged then
+						tStored = SkuSettings:Get(self.skuModule, self.profileIndex)
 					else
-						tValue = L["Off"]
+						tStored = self.optionsPath[self.profileIndex]:get()
 					end
-					return tValue
+					if tStored == true then
+						return L["On"]
+					else
+						return L["Off"]
+					end
 				end
 
 			elseif v.type == "select" then
@@ -5113,10 +5132,16 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				tNewMenuEntry.profileIndex = i
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.isSelect = true
+				tNewMenuEntry.skuModule = aModule
+				tNewMenuEntry.skuManaged = (v.get == nil and v.set == nil and aModule ~= nil)
 				tNewMenuEntry.OnAction = function(self, aValue, aName)
 					for ia, va in pairs(v.values) do
 						if va == aName or va == L["sound"].."#"..aName or va == L["aura;sound"].."#"..aName then
-							self.profilePath[self.profileIndex] = ia
+							if self.skuManaged then
+								SkuSettings:Set(self.skuModule, self.profileIndex, ia)
+							else
+								self.profilePath[self.profileIndex] = ia
+							end
 						end
 					end
 
@@ -5155,9 +5180,14 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				end
 				tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 					local tValue = ""
+					local tStored
+					if self.skuManaged then
+						tStored = SkuSettings:Get(self.skuModule, self.profileIndex)
+					else
+						tStored = self.optionsPath[self.profileIndex]:get()
+					end
 					for ia, va in pairs(v.values) do
-						--if ia == self.profilePath[self.profileIndex] then
-						if ia == self.optionsPath[self.profileIndex]:get() then
+						if ia == tStored then
 							tValue = va
 						end
 					end
@@ -5173,9 +5203,15 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				tNewMenuEntry.filterable = true
 				tNewMenuEntry.rangeMin = v.min or 0
 				tNewMenuEntry.rangeMax = v.max or 100
+				tNewMenuEntry.skuModule = aModule
+				tNewMenuEntry.skuManaged = (v.get == nil and v.set == nil and aModule ~= nil)
 				tNewMenuEntry.OnAction = function(self, aValue, aName)
 					--self.profilePath[self.profileIndex] = tonumber(aName)
-					self.optionsPath[self.profileIndex]:set(tonumber(aName))
+					if self.skuManaged then
+						SkuSettings:Set(self.skuModule, self.profileIndex, tonumber(aName))
+					else
+						self.optionsPath[self.profileIndex]:set(tonumber(aName))
+					end
 					--PlaySound(835)
 					if self.optionsPath[self.profileIndex].OnAction then
 						self.optionsPath[self.profileIndex]:OnAction(aValue, aName)
@@ -5192,6 +5228,9 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 					--SkuOptions:InjectMenuItems(self, tList, SkuGenericMenuItem)
 				end
 				tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+					if self.skuManaged then
+						return SkuSettings:Get(self.skuModule, self.profileIndex)
+					end
 					return self.optionsPath[self.profileIndex]:get()
 					--return self.profilePath[self.profileIndex]
 				end
