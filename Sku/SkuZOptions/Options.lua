@@ -43,36 +43,18 @@ SkuOptions.options = {
 			name = L["Menünummern ansagen"],
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuOptions").vocalizeMenuNumbers = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuOptions").vocalizeMenuNumbers
-			end
 		},
 		vocalizeSubmenus = {
 			order = 2,
 			name = L["Untermenüs ansagen"] ,
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuOptions").vocalizeSubmenus = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuOptions").vocalizeSubmenus
-			end
 		},
 		TTSSepPause = {
 			order = 3,
 			name = L["Audio Dauer Pause"] ,
 			desc = "",
 			type = "range",
-			set = function(info,val)
-				SkuSettings:Sub("SkuOptions").TTSSepPause = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuOptions").TTSSepPause
-			end
 		},
 		backgroundSound = {
 			order = 4,
@@ -80,24 +62,12 @@ SkuOptions.options = {
 			desc = "",
 			type = "select",
 			values = SkuCore.BackgroundSoundFiles,
-			set = function(info,val)
-				SkuSettings:Sub("SkuOptions").backgroundSound = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuOptions").backgroundSound
-			end
 		},
 		localActive = {
 			order = 5,
 			name = L["Lokal aktiv"] ,
 			desc = "",
 			type = "toggle",
-			set = function(info,val)
-				SkuSettings:Sub("SkuOptions").localActive = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuOptions").localActive
-			end
 		},
 		--[[
 		useBlizzTtsInMenu = {
@@ -189,12 +159,6 @@ SkuOptions.options = {
 						desc = "",
 						type = "select",
 						values = SKU_CONSTANTS.SOUNDCHANNELS,
-						set = function(info,val)
-							SkuSettings:Sub("SkuOptions").soundChannels.SkuChannel = val
-						end,
-						get = function(info)
-							return SkuSettings:Sub("SkuOptions").soundChannels.SkuChannel
-						end
 					},
 				},
 			},
@@ -337,12 +301,6 @@ SkuOptions.options = {
 					name = L["Sound bei Fehler"] ,
 					desc = "",
 					type = "toggle",
-					set = function(info,val)
-						SkuSettings:Sub("SkuOptions").debugOptions.soundOnError = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuOptions").debugOptions.soundOnError
-					end
 				},
 				--[[
 				showError = {
@@ -378,48 +336,24 @@ SkuOptions.options = {
 						name = L["Schnellwahl 1"] ,
 						desc = "",
 						type = "input",
-						set = function(info,val)
-							SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect1 = val
-						end,
-						get = function(info)
-							return SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect1
-						end
 					},
 					MenuQuickSelect2 = {
 						order = 2,
 						name = L["Schnellwahl 2"] ,
 						desc = "",
 						type = "input",
-						set = function(info,val)
-							SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect2 = val
-						end,
-						get = function(info)
-							return SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect2
-						end
 					},
 					MenuQuickSelect3 = {
 						order = 3,
 						name = L["Schnellwahl 3"] ,
 						desc = "",
 						type = "input",
-						set = function(info,val)
-							SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect3 = val
-						end,
-						get = function(info)
-							return SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect3
-						end
 					},
 					MenuQuickSelect4 = {
 						order = 4,
 						name = L["Schnellwahl 4"] ,
 						desc = "",
 						type = "input",
-						set = function(info,val)
-							SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect4 = val
-						end,
-						get = function(info)
-							return SkuSettings:Sub("SkuOptions").allModules.MenuQuickSelect4
-						end
 					},
 				},
 			},
@@ -441,12 +375,6 @@ SkuOptions.options = {
 								OnAction = function(self, info, val)
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.enemy.enabled = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.enabled
-								end
 							},
 							arc = {
 								order = 2,
@@ -457,12 +385,6 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SoftTargetingArcValues,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.enemy.arc = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.arc
-								end
 							},							
 							range = {
 								order = 3,
@@ -474,12 +396,6 @@ SkuOptions.options = {
 								end,
 								min = 1,
 								max = 60,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.enemy.range = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.range
-								end
 							},		
 							forPlayers = {
 								order = 4,
@@ -489,12 +405,6 @@ SkuOptions.options = {
 								OnAction = function(self, info, val)
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.enemy.forPlayers = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.forPlayers
-								end
 							},
 							forPets = {
 								order = 5,
@@ -504,12 +414,6 @@ SkuOptions.options = {
 								OnAction = function(self, info, val)
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.enemy.forPets = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.forPets
-								end
 							},							
 							forPassive = {
 								order = 5,
@@ -519,12 +423,6 @@ SkuOptions.options = {
 								OnAction = function(self, info, val)
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.enemy.forPassive = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.forPassive
-								end
 							},
 							sound = {
 								order = 6,
@@ -535,12 +433,6 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.enemy.sound = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.sound
-								end
 							},									
 							soundNoTarget = {
 								order = 6.5,
@@ -551,12 +443,6 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.enemy.soundNoTarget = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.soundNoTarget
-								end
 							},									
 
 							outputName = {
@@ -567,12 +453,6 @@ SkuOptions.options = {
 								OnAction = function(self, info, val)
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.enemy.outputName = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.outputName
-								end
 							},
 							muteInCombat = {
 								order = 8,
@@ -582,12 +462,6 @@ SkuOptions.options = {
 								OnAction = function(self, info, val)
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.enemy.muteInCombat = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.enemy.muteInCombat
-								end
 							},
 						},
 					},
@@ -604,12 +478,6 @@ SkuOptions.options = {
 								OnAction = function(self, info, val)
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.friend.enabled = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.friend.enabled
-								end
 							},
 							arc = {
 								order = 2,
@@ -620,12 +488,6 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SoftTargetingArcValues,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.friend.arc = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.friend.arc
-								end
 							},							
 							range = {
 								order = 3,
@@ -637,12 +499,6 @@ SkuOptions.options = {
 								end,
 								min = 1,
 								max = 60,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.friend.range = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.friend.range
-								end
 							},		
 							forPlayers = {
 								order = 4,
@@ -652,12 +508,6 @@ SkuOptions.options = {
 								OnAction = function(self, info, val)
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.friend.forPlayers = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.friend.forPlayers
-								end
 							},
 							forPets = {
 								order = 5,
@@ -667,12 +517,6 @@ SkuOptions.options = {
 								OnAction = function(self, info, val)
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.friend.forPets = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.friend.forPets
-								end
 							},
 							sound = {
 								order = 6,
@@ -683,12 +527,6 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.friend.sound = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.friend.sound
-								end
 							},			
 							soundNoTarget = {
 								order = 6.5,
@@ -699,12 +537,6 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.friend.soundNoTarget = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.friend.soundNoTarget
-								end
 							},									
 
 							outputName = {
@@ -715,12 +547,6 @@ SkuOptions.options = {
 								OnAction = function(self, info, val)
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.friend.outputName = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.friend.outputName
-								end
 							},													
 						},
 					},
@@ -737,12 +563,6 @@ SkuOptions.options = {
 								OnAction = function(self, info, val)
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.interact.enabled = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.interact.enabled
-								end
 							},
 							arc = {
 								order = 2,
@@ -753,12 +573,6 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SoftTargetingArcValues,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.interact.arc = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.interact.arc
-								end
 							},							
 							range = {
 								order = 3,
@@ -770,12 +584,6 @@ SkuOptions.options = {
 								end,
 								min = 1,
 								max = 15,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.interact.range = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.interact.range
-								end
 							},		
 							soundfor = {
 								order = 4,
@@ -786,12 +594,6 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SofttargetingInteractNameForValues,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.interact.soundfor = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.interact.soundfor
-								end
 							},				
 							sound = {
 								order = 5,
@@ -802,12 +604,6 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.interact.sound = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.interact.sound
-								end
 							},			
 							soundNoTarget = {
 								order = 5.5,
@@ -818,12 +614,6 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.interact.soundNoTarget = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.interact.soundNoTarget
-								end
 							},																								
 							unitNameFor = {
 								order = 6,
@@ -834,12 +624,6 @@ SkuOptions.options = {
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SofttargetingInteractNameForValues,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.interact.unitNameFor = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.interact.unitNameFor
-								end
 							},							
 
 							outputBTTS = {
@@ -850,12 +634,6 @@ SkuOptions.options = {
 								OnAction = function(self, info, val)
 									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
-								set = function(info,val)
-									SkuSettings:Sub("SkuOptions").softTargeting.interact.outputBTTS = val
-								end,
-								get = function(info)
-									return SkuSettings:Sub("SkuOptions").softTargeting.interact.outputBTTS
-								end
 							},									
 						},
 					},
@@ -868,12 +646,6 @@ SkuOptions.options = {
 							SkuOptions:UpdateSoftTargetingSettings("all")
 						end,
 						values = SkuCore.SofttargetingForceValues,
-						set = function(info,val)
-							SkuSettings:Sub("SkuOptions").softTargeting.force = val
-						end,
-						get = function(info)
-							return SkuSettings:Sub("SkuOptions").softTargeting.force
-						end
 					},							
 					matchLocked = {
 						order = 6,
@@ -884,12 +656,6 @@ SkuOptions.options = {
 							SkuOptions:UpdateSoftTargetingSettings("all")
 						end,
 						values = SkuCore.SofttargetingMatchLockedValues,
-						set = function(info,val)
-							SkuSettings:Sub("SkuOptions").softTargeting.matchLocked = val
-						end,
-						get = function(info)
-							return SkuSettings:Sub("SkuOptions").softTargeting.matchLocked
-						end
 					},		
 					enableDisableOutputInChat = {
 						order = 7,
@@ -899,12 +665,6 @@ SkuOptions.options = {
 						OnAction = function(self, info, val)
 							SkuOptions:UpdateSoftTargetingSettings("all")
 						end,
-						set = function(info,val)
-							SkuSettings:Sub("SkuOptions").softTargeting.enableDisableOutputInChat = val
-						end,
-						get = function(info)
-							return SkuSettings:Sub("SkuOptions").softTargeting.enableDisableOutputInChat
-						end
 					},									
 
 				}
@@ -985,11 +745,70 @@ SkuOptions.defaults = {
 		},
 	}
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Settings schema for SkuOptions (Sku 42 rework, W1 Phase C / W2 MC1). All
+-- keys profile scope (the menu renders via SkuSettings:Sub("SkuOptions")).
+-- Pure-storage leaves are schema-managed (get/set stripped above); leaves
+-- whose set/get carried a side effect (C_CVar sound channel/settings writes)
+-- keep their inline handlers and are listed here only for the schema.
+SkuSettings:Register("SkuOptions", {
+	["vocalizeMenuNumbers"] = { scope = "profile", default = true, type = "boolean" },
+	["vocalizeSubmenus"] = { scope = "profile", default = true, type = "boolean" },
+	["TTSSepPause"] = { scope = "profile", default = 85, type = "number" },
+	["backgroundSound"] = { scope = "profile", default = "silence.mp3", type = "string" },
+	["localActive"] = { scope = "profile", default = true, type = "boolean" },
+	["soundChannels.MasterVolume"] = { scope = "profile", default = -1, type = "number" },
+	["soundChannels.SFXVolume"] = { scope = "profile", default = 100, type = "number" },
+	["soundChannels.MusicVolume"] = { scope = "profile", default = 100, type = "number" },
+	["soundChannels.AmbienceVolume"] = { scope = "profile", default = 100, type = "number" },
+	["soundChannels.DialogVolume"] = { scope = "profile", default = 100, type = "number" },
+	["soundChannels.SkuChannel"] = { scope = "profile", default = "Talking Head", type = "string" },
+	["soundSettings.Sound_EnableReverb"] = { scope = "profile", default = false, type = "boolean" },
+	["soundSettings.Sound_EnablePositionalLowPassFilter"] = { scope = "profile", default = false, type = "boolean" },
+	["soundSettings.Sound_EnableDSPEffects"] = { scope = "profile", default = false, type = "boolean" },
+	["soundSettings.Sound_EnableSoundWhenGameIsInBG"] = { scope = "profile", default = false, type = "boolean" },
+	["soundSettings.Sound_ZoneMusicNoDelay"] = { scope = "profile", default = false, type = "boolean" },
+	["debugOptions.soundOnError"] = { scope = "profile", default = false, type = "boolean" },
+	["allModules.MenuQuickSelect1"] = { scope = "profile", default = L["SkuNav,Wegpunkt,Auswählen,Aktuelle Karte Entfernung"], type = "string" },
+	["allModules.MenuQuickSelect2"] = { scope = "profile", default = L["SkuNav,Route,Route folgen,Ziele Entfernung"], type = "string" },
+	["allModules.MenuQuickSelect3"] = { scope = "profile", default = L["SkuCore,Aktionsleisten"], type = "string" },
+	["allModules.MenuQuickSelect4"] = { scope = "profile", default = L["SkuNav,Alles abwählen"], type = "string" },
+	["softTargeting.enemy.enabled"] = { scope = "profile", default = false, type = "boolean" },
+	["softTargeting.enemy.arc"] = { scope = "profile", default = 1, type = "number" },
+	["softTargeting.enemy.range"] = { scope = "profile", default = 60, type = "number" },
+	["softTargeting.enemy.forPlayers"] = { scope = "profile", default = false, type = "boolean" },
+	["softTargeting.enemy.forPets"] = { scope = "profile", default = false, type = "boolean" },
+	["softTargeting.enemy.forPassive"] = { scope = "profile", default = true, type = "boolean" },
+	["softTargeting.enemy.sound"] = { scope = "profile", default = "sound-notification26", type = "string" },
+	["softTargeting.enemy.soundNoTarget"] = { scope = "profile", default = " ", type = "string" },
+	["softTargeting.enemy.outputName"] = { scope = "profile", default = true, type = "boolean" },
+	["softTargeting.enemy.muteInCombat"] = { scope = "profile", default = false, type = "boolean" },
+	["softTargeting.friend.enabled"] = { scope = "profile", default = false, type = "boolean" },
+	["softTargeting.friend.arc"] = { scope = "profile", default = 1, type = "number" },
+	["softTargeting.friend.range"] = { scope = "profile", default = 60, type = "number" },
+	["softTargeting.friend.forPlayers"] = { scope = "profile", default = false, type = "boolean" },
+	["softTargeting.friend.forPets"] = { scope = "profile", default = false, type = "boolean" },
+	["softTargeting.friend.sound"] = { scope = "profile", default = "sound-notification27", type = "string" },
+	["softTargeting.friend.soundNoTarget"] = { scope = "profile", default = " ", type = "string" },
+	["softTargeting.friend.outputName"] = { scope = "profile", default = true, type = "boolean" },
+	["softTargeting.interact.enabled"] = { scope = "profile", default = false, type = "boolean" },
+	["softTargeting.interact.arc"] = { scope = "profile", default = 2, type = "number" },
+	["softTargeting.interact.range"] = { scope = "profile", default = 15, type = "number" },
+	["softTargeting.interact.soundfor"] = { scope = "profile", default = 4, type = "number" },
+	["softTargeting.interact.unitNameFor"] = { scope = "profile", default = 4, type = "number" },
+	["softTargeting.interact.sound"] = { scope = "profile", default = "sound-notification25", type = "string" },
+	["softTargeting.interact.soundNoTarget"] = { scope = "profile", default = " ", type = "string" },
+	["softTargeting.interact.outputBTTS"] = { scope = "profile", default = true, type = "boolean" },
+	["softTargeting.force"] = { scope = "profile", default = 0, type = "number" },
+	["softTargeting.matchLocked"] = { scope = "profile", default = 2, type = "number" },
+	["softTargeting.enableDisableOutputInChat"] = { scope = "profile", default = true, type = "boolean" },
+})
+
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:MenuBuilder(aParentEntry)
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true
-	SkuOptions:IterateOptionsArgs(SkuOptions.options.args, tNewMenuEntry, SkuSettings:Sub("SkuOptions"))
+	SkuOptions:IterateOptionsArgs(SkuOptions.options.args, tNewMenuEntry, SkuSettings:Sub("SkuOptions"), "SkuOptions")
 
 
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Overview pages"]}, SkuGenericMenuItem)
