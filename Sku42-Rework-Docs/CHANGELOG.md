@@ -623,3 +623,19 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
     `/reload` with the generic `_readperf.py` (no parser change needed). New
     subcommands wired into `/skuperf` and `/skuperf all`. luaparser syntax-gated;
     in-game test pending.
+- **W3 load-time: waypoint cache streamed off the freeze + route data deferred.**
+  Full details and the diagnostic-tooling inventory live in `LOAD-PERF-NOTES.md`.
+  Summary: `SkuNav:CreateWaypointCache` (the single biggest Sku login cost) now
+  builds in a coroutine that yields ~10 ms/frame, streaming the whole ~3.36 s of
+  work (creatures+objects+custom+links) *after* first-frame instead of blocking
+  login (~1.5 s genuinely off the freeze; the rest, previously post-login timer
+  chunks, now smoothed). PEW calls it async; all other callers stay synchronous.
+  A signature bug (`aAsync` not declared) had made the whole thing a silent no-op
+  until fixed. Also: route data files wrapped as deferred `loadstring` builders
+  (`_wrap_deferred.py`) built on first nav use via a new `Sku:EnsureData` facade
+  (`SkuDeferredData.lua`); a stale-link nil-index in `LoadLinkDataFromProfile`
+  guarded (was silently aborting the coroutine tail). Findings: SkuQuest login
+  DB-fix+merge is negligible (~14 ms, ruled out); the residual ~0.7 s route
+  construct is an atomic `loadstring` not worth deferring as-is (options A/B/C in
+  the notes). Diagnostics kept for future sessions (`/skuperf files|modules|
+  addons|mem`, `SkuDebugLog.wpcResult`, the `_ps*` stubs).
