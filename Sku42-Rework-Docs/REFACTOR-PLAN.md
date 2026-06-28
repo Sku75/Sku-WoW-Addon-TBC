@@ -315,8 +315,20 @@ time with both styles coexisting.
     hand-flattening large nested `defaults` trees (+ enumerating char/global
     defaults) is error-prone with no current consumer. Flat-schema authoring +
     char/global default population becomes a focused later pass (W2 prep).
-- [ ] C1. Enable `Set` validation permanently; remove raw-path fallback.
-- [ ] C2. Publish the finalized schema as the input contract for Workstream 2.
+- [x] C1. **Validation ON permanently; raw-path fallback scoped down.** `SkuSettings.validate
+  = true`. Implemented LOG-ONLY (dprint), deliberately NOT reject/clamp as 1.4 first sketched —
+  a screen-reader user must never silently lose a setting to a schema-type mismatch; a logged
+  mismatch flags a schema fix instead. Dormant in normal play (emits only when dprint logging is
+  on). **Raw-path fallback:** the only direct `Get`/`Set` callers are the schema-managed menu
+  nodes, and every key they touch is registered, so the unknown-key→DEFAULT_SCOPE fallback is
+  unreachable through the accessor surface (the lockdown the plan wanted). It is KEPT in the code
+  as a resilience net because `Sub` (the ~2000-call fast path) legitimately accesses unregistered
+  whole-subtables and relies on it; deleting it would break those, with no upside. Unregistered
+  Get/Set already dprint-warn (the "hard dprint error in debug" from 1.4).
+- [x] C2. **Schema published as the W2 contract.** The per-module `SkuSettings:Register(module,
+  {dottedKey={scope,type,default}})` calls (SkuMob/Quest/Chat/Nav/SkuOptions/SkuCore) register into
+  `SkuSettings.schema` at load and ARE the menu-generation source of truth — W2 M-C1's engine reads
+  scope/type/default from them. No separate artifact needed; the runtime registry is the contract.
 
 ---
 

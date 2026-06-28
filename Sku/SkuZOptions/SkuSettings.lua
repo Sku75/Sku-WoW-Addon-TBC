@@ -5,11 +5,15 @@
 -- plus Get/Set/Sub accessors so call sites never name a scope ("profile" vs
 -- "char" vs "global") or hand-walk a dotted path with the `x = x or {}` idiom.
 --
--- Phase A is purely ADDITIVE and non-breaking: this wraps the SAME AceDB tables,
--- so a raw deep path (`SkuOptions.db.profile[M].a.b`) and the matching accessor
--- (`SkuSettings:Get(M, "a.b")`) read/write identical storage. Old and new styles
--- can therefore coexist while modules migrate one at a time. Nothing calls this
--- yet — it is introduced first, on its own, and verified to change no behaviour.
+-- This wraps the SAME AceDB tables, so a raw deep path
+-- (`SkuOptions.db.profile[M].a.b`) and the matching accessor
+-- (`SkuSettings:Get(M, "a.b")`) read/write identical storage. That let modules
+-- migrate one at a time with both styles coexisting.
+--
+-- STATUS (W1 Phase C, done): every module's own access goes through Sub (Phase B,
+-- ~2700 sites), and the settings MENUS read/write registered keys via Get/Set
+-- (W2 M-C1). The per-module `SkuSettings:Register(...)` schemas are the published
+-- source of truth for menu generation (W1 C2). Validation is ON (see below).
 --
 -- Load position: this is TOC-loaded EARLY (right after SkuUtil.lua, before every
 -- feature module) so the registry exists when modules register their schema at
@@ -29,9 +33,17 @@ SkuSettings = ns.Settings
 -- schema[module][dottedKey] = { scope = "profile"|"char"|"global", default = <v>, type = "number"|"string"|"boolean"|"table" }
 SkuSettings.schema = SkuSettings.schema or {}
 
--- Type-validate writes in Set. Off by default; flip on (e.g. under /skudebug)
--- during migration to catch out-of-type writes. Never hard-fails the user.
-SkuSettings.validate = false
+-- Type-validate writes in Set against the schema. W1 Phase C: ON now that the
+-- schema is authoritative for the accessor (Get/Set) surface (the only Get/Set
+-- callers are the schema-managed menu nodes, all registered). LOG-ONLY via
+-- dprint — it never rejects or clamps a write: a screen-reader user must never
+-- silently lose a setting to a schema-type mismatch; a logged mismatch instead
+-- flags a schema entry to fix. Dormant in normal play (emits only when dprint
+-- logging is enabled, e.g. /skudebug). The graceful raw-path fallback (unknown
+-- key -> DEFAULT_SCOPE) is KEPT as a resilience net: it is unreachable through
+-- Get/Set in practice (all their keys are registered) but Sub (the ~2000-call
+-- fast path) legitimately accesses unregistered whole-subtables and needs it.
+SkuSettings.validate = true
 
 -- moduleDefaults[scope][module] = the module's whole defaults tree. Used to
 -- assemble the AceDB defaults table BY REFERENCE (lossless for any contents —

@@ -22,6 +22,16 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W1 Phase C — locked down (closes Workstream 1).** `SkuSettings.validate = true` permanently.
+  Implemented LOG-ONLY (dprint), not reject/clamp — a screen-reader user must never silently lose
+  a setting to a schema-type mismatch; a logged mismatch flags a schema fix. Dormant in normal play
+  (emits only under /skudebug). The unknown-key→profile raw-path fallback is now unreachable through
+  Get/Set (their only callers are the schema-managed menu nodes, all registered) but is KEPT for the
+  `Sub` fast path (~2000 unregistered whole-subtable callers need it). C2: the per-module Register
+  schemas are the published menu-generation contract, consumed by the W2 M-C1 engine — no separate
+  artifact, the runtime registry IS the contract. Note: enabling /skudebug may now surface
+  type-mismatch logs for any select whose auto-authored schema type needs refining (harmless, a TODO).
+
 - **W2-MC1 + W1-C: settings menus are now schema-managed (6 modules).** The menu engine
   `SkuOptions:IterateOptionsArgs` gained `aModule` + `aKeyPrefix`: a leaf option with NO
   inline get/set, under a module, is "schema-managed" — read/written via
