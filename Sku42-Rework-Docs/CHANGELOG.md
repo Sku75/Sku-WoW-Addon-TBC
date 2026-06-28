@@ -29,8 +29,9 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
   Get/Set (their only callers are the schema-managed menu nodes, all registered) but is KEPT for the
   `Sub` fast path (~2000 unregistered whole-subtable callers need it). C2: the per-module Register
   schemas are the published menu-generation contract, consumed by the W2 M-C1 engine — no separate
-  artifact, the runtime registry IS the contract. Note: enabling /skudebug may now surface
-  type-mismatch logs for any select whose auto-authored schema type needs refining (harmless, a TODO).
+  artifact, the runtime registry IS the contract. Validation accuracy verified: a type-vs-default
+  audit (`_mc1_typeaudit.py`) reports 0 mismatches across all 163 schema entries, so validation
+  never false-positives on a correct option flip (it logs only genuine wrong-type writes).
 
 - **W2-MC1 + W1-C: settings menus are now schema-managed (6 modules).** The menu engine
   `SkuOptions:IterateOptionsArgs` gained `aModule` + `aKeyPrefix`: a leaf option with NO
