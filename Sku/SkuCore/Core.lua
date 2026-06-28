@@ -3395,9 +3395,30 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 			end
 			
 			if tFlag == false or  aForceLocalRoot == true then
-				SkuOptions:SlashFunc(L["short"]..","..L["Local"])
+				-- Auto-descend one level into the first open window so the user
+				-- lands directly on its content (dialogue line, quest text, bag
+				-- list, role/ready check, ...) instead of on the bare window
+				-- name. The window name is still one Left-arrow up, and Up/Down
+				-- there still cycles the other open windows — so the
+				-- multiple-windows mechanism is preserved, we only change the
+				-- starting position. Skipped when: the caller forced the Local
+				-- root (aForceLocalRoot), the window has no content yet, or the
+				-- primary frame is a StaticPopup (handled by its own branch
+				-- below, which already lands on the popup's content).
+				local tPrimaryFrame = tOpenFrames[1]
+				local tPrimaryEntry = tPrimaryFrame and tGossipList[tPrimaryFrame]
+				local tDescendIntoPrimary = aForceLocalRoot ~= true
+					and tPrimaryEntry
+					and tPrimaryEntry.childs and #tPrimaryEntry.childs > 0
+					and tPrimaryEntry.textFirstLine
+					and not (tPrimaryFrame and string.find(tPrimaryFrame, "StaticPopup"))
+				if tDescendIntoPrimary then
+					SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..tPrimaryEntry.textFirstLine)
+				else
+					SkuOptions:SlashFunc(L["short"]..","..L["Local"])
+				end
 			end
-			
+
 			for q = 1, #tOpenFrames do
 				if tOpenFrames[q] == "StaticPopup1" and aForceLocalRoot ~= true then
 					SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Popup 1"])
