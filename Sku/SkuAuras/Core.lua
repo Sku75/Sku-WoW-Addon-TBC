@@ -897,6 +897,15 @@ local CombatLogFilterAttackable =  bit.bor(
 	COMBATLOG_FILTER_HOSTILE_PLAYERS,
 	COMBATLOG_FILTER_NEUTRAL_UNITS
 )
+-- Constant {unit, filter} map for the per-aura duration lookups in
+-- EvaluateAllAuras. Read-only, so it is hoisted out of the per-aura loop where
+-- it was being reallocated on every enabled aura on every combat-log event.
+local tAuraDurationAtts = {
+	buffListPlayer = {"player", "HELPFUL"},
+	debuffListPlayer = {"player", "HARMFUL"},
+	buffListTarget = {"target", "HELPFUL"},
+	debuffListTarget = {"target", "HARMFUL"},
+}
 function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 	local beginTime = debugprofilestop()
 
@@ -938,14 +947,17 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 		local tBuffList = {}
 		for x = 1, 40  do
 			local name, icon, count, dispelType, duration, expirationTime = UnitAura(unit, x, filter)
-			if name then
-				if durationForAuraName then
-					if name == durationForAuraName then
-						return (expirationTime or GetTime()) - GetTime()
-					end
+			-- UnitAura indices are contiguous then nil: once name is nil there are
+			-- no further auras on this unit/filter, so stop instead of probing all
+			-- 40 slots every call. Behaviour-identical (the trailing slots returned
+			-- nil and did nothing); cuts the loop to (aura count + 1) iterations.
+			if not name then break end
+			if durationForAuraName then
+				if name == durationForAuraName then
+					return (expirationTime or GetTime()) - GetTime()
 				end
-				tBuffList[name] = name
 			end
+			tBuffList[name] = name
 		end
 
 		--add weapon enchants
@@ -1150,13 +1162,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 				local tHasCountCondition_NumConditionsWoCountIsTrue = 0
 
 				--add tEvaluateData for durations of buff/debuff list conditions
-				local tAtts = {
-					buffListPlayer = {"player", "HELPFUL"},
-					debuffListPlayer = {"player", "HARMFUL"},
-					buffListTarget = {"target", "HELPFUL"},
-					debuffListTarget = {"target", "HARMFUL"},
-				}
-				for tAttsI, tAttsV in pairs(tAtts) do
+				for tAttsI, tAttsV in pairs(tAuraDurationAtts) do
 					if tAuraData.attributes[tAttsI] and tAuraData.attributes[tAttsI.."Duration"] then
 						local tduration = getAuraList(tAttsV[1], tAttsV[2], tEvaluateData[tAttsI][SkuAuras:RemoveTags(tAuraData.attributes[tAttsI][1][2])])
 						if tduration then
