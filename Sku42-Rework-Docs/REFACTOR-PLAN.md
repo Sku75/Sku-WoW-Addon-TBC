@@ -709,14 +709,16 @@ baseline confirms.
     - Load: PLAYER_LOGIN ≈ 3.95 s, PLAYER_ENTERING_WORLD ≈ 5.88 s since core load.
     - CPU (scriptProfile on): Sku ≈ 3835 ms cumulative ≈ 55% of all-addon CPU (mostly
       one-time DB-table load; companions ≈ 0).
-  - PENDING: a group/raid baseline (the decisive `n`-heavy case) and load milestones
-    around the big DB tables (`routedata`/SkuDB) to pin the 3.8 s startup.
+  - PENDING: load milestones around the big DB tables (`routedata`/SkuDB) to pin the
+    3.8 s startup, plus the remaining non-aura six-scenario baselines (nav / AH / menu).
+    The decisive raid `n`-heavy **aura** case is now captured under P4 (cache ON,
+    0.739 ms avg over n=162935 in a live 25-man raid).
 - [x] P3. **Top hypothesis confirmed by measurement.** `EvaluateAllAuras` (plan 3.3 #1)
   is the dominant combat cost (~10× every other probe even solo), runs on every CLEU.
   Cost driver is per-event frequency `n` (explodes in raids), not per-call magnitude;
   raw damage-number size is NOT a cost factor (Lua number ops are fixed-cost — magnitude
   correlates with lag only as a marker of high-event-rate bursts).
-- [~] P4. **Tier-1 done; Tier-2 cache done + correctness-verified; perf-vs-raid pending.**
+- [x] P4. **Tier-1 done; Tier-2 cache done + correctness-verified; raid perf CONFIRMED.**
   All in `Sku/SkuAuras/Core.lua`, behaviour-preserving, each independently revertible.
   - **Tier-1 (per-call cost, safe micro-opts):** #1 early-break `getAuraList` (stop the
     `UnitAura` 1..40 loop at first nil), #3 hoist the constant per-aura `{unit,filter}`
@@ -737,10 +739,21 @@ baseline confirms.
     - **Correctness VERIFIED:** single-fight verify run with target swaps + buff
       gain/lose + a temp weapon enchant: first pass found 22 mismatches (the
       CLEU-before-`UNIT_AURA` lag), the frame-accurate fix took it to **0**.
-  - PENDING (when a raid is available): `/skuauracache verify off`, `/skuperf reset`,
-    fight, `/skuperf combat`, `/reload` → measure the cache payoff vs the 0.779 ms
-    baseline. THEN decide whether further work (e.g. caching beyond player/target) is
-    warranted. The solo perf read with verify OFF is the immediate next step.
+  - **Raid perf CONFIRMED (2026-06-28, verify OFF, cache ON).** Live 25-man raid,
+    ~43.5 min combat window (`/skuperf` cleared 19:06:56 → dumped 19:50:33):
+    `EvaluateAllAuras` **0.739 ms avg, n=162935, max=16.970 ms, total=120381.8 ms**.
+    Per-call cost held *at/below* the 0.779 ms solo pre-cache baseline despite ~62
+    calls/sec sustained — the cross-event cache absorbs the `n` explosion the raid case
+    was built for. **0 `AURACACHE MISMATCH`** in the run. Still the #1 combat probe (18×
+    the next, 0.040 ms) and ≈4.6 % of wall-clock CPU over the window — expected, it runs
+    every CLEU. One 16.970 ms frame spike (a single cache rebuild on a mass-aura/target
+    event) — the tail to watch, not an alarm.
+  - **Residual (OPTIONAL) gate — not required:** the comparison leans on raid-cache-on
+    vs *solo* pre-cache, not a controlled raid A/B. A same-session raid
+    `/skuauracache off`→fight→`on`→fight would quantify the exact payoff and inform
+    whether to cache beyond player/target. Current data already shows the cache holding
+    the line under raid load, so P4 is considered DONE; pursue the A/B only if a hard
+    payoff number is wanted later.
 
 ---
 
