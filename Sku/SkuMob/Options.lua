@@ -596,14 +596,9 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:MenuBuilder(aParentEntry)
-	-- Declarative spec (W2 M-B, first conversion): Ziel-Aktionsmenue (dynamische
-	-- API-Liste, BuildChildren bei jedem Oeffnen neu auf das aktuelle Ziel/den
-	-- Status zugeschnitten) + Optionen (AceConfig-Args via IterateOptionsArgs).
-	-- Verhalten identisch zur frueheren hand-gebauten Fassung.
-	SkuMenu:Build(aParentEntry, {
-		{ kind = "list", label = L["Target menu"], filterable = true,
-			build = function(entry) tBuildTargetMenu(entry) end },
-		{ kind = "settings", label = L["Options"], filterable = true,
-			args = SkuMob.options.args, db = SkuSettings:Sub("SkuMob"), module = "SkuMob" },
-	})
+	-- W7: the top-level entry IS the target action menu now (no "Mob" wrapper, no
+	-- nested "Zielmenue" level). The SkuMob options moved to Einstellungen ->
+	-- Sonstiges (built from SkuCore:MenuBuilder). The target menu itself is a
+	-- dynamic API list rebuilt on each open against the current target/status.
+	tBuildTargetMenu(aParentEntry)
 end

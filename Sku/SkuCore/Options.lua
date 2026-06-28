@@ -2746,6 +2746,15 @@ function SkuCore:MenuBuilder(aParentEntry)
 	tSonstiges[#tSonstiges+1] = { kind = "settings", label = L["Options"], filterable = true,
 		args = SkuCore.options.args, db = SkuSettings:Sub("SkuCore"), module = "SkuCore" }
 
+	-- W7: SkuMob's settings, relocated under Kampf when the "Mob" wrapper was dropped
+	-- and the target menu promoted to top level. Same args/db -> saved values preserved.
+	if SkuMob and SkuMob.options and SkuMob.options.args then
+		tKampf[#tKampf+1] = { kind = "settings",
+			label = function() return (GetLocale and GetLocale() == "deDE") and "Ziel Optionen" or "Target options" end,
+			filterable = true,
+			args = SkuMob.options.args, db = SkuSettings:Sub("SkuMob"), module = "SkuMob" }
+	end
+
 	-- W7: top-level Einstellungen layout. Allgemein reuses the old "Optionen" menu
 	-- (SkuOptions:MenuBuilder); Spieleinstellungen reuses the Game Options builder;
 	-- Module reuses the per-feature on/off list (the old "Funktionen an/aus"). Kampf /

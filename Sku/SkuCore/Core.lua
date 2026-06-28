@@ -3736,13 +3736,17 @@ function SkuCore:GameMenuShowHandler()
 	if InCombatLockdown and InCombatLockdown() then
 		return
 	end
-	local tTitle = (GetLocale and GetLocale() == "deDE") and "Spieloptionen" or "Game Options"
+	-- W7: GameOptions is no longer a root entry; it lives under
+	-- Einstellungen -> Spieleinstellungen. Navigate there (labels must match the
+	-- Einstellungen builder in SkuCore/Options.lua).
+	local tDe = (GetLocale and GetLocale() == "deDE")
+	local tPath = "short," .. (tDe and "Einstellungen" or "Settings") .. "," .. (tDe and "Spieleinstellungen" or "Game options")
 	if C_Timer and C_Timer.After then
 		C_Timer.After(0, function()
 			pcall(function()
 				if HideUIPanel then HideUIPanel(GameMenuFrame) else GameMenuFrame:Hide() end
 			end)
-			pcall(function() SkuOptions:SlashFunc("short," .. tTitle) end)
+			pcall(function() SkuOptions:SlashFunc(tPath) end)
 		end)
 	end
 end

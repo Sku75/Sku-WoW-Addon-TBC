@@ -276,7 +276,9 @@ end
 local function L() return Sku.L end
 
 SkuMenu:RegisterModule("SkuNav",   { label = function() return L()["SkuNavMenuEntry"]   end, build = function(entry) SkuNav:MenuBuilder(entry)   end })
-SkuMenu:RegisterModule("SkuMob",   { label = function() return L()["SkuMobMenuEntry"]   end, build = function(entry) SkuMob:MenuBuilder(entry)   end })
+-- W7: top-level entry is the target action menu directly (label "Ziel Menue"),
+-- not a "Mob" wrapper. SkuMob's settings live under Einstellungen -> Sonstiges.
+SkuMenu:RegisterModule("SkuMob",   { label = function() return L()["Target menu"]       end, build = function(entry) SkuMob:MenuBuilder(entry)   end })
 SkuMenu:RegisterModule("SkuChat",  { label = function() return L()["SkuChatMenuEntry"]  end, build = function(entry) SkuChat:MenuBuilder(entry)  end })
 SkuMenu:RegisterModule("SkuQuest", { label = function() return L()["SkuQuestMenuEntry"] end, build = function(entry) SkuQuest:MenuBuilder(entry) end })
 -- W7: "Core" grab-bag is gone; SkuCore:MenuBuilder now builds the aggregated
@@ -331,8 +333,6 @@ SkuMenu:SetRootLayout({
 	"SkuAuras",    -- auren
 	"Addons",
 	"Einstellungen",
-	-- GameOptions kept at root transitionally so the Escape hook still resolves; it
-	-- is ALSO reachable under Einstellungen -> Spieleinstellungen. Folds away with the
-	-- Escape rewire batch.
-	"GameOptions",
 })
+-- GameOptions is NOT at root — it lives under Einstellungen -> Spieleinstellungen,
+-- and the Escape (GameMenuFrame) hook now navigates there (SkuCore:GameMenuShowHandler).
