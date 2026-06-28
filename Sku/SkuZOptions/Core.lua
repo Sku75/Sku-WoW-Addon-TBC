@@ -2873,7 +2873,16 @@ function SkuOptions:CreateMenuFrame()
 			end
 		end
 
-		if aKey ~= "ESCAPE" and _G["OnSkuOptionsMainOption1"]:IsVisible() and aKey ~= "SHIFT-DOWN" and SkuOptions.TTS.MainFrame:IsVisible() ~= true then
+		-- Suppress the normal post-keypress announce for a bag-action ENTER
+		-- while a confirm window is open: the cursor is still on the menu's
+		-- transient re-anchor position (often the first all-items entry) and
+		-- the event-driven SkuBagConfirmRefresh is what speaks the settled item
+		-- once it's re-pinned by identity. Without this we'd announce the wrong
+		-- item first, then move silently to the right one.
+		local tBagActionEnter = (aKey == "ENTER" or aKey == "SHIFT-ENTER" or aKey == "CTRL-ENTER")
+			and Sku and Sku.tBagPostAction
+			and GetTime() < (Sku.tBagPostAction.deadline or 0)
+		if aKey ~= "ESCAPE" and _G["OnSkuOptionsMainOption1"]:IsVisible() and aKey ~= "SHIFT-DOWN" and SkuOptions.TTS.MainFrame:IsVisible() ~= true and not tBagActionEnter then
 			SkuOptions:VocalizeCurrentMenuName(tVocalizeReset)
 			if string.len(SkuOptions.Filterstring) > 1  then
 				--SkuOptions.Voice:OutputStringBTtts("Filter", false, true, 0.3, nil, nil, nil, 2)
@@ -4320,14 +4329,21 @@ function SkuCaptureSellState()
 		node = node.parent
 	end
 
-	Sku.tLastSellState = {
+	-- Open the BAG_UPDATE confirm window NOW (before the action) so the
+	-- corrective fires on the BAG_UPDATEs the action itself emits and can
+	-- re-pin the cursor by identity through any list re-sort (one or more
+	-- "new" items dropping out of the top slot). announced=false → the first
+	-- successful land speaks once; later re-pins are silent.
+	Sku.tBagPostAction = {
 		path = path,
 		origIdx = origIdx,
-		-- stable identity of the focused item, for a view-aware restore:
-		-- bagSlot pins the per-bag cursor to the physical slot; itemId lets
-		-- the all-items cursor follow the item if it still exists.
+		-- stable identity: bagSlot pins the per-bag cursor to the physical
+		-- slot; itemId lets the all-items cursor follow the item if it still
+		-- exists.
 		bagSlot = itemEntry and itemEntry.bagSlot,
 		itemId = itemEntry and itemEntry.itemId,
+		deadline = GetTime() + 2.5,
+		lastName = nil,
 	}
 end
 
@@ -4354,52 +4370,99 @@ local function tFindMenuNodeByPath(aPath)
 	return node
 end
 
-function SkuRestoreSellPosition()
-	local s = Sku and Sku.tLastSellState
-	if Sku then Sku.tLastSellState = nil end
-	if not s or not s.path or not s.origIdx then return end
-
-	local listNode = tFindMenuNodeByPath(s.path)
+-- View-aware target picker, shared by the post-action restore and the
+-- BAG_UPDATE corrective. Prefers stable identity over the volatile numbered
+-- display name / raw index:
+--   1) per-bag: the same physical slot (bagSlot) — lands on the now-empty
+--      slot if the focused item was removed;
+--   2) all-items: the same item (itemId) if it still exists (partial-stack);
+--   3) fallback: the entry now at the original index — packed-list semantics,
+--      i.e. the next item that filled the gap.
+local function tPickBagTarget(listNode, sel)
 	if not listNode or not listNode.children or #listNode.children == 0 then
-		return
+		return nil
 	end
-
-	-- View-aware restore. Prefer stable identity over the volatile numbered
-	-- display name / raw index:
-	--   1) per-bag: pin to the same physical slot (bagSlot) — you land on the
-	--      now-empty slot if you removed the item you were standing on;
-	--   2) all-items: follow the same item (itemId) if it still exists
-	--      (e.g. a partial-stack sale);
-	--   3) fallback: the entry now at the original index — packed-list
-	--      semantics, i.e. the next item that filled the gap.
 	local tTarget
-	if s.bagSlot then
+	if sel.bagSlot then
 		for i = 1, #listNode.children do
-			if listNode.children[i].bagSlot == s.bagSlot then
+			if listNode.children[i].bagSlot == sel.bagSlot then
 				tTarget = listNode.children[i]
 				break
 			end
 		end
 	end
-	if not tTarget and s.itemId then
+	if not tTarget and sel.itemId then
 		for i = 1, #listNode.children do
-			if listNode.children[i].itemId == s.itemId then
+			if listNode.children[i].itemId == sel.itemId then
 				tTarget = listNode.children[i]
 				break
 			end
 		end
 	end
-	if not tTarget then
-		local idx = math.min(s.origIdx, #listNode.children)
+	if not tTarget and sel.origIdx then
+		local idx = math.min(sel.origIdx, #listNode.children)
 		if idx < 1 then idx = 1 end
 		tTarget = listNode.children[idx]
 	end
-	dprint("sell restore", "bagSlot=", tostring(s.bagSlot), "itemId=", tostring(s.itemId),
-		"->", tTarget and tTarget.name or "?")
-	SkuOptions.currentMenuPosition = tTarget
-	if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then
-		pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
+	return tTarget
+end
+
+function SkuRestoreSellPosition()
+	-- Timed fallback for the event-driven confirm: if the action emitted few
+	-- or no BAG_UPDATEs (e.g. using a non-consumable that doesn't change bag
+	-- contents), still land on the item by identity. SkuBagConfirmRefresh is
+	-- idempotent and announces only once, so calling it here is harmless even
+	-- when BAG_UPDATEs already drove the landing.
+	if SkuBagConfirmRefresh then
+		pcall(SkuBagConfirmRefresh)
 	end
+end
+
+-- The event-driven confirm. Called (debounced) on each BAG_UPDATE while a bag
+-- action's window is open, and once by the timed fallback. Quietly rebuilds the
+-- bag data + menu, then re-pins the cursor on the LIVE tree by stable identity
+-- so it follows the item through any re-sort (e.g. one or more "new" items
+-- leaving the top slot). Speaks once on the first successful land, and again
+-- only if the focused entry's text later changes; otherwise re-pins silently.
+function SkuBagConfirmRefresh()
+	local s = Sku and Sku.tBagPostAction
+	if not s then return end
+	if GetTime() > (s.deadline or 0) then
+		Sku.tBagPostAction = nil
+		return
+	end
+	if not (SkuOptions and SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen() == true) then
+		return
+	end
+
+	-- Quiet rebuild: fresh GossipList + re-rendered nodes, no announce.
+	pcall(function() SkuCore:CheckFrames(nil, nil, true) end)
+
+	if not (_G.C_Timer and _G.C_Timer.After) then return end
+	_G.C_Timer.After(0.2, function()
+		local s2 = Sku and Sku.tBagPostAction
+		if not s2 then return end
+		local listNode = tFindMenuNodeByPath(s2.path)
+		local tTarget = tPickBagTarget(listNode, s2)
+		if not tTarget then return end
+		SkuOptions.currentMenuPosition = tTarget
+		if tTarget.OnEnter then
+			pcall(function() tTarget:OnEnter() end)
+		end
+
+		-- announce once on first land; afterwards only if the text changed.
+		local tSpeak = (not s2.announced) or (tTarget.name ~= s2.lastName)
+		s2.announced = true
+		s2.lastName = tTarget.name
+		if tSpeak then
+			dprint("bag confirm", "announce ->", tostring(tTarget.name))
+			if SkuOptions.TTS and SkuOptions.TTS.MainFrame and SkuOptions.TTS.MainFrame:IsVisible() ~= true then
+				pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
+			end
+		else
+			dprint("bag confirm", "silent re-pin ->", tostring(tTarget.name))
+		end
+	end)
 end
 
 local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)

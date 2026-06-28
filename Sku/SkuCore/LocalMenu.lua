@@ -1262,10 +1262,12 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 						copy[k] = v
 					end
 					copy.textFirstLine = string.sub(copy.textFirstLine, string.find(copy.textFirstLine, " ") + 1)
-					-- The all-items view is a packed, slot-less list; drop the
-					-- physical-slot identity so its cursor follows the ITEM
-					-- (itemId), not a slot that has no meaning in this view.
-					copy.bagSlot = nil
+					-- Keep bagSlot (the source slot) as the precise identity: it
+					-- uniquely identifies THIS stack even when several stacks of
+					-- the same item exist (itemId alone is ambiguous then), and it
+					-- still follows the entry through a re-sort — the slot is
+					-- stable, only the index moves. If the exact stack is gone,
+					-- tPickBagTarget falls back to itemId.
 					table.insert(allBagResults, copy)
 					allBagResults[copy] = copy
 				end

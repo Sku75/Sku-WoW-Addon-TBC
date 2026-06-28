@@ -1786,6 +1786,25 @@ end
 -- whenever the player navigates or an action triggers CheckFrames
 -- naturally.
 function SkuCore:BAG_UPDATE(...)
+	-- Option 1: confirm the post-action bag refresh against the server's
+	-- actual BAG_UPDATE. The fixed-delay restore in the action macrotext can
+	-- run before the bag has settled (server latency), leaving the menu stale.
+	-- When a bag action just restored (Sku.tBagPostAction set by
+	-- SkuRestoreSellPosition, window-limited), coalesce the BAG_UPDATE burst
+	-- and run a quiet corrective that only re-announces if the focused entry
+	-- actually changed — so the common, already-correct case adds no chatter.
+	-- Outside that window this is a no-op (normal looting etc. is untouched).
+	if not (Sku and Sku.tBagPostAction) then return end
+	if not (_G.C_Timer and _G.C_Timer.NewTimer) then return end
+	if SkuCore._bagConfirmTimer then
+		SkuCore._bagConfirmTimer:Cancel()
+	end
+	SkuCore._bagConfirmTimer = _G.C_Timer.NewTimer(0.15, function()
+		SkuCore._bagConfirmTimer = nil
+		if SkuBagConfirmRefresh then
+			pcall(SkuBagConfirmRefresh)
+		end
+	end)
 end
 function SkuCore:BAG_UPDATE_DELAYED(...)
 end
@@ -3261,7 +3280,7 @@ end
 
 -------------------------------------------------------------------------------------------------
 ---@param aForceLocalRoot bool force the audio menu to return to the "Local" root element if there are new childs in Local
-function SkuCore:CheckFrames(aForceLocalRoot, aDontClose)
+function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 	dprint("++CheckFrames", aForceLocalRoot)
 
 	if SkuOptions.db.profile["SkuOptions"].localActive == false then
@@ -3356,7 +3375,16 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose)
 										SkuOptions.currentMenuPosition:OnNext()
 									end
 									--SkuOptions.currentMenuPosition.parent.children[tIndex]:OnSelect()
-									SkuOptions:VocalizeCurrentMenuName()
+									-- Suppress the re-anchor announce when (a) called
+									-- quietly, or (b) a bag-action confirm window is open —
+									-- so the only thing spoken is the identity land, with
+									-- no brief "wrong item" blip from the action's own
+									-- re-anchor before the cursor settles.
+									local tBagWindow = Sku and Sku.tBagPostAction
+										and GetTime() < (Sku.tBagPostAction.deadline or 0)
+									if not aQuiet and not tBagWindow then
+										SkuOptions:VocalizeCurrentMenuName()
+									end
 								end
 
 								tFlag = true
