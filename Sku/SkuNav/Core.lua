@@ -3232,7 +3232,11 @@ function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	end
 
 	if aIsInitialLogin == true or aIsReloadingUi == true then
+		-- [W3] time the waypoint-cache build: it is the other route-data consumer
+		-- inside the login freeze, so we need its cost to size the deferral prize.
+		local tWpcT0 = debugprofilestop()
 		SkuNav:CreateWaypointCache()
+		if Sku.MetricPoint then Sku:MetricPoint(string.format("CreateWaypointCache = %.1f ms", debugprofilestop() - tWpcT0)) end
 	end
 
 	if _G["SkuNavMMMainFrameZoneSelect"] then
