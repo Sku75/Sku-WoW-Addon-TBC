@@ -101,13 +101,7 @@ SkuCore.options = {
 			desc = "",
 			type = "select",
 			values = SkuCore.BackgroundSoundFiles,
-			set = function(info,val)
-				SkuSettings:Sub("SkuCore").scanBackgroundSound = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuCore").scanBackgroundSound
-			end
-		},		
+		},
 		ressourceScanning={
 			name = L["Ressource Scanning"],
 			type = "group",
@@ -137,37 +131,19 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = scanAccuracyValues,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").ressourceScanning.scanAccuracyS = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").ressourceScanning.scanAccuracyS
-					end
-				},	
+				},
 				notifyOnRessources = {
 					order = 5,
 					name = L["notify On Ressources"],
 					desc = "",
 					type = "toggle",
-					set = function(info, val)
-						SkuSettings:Sub("SkuCore").ressourceScanning.notifyOnRessources = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").ressourceScanning.notifyOnRessources
-					end
-				},					
+				},
 			},
 		},
 		readAllTooltips = {
 			name = L["Read all tooltips"],
 			desc = "",
 			type = "toggle",
-			set = function(info, val)
-				SkuSettings:Sub("SkuCore").readAllTooltips = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuCore").readAllTooltips
-			end
 		},
 		--[[
 		autoFollow = {
@@ -197,12 +173,6 @@ SkuCore.options = {
 			name = L["Bei Interagieren zum Ziel laufen"],
 			desc = "",
 			type = "toggle",
-			set = function(info, val)
-				SkuSettings:Sub("SkuCore").interactMove = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuCore").interactMove
-			end
 		},
 		turnToUnit = {
 			name = L["Turn to unit"],
@@ -216,12 +186,6 @@ SkuCore.options = {
 					type = "range",
 					min = 1,
 					max = 10,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").turnToUnit.speed = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").turnToUnit.speed
-					end
 				},
 				soundOnSuccess = {
 					order = 2,
@@ -229,26 +193,14 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.outputSoundFiles,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").turnToUnit.soundOnSuccess = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").turnToUnit.soundOnSuccess
-					end
-				},	
+				},
 				soundOnFail = {
 					order = 3,
 					name = L["Sound on fail"],
 					desc = "",
 					type = "select",
 					values = SkuCore.outputSoundFiles,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").turnToUnit.soundOnFail = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").turnToUnit.soundOnFail
-					end
-				},	
+				},
 				targetSelection={
 					name = L["Unit selection"],
 					type = "group",
@@ -260,12 +212,6 @@ SkuCore.options = {
 							desc = "",
 							type = "select",
 							values = SkuCore.TurnToUnit.availableTargetsListNames,
-							set = function(info,val)
-								SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key1 = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key1
-							end
 						},
 						key2 = {
 							order = 2,
@@ -273,12 +219,6 @@ SkuCore.options = {
 							desc = "",
 							type = "select",
 							values = SkuCore.TurnToUnit.availableTargetsListNames,
-							set = function(info,val)
-								SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key2 = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key2
-							end
 						},
 						key3 = {
 							order = 3,
@@ -286,12 +226,6 @@ SkuCore.options = {
 							desc = "",
 							type = "select",
 							values = SkuCore.TurnToUnit.availableTargetsListNames,
-							set = function(info,val)
-								SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key3 = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key3
-							end
 						},
 						key4 = {
 							order = 4,
@@ -299,12 +233,6 @@ SkuCore.options = {
 							desc = "",
 							type = "select",
 							values = SkuCore.TurnToUnit.availableTargetsListNames,
-							set = function(info,val)
-								SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key4 = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key4
-							end
 						},
 						key5 = {
 							order = 5,
@@ -312,12 +240,6 @@ SkuCore.options = {
 							desc = "",
 							type = "select",
 							values = SkuCore.TurnToUnit.availableTargetsListNames,
-							set = function(info,val)
-								SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key5 = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key5
-							end
 						},
 						key6 = {
 							order = 6,
@@ -325,12 +247,6 @@ SkuCore.options = {
 							desc = "",
 							type = "select",
 							values = SkuCore.TurnToUnit.availableTargetsListNames,
-							set = function(info,val)
-								SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key6 = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuCore").turnToUnit.targetSelection.key6
-							end
 						},
 
 					},
@@ -348,12 +264,6 @@ SkuCore.options = {
 							type = "range",
 							min = 1,
 							max = 10,
-									set = function(info,val)
-								SkuSettings:Sub("SkuCore").turnToUnit.enhancedSettings.delayOnPlate = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuCore").turnToUnit.enhancedSettings.delayOnPlate
-							end
 						},
 					},
 				},
@@ -363,23 +273,11 @@ SkuCore.options = {
 			name = L["Play NPC greetings"],
 			desc = "",
 			type = "toggle",
-			set = function(info, val)
-				SkuSettings:Sub("SkuCore").playNPCGreetings = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuCore").playNPCGreetings
-			end
 		},
 		doNotHideTooltip = {
 			name = L["do not hide tooltip"],
 			desc = "",
 			type = "toggle",
-			set = function(info, val)
-				SkuSettings:Sub("SkuCore").doNotHideTooltip = val
-			end,
-			get = function(info)
-				return SkuSettings:Sub("SkuCore").doNotHideTooltip
-			end
 		},
 		classes={
 			name = L["Classes"],
@@ -396,12 +294,6 @@ SkuCore.options = {
 							name = L["Notice on pet starving"],
 							desc = "",
 							type = "toggle",
-							set = function(info,val)
-								SkuSettings:Sub("SkuCore").classes.hunter.petHappyness = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuCore").classes.hunter.petHappyness
-							end
 						},
 					},
 				},
@@ -417,36 +309,18 @@ SkuCore.options = {
 					order = 1,
 					desc = "",
 					type = "toggle",
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").itemSettings.ShowItemQality = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").itemSettings.ShowItemQality
-					end
 				},
 				autoSellJunk = {
 					name = L["Auto sell junk at vendors"],
 					order = 2,
 					desc = "",
 					type = "toggle",
-					set = function(info, val)
-						SkuSettings:Sub("SkuCore").itemSettings.autoSellJunk = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").itemSettings.autoSellJunk
-					end
 				},
 				autoRepair = {
 					name = L["Auto repair at vendors"],
 					order = 3,
 					desc = "",
 					type = "toggle",
-					set = function(info, val)
-						SkuSettings:Sub("SkuCore").itemSettings.autoRepair = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").itemSettings.autoRepair
-					end
 				},
 	
 			},
@@ -463,24 +337,12 @@ SkuCore.options = {
 					type = "range",
 					min = 0,
 					max = 1000,
-					set = function(info, val)
-						SkuSettings:Sub("SkuCore").fallSettings.delay = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").fallSettings.delay
-					end
 				},
 				ignoreJumps = {
 					name = L["Ignore jumps"],
 					order = 2,
 					desc = "",
 					type = "toggle",
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").fallSettings.ignoreJumps = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").fallSettings.ignoreJumps
-					end
 				},
 
 				voiceOutput = {
@@ -488,24 +350,12 @@ SkuCore.options = {
 					order = 3,
 					desc = "",
 					type = "toggle",
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").fallSettings.voiceOutput = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").fallSettings.voiceOutput
-					end
 				},
 				soundOutput = {
 					name = L["Sound output"],
 					order = 4,
 					desc = "",
 					type = "toggle",
-					set = function(info, val)
-						SkuSettings:Sub("SkuCore").fallSettings.soundOutput = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").fallSettings.soundOutput
-					end
 				},
 	
 			},
@@ -522,12 +372,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SKU_CONSTANTS.SOUNDCHANNELS,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.ErrorSoundChannel = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.ErrorSoundChannel
-					end
 				},
 				OutOfRangeMelee={
 					name = L["out of range melee"],
@@ -535,12 +379,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.OutOfRangeMelee = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.OutOfRangeMelee
-					end
 				},
 				OutOfRangeCast={
 					name = L["out of range cast"],
@@ -548,12 +386,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.OutOfRangeCast = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.OutOfRangeCast
-					end
 				},
 				Moving={
 					name = L["Moving"],
@@ -561,12 +393,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.Moving = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.Moving
-					end
 				},
 				NoLoS={
 					name = L["No LoS"],
@@ -574,12 +400,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.NoLoS = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.NoLoS
-					end
 				},
 				BadTarget={
 					name = L["Bad Target"],
@@ -587,12 +407,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.BadTarget = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.BadTarget
-					end
 				},
 				InCombat={
 					name = L["In Combat"],
@@ -600,12 +414,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.InCombat = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.InCombat
-					end
 				},
 				NoMana={
 					name = L["No ressource"],
@@ -613,12 +421,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.NoMana = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.NoMana
-					end
 				},
 				ObjectBusy={
 					name = L["Object Busy"],
@@ -626,12 +428,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.ObjectBusy = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.ObjectBusy
-					end
 				},
 				NotFacing={
 					name = L["Not Facing"],
@@ -639,12 +435,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.NotFacing = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.NotFacing
-					end
 				},
 				CrowdControlled={
 					name = L["Crowd Controlled"],
@@ -652,12 +442,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.CrowdControlled = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.CrowdControlled
-					end
 				},
 				Interrupted={
 					name = L["Interrupted"],
@@ -665,12 +449,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.Interrupted = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.Interrupted
-					end
 				},
 				Other={
 					name = L["other"],
@@ -678,12 +456,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.Other = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.Other
-					end
 				},
 				Cooldown={
 					name = L["cooldown"],
@@ -691,12 +463,6 @@ SkuCore.options = {
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
-					set = function(info,val)
-						SkuSettings:Sub("SkuCore").UIErrors.Cooldown = val
-					end,
-					get = function(info)
-						return SkuSettings:Sub("SkuCore").UIErrors.Cooldown
-					end
 				},				
 				
 			},
@@ -843,6 +609,60 @@ do
 		SkuCore.defaults.ressourceScanning.gasCollector[x] = true
 	end
 end
+
+-- Settings schema for SkuCore's MAIN options menu (Sku 42 rework, W2 M-C1 /
+-- W1 Phase C). Every key below is profile-scoped (these settings have always
+-- lived under SkuSettings:Sub("SkuCore") with no scope override, i.e. the
+-- profile scope, and the defaults mirror SkuCore.defaults above). Declared here
+-- as the single source of truth (scope/type/default) for the schema-managed menu
+-- generation: the matching nodes in SkuCore.options.args no longer carry get/set
+-- and are resolved via SkuSettings:Get/Set("SkuCore", dottedKey).
+--
+-- NOT registered on purpose: the data-driven ressourceScanning.miningNodes /
+-- .herbs / .gasCollector toggles (integer keys, count comes from
+-- SkuCore.RessourceTypes at load) — their option nodes KEEP their own get/set
+-- (see the do-loops in Options.lua) and are not schema-managed.
+SkuSettings:Register("SkuCore", {
+	["scanBackgroundSound"]                       = { scope = "profile", default = "tools-ratchet.mp3", type = "string" },
+	["ressourceScanning.scanAccuracyS"]           = { scope = "profile", default = 3, type = "number" },
+	["ressourceScanning.notifyOnRessources"]      = { scope = "profile", default = false, type = "boolean" },
+	["readAllTooltips"]                           = { scope = "profile", default = false, type = "boolean" },
+	["interactMove"]                              = { scope = "profile", default = true, type = "boolean" },
+	["turnToUnit.speed"]                          = { scope = "profile", default = 6, type = "number" },
+	["turnToUnit.soundOnSuccess"]                 = { scope = "profile", default = "sound-waterdrop5", type = "string" },
+	["turnToUnit.soundOnFail"]                    = { scope = "profile", default = "sound-waterdrop1", type = "string" },
+	["turnToUnit.targetSelection.key1"]           = { scope = "profile", default = 1, type = "number" },
+	["turnToUnit.targetSelection.key2"]           = { scope = "profile", default = 13, type = "number" },
+	["turnToUnit.targetSelection.key3"]           = { scope = "profile", default = 12, type = "number" },
+	["turnToUnit.targetSelection.key4"]           = { scope = "profile", default = 11, type = "number" },
+	["turnToUnit.targetSelection.key5"]           = { scope = "profile", default = 22, type = "number" },
+	["turnToUnit.targetSelection.key6"]           = { scope = "profile", default = 22, type = "number" },
+	["turnToUnit.enhancedSettings.delayOnPlate"]  = { scope = "profile", default = 2, type = "number" },
+	["playNPCGreetings"]                          = { scope = "profile", default = false, type = "boolean" },
+	["doNotHideTooltip"]                          = { scope = "profile", default = false, type = "boolean" },
+	["classes.hunter.petHappyness"]               = { scope = "profile", default = true, type = "boolean" },
+	["itemSettings.ShowItemQality"]               = { scope = "profile", default = true, type = "boolean" },
+	["itemSettings.autoSellJunk"]                 = { scope = "profile", default = true, type = "boolean" },
+	["itemSettings.autoRepair"]                   = { scope = "profile", default = true, type = "boolean" },
+	["fallSettings.delay"]                        = { scope = "profile", default = 0, type = "number" },
+	["fallSettings.ignoreJumps"]                  = { scope = "profile", default = true, type = "boolean" },
+	["fallSettings.voiceOutput"]                  = { scope = "profile", default = false, type = "boolean" },
+	["fallSettings.soundOutput"]                  = { scope = "profile", default = true, type = "boolean" },
+	["UIErrors.ErrorSoundChannel"]                = { scope = "profile", default = "Talking Head", type = "string" },
+	["UIErrors.OutOfRangeMelee"]                  = { scope = "profile", default = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3", type = "string" },
+	["UIErrors.OutOfRangeCast"]                   = { scope = "profile", default = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3", type = "string" },
+	["UIErrors.Moving"]                           = { scope = "profile", default = "voice", type = "string" },
+	["UIErrors.NoLoS"]                            = { scope = "profile", default = "voice", type = "string" },
+	["UIErrors.BadTarget"]                        = { scope = "profile", default = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3", type = "string" },
+	["UIErrors.InCombat"]                         = { scope = "profile", default = "voice", type = "string" },
+	["UIErrors.NoMana"]                           = { scope = "profile", default = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3", type = "string" },
+	["UIErrors.ObjectBusy"]                       = { scope = "profile", default = "voice", type = "string" },
+	["UIErrors.NotFacing"]                        = { scope = "profile", default = "voice", type = "string" },
+	["UIErrors.CrowdControlled"]                  = { scope = "profile", default = "voice", type = "string" },
+	["UIErrors.Interrupted"]                      = { scope = "profile", default = "voice", type = "string" },
+	["UIErrors.Other"]                            = { scope = "profile", default = "voice", type = "string" },
+	["UIErrors.Cooldown"]                         = { scope = "profile", default = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3", type = "string" },
+})
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2911,7 +2731,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 
 	tSpecs[#tSpecs+1] = { kind = "settings", label = L["Options"], filterable = true,
-		args = SkuCore.options.args, db = SkuSettings:Sub("SkuCore") }
+		args = SkuCore.options.args, db = SkuSettings:Sub("SkuCore"), module = "SkuCore" }
 
 	SkuMenu:Build(aParentEntry, tSpecs)
 end
