@@ -20,12 +20,6 @@ SkuQuest.options = {
 			order = 1,
 			type = "toggle",
 			desc = "",
-			set = function(info,val)
-				SkuSettings:Sub("SkuQuest").showDifficultyColors = val
-			end,
-			get = function(info) 
-				return SkuSettings:Sub("SkuQuest").showDifficultyColors
-			end,
 		},
 		questMarkerBeacons ={
 			name = L["quest notifications"],
@@ -45,12 +39,6 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enabled = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enabled
-							end
 						},
 						enableBeacons = {
 							order = 1.4,
@@ -60,12 +48,6 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enableBeacons = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enableBeacons
-							end
 						},
 						enableClickClack = {
 							order = 1.5,
@@ -74,15 +56,9 @@ SkuQuest.options = {
 							type = "select",
 							values = SkuNav.ClickClackSoundsets,
 							OnAction = function(self, info, val)
-								SkuQuest:UpdateZoneAvailableQuestList(true)			
+								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enableClickClack = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enableClickClack
-							end
-						},						
+						},
 						singlePing = {
 							order = 1.75,
 							name = L["only one beacon ping"],
@@ -91,12 +67,6 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.singlePing = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.singlePing
-							end
 						},
 
 						-- beacon sound
@@ -152,14 +122,8 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.beaconVolume = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.beaconVolume
-							end
 						},
-				
+
 						-- max range
 						maxRange = {
 							order = 5,
@@ -169,12 +133,6 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.maxRange = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.maxRange
-							end
 						},
 						-- chat output
 						chatNotification = {
@@ -185,12 +143,6 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.chatNotification = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.chatNotification
-							end
 						},
 						-- disable on
 						disableOn = {
@@ -201,13 +153,7 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.disableOn = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.disableOn
-							end
-						},						
+						},
 						-- disable seen forever
 						disableSeenForever = {
 							order = 8,
@@ -217,12 +163,6 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.disableSeenForever = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.disableSeenForever
-							end
 						},
 						minLevel = {
 							order = 9,
@@ -232,13 +172,7 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.minLevel = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.minLevel
-							end
-						},						
+						},
 
 					},
 				},
@@ -255,12 +189,6 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.enabled = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.enabled
-							end
 						},
 						enableBeacons = {
 							order = 1.4,
@@ -270,12 +198,6 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.enableBeacons = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.enableBeacons
-							end
 						},
 						enableClickClack = {
 							order = 1.5,
@@ -284,15 +206,9 @@ SkuQuest.options = {
 							type = "select",
 							values = SkuNav.ClickClackSoundsets,
 							OnAction = function(self, info, val)
-								SkuQuest:UpdateZoneAvailableQuestList(true)			
+								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.enableClickClack = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.enableClickClack
-							end
-						},						
+						},
 						singlePing = {
 							order = 1.75,
 							name = L["only one beacon ping"],
@@ -301,12 +217,6 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.singlePing = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.singlePing
-							end
 						},
 
 						beaconSoundSet = {
@@ -361,14 +271,8 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.beaconVolume = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.beaconVolume
-							end
 						},
-				
+
 						-- max range
 						maxRange = {
 							order = 5,
@@ -378,12 +282,6 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.maxRange = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.maxRange
-							end
 						},
 						-- chat output
 						chatNotification = {
@@ -394,12 +292,6 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.chatNotification = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.chatNotification
-							end
 						},
 						-- disable on
 						disableOn = {
@@ -410,13 +302,7 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.disableOn = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.disableOn
-							end
-						},						
+						},
 						-- disable seen forever
 						disableSeenForever = {
 							order = 8,
@@ -426,13 +312,7 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.disableSeenForever = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.disableSeenForever
-							end
-						},						
+						},
 						minLevel = {
 							order = 9,
 							name = L["Ignore quests x levels below your level"],
@@ -441,13 +321,7 @@ SkuQuest.options = {
 							OnAction = function(self, info, val)
 								SkuQuest:UpdateZoneAvailableQuestList(true)
 							end,
-							set = function(info,val)
-								SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.minLevel = val
-							end,
-							get = function(info)
-								return SkuSettings:Sub("SkuQuest").questMarkerBeacons.currentQuests.minLevel
-							end
-						},						
+						},
 
 					},
 				},
@@ -485,12 +359,50 @@ SkuQuest.defaults = {
 			beaconVolume = 40,
 			maxRange = 60,
 			chatNotification = true,
-			disableOn = 5,			
+			disableOn = 5,
 			disableSeenForever = false,
 			minLevel = 15,
 		},
 	},
 }
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Settings schema for SkuQuest (Sku 42 rework, W2 M-C1 / W1 Phase C). Single
+-- source of truth (scope/default/type) for every settings key in the options
+-- menu. All keys are profile scope (the option handlers use SkuSettings:Sub
+-- with no scope arg). Dotted keys mirror the nested group/storage path. Nodes
+-- whose get/set are pure storage are schema-managed (their get/set were
+-- removed); beaconSoundSet/beaconType keep their get/set because they transform
+-- the value (name<->id), so they are listed here but stay non-managed.
+SkuSettings:Register("SkuQuest", {
+	["showDifficultyColors"]                              = { scope = "profile", default = true,  type = "boolean" },
+
+	["questMarkerBeacons.availableQuests.enabled"]            = { scope = "profile", default = false,     type = "boolean" },
+	["questMarkerBeacons.availableQuests.enableBeacons"]      = { scope = "profile", default = true,      type = "boolean" },
+	["questMarkerBeacons.availableQuests.enableClickClack"]   = { scope = "profile", default = "off",     type = "string"  },
+	["questMarkerBeacons.availableQuests.singlePing"]         = { scope = "profile", default = false,     type = "boolean" },
+	["questMarkerBeacons.availableQuests.beaconSoundSet"]     = { scope = "profile", default = "Beacon 1", type = "string"  },
+	["questMarkerBeacons.availableQuests.beaconType"]         = { scope = "profile", default = -7,        type = "number"  },
+	["questMarkerBeacons.availableQuests.beaconVolume"]       = { scope = "profile", default = 40,        type = "number"  },
+	["questMarkerBeacons.availableQuests.maxRange"]           = { scope = "profile", default = 30,        type = "number"  },
+	["questMarkerBeacons.availableQuests.chatNotification"]   = { scope = "profile", default = true,      type = "boolean" },
+	["questMarkerBeacons.availableQuests.disableOn"]          = { scope = "profile", default = 5,         type = "number"  },
+	["questMarkerBeacons.availableQuests.disableSeenForever"] = { scope = "profile", default = false,     type = "boolean" },
+	["questMarkerBeacons.availableQuests.minLevel"]           = { scope = "profile", default = 5,         type = "number"  },
+
+	["questMarkerBeacons.currentQuests.enabled"]            = { scope = "profile", default = false,      type = "boolean" },
+	["questMarkerBeacons.currentQuests.enableBeacons"]      = { scope = "profile", default = true,       type = "boolean" },
+	["questMarkerBeacons.currentQuests.enableClickClack"]   = { scope = "profile", default = "off",      type = "string"  },
+	["questMarkerBeacons.currentQuests.singlePing"]         = { scope = "profile", default = false,      type = "boolean" },
+	["questMarkerBeacons.currentQuests.beaconSoundSet"]     = { scope = "profile", default = "Beacon 3", type = "string"  },
+	["questMarkerBeacons.currentQuests.beaconType"]         = { scope = "profile", default = -7,         type = "number"  },
+	["questMarkerBeacons.currentQuests.beaconVolume"]       = { scope = "profile", default = 40,         type = "number"  },
+	["questMarkerBeacons.currentQuests.maxRange"]           = { scope = "profile", default = 60,         type = "number"  },
+	["questMarkerBeacons.currentQuests.chatNotification"]   = { scope = "profile", default = true,       type = "boolean" },
+	["questMarkerBeacons.currentQuests.disableOn"]          = { scope = "profile", default = 5,          type = "number"  },
+	["questMarkerBeacons.currentQuests.disableSeenForever"] = { scope = "profile", default = false,      type = "boolean" },
+	["questMarkerBeacons.currentQuests.minLevel"]           = { scope = "profile", default = 15,         type = "number"  },
+})
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function SkuSpairs(t, order)
@@ -2044,7 +1956,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 
 
 	tSpecs[#tSpecs+1] = { kind = "settings", label = L["Options"], filterable = true,
-		args = SkuQuest.options.args, db = SkuSettings:Sub("SkuQuest") }
+		args = SkuQuest.options.args, db = SkuSettings:Sub("SkuQuest"), module = "SkuQuest" }
 
 	SkuMenu:Build(aParentEntry, tSpecs)
 end
