@@ -67,7 +67,7 @@ end
 local MailboxOpenFlag = false
 function Mail:MAIL_SHOW(...)
    --print("MAIL_SHOW", ...)
-   SkuOptions:SlashFunc(L["short"]..",Core,"..L["Mail"])
+   SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Mail"])
    MailboxOpenFlag = true
 end
 
@@ -78,7 +78,7 @@ function Mail:MAIL_INBOX_UPDATE(...)
       if SkuOptions.currentMenuPosition then
          SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
       else
-         SkuOptions:SlashFunc(L["short"]..",Core,"..L["Mail"])
+         SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Mail"])
       end
    end
 end

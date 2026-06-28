@@ -347,6 +347,67 @@ SkuCore.interactFramesList = {
 }
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- W7: window modules reached through the contextual "Local" menu instead of a
+-- permanent top-level/Core entry. Each contributor renders its EXISTING menu
+-- builder as a child of "Local" while its frame is visible. (Mail/AH/Social were
+-- static "Core" children auto-opened via a hardcoded SlashFunc path; now they live
+-- in Local, uniform with the other contextual windows.) `build` is assigned as the
+-- node's BuildChildren and called as `node:BuildChildren()`, so each builder's
+-- implicit `self` resolves to the menu entry, exactly as the old specs relied on.
+-- Module refs are resolved lazily (the feature files load after this one).
+SkuCore.localWindowContributors = {
+	{ frame = "MailFrame",    label = function() return Sku.L["Mail"] end,
+	  build = function(self) if SkuCore.MailMenuBuilder then SkuCore.MailMenuBuilder(self) end end },
+	{ frame = "AuctionFrame", label = function() return Sku.L["Auktionshaus"] end,
+	  build = function(self) if SkuCore.AuctionHouse and SkuCore.AuctionHouse.AuctionHouseMenuBuilder then SkuCore.AuctionHouse.AuctionHouseMenuBuilder(self) end end },
+	{ frame = "FriendsFrame", label = function() return Sku.L["Social"] end,
+	  build = function(self) if SkuCore.Friends and SkuCore.Friends.FriendsMenuBuilder then SkuCore.Friends.FriendsMenuBuilder(self) end end },
+}
+
+-- True when any window contributor's frame is currently visible.
+function SkuCore:AnyWindowContributorVisible()
+	for _, c in ipairs(SkuCore.localWindowContributors) do
+		local f = _G[c.frame]
+		if f and f.IsVisible and f:IsVisible() then return true end
+	end
+	return false
+end
+
+-- True when the "Local" menu should be present at root: any tracked interact frame
+-- OR any window contributor is currently visible.
+function SkuCore:HasLocalContent()
+	for x = 1, #SkuCore.interactFramesList do
+		local f = _G[SkuCore.interactFramesList[x]]
+		if f and f.IsVisible and f:IsVisible() then return true end
+	end
+	return SkuCore:AnyWindowContributorVisible()
+end
+
+-- Splice the single "Local" root entry in/out to match HasLocalContent(). The root
+-- menu is assembled once and persists, so Local cannot be a static conditional; it
+-- is added/removed on demand (idempotent — safe to call on every menu open) and
+-- always appended LAST. Marked .isLocalRoot so it can be found and removed.
+function SkuCore:UpdateLocalRootEntry()
+	if not SkuOptions or not SkuOptions.Menu then return end
+	local tExisting
+	for x = 1, #SkuOptions.Menu do
+		if SkuOptions.Menu[x].isLocalRoot then tExisting = SkuOptions.Menu[x] break end
+	end
+	if SkuCore:HasLocalContent() then
+		if not tExisting then
+			local tEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {Sku.L["Local"]}, SkuGenericMenuItem)
+			tEntry.dynamic = true
+			tEntry.isLocalRoot = true
+			tEntry.BuildChildren = function(self)
+				SkuOptions:MenuBuilderLocal(self, {Sku.L["Empty"]}, function(a, b, c, d) end)
+			end
+		end
+	elseif tExisting and SkuMenu and SkuMenu.Remove then
+		SkuMenu:Remove(tExisting)
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:OnInitialize()
 	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_START", SkuCore.UNIT_SPELLCAST_START)
 	SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", SkuCore.PLAYER_ENTERING_WORLD)
@@ -3309,7 +3370,10 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 			end
 		end
 		
-		if #tOpenFrames > 0 or (_G["AuctionFrame"] and _G["AuctionFrame"]:IsVisible() == true) then
+		-- W7: keep the menu alive while a window contributor (mail/AH/social) is open,
+		-- even though those frames are not in interactFramesList. Generalises the old
+		-- AuctionFrame-only special-case to every contributor.
+		if #tOpenFrames > 0 or SkuCore:AnyWindowContributorVisible() then
 			local tGossipList = {}
 			for x = 1, #tOpenFrames do
 				--dprint(x, tOpenFrames[x])

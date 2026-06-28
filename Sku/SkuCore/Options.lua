@@ -1538,14 +1538,11 @@ local function pairsByKeys (t, f)
 	return iter
 end
 
-function SkuCore:MenuBuilder(aParentEntry)
-	--dprint("SkuCore:MenuBuilder", aParentEntry)
-	local tSpecs = {}
 
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Mail"], filterable = true,
-		onAction = function(self, aValue, aName)
-	end,
-		build = function(self)
+-- W7: Mail menu lifted to file scope so it can be a Local window contributor
+-- (opened via the contextual "Local" menu when the mailbox is shown) instead
+-- of a permanent Core "Mail" child. Body is the unchanged inline build closure.
+function SkuCore.MailMenuBuilder(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["New letter"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		-- isSelect entfernt: jedes Kind hat jetzt eine eigene OnAction,
@@ -1996,7 +1993,13 @@ function SkuCore:MenuBuilder(aParentEntry)
 				end
 			end
 		end
-	end }
+end
+
+function SkuCore:MenuBuilder(aParentEntry)
+	--dprint("SkuCore:MenuBuilder", aParentEntry)
+	local tSpecs = {}
+
+	-- Mail: now a Local window contributor (SkuCore.MailMenuBuilder) -- W7
 
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Action bars"],
 		build = function(self)
@@ -2696,8 +2699,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	end }
 
 
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Auktionshaus"], filterable = true,
-		build = SkuCore.AuctionHouse.AuctionHouseMenuBuilder }
+	-- Auktionshaus: now a Local window contributor (AuctionHouseMenuBuilder) -- W7
 
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Monitor"], filterable = true,
 		build = SkuCore.Aq.MonitorMenuBuilder }
@@ -2706,8 +2708,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Dial Targeting"], filterable = true,
 		build = SkuCore.DialTargeting.DialTargetingMenuBuilder }
 
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Social"], filterable = true,
-		build = SkuCore.Friends.FriendsMenuBuilder }
+	-- Social: now a Local window contributor (FriendsMenuBuilder) -- W7
 
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Damage Meter"], filterable = true,
 		build = SkuCore.DamageMeter.DamageMeterMenuBuilder }

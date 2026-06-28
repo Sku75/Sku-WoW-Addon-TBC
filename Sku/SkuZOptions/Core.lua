@@ -265,6 +265,10 @@ function SkuOptions:SlashFunc(input, aSilent)
 				_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_OPENMENU"].key)
 			end
 
+			-- W7: ensure "Local" is present before walking a "...,Local,..." path (e.g.
+			-- a window auto-open) when the menu was already open (no reassembly above).
+			pcall(function() if SkuCore and SkuCore.UpdateLocalRootEntry then SkuCore:UpdateLocalRootEntry() end end)
+
 			local tMenu = SkuOptions.Menu
 			local tFoundMenuPos = nil
 
@@ -2343,14 +2347,14 @@ function SkuOptions:CreateMainFrame()
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuOptions:MenuBuilder(tNewMenuEntry)
 				end
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["Local"]}, SkuGenericMenuItem)
-				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.BuildChildren = function(self)
-					SkuOptions:MenuBuilderLocal(self, {L["Empty"]}, function(a, b, c, d) 
-						--dprint(a, b, c, d) 
-					end)
-				end
+				-- W7: "Local" is no longer a static, always-present root entry. It is
+				-- spliced in/out by SkuCore:UpdateLocalRootEntry() (below, every open)
+				-- so it only appears when a window/contributor is actually open.
 			end
+
+			-- W7: evaluate Local presence on every open (the root above is assembled
+			-- only once, so this can't live inside the build-once block).
+			pcall(function() if SkuCore and SkuCore.UpdateLocalRootEntry then SkuCore:UpdateLocalRootEntry() end end)
 
 			--set menu to entry first
 			SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
@@ -5283,7 +5287,26 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:MenuBuilderLocal(aParentEntry, aEntryDataTable, aOnActionFunc)
 	SkuCore.GossipList = SkuCore.GossipList or {}
-	if #SkuCore.GossipList < 1 then
+
+	-- W7: render open window-module contributors (mail/AH/social) as Local children,
+	-- reusing their existing menu builders. They live in Local now instead of a
+	-- permanent Core entry. Their presence also suppresses the "Empty" placeholder.
+	local tHasContributor = false
+	if SkuCore.localWindowContributors then
+		for _, c in ipairs(SkuCore.localWindowContributors) do
+			local f = _G[c.frame]
+			if f and f.IsVisible and f:IsVisible() then
+				tHasContributor = true
+				local tLabel = type(c.label) == "function" and c.label() or c.label
+				local tEntry = SkuOptions:InjectMenuItems(aParentEntry, {tLabel}, SkuGenericMenuItem)
+				tEntry.dynamic = true
+				tEntry.filterable = true
+				tEntry.BuildChildren = c.build
+			end
+		end
+	end
+
+	if #SkuCore.GossipList < 1 and not tHasContributor then
 		table.insert(SkuCore.GossipList, L["Empty"])
 		SkuCore.GossipList[L["Empty"]] ={
 				frameName = L["Empty"],

@@ -430,7 +430,7 @@ function AuctionHouse:AUCTION_HOUSE_SHOW()
 
    SkuCore.AuctionHouseOpen = true
    C_Timer.After(0.3, function()
-      SkuOptions:SlashFunc(L["short"]..L[",SkuCore,Auktionshaus"])
+      SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Auktionshaus"])
    end)
 end
 
