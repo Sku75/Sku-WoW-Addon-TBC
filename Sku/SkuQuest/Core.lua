@@ -1078,6 +1078,10 @@ end
 function SkuQuest:PLAYER_LOGIN(...)
 	--print("SkuQuest:PLAYER_LOGIN")
 
+	-- [W3] time the login DB fixups + creature merge: Sku cost in the
+	-- PLAYER_LOGIN->PEW window the module-timing hook does not capture.
+	local tSqT0 = debugprofilestop()
+
 	--apply fixed on tbc dbs
 	SkuDB:FixQuestDB(SkuDB)
 	SkuDB:FixItemDB(SkuDB)
@@ -1095,8 +1099,8 @@ function SkuQuest:PLAYER_LOGIN(...)
 	SkuDB:SoDFixItemDB(SkuDB.SoD)
 	SkuDB:SoDFixCreaturesDB(SkuDB.SoD)
 	SkuDB:SoDFixObjectsDB(SkuDB.SoD)
-
-
+	if Sku.MetricPoint then Sku:MetricPoint(string.format("SkuQuest login DB fixes = %.1f ms", debugprofilestop() - tSqT0)) end
+	local tSqMergeT0 = debugprofilestop()
 
 	--merge creature dbs
 	local tcount = 0
@@ -1134,6 +1138,7 @@ function SkuQuest:PLAYER_LOGIN(...)
 		end	
 		--print("NpcData", tcount)
 	end
+	if Sku.MetricPoint then Sku:MetricPoint(string.format("SkuQuest login creature merge = %.1f ms", debugprofilestop() - tSqMergeT0)) end
 
 
 

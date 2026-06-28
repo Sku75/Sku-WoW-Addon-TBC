@@ -315,7 +315,7 @@ local WaypointCacheLookupIdForCacheIndex = {}
 local WaypointCacheLookupCacheNameForId = {}
 
 local WaypointCacheLookupPerContintent = {}
-function SkuNav:CreateWaypointCache(aAddLocalizedNames)
+function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	--print("CreateWaypointCache")
 	
 	local C_MapGetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
@@ -571,15 +571,31 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 	-- not blocked. Otherwise (settings/menu callers): drain it now, preserving the
 	-- old synchronous behaviour.
 	if aAsync then
+		SkuNav._wpcWorkMs = 0
+		-- Eviction-proof result field (the SkuDebugLog ring gets flooded by dprint
+		-- and trims our markers; a dedicated field survives). Read SkuDebugLog.wpcResult.
+		local function tWpcSetResult(aText)
+			if type(SkuDebugLog) == "table" then SkuDebugLog.wpcResult = aText .. "  " .. date("%H:%M:%S") end
+		end
 		local function tWpcPump()
-			if SkuNav._wpcGen ~= tWpcMyGen then return end   -- superseded by a newer build
+			if SkuNav._wpcGen ~= tWpcMyGen then
+				tWpcSetResult("superseded by a newer build")
+				return
+			end
 			local co = SkuNav._wpcCo
 			if co and coroutine.status(co) ~= "dead" then
+				local tR0 = debugprofilestop()
 				local ok, err = coroutine.resume(co)
+				SkuNav._wpcWorkMs = SkuNav._wpcWorkMs + (debugprofilestop() - tR0)
 				if not ok then
+					tWpcSetResult("ERROR: " .. tostring(err))
 					dprint("CreateWaypointCache coroutine error", err)
 				elseif coroutine.status(co) ~= "dead" then
 					C_Timer.After(0, tWpcPump)
+				else
+					-- completes after first-frame -> proves the build is off the freeze.
+					tWpcSetResult(string.format("async done = %.1f ms work", SkuNav._wpcWorkMs))
+					if Sku.MetricPoint then Sku:MetricPoint(string.format("waypoint cache async build done = %.1f ms work", SkuNav._wpcWorkMs)) end
 				end
 			end
 		end
@@ -608,23 +624,31 @@ function SkuNav:LoadLinkDataFromProfile()
 	if SkuDB.SessionRouteData.Links then
 		SkuNav:CheckAndUpdateProfileLinkData()
 		for tSourceWpID, tSourceWpLinks in pairs(SkuDB.SessionRouteData.Links) do
-			if not WaypointCacheLookupIdForCacheIndex[tSourceWpID] then
+			-- Guard: a stale link can reference a waypoint no longer in the cache.
+			-- Skip it instead of nil-indexing (which previously crashed; harmless in
+			-- a C_Timer callback, but it aborts the whole build inside the coroutine).
+			local tSourceWpIdx = WaypointCacheLookupIdForCacheIndex[tSourceWpID]
+			if not tSourceWpIdx then
 				dprint("this shouldn't happen NO WaypointCacheLookupIdForCacheIndex[tSourceWpID]", tSourceWpID, tSourceWpLinks)
-			end
-			local tSourceWpName = WaypointCache[WaypointCacheLookupIdForCacheIndex[tSourceWpID]].name
+			else
+			local tSourceWpName = WaypointCache[tSourceWpIdx].name
 			WaypointCacheLookupCacheNameForId[tSourceWpName] = tSourceWpID
 
 			if WaypointCacheLookupAll[tSourceWpName] then
 				WaypointCache[WaypointCacheLookupAll[tSourceWpName]].links.byName = {}
 				WaypointCache[WaypointCacheLookupAll[tSourceWpName]].links.byId = {}
 				for tTargetWpID, tTargetWpDistance in pairs(tSourceWpLinks) do
-					local tTargetWpName = WaypointCache[WaypointCacheLookupIdForCacheIndex[tTargetWpID]].name
+					local tTargetWpIdx = WaypointCacheLookupIdForCacheIndex[tTargetWpID]
+					if tTargetWpIdx then
+					local tTargetWpName = WaypointCache[tTargetWpIdx].name
 					WaypointCacheLookupCacheNameForId[tTargetWpName] = tTargetWpID
 					if WaypointCacheLookupAll[tTargetWpName] then
 						WaypointCache[WaypointCacheLookupAll[tSourceWpName]].links.byName[tTargetWpName] = tTargetWpDistance
 						WaypointCache[WaypointCacheLookupAll[tSourceWpName]].links.byId[WaypointCacheLookupAll[tTargetWpName]] = tTargetWpDistance
 					end
+					end
 				end
+			end
 			end
 		end
 	end
