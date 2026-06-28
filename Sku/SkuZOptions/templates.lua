@@ -164,14 +164,70 @@ SkuGenericMenuItem = {
 	BuildChildren = function(self)
 		--dprint("BuildChildren generic", self.name)
 	end,
+	-- Option-2 "live data" support for node-based menus.
+	--
+	-- A level whose children grow/change while the menu sits open (e.g.
+	-- nearby routes streaming in) can set `volatileChildren = true` on the
+	-- PARENT node. Then, on each navigation step within that level, we
+	-- silently rebuild the level's children in place — no speech, no
+	-- re-anchor (we never go through CheckFrames/SlashFunc) — and re-resolve
+	-- the cursor by name. The user hears nothing extra; the NEXT arrow press
+	-- simply reflects fresh data. Throttled so fast scrolling can't thrash.
+	RebuildVolatileSiblings = function(self)
+		local tParent = self.parent
+		if not tParent or not tParent.children or not tParent.BuildChildren then
+			return self
+		end
+
+		-- throttle: at most ~2x/second per level
+		local tNow = GetTime()
+		if tParent._lastVolatileRebuild and (tNow - tParent._lastVolatileRebuild) < 0.5 then
+			return self
+		end
+		tParent._lastVolatileRebuild = tNow
+
+		local tCurrentName = self.name
+		local tCurrentIndex = 1
+		for x = 1, #tParent.children do
+			if tParent.children[x].name == tCurrentName then
+				tCurrentIndex = x
+			end
+		end
+
+		-- swap out the children for a freshly built list
+		tParent.children = {}
+		tParent:BuildChildren(tParent)
+		dprint("volatile refresh", tParent.name, "->", #tParent.children, "items")
+
+		-- re-resolve the cursor: prefer the same entry by name, else fall
+		-- back to the nearest surviving index, else the first entry.
+		for x = 1, #tParent.children do
+			if tParent.children[x].name == tCurrentName then
+				return tParent.children[x]
+			end
+		end
+		return tParent.children[tCurrentIndex] or tParent.children[tCurrentIndex - 1] or tParent.children[1] or self
+	end,
+	MaybeRebuildVolatile = function(self)
+		if not (self.parent and self.parent.volatileChildren == true) then
+			return self
+		end
+		local ok, res = pcall(function() return self:RebuildVolatileSiblings() end)
+		if ok and res then
+			return res
+		end
+		return self
+	end,
 	OnPrev = function(self)
 		--dprint("OnPrev generic", self.name)
 		SkuOptions.currentMenuPosition:OnLeave(self, value, aValue)
 
-		if self.prev then
-			SkuOptions.currentMenuPosition = self.prev
+		local tNode = self:MaybeRebuildVolatile()
+		if tNode.prev then
+			SkuOptions.currentMenuPosition = tNode.prev
 		else
 			PlaySound(681)
+			SkuOptions.currentMenuPosition = tNode
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,
@@ -179,10 +235,12 @@ SkuGenericMenuItem = {
 		--dprint("OnNext generic", self.name)
 		SkuOptions.currentMenuPosition:OnLeave(self, value, aValue)
 
-		if self.next then
-			SkuOptions.currentMenuPosition = self.next
+		local tNode = self:MaybeRebuildVolatile()
+		if tNode.next then
+			SkuOptions.currentMenuPosition = tNode.next
 		else
 			PlaySound(681)
+			SkuOptions.currentMenuPosition = tNode
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,
@@ -190,11 +248,12 @@ SkuGenericMenuItem = {
 		--dprint("OnFirst generic", self.name)
 		SkuOptions.currentMenuPosition:OnLeave(self, value, aValue)
 
-		if self.parent then
-			if self.parent.children then
-				SkuOptions.currentMenuPosition = self.parent.children[1]
-			else 
-				SkuOptions.currentMenuPosition = self.parent[1]
+		local tNode = self:MaybeRebuildVolatile()
+		if tNode.parent then
+			if tNode.parent.children then
+				SkuOptions.currentMenuPosition = tNode.parent.children[1]
+			else
+				SkuOptions.currentMenuPosition = tNode.parent[1]
 			end
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
@@ -203,11 +262,12 @@ SkuGenericMenuItem = {
 		--dprint("OnLast generic", self.name)
 		SkuOptions.currentMenuPosition:OnLeave(self, value, aValue)
 
-		if self.parent then
-			if self.parent.children then
-				SkuOptions.currentMenuPosition = self.parent.children[#self.parent.children]
-			else 
-				SkuOptions.currentMenuPosition = self.parent[1]
+		local tNode = self:MaybeRebuildVolatile()
+		if tNode.parent then
+			if tNode.parent.children then
+				SkuOptions.currentMenuPosition = tNode.parent.children[#tNode.parent.children]
+			else
+				SkuOptions.currentMenuPosition = tNode.parent[1]
 			end
 		end
 		SkuOptions.currentMenuPosition:OnEnter()

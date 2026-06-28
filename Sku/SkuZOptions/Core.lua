@@ -4028,6 +4028,14 @@ function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString)
 
 	local tTable = SkuOptions.currentMenuPosition
 
+	-- Option 2 (live values): a leaf may carry a RefreshLiveName function
+	-- that re-reads its underlying game data and rewrites self.name right
+	-- before we speak it. This keeps frame-walker leaves (e.g. character
+	-- stats) current without rebuilding the menu or re-anchoring it.
+	if tTable and tTable.RefreshLiveName then
+		pcall(function() tTable:RefreshLiveName() end)
+	end
+
 	--get menu pos
 	local tMenuNumber = nil
 	if tTable.parent then
@@ -4395,6 +4403,23 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 
 			if aGossipListTable[index].onEnter then
 				tNewMenuEntry.OnEnter = aGossipListTable[index].onEnter
+			end
+
+			-- Option 2 (live values): carry a per-leaf live-name getter onto
+			-- the menu node. VocalizeCurrentMenuName calls RefreshLiveName()
+			-- right before speaking, so the spoken text reflects current game
+			-- state without a menu rebuild or re-anchor.
+			if aGossipListTable[index].liveName then
+				local tLiveFn = aGossipListTable[index].liveName
+				tNewMenuEntry.RefreshLiveName = function(self)
+					local ok, val = pcall(tLiveFn)
+					if ok and type(val) == "string" and val ~= "" then
+						if val ~= self.name then
+							dprint("live name", self.name, "->", val)
+						end
+						self.name = val
+					end
+				end
 			end
 
 			-- "directAction" path: an entry that should fire its `func`

@@ -2300,14 +2300,28 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 					--click = true,
 				}
 
-				local tParentStatsValues = tParentStats[tFriendlyName].childs	
+				local tParentStatsValues = tParentStats[tFriendlyName].childs
 				for i1, v1 in pairs(v) do
 					loadstring(v1)()
-				
+
 					if PlayerStatFrameLeft1Label:GetText() and PlayerStatFrameLeft1Label:GetText() ~= "" then
 						local tFrameName = v
 						local tFriendlyName = SkuUtil:Unescape(PlayerStatFrameLeft1Label:GetText().." "..PlayerStatFrameLeft1StatText:GetText())
 						--local tName, tFullText = GetButtonTooltipLines(PlayerStatFrameLeft1, GameTooltip)
+
+						-- Option 2 (live values): precompile this stat's PaperDoll
+						-- setter once, then re-run it on demand to read the current
+						-- value when the user lands on the entry. Same Blizzard
+						-- setter the build used, re-read off the shared stat frame.
+						local tStatFn = loadstring(v1)
+						local tLiveName = function()
+							if not tStatFn then return nil end
+							tStatFn()
+							if PlayerStatFrameLeft1Label:GetText() and PlayerStatFrameLeft1Label:GetText() ~= "" then
+								return SkuUtil:Unescape(PlayerStatFrameLeft1Label:GetText().." "..PlayerStatFrameLeft1StatText:GetText())
+							end
+							return nil
+						end
 
 						table.insert(tParentStatsValues, tFriendlyName)
 						tParentStatsValues[tFriendlyName] = {
@@ -2318,8 +2332,9 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 							textFirstLine = tFriendlyName,
 							textFull = "",--tFullText,
 							childs = {},
+							liveName = tLiveName,
 							--click = true,
-						}				
+						}
 					end
 				end
 			end

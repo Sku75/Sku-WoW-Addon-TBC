@@ -391,6 +391,9 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 			--close rts
 			local tNewMenuEntrySub = SkuOptions:InjectMenuItems(self, {L["Nahe Routen"]}, SkuGenericMenuItem)
 			tNewMenuEntrySub.dynamic = true
+			-- Option 2: the nearby-routes list streams in as data arrives;
+			-- mark it volatile so navigating the list silently re-reads it.
+			tNewMenuEntrySub.volatileChildren = true
 			tNewMenuEntrySub.BuildChildren = function(self)
 				local tPlayX, tPlayY = UnitPosition("player")
 				local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(tPlayX, tPlayY, SkuNav.MaxMetaEntryRange)--SkuSettings:Sub("SkuNav").nearbyWpRange)
