@@ -2790,6 +2790,10 @@ function SkuOptions:CreateMenuFrame()
 			end
 		end
 		local tVocalizeReset = true
+		-- Set synchronously below when an ENTER activates a bag-item action,
+		-- so we can skip the transient post-action announce regardless of when
+		-- the secure macro opens the confirm window (ordering-independent).
+		local tSuppressBagAnnounce = false
 
 		if aKey == "UP" then
 			if tIsDoubleDown ~= true then
@@ -2846,6 +2850,22 @@ function SkuOptions:CreateMenuFrame()
 
 		if aKey == "ENTER" or aKey == "SHIFT-ENTER" then
 			tVocalizeReset = false
+			-- Is this ENTER activating a bag-item action node? Capture it NOW,
+			-- before OnSelect runs the action and moves the cursor. The focused
+			-- node must be an actual action (carries a secure `macrotext`) whose
+			-- parent is the bag item (carries bagSlot/itemId) — NOT the item
+			-- node itself (ENTER there merely descends into Linksklick/
+			-- Rechtsklick and must still announce). The event-driven confirm
+			-- speaks the settled item, so suppress only this transient announce.
+			local tCur = SkuOptions.currentMenuPosition
+			if tCur and tCur.macrotext
+				and tCur.parent and (tCur.parent.bagSlot or tCur.parent.itemId) then
+				tSuppressBagAnnounce = true
+				-- Suppress ALL menu announces until the followed entry settles;
+				-- SkuBagConfirmRefresh force-announces it then clears this. The
+				-- timestamp is a safety backstop in case that never happens.
+				if Sku then Sku.tBagAnnounceSuppress = GetTime() + 1.5 end
+			end
 			SkuOptions.currentMenuPosition:OnSelect(true)
 			SkuOptions:ClearFilter()
 		end
@@ -2873,16 +2893,13 @@ function SkuOptions:CreateMenuFrame()
 			end
 		end
 
-		-- Suppress the normal post-keypress announce for a bag-action ENTER
-		-- while a confirm window is open: the cursor is still on the menu's
-		-- transient re-anchor position (often the first all-items entry) and
-		-- the event-driven SkuBagConfirmRefresh is what speaks the settled item
-		-- once it's re-pinned by identity. Without this we'd announce the wrong
-		-- item first, then move silently to the right one.
-		local tBagActionEnter = (aKey == "ENTER" or aKey == "SHIFT-ENTER" or aKey == "CTRL-ENTER")
-			and Sku and Sku.tBagPostAction
-			and GetTime() < (Sku.tBagPostAction.deadline or 0)
-		if aKey ~= "ESCAPE" and _G["OnSkuOptionsMainOption1"]:IsVisible() and aKey ~= "SHIFT-DOWN" and SkuOptions.TTS.MainFrame:IsVisible() ~= true and not tBagActionEnter then
+		-- tSuppressBagAnnounce was set synchronously above when this ENTER
+		-- activates a bag-item action: the cursor is on the menu's transient
+		-- re-anchor position (often the first all-items entry) and the
+		-- event-driven SkuBagConfirmRefresh speaks the settled item once it's
+		-- re-pinned by identity. Suppressing here stops the wrong item starting
+		-- to announce before the correct one cuts it off.
+		if aKey ~= "ESCAPE" and _G["OnSkuOptionsMainOption1"]:IsVisible() and aKey ~= "SHIFT-DOWN" and SkuOptions.TTS.MainFrame:IsVisible() ~= true and not tSuppressBagAnnounce then
 			SkuOptions:VocalizeCurrentMenuName(tVocalizeReset)
 			if string.len(SkuOptions.Filterstring) > 1  then
 				--SkuOptions.Voice:OutputStringBTtts("Filter", false, true, 0.3, nil, nil, nil, 2)
@@ -4121,8 +4138,15 @@ function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString)
 	if aReturnAsString then
 		return tFinalString
 	else
-		SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, 2, SkuOptions.currentMenuPosition.vocalizeAsIs)
-		pcall(function() if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsLineBarSet then SkuCore.VisualAids:VisualAidsLineBarSet(tFinalString) end end)
+		-- Bag-action settle gate: while an action is settling, swallow every
+		-- transient announce. Only SkuBagConfirmRefresh's forced announce (once
+		-- the followed entry has stopped moving) sets tBagAnnounceForce to pass.
+		local tBagSuppressed = Sku and Sku.tBagAnnounceSuppress
+			and GetTime() < Sku.tBagAnnounceSuppress and not Sku.tBagAnnounceForce
+		if not tBagSuppressed then
+			SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, 2, SkuOptions.currentMenuPosition.vocalizeAsIs)
+			pcall(function() if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsLineBarSet then SkuCore.VisualAids:VisualAidsLineBarSet(tFinalString) end end)
+		end
 	end
 
 	--debug as text
@@ -4442,26 +4466,44 @@ function SkuBagConfirmRefresh()
 	_G.C_Timer.After(0.2, function()
 		local s2 = Sku and Sku.tBagPostAction
 		if not s2 then return end
-		local listNode = tFindMenuNodeByPath(s2.path)
-		local tTarget = tPickBagTarget(listNode, s2)
+		local tTarget = tPickBagTarget(tFindMenuNodeByPath(s2.path), s2)
 		if not tTarget then return end
+		-- Re-pin the cursor onto the followed entry. Silent: the settle gate
+		-- swallows any announce until we force one below.
 		SkuOptions.currentMenuPosition = tTarget
-		if tTarget.OnEnter then
-			pcall(function() tTarget:OnEnter() end)
-		end
-
-		-- announce once on first land; afterwards only if the text changed.
-		local tSpeak = (not s2.announced) or (tTarget.name ~= s2.lastName)
-		s2.announced = true
+		if tTarget.OnEnter then pcall(function() tTarget:OnEnter() end) end
 		s2.lastName = tTarget.name
-		if tSpeak then
-			dprint("bag confirm", "announce ->", tostring(tTarget.name))
-			if SkuOptions.TTS and SkuOptions.TTS.MainFrame and SkuOptions.TTS.MainFrame:IsVisible() ~= true then
-				pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
-			end
-		else
-			dprint("bag confirm", "silent re-pin ->", tostring(tTarget.name))
+		dprint("bag confirm", "re-pin ->", tostring(tTarget.name))
+
+		if s2.announced then return end
+		-- Debounce the authoritative announce: (re)arm a short timer on every
+		-- re-pin so it fires only once the re-pins/BAG_UPDATEs have gone quiet
+		-- — i.e. when the followed entry has stopped moving ("settled").
+		if SkuCore._bagAnnounceTimer then
+			SkuCore._bagAnnounceTimer:Cancel()
 		end
+		SkuCore._bagAnnounceTimer = _G.C_Timer.NewTimer(0.3, function()
+			SkuCore._bagAnnounceTimer = nil
+			local s3 = Sku and Sku.tBagPostAction
+			if not s3 or s3.announced then
+				if Sku then Sku.tBagAnnounceSuppress = nil end
+				return
+			end
+			-- final re-pin in case the last event nudged the position
+			local t2 = tPickBagTarget(tFindMenuNodeByPath(s3.path), s3)
+			if t2 then SkuOptions.currentMenuPosition = t2 end
+			s3.announced = true
+			dprint("bag confirm", "settled announce ->",
+				tostring(SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name))
+			Sku.tBagAnnounceForce = true
+			pcall(function()
+				if SkuOptions.TTS and SkuOptions.TTS.MainFrame and SkuOptions.TTS.MainFrame:IsVisible() ~= true then
+					SkuOptions:VocalizeCurrentMenuName()
+				end
+			end)
+			Sku.tBagAnnounceForce = nil
+			Sku.tBagAnnounceSuppress = nil
+		end)
 	end)
 end
 
