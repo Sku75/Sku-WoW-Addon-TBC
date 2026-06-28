@@ -279,7 +279,9 @@ SkuMenu:RegisterModule("SkuNav",   { label = function() return L()["SkuNavMenuEn
 SkuMenu:RegisterModule("SkuMob",   { label = function() return L()["SkuMobMenuEntry"]   end, build = function(entry) SkuMob:MenuBuilder(entry)   end })
 SkuMenu:RegisterModule("SkuChat",  { label = function() return L()["SkuChatMenuEntry"]  end, build = function(entry) SkuChat:MenuBuilder(entry)  end })
 SkuMenu:RegisterModule("SkuQuest", { label = function() return L()["SkuQuestMenuEntry"] end, build = function(entry) SkuQuest:MenuBuilder(entry) end })
-SkuMenu:RegisterModule("SkuCore",  { label = function() return L()["SkuCoreMenuEntry"]  end, build = function(entry) SkuCore:MenuBuilder(entry)  end })
+-- W7: "Core" grab-bag is gone; SkuCore:MenuBuilder now builds the aggregated
+-- "Einstellungen" (Settings) tree.
+SkuMenu:RegisterModule("Einstellungen", { label = function() return (GetLocale and GetLocale() == "deDE") and "Einstellungen" or "Settings" end, build = function(entry) SkuCore:MenuBuilder(entry)  end })
 SkuMenu:RegisterModule("SkuAuras", { label = function() return L()["SkuAurasMenuEntry"] end, build = function(entry) SkuAuras:MenuBuilder(entry) end })
 
 -- Game Options: Blizzard's built-in game options (modern Settings system, else
@@ -328,7 +330,9 @@ SkuMenu:SetRootLayout({
 	"Macros",
 	"SkuAuras",    -- auren
 	"Addons",
-	-- transitional (folded into Einstellungen / dismantled next batch):
-	"SkuCore",
+	"Einstellungen",
+	-- GameOptions kept at root transitionally so the Escape hook still resolves; it
+	-- is ALSO reachable under Einstellungen -> Spieleinstellungen. Folds away with the
+	-- Escape rewire batch.
 	"GameOptions",
 })

@@ -2011,13 +2011,18 @@ function SkuCore.MailMenuBuilder(self)
 		end
 end
 
+-- W7: this is now the "Einstellungen" (Settings) builder, not the old "Core" grab-bag.
+-- It collects three groups of leftover Core specs (Kampf / Tastenbelegungen /
+-- Sonstiges) plus the aggregated settings sub-menus (Allgemein, Spieleinstellungen,
+-- Module). The leftover specs are retargeted into per-group arrays below by editing
+-- only their assignment heads; their build closures are unchanged.
 function SkuCore:MenuBuilder(aParentEntry)
 	--dprint("SkuCore:MenuBuilder", aParentEntry)
-	local tSpecs = {}
+	local tKampf, tKeybinds, tSonstiges = {}, {}, {}
 
 	-- Mail: now a Local window contributor (SkuCore.MailMenuBuilder) -- W7
 
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Action bars"],
+	tSonstiges[#tSonstiges+1] = { kind = "list", label = L["Action bars"],
 		build = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MainMenuBar"].friendlyName}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
@@ -2135,7 +2140,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		--end
 	end }
 
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Entfernung"],
+	tKampf[#tKampf+1] = { kind = "list", label = L["Entfernung"],
 		build = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Freundlich"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
@@ -2154,7 +2159,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		end
 	end }
 
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Spiel Tastenbelegung"],
+	tKeybinds[#tKeybinds+1] = { kind = "list", label = L["Spiel Tastenbelegung"],
 		build = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alles zurücksetzen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.BuildChildren = function(self)
@@ -2271,7 +2276,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		end
 	end }
 
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Sku Tastenbelegung"],
+	tKeybinds[#tKeybinds+1] = { kind = "list", label = L["Sku Tastenbelegung"],
 		build = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alles zurücksetzen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.BuildChildren = function(self)
@@ -2584,7 +2589,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		end
 	end }
 
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Scan settings"],
+	tSonstiges[#tSonstiges+1] = { kind = "list", label = L["Scan settings"],
 		build = function(self)
 		for x = 1, 8 do
 			local tText = SkuCore.ScanTypes[SkuSettings:Sub("SkuCore", nil, "char").scanConfigs[x].type].name
@@ -2719,7 +2724,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	-- Monitor: promoted to a top-level entry (SkuMenu "Monitor") -- W7
 
 	-- DIAL-TARGETING (41.02.06e) — Entfernbar: Block löschen + DialTargeting.lua + TOC + Core.lua Init
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Dial Targeting"], filterable = true,
+	tKampf[#tKampf+1] = { kind = "list", label = L["Dial Targeting"], filterable = true,
 		build = SkuCore.DialTargeting.DialTargetingMenuBuilder }
 
 	-- Social: now a Local window contributor (FriendsMenuBuilder) -- W7
@@ -2738,8 +2743,25 @@ function SkuCore:MenuBuilder(aParentEntry)
 	]]
 
 
-	tSpecs[#tSpecs+1] = { kind = "settings", label = L["Options"], filterable = true,
+	tSonstiges[#tSonstiges+1] = { kind = "settings", label = L["Options"], filterable = true,
 		args = SkuCore.options.args, db = SkuSettings:Sub("SkuCore"), module = "SkuCore" }
+
+	-- W7: top-level Einstellungen layout. Allgemein reuses the old "Optionen" menu
+	-- (SkuOptions:MenuBuilder); Spieleinstellungen reuses the Game Options builder;
+	-- Module reuses the per-feature on/off list (the old "Funktionen an/aus"). Kampf /
+	-- Tastenbelegungen / Sonstiges are the regrouped Core leftovers from above.
+	local function tDeEn(de, en) return function() return (GetLocale and GetLocale() == "deDE") and de or en end end
+	local tSpecs = {
+		{ kind = "submenu", label = tDeEn("Allgemein", "General"),
+			build = function(self) SkuOptions:MenuBuilder(self) end },
+		{ kind = "submenu", label = tDeEn("Spieleinstellungen", "Game options"),
+			build = function(self) if SkuCore.GameOptions and SkuCore.GameOptions.GameOptionsMenuBuilder then SkuCore.GameOptions:GameOptionsMenuBuilder(self) end end },
+		{ kind = "submenu", label = tDeEn("Kampf", "Combat"), children = tKampf },
+		{ kind = "submenu", label = tDeEn("Tastenbelegungen", "Key bindings"), children = tKeybinds },
+		{ kind = "submenu", label = tDeEn("Module", "Modules"),
+			build = function(self) if SkuCore.FeaturesMenuBuilder then SkuCore:FeaturesMenuBuilder(self) end end },
+		{ kind = "submenu", label = tDeEn("Sonstiges", "Other"), children = tSonstiges },
+	}
 
 	SkuMenu:Build(aParentEntry, tSpecs)
 end

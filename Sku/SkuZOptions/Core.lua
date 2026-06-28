@@ -2342,11 +2342,8 @@ function SkuOptions:CreateMainFrame()
 							end
 						end
 					end --[Menue7] schliesst tAccessMenuEntry.BuildChildren (Barrierefreiheit-Umbau; RUECKBAU: diese Zeile entfernen)
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuOptionsMenuEntry"]}, SkuGenericMenuItem)
-				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.BuildChildren = function(self)
-					SkuOptions:MenuBuilder(tNewMenuEntry)
-				end
+				-- W7: the old top-level "Optionen" (SkuOptions:MenuBuilder) is folded into
+				-- Einstellungen -> Allgemein, so it is no longer appended here at root.
 				-- W7: "Local" is no longer a static, always-present root entry. It is
 				-- spliced in/out by SkuCore:UpdateLocalRootEntry() (below, every open)
 				-- so it only appears when a window/contributor is actually open.

@@ -155,22 +155,15 @@ function SkuCore:FeaturesMenuBuilder(aEntry)
 	end
 end
 
--- Register the Features root contribution and append it to the root layout (a data
--- edit; reorder later if desired). Built lazily at open time, like every root entry.
+-- W7: the per-feature on/off list is no longer a top-level "Funktionen an/aus" root
+-- entry; it now lives under Einstellungen -> Module (SkuCore:FeaturesMenuBuilder is
+-- called from SkuCore:MenuBuilder). The registration is kept (harmless, lets the
+-- builder be referenced by id) but it is no longer appended to the root layout.
 if SkuMenu then
 	SkuMenu:RegisterModule("Features", {
 		label = function() return (GetLocale and GetLocale() == "deDE") and "Funktionen an/aus" or "Features on/off" end,
 		build = function(entry) SkuCore:FeaturesMenuBuilder(entry) end,
 	})
-	SkuMenu.rootLayout = SkuMenu.rootLayout or {}
-	-- avoid a duplicate entry if this file's scope runs again
-	local tHasFeatures = false
-	for _, id in ipairs(SkuMenu.rootLayout) do
-		if id == "Features" then tHasFeatures = true break end
-	end
-	if not tHasFeatures then
-		table.insert(SkuMenu.rootLayout, "Features")
-	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
