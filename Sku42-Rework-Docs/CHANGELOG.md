@@ -22,6 +22,27 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W2-MC1 + W1-C: settings menus are now schema-managed (6 modules).** The menu engine
+  `SkuOptions:IterateOptionsArgs` gained `aModule` + `aKeyPrefix`: a leaf option with NO
+  inline get/set, under a module, is "schema-managed" — read/written via
+  `SkuSettings:Get/Set(module, dottedKey)` (full nested storage path; scope/type/default
+  from the schema). `SkuMenu` "settings" kind threads `aSpec.module`. Behaviour-preserving:
+  nodes that keep get/set are byte-identical, so modules migrated one at a time.
+  - **Pilot SkuMob** (commit 443e0c3, in-game verified): 7 nodes, schema-managed off the
+    existing Register schema.
+  - **Dotted-key engine upgrade** (b945ef3) for nested option groups.
+  - **5 more menus, one commit each:** SkuQuest 23/27 (b28dbc6), SkuChat 17/18 (8f0b8a0),
+    SkuNav 19/22 (6d5f145), SkuOptions 40 (5561d53), SkuCore 35 (03b97ac). Each authored a
+    `SkuSettings:Register(module, {dottedKey={scope,type,default}})` schema — the W1-C/C2
+    contract — and stripped the pure-storage closures (~134 nodes total).
+  - **Conservative — KEPT inline (unchanged):** value-transform selects (beacon name↔id),
+    side-effect handlers (C_CVar sound volumes, C_TTSSettings, sample beacons, route-data
+    loads), and dynamic integer-keyed ressource toggles. OnAction hooks on stripped nodes
+    preserved (engine fires them after the managed write). Menu nodes were all profile scope
+    (char/global settings are data, not menu toggles). luaparser-gated all files.
+  - Pending: one in-game test round of the 5 menus, then W1-C close-out (enable validation,
+    drop the raw-path fallback, mark the schema published).
+
 - **W4 Phase E — E3: coupling re-measured, collapse recorded (closes Workstream 4
   decoupling).** Read-only audit — re-ran `_matrix.py` (cross-module global-token
   reference grid) and `_members.py` (per-edge member breakdown) now that A–E2 are
