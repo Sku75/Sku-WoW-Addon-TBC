@@ -372,3 +372,168 @@ function Sku:Performance()
 		Sku.PerformanceStart = true
 	end
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Performance readout (screen-reader friendly)  [Workstream 3 / P1]
+--
+-- The on-screen SkuPerformance frame above is sighted-only. This block adds a
+-- TEXT readout of the same data, plus load-time milestones and (optional)
+-- per-addon CPU usage. Every line is written BOTH to the chat frame (live,
+-- read by the screen reader) and to the persisted SkuDebugLog ring (read back
+-- out-of-game after a /reload, like the rest of Sku's logging). All combat
+-- probe numbers are milliseconds; load milestones are seconds since core load.
+--
+--   /skuperf            -- dump everything (load + combat + cpu, read-only)
+--   /skuperf combat     -- Sku.PerformanceData probes, slowest first
+--   /skuperf load       -- Sku.metric load-time milestones
+--   /skuperf cpu        -- per-addon CPU usage (needs scriptProfile; enables it)
+--   /skuperf reset      -- clear the rolling combat probe averages
+--   /skuperf frame      -- toggle the old on-screen frame (sighted devs)
+--
+-- The combat probes (Sku.PerformanceData[...]) are reset to {} every load and
+-- are NOT persisted, so read them in the same session you captured them (run
+-- the scenario, then /skuperf combat). Load milestones ARE auto-persisted to
+-- the ring at first PLAYER_ENTERING_WORLD, so "loading time" is always
+-- captured without running a command.
+
+-- Emit one line to chat AND the persisted ring (so it is readable live by the
+-- screen reader and out-of-game after /reload, regardless of the dprint flag).
+local function tPerfEmitChat(aLine)
+	print(aLine)
+	tDebugLogAppend(aLine)
+end
+-- Ring-only emitter for the silent auto-capture at login (no chat/TTS spam).
+local function tPerfEmitQuiet(aLine)
+	tDebugLogAppend(aLine)
+end
+
+-- Resolve the AddOn CPU APIs across client versions (modern clients moved
+-- several AddOn APIs under C_AddOns; older ones keep the globals).
+local function tUpdateAddOnCpu()
+	if C_AddOns and C_AddOns.UpdateAddOnCPUUsage then C_AddOns.UpdateAddOnCPUUsage()
+	elseif UpdateAddOnCPUUsage then UpdateAddOnCPUUsage() end
+end
+local function tGetAddOnCpu(aNameOrIndex)
+	if C_AddOns and C_AddOns.GetAddOnCPUUsage then return C_AddOns.GetAddOnCPUUsage(aNameOrIndex) end
+	if GetAddOnCPUUsage then return GetAddOnCPUUsage(aNameOrIndex) end
+	return nil
+end
+local function tGetNumAddOns()
+	if C_AddOns and C_AddOns.GetNumAddOns then return C_AddOns.GetNumAddOns() end
+	if GetNumAddOns then return GetNumAddOns() end
+	return 0
+end
+local function tGetAddOnName(aIndex)
+	local f = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
+	if not f then return nil end
+	return (f(aIndex))  -- field 1 = name
+end
+
+function Sku:PerformanceDumpCombat(aEmit)
+	aEmit = aEmit or tPerfEmitChat
+	aEmit("|cff80c0ffSkuPerf|r combat probes (ms, slowest first):")
+	local tRows = {}
+	for k, v in pairs(Sku.PerformanceData) do
+		tRows[#tRows + 1] = {k, tonumber(v) or 0}
+	end
+	if #tRows == 0 then
+		aEmit("  (no data yet - run the scenario first, e.g. enter combat)")
+		return
+	end
+	table.sort(tRows, function(a, b) return a[2] > b[2] end)
+	for _, r in ipairs(tRows) do
+		aEmit(string.format("  %.3f ms  %s", r[2], r[1]))
+	end
+end
+
+function Sku:PerformanceDumpLoad(aEmit)
+	aEmit = aEmit or tPerfEmitChat
+	aEmit("|cff80c0ffSkuPerf|r load milestones (seconds since core load):")
+	if #Sku.metric == 0 then
+		aEmit("  (no milestones captured)")
+		return
+	end
+	for _, m in ipairs(Sku.metric) do
+		aEmit(string.format("  %.3f s  %s", tonumber(m[2]) or 0, tostring(m[1])))
+	end
+end
+
+-- aAllowEnable: only the explicit "/skuperf cpu" flips the scriptProfile CVar
+-- (it needs a /reload to take effect); the catch-all dump stays read-only.
+function Sku:PerformanceDumpCpu(aEmit, aAllowEnable)
+	aEmit = aEmit or tPerfEmitChat
+	if not tGetAddOnCpu(1) and not (GetCVar and GetCVar("scriptProfile")) then
+		aEmit("|cff80c0ffSkuPerf|r CPU profiling API not available on this client.")
+		return
+	end
+	local tEnabled = (GetCVar and GetCVar("scriptProfile") == "1")
+	if not tEnabled then
+		if aAllowEnable and SetCVar then
+			SetCVar("scriptProfile", "1")
+			aEmit("|cff80c0ffSkuPerf|r CPU profiling was OFF. Enabled scriptProfile - type /reload, then /skuperf cpu.")
+		else
+			aEmit("|cff80c0ffSkuPerf|r CPU profiling is OFF (run /skuperf cpu to enable, needs /reload).")
+		end
+		return
+	end
+	tUpdateAddOnCpu()
+	aEmit("|cff80c0ffSkuPerf|r addon CPU usage (ms, cumulative this session, Sku family):")
+	local tRows, tTotal = {}, 0
+	for i = 1, tGetNumAddOns() do
+		local tName = tGetAddOnName(i)
+		local tUse = tGetAddOnCpu(i) or 0
+		tTotal = tTotal + tUse
+		if tName and tName:find("^Sku") then
+			tRows[#tRows + 1] = {tName, tUse}
+		end
+	end
+	table.sort(tRows, function(a, b) return a[2] > b[2] end)
+	for _, r in ipairs(tRows) do
+		aEmit(string.format("  %.1f ms  %s", r[2], r[1]))
+	end
+	aEmit(string.format("  %.1f ms  (all addons total)", tTotal))
+end
+
+SLASH_SKUPERF1 = "/skuperf"
+SlashCmdList["SKUPERF"] = function(aMsg)
+	aMsg = (aMsg or ""):lower():match("^%s*(.-)%s*$")
+	if aMsg == "combat" then
+		Sku:PerformanceDumpCombat()
+	elseif aMsg == "load" then
+		Sku:PerformanceDumpLoad()
+	elseif aMsg == "cpu" then
+		Sku:PerformanceDumpCpu(nil, true)
+	elseif aMsg == "reset" then
+		Sku.PerformanceData = {}
+		tPerfEmitChat("|cff80c0ffSkuPerf|r combat probe averages cleared.")
+	elseif aMsg == "frame" then
+		Sku:Performance()
+	elseif aMsg == "" or aMsg == "all" then
+		Sku:PerformanceDumpLoad()
+		Sku:PerformanceDumpCombat()
+		Sku:PerformanceDumpCpu(nil, false)
+	else
+		print("|cff80c0ffSkuPerf|r usage: /skuperf [combat|load|cpu|reset|frame]")
+	end
+end
+
+-- Load-time milestone capture. The single debugprofilestart() at the top of
+-- this file anchors the session clock, so Sku:MetricPoint() records seconds
+-- since core load. We stamp the two key startup events and auto-persist the
+-- timeline to the ring once the world is ready (silent - no chat spam).
+local tPerfLoadFrame = CreateFrame("Frame")
+tPerfLoadFrame.tFirstPew = true
+tPerfLoadFrame:RegisterEvent("PLAYER_LOGIN")
+tPerfLoadFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+tPerfLoadFrame:SetScript("OnEvent", function(self, aEvent)
+	if aEvent == "PLAYER_LOGIN" then
+		Sku:MetricPoint("PLAYER_LOGIN")
+	elseif aEvent == "PLAYER_ENTERING_WORLD" then
+		if self.tFirstPew then
+			self.tFirstPew = false
+			Sku:MetricPoint("PLAYER_ENTERING_WORLD (first)")
+			Sku:DebugLogMark("perf load milestones")
+			Sku:PerformanceDumpLoad(tPerfEmitQuiet)
+		end
+	end
+end)

@@ -1314,7 +1314,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 		end
 	end
 
-	--Sku.PerformanceData["EvaluateAllAuras"] = ((Sku.PerformanceData["EvaluateAllAuras"] or 0) + (debugprofilestop() - beginTime)) / 2
+	Sku.PerformanceData["EvaluateAllAuras"] = ((Sku.PerformanceData["EvaluateAllAuras"] or 0) + (debugprofilestop() - beginTime)) / 2
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

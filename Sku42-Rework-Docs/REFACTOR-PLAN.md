@@ -667,7 +667,29 @@ baseline confirms.
 
 ## 3.6 Task checklist
 
-- [ ] P1. Enable measurement harness (scriptProfile, PerformanceData store, dprint timers); document how to read it.
+- [x] P1. **Measurement harness enabled + made screen-reader readable.** Done in
+  `Sku/Core.lua` (readout + load capture) and `Sku/SkuAuras/Core.lua` (aura probe).
+  Three findings shaped the work: the on-screen `Sku:Performance` frame is
+  sighted-only AND was never reachable (no slash/keybind), `Sku:MetricPoint` was
+  defined but never called (zero load timing), and the top-suspect aura probe
+  (`SkuAuras/Core.lua:1317`) was commented out. Delivered (all additive,
+  behaviour-preserving, NO churn of the ~26 existing combat probe sites):
+  - Un-commented the `EvaluateAllAuras` probe (`Sku.PerformanceData["EvaluateAllAuras"]`).
+  - Load timing: a small frame stamps `MetricPoint("PLAYER_LOGIN")` +
+    `MetricPoint("PLAYER_ENTERING_WORLD (first)")` and auto-writes the timeline to
+    the `SkuDebugLog` ring at first PEW (silent — ring only, no chat/TTS).
+  - `/skuperf [combat|load|cpu|reset|frame]` readout. Every line prints to chat
+    (live TTS) AND `tDebugLogAppend`s to the ring (out-of-game read-back). `cpu`
+    enables `scriptProfile` (needs /reload) and lists Sku-family
+    `GetAddOnCPUUsage` (APIs resolved via `C_AddOns.*` with global fallback).
+  - **How to read it (screen-reader loop):** combat probes reset every load and
+    are NOT persisted → run the scenario, then `/skuperf combat` IN THE SAME
+    SESSION (it copies them into the ring), then `/reload` and read `SkuDebugLog`
+    per CLAUDE.md. Load milestones auto-persist, so they are in the ring after any
+    `/reload` without a command. CPU profiling of the load phase needs
+    `scriptProfile` already on at load (run `/skuperf cpu` once, /reload, it
+    measures from then on). Add more milestones anywhere with `Sku:MetricPoint("label")`.
+  - luaparser-gated; **in-game smoke test pending** (folds into P2 baselines).
 - [ ] P2. Capture baselines for the six scenarios; record numbers in this file.
 - [ ] P3. Confirm/replace the ranked hypotheses with measured costs.
 - [ ] P4. Fix top confirmed costs cheapest-first; re-baseline after each; guard announcements unchanged.

@@ -22,6 +22,25 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W3 P1 — performance measurement enabled + made screen-reader readable.** The
+  timing harness already existed (`Sku.PerformanceData` EWMA probes in
+  `aqCombat.lua`/`aq.lua`, `Sku:MetricPoint`, the on-screen `Sku:Performance`
+  frame) but was unusable for a blind user and partly dead: the on-screen frame
+  is sighted-only and was never even reachable, `MetricPoint` was never called
+  (no load timing captured), and the #1-suspect aura probe
+  (`SkuAuras/Core.lua:1317` `EvaluateAllAuras`) was commented out. Changes (all
+  additive, behaviour-preserving): (1) un-commented the aura probe; (2) wired
+  `MetricPoint` at `PLAYER_LOGIN` + first `PLAYER_ENTERING_WORLD` and
+  auto-persist the load timeline to the `SkuDebugLog` ring each session (silent,
+  no TTS spam); (3) new `/skuperf` slash command — `combat` (PerformanceData,
+  slowest first), `load` (MetricPoint milestones), `cpu` (per-addon
+  `GetAddOnCPUUsage`, enables `scriptProfile` + asks for /reload), `reset`,
+  `frame` (toggles the old sighted frame, now reachable) — every line goes to
+  BOTH chat (live TTS) and the persisted ring (read back out-of-game after
+  /reload). CPU APIs resolved across `C_AddOns.*`/global. No combat-path probe
+  sites were churned (kept the existing EWMA writes); this is enable+readout
+  only. luaparser-gated. **In-game test pending** (P2 baselines).
+
 - **W1 Phase C — locked down (closes Workstream 1).** `SkuSettings.validate = true` permanently.
   Implemented LOG-ONLY (dprint), not reject/clamp — a screen-reader user must never silently lose
   a setting to a schema-type mismatch; a logged mismatch flags a schema fix. Dormant in normal play
