@@ -1955,8 +1955,8 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		end }
 
 
-	tSpecs[#tSpecs+1] = { kind = "settings", label = L["Options"], filterable = true,
-		args = SkuQuest.options.args, db = SkuSettings:Sub("SkuQuest"), module = "SkuQuest" }
+	-- W7: quest settings moved to Einstellungen -> Sonstiges -> Quest (the quest menu
+	-- is now a Local window contributor, so its options no longer belong here).
 
 	SkuMenu:Build(aParentEntry, tSpecs)
 end

@@ -318,6 +318,14 @@ SkuMenu:RegisterModule("Addons", {
 	build = function(entry) if SkuCore and SkuCore.AddonsMenuBuilder then SkuCore:AddonsMenuBuilder(entry) end end,
 })
 
+-- W7: the Escape game menu (Spielmenue) — the live game-menu actions, with Optionen
+-- routed to Einstellungen and Makros to the Sku macro menu. SkuCore:GameMenuShowHandler
+-- navigates here when the Blizzard GameMenuFrame is invoked.
+SkuMenu:RegisterModule("GameMenu", {
+	label = function() return (GetLocale and GetLocale() == "deDE") and "Spielmenü" or "Game menu" end,
+	build = function(entry) if SkuCore and SkuCore.GameOptions and SkuCore.GameOptions.GameMenuBuilder then SkuCore.GameOptions:GameMenuBuilder(entry) end end,
+})
+
 -- W7 root layout: target/nav/chat/monitor/macros/auren/addons up front (the intended
 -- order), with the still-transitional "Core" + "GameOptions" kept reachable until they
 -- fold into the Einstellungen tree in the next batch. SkuQuest dropped from the root —
@@ -334,5 +342,7 @@ SkuMenu:SetRootLayout({
 	"Addons",
 	"Einstellungen",
 })
+-- "GameMenu" (Spielmenü) is intentionally NOT in the layout: like "Local", it is
+-- spliced in only for an Escape session by SkuCore:UpdateGameMenuRootEntry.
 -- GameOptions is NOT at root — it lives under Einstellungen -> Spieleinstellungen,
 -- and the Escape (GameMenuFrame) hook now navigates there (SkuCore:GameMenuShowHandler).

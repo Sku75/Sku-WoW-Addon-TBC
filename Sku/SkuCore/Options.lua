@@ -2748,8 +2748,15 @@ function SkuCore:MenuBuilder(aParentEntry)
 	]]
 
 
-	tSonstiges[#tSonstiges+1] = { kind = "settings", label = L["Options"], filterable = true,
-		args = SkuCore.options.args, db = SkuSettings:Sub("SkuCore"), module = "SkuCore" }
+	-- W7: the SkuCore options no longer get their own "Optionen" wrapper under
+	-- Sonstiges — they are rendered directly into Sonstiges in the build below.
+
+	-- W7: SkuQuest's settings, relocated here (Sonstiges -> Quest) when the quest menu
+	-- became a Local window contributor; same args/db -> saved values preserved.
+	if SkuQuest and SkuQuest.options and SkuQuest.options.args then
+		tSonstiges[#tSonstiges+1] = { kind = "settings", label = "Quest", filterable = true,
+			args = SkuQuest.options.args, db = SkuSettings:Sub("SkuQuest"), module = "SkuQuest" }
+	end
 
 	-- W7: SkuMob's settings, relocated under Kampf when the "Mob" wrapper was dropped
 	-- and the target menu promoted to top level. Same args/db -> saved values preserved.
@@ -2817,10 +2824,18 @@ function SkuCore:MenuBuilder(aParentEntry)
 					}
 					SkuOptions:IterateOptionsArgs(tArgs, self, SkuSettings:Sub("SkuChat"), "SkuChat", "")
 				end
+				-- W7: "Audio Dauer Pause" (TTSSepPause), moved here from Allgemein
+				-- (keyPrefix "" preserved -> saved value intact).
+				if SkuOptions.options and SkuOptions.options.args and SkuOptions.options.args.TTSSepPause then
+					SkuOptions:IterateOptionsArgs({ TTSSepPause = SkuOptions.options.args.TTSSepPause }, self, SkuSettings:Sub("SkuOptions"), "SkuOptions", "", true)
+				end
 			end },
 		{ kind = "submenu", label = tDeEn("Sonstiges", "Other"),
 			build = function(self)
 				SkuMenu:Build(self, tSonstiges)
+				-- W7: the SkuCore options rendered DIRECTLY into Sonstiges (no "Optionen"
+				-- wrapper); forAudioMenu=false entries stay hidden (they live in Scan etc.).
+				SkuOptions:IterateOptionsArgs(SkuCore.options.args, self, tSub, "SkuCore")
 				-- "Notice on pet starving", relocated out of the removed Classes menu
 				-- (keyPrefix "classes.hunter." preserved so the saved value survives).
 				if SkuCore.options.args.classes and SkuCore.options.args.classes.args

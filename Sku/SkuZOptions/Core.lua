@@ -265,9 +265,11 @@ function SkuOptions:SlashFunc(input, aSilent)
 				_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_OPENMENU"].key)
 			end
 
-			-- W7: ensure "Local" is present before walking a "...,Local,..." path (e.g.
-			-- a window auto-open) when the menu was already open (no reassembly above).
+			-- W7: ensure the dynamic root entries ("Local" / "Spielmenü") are present
+			-- before walking a path into them (e.g. a window auto-open or the Escape
+			-- hook) when the menu was already open (no reassembly above).
 			pcall(function() if SkuCore and SkuCore.UpdateLocalRootEntry then SkuCore:UpdateLocalRootEntry() end end)
+			pcall(function() if SkuCore and SkuCore.UpdateGameMenuRootEntry then SkuCore:UpdateGameMenuRootEntry() end end)
 
 			local tMenu = SkuOptions.Menu
 			local tFoundMenuPos = nil
@@ -2349,9 +2351,10 @@ function SkuOptions:CreateMainFrame()
 				-- so it only appears when a window/contributor is actually open.
 			end
 
-			-- W7: evaluate Local presence on every open (the root above is assembled
-			-- only once, so this can't live inside the build-once block).
+			-- W7: evaluate the dynamic root entries on every open (the root above is
+			-- assembled only once, so this can't live inside the build-once block).
 			pcall(function() if SkuCore and SkuCore.UpdateLocalRootEntry then SkuCore:UpdateLocalRootEntry() end end)
+			pcall(function() if SkuCore and SkuCore.UpdateGameMenuRootEntry then SkuCore:UpdateGameMenuRootEntry() end end)
 
 			--set menu to entry first
 			SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
@@ -2475,6 +2478,9 @@ function SkuOptions:CreateMainFrame()
 	tFrame:SetScript("OnHide", function(self, a, b)
 		--dprint("OnSkuOptionsMain OnHide")
 		--ClearOverrideBindings(self)
+		-- W7: end any Escape "Spielmenü" session when the menu closes, so it is gone
+		-- on the next normal open (it removes itself via UpdateGameMenuRootEntry).
+		if SkuCore then SkuCore.gameMenuActive = false end
 		SkuOptions:HideVisualMenu()
 	end)
 

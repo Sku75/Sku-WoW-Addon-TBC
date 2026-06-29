@@ -279,8 +279,13 @@ SkuGenericMenuItem = {
 		if self.parent.name then
 			SkuOptions.currentMenuPosition = self.parent
 		else
-			--dprint("main level > leave nav")
-			_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"])
+			-- W7: at the root level (parent is the root array, no name) Left no longer
+			-- CLOSES the menu — it lands on the first top-level entry so the user stays
+			-- in the root list (e.g. stepping Left out of Lokal returns to root instead
+			-- of closing everything). Closing is still done via Escape / the open key.
+			if SkuOptions.Menu and SkuOptions.Menu[1] then
+				SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
+			end
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,

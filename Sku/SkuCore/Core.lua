@@ -409,6 +409,31 @@ function SkuCore:UpdateLocalRootEntry()
 	end
 end
 
+-- W7: the Escape "Spielmenü" is hidden from the browsable root and only spliced in
+-- for an Escape-invoked session, mirroring Local. SkuCore.gameMenuActive is set when
+-- GameMenuShowHandler fires and cleared when the Sku menu closes (OnHide). Same
+-- add/remove-on-open idempotent pattern as UpdateLocalRootEntry.
+function SkuCore:UpdateGameMenuRootEntry()
+	if not SkuOptions or not SkuOptions.Menu then return end
+	local tExisting
+	for x = 1, #SkuOptions.Menu do
+		if SkuOptions.Menu[x].isGameMenuRoot then tExisting = SkuOptions.Menu[x] break end
+	end
+	if SkuCore.gameMenuActive == true then
+		if not tExisting then
+			local tLabel = (GetLocale and GetLocale() == "deDE") and "Spielmenü" or "Game menu"
+			local tEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {tLabel}, SkuGenericMenuItem)
+			tEntry.dynamic = true
+			tEntry.isGameMenuRoot = true
+			tEntry.BuildChildren = function(self)
+				if SkuCore.GameOptions and SkuCore.GameOptions.GameMenuBuilder then SkuCore.GameOptions:GameMenuBuilder(self) end
+			end
+		end
+	elseif tExisting and SkuMenu and SkuMenu.Remove then
+		SkuMenu:Remove(tExisting)
+	end
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:OnInitialize()
 	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_START", SkuCore.UNIT_SPELLCAST_START)
@@ -3736,11 +3761,14 @@ function SkuCore:GameMenuShowHandler()
 	if InCombatLockdown and InCombatLockdown() then
 		return
 	end
-	-- W7: GameOptions is no longer a root entry; it lives under
-	-- Einstellungen -> Spieleinstellungen. Navigate there (labels must match the
-	-- Einstellungen builder in SkuCore/Options.lua).
+	-- W7: Escape opens the improved Sku "Spielmenü" (game-menu mirror whose Optionen
+	-- routes to Einstellungen and Makros to the Sku macro menu). Label must match the
+	-- "GameMenu" registry entry in SkuZOptions/SkuMenu.lua.
 	local tDe = (GetLocale and GetLocale() == "deDE")
-	local tPath = "short," .. (tDe and "Einstellungen" or "Settings") .. "," .. (tDe and "Spieleinstellungen" or "Game options")
+	local tPath = "short," .. (tDe and "Spielmenü" or "Game menu")
+	-- W7: open a Spielmenü session so UpdateGameMenuRootEntry splices the (otherwise
+	-- hidden) entry into the root; cleared again when the Sku menu closes (OnHide).
+	SkuCore.gameMenuActive = true
 	if C_Timer and C_Timer.After then
 		C_Timer.After(0, function()
 			pcall(function()

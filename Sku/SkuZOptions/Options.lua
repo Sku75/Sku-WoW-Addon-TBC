@@ -55,6 +55,7 @@ SkuOptions.options = {
 			name = L["Audio Dauer Pause"] ,
 			desc = "",
 			type = "range",
+			forAudioMenu = false,   -- W7: surfaced under Einstellungen -> Sprachausgabe
 		},
 		backgroundSound = {
 			order = 4,

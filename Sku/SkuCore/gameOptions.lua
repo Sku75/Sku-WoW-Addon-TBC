@@ -383,11 +383,36 @@ local function IsSettingsButton(aLabel)
    return false
 end
 
+-- W7: recognise the game-menu "Makros" button so the Escape menu can route it to
+-- Sku's own macro menu instead of clicking the (inaccessible) Blizzard macro frame.
+local function IsMacroButton(aLabel)
+   if _G.MACROS and aLabel == _G.MACROS then return true end
+   for _, s in ipairs({ "Makros", "Macros" }) do
+      if aLabel == s then return true end
+   end
+   return false
+end
+
+-- W7: navigate the Sku audio menu to a path, deferred one frame so we don't fight
+-- the action currently being processed (same idea as the Escape hook).
+local function tNavTo(aPath)
+   if not (SkuOptions and SkuOptions.SlashFunc) then return end
+   if C_Timer and C_Timer.After then
+      C_Timer.After(0, function() pcall(function() SkuOptions:SlashFunc(aPath) end) end)
+   else
+      pcall(function() SkuOptions:SlashFunc(aPath) end)
+   end
+end
+
 -- ---------------------------------------------------------------------
 -- Top-level entry point, hooked from SkuZOptions/Core.lua. Mirrors the
 -- Escape Game Menu: its children are the live game-menu actions, and the
 -- "Optionen" entry descends into the Blizzard settings categories.
 -- ---------------------------------------------------------------------
+-- Einstellungen -> Spieleinstellungen. W7: this IS the Blizzard game-settings
+-- categories directly (graphics / sound / interface / ...), so they are reachable
+-- one level shorter. The live game-menu mirror (Optionen/Makros/Logout/Quit) moved
+-- to GameMenuBuilder below, which the Escape hook navigates to.
 function GameOptions:GameOptionsMenuBuilder(aParentEntry)
    -- Feature off: yield nothing (the Game-Options menu entry stays empty).
    if not GameOptions:IsEnabled() then return end
@@ -395,36 +420,40 @@ function GameOptions:GameOptionsMenuBuilder(aParentEntry)
       Inject(aParentEntry, _L.unavailable)
       return
    end
+   BuildCategoryList(aParentEntry)
+end
 
-   -- Declarative top-level entries (W2 M-B): the entry COUNT/labels/kinds are
-   -- runtime-driven (one per live game-menu button), so the static spec list is
-   -- built up in order inside the same loop/conditionals as before and compiled
-   -- node-by-node with SkuMenu:BuildNode. Each spec reproduces the exact property
-   -- set of its former hand-built entry; closure bodies are moved verbatim.
+-- W7: the improved Escape game menu (navigated to by SkuCore:GameMenuShowHandler).
+-- Mirrors the live GameMenuFrame buttons, but routes "Optionen" to Sku's own
+-- Einstellungen and "Makros" to Sku's macro menu (the user's ask); every other
+-- button (Shop, Addons, Ausloggen, Spiel verlassen, ...) clicks the live button.
+-- Buttons persist after the frame's first open, so reading them while the frame is
+-- hidden (the Escape hook hides it) still works.
+function GameOptions:GameMenuBuilder(aParentEntry)
+   if not GameOptions:IsEnabled() then return end
    local buttons = CollectGameMenuButtons()
-   local addedOptions = false
+   local tEinst = "short," .. (_DE and "Einstellungen" or "Settings")
    for _, btn in ipairs(buttons) do
       local label = tostring(tCall(btn, "GetText"))
       if IsSettingsButton(label) then
-         -- "Optionen" -> the settings categories (not a frame click).
-         SkuMenu:BuildNode(aParentEntry, { kind = "list", label = label, filterable = true,
-            build = function(self) BuildCategoryList(self) end })
-         addedOptions = true
+         -- "Optionen" -> Sku's Einstellungen (the new settings menu).
+         SkuMenu:BuildNode(aParentEntry, { kind = "action", label = label, dynamic = false,
+            onAction = function() tNavTo(tEinst) end })
+      elseif IsMacroButton(label) then
+         -- "Makros" -> Sku's macro menu.
+         SkuMenu:BuildNode(aParentEntry, { kind = "action", label = label, dynamic = false,
+            onAction = function() tNavTo("short," .. ((Sku and Sku.L and Sku.L["Macros"]) or "Macros")) end })
       else
-         -- Every other game-menu action (Shop, Addons, Makros, Ausloggen,
-         -- Spiel verlassen, ...) -> click the live button. Sku's menu keys
-         -- arrive via hardware-event override bindings, so :Click() counts
-         -- as a hardware event (protected Logout/Quit are allowed).
+         -- Sku's menu keys arrive via hardware-event override bindings, so :Click()
+         -- counts as a hardware event (protected Logout/Quit are allowed).
          SkuMenu:BuildNode(aParentEntry, { kind = "action", label = label, dynamic = false,
             onAction = function() pcall(function() btn:Click() end) end })
       end
    end
-
-   -- The game menu builds its buttons lazily on first open; if it has not
-   -- been opened this session (or the settings button was not recognised),
-   -- still expose the options so the main feature always works.
-   if not addedOptions then
-      SkuMenu:BuildNode(aParentEntry, { kind = "list", label = _G.SETTINGS or "Optionen", filterable = true,
-         build = function(self) BuildCategoryList(self) end })
+   -- Cold path: the game menu has not been built yet this session, so no buttons are
+   -- available — at least offer the settings link so Escape is never a dead end.
+   if #buttons == 0 then
+      SkuMenu:BuildNode(aParentEntry, { kind = "action", label = _G.SETTINGS or (_DE and "Einstellungen" or "Settings"), dynamic = false,
+         onAction = function() tNavTo(tEinst) end })
    end
 end
