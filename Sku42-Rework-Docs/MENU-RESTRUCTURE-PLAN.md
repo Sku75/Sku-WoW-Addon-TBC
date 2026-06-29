@@ -1,4 +1,8 @@
-# Workstream 7 — Menu restructure (full tree rebuild)  (DESIGN LOCKED 2026-06-28)
+# Workstream 7 — Menu restructure (full tree rebuild)  (IMPLEMENTED & VERIFIED — CLOSED 2026-06-29)
+
+> **Status:** built and in-game-verified across 8 commits (d4a00c4 → 72092b7). The
+> sections below are the original design; **9.x "Final state as shipped"** at the
+> bottom records what actually landed and the few intentional deviations.
 
 This is the payoff of Workstream 2. W2 made the menu *contribution/layout* data-driven
 (`SkuMenu.registry` + `SkuMenu.rootLayout`) and converted module builders to declarative
@@ -258,13 +262,65 @@ Order agreed with owner: **Local-ize the windows first as one batch, then build 
 - [x] Local spliced in/out per `SkuCore:HasLocalContent()` (root persists, so it
       is added/removed on every open via `SkuCore:UpdateLocalRootEntry`); "Empty"
       placeholder suppressed when a contributor is visible.
-- [ ] IN-GAME TEST of the 3 windows (mailbox, auctioneer, friends list).
-- [ ] Three inline appends migrated into `rootLayout`.
-- [ ] New root order set; Monitor + Macros promoted.
-- [ ] addons container built (Atlas Loot, Damage Meter).
-- [ ] Einstellungen tree built (allgemein/menu/sprache/übersicht, spieleinstellungen, kampf,
-      Tastenbelegungen, sonstiges).
-- [ ] Per-module list built (has-options submenu vs bare toggle); "Funktionen an/aus" removed.
-- [ ] Escape rewired (Options → Einstellungen, Makros → macros).
-- [ ] Path-coupled auto-open sweep done; all resolve.
-- [ ] In-game pass per 7.8; owner sign-off.
+- [x] IN-GAME TEST of the 3 windows (mailbox, auctioneer, friends list) — passed.
+- [x] Quest-log Local-ized (QuestLogFrame contributor); top-level Quest removed.
+- [x] New root order set; Monitor + Macros promoted; Addons container built.
+- [x] Einstellungen tree built (Allgemein, Spieleinstellungen, Kampf, Scan,
+      Tastenbelegungen, Module, Sprachausgabe, Sonstiges).
+- [x] "Funktionen an/aus" removed → Module list (bare toggles; per-module options
+      deferred — owner chose themed grouping, see 9.2).
+- [x] Escape rewired (Spielmenü: Optionen → Einstellungen, Makros → Macros);
+      Spieleinstellungen = Blizzard categories directly; Spielmenü hidden/dynamic.
+- [x] Path-coupled auto-open sweep done; all resolve.
+- [x] Owner sign-off (committed batches).
+
+---
+
+## 9. Final state as shipped (CLOSED 2026-06-29)
+
+### 9.1 Top level (Shift+F1), in order
+Ziel Menü (SkuMob target menu, directly — no "Mob" wrapper) · Navigation · Chat ·
+Monitor · Macros · Auren · Addons (Atlas Loot, Damage Meter) · Einstellungen ·
+Barrierefreiheit (still inline append, unchanged). Two **dynamic** entries appear
+only when relevant, spliced last: **Lokal** (any window/contributor open) and
+**Spielmenü** (an Escape session). Neither is in `rootLayout`.
+
+### 9.2 Einstellungen tree
+Allgemein (SkuOptions options, flattened — no inner "Optionen") · Spieleinstellungen
+(Blizzard game-settings categories directly) · Kampf (Entfernung, Dial Targeting,
+Ziel Optionen, Soft targeting) · Scan (ressourceScanning, scanBackgroundSound,
+doNotHideTooltip, turnToUnit, Scan settings) · Tastenbelegungen (Sku + game keybinds)
+· Module (per-feature on/off — **bare toggles**) · Sprachausgabe (chat TTS/voice
+settings + Audio Dauer Pause) · Sonstiges (Action bars, Quest, SkuCore options
+rendered directly, Notice on pet starving).
+
+### 9.3 Key mechanisms introduced (reusable)
+- **Dynamic root entries**: `SkuCore:UpdateLocalRootEntry` / `UpdateGameMenuRootEntry`
+  splice Lokal/Spielmenü in/out (root is assembled once and persists, so a static
+  conditional won't work). Called on every menu open + the `short` SlashFunc path.
+  Spielmenü is gated by `SkuCore.gameMenuActive` (set in `GameMenuShowHandler`,
+  cleared in the menu's OnHide).
+- **Window contributors**: `SkuCore.localWindowContributors` (MailFrame, AuctionFrame,
+  FriendsFrame, QuestLogFrame → existing builders). `MenuBuilderLocal` renders them
+  under Lokal while their frame is visible; auto-open via each module's redirected
+  `SlashFunc("short,Local,…")`.
+- **Settings relocation lever**: `forAudioMenu = false` on an AceConfig entry hides it
+  from its default render; re-render elsewhere via `IterateOptionsArgs(..., keyPrefix,
+  aIncludeHidden=true)` with the ORIGINAL keyPrefix → storage key preserved, only the
+  menu location changes. Used for Scan, Softtargeting, Classes→pet-starving, Quest,
+  Audio Dauer Pause, chat→Sprachausgabe.
+- **Left at root no longer closes** the menu (templates `OnBack`): it lands on the
+  first top-level entry. Closing stays on Escape / the open-menu key.
+
+### 9.4 Intentional deviations / deferred
+- **Per-module options under each toggle** (original 7.3 "Module" idea): NOT done.
+  Owner chose themed grouping (Kampf/Scan/Sprachausgabe/Sonstiges), which already
+  homes the options; per-module would duplicate. Module is bare on/off toggles.
+  The one true orphan (SkuQuest options, only reachable via the quest-log window) was
+  relocated to Sonstiges → Quest.
+- **Barrierefreiheit** still appended inline after `rootLayout` (sorts after
+  Einstellungen). Owner expects to remove it later; not worth migrating now.
+- **Spielmenü** added as a (dynamic) entry the original concept didn't list — it is
+  the home for the improved Escape menu.
+- **SkuAdventureGuide** ("Tutorials und Wiki") owns options but isn't in the TOC/root
+  — a pre-existing dormant module, not touched by W7.
