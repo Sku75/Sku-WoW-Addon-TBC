@@ -1107,8 +1107,14 @@ function SkuChat:MenuBuilder(aParentEntry)
 	end }
 
 
-	tSpecs[#tSpecs+1] = { kind = "settings", label = L["Options"], filterable = true,
-		args = SkuChat.options.args, db = SkuSettings:Sub("SkuChat"), module = "SkuChat" }
+	-- W7: the chat "Optionen" entry is now the chat settings directly (chatSettings
+	-- rendered with its original keyPrefix so saved values are preserved). The other
+	-- SkuChat options (TTS voice/speed/volume, join channel, ...) moved to
+	-- Einstellungen -> Sprachausgabe (see SkuCore:MenuBuilder).
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Options"], filterable = true,
+		build = function(self)
+			SkuOptions:IterateOptionsArgs(SkuChat.options.args.chatSettings.args, self, SkuSettings:Sub("SkuChat"), "SkuChat", "chatSettings.")
+		end }
 
 	SkuMenu:Build(aParentEntry, tSpecs)
 end

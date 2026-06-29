@@ -2799,6 +2799,25 @@ function SkuCore:MenuBuilder(aParentEntry)
 		{ kind = "submenu", label = tDeEn("Tastenbelegungen", "Key bindings"), children = tKeybinds },
 		{ kind = "submenu", label = tDeEn("Module", "Modules"),
 			build = function(self) if SkuCore.FeaturesMenuBuilder then SkuCore:FeaturesMenuBuilder(self) end end },
+		{ kind = "submenu", label = tDeEn("Sprachausgabe", "Speech output"),
+			build = function(self)
+				-- The non-chat-settings SkuChat options, moved out of the chat menu's
+				-- "Optionen" (keyPrefix "" preserved -> saved values intact).
+				if SkuChat and SkuChat.options and SkuChat.options.args then
+					local a = SkuChat.options.args
+					local tArgs = {
+						WowTtsVoice           = a.WowTtsVoice,
+						WowTtsSpeed           = a.WowTtsSpeed,
+						WowTtsVolume          = a.WowTtsVolume,
+						WowTtsTags            = a.WowTtsTags,
+						joinSkuChannel        = a.joinSkuChannel,
+						neverResetQueues      = a.neverResetQueues,
+						allChatViaBlizzardTts = a.allChatViaBlizzardTts,
+						doNotReadoutEmojis    = a.doNotReadoutEmojis,
+					}
+					SkuOptions:IterateOptionsArgs(tArgs, self, SkuSettings:Sub("SkuChat"), "SkuChat", "")
+				end
+			end },
 		{ kind = "submenu", label = tDeEn("Sonstiges", "Other"),
 			build = function(self)
 				SkuMenu:Build(self, tSonstiges)

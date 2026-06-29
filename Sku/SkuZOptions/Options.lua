@@ -807,7 +807,10 @@ SkuSettings:Register("SkuOptions", {
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:MenuBuilder(aParentEntry)
-	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
+	-- W7: render directly into the parent (Einstellungen -> Allgemein) instead of an
+	-- extra "Optionen" wrapper node. tNewMenuEntry is aliased so the rest of this
+	-- builder (Overview pages, Profil, ...) keeps attaching to the same parent.
+	local tNewMenuEntry = aParentEntry
 	tNewMenuEntry.filterable = true
 	SkuOptions:IterateOptionsArgs(SkuOptions.options.args, tNewMenuEntry, SkuSettings:Sub("SkuOptions"), "SkuOptions")
 
