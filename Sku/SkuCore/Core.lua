@@ -3486,26 +3486,74 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 			end
 			
 			if tFlag == false or  aForceLocalRoot == true then
-				-- Auto-descend one level into the first open window so the user
-				-- lands directly on its content (dialogue line, quest text, bag
-				-- list, role/ready check, ...) instead of on the bare window
+				-- Auto-descend one level into the open window so the user lands
+				-- directly on its content (dialogue line, quest text, bag list,
+				-- mail, role/ready check, ...) instead of on the bare window
 				-- name. The window name is still one Left-arrow up, and Up/Down
 				-- there still cycles the other open windows — so the
 				-- multiple-windows mechanism is preserved, we only change the
-				-- starting position. Skipped when: the caller forced the Local
-				-- root (aForceLocalRoot), the window has no content yet, or the
-				-- primary frame is a StaticPopup (handled by its own branch
-				-- below, which already lands on the popup's content).
-				local tPrimaryFrame = tOpenFrames[1]
-				local tPrimaryEntry = tPrimaryFrame and tGossipList[tPrimaryFrame]
-				local tDescendIntoPrimary = aForceLocalRoot ~= true
-					and tPrimaryEntry
-					and tPrimaryEntry.childs and #tPrimaryEntry.childs > 0
-					and tPrimaryEntry.textFirstLine
-					and not (tPrimaryFrame and string.find(tPrimaryFrame, "StaticPopup"))
-				if tDescendIntoPrimary then
-					SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..tPrimaryEntry.textFirstLine)
+				-- starting position. Skipped when the caller forced the Local
+				-- root (aForceLocalRoot).
+				--
+				-- The bags (ContainerFrame*) auto-open in the BACKGROUND behind
+				-- many windows (vendor, mailbox, bank, ...); they are noise for
+				-- this decision, never the thing the user opened. So we split
+				-- the open interact frames into "real" (non-bag) ones and bags,
+				-- and treat window contributors (mail/AH/social — rendered as
+				-- Local children, not in tOpenFrames) as real windows too.
+				--
+				-- Descend rules, in order:
+				--  1. Exactly one contributor and no real interact frame -> descend
+				--     into that contributor (mailbox: MailFrame contributor + bags
+				--     in the background -> land on Mail, not the bags).
+				--  2. No contributor and exactly one interact frame total -> descend
+				--     into it (a lone gossip/quest window, or the bags opened on
+				--     their own).
+				--  3. Anything else (e.g. vendor = MerchantFrame + bags = two
+				--     interact frames, or several contributors) -> stay on the
+				--     Local root and let the user pick.
+				-- StaticPopups have their own branch below, so a popup primary is
+				-- never auto-descended here.
+				local tContributors = {}
+				for _, c in ipairs(SkuCore.localWindowContributors) do
+					local f = _G[c.frame]
+					if f and f.IsVisible and f:IsVisible() then
+						tContributors[#tContributors + 1] = c
+					end
+				end
+				local tRealInteractCount = 0
+				for x = 1, #tOpenFrames do
+					if not string.find(tOpenFrames[x], "ContainerFrame") then
+						tRealInteractCount = tRealInteractCount + 1
+					end
+				end
+
+				local tDescendPath = nil
+				if aForceLocalRoot ~= true then
+					if #tContributors == 1 and tRealInteractCount == 0 then
+						-- Rule 1: single contributor window (bags ignored).
+						local c = tContributors[1]
+						local tLabel = type(c.label) == "function" and c.label() or c.label
+						if tLabel then
+							tDescendPath = L["short"]..","..L["Local"]..","..tLabel
+						end
+					elseif #tContributors == 0 and #tOpenFrames == 1 then
+						-- Rule 2: a single interact frame.
+						local tPrimaryFrame = tOpenFrames[1]
+						local tPrimaryEntry = tPrimaryFrame and tGossipList[tPrimaryFrame]
+						if tPrimaryEntry
+							and tPrimaryEntry.childs and #tPrimaryEntry.childs > 0
+							and tPrimaryEntry.textFirstLine
+							and not string.find(tPrimaryFrame, "StaticPopup") then
+							tDescendPath = L["short"]..","..L["Local"]..","..tPrimaryEntry.textFirstLine
+						end
+					end
+				end
+
+				if tDescendPath then
+					SkuOptions:SlashFunc(tDescendPath)
 				else
+					-- Rule 3 (and the forced-Local-root case): stay on Local.
 					SkuOptions:SlashFunc(L["short"]..","..L["Local"])
 				end
 			end
