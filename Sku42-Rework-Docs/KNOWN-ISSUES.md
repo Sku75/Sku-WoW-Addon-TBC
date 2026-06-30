@@ -30,14 +30,6 @@ Carried in from the v41 line / reported by the maintainer. German term kept with
 an English gloss where the term is Sku-specific. Repro/area are best-guess until
 investigated.
 
-- **Weapon/spell oil (Zauberöl) not working** ("Zauberöl auftreten geht noch
-  nicht").
-  - Symptom: applying / detecting / announcing weapon oil (Zauberöl) does not
-    work yet.
-  - Repro: TBD (apply a weapon oil, expect detection/announcement).
-  - Suspected area: weapon-enchant / aura tracking (`SkuAuras`, the `AURA_*`
-    weapon-buff + enchant-expiration code).
-  - Status: open.
 - **Arena queries not working** ("Arena Abfragen funktionieren noch nicht").
   - Symptom: arena-related queries / announcements do not function yet.
   - Repro: TBD (enter/query arena context).
@@ -51,18 +43,6 @@ investigated.
   - Suspected area: `SkuCore/skuFocus.lua` and how it relates to WoW's focus.
     Good candidate to reconcile during W4 (state ownership / one writer).
   - Status: open.
-
-- **SkuAuras "Optionen" submenu is an empty placeholder.**
-  - Symptom: navigating Auren → Optionen enters a menu with no children — nothing
-    to read; feels like "can't enter the options".
-  - Repro: Sku menu → Auren → Optionen.
-  - Cause: `SkuAuras.options.args` is `{}` (never populated), so the
-    `IterateOptionsArgs(SkuAuras.options.args, …)` call in `SkuAuras:MenuBuilder`
-    builds 0 children. Pre-existing (present on v41); NOT caused by the W1 settings
-    migration — confirmed during B3 testing (no Lua error logged, `/wdsku` shows
-    the entry with numChildren=0).
-  - Status: open (pre-existing). Either remove the dead entry or populate it with
-    the real SkuAuras toggles. Candidate for W2 (menu rework) / W6 cleanup.
 
 ## Code quality (deferred — documented, not scheduled)
 
@@ -99,11 +79,13 @@ workstreams (noted) — fold them in there when that workstream runs.
 - **Shift+Enter / Ctrl+Enter for left- and right-click.** Keyboard bindings in
   menus to trigger a left-click (Shift+Enter) and right-click (Ctrl+Enter).
   Relates to W2 (menu action semantics) and secure-action handling.
-- **Dynamic updating of bag entries, values, etc.** Live-refresh menu entries
-  (bag contents, numeric values) instead of stale snapshots. Relates to W2
-  (dynamic-list refresh) — note the deliberately-removed BAG_UPDATE auto-refresh
-  (`SkuCore/Core.lua`) that previously caused re-anchoring problems; design a
-  targeted refresh that does not re-anchor the menu.
+- **Default macro to insert.** Provide a ready-made default macro the user can
+  insert (e.g. into the macro UI) for common Sku actions — so a screen-reader
+  user does not have to author secure macros by hand. Scope/contents TBD with
+  the maintainer.
+- **Quest button functionality.** Add quest-button functionality (a button /
+  menu action to interact with quests — accept/turn-in/track). Relates to
+  `SkuQuest`; exact behaviour TBD with the maintainer.
 - **Loading times.** Reduce addon load/reload time. Relates to W3 (load-time cost
   of the big Lua data tables: `routedata_global_wotlk.lua`, `SkuDB/assets`).
 - **Nicer-looking popups.** Improve popup appearance.
@@ -112,6 +94,22 @@ workstreams (noted) — fold them in there when that workstream runs.
 
 ## Resolved
 
+- **Weapon/spell oil (Zauberöl) — applying to an equipped weapon threw a Lua
+  error** — fixed 2026-06-30 (`SkuZOptions/Core.lua`, equipment-slot right-click
+  handler). Using an oil starts a spell-TARGETING mode (`SpellIsTargeting()`,
+  NOT a cursor item), so the old unequip path's `PickupInventoryItem` was
+  `ADDON_ACTION_FORBIDDEN`. Right-click on an equipped item is now a three-path,
+  build-time decision: (1) targeting active → secure `/click <Slot> RightButton`
+  applies the oil/poison/stone/enchant; (2) item has an on-use effect
+  (`GetItemSpell`) → secure `/use <slotID>` fires it; (3) plain gear → manual
+  unequip to first free bag. All three confirmed in-game by the maintainer.
+- **Dynamic updating of bag entries, values, etc.** — DONE (W2 live menus,
+  2026-06-28). `liveName` leaf getters + `volatileChildren` lists + event-driven
+  bag re-pin by stable identity (bagSlot→itemId) with a speak-when-settled gate,
+  replacing stale snapshots without re-anchoring the menu.
+- **SkuAuras "Optionen" submenu empty placeholder** — confirmed resolved by the
+  maintainer 2026-06-30 (Auren → Optionen now has content / the dead entry is
+  gone, following the W2/W7 menu rework).
 - **v42 worktree was missing the gitignored runtime assets** — fixed by copying
   all 12,809 gitignored files (`SkuDB/assets/`, `routedata_global_wotlk.lua`,
   `audio/`, scattered binaries) from the v41 tree into `Sku-TBC-42\Sku\`

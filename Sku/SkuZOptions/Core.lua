@@ -4761,7 +4761,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								local lSlotID = tEqSlotID
 								tNewSubMenuEntry.OnAction = function()
 									-- Skip wenn macrotext den Gegenstand bereits aufgenommen hat
-									if GetCursorInfo() then return end
+									if GetCursorInfo() or (SpellIsTargeting and SpellIsTargeting()) then return end
 									if _G.PickupInventoryItem then
 										pcall(_G.PickupInventoryItem, lSlotID)
 									end
@@ -4919,23 +4919,64 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 
 							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Right click"]}, SkuGenericMenuItem)
 							if tIsEquipmentSlot then
-								-- Equipment-Slot Rechtsklick = ausziehen.
-								-- TBC-2.5.5 hat keine direkte UnequipItem-API.
-								-- Lösung: Item via PickupInventoryItem an den
-								-- Cursor heften und auf das erste freie
-								-- Taschenfach ablegen (PickupContainerItem).
-								-- Falls keine Tasche frei ist, Cursor leeren
-								-- und kurze Sapi-Meldung ausgeben.
 								local lSlotID = tEqSlotID
+								local lSlotName = aGossipListTable[index].containerFrameName
+								-- Rechtsklick auf ein ausgeruestetes Teil. TBC-2.5.5 hat KEIN
+								-- natives Rechtsklick-Verhalten auf den Paperdoll-Slots (weder
+								-- benutzen noch ausziehen -- "/click <Slot> RightButton" macht
+								-- nichts). Daher drei Faelle, beim Menue-Aufbau entschieden:
+								--  1) Ziel-Modus aktiv (Waffenoel/Gift/Schleifstein/Verzauberung):
+								--     ANWENDEN -> sicheres macrotext /click RightButton (der
+								--     einzige Weg, der im Ziel-Modus ohne FORBIDDEN funktioniert).
+								--  2) Gegenstand mit Benutzen-Effekt (Schmuck etc.): on-use
+								--     ausloesen -> sicheres macrotext "/use <slotID>" (Trinket-Makro).
+								--  3) Sonst (normale Ruestung/Waffe): AUSZIEHEN via
+								--     PickupInventoryItem + erstes freies Taschenfach (kein Cursor/
+								--     Ziel-Modus aktiv -> erlaubt, nicht FORBIDDEN).
+								-- Ausziehen eines on-use-Teils geht weiterhin per Linksklick.
+								local tTargeting = (SpellIsTargeting and SpellIsTargeting()) and true or false
+								local tHasOnUse = false
+								if not tTargeting and _G.GetInventoryItemLink and _G.GetItemSpell then
+									local tLink = _G.GetInventoryItemLink("player", lSlotID)
+									if tLink and (_G.GetItemSpell(tLink)) then
+										tHasOnUse = true
+									end
+								end
+								dprint("equip rclick build", lSlotName, "slot", lSlotID, "targeting", tTargeting, "onUse", tHasOnUse)
+								if tTargeting then
+									tNewSubMenuEntry.macrotext = "/click " .. lSlotName .. " RightButton"
+								elseif tHasOnUse then
+									tNewSubMenuEntry.macrotext = "/use " .. lSlotID
+								end
 								tNewSubMenuEntry.OnAction = function()
+									-- Faelle 1+2 erledigt das sichere macrotext; nur auffrischen.
+									if tTargeting or tHasOnUse then
+										dprint("equip rclick action: macro path (refresh only)")
+										if _G.C_Timer and _G.C_Timer.After then
+											_G.C_Timer.After(0.1, function()
+												pcall(function() SkuCore:CheckFrames() end)
+												_G.C_Timer.After(0.35, function()
+													if SkuOptions.currentMenuPosition
+														and SkuOptions.currentMenuPosition.OnUpdate then
+														pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
+													end
+												end)
+											end)
+										end
+										return
+									end
+									-- Fall 3: ausziehen. Defensiv: liegt jetzt doch ein Cursor-Item /
+									-- Ziel-Modus vor (Rebuild-Timing), NICHT ausziehen -> sonst FORBIDDEN.
+									if GetCursorInfo() or (SpellIsTargeting and SpellIsTargeting()) then
+										dprint("equip rclick action: bail, cursor/targeting active")
+										return
+									end
+									dprint("equip rclick action: unequip slot", lSlotID)
 									if _G.GetInventoryItemID then
 										if not _G.GetInventoryItemID("player", lSlotID) then
-											if SkuOptions and SkuOptions.Voice
-												and SkuOptions.Voice.OutputStringBTtts then
+											if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.OutputStringBTtts then
 												pcall(function()
-													SkuOptions.Voice:OutputStringBTtts(
-														L["Empty"] or "Empty",
-														true, true, 0.1, nil, nil, nil, 1)
+													SkuOptions.Voice:OutputStringBTtts(L["Empty"] or "Empty", true, true, 0.1, nil, nil, nil, 1)
 												end)
 											end
 											return
@@ -4944,7 +4985,6 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									if _G.PickupInventoryItem then
 										pcall(_G.PickupInventoryItem, lSlotID)
 									end
-									-- Erstes freies Taschenfach finden und Item ablegen
 									local tPlaced = false
 									if _G.GetContainerNumSlots and _G.PickupContainerItem then
 										for bag = 0, NUM_BAG_SLOTS or 4 do
@@ -4961,15 +5001,10 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										end
 									end
 									if not tPlaced then
-										-- Keine Tasche frei: Cursor leeren, damit
-										-- das Item nicht hängen bleibt, und Hinweis.
 										if _G.ClearCursor then pcall(_G.ClearCursor) end
-										if SkuOptions and SkuOptions.Voice
-											and SkuOptions.Voice.OutputStringBTtts then
+										if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.OutputStringBTtts then
 											pcall(function()
-												SkuOptions.Voice:OutputStringBTtts(
-													L["No free bag space"] or "Keine Tasche frei",
-													true, true, 0.1, nil, nil, nil, 1)
+												SkuOptions.Voice:OutputStringBTtts(L["No free bag space"] or "Keine Tasche frei", true, true, 0.1, nil, nil, nil, 1)
 											end)
 										end
 									end
