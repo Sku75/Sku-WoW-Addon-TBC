@@ -4796,6 +4796,19 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										"/script SkuCaptureSellState()\r\n"
 										.. "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n"
 										.. "/script SkuCore:CheckFrames() C_Timer.After(0.5, function() SkuRestoreSellPosition() end)"
+									-- Combat-actions: the secure macrotext above is only armed out of
+									-- combat (templates.lua OnEnter gate), so in combat left-click would
+									-- do nothing. Left-click = pick up, which is NOT protected, so do it
+									-- directly here when in combat. The leaf knows its bag/slot via the
+									-- container-frame button (GetBag/GetID checked above => tIsBagItemL).
+									local lBagL, lSlotL
+									pcall(function() lBagL = tFrameForCheckL:GetBag(); lSlotL = tFrameForCheckL:GetID() end)
+									tNewSubMenuEntry.OnAction = function()
+										if InCombatLockdown and InCombatLockdown()
+											and lBagL and lSlotL and _G.PickupContainerItem then
+											pcall(_G.PickupContainerItem, lBagL, lSlotL)
+										end
+									end
 								else
 									tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 								end
