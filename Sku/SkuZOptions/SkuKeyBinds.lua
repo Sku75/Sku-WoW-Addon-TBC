@@ -64,6 +64,13 @@ SkuOptions.skuDefaultKeyBindings = {
 
    ["SKU_KEY_OPENATLASLOOT"] = {key = "CTRL-SHIFT-L", object = "SkuCore", func = "AtlasLootApplyKeyBinding",},
 
+   -- Combat bag access (SkuCore/combatBags.lua): navigate occupied bag slots and
+   -- left/right-click them WHILE IN COMBAT. Default empty -> assign in the keybind menu.
+   ["SKU_KEY_COMBATBAGPREV"] = {key = "", object = "SkuCore", func = "CombatBagsApplyKeyBinding",},
+   ["SKU_KEY_COMBATBAGNEXT"] = {key = "", object = "SkuCore", func = "CombatBagsApplyKeyBinding",},
+   ["SKU_KEY_COMBATBAGUSE"] = {key = "", object = "SkuCore", func = "CombatBagsApplyKeyBinding",},
+   ["SKU_KEY_COMBATBAGPICKUP"] = {key = "", object = "SkuCore", func = "CombatBagsApplyKeyBinding",},
+
    ["SKU_KEY_STOPROUTEORWAYPOINT"] = {key = "", object = "SkuNav", func = "CreateSkuNavMain",},
 
    ["SKU_KEY_MENUQUICK5"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
