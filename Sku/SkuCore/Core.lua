@@ -2599,8 +2599,19 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_REGEN_DISABLED(...)
-	SkuOptions:CloseMenu()
-	_G["SkuCoreControlOption1"]:Hide()
+	-- Combat-actions Stage 3 (opt-in): keep the Sku menu open + navigable in combat.
+	-- The menu's nav key bindings are set out of combat and PERSIST into combat, so an
+	-- already-open menu stays readable mid-fight (read settings/auras/stats/target, etc.).
+	-- LIMITATION: override bindings cannot be toggled in combat, so while this is on the
+	-- menu is effectively "stuck open" until combat ends (you cannot fight with it up, and
+	-- it will not close until PLAYER_REGEN_ENABLED). Default off preserves the original
+	-- close-on-combat behaviour; toggle with /skucombatmenu. The full open/close-in-combat
+	-- solution is the larger OnKeyDown capture migration (separate, iteratively-tested work).
+	local tKeepOpen = SkuSettings and SkuSettings:Sub("SkuCore") and SkuSettings:Sub("SkuCore").combatMenuOpen == true
+	if not tKeepOpen then
+		SkuOptions:CloseMenu()
+		_G["SkuCoreControlOption1"]:Hide()
+	end
 	if SkuCore.MinimapScanner.IsMMScanning == true then
 		SkuCore.MinimapScanner:MinimapStopScan()
 	end
