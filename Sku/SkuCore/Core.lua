@@ -162,6 +162,13 @@ SkuCoreMovement = {
 			["Descend"] = false,
 			["FollowUnit"] = false,
 			["IsTurningOrAutorunningOrStrafing"] = false,
+			-- Autorun is a toggle, not a held key, so the menu's movement-key
+			-- override traps nothing while it's active: opening the menu during
+			-- autorun is safe. It is therefore tracked separately here and is
+			-- deliberately NOT consulted by IsPlayerMoving()/SkuCore.isMoving, so
+			-- autorun does not gate the menu. See the StartAutoRun/StopAutoRun
+			-- hooks and PLAYER_STOPPED_MOVING below.
+			["AutoRun"] = false,
 			},
 		["LastPosition"] = {
 			["x"] = 0,
@@ -478,6 +485,7 @@ function SkuCore:OnInitialize()
 	SkuDispatcher:RegisterEventCallback("NAME_PLATE_UNIT_ADDED", SkuCore.NAME_PLATE_UNIT_ADDED)
 	SkuDispatcher:RegisterEventCallback("NAME_PLATE_UNIT_REMOVED", SkuCore.NAME_PLATE_UNIT_REMOVED)
 	SkuDispatcher:RegisterEventCallback("PLAYER_STARTED_MOVING", SkuCore.PLAYER_STARTED_MOVING)
+	SkuDispatcher:RegisterEventCallback("PLAYER_STOPPED_MOVING", SkuCore.PLAYER_STOPPED_MOVING)
 	SkuDispatcher:RegisterEventCallback("GOSSIP_SHOW", SkuCore.GOSSIP_SHOW)
 	SkuDispatcher:RegisterEventCallback("ACTIVE_TALENT_GROUP_CHANGED", SkuCore.ACTIVE_TALENT_GROUP_CHANGED)
 	SkuDispatcher:RegisterEventCallback("PLAYER_TALENT_UPDATE", SkuCore.PLAYER_TALENT_UPDATE)
@@ -530,12 +538,24 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_STARTED_MOVING()
+   dprint("PLAYER_STARTED_MOVING", "AutoRun", SkuCoreMovement.Flags.AutoRun)
    if SkuCore.GameWorldObjects.gameWorldObjectsScanFrame then
       SkuCore.GameWorldObjects:GameWorldObjectsRestoreView()
    end
    if SkuCore.MinimapScanner.IsMMScanning == true then
 		SkuCore.MinimapScanner:MinimapStopScan()
 	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Engine ground-truth "stopped translating" event. Autorun cancelled by pressing
+-- a movement key is an engine-level cancel that never calls the Lua StopAutoRun(),
+-- so clear the AutoRun flag here as a self-healing safety net regardless of how
+-- autorun ended.
+function SkuCore:PLAYER_STOPPED_MOVING()
+   if SkuCoreMovement.Flags.AutoRun == true then
+      SkuCoreMovement.Flags.AutoRun = false
+      dprint("PLAYER_STOPPED_MOVING -> cleared stale AutoRun=false")
+   end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PanicModeStartStopBackgroundSound(aStartStop)
@@ -1725,12 +1745,18 @@ function SkuCore:OnEnable()
 
 	--This is because the audio menu overrides most movement keys. 
 	--If the player is turning/moving when the audio menu opens it would turn/move until the menu is closed.
-	hooksecurefunc("StartAutoRun", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = true end)
+	-- Autorun deliberately does NOT touch the IsTurningOrAutorunningOrStrafing
+	-- gate latch (so the menu stays usable while autorunning); it only records
+	-- its own AutoRun flag. StopAutoRun is unreliable — cancelling autorun by
+	-- pressing a movement key is an engine-level cancel that never calls the Lua
+	-- StopAutoRun() — so the flag is also cleared from ground truth in
+	-- PLAYER_STOPPED_MOVING below.
+	hooksecurefunc("StartAutoRun", function() SkuCoreMovement.Flags.AutoRun = true dprint("StartAutoRun hook -> AutoRun=true") end)
 	hooksecurefunc("StrafeLeftStart", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = true end)
 	hooksecurefunc("StrafeRightStart", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = true end)
 	hooksecurefunc("TurnLeftStart", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("TurnLeftStart") end)
 	hooksecurefunc("TurnRightStart", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("TurnRightStart") end)
-	hooksecurefunc("StopAutoRun", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false end)
+	hooksecurefunc("StopAutoRun", function() SkuCoreMovement.Flags.AutoRun = false dprint("StopAutoRun hook -> AutoRun=false") end)
 	hooksecurefunc("StrafeLeftStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false end)
 	hooksecurefunc("StrafeRightStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false end)
 	hooksecurefunc("TurnLeftStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("TurnLeftStop") end)

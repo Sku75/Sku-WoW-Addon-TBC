@@ -30,15 +30,6 @@ Carried in from the v41 line / reported by the maintainer. German term kept with
 an English gloss where the term is Sku-specific. Repro/area are best-guess until
 investigated.
 
-- **Auto-run deactivates half the addon** ("autolaufen deaktiviert das halbe
-  Addon").
-  - Symptom: turning on auto-run / auto-walk disables a large part of Sku's
-    functionality.
-  - Repro: TBD (enable auto-run, observe which features go silent).
-  - Suspected area: movement state handling / `SkuCore.isMoving` and the
-    open-menu-after-moving logic; possibly an input/keybind capture that swallows
-    other handlers. Ties into W4 (shared movement state).
-  - Status: open.
 - **Weapon/spell oil (Zauberöl) not working** ("Zauberöl auftreten geht noch
   nicht").
   - Symptom: applying / detecting / announcing weapon oil (Zauberöl) does not
