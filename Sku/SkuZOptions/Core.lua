@@ -2747,8 +2747,15 @@ function SkuOptions:CreateMenuFrame()
 		end
 
 		if SkuState:IsInCombat() == true then
-			SkuCore:SetOpenMenuAfterCombat(true)
-			return
+			-- Combat-actions Stage 3: if the player opted into combat menu access
+			-- (/skucombatmenu), allow navigation in combat -- moving the cursor and
+			-- reading are unprotected, so this is safe. Protected leaf actions stay
+			-- gated elsewhere (the secure-button macrotext is only set out of combat).
+			-- Without the opt-in, defer as before.
+			if not (SkuSettings and SkuSettings:Sub("SkuCore") and SkuSettings:Sub("SkuCore").combatMenuOpen == true) then
+				SkuCore:SetOpenMenuAfterCombat(true)
+				return
+			end
 		end
 		if SkuState:IsMoving() == true then
 			SkuCore:SetOpenMenuAfterMoving(true)
