@@ -75,6 +75,7 @@ SkuCore\Build_SocketingFrame.lua
 SkuCore\dungeonBrowser.lua
 SkuCore\equipmentSets.lua
 SkuCore\combatBags.lua
+SkuCore\combatTrade.lua
 SkuCore\updateCheck.lua
 
 

@@ -183,6 +183,16 @@ function SkuCore:CombatBagsApplyKeyBinding()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- expose the focused (bag, slot) so the combat-trade helper (combatTrade.lua) can
+-- stage the currently-navigated item into a trade window while in combat.
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:CombatBagsGetFocusedSlot()
+   local e = slotList[cursorIndex]
+   if e then return e.bag, e.slot, e.name end
+   return nil
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- wiring: build/bind after login, and rebuild the slot list when bags change (out of combat)
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tInitFrame = CreateFrame("Frame")
