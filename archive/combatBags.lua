@@ -53,9 +53,20 @@ local function tAnnounce(aIdx)
    local e = slotList[aIdx]
    if not e then return end
    cursorIndex = aIdx
-   local tName = e.name or ""
-   if e.count and e.count > 1 then
-      tName = tName .. ", " .. e.count
+   -- STRUCTURE (position -> physical bag/slot) is frozen at sync; CONTENT is read LIVE
+   -- from that slot, so what we speak always matches what "use" will fire -- both key off
+   -- the SAME bag/slot. If the item was consumed mid-combat the slot reads empty; if a
+   -- different item slid in, we speak (and will use) that item. Read is unprotected, so
+   -- this live lookup is safe in combat. (Point 3 of the combat-actions design.)
+   local _, tCount, _, _, _, _, tLink = GetContainerItemInfo(e.bag, e.slot)
+   local tName
+   if tLink then
+      tName = GetItemInfo(tLink) or tLink
+      if tCount and tCount > 1 then
+         tName = tName .. ", " .. tCount
+      end
+   else
+      tName = L["Empty"] or "empty"   -- slot emptied since the frozen snapshot
    end
    tSpeak(tName)
 end
@@ -277,6 +288,94 @@ end
 SLASH_SKUBAGARROWS1 = "/skubagarrows"
 SlashCmdList["SKUBAGARROWS"] = function()
    SkuCore:CombatBagsToggleArrows()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- NAV PROBE (temporary, remove after validation) -- settles the ONE unproven join in the
+-- "persistent secure binding + insecure PostClick" combat-menu model (Path A of the
+-- combat-actions design):
+--   Q1: does a PERSISTENT secure binding's insecure PostClick navigate the Sku menu
+--       IN COMBAT (i.e. can it replace the EnableKeyboard capture frame)?
+--   Q2: does a PERSISTENT secure /use fire in combat when triggered this way?
+--   Q3: can we bind AT combat start (PLAYER_REGEN_DISABLED) at all, or is it already
+--       locked? (bind CTRL-RIGHT there; if pressing it in combat logs a PostClick, the
+--       combat-start bind WORKED.)
+-- Binds three ctrl-keys at login (out of combat). Read results in SkuDebugLog via
+-- SkuLogCombat("navProbe", ...). Test protocol printed by /skunavprobe.
+---------------------------------------------------------------------------------------------------------------------------------------
+local function tProbeLog(aMsg)
+   if SkuLogCombat then SkuLogCombat("navProbe", aMsg)
+   elseif SkuCore and SkuCore.dprint then pcall(function() SkuCore:dprint("navProbe " .. tostring(aMsg)) end) end
+end
+
+local function tEnsureNavProbe()
+   if _G["SkuNavProbe"] then return end
+   if tInCombat() then return end
+
+   -- secure button whose insecure PostClick drives the menu, exactly like the capture frame does
+   local tNav = CreateFrame("Button", "SkuNavProbe", UIParent, "SecureActionButtonTemplate")
+   tNav:RegisterForClicks("AnyDown")
+   tNav:SetScript("PostClick", function(self, button)
+      local tKey = "DOWN"
+      if button == "CTRL-UP" then tKey = "UP" elseif button == "CTRL-RIGHT" then tKey = "RIGHT" end
+      local tOpt = _G["OnSkuOptionsMainOption1"]
+      local tRan = false
+      if tOpt and tOpt:GetScript("OnClick") then
+         pcall(tOpt:GetScript("OnClick"), tOpt, tKey)
+         tRan = true
+      end
+      tProbeLog("PostClick " .. tostring(button) .. " -> " .. tKey
+         .. " combat=" .. (tInCombat() and 1 or 0) .. " ran=" .. (tRan and 1 or 0))
+   end)
+
+   -- persistent secure /use test (bag 0 slot 1); confirms secure use in combat via this path
+   local tUse = CreateFrame("Button", "SkuNavProbeUse", UIParent, "SecureActionButtonTemplate")
+   tUse:RegisterForClicks("AnyDown")
+   tUse:SetAttribute("type", "macro")
+   tUse:SetAttribute("macrotext", "/use 0 1")
+   tUse:SetScript("PostClick", function(self, button)
+      tProbeLog("Use fired combat=" .. (tInCombat() and 1 or 0))
+   end)
+
+   local tOwner = CreateFrame("Frame", "SkuNavProbeOwner", UIParent)
+   pcall(SetOverrideBindingClick, tOwner, true, "CTRL-UP",   "SkuNavProbe", "CTRL-UP")
+   pcall(SetOverrideBindingClick, tOwner, true, "CTRL-DOWN", "SkuNavProbe", "CTRL-DOWN")
+   pcall(SetOverrideBindingClick, tOwner, true, "CTRL-U",    "SkuNavProbeUse")
+   tProbeLog("bound CTRL-UP/DOWN/U at login combat=" .. (tInCombat() and 1 or 0))
+end
+
+-- Q3: try to bind CTRL-RIGHT AT combat start. pcall ok=1 does NOT prove it took effect
+-- (blocks can be silent) -- the real proof is pressing CTRL-RIGHT in combat and seeing a
+-- "PostClick CTRL-RIGHT" line appear.
+local tProbeCombatFrame = CreateFrame("Frame")
+tProbeCombatFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+tProbeCombatFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
+tProbeCombatFrame:SetScript("OnEvent", function(self, event)
+   if event == "PLAYER_ENTERING_WORLD" then
+      if _G.C_Timer and _G.C_Timer.After then
+         _G.C_Timer.After(3, function() pcall(tEnsureNavProbe) end)
+      end
+   elseif event == "PLAYER_REGEN_DISABLED" then
+      local tOwner = _G["SkuNavProbeOwner"]
+      if not tOwner then return end
+      local ok = pcall(SetOverrideBindingClick, tOwner, true, "CTRL-RIGHT", "SkuNavProbe", "CTRL-RIGHT")
+      tProbeLog("combat-start bind attempt ok=" .. (ok and 1 or 0) .. " lock=" .. (InCombatLockdown() and 1 or 0))
+   end
+end)
+
+SLASH_SKUNAVPROBE1 = "/skunavprobe"
+SlashCmdList["SKUNAVPROBE"] = function()
+   print("Sku nav probe -- put something usable in bag 0 slot 1 first, then:")
+   print("0. /skudebug log on   (start the log)")
+   print("A. OUT of combat, Sku menu OPEN: press CTRL-DOWN/UP -> menu should move; CTRL-U -> uses slot.")
+   print("B. IN combat, NO Sku menu open: press CTRL-DOWN and CTRL-U.")
+   print("   (clean test: capture frame is inactive, so this isolates the persistent binding.)")
+   print("C. IN combat, Sku menu OPEN (handed off): press CTRL-DOWN.")
+   print("   (coexistence test: does the capture frame eat it?)")
+   print("D. IN combat: press CTRL-RIGHT (only bound at combat start).")
+   print("E. /reload, then read SkuDebugLog navProbe lines. Key: combat=1 ran=1 = works.")
+   print("   B logs but C silent  -> capture eats keys (must REPLACE it, not layer).")
+   print("   CTRL-RIGHT logs       -> binding AT combat start works after all.")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

@@ -281,8 +281,11 @@ function SkuOptions:SlashFunc(input, aSilent)
 				-- so enable capture HERE -- this is the reliable in-combat "menu open" signal.
 				if _G["SkuMenuCapture"] then
 					SkuOptions.combatMenuActive = true
-					_G["SkuMenuCapture"]:EnableKeyboard(true)
-					if SkuLogCombat then SkuLogCombat("capture", "ENABLE via SlashFunc") end
+					-- Secure nav keys bound this combat -> capture stands down (Path A Stage 1).
+					if not (Sku and Sku.combatSecureKeysBound) then
+						_G["SkuMenuCapture"]:EnableKeyboard(true)
+						if SkuLogCombat then SkuLogCombat("capture", "ENABLE via SlashFunc") end
+					end
 				end
 			end
 			if SkuState:IsMoving() == true then
@@ -1810,8 +1813,11 @@ function SkuOptions:CreateMainFrame()
 			if InCombatLockdown() and _G["SkuMenuCapture"] and SkuSettings and SkuSettings:Sub("SkuCore")
 				and SkuSettings:Sub("SkuCore").combatMenuOpen == true then
 				SkuOptions.combatMenuActive = true
-				_G["SkuMenuCapture"]:EnableKeyboard(true)
-				if SkuLogCombat then SkuLogCombat("capture", "ENABLE via OpenMenu key") end
+				-- Secure nav keys bound this combat -> capture stands down (Path A Stage 1).
+				if not (Sku and Sku.combatSecureKeysBound) then
+					_G["SkuMenuCapture"]:EnableKeyboard(true)
+					if SkuLogCombat then SkuLogCombat("capture", "ENABLE via OpenMenu key") end
+				end
 			end
 			SkuChat:CloseChat()
 
@@ -3394,8 +3400,8 @@ function SkuOptions:CreateMenuFrame()
 	-- only WRITE a NON-protected frame in combat -- a hard contradiction. So per-item
 	-- in-combat arming cannot use an insecure-written scratch; it must pre-stage onto a
 	-- PROTECTED handler out of combat and select via a hardware-key-driven secure index
-	-- (the SkuCore/combatBags model -- now implemented there as arrow mode). See
-	-- [[sku42-combat-menu-linchpin]].
+	-- (the combatBags model -- archived 2026-07-01; superseded by the Path A rework). See
+	-- [[sku42-combat-item-use-design]], [[sku42-combat-menu-linchpin]].
 
 	-- TEMP diagnostic: record (ALWAYS, independent of /skudebug) which protected
 	-- function gets blocked/forbidden + combat state, into SkuDebugLog.blockProbe.
@@ -5267,8 +5273,9 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								-- "/use <bag> <slot>" macrotext. Insecure Lua may compute the slot
 								-- numbers here (only the keypress that fires the macro must be a
 								-- hardware event, which SecureOnSkuOptionsMainOption1 provides, and
-								-- SetAttribute is already combat-gated in templates.lua). Combat
-								-- use is handled by SkuCore/combatBags.
+								-- SetAttribute is already combat-gated in templates.lua). So this
+								-- works OUT of combat only; IN-combat use is not yet wired (pending
+								-- the Path A rework -- see [[sku42-combat-item-use-design]]).
 								--
 								-- Bag-action confirm wiring: activating this node makes the ENTER
 								-- handler arm the announce-suppress window (the node carries a

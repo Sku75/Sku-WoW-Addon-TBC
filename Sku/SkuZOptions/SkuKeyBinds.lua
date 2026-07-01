@@ -64,18 +64,9 @@ SkuOptions.skuDefaultKeyBindings = {
 
    ["SKU_KEY_OPENATLASLOOT"] = {key = "CTRL-SHIFT-L", object = "SkuCore", func = "AtlasLootApplyKeyBinding",},
 
-   -- Combat bag access (SkuCore/combatBags.lua): navigate occupied bag slots and
-   -- left/right-click them WHILE IN COMBAT. Default empty -> assign in the keybind menu.
-   ["SKU_KEY_COMBATBAGPREV"] = {key = "", object = "SkuCore", func = "CombatBagsApplyKeyBinding",},
-   ["SKU_KEY_COMBATBAGNEXT"] = {key = "", object = "SkuCore", func = "CombatBagsApplyKeyBinding",},
-   ["SKU_KEY_COMBATBAGUSE"] = {key = "", object = "SkuCore", func = "CombatBagsApplyKeyBinding",},
-   ["SKU_KEY_COMBATBAGPICKUP"] = {key = "", object = "SkuCore", func = "CombatBagsApplyKeyBinding",},
-   ["SKU_KEY_COMBATBAGARROWS"] = {key = "", object = "SkuCore", func = "CombatBagsApplyKeyBinding",},
-
-   -- Combat trading (SkuCore/combatTrade.lua): finish a trade while in combat.
-   ["SKU_KEY_COMBATTRADEACCEPT"] = {key = "", object = "SkuCore", func = "CombatTradeApplyKeyBinding",},
-   ["SKU_KEY_COMBATTRADECANCEL"] = {key = "", object = "SkuCore", func = "CombatTradeApplyKeyBinding",},
-   ["SKU_KEY_COMBATTRADEADD"] = {key = "", object = "SkuCore", func = "CombatTradeApplyKeyBinding",},
+   -- (Combat bag access + combat trading keybinds removed 2026-07-01 -- their probe-era
+   -- modules SkuCore/combatBags.lua + combatTrade.lua were archived. The Path A combat
+   -- item-use rework will register its own keys. See [[sku42-combat-item-use-design]].)
 
    ["SKU_KEY_STOPROUTEORWAYPOINT"] = {key = "", object = "SkuNav", func = "CreateSkuNavMain",},
 

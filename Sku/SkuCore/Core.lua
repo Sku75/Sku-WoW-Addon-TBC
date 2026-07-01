@@ -2674,6 +2674,11 @@ function SkuCore:PLAYER_REGEN_DISABLED(...)
 	-- vanished visual is invisible; they just keep hearing/navigating, keys stay free after
 	-- ESC (no lingering bindings). CloseMenu's OnHide disables the capture, so we re-enable
 	-- it AFTER. When the feature is off, or the menu was closed, do the plain close.
+	-- Path A Stage 1: bind the secure nav keys NOW (combat-start grace window), before the
+	-- handoff decides capture-vs-not. Sets Sku.combatSecureKeysBound; when true, the capture
+	-- frame stands down (secure keys drive nav instead). See SkuCore/combatMenuKeys.lua.
+	if SkuCore.CombatMenuKeysBindNow then pcall(function() SkuCore:CombatMenuKeysBindNow() end) end
+
 	local tCombatMenu = SkuSettings and SkuSettings:Sub("SkuCore") and SkuSettings:Sub("SkuCore").combatMenuOpen == true
 	local tWasOpen = SkuOptions:IsMenuOpen() == true
 	SkuOptions.combatMenuHasWindow = false   -- handoff is a bare menu; CheckFrames re-sets it if a window is open
@@ -2689,7 +2694,12 @@ function SkuCore:PLAYER_REGEN_DISABLED(...)
 		SkuOptions.tSuppressMenuCloseSound = true   -- handoff is not a real close; skip the close ping
 		if _G["OnSkuOptionsMain"] then _G["OnSkuOptionsMain"]:Hide() end
 		SkuOptions.combatMenuActive = true
-		if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(true) end
+		-- Secure nav keys already bound this combat -> the capture frame stands down (it
+		-- would otherwise eat the keys before the secure bindings fire). Only enable the
+		-- capture as the FALLBACK (grace window missed / feature toggled to capture).
+		if not (Sku and Sku.combatSecureKeysBound) then
+			if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(true) end
+		end
 	else
 		if SkuLogCombat then SkuLogCombat("PLAYER_REGEN_DISABLED", "close menu") end
 		SkuOptions:CloseMenu()
@@ -2715,6 +2725,9 @@ function SkuCore:PLAYER_REGEN_ENABLED(...)
 	SkuOptions.combatMenuActive = false
 	SkuOptions.combatMenuHasWindow = false
 	if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(false) end
+	-- Path A Stage 1: release the secure nav keys now that combat is over (out of combat,
+	-- so ClearOverrideBindings is allowed). See SkuCore/combatMenuKeys.lua.
+	if SkuCore.CombatMenuKeysClear then pcall(function() SkuCore:CombatMenuKeysClear() end) end
 	if tRestore and SkuOptions.currentMenuPosition and _G["OnSkuOptionsMain"]
 		and _G["OnSkuOptionsMain"]:IsVisible() ~= true then
 		_G["OnSkuOptionsMain"]:Show()   -- OnShow rebinds nav keys; currentMenuPosition preserved
