@@ -3209,16 +3209,15 @@ function SkuOptions:CreateMenuFrame()
 				stack = debugstack(2, 6, 0)}
 			while #tR > 60 do table.remove(tR, 1) end
 		end
+		-- Modal capture: enable on the REAL combat flag (InCombatLockdown), the same one
+		-- the OnKeyDown failsafe checks -- using SkuState here could enable then instantly
+		-- failsafe-disable if the two disagree. EnableKeyboard is combat-legal (non-secure).
+		if InCombatLockdown() and _G["SkuMenuCapture"] and SkuSettings and SkuSettings:Sub("SkuCore")
+			and SkuSettings:Sub("SkuCore").combatMenuOpen == true then
+			_G["SkuMenuCapture"]:EnableKeyboard(true)
+			if SkuLogCombat then SkuLogCombat("capture", "ENABLE lock=1 skuState=" .. tostring(SkuState:IsInCombat())) end
+		end
 		if SkuState:IsInCombat() == true then
-			-- Nav keys can't be override-bound in combat; instead the modal capture frame
-			-- grabs the keyboard and routes to this same OnClick. Enable it here (menu just
-			-- became visible in combat) under the /skucombatmenu opt-in. EnableKeyboard is
-			-- callable in combat (non-secure frame). OnHide disables it again.
-			if _G["SkuMenuCapture"] and SkuSettings and SkuSettings:Sub("SkuCore")
-				and SkuSettings:Sub("SkuCore").combatMenuOpen == true then
-				_G["SkuMenuCapture"]:EnableKeyboard(true)
-				if SkuLogCombat then SkuLogCombat("capture", "ENABLE (menu shown in combat)") end
-			end
 			if SkuLogCombat then SkuLogCombat("menuOnShow", "return in combat -> nav via capture") end
 			SkuCore:SetOpenMenuAfterCombat(true)
 			return
@@ -3429,10 +3428,14 @@ function SkuOptions:CreateMenuFrame()
 			-- but every following key falls straight through to the game -> it can never
 			-- permanently lock the player out (the bug that ate ESC out of combat).
 			if not tCaptureActive() then
+				local tWhy = (not InCombatLockdown() and "noLock")
+					or ((not (_G["OnSkuOptionsMain"] and _G["OnSkuOptionsMain"]:IsVisible())) and "menuHidden")
+					or "optOff"
 				self:EnableKeyboard(false)
-				if SkuLogCombat then SkuLogCombat("capture", "FAILSAFE disable") end
+				if SkuLogCombat then SkuLogCombat("capture", "FAILSAFE disable (" .. tWhy .. ") key=" .. tostring(aKey)) end
 				return
 			end
+			if SkuLogCombat then SkuLogCombat("capture", "keydown " .. tostring(aKey)) end
 			if tMods[aKey] then return end                    -- ignore bare modifier presses
 			if aKey == "ESCAPE" then
 				if SkuLogCombat then SkuLogCombat("capture", "ESC -> close") end
@@ -3456,8 +3459,16 @@ function SkuOptions:CreateMenuFrame()
 		-- across combat-end (combatMenuOpen), and OnHide never fires in that case, so
 		-- without this the capture keeps eating keys out of combat = the observed lock.
 		tCap:RegisterEvent("PLAYER_REGEN_ENABLED")
-		tCap:SetScript("OnEvent", function(self)
-			self:EnableKeyboard(false)
+		tCap:RegisterEvent("PLAYER_ENTERING_WORLD")
+		tCap:SetScript("OnEvent", function(self, aEvent)
+			if aEvent == "PLAYER_ENTERING_WORLD" then
+				-- session boundary marker (fix: stale entries from a prior session were
+				-- being mistaken for the current one) + reset capture to a known-off state.
+				self:EnableKeyboard(false)
+				if SkuLogCombat then SkuLogCombat("=== SESSION ===", "load lock=" .. (InCombatLockdown() and 1 or 0)) end
+				return
+			end
+			self:EnableKeyboard(false)   -- PLAYER_REGEN_ENABLED: release on combat end
 			if SkuLogCombat then SkuLogCombat("capture", "REGEN_ENABLED release") end
 		end)
 	end

@@ -24,8 +24,14 @@ def dump(section):
     return out
 
 ct = dump('combatTrace')
-print("=== combatTrace (%d) ===" % len(ct))
-for e in ct[-80:]:
+# Show only the CURRENT session: everything after the last "=== SESSION ===" marker.
+last_session = 0
+for i, e in enumerate(ct):
+    if e.get('tag','').startswith('=== SESSION'):
+        last_session = i
+cur = ct[last_session:]
+print("=== combatTrace: last session (%d of %d total) ===" % (len(cur), len(ct)))
+for e in cur:
     print(f"{e.get('t','')}  c={e.get('combat','?')}  {e.get('tag','')}  {e.get('detail','')}")
 
 bp = dump('blockProbe')
