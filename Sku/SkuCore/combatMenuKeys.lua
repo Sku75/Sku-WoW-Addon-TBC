@@ -114,6 +114,18 @@ local function tEnsureKeyFrame()
       local vc = self:GetAttribute("vc") or 0
       local u = self:GetFrameRef("use")
 
+      if key == "SYNC" then
+         -- B (open-bags key): cold-sync to the view-selection level. The insecure kroute
+         -- handler opens the visual bags + builds Sku's bags menu on the same press.
+         self:SetAttribute("ma", 1)
+         self:SetAttribute("mlvl", 0)
+         self:SetAttribute("mv", 1)
+         self:SetAttribute("mi", 1)
+         if u then u:SetAttribute("macrotext", "") end
+         self:SetAttribute("mlog", "B sync -> views v=1")
+         return
+      end
+
       if key == "HOME" then
          if (self:GetAttribute("ma") or 0) ~= 1 then
             self:SetAttribute("ma", 1)                   -- cold sync -> view-selection level
@@ -229,6 +241,18 @@ local function tEnsureKeyFrame()
       elseif name == "kroute" then
          local key = tostring(value):match("|(.+)$")
          if not key then return end
+         if key == "SYNC" then
+            -- B: open the real bags (sighted rendering, unchanged) + build+show Sku's bags
+            -- menu so headless nav can begin. OpenAllBags (not Toggle) is idempotent -- it
+            -- no-ops if bags are already open (never closes them). pcall'd: if the frames
+            -- weren't pre-generated the call may block in combat, but the secure sync already
+            -- happened, so it degrades rather than errors.
+            SkuOptions.combatMenuActive = true
+            pcall(function() if OpenAllBags then OpenAllBags() end end)
+            pcall(function() SkuCore:CheckFrames() end)
+            if SkuLogCombat then SkuLogCombat("secureKeys", "SYNC -> OpenAllBags+CheckFrames combat=" .. (tInCombat() and 1 or 0)) end
+            return
+         end
          if not tCombatMenuActive() then return end        -- no menu logically open -> ignore
          if key == "ESCAPE" then
             SkuOptions.combatMenuActive = false             -- logical close (visual hidden in combat)
@@ -273,6 +297,19 @@ function SkuCore:CombatMenuKeysBindNow()
    -- navigates to the item (or descends to Rechtsklick) and presses ENTER. Configurable in
    -- Stage 3.
    pcall(SetOverrideBindingClick, tKeyOwner, true, "ENTER", "SkuCombatUse")
+
+   -- Part C: the player's OPEN-BAGS key = open bags + SYNC the mirror on one press. We look
+   -- up their actual bag key(s) (GetBindingKey) and override them during combat only -- so
+   -- out of combat the key is Blizzard's normal bag toggle (no change for sighted play). The
+   -- SYNC snippet cold-syncs the mirror; the kroute handler opens the real bags + builds
+   -- Sku's bags menu. Configurable override in Stage 3.
+   local function tBindBagKey(aBinding)
+      local k1, k2 = GetBindingKey(aBinding)
+      if k1 then pcall(SetOverrideBindingClick, tKeyOwner, true, k1, "SkuCombatMenuKey", "SYNC") end
+      if k2 then pcall(SetOverrideBindingClick, tKeyOwner, true, k2, "SkuCombatMenuKey", "SYNC") end
+   end
+   tBindBagKey("OPENALLBAGS")
+   tBindBagKey("TOGGLEBACKPACK")
 
    -- Stage 2: pre-stage the bags TREE mirror in the menu's captured per-view order
    -- (SkuCore.combatBagTree, filled by the LocalMenu builder), keyed to physical slots.
