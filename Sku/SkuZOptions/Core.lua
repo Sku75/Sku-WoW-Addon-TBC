@@ -4727,6 +4727,16 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 			if aGossipListTable[index].itemId and not tNewMenuEntry.itemId then
 				tNewMenuEntry.itemId = aGossipListTable[index].itemId
 			end
+			-- Carry the physical (bag, slot) onto the node too, so focusing it can
+			-- clear the item's "new" (neu) glow (see the generic OnEnter). The
+			-- Container-API migration made these nodes obj-less, dropping the old
+			-- side effect where the rendered button's OnEnter cleared it.
+			if aGossipListTable[index].bag ~= nil then
+				tNewMenuEntry.bag = aGossipListTable[index].bag
+			end
+			if aGossipListTable[index].slot ~= nil then
+				tNewMenuEntry.slot = aGossipListTable[index].slot
+			end
 
 			-- "directAction" path: an entry that should fire its `func`
 			-- immediately on Enter, without expanding into the generic

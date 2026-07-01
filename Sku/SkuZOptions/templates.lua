@@ -300,6 +300,19 @@ SkuGenericMenuItem = {
 	end,
 	OnEnter = function(self, value, aValue)
 		--print("OnEnter generic", self.name, value, aValue)
+
+		-- Mirror the default UI: focusing a bag item clears its "new" (neu) glow,
+		-- so the next bag rebuild re-sorts it out of the new-items block and drops
+		-- the "New" prefix. Before the Container-API migration this was a side
+		-- effect of the rendered button's OnEnter; these obj-less nodes carry
+		-- (bag, slot) instead (set in the gossip->menu converter) and clear it here.
+		if self.bag ~= nil and self.slot ~= nil and _G.C_NewItems
+			and _G.C_NewItems.IsNewItem and _G.C_NewItems.RemoveNewItem then
+			if _G.C_NewItems.IsNewItem(self.bag, self.slot) then
+				pcall(_G.C_NewItems.RemoveNewItem, self.bag, self.slot)
+			end
+		end
+
 		if string.find(self.name, L["error;sound"].."#") then
 			for i, v in pairs(SkuCore.Errors.Sounds) do
 				if self.name == v then
