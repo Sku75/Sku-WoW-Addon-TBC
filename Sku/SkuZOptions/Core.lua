@@ -3313,7 +3313,11 @@ function SkuOptions:CreateMenuFrame()
 
 		ClearOverrideBindings(self)
 		ClearOverrideBindings(UIParent)
-		PlaySound(89)
+		if SkuOptions.tSuppressMenuCloseSound then
+			SkuOptions.tSuppressMenuCloseSound = nil   -- combat handoff: not a real close, no ping
+		else
+			PlaySound(89)
+		end
 
 		if _G["FriendsFrame"] then
 			if _G["FriendsFrame"]:IsVisible() == true then
@@ -3478,20 +3482,16 @@ function SkuOptions:CreateMenuFrame()
 		-- Combat ended -> release the keyboard unconditionally. The menu can stay open
 		-- across combat-end (combatMenuOpen), and OnHide never fires in that case, so
 		-- without this the capture keeps eating keys out of combat = the observed lock.
-		tCap:RegisterEvent("PLAYER_REGEN_ENABLED")
+		-- Combat-END release + visual-menu restore is owned by SkuCore:PLAYER_REGEN_ENABLED
+		-- (it runs after SkuCore.inCombat is cleared, so OnShow can rebind the nav keys).
+		-- Here we only reset on load + write a session boundary marker. The OnKeyDown
+		-- failsafe is the backstop if that handler ever fails to fire.
 		tCap:RegisterEvent("PLAYER_ENTERING_WORLD")
 		tCap:SetScript("OnEvent", function(self, aEvent)
-			-- Both events reset capture to a known-off state.
 			SkuOptions.combatMenuActive = false
 			SkuOptions.combatMenuHasWindow = false
 			self:EnableKeyboard(false)
-			if aEvent == "PLAYER_ENTERING_WORLD" then
-				-- session boundary marker (fix: stale entries from a prior session were
-				-- being mistaken for the current one).
-				if SkuLogCombat then SkuLogCombat("=== SESSION ===", "load lock=" .. (InCombatLockdown() and 1 or 0)) end
-			else
-				if SkuLogCombat then SkuLogCombat("capture", "REGEN_ENABLED release") end
-			end
+			if SkuLogCombat then SkuLogCombat("=== SESSION ===", "load lock=" .. (InCombatLockdown() and 1 or 0)) end
 		end)
 	end
 

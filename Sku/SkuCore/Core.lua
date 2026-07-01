@@ -2686,6 +2686,7 @@ function SkuCore:PLAYER_REGEN_DISABLED(...)
 		-- Enable the capture AFTER the Hide (whose OnHide disables it), so nav continues
 		-- headlessly from exactly where the player was.
 		if SkuLogCombat then SkuLogCombat("PLAYER_REGEN_DISABLED", "handoff open menu to capture") end
+		SkuOptions.tSuppressMenuCloseSound = true   -- handoff is not a real close; skip the close ping
 		if _G["OnSkuOptionsMain"] then _G["OnSkuOptionsMain"]:Hide() end
 		SkuOptions.combatMenuActive = true
 		if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(true) end
@@ -2707,6 +2708,19 @@ end
 function SkuCore:PLAYER_REGEN_ENABLED(...)
 	SkuCore.inCombat = false
 	SkuOptions.Voice:OutputString(L["Combat end"], true, true, 0.2)
+	-- Combat ended: release the headless capture, and if a headless combat menu was still
+	-- active, RESTORE the visual menu at the preserved position -- now out of combat, so
+	-- OnShow can rebind the nav keys -- for a seamless transition in both directions.
+	local tRestore = SkuOptions.combatMenuActive == true
+	SkuOptions.combatMenuActive = false
+	SkuOptions.combatMenuHasWindow = false
+	if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(false) end
+	if tRestore and SkuOptions.currentMenuPosition and _G["OnSkuOptionsMain"]
+		and _G["OnSkuOptionsMain"]:IsVisible() ~= true then
+		_G["OnSkuOptionsMain"]:Show()   -- OnShow rebinds nav keys; currentMenuPosition preserved
+		pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
+		if SkuLogCombat then SkuLogCombat("capture", "restore visual menu at combat end") end
+	end
 	if SkuSettings:Sub("SkuCore").autoFollow == true then
 		if SkuStatus.followUnitId then
 			if SkuStatus.followUnitId ~= "" then
@@ -3990,9 +4004,13 @@ function SkuCore:GameMenuShowHandler()
 	if not GameMenuFrame or GameMenuFrame:IsVisible() ~= true then
 		return
 	end
-	-- Don't hijack while in combat (hiding panels / opening the menu mid
-	-- fight is undesirable; the plain Blizzard menu still works there).
-	if InCombatLockdown and InCombatLockdown() then
+	-- In combat, under the /skucombatmenu opt-in, still open the Sku "Spielmenü": the
+	-- HideUIPanel(GameMenuFrame) below is protected and just no-ops (the Blizzard menu
+	-- stays visible, harmless for a screen-reader user), while SlashFunc descends into the
+	-- Spielmenü headlessly and enables the capture -> navigable in combat like other
+	-- windows. Without the opt-in, keep the plain Blizzard menu.
+	local tCombatMenu = SkuSettings and SkuSettings:Sub("SkuCore") and SkuSettings:Sub("SkuCore").combatMenuOpen == true
+	if InCombatLockdown and InCombatLockdown() and not tCombatMenu then
 		return
 	end
 	-- W7: Escape opens the improved Sku "Spielmenü" (game-menu mirror whose Optionen
