@@ -2676,17 +2676,26 @@ function SkuCore:PLAYER_REGEN_DISABLED(...)
 	-- it AFTER. When the feature is off, or the menu was closed, do the plain close.
 	local tCombatMenu = SkuSettings and SkuSettings:Sub("SkuCore") and SkuSettings:Sub("SkuCore").combatMenuOpen == true
 	local tWasOpen = SkuOptions:IsMenuOpen() == true
-	if SkuLogCombat then SkuLogCombat("PLAYER_REGEN_DISABLED", (tCombatMenu and tWasOpen) and "handoff open menu to capture" or "close menu") end
-	SkuOptions:CloseMenu()
-	if _G["SkuCoreControlOption1"] then _G["SkuCoreControlOption1"]:Hide() end
 	SkuOptions.combatMenuHasWindow = false   -- handoff is a bare menu; CheckFrames re-sets it if a window is open
 	if tCombatMenu and tWasOpen then
+		-- HANDOFF: hide ONLY the visual frame -- directly, NOT via CloseMenu. CloseMenu
+		-- routes through the open/close toggle handler, which ALWAYS resets
+		-- currentMenuPosition to root (SkuZOptions ~2398 + OnFirst) and speaks "Menu;closed"
+		-- (~2457). A direct :Hide() skips both -- its OnHide still clears the override
+		-- bindings -- so the menu POSITION survives and there is no "closed" announce.
+		-- Enable the capture AFTER the Hide (whose OnHide disables it), so nav continues
+		-- headlessly from exactly where the player was.
+		if SkuLogCombat then SkuLogCombat("PLAYER_REGEN_DISABLED", "handoff open menu to capture") end
+		if _G["OnSkuOptionsMain"] then _G["OnSkuOptionsMain"]:Hide() end
 		SkuOptions.combatMenuActive = true
 		if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(true) end
 	else
+		if SkuLogCombat then SkuLogCombat("PLAYER_REGEN_DISABLED", "close menu") end
+		SkuOptions:CloseMenu()
 		SkuOptions.combatMenuActive = false
 		if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(false) end
 	end
+	if _G["SkuCoreControlOption1"] then _G["SkuCoreControlOption1"]:Hide() end
 	if SkuCore.MinimapScanner.IsMMScanning == true then
 		SkuCore.MinimapScanner:MinimapStopScan()
 	end
