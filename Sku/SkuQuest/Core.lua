@@ -1038,7 +1038,11 @@ function SkuQuest:ToggleQuestLogHook(...)
 	end
 	--if 1 == 1 then return end
 
-	if SkuState:IsInCombat() == true then
+	-- Self-deactivation: the quest log opens fine in combat, but this hook used to bail
+	-- here -> the SlashFunc read-descend below (which also enables the modal capture) was
+	-- skipped, so Sku never read/navigated it. Proceed under the /skucombatmenu opt-in.
+	if SkuState:IsInCombat() == true and not (SkuSettings and SkuSettings:Sub("SkuCore")
+		and SkuSettings:Sub("SkuCore").combatMenuOpen == true) then
 		return
 	end
 
