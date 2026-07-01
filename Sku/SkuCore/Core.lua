@@ -2665,12 +2665,17 @@ function SkuCore:PLAYER_REGEN_DISABLED(...)
 	-- it will not close until PLAYER_REGEN_ENABLED). Default off preserves the original
 	-- close-on-combat behaviour; toggle with /skucombatmenu. The full open/close-in-combat
 	-- solution is the larger OnKeyDown capture migration (separate, iteratively-tested work).
-	local tKeepOpen = SkuSettings and SkuSettings:Sub("SkuCore") and SkuSettings:Sub("SkuCore").combatMenuOpen == true
-	if SkuLogCombat then SkuLogCombat("PLAYER_REGEN_DISABLED", tKeepOpen and "keep menu open" or "close menu") end
-	if not tKeepOpen then
-		SkuOptions:CloseMenu()
-		_G["SkuCoreControlOption1"]:Hide()
-	end
+	-- ALWAYS close the menu on combat start, so combat begins from a clean slate. Keeping
+	-- the (visual, override-bound) menu open across combat-start was a lock-in: the frame
+	-- can't be hidden and its arrow bindings can't be cleared in combat, so the keys
+	-- stayed hijacked with no way out. Combat menu access is provided FRESH by the headless
+	-- capture (open a window or Shift-F1 in combat), so we no longer keep it open here.
+	if SkuLogCombat then SkuLogCombat("PLAYER_REGEN_DISABLED", "close menu (clean slate)") end
+	SkuOptions:CloseMenu()
+	if _G["SkuCoreControlOption1"] then _G["SkuCoreControlOption1"]:Hide() end
+	-- clear any headless combat-capture state (re-enabled on the next in-combat open)
+	SkuOptions.combatMenuActive = false
+	if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(false) end
 	if SkuCore.MinimapScanner.IsMMScanning == true then
 		SkuCore.MinimapScanner:MinimapStopScan()
 	end
@@ -3677,6 +3682,16 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 			SkuCore:ScheduleMenuFlashRecheck()
 
 		else
+			-- No contributing window is open any more. In combat, release the headless
+			-- capture so closing a window via its own key hands the keyboard straight back
+			-- to the game (instead of waiting for ESC / combat end). This fires only when a
+			-- window actually closed (the window is gone), never mid-navigation. The bare
+			-- Shift-F1 menu (no window) is released by ESC instead.
+			if InCombatLockdown() and SkuOptions.combatMenuActive == true then
+				SkuOptions.combatMenuActive = false
+				if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(false) end
+				if SkuLogCombat then SkuLogCombat("capture", "release (no window open)") end
+			end
 			if not aDontClose then
 				SkuCore.openMenuAfterMoving = false
 				SkuCore.openMenuAfterCombat = false
@@ -3684,7 +3699,7 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 					SkuCore.GossipList = {}
 					--SkuOptions:SlashFunc("short,lokal")
 					SkuOptions:CloseMenu()
-				end			
+				end
 			end
 		end
 	end)
