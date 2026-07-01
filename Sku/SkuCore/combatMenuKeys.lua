@@ -30,7 +30,10 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 -- Stage 1 nav key set. Stage 3 makes these user-configurable settings (default arrows +
 -- enter). ESCAPE closes the combat menu; while bound (whole combat) it loses its normal
 -- game function -- an accepted cost of the dedicated-combat-keys model.
-local NAV_KEYS = { "UP", "DOWN", "LEFT", "RIGHT", "ENTER", "BACKSPACE", "HOME", "END", "ESCAPE" }
+-- ENTER is intentionally NOT here -- it's bound to the secure USE button instead (fires the
+-- armed /use), with a PostClick that also routes ENTER to the menu handler so it still
+-- activates non-bag menu items in combat. See tEnsureKeyFrame / CombatMenuKeysBindNow.
+local NAV_KEYS = { "UP", "DOWN", "LEFT", "RIGHT", "BACKSPACE", "HOME", "END", "ESCAPE" }
 
 local tKeyOwner
 
@@ -80,86 +83,137 @@ local function tEnsureKeyFrame()
    u:SetAttribute("type", "macro")
    u:SetAttribute("macrotext", "")
    u:Show()
-   u:SetScript("PostClick", function(self)   -- diagnostic: confirms the USE key reached the button + shows the armed macro
-      if SkuLogCombat then SkuLogCombat("mirror", "USE fired macro=[" .. tostring(self:GetAttribute("macrotext")) .. "] combat=" .. (tInCombat() and 1 or 0)) end
+   u:SetScript("PostClick", function(self)
+      if SkuLogCombat then SkuLogCombat("mirror", "USE(ENTER) macro=[" .. tostring(self:GetAttribute("macrotext")) .. "] combat=" .. (tInCombat() and 1 or 0)) end
+      -- ENTER fires the armed /use above (secure). It ALSO routes to the menu handler so
+      -- ENTER still activates NON-bag menu items in combat (outside the bag list the armed
+      -- macro is empty, so the /use is a no-op and only the normal activate happens).
+      if tCombatMenuActive() then
+         local tOpt = _G["OnSkuOptionsMainOption1"]
+         if tOpt and tOpt:GetScript("OnClick") then
+            pcall(tOpt:GetScript("OnClick"), tOpt, "ENTER")
+         end
+      end
    end)
    b:SetFrameRef("use", u)
 
-   -- MIRROR snippet (runs secure, on every key). mA=active, mL=level(0 list/1 submenu),
-   -- mI=item index, mSub=submenu pos (1 Links / 2 Rechts). Only HOME can activate.
+   -- MIRROR snippet -- a 3-level TREE tracking the bags menu in lockstep (see Part A capture
+   -- in LocalMenu.lua -> SkuCore.combatBagTree, pre-staged as vc / v<v>_c / v<v>_s<i>):
+   --   mlvl 0 = view-selection level (Tasche 1..N, keyring, all items, ...)
+   --   mlvl 1 = item list inside the current view (mv), item index mi
+   --   mlvl 2 = the item's Links/Rechtsklick submenu
+   -- Arms SkuCombatUse's "/use <bag> <slot>" for the focused item; ENTER (bound straight to
+   -- SkuCombatUse) fires it. HOME syncs: cold -> activate at view level; at view level ->
+   -- first view; inside a view -> that view's first item. Attribute names are all lowercase
+   -- (WoW lowercases secure attr names). Fire is external (ENTER->SkuCombatUse).
    b:SetAttribute("_onclick", [=[
       local key = button
-      local c = (self:GetAttribute("mC") or 0) + 1
-      self:SetAttribute("mC", c)
-      -- route the key to the insecure menu handler (nav/read/open/close) via OnAttributeChanged
-      self:SetAttribute("kroute", c .. "|" .. key)
-      -- DIAGNOSTIC (temporary): prove the snippet runs on EVERY key.
-      self:SetAttribute("mLog", c .. " key=" .. key .. " mA=" .. (self:GetAttribute("mA") or 0))
+      local c = (self:GetAttribute("mc") or 0) + 1
+      self:SetAttribute("mc", c)
+      self:SetAttribute("kroute", c .. "|" .. key)      -- insecure nav routing
+      local vc = self:GetAttribute("vc") or 0
+      local u = self:GetFrameRef("use")
+
       if key == "HOME" then
-         self:SetAttribute("mA", 1)
-         self:SetAttribute("mL", 0)
-         self:SetAttribute("mI", 1)
-         local s = self:GetAttribute("s1")
-         local u = self:GetFrameRef("use")
-         if u and s then u:SetAttribute("macrotext", "/use " .. s) end
-         self:SetAttribute("mLog", "HOME sync i=1 s=" .. (s or "?"))
+         if (self:GetAttribute("ma") or 0) ~= 1 then
+            self:SetAttribute("ma", 1)                   -- cold sync -> view-selection level
+            self:SetAttribute("mlvl", 0)
+            self:SetAttribute("mv", 1)
+            self:SetAttribute("mi", 1)
+            if u then u:SetAttribute("macrotext", "") end
+            self:SetAttribute("mlog", "HOME sync -> views v=1")
+         else
+            local lvl = self:GetAttribute("mlvl") or 0
+            if lvl == 0 then
+               self:SetAttribute("mv", 1)
+               self:SetAttribute("mlog", "HOME -> view 1")
+            else
+               local mv = self:GetAttribute("mv") or 1
+               self:SetAttribute("mlvl", 1)
+               self:SetAttribute("mi", 1)
+               local s = self:GetAttribute("v" .. mv .. "_s1")
+               if u and s then u:SetAttribute("macrotext", "/use " .. s) end
+               self:SetAttribute("mlog", "HOME -> item 1 v=" .. mv .. " s=" .. (s or "?"))
+            end
+         end
          return
       end
-      if (self:GetAttribute("mA") or 0) ~= 1 then return end
-      local count = self:GetAttribute("count") or 0
-      local lvl = self:GetAttribute("mL") or 0
-      local i = self:GetAttribute("mI") or 1
-      local u = self:GetFrameRef("use")
+
+      if (self:GetAttribute("ma") or 0) ~= 1 then return end
+      local lvl = self:GetAttribute("mlvl") or 0
+      local mv = self:GetAttribute("mv") or 1
+      local mi = self:GetAttribute("mi") or 1
+
       if lvl == 0 then
+         -- view-selection level
          if key == "DOWN" then
-            if count > 0 then i = i % count + 1 end
-            self:SetAttribute("mI", i)
-            local s = self:GetAttribute("s" .. i)
-            if u and s then u:SetAttribute("macrotext", "/use " .. s) end
-            self:SetAttribute("mLog", "DOWN i=" .. i .. " s=" .. (s or "?"))
+            if vc > 0 then mv = mv % vc + 1 end
+            self:SetAttribute("mv", mv)
+            self:SetAttribute("mlog", "view DOWN v=" .. mv)
          elseif key == "UP" then
-            if count > 0 then i = (i - 2) % count + 1 end
-            self:SetAttribute("mI", i)
-            local s = self:GetAttribute("s" .. i)
-            if u and s then u:SetAttribute("macrotext", "/use " .. s) end
-            self:SetAttribute("mLog", "UP i=" .. i .. " s=" .. (s or "?"))
+            if vc > 0 then mv = (mv - 2) % vc + 1 end
+            self:SetAttribute("mv", mv)
+            self:SetAttribute("mlog", "view UP v=" .. mv)
          elseif key == "END" then
-            i = count
-            self:SetAttribute("mI", i)
-            local s = self:GetAttribute("s" .. i)
-            if u and s then u:SetAttribute("macrotext", "/use " .. s) end
-            self:SetAttribute("mLog", "END i=" .. i)
+            mv = vc
+            self:SetAttribute("mv", mv)
+            self:SetAttribute("mlog", "view END v=" .. mv)
          elseif key == "RIGHT" then
-            self:SetAttribute("mL", 1)
-            self:SetAttribute("mSub", 1)
-            self:SetAttribute("mLog", "RIGHT submenu i=" .. i)
+            self:SetAttribute("mlvl", 1)
+            self:SetAttribute("mi", 1)
+            local s = self:GetAttribute("v" .. mv .. "_s1")
+            if u and s then u:SetAttribute("macrotext", "/use " .. s) end
+            self:SetAttribute("mlog", "enter view v=" .. mv .. " i=1 s=" .. (s or "?"))
          elseif key == "LEFT" then
-            self:SetAttribute("mA", 0)
-            if u then u:SetAttribute("macrotext", "") end   -- disarm so the USE key is inert outside the list
-            self:SetAttribute("mLog", "LEFT exit")
+            self:SetAttribute("ma", 0)
+            if u then u:SetAttribute("macrotext", "") end
+            self:SetAttribute("mlog", "exit views")
+         end
+      elseif lvl == 1 then
+         -- item list within view mv
+         local vn = self:GetAttribute("v" .. mv .. "_c") or 0
+         if key == "DOWN" then
+            if vn > 0 then mi = mi % vn + 1 end
+            self:SetAttribute("mi", mi)
+            local s = self:GetAttribute("v" .. mv .. "_s" .. mi)
+            if u and s then u:SetAttribute("macrotext", "/use " .. s) end
+            self:SetAttribute("mlog", "item DOWN v=" .. mv .. " i=" .. mi .. " s=" .. (s or "?"))
+         elseif key == "UP" then
+            if vn > 0 then mi = (mi - 2) % vn + 1 end
+            self:SetAttribute("mi", mi)
+            local s = self:GetAttribute("v" .. mv .. "_s" .. mi)
+            if u and s then u:SetAttribute("macrotext", "/use " .. s) end
+            self:SetAttribute("mlog", "item UP v=" .. mv .. " i=" .. mi .. " s=" .. (s or "?"))
+         elseif key == "END" then
+            mi = vn
+            self:SetAttribute("mi", mi)
+            local s = self:GetAttribute("v" .. mv .. "_s" .. mi)
+            if u and s then u:SetAttribute("macrotext", "/use " .. s) end
+            self:SetAttribute("mlog", "item END v=" .. mv .. " i=" .. mi)
+         elseif key == "RIGHT" then
+            self:SetAttribute("mlvl", 2)
+            self:SetAttribute("msub", 1)
+            self:SetAttribute("mlog", "enter submenu v=" .. mv .. " i=" .. mi)
+         elseif key == "LEFT" then
+            self:SetAttribute("mlvl", 0)
+            self:SetAttribute("mlog", "back to views")
          end
       else
-         local sub = self:GetAttribute("mSub") or 1
+         -- Links/Rechtsklick submenu (arm unchanged; ENTER->SkuCombatUse fires it)
+         local sub = self:GetAttribute("msub") or 1
          if key == "DOWN" then
             sub = sub + 1
             if sub > 2 then sub = 2 end
-            self:SetAttribute("mSub", sub)
-            self:SetAttribute("mLog", "sub=" .. sub)
+            self:SetAttribute("msub", sub)
+            self:SetAttribute("mlog", "sub=" .. sub)
          elseif key == "UP" then
             sub = sub - 1
             if sub < 1 then sub = 1 end
-            self:SetAttribute("mSub", sub)
-            self:SetAttribute("mLog", "sub=" .. sub)
+            self:SetAttribute("msub", sub)
+            self:SetAttribute("mlog", "sub=" .. sub)
          elseif key == "LEFT" then
-            self:SetAttribute("mL", 0)
-            self:SetAttribute("mLog", "back to list")
-         elseif key == "ENTER" then
-            if sub == 2 then
-               self:SetAttribute("mLog", "FIRE i=" .. i)
-               if u then u:Click() end
-            else
-               self:SetAttribute("mLog", "ENTER links no-fire")
-            end
+            self:SetAttribute("mlvl", 1)
+            self:SetAttribute("mlog", "back to items")
          end
       end
    ]=])
@@ -212,38 +266,46 @@ function SkuCore:CombatMenuKeysBindNow()
    for _, k in ipairs(NAV_KEYS) do
       pcall(SetOverrideBindingClick, tKeyOwner, true, k, "SkuCombatMenuKey", k)
    end
-   -- Dedicated USE key -> fires the armed "/use <bag> <slot>" DIRECTLY on the secure button.
-   -- The snippet arms the macro as you navigate (proven), but its own use:Click() does NOT
-   -- fire a protected action in combat; a hardware key bound straight to the SecureActionButton
-   -- does (same as combatBags). Press it while on the item you want. Configurable in Stage 3;
-   -- DELETE for now.
-   pcall(SetOverrideBindingClick, tKeyOwner, true, "DELETE", "SkuCombatUse")
+   -- ENTER = the USE hotkey -> fires the armed "/use <bag> <slot>" DIRECTLY on the secure
+   -- button (the snippet only arms the macro; a hardware key bound straight to the
+   -- SecureActionButton is what actually fires a protected action in combat). Its PostClick
+   -- also routes ENTER to the menu handler, so ENTER still activates non-bag items. The user
+   -- navigates to the item (or descends to Rechtsklick) and presses ENTER. Configurable in
+   -- Stage 3.
+   pcall(SetOverrideBindingClick, tKeyOwner, true, "ENTER", "SkuCombatUse")
 
-   -- Stage 2: pre-stage the bags MIRROR in the menu's captured "all items" order
-   -- (SkuCore.combatBagOrder, filled by the LocalMenu builder), keyed to physical slots.
-   -- Done here in the combat-start grace window (SetAttribute on a secure frame is allowed
-   -- while InCombatLockdown() is still false -- verified). Reset the mirror cursor; HOME
-   -- (re)syncs + activates it in-list. If the order wasn't captured yet (bags never opened),
-   -- count=0 and the mirror is simply inert until the player opens bags out of combat once.
+   -- Stage 2: pre-stage the bags TREE mirror in the menu's captured per-view order
+   -- (SkuCore.combatBagTree, filled by the LocalMenu builder), keyed to physical slots.
+   -- Flattened to secure attributes: vc = view count; v<v>_c = item count of view v;
+   -- v<v>_s<i> = "bag slot" of item i in view v. Done in the combat-start grace window
+   -- (SetAttribute on a secure frame is allowed while InCombatLockdown() is still false --
+   -- verified). Reset the mirror cursor; HOME/B (re)syncs + activates it. If the tree wasn't
+   -- captured yet (bags never opened), vc=0 and the mirror is inert until bags are opened.
    local tH = _G["SkuCombatMenuKey"]
-   local tOrder = SkuCore and SkuCore.combatBagOrder
-   local tN = 0
+   local tTree = SkuCore and SkuCore.combatBagTree
+   local tVC, tItems = 0, 0
    if tH then
-      if type(tOrder) == "table" then
-         for _, e in ipairs(tOrder) do
-            tN = tN + 1
-            local slotStr = e.bag .. " " .. e.slot
-            pcall(function() tH:SetAttribute("s" .. tN, slotStr) end)
+      if type(tTree) == "table" then
+         tVC = #tTree
+         for v, view in ipairs(tTree) do
+            local n = #view.items
+            pcall(function() tH:SetAttribute("v" .. v .. "_c", n) end)
+            for i, e in ipairs(view.items) do
+               tItems = tItems + 1
+               local slotStr = e.bag .. " " .. e.slot
+               pcall(function() tH:SetAttribute("v" .. v .. "_s" .. i, slotStr) end)
+            end
          end
       end
-      pcall(function() tH:SetAttribute("count", tN) end)
-      pcall(function() tH:SetAttribute("mA", 0) end)
-      pcall(function() tH:SetAttribute("mL", 0) end)
-      pcall(function() tH:SetAttribute("mI", 1) end)
+      pcall(function() tH:SetAttribute("vc", tVC) end)
+      pcall(function() tH:SetAttribute("ma", 0) end)
+      pcall(function() tH:SetAttribute("mlvl", 0) end)
+      pcall(function() tH:SetAttribute("mv", 1) end)
+      pcall(function() tH:SetAttribute("mi", 1) end)
    end
 
    Sku.combatSecureKeysBound = true
-   if SkuLogCombat then SkuLogCombat("secureKeys", "bound nav keys + staged mirror count=" .. tN .. " (lock=0)") end
+   if SkuLogCombat then SkuLogCombat("secureKeys", "bound nav keys + staged tree views=" .. tVC .. " items=" .. tItems .. " (lock=0)") end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

@@ -75,7 +75,6 @@ SkuCore\Build_SocketingFrame.lua
 SkuCore\dungeonBrowser.lua
 SkuCore\equipmentSets.lua
 SkuCore\combatMenuKeys.lua
-SkuCore\combatActionsProbe.lua
 SkuCore\updateCheck.lua
 
 

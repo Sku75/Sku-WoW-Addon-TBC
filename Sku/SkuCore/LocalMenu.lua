@@ -1127,6 +1127,12 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 		local bagId = tBagSlotListSorted[q]
 		local tIsBankSlot = (bagId == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true)
 		local tNumSlots = GetContainerNumSlots(bagId) or 0
+		-- BUGFIX: the bank container (-1) reports its 28 slots even when the bank UI is
+		-- closed, producing a phantom "Bank" view in the bags menu. Only include it while the
+		-- bank frame is actually open (0 slots -> the slot loop skips it, no bag node created).
+		if bagId == -1 and not (_G["BankFrame"] and _G["BankFrame"]:IsVisible() == true) then
+			tNumSlots = 0
+		end
 		for slotId = 1, tNumSlots do
 			-- bag (parent) node, once per bag, keyed by bagId
 			if not tBagResultsByBag[bagId] then
@@ -1449,6 +1455,33 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 	}   
 
 	BagSortMenuHelper(aParentChilds[tFriendlyName].childs, nil)
+
+	-- Capture the per-view bag TREE for the combat-actions mirror: every top-level view in
+	-- display order (per-bag lists, all-items, keyring, ...) with its usable items (bag/slot)
+	-- in child order. Single source of truth so the in-combat tree mirror matches the menu
+	-- exactly (order + ties). Non-item views are kept (empty item list) so the view-level
+	-- index stays aligned with the menu. See SkuCore/combatMenuKeys.lua / [[sku42-combat-item-use-design]].
+	do
+		local tTree = {}
+		for _, tViewName in ipairs(aParentChilds) do
+			local tNode = aParentChilds[tViewName]
+			if type(tNode) == "table" and type(tNode.childs) == "table" then
+				local tItems = {}
+				for _, tChild in ipairs(tNode.childs) do
+					if type(tChild) == "table" and tChild.bag ~= nil and tChild.slot ~= nil then
+						tItems[#tItems + 1] = { bag = tChild.bag, slot = tChild.slot }
+					end
+				end
+				tTree[#tTree + 1] = { label = tostring(tViewName), items = tItems }
+			end
+		end
+		SkuCore.combatBagTree = tTree
+		if SkuLogCombat then
+			local tSummary = ""
+			for i, v in ipairs(tTree) do tSummary = tSummary .. i .. ":" .. v.label .. "(" .. #v.items .. ") " end
+			SkuLogCombat("bagTree", tSummary)
+		end
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
