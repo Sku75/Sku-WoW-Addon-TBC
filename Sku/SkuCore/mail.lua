@@ -69,6 +69,7 @@ function Mail:MAIL_SHOW(...)
    --print("MAIL_SHOW", ...)
    SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Mail"])
    MailboxOpenFlag = true
+   pcall(function() if SkuCore and SkuCore.ScheduleMenuFlashRecheck then SkuCore:ScheduleMenuFlashRecheck() end end)
 end
 
 ------------------------------------------------------------------------------------------------------------

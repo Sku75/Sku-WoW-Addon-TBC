@@ -97,6 +97,24 @@ local function tEnsureFrames()
          idx = idx % count + 1
       elseif button == "PREV" then
          idx = (idx - 2) % count + 1
+      elseif button == "HOME" then
+         idx = 1
+      elseif button == "END" then
+         idx = count
+      elseif strlen(button) == 1 then
+         -- first-letter search: jump to the NEXT occupied slot whose item name
+         -- starts with the pressed letter (wraps). Names are pre-staged out of
+         -- combat (n1..nN); the search runs entirely in this secure snippet, so it
+         -- needs no insecure->secure transfer and works in combat.
+         local target = strlower(button)
+         for step = 1, count do
+            local cand = (idx - 1 + step) % count + 1
+            local nm = self:GetAttribute("n" .. cand)
+            if nm and strlower(strsub(nm, 1, 1)) == target then
+               idx = cand
+               break
+            end
+         end
       end
       self:SetAttribute("index", idx)
       local bs = self:GetAttribute("s" .. idx)
@@ -110,6 +128,14 @@ local function tEnsureFrames()
       if name == "announce" then
          tAnnounce(value)
       end
+   end)
+
+   -- insecure toggle button for ARROW MODE (bound to SKU_KEY_COMBATBAGARROWS). Clicking
+   -- it flips arrow mode; the flip itself only happens out of combat (it (un)binds keys).
+   local tArrowToggle = _G["SkuCombatBagsArrowToggle"] or CreateFrame("Button", "SkuCombatBagsArrowToggle", UIParent)
+   tArrowToggle:RegisterForClicks("AnyDown")
+   tArrowToggle:SetScript("OnClick", function()
+      SkuCore:CombatBagsToggleArrows()
    end)
 
    framesReady = true
@@ -133,6 +159,7 @@ local function tRebuild()
             n = n + 1
             slotList[n] = { bag = bag, slot = slot, name = (GetItemInfo(link) or link), count = count }
             tNav:SetAttribute("s" .. n, bag .. " " .. slot)
+            tNav:SetAttribute("n" .. n, slotList[n].name or "")   -- name, for in-snippet first-letter search
          end
       end
    end
@@ -180,6 +207,7 @@ function SkuCore:CombatBagsApplyKeyBinding()
    tBind("SKU_KEY_COMBATBAGNEXT",   "SkuCombatBagsNav", "NEXT")
    tBind("SKU_KEY_COMBATBAGUSE",    "SkuCombatBagsUse")
    tBind("SKU_KEY_COMBATBAGPICKUP", "SkuCombatBagsPickup")
+   tBind("SKU_KEY_COMBATBAGARROWS", "SkuCombatBagsArrowToggle")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -190,6 +218,65 @@ function SkuCore:CombatBagsGetFocusedSlot()
    local e = slotList[cursorIndex]
    if e then return e.bag, e.slot, e.name end
    return nil
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- ARROW MODE (option 3): drive the SECURE bag cursor with the ARROW keys, so using
+-- bags feels the same in and out of combat. While ON:
+--   UP / DOWN      move to prev / next occupied slot (speaks the item)
+--   a-z            jump to the next item whose name starts with that letter
+--   HOME / END     first / last item
+--   RIGHT          USE the focused item   (secure /use -> works in combat)
+--   LEFT           PICK UP the focused item (insecure, works in combat)
+-- Because what the secure cursor announces is exactly what RIGHT uses, "what you
+-- hear is what you use" -- the two can never diverge (single source of truth).
+--
+-- Key bindings can only be (re)bound OUT of combat (Blizzard rule), so this is a
+-- manual toggle you flip BEFORE a fight; it then persists into combat. While ON the
+-- arrows are taken over for bags -- flip OFF (out of combat) to use the normal menu
+-- arrows again. Toggle via /skubagarrows (or bind a key to that macro).
+---------------------------------------------------------------------------------------------------------------------------------------
+local arrowOwner
+local arrowsOn = false
+
+function SkuCore:CombatBagsArrowsActive()
+   return arrowsOn
+end
+
+function SkuCore:CombatBagsToggleArrows()
+   if tInCombat() then
+      tSpeak("bag arrows can only be switched out of combat")
+      return
+   end
+   if not tEnsureFrames() then return end
+   tRebuild()
+   arrowOwner = arrowOwner or CreateFrame("Frame", "SkuCombatBagsArrowOwner", UIParent)
+
+   if arrowsOn then
+      pcall(ClearOverrideBindings, arrowOwner)
+      arrowsOn = false
+      tSpeak("bag arrows off")
+      return
+   end
+
+   pcall(SetOverrideBindingClick, arrowOwner, true, "DOWN",  "SkuCombatBagsNav", "NEXT")
+   pcall(SetOverrideBindingClick, arrowOwner, true, "UP",    "SkuCombatBagsNav", "PREV")
+   pcall(SetOverrideBindingClick, arrowOwner, true, "HOME",  "SkuCombatBagsNav", "HOME")
+   pcall(SetOverrideBindingClick, arrowOwner, true, "END",   "SkuCombatBagsNav", "END")
+   pcall(SetOverrideBindingClick, arrowOwner, true, "RIGHT", "SkuCombatBagsUse")
+   pcall(SetOverrideBindingClick, arrowOwner, true, "LEFT",  "SkuCombatBagsPickup")
+   for i = 0, 25 do
+      local c = string.char(97 + i)                                 -- 'a'..'z'
+      pcall(SetOverrideBindingClick, arrowOwner, true, string.upper(c), "SkuCombatBagsNav", c)
+   end
+   arrowsOn = true
+   tSpeak("bag arrows on")
+   tAnnounce(cursorIndex)                                            -- read the item we're on
+end
+
+SLASH_SKUBAGARROWS1 = "/skubagarrows"
+SlashCmdList["SKUBAGARROWS"] = function()
+   SkuCore:CombatBagsToggleArrows()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

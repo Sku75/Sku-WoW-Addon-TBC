@@ -70,6 +70,7 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_COMBATBAGNEXT"] = {key = "", object = "SkuCore", func = "CombatBagsApplyKeyBinding",},
    ["SKU_KEY_COMBATBAGUSE"] = {key = "", object = "SkuCore", func = "CombatBagsApplyKeyBinding",},
    ["SKU_KEY_COMBATBAGPICKUP"] = {key = "", object = "SkuCore", func = "CombatBagsApplyKeyBinding",},
+   ["SKU_KEY_COMBATBAGARROWS"] = {key = "", object = "SkuCore", func = "CombatBagsApplyKeyBinding",},
 
    -- Combat trading (SkuCore/combatTrade.lua): finish a trade while in combat.
    ["SKU_KEY_COMBATTRADEACCEPT"] = {key = "", object = "SkuCore", func = "CombatTradeApplyKeyBinding",},

@@ -1108,172 +1108,111 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 	local tBagResultsByBag = {}
 	local inventoryTooltipTextCache = {}
 
-	OpenAllBagsHelper()
-
-	--for bagId = -3, 11 do
+	-- Container-API driven enumeration: bags no longer need to be OPEN/rendered. Item
+	-- data is read via the API on (bagId, slotId) and each entry stores bag/slot; the bag
+	-- menu actions (SkuZOptions/Core.lua) act via PickupContainerItem/UseContainerItem/
+	-- SocketContainerItem on those. Removed OpenAllBagsHelper() -- nothing force-opens the
+	-- bags now (that proactive render was the login-stuck-menu cause). Bank slots keep the
+	-- rendered BankFrameItem name for their existing /click path (the bank is only
+	-- reachable with its frame already up).
 	for q = 1, #tBagSlotListSorted do
 		local bagId = tBagSlotListSorted[q]
-		local tCurrentContainerFrameNumber = IsBagOpen(bagId)
-		local tNumSlots = GetContainerNumSlots(bagId)
+		local tIsBankSlot = (bagId == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true)
+		local tNumSlots = GetContainerNumSlots(bagId) or 0
 		for slotId = 1, tNumSlots do
-			local containerFrameName = ""
-			if tCurrentContainerFrameNumber then
-				containerFrameName = "ContainerFrame"..(tCurrentContainerFrameNumber).."Item"..(tNumSlots - slotId + 1)
+			-- bag (parent) node, once per bag, keyed by bagId
+			if not tBagResultsByBag[bagId] then
+				local bagName = tBagSlotList[bagId]
+				table.insert(aParentChilds, bagName)
+				aParentChilds[bagName] = {
+					frameName = nil,
+					RoC = "Child",
+					type = "Button",
+					obj = nil,
+					textFirstLine = bagName,
+					textFull = "",
+					noMenuNumbers = true,
+					childs = {},
+					bag = bagId,
+				}
+				tBagResultsByBag[bagId] = { obj = aParentChilds[bagName], childs = {} }
 			end
-			if bagId == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true then
-				tCurrentContainerFrameNumber = -1
-				containerFrameName = "BankFrameItem"..slotId
+
+			local tFriendlyName = L["Bag"] .. bagId .. "-" .. slotId
+			local tItemId = GetContainerItemID(bagId, slotId)
+			local _, tCount = GetContainerItemInfo(bagId, slotId)
+			local isEmpty = (tItemId == nil)
+
+			local bagItemButton = {
+				frameName = nil,
+				RoC = "Child",
+				type = "Button",
+				obj = nil,
+				textFirstLine = L["Empty"],
+				textFull = "",
+				noMenuNumbers = true,
+				childs = {},
+				isNewItem = (C_NewItems and C_NewItems.IsNewItem(bagId, slotId)) or false,
+				-- stable per-slot identity for view-aware cursor restore
+				bagSlot = bagId .. ":" .. slotId,
+				bag = bagId,
+				slot = slotId,
+			}
+			if tIsBankSlot then
+				bagItemButton.containerFrameName = "BankFrameItem" .. slotId
+			end
+			aParentChilds[tFriendlyName] = bagItemButton
+
+			if not isEmpty then
+				bagItemButton.itemId = tItemId
+				bagItemButton.click = true
+				-- The gossip menu only builds the Linksklick/Rechtsklick submenu when the
+				-- entry has BOTH click==true AND a func (SkuZOptions/Core.lua ~4731). Since
+				-- the container-API migration dropped the rendered button (no OnClick to
+				-- borrow), give a no-op func so the submenu is still injected -- the real
+				-- actions live in the .bag/.slot leaves, and this func is never called for
+				-- an item that has children.
+				bagItemButton.func = function() end
+				if tCount and tCount > 1 then
+					bagItemButton.stackSize = tostring(tCount)
+				end
+				-- Pass NO itemId so the reader uses tooltip:SetBagItem(bag, slot) -- the
+				-- actual item instance (full description, use-effects, charges, bound,
+				-- flavour), matching what the old rendered-button OnEnter tooltip gave.
+				-- Passing itemId would route to SetItemByID (generic) and lose that.
+				local tText = getItemTooltipTextFromBagItem(bagId, slotId)
+				if tText then
+					isEmpty = false
+					bagItemButton.textFirstLine = SkuCore:ItemName_helper(tText)
+					bagItemButton.textFull = SkuCore.AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(tItemId)
+					if type(bagItemButton.textFull) ~= "table" then
+						bagItemButton.textFull = { (bagItemButton.textFull or bagItemButton.textFirstLine or "") }
+					end
+					table.insert(bagItemButton.textFull, 1, tText)
+					SkuCore:InsertComparisnSections(tItemId, bagItemButton.textFull, inventoryTooltipTextCache)
+				end
 			end
 
-			local containerFrame = _G[containerFrameName]
-			if containerFrame then
-				if not tBagResultsByBag[tCurrentContainerFrameNumber] then
-					local bagName = tBagSlotList[bagId] --L["Bag"] .. " " .. (tCurrentContainerFrameNumber)
-					table.insert(aParentChilds, bagName)
-					aParentChilds[bagName] = {
-						frameName = containerFrameName,
-						RoC = "Child",
-						type = "Button",
-						obj = containerFrame,
-						textFirstLine = bagName,
-						textFull = "",
-						noMenuNumbers = true,
-						childs = {},
-					}   
-
-					tBagResultsByBag[(tCurrentContainerFrameNumber)] = { obj = aParentChilds[bagName], childs = {} }
-				end
-
-				local tFriendlyName = L["Bag"] .. (tCurrentContainerFrameNumber) .. "-" .. slotId
-				local tText = L["Empty"]
-				local isEmpty = true
-				local bagItemButton
-
-				--update blizzard container object
-				containerFrame.GetBag = function() 
-					return bagId
-				end
-				containerFrame.info = containerFrame.info or {}
-				containerFrame.info.id = GetContainerItemID(bagId, slotId)
-				local _, itemCount = GetContainerItemInfo(bagId, slotId)
-				containerFrame.info.count = itemCount
-
-				if containerFrame:IsEnabled() == true then
-					aParentChilds[tFriendlyName] = {
-						frameName = containerFrameName,
-						RoC = "Child",
-						type = "Button",
-						obj = containerFrame,
-						textFirstLine = tText,
-						textFull = "",
-						noMenuNumbers = true,
-						childs = {},
-						isNewItem = C_NewItems.IsNewItem(bagId, slotId),
-						-- stable per-slot identity for view-aware cursor restore
-						bagSlot = bagId .. ":" .. slotId,
-					}
-					bagItemButton = aParentChilds[tFriendlyName]
-					--get the onclick func if there is one
-					if bagItemButton.obj:IsMouseClickEnabled() == true then
-						if bagItemButton.obj:GetObjectType() == "Button" then
-							bagItemButton.func = bagItemButton.obj:GetScript("OnClick")
-						end
-						bagItemButton.containerFrameName = containerFrameName
-						bagItemButton.onActionFunc = function(self, aTable, aChildName)
-
-						end
-						if bagItemButton.func then
-							bagItemButton.click = true
-						end
-					end
-
-					local maybeText = getItemTooltipTextFromBagItem(bagItemButton.obj:GetParent():GetID(), bagItemButton.obj:GetID(), bagItemButton.obj.info.id)
-					if maybeText then
-						local tText = maybeText
-						isEmpty = false
-						if bagItemButton.obj.info then
-							if bagItemButton.obj.info.id then
-								bagItemButton.itemId = bagItemButton.obj.info.id
-								bagItemButton.textFirstLine = SkuCore:ItemName_helper(tText)
-								bagItemButton.textFull = SkuCore.AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(bagItemButton.obj.info.id)
-							end
-						end
-						if not bagItemButton.textFull then
-							bagItemButton.textFull = {}
-						end
-						local tFirst, tFull = SkuCore:ItemName_helper(tText)
-
-						local tFull = getItemTooltipTextFromBagItem(bagItemButton.obj:GetParent():GetID(), bagItemButton.obj:GetID(), bagItemButton.obj.info.id, bagItemButton.obj)
-
-						bagItemButton.textFirstLine = tFirst
-						if type(bagItemButton.textFull) ~= "table" then
-							bagItemButton.textFull = { (bagItemButton.textFull or bagItemButton.textFirstLine or ""), }
-						end
-						table.insert(bagItemButton.textFull, 1, tFull)
-						SkuCore:InsertComparisnSections(bagItemButton.itemId, bagItemButton.textFull, inventoryTooltipTextCache)
-					end
-
-					if bagItemButton.textFirstLine == "" and bagItemButton.textFull == "" and bagItemButton.obj.ShowTooltip then
-						GameTooltip:ClearLines()
-						bagItemButton.obj:ShowTooltip()
-						if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
-							if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
-								local tText = SkuUtil:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
-								bagItemButton.textFirstLine, bagItemButton.textFull = SkuCore:ItemName_helper(tText)
-								isEmpty = false
-							end
-						end
-					end
-					
-					if _G[containerFrameName .. "Count"] and not containerFrame.info then
-						if bagItemButton and _G[containerFrameName .. "Count"]:GetText() then
-							if not isEmpty then
-								bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. _G[containerFrameName .. "Count"]:GetText()
-							end
-						end
-					end
-					if bagItemButton and (string.find(containerFrameName, "ContainerFrame") or string.find(containerFrameName, "BankFrameItem") )then
-						if bagItemButton.textFirstLine then
-							bagItemButton.textFirstLine = (#tBagResultsByBag[(tCurrentContainerFrameNumber)].childs + 1) .. " " .. bagItemButton.textFirstLine
-							tEmptyCounter = tEmptyCounter + 1
-						end
-					end
-					if _G[containerFrameName .. "Count"] and bagItemButton then
-						bagItemButton.stackSize = _G[containerFrameName .. "Count"]:GetText()
-					end
-					if containerFrame.info then
-						bagItemButton.itemId = containerFrame.info.id
-						if not containerFrame.info.count then
-							bagItemButton.textFirstLine = bagItemButton.textFirstLine
-						else
-							if not isEmpty and containerFrame.info.count > 1 then
-								bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. containerFrame.info.count
-							end
-						end								
-					end							
-				end
-				
-				tBagResultsByBag[(tCurrentContainerFrameNumber)].childs[#tBagResultsByBag[(tCurrentContainerFrameNumber)].childs + 1] = bagItemButton
-				-- if the item slot isn't empty and is in one of the bags, add it to allBagResults
-				if not isEmpty and bagId >= 0 and bagId <= 4 then
-					-- create a copy that doesn't have the numbering in textFirstLine
-					copy = {}
-					for k, v in pairs(bagItemButton) do
-						copy[k] = v
-					end
-					copy.textFirstLine = string.sub(copy.textFirstLine, string.find(copy.textFirstLine, " ") + 1)
-					-- Keep bagSlot (the source slot) as the precise identity: it
-					-- uniquely identifies THIS stack even when several stacks of
-					-- the same item exist (itemId alone is ambiguous then), and it
-					-- still follows the entry through a re-sort — the slot is
-					-- stable, only the index moves. If the exact stack is gone,
-					-- tPickBagTarget falls back to itemId.
-					table.insert(allBagResults, copy)
-					allBagResults[copy] = copy
-				end
-				
+			-- position number prefix within the bag
+			bagItemButton.textFirstLine = (#tBagResultsByBag[bagId].childs + 1) .. " " .. bagItemButton.textFirstLine
+			tEmptyCounter = tEmptyCounter + 1
+			if not isEmpty and tCount and tCount > 1 then
+				bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. tCount
 			end
-		end  
+
+			tBagResultsByBag[bagId].childs[#tBagResultsByBag[bagId].childs + 1] = bagItemButton
+			-- non-empty items in the real bags also go into the flat "all items" list
+			if not isEmpty and bagId >= 0 and bagId <= 4 then
+				local copy = {}
+				for k, v in pairs(bagItemButton) do
+					copy[k] = v
+				end
+				copy.textFirstLine = string.sub(copy.textFirstLine, string.find(copy.textFirstLine, " ") + 1)
+				-- bagSlot stays the precise identity for cursor restore / duplicate stacks
+				table.insert(allBagResults, copy)
+				allBagResults[copy] = copy
+			end
+		end
 	end
 
 	for q = -3, 40 do
@@ -1299,7 +1238,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				func = nil,
 				click = true,
 			}   
-			BagSortMenuHelper(v.obj.childs[tFriendlyName].childs, v.obj.obj:GetBag(), v)
+			BagSortMenuHelper(v.obj.childs[tFriendlyName].childs, v.obj.bag, v)
 		end
 	end
 

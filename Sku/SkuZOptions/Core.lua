@@ -3146,6 +3146,20 @@ function SkuOptions:CreateMenuFrame()
 
 	tFrame:SetScript("OnShow", function(self)
 		--dprint("OnSkuOptionsMainOption1 OnShow")
+		-- TEMP always-on trace (independent of /skudebug): record every menu-open
+		-- OnShow fire + state, into SkuDebugLog.loginTrace, to see what opens the menu
+		-- at login. Remove once diagnosed.
+		do
+			SkuDebugLog = SkuDebugLog or {}
+			SkuDebugLog.loginTrace = SkuDebugLog.loginTrace or {}
+			local tR = SkuDebugLog.loginTrace
+			tR[#tR + 1] = {t = date("%H:%M:%S"), what = "menuOpenOnShow",
+				combat = (InCombatLockdown() and 1 or 0),
+				skuCombat = (SkuState:IsInCombat() and 1 or 0),
+				moving = (SkuState:IsMoving() and 1 or 0),
+				stack = debugstack(2, 6, 0)}
+			while #tR > 60 do table.remove(tR, 1) end
+		end
 		if SkuState:IsInCombat() == true then
 			SkuCore:SetOpenMenuAfterCombat(true)
 			return
@@ -3288,6 +3302,34 @@ function SkuOptions:CreateMenuFrame()
 		ClearOverrideBindings(self)
 	end)
 	tFrame:SetScript("PostClick", _G["OnSkuOptionsMainOption1"]:GetScript("OnClick"))
+
+	-- Combat-actions: the in-combat secure-arm WRAP was removed here. It read a plain
+	-- scratch frame from a secure snippet, which Blizzard refuses in combat:
+	-- RestrictedFrames.lua:83 only hands a frame to a snippet if the frame is PROTECTED
+	-- or you are out of combat ("Invalid frame handle" otherwise). But insecure code can
+	-- only WRITE a NON-protected frame in combat -- a hard contradiction. So per-item
+	-- in-combat arming cannot use an insecure-written scratch; it must pre-stage onto a
+	-- PROTECTED handler out of combat and select via a hardware-key-driven secure index
+	-- (the SkuCore/combatBags model -- now implemented there as arrow mode). See
+	-- [[sku42-combat-menu-linchpin]].
+
+	-- TEMP diagnostic: record (ALWAYS, independent of /skudebug) which protected
+	-- function gets blocked/forbidden + combat state, into SkuDebugLog.blockProbe.
+	-- Sku's ErrorLog throttles these in combat and dprint is off by default, so this
+	-- always-on ring is the only reliable capture for login-in-combat. Remove later.
+	if not _G["SkuCombatBlockProbe"] then
+		local tBp = CreateFrame("Frame", "SkuCombatBlockProbe", UIParent)
+		tBp:RegisterEvent("ADDON_ACTION_BLOCKED")
+		tBp:RegisterEvent("ADDON_ACTION_FORBIDDEN")
+		tBp:SetScript("OnEvent", function(_, aEv, aAddon, aFunc)
+			SkuDebugLog = SkuDebugLog or {}
+			SkuDebugLog.blockProbe = SkuDebugLog.blockProbe or {}
+			local tBpRing = SkuDebugLog.blockProbe
+			tBpRing[#tBpRing + 1] = {t = date("%H:%M:%S"), ev = tostring(aEv), addon = tostring(aAddon), func = tostring(aFunc), combat = (InCombatLockdown() and 1 or 0)}
+			while #tBpRing > 300 do table.remove(tBpRing, 1) end
+		end)
+	end
+
 	tFrame:Show()
 end
 
@@ -4099,7 +4141,11 @@ function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString)
 		end
 	end
 	if SkuOptions.currentMenuPosition.BuildChildren then
-		SkuOptions.currentMenuPosition:BuildChildren(SkuOptions.currentMenuPosition)
+		-- Isolate BuildChildren: a submenu-builder error must never abort the
+		-- vocalization below (that would silence the item NAME on nav while the
+		-- error keeps firing). Speak-the-name is more important than a complete
+		-- submenu; a partial/failed submenu is recoverable, a silent menu is not.
+		pcall(function() SkuOptions.currentMenuPosition:BuildChildren(SkuOptions.currentMenuPosition) end)
 	end
 
 	--handle filter placeholder
@@ -4784,35 +4830,28 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										end)
 									end
 								end
-							elseif aGossipListTable[index].containerFrameName then
-								-- Bag-Items: Position merken und nach Aktion wiederherstellen
-								local tIsBagItemL = false
-								local tFrameForCheckL = _G[aGossipListTable[index].containerFrameName]
-								if tFrameForCheckL and tFrameForCheckL.GetBag and tFrameForCheckL.GetID then
-									tIsBagItemL = true
-								end
-								if tIsBagItemL then
-									tNewSubMenuEntry.macrotext =
-										"/script SkuCaptureSellState()\r\n"
-										.. "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n"
-										.. "/script SkuCore:CheckFrames() C_Timer.After(0.5, function() SkuRestoreSellPosition() end)"
-									-- Combat-actions: the secure macrotext above is only armed out of
-									-- combat (templates.lua OnEnter gate), so in combat left-click would
-									-- do nothing. Left-click = pick up, which is NOT protected, so do it
-									-- directly here when in combat. The leaf knows its bag/slot via the
-									-- container-frame button (GetBag/GetID checked above => tIsBagItemL).
-									local lBagL, lSlotL
-									pcall(function() lBagL = tFrameForCheckL:GetBag(); lSlotL = tFrameForCheckL:GetID() end)
-									tNewSubMenuEntry.OnAction = function()
-										if InCombatLockdown and InCombatLockdown()
-											and lBagL and lSlotL and _G.PickupContainerItem then
-											pcall(_G.PickupContainerItem, lBagL, lSlotL)
-										end
+							elseif aGossipListTable[index].bag ~= nil and aGossipListTable[index].slot ~= nil then
+								-- Bag/bank item (container-API migration): left-click = pick the
+								-- item up to the cursor via PickupContainerItem(bag, slot). No
+								-- rendered ContainerFrame needed, and it is NOT a protected
+								-- function, so it works in AND out of combat. Then refresh the menu.
+								local lBag, lSlot = aGossipListTable[index].bag, aGossipListTable[index].slot
+								tNewSubMenuEntry.OnAction = function()
+									if _G.PickupContainerItem then pcall(_G.PickupContainerItem, lBag, lSlot) end
+									if _G.C_Timer and _G.C_Timer.After then
+										_G.C_Timer.After(0.1, function()
+											pcall(function() SkuCore:CheckFrames() end)
+											_G.C_Timer.After(0.35, function()
+												if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then
+													pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
+												end
+											end)
+										end)
 									end
-								else
-									tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 								end
-								if aGossipListTable[index].obj.GetParent then
+							elseif aGossipListTable[index].containerFrameName then
+								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
+								if aGossipListTable[index].obj and aGossipListTable[index].obj.GetParent then
 									if aGossipListTable[index].obj:GetParent() then
 										if aGossipListTable[index].obj:GetParent().rollID then
 											tNewSubMenuEntry.macrotext = "/script RollOnLoot("..aGossipListTable[index].obj:GetParent().rollID..", "..aGossipListTable[index].obj:GetID()..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
@@ -5040,26 +5079,30 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										end)
 									end
 								end
+							elseif aGossipListTable[index].bag ~= nil and aGossipListTable[index].slot ~= nil then
+								-- Bag/bank item (container-API migration): right-click =
+								-- UseContainerItem(bag, slot). Blizzard's UseContainerItem is
+								-- itself context-sensitive -- it uses a consumable, equips gear,
+								-- and SELLS at a vendor (the same behaviours the old /click
+								-- RightButton gave), with no rendered ContainerFrame. It is
+								-- protected in combat (blocked there, same as before); combat use
+								-- is handled by SkuCore/combatBags. Then refresh the menu.
+								local lBag, lSlot = aGossipListTable[index].bag, aGossipListTable[index].slot
+								tNewSubMenuEntry.OnAction = function()
+									if _G.UseContainerItem then pcall(_G.UseContainerItem, lBag, lSlot) end
+									if _G.C_Timer and _G.C_Timer.After then
+										_G.C_Timer.After(0.1, function()
+											pcall(function() SkuCore:CheckFrames() end)
+											_G.C_Timer.After(0.35, function()
+												if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then
+													pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
+												end
+											end)
+										end)
+									end
+								end
 							elseif aGossipListTable[index].containerFrameName then
-								-- Bei Bag-Items zusätzlich Verkaufs-Flow-Helper
-								-- aufrufen: BEFORE der Aktion Position merken,
-								-- AFTER der Aktion + CheckFrames auf den nächsten
-								-- Eintrag (origIdx) in der Bag-Liste positionieren.
-								-- Nur ContainerFrame-Items (Taschen): bei anderen
-								-- Frame-Klicks bleibt das alte Verhalten.
-								local tIsBagItem = false
-								local tFrameForCheck = _G[aGossipListTable[index].containerFrameName]
-								if tFrameForCheck and tFrameForCheck.GetBag and tFrameForCheck.GetID then
-									tIsBagItem = true
-								end
-								if tIsBagItem then
-									tNewSubMenuEntry.macrotext =
-										"/script SkuCaptureSellState()\r\n"
-										.. "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n"
-										.. "/script SkuCore:CheckFrames() C_Timer.After(0.5, function() SkuRestoreSellPosition() end)"
-								else
-									tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
-								end
+								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 							else
 								tNewSubMenuEntry.OnAction = function()
 									aGossipListTable[index].func(aGossipListTable[index].obj, "RightButton")
@@ -5078,7 +5121,25 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 
 
 
-							if aGossipListTable[index].containerFrameName and _G[aGossipListTable[index].containerFrameName] then
+							if aGossipListTable[index].bag ~= nil and aGossipListTable[index].slot ~= nil then
+								-- Bag/bank socket (container-API migration): SocketContainerItem(bag,
+								-- slot) directly, no rendered frame. Mirrors the old macrotext path.
+								if _G.SocketContainerItem then
+									local tNewSubMenuEntrySocket = SkuOptions:InjectMenuItems(self, {L["Sockeln"]}, SkuGenericMenuItem)
+									local lBagS, lSlotS = aGossipListTable[index].bag, aGossipListTable[index].slot
+									tNewSubMenuEntrySocket.OnAction = function()
+										pcall(function() SkuCore.Socketing:SuppressMinimapMapPingBriefly() end)
+										pcall(_G.SocketContainerItem, lBagS, lSlotS)
+										pcall(function() SkuCore:CheckFrames() end)
+										if _G.C_Timer and _G.C_Timer.After then
+											_G.C_Timer.After(0.35, function()
+												if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end) end
+												pcall(function() SkuCore.Socketing:OpenSocketingMenuFollowUp() end)
+											end)
+										end
+									end
+								end
+							elseif aGossipListTable[index].containerFrameName and _G[aGossipListTable[index].containerFrameName] then
 								if _G[aGossipListTable[index].containerFrameName].GetBag and _G[aGossipListTable[index].containerFrameName]:GetBag() and _G[aGossipListTable[index].containerFrameName]:GetID() then
 									-- Sockeln (Bag-Item) — exakt wie in der WotLK-Vorlage:
 									-- nur ein macrotext, der SocketContainerItem aufruft und
@@ -5150,23 +5211,29 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								end
 							end							
 
-							if SkuCore.AuctionHouseOpen == true then
+							if SkuCore.AuctionHouseOpen == true and aGossipListTable[index].obj then
 								if aGossipListTable[index].obj:GetParent() then
-									if string.find(aGossipListTable[index].obj:GetName() or "", "ContainerFrame") or string.find(aGossipListTable[index].obj:GetParent():GetName() or "", "ContainerFrame") then									
+									if string.find(aGossipListTable[index].obj:GetName() or "", "ContainerFrame") or string.find(aGossipListTable[index].obj:GetParent():GetName() or "", "ContainerFrame") then
 										SkuCore:AuctionHouseBuildItemSellMenu(tNewMenuEntry, aGossipListTable[index])
 									end
 								end
 							end
 
+							-- Container-API migration: migrated bag/bank items carry no rendered
+							-- button, so `.obj` is nil -- read the item id from the entry's own
+							-- .itemId (set in Build_BagsFrame) and only fall back to the old
+							-- .obj.info path for legacy frame-backed entries.
 							local tItemId
-							if aGossipListTable[index].obj.info then
+							if aGossipListTable[index].obj and aGossipListTable[index].obj.info then
 								tItemId = aGossipListTable[index].obj.info.id
 							end
 							if not tItemId then
-								tItemId = aGossipListTable.itemId
+								tItemId = aGossipListTable[index].itemId or aGossipListTable.itemId
 							end
+							-- true for the migrated Container-API bag/bank items
+							local tHasBagSlot = (aGossipListTable[index].bag ~= nil and aGossipListTable[index].slot ~= nil)
 							if tItemId then
-								if _G[aGossipListTable[index].containerFrameName] then
+								if _G[aGossipListTable[index].containerFrameName] or tHasBagSlot then
 									aGossipListTable[index].itemId = tItemId
 
 									if not SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds then
@@ -5176,11 +5243,11 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Markierung für Auto Verkaufen entfernen"]}, SkuGenericMenuItem)
 										tNewSubMenuEntry.OnAction = function(self, a, b)
 											local tItemId
-											if aGossipListTable[index].obj.info then
+											if aGossipListTable[index].obj and aGossipListTable[index].obj.info then
 												tItemId = aGossipListTable[index].obj.info.id
 											end
 											if not tItemId then
-												tItemId = aGossipListTable.itemId
+												tItemId = aGossipListTable[index].itemId or aGossipListTable.itemId
 											end
 											SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = nil
 										end
@@ -5188,11 +5255,11 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Für Auto Verkaufen markieren"]}, SkuGenericMenuItem)
 										tNewSubMenuEntry.OnAction = function(self, a, b)
 											local tItemId
-											if aGossipListTable[index].obj.info then
+											if aGossipListTable[index].obj and aGossipListTable[index].obj.info then
 												tItemId = aGossipListTable[index].obj.info.id
 											end
 											if not tItemId then
-												tItemId = aGossipListTable.itemId
+												tItemId = aGossipListTable[index].itemId or aGossipListTable.itemId
 											end
 											SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = true
 										end
@@ -5201,21 +5268,28 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 							end
 
 							if tItemId then
-								if _G[aGossipListTable[index].containerFrameName] then
+								if _G[aGossipListTable[index].containerFrameName] or tHasBagSlot then
 									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Zerstören"]}, SkuGenericMenuItem)
 									tNewSubMenuEntry.OnAction = function(self, a, b)
 										local tItemId
-										if aGossipListTable[index].obj.info then
+										if aGossipListTable[index].obj and aGossipListTable[index].obj.info then
 											tItemId = aGossipListTable[index].obj.info.id
 										end
 										if not tItemId then
-											tItemId = aGossipListTable.itemId
+											tItemId = aGossipListTable[index].itemId or aGossipListTable.itemId
 										end
 
 										--print(aGossipListTable[index].containerFrameName, tItemId, _G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID())
 										if tItemId then
-											aGossipListTable[index].obj:GetScript("OnDragStart")(aGossipListTable[index].obj, "LeftButton") 
-											DeleteCursorItem()
+											if tHasBagSlot then
+												-- Container-API destroy: pick the item to the cursor and
+												-- delete it (mirrors the old OnDragStart+DeleteCursorItem).
+												if _G.PickupContainerItem then pcall(_G.PickupContainerItem, aGossipListTable[index].bag, aGossipListTable[index].slot) end
+												DeleteCursorItem()
+											elseif aGossipListTable[index].obj and aGossipListTable[index].obj.GetScript then
+												aGossipListTable[index].obj:GetScript("OnDragStart")(aGossipListTable[index].obj, "LeftButton")
+												DeleteCursorItem()
+											end
 											SkuCore:CheckFrames()
 											--[[
 											SkuCore:ConfirmButtonShow("Wirklich zerstören? Eingabe Ja, Escape Nein", 
@@ -5237,38 +5311,46 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 							end
 
 							if tItemId then
-								if _G[aGossipListTable[index].containerFrameName] then
-									if _G[aGossipListTable[index].containerFrameName].count then
-										if _G[aGossipListTable[index].containerFrameName].count > 1 then
+								-- Stack size for the split submenu: migrated Container-API items
+								-- read it live from GetContainerItemInfo; legacy frame-backed
+								-- items keep the rendered button's .count.
+								local tStackCount
+								if tHasBagSlot then
+									local _, tC = GetContainerItemInfo(aGossipListTable[index].bag, aGossipListTable[index].slot)
+									tStackCount = tC
+								elseif _G[aGossipListTable[index].containerFrameName] then
+									tStackCount = _G[aGossipListTable[index].containerFrameName].count
+								end
+								if _G[aGossipListTable[index].containerFrameName] or tHasBagSlot then
+									if tStackCount and tStackCount > 1 then
 											local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["split"]}, SkuGenericMenuItem)
 											tNewSubMenuEntry.isSelect = true
 											tNewSubMenuEntry.dynamic = true
 											tNewSubMenuEntry.OnAction = function(self, a, amount)
 												local tItemId
-												if aGossipListTable[index].obj.info then
+												if aGossipListTable[index].obj and aGossipListTable[index].obj.info then
 													tItemId = aGossipListTable[index].obj.info.id
 												end
 												if not tItemId then
-													tItemId = aGossipListTable.itemId
+													tItemId = aGossipListTable[index].itemId or aGossipListTable.itemId
 												end
 
 												if tItemId then
-													SplitContainerItem(_G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID(), amount)
+													SplitContainerItem(aGossipListTable[index].bag, aGossipListTable[index].slot, amount)
 													SkuCore:CheckFrames()
 												end
 												C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)
 											end
 											tNewSubMenuEntry.BuildChildren = function(self)
-												for x = 1, _G[aGossipListTable[index].containerFrameName].count do
+												for x = 1, tStackCount do
 													local tNewMenuSubEntryNumber = SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
 												end
 											end
-										end
 									end
 
 									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add Link to chat"]}, SkuGenericMenuItem)
 									tNewSubMenuEntry.OnAction = function(self, a, amount)
-										local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(_G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID())
+										local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(aGossipListTable[index].bag, aGossipListTable[index].slot)
 										if itemLink then
 											ChatFrame1EditBox:Show()
 											ChatFrame1EditBox:SetFocus()

@@ -1292,6 +1292,15 @@ function SkuCore:OnEnable()
 
 		if SkuCore.openMenuAfterCombat == true or SkuCore.openMenuAfterMoving == true then
 			if SkuCore.inCombat == false and SkuCore.isMoving == false then
+				-- TEMP always-on trace: the deferred-open watcher is about to open the menu
+				SkuDebugLog = SkuDebugLog or {}
+				SkuDebugLog.loginTrace = SkuDebugLog.loginTrace or {}
+				local tR = SkuDebugLog.loginTrace
+				tR[#tR + 1] = {t = date("%H:%M:%S"), what = "deferredOpenWatcher",
+					afterCombat = (SkuCore.openMenuAfterCombat and 1 or 0),
+					afterMoving = (SkuCore.openMenuAfterMoving and 1 or 0),
+					path = tostring(SkuCore.openMenuAfterPath)}
+				while #tR > 60 do table.remove(tR, 1) end
 				if SkuCore.openMenuAfterPath ~= "" then
 					SkuOptions:SlashFunc(SkuCore.openMenuAfterPath)
 					SkuCore.openMenuAfterPath = ""
@@ -2260,6 +2269,34 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	local event, isInitialLogin, isReloadingUi = ...
 	dprint("PLAYER_ENTERING_WORLD", isInitialLogin, isReloadingUi)
 
+	-- Re-sync the combat flag from the hardware truth on every login/reload.
+	-- PLAYER_REGEN_DISABLED fires only when ENTERING combat, so logging in (or
+	-- /reload) while ALREADY in combat would otherwise leave SkuCore.inCombat=false.
+	-- Then the menu's OnShow combat guard is skipped and its ~30
+	-- SetOverrideBindingClick calls are all refused in combat (ADDON_ACTION_BLOCKED),
+	-- the nav keys never bind, and every key looks "blocked". Mirroring
+	-- InCombatLockdown() here makes login-directly-into-combat detected, so the menu
+	-- defers cleanly instead.
+	SkuCore.inCombat = (InCombatLockdown() and true) or false
+
+	-- Control-frame OnShow handlers stamp the deferred-menu-open flags
+	-- (openMenuAfterCombat/Moving) when they are created during login IF inCombat or
+	-- isMoving is true (e.g. logging in during combat, or while autorunning). The
+	-- deferred-open watcher (SkuCore/Core.lua:1293) would then pop the Sku menu open by
+	-- itself the instant combat/movement ends -- "menu up at start", needing an Escape.
+	-- Those login-time stamps are spurious (the user didn't open the menu), so clear
+	-- them right after login. Genuine in-game defers happen later and are unaffected.
+	SkuCore.openMenuAfterCombat = false
+	SkuCore.openMenuAfterMoving = false
+	SkuCore.openMenuAfterPath = ""
+	if _G.C_Timer and _G.C_Timer.After then
+		_G.C_Timer.After(0.5, function()
+			SkuCore.openMenuAfterCombat = false
+			SkuCore.openMenuAfterMoving = false
+			SkuCore.openMenuAfterPath = ""
+		end)
+	end
+
 
 
 	SkuSettings:Sub("SkuCore", nil, "global")
@@ -2578,7 +2615,11 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	-- Make the Escape game menu accessible: instead of the (retired) whale
 	-- song, open Sku's "Spieloptionen" menu in its place. See
 	-- SkuCore:GameMenuShowHandler / SkuCore/gameOptions.lua.
-	hooksecurefunc(GameMenuFrame, "Show", function() SkuCore:GameMenuShowHandler() end)
+	-- Hook ToggleGameMenu (the function the Escape key binding actually calls), NOT
+	-- GameMenuFrame:Show -- Blizzard also calls GameMenuFrame:Show() during UI init,
+	-- which fired the handler at login and popped the Spielmenü open spuriously. The
+	-- toggle only runs on a genuine Escape press.
+	hooksecurefunc("ToggleGameMenu", function() SkuCore:GameMenuShowHandler() end)
 	--[[
 	--hooksecurefunc(GameTooltip, "Hide", SkuCore.CheckInteractObjectHide)
 	--hooksecurefunc("GameTooltip_OnHide", SkuCore.CheckInteractObjectHide)
@@ -3611,6 +3652,12 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 				end
 			end
 
+			-- Flash self-correct: a triggering Blizzard frame can be only transiently
+			-- visible (esp. flashes during login init), and its Hide may not fire the
+			-- Hide hook. Schedule a delayed re-check that closes the just-opened menu if
+			-- no contributing window is actually open by then.
+			SkuCore:ScheduleMenuFlashRecheck()
+
 		else
 			if not aDontClose then
 				SkuCore.openMenuAfterMoving = false
@@ -3830,6 +3877,50 @@ function SkuCore:StartStopGameMenuBackgroundSound()
 		SkuCore.currentBackgroundSoundTimerHandle:Cancel()
 		SkuCore.currentBackgroundSoundTimerHandle = nil
 	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Shared "flash self-correct" for the W7 window auto-open hooks (CheckFrames, quest,
+-- mail, ...). They open the Sku menu when their window/frame looks visible, but at
+-- login Blizzard briefly flashes those frames during UI init -> the menu opens with no
+-- matching close (the frame's Hide hook may not fire for an init flash). Call this
+-- right after such an auto-open: it schedules ONE delayed re-check and, if no
+-- contributing window is actually open by then, closes the menu again. Genuine opens
+-- (a real vendor/quest/mail window still up) keep the menu; a real Spielmenü session
+-- (gameMenuActive) is left alone; menus you opened yourself never call this.
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:ScheduleMenuFlashRecheck()
+	if SkuCore.menuFlashRecheckPending == true then return end
+	if not (C_Timer and C_Timer.After) then return end
+	SkuCore.menuFlashRecheckPending = true
+	C_Timer.After(0.3, function()
+		SkuCore.menuFlashRecheckPending = false
+		local tAnyOpen, tWhich = false, ""
+		for i, v in pairs(SkuCore.interactFramesList) do
+			if _G[v] and _G[v]:IsVisible() == true then tAnyOpen = true tWhich = v break end
+		end
+		-- TEMP diagnostic: record why the flash re-check did/didn't close the menu.
+		SkuDebugLog = SkuDebugLog or {}
+		SkuDebugLog.loginTrace = SkuDebugLog.loginTrace or {}
+		local tR = SkuDebugLog.loginTrace
+		tR[#tR + 1] = {t = date("%H:%M:%S"), what = "flashRecheck",
+			menuOpen = (SkuOptions:IsMenuOpen() == true and 1 or 0),
+			gameMenu = (SkuCore.gameMenuActive == true and 1 or 0),
+			anyFrame = (tAnyOpen and tWhich or "0"),
+			contrib = (SkuCore:AnyWindowContributorVisible() == true and 1 or 0),
+			questLog = (QuestLogFrame and QuestLogFrame:IsVisible() == true and 1 or 0),
+			mail = (MailFrame and MailFrame:IsShown() == true and 1 or 0)}
+		while #tR > 60 do table.remove(tR, 1) end
+		if SkuCore.gameMenuActive == true then return end
+		if SkuOptions:IsMenuOpen() ~= true then return end
+		if tAnyOpen ~= true
+			and SkuCore:AnyWindowContributorVisible() ~= true
+			and not (QuestLogFrame and QuestLogFrame:IsVisible() == true)
+			and not (MailFrame and MailFrame:IsShown() == true) then
+			SkuCore.GossipList = {}
+			SkuOptions:CloseMenu()
+		end
+	end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
