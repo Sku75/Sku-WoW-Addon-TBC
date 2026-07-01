@@ -153,3 +153,74 @@ SlashCmdList["SKUPROPTEST"] = function()
    tPropCap:EnableKeyboard(tPropOn)
    print("Sku prop test capture = " .. (tPropOn and "ON -- IN COMBAT, menu closed, press J (ESC to release)" or "OFF"))
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- STAGE 2 GROUNDWORK PROBE: settle the two unknowns the mirror depends on --
+--   (a) can we pre-stage bag data as SECURE ATTRIBUTES at the combat-start grace window?
+--   (b) can a secure SNIPPET READ those attributes in combat?
+-- At combat start we stage the occupied bag slots (slot order: bag 0 slot 1..n, bag 1..)
+-- as s1..sN / n1..nN onto a secure handler. In combat, press CTRL-M to cycle the list --
+-- the SNIPPET reads s<idx> and logs it (readback). If the readback shows the right slots,
+-- both (a) and (b) hold. Compare the "prestage N = bag slot name" lines with the
+-- "mirrorProbe focus ..." lines (logged by combatMenuKeys as you navigate the bag list)
+-- to learn whether the bag MENU order matches slot order. Disposable.
+---------------------------------------------------------------------------------------------------------------------------------------
+local tMirrorProbe
+local function tEnsureMirrorProbe()
+   if tMirrorProbe then return end
+   tMirrorProbe = CreateFrame("Button", "SkuMirrorProbe", UIParent, "SecureHandlerClickTemplate")
+   tMirrorProbe:RegisterForClicks("AnyDown")
+   tMirrorProbe:SetAttribute("_onclick", [=[
+      local count = self:GetAttribute("count") or 0
+      if count == 0 then return end
+      local idx = (self:GetAttribute("idx") or 0) + 1
+      if idx > count then idx = 1 end
+      self:SetAttribute("idx", idx)
+      local s = self:GetAttribute("s" .. idx)          -- SNIPPET reads the combat-start-staged slot
+      self:SetAttribute("readback", idx .. ":" .. (s or "NIL"))
+   ]=])
+   tMirrorProbe:SetScript("OnAttributeChanged", function(self, name, value)
+      if name == "readback" then
+         tProbeLog("mirror snippet read " .. tostring(value) .. " combat=" .. (tInCombat() and 1 or 0))
+      end
+   end)
+   local tOwner = _G["SkuMirrorProbeOwner"] or CreateFrame("Frame", "SkuMirrorProbeOwner", UIParent)
+   pcall(SetOverrideBindingClick, tOwner, true, "CTRL-M", "SkuMirrorProbe")
+end
+
+local function tMirrorProbePrestage()
+   tEnsureMirrorProbe()
+   local h = _G["SkuMirrorProbe"]
+   local order = SkuCore and SkuCore.combatBagOrder
+   local n = 0
+   if type(order) == "table" then
+      -- pre-stage in the MENU's captured "all items" order (see LocalMenu.lua) so the
+      -- mirror index lines up with the alphabetical list the player navigates.
+      for _, e in ipairs(order) do
+         local link = select(7, GetContainerItemInfo(e.bag, e.slot))
+         local nm = link and (GetItemInfo(link) or link) or "?"
+         n = n + 1
+         pcall(function() h:SetAttribute("s" .. n, e.bag .. " " .. e.slot) end)
+         pcall(function() h:SetAttribute("n" .. n, nm) end)
+         tProbeLog("prestage " .. n .. " = " .. e.bag .. " " .. e.slot .. " " .. tostring(nm))
+      end
+   else
+      tProbeLog("prestage: no SkuCore.combatBagOrder yet (open the bags menu once first)")
+   end
+   pcall(function() h:SetAttribute("idx", 0) end)
+   pcall(function() h:SetAttribute("count", n) end)
+   tProbeLog("prestage done count=" .. n .. " lock=" .. (InCombatLockdown() and 1 or 0))
+end
+
+local tMirrorEvt = CreateFrame("Frame")
+tMirrorEvt:RegisterEvent("PLAYER_ENTERING_WORLD")
+tMirrorEvt:RegisterEvent("PLAYER_REGEN_DISABLED")
+tMirrorEvt:SetScript("OnEvent", function(self, event)
+   if event == "PLAYER_ENTERING_WORLD" then
+      if _G.C_Timer and _G.C_Timer.After then
+         _G.C_Timer.After(3, function() pcall(tEnsureMirrorProbe) end)
+      end
+   elseif event == "PLAYER_REGEN_DISABLED" then
+      pcall(tMirrorProbePrestage)                        -- combat-start grace window
+   end
+end)

@@ -2784,6 +2784,12 @@ function SkuOptions:CreateMenuFrame()
 			tIsDoubleDown = true
 		end
 		OnSkuOptionsMainOnKeyPressTimer = GetTimePreciseSec()
+		-- Combat mirror lockstep: the double-tap "skip empty entries" jumps the cursor
+		-- several steps on one keypress, which would desync the secure bags mirror (it moves
+		-- one step per key). Disable it while the combat menu is active so 1 key = 1 move.
+		if SkuOptions.combatMenuActive == true then
+			tIsDoubleDown = false
+		end
 
 		if SkuOptions.MenuAccessKeysChars[aKey] then
 			aKey = slower(aKey)

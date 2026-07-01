@@ -1260,6 +1260,17 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 		return item1.textFirstLine < item2.textFirstLine
 	end)
 
+	-- Capture the exact "all items" display order for the combat-actions mirror -- a single
+	-- source of truth so the in-combat secure /use always matches the item the menu shows
+	-- (no re-deriving the sort, no locale/tie drift). The mirror pre-stages from this at
+	-- combat start. See SkuCore/combatMenuKeys.lua / [[sku42-combat-item-use-design]].
+	SkuCore.combatBagOrder = {}
+	for _, itemButton in ipairs(allBagResults) do
+		if itemButton.bag ~= nil and itemButton.slot ~= nil then
+			SkuCore.combatBagOrder[#SkuCore.combatBagOrder + 1] = { bag = itemButton.bag, slot = itemButton.slot }
+		end
+	end
+
 	-- prepend "new" to all new items
 	for _, itemButton in pairs(allBagResults) do
 		if itemButton.isNewItem then
