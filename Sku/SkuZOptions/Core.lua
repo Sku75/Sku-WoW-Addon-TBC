@@ -1782,7 +1782,8 @@ function SkuOptions:CreateMainFrame()
 			end					
 		end
 
-		if SkuState:IsInCombat() == true then
+		if SkuState:IsInCombat() == true and not (SkuSettings and SkuSettings:Sub("SkuCore")
+			and SkuSettings:Sub("SkuCore").combatMenuOpen == true) then
 			--SkuCore:SetOpenMenuAfterCombat(true)
 			return
 		end
@@ -3209,7 +3210,16 @@ function SkuOptions:CreateMenuFrame()
 			while #tR > 60 do table.remove(tR, 1) end
 		end
 		if SkuState:IsInCombat() == true then
-			if SkuLogCombat then SkuLogCombat("menuOnShow", "return in combat -> nav keys NOT bound") end
+			-- Nav keys can't be override-bound in combat; instead the modal capture frame
+			-- grabs the keyboard and routes to this same OnClick. Enable it here (menu just
+			-- became visible in combat) under the /skucombatmenu opt-in. EnableKeyboard is
+			-- callable in combat (non-secure frame). OnHide disables it again.
+			if _G["SkuMenuCapture"] and SkuSettings and SkuSettings:Sub("SkuCore")
+				and SkuSettings:Sub("SkuCore").combatMenuOpen == true then
+				_G["SkuMenuCapture"]:EnableKeyboard(true)
+				if SkuLogCombat then SkuLogCombat("capture", "ENABLE (menu shown in combat)") end
+			end
+			if SkuLogCombat then SkuLogCombat("menuOnShow", "return in combat -> nav via capture") end
 			SkuCore:SetOpenMenuAfterCombat(true)
 			return
 		end
@@ -3277,7 +3287,11 @@ function SkuOptions:CreateMenuFrame()
 
 	tFrame:SetScript("OnHide", function(self)
 		--dprint("OnSkuOptionsMainOption1 OnHide")
+		-- Release the modal capture keyboard (in AND out of combat) so keys go back to
+		-- the game the moment the menu closes. EnableKeyboard is combat-safe.
+		if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(false) end
 		if SkuState:IsInCombat() == true then
+			if SkuLogCombat then SkuLogCombat("capture", "DISABLE (menu hidden)") end
 			return
 		end
 
@@ -3377,6 +3391,47 @@ function SkuOptions:CreateMenuFrame()
 			local tBpRing = SkuDebugLog.blockProbe
 			tBpRing[#tBpRing + 1] = {t = date("%H:%M:%S"), ev = tostring(aEv), addon = tostring(aAddon), func = tostring(aFunc), combat = (InCombatLockdown() and 1 or 0)}
 			while #tBpRing > 300 do table.remove(tBpRing, 1) end
+		end)
+	end
+
+	-- === Modal combat menu capture (EnableKeyboard toggle) ==========================
+	-- Lets the player OPEN / NAVIGATE / CLOSE the Sku menu WHILE IN COMBAT. Override
+	-- bindings can't: SetOverrideBinding is combat-blocked, so a menu opened fresh in
+	-- combat had no nav keys and (armed before combat) couldn't be closed = locked in.
+	-- Instead a NON-secure frame toggles EnableKeyboard, which IS callable in combat
+	-- (API doc: IsProtectedFunction, same class as Hide/EnableMouse -> only PROTECTED
+	-- frames are gated), unlike SetPropagateKeyboardInput (HasRestrictions = blocked).
+	-- While the menu is visible in combat the frame CONSUMES every key (propagate set
+	-- false ONCE out of combat) and its insecure OnKeyDown routes them (with modifiers)
+	-- to the existing menu OnClick handler -- reads/nav are unprotected, so they work in
+	-- combat. It is MODAL: while open it eats all keys, so ESC closes it and hands the
+	-- keyboard back to the game. Enable/disable is driven from the menu OnShow/OnHide
+	-- (below); gated by /skucombatmenu. See [[sku42-combat-menu-selfdeactivation]].
+	if not _G["SkuMenuCapture"] then
+		local tCap = CreateFrame("Frame", "SkuMenuCapture", UIParent)
+		tCap:SetSize(1, 1)
+		tCap:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -500, -500)
+		tCap:EnableKeyboard(false)
+		if not InCombatLockdown() then tCap:SetPropagateKeyboardInput(false) end   -- consume; set out of combat
+
+		local tMods = { LSHIFT = 1, RSHIFT = 1, LCTRL = 1, RCTRL = 1, LALT = 1, RALT = 1 }
+		tCap:SetScript("OnKeyDown", function(self, aKey)
+			if tMods[aKey] then return end                    -- ignore bare modifier presses
+			if aKey == "ESCAPE" then
+				if SkuLogCombat then SkuLogCombat("capture", "ESC -> close") end
+				if _G["OnSkuOptionsMain"] then _G["OnSkuOptionsMain"]:Hide() end   -- insecure Hide OK in combat -> OnHide disables capture
+				return
+			end
+			local tPrefix = ""
+			if IsAltKeyDown() then tPrefix = tPrefix .. "ALT-" end
+			if IsControlKeyDown() then tPrefix = tPrefix .. "CTRL-" end
+			if IsShiftKeyDown() then tPrefix = tPrefix .. "SHIFT-" end
+			local tFull = tPrefix .. aKey
+			if SkuLogCombat then SkuLogCombat("capture", "route " .. tFull) end
+			local tOpt = _G["OnSkuOptionsMainOption1"]
+			if tOpt and tOpt:GetScript("OnClick") then
+				tOpt:GetScript("OnClick")(tOpt, tFull)
+			end
 		end)
 	end
 
