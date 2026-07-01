@@ -2666,6 +2666,7 @@ function SkuCore:PLAYER_REGEN_DISABLED(...)
 	-- close-on-combat behaviour; toggle with /skucombatmenu. The full open/close-in-combat
 	-- solution is the larger OnKeyDown capture migration (separate, iteratively-tested work).
 	local tKeepOpen = SkuSettings and SkuSettings:Sub("SkuCore") and SkuSettings:Sub("SkuCore").combatMenuOpen == true
+	if SkuLogCombat then SkuLogCombat("PLAYER_REGEN_DISABLED", tKeepOpen and "keep menu open" or "close menu") end
 	if not tKeepOpen then
 		SkuOptions:CloseMenu()
 		_G["SkuCoreControlOption1"]:Hide()

@@ -237,6 +237,28 @@ function Sku:DebugLogMark(aText)
 	tDebugLogAppend("=== " .. tostring(aText) .. "  " .. date("%Y-%m-%d %H:%M:%S") .. " ===")
 end
 
+-- Always-on combat-trace ring (independent of the Sku.debug flags), living in
+-- SkuDebugLog.combatTrace. SkuDebugLog.blockProbe only catches taint BLOCKS
+-- (ADDON_ACTION_BLOCKED/FORBIDDEN); but Sku's combat problem is mostly SELF-
+-- deactivation -- code that voluntarily bails/defers because of combat and never
+-- reaches a protected call, so nothing is ever blocked to capture. This ring
+-- records those decision points (tag + detail + live combat flag) so a single
+-- test cycle shows exactly where Sku turns itself off in combat, and -- once the
+-- restriction is relaxed -- that the read path now runs. Ring of 300; read it
+-- from SkuDebugLog.combatTrace after a /reload.
+function SkuLogCombat(aTag, aDetail)
+	if type(SkuDebugLog) ~= "table" then SkuDebugLog = {} end
+	local tRing = SkuDebugLog.combatTrace or {}
+	SkuDebugLog.combatTrace = tRing
+	tRing[#tRing + 1] = {
+		t = date("%H:%M:%S"),
+		tag = tostring(aTag),
+		detail = (aDetail ~= nil) and tostring(aDetail) or "",
+		combat = (InCombatLockdown and InCombatLockdown()) and 1 or 0,
+	}
+	while #tRing > 300 do table.remove(tRing, 1) end
+end
+
 -- /skudebug — control the two debug channels and the persisted log.
 SLASH_SKUDEBUG1 = "/skudebug"
 SlashCmdList["SKUDEBUG"] = function(aMsg)

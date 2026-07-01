@@ -260,9 +260,21 @@ function SkuOptions:SlashFunc(input, aSilent)
 
 		if fields[1] == L["short"] then
 			if SkuState:IsInCombat() == true then
-				SkuCore:SetOpenMenuAfterCombat(true)
-				SkuCore:SetOpenMenuAfterPath(input)
-				return
+				-- Self-deactivation: historically Sku deferred EVERY menu open/descend
+				-- until combat ended (openMenuAfterCombat), which is why a window opened
+				-- in combat (Blizzard C/B keys work in combat) was never read by the menu.
+				-- Opening/navigating the Sku overlay is insecure and legal in combat, and
+				-- reads are never protected, so under the /skucombatmenu opt-in we now let
+				-- it proceed. Default (opt-in off) preserves the original defer behaviour.
+				local tCombatMenu = SkuSettings and SkuSettings:Sub("SkuCore")
+					and SkuSettings:Sub("SkuCore").combatMenuOpen == true
+				if SkuLogCombat then SkuLogCombat("SlashFunc/short", (tCombatMenu and "proceed" or "defer").." path="..tostring(input)) end
+				if not tCombatMenu then
+					SkuCore:SetOpenMenuAfterCombat(true)
+					SkuCore:SetOpenMenuAfterPath(input)
+					return
+				end
+				-- opt-in on: fall through and open/read the menu in combat
 			end
 			if SkuState:IsMoving() == true then
 				SkuCore:SetOpenMenuAfterMoving(true)
@@ -2671,6 +2683,9 @@ function SkuOptions:CreateMenuFrame()
 	end)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
 		dprint("OnSkuOptionsMainOption1 click", aKey, aB)
+		if SkuLogCombat and SkuState and SkuState:IsInCombat() == true then
+			SkuLogCombat("navClick", "key="..tostring(aKey).." vis="..tostring(self:IsVisible()).." pos="..tostring(SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.name))
+		end
 
 		-- Recovery-Guard: SkuOptions.currentMenuPosition kann durch
 		-- vorherige Lua-Errors in parallelen Pipelines (z. B. ein
@@ -3194,6 +3209,7 @@ function SkuOptions:CreateMenuFrame()
 			while #tR > 60 do table.remove(tR, 1) end
 		end
 		if SkuState:IsInCombat() == true then
+			if SkuLogCombat then SkuLogCombat("menuOnShow", "return in combat -> nav keys NOT bound") end
 			SkuCore:SetOpenMenuAfterCombat(true)
 			return
 		end
@@ -3203,7 +3219,8 @@ function SkuOptions:CreateMenuFrame()
 		end
 
 		SkuCore:SetOpenMenuAfterCombat(false)
-		SkuCore:SetOpenMenuAfterMoving(false)	
+		SkuCore:SetOpenMenuAfterMoving(false)
+		if SkuLogCombat then SkuLogCombat("menuOnShow", "bind nav keys (out of combat)") end
 		PlaySound(88)
 		SetOverrideBindingClick(self, true, SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key, "SkuQuestMainOption1", SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key)
 		if SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2 and SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2 ~= "" then SetOverrideBindingClick(self, true, SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2, "SkuQuestMainOption1", SkuSettings:Sub("SkuOptions").SkuKeyBinds["SKU_KEY_QUESTABANDON"].key2) end

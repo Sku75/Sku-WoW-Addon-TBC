@@ -359,6 +359,14 @@ local tBagSlotList = {
 	[-3] = L["Reagent bank"],
 }
 local function OpenAllBagsHelper()
+	-- OpenBag force-opens a container frame (protected in combat). In combat we
+	-- only READ what the player already opened via Blizzard's own B key, so skip
+	-- the force-open rather than risk a block. Reads use the container APIs and
+	-- work regardless of whether we opened the frame.
+	if InCombatLockdown and InCombatLockdown() then
+		if SkuLogCombat then SkuLogCombat("OpenAllBagsHelper", "skip force-open in combat") end
+		return
+	end
 	for i, v in pairs(tBagSlotList) do
 		if i ~= -1 and GetContainerNumSlots(i) > 0 then
 			if not IsBagOpen(i) then
@@ -2081,8 +2089,14 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:Build_CharacterFrame(aParentChilds)
-	if _G["GearManagerToggleButton"] then
+	-- GearManagerToggleButton:Click() is a protected click (blocked in combat).
+	-- Skip it in combat; the stat/equipment reads below use non-protected APIs and
+	-- the always-present PaperDoll widgets, so they still populate. Out of combat
+	-- this is unchanged.
+	if _G["GearManagerToggleButton"] and not (InCombatLockdown and InCombatLockdown()) then
 		_G["GearManagerToggleButton"]:Click("LeftMouse")
+	elseif _G["GearManagerToggleButton"] and SkuLogCombat then
+		SkuLogCombat("Build_CharacterFrame", "skip GearManagerToggleButton:Click in combat")
 	end
 
 	local tFrameName = "CharacterLevelText"

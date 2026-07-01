@@ -191,10 +191,14 @@ function SkuQuest:OnEnable()
 	tFrame:SetPoint("TOP", _G["SkuQuestMain"], "BOTTOM", 0, 0)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
 		--dprint("SkuQuestMainOption1 OnClick", aKey, aB)
-		if SkuState:IsInCombat() == true then
+		-- Self-deactivation: quest-log navigation was fully disabled in combat.
+		-- Reads/cursor moves are unprotected; under the /skucombatmenu opt-in allow
+		-- them (the quest log must have been opened before combat for its nav keys to
+		-- be bound -- same binding wall as the main menu). Default off = unchanged.
+		if SkuState:IsInCombat() == true and not (SkuSettings and SkuSettings:Sub("SkuCore") and SkuSettings:Sub("SkuCore").combatMenuOpen == true) then
 			return
 		end
-		
+
 		if aKey == "SHIFT-UP" then
 			SkuOptions.TTS:PreviousLine()
 		end
@@ -243,10 +247,12 @@ function SkuQuest:OnEnable()
 	end)
 	tFrame:SetScript("OnShow", function(self)
 		--dprint("SkuQuestMainOption1 OnShow")
-		if SkuState:IsInCombat() == true then
+		local tCombatMenu = SkuSettings and SkuSettings:Sub("SkuCore") and SkuSettings:Sub("SkuCore").combatMenuOpen == true
+		if SkuState:IsInCombat() == true and not tCombatMenu then
 			return
 		end
-		
+		if SkuLogCombat and SkuState:IsInCombat() == true then SkuLogCombat("questOnShow", "proceed (opt-in)") end
+
 		PlaySound(88)
 		SkuOptions.Voice:OutputStringBTtts(L["Quest;geöffnet"], true, true, 0.3)
 		--[[
@@ -259,7 +265,11 @@ function SkuQuest:OnEnable()
 		SetOverrideBindingClick(self, true, "UP", "SkuQuestMainOption1", "UP")
 		SetOverrideBindingClick(self, true, "DOWN", "SkuQuestMainOption1", "DOWN")
 		]]
-		SetOverrideBindingClick(self, true, "ESCAPE", "SkuQuestMainOption1", "ESCAPE")
+		-- Binding changes are combat-blocked; skip in combat (the ESCAPE bind will
+		-- already be present if the quest log was opened before combat).
+		if not (InCombatLockdown and InCombatLockdown()) then
+			SetOverrideBindingClick(self, true, "ESCAPE", "SkuQuestMainOption1", "ESCAPE")
+		end
 		for x = 1, #SkuQuest.MenuAccessKeysNumbers do
 			--SetOverrideBindingClick(self, true, SkuQuest.MenuAccessKeysNumbers[x], "SkuQuestMainOption1", SkuQuest.MenuAccessKeysNumbers[x])
 			--SkuQuest.MenuAccessKeysNumbers[SkuQuest.MenuAccessKeysNumbers[x]] = SkuQuest.MenuAccessKeysNumbers[x]
