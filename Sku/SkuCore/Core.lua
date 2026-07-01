@@ -462,11 +462,18 @@ function SkuCore:OnInitialize()
 	SkuDispatcher:RegisterEventCallback("ITEM_UNLOCKED", SkuCore.ITEM_UNLOCKED)
 	SkuDispatcher:RegisterEventCallback("ITEM_LOCK_CHANGED", SkuCore.ITEM_LOCK_CHANGED)
 	SkuDispatcher:RegisterEventCallback("BAG_UPDATE", SkuCore.BAG_UPDATE)
-	-- BAG_UPDATE_DELAYED / PLAYER_EQUIPMENT_CHANGED / MERCHANT_UPDATE
-	-- intentionally NOT registered — the WotLK reference build doesn't
-	-- register them either. Registering them caused the menu to be
-	-- rebuilt during merchant / flight master interactions, breaking
-	-- navigation into those frames.
+	-- BAG_UPDATE_DELAYED: the client's authoritative "all bag changes for this
+	-- frame have settled" signal — the real event the old fixed-delay bag-action
+	-- fallback used to approximate. Registered but GATED: SkuCore:BAG_UPDATE_DELAYED
+	-- no-ops unless a bag action just armed Sku.tBagPostAction, so it stays inert
+	-- during normal merchant / flight master interactions (the situation that
+	-- originally motivated leaving it unregistered) and only drives the
+	-- post-action cursor confirm.
+	SkuDispatcher:RegisterEventCallback("BAG_UPDATE_DELAYED", SkuCore.BAG_UPDATE_DELAYED)
+	-- PLAYER_EQUIPMENT_CHANGED / MERCHANT_UPDATE intentionally NOT registered —
+	-- the WotLK reference build doesn't register them either. Registering them
+	-- caused the menu to be rebuilt during merchant / flight master interactions,
+	-- breaking navigation into those frames.
 	SkuDispatcher:RegisterEventCallback("UNIT_POWER_UPDATE", SkuCore.Aq.UNIT_POWER_UPDATE)
 	SkuDispatcher:RegisterEventCallback("UNIT_HAPPINESS", SkuCore.UNIT_HAPPINESS)
 	SkuDispatcher:RegisterEventCallback("PLAYER_TARGET_CHANGED", SkuCore.PLAYER_TARGET_CHANGED)
@@ -1930,6 +1937,16 @@ function SkuCore:BAG_UPDATE(...)
 	end)
 end
 function SkuCore:BAG_UPDATE_DELAYED(...)
+	-- Authoritative post-action settle signal: fires once per frame after a
+	-- burst of BAG_UPDATEs has fully settled — the real event the fixed-delay
+	-- SkuRestoreSellPosition timer used to approximate. Gated exactly like
+	-- SkuCore:BAG_UPDATE so it is a no-op outside a bag-action window (normal
+	-- looting / merchant / flight-master interactions are untouched). BAG_UPDATE
+	-- is already coalesced here, so call the confirm directly (no extra debounce).
+	if not (Sku and Sku.tBagPostAction) then return end
+	if SkuBagConfirmRefresh then
+		pcall(SkuBagConfirmRefresh)
+	end
 end
 function SkuCore:PLAYER_EQUIPMENT_CHANGED(...)
 end

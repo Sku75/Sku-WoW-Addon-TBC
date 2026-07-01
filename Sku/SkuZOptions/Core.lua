@@ -24,6 +24,14 @@ SkuOptions.MenuAccessKeysNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9",
 
 local ssplit = string.split
 
+-- Explicit cursor-movement keys in the menu key dispatcher. Used to treat a
+-- deliberate navigation as the "settle" signal that closes a bag post-action
+-- announce-suppress window (see SkuCaptureSellState / SkuBagConfirmRefresh).
+local tNavigationKeys = {
+	["UP"] = true, ["DOWN"] = true, ["LEFT"] = true, ["RIGHT"] = true,
+	["HOME"] = true, ["END"] = true, ["SHIFT-UP"] = true, ["SHIFT-DOWN"] = true,
+}
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuOptions.DebugToChatFlag = true
 function SkuOptions:DebugToChat(...)
@@ -2812,6 +2820,31 @@ function SkuOptions:CreateMenuFrame()
 		-- the secure macro opens the confirm window (ordering-independent).
 		local tSuppressBagAnnounce = false
 
+		-- User input IS the settle signal. If the player deliberately navigates
+		-- while a bag post-action window is still open, they have taken manual
+		-- control. Drop the suppress so THIS navigation speaks immediately, and
+		-- cancel the whole pending confirm so it can neither fire a second, stale
+		-- announce nor re-pin the cursor by identity back onto the acted-on item
+		-- (yanking it away from where the user just moved). Covers both the "no
+		-- bag event at all" case and a late event arriving after the user moved on
+		-- — so no fixed-delay fallback is needed.
+		if Sku and (Sku.tBagAnnounceSuppress or Sku.tBagPostAction)
+			and tNavigationKeys and tNavigationKeys[aKey] then
+			Sku.tBagAnnounceSuppress = nil
+			Sku.tBagAnnounceForce = nil
+			Sku.tBagPostAction = nil
+			if SkuCore then
+				if SkuCore._bagConfirmTimer then
+					pcall(function() SkuCore._bagConfirmTimer:Cancel() end)
+					SkuCore._bagConfirmTimer = nil
+				end
+				if SkuCore._bagAnnounceTimer then
+					pcall(function() SkuCore._bagAnnounceTimer:Cancel() end)
+					SkuCore._bagAnnounceTimer = nil
+				end
+			end
+		end
+
 		if aKey == "UP" then
 			if tIsDoubleDown ~= true then
 				SkuOptions.currentMenuPosition:OnPrev()
@@ -5080,27 +5113,43 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									end
 								end
 							elseif aGossipListTable[index].bag ~= nil and aGossipListTable[index].slot ~= nil then
-								-- Bag/bank item (container-API migration): right-click =
-								-- UseContainerItem(bag, slot). Blizzard's UseContainerItem is
-								-- itself context-sensitive -- it uses a consumable, equips gear,
-								-- and SELLS at a vendor (the same behaviours the old /click
-								-- RightButton gave), with no rendered ContainerFrame. It is
-								-- protected in combat (blocked there, same as before); combat use
-								-- is handled by SkuCore/combatBags. Then refresh the menu.
+								-- Bag/bank item (container-API migration): right-click = "use"
+								-- (consume, equip, or vendor-sell -- the same context-sensitive
+								-- behaviour the old /click RightButton gave), with no rendered
+								-- ContainerFrame.
+								-- The underlying UseContainerItem(bag, slot) is HARDWARE-EVENT
+								-- gated: an insecure OnAction call is refused with
+								-- ADDON_ACTION_FORBIDDEN for any item whose use casts a spell or
+								-- equips gear (potions, most consumables, gear). So drive it
+								-- through the secure button instead: bake the (bag, slot) into a
+								-- "/use <bag> <slot>" macrotext. Insecure Lua may compute the slot
+								-- numbers here (only the keypress that fires the macro must be a
+								-- hardware event, which SecureOnSkuOptionsMainOption1 provides, and
+								-- SetAttribute is already combat-gated in templates.lua). Combat
+								-- use is handled by SkuCore/combatBags.
+								--
+								-- Bag-action confirm wiring: activating this node makes the ENTER
+								-- handler arm the announce-suppress window (the node carries a
+								-- `macrotext` and its parent is a bag item). That window is closed by
+								-- SkuBagConfirmRefresh, which re-pins the cursor by identity
+								-- (bagSlot/itemId) through the post-use bag re-sort and
+								-- force-announces the settled item. It is driven off REAL signals,
+								-- not a fixed delay:
+								--   * SkuCaptureSellState() opens the window (captures the item
+								--     path/index BEFORE the action);
+								--   * /use <bag> <slot> is the action;
+								--   * the client's BAG_UPDATE / BAG_UPDATE_DELAYED events then fire the
+								--     confirm once the bag has actually settled (see
+								--     SkuCore:BAG_UPDATE_DELAYED). The trailing /script only rebuilds
+								--     the menu immediately for responsiveness.
+								-- For the rare use that changes nothing (no bag event at all), the
+								-- user's next navigation keypress closes the window instead (handled
+								-- in the key dispatcher) -- so no fixed-delay fallback is needed.
 								local lBag, lSlot = aGossipListTable[index].bag, aGossipListTable[index].slot
-								tNewSubMenuEntry.OnAction = function()
-									if _G.UseContainerItem then pcall(_G.UseContainerItem, lBag, lSlot) end
-									if _G.C_Timer and _G.C_Timer.After then
-										_G.C_Timer.After(0.1, function()
-											pcall(function() SkuCore:CheckFrames() end)
-											_G.C_Timer.After(0.35, function()
-												if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then
-													pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
-												end
-											end)
-										end)
-									end
-								end
+								tNewSubMenuEntry.macrotext =
+									"/script SkuCaptureSellState()\r\n"
+									.. "/use "..lBag.." "..lSlot.."\r\n"
+									.. "/script SkuCore:CheckFrames()"
 							elseif aGossipListTable[index].containerFrameName then
 								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 							else
