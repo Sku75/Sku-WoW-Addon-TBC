@@ -3414,12 +3414,30 @@ function SkuOptions:CreateMenuFrame()
 		tCap:EnableKeyboard(false)
 		if not InCombatLockdown() then tCap:SetPropagateKeyboardInput(false) end   -- consume; set out of combat
 
+		-- Capture is valid ONLY while the Sku menu is open, IN combat, under the opt-in.
+		local function tCaptureActive()
+			return InCombatLockdown()
+				and _G["OnSkuOptionsMain"] and _G["OnSkuOptionsMain"]:IsVisible()
+				and SkuSettings and SkuSettings:Sub("SkuCore")
+				and SkuSettings:Sub("SkuCore").combatMenuOpen == true
+		end
+
 		local tMods = { LSHIFT = 1, RSHIFT = 1, LCTRL = 1, RCTRL = 1, LALT = 1, RALT = 1 }
 		tCap:SetScript("OnKeyDown", function(self, aKey)
+			-- HARD FAILSAFE against lock: if capture is not currently valid (combat ended,
+			-- menu closed, or opt-in off) disable the keyboard NOW. This one key is lost,
+			-- but every following key falls straight through to the game -> it can never
+			-- permanently lock the player out (the bug that ate ESC out of combat).
+			if not tCaptureActive() then
+				self:EnableKeyboard(false)
+				if SkuLogCombat then SkuLogCombat("capture", "FAILSAFE disable") end
+				return
+			end
 			if tMods[aKey] then return end                    -- ignore bare modifier presses
 			if aKey == "ESCAPE" then
 				if SkuLogCombat then SkuLogCombat("capture", "ESC -> close") end
-				if _G["OnSkuOptionsMain"] then _G["OnSkuOptionsMain"]:Hide() end   -- insecure Hide OK in combat -> OnHide disables capture
+				self:EnableKeyboard(false)                     -- release the keyboard now
+				if _G["OnSkuOptionsMain"] then _G["OnSkuOptionsMain"]:Hide() end
 				return
 			end
 			local tPrefix = ""
@@ -3432,6 +3450,15 @@ function SkuOptions:CreateMenuFrame()
 			if tOpt and tOpt:GetScript("OnClick") then
 				tOpt:GetScript("OnClick")(tOpt, tFull)
 			end
+		end)
+
+		-- Combat ended -> release the keyboard unconditionally. The menu can stay open
+		-- across combat-end (combatMenuOpen), and OnHide never fires in that case, so
+		-- without this the capture keeps eating keys out of combat = the observed lock.
+		tCap:RegisterEvent("PLAYER_REGEN_ENABLED")
+		tCap:SetScript("OnEvent", function(self)
+			self:EnableKeyboard(false)
+			if SkuLogCombat then SkuLogCombat("capture", "REGEN_ENABLED release") end
 		end)
 	end
 
