@@ -633,6 +633,10 @@ SkuSettings:Register("SkuCore", {
 	["ressourceScanning.notifyOnRessources"]      = { scope = "profile", default = false, type = "boolean" },
 	["readAllTooltips"]                           = { scope = "profile", default = false, type = "boolean" },
 	["interactMove"]                              = { scope = "profile", default = true, type = "boolean" },
+	-- Combat menu accessibility: open/read/navigate the Sku menu, bags, character sheet
+	-- and quest log WHILE IN COMBAT (headless capture + relaxed self-deactivation).
+	-- Default ON; toggle in the Kampf menu or via /skucombatmenu.
+	["combatMenuOpen"]                            = { scope = "profile", default = true, type = "boolean" },
 	["turnToUnit.speed"]                          = { scope = "profile", default = 6, type = "number" },
 	["turnToUnit.soundOnSuccess"]                 = { scope = "profile", default = "sound-waterdrop5", type = "string" },
 	["turnToUnit.soundOnFail"]                    = { scope = "profile", default = "sound-waterdrop1", type = "string" },

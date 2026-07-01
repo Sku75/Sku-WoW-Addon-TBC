@@ -1647,6 +1647,32 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function aqCombat:aqCombatMenuBuilder()
+   -- Combat menu accessibility toggle (open/read/navigate Sku menu, bags, character,
+   -- quest log while in combat). Profile-scoped SkuSettings:Sub("SkuCore").combatMenuOpen
+   -- (registered default ON). Same flag /skucombatmenu toggles.
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Sku menu in combat"]}, SkuGenericMenuItem)
+   tNewMenuEntry.dynamic = true
+   tNewMenuEntry.filterable = true
+   tNewMenuEntry.isSelect = true
+   tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+      if SkuSettings:Sub("SkuCore").combatMenuOpen == true then
+         return L["Yes"]
+      else
+         return L["No"]
+      end
+   end
+   tNewMenuEntry.OnAction = function(self, aValue, aName)
+      if aName == L["No"] then
+         SkuSettings:Sub("SkuCore").combatMenuOpen = false
+      elseif aName == L["Yes"] then
+         SkuSettings:Sub("SkuCore").combatMenuOpen = true
+      end
+   end
+   tNewMenuEntry.BuildChildren = function(self)
+      SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+      SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+   end
+
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true

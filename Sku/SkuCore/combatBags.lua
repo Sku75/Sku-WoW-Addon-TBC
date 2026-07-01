@@ -296,8 +296,9 @@ tInitFrame:SetScript("OnEvent", function(self, event)
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- /skucombatmenu : toggle "keep the Sku menu open + navigable in combat" (Stage 3, opt-in).
--- See SkuCore:PLAYER_REGEN_DISABLED for the behaviour + the stuck-open limitation.
+-- /skucombatmenu : toggle "Sku menu usable in combat" (open/read/navigate menu, bags,
+-- character, quest log in combat). Same profile setting as the Kampf-menu toggle
+-- (SkuSettings:Sub("SkuCore").combatMenuOpen), default ON.
 ---------------------------------------------------------------------------------------------------------------------------------------
 SLASH_SKUCOMBATMENU1 = "/skucombatmenu"
 SlashCmdList["SKUCOMBATMENU"] = function()
@@ -305,6 +306,6 @@ SlashCmdList["SKUCOMBATMENU"] = function()
    if not s then return end
    s.combatMenuOpen = not (s.combatMenuOpen == true)
    local tOn = s.combatMenuOpen == true
-   print("Sku: keep menu open in combat = " .. (tOn and "ON (experimental, stuck open until combat ends)" or "OFF (default)"))
+   print("Sku: menu usable in combat = " .. (tOn and "ON" or "OFF"))
    tSpeak(tOn and "combat menu on" or "combat menu off")
 end

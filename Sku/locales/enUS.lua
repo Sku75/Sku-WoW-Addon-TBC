@@ -511,6 +511,7 @@ L["Combat end"]  = "combat end" --
 L["combat notification"] = "combat notification"
 L["Combat start"]  = "combat start" --
 L["Combat"] = "Combat"
+L["Sku menu in combat"] = "Sku menu in combat"
 L["Comma"]  = "comma" --this is the name of the character (,)
 L["comma"]  = "comma" --use the word  not the character
 L["comment"] = "comment"

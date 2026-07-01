@@ -512,6 +512,7 @@ L["Combat end"] = "Kampfende"
 L["combat notification"] = "kampfbenachrichtigung"
 L["Combat start"] = "Kampfbeginn"  
 L["Combat"] = "Kampf"
+L["Sku menu in combat"] = "Sku Menü im Kampf"
 L["comma"] = "Komma"  --use the word  not the character
 L["Comma"] = "Komma" --this is the name of the character (,)
 L["comment"] = "kommentar"
