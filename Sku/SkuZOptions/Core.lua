@@ -274,7 +274,16 @@ function SkuOptions:SlashFunc(input, aSilent)
 					SkuCore:SetOpenMenuAfterPath(input)
 					return
 				end
-				-- opt-in on: fall through and open/read the menu in combat
+				-- Opt-in on: open/read the menu HEADLESSLY in combat. OnSkuOptionsMain is
+				-- PROTECTED (ancestor of the secure ENTER button), so its Show() is blocked
+				-- in combat -> the visual never appears and OnShow never fires. Nav+reading
+				-- run through TTS + the modal capture frame, which need no visible frame,
+				-- so enable capture HERE -- this is the reliable in-combat "menu open" signal.
+				if _G["SkuMenuCapture"] then
+					SkuOptions.combatMenuActive = true
+					_G["SkuMenuCapture"]:EnableKeyboard(true)
+					if SkuLogCombat then SkuLogCombat("capture", "ENABLE via SlashFunc") end
+				end
 			end
 			if SkuState:IsMoving() == true then
 				SkuCore:SetOpenMenuAfterMoving(true)
@@ -1796,6 +1805,14 @@ function SkuOptions:CreateMainFrame()
 		SkuCore:SetOpenMenuAfterMoving(false)
 		--dprint("SkuCore.isMoving1", SkuCore.isMoving)
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_OPENMENU") or a == nil then
+			-- Headless combat open (Shift-F1): the visual frame can't Show in combat, so
+			-- enable the modal capture frame here too (nav+reading go through TTS/capture).
+			if InCombatLockdown() and _G["SkuMenuCapture"] and SkuSettings and SkuSettings:Sub("SkuCore")
+				and SkuSettings:Sub("SkuCore").combatMenuOpen == true then
+				SkuOptions.combatMenuActive = true
+				_G["SkuMenuCapture"]:EnableKeyboard(true)
+				if SkuLogCombat then SkuLogCombat("capture", "ENABLE via OpenMenu key") end
+			end
 			SkuChat:CloseChat()
 
 			if #SkuOptions.Menu == 0 then
@@ -2965,7 +2982,7 @@ function SkuOptions:CreateMenuFrame()
 		-- event-driven SkuBagConfirmRefresh speaks the settled item once it's
 		-- re-pinned by identity. Suppressing here stops the wrong item starting
 		-- to announce before the correct one cuts it off.
-		if aKey ~= "ESCAPE" and _G["OnSkuOptionsMainOption1"]:IsVisible() and aKey ~= "SHIFT-DOWN" and SkuOptions.TTS.MainFrame:IsVisible() ~= true and not tSuppressBagAnnounce then
+		if aKey ~= "ESCAPE" and (_G["OnSkuOptionsMainOption1"]:IsVisible() or (SkuOptions.combatMenuActive == true and InCombatLockdown())) and aKey ~= "SHIFT-DOWN" and SkuOptions.TTS.MainFrame:IsVisible() ~= true and not tSuppressBagAnnounce then
 			SkuOptions:VocalizeCurrentMenuName(tVocalizeReset)
 			if string.len(SkuOptions.Filterstring) > 1  then
 				--SkuOptions.Voice:OutputStringBTtts("Filter", false, true, 0.3, nil, nil, nil, 2)
@@ -3413,10 +3430,12 @@ function SkuOptions:CreateMenuFrame()
 		tCap:EnableKeyboard(false)
 		if not InCombatLockdown() then tCap:SetPropagateKeyboardInput(false) end   -- consume; set out of combat
 
-		-- Capture is valid ONLY while the Sku menu is open, IN combat, under the opt-in.
+		-- Capture is valid ONLY while the combat menu is logically open, IN combat, under
+		-- the opt-in. Uses the SkuOptions.combatMenuActive flag (NOT frame visibility --
+		-- the menu frame can't be shown in combat, so IsVisible is always false there).
 		local function tCaptureActive()
 			return InCombatLockdown()
-				and _G["OnSkuOptionsMain"] and _G["OnSkuOptionsMain"]:IsVisible()
+				and SkuOptions.combatMenuActive == true
 				and SkuSettings and SkuSettings:Sub("SkuCore")
 				and SkuSettings:Sub("SkuCore").combatMenuOpen == true
 		end
@@ -3429,7 +3448,7 @@ function SkuOptions:CreateMenuFrame()
 			-- permanently lock the player out (the bug that ate ESC out of combat).
 			if not tCaptureActive() then
 				local tWhy = (not InCombatLockdown() and "noLock")
-					or ((not (_G["OnSkuOptionsMain"] and _G["OnSkuOptionsMain"]:IsVisible())) and "menuHidden")
+					or (SkuOptions.combatMenuActive ~= true and "notActive")
 					or "optOff"
 				self:EnableKeyboard(false)
 				if SkuLogCombat then SkuLogCombat("capture", "FAILSAFE disable (" .. tWhy .. ") key=" .. tostring(aKey)) end
@@ -3438,9 +3457,9 @@ function SkuOptions:CreateMenuFrame()
 			if SkuLogCombat then SkuLogCombat("capture", "keydown " .. tostring(aKey)) end
 			if tMods[aKey] then return end                    -- ignore bare modifier presses
 			if aKey == "ESCAPE" then
-				if SkuLogCombat then SkuLogCombat("capture", "ESC -> close") end
+				SkuOptions.combatMenuActive = false            -- logical close (frame Hide is protected in combat)
 				self:EnableKeyboard(false)                     -- release the keyboard now
-				if _G["OnSkuOptionsMain"] then _G["OnSkuOptionsMain"]:Hide() end
+				if SkuLogCombat then SkuLogCombat("capture", "ESC -> release") end
 				return
 			end
 			local tPrefix = ""
@@ -3461,15 +3480,16 @@ function SkuOptions:CreateMenuFrame()
 		tCap:RegisterEvent("PLAYER_REGEN_ENABLED")
 		tCap:RegisterEvent("PLAYER_ENTERING_WORLD")
 		tCap:SetScript("OnEvent", function(self, aEvent)
+			-- Both events reset capture to a known-off state.
+			SkuOptions.combatMenuActive = false
+			self:EnableKeyboard(false)
 			if aEvent == "PLAYER_ENTERING_WORLD" then
 				-- session boundary marker (fix: stale entries from a prior session were
-				-- being mistaken for the current one) + reset capture to a known-off state.
-				self:EnableKeyboard(false)
+				-- being mistaken for the current one).
 				if SkuLogCombat then SkuLogCombat("=== SESSION ===", "load lock=" .. (InCombatLockdown() and 1 or 0)) end
-				return
+			else
+				if SkuLogCombat then SkuLogCombat("capture", "REGEN_ENABLED release") end
 			end
-			self:EnableKeyboard(false)   -- PLAYER_REGEN_ENABLED: release on combat end
-			if SkuLogCombat then SkuLogCombat("capture", "REGEN_ENABLED release") end
 		end)
 	end
 
