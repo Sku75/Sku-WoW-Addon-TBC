@@ -3458,6 +3458,7 @@ function SkuOptions:CreateMenuFrame()
 			if tMods[aKey] then return end                    -- ignore bare modifier presses
 			if aKey == "ESCAPE" then
 				SkuOptions.combatMenuActive = false            -- logical close (frame Hide is protected in combat)
+				SkuOptions.combatMenuHasWindow = false
 				self:EnableKeyboard(false)                     -- release the keyboard now
 				if SkuLogCombat then SkuLogCombat("capture", "ESC -> release") end
 				return
@@ -3482,6 +3483,7 @@ function SkuOptions:CreateMenuFrame()
 		tCap:SetScript("OnEvent", function(self, aEvent)
 			-- Both events reset capture to a known-off state.
 			SkuOptions.combatMenuActive = false
+			SkuOptions.combatMenuHasWindow = false
 			self:EnableKeyboard(false)
 			if aEvent == "PLAYER_ENTERING_WORLD" then
 				-- session boundary marker (fix: stale entries from a prior session were

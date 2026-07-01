@@ -2665,17 +2665,28 @@ function SkuCore:PLAYER_REGEN_DISABLED(...)
 	-- it will not close until PLAYER_REGEN_ENABLED). Default off preserves the original
 	-- close-on-combat behaviour; toggle with /skucombatmenu. The full open/close-in-combat
 	-- solution is the larger OnKeyDown capture migration (separate, iteratively-tested work).
-	-- ALWAYS close the menu on combat start, so combat begins from a clean slate. Keeping
-	-- the (visual, override-bound) menu open across combat-start was a lock-in: the frame
-	-- can't be hidden and its arrow bindings can't be cleared in combat, so the keys
-	-- stayed hijacked with no way out. Combat menu access is provided FRESH by the headless
-	-- capture (open a window or Shift-F1 in combat), so we no longer keep it open here.
-	if SkuLogCombat then SkuLogCombat("PLAYER_REGEN_DISABLED", "close menu (clean slate)") end
+	-- Menu open going into combat: HAND IT OFF to the headless capture instead of just
+	-- closing (which was the annoying part). We still drop the VISUAL frame via CloseMenu --
+	-- that stops the combat-illegal visual updates (they are gated on the frame being
+	-- visible) AND clears the override bindings we otherwise can't clear once fully in
+	-- combat (the old lock-in) -- but currentMenuPosition survives, so with the capture
+	-- enabled navigation continues seamlessly and headlessly. For a screen-reader user the
+	-- vanished visual is invisible; they just keep hearing/navigating, keys stay free after
+	-- ESC (no lingering bindings). CloseMenu's OnHide disables the capture, so we re-enable
+	-- it AFTER. When the feature is off, or the menu was closed, do the plain close.
+	local tCombatMenu = SkuSettings and SkuSettings:Sub("SkuCore") and SkuSettings:Sub("SkuCore").combatMenuOpen == true
+	local tWasOpen = SkuOptions:IsMenuOpen() == true
+	if SkuLogCombat then SkuLogCombat("PLAYER_REGEN_DISABLED", (tCombatMenu and tWasOpen) and "handoff open menu to capture" or "close menu") end
 	SkuOptions:CloseMenu()
 	if _G["SkuCoreControlOption1"] then _G["SkuCoreControlOption1"]:Hide() end
-	-- clear any headless combat-capture state (re-enabled on the next in-combat open)
-	SkuOptions.combatMenuActive = false
-	if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(false) end
+	SkuOptions.combatMenuHasWindow = false   -- handoff is a bare menu; CheckFrames re-sets it if a window is open
+	if tCombatMenu and tWasOpen then
+		SkuOptions.combatMenuActive = true
+		if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(true) end
+	else
+		SkuOptions.combatMenuActive = false
+		if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(false) end
+	end
 	if SkuCore.MinimapScanner.IsMMScanning == true then
 		SkuCore.MinimapScanner:MinimapStopScan()
 	end
@@ -3502,6 +3513,10 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 		-- even though those frames are not in interactFramesList. Generalises the old
 		-- AuctionFrame-only special-case to every contributor.
 		if #tOpenFrames > 0 or SkuCore:AnyWindowContributorVisible() then
+			-- Mark the combat capture as WINDOW-backed, so the else-branch below knows to
+			-- release it when the window later closes -- vs a bare Shift-F1/handoff menu
+			-- (no window), which must NOT be released just because no window is open.
+			if InCombatLockdown() then SkuOptions.combatMenuHasWindow = true end
 			local tGossipList = {}
 			for x = 1, #tOpenFrames do
 				--dprint(x, tOpenFrames[x])
@@ -3687,10 +3702,11 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 			-- to the game (instead of waiting for ESC / combat end). This fires only when a
 			-- window actually closed (the window is gone), never mid-navigation. The bare
 			-- Shift-F1 menu (no window) is released by ESC instead.
-			if InCombatLockdown() and SkuOptions.combatMenuActive == true then
+			if InCombatLockdown() and SkuOptions.combatMenuActive == true and SkuOptions.combatMenuHasWindow == true then
 				SkuOptions.combatMenuActive = false
+				SkuOptions.combatMenuHasWindow = false
 				if _G["SkuMenuCapture"] then _G["SkuMenuCapture"]:EnableKeyboard(false) end
-				if SkuLogCombat then SkuLogCombat("capture", "release (no window open)") end
+				if SkuLogCombat then SkuLogCombat("capture", "release (window closed)") end
 			end
 			if not aDontClose then
 				SkuCore.openMenuAfterMoving = false
