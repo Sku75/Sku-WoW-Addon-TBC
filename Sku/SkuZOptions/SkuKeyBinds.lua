@@ -67,6 +67,9 @@ SkuOptions.skuDefaultKeyBindings = {
    -- (Combat bag access + combat trading keybinds removed 2026-07-01 -- their probe-era
    -- modules SkuCore/combatBags.lua + combatTrade.lua were archived. The Path A combat
    -- item-use rework will register its own keys. See [[sku42-combat-item-use-design]].)
+   -- Trade-accept: permanent, rebindable secure /click TradeFrameTradeButton (works in and out
+   -- of combat, no-op with no trade open). See SkuCore:UpdateTradeAcceptBinding.
+   ["SKU_KEY_TRADEACCEPT"] = {key = "CTRL-T", object = "SkuCore", func = "UpdateTradeAcceptBinding",},
 
    ["SKU_KEY_STOPROUTEORWAYPOINT"] = {key = "", object = "SkuNav", func = "CreateSkuNavMain",},
 

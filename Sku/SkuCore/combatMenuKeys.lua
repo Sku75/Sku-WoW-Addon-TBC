@@ -27,6 +27,12 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- locale accessor (Sku.L may be set after this file loads; resolve at call time). Falls back
+-- to the key itself so a missing string can never break secure->insecure routing.
+local function tL(k)
+   return (Sku and Sku.L and Sku.L[k]) or k
+end
+
 -- Stage 1 nav key set. Stage 3 makes these user-configurable settings (default arrows +
 -- enter). ESCAPE closes the combat menu; while bound (whole combat) it loses its normal
 -- game function -- an accepted cost of the dedicated-combat-keys model.
@@ -98,7 +104,9 @@ local function tEnsureKeyFrame()
       -- currentMenuPosition is still on the used item (SkuCaptureSellState handles both the
       -- item node and its Rechtsklick submenu). NOTE: the secure /use slot MAP can't be
       -- re-staged mid-combat, but that's the mirror side -- the narration is what refreshes.
-      if tMacro ~= "" and SkuCaptureSellState then
+      -- only the bag /use path needs the post-action confirm refresh; the trade-accept
+      -- /click macro must NOT trigger a bag rebuild.
+      if tMacro ~= "" and string.find(tMacro, "^/use") and SkuCaptureSellState then
          pcall(SkuCaptureSellState)
          if SkuLogCombat then SkuLogCombat("mirror", "post-use capture -> tBagPostAction=" .. ((Sku and Sku.tBagPostAction) and 1 or 0)) end
       end
@@ -114,44 +122,66 @@ local function tEnsureKeyFrame()
    end)
    b:SetFrameRef("use", u)
 
-   -- MIRROR snippet -- a 3-level TREE tracking the bags menu in lockstep (see Part A capture
-   -- in LocalMenu.lua -> SkuCore.combatBagTree, pre-staged as vc / v<v>_c / v<v>_s<i>):
-   --   mlvl 0 = view-selection level (Tasche 1..N, keyring, all items, ...)
-   --   mlvl 1 = item list inside the current view (mv), item index mi
-   --   mlvl 2 = the item's Links/Rechtsklick submenu
-   -- Arms SkuCombatUse's "/use <bag> <slot>" for the focused item; ENTER (bound straight to
-   -- SkuCombatUse) fires it. HOME syncs: cold -> activate at view level; at view level ->
-   -- first view; inside a view -> that view's first item. Attribute names are all lowercase
-   -- (WoW lowercases secure attr names). Fire is external (ENTER->SkuCombatUse).
+   -- MIRROR snippet -- tracks the bags menu in lockstep (Part A capture in LocalMenu.lua ->
+   -- SkuCore.combatBagTree, pre-staged as vc / v<v>_c / v<v>_s<i>) AND holds the in-combat
+   -- TRADE state:
+   --   ma 0 = neutral (nothing armed)   ma 1 = bags nav   ma 2 = trade-accept armed
+   --   mlvl 0/1/2 = bag view / item list / Links-Rechtsklick submenu (only for ma 1)
+   --   manchor 1 = at the "bags-entry anchor" (reached by LEFT out of the bags, or by HOME
+   --               while neutral/armed): RIGHT re-syncs bags, DOWN commits to trade-accept,
+   --               other nav leaves it.
+   -- Arms SkuCombatUse with "/use <bag> <slot>" (ma 1, focused item) or
+   -- "/click TradeFrameTradeButton" (ma 2). ENTER is bound straight to SkuCombatUse and fires
+   -- whatever is armed. B = bags sync. HOME = first-item nav while in the bags (ma 1), else
+   -- the bags-entry anchor DECLARE (aligns the mirror to where a partner trade drops the
+   -- insecure menu; END = last-item nav). Trade-arm (ma 2) persists until B or HOME. WoW
+   -- lowercases attr names.
+   --
+   -- kroute (the insecure route signal) is decided ONCE, up front, from state we can read now,
+   -- and written a SINGLE time -- so the state mutations below never trigger a second (wrong)
+   -- route (OnAttributeChanged fires synchronously on each SetAttribute). routeKey defaults to
+   -- the raw key (normal passthrough / lockstep menu nav); the intercepts override it to
+   -- SYNC / ANCHOR, which the insecure handler acts on.
    b:SetAttribute("_onclick", [=[
       local key = button
       local c = (self:GetAttribute("mc") or 0) + 1
       self:SetAttribute("mc", c)
-      self:SetAttribute("kroute", c .. "|" .. key)      -- insecure nav routing
       local vc = self:GetAttribute("vc") or 0
       local u = self:GetFrameRef("use")
+      local ma = self:GetAttribute("ma") or 0
+      local anchor = self:GetAttribute("manchor") or 0
+      local TRADE = "/click TradeFrameTradeButton"
+
+      local routeKey = key
+      if key == "SYNC" then
+         routeKey = "SYNC"
+      elseif key == "HOME" and ma ~= 1 then
+         routeKey = "ANCHOR"        -- HOME while neutral/armed = declare the anchor (reposition
+                                    -- the insecure menu to the Local root). HOME in the bags
+                                    -- (ma 1) is normal first-item nav -> plain passthrough.
+      elseif anchor == 1 and key == "RIGHT" then
+         routeKey = "SYNC"          -- RIGHT from the bags-entry anchor = re-sync into bags
+      elseif anchor == 1 and key == "LEFT" then
+         routeKey = "NOOP"          -- LEFT at the anchor is blocked (no exit into wider menus)
+      end
+      -- DOWN from the anchor just arms trade + moves down normally (no special route).
+      self:SetAttribute("kroute", c .. "|" .. routeKey)
 
       if key == "SYNC" then
-         -- B (open-bags key): cold-sync to the view-selection level. The insecure kroute
-         -- handler opens the visual bags + builds Sku's bags menu on the same press.
+         -- B (open-bags key): cold-sync to the bag view level; insecure side opens the bags.
          self:SetAttribute("ma", 1)
          self:SetAttribute("mlvl", 0)
          self:SetAttribute("mv", 1)
          self:SetAttribute("mi", 1)
+         self:SetAttribute("manchor", 0)
          if u then u:SetAttribute("macrotext", "") end
-         self:SetAttribute("mlog", "B sync -> views v=1")
+         self:SetAttribute("mlog", "B sync -> bags views v=1")
          return
       end
 
       if key == "HOME" then
-         if (self:GetAttribute("ma") or 0) ~= 1 then
-            self:SetAttribute("ma", 1)                   -- cold sync -> view-selection level
-            self:SetAttribute("mlvl", 0)
-            self:SetAttribute("mv", 1)
-            self:SetAttribute("mi", 1)
-            if u then u:SetAttribute("macrotext", "") end
-            self:SetAttribute("mlog", "HOME sync -> views v=1")
-         else
+         if ma == 1 then
+            -- in the bags: normal "jump to first" nav (symmetric with END = jump to last).
             local lvl = self:GetAttribute("mlvl") or 0
             if lvl == 0 then
                self:SetAttribute("mv", 1)
@@ -164,11 +194,57 @@ local function tEnsureKeyFrame()
                if u and s then u:SetAttribute("macrotext", "/use " .. s) end
                self:SetAttribute("mlog", "HOME -> item 1 v=" .. mv .. " s=" .. (s or "?"))
             end
+         else
+            -- neutral or armed: declare the bags-entry anchor -- align the mirror to where a
+            -- partner trade dropped the insecure menu. RIGHT there re-syncs bags, DOWN arms
+            -- trade. Clears any prior trade arm. (ANCHOR route repositions to the Local root.)
+            self:SetAttribute("ma", 0)
+            self:SetAttribute("manchor", 1)
+            if u then u:SetAttribute("macrotext", "") end
+            self:SetAttribute("mlog", "HOME -> bags-entry anchor (declare)")
          end
          return
       end
 
-      if (self:GetAttribute("ma") or 0) ~= 1 then return end
+      if anchor == 1 then
+         -- at the bags-entry anchor (reached by LEFT out of the bags, or a HOME declare):
+         if key == "RIGHT" then
+            -- back into the bags -- authoritative sync (independent of the cursor position)
+            self:SetAttribute("ma", 1)
+            self:SetAttribute("mlvl", 0)
+            self:SetAttribute("mv", 1)
+            self:SetAttribute("mi", 1)
+            self:SetAttribute("manchor", 0)
+            if u then u:SetAttribute("macrotext", "") end
+            self:SetAttribute("mlog", "anchor RIGHT -> re-sync bags")
+         elseif key == "DOWN" then
+            -- commit to trade-accept (stays armed until B or HOME); menu moves down normally.
+            self:SetAttribute("ma", 2)
+            self:SetAttribute("manchor", 0)
+            if u then u:SetAttribute("macrotext", TRADE) end
+            self:SetAttribute("mlog", "anchor DOWN -> trade armed")
+         elseif key == "LEFT" then
+            -- blocked: stay pinned at the anchor. Leaving Local leftward into the wider menu
+            -- isn't useful in combat (close the bags/trade and open the menu directly instead),
+            -- and pinning avoids an accidental LEFT dropping to neutral (which would then need
+            -- a HOME/B to recover). routeKey is NOOP so the insecure menu doesn't move either.
+            self:SetAttribute("mlog", "anchor LEFT blocked")
+         else
+            -- UP/END/etc: leave the anchor, stay neutral, menu moves via passthrough.
+            self:SetAttribute("manchor", 0)
+            self:SetAttribute("mlog", "anchor leave (" .. key .. ")")
+         end
+         return
+      end
+
+      if ma == 2 then
+         -- trade-armed, reading freely. Menu moves via passthrough; ENTER accepts. Persists
+         -- until B (bags) or HOME (anchor).
+         self:SetAttribute("mlog", "trade nav " .. key)
+         return
+      end
+
+      if ma ~= 1 then return end     -- neutral: passthrough only, nothing armed
       local lvl = self:GetAttribute("mlvl") or 0
       local mv = self:GetAttribute("mv") or 1
       local mi = self:GetAttribute("mi") or 1
@@ -194,9 +270,12 @@ local function tEnsureKeyFrame()
             if u and s then u:SetAttribute("macrotext", "/use " .. s) end
             self:SetAttribute("mlog", "enter view v=" .. mv .. " i=1 s=" .. (s or "?"))
          elseif key == "LEFT" then
+            -- leaving the bags upward lands on the bags-entry anchor (neutral, recoverable):
+            -- RIGHT there re-syncs bags, DOWN commits to trade. Menu moves up via passthrough.
             self:SetAttribute("ma", 0)
+            self:SetAttribute("manchor", 1)
             if u then u:SetAttribute("macrotext", "") end
-            self:SetAttribute("mlog", "exit views")
+            self:SetAttribute("mlog", "views LEFT -> bags-entry anchor (neutral)")
          end
       elseif lvl == 1 then
          -- item list within view mv
@@ -258,6 +337,7 @@ local function tEnsureKeyFrame()
       elseif name == "kroute" then
          local key = tostring(value):match("|(.+)$")
          if not key then return end
+         if key == "NOOP" then return end   -- blocked key (LEFT at the anchor): no menu movement
          if key == "SYNC" then
             -- B: open the real bags (sighted rendering, unchanged) + build+show Sku's bags
             -- menu so headless nav can begin. OpenAllBags (not Toggle) is idempotent -- it
@@ -280,6 +360,17 @@ local function tEnsureKeyFrame()
             pcall(function() if OpenAllBags then OpenAllBags() end end)
             pcall(function() SkuCore:CheckFrames() end)
             if SkuLogCombat then SkuLogCombat("secureKeys", "SYNC -> reset+OpenAllBags+CheckFrames combat=" .. (tInCombat() and 1 or 0)) end
+            return
+         end
+         if key == "ANCHOR" then
+            -- HOME: raise the headless menu at the Local root as the bags-entry anchor (neutral;
+            -- RIGHT re-syncs bags, DOWN arms trade). SlashFunc is combat-safe (same path SYNC uses).
+            SkuOptions.combatMenuActive = true
+            if SkuOptions.Menu and SkuOptions.Menu[1] then
+               SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
+            end
+            pcall(function() SkuOptions:SlashFunc(tL("short") .. "," .. tL("Local")) end)
+            if SkuLogCombat then SkuLogCombat("secureKeys", "ANCHOR -> Local root (bags-entry anchor)") end
             return
          end
          if not tCombatMenuActive() then return end        -- no menu logically open -> ignore
@@ -358,8 +449,8 @@ function SkuCore:CombatMenuKeysBindNow()
    -- Flattened to secure attributes: vc = view count; v<v>_c = item count of view v;
    -- v<v>_s<i> = "bag slot" of item i in view v. Done in the combat-start grace window
    -- (SetAttribute on a secure frame is allowed while InCombatLockdown() is still false --
-   -- verified). Reset the mirror cursor; HOME/B (re)syncs + activates it. If the tree wasn't
-   -- captured yet (bags never opened), vc=0 and the mirror is inert until bags are opened.
+   -- verified). Reset the mirror to neutral; B re-syncs bags / HOME arms the trade anchor. If
+   -- the tree wasn't captured yet (bags never opened), vc=0 and bag nav is inert until opened.
    local tH = _G["SkuCombatMenuKey"]
    local tTree = SkuCore and SkuCore.combatBagTree
    local tVC, tItems = 0, 0
@@ -377,10 +468,11 @@ function SkuCore:CombatMenuKeysBindNow()
          end
       end
       pcall(function() tH:SetAttribute("vc", tVC) end)
-      pcall(function() tH:SetAttribute("ma", 0) end)
+      pcall(function() tH:SetAttribute("ma", 0) end)     -- neutral: nothing armed until B or HOME
       pcall(function() tH:SetAttribute("mlvl", 0) end)
       pcall(function() tH:SetAttribute("mv", 1) end)
       pcall(function() tH:SetAttribute("mi", 1) end)
+      pcall(function() tH:SetAttribute("manchor", 0) end)
    end
 
    Sku.combatSecureKeysBound = true
@@ -395,6 +487,41 @@ function SkuCore:CombatMenuKeysClear()
    if tKeyOwner then pcall(ClearOverrideBindings, tKeyOwner) end
    Sku.combatSecureKeysBound = false
    if SkuLogCombat then SkuLogCombat("secureKeys", "cleared nav keys at combat end") end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Ctrl+T (rebindable) = accept the current trade. A PERMANENT secure button with a FIXED
+-- "/click TradeFrameTradeButton" macro -- so it needs no in-combat arming (the macro never
+-- changes) and is a no-op whenever no trade window is open. Bound out of combat from the
+-- SkuKeyBinds store and re-applied by SkuKeyBindsUpdate whenever the key changes (registered
+-- as SKU_KEY_TRADEACCEPT -> SkuCore:UpdateTradeAcceptBinding). This is the position-independent
+-- accept; the menu-driven HOME/ENTER accept lives in the mirror snippet above.
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:UpdateTradeAcceptBinding()
+   if InCombatLockdown() then return end     -- secure-button setup + bindings are combat-protected
+   local btn = _G["SkuCombatTradeAccept"]
+   if not btn then
+      btn = CreateFrame("Button", "SkuCombatTradeAccept", UIParent, "SecureActionButtonTemplate")
+      btn:RegisterForClicks("AnyDown")
+      btn:SetSize(1, 1)
+      btn:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", -430, -430)
+      btn:SetAttribute("type", "macro")
+      btn:SetAttribute("macrotext", "/click TradeFrameTradeButton")
+      btn:Show()
+      btn:SetScript("PostClick", function()
+         if SkuLogCombat then SkuLogCombat("tradeAccept", "/click TradeFrameTradeButton combat=" .. (tInCombat() and 1 or 0)) end
+      end)
+   end
+   local owner = _G["SkuCombatTradeAcceptOwner"] or CreateFrame("Frame", "SkuCombatTradeAcceptOwner", UIParent)
+   pcall(ClearOverrideBindings, owner)
+   local tKb = SkuOptions and SkuOptions.db and SkuOptions.db.profile
+      and SkuOptions.db.profile["SkuOptions"] and SkuOptions.db.profile["SkuOptions"].SkuKeyBinds
+   local tEntry = tKb and tKb["SKU_KEY_TRADEACCEPT"]
+   local tKey = tEntry and tEntry.key or ""
+   local tKey2 = tEntry and tEntry.key2 or ""
+   if tKey ~= "" then pcall(SetOverrideBindingClick, owner, true, tKey, "SkuCombatTradeAccept") end
+   if tKey2 ~= "" then pcall(SetOverrideBindingClick, owner, true, tKey2, "SkuCombatTradeAccept") end
+   if SkuLogCombat then SkuLogCombat("tradeAccept", "bound accept key=[" .. tKey .. "] key2=[" .. tKey2 .. "]") end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
