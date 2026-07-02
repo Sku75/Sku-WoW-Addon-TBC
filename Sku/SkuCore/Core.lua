@@ -2479,6 +2479,14 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		MainMenuBarBackpackButton:Click()
 		MainMenuBarBackpackButton:Click()
 
+		-- Prime the in-combat item-use mirrors (bag tree + character-slot tree) at login so
+		-- the very FIRST combat of a session can /use bag items and on-use gear even if the
+		-- player never manually opened the bags or character sheet. Silent -- no menu, no
+		-- voice (see SkuCore:PrimeCombatMirrors). Deferred a moment so the Blizzard bag /
+		-- character data (which can lag login by a few ms) are fully populated first, and so
+		-- the just-issued backpack toggles above have settled closed.
+		C_Timer.After(0.5, function() pcall(function() SkuCore:PrimeCombatMirrors() end) end)
+
 		if SkuCore.TalentTempFlag == true then
 			_G["TalentMicroButton"]:Click()
 		end
@@ -2897,6 +2905,11 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local GENERIC_OnOpenFlag = false
 function SkuCore:GENERIC_OnOpen(self)
+	-- Silent mirror-prime (SkuCore:PrimeCombatMirrors) briefly Shows/Hides frames; the
+	-- lazily-installed interactFramesList Show/Hide hooks would otherwise route that into
+	-- CheckFrames and pop the menu. This flag makes the prime race-proof regardless of
+	-- whether the hooks are installed yet.
+	if SkuCore._suppressGenericFrameHooks == true then return end
 	if GENERIC_OnOpenFlag ~= false then return end
 
 	GENERIC_OnOpenFlag = true
@@ -2917,9 +2930,69 @@ end
 ]]
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GENERIC_OnClose(self)
+	if SkuCore._suppressGenericFrameHooks == true then return end
 	--print("GENERIC_OnClose", _G["AuctionFrame"]:IsShown())
 	SkuCore:CheckFrames()
 	SkuOptions:SendTrackingStatusUpdates()
+	-- Keep the in-combat bag mirror fresh after the bags are closed out of combat:
+	-- CheckFrames only (re)builds VISIBLE frames, so a plain close never rebuilds the bag
+	-- tree by itself, leaving it stale (whatever the bags held when last open). Rebuild it
+	-- here out of combat (Container-API read -- no open bag needed) so the next combat
+	-- stages the just-closed bag contents. Cheap; the char-slot map is fixed so it needs
+	-- no refresh here. See SkuCore:PrimeBagMirror.
+	if not (InCombatLockdown and InCombatLockdown()) then
+		SkuCore:PrimeBagMirror()
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- In-combat item-use mirrors -- priming.
+--
+-- The flat SkuCore.combatBagTree / combatCharTree snapshots that PLAYER_REGEN_DISABLED
+-- (CombatMenuKeysBindNow) stages into the secure use-button at combat start are populated
+-- ONLY as a side effect of the menu builders (Build_BagsFrame / Build_CharacterFrame). So
+-- historically the in-combat mirror worked only AFTER the player had manually opened the
+-- bags / character sheet once that session -- the first combat had nothing to /use. These
+-- primers build the trees up front so the FIRST combat already works. They read live data
+-- (bags via the Container API, gear via the always-present PaperDoll widgets) -- no menu,
+-- no voice -- and are out-of-combat only (combat staging is the separate REGEN_DISABLED
+-- step). This is the same "warm the data on load" convention as the CraftFrame /
+-- WorldMapFrame Show()/Hide() primes in PLAYER_LOGIN / PLAYER_ENTERING_WORLD.
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Bag tree only: Build_BagsFrame is fully Container-API driven (no bag needs to be open),
+-- so this is a cheap, side-effect-free refresh of combatBagTree/combatBagOrder. Used both
+-- for the login prime and to keep the mirror fresh when the bags are closed out of combat.
+function SkuCore:PrimeBagMirror()
+	if InCombatLockdown and InCombatLockdown() then return end
+	local ok = pcall(function() SkuCore:Build_BagsFrame({}) end)
+	dprint("PrimeBagMirror", ok, SkuCore.combatBagTree and #SkuCore.combatBagTree or -1)
+end
+
+-- Both trees. The character-slot map is fixed for the whole session (gear order can't
+-- reshuffle the menu), so it only needs priming once, at login. Build_CharacterFrame reads
+-- the always-present PaperDoll widgets and captures the slot list in exact menu order;
+-- realise the CharacterFrame for a single frame first (matching the WorldMapFrame/CraftFrame
+-- login-prime convention) so its widgets and the gear-manager toggle initialise cleanly,
+-- then hide it again. _suppressGenericFrameHooks keeps that silent Show/Hide from running
+-- GENERIC_OnOpen/OnClose (no CheckFrames, no menu pop, no voice); it is always cleared,
+-- even if the build errors, so a hiccup can never wedge the frame hooks off.
+function SkuCore:PrimeCombatMirrors()
+	if InCombatLockdown and InCombatLockdown() then return end
+	SkuCore:PrimeBagMirror()
+	local tCf = _G["CharacterFrame"]
+	if tCf then
+		local tWasShown = tCf:IsShown()
+		SkuCore._suppressGenericFrameHooks = true
+		pcall(function()
+			if not tWasShown then tCf:Show() end
+			SkuCore:Build_CharacterFrame({})
+			if not tWasShown then tCf:Hide() end
+		end)
+		SkuCore._suppressGenericFrameHooks = false
+	else
+		pcall(function() SkuCore:Build_CharacterFrame({}) end)
+	end
+	dprint("PrimeCombatMirrors", SkuCore.combatBagTree and #SkuCore.combatBagTree or -1, SkuCore.combatCharTree and #SkuCore.combatCharTree or -1)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
