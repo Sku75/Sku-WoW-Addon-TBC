@@ -84,7 +84,24 @@ local function tEnsureKeyFrame()
    u:SetAttribute("macrotext", "")
    u:Show()
    u:SetScript("PostClick", function(self)
-      if SkuLogCombat then SkuLogCombat("mirror", "USE(ENTER) macro=[" .. tostring(self:GetAttribute("macrotext")) .. "] combat=" .. (tInCombat() and 1 or 0)) end
+      local tMacro = tostring(self:GetAttribute("macrotext") or "")
+      if SkuLogCombat then SkuLogCombat("mirror", "USE(ENTER) macro=[" .. tMacro .. "] combat=" .. (tInCombat() and 1 or 0)) end
+      -- STALE-COUNT FIX: a bag /use just fired secure-side (macro non-empty). Open the SAME
+      -- post-action confirm window the out-of-combat use macro opens via
+      -- "/script SkuCaptureSellState()" (SkuZOptions/Core.lua ~5305). That call arms
+      -- Sku.tBagPostAction, which is the GATE on SkuCore:BAG_UPDATE / :BAG_UPDATE_DELAYED --
+      -- without it those handlers early-return, so no quiet rebuild runs in combat and the
+      -- narrated stack count stays frozen at SYNC time. With it, the settle event ->
+      -- SkuBagConfirmRefresh rebuilds the bags menu (CheckFrames is combat-safe here, same
+      -- as the SYNC branch) and re-pins the cursor by identity, so the SPOKEN count refreshes
+      -- exactly like out of combat. Capture BEFORE routing ENTER below, while
+      -- currentMenuPosition is still on the used item (SkuCaptureSellState handles both the
+      -- item node and its Rechtsklick submenu). NOTE: the secure /use slot MAP can't be
+      -- re-staged mid-combat, but that's the mirror side -- the narration is what refreshes.
+      if tMacro ~= "" and SkuCaptureSellState then
+         pcall(SkuCaptureSellState)
+         if SkuLogCombat then SkuLogCombat("mirror", "post-use capture -> tBagPostAction=" .. ((Sku and Sku.tBagPostAction) and 1 or 0)) end
+      end
       -- ENTER fires the armed /use above (secure). It ALSO routes to the menu handler so
       -- ENTER still activates NON-bag menu items in combat (outside the bag list the armed
       -- macro is empty, so the /use is a no-op and only the normal activate happens).

@@ -4574,9 +4574,19 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCaptureSellState()
 	if not (SkuOptions and SkuOptions.currentMenuPosition) then return end
-	local pos = SkuOptions.currentMenuPosition          -- "Rechtsklick" entry
-	local itemEntry = pos and pos.parent                -- "Item N" entry
-	local listEntry = itemEntry and itemEntry.parent    -- "BagN" entry
+	local pos = SkuOptions.currentMenuPosition          -- item node OR its "Rechtsklick" entry
+	-- The out-of-combat sell/use flow calls this from the item's "Rechtsklick"
+	-- submenu (pos = Rechtsklick, pos.parent = item). The in-combat use
+	-- (SkuCombatUse PostClick) can call it with the cursor still ON the item
+	-- node itself. Anchor on the item node either way, detected by its stable
+	-- identity fields (bagSlot/itemId, carried on rendered bag-item nodes).
+	local itemEntry
+	if pos.bagSlot or pos.itemId then
+		itemEntry = pos                                 -- cursor already on the item (combat)
+	else
+		itemEntry = pos.parent                          -- cursor on "Rechtsklick" (normal)
+	end
+	local listEntry = itemEntry and itemEntry.parent    -- "BagN" / "all items" list entry
 	if not listEntry or not listEntry.children then return end
 
 	-- Index des Item-Eintrags in der Bag-Liste
@@ -4695,7 +4705,12 @@ function SkuBagConfirmRefresh()
 		Sku.tBagPostAction = nil
 		return
 	end
-	if not (SkuOptions and SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen() == true) then
+	-- In combat the visual OnSkuOptionsMain is hidden (can't Show under lockdown),
+	-- so IsMenuOpen() reports false even though the headless combat menu is
+	-- logically open. Accept the combat-active state so the post-USE refresh (the
+	-- stack-count fix, driven from SkuCombatUse's PostClick) still runs in combat.
+	local tMenuOpen = SkuOptions and SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen() == true
+	if not (tMenuOpen or (SkuOptions and SkuOptions.combatMenuActive == true)) then
 		return
 	end
 
