@@ -114,10 +114,17 @@ local function tEnsureKeyFrame()
          pcall(SkuCaptureSellState)
          if SkuLogCombat then SkuLogCombat("mirror", "post-use capture -> tBagPostAction=" .. ((Sku and Sku.tBagPostAction) and 1 or 0)) end
       end
-      -- ENTER fires the armed /use above (secure). It ALSO routes to the menu handler so
-      -- ENTER still activates NON-bag menu items in combat (outside the bag list the armed
-      -- macro is empty, so the /use is a no-op and only the normal activate happens).
-      if tCombatMenuActive() then
+      -- ENTER fires the armed /use above (secure). Route it to the insecure menu ONLY when
+      -- NOTHING was armed (macro empty) -- so ENTER still activates a plain, non-actionable
+      -- menu item in combat. When a macro DID fire (bag/equipment /use, trade accept), the
+      -- secure action already IS the activation; routing ENTER too would re-run the item's
+      -- insecure Rechtsklick OnAction (SkuStepBackAndRefresh etc.), which steps the VISIBLE
+      -- cursor off the submenu and rebuilds -- desyncing it from the secure mirror, which
+      -- stays on the submenu (the mirror only moves on nav keys, never on ENTER). It also
+      -- avoided a redundant second action. The bag stack-count refresh is NOT lost: it is
+      -- driven separately by SkuCaptureSellState -> tBagPostAction -> SkuBagConfirmRefresh
+      -- (armed above, ma==1), independent of this routing.
+      if tCombatMenuActive() and tMacro == "" then
          local tOpt = _G["OnSkuOptionsMainOption1"]
          if tOpt and tOpt:GetScript("OnClick") then
             pcall(tOpt:GetScript("OnClick"), tOpt, "ENTER")
