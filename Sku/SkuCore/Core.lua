@@ -1299,15 +1299,6 @@ function SkuCore:OnEnable()
 
 		if SkuCore.openMenuAfterCombat == true or SkuCore.openMenuAfterMoving == true then
 			if SkuCore.inCombat == false and SkuCore.isMoving == false then
-				-- TEMP always-on trace: the deferred-open watcher is about to open the menu
-				SkuDebugLog = SkuDebugLog or {}
-				SkuDebugLog.loginTrace = SkuDebugLog.loginTrace or {}
-				local tR = SkuDebugLog.loginTrace
-				tR[#tR + 1] = {t = date("%H:%M:%S"), what = "deferredOpenWatcher",
-					afterCombat = (SkuCore.openMenuAfterCombat and 1 or 0),
-					afterMoving = (SkuCore.openMenuAfterMoving and 1 or 0),
-					path = tostring(SkuCore.openMenuAfterPath)}
-				while #tR > 60 do table.remove(tR, 1) end
 				if SkuCore.openMenuAfterPath ~= "" then
 					SkuOptions:SlashFunc(SkuCore.openMenuAfterPath)
 					SkuCore.openMenuAfterPath = ""
@@ -3984,18 +3975,6 @@ function SkuCore:ScheduleMenuFlashRecheck()
 		for i, v in pairs(SkuCore.interactFramesList) do
 			if _G[v] and _G[v]:IsVisible() == true then tAnyOpen = true tWhich = v break end
 		end
-		-- TEMP diagnostic: record why the flash re-check did/didn't close the menu.
-		SkuDebugLog = SkuDebugLog or {}
-		SkuDebugLog.loginTrace = SkuDebugLog.loginTrace or {}
-		local tR = SkuDebugLog.loginTrace
-		tR[#tR + 1] = {t = date("%H:%M:%S"), what = "flashRecheck",
-			menuOpen = (SkuOptions:IsMenuOpen() == true and 1 or 0),
-			gameMenu = (SkuCore.gameMenuActive == true and 1 or 0),
-			anyFrame = (tAnyOpen and tWhich or "0"),
-			contrib = (SkuCore:AnyWindowContributorVisible() == true and 1 or 0),
-			questLog = (QuestLogFrame and QuestLogFrame:IsVisible() == true and 1 or 0),
-			mail = (MailFrame and MailFrame:IsShown() == true and 1 or 0)}
-		while #tR > 60 do table.remove(tR, 1) end
 		if SkuCore.gameMenuActive == true then return end
 		if SkuOptions:IsMenuOpen() ~= true then return end
 		if tAnyOpen ~= true

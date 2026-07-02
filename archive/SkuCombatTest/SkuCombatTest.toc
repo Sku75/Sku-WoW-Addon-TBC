@@ -1,0 +1,7 @@
+## Interface: 11508
+## Title: SkuCombatTest
+## Notes: In-combat secure-action probe (bag use + trade) for Sku accessibility research
+## Author: Sku dev
+## SavedVariables: SkuCombatTestDB
+
+SkuCombatTest.lua

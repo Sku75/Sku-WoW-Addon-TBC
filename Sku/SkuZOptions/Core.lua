@@ -3212,20 +3212,6 @@ function SkuOptions:CreateMenuFrame()
 
 	tFrame:SetScript("OnShow", function(self)
 		--dprint("OnSkuOptionsMainOption1 OnShow")
-		-- TEMP always-on trace (independent of /skudebug): record every menu-open
-		-- OnShow fire + state, into SkuDebugLog.loginTrace, to see what opens the menu
-		-- at login. Remove once diagnosed.
-		do
-			SkuDebugLog = SkuDebugLog or {}
-			SkuDebugLog.loginTrace = SkuDebugLog.loginTrace or {}
-			local tR = SkuDebugLog.loginTrace
-			tR[#tR + 1] = {t = date("%H:%M:%S"), what = "menuOpenOnShow",
-				combat = (InCombatLockdown() and 1 or 0),
-				skuCombat = (SkuState:IsInCombat() and 1 or 0),
-				moving = (SkuState:IsMoving() and 1 or 0),
-				stack = debugstack(2, 6, 0)}
-			while #tR > 60 do table.remove(tR, 1) end
-		end
 		-- Modal capture: enable on the REAL combat flag (InCombatLockdown), the same one
 		-- the OnKeyDown failsafe checks -- using SkuState here could enable then instantly
 		-- failsafe-disable if the two disagree. EnableKeyboard is combat-legal (non-secure).

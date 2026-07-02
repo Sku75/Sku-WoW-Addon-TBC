@@ -1023,16 +1023,6 @@ function SkuQuest:ToggleQuestLogHook(...)
 	-- hooksecurefunc can't be removed; no-op when the addon is disabled so a
 	-- disabled SkuQuest does not intercept the quest log.
 	if not SkuQuest:IsEnabled() then return end
-	-- TEMP diagnostic: who called ToggleQuestLog + is the quest log actually visible?
-	pcall(function()
-		SkuDebugLog = SkuDebugLog or {}
-		SkuDebugLog.loginTrace = SkuDebugLog.loginTrace or {}
-		local tR = SkuDebugLog.loginTrace
-		tR[#tR + 1] = {t = date("%H:%M:%S"), what = "ToggleQuestLogHook",
-			questLogVisible = (QuestLogFrame and QuestLogFrame:IsVisible() == true and 1 or 0),
-			stack = debugstack(2, 8, 0)}
-		while #tR > 60 do table.remove(tR, 1) end
-	end)
 	if ( QuestLogFrame:IsVisible() ) then
 		ExpandQuestHeader(0)
 	end
