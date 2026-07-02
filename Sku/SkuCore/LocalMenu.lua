@@ -1177,16 +1177,18 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 			end
 			aParentChilds[tFriendlyName] = bagItemButton
 
+			-- Give EVERY slot -- empty or filled -- the Links/Rechtsklick submenu. The gossip
+			-- menu only injects it when the entry has BOTH click==true AND a func
+			-- (SkuZOptions/Core.lua ~4932); the container-API migration set these only for
+			-- non-empty slots, which dropped the submenu on EMPTY slots -- and with it the
+			-- ability to DROP a held item into an empty slot (Linksklick -> PickupContainerItem
+			-- (bag, slot), which places the cursor item). The real actions live in the .bag/
+			-- .slot leaves, so this func is a never-called no-op placeholder. (For an empty slot
+			-- the Rechtsklick "/use" and "Sockeln" are simply no-ops -- nothing there to use.)
+			bagItemButton.click = true
+			bagItemButton.func = function() end
 			if not isEmpty then
 				bagItemButton.itemId = tItemId
-				bagItemButton.click = true
-				-- The gossip menu only builds the Linksklick/Rechtsklick submenu when the
-				-- entry has BOTH click==true AND a func (SkuZOptions/Core.lua ~4731). Since
-				-- the container-API migration dropped the rendered button (no OnClick to
-				-- borrow), give a no-op func so the submenu is still injected -- the real
-				-- actions live in the .bag/.slot leaves, and this func is never called for
-				-- an item that has children.
-				bagItemButton.func = function() end
 				if tCount and tCount > 1 then
 					bagItemButton.stackSize = tostring(tCount)
 				end
