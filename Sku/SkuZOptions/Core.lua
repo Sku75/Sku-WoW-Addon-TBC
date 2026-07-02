@@ -2875,19 +2875,7 @@ function SkuOptions:CreateMenuFrame()
 		-- — so no fixed-delay fallback is needed.
 		if Sku and (Sku.tBagAnnounceSuppress or Sku.tBagPostAction)
 			and tNavigationKeys and tNavigationKeys[aKey] then
-			Sku.tBagAnnounceSuppress = nil
-			Sku.tBagAnnounceForce = nil
-			Sku.tBagPostAction = nil
-			if SkuCore then
-				if SkuCore._bagConfirmTimer then
-					pcall(function() SkuCore._bagConfirmTimer:Cancel() end)
-					SkuCore._bagConfirmTimer = nil
-				end
-				if SkuCore._bagAnnounceTimer then
-					pcall(function() SkuCore._bagAnnounceTimer:Cancel() end)
-					SkuCore._bagAnnounceTimer = nil
-				end
-			end
+			if SkuClearBagPostAction then SkuClearBagPostAction() end
 		end
 
 		if aKey == "UP" then
@@ -4572,6 +4560,28 @@ end
 -- min(origIdx, #children) — damit landet der User am NÄCHSTEN Item
 -- nach dem verkauften (bzw. am letzten, wenn er das letzte verkauft hat).
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Cancel any in-flight bag post-action confirm window and its pending timers.
+-- Shared by the nav-key "settle" path (user took manual control) and the combat
+-- menu close/re-sync (so a reopen starts fresh instead of restoring the acted-on
+-- item — the in-combat open/close toggle that normally resets the cursor never
+-- runs headless). Idempotent; safe to call when no window is open.
+function SkuClearBagPostAction()
+	if not Sku then return end
+	Sku.tBagAnnounceSuppress = nil
+	Sku.tBagAnnounceForce = nil
+	Sku.tBagPostAction = nil
+	if SkuCore then
+		if SkuCore._bagConfirmTimer then
+			pcall(function() SkuCore._bagConfirmTimer:Cancel() end)
+			SkuCore._bagConfirmTimer = nil
+		end
+		if SkuCore._bagAnnounceTimer then
+			pcall(function() SkuCore._bagAnnounceTimer:Cancel() end)
+			SkuCore._bagAnnounceTimer = nil
+		end
+	end
+end
+
 function SkuCaptureSellState()
 	if not (SkuOptions and SkuOptions.currentMenuPosition) then return end
 	local pos = SkuOptions.currentMenuPosition          -- item node OR its "Rechtsklick" entry

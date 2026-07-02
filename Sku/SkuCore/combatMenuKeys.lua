@@ -265,16 +265,41 @@ local function tEnsureKeyFrame()
             -- weren't pre-generated the call may block in combat, but the secure sync already
             -- happened, so it degrades rather than errors.
             SkuOptions.combatMenuActive = true
+            -- FRESH-OPEN RESET: the normal open/close toggle (OnSkuOptionsMain OnClick)
+            -- resets currentMenuPosition to the root on every open -- but that toggle never
+            -- runs in the headless combat menu. Without this, a close(ESC)+reopen(B) keeps
+            -- the cursor on the last item, and CheckFrames' restore-across-rebuild branch
+            -- (Core.lua ~3581) faithfully re-navigates back to it -> reopen lands on the last
+            -- item instead of the bags list's first entry. Reset to root here so CheckFrames
+            -- takes its fresh-open (auto-descend) path, and clear any in-flight post-USE
+            -- confirm so its pending re-pin can't yank the cursor off the first entry.
+            if SkuClearBagPostAction then pcall(SkuClearBagPostAction) end
+            if SkuOptions.Menu and SkuOptions.Menu[1] then
+               SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
+            end
             pcall(function() if OpenAllBags then OpenAllBags() end end)
             pcall(function() SkuCore:CheckFrames() end)
-            if SkuLogCombat then SkuLogCombat("secureKeys", "SYNC -> OpenAllBags+CheckFrames combat=" .. (tInCombat() and 1 or 0)) end
+            if SkuLogCombat then SkuLogCombat("secureKeys", "SYNC -> reset+OpenAllBags+CheckFrames combat=" .. (tInCombat() and 1 or 0)) end
             return
          end
          if not tCombatMenuActive() then return end        -- no menu logically open -> ignore
          if key == "ESCAPE" then
             SkuOptions.combatMenuActive = false             -- logical close (visual hidden in combat)
             SkuOptions.combatMenuHasWindow = false
-            if SkuLogCombat then SkuLogCombat("secureKeys", "ESC -> close") end
+            -- Clear any in-flight post-USE confirm so a late re-pin can't move the cursor
+            -- or fire a stray announce after the menu is closed.
+            if SkuClearBagPostAction then pcall(SkuClearBagPostAction) end
+            -- CLOSE RESET: reset the cursor to root, same as an out-of-combat close (the
+            -- open/close toggle does this; it never runs headless). An in-combat reopen (B)
+            -- re-resets via SYNC anyway, but a reopen AFTER combat ends goes through the
+            -- normal CheckFrames bag-open path, whose restore-across-rebuild branch would
+            -- otherwise re-navigate to this stale combat position. (Combat-end only restores
+            -- the visual menu when it was still OPEN, i.e. combatMenuActive == true, so this
+            -- ESC-closed case is not covered there.)
+            if SkuOptions.Menu and SkuOptions.Menu[1] then
+               SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
+            end
+            if SkuLogCombat then SkuLogCombat("secureKeys", "ESC -> close + reset cursor") end
             return
          end
          local tOpt = _G["OnSkuOptionsMainOption1"]
