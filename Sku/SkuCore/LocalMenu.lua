@@ -2197,7 +2197,39 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				tParentEquipment[tFriendlyName].childs["GearManagerToggleButton"] = nil
 			end
 		end
-		
+
+		-- Capture the equipment-slot list for the combat-actions mirror (character branch):
+		-- every shown equipment slot in MENU display order, with its inventory slot ID
+		-- (obj:GetID()). Iterate exactly the way the renderer does (SkuIterateGossipList uses
+		-- `for x = 1, #childs`) so the mirror can never disagree with the on-screen order.
+		-- Unlike bags, this MAP is fixed for the whole fight -- gear can't change in combat --
+		-- so the combat-start staging stays valid all combat and needs no re-sort/re-pin. Armed
+		-- as "/use <slotID>" (the trinket-macro form), which fires on-use equipped items
+		-- (trinkets, on-use gear) in combat. See SkuCore/combatMenuKeys.lua.
+		do
+			local tItemsChilds = tParentEquipment[L["Items"]] and tParentEquipment[L["Items"]].childs
+			local tList = {}
+			if type(tItemsChilds) == "table" then
+				for x = 1, #tItemsChilds do
+					local tFName = tItemsChilds[x]
+					local tNode = tFName and tItemsChilds[tFName]
+					if type(tNode) == "table" and tNode.obj and tNode.obj.GetID
+						and type(tFName) == "string" and string.match(tFName, "^Character.+Slot$") then
+						local tSlotID = tNode.obj:GetID()
+						if tSlotID and tSlotID > 0 then
+							tList[#tList + 1] = { slotID = tSlotID, name = tFName }
+						end
+					end
+				end
+			end
+			SkuCore.combatCharTree = tList
+			if SkuLogCombat then
+				local tSummary = ""
+				for i, v in ipairs(tList) do tSummary = tSummary .. i .. ":" .. v.name .. "(" .. v.slotID .. ") " end
+				SkuLogCombat("charTree", tSummary)
+			end
+		end
+
 	--stats
 	do
 		local tFrameName = ""
