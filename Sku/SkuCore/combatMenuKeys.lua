@@ -185,17 +185,18 @@ local function tEnsureKeyFrame()
       end
 
       if key == "CSYNC" then
-         -- C (character key): sync straight to the equipment-slot list (analogous to the bag
-         -- SYNC, but the character branch has a single fixed list -- no view level). Arm the
-         -- focused slot's "/use <slotID>" so ENTER pops it (trinkets / on-use gear). The
-         -- insecure side opens the character pane and lands the menu on slot 1.
+         -- C (character key): enter the FULL character-tree mirror. Seed the walker at the
+         -- first top-level node (the level text) so it lands exactly where opening the pane
+         -- lands out of combat; from there Down/Up/Right/Left walk the whole tree. Arm that
+         -- node's /use (empty for the text). The insecure side opens the char pane and lands
+         -- the menu on the same node. See the ma==3 walker below + Build_CharacterFrame.
+         local cstart = self:GetAttribute("cstart") or 0
          self:SetAttribute("ma", 3)
-         self:SetAttribute("clvl", 1)
-         self:SetAttribute("cindex", 1)
+         self:SetAttribute("ccur", cstart)
          self:SetAttribute("manchor", 0)
-         local s = self:GetAttribute("cs1")
-         if u then u:SetAttribute("macrotext", (s and ("/use " .. s)) or "") end
-         self:SetAttribute("mlog", "C sync -> char slot 1 s=" .. (s or "?"))
+         local m = self:GetAttribute("cm" .. cstart) or ""
+         if u then u:SetAttribute("macrotext", m) end
+         self:SetAttribute("mlog", "C sync -> char tree start=" .. cstart .. " m=" .. m)
          return
       end
 
@@ -215,12 +216,14 @@ local function tEnsureKeyFrame()
                self:SetAttribute("mlog", "HOME -> item 1 v=" .. mv .. " s=" .. (s or "?"))
             end
          elseif ma == 3 then
-            -- character: jump to the first equipment slot (symmetric with END = last slot)
-            self:SetAttribute("clvl", 1)
-            self:SetAttribute("cindex", 1)
-            local s = self:GetAttribute("cs1")
-            if u and s then u:SetAttribute("macrotext", "/use " .. s) end
-            self:SetAttribute("mlog", "char HOME -> slot 1 s=" .. (s or "?"))
+            -- character tree: jump to the FIRST sibling at the current level (symmetric with
+            -- END = last sibling). Follows the precomputed cf<cur> pointer.
+            local cur = self:GetAttribute("ccur") or 0
+            local first = self:GetAttribute("cf" .. cur) or cur
+            self:SetAttribute("ccur", first)
+            local m = self:GetAttribute("cm" .. first) or ""
+            if u then u:SetAttribute("macrotext", m) end
+            self:SetAttribute("mlog", "char HOME -> first=" .. first .. " m=" .. m)
          else
             -- neutral or armed: declare the bags-entry anchor -- align the mirror to where a
             -- partner trade dropped the insecure menu. RIGHT there re-syncs bags, DOWN arms
@@ -272,62 +275,42 @@ local function tEnsureKeyFrame()
       end
 
       if ma == 3 then
-         -- character mirror: a single fixed slot list (clvl 1) + the per-slot Links/Rechtsklick
-         -- submenu (clvl 2). Arms "/use <slotID>" for the focused slot; ENTER (bound straight to
-         -- SkuCombatUse) fires it. Slots never change in combat, so no re-stage/re-pin. LEFT out
-         -- of the slot list drops to the neutral bags-entry anchor (recoverable via B/HOME/C).
-         local clvl = self:GetAttribute("clvl") or 1
-         local cn = self:GetAttribute("cc") or 0
-         local ci = self:GetAttribute("cindex") or 1
-         if clvl == 1 then
-            if key == "DOWN" then
-               if cn > 0 then ci = ci % cn + 1 end
-               self:SetAttribute("cindex", ci)
-               local s = self:GetAttribute("cs" .. ci)
-               if u and s then u:SetAttribute("macrotext", "/use " .. s) end
-               self:SetAttribute("mlog", "char DOWN i=" .. ci .. " s=" .. (s or "?"))
-            elseif key == "UP" then
-               if cn > 0 then ci = (ci - 2) % cn + 1 end
-               self:SetAttribute("cindex", ci)
-               local s = self:GetAttribute("cs" .. ci)
-               if u and s then u:SetAttribute("macrotext", "/use " .. s) end
-               self:SetAttribute("mlog", "char UP i=" .. ci .. " s=" .. (s or "?"))
-            elseif key == "END" then
-               ci = cn
-               self:SetAttribute("cindex", ci)
-               local s = self:GetAttribute("cs" .. ci)
-               if u and s then u:SetAttribute("macrotext", "/use " .. s) end
-               self:SetAttribute("mlog", "char END i=" .. ci .. " s=" .. (s or "?"))
-            elseif key == "RIGHT" then
-               self:SetAttribute("clvl", 2)
-               self:SetAttribute("csub", 1)
-               self:SetAttribute("mlog", "char enter submenu i=" .. ci)
-            elseif key == "LEFT" then
-               -- leave the slot list upward -> neutral bags-entry anchor (menu moves up via
-               -- passthrough); RIGHT there re-syncs bags, DOWN arms trade, C re-syncs char.
+         -- character mirror: a GENERAL tree-walker over the full character screen (Text /
+         -- Equipment / Stats / Professions / Sets), staged as precomputed neighbour pointers
+         -- per node (see CombatMenuKeysBindNow / Build_CharacterFrame). No loops -- each key
+         -- just follows one pointer, exactly mirroring the insecure menu nav:
+         --   DOWN cd / UP cu = cycle siblings; RIGHT cr = descend to first child (0=leaf,stay);
+         --   LEFT cl = ascend to parent (0 = top level -> leave the mirror to the neutral
+         --   anchor, recoverable via B/HOME/C); END ce = last sibling.
+         -- After moving, arm cm<cur> ("/use <slotID>" on equipment items + their Links/
+         -- Rechtsklick submenu, "" elsewhere); ENTER (bound to SkuCombatUse) fires it. Same
+         -- item+submenu shape as bags.
+         local cur = self:GetAttribute("ccur") or 0
+         if key == "LEFT" then
+            local l = self:GetAttribute("cl" .. cur) or 0
+            if l == 0 then
+               -- at the top level: leave the char mirror upward -> neutral bags-entry anchor.
                self:SetAttribute("ma", 0)
                self:SetAttribute("manchor", 1)
                if u then u:SetAttribute("macrotext", "") end
-               self:SetAttribute("mlog", "char LEFT -> bags-entry anchor (neutral)")
+               self:SetAttribute("mlog", "char LEFT top -> bags-entry anchor (neutral)")
+               return
             end
-         else
-            -- Links/Rechtsklick submenu (arm unchanged; ENTER->SkuCombatUse fires the /use)
-            local sub = self:GetAttribute("csub") or 1
-            if key == "DOWN" then
-               sub = sub + 1
-               if sub > 2 then sub = 2 end
-               self:SetAttribute("csub", sub)
-               self:SetAttribute("mlog", "char sub=" .. sub)
-            elseif key == "UP" then
-               sub = sub - 1
-               if sub < 1 then sub = 1 end
-               self:SetAttribute("csub", sub)
-               self:SetAttribute("mlog", "char sub=" .. sub)
-            elseif key == "LEFT" then
-               self:SetAttribute("clvl", 1)
-               self:SetAttribute("mlog", "char back to slots")
-            end
+            cur = l
+         elseif key == "RIGHT" then
+            local r = self:GetAttribute("cr" .. cur) or 0
+            if r ~= 0 then cur = r end          -- leaf: stay put
+         elseif key == "DOWN" then
+            cur = self:GetAttribute("cd" .. cur) or cur
+         elseif key == "UP" then
+            cur = self:GetAttribute("cu" .. cur) or cur
+         elseif key == "END" then
+            cur = self:GetAttribute("ce" .. cur) or cur
          end
+         self:SetAttribute("ccur", cur)
+         local m = self:GetAttribute("cm" .. cur) or ""
+         if u then u:SetAttribute("macrotext", m) end
+         self:SetAttribute("mlog", "char nav " .. key .. " cur=" .. cur .. " m=" .. m)
          return
       end
 
@@ -432,6 +415,7 @@ local function tEnsureKeyFrame()
             -- weren't pre-generated the call may block in combat, but the secure sync already
             -- happened, so it degrades rather than errors.
             SkuOptions.combatMenuActive = true
+            if Sku then Sku.combatCharForceOpen = false end   -- leaving the char mirror -> drop the phantom char window
             -- FRESH-OPEN RESET: the normal open/close toggle (OnSkuOptionsMain OnClick)
             -- resets currentMenuPosition to the root on every open -- but that toggle never
             -- runs in the headless combat menu. Without this, a close(ESC)+reopen(B) keeps
@@ -450,35 +434,48 @@ local function tEnsureKeyFrame()
             return
          end
          if key == "CSYNC" then
-            -- C: open the Blizzard character pane (guarded so it never TOGGLES closed -- unlike
-            -- bags' idempotent OpenAllBags, ToggleCharacter flips) + build Sku's char menu, then
-            -- land the headless cursor directly on the first equipment slot so the mirror (armed
-            -- to slot 1 secure-side) is in lockstep. CheckFrames builds on a 0.01 timer, so the
-            -- deep SlashFunc + descend runs slightly deferred; the endpoint (slot 1) is fixed, so
-            -- lockstep holds regardless of exact timing. SlashFunc/CheckFrames are combat-safe
-            -- (same paths SYNC/ANCHOR use); Build_CharacterFrame skips its one protected click.
+            -- C: read the character equipment slots headlessly + land the cursor on the first
+            -- slot so the mirror (armed to slot 1 secure-side) is in lockstep. CheckFrames
+            -- builds on a 0.01 timer, so the deep SlashFunc + descend runs slightly deferred;
+            -- the endpoint (slot 1) is fixed, so lockstep holds regardless of exact timing.
+            --
+            -- Opening the char pane in combat: ToggleCharacter/ShowUIPanel is UIPanel-managed
+            -- and SILENTLY DEFERS in combat (never shows -- verified: CheckFrames only ever saw
+            -- bags, so C landed on whatever else was open). A DIRECT CharacterFrame:Show() is
+            -- NOT panel-managed and works in combat (CharacterFrame isn't a protected frame) --
+            -- this is exactly what the login PrimeCombatMirrors uses to read the slots. It makes
+            -- the slot buttons visible, which matters because IterateChildren is visibility-gated
+            -- (Core.lua ~3218): a hidden frame yields NO slots. The user is blind, so the
+            -- unmanaged on-screen placement is irrelevant. combatCharForceOpen is a belt-and-
+            -- suspenders fallback so CheckFrames still treats it as open even if the Show is ever
+            -- refused; cleared on SYNC/ANCHOR/ESC/combat-end so no phantom char window shadows
+            -- the bags/trade views.
             SkuOptions.combatMenuActive = true
+            if Sku then Sku.combatCharForceOpen = true end
+            pcall(function()
+               local tCf = _G["CharacterFrame"]
+               if tCf and not tCf:IsShown() then tCf:Show() end
+            end)
             if SkuClearBagPostAction then pcall(SkuClearBagPostAction) end
             if SkuOptions.Menu and SkuOptions.Menu[1] then
                SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
             end
-            pcall(function()
-               if not (_G["CharacterFrame"] and _G["CharacterFrame"]:IsVisible()) and _G.ToggleCharacter then
-                  _G.ToggleCharacter("PaperDollFrame")
-               end
-            end)
             pcall(function() SkuCore:CheckFrames() end)
             if _G.C_Timer and _G.C_Timer.After then
                _G.C_Timer.After(0.12, function()
+                  -- Land exactly like opening the pane out of combat: navigate to the Char
+                  -- window node, then descend ONE level so the cursor sits on the first child
+                  -- (the level text). From there the user reads/walks the WHOLE tree. The
+                  -- secure walker was seeded at cstart (that same first node) in the CSYNC
+                  -- snippet, so both sides are in lockstep. (No forced jump into Equipment.)
                   pcall(function()
-                     SkuOptions:SlashFunc(tL("short") .. "," .. tL("Local") .. "," .. tL("Character") .. "," .. tL("Equipment") .. "," .. tL("Items"))
+                     SkuOptions:SlashFunc(tL("short") .. "," .. tL("Local") .. "," .. tL("Character"))
                   end)
-                  -- descend one level into the slot list (lands on slot 1)
                   local tOpt = _G["OnSkuOptionsMainOption1"]
                   if tOpt and tOpt:GetScript("OnClick") then
                      pcall(tOpt:GetScript("OnClick"), tOpt, "RIGHT")
                   end
-                  if SkuLogCombat then SkuLogCombat("secureKeys", "CSYNC land -> Character/Equipment/Items + descend") end
+                  if SkuLogCombat then SkuLogCombat("secureKeys", "CSYNC land -> Character + descend to first child") end
                end)
             end
             if SkuLogCombat then SkuLogCombat("secureKeys", "CSYNC -> open char + CheckFrames combat=" .. (tInCombat() and 1 or 0)) end
@@ -488,6 +485,7 @@ local function tEnsureKeyFrame()
             -- HOME: raise the headless menu at the Local root as the bags-entry anchor (neutral;
             -- RIGHT re-syncs bags, DOWN arms trade). SlashFunc is combat-safe (same path SYNC uses).
             SkuOptions.combatMenuActive = true
+            if Sku then Sku.combatCharForceOpen = false end   -- leaving the char mirror -> drop the phantom char window
             if SkuOptions.Menu and SkuOptions.Menu[1] then
                SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
             end
@@ -499,6 +497,7 @@ local function tEnsureKeyFrame()
          if key == "ESCAPE" then
             SkuOptions.combatMenuActive = false             -- logical close (visual hidden in combat)
             SkuOptions.combatMenuHasWindow = false
+            if Sku then Sku.combatCharForceOpen = false end   -- close -> drop the phantom char window
             -- Clear any in-flight post-USE confirm so a late re-pin can't move the cursor
             -- or fire a stray announce after the menu is closed.
             if SkuClearBagPostAction then pcall(SkuClearBagPostAction) end
@@ -515,6 +514,12 @@ local function tEnsureKeyFrame()
             if SkuLogCombat then SkuLogCombat("secureKeys", "ESC -> close + reset cursor") end
             return
          end
+         -- Keep the phantom-char-window flag in lockstep with the mirror mode: it must be set
+         -- ONLY while we are in the character mirror (ma==3). A plain nav key can LEAVE char
+         -- (LEFT -> neutral anchor, handled secure-side), so re-derive the flag from the live
+         -- ma here -- otherwise a stale flag would inject a phantom CharacterFrame into a later
+         -- bags/trade CheckFrames and hold the menu at the Local root (Rule 3).
+         if Sku then Sku.combatCharForceOpen = (tonumber(self:GetAttribute("ma")) == 3) end
          local tOpt = _G["OnSkuOptionsMainOption1"]
          if tOpt and tOpt:GetScript("OnClick") then
             pcall(tOpt:GetScript("OnClick"), tOpt, key)
@@ -570,12 +575,17 @@ function SkuCore:CombatMenuKeysBindNow()
    -- (CSYNC) on one press. Overridden during combat only; out of combat it stays Blizzard's
    -- normal character toggle. CSYNC arms the first equipment slot's /use and lands the headless
    -- menu on it (kroute handler). Configurable override in Stage 3.
+   -- NOTE: the paperdoll/equipment pane binding in this client is TOGGLECHARACTER0 (the "C"
+   -- key) -- there is NO plain "TOGGLECHARACTER" command, so GetBindingKey("TOGGLECHARACTER")
+   -- returns nil and CSYNC was NEVER bound (verified in the combat trace: CSYNC absent, and
+   -- ENTER on an equipped item fired a STALE bag macro like "/use 0 3" instead of "/use <slotID>").
+   -- Bind the real command TOGGLECHARACTER0. (data.lua: TOGGLECHARACTER1..4 are the other tabs.)
    local function tBindCharKey(aBinding)
       local k1, k2 = GetBindingKey(aBinding)
       if k1 then pcall(SetOverrideBindingClick, tKeyOwner, true, k1, "SkuCombatMenuKey", "CSYNC") end
       if k2 then pcall(SetOverrideBindingClick, tKeyOwner, true, k2, "SkuCombatMenuKey", "CSYNC") end
    end
-   tBindCharKey("TOGGLECHARACTER")
+   tBindCharKey("TOGGLECHARACTER0")
 
    -- Stage 2: pre-stage the bags TREE mirror in the menu's captured per-view order
    -- (SkuCore.combatBagTree, filled by the LocalMenu builder), keyed to physical slots.
@@ -608,28 +618,38 @@ function SkuCore:CombatMenuKeysBindNow()
       pcall(function() tH:SetAttribute("manchor", 0) end)
    end
 
-   -- Stage the CHARACTER slot mirror (SkuCore.combatCharTree, filled by Build_CharacterFrame),
-   -- flattened to secure attributes: cc = slot count; cs<i> = inventory slot ID of slot i (in
-   -- menu display order). Fixed for the whole fight (gear can't change in combat), so unlike the
-   -- bag tree this never goes stale. If the character menu was never built (char pane never
-   -- opened), cc=0 and char nav is inert until C opens it.
+   -- Stage the CHARACTER mirror as the FULL menu tree (SkuCore.combatCharTree, built by
+   -- Build_CharacterFrame). Flattened per node i to secure attributes the snippet just
+   -- follows -- no loops: cd<i>=Down, cu<i>=Up, cr<i>=Right(first child; 0=leaf),
+   -- cl<i>=Left(parent; 0=leave mirror), cf<i>=first sibling, ce<i>=last sibling,
+   -- cm<i>="/use <slotID>" (or ""). ccnt=node count, cstart=first top-level node (the level
+   -- text). Fixed for the whole fight -- gear/stats can't change in combat -- so it never
+   -- goes stale. If the char menu was never built, ccnt=0 and char nav is inert until C.
+   -- One pcall around the whole loop (hundreds of attrs) instead of per-attribute.
    local tCTree = SkuCore and SkuCore.combatCharTree
    local tCC = 0
    if tH then
-      if type(tCTree) == "table" then
-         tCC = #tCTree
-         for i, e in ipairs(tCTree) do
-            local slotID = e.slotID
-            pcall(function() tH:SetAttribute("cs" .. i, slotID) end)
+      pcall(function()
+         if type(tCTree) == "table" then
+            tCC = #tCTree
+            for i, n in ipairs(tCTree) do
+               tH:SetAttribute("cd" .. i, n.down or 0)
+               tH:SetAttribute("cu" .. i, n.up or 0)
+               tH:SetAttribute("cr" .. i, n.right or 0)
+               tH:SetAttribute("cl" .. i, n.left or 0)
+               tH:SetAttribute("cf" .. i, n.first or 0)
+               tH:SetAttribute("ce" .. i, n.last or 0)
+               tH:SetAttribute("cm" .. i, n.use or "")
+            end
          end
-      end
-      pcall(function() tH:SetAttribute("cc", tCC) end)
-      pcall(function() tH:SetAttribute("clvl", 1) end)
-      pcall(function() tH:SetAttribute("cindex", 1) end)
+         tH:SetAttribute("ccnt", tCC)
+         tH:SetAttribute("cstart", (SkuCore and SkuCore.combatCharStart) or 0)
+         tH:SetAttribute("ccur", 0)
+      end)
    end
 
    Sku.combatSecureKeysBound = true
-   if SkuLogCombat then SkuLogCombat("secureKeys", "bound nav keys + staged tree views=" .. tVC .. " items=" .. tItems .. " charSlots=" .. tCC .. " (lock=0)") end
+   if SkuLogCombat then SkuLogCombat("secureKeys", "bound nav keys + staged tree views=" .. tVC .. " items=" .. tItems .. " charNodes=" .. tCC .. " (lock=0)") end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -639,6 +659,10 @@ end
 function SkuCore:CombatMenuKeysClear()
    if tKeyOwner then pcall(ClearOverrideBindings, tKeyOwner) end
    Sku.combatSecureKeysBound = false
+   if Sku then Sku.combatCharForceOpen = false end   -- out of combat: no phantom char window
+   -- If the combat char mirror left CharacterFrame open via our direct :Show(), hide it so
+   -- the out-of-combat state is clean (the normal C key toggles it again as usual).
+   pcall(function() local f = _G["CharacterFrame"]; if f and f:IsShown() then f:Hide() end end)
    if SkuLogCombat then SkuLogCombat("secureKeys", "cleared nav keys at combat end") end
 end
 

@@ -2198,37 +2198,10 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 			end
 		end
 
-		-- Capture the equipment-slot list for the combat-actions mirror (character branch):
-		-- every shown equipment slot in MENU display order, with its inventory slot ID
-		-- (obj:GetID()). Iterate exactly the way the renderer does (SkuIterateGossipList uses
-		-- `for x = 1, #childs`) so the mirror can never disagree with the on-screen order.
-		-- Unlike bags, this MAP is fixed for the whole fight -- gear can't change in combat --
-		-- so the combat-start staging stays valid all combat and needs no re-sort/re-pin. Armed
-		-- as "/use <slotID>" (the trinket-macro form), which fires on-use equipped items
-		-- (trinkets, on-use gear) in combat. See SkuCore/combatMenuKeys.lua.
-		do
-			local tItemsChilds = tParentEquipment[L["Items"]] and tParentEquipment[L["Items"]].childs
-			local tList = {}
-			if type(tItemsChilds) == "table" then
-				for x = 1, #tItemsChilds do
-					local tFName = tItemsChilds[x]
-					local tNode = tFName and tItemsChilds[tFName]
-					if type(tNode) == "table" and tNode.obj and tNode.obj.GetID
-						and type(tFName) == "string" and string.match(tFName, "^Character.+Slot$") then
-						local tSlotID = tNode.obj:GetID()
-						if tSlotID and tSlotID > 0 then
-							tList[#tList + 1] = { slotID = tSlotID, name = tFName }
-						end
-					end
-				end
-			end
-			SkuCore.combatCharTree = tList
-			if SkuLogCombat then
-				local tSummary = ""
-				for i, v in ipairs(tList) do tSummary = tSummary .. i .. ":" .. v.name .. "(" .. v.slotID .. ") " end
-				SkuLogCombat("charTree", tSummary)
-			end
-		end
+		-- (The in-combat character mirror is captured as a FULL tree at the very end of this
+		-- function, once every branch -- Equipment, Stats, Professions, Sets -- has been built.
+		-- See the "combatCharTree" capture below. Kept there so it mirrors the whole screen, not
+		-- just the equipment list.)
 
 	--stats
 	do
@@ -2769,6 +2742,79 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 			childs = {},
 		}
 		SkuCore.EquipmentSets:BuildChilds(aParentChilds[tEqName].childs)
+	end
+
+	-- ====================================================================
+	-- In-combat CHARACTER mirror -- FULL tree (Text / Equipment / Stats /
+	-- Professions / Sets), captured the same way the bag mirror captures its
+	-- tree (combatBagTree), just N-level instead of the fixed views/items/submenu.
+	-- Nothing on the character screen can change position in combat (gear/stats
+	-- are frozen), so this static snapshot stays valid the whole fight.
+	--
+	-- Model: a flat node array. Node i = { parent, kids, use, and the precomputed
+	-- neighbours down/up/right/left/first/last }. The secure snippet just FOLLOWS
+	-- these pointers (no loops) -- Down/Up cycle siblings, Right descends to the
+	-- first child, Left ascends (or leaves the mirror at the top level). Equipment
+	-- slot nodes carry "/use <slotID>" AND get a synthetic 2-entry Links/Rechtsklick
+	-- submenu that inherits it -- exactly the bag item + submenu shape, so Enter on
+	-- the item (or its Rechtsklick) fires the on-use item in combat. Everything else
+	-- is read-only (empty macro); reading itself is handled by the normal insecure
+	-- menu nav, so the mirror only needs the structure + the slot /use points.
+	do
+		local tNodes = {}
+		local function tAdd(aParent)
+			local i = #tNodes + 1
+			tNodes[i] = { parent = aParent or 0, kids = {}, use = "" }
+			if aParent and aParent > 0 then table.insert(tNodes[aParent].kids, i) end
+			return i
+		end
+		local function tWalk(aChilds, aParentIdx)
+			if type(aChilds) ~= "table" then return end
+			for _, tKey in ipairs(aChilds) do
+				local tNode = aChilds[tKey]
+				if type(tNode) == "table" then
+					local i = tAdd(aParentIdx)
+					local tIsSlot = tNode.obj and tNode.obj.GetID and type(tKey) == "string"
+						and string.match(tKey, "^Character.+Slot$")
+					local tSid = tIsSlot and tNode.obj:GetID() or nil
+					if tSid and tSid > 0 then
+						-- equipment slot: arm "/use <slotID>" + synthesize the Links/Rechtsklick
+						-- submenu (both inherit the /use, like a bag item's submenu).
+						tNodes[i].use = "/use " .. tSid
+						local l = tAdd(i); tNodes[l].use = tNodes[i].use   -- Linksklick
+						local r = tAdd(i); tNodes[r].use = tNodes[i].use   -- Rechtsklick
+					elseif type(tNode.childs) == "table" and #tNode.childs > 0 then
+						tWalk(tNode.childs, i)
+					end
+				end
+			end
+		end
+		tWalk(aParentChilds, 0)   -- parent 0 = the virtual root (the Character window itself)
+
+		-- Precompute the four navigation neighbours + first/last sibling per node.
+		local tRootKids = {}
+		for i, n in ipairs(tNodes) do if n.parent == 0 then tRootKids[#tRootKids + 1] = i end end
+		for i, n in ipairs(tNodes) do
+			local tSibs = (n.parent == 0) and tRootKids or tNodes[n.parent].kids
+			local tCnt = #tSibs
+			local tIdx = 1
+			for j, v in ipairs(tSibs) do if v == i then tIdx = j break end end
+			n.down  = tSibs[tIdx % tCnt + 1]
+			n.up    = tSibs[(tIdx - 2) % tCnt + 1]
+			n.first = tSibs[1]
+			n.last  = tSibs[tCnt]
+			n.right = (#n.kids > 0) and n.kids[1] or 0   -- 0 = leaf (Right stays put)
+			n.left  = n.parent                           -- 0 = top level (Left leaves the mirror)
+		end
+
+		SkuCore.combatCharTree = tNodes
+		SkuCore.combatCharStart = tRootKids[1] or 0      -- first top-level node (the level text)
+		if SkuLogCombat then
+			local tUseCount = 0
+			for _, n in ipairs(tNodes) do if n.use ~= "" then tUseCount = tUseCount + 1 end end
+			SkuLogCombat("charTree", "nodes=" .. #tNodes .. " top=" .. #tRootKids
+				.. " useNodes=" .. tUseCount .. " start=" .. (SkuCore.combatCharStart or 0))
+		end
 	end
 end
 
