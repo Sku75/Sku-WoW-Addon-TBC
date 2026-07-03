@@ -2557,6 +2557,14 @@ function SkuNav:OnEnable()
 	-- re-registers them). AceEvent re-registering the same event is a safe no-op.
 	SkuNav:RegisterNavEvents()
 	SkuSettings:Sub("SkuNav", nil, "global")
+	-- SessionRouteData is a per-session working copy of the route DB (repopulated
+	-- from SkuDB.routedata on PLAYER_ENTERING_WORLD). On the TBC/Anniversary path
+	-- the container can still be nil here — the WotLK routedata file only creates
+	-- SkuDBTMP.SessionRouteData, never SkuDB.SessionRouteData — which made OnEnable
+	-- throw "attempt to index field 'SessionRouteData'" on every login. Ensure it
+	-- exists (never overwrites real data: it's a session rebuild) so enable can
+	-- proceed and the later loads fill it.
+	SkuDB.SessionRouteData = SkuDB.SessionRouteData or {}
 	if not SkuDB.SessionRouteData.Waypoints then
 		SkuSettings:Sub("SkuNav").Waypoints = nil
 		SkuDB.SessionRouteData.Waypoints = {}
