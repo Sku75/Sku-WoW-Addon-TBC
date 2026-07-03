@@ -761,6 +761,154 @@ SlashCmdList["SKUPERF"] = function(aMsg)
 	end
 end
 
+--------------------------------------------------------------------------------
+-- /skufollowprobe (/sfp) — TEMP diagnostic for the planned "stuck while
+-- following" collision feature. For the unit you are currently following (or
+-- target / party1 as a fallback) it reports which distance/position signals
+-- THIS client actually returns, then samples them for ~5s at the collision-loop
+-- cadence (0.15s) so we can see whether they move while the leader walks and you
+-- stand still. Answers the open questions: does UnitPosition/UnitDistanceSquared
+-- work out in the world AND inside instances, how coarse is LibRangeCheck, and
+-- can we tell "leader moving + me pinned" apart. All samples go to the
+-- SkuDebugLog ring via dprint (log is ON by default in Sku 42); read them back
+-- from ...\SavedVariables\Sku.lua after a /reload. Delete once validated.
+--------------------------------------------------------------------------------
+local function tSkuFollowProbeResolveUnit()
+	-- 1) live follow token if Sku already resolved one
+	if SkuStatus and SkuStatus.follow and SkuStatus.follow ~= 0 then
+		if SkuStatus.followUnitId and SkuStatus.followUnitId ~= "" and UnitExists(SkuStatus.followUnitId) then
+			return SkuStatus.followUnitId, "followUnitId"
+		end
+		-- 2) resolve by follow name across raid/party
+		local tName = SkuStatus.followUnitName
+		if tName and tName ~= "" then
+			for x = 1, 40 do if UnitName("raid"..x) == tName then return "raid"..x, "followName" end end
+			for x = 1, 5 do if UnitName("party"..x) == tName then return "party"..x, "followName" end end
+		end
+	end
+	-- 3) fallbacks so the probe is useful even when not following
+	if UnitExists("target") then return "target", "target" end
+	if UnitExists("party1") then return "party1", "party1" end
+	return nil, "none"
+end
+
+-- UnitPosition returns two planar coords + z + instanceID; x/y order is
+-- irrelevant here since we only ever take Euclidean deltas/distances.
+local function tSkuFollowProbePos(aUnit)
+	if type(UnitPosition) == "function" and aUnit then
+		local a, b = UnitPosition(aUnit)
+		if a and b then return a, b end
+	end
+	return nil, nil
+end
+
+local function tSkuFollowProbeDist(aUnit)
+	if type(UnitDistanceSquared) == "function" and aUnit then
+		local d2, checked = UnitDistanceSquared(aUnit)
+		if checked and d2 then return math.sqrt(d2), checked end
+		return nil, checked
+	end
+	return nil, nil
+end
+
+-- GetRange returns two range-bracket bounds. Print them raw/ordered: Sku's own
+-- RangeCheck.lua labels the returns in the opposite order to the LibRangeCheck
+-- doc, so we don't trust either name here.
+local function tSkuFollowProbeLib(aUnit)
+	if SkuOptions and SkuOptions.RangeCheck and SkuOptions.RangeCheck.GetRange and aUnit then
+		local ok, r1, r2 = pcall(function() return SkuOptions.RangeCheck:GetRange(aUnit) end)
+		if ok then return r1, r2 end
+	end
+	return nil, nil
+end
+
+local tSkuFollowProbeFrame
+local function tSkuFollowProbeStart()
+	if Sku and Sku.debug then Sku.debug.log = true end   -- ensure samples persist to the ring
+
+	local tUnit, tHow = tSkuFollowProbeResolveUnit()
+	local _, tInstType = IsInInstance()
+
+	local pa, pb = tSkuFollowProbePos("player")
+	local ua, ub = tUnit and tSkuFollowProbePos(tUnit) or nil, nil
+	if tUnit then ua, ub = tSkuFollowProbePos(tUnit) end
+	local tDist, tDChecked = nil, nil
+	if tUnit then tDist, tDChecked = tSkuFollowProbeDist(tUnit) end
+	local tR1, tR2 = nil, nil
+	if tUnit then tR1, tR2 = tSkuFollowProbeLib(tUnit) end
+	local tInRange, tRChecked
+	if type(UnitInRange) == "function" and tUnit then tInRange, tRChecked = UnitInRange(tUnit) end
+
+	dprint("=== SkuFollowProbe START ===")
+	dprint("instance", tostring(tInstType), "unit", tostring(tUnit), "via", tHow,
+		"name", tUnit and tostring(UnitName(tUnit)) or "-",
+		"isPlayer", tUnit and tostring(UnitIsPlayer(tUnit)) or "-",
+		"inParty", tUnit and tostring(UnitInParty(tUnit)) or "-",
+		"inRaid", tUnit and tostring(UnitInRaid(tUnit)) or "-")
+	dprint("player UnitPosition", tostring(pa), tostring(pb))
+	dprint("unit UnitPosition", tostring(ua), tostring(ub))
+	dprint("UnitDistanceSquared yd", tostring(tDist), "checked", tostring(tDChecked),
+		"UnitInRange", tostring(tInRange), "checked", tostring(tRChecked))
+	dprint("LibRangeCheck GetRange raw", tostring(tR1), tostring(tR2))
+
+	-- audible one-shot summary (deDE)
+	local tSpeak
+	if not tUnit then
+		tSpeak = "Probe. Kein Zielunit."
+	else
+		tSpeak = "Probe. "..tHow.." "..(UnitName(tUnit) or "?")..". "
+			.."Position "..(ua and "ja" or "nein")..". "
+			.."Distanz "..(tDist and tostring(math.floor(tDist*10)/10) or "nein")..". "
+			.."Lib "..(tR1 and tostring(tR1) or "nein").." bis "..(tR2 and tostring(tR2) or "nein")
+	end
+	if SkuOptions and SkuOptions.Voice then SkuOptions.Voice:OutputString(tSpeak, true, true, 0.2) end
+
+	if not tUnit then return end
+
+	-- 5s sampler at the collision-loop cadence
+	tSkuFollowProbeFrame = tSkuFollowProbeFrame or CreateFrame("Frame")
+	local tElapsed, tAcc, tN = 0, 0, 0
+	local tLpa, tLpb = pa, pb
+	local tLua, tLub = ua, ub
+	local tLDist = tDist
+	tSkuFollowProbeFrame:SetScript("OnUpdate", function(self, time)
+		tElapsed = tElapsed + time
+		tAcc = tAcc + time
+		if tAcc < 0.15 then return end
+		tAcc = 0
+		tN = tN + 1
+		local cpa, cpb = tSkuFollowProbePos("player")
+		local cua, cub = tSkuFollowProbePos(tUnit)
+		local cdist = tSkuFollowProbeDist(tUnit)
+		local myDelta = (cpa and tLpa) and math.sqrt((cpa-tLpa)^2 + (cpb-tLpb)^2) or nil
+		local ldDelta = (cua and tLua) and math.sqrt((cua-tLua)^2 + (cub-tLub)^2) or nil
+		local gapDelta = (cdist and tLDist) and (cdist - tLDist) or nil
+		local mr1, mr2 = tSkuFollowProbeLib(tUnit)
+		dprint("sample", tN,
+			"myDelta", myDelta and tostring(math.floor(myDelta*1000)/1000) or "-",
+			"leaderDelta", ldDelta and tostring(math.floor(ldDelta*1000)/1000) or "-",
+			"dist", cdist and tostring(math.floor(cdist*100)/100) or "-",
+			"gapDelta", gapDelta and tostring(math.floor(gapDelta*100)/100) or "-",
+			"lib", tostring(mr1), tostring(mr2))
+		tLpa, tLpb = cpa or tLpa, cpb or tLpb
+		tLua, tLub = cua or tLua, cub or tLub
+		tLDist = cdist or tLDist
+		if tElapsed >= 5 then
+			self:SetScript("OnUpdate", nil)
+			dprint("=== SkuFollowProbe END, samples="..tN.." ===")
+			if SkuOptions and SkuOptions.Voice then
+				SkuOptions.Voice:OutputString("Probe fertig, "..tN.." Samples", true, true, 0.2)
+			end
+		end
+	end)
+end
+
+SLASH_SKUFOLLOWPROBE1 = "/skufollowprobe"
+SLASH_SKUFOLLOWPROBE2 = "/sfp"
+SlashCmdList["SKUFOLLOWPROBE"] = function()
+	tSkuFollowProbeStart()
+end
+
 -- Load-time milestone capture. The single debugprofilestart() at the top of
 -- this file anchors the session clock, so Sku:MetricPoint() records seconds
 -- since core load. We stamp the two key startup events and auto-persist the
