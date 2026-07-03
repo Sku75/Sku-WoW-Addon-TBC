@@ -33,13 +33,37 @@ local function tL(k)
    return (Sku and Sku.L and Sku.L[k]) or k
 end
 
--- Stage 1 nav key set. Stage 3 makes these user-configurable settings (default arrows +
--- enter). ESCAPE closes the combat menu; while bound (whole combat) it loses its normal
--- game function -- an accepted cost of the dedicated-combat-keys model.
--- ENTER is intentionally NOT here -- it's bound to the secure USE button instead (fires the
--- armed /use), with a PostClick that also routes ENTER to the menu handler so it still
--- activates non-bag menu items in combat. See tEnsureKeyFrame / CombatMenuKeysBindNow.
-local NAV_KEYS = { "UP", "DOWN", "LEFT", "RIGHT", "BACKSPACE", "HOME", "END", "ESCAPE" }
+-- Stage 3: the nav keys are now user-configurable Sku keybinds (registered in
+-- SkuOptions.skuDefaultKeyBindings, defaults = the old hardcoded arrows/home/end/backspace/
+-- escape). Each row maps a keybind CONST to a fixed LOGICAL action: at combat start we look up
+-- the physical key the user assigned and bind it as a secure override click whose "button"
+-- string is the logical action -- so BOTH the secure snippet AND the insecure menu handler
+-- keep seeing the same action name no matter which key drives it. Rebinding a key never
+-- changes behaviour, only which key triggers it. ESCAPE (default) closes the combat menu;
+-- while bound (whole combat) it loses its normal game function -- an accepted cost of the
+-- dedicated-combat-keys model.
+-- The USE action (default ENTER) is intentionally NOT in this list -- it's bound to the secure
+-- USE button instead (fires the armed /use), with a PostClick that also routes ENTER to the
+-- menu handler so it still activates non-bag menu items in combat. See CombatMenuKeysBindNow.
+local NAV_BINDS = {
+   { const = "SKU_KEY_COMBATMENU_UP",    action = "UP" },
+   { const = "SKU_KEY_COMBATMENU_DOWN",  action = "DOWN" },
+   { const = "SKU_KEY_COMBATMENU_LEFT",  action = "LEFT" },
+   { const = "SKU_KEY_COMBATMENU_RIGHT", action = "RIGHT" },
+   { const = "SKU_KEY_COMBATMENU_BACK",  action = "BACKSPACE" },
+   { const = "SKU_KEY_COMBATMENU_HOME",  action = "HOME" },
+   { const = "SKU_KEY_COMBATMENU_END",   action = "END" },
+   { const = "SKU_KEY_COMBATMENU_CLOSE", action = "ESCAPE" },
+}
+
+-- Read a keybind's assigned key(s) from the SkuKeyBinds store (same store SkuKeyBinds.lua and
+-- the trade-accept binder read). Returns "", "" when unset so callers can skip empty binds.
+local function tKeyBindKeys(aConst)
+   local tKb = SkuOptions and SkuOptions.db and SkuOptions.db.profile
+      and SkuOptions.db.profile["SkuOptions"] and SkuOptions.db.profile["SkuOptions"].SkuKeyBinds
+   local e = tKb and tKb[aConst]
+   return (e and e.key or ""), (e and e.key2 or "")
+end
 
 local tKeyOwner
 
@@ -554,22 +578,34 @@ function SkuCore:CombatMenuKeysBindNow()
    tEnsureKeyFrame()
    tKeyOwner = tKeyOwner or CreateFrame("Frame", "SkuCombatMenuKeyOwner", UIParent)
    pcall(ClearOverrideBindings, tKeyOwner)
-   for _, k in ipairs(NAV_KEYS) do
-      pcall(SetOverrideBindingClick, tKeyOwner, true, k, "SkuCombatMenuKey", k)
+   -- Bind each configured nav key -> its fixed logical action (the click "button" string). The
+   -- user can reassign the physical key in the Sku keybind menu (SKU_KEY_COMBATMENU_*); the
+   -- logical action passed downstream never changes, so the snippet + menu handler are
+   -- untouched. Empty (unassigned) keys are skipped.
+   for _, b in ipairs(NAV_BINDS) do
+      local k1, k2 = tKeyBindKeys(b.const)
+      if k1 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, k1, "SkuCombatMenuKey", b.action) end
+      if k2 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, k2, "SkuCombatMenuKey", b.action) end
    end
-   -- ENTER = the USE hotkey -> fires the armed "/use <bag> <slot>" DIRECTLY on the secure
+   -- USE hotkey (default ENTER) -> fires the armed "/use <bag> <slot>" DIRECTLY on the secure
    -- button (the snippet only arms the macro; a hardware key bound straight to the
    -- SecureActionButton is what actually fires a protected action in combat). Its PostClick
-   -- also routes ENTER to the menu handler, so ENTER still activates non-bag items. The user
-   -- navigates to the item (or descends to Rechtsklick) and presses ENTER. Configurable in
-   -- Stage 3.
-   pcall(SetOverrideBindingClick, tKeyOwner, true, "ENTER", "SkuCombatUse")
+   -- also routes ENTER to the menu handler, so it still activates non-bag items. The user
+   -- navigates to the item (or descends to Rechtsklick) and presses this key. Configurable via
+   -- SKU_KEY_COMBATMENU_USE.
+   local tUse1, tUse2 = tKeyBindKeys("SKU_KEY_COMBATMENU_USE")
+   if tUse1 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, tUse1, "SkuCombatUse") end
+   if tUse2 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, tUse2, "SkuCombatUse") end
 
-   -- Part C: the player's OPEN-BAGS key = open bags + SYNC the mirror on one press. We look
-   -- up their actual bag key(s) (GetBindingKey) and override them during combat only -- so
-   -- out of combat the key is Blizzard's normal bag toggle (no change for sighted play). The
-   -- SYNC snippet cold-syncs the mirror; the kroute handler opens the real bags + builds
-   -- Sku's bags menu. Configurable override in Stage 3.
+   -- Part C: the player's OPEN-BAGS key = open bags + SYNC the mirror on one press. Unlike the
+   -- nav/use keys above, B does NOT get its own SKU_KEY_ bind -- it deliberately FOLLOWS the
+   -- player's existing open-bags binding: we look up their actual bag key(s) fresh each combat
+   -- start (GetBindingKey) and override them during combat only, so out of combat the key stays
+   -- Blizzard's normal bag toggle (no change for sighted play). Because this is re-read every
+   -- combat, if the player moves their open-bags key (in Blizzard's or Sku's keybind menu) the
+   -- in-combat SYNC action moves with it automatically -- no duplicate bind to keep in sync.
+   -- The SYNC snippet cold-syncs the mirror; the kroute handler opens the real bags + builds
+   -- Sku's bags menu.
    local function tBindBagKey(aBinding)
       local k1, k2 = GetBindingKey(aBinding)
       if k1 then pcall(SetOverrideBindingClick, tKeyOwner, true, k1, "SkuCombatMenuKey", "SYNC") end
@@ -579,9 +615,11 @@ function SkuCore:CombatMenuKeysBindNow()
    tBindBagKey("TOGGLEBACKPACK")
 
    -- Same idea for the player's CHARACTER key = open the character pane + SYNC the char mirror
-   -- (CSYNC) on one press. Overridden during combat only; out of combat it stays Blizzard's
-   -- normal character toggle. CSYNC arms the first equipment slot's /use and lands the headless
-   -- menu on it (kroute handler). Configurable override in Stage 3.
+   -- (CSYNC) on one press. Like B, C does NOT get its own SKU_KEY_ bind -- it FOLLOWS the
+   -- player's existing open-character binding, re-read fresh each combat start, so moving that
+   -- binding moves the in-combat CSYNC action with it. Overridden during combat only; out of
+   -- combat it stays Blizzard's normal character toggle. CSYNC arms the first equipment slot's
+   -- /use and lands the headless menu on it (kroute handler).
    -- NOTE: the paperdoll/equipment pane binding in this client is TOGGLECHARACTER0 (the "C"
    -- key) -- there is NO plain "TOGGLECHARACTER" command, so GetBindingKey("TOGGLECHARACTER")
    -- returns nil and CSYNC was NEVER bound (verified in the combat trace: CSYNC absent, and

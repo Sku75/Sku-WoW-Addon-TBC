@@ -2372,17 +2372,26 @@ function SkuCore:MenuBuilder(aParentEntry)
 								dprint("SkuCoreBindControlFrame OnClick", aKey, aB)
 								if aKey ~= "ESCAPE" then
 									if not self.bindingConst or not self.menuTarget then return end
-									for z = 1, #tBlockedKeysParts do
-										if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then 
-											SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
-											self.prevKey = nil
-											return 
+									-- The in-combat menu keys (SKU_KEY_COMBATMENU_*) are ALLOWED to take
+									-- otherwise-reserved keys (arrows / enter / backspace): they are bound
+									-- ONLY during combat (override cleared at combat end), so reusing the
+									-- menu-nav keys there is intended, and arrow-key movers need to relocate
+									-- them onto (possibly modified) arrows. Skip the block list for those
+									-- consts only; every other bind keeps the reserved-key protection.
+									local tAllowReserved = string.find(self.bindingConst, "SKU_KEY_COMBATMENU_", 1, true) ~= nil
+									if not tAllowReserved then
+										for z = 1, #tBlockedKeysParts do
+											if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then
+												SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+												self.prevKey = nil
+												return
+											end
 										end
-									end
-									for z = 1, #tBlockedKeysBinds do
-										if aKey == tBlockedKeysBinds[z] or string.lower(aKey) == string.lower(tBlockedKeysBinds[z]) then 
-											SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
-											return
+										for z = 1, #tBlockedKeysBinds do
+											if aKey == tBlockedKeysBinds[z] or string.lower(aKey) == string.lower(tBlockedKeysBinds[z]) then
+												SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+												return
+											end
 										end
 									end
 
@@ -2477,17 +2486,22 @@ function SkuCore:MenuBuilder(aParentEntry)
 							f:SetScript("OnClick", function(self, aKey, aB)
 								if aKey ~= "ESCAPE" then
 									if not self.bindingConst or not self.menuTarget then return end
-									for z = 1, #tBlockedKeysParts do
-										if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then
-											SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
-											self.prevKey = nil
-											return
+									-- Same reserved-key exception as the primary-key handler above: SKU_KEY_COMBATMENU_*
+									-- may take arrows / enter / backspace (bound only during combat).
+									local tAllowReserved = string.find(self.bindingConst, "SKU_KEY_COMBATMENU_", 1, true) ~= nil
+									if not tAllowReserved then
+										for z = 1, #tBlockedKeysParts do
+											if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then
+												SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+												self.prevKey = nil
+												return
+											end
 										end
-									end
-									for z = 1, #tBlockedKeysBinds do
-										if aKey == tBlockedKeysBinds[z] or string.lower(aKey) == string.lower(tBlockedKeysBinds[z]) then
-											SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
-											return
+										for z = 1, #tBlockedKeysBinds do
+											if aKey == tBlockedKeysBinds[z] or string.lower(aKey) == string.lower(tBlockedKeysBinds[z]) then
+												SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+												return
+											end
 										end
 									end
 

@@ -71,6 +71,27 @@ SkuOptions.skuDefaultKeyBindings = {
    -- of combat, no-op with no trade open). See SkuCore:UpdateTradeAcceptBinding.
    ["SKU_KEY_TRADEACCEPT"] = {key = "CTRL-T", object = "SkuCore", func = "UpdateTradeAcceptBinding",},
 
+   -- In-combat menu navigation keys (Path A combat item-use). Unlike most binds these are NOT
+   -- applied out of combat -- SkuCore:CombatMenuKeysBindNow reads them from this store and binds
+   -- them as secure override clicks only at combat start (cleared at combat end), so out of
+   -- combat the arrows/enter stay the game's normal keys. The dispatch object/func here is just
+   -- the harmless CreateMainFrame placeholder (the real apply happens at the next combat start).
+   -- Defaults mirror the hardcoded out-of-combat menu nav keys. The physical key the user
+   -- assigns is mapped to a fixed logical action inside CombatMenuKeysBindNow, so rebinding the
+   -- key never changes what the snippet/menu handler does. See [[sku42-combat-item-use-design]].
+   -- NOTE: bag (B) and character (C) do NOT get their own bind here -- their in-combat SYNC/CSYNC
+   -- follows whatever key already opens bags/character (GetBindingKey in CombatMenuKeysBindNow),
+   -- so moving that binding moves the combat action with it.
+   ["SKU_KEY_COMBATMENU_UP"] = {key = "UP", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_COMBATMENU_DOWN"] = {key = "DOWN", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_COMBATMENU_LEFT"] = {key = "LEFT", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_COMBATMENU_RIGHT"] = {key = "RIGHT", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_COMBATMENU_HOME"] = {key = "HOME", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_COMBATMENU_END"] = {key = "END", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_COMBATMENU_BACK"] = {key = "BACKSPACE", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_COMBATMENU_CLOSE"] = {key = "ESCAPE", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_COMBATMENU_USE"] = {key = "ENTER", object = "SkuOptions", func = "CreateMainFrame",},
+
    ["SKU_KEY_STOPROUTEORWAYPOINT"] = {key = "", object = "SkuNav", func = "CreateSkuNavMain",},
 
    ["SKU_KEY_MENUQUICK5"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
