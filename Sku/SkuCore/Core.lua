@@ -441,6 +441,43 @@ function SkuCore:UpdateGameMenuRootEntry()
 	end
 end
 
+-- Action bars ("Aktionsleisten"): like the Escape "Spielmenü", this menu is NOT a
+-- browsable root/settings entry -- it is spliced into the root only for a Shift-F11
+-- session (SkuCore.actionBarsMenuActive) and removed again when the Sku menu closes
+-- (OnHide clears the flag). Same idempotent add/remove-on-open pattern as
+-- UpdateGameMenuRootEntry. The subtree is built by SkuCore.ActionBarsMenuBuilder
+-- (SkuCore/Options.lua), the same content the old Sonstiges "Action bars" node had.
+function SkuCore:UpdateActionBarsRootEntry()
+	if not SkuOptions or not SkuOptions.Menu then return end
+	local tExisting
+	for x = 1, #SkuOptions.Menu do
+		if SkuOptions.Menu[x].isActionBarsRoot then tExisting = SkuOptions.Menu[x] break end
+	end
+	if SkuCore.actionBarsMenuActive == true then
+		if not tExisting then
+			local tEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {Sku.L["Action bars"]}, SkuGenericMenuItem)
+			tEntry.dynamic = true
+			tEntry.filterable = true
+			tEntry.isActionBarsRoot = true
+			tEntry.BuildChildren = function(self)
+				if SkuCore.ActionBarsMenuBuilder then SkuCore.ActionBarsMenuBuilder(self) end
+			end
+		end
+	elseif tExisting and SkuMenu and SkuMenu.Remove then
+		SkuMenu:Remove(tExisting)
+	end
+end
+
+-- Shift-F11: open the (otherwise hidden) "Aktionsleisten" menu. Mirrors the Escape
+-- "Spielmenü" flow (SkuCore:GameMenuShowHandler): set the active flag so
+-- UpdateActionBarsRootEntry splices the entry in, then walk the audio-menu path to
+-- it (SlashFunc also handles the combat/moving deferral and opening the menu). The
+-- entry is removed again when the Sku menu closes (OnHide clears the flag).
+function SkuCore:ActionBarsShowHandler()
+	SkuCore.actionBarsMenuActive = true
+	pcall(function() SkuOptions:SlashFunc(Sku.L["short"] .. "," .. Sku.L["Action bars"]) end)
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:OnInitialize()
 	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_START", SkuCore.UNIT_SPELLCAST_START)

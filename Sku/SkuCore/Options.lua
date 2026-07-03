@@ -2020,6 +2020,107 @@ function SkuCore.MailMenuBuilder(self)
 		end
 end
 
+-- Builds the action bars list (one entry per active bar; each descends into
+-- ActionBarMenuBuilder). Extracted verbatim from the old Einstellungen>Sonstiges
+-- "Action bars" node so it is NO LONGER browsable in the settings tree -- it is now
+-- reached ONLY as the hidden "Aktionsleisten" root entry that Shift-F11 splices in
+-- (SkuCore:UpdateActionBarsRootEntry / SkuCore:ActionBarsShowHandler), mirroring how
+-- the Escape "Spielmenue" and the Auktionshaus stay in the tree but off the browsable
+-- root. Defined at file scope (not inside MenuBuilder) so it exists at login, before
+-- Einstellungen is ever opened. `self` is the menu parent (called via
+-- node:BuildChildren -> SkuCore.ActionBarsMenuBuilder(self)).
+function SkuCore.ActionBarsMenuBuilder(self)
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MainMenuBar"].friendlyName}, SkuGenericMenuItem)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.filterable = true
+	tNewMenuEntry.BuildChildren = function(self)
+		ActionBarMenuBuilder(self, "MainMenuBar", BOOKTYPE_SPELL)
+	end
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarBottomLeft"].friendlyName}, SkuGenericMenuItem)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.filterable = true
+	tNewMenuEntry.BuildChildren = function(self)
+		ActionBarMenuBuilder(self, "MultiBarBottomLeft", BOOKTYPE_SPELL)
+	end
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarBottomRight"].friendlyName}, SkuGenericMenuItem)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.filterable = true
+	tNewMenuEntry.BuildChildren = function(self)
+		ActionBarMenuBuilder(self, "MultiBarBottomRight", BOOKTYPE_SPELL)
+	end
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarRight"].friendlyName}, SkuGenericMenuItem)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.filterable = true
+	tNewMenuEntry.BuildChildren = function(self)
+		ActionBarMenuBuilder(self, "MultiBarRight", BOOKTYPE_SPELL)
+	end
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarLeft"].friendlyName}, SkuGenericMenuItem)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.filterable = true
+	tNewMenuEntry.BuildChildren = function(self)
+		ActionBarMenuBuilder(self, "MultiBarLeft", BOOKTYPE_SPELL)
+	end
+
+	-- Pet action bar: the previous check relied on PetActionBarFrame:IsShown(),
+	-- which is false while the frame is hidden by layout rules (e.g. on the
+	-- Anniversary client right after login or while the menu is being built
+	-- before the pet frame becomes visible). Use a broader set of pet-presence
+	-- probes so the entry reappears for Hunters, Warlocks, etc. whenever the
+	-- character actually has a pet with an action bar.
+	local tHasPet = false
+	if _G.UnitExists and _G.UnitExists("pet") then tHasPet = true end
+	if not tHasPet and _G.HasPetUI then
+		local ok, v = pcall(_G.HasPetUI); if ok and v then tHasPet = true end
+	end
+	if not tHasPet and _G.HasPetSpells then
+		local ok, v = pcall(_G.HasPetSpells); if ok and v then tHasPet = true end
+	end
+	if not tHasPet and _G.PetHasActionBar then
+		local ok, v = pcall(_G.PetHasActionBar); if ok and v then tHasPet = true end
+	end
+	if not tHasPet and _G["PetActionBarFrame"] and _G["PetActionBarFrame"]:IsShown() == true then
+		tHasPet = true
+	end
+	if tHasPet then
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["PetBar"].friendlyName}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.filterable = true
+		tNewMenuEntry.BuildChildren = function(self)
+			PetActionBarMenuBuilder(self, "PetBar", BOOKTYPE_PET)
+		end
+	end
+	if _G["OverrideActionBar"] and _G["OverrideActionBar"]:IsShown() == true then
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["OverrideActionBar"].friendlyName}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.filterable = true
+		tNewMenuEntry.BuildChildren = function(self)
+			ActionBarMenuBuilder(self, "OverrideActionBar", nil)
+		end
+	end
+	if _G["MultiCastActionBarFrame"] and _G["MultiCastActionBarFrame"]:IsShown() == true then
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiCastActionBar1"].friendlyName}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.filterable = true
+		tNewMenuEntry.BuildChildren = function(self)
+			ActionBarMenuBuilder(self, "MultiCastActionBar1", BOOKTYPE_SPELL)
+		end
+
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiCastActionBar2"].friendlyName}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.filterable = true
+		tNewMenuEntry.BuildChildren = function(self)
+			ActionBarMenuBuilder(self, "MultiCastActionBar2", BOOKTYPE_SPELL)
+		end
+
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiCastActionBar3"].friendlyName}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.filterable = true
+		tNewMenuEntry.BuildChildren = function(self)
+			ActionBarMenuBuilder(self, "MultiCastActionBar3", BOOKTYPE_SPELL)
+		end
+	end
+end
+
 -- W7: this is now the "Einstellungen" (Settings) builder, not the old "Core" grab-bag.
 -- It collects three groups of leftover Core specs (Kampf / Tastenbelegungen /
 -- Sonstiges) plus the aggregated settings sub-menus (Allgemein, Spieleinstellungen,
@@ -2031,123 +2132,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 	-- Mail: now a Local window contributor (SkuCore.MailMenuBuilder) -- W7
 
-	tSonstiges[#tSonstiges+1] = { kind = "list", label = L["Action bars"],
-		build = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MainMenuBar"].friendlyName}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
-		tNewMenuEntry.BuildChildren = function(self)
-			ActionBarMenuBuilder(self, "MainMenuBar", BOOKTYPE_SPELL)
-		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarBottomLeft"].friendlyName}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
-		tNewMenuEntry.BuildChildren = function(self)
-			ActionBarMenuBuilder(self, "MultiBarBottomLeft", BOOKTYPE_SPELL)
-		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarBottomRight"].friendlyName}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
-		tNewMenuEntry.BuildChildren = function(self)
-			ActionBarMenuBuilder(self, "MultiBarBottomRight", BOOKTYPE_SPELL)
-		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarRight"].friendlyName}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
-		tNewMenuEntry.BuildChildren = function(self)
-			ActionBarMenuBuilder(self, "MultiBarRight", BOOKTYPE_SPELL)
-		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarLeft"].friendlyName}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
-		tNewMenuEntry.BuildChildren = function(self)
-			ActionBarMenuBuilder(self, "MultiBarLeft", BOOKTYPE_SPELL)
-		end
-
-		-- Pet action bar: the previous check relied on PetActionBarFrame:IsShown(),
-		-- which is false while the frame is hidden by layout rules (e.g. on the
-		-- Anniversary client right after login or while the menu is being built
-		-- before the pet frame becomes visible). Use a broader set of pet-presence
-		-- probes so the entry reappears for Hunters, Warlocks, etc. whenever the
-		-- character actually has a pet with an action bar.
-		local tHasPet = false
-		if _G.UnitExists and _G.UnitExists("pet") then tHasPet = true end
-		if not tHasPet and _G.HasPetUI then
-			local ok, v = pcall(_G.HasPetUI); if ok and v then tHasPet = true end
-		end
-		if not tHasPet and _G.HasPetSpells then
-			local ok, v = pcall(_G.HasPetSpells); if ok and v then tHasPet = true end
-		end
-		if not tHasPet and _G.PetHasActionBar then
-			local ok, v = pcall(_G.PetHasActionBar); if ok and v then tHasPet = true end
-		end
-		if not tHasPet and _G["PetActionBarFrame"] and _G["PetActionBarFrame"]:IsShown() == true then
-			tHasPet = true
-		end
-		if tHasPet then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["PetBar"].friendlyName}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
-			tNewMenuEntry.BuildChildren = function(self)
-				PetActionBarMenuBuilder(self, "PetBar", BOOKTYPE_PET)
-			end
-		end
-		if _G["OverrideActionBar"] and _G["OverrideActionBar"]:IsShown() == true then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["OverrideActionBar"].friendlyName}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
-			tNewMenuEntry.BuildChildren = function(self)
-				ActionBarMenuBuilder(self, "OverrideActionBar", nil)
-			end
-		end
-		if _G["MultiCastActionBarFrame"] and _G["MultiCastActionBarFrame"]:IsShown() == true then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiCastActionBar1"].friendlyName}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
-			tNewMenuEntry.BuildChildren = function(self)
-				ActionBarMenuBuilder(self, "MultiCastActionBar1", BOOKTYPE_SPELL)
-			end
-
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiCastActionBar2"].friendlyName}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
-			tNewMenuEntry.BuildChildren = function(self)
-				ActionBarMenuBuilder(self, "MultiCastActionBar2", BOOKTYPE_SPELL)
-			end
-
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiCastActionBar3"].friendlyName}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
-			tNewMenuEntry.BuildChildren = function(self)
-				ActionBarMenuBuilder(self, "MultiCastActionBar3", BOOKTYPE_SPELL)
-			end
-		end		
-		--[[
-		if _G["ShapeshiftBar"] and _G["ShapeshiftBar"]:IsShown() == true then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["ShapeshiftBar"].friendlyName}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
-			tNewMenuEntry.BuildChildren = function(self)
-				ActionBarMenuBuilder(self, "ShapeshiftBar", nil)
-			end
-		end
-		]]
-		--[[
-		if _G["StanceBarFrame"] and _G["StanceBarFrame"]:IsShown() == true then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["StanceBarFrame"].friendlyName}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
-			tNewMenuEntry.BuildChildren = function(self)
-				ActionBarMenuBuilder(self, "StanceBarFrame", nil)
-			end
-		end		
-		]]
-
-		--local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Einstellungen"}, SkuGenericMenuItem)
-		--tNewMenuEntry.dynamic = true
-		--tNewMenuEntry.BuildChildren = function(self)
-		--end
-	end }
+	-- Action bars: no longer a browsable Sonstiges node -- moved to the hidden,
+	-- Shift-F11-only "Aktionsleisten" root entry (SkuCore.ActionBarsMenuBuilder,
+	-- spliced by SkuCore:UpdateActionBarsRootEntry).
 
 	tKampf[#tKampf+1] = { kind = "list", label = L["Entfernung"],
 		build = function(self)

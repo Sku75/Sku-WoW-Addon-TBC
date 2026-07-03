@@ -1020,6 +1020,7 @@ L["fokus"]  = "focus" --
 L["Folgen beim Zaubern temporär beenden"]  = "Temporarily stop following upon casting" --
 L["Following metaroute"]  = "Following metaroute" --
 L["following stopped"]  = "current following stopped" --
+L["Navigation abgebrochen"] = "Navigation canceled"
 L["for tutorial creators"] = "for tutorial creators"
 L["For you as (%race%) (%class%) there is a tutorial. Use down arrow to learn how to start it."] = "For you as (%race%) (%class%) there is a tutorial. Use down arrow to learn how to start it."
 L["Format"] ="Layout"

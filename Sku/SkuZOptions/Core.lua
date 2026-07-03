@@ -302,6 +302,7 @@ function SkuOptions:SlashFunc(input, aSilent)
 			-- hook) when the menu was already open (no reassembly above).
 			pcall(function() if SkuCore and SkuCore.UpdateLocalRootEntry then SkuCore:UpdateLocalRootEntry() end end)
 			pcall(function() if SkuCore and SkuCore.UpdateGameMenuRootEntry then SkuCore:UpdateGameMenuRootEntry() end end)
+			pcall(function() if SkuCore and SkuCore.UpdateActionBarsRootEntry then SkuCore:UpdateActionBarsRootEntry() end end)
 
 			local tMenu = SkuOptions.Menu
 			local tFoundMenuPos = nil
@@ -1305,6 +1306,40 @@ function SkuOptions:CreateMainFrame()
 	SkuOptions.InteractMove = false
 
 	tFrame:SetScript("OnClick", function(self, a, b)
+		-- Shift-F12 (SKU_KEY_MENUQUICK4): dedicated "cancel route navigation".
+		-- It used to route through the audio-menu quick-select path
+		-- ("Navigation,Alles abwaehlen"), which FLASHED the whole menu open and
+		-- shut again just to fire the deselect action. Handle it directly: stop
+		-- any active waypoint/route following and announce once, leaving the
+		-- menu's open/closed state untouched. Placed before the combat/moving
+		-- guards below so it also works while moving/in combat (it only tears down
+		-- beacons + state, nothing protected). The SET variant (Ctrl-Shift-F12) is
+		-- a different key and still saves a quick-select slot as before.
+		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_MENUQUICK4") then
+			local tWasActive = false
+			if SkuNav and SkuNav.CancelNavigationSilent then
+				tWasActive = SkuNav:CancelNavigationSilent()
+			end
+			if tWasActive then
+				SkuOptions.Voice:OutputStringBTtts(L["Navigation abgebrochen"], true, true, 0.2, nil, nil, nil, 2)
+			end
+			return
+		end
+
+		-- Shift-F11 (SKU_KEY_MENUQUICK3): dedicated "open the action bars menu".
+		-- The action bars menu is no longer a browsable settings node; it is the
+		-- hidden "Aktionsleisten" root entry that this handler splices in and
+		-- navigates to (SkuCore:ActionBarsShowHandler, which routes through SlashFunc
+		-- so combat/moving deferral and opening the menu are handled as usual). This
+		-- replaces the stale audio-menu quick-select path ("Core,Aktionsleisten"),
+		-- broken since the W7 root restructure removed the "Core" top-level entry.
+		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_MENUQUICK3") then
+			if SkuCore and SkuCore.ActionBarsShowHandler then
+				SkuCore:ActionBarsShowHandler()
+			end
+			return
+		end
+
 		if not SkuOptions.TTS:IsVisible() then
 			tCurrentOverviewPage = nil
 			if a == "SHIFT-UP" then
@@ -2399,6 +2434,7 @@ function SkuOptions:CreateMainFrame()
 			-- assembled only once, so this can't live inside the build-once block).
 			pcall(function() if SkuCore and SkuCore.UpdateLocalRootEntry then SkuCore:UpdateLocalRootEntry() end end)
 			pcall(function() if SkuCore and SkuCore.UpdateGameMenuRootEntry then SkuCore:UpdateGameMenuRootEntry() end end)
+			pcall(function() if SkuCore and SkuCore.UpdateActionBarsRootEntry then SkuCore:UpdateActionBarsRootEntry() end end)
 
 			--set menu to entry first
 			SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
@@ -2525,6 +2561,9 @@ function SkuOptions:CreateMainFrame()
 		-- W7: end any Escape "Spielmenü" session when the menu closes, so it is gone
 		-- on the next normal open (it removes itself via UpdateGameMenuRootEntry).
 		if SkuCore then SkuCore.gameMenuActive = false end
+		-- Same for the Shift-F11 "Aktionsleisten" session: clear the flag so the
+		-- hidden entry is removed again on the next normal open.
+		if SkuCore then SkuCore.actionBarsMenuActive = false end
 		SkuOptions:HideVisualMenu()
 	end)
 

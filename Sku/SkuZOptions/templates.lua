@@ -250,11 +250,11 @@ SkuGenericMenuItem = {
 
 		local tNode = self:MaybeRebuildVolatile()
 		if tNode.parent then
-			if tNode.parent.children then
-				SkuOptions.currentMenuPosition = tNode.parent.children[1]
-			else
-				SkuOptions.currentMenuPosition = tNode.parent[1]
-			end
+			-- At the root level the parent IS the sibling list (the SkuOptions.Menu
+			-- array, no .children field); everywhere else siblings live in
+			-- parent.children. Resolve the list once so HOME works at both levels.
+			local tSiblings = tNode.parent.children or tNode.parent
+			SkuOptions.currentMenuPosition = tSiblings[1]
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,
@@ -264,11 +264,11 @@ SkuGenericMenuItem = {
 
 		local tNode = self:MaybeRebuildVolatile()
 		if tNode.parent then
-			if tNode.parent.children then
-				SkuOptions.currentMenuPosition = tNode.parent.children[#tNode.parent.children]
-			else
-				SkuOptions.currentMenuPosition = tNode.parent[1]
-			end
+			-- Same as OnFirst: at root the sibling list is parent itself. Previously
+			-- the root branch used parent[1], so END jumped to the FIRST entry instead
+			-- of the last -- now it correctly lands on the last sibling.
+			local tSiblings = tNode.parent.children or tNode.parent
+			SkuOptions.currentMenuPosition = tSiblings[#tSiblings]
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,

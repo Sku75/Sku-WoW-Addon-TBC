@@ -2878,6 +2878,27 @@ function SkuNav:EndFollowingWpOrRt()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Cancel any active waypoint/route navigation WITHOUT the "following stopped"
+-- announce, so the caller can voice a single confirmation of its own. Mirrors the
+-- state teardown of EndFollowingWpOrRt (destroy beacon, deselect, clear metapath
+-- state, fire SKU_NAVIGATION_STOPPED) plus the temporary-waypoint clear that the
+-- "Deselect all" menu action did. Returns true if navigation was actually active.
+-- Used by the dedicated Shift-F12 cancel key (SkuZOptions/Core.lua).
+function SkuNav:CancelNavigationSilent()
+	local tWasActive = (SkuSettings:Sub("SkuNav").metapathFollowing == true)
+		or (SkuSettings:Sub("SkuNav").selectedWaypoint ~= nil and SkuSettings:Sub("SkuNav").selectedWaypoint ~= "")
+	if not tWasActive then
+		return false
+	end
+	SkuSettings:Sub("SkuNav").metapathFollowing = nil
+	SkuSettings:Sub("SkuNav").metapathFollowingTargetName = nil
+	SkuNav:SelectWP("", true)
+	if SkuNav.ClearWaypointsTemporary then SkuNav:ClearWaypointsTemporary() end
+	SkuDispatcher:TriggerSkuEvent("SKU_NAVIGATION_STOPPED")
+	return true
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aWpName number
 ---@param aNoVoice bool if the selection should be vocalized
 function SkuNav:SelectWP(aWpName, aNoVoice)
