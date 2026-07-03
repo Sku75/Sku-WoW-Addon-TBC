@@ -2496,7 +2496,12 @@ function SkuOptions:CreateMainFrame()
 				end
 				
 
-				SkuOptions.Voice:OutputStringBTtts(L["Menu;closed"], false, true, 0.3, true, nil, nil, 2)
+				-- overwrite=true: appends a "queuereset" to the BTTS queue so any menu
+				-- item announcement still in-flight (e.g. the focused entry that was
+				-- being spoken when the menu was closed) is stopped and cleared before
+				-- "menu closed" is spoken. Was false, which left the stale announcement
+				-- to play alongside/after the close line. Symmetric with the open branch.
+				SkuOptions.Voice:OutputStringBTtts(L["Menu;closed"], true, true, 0.3, true, nil, nil, 2)
 				pcall(function() if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsLineBarHide then SkuCore.VisualAids:VisualAidsLineBarHide() end end)
 				SkuCore.Debug("", L["Menu;closed"], true)
 
