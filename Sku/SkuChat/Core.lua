@@ -4071,12 +4071,25 @@ function SkuChat:InitTab(tNewTabIndex)
 			local tFlatBody = string.gsub(SkuUtil:Unescape(body), "|", "")
 			tFlatBody = SkuChat:ShortenChannelName(tFlatBody)
 
+			-- Multisell-Auktionen: der Server schickt pro erstelltem Stack eine
+			-- eigene, identische Systemzeile "Auktion erstellt."
+			-- (ERR_AUCTION_STARTED). Bei n Stacks sind das n gleiche Zeilen und
+			-- damit Sprach-Spam. Die Auktions-Ansage von Sku nennt die Anzahl
+			-- ohnehin selbst ("n Auktionen erstellt"), daher diese BLOSSE
+			-- Bestätigung weder vorlesen noch den Neue-Nachricht-Ton spielen.
+			-- Nur die EXAKTE Konstante wird geschluckt — jede Zeile mit
+			-- Zusatzinfo (die nicht exakt der Konstante entspricht) läuft normal
+			-- durch und wird vorgelesen, geht also nicht verloren.
+			local tIsBareAuctionCreated = (messageTypeGroup == "SYSTEM")
+				and (type(ERR_AUCTION_STARTED) == "string")
+				and (body == ERR_AUCTION_STARTED)
+
 			--audio output
-			if tAudio == play then
+			if tAudio == play and not tIsBareAuctionCreated then
 				SkuOptions.Voice:OutputStringBTtts(tFlatBody, false, true, 0.2, nil, nil, nil, 2)
 			end
 
-			if a.tab.audioOnNewMessage then
+			if a.tab.audioOnNewMessage and not tIsBareAuctionCreated then
 				if SkuState:IsInCombat() == true then
 					SkuChatNewLineInCombat = true
 				else

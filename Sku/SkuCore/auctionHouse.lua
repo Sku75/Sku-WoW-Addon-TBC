@@ -542,6 +542,44 @@ local function _ASCaptureResult()
    _ASMsgTimer = C_Timer.NewTimer(8, _ASStopResultCapture)
 end
 
+-- ---------------------------------------------------------------------------
+-- Deprecated-API popup suppression.
+-- On this client (wow_anniversary 2.5.5, classic game type) the auction house is
+-- Blizzard's OLD Blizzard_AuctionUI and the legacy AH API (PostAuction,
+-- ClickAuctionSellItemButton, ...) is the ONLY one that exists — C_AuctionHouse
+-- is nil here, so there is NOTHING to migrate to. Yet Blizzard's unified client
+-- still fires AUCTION_HOUSE_SCRIPT_DEPRECATED whenever we call that legacy API,
+-- and UIParent answers it with StaticPopup_Show("AUCTION_HOUSE_DEPRECATED") —
+-- the misleading "Dieses Add-on wurde deaktiviert. Neue Version installieren."
+-- nag. It does NOT actually disable the addon (auctions post fine); it is pure
+-- noise that interrupts the sell/buy flow and gets read aloud to the user.
+--
+-- Suppress it AT THE SOURCE: UIParent's ONLY handling of that event is showing
+-- this one popup (verified in the Blizzard interface code, UIParent.lua), so
+-- unregistering the event on UIParent kills the nag with no side effects and no
+-- taint (UnregisterEvent is unprotected). UIParent re-registers the event in its
+-- OnLoad on every reload, but this file runs at load AFTER UIParent, so the
+-- unregister re-applies each session. This replaces the earlier hide-after-show
+-- hook (popupCapture.lua, removed) which raced the popup onto the screen.
+-- Belt-and-braces: also auto-dismiss the dialog if anything ever shows it
+-- directly. (Repro was a numStacks>1 multisell; see the auction-deprecated-api
+-- popup notes.)
+-- ---------------------------------------------------------------------------
+do
+   if _G.UIParent and _G.UIParent.UnregisterEvent then
+      pcall(_G.UIParent.UnregisterEvent, _G.UIParent, "AUCTION_HOUSE_SCRIPT_DEPRECATED")
+   end
+   local tDlg = _G.StaticPopupDialogs and _G.StaticPopupDialogs["AUCTION_HOUSE_DEPRECATED"]
+   if type(tDlg) == "table" and not tDlg._skuSuppressed then
+      tDlg._skuSuppressed = true
+      local tPrevOnShow = tDlg.OnShow
+      tDlg.OnShow = function(self, ...)
+         if type(tPrevOnShow) == "function" then pcall(tPrevOnShow, self, ...) end
+         if _G.StaticPopup_Hide then _G.StaticPopup_Hide("AUCTION_HOUSE_DEPRECATED") end
+      end
+   end
+end
+
 local function _ABTrack(timer)
    if timer then
       table.insert(SkuCore.AuctionBuy.timers, timer)
