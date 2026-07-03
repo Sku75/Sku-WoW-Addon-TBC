@@ -2167,11 +2167,11 @@ function SkuCore:MenuBuilder(aParentEntry)
 			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Oh nein hilfe! Ich bin ein Trottel und will doch nicht zurücksetzen"]}, SkuGenericMenuItem)
 		end
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Taste zuweisen"]}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.sorting = true
-		tNewMenuEntry.BuildChildren = function(self)
-			--dprint("Taste zuweisen 2 BuildChildren")
+		-- Game keybindings: the old "Taste zuweisen" wrapper is folded away (2026-07-03).
+		-- The per-category sub-menus (Bewegung, Aktionsleiste, ...) are already a useful
+		-- grouping, so they now sit directly under "Spiel Tastenbelegung" -- one pure
+		-- navigation level removed. Each category is still its own dynamic sub-menu, so
+		-- key displays stay live. Built straight into the list `self` below.
 			local tBindings = {}
 
 			local aBindingSet = GetCurrentBindingSet()
@@ -2269,7 +2269,6 @@ function SkuCore:MenuBuilder(aParentEntry)
 					end
 				end
 			end
-		end
 	end }
 
 	tKeybinds[#tKeybinds+1] = { kind = "list", label = L["Sku Tastenbelegung"],
@@ -2284,27 +2283,13 @@ function SkuCore:MenuBuilder(aParentEntry)
 			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Oh nein hilfe! Ich bin ein Trottel und will doch nicht zurücksetzen"]}, SkuGenericMenuItem)
 		end
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Taste zuweisen"]}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.sorting = true
-		tNewMenuEntry.BuildChildren = function(self)
-			--remove outdated and delete key bindings
-			for i, v in pairs(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds) do
-				if not SkuOptions.skuDefaultKeyBindings[i] then
-					SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[i] = nil
-				end
-			end
-
-			--sort
-			local tSortedList = {}
-			for k, v in SkuSpairs(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds, function(t,a,b) 
-				return L[b] > L[a] end) do
-				tSortedList[#tSortedList+1] = k
-			end
-
-			--build list
-			for _, tBindingConst in pairs(tSortedList) do
+		-- Helper: render one key-binding entry under aParent (name shows current keys;
+		-- descend to rebind/clear primary+secondary). Extracted from the old flat
+		-- "Taste zuweisen" loop so entries can live at the top level of "Sku
+		-- Tastenbelegung" OR inside one of the group sub-menus built further below.
+		local function AddKeyBindEntry(aParent, tBindingConst)
 				local v = SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[tBindingConst]
+				if not v then return end
 				local tFriendlyKey1
 				if v.key == "" then
 					tFriendlyKey1 = L["nichts"]
@@ -2332,7 +2317,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 					tFriendlyKey2 = gsub(tFriendlyKey2, "%-%-", "-"..L["Minus"])
 				end
 
-				local tNewMenuEntryKey = SkuOptions:InjectMenuItems(self, {L[tBindingConst]..L[" Taste 1: "]..(tFriendlyKey1 or L["nichts"])..L[" Taste 2: "]..(tFriendlyKey2 or L["nichts"])}, SkuGenericMenuItem)
+				local tNewMenuEntryKey = SkuOptions:InjectMenuItems(aParent, {L[tBindingConst]..L[" Taste 1: "]..(tFriendlyKey1 or L["nichts"])..L[" Taste 2: "]..(tFriendlyKey2 or L["nichts"])}, SkuGenericMenuItem)
 				tNewMenuEntryKey.isSelect = true
 				tNewMenuEntryKey.dynamic = true
 				tNewMenuEntryKey.OnAction = function(self, aValue, aName)
@@ -2595,7 +2580,95 @@ function SkuCore:MenuBuilder(aParentEntry)
 					local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Belegung löschen"]}, SkuGenericMenuItem)
 					local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Sekundäre Belegung löschen"]}, SkuGenericMenuItem)
 				end
+		end
+
+		-- Regrouped 2026-07-03: the old "Taste zuweisen" wrapper is gone -- its key
+		-- entries now sit directly under "Sku Tastenbelegung". Numbered series (Scan,
+		-- audio quick-access, quick waypoints, focus, target markers, turn-to-unit) and
+		-- large thematic clusters (combat menu, targeting, navigation, monitor, rolling)
+		-- each get their own sub-menu; everything else stays loose at this level.
+		--drop outdated bindings once (was inside the old flat BuildChildren)
+		for i, v in pairs(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds) do
+			if not SkuOptions.skuDefaultKeyBindings[i] then
+				SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[i] = nil
 			end
+		end
+
+		local tKeyBindGroups = {
+			{ label = L["Scan Tasten"], members = {
+				"SKU_KEY_SCANCONTINUE", "SKU_KEY_SCAN1", "SKU_KEY_SCAN2", "SKU_KEY_SCAN3", "SKU_KEY_SCAN4",
+				"SKU_KEY_SCAN5", "SKU_KEY_SCAN6", "SKU_KEY_SCAN7", "SKU_KEY_SCAN8",
+				"SKU_KEY_MMSCANWIDE", "SKU_KEY_MMSCANNARROW", "SKU_KEY_NOTIFYONRESOURCES", }, },
+			{ label = L["Audio Menü Schnellzugriff"], members = {
+				"SKU_KEY_MENUQUICK1", "SKU_KEY_MENUQUICK1SET", "SKU_KEY_MENUQUICK2", "SKU_KEY_MENUQUICK2SET",
+				"SKU_KEY_MENUQUICK3", "SKU_KEY_MENUQUICK3SET", "SKU_KEY_MENUQUICK4", "SKU_KEY_MENUQUICK4SET",
+				"SKU_KEY_MENUQUICK5", "SKU_KEY_MENUQUICK5SET", "SKU_KEY_MENUQUICK6", "SKU_KEY_MENUQUICK6SET",
+				"SKU_KEY_MENUQUICK7", "SKU_KEY_MENUQUICK7SET", "SKU_KEY_MENUQUICK8", "SKU_KEY_MENUQUICK8SET",
+				"SKU_KEY_MENUQUICK9", "SKU_KEY_MENUQUICK9SET", "SKU_KEY_MENUQUICK10", "SKU_KEY_MENUQUICK10SET", }, },
+			{ label = L["Schnellwegpunkte"], members = {
+				"SKU_KEY_QUICKWP1", "SKU_KEY_QUICKWP1SET", "SKU_KEY_QUICKWP2", "SKU_KEY_QUICKWP2SET",
+				"SKU_KEY_QUICKWP3", "SKU_KEY_QUICKWP3SET", "SKU_KEY_QUICKWP4", "SKU_KEY_QUICKWP4SET", }, },
+			{ label = L["Fokus Tasten"], members = {
+				"SKU_KEY_FOCUSGET1", "SKU_KEY_FOCUSSET1", "SKU_KEY_FOCUSGET2", "SKU_KEY_FOCUSSET2",
+				"SKU_KEY_FOCUSGET3", "SKU_KEY_FOCUSSET3", "SKU_KEY_FOCUSGET4", "SKU_KEY_FOCUSSET4",
+				"SKU_KEY_FOCUSGET5", "SKU_KEY_FOCUSSET5", "SKU_KEY_FOCUSGET6", "SKU_KEY_FOCUSSET6",
+				"SKU_KEY_FOCUSGET7", "SKU_KEY_FOCUSSET7", "SKU_KEY_FOCUSGET8", "SKU_KEY_FOCUSSET8", }, },
+			{ label = L["Ziel Markierungen"], members = {
+				"SKU_KEY_SKUMARKERSET1WHITE", "SKU_KEY_SKUMARKERSET2RED", "SKU_KEY_SKUMARKERSET3BLUE",
+				"SKU_KEY_SKUMARKERSET4GREEN", "SKU_KEY_SKUMARKERSET5PURPLE", "SKU_KEY_SKUMARKERSET6YELLOW",
+				"SKU_KEY_SKUMARKERSET7ORANGE", "SKU_KEY_SKUMARKERSET8GREY", "SKU_KEY_SKUMARKERCLEARALL", }, },
+			{ label = L["Zu Einheit und Drehen"], members = {
+				"SKU_KEY_TURNTOUNIT1", "SKU_KEY_TURNTOUNIT2", "SKU_KEY_TURNTOUNIT3", "SKU_KEY_TURNTOUNIT4",
+				"SKU_KEY_TURNTOUNIT5", "SKU_KEY_TURNTOUNIT6", "SKU_KEY_TURNTOUNITTURN180", "SKU_KEY_TURNTOBEACON", }, },
+			{ label = L["Kampfmenü Steuerung"], members = {
+				"SKU_KEY_COMBATMENU_UP", "SKU_KEY_COMBATMENU_DOWN", "SKU_KEY_COMBATMENU_LEFT", "SKU_KEY_COMBATMENU_RIGHT",
+				"SKU_KEY_COMBATMENU_HOME", "SKU_KEY_COMBATMENU_END", "SKU_KEY_COMBATMENU_BACK", "SKU_KEY_COMBATMENU_USE",
+				"SKU_KEY_COMBATMENU_CLOSE", }, },
+			{ label = L["Ziel und Soft Targeting"], members = {
+				"SKU_KEY_TARGETDISTANCE", "SKU_KEY_TARGETHEALTH", "SKU_KEY_OUTPUTHARDTARGET", "SKU_KEY_OUTPUTSOFTTARGET",
+				"SKU_KEY_ENABLESOFTTARGETINGENEMY", "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY", "SKU_KEY_ENABLESOFTTARGETINGINTERACT", }, },
+			{ label = L["Navigation und Wegpunkte"], members = {
+				"SKU_KEY_SELECTNEXTBASEWAYPOINT", "SKU_KEY_MOVETONEXTWP", "SKU_KEY_MOVETOPREVWP", "SKU_KEY_ADDLARGEWP",
+				"SKU_KEY_ADDSMALLWP", "SKU_KEY_STARTRRFOLLOW", "SKU_KEY_STOPROUTEORWAYPOINT", "SKU_KEY_TOGGLEREACHRANGE",
+				"SKU_KEY_TOGGLEMMSIZE", }, },
+			{ label = L["Monitor und Kampf"], members = {
+				"SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR", "SKU_KEY_DOMONITORPARTYHEALTH2CONTI", "SKU_KEY_GROUPMEMBERSRANGECHECK",
+				"SKU_KEY_COMBATMONSETFOLLOWTARGET", "SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT", "SKU_KEY_NEXTCOMBATENEMY", }, },
+			{ label = L["Würfeln"], members = {
+				"SKU_KEY_ROLLNEED", "SKU_KEY_ROLLGREED", "SKU_KEY_ROLLPASS", "SKU_KEY_ROLLINFO",
+				"SKU_KEY_QUESTSHARE", }, },
+		}
+
+		local tGrouped = {}
+		for _, tGroup in ipairs(tKeyBindGroups) do
+			for _, tConst in ipairs(tGroup.members) do
+				tGrouped[tConst] = true
+			end
+		end
+
+		--one dynamic, type-ahead sub-menu per group (mirrors the old flat list's flags)
+		for _, tGroup in ipairs(tKeyBindGroups) do
+			local tGroupMembers = tGroup.members
+			local tGroupEntry = SkuOptions:InjectMenuItems(self, {tGroup.label}, SkuGenericMenuItem)
+			tGroupEntry.dynamic = true
+			tGroupEntry.sorting = true
+			tGroupEntry.BuildChildren = function(self)
+				for _, tConst in ipairs(tGroupMembers) do
+					AddKeyBindEntry(self, tConst)
+				end
+			end
+		end
+
+		--loose entries: everything not in a group, alphabetically by localized name
+		local tLooseSorted = {}
+		for k, v in SkuSpairs(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds, function(t,a,b)
+			return L[b] > L[a] end) do
+			if not tGrouped[k] then
+				tLooseSorted[#tLooseSorted+1] = k
+			end
+		end
+		for _, tBindingConst in ipairs(tLooseSorted) do
+			AddKeyBindEntry(self, tBindingConst)
 		end
 	end }
 
