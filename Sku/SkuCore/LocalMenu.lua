@@ -4514,21 +4514,10 @@ function SkuCore:QuestFrame(aParentChilds)
 	if _G["QuestFrameGreetingPanel"] then 
 		if _G["QuestFrameGreetingPanel"]:IsVisible() == true then
 
-			local tFrameName = "QuestFrameGreetingPanel"
-			local tFriendlyName = L["Greeting"]
-			local tFrst, tFll = tFriendlyName, ""
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFrst,
-				textFull = tFll,
-				childs = {},
-			}  
-
-			local tGreetingChilds = aParentChilds[tFriendlyName].childs
+			-- W7/quest: flattened - no intermediate "Greeting" state node, the
+			-- greeting text + selectable quest list go straight into the window
+			-- so auto-descend lands on the content, not a bare state label.
+			local tGreetingChilds = aParentChilds
 			local dtc = { _G["QuestGreetingScrollChildFrame"]:GetRegions() }
 			for x = 1, 1 do --#dtc do
 				if dtc[x].GetText then
@@ -4590,26 +4579,17 @@ function SkuCore:QuestFrame(aParentChilds)
 	--QuestFrameProgressPanel
 	if _G["QuestFrameProgressPanel"] then 
 		if _G["QuestFrameProgressPanel"]:IsVisible() == true then
-			local tFrameName = "QuestFrameProgressPanel"
-			local tFriendlyName = L["Progress"]
-			local tFrst, tFll = tFriendlyName, ""
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFrst,
-				textFull = tFll,
-				childs = {},
-			}  
-
-			local tProgressChilds = aParentChilds[tFriendlyName].childs
+			-- W7/quest: flattened - the quest content goes straight into the
+			-- window. The state used to be the "Fortschritt" node; it is now
+			-- prefixed onto the quest name (dtc[1] = QuestProgressTitleText) so
+			-- auto-descend lands on "Fortschritt <quest name>".
+			local tProgressChilds = aParentChilds
 			local dtc = { _G["QuestProgressScrollChildFrame"]:GetRegions() }
 			for x = 1, 2 do
 				if dtc[x].GetText then
 					local tText = dtc[x]:GetText()
 					if tText then
+						if x == 1 then tText = L["Progress"].." "..tText end
 						local tFrameName = "QuestInfo"
 						local tFriendlyName = tText
 						local tFrst, tFll = SkuCore:ItemName_helper(tText)
@@ -4721,22 +4701,11 @@ function SkuCore:QuestFrame(aParentChilds)
 	--QuestFrameDetailPanel
 	if _G["QuestFrameDetailPanel"] then 
 		if _G["QuestFrameDetailPanel"]:IsVisible() == true then
-			local tFrameName = "QuestFrameDetailPanel"
-			local tFriendlyName = L["Detail"]
-			local tFrst, tFll = tFriendlyName, ""
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFrst,
-				textFull = tFll,
-				childs = {},
-			}  
-
-
-			local tDetailChilds = aParentChilds[tFriendlyName].childs
+			-- W7/quest: flattened - the quest content goes straight into the
+			-- window. The state used to be the "Details" node; it is now prefixed
+			-- (as "Annehmen") onto the quest name (QuestInfoTitleHeader) so
+			-- auto-descend lands on "Annehmen <quest name>".
+			local tDetailChilds = aParentChilds
 			local dtc = { _G["QuestDetailScrollChildFrame"]:GetRegions() }
 			local tFrameName = "QuestInfoTitleHeader"
 			if _G[tFrameName] then
@@ -4754,6 +4723,7 @@ function SkuCore:QuestFrame(aParentChilds)
 						end
 					end
 
+					tText = L["Accept"].." "..tText
 					local tFriendlyName = tText
 					local tFrst, tFll = SkuCore:ItemName_helper(tText)
 					table.insert(tDetailChilds, tFriendlyName)
@@ -4765,7 +4735,7 @@ function SkuCore:QuestFrame(aParentChilds)
 						textFirstLine = tFrst,
 						textFull = tFll,
 						childs = {},
-					}  
+					}
 				end
 			end
 			local tFrameName = "QuestInfoDescriptionText"
@@ -4870,26 +4840,17 @@ function SkuCore:QuestFrame(aParentChilds)
 	--QuestFrameRewardPanel
 	if _G["QuestFrameRewardPanel"] then 
 		if _G["QuestFrameRewardPanel"]:IsVisible() == true then
-			local tFrameName = "QuestFrameRewardPanel"
-			local tFriendlyName = L["Abgabe"]
-			local tFrst, tFll = tFriendlyName, ""
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFrst,
-				textFull = tFll,
-				childs = {},
-			}  
-
-			local tDetailChilds = aParentChilds[tFriendlyName].childs
+			-- W7/quest: flattened - the quest content goes straight into the
+			-- window. The state used to be the "Abgabe" node; it is now prefixed
+			-- onto the quest name (QuestInfoTitleHeader) so auto-descend lands on
+			-- "Abgabe <quest name>".
+			local tDetailChilds = aParentChilds
 
 			local tFrameName = "QuestInfoTitleHeader"
 			if _G[tFrameName] then
 				local tText = _G[tFrameName]:GetText()
 				if tText then
+					tText = L["Abgabe"].." "..tText
 					local tFriendlyName = tText
 					local tFrst, tFll = SkuCore:ItemName_helper(tText)
 					table.insert(tDetailChilds, tFriendlyName)
