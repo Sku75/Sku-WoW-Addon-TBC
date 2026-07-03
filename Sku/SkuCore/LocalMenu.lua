@@ -3836,11 +3836,22 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 					textFirstLine = tFriendlyName,
 					textFull = "",
 					childs = {},
-					func = _G[tFrameName]:GetScript("OnClick"),
-					click = true,
-					containerFrameName = "CraftCreateButton",
-					--onActionFunc = function(self, aTable, aChildName) end,
-				}   
+					-- directAction: Enter fires the craft immediately, no
+					-- Linksklick/Rechtsklick submenu (a "create" has no left/
+					-- right semantics).
+					directAction = true,
+					-- DoCraft is TAINT-protected (confirmed: "/script DoCraft(...)"
+					-- throws ADDON_ACTION_FORBIDDEN). It also silently no-ops when
+					-- reached via "/click CraftCreateButton" -> :Click() -> OnClick
+					-- (the hardware event is lost through the chat SlashCommand
+					-- parser). The only path that both stays untainted AND is a real
+					-- hardware event is a direct key->button binding: while this
+					-- entry is focused we bind the menu's Enter directly to the real
+					-- Blizzard CraftCreateButton (see directClickButton handling in
+					-- the generic OnEnter). That runs DoCraft in Blizzard's own
+					-- secure OnClick from a genuine keypress, like a mouse click.
+					directClickButton = "CraftCreateButton",
+				}
 			end
 		end
 	end

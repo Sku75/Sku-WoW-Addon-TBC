@@ -373,6 +373,23 @@ SkuGenericMenuItem = {
 					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("typeENTER","")
 					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotextENTER","")
 				end
+
+				-- directClickButton: for TAINT-protected buttons whose effect is a
+				-- protected/hardware-gated action (e.g. the enchant CraftCreateButton
+				-- -> DoCraft), the normal "/click <btn>" secure macro is routed through
+				-- the chat SlashCommand parser (RunMacro -> SendText -> /click ->
+				-- btn:Click()), which drops the genuine hardware event, so the action
+				-- silently no-ops. Instead, bind the menu's Enter DIRECTLY to the real
+				-- Blizzard button while this entry is focused: a native key->button
+				-- hardware event, exactly like a mouse click, no chat parser. Every
+				-- other focused entry restores Enter to the normal secure menu button.
+				if self.directClickButton and _G[self.directClickButton] then
+					pcall(SetOverrideBindingClick, _G["SecureOnSkuOptionsMainOption1"], true,
+						"ENTER", self.directClickButton, "LeftButton")
+				else
+					pcall(SetOverrideBindingClick, _G["SecureOnSkuOptionsMainOption1"], true,
+						"ENTER", "SecureOnSkuOptionsMainOption1", "ENTER")
+				end
 			end
 		end
 	end,

@@ -3449,6 +3449,20 @@ function SkuOptions:CreateMenuFrame()
 	tFrame:SetScript("OnHide", function(self)
 		ClearOverrideBindings(self)
 	end)
+	-- PreClick runs BEFORE the secure macro action (which runs before PostClick ->
+	-- the insecure ENTER handler -> OnAction). We snapshot the "apply mode" here,
+	-- i.e. whether a spell is awaiting an item target (enchant / weapon oil /
+	-- sharpening / armor kit -> SpellIsTargeting) OR an item is on the cursor
+	-- (armor-set swap -> GetCursorInfo). The `/click <Slot>` macro consumes that
+	-- state (applies the enchant / places the item), so by the time OnAction runs
+	-- the cursor is empty again and OnAction can no longer tell "an apply just
+	-- happened" from "idle". The snapshot lets the equipment-slot OnActions skip
+	-- their insecure pick-up/unequip fallback when the macro already did the work,
+	-- which is the fix for enchants/armor-kits being re-picked-up after applying.
+	tFrame:SetScript("PreClick", function(self)
+		SkuOptions.tPreEnterApplyState =
+			((SpellIsTargeting and SpellIsTargeting()) or (GetCursorInfo and GetCursorInfo())) and true or false
+	end)
 	tFrame:SetScript("PostClick", _G["OnSkuOptionsMainOption1"]:GetScript("OnClick"))
 
 	-- Combat-actions: the in-combat secure-arm WRAP was removed here. It read a plain
@@ -5008,6 +5022,14 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 			if aGossipListTable[index].slot ~= nil then
 				tNewMenuEntry.slot = aGossipListTable[index].slot
 			end
+			-- Carry directClickButton onto the node so the generic OnEnter can
+			-- bind the menu's Enter straight to a real Blizzard button (needed for
+			-- taint+hardware-gated actions like the enchant CraftCreateButton ->
+			-- DoCraft). Without this copy the field stays on the gossip entry only
+			-- and OnEnter never sees it.
+			if aGossipListTable[index].directClickButton then
+				tNewMenuEntry.directClickButton = aGossipListTable[index].directClickButton
+			end
 
 			-- "directAction" path: an entry that should fire its `func`
 			-- immediately on Enter, without expanding into the generic
@@ -5127,8 +5149,33 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								-- Fallback OnAction falls macrotext nicht greift
 								local lSlotID = tEqSlotID
 								tNewSubMenuEntry.OnAction = function()
-									-- Skip wenn macrotext den Gegenstand bereits aufgenommen hat
-									if GetCursorInfo() or (SpellIsTargeting and SpellIsTargeting()) then return end
+									-- The secure macro (/click <Slot> LeftButton -> PickupInventoryItem)
+									-- ran FIRST (before this OnAction). It natively does the right thing
+									-- with the LIVE cursor/targeting state:
+									--   * SpellIsTargeting (enchant / armor kit / sharpening) -> APPLIES it,
+									--   * item on cursor (armor-set swap) -> PLACES it into the slot,
+									--   * nothing pending -> picks the equipped item up to the cursor.
+									-- So OnAction must only act when the macro did NOT already do so.
+									-- After an apply the cursor is empty and targeting is off again, so
+									-- the live check alone can't detect it -> also honour the pre-macro
+									-- snapshot from the secure PreClick. Without this the just-enchanted
+									-- item got re-picked-up onto the cursor (the reported bug).
+									if SkuOptions.tPreEnterApplyState
+										or GetCursorInfo() or (SpellIsTargeting and SpellIsTargeting()) then
+										-- Macro applied/placed/picked-up already -> just refresh.
+										if _G.C_Timer and _G.C_Timer.After then
+											_G.C_Timer.After(0.1, function()
+												pcall(function() SkuCore:CheckFrames() end)
+												_G.C_Timer.After(0.35, function()
+													if SkuOptions.currentMenuPosition
+														and SkuOptions.currentMenuPosition.OnUpdate then
+														pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
+													end
+												end)
+											end)
+										end
+										return
+									end
 									if _G.PickupInventoryItem then
 										pcall(_G.PickupInventoryItem, lSlotID)
 									end
@@ -5294,36 +5341,42 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 							if tIsEquipmentSlot then
 								local lSlotID = tEqSlotID
 								local lSlotName = aGossipListTable[index].containerFrameName
-								-- Rechtsklick auf ein ausgeruestetes Teil. TBC-2.5.5 hat KEIN
-								-- natives Rechtsklick-Verhalten auf den Paperdoll-Slots (weder
-								-- benutzen noch ausziehen -- "/click <Slot> RightButton" macht
-								-- nichts). Daher drei Faelle, beim Menue-Aufbau entschieden:
-								--  1) Ziel-Modus aktiv (Waffenoel/Gift/Schleifstein/Verzauberung):
-								--     ANWENDEN -> sicheres macrotext /click RightButton (der
-								--     einzige Weg, der im Ziel-Modus ohne FORBIDDEN funktioniert).
-								--  2) Gegenstand mit Benutzen-Effekt (Schmuck etc.): on-use
-								--     ausloesen -> sicheres macrotext "/use <slotID>" (Trinket-Makro).
-								--  3) Sonst (normale Ruestung/Waffe): AUSZIEHEN via
-								--     PickupInventoryItem + erstes freies Taschenfach (kein Cursor/
-								--     Ziel-Modus aktiv -> erlaubt, nicht FORBIDDEN).
-								-- Ausziehen eines on-use-Teils geht weiterhin per Linksklick.
-								local tTargeting = (SpellIsTargeting and SpellIsTargeting()) and true or false
+								-- Rechtsklick auf ein ausgeruestetes Teil. Das sichere Makro
+								-- "/click <Slot> RightButton" laeuft VOR dieser OnAction (auf dem
+								-- Hardware-ENTER) und ruft nativ UseInventoryItem(slot) mit der
+								-- LIVE-Cursor/Ziel-Lage auf:
+								--  1) Ziel-Modus (Waffenoel/Gift/Schleifstein): WENDET AN.
+								--  2) Gegenstand mit Benutzen-Effekt (Schmuck): loest on-use aus.
+								--  3) Normale Ruestung/Waffe: TBC-2.5.5 macht hier nativ NICHTS
+								--     -> die insecure OnAction unten zieht dann aus.
+								-- Frueher wurde 1/2 anhand des ZUSTANDS BEIM MENUE-AUFBAU
+								-- entschieden (tTargeting/tHasOnUse). Das brach, sobald der
+								-- Ziel-Modus erst NACH dem Aufbau aktiv wurde (z.B. Verzauberung:
+								-- Menue stand schon, dann Zielcursor). Deshalb jetzt: Makro IMMER
+								-- binden und in OnAction anhand des PreClick-Schnappschusses +
+								-- LIVE-Pruefung entscheiden, ob das Makro schon gehandelt hat.
 								local tHasOnUse = false
-								if not tTargeting and _G.GetInventoryItemLink and _G.GetItemSpell then
+								if _G.GetInventoryItemLink and _G.GetItemSpell then
 									local tLink = _G.GetInventoryItemLink("player", lSlotID)
 									if tLink and (_G.GetItemSpell(tLink)) then
 										tHasOnUse = true
 									end
 								end
-								dprint("equip rclick build", lSlotName, "slot", lSlotID, "targeting", tTargeting, "onUse", tHasOnUse)
-								if tTargeting then
-									tNewSubMenuEntry.macrotext = "/click " .. lSlotName .. " RightButton"
-								elseif tHasOnUse then
-									tNewSubMenuEntry.macrotext = "/use " .. lSlotID
-								end
+								dprint("equip rclick build", lSlotName, "slot", lSlotID,
+									"targeting", tostring(SpellIsTargeting and SpellIsTargeting()), "onUse", tHasOnUse)
+								tNewSubMenuEntry.macrotext = "/click " .. lSlotName .. " RightButton"
 								tNewSubMenuEntry.OnAction = function()
-									-- Faelle 1+2 erledigt das sichere macrotext; nur auffrischen.
-									if tTargeting or tHasOnUse then
+									-- Hat das sichere Makro schon angewendet/benutzt? Dann NICHT ausziehen.
+									-- pre-Schnappschuss faengt den soeben verbrauchten Ziel-Modus;
+									-- on-use LIVE neu berechnen (Makro hat evtl. gerade ausgeloest);
+									-- Cursor/Ziel-Modus jetzt = Rebuild-Timing-Schutz.
+									local tOnUseLive = false
+									if _G.GetInventoryItemLink and _G.GetItemSpell then
+										local tLink = _G.GetInventoryItemLink("player", lSlotID)
+										if tLink and (_G.GetItemSpell(tLink)) then tOnUseLive = true end
+									end
+									if SkuOptions.tPreEnterApplyState or tOnUseLive
+										or GetCursorInfo() or (SpellIsTargeting and SpellIsTargeting()) then
 										dprint("equip rclick action: macro path (refresh only)")
 										if _G.C_Timer and _G.C_Timer.After then
 											_G.C_Timer.After(0.1, function()
