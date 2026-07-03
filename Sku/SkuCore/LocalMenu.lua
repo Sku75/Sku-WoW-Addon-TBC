@@ -2158,7 +2158,11 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 		childs = {},
 	}
 
-	--items
+	--items (flattened: the former "Gegenstände"/L["Items"] node was the ONLY child of
+	-- "Ausrüstung", so it is removed -- the equipment slot list now hangs directly under
+	-- "Ausrüstung". The in-combat character mirror needs NO change: it walks whatever tree
+	-- shape aParentChilds has (see the combatCharTree tWalk below) and detects slot nodes by
+	-- the "^Character.+Slot$" key pattern, not by depth, so it just gets one level shallower.)
 	local tFrameName = ""
 	local tFriendlyName = L["Equipment"]
 	table.insert(aParentChilds, tFriendlyName)
@@ -2171,34 +2175,16 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 		textFull = "",
 		childs = {},
 		--click = true,
-	}   
-	local tParentEquipment = aParentChilds[tFriendlyName].childs
+	}
+	local tParentEquipment = aParentChilds[tFriendlyName]
+	tParentEquipment.childs = SkuCore:IterateChildren(_G["PaperDollItemsFrame"], 2)
 
-		--items submenu
-		local tFrameName = "PaperDollItemsFrame"
-		local tFriendlyName = L["Items"]
-		table.insert(tParentEquipment, tFriendlyName)
-		tParentEquipment[tFriendlyName] = {
-			frameName = tFrameName,
-			RoC = "Child",
-			type = "Button",
-			obj = _G[tFrameName],
-			textFirstLine = tFriendlyName,
-			textFull = "",
-			childs = {},
-			--click = true,
-		}
-		tParentEquipment[tFriendlyName].childs = SkuCore:IterateChildren(tParentEquipment[tFriendlyName].obj, 2)
-
-		--print(tParentEquipment[tFriendlyName].childs["GearManagerToggleButton"])
-		for x = 1, #tParentEquipment[tFriendlyName].childs do
-			--print(x)
-			if tParentEquipment[tFriendlyName].childs[x] == "GearManagerToggleButton" then
-				--print("GearManagerToggleButton")
-				tParentEquipment[tFriendlyName].childs[x] = nil
-				tParentEquipment[tFriendlyName].childs["GearManagerToggleButton"] = nil
-			end
+	for x = 1, #tParentEquipment.childs do
+		if tParentEquipment.childs[x] == "GearManagerToggleButton" then
+			tParentEquipment.childs[x] = nil
+			tParentEquipment.childs["GearManagerToggleButton"] = nil
 		end
+	end
 
 		-- (The in-combat character mirror is captured as a FULL tree at the very end of this
 		-- function, once every branch -- Equipment, Stats, Professions, Sets -- has been built.

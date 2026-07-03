@@ -22,6 +22,35 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **Character frame — flattened the single "Gegenstände" node under "Ausrüstung".**
+  In `SkuCore:Build_CharacterFrame` (`SkuCore/LocalMenu.lua`) the equipment branch
+  built "Ausrüstung" (`L["Equipment"]`) with exactly one child, "Gegenstände"
+  (`L["Items"]`, `PaperDollItemsFrame`), whose `.childs` held the actual slot list.
+  Removed that lone intermediate node: the slot list (`IterateChildren(
+  PaperDollItemsFrame, 2)`, minus `GearManagerToggleButton`) now hangs directly
+  under "Ausrüstung", so right-arrow lands straight on the first slot. The
+  "Ausrüstung" node itself is unchanged; only its `childs` differ. **The in-combat
+  character mirror needed no change** — it is built by `tWalk(aParentChilds, 0)`,
+  which recurses whatever tree shape exists and detects equipment slots by the
+  `^Character.+Slot$` key pattern (depth-independent), so the flattened tree yields
+  a mirror one level shallower automatically; `/use <slotID>` arming + the
+  Links/Rechtsklick submenus stay intact. In-game verified out of and in combat.
+
+- **Quest frame — flattened the state node onto the quest name.** The quest
+  dialog builder (`SkuCore:QuestFrame`, `SkuCore/LocalMenu.lua`) inserted one
+  intermediate "state" grouping node — Details (accept) / Fortschritt (progress)
+  / Abgabe (turn-in) / Auswahl (greeting) — with the actual quest content nested
+  inside it, so the one-level window auto-descend (`CheckFrames`) landed on that
+  bare state label instead of the quest text. Removed the intermediate node in
+  all four panels so the content goes straight into the window, and folded the
+  state onto the first line so the info is not lost: Detail → "Annehmen <quest
+  name>", Progress → "Fortschritt <quest name>" (the `dtc[1]` title region),
+  Reward → "Abgabe <quest name>", Greeting → greeting text then the selectable
+  quest list. Auto-descend now lands directly on the quest text, one level
+  shallower; the window node and multi-window nav are unchanged. Safe: those four
+  `L[...]` state labels are referenced only by this builder (no SlashFunc
+  path-by-label coupling). In-game verified.
+
 - **W3 P1 — performance measurement enabled + made screen-reader readable.** The
   timing harness already existed (`Sku.PerformanceData` EWMA probes in
   `aqCombat.lua`/`aq.lua`, `Sku:MetricPoint`, the on-screen `Sku:Performance`
