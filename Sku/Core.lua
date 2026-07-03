@@ -841,10 +841,10 @@ local function tSkuFollowProbeStart()
 
 	dprint("=== SkuFollowProbe START ===")
 	dprint("instance", tostring(tInstType), "unit", tostring(tUnit), "via", tHow,
-		"name", tUnit and tostring(UnitName(tUnit)) or "-",
-		"isPlayer", tUnit and tostring(UnitIsPlayer(tUnit)) or "-",
-		"inParty", tUnit and tostring(UnitInParty(tUnit)) or "-",
-		"inRaid", tUnit and tostring(UnitInRaid(tUnit)) or "-")
+		"name", tUnit and tostring((UnitName(tUnit))) or "-",
+		"isPlayer", tUnit and tostring((UnitIsPlayer(tUnit))) or "-",
+		"inParty", tUnit and tostring((UnitInParty(tUnit))) or "-",
+		"inRaid", tUnit and tostring((UnitInRaid(tUnit))) or "-")
 	dprint("player UnitPosition", tostring(pa), tostring(pb))
 	dprint("unit UnitPosition", tostring(ua), tostring(ub))
 	dprint("UnitDistanceSquared yd", tostring(tDist), "checked", tostring(tDChecked),

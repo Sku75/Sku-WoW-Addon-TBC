@@ -876,6 +876,29 @@ function SkuCore:IsPlayerMoving()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Resolve the unit token of whoever we are autofollowing, or nil when not
+-- following / the leader is not reachable as a unit token. Prefers a persistent
+-- party/raid token, which works regardless of the current target (an enemy can
+-- be targeted) -- see the follow-collision feature in the OnUpdate loop. Only
+-- falls back to "target" for an ungrouped leader, the sole case where selection
+-- matters.
+function SkuCore:ResolveFollowLeader()
+	if not (SkuStatus and SkuStatus.follow and SkuStatus.follow ~= 0) then
+		return nil
+	end
+	if SkuStatus.followUnitId and SkuStatus.followUnitId ~= "" and UnitExists(SkuStatus.followUnitId) then
+		return SkuStatus.followUnitId
+	end
+	local tName = SkuStatus.followUnitName
+	if tName and tName ~= "" then
+		for x = 1, 40 do if UnitName("raid"..x) == tName then return "raid"..x end end
+		for x = 1, 5 do if UnitName("party"..x) == tName then return "party"..x end end
+		if UnitExists("target") and UnitName("target") == tName then return "target" end
+	end
+	return nil
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tSkuCoreNamePlateRepo = {}
 function SkuCore:NAME_PLATE_CREATED(...)
 	--dprint("NAME_PLATE_CREATED", ...)
@@ -1556,6 +1579,80 @@ function SkuCore:OnEnable()
 
 						end
 						SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y = tNewX, tNewY
+					end
+				end
+
+				-- Follow-collision: warn (reusing the sound-stuck tiers) when we are
+				-- autofollowing and fall behind the leader while not moving ourselves --
+				-- e.g. wedged on terrain while the group runs on. Two modes, switched by
+				-- whether UnitPosition answers: outdoors = exact player/leader positions;
+				-- instances (positions dead) = GetUnitSpeed + the LibRangeCheck bracket vs
+				-- the keeping-up baseline. Validated via /skufollowprobe. A leader who is
+				-- simply standing still stays silent (no gap growth); the ~0.75s counter
+				-- eats the autofollow start-up lag so a leader merely starting to move
+				-- does not beep. Uses a persistent party/raid token, so any target is fine.
+				if SkuSettings:Sub("SkuCore").followCollision ~= false then
+					local tLeader = SkuCore:ResolveFollowLeader()
+					if not tLeader then
+						SkuCoreMovement.FollowStuck = nil
+					else
+						local fs = SkuCoreMovement.FollowStuck
+						if not fs then fs = {counter = 0} SkuCoreMovement.FollowStuck = fs end
+						-- Warn by HOW FAST the gap to the leader is opening (the rate we are
+						-- separating), not by being stopped or by absolute distance: this is
+						-- the leading signal -- it fires the instant we start to lose them, so
+						-- it is actionable BEFORE we are stuck. Faster pull-away = more urgent
+						-- (lower number, matching the self-collision convention); it stays
+						-- quiet while the gap holds or closes (we are keeping up / recovering).
+						-- Thresholds are easy to retune.
+						local tBehind, tTier
+						local pa, pb = UnitPosition("player")
+						if pa and pb then
+							-- precise mode (outdoors): rate of separation from exact positions
+							local ua, ub = UnitPosition(tLeader)
+							local tGap = (ua and ub) and math.sqrt((pa - ua)^2 + (pb - ub)^2) or nil
+							if tGap and fs.lastGap then
+								local sep = tGap - fs.lastGap   -- yd gained this ~0.15s tick; +ve = separating
+								fs.lastSep = sep
+								if sep > 0.15 then
+									tBehind = true
+									-- frac 1.0 ~= leader pulling away at full run speed (~1.05 yd/tick)
+									local frac = sep / 1.05
+									tTier = (frac >= 0.85 and 1) or (frac >= 0.60 and 2) or (frac >= 0.40 and 3) or (frac >= 0.25 and 4) or 5
+								end
+							end
+							fs.lastGap = tGap
+							fs.baseLibMin = nil
+						else
+							-- fallback mode (instances): positions are dead, so use the
+							-- LibRangeCheck lower bracket vs the keep-up baseline (refreshed
+							-- each moving tick) as a coarse "how far behind" proxy.
+							local moving = (GetUnitSpeed("player") or 0) > 0.5
+							local tLibMin
+							if SkuOptions and SkuOptions.RangeCheck and SkuOptions.RangeCheck.GetRange then
+								local ok, a = pcall(function() return SkuOptions.RangeCheck:GetRange(tLeader) end)
+								if ok then tLibMin = a end
+							end
+							if moving and tLibMin then
+								fs.baseLibMin = tLibMin
+							end
+							if tLibMin and fs.baseLibMin and tLibMin > fs.baseLibMin then
+								local over = tLibMin - fs.baseLibMin
+								tBehind = true
+								tTier = (over >= 20 and 1) or (over >= 12 and 2) or (over >= 7 and 3) or (over >= 3 and 4) or 5
+							end
+							fs.lastGap, fs.lastPa, fs.lastPb, fs.lastSep = nil, nil, nil, nil
+						end
+						if tBehind == true then
+							fs.counter = (fs.counter or 0) + 1
+							if fs.counter > 5 then
+								fs.counter = 0
+								dprint("followCollision fire", tLeader, pa and "precise" or "fallback", "gap", tostring(fs.lastGap and math.floor(fs.lastGap)), "sepPerTick", tostring(fs.lastSep and math.floor(fs.lastSep * 100) / 100), "tier", tTier or 3)
+								SkuOptions.Voice:OutputString("sound-stuck"..(tTier or 3), false, false, 0.8)
+							end
+						else
+							fs.counter = 0
+						end
 					end
 				end
 			end

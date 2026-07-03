@@ -176,6 +176,11 @@ SkuCore.options = {
 			desc = "",
 			type = "toggle",
 		},
+		followCollision = {
+			name = (GetLocale and GetLocale() == "deDE") and "Kollisionswarnung beim Folgen" or "Follow collision warning",
+			desc = "",
+			type = "toggle",
+		},
 		turnToUnit = {
 			name = L["Turn to unit"],
 			order = 5,
@@ -533,6 +538,7 @@ SkuCore.defaults = {
 	--autoFollow = false,
 	--endFollowOnCast = false,
 	interactMove = true,
+	followCollision = true,
 	turnToUnit = {
 		speed = 6,
 		soundOnSuccess = "sound-waterdrop5",
@@ -649,6 +655,7 @@ SkuSettings:Register("SkuCore", {
 	["turnToUnit.enhancedSettings.delayOnPlate"]  = { scope = "profile", default = 2, type = "number" },
 	["playNPCGreetings"]                          = { scope = "profile", default = false, type = "boolean" },
 	["doNotHideTooltip"]                          = { scope = "profile", default = false, type = "boolean" },
+	["followCollision"]                           = { scope = "profile", default = true, type = "boolean" },
 	["classes.hunter.petHappyness"]               = { scope = "profile", default = true, type = "boolean" },
 	["itemSettings.ShowItemQality"]               = { scope = "profile", default = true, type = "boolean" },
 	["itemSettings.autoSellJunk"]                 = { scope = "profile", default = true, type = "boolean" },
