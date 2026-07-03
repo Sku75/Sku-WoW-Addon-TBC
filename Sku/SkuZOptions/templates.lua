@@ -227,6 +227,9 @@ SkuGenericMenuItem = {
 			SkuOptions.currentMenuPosition = tNode.prev
 		else
 			PlaySound(681)
+			-- Flag the boundary so the key handler suppresses its per-step nav
+			-- click (811) — only the boundary sound should play at a list edge.
+			SkuOptions.tBoundaryHitThisKey = true
 			SkuOptions.currentMenuPosition = tNode
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
@@ -240,6 +243,9 @@ SkuGenericMenuItem = {
 			SkuOptions.currentMenuPosition = tNode.next
 		else
 			PlaySound(681)
+			-- Flag the boundary so the key handler suppresses its per-step nav
+			-- click (811) — only the boundary sound should play at a list edge.
+			SkuOptions.tBoundaryHitThisKey = true
 			SkuOptions.currentMenuPosition = tNode
 		end
 		SkuOptions.currentMenuPosition:OnEnter()

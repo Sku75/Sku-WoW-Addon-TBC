@@ -2773,6 +2773,12 @@ function SkuOptions:CreateMenuFrame()
 			end
 		end
 
+		-- Reset per-keystroke boundary flag. OnNext/OnPrev set it true when the
+		-- move hits the end of a sibling list and plays the boundary sound (681).
+		-- The unconditional per-step nav click (811, further below) is then
+		-- suppressed so a boundary press plays ONLY the boundary sound, not both.
+		SkuOptions.tBoundaryHitThisKey = false
+
 		-- PAGEDOWN/PAGEUP: Scroll-Buttons fuer Berufefenster klicken,
 		-- dann CheckFrames zum Aktualisieren. Kein Menue-Springen.
 		if aKey == "PAGEDOWN" then
@@ -3030,7 +3036,12 @@ function SkuOptions:CreateMenuFrame()
 		if SkuOptions.MenuAccessKeysChars[aKey] or (SkuOptions.MenuAccessKeysNumbers[aKey]) then
 			SkuOptions.currentMenuPosition:OnKey(aKey)
 		end
-		PlaySound(811)
+		-- Skip the per-step nav click when this keypress hit a list boundary:
+		-- OnNext/OnPrev already played the boundary sound (681), so playing 811
+		-- too would sound both at once on the last/first item.
+		if SkuOptions.tBoundaryHitThisKey ~= true then
+			PlaySound(811)
+		end
 
 		if aKey ~= "SHIFT-RIGHT" and aKey ~= "SHIFT-LEFT" and aKey ~= "SHIFT-ENTER" and aKey ~= "SHIFT-BACKSPACE" and aKey ~= "SHIFT-UP" and aKey ~= "SHIFT-DOWN" and aKey ~= "SHIFT-PAGEDOWN" and aKey ~= "CTRL-SHIFT-UP" and aKey ~= "CTRL-SHIFT-DOWN" then
 			if SkuOptions.TTS:IsAutoRead() == true then
