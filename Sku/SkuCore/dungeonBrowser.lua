@@ -914,7 +914,7 @@ local function tBuildPhaseA(aParent, aSelf)
    -- zeile oben.
    local tRoleEntry = SkuOptions:InjectMenuItems(aParent, {L["DB_Role"]}, SkuGenericMenuItem)
    tRoleEntry.dynamic = true
-   tRoleEntry.filterable = true
+   tRoleEntry.sorting = true
    tRoleEntry.BuildChildren = function(self)
       for _, r in ipairs(availableRoles) do
          local roleName = ROLE_NAMES[r] or r
@@ -962,7 +962,7 @@ local function tBuildPhaseA(aParent, aSelf)
             end
             local tDungeon = SkuOptions:InjectMenuItems(aParent, {statePrefix .. displayName .. levelStr}, SkuGenericMenuItem)
             tDungeon.dynamic = true
-            tDungeon.filterable = true
+            tDungeon.sorting = true
             local lDungeonId = dun.id
             local lDungeonName = dun.shortName or dun.name
             DungeonBrowser.tDungeonBrowserDungeonEntries[lDungeonId] = tDungeon
@@ -1119,7 +1119,7 @@ local function tBuildPhaseB(aParent)
             }
          end
          tPlayer.dynamic = true
-         tPlayer.filterable = true
+         tPlayer.sorting = true
          tPlayer.BuildChildren = function(self)
             local lLeaderName = p.leaderName or ""
             local lSearchResultID = p.searchResultID
@@ -1324,7 +1324,7 @@ local function tEnsureDungeonBrowserEntry()
    end
    local tEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {DUNGEON_BROWSER_LABEL}, SkuGenericMenuItem)
    tEntry.dynamic = true
-   tEntry.filterable = true
+   tEntry.sorting = true
    tEntry.BuildChildren = function(self)
       DungeonBrowser:DungeonBrowserBuildMenu(self)
    end

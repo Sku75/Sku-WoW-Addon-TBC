@@ -1926,7 +1926,7 @@ local function MonitorSpellMenuBuilder(self)
 
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["ignored"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
 	tNewMenuEntry.isSelect = true
 	tNewMenuEntry.OnAction = function(self, aValue, aName)
 		if aName ~= L["Empty"] then
@@ -1953,7 +1953,7 @@ local function MonitorSpellMenuBuilder(self)
 
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["not ignored"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
 	tNewMenuEntry.isSelect = true
 	tNewMenuEntry.OnAction = function(self, aValue, aName)
 		SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tUnitType].debuffs.ignored[self.spellName] = true
@@ -1986,7 +1986,7 @@ function Aq:MonitorMenuBuilder()
 	tNewMenuEntry.BuildChildren = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unit number first"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.isSelect = true
 		tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 			if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberFirst == true then
@@ -2009,7 +2009,7 @@ function Aq:MonitorMenuBuilder()
 		
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Only unit numbers"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.isSelect = true
 		tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 			if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberOnly == true then
@@ -2041,7 +2041,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.enabled == true then
@@ -2064,7 +2064,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Factor in incoming heals"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.factorInIncomingHeals == true then
@@ -2087,7 +2087,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.instancesOnly == true then
@@ -2110,7 +2110,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output start at"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if aName == -1 then
@@ -2135,7 +2135,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.continouslyTimer
@@ -2151,7 +2151,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on 100 and 0 percent"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.silentOn100and0 == true then
@@ -2175,7 +2175,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.continouslyVolume
@@ -2191,7 +2191,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.eventVolume
@@ -2207,7 +2207,7 @@ function Aq:MonitorMenuBuilder()
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event Steps"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return tonumber(SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.steps)
@@ -2223,7 +2223,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.voice].name
@@ -2257,7 +2257,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.enabled == true then
@@ -2280,7 +2280,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Power Type"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				for i, v in pairs(tPowerTypes) do
@@ -2304,7 +2304,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.instancesOnly == true then
@@ -2327,7 +2327,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output start at"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if aName == -1 then
@@ -2352,7 +2352,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.continouslyTimer
@@ -2368,7 +2368,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on 100 and 0 percent"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.silentOn100and0 == true then
@@ -2392,7 +2392,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.continouslyVolume
@@ -2408,7 +2408,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.eventVolume
@@ -2424,7 +2424,7 @@ function Aq:MonitorMenuBuilder()
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event Steps"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return tonumber(SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.steps)
@@ -2440,7 +2440,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.voice].name
@@ -2468,7 +2468,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.enabled == true then
@@ -2491,7 +2491,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["debuff types"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
 				if aName == L["Enabled"] then
@@ -2527,7 +2527,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.instancesOnly == true then
@@ -2550,7 +2550,7 @@ function Aq:MonitorMenuBuilder()
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output starts after seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if aName == -1 then
@@ -2575,7 +2575,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.continouslyTimer
@@ -2591,7 +2591,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.continouslyVolume
@@ -2607,7 +2607,7 @@ function Aq:MonitorMenuBuilder()
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.eventVolume
@@ -2623,7 +2623,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.voice].name
@@ -2656,7 +2656,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.enabled == true then
@@ -2679,7 +2679,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Factor in incoming heals"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.factorInIncomingHeals == true then
@@ -2702,7 +2702,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.instancesOnly == true then
@@ -2725,7 +2725,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output start at"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if aName == -1 then
@@ -2750,7 +2750,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.continouslyTimer
@@ -2766,7 +2766,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on 100 and 0 percent"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.silentOn100and0 == true then
@@ -2790,7 +2790,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.continouslyVolume
@@ -2806,7 +2806,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.eventVolume
@@ -2822,7 +2822,7 @@ function Aq:MonitorMenuBuilder()
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event Steps"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return tonumber(SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.steps)
@@ -2838,7 +2838,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.voice].name
@@ -2872,7 +2872,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.enabled == true then
@@ -2895,7 +2895,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.instancesOnly == true then
@@ -2918,7 +2918,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.continouslyEnabled == true then
@@ -2941,7 +2941,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.continouslyTimer
@@ -2957,7 +2957,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on all at 100 percent"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.silentAtAll100 == true then
@@ -2980,7 +2980,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Speed"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.continouslySpeed
@@ -2996,7 +2996,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Include self"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.includeSelf == true then
@@ -3025,7 +3025,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.enabled == true then
@@ -3048,7 +3048,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Factor in incoming heals"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.factorInIncomingHeals == true then
@@ -3144,7 +3144,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.continouslyTimer
@@ -3215,7 +3215,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on 100 and 0 percent"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.silentOn100and0 == true then
@@ -3238,7 +3238,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add sound on 100 percent"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.addSoundOn100Percent == true then
@@ -3261,7 +3261,7 @@ function Aq:MonitorMenuBuilder()
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add Dead on 0 percent"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.addDeadOn0Percent == true then
@@ -3284,7 +3284,7 @@ function Aq:MonitorMenuBuilder()
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.continouslyVolume
@@ -3300,7 +3300,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.eventVolume
@@ -3316,7 +3316,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Percent delay for next output in queue"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.outputQueueDelay
@@ -3337,7 +3337,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.enabled == true then
@@ -3360,7 +3360,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["debuff types"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
 				if aName == L["Enabled"] then
@@ -3396,7 +3396,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.instancesOnly == true then
@@ -3419,7 +3419,7 @@ function Aq:MonitorMenuBuilder()
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output starts after seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if aName == -1 then
@@ -3444,7 +3444,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output style"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.toutputStyle = 1
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
@@ -3467,7 +3467,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.continouslyTimer
@@ -3483,7 +3483,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.continouslyVolume
@@ -3499,7 +3499,7 @@ function Aq:MonitorMenuBuilder()
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.eventVolume
@@ -3515,7 +3515,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.voice].name
@@ -3548,7 +3548,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.enabled == true then
@@ -3571,7 +3571,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Factor in incoming heals"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.factorInIncomingHeals == true then
@@ -3728,7 +3728,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.continouslyTimer
@@ -3802,7 +3802,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on 100 and 0 percent"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.silentOn100and0 == true then
@@ -3826,7 +3826,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add sound on 100 percent"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.addSoundOn100Percent == true then
@@ -3850,7 +3850,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add Dead on 0 percent"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.addDeadOn0Percent == true then
@@ -3874,7 +3874,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.continouslyVolume
@@ -3891,7 +3891,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.eventVolume
@@ -3908,7 +3908,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Percent delay for next output in queue"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.outputQueueDelay
@@ -3929,7 +3929,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.enabled == true then
@@ -3952,7 +3952,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["debuff types"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
 				if aName == L["Enabled"] then
@@ -3988,7 +3988,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.instancesOnly == true then
@@ -4064,7 +4064,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output starts after seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if aName == -1 then
@@ -4089,7 +4089,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output style"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.toutputStyle = 1
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
@@ -4112,7 +4112,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.continouslyTimer
@@ -4128,7 +4128,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.continouslyVolume
@@ -4144,7 +4144,7 @@ function Aq:MonitorMenuBuilder()
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.eventVolume
@@ -4160,7 +4160,7 @@ function Aq:MonitorMenuBuilder()
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				return tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.voice].name
@@ -4187,7 +4187,7 @@ function Aq:MonitorMenuBuilder()
 	--combat
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Combat"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
 	tNewMenuEntry.BuildChildren = SkuCore.aqCombat.aqCombatMenuBuilder
 
 

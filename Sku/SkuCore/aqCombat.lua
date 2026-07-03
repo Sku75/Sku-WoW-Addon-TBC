@@ -1597,7 +1597,7 @@ end
 local function tSoundMenuBuilder(self, aSetting)
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Audio"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-   tNewMenuEntry.filterable = true   
+   tNewMenuEntry.sorting = true   
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
       for i, v in pairs(aqCombatAudioOutputs) do
@@ -1652,7 +1652,7 @@ function aqCombat:aqCombatMenuBuilder()
    -- (registered default ON). Same flag /skucombatmenu toggles.
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Sku menu in combat"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-   tNewMenuEntry.filterable = true
+   tNewMenuEntry.sorting = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
       if SkuSettings:Sub("SkuCore").combatMenuOpen == true then
@@ -1675,7 +1675,7 @@ function aqCombat:aqCombatMenuBuilder()
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-   tNewMenuEntry.filterable = true
+   tNewMenuEntry.sorting = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
       if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.enabled == true then
@@ -1699,7 +1699,7 @@ function aqCombat:aqCombatMenuBuilder()
    ---
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Update rate (performance)"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-   tNewMenuEntry.filterable = true
+   tNewMenuEntry.sorting = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
       return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.updateRate
@@ -1717,7 +1717,7 @@ function aqCombat:aqCombatMenuBuilder()
    ----
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-   tNewMenuEntry.filterable = true
+   tNewMenuEntry.sorting = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
       return aqCombatVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.voice]
@@ -1737,7 +1737,7 @@ function aqCombat:aqCombatMenuBuilder()
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Notification volume"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-   tNewMenuEntry.filterable = true
+   tNewMenuEntry.sorting = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
       if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.notificationVolume == 1 then
@@ -1760,7 +1760,7 @@ function aqCombat:aqCombatMenuBuilder()
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice volume"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-   tNewMenuEntry.filterable = true
+   tNewMenuEntry.sorting = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
       if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.voiceVolume == 1 then
@@ -1790,7 +1790,7 @@ function aqCombat:aqCombatMenuBuilder()
       ----
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["ignore non-elite"]}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
-      tNewMenuEntry.filterable = true
+      tNewMenuEntry.sorting = true
       tNewMenuEntry.isSelect = true
       tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
          if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.ignoreNonElite == true then
@@ -1818,7 +1818,7 @@ function aqCombat:aqCombatMenuBuilder()
          ---
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output target of target on target change"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.filterable = true
+         tNewMenuEntry.sorting = true
          tNewMenuEntry.BuildChildren = function(self)
             local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
             tNewMenuEntry.dynamic = true
@@ -1855,7 +1855,7 @@ function aqCombat:aqCombatMenuBuilder()
          tNewMenuEntry.BuildChildren = function(self)
             local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
             tNewMenuEntry.dynamic = true
-            tNewMenuEntry.filterable = true
+            tNewMenuEntry.sorting = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
                if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan.value == 0 then
@@ -1886,7 +1886,7 @@ function aqCombat:aqCombatMenuBuilder()
          tNewMenuEntry.BuildChildren = function(self)
             local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
             tNewMenuEntry.dynamic = true
-            tNewMenuEntry.filterable = true
+            tNewMenuEntry.sorting = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
                if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan.value == 0 then
@@ -1914,7 +1914,7 @@ function aqCombat:aqCombatMenuBuilder()
          ---
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Theat warning repeating interval (0 is once)"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.filterable = true
+         tNewMenuEntry.sorting = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
             return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.threatWarningInterval
@@ -1931,7 +1931,7 @@ function aqCombat:aqCombatMenuBuilder()
          ----
 			local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Warning if your target is switching from you"]}, SkuGenericMenuItem)
 			tNewSubMenuEntry.dynamic = true
-         tNewSubMenuEntry.filterable = true
+         tNewSubMenuEntry.sorting = true
          tNewSubMenuEntry.BuildChildren = function(self)
             local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
             tNewSubMenuEntry.dynamic = true
@@ -1961,7 +1961,7 @@ function aqCombat:aqCombatMenuBuilder()
          ----
 			local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Warning if your target is switching to you"]}, SkuGenericMenuItem)
 			tNewSubMenuEntry.dynamic = true
-         tNewSubMenuEntry.filterable = true
+         tNewSubMenuEntry.sorting = true
          tNewSubMenuEntry.BuildChildren = function(self)
             local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
             tNewSubMenuEntry.dynamic = true
@@ -1996,7 +1996,7 @@ function aqCombat:aqCombatMenuBuilder()
          ---
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output your target casting"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.filterable = true
+         tNewMenuEntry.sorting = true
          tNewMenuEntry.BuildChildren = function(self)
             local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
             tNewMenuEntry.dynamic = true
@@ -2030,7 +2030,7 @@ function aqCombat:aqCombatMenuBuilder()
          ---
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output all enemies casting"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.filterable = true
+         tNewMenuEntry.sorting = true
          tNewMenuEntry.BuildChildren = function(self)
             local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
             tNewMenuEntry.dynamic = true
@@ -2064,7 +2064,7 @@ function aqCombat:aqCombatMenuBuilder()
          ---
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Minimum cast time"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.filterable = true
+         tNewMenuEntry.sorting = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
             return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.minimumCastDuration
@@ -2086,7 +2086,7 @@ function aqCombat:aqCombatMenuBuilder()
          ----
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["ignore dead units not in combat"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.filterable = true
+         tNewMenuEntry.sorting = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
             if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat == true then
@@ -2110,7 +2110,7 @@ function aqCombat:aqCombatMenuBuilder()
          ---
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output dead units"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.filterable = true
+         tNewMenuEntry.sorting = true
          tNewMenuEntry.BuildChildren = function(self)
             local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
             tNewMenuEntry.dynamic = true
@@ -2154,7 +2154,7 @@ function aqCombat:aqCombatMenuBuilder()
          ---
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Announce enemies entering combat"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.filterable = true
+         tNewMenuEntry.sorting = true
          tNewMenuEntry.BuildChildren = function(self)
             local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
             tNewMenuEntry.dynamic = true
@@ -2193,7 +2193,7 @@ function aqCombat:aqCombatMenuBuilder()
          ---
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Announce enemies leaving combat"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.filterable = true
+         tNewMenuEntry.sorting = true
          tNewMenuEntry.BuildChildren = function(self)
             local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
             tNewMenuEntry.dynamic = true
@@ -2232,7 +2232,7 @@ function aqCombat:aqCombatMenuBuilder()
          ---
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Announce relative number of enemies in combat"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.filterable = true
+         tNewMenuEntry.sorting = true
          tNewMenuEntry.BuildChildren = function(self)
             local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
             tNewMenuEntry.dynamic = true
@@ -2272,7 +2272,7 @@ function aqCombat:aqCombatMenuBuilder()
          ----
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Announce only numbers for entering or leaving combat notifications"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.filterable = true
+         tNewMenuEntry.sorting = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
             if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages == true then
@@ -2304,7 +2304,7 @@ function aqCombat:aqCombatMenuBuilder()
       ----
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Announce deaths"]}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
-      tNewMenuEntry.filterable = true
+      tNewMenuEntry.sorting = true
       tNewMenuEntry.BuildChildren = function(self)
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
@@ -2333,7 +2333,7 @@ function aqCombat:aqCombatMenuBuilder()
       ----
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Count deaths up"]}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
-      tNewMenuEntry.filterable = true
+      tNewMenuEntry.sorting = true
       tNewMenuEntry.BuildChildren = function(self)
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
@@ -2361,7 +2361,7 @@ function aqCombat:aqCombatMenuBuilder()
 
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Ignore dead party pets"]}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
-      tNewMenuEntry.filterable = true
+      tNewMenuEntry.sorting = true
       tNewMenuEntry.isSelect = true
       tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
          if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets == true then
@@ -2417,7 +2417,7 @@ function aqCombat:aqCombatMenuBuilder()
          ---
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Out of range at"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.filterable = true
+         tNewMenuEntry.sorting = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
             return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.oorAt
@@ -2477,7 +2477,7 @@ function aqCombat:aqCombatMenuBuilder()
          ---
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Repeating interval (0 is once)"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
-         tNewMenuEntry.filterable = true
+         tNewMenuEntry.sorting = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
             return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.friendly.oorInterval

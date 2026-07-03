@@ -1056,7 +1056,7 @@ end
 local function MacrosMenuBuilder(aParentEntry)
 	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Macros"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
-	tNewMenuSubEntry.filterable = true
+	tNewMenuSubEntry.sorting = true
 	tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
 		self.selectTarget.itemID = nil
 	end
@@ -1102,7 +1102,7 @@ end
 local function ItemsMenuBuilder(aParentEntry)
 	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Items"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
-	tNewMenuSubEntry.filterable = true
+	tNewMenuSubEntry.sorting = true
 	tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
 		self.selectTarget.itemID = nil
 	end
@@ -1162,7 +1162,7 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 		end
 
 		tNewMenuSubEntry.dynamic = true
-		tNewMenuSubEntry.filterable = true
+		tNewMenuSubEntry.sorting = true
 		tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
 			self.selectTarget.spellID = nil
 		end
@@ -1446,7 +1446,7 @@ local function PetActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					local tPerm = SkuOptions:InjectMenuItems(self,
 						{L["PETBAR_Autocast"] .. " (" .. tStateLabel .. ")"}, SkuGenericMenuItem)
 					tPerm.dynamic = true
-					tPerm.filterable = true
+					tPerm.sorting = true
 					tPerm.BuildChildren = function(self2)
 						-- Aktiviert (macrotext: Rechtsklick auf PetActionButton)
 						local tEnable = SkuOptions:InjectMenuItems(self2,
@@ -1554,11 +1554,11 @@ end
 function SkuCore:AddonsMenuBuilder(aParentEntry)
 	local tSpecs = {}
 	if SkuCore.AtlasLootIntegration and SkuCore.AtlasLootIntegration.alIntegrationMenuBuilder then
-		tSpecs[#tSpecs+1] = { kind = "list", label = L["Atlas Loot"], filterable = true,
+		tSpecs[#tSpecs+1] = { kind = "list", label = L["Atlas Loot"], sorting = true,
 			build = SkuCore.AtlasLootIntegration.alIntegrationMenuBuilder }
 	end
 	if SkuCore.DamageMeter and SkuCore.DamageMeter.DamageMeterMenuBuilder then
-		tSpecs[#tSpecs+1] = { kind = "list", label = L["Damage Meter"], filterable = true,
+		tSpecs[#tSpecs+1] = { kind = "list", label = L["Damage Meter"], sorting = true,
 			build = SkuCore.DamageMeter.DamageMeterMenuBuilder }
 	end
 	SkuMenu:Build(aParentEntry, tSpecs)
@@ -1623,7 +1623,7 @@ function SkuCore.MailMenuBuilder(self)
 
 			-- 1. Gegenstaende anhaengen
 			local tItemsEntry = SkuOptions:InjectMenuItems(self, {L["MAIL_AttachItems"]}, SkuGenericMenuItem)
-			tItemsEntry.filterable = true
+			tItemsEntry.sorting = true
 			tItemsEntry.dynamic = true
 			local lItemsEntry = tItemsEntry
 			tItemsEntry.BuildChildren = function(self)
@@ -2032,31 +2032,31 @@ end
 function SkuCore.ActionBarsMenuBuilder(self)
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MainMenuBar"].friendlyName}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
 	tNewMenuEntry.BuildChildren = function(self)
 		ActionBarMenuBuilder(self, "MainMenuBar", BOOKTYPE_SPELL)
 	end
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarBottomLeft"].friendlyName}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
 	tNewMenuEntry.BuildChildren = function(self)
 		ActionBarMenuBuilder(self, "MultiBarBottomLeft", BOOKTYPE_SPELL)
 	end
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarBottomRight"].friendlyName}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
 	tNewMenuEntry.BuildChildren = function(self)
 		ActionBarMenuBuilder(self, "MultiBarBottomRight", BOOKTYPE_SPELL)
 	end
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarRight"].friendlyName}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
 	tNewMenuEntry.BuildChildren = function(self)
 		ActionBarMenuBuilder(self, "MultiBarRight", BOOKTYPE_SPELL)
 	end
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarLeft"].friendlyName}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
 	tNewMenuEntry.BuildChildren = function(self)
 		ActionBarMenuBuilder(self, "MultiBarLeft", BOOKTYPE_SPELL)
 	end
@@ -2084,7 +2084,7 @@ function SkuCore.ActionBarsMenuBuilder(self)
 	if tHasPet then
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["PetBar"].friendlyName}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.BuildChildren = function(self)
 			PetActionBarMenuBuilder(self, "PetBar", BOOKTYPE_PET)
 		end
@@ -2092,7 +2092,7 @@ function SkuCore.ActionBarsMenuBuilder(self)
 	if _G["OverrideActionBar"] and _G["OverrideActionBar"]:IsShown() == true then
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["OverrideActionBar"].friendlyName}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.BuildChildren = function(self)
 			ActionBarMenuBuilder(self, "OverrideActionBar", nil)
 		end
@@ -2100,21 +2100,21 @@ function SkuCore.ActionBarsMenuBuilder(self)
 	if _G["MultiCastActionBarFrame"] and _G["MultiCastActionBarFrame"]:IsShown() == true then
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiCastActionBar1"].friendlyName}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.BuildChildren = function(self)
 			ActionBarMenuBuilder(self, "MultiCastActionBar1", BOOKTYPE_SPELL)
 		end
 
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiCastActionBar2"].friendlyName}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.BuildChildren = function(self)
 			ActionBarMenuBuilder(self, "MultiCastActionBar2", BOOKTYPE_SPELL)
 		end
 
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiCastActionBar3"].friendlyName}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.BuildChildren = function(self)
 			ActionBarMenuBuilder(self, "MultiCastActionBar3", BOOKTYPE_SPELL)
 		end
@@ -2169,7 +2169,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Taste zuweisen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.BuildChildren = function(self)
 			--dprint("Taste zuweisen 2 BuildChildren")
 			local tBindings = {}
@@ -2201,7 +2201,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 					tNewMenuEntryCat = SkuOptions:InjectMenuItems(self, {categoryConst}, SkuGenericMenuItem)
 				end
 				tNewMenuEntryCat.dynamic = true
-				tNewMenuEntryCat.filterable = true
+				tNewMenuEntryCat.sorting = true
 
 				tNewMenuEntryCat.BuildChildren = function(self)
 					--dprint("categoryConst BuildChildren")
@@ -2286,7 +2286,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Taste zuweisen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.BuildChildren = function(self)
 			--remove outdated and delete key bindings
 			for i, v in pairs(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds) do
@@ -2734,7 +2734,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	-- Monitor: promoted to a top-level entry (SkuMenu "Monitor") -- W7
 
 	-- DIAL-TARGETING (41.02.06e) — Entfernbar: Block löschen + DialTargeting.lua + TOC + Core.lua Init
-	tKampf[#tKampf+1] = { kind = "list", label = L["Dial Targeting"], filterable = true,
+	tKampf[#tKampf+1] = { kind = "list", label = L["Dial Targeting"], sorting = true,
 		build = SkuCore.DialTargeting.DialTargetingMenuBuilder }
 
 	-- Social: now a Local window contributor (FriendsMenuBuilder) -- W7
@@ -2747,7 +2747,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	if Sku.IsEraSoD == true then
 		local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Runes"]}, SkuGenericMenuItem)
 		tNewMenuParentEntry.dynamic = true
-		tNewMenuParentEntry.filterable = true
+		tNewMenuParentEntry.sorting = true
 		tNewMenuParentEntry.BuildChildren = SkuCore.EngravingFrameMenuBuilder
 	end
 	]]
@@ -2759,7 +2759,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	-- W7: SkuQuest's settings, relocated here (Sonstiges -> Quest) when the quest menu
 	-- became a Local window contributor; same args/db -> saved values preserved.
 	if SkuQuest and SkuQuest.options and SkuQuest.options.args then
-		tSonstiges[#tSonstiges+1] = { kind = "settings", label = "Quest", filterable = true,
+		tSonstiges[#tSonstiges+1] = { kind = "settings", label = "Quest", sorting = true,
 			args = SkuQuest.options.args, db = SkuSettings:Sub("SkuQuest"), module = "SkuQuest" }
 	end
 
@@ -2768,7 +2768,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	if SkuMob and SkuMob.options and SkuMob.options.args then
 		tKampf[#tKampf+1] = { kind = "settings",
 			label = function() return (GetLocale and GetLocale() == "deDE") and "Ziel Optionen" or "Target options" end,
-			filterable = true,
+			sorting = true,
 			args = SkuMob.options.args, db = SkuSettings:Sub("SkuMob"), module = "SkuMob" }
 	end
 

@@ -2858,42 +2858,65 @@ function SkuOptions:CreateMenuFrame()
 
 		if SkuOptions.currentMenuPosition then
 			if SkuOptions.currentMenuPosition.parent then
-				if SkuOptions.currentMenuPosition.parent.filterable == true then
-					if  SkuOptions.MenuAccessKeysChars[aKey] or SkuOptions.MenuAccessKeysNumbers[aKey] then
-						if aKey == "shift-," then aKey = ";" end
-						if SkuOptions.Filterstring == "" then
-							--SkuCore:Debug("empty = rep")
+				-- Type-ahead: ONE accumulation path for every menu; only the result of
+				-- 2+ typed letters differs by the parent's `sorting` flag:
+				--   sorting == true  -> filter the sibling list down to matches (bags-style)
+				--   sorting ~= true  -> keep the list intact, just JUMP the cursor to the
+				--                       first matching entry (type-ahead), and DIGITS are
+				--                       excluded so they keep their jump-to-index-N role.
+				local tSorting = (SkuOptions.currentMenuPosition.parent.sorting == true)
+				-- On non-sorting lists digits are NOT type-ahead input (they stay index keys).
+				local tTypeAheadKey = SkuOptions.MenuAccessKeysChars[aKey]
+					or (tSorting and SkuOptions.MenuAccessKeysNumbers[aKey])
+				if tTypeAheadKey then
+					if aKey == "shift-," then aKey = ";" end
+					if SkuOptions.Filterstring == "" then
+						--SkuCore:Debug("empty = rep")
+						SkuOptions.Filterstring = aKey
+					elseif string.len(SkuOptions.Filterstring) == 1 and ((GetTime() - OnSkuOptionsMainOption1LastInputTime) < OnSkuOptionsMainOption1LastInputTimeout) then
+						--SkuCore:Debug("1 and in time = add")
+						SkuOptions.Filterstring = SkuOptions.Filterstring..aKey
+						aKey = ""
+					elseif string.len(SkuOptions.Filterstring) > 1 then
+						-- Sorting keeps appending (you're editing a search string, Backspace
+						-- trims it). Non-sorting resets after an idle pause so a fresh single
+						-- letter still works as a first-letter jump instead of endlessly
+						-- appending to a stale type-ahead string.
+						if (not tSorting) and ((GetTime() - OnSkuOptionsMainOption1LastInputTime) >= OnSkuOptionsMainOption1LastInputTimeout) then
 							SkuOptions.Filterstring = aKey
-						elseif string.len(SkuOptions.Filterstring) == 1 and ((GetTime() - OnSkuOptionsMainOption1LastInputTime) < OnSkuOptionsMainOption1LastInputTimeout) then
-							--SkuCore:Debug("1 and in time = add")
-							SkuOptions.Filterstring = SkuOptions.Filterstring..aKey
-							aKey = ""
-						elseif  string.len(SkuOptions.Filterstring) > 1  then
+						else
 							--SkuCore:Debug("> 1 = add")
 							SkuOptions.Filterstring = SkuOptions.Filterstring..aKey
 							aKey = ""
-						else
-							--SkuCore:Debug("1 and out of time = rep")
-							SkuOptions.Filterstring = aKey
 						end
-						OnSkuOptionsMainOption1LastInputTime = GetTime()
-
-						if string.len(SkuOptions.Filterstring) > 1  then
-							SkuOptions:ApplyFilter(SkuOptions.Filterstring)
-							--SkuCore:Debug("filter by: ", SkuOptions.Filterstring)
-							aKey = ""
-						end
+					else
+						--SkuCore:Debug("1 and out of time = rep")
+						SkuOptions.Filterstring = aKey
 					end
-					if  string.len(SkuOptions.Filterstring) > 1  then
-						if aKey == "BACKSPACE" then
-							SkuOptions.Filterstring = ""
+					OnSkuOptionsMainOption1LastInputTime = GetTime()
+
+					if string.len(SkuOptions.Filterstring) > 1  then
+						if tSorting then
 							SkuOptions:ApplyFilter(SkuOptions.Filterstring)
-							aKey = ""
+						else
+							SkuOptions:JumpToFilterMatch(SkuOptions.Filterstring)
 						end
-						if aKey == "LEFT" then
-							SkuOptions.Filterstring = ""
-							SkuOptions:ApplyFilter(SkuOptions.Filterstring)
-						end
+						--SkuCore:Debug("filter by: ", SkuOptions.Filterstring)
+						aKey = ""
+					end
+				end
+				-- Backspace/Left trim+re-apply only makes sense while a list is actually
+				-- FILTERED. On non-sorting lists they stay plain navigation keys (Left =
+				-- one level up, which clears the type-ahead string via ClearFilter).
+				if tSorting and string.len(SkuOptions.Filterstring) > 1  then
+					if aKey == "BACKSPACE" then
+						SkuOptions.Filterstring = ""
+						SkuOptions:ApplyFilter(SkuOptions.Filterstring)
+						aKey = ""
+					end
+					if aKey == "LEFT" then
+						SkuOptions.Filterstring = ""
+						SkuOptions:ApplyFilter(SkuOptions.Filterstring)
 					end
 				end
 			end
@@ -3807,6 +3830,34 @@ function SkuOptions:UpdateMovedAceDbProfileValues()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Shared normalized "does this menu entry's name contain the search string" test.
+-- Used by BOTH the sorting filter (ApplyFilter, which rebuilds the sibling list) and
+-- the non-sorting type-ahead jump (SkuOptions:JumpToFilterMatch, which only moves the
+-- cursor), so typing-to-match feels identical in both modes. The name is lowercased,
+-- OBJECT ids and the ;/# separators are flattened to spaces, and large or fractional
+-- numeric tokens (item stack counts, prices) are stripped so they don't match.
+local function SkuMenuFilterMatch(aName, aFilterstring)
+	local tHayStack = slower(aName or "")
+	tHayStack = string.gsub(tHayStack, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
+	tHayStack = string.gsub(tHayStack, ";", " ")
+	tHayStack = string.gsub(tHayStack, "#", " ")
+
+	local tTempHayStack = tHayStack
+	for i, v in pairs({strsplit(tHayStack, " ")}) do
+		local tNumberTest = tonumber(v)
+		if tNumberTest then
+			local tFloat = math.floor(tNumberTest)
+			if (tNumberTest > 20000) or (tNumberTest - tFloat > 0) then
+				tTempHayStack = string.gsub(tTempHayStack, v, "")
+			end
+		end
+	end
+	tHayStack = tTempHayStack
+
+	return string.find(slower(tHayStack), slower(aFilterstring)) ~= nil
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tOldChildren = false
 function SkuOptions:ClearFilter()
 	if tOldChildren ~= false then
@@ -3819,12 +3870,12 @@ function SkuOptions:ClearFilter()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ApplyFilter(aFilterstring)
-	--dprint("aFilterstring", aFilterstring, SkuOptions.currentMenuPosition.parent.filterable)
+	--dprint("aFilterstring", aFilterstring, SkuOptions.currentMenuPosition.parent.sorting)
 
 	aFilterstring = slower(aFilterstring)
 
-	if SkuOptions.currentMenuPosition.parent.filterable ~= true then
-		--SkuCore:Debug("ApplyFilter: not filterable")
+	if SkuOptions.currentMenuPosition.parent.sorting ~= true then
+		--SkuCore:Debug("ApplyFilter: not sorting")
 		return
 	end
 
@@ -3841,25 +3892,8 @@ function SkuOptions:ApplyFilter(aFilterstring)
 		tFilterEntry.name = L["Filter"]..";"..aFilterstring
 		table.insert(tChildrenFiltered, tFilterEntry)
 		for x = 1, #tOldChildren do
-			local tHayStack = slower(tOldChildren[x].name)
-			tHayStack = string.gsub(tHayStack, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
-			tHayStack = string.gsub(tHayStack, ";", " ")
-			tHayStack = string.gsub(tHayStack, "#", " ")
-
-			local tTempHayStack = tHayStack
-			for i, v in pairs({strsplit(tHayStack, " ")}) do
-				local tNumberTest = tonumber(v)
-				if tNumberTest then
-					local tFloat = math.floor(tNumberTest)
-					if (tNumberTest > 20000) or (tNumberTest - tFloat > 0) then
-						tTempHayStack = string.gsub(tTempHayStack, v)
-					end
-				end
-			end
-			tHayStack = tTempHayStack
-
-			if string.find(slower(tHayStack), slower(aFilterstring))  then
-					table.insert(tChildrenFiltered, tOldChildren[x])
+			if SkuMenuFilterMatch(tOldChildren[x].name, aFilterstring) then
+				table.insert(tChildrenFiltered, tOldChildren[x])
 			end
 		end
 
@@ -3915,6 +3949,33 @@ function SkuOptions:ApplyFilter(aFilterstring)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Non-sorting counterpart to ApplyFilter: DON'T rebuild the sibling list, just move
+-- the cursor to the first sibling matching the typed string (same predicate as the
+-- filter). Handles the root array (parent has no .children) too. Announces "No
+-- results" and stays put when nothing matches. The caller (the key handler) speaks
+-- the resulting cursor entry afterwards via VocalizeCurrentMenuName.
+function SkuOptions:JumpToFilterMatch(aFilterstring)
+	if not SkuOptions.currentMenuPosition or not SkuOptions.currentMenuPosition.parent then
+		return
+	end
+	local tSiblings = SkuOptions.currentMenuPosition.parent.children or SkuOptions.currentMenuPosition.parent
+	local tMatch
+	for x = 1, #tSiblings do
+		if SkuMenuFilterMatch(tSiblings[x].name, aFilterstring) then
+			tMatch = tSiblings[x]
+			break
+		end
+	end
+	SkuOptions.currentMenuPosition:OnLeave()
+	if tMatch then
+		SkuOptions.currentMenuPosition = tMatch
+	else
+		SkuOptions.Voice:OutputStringBTtts(L["No results"], true, true, 0.2, nil, nil, nil, 2)
+	end
+	SkuOptions.currentMenuPosition:OnEnter()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- Live-filter support for menus whose children grow while a first-letter filter
 -- is active (currently the Auction House results list). ApplyFilter snapshots
 -- the unfiltered list into the file-local tOldChildren and shows a filtered
@@ -3922,7 +3983,7 @@ end
 -- refresh the visible filtered subset in place, WITHOUT moving the cursor or
 -- re-announcing — so the filter stays live as results stream in, and clearing
 -- it later still reveals everything. (Additive: ApplyFilter/ClearFilter are
--- unchanged; other filterable menus are unaffected.)
+-- unchanged; other sorting menus are unaffected.)
 function SkuOptions:GetActiveFilterBase()
 	if tOldChildren ~= false and SkuOptions.Filterstring and string.len(SkuOptions.Filterstring) > 1 then
 		return tOldChildren
@@ -4866,7 +4927,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 			if aGossipListTable[index].noMenuNumbers then
 				tNewMenuEntry.noMenuNumbers = true
 			end
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			if aGossipListTable[index].textFull then
 				--[[if aGossipListTable[index].textFull ~= "" then
 					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntry, {"Anzeigen"}, SkuGenericMenuItem)
@@ -4979,7 +5040,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									tStock = aGossipListTable[index].obj.numInStock
 								end
 								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Kaufen"]}, SkuGenericMenuItem)
-								tNewSubMenuEntry.filterable = true
+								tNewSubMenuEntry.sorting = true
 								tNewSubMenuEntry.dynamic = true
 								tNewSubMenuEntry.BuildChildren = function(self)
 									for tN = 1, tStock do
@@ -5654,7 +5715,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 		else
 			--dprint(aTab, x, "SUB: "..aGossipListTable[index].textFirstLine)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentMenuTable, {aGossipListTable[index].textFirstLine}, SkuGenericMenuItem)
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			if aGossipListTable[index].noMenuNumbers then
 				tNewMenuEntry.noMenuNumbers = true
 			end
@@ -5694,7 +5755,7 @@ function SkuOptions:MenuBuilderLocal(aParentEntry, aEntryDataTable, aOnActionFun
 				local tLabel = type(c.label) == "function" and c.label() or c.label
 				local tEntry = SkuOptions:InjectMenuItems(aParentEntry, {tLabel}, SkuGenericMenuItem)
 				tEntry.dynamic = true
-				tEntry.filterable = true
+				tEntry.sorting = true
 				tEntry.BuildChildren = c.build
 			end
 		end
@@ -5737,7 +5798,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 		elseif v.args then
 			local tParentMenu =  SkuOptions:InjectMenuItems(aParentMenu, {v.name}, SkuGenericMenuItem)
 			--tParentMenu.dynamic = true
-			tParentMenu.filterable = true
+			tParentMenu.sorting = true
 			SkuOptions:IterateOptionsArgs(v.args, tParentMenu, tProfileParentPath[i], aModule, (aKeyPrefix or "") .. tostring(i) .. ".")
 		else
 			if v.type == "toggle" then
@@ -5864,7 +5925,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				tNewMenuEntry.profileIndex = i
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.isSelect = true
-				tNewMenuEntry.filterable = true
+				tNewMenuEntry.sorting = true
 				tNewMenuEntry.rangeMin = v.min or 0
 				tNewMenuEntry.rangeMax = v.max or 100
 				tNewMenuEntry.skuModule = aModule
@@ -5907,7 +5968,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				tNewMenuEntry.profileIndex = i
 				--tNewMenuEntry.dynamic = true
 				--tNewMenuEntry.isSelect = true
-				--tNewMenuEntry.filterable = true
+				--tNewMenuEntry.sorting = true
 				tNewMenuEntry.OnAction = function(self, aValue, aName)
 					--self.profilePath[self.profileIndex] = tonumber(aName)
 					self.optionsPath[self.profileIndex]:func()

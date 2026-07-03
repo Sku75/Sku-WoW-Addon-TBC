@@ -1,4 +1,4 @@
-local MODULE_NAME = "SkuQuest"
+﻿local MODULE_NAME = "SkuQuest"
 local L = Sku.L
 
 SkuQuest.questMarkerBeaconsTypeValues = {
@@ -847,7 +847,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {L["Route"]}, SkuGenericMenuItem)
 				tNewMenuSubEntry1.dynamic = true
 				tNewMenuSubEntry1.isSelect = true
-				tNewMenuSubEntry1.filterable = true
+				tNewMenuSubEntry1.sorting = true
 				tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
 					--print("Route onaction", self, aValue, aName)
 					if SkuOptions.db.profile["SkuNav"].routeRecording == true then
@@ -912,7 +912,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 
 								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Entry point: "]..tLayerText..v}, SkuGenericMenuItem)
 								tNewMenuEntry.dynamic = true
-								tNewMenuEntry.filterable = true
+								tNewMenuEntry.sorting = true
 								tNewMenuEntry.BuildChildren = function(self)
 									if #tSortedWaypointList == 0 then
 										local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
@@ -979,7 +979,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {L["Closest route"]}, SkuGenericMenuItem)
 				tNewMenuSubEntry1.dynamic = true
 				tNewMenuSubEntry1.isSelect = true
-				tNewMenuSubEntry1.filterable = true
+				tNewMenuSubEntry1.sorting = true
 				tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
 					--dprint("OnAction", self.name, aValue, aName)
 					if SkuOptions.db.profile["SkuNav"].routeRecording == true then
@@ -1035,7 +1035,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 
 								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Entry point: "]..tLayerText..v}, SkuGenericMenuItem)
 								tNewMenuEntry.dynamic = true
-								tNewMenuEntry.filterable = true
+								tNewMenuEntry.sorting = true
 								tNewMenuEntry.BuildChildren = function(self)
 									if #tSortedWaypointList == 0 then
 										local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
@@ -1107,7 +1107,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {L["Wegpunkt"]}, SkuGenericMenuItem)
 				tNewMenuSubEntry1.dynamic = true
 				tNewMenuSubEntry1.isSelect = true
-				tNewMenuSubEntry1.filterable = true
+				tNewMenuSubEntry1.sorting = true
 				tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
 					--dprint("OnAction Wegpunkt auswählen", self.name, aValue, aName)
 					if SkuSettings:Sub("SkuQuest").routeRecording == true then
@@ -1394,7 +1394,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 
 					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Annahme"]}, SkuGenericMenuItem)
 					tNewMenuSubEntry.dynamic = true
-					tNewMenuSubEntry.filterable = true
+					tNewMenuSubEntry.sorting = true
 					tNewMenuSubEntry.BuildChildren = function(self)
 						tHasEntries = true
 						CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
@@ -1414,7 +1414,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 				if	tTargetType then
 					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Ziel"]}, SkuGenericMenuItem)
 					tNewMenuSubEntry.dynamic = true
-					--tNewMenuSubEntry.filterable = true
+					--tNewMenuSubEntry.sorting = true
 					tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 					end
 					tNewMenuSubEntry.BuildChildren = function(self)
@@ -1428,7 +1428,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 				tHasEntries = true
 				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Abgabe"]}, SkuGenericMenuItem)
 				tNewMenuSubEntry.dynamic = true
-				tNewMenuSubEntry.filterable = true
+				tNewMenuSubEntry.sorting = true
 				local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
 				if tFinishedBy and tFinishedBy then
 					local tTargets = {}
@@ -1829,7 +1829,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			end
 			--all
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alle"]}, SkuGenericMenuItem)
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			for ih, vh in pairs(tQuestsByHeader) do
 				for iq, vq in pairs(vh) do
 					local tNewMenuEntry1 = SkuOptions:InjectMenuItems(tNewMenuEntry, {iq}, SkuGenericMenuItem)
@@ -1849,7 +1849,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			--by zone
 			for ih, vh in pairs(tQuestsByHeader) do
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {ih}, SkuGenericMenuItem)
-				tNewMenuEntry.filterable = true
+				tNewMenuEntry.sorting = true
 				for iq, vq in pairs(vh) do
 					local tNewMenuEntry1 = SkuOptions:InjectMenuItems(tNewMenuEntry, {iq}, SkuGenericMenuItem)
 					tNewMenuEntry1.questLogId = vq
@@ -1874,7 +1874,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		build = function(self)
 		local tNewMenuSubEntry =SkuOptions:InjectMenuItems(self, {L["Start in Zone"]}, SkuGenericMenuItem)
 		tNewMenuSubEntry.dynamic = true
-		tNewMenuSubEntry.filterable = true
+		tNewMenuSubEntry.sorting = true
 		tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		end
 		tNewMenuSubEntry.BuildChildren = function(self)
@@ -1882,7 +1882,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 
 			local tNewMenuSubEntryDist =SkuOptions:InjectMenuItems(self, {L["By distance"]}, SkuGenericMenuItem)
 			tNewMenuSubEntryDist.dynamic = true
-			tNewMenuSubEntryDist.filterable = true
+			tNewMenuSubEntryDist.sorting = true
 			tNewMenuSubEntryDist.OnAction = function(self, aValue, aName)
 			end
 			tNewMenuSubEntryDist.BuildChildren = function(self)
@@ -1907,13 +1907,13 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			--[[
 			local tNewMenuSubEntryDist =SkuOptions:InjectMenuItems(self, {"Nach Schwierigkeit"}, SkuGenericMenuItem)
 			tNewMenuSubEntryDist.dynamic = true
-			tNewMenuSubEntryDist.filterable = true
+			tNewMenuSubEntryDist.sorting = true
 			]]
 		end
 
 		local tNewMenuSubEntry =SkuOptions:InjectMenuItems(self, {L["Alle"]}, SkuGenericMenuItem)
 		tNewMenuSubEntry.dynamic = true
-		tNewMenuSubEntry.filterable = true
+		tNewMenuSubEntry.sorting = true
 		tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 			--SkuOptions.db:SetSProfile(aName)
 		end

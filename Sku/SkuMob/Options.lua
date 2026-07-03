@@ -107,7 +107,7 @@ function SkuMob:MenuBuilder(aParentEntry)
 	end
 
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
 	SkuOptions:IterateOptionsArgs(SkuMob.options.args, tNewMenuEntry, SkuSettings:Sub("SkuMob"))
 end
 
@@ -223,7 +223,7 @@ end
 -- Vereinheitlichter Action-Eintrag.
 local function tAddAction(aParent, aLabel, aFunc, aTooltip)
 	local tEntry = SkuOptions:InjectMenuItems(aParent, {aLabel}, SkuGenericMenuItem)
-	tEntry.filterable = true
+	tEntry.sorting = true
 	if aTooltip then tEntry.textFull = aTooltip end
 	tEntry.OnAction = function()
 		pcall(aFunc)
@@ -260,7 +260,7 @@ local tRaidMarkers = {
 
 local function tBuildRaidMarkerSubmenu(aParent, aUnit)
 	local tEntry = SkuOptions:InjectMenuItems(aParent, {L["MOB_SetMarker"]}, SkuGenericMenuItem)
-	tEntry.filterable = true
+	tEntry.sorting = true
 	tEntry.dynamic = true
 	tEntry.BuildChildren = function(self)
 		for i = 0, 8 do
@@ -286,7 +286,7 @@ local tReportReasons = {
 
 local function tBuildReportSubmenu(aParent)
 	local tEntry = SkuOptions:InjectMenuItems(aParent, {L["MOB_ReportPlayer"]}, SkuGenericMenuItem)
-	tEntry.filterable = true
+	tEntry.sorting = true
 	tEntry.dynamic = true
 	tEntry.BuildChildren = function(self)
 		for _, r in ipairs(tReportReasons) do
@@ -311,7 +311,7 @@ local tLootMethods = {
 
 local function tBuildLootMethodSubmenu(aParent)
 	local tEntry = SkuOptions:InjectMenuItems(aParent, {L["MOB_LootMethod"]}, SkuGenericMenuItem)
-	tEntry.filterable = true
+	tEntry.sorting = true
 	tEntry.dynamic = true
 	tEntry.BuildChildren = function(self)
 		for _, lm in ipairs(tLootMethods) do
@@ -328,7 +328,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function tBuildPetModeSubmenu(aParent)
 	local tEntry = SkuOptions:InjectMenuItems(aParent, {L["MOB_PetMode"]}, SkuGenericMenuItem)
-	tEntry.filterable = true
+	tEntry.sorting = true
 	tEntry.dynamic = true
 	tEntry.BuildChildren = function(self)
 		tAddAction(self, L["MOB_PetAggressive"], function()
@@ -453,7 +453,7 @@ local function tBuildTargetMenu(aParent)
 			-- PetDismiss: macrotext (ADDON_ACTION_FORBIDDEN-Fix)
 			do
 				local tEntry = SkuOptions:InjectMenuItems(aParent, {L["MOB_PetDismiss"]}, SkuGenericMenuItem)
-				tEntry.filterable = true
+				tEntry.sorting = true
 				tEntry.textFull = L["MOB_PetDismissTip"]
 				tEntry.macrotext = "/petdismiss"
 				tEntry.secureMacro = true
@@ -516,7 +516,7 @@ local function tBuildTargetMenu(aParent)
 				local tSafeName = SkuMob.pendingPetRename:gsub('["\\\r\n]', '')
 				local tConfirmLabel = L["MOB_PetRenameConfirm"] .. tSafeName
 				local tEntry = SkuOptions:InjectMenuItems(aParent, {tConfirmLabel}, SkuGenericMenuItem)
-				tEntry.filterable = true
+				tEntry.sorting = true
 				tEntry.textFull = L["MOB_PetRenameTip"]
 				tEntry.macrotext = '/run PetRename("' .. tSafeName .. '")'
 				tEntry.secureMacro = true
@@ -544,7 +544,7 @@ local function tBuildTargetMenu(aParent)
 			-- PetDismiss (Freigeben)
 			do
 				local tEntry = SkuOptions:InjectMenuItems(aParent, {L["MOB_PetDismiss"]}, SkuGenericMenuItem)
-				tEntry.filterable = true
+				tEntry.sorting = true
 				tEntry.textFull = L["MOB_PetDismissTip"]
 				tEntry.macrotext = "/petdismiss"
 				tEntry.secureMacro = true

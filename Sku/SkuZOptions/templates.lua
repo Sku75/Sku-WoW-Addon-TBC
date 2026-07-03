@@ -1,4 +1,4 @@
-local _G = _G
+﻿local _G = _G
 
 SkuOptions = SkuOptions or LibStub("AceAddon-3.0"):NewAddon("SkuOptions", "AceConsole-3.0", "AceEvent-3.0")
 local L = Sku.L
@@ -70,7 +70,7 @@ SkuGenericMenuItem = {
 	isMultiselect = false,
 	selectTarget = nil,
 	dynamic = false,
-	filterable = false,
+	sorting = false,
 	OnUpdate = function(self, aKey)
 		C_Timer.After(0.01, function()
 
@@ -553,7 +553,7 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {aEntryName}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.isMultiselect = true
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
 
 	tNewMenuEntry.BuildChildren = function(self)
 		self.parent.oldWpName = SkuOptions.db.profile.SkuNav.selectedWaypoint
@@ -604,7 +604,7 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["NPC names"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.BuildChildren = function(self)
 			self.children = {}
 			--collectgarbage("collect")
@@ -659,13 +659,13 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Zonen names"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tWaypointList = {}
 			for q = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Zones do
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuDB.DefaultWaypoints[Sku.Loc].Zones[q]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.filterable = true
+				tNewMenuEntry.sorting = true
 				tNewMenuEntry.BuildChildren = function(self)--continents
 					for q = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Zones[self.name] do
 						local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.DefaultWaypoints[Sku.Loc].Zones[self.name][q]}, SkuGenericMenuItem)
@@ -677,7 +677,7 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 		--npc namen, quests von oben noch hinzufügen
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["All alphabetically"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tFullGlossary = {}
 			local tIndex = 1

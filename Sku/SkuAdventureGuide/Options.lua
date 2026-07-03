@@ -1,4 +1,4 @@
-local MODULE_NAME = "SkuAdventureGuide"
+﻿local MODULE_NAME = "SkuAdventureGuide"
 local L = Sku.L
 local slower = string.lower	
 
@@ -121,7 +121,7 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 	tNewMenuParentEntryWiki.BuildChildren = function(self)
 		local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuParentEntryWiki, {L["Link History"]}, SkuGenericMenuItem)
 		tNewMenuParentEntry.dynamic = true
-		tNewMenuParentEntry.filterable = true
+		tNewMenuParentEntry.sorting = true
 		tNewMenuParentEntry.BuildChildren = function(self)
 			if #SkuAdventureGuide.linkHistory > 0 then
 				for x = #SkuAdventureGuide.linkHistory, 1, -1 do
@@ -133,7 +133,7 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 							if tFinalLink then
 								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tDataLink}, SkuGenericMenuItem)
 								--tNewMenuEntry.dynamic = true
-								tNewMenuEntry.filterable = true
+								tNewMenuEntry.sorting = true
 								tNewMenuEntry.OnEnter = function(self, aValue, aName)
 									SkuOptions.currentMenuPosition.linksHistory = {}
 									if tFinalLink ~= tDataLink then
@@ -153,7 +153,7 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 
 		local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuParentEntryWiki, {L["All entries"]}, SkuGenericMenuItem)
 		tNewMenuParentEntry.dynamic = true
-		tNewMenuParentEntry.filterable = true
+		tNewMenuParentEntry.sorting = true
 		tNewMenuParentEntry.BuildChildren = function(self)
 			for i, v in pairs(SkuDB.Wiki[Sku.Loc].data) do
 				if string.len(v.content) > 0 and v.content ~= "\r\n" then
@@ -161,7 +161,7 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 					if tFinalLink then
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {i}, SkuGenericMenuItem)
 						--tNewMenuEntry.dynamic = true
-						tNewMenuEntry.filterable = true
+						tNewMenuEntry.sorting = true
 						tNewMenuEntry.OnEnter = function(self, aValue, aName)
 							SkuOptions.currentMenuPosition.linksHistory = {}
 							if tFinalLink ~= i then
@@ -177,7 +177,7 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 	end
 
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
 	SkuOptions:IterateOptionsArgs(SkuAdventureGuide.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 end
 

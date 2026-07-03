@@ -447,7 +447,7 @@ end
 function DialTargeting:DialTargetingMenuBuilder()
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-   tNewMenuEntry.filterable = true
+   tNewMenuEntry.sorting = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
       return SkuSettings:Sub("SkuCore").dialTargeting.enabled
@@ -465,7 +465,7 @@ function DialTargeting:DialTargetingMenuBuilder()
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Key Sound"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-   tNewMenuEntry.filterable = true
+   tNewMenuEntry.sorting = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
       return SkuSettings:Sub("SkuCore").dialTargeting.keySound
@@ -482,7 +482,7 @@ function DialTargeting:DialTargetingMenuBuilder()
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Single key action in raids up to 10 players"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-   tNewMenuEntry.filterable = true
+   tNewMenuEntry.sorting = true
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
       return SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10

@@ -32,7 +32,7 @@ ns.Menu = ns.Menu or {}
 SkuMenu = ns.Menu
 
 -- registry[id] = { label = <string | function -> string>, build = function(entry),
---                  filterable = <bool?> }. `build` receives the dynamic root
+--                  sorting = <bool?> }. `build` receives the dynamic root
 -- entry as its argument and populates its children (same contract the old inline
 -- BuildChildren closures had: build the subtree under the passed entry).
 SkuMenu.registry = SkuMenu.registry or {}
@@ -87,8 +87,8 @@ function SkuMenu:InjectModuleEntry(aRootMenu, aId)
 	end
 	local tEntry = SkuOptions:InjectMenuItems(aRootMenu, {resolveLabel(spec, aId)}, SkuGenericMenuItem)
 	tEntry.dynamic = true
-	if spec.filterable then
-		tEntry.filterable = true
+	if spec.sorting then
+		tEntry.sorting = true
 	end
 	local buildFn = spec.build
 	tEntry.BuildChildren = function(self)
@@ -164,7 +164,7 @@ end
 --
 -- Any spec may ALSO carry these optional fields, copied verbatim onto the node so
 -- a converted hand-built entry keeps its EXACT property set (faithful, mechanical
--- conversion): filterable, dynamic, isSelect, isMultiselect, noStepUpAfterSelect,
+-- conversion): sorting, dynamic, isSelect, isMultiselect, noStepUpAfterSelect,
 -- macrotext, secureMacro, tooltip (-> textFull), and the handlers onAction
 -- (-> OnAction), onEnter, onLeave, getCurrentValue, onUpdate, onKey.
 local function specLabel(aSpec)
@@ -178,7 +178,7 @@ local function specLabel(aSpec)
 end
 
 local PASSTHROUGH_FLAGS = {
-	"filterable", "dynamic", "isSelect", "isMultiselect",
+	"sorting", "dynamic", "isSelect", "isMultiselect",
 	"noStepUpAfterSelect", "macrotext", "secureMacro",
 }
 local PASSTHROUGH_HANDLERS = {
@@ -244,7 +244,7 @@ function SkuMenu:BuildNode(aParent, aSpec)
 	elseif kind == "settings" then
 		-- Named container populated immediately from an AceConfig args table via
 		-- the existing IterateOptionsArgs (toggle/select/range/execute children).
-		if aSpec.filterable == nil then tEntry.filterable = true end
+		if aSpec.sorting == nil then tEntry.sorting = true end
 		if aSpec.args then
 			SkuOptions:IterateOptionsArgs(aSpec.args, tEntry, aSpec.db, aSpec.module)
 		end

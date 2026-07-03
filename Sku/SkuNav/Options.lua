@@ -1,4 +1,4 @@
-local MODULE_NAME = "SkuNav"
+﻿local MODULE_NAME = "SkuNav"
 local L = Sku.L
 
 local ssub = string.sub
@@ -426,7 +426,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Entry point: "]..tLayerText..v}, SkuGenericMenuItem)
 							tNewMenuEntry.dynamic = true
-							tNewMenuEntry.filterable = true
+							tNewMenuEntry.sorting = true
 							tNewMenuEntry.BuildChildren = function(self)
 								if #tSortedWaypointList == 0 then
 									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
@@ -631,7 +631,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			if #SkuSettings:Sub("SkuNav").RecentWPs > 0 then
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Recent"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.filterable = true
+				tNewMenuEntry.sorting = true
 				tNewMenuEntry.BuildChildren = function(self)
 					for i, v in pairs(SkuSettings:Sub("SkuNav").RecentWPs) do
 						--dprint("recent: ", i, v)
@@ -648,7 +648,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			local tAutoLen = slen(L["auto"]) + 1
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Aktuelle Karte Entfernung"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.BuildChildren = function(self)
 				SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = nil
 				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
@@ -717,7 +717,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			-- all wps
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alle aktueller Kontinent"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.BuildChildren = function(self)
 				SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = nil
 				local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId()))
@@ -733,7 +733,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			--wps in current map sortet by range with auto wps
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Aktuelle Karte Entfernung mit Auto"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.BuildChildren = function(self)
 				SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = nil
 				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
@@ -850,7 +850,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			--
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Löschen"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.OnAction = function(self, aValue, aName, aChildName)
 				--dprint("OnAction Löschen", self.name, aValue, aName, aChildName)
@@ -898,7 +898,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Kommentar zuweisen"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
+			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.OnAction = function(self, aValue, aName, aChildName)
 				--dprint("OnAction Kommentar zuweisen", self, aValue, aName, aChildName)
@@ -1045,7 +1045,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 		build = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Ziele Entfernung"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.BuildChildren = function(self)
 			--SkuSettings:Sub("SkuNav").metapathFollowingMetapaths = nil
 			--SkuSettings:Sub("SkuNav").metapathFollowingStart = nil
@@ -1079,7 +1079,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Entry point: "]..tLayerText..v}, SkuGenericMenuItem)
 						tNewMenuEntry.dynamic = true
-						tNewMenuEntry.filterable = true
+						tNewMenuEntry.sorting = true
 						tNewMenuEntry.BuildChildren = function(self)
 							SkuSettings:Sub("SkuNav").metapathFollowingStartTMP = v
 							local tMetapaths = SkuNav:GetAllMetaTargetsFromWp5(ssub(v, string.find(v, "#") + 1), SkuSettings:Sub("SkuNav").routesMaxDistance, SkuNav.MaxMetaWPs)--
@@ -1131,7 +1131,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 		end
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Einheiten Route"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.BuildChildren = function(self)
 			SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypoint = nil
 			--SkuSettings:Sub("SkuNav").metapathFollowingMetapaths = nil
@@ -1260,7 +1260,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 	end -- [41.02.08] schliesst das ausblendende "if false then" fuer "Daten"
 
 	SkuMenu:Build(aParentEntry, {
-		{ kind = "settings", label = L["Options"], filterable = true,
+		{ kind = "settings", label = L["Options"], sorting = true,
 			args = SkuNav.options.args, db = SkuSettings:Sub("SkuNav"), module = "SkuNav" },
 	})
 end

@@ -1,4 +1,4 @@
--- =====================================================================
+﻿-- =====================================================================
 -- Sku Game Options  ("Spieloptionen")
 -- ---------------------------------------------------------------------
 -- Exposes Blizzard's built-in game options (the modern Settings system
@@ -366,7 +366,7 @@ local function BuildCategoryList(aSelf)
          any = true
          local entry = Inject(aSelf, tostring(CategoryName(cat)))
          entry.dynamic = true
-         entry.filterable = true
+         entry.sorting = true
          entry.BuildChildren = function(self) BuildCategory(self, cat) end
       end
    end

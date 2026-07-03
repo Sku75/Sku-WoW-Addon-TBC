@@ -1,4 +1,4 @@
-local MODULE_NAME = "SkuAuras"
+﻿local MODULE_NAME = "SkuAuras"
 local L = Sku.L
 
 SkuAuras.options = {
@@ -250,7 +250,7 @@ function SkuAuras:NewAuraAttributeBuilder(self)
 					local tAttributeEntry = SkuOptions:InjectMenuItems(self, {v.friendlyName}, SkuGenericMenuItem)
 					tAttributeEntry.internalName = "output:"..i
 					tAttributeEntry.dynamic = true
-					tAttributeEntry.filterable = true
+					tAttributeEntry.sorting = true
 					tAttributeEntry.actionOnEnter = true
 					tAttributeEntry.elementType = "output"
 					tAttributeEntry.OnEnter = function(self, aValue, aName)
@@ -298,7 +298,7 @@ function SkuAuras:NewAuraAttributeBuilder(self)
 						local tAttributeEntry = SkuOptions:InjectMenuItems(self, {SkuAuras.attributes[v].friendlyName}, SkuGenericMenuItem)
 						tAttributeEntry.internalName = v
 						tAttributeEntry.dynamic = true
-						tAttributeEntry.filterable = true
+						tAttributeEntry.sorting = true
 						tAttributeEntry.vocalizeAsIs = true
 						tAttributeEntry.elementType = "attribute"
 						tAttributeEntry.OnEnter = function(self, aValue, aName)
@@ -351,7 +351,7 @@ function SkuAuras:NewAuraOutputBuilder(self)
 				local tAttributeEntry = SkuOptions:InjectMenuItems(self, {v.friendlyName}, SkuGenericMenuItem)
 				tAttributeEntry.internalName = "output:"..i
 				tAttributeEntry.dynamic = true
-				tAttributeEntry.filterable = true
+				tAttributeEntry.sorting = true
 				tAttributeEntry.actionOnEnter = true
 				tAttributeEntry.vocalizeAsIs = true
 				tAttributeEntry.elementType = "output"
@@ -403,7 +403,7 @@ function SkuAuras:NewAuraOperatorBuilder(self)
 			local tAttributeEntry = SkuOptions:InjectMenuItems(self, {L["then"]}, SkuGenericMenuItem)
 			tAttributeEntry.internalName = "then"
 			tAttributeEntry.dynamic = true
-			tAttributeEntry.filterable = true
+			tAttributeEntry.sorting = true
 			tAttributeEntry.elementType = "then"
 			tAttributeEntry.OnEnter = function(self, aValue, aName)
 				self.BuildChildren = SkuAuras:NewAuraValueBuilder(self)
@@ -422,7 +422,7 @@ function SkuAuras:NewAuraOperatorBuilder(self)
 					local tAttributeEntry = SkuOptions:InjectMenuItems(self, {v.friendlyName}, SkuGenericMenuItem)
 					tAttributeEntry.internalName = i
 					tAttributeEntry.dynamic = true
-					tAttributeEntry.filterable = true
+					tAttributeEntry.sorting = true
 					tAttributeEntry.vocalizeAsIs = true
 					tAttributeEntry.elementType = "operator"
 					tAttributeEntry.OnEnter = function(self, aValue, aName)
@@ -492,7 +492,7 @@ function SkuAuras:NewAuraValueBuilder(self)
 				if not tSelectTarget.single then
 					tAttributeValueEntry.dynamic = true
 				end
-				tAttributeValueEntry.filterable = true
+				tAttributeValueEntry.sorting = true
 				--tAttributeValueEntry.actionOnEnter = true
 				tAttributeValueEntry.vocalizeAsIs = true
 				tAttributeValueEntry.elementType = "value"
@@ -748,7 +748,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 			end
 
 			local tNewMenuEntryOutp = SkuOptions:InjectMenuItems(self, {L["Ausgaben"]}, SkuGenericMenuItem)
-			tNewMenuEntryOutp.filterable = true
+			tNewMenuEntryOutp.sorting = true
 			tNewMenuEntryOutp.dynamic = true
 			tNewMenuEntryOutp.isSelect = true
 			tNewMenuEntryOutp.auraName = self.parent.name
@@ -882,13 +882,13 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:MenuBuilder(aParentEntry)
 	-- W2 M-B: top-level "Auren" entry expressed as a declarative SkuMenu "list"
-	-- spec (dynamic + filterable, BuildChildren rebuilt each visit). The deeper
+	-- spec (dynamic + sorting, BuildChildren rebuilt each visit). The deeper
 	-- entries built inside the closure stay hand-built/verbatim. The "Optionen"
-	-- entry below is left hand-built on purpose: it carries filterable=nil and the
-	-- "settings" kind would force filterable=true, so converting it would change
+	-- entry below is left hand-built on purpose: it carries sorting=nil and the
+	-- "settings" kind would force sorting=true, so converting it would change
 	-- its property set.
 	local tSpecs = {}
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Auren"], filterable = true,
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Auren"], sorting = true,
 		build = function(self)
 		-- [41.05] Sets anlegen/teilen (Stufe 1+2), isoliert in SkuAuras\sharing.lua
 		-- [41.06] Sets-Menue an Position 3 verschoben (siehe weiter unten, vor Aura importieren)
@@ -899,7 +899,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 				local tTypeItem = SkuOptions:InjectMenuItems(self, {v.friendlyName}, SkuGenericMenuItem)
 				tTypeItem.internalName = i
 				tTypeItem.dynamic = true
-				tTypeItem.filterable = true
+				tTypeItem.sorting = true
 				tTypeItem.isSelect = true
 				tTypeItem.collectValuesFrom = self
 				tTypeItem.usedAttributes = {}
@@ -946,7 +946,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Auren verwalten"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.isSelect = true
-		tNewMenuEntry.filterable = true
+		tNewMenuEntry.sorting = true
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			--print("OnAction Auren verwalten", aValue, aName, self.targetAuraName)
 			if not self.targetAuraName then return end
@@ -1059,7 +1059,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tNewMenuEntry.BuildChildren = function(self)
 			local tTypeItem = SkuOptions:InjectMenuItems(self, {L["Aktivierte"]}, SkuGenericMenuItem)
 			tTypeItem.dynamic = true
-			tTypeItem.filterable = true
+			tTypeItem.sorting = true
 			tTypeItem.BuildChildren = function(self)
 				local tHasEntries = false
 				for i, v in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras) do 
@@ -1074,7 +1074,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 			end
 			local tTypeItem = SkuOptions:InjectMenuItems(self, {L["Deaktivierte"]}, SkuGenericMenuItem)
 			tTypeItem.dynamic = true
-			tTypeItem.filterable = true
+			tTypeItem.sorting = true
 			tTypeItem.BuildChildren = function(self)
 				local tHasEntries = false
 				for i, v in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras) do 
@@ -1089,7 +1089,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 			end
 			local tTypeItem = SkuOptions:InjectMenuItems(self, {L["Alle"]}, SkuGenericMenuItem)
 			tTypeItem.dynamic = true
-			tTypeItem.filterable = true
+			tTypeItem.sorting = true
 			tTypeItem.BuildChildren = function(self)
 				local tHasEntries = false
 				for i, v in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras) do 
@@ -1205,7 +1205,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 	---
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {"Zauberdatenbank"}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.filterable = true
+	tNewMenuParentEntry.sorting = true
 	tNewMenuParentEntry.OnAction = function(self, aValue, aName)
 
 	end

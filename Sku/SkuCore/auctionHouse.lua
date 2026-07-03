@@ -1761,7 +1761,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
          tNewMenuEntryCategorySub.BuildChildren = function(self)
             tNewMenuEntryFilterOption = SkuOptions:InjectMenuItems(self, {L["Level Minimum"]}, SkuGenericMenuItem)
             tNewMenuEntryFilterOption.dynamic = true
-            tNewMenuEntryFilterOption.filterable = true
+            tNewMenuEntryFilterOption.sorting = true
             tNewMenuEntryFilterOption.isSelect = true
             tNewMenuEntryFilterOption.noStepUpAfterSelect = true
             tNewMenuEntryFilterOption.GetCurrentValue = function(self, aValue, aName)
@@ -1779,7 +1779,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
 
             tNewMenuEntryFilterOption = SkuOptions:InjectMenuItems(self, {L["Level Max"]}, SkuGenericMenuItem)
             tNewMenuEntryFilterOption.dynamic = true
-            tNewMenuEntryFilterOption.filterable = true
+            tNewMenuEntryFilterOption.sorting = true
             tNewMenuEntryFilterOption.isSelect = true
             tNewMenuEntryFilterOption.noStepUpAfterSelect = true
             tNewMenuEntryFilterOption.GetCurrentValue = function(self, aValue, aName)
@@ -1797,7 +1797,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
 
             tNewMenuEntryFilterOption = SkuOptions:InjectMenuItems(self, {L["Qualität"]}, SkuGenericMenuItem)
             tNewMenuEntryFilterOption.dynamic = true
-            tNewMenuEntryFilterOption.filterable = true
+            tNewMenuEntryFilterOption.sorting = true
             tNewMenuEntryFilterOption.isSelect = true
             tNewMenuEntryFilterOption.noStepUpAfterSelect = true
             tNewMenuEntryFilterOption.GetCurrentValue = function(self, aValue, aName)
@@ -1823,7 +1823,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
 
             tNewMenuEntryFilterOption = SkuOptions:InjectMenuItems(self, {L["Nur benutzbare"]}, SkuGenericMenuItem)
             tNewMenuEntryFilterOption.dynamic = true
-            tNewMenuEntryFilterOption.filterable = true
+            tNewMenuEntryFilterOption.sorting = true
             tNewMenuEntryFilterOption.isSelect = true
             tNewMenuEntryFilterOption.noStepUpAfterSelect = true
             tNewMenuEntryFilterOption.GetCurrentValue = function(self, aValue, aName)
@@ -1849,7 +1849,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
 
          tNewMenuEntryCategorySub = SkuOptions:InjectMenuItems(self, {L["Sortierung"]}, SkuGenericMenuItem)
          tNewMenuEntryCategorySub.dynamic = true
-         tNewMenuEntryCategorySub.filterable = true
+         tNewMenuEntryCategorySub.sorting = true
          tNewMenuEntryCategorySub.isSelect = true
          tNewMenuEntryCategorySub.noStepUpAfterSelect = true
          tNewMenuEntryCategorySub.GetCurrentValue = function(self, aValue, aName)
@@ -1878,7 +1878,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
       --auctions by item 
       tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["auctions by item"]}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
-      --tNewMenuEntry.filterable = true
+      --tNewMenuEntry.sorting = true
       tNewMenuEntry.BuildChildren = function(self)
          --categories
          AuctionHouse:AuctionHouseResetQuery()
@@ -1890,7 +1890,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
             if categoryInfo.name ~= L["WoW Token (China Only)"] then
                tNewMenuEntryCategory = SkuOptions:InjectMenuItems(self, {categoryInfo.name}, SkuGenericMenuItem)
                tNewMenuEntryCategory.dynamic = true
-               tNewMenuEntryCategory.filterable = true
+               tNewMenuEntryCategory.sorting = true
                tNewMenuEntryCategory.OnEnter = function(self, aValue, aName, aEnterFlag)
                   if not aValue then
                      --SkuCore:AuctionStartQuery(categoryIndex, nil, nil, true)
@@ -1903,7 +1903,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
                      for subCategoryIndex, subCategoryInfo in ipairs(categoryInfo.subCategories) do
                         tNewMenuEntryCategorySub = SkuOptions:InjectMenuItems(self, {subCategoryInfo.name}, SkuGenericMenuItem)
                         tNewMenuEntryCategorySub.dynamic = true
-                        tNewMenuEntryCategorySub.filterable = true
+                        tNewMenuEntryCategorySub.sorting = true
                         tNewMenuEntryCategorySub.BuildChildren = function(self)
                            OnEnterAllFlag = nil
                            AuctionHouse:AuctionHouseResetQuery()
@@ -1912,7 +1912,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
                               for subSubCategoryIndex, subSubCategoryInfo in ipairs(subCategoryInfo.subCategories) do
                                  tNewMenuEntryCategorySubSub = SkuOptions:InjectMenuItems(self, {subSubCategoryInfo.name}, SkuGenericMenuItem)
                                  tNewMenuEntryCategorySubSub.dynamic = true
-                                 tNewMenuEntryCategorySubSub.filterable = true
+                                 tNewMenuEntryCategorySubSub.sorting = true
                                  tNewMenuEntryCategorySubSub.BuildChildren = function(self)
                                     OnEnterAllFlag = nil
                                     -- query categoryIndex, subCategoryIndex, subSubCategoryIndex
@@ -1945,9 +1945,9 @@ function AuctionHouse:AuctionHouseMenuBuilder()
       tNewMenuEntrysearch.noStepUpAfterSelect = true
       -- Buchstaben-Filter (erste-Buchstaben-Suche) auch in der Suchergebnis-
       -- Liste erlauben — wie bei den Kategorie-Listen ("Alle"/Einzel-Item),
-      -- die .filterable bereits setzen. Ohne das tat ApplyFilter hier nichts
-      -- (Core.lua prüft currentMenuPosition.parent.filterable == true).
-      tNewMenuEntrysearch.filterable = true
+      -- die .sorting bereits setzen. Ohne das tat ApplyFilter hier nichts
+      -- (Core.lua prüft currentMenuPosition.parent.sorting == true).
+      tNewMenuEntrysearch.sorting = true
       tNewMenuEntrysearch.OnAction = function(self, aValue, aName)
          -- Menü-Eintrag in lokaler Closure für die EditBox-Callback
          -- festhalten — sonst zeigt 'self' im Callback auf die EditBox.
@@ -2027,7 +2027,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
          local tItemLabel = L["STRAT_ItemName"]..": "..(cfg.itemName or L["STRAT_NotSet"])
          local tItemEntry = SkuOptions:InjectMenuItems(self, {tItemLabel}, SkuGenericMenuItem)
          tItemEntry.dynamic = true
-         tItemEntry.filterable = true
+         tItemEntry.sorting = true
          tItemEntry.isSelect = true
          tItemEntry.noStepUpAfterSelect = true
          tItemEntry.OnAction = function(self, aValue, aName)
@@ -2051,7 +2051,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
          end
          local tGoldEntry = SkuOptions:InjectMenuItems(self, {L["STRAT_MaxGold"]..": "..(cfg.maxGold or 0)}, SkuGenericMenuItem)
          tGoldEntry.dynamic = true
-         tGoldEntry.filterable = true
+         tGoldEntry.sorting = true
          tGoldEntry.isSelect = true
          tGoldEntry.noStepUpAfterSelect = true
          tGoldEntry.OnAction = function(self, aValue, aName)
@@ -2064,7 +2064,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
          end
          local tSilverEntry = SkuOptions:InjectMenuItems(self, {L["STRAT_MaxSilver"]..": "..(cfg.maxSilver or 0)}, SkuGenericMenuItem)
          tSilverEntry.dynamic = true
-         tSilverEntry.filterable = true
+         tSilverEntry.sorting = true
          tSilverEntry.isSelect = true
          tSilverEntry.noStepUpAfterSelect = true
          tSilverEntry.OnAction = function(self, aValue, aName)
@@ -2077,7 +2077,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
          end
          local tCopperEntry = SkuOptions:InjectMenuItems(self, {L["STRAT_MaxCopper"]..": "..(cfg.maxCopper or 0)}, SkuGenericMenuItem)
          tCopperEntry.dynamic = true
-         tCopperEntry.filterable = true
+         tCopperEntry.sorting = true
          tCopperEntry.isSelect = true
          tCopperEntry.noStepUpAfterSelect = true
          tCopperEntry.OnAction = function(self, aValue, aName)
@@ -2145,7 +2145,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
                if categoryInfo.name ~= L["WoW Token (China Only)"] then
                   tNewMenuEntryCategory = SkuOptions:InjectMenuItems(self, {categoryInfo.name}, SkuGenericMenuItem)
                   tNewMenuEntryCategory.dynamic = true
-                  tNewMenuEntryCategory.filterable = true
+                  tNewMenuEntryCategory.sorting = true
                   tNewMenuEntryCategory.OnEnter = function(self, aValue, aName, aEnterFlag)
                      if not aValue then
                      end
@@ -2157,7 +2157,7 @@ OnEnterAllFlag = nil
                         for subCategoryIndex, subCategoryInfo in ipairs(categoryInfo.subCategories) do
                            tNewMenuEntryCategorySub = SkuOptions:InjectMenuItems(self, {subCategoryInfo.name}, SkuGenericMenuItem)
                            tNewMenuEntryCategorySub.dynamic = true
-                           tNewMenuEntryCategorySub.filterable = true
+                           tNewMenuEntryCategorySub.sorting = true
                            tNewMenuEntryCategorySub.BuildChildren = function(self)
 OnEnterAllFlag = nil
                               AuctionHouse:AuctionHouseResetQuery()
@@ -2166,7 +2166,7 @@ OnEnterAllFlag = nil
                                  for subSubCategoryIndex, subSubCategoryInfo in ipairs(subCategoryInfo.subCategories) do
                                     tNewMenuEntryCategorySubSub = SkuOptions:InjectMenuItems(self, {subSubCategoryInfo.name}, SkuGenericMenuItem)
                                     tNewMenuEntryCategorySubSub.dynamic = true
-                                    tNewMenuEntryCategorySubSub.filterable = true
+                                    tNewMenuEntryCategorySubSub.sorting = true
                                     tNewMenuEntryCategorySubSub.BuildChildren = function(self)
 OnEnterAllFlag = nil
                                        -- query categoryIndex subCategoryIndex
@@ -2243,14 +2243,14 @@ OnEnterAllFlag = nil
    --bids
    tNewMenuEntry  = SkuOptions:InjectMenuItems(self, {L["Gebote"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
    tNewMenuEntry.BuildChildren = function(self)
       if #BidDB > 0 then
          for tIndex, tData in pairs(BidDB) do
             if tData then
                tNewMenuEntry = SkuOptions:InjectMenuItems(self, {AuctionHouse:AuctionItemNameFormat(tData, tIndex)}, SkuGenericMenuItem)
                tNewMenuEntry.dynamic = false
-               tNewMenuEntry.filterable = true
+               tNewMenuEntry.sorting = true
                tNewMenuEntry.textFull = select(2, AuctionHouse:AuctionBuildItemTooltip(tData, tIndex, true, true))
             end
          end
@@ -2263,7 +2263,7 @@ OnEnterAllFlag = nil
    --sells
    tNewMenuEntry  = SkuOptions:InjectMenuItems(self, {L["Verkäufe"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
    tNewMenuEntry.BuildChildren = function(self)
       if SkuCore.AuctionScan.state ~= "idle" then
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["not possible, scan in progess"]}, SkuGenericMenuItem)
@@ -2304,7 +2304,7 @@ OnEnterAllFlag = nil
                         tFoundItems[itemID] = true
                         local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {tName.." ("..tCountItems[itemID]..")"}, SkuGenericMenuItem)
                         tNewMenuSubSubEntry.dynamic = true
-                        tNewMenuSubSubEntry.filterable = true
+                        tNewMenuSubSubEntry.sorting = true
                         tNewMenuSubSubEntry.isSelect = true
                         tNewMenuSubSubEntry.itemId = itemID
                         tNewMenuSubSubEntry.amountMax = tCountItems[itemID]
@@ -2436,7 +2436,7 @@ OnEnterAllFlag = nil
                      
                            for z = 1, tonumber(tCount) do
                               local tStackMenuEntry = SkuOptions:InjectMenuItems(self, {tostring(z)}, SkuGenericMenuItem)
-                              tStackMenuEntry.filterable = true
+                              tStackMenuEntry.sorting = true
                               tStackMenuEntry.dynamic = true
                               tStackMenuEntry.OnEnter = function(self, aValue, aName)
                                  self.selectTarget.amount = z
@@ -2462,7 +2462,7 @@ OnEnterAllFlag = nil
             if tData then
                tNewMenuEntry = SkuOptions:InjectMenuItems(self, {AuctionHouse:AuctionItemNameFormat(tData, tIndex)}, SkuGenericMenuItem)
                tNewMenuEntry.dynamic = false
-               tNewMenuEntry.filterable = true
+               tNewMenuEntry.sorting = true
                tNewMenuEntry.textFull = select(2, AuctionHouse:AuctionBuildItemTooltip(tData, tIndex, true, true))
                tNewMenuEntry.ownerID = tIndex
                tNewMenuEntry.BuildChildren = function(self)
@@ -2583,7 +2583,7 @@ function AuctionHouse:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
       local function tAddCoin(aKey, aLabel, aMax)
          local tNode = SkuOptions:InjectMenuItems(self, {aLabel..": "..(tCfg[aKey] or 0)}, SkuGenericMenuItem)
          tNode.dynamic = true
-         tNode.filterable = true
+         tNode.sorting = true
          tNode.isSelect = true
          tNode.noStepUpAfterSelect = true
          tNode.GetCurrentValue = function(s) return tostring(tCfg[aKey] or 0) end
@@ -2596,7 +2596,7 @@ function AuctionHouse:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
             for x = 0, aMax do
                local tValue = SkuOptions:InjectMenuItems(s, {tostring(x)}, SkuGenericMenuItem)
                tValue.dynamic = true
-               tValue.filterable = true
+               tValue.sorting = true
                tValue.actionOnEnter = true
                tValue.OnEnter = function(vself, aV, aN)
                   tCfg[aKey] = x
@@ -2870,7 +2870,7 @@ function AuctionHouse:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCatego
 
    tNewMenuEntryCategorySubSubItem = SkuOptions:InjectMenuItems(self, {L["All"]}, SkuGenericMenuItem)
    tNewMenuEntryCategorySubSubItem.dynamic = true
-   tNewMenuEntryCategorySubSubItem.filterable = true
+   tNewMenuEntryCategorySubSubItem.sorting = true
    tNewMenuEntryCategorySubSubItem.OnEnter = function(self, aValue, aName, aEnterFlag)
       if OnEnterAllFlag == true then
          OnEnterAllFlag = nil
@@ -2935,7 +2935,7 @@ function AuctionHouse:AuctionHouseBuildItemDBMenu(self, categoryIndex, subCatego
 
             tNewMenuEntryCategorySubSubItem = SkuOptions:InjectMenuItems(self, {tLocName}, SkuGenericMenuItem)
             tNewMenuEntryCategorySubSubItem.dynamic = true
-            tNewMenuEntryCategorySubSubItem.filterable = true
+            tNewMenuEntryCategorySubSubItem.sorting = true
             tNewMenuEntryCategorySubSubItem.OnEnter = function(self, aValue, aName, aEnterFlag)
                OnEnterAllFlag = true
                if not aValue then

@@ -433,7 +433,7 @@ function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, 
       --print("7)", "        ", "set", aId, AtlasLoot.Data.ItemSet.GetSetName(aId))
       local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["Set"].." "..AtlasLoot.Data.ItemSet.GetSetName(aId)}, SkuGenericMenuItem)
       tNewSubMenuEntry.dynamic = true
-      tNewSubMenuEntry.filterable = true
+      tNewSubMenuEntry.sorting = true
       tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
          local tTextFirstLine = SkuUtil:Unescape(AtlasLoot.Data.ItemSet.GetSetName(aId))
          local tString = AtlasLoot.Data.ItemSet.GetSetBonusString(aId)
@@ -702,7 +702,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Search"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-   tNewMenuEntry.filterable = true
+   tNewMenuEntry.sorting = true
    tNewMenuEntry.BuildChildren = function(self)
       for i, v in pairs(tItemNameTable) do
          AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", v.itemID, v.npcId, v.internalName, v.bossIndex, nil, v.difficultyIndex)
@@ -721,7 +721,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
          end
          local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {tModules.module[pluginIndex].tt_title}, SkuGenericMenuItem)
          tNewSubMenuEntry.dynamic = true
-         tNewSubMenuEntry.filterable = true
+         tNewSubMenuEntry.sorting = true
          tNewSubMenuEntry.BuildChildren = function(self)
             -- Spezialfall "Berufe": Classic + BC zusammenfassen, nach
             -- Skill-Level sortieren, KEINE Erweiterungs-Unterteilung.
@@ -782,7 +782,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                   local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aSelf,
                      {SkuUtil:Unescape(moduleData[contentInteralName]:GetName())}, SkuGenericMenuItem)
                   tNewSubMenuEntry.dynamic = true
-                  tNewSubMenuEntry.filterable = true
+                  tNewSubMenuEntry.sorting = true
                   tNewSubMenuEntry.BuildChildren = function(self)
                      for bossIndex = 1, #moduleData[contentInteralName].items do
                         local tabVal = moduleData[contentInteralName].items[bossIndex]
@@ -790,7 +790,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                            local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self,
                               {SkuUtil:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))}, SkuGenericMenuItem)
                            tNewSubMenuEntry.dynamic = true
-                           tNewSubMenuEntry.filterable = true
+                           tNewSubMenuEntry.sorting = true
                            tNewSubMenuEntry.BuildChildren = function(self)
                               -- Berufe haben nur eine Schwierigkeitsstufe
                               -- ("Normal"). Diese überflüssige Zwischen-
@@ -869,7 +869,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
             for selectedGameVersion = 1, #tExpansions do
                local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {tExpansions[selectedGameVersion]}, SkuGenericMenuItem)
                tNewSubMenuEntry.dynamic = true
-               tNewSubMenuEntry.filterable = true
+               tNewSubMenuEntry.sorting = true
                tNewSubMenuEntry.BuildChildren = function(self)
                   --cats
                   local tModulList = AtlasLoot.ItemDB:GetModuleList(tModules.module[pluginIndex].addonName)
@@ -910,7 +910,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
 
                         local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aSelf, {SkuUtil:Unescape(moduleData[contentInteralName]:GetName())}, SkuGenericMenuItem)
                         tNewSubMenuEntry.dynamic = true
-                        tNewSubMenuEntry.filterable = true
+                        tNewSubMenuEntry.sorting = true
                         tNewSubMenuEntry.BuildChildren = function(self)
                            -- Kontextuelle Wunschliste (mode="boss"): Geschwister
                            -- der Bosse, wenn der getargetete Boss in dieser
@@ -947,7 +947,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                                  --print("4)", "   ", bossIndex, tabVal.ExtraList, moduleData[contentInteralName].__numDiffEntrys, name, coinTexture, tt_title, tt_text)
                                  local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {SkuUtil:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))}, SkuGenericMenuItem)
                                  tNewSubMenuEntry.dynamic = true
-                                 tNewSubMenuEntry.filterable = true
+                                 tNewSubMenuEntry.sorting = true
                                  tNewSubMenuEntry.BuildChildren = function(self)
                                     local bossData = moduleData[contentInteralName].items[bossIndex]
                                     for difficultyIndex = 1, #tDifficulties do
@@ -958,7 +958,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                                           --print("5)", "    ", difficultyIndex, name, tt_title, moduleData:GetDifficulty(contentInteralName, bossIndex, difficultyIndex))
                                           local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {SkuUtil:Unescape(bossData[difficultyIndex].diffName or tDifficulties[difficultyIndex].name)}, SkuGenericMenuItem)
                                           tNewSubMenuEntry.dynamic = true
-                                          tNewSubMenuEntry.filterable = true
+                                          tNewSubMenuEntry.sorting = true
                                           tNewSubMenuEntry.BuildChildren = function(self)
                                              --local bossData = AtlasLoot.ItemDB:GetBossTable(tModules.module[pluginIndex].addonName, contentInteralName, bossIndex)
                                              local items, tableType, diffData = AtlasLoot.ItemDB:GetItemTable(tModules.module[pluginIndex].addonName, contentInteralName, bossIndex, difficultyIndex)
@@ -1025,7 +1025,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                      local tGroupEntry = SkuOptions:InjectMenuItems(self,
                         { aLabel }, SkuGenericMenuItem)
                      tGroupEntry.dynamic = true
-                     tGroupEntry.filterable = true
+                     tGroupEntry.sorting = true
                      tGroupEntry.BuildChildren = function(aSelf)
                         -- Kontextuelle Wunschliste (mode="instance") als
                         -- Geschwister der Raids einfügen, wenn der
@@ -1057,7 +1057,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                      local tGroupEntry = SkuOptions:InjectMenuItems(self,
                         { aLabel }, SkuGenericMenuItem)
                      tGroupEntry.dynamic = true
-                     tGroupEntry.filterable = true
+                     tGroupEntry.sorting = true
                      tGroupEntry.BuildChildren = function(aSelf)
                         -- Kontextuelle Wunschliste für Welt-Bosse:
                         -- Geschwister der Bosse, wenn der gezielte Boss
@@ -1077,7 +1077,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                                     {SkuUtil:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))},
                                     SkuGenericMenuItem)
                                  tBossEntry.dynamic = true
-                                 tBossEntry.filterable = true
+                                 tBossEntry.sorting = true
                                  tBossEntry.BuildChildren = function(self)
                                     local bossData = moduleData[contentInteralName].items[bossIndex]
                                     for difficultyIndex = 1, #tDifficulties do
@@ -1086,7 +1086,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                                              {SkuUtil:Unescape(bossData[difficultyIndex].diffName or tDifficulties[difficultyIndex].name)},
                                              SkuGenericMenuItem)
                                           tDiffEntry.dynamic = true
-                                          tDiffEntry.filterable = true
+                                          tDiffEntry.sorting = true
                                           tDiffEntry.BuildChildren = function(self)
                                              local items = AtlasLoot.ItemDB:GetItemTable(tModules.module[pluginIndex].addonName, contentInteralName, bossIndex, difficultyIndex)
                                              if items then
@@ -1131,7 +1131,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                      local tGroupEntry = SkuOptions:InjectMenuItems(self,
                         { aLabel }, SkuGenericMenuItem)
                      tGroupEntry.dynamic = true
-                     tGroupEntry.filterable = true
+                     tGroupEntry.sorting = true
                      tGroupEntry.BuildChildren = function(aSelf)
                         -- Welche Difficulty-Indices sind in dieser Gruppe vorhanden?
                         local seenDiffs = {}
@@ -1158,7 +1158,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                            local tDiffEntry = SkuOptions:InjectMenuItems(aSelf,
                               {SkuUtil:Unescape(tDiffName)}, SkuGenericMenuItem)
                            tDiffEntry.dynamic = true
-                           tDiffEntry.filterable = true
+                           tDiffEntry.sorting = true
                            tDiffEntry.BuildChildren = function(self2)
                               -- Kontextuelle Wunschliste (mode="instance"):
                               -- Geschwister der Instanzen, wenn der Spieler
@@ -1186,7 +1186,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                                        {SkuUtil:Unescape(moduleData[contentInteralName]:GetName())},
                                        SkuGenericMenuItem)
                                     tInstEntry.dynamic = true
-                                    tInstEntry.filterable = true
+                                    tInstEntry.sorting = true
                                     tInstEntry.BuildChildren = function(self3)
                                        -- Kontextuelle Wunschliste (mode="boss"):
                                        -- Geschwister der Bosse, wenn der gezielte
@@ -1208,7 +1208,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                                                 {SkuUtil:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))},
                                                 SkuGenericMenuItem)
                                              tBossEntry.dynamic = true
-                                             tBossEntry.filterable = true
+                                             tBossEntry.sorting = true
                                              tBossEntry.BuildChildren = function(self4)
                                                 local items = AtlasLoot.ItemDB:GetItemTable(tModules.module[pluginIndex].addonName, contentInteralName, bossIndex, difficultyIndex)
                                                 if items then
@@ -1273,7 +1273,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["AL_Wishlist"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-   tNewMenuEntry.filterable = true
+   tNewMenuEntry.sorting = true
    tNewMenuEntry.BuildChildren = function(self)
 
       -- ============================================================
@@ -1281,7 +1281,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
       -- ============================================================
       local tByDungeon = SkuOptions:InjectMenuItems(self, {L["AL_WishlistByDungeon"]}, SkuGenericMenuItem)
       tByDungeon.dynamic = true
-      tByDungeon.filterable = true
+      tByDungeon.sorting = true
       tByDungeon.BuildChildren = function(self)
          local tFavs = SkuOptions and SkuOptions.db and SkuOptions.db.char
             and SkuSettings:Sub("SkuCore", nil, "char")
@@ -1327,7 +1327,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                local tLabel = #items .. " " .. dungeonName
                local tDungeonEntry = SkuOptions:InjectMenuItems(self, {tLabel}, SkuGenericMenuItem)
                tDungeonEntry.dynamic = true
-               tDungeonEntry.filterable = true
+               tDungeonEntry.sorting = true
                tDungeonEntry.BuildChildren = function(self)
                   for _, itemID in ipairs(items) do
                      AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", itemID)
@@ -1342,14 +1342,14 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
       -- ============================================================
       local tBySlot = SkuOptions:InjectMenuItems(self, {L["AL_WishlistBySlot"]}, SkuGenericMenuItem)
       tBySlot.dynamic = true
-      tBySlot.filterable = true
+      tBySlot.sorting = true
       tBySlot.BuildChildren = function(self)
          for x = 1, #AtlasLootIntegration.favoriteSlots do
             if AtlasLootIntegration.favoriteSlots[x][1] then
                local tSlotLabel = _G[AtlasLootIntegration.favoriteSlots[x][1]] or L[AtlasLootIntegration.favoriteSlots[x][1]] or AtlasLootIntegration.favoriteSlots[x][1]
                local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tSlotLabel}, SkuGenericMenuItem)
                tNewMenuEntry.dynamic = true
-               tNewMenuEntry.filterable = true
+               tNewMenuEntry.sorting = true
                tNewMenuEntry.BuildChildren = function(self)
                   if #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x] > 0 then
                      for y = 1, #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x] do
@@ -1448,7 +1448,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Loot history"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
-   tNewMenuEntry.filterable = true
+   tNewMenuEntry.sorting = true
    tNewMenuEntry.BuildChildren = function(self)
       if #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.lootHistory > 0 then
          local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Clear list"]}, SkuGenericMenuItem)
@@ -1572,7 +1572,7 @@ AtlasLootIntegration.alDropsByInstance = AtlasLootIntegration.alDropsByInstance 
 function AtlasLootIntegration:BuildContextualWishlistEntry(aParent, aDropMap)
    local tEntry = SkuOptions:InjectMenuItems(aParent, {L["AL_Wishlist"]}, SkuGenericMenuItem)
    tEntry.dynamic = true
-   tEntry.filterable = true
+   tEntry.sorting = true
    tEntry.BuildChildren = function(self)
       local tFavs = SkuOptions and SkuOptions.db and SkuOptions.db.char
          and SkuSettings:Sub("SkuCore", nil, "char")

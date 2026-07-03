@@ -457,7 +457,7 @@ function SkuCore:UpdateActionBarsRootEntry()
 		if not tExisting then
 			local tEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {Sku.L["Action bars"]}, SkuGenericMenuItem)
 			tEntry.dynamic = true
-			tEntry.filterable = true
+			tEntry.sorting = true
 			tEntry.isActionBarsRoot = true
 			tEntry.BuildChildren = function(self)
 				if SkuCore.ActionBarsMenuBuilder then SkuCore.ActionBarsMenuBuilder(self) end

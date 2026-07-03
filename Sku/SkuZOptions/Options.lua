@@ -812,7 +812,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	-- extra "Optionen" wrapper node. tNewMenuEntry is aliased so the rest of this
 	-- builder (Overview pages, Profil, ...) keeps attaching to the same parent.
 	local tNewMenuEntry = aParentEntry
-	tNewMenuEntry.filterable = true
+	tNewMenuEntry.sorting = true
 	SkuOptions:IterateOptionsArgs(SkuOptions.options.args, tNewMenuEntry, SkuSettings:Sub("SkuOptions"), "SkuOptions")
 
 

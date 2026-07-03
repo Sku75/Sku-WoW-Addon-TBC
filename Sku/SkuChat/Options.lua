@@ -1,4 +1,4 @@
-local MODULE_NAME = "SkuChat"
+﻿local MODULE_NAME = "SkuChat"
 
 local L = Sku.L
 
@@ -480,7 +480,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 
 	local tSpecs = {}
 
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Tabs"], filterable = true,
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Tabs"], sorting = true,
 		build = function(self)
 		for x = 1, #SkuSettings:Sub("SkuChat").tabs do
 			local tTabEntry = SkuOptions:InjectMenuItems(self, {SkuSettings:Sub("SkuChat").tabs[x].name}, SkuGenericMenuItem)
@@ -492,7 +492,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 
 			else
 				tTabEntry.dynamic = true
-				tTabEntry.filterable = true
+				tTabEntry.sorting = true
 				tTabEntry.tabIndex = x
 				tTabEntry.BuildChildren = function(self)
 					local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["Rename"]}, SkuGenericMenuItem)
@@ -557,13 +557,13 @@ function SkuChat:MenuBuilder(aParentEntry)
 
 					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Nachrichtentypen"]}, SkuGenericMenuItem)
 					tNewMenuSubEntry.dynamic = true
-					tNewMenuSubEntry.filterable = true
+					tNewMenuSubEntry.sorting = true
 					tNewMenuSubEntry.BuildChildren = function(self)
 						for i, v in pairs(SkuChat.ChatFrameMessageTypes) do
 							if i ~= "SKU" then
 								local tCatEntry = SkuOptions:InjectMenuItems(self, {_G[i]}, SkuGenericMenuItem)
 								tCatEntry.dynamic = true
-								tCatEntry.filterable = true
+								tCatEntry.sorting = true
 								tCatEntry.catType = i
 								tCatEntry.BuildChildren = function(self)
 									for w = 1, #v do
@@ -625,7 +625,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 
 					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Channels"]}, SkuGenericMenuItem)
 					tNewMenuSubEntry.dynamic = true
-					tNewMenuSubEntry.filterable = true
+					tNewMenuSubEntry.sorting = true
 					tNewMenuSubEntry.BuildChildren = function(self)
 						local tChannelList = {GetChannelList()}
 						for q = 1, C_ChatInfo.GetNumActiveChannels() * 3, 3 do 
@@ -689,7 +689,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Audio notification on chat message"]}, SkuGenericMenuItem)
 					tNewMenuEntry.dynamic = true
 					tNewMenuEntry.isSelect = true
-					tNewMenuEntry.filterable = true
+					tNewMenuEntry.sorting = true
 					tNewMenuEntry.OnAction = function(self, aValue, aName)
 						for i, v in pairs(SkuCore.outputSoundFiles) do
 							if "aura;sound#"..aName == v then
@@ -758,7 +758,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 	end }
 
 
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Filters"], filterable = true, isSelect = true,
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Filters"], sorting = true, isSelect = true,
 		onAction = function(self, aValue, aName)
 		if aName == L["Add new entry"] then
 			SkuOptions:EditBoxShow("", function() 
@@ -1111,7 +1111,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 	-- rendered with its original keyPrefix so saved values are preserved). The other
 	-- SkuChat options (TTS voice/speed/volume, join channel, ...) moved to
 	-- Einstellungen -> Sprachausgabe (see SkuCore:MenuBuilder).
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Options"], filterable = true,
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Options"], sorting = true,
 		build = function(self)
 			SkuOptions:IterateOptionsArgs(SkuChat.options.args.chatSettings.args, self, SkuSettings:Sub("SkuChat"), "SkuChat", "chatSettings.")
 		end }

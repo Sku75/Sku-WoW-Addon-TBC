@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "FriendsFrame"  
 local L = Sku.L
 local _G = _G
@@ -356,7 +356,7 @@ function Friends:FriendsMenuBuilder()
 
       local tNewMenuEntryContacts = SkuOptions:InjectMenuItems(self, {L["Friend List"]}, SkuGenericMenuItem)
       tNewMenuEntryContacts.dynamic = true
-      tNewMenuEntryContacts.filterable = true
+      tNewMenuEntryContacts.sorting = true
       tNewMenuEntryContacts.OnEnter = function(self, aValue, aName, aEnterFlag)
          C_FriendList.ShowFriends()
       end
