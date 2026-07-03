@@ -84,6 +84,28 @@ AtlasLootIntegration.favoriteSlots = {
 local tItemDropTable = nil
 local tItemNameTable = nil
 
+-- Guard helper: resolve the AtlasLoot addon (or its Classic fork) and confirm
+-- the submodules this integration calls into are present. Returns the resolved
+-- table, or nil when AtlasLoot is not installed / not yet initialised. Every
+-- AtlasLoot-touching entry point calls this first, so a user running Sku
+-- WITHOUT AtlasLoot gets a silent no-op instead of a nil-index Lua error.
+-- Note: the TOC has no `## OptionalDeps: AtlasLoot`, so AtlasLoot may also load
+-- AFTER Sku — resolving lazily here (not once at file load) copes with that
+-- ordering as well.
+local function EnsureAtlasLoot()
+   local tAL = _G.AtlasLoot or _G.AtlasLootClassic
+   if type(tAL) ~= "table" or type(tAL.Loader) ~= "table"
+      or type(tAL.ItemDB) ~= "table" or type(tAL.Data) ~= "table" then
+      return nil
+   end
+   -- Map a Classic-fork container onto the expected _G.AtlasLoot symbol so the
+   -- rest of this file can keep using `AtlasLoot` unchanged.
+   if not _G.AtlasLoot then
+      _G.AtlasLoot = tAL
+   end
+   return tAL
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function AtlasLootIntegration:alItegrationGetItemDropTable(aId)
    if not aId then
@@ -319,10 +341,6 @@ AtlasLootIntegration.CHAT_MSG_SAY          = AtlasLootIntegration.CHAT_MSG_PARTY
 AtlasLootIntegration.CHAT_MSG_YELL         = AtlasLootIntegration.CHAT_MSG_PARTY
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local DIFFICULTY
-if AtlasLoot then
-   DIFFICULTY = AtlasLoot.DIFFICULTY
-end
 -- Entfernt WoW-Farbcodes (|cffXXXXXX ... |r) aus Strings,
 -- damit die Sprachausgabe keine Hex-Zeichenfolgen vorliest.
 local function stripColorCodes(str)
@@ -336,7 +354,20 @@ end
 
 local function BuildSource(ini, boss, typ, item, diffID)
    --print("BuildSource(", ini, boss, typ, item, diffID)
+   local tAL = EnsureAtlasLoot()
+   if not tAL then return "" end
+   -- Resolve DIFFICULTY per-call (not once at file load): with no OptionalDeps,
+   -- AtlasLoot may have loaded after Sku, so a load-time capture could be nil.
+   local DIFFICULTY = tAL.DIFFICULTY
    if typ and typ > 3 then
+       -- Profession. Sources/Recipe/Profession/SOURCE_DATA/SOURCE_TYPES are
+       -- AtlasLoot's *source-annotation* globals — a separate optional component
+       -- not every AtlasLoot build ships. Fall back to a blank source rather
+       -- than nil-index them when absent.
+       if not (Sources and Sources.db and Recipe and Profession
+          and SOURCE_DATA and SOURCE_TYPES) then
+          return ""
+       end
        -- Profession
        local src = ""
        --RECIPE_ICON
@@ -423,6 +454,12 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInternalDungeonName, aBossIndex, aTypeId, aDiffId)
    if not aId then
+      return
+   end
+
+   -- Reachable from the wishlist path (BuildContextualWishlistEntry) as well as
+   -- the top-level menu builder; guard here too so it no-ops without AtlasLoot.
+   if not EnsureAtlasLoot() then
       return
    end
 
@@ -683,17 +720,12 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
    -- Auf Anniversary 2.5.5 ist der globale Name immer noch "AtlasLoot",
    -- aber das eigentliche Add-on läuft als AtlasLootClassic_TBC
    -- (Toc-spezifisch). Einige Forks deklarieren zusätzlich einen
-   -- _G.AtlasLootClassic-Container — den nehmen wir als Fallback dazu.
-   local tAL = _G.AtlasLoot or _G.AtlasLootClassic
-   if not tAL or type(tAL) ~= "table" or not tAL.Loader or not tAL.ItemDB then
+   -- _G.AtlasLootClassic-Container — den nimmt EnsureAtlasLoot als Fallback
+   -- dazu und mappt ihn auf das erwartete _G.AtlasLoot-Symbol.
+   local tAL = EnsureAtlasLoot()
+   if not tAL then
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Atlas Loot addon missing"]}, SkuGenericMenuItem)
       return
-   end
-   -- Falls der globale "AtlasLoot"-Name fehlt, aber wir ein
-   -- AtlasLootClassic-Pendant gefunden haben, mappen wir es auf das
-   -- erwartete Symbol, damit der restliche Code unverändert greift.
-   if not _G.AtlasLoot and tAL then
-      _G.AtlasLoot = tAL
    end
 
    if tItemDropTable == nil then
@@ -1599,7 +1631,7 @@ function AtlasLootIntegration:BuildContextualWishlistEntry(aParent, aDropMap)
 end
 
 function AtlasLootIntegration:alIntegrationQueryAll()
-   if not AtlasLoot then
+   if not EnsureAtlasLoot() then
       return
    end
 
