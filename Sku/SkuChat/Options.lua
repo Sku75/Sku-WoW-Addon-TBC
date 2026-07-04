@@ -675,22 +675,44 @@ function SkuChat:MenuBuilder(aParentEntry)
 					tNewMenuSubEntry.dynamic = true
 					tNewMenuSubEntry.sorting = true
 					tNewMenuSubEntry.BuildChildren = function(self)
+						local tTabIdx = x
+
+						-- Assemble the channel list from BOTH sources, deduped by name:
+						--  * EnumerateServerChannels() = the zone/server channels
+						--    (General/Trade/... or localized Allgemein/Handel/...).
+						--    GetChannelList() no longer returns these on current
+						--    clients, which is why they went missing from the menu.
+						--  * GetChannelList() = the custom / user-joined channels.
+						local tOrder, tSeen = {}, {}
+						local function tAdd(aName, aNumber)
+							if aName and aName ~= "" and not tSeen[aName] then
+								tSeen[aName] = true
+								tOrder[#tOrder + 1] = {name = aName, number = aNumber}
+							end
+						end
+						if EnumerateServerChannels then
+							for _, tName in ipairs({EnumerateServerChannels()}) do
+								tAdd(tName, GetChannelName(tName))   -- number is 0 if not currently joined
+							end
+						end
 						local tChannelList = {GetChannelList()}
 						for q = 1, C_ChatInfo.GetNumActiveChannels() * 3, 3 do
-							local tShortName = tChannelList[q + 1]
-							local tNumber = ""
+							tAdd(tChannelList[q + 1], tChannelList[q])
+						end
+
+						for _, tChan in ipairs(tOrder) do
+							local tChanName = tChan.name
+							-- ensure a persisted settings entry exists for this channel
 							local tFoundC
-							for y = 1, #SkuSettings:Sub("SkuChat").tabs[x].channels do
-								if SkuSettings:Sub("SkuChat").tabs[x].channels[y].name == tShortName then
-									tNumber = tChannelList[q]
+							for y = 1, #SkuSettings:Sub("SkuChat").tabs[tTabIdx].channels do
+								if SkuSettings:Sub("SkuChat").tabs[tTabIdx].channels[y].name == tChanName then
 									tFoundC = true
 								end
 							end
 							if not tFoundC then
-								SkuSettings:Sub("SkuChat").tabs[x].channels[#SkuSettings:Sub("SkuChat").tabs[x].channels + 1] = {name = tShortName, status = false}
+								SkuSettings:Sub("SkuChat").tabs[tTabIdx].channels[#SkuSettings:Sub("SkuChat").tabs[tTabIdx].channels + 1] = {name = tChanName, status = false}
 							end
 
-							local tTabIdx, tChanName = x, tShortName
 							local function FindChannel()
 								for y = 1, #SkuSettings:Sub("SkuChat").tabs[tTabIdx].channels do
 									if SkuSettings:Sub("SkuChat").tabs[tTabIdx].channels[y].name == tChanName then
@@ -698,7 +720,10 @@ function SkuChat:MenuBuilder(aParentEntry)
 									end
 								end
 							end
-							local tBaseName = tNumber.."#"..tShortName
+							local tBaseName = tChanName
+							if tChan.number and tChan.number > 0 then
+								tBaseName = tChan.number.."#"..tChanName
+							end
 							local tTypeEntry = SkuOptions:InjectMenuItems(self, {tBaseName}, SkuGenericMenuItem)
 							tTypeEntry.shortName = tChanName
 							BuildOutputModeNode(tTypeEntry, tTabIdx, tBaseName,

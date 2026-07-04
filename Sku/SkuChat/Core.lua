@@ -1968,12 +1968,25 @@ function SkuChat_MessageEventHandler(self, event, ...)
 
 			-- Add Channel
 			if (channelLength > 0) then
-				body = "["..SkuChat_ResolvePrefixedChannelName(arg4).."] "..body 
+				body = "["..SkuChat_ResolvePrefixedChannelName(arg4).."] "..body
+				local tMatched
 				local tChannelList = {GetChannelList()}
-				for q = 1, C_ChatInfo.GetNumActiveChannels() * 3, 3 do 
+				for q = 1, C_ChatInfo.GetNumActiveChannels() * 3, 3 do
 					if arg8 == tChannelList[q] then
 						tMessagetype = tChannelList[q + 1]
+						tMatched = true
 					end
+				end
+				-- Zone/server channels (General/Trade/Allgemein/Handel/...) are no
+				-- longer returned by GetChannelList() on current clients, so the
+				-- lookup above misses them and their per-channel audio setting never
+				-- matched. Fall back to channelBaseName (arg9, "the channel name
+				-- without the number in front" — see the CHANNEL branch above) for
+				-- plain channels; the menu creates the settings entry under that same
+				-- base name via EnumerateServerChannels(). Communities/customs keep
+				-- their existing GetChannelList-based keying untouched.
+				if not tMatched and type == "CHANNEL" and arg9 and arg9 ~= "" then
+					tMessagetype = arg9
 				end
 			end
 
