@@ -2323,7 +2323,45 @@ function SkuCore:UNIT_SPELLCAST_FAILED_QUIET(aEvent, aUnitTarget, aCastGUID, aSp
 end
 function SkuCore:UNIT_SPELLCAST_INTERRUPTED(aEvent, aUnitTarget, aCastGUID, aSpellID)
 end
+-- Cast-time actions that mutate the player's bags only when the cast COMPLETES,
+-- decoupled from the Sku right-click that started them (unlike a potion/sell,
+-- which change the bag instantly). Keyed by spellID (language-independent).
+-- Disenchant (13262) is the confirmed case; add prospecting/milling/opening here
+-- if they ever show the same stale-list symptom.
+local tBagMutatingCastSpells = {
+	[13262] = true,   -- Disenchant / Entzaubern
+}
 function SkuCore:UNIT_SPELLCAST_SUCCEEDED(aEvent, aUnitTarget, aCastGUID, aSpellID)
+	if aUnitTarget ~= "player" then return end
+	if not (aSpellID and tBagMutatingCastSpells[aSpellID]) then return end
+	dprint("bag cast-refresh", "spell done ->", tostring(aSpellID))
+	-- Disenchant destroys the item + creates materials only WHEN THE CAST FINISHES
+	-- — often seconds after the right-click that started it. By now the confirm
+	-- window SkuCaptureSellState armed at the click (2.5s deadline) has expired, so
+	-- the gated BAG_UPDATE handlers no-op and the open bag list stays stale. A
+	-- fixed-delay rebuild is unreliable: it can fire before the destroy BAG_UPDATE
+	-- lands, then re-pin back onto the still-present item and (lacking the suppress
+	-- gate) blurt the wrong entry. So RE-ARM the same proven confirm window here,
+	-- anchored on the current cursor, and let the real BAG_UPDATE_DELAYED (the
+	-- authoritative "bags settled" signal) drive SkuBagConfirmRefresh — identical
+	-- to the vendor-sell flow, which re-pins by identity and announces once.
+	if not (_G.SkuCaptureSellState and Sku) then return end
+	pcall(_G.SkuCaptureSellState)
+	if not Sku.tBagPostAction then return end     -- cursor wasn't on a bag item
+	-- Same suppress gate the ENTER path sets, so the confirm's quiet rebuild doesn't
+	-- announce the transient first item; SkuBagConfirmRefresh force-announces the
+	-- settled entry once and clears this.
+	Sku.tBagAnnounceSuppress = GetTime() + 2.5
+	-- Fallback in case the destroy BAG_UPDATE was dispatched just BEFORE this
+	-- handler (event ordering) or never fires: confirm once against now-settled
+	-- bags. Late enough to give the real BAG_UPDATE_DELAYED first shot; the window
+	-- stays valid (2.5s) and SkuBagConfirmRefresh is idempotent (silent re-pin once
+	-- already announced).
+	if _G.C_Timer and _G.C_Timer.After then
+		_G.C_Timer.After(1.0, function()
+			if _G.SkuBagConfirmRefresh then pcall(_G.SkuBagConfirmRefresh) end
+		end)
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
