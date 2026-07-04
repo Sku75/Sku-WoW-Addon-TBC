@@ -468,14 +468,16 @@ function SkuVoice:CheckIgnore(aString)
 end
 
 ---------------------------------------------------------------------------------------------------------
--- Global NVDA engine. When SkuPixelBridge.globalMode is on, general Sku speech
+-- Global NVDA engine. When the SkuOptions "nvdaGlobalTts" setting is on, general Sku speech
 -- (menu, tooltips, announcements) is routed to the user's real screen reader via
 -- the pixel bridge instead of in-game TTS. Returns true if it handled the string
 -- (caller must then return). aExplicit = this call carries an explicit per-channel
 -- engine (chat Sku/Blizzard TTS) -> leave it alone so the per-channel choice wins.
 local function NvdaGlobalHandled(aString, aExplicit)
 	if aExplicit then return false end
-	if not (SkuPixelBridge and SkuPixelBridge.globalMode) then return false end
+	if not SkuPixelBridge then return false end
+	local s = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuOptions.db.profile["SkuOptions"]
+	if not (s and s.nvdaGlobalTts == true) then return false end
 	if type(aString) ~= "string" or aString == "" then return false end
 	-- UI sound tokens are beeps, not speech: let them play through WoW audio
 	if string.find(aString, "^sound%-") or string.find(aString, "^male%-")

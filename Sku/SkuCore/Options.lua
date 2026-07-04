@@ -2912,7 +2912,10 @@ function SkuCore:MenuBuilder(aParentEntry)
 				-- W7: "Audio Dauer Pause" (TTSSepPause), moved here from Allgemein
 				-- (keyPrefix "" preserved -> saved value intact).
 				if SkuOptions.options and SkuOptions.options.args and SkuOptions.options.args.TTSSepPause then
-					SkuOptions:IterateOptionsArgs({ TTSSepPause = SkuOptions.options.args.TTSSepPause }, self, SkuSettings:Sub("SkuOptions"), "SkuOptions", "", true)
+					SkuOptions:IterateOptionsArgs({
+						TTSSepPause   = SkuOptions.options.args.TTSSepPause,
+						nvdaGlobalTts = SkuOptions.options.args.nvdaGlobalTts,
+					}, self, SkuSettings:Sub("SkuOptions"), "SkuOptions", "", true)
 				end
 			end },
 		{ kind = "submenu", label = tDeEn("Sonstiges", "Other"),

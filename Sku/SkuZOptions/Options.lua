@@ -84,6 +84,15 @@ SkuOptions.options = {
 			end
 		},
 		]]
+		-- Global screen-reader (NVDA) output via the pixel bridge. Schema-managed
+		-- boolean (get/set stripped -> storage handled by the SkuOptions schema).
+		-- Read by SkuVoice.NvdaGlobalHandled and SkuPixelBridge:IsGlobal.
+		nvdaGlobalTts = {
+			order = 7,
+			name = L["Global screen reader output (NVDA)"],
+			desc = "",
+			type = "toggle",
+		},
 		soundChannels={
 			name = L["Audio-Kanäle"],
 			type = "group",
@@ -683,6 +692,7 @@ SkuOptions.defaults = {
 	localActive = true,
 	visualAudioMenu = false,
 	--useBlizzTtsInMenu = false,
+	nvdaGlobalTts = false,
 	allModules  = {
 		MenuQuickSelect1 = L["SkuNav,Wegpunkt,Auswählen,Aktuelle Karte Entfernung"],
 		MenuQuickSelect2 = L["SkuNav,Route,Route folgen,Ziele Entfernung"],
@@ -759,6 +769,7 @@ SkuSettings:Register("SkuOptions", {
 	["TTSSepPause"] = { scope = "profile", default = 85, type = "number" },
 	["backgroundSound"] = { scope = "profile", default = "silence.mp3", type = "string" },
 	["localActive"] = { scope = "profile", default = true, type = "boolean" },
+	["nvdaGlobalTts"] = { scope = "profile", default = false, type = "boolean" },
 	["soundChannels.MasterVolume"] = { scope = "profile", default = -1, type = "number" },
 	["soundChannels.SFXVolume"] = { scope = "profile", default = 100, type = "number" },
 	["soundChannels.MusicVolume"] = { scope = "profile", default = 100, type = "number" },

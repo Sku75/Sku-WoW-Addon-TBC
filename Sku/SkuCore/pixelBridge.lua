@@ -39,10 +39,6 @@ PB.X_OFFSET_PX  = 160  -- shift the whole row right off the bottom-left corner:
 --   4 .. 4+LEN-1 PAYLOAD  UTF-8 bytes, one per cell
 --   4+LEN        CHECKSUM sum(payload) mod 256, one byte
 PB.enabled  = false
-PB.globalMode = false  -- when true, general Sku speech (menu/tooltips/announces)
-                       -- routes to NVDA via the bridge instead of in-game TTS.
-                       -- Per-channel chat engines still win (see SkuVoice). Session
-                       -- only (reset each load); toggle with /skupixel global.
 PB.seq      = 0
 PB.cells    = nil      -- array of Texture objects
 PB.frame    = nil
@@ -176,6 +172,21 @@ function PB:EnsureReady()
 	self.enabled = true
 end
 
+-- Global-NVDA mode is a persisted setting (SkuOptions profile: nvdaGlobalTts),
+-- so the Sprachausgabe menu toggle, /skupixel global, and SkuVoice all share one
+-- source of truth. When on, general Sku speech routes to NVDA (per-channel chat
+-- engines still win -- see SkuVoice.NvdaGlobalHandled).
+function PB:IsGlobal()
+	local s = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuOptions.db.profile["SkuOptions"]
+	return s ~= nil and s.nvdaGlobalTts == true
+end
+
+function PB:SetGlobal(v)
+	local s = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuOptions.db.profile["SkuOptions"]
+	if s then s.nvdaGlobalTts = (v == true) end
+	if v then self:EnsureReady() end
+end
+
 -- test/hook path: dedups consecutive identical lines, skips audio tokens
 function PB:Send(text)
 	if not self.enabled or not self.frame then return end
@@ -249,10 +260,10 @@ SlashCmdList["SKUPIXEL"] = function(msg)
 	elseif msg == "calib" then
 		PB:Calib(); print("Sku pixel bridge: CALIB ramp shown. "..PB:GeometryString())
 	elseif msg == "global" or msg == "globalon" or msg == "globaloff" then
-		if msg == "globaloff" then PB.globalMode = false
-		elseif msg == "globalon" then PB.globalMode = true; PB:EnsureReady()
-		else PB.globalMode = not PB.globalMode; if PB.globalMode then PB:EnsureReady() end end
-		print("Sku pixel bridge: GLOBAL NVDA "..(PB.globalMode and "ON (menu/tooltips -> NVDA)" or "OFF"))
+		if msg == "globaloff" then PB:SetGlobal(false)
+		elseif msg == "globalon" then PB:SetGlobal(true)
+		else PB:SetGlobal(not PB:IsGlobal()) end
+		print("Sku pixel bridge: GLOBAL NVDA "..(PB:IsGlobal() and "ON (menu/tooltips -> NVDA)" or "OFF"))
 	elseif msg == "geo" then
 		PB:Enable(); print("Sku pixel bridge: "..PB:GeometryString())
 	else
