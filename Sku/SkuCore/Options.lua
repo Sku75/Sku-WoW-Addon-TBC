@@ -2062,6 +2062,183 @@ function SkuCore.ActionBarsMenuBuilder(self)
 	end
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Settings search ("Einstellungen durchsuchen"). A text-input leaf placed FIRST in
+-- the Einstellungen menu. ENTER opens a text box (SkuOptions:EditBoxShow, same as
+-- the mail composer); on confirm we walk a SCRATCH copy of the whole Einstellungen
+-- tree, collect every entry whose name contains the typed text, and render the
+-- matches as this entry's children -- a flat, breadcrumb-labelled result list. ENTER
+-- (or RIGHT) on a result JUMPS the live menu to that setting and opens it (its
+-- on/off / value submenu), exactly like navigating there by hand. RIGHT on the
+-- search field itself re-browses the last result list without re-typing.
+--
+-- The walk uses a scratch tree (SkuCore:MenuBuilder on a throwaway root) so the live
+-- menu the user is sitting in is never mutated; each dynamic BuildChildren runs under
+-- pcall and is bounded by depth/visit caps. isSelect value-leaves (On/Off, enum
+-- values, range numbers) are collected but not descended into -- they are the search
+-- targets, not containers.
+---------------------------------------------------------------------------------------------------------------------------------------
+local SETTINGS_SEARCH_MAXDEPTH = 10
+local SETTINGS_SEARCH_MAXVISIT = 6000
+
+local function SettingsSearchMatch(aName, aQueryLower)
+	if type(aName) ~= "string" then return false end
+	return string.find(string.lower(aName), aQueryLower, 1, true) ~= nil
+end
+
+-- DFS the scratch tree, collecting {name=breadcrumb, path={names}} for every entry
+-- whose name matches. `path` is the list of node names from a top-level category
+-- down to the match (inclusive), used later to re-descend the LIVE tree.
+function SkuCore:SettingsSearchCollect(aQuery)
+	local tResults = {}
+	if not aQuery or aQuery == "" then return tResults end
+	local tQueryLower = string.lower(aQuery)
+
+	-- throwaway root; MenuBuilder injects the search field + all categories into it
+	local tScratchRoot = { name = "__settingsSearchScratch", children = {} }
+	local tOk = pcall(function() SkuCore:MenuBuilder(tScratchRoot) end)
+	if not tOk then return tResults end
+
+	local tVisited = 0
+
+	local function tWalk(aNode, aPath, aDepth)
+		if tVisited >= SETTINGS_SEARCH_MAXVISIT then return end
+
+		-- build this level's children on demand (dynamic containers start empty)
+		local tChildren = aNode.children
+		if (type(tChildren) ~= "table" or #tChildren == 0) and type(aNode.BuildChildren) == "function" then
+			aNode.children = {}
+			pcall(function() aNode:BuildChildren(aNode) end)
+			tChildren = aNode.children
+		end
+		if type(tChildren) ~= "table" then return end
+
+		for x = 1, #tChildren do
+			if tVisited >= SETTINGS_SEARCH_MAXVISIT then break end
+			local tChild = tChildren[x]
+			-- never index the search field itself
+			if type(tChild) == "table" and not tChild.isSettingsSearch and type(tChild.name) == "string" then
+				tVisited = tVisited + 1
+
+				local tChildPath = {}
+				for i = 1, #aPath do tChildPath[i] = aPath[i] end
+				tChildPath[#tChildPath + 1] = tChild.name
+
+				if SettingsSearchMatch(tChild.name, tQueryLower) then
+					tResults[#tResults + 1] = { name = table.concat(tChildPath, " > "), path = tChildPath }
+				end
+
+				-- recurse into containers only; isSelect nodes are value pickers
+				-- (On/Off, enum, range) whose children are the values, not settings.
+				if aDepth < SETTINGS_SEARCH_MAXDEPTH and tChild.isSelect ~= true then
+					tWalk(tChild, tChildPath, aDepth + 1)
+				end
+			end
+		end
+	end
+
+	-- Some settings BuildChildren closures read/adjust the global cursor; the walk
+	-- runs them on a scratch tree, so snapshot and restore the live cursor around it.
+	local tSavedCursor = SkuOptions.currentMenuPosition
+	tWalk(tScratchRoot, {}, 0)
+	SkuOptions.currentMenuPosition = tSavedCursor
+	dprint("SettingsSearchCollect", aQuery, "visited", tVisited, "matches", #tResults)
+	return tResults
+end
+
+-- Re-descend the LIVE Einstellungen tree to aPath and open the target, mirroring
+-- SkuOptions:SlashFunc's path walk (build children per level, OnSelect to descend).
+-- Leaves the cursor on the opened target; the key handler vocalizes afterwards.
+function SkuCore:SettingsSearchGoTo(aNavRoot, aPath)
+	if type(aNavRoot) ~= "table" or type(aPath) ~= "table" then return end
+
+	if type(aNavRoot.children) ~= "table" or #aNavRoot.children == 0 then
+		if type(aNavRoot.BuildChildren) == "function" then
+			pcall(function() aNavRoot:BuildChildren(aNavRoot) end)
+		end
+	end
+
+	local tMenu = aNavRoot.children
+	local tFound = nil
+	for x = 1, #aPath do
+		if type(tMenu) ~= "table" then tMenu = nil break end
+		local tMatched = nil
+		for y = 1, #tMenu do
+			if aPath[x] == tMenu[y].name then
+				tMatched = tMenu[y]
+				pcall(function() tMatched:OnSelect(true) end)
+				tMenu = tMatched.children
+				break
+			end
+		end
+		if not tMatched then tFound = nil break end
+		tFound = tMatched
+	end
+
+	if tFound then
+		SkuOptions.currentMenuPosition = tFound
+		pcall(function() tFound:OnSelect() end)
+	else
+		SkuOptions.Voice:OutputStringBTtts(L["No results"], true, true, 0.2, nil, nil, nil, 2)
+	end
+end
+
+-- Build the match list as children of the search field from its stored query.
+-- No matches -> children left empty (caller announces "No results").
+function SkuCore:SettingsSearchBuildResults(aSearchEntry)
+	aSearchEntry.children = {}
+	local tQuery = aSearchEntry.searchQuery
+	if not tQuery or tQuery == "" then return end
+
+	local tResults = SkuCore:SettingsSearchCollect(tQuery)
+	for x = 1, #tResults do
+		local tRes = SkuOptions:InjectMenuItems(aSearchEntry, {tResults[x].name}, SkuGenericMenuItem)
+		tRes.searchNavRoot = aSearchEntry.searchNavRoot
+		tRes.searchPath = tResults[x].path
+		-- ENTER/RIGHT on a result jumps the live menu to the setting and opens it.
+		-- (When sorting filters the list, ApplyFilter clones the first result into a
+		-- "Filter;<string>" header that inherits this OnSelect; overriding OnSelect
+		-- bypasses the stock header guard, so re-apply it here.)
+		tRes.OnSelect = function(self, aEnterFlag)
+			if self.name and string.find(self.name, L["Filter"]..";") then return end
+			SkuCore:SettingsSearchGoTo(self.searchNavRoot, self.searchPath)
+		end
+	end
+end
+
+-- ENTER on the search field: open the text box; on confirm rebuild + descend.
+function SkuCore:SettingsSearchPrompt(aSearchEntry)
+	PlaySound(88)
+	SkuOptions.Voice:OutputStringBTtts(L["Enter text and press ENTER key"], false, true, 0.2)
+
+	SkuOptions:EditBoxShow(aSearchEntry.searchQuery or "", function(self)
+		PlaySound(89)
+		local tText = strtrim(SkuOptionsEditBoxEditBox:GetText() or "")
+		aSearchEntry.searchQuery = (tText ~= "") and tText or nil
+
+		SkuCore:SettingsSearchBuildResults(aSearchEntry)
+
+		-- Descend into the results (or stay put and announce none). Re-pinned on a
+		-- short timer because the ENTER that opened the box may still be settling
+		-- the menu cursor (same async-editbox gotcha as the mail composer).
+		local function tShow()
+			if aSearchEntry.children and #aSearchEntry.children > 0 then
+				SkuOptions.currentMenuPosition = aSearchEntry.children[1]
+				pcall(function() SkuOptions.currentMenuPosition:OnEnter() end)
+				SkuOptions:VocalizeCurrentMenuName()
+			else
+				SkuOptions.currentMenuPosition = aSearchEntry
+				pcall(function() aSearchEntry:OnEnter() end)
+				SkuOptions.Voice:OutputStringBTtts(L["No results"], true, true, 0.3, nil, nil, nil, 2)
+			end
+		end
+		tShow()
+		if C_Timer and C_Timer.After then
+			C_Timer.After(0.05, tShow)
+		end
+	end)
+end
+
 -- W7: this is now the "Einstellungen" (Settings) builder, not the old "Core" grab-bag.
 -- It collects three groups of leftover Core specs (Kampf / Tastenbelegungen /
 -- Sonstiges) plus the aggregated settings sub-menus (Allgemein, Spieleinstellungen,
@@ -2866,6 +3043,27 @@ function SkuCore:MenuBuilder(aParentEntry)
 				end
 			end },
 	}
+
+	-- Settings search: the FIRST entry in Einstellungen. ENTER opens a text box to
+	-- type a query; RIGHT re-opens the last result list. Injected before SkuMenu:Build
+	-- so it lands ahead of the categories (which get appended after it). See the
+	-- SkuCore:SettingsSearch* helpers above. On the scratch tree used by the search
+	-- walk this same entry is added and skipped via its isSettingsSearch flag.
+	local tSearchLabel = (GetLocale and GetLocale() == "deDE") and "Einstellungen durchsuchen" or "Search settings"
+	local tSearchEntry = SkuOptions:InjectMenuItems(aParentEntry, {tSearchLabel}, SkuGenericMenuItem)
+	tSearchEntry.isSettingsSearch = true
+	tSearchEntry.searchNavRoot = aParentEntry
+	-- sorting=true makes the RESULT list (this entry's children) filterable: typing
+	-- 2+ letters narrows it via ApplyFilter, like other sorting lists (bags etc.).
+	tSearchEntry.sorting = true
+	tSearchEntry.OnSelect = function(self, aEnterFlag)
+		if aEnterFlag == true then
+			SkuCore:SettingsSearchPrompt(self)
+		elseif self.children and #self.children > 0 then
+			SkuOptions.currentMenuPosition = self.children[1]
+			pcall(function() SkuOptions.currentMenuPosition:OnEnter() end)
+		end
+	end
 
 	SkuMenu:Build(aParentEntry, tSpecs)
 end
