@@ -134,87 +134,53 @@ function Mail:MAIL_FAILED(...)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function Mail:MailEditor(aTargetValue)
+-- Ein normales Eingabefeld fuer ein Mail-Textfeld (Empfaenger / Betreff / Text).
+-- Der Nutzer tippt und bestaetigt mit ENTER (EditBoxShow ruft dann den Callback
+-- und schliesst die Box) -- das urspruengliche, vertraute Verhalten, statt der
+-- kombinierten Tab-Eingabe.
+--   aTargetValue : Feldname auf dem Brief-Eintrag (TmpTo / TmpSubject / TmpBody).
+--   aLabelPrefix : optionale Beschriftung; nach der Eingabe wird der Feld-Eintrag
+--                  auf "<Beschriftung>: <Wert>" gesetzt und vorgelesen -- hoerbare
+--                  Bestaetigung fuer Screenreader-Nutzer.
+-- Ziel-Eintrag und Feld-Eintrag werden JETZT (vor dem Oeffnen der Box) festgehalten
+-- statt im Callback ueber currentMenuPosition gelesen: der Feld-Eintrag ist ein Kind
+-- des Brief-Eintrags, und die Tmp-Werte liegen auf dem Brief-Eintrag (parent).
+function Mail:MailEditor(aTargetValue, aLabelPrefix)
 	PlaySound(88)
 	SkuOptions.Voice:OutputStringBTtts(L["Enter text and press ENTER key"], false, true, 0.2)
 
-	--SkuOptions:EditBoxPasteShow("", function(self)
-   SkuOptions:EditBoxShow(" ", function(self)
+	local tFieldEntry = SkuOptions.currentMenuPosition
+	local tTarget = (tFieldEntry and tFieldEntry.parent) or tFieldEntry
+
+	SkuOptions:EditBoxShow(tTarget[aTargetValue] or "", function(self)
 		PlaySound(89)
-      local tText = SkuOptionsEditBoxEditBox:GetText()
-      local tTarget = SkuOptions.currentMenuPosition.parent or SkuOptions.currentMenuPosition
-      tTarget[aTargetValue] = tText
-      if not tTarget.TmpTo then
-         SkuOptions.Voice:OutputStringBTtts(L["Recepient missing"], false, true, 0.2)
-      elseif not tTarget.TmpSubject then
-         SkuOptions.Voice:OutputStringBTtts(L["Topic missing"], false, true, 0.2)
-      else
-         SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.name, false, true, 0.2)
-      end
+		local tText = strtrim(SkuOptionsEditBoxEditBox:GetText() or "")
+		tTarget[aTargetValue] = (tText ~= "") and tText or nil
+
+		if aLabelPrefix and tFieldEntry then
+			tFieldEntry.name = aLabelPrefix..(tTarget[aTargetValue] and (": "..tTarget[aTargetValue]) or "")
+		end
+
+		-- Cursor auf dem gerade bearbeiteten Feld halten. Der Enter-Klick, der die
+		-- Box geoeffnet hat, hat den Menue-Cursor bereits eine Ebene hoch auf den
+		-- Brief-Eintrag gestellt (templates.lua OnPostSelect -> currentMenuPosition =
+		-- parent). Ohne dieses Re-Pinnen landet der Nutzer nach der Eingabe auf
+		-- "Neuer Brief" statt auf dem Feld. Gleiches Muster wie beim Anhaengen.
+		local function tRepin()
+			if SkuOptions then SkuOptions.currentMenuPosition = tFieldEntry end
+		end
+		tRepin()
+		if _G.C_Timer and _G.C_Timer.After then
+			_G.C_Timer.After(0.02, tRepin)
+			_G.C_Timer.After(0.10, tRepin)
+			_G.C_Timer.After(0.30, function()
+				tRepin()
+				if aLabelPrefix and tFieldEntry then
+					SkuOptions.Voice:OutputStringBTtts(tFieldEntry.name, false, true, 0.2)
+				end
+			end)
+		elseif aLabelPrefix and tFieldEntry then
+			SkuOptions.Voice:OutputStringBTtts(tFieldEntry.name, false, true, 0.2)
+		end
 	end)
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
--- Kombinierte Mail-Eingabe: Name [Tab] Betreff [Tab] Text [Enter] -> sendet direkt
--- Menue bleibt offen (MailFrame muss offen bleiben fuer SendMail).
--- OnKeyDown faengt Tab und Enter ab, unabhaengig vom Enter-Override-Binding.
--- aParentEntry: Referenz auf den "Neuer Brief"-Menueeintrag fuer Fokus-Rueckkehr nach Senden.
-function Mail:MailEditorCombined(aParentEntry)
-	local tField = 1
-	local tValues = {"", "", ""}
-
-	-- EditBox oeffnen (Menue bleibt offen)
-	SkuOptions:EditBoxShow("", function(self) end)
-
-	-- Tab- und Enter-Handler
-	if _G["SkuOptionsEditBoxEditBox"] then
-		_G["SkuOptionsEditBoxEditBox"]:SetScript("OnKeyDown", function(self, key)
-			if key == "TAB" then
-				tValues[tField] = strtrim(self:GetText() or "")
-				if tField < 3 then
-					tField = tField + 1
-					self:SetText("")
-					PlaySound(88)
-					if tField == 2 then
-						SkuOptions.Voice:OutputStringBTtts(L["MAIL_EnterSubjectTab"], false, true, 0.2)
-					elseif tField == 3 then
-						SkuOptions.Voice:OutputStringBTtts(L["MAIL_EnterTextEnter"], false, true, 0.2)
-					end
-				end
-			elseif key == "ENTER" then
-				tValues[tField] = strtrim(self:GetText() or "")
-				-- Handler entfernen und EditBox schliessen
-				self:SetScript("OnKeyDown", nil)
-				if _G["SkuOptionsEditBox"] then
-					_G["SkuOptionsEditBox"]:Hide()
-				end
-
-				local tTo = (tValues[1] ~= "") and tValues[1] or nil
-				local tSubject = (tValues[2] ~= "") and tValues[2] or nil
-				local tBody = (tValues[3] ~= "") and tValues[3] or nil
-
-				if not tTo then
-					SkuOptions.Voice:OutputStringBTtts(L["No Recipient"], false, true, 0.2)
-				elseif not tSubject then
-					SkuOptions.Voice:OutputStringBTtts(L["No topic"], false, true, 0.2)
-				else
-					pcall(SendMail, tTo, tSubject, tBody or " ")
-					SkuOptions.Voice:OutputStringBTtts(L["MAIL_Sent"], false, true, 0.2)
-					-- Fokus zurueck auf "Neuer Brief"
-					if aParentEntry then
-						C_Timer.After(0.3, function()
-							if SkuOptions then
-								SkuOptions.currentMenuPosition = aParentEntry
-								if SkuOptions.VocalizeCurrentMenuName then
-									pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
-								end
-							end
-						end)
-					end
-				end
-			end
-		end)
-	end
-
-	SkuOptions.Voice:OutputStringBTtts(L["MAIL_EnterRecipientTab"], false, true, 0.2)
 end

@@ -1571,166 +1571,176 @@ function SkuCore:AddonsMenuBuilder(aParentEntry)
 	SkuMenu:Build(aParentEntry, tSpecs)
 end
 
--- W7: Mail menu lifted to file scope so it can be a Local window contributor
--- (opened via the contextual "Local" menu when the mailbox is shown) instead
--- of a permanent Core "Mail" child. Body is the unchanged inline build closure.
-function SkuCore.MailMenuBuilder(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["New letter"]}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		-- isSelect entfernt: jedes Kind hat jetzt eine eigene OnAction,
-		-- damit Enter (statt Shift+Enter) den Schalter direkt auslöst.
-		--tNewMenuEntry.ttsEngine = 2
-		tNewMenuEntry.OnAction = function(self, aValue, aName)
-			--open the specific edit box for aname and write result to current mi.tmpx
-			if string.find(aName, L["KommaNumbers"]) and tonumber(string.sub(aName, 0, 1)) == 0 then
-				local tFormatted = string.gsub(aName, ";"..L["KommaNumbers"]..";", ".")
-				tFormatted = string.gsub(tFormatted, ";", "")
-				if tonumber(tFormatted) then
-					aName = tonumber(tFormatted)
-				end
-			end
+-- Baut die "Brief verfassen"-Kindeintraege unter aLetterEntry auf und wird von
+-- BEIDEN Verfassen-Pfaden benutzt: "Neuer Brief" (leer) und "Beantworten" (mit
+-- vorbelegtem Empfaenger/Betreff). aLetterEntry haelt die Zwischenwerte
+-- (TmpTo / TmpSubject / TmpBody / TmpMoneyCfg / TmpItemsLock) und ist zugleich der
+-- Fokus-Rueckkehrpunkt nach dem Senden.
+--
+-- Eintraege:
+--   Empfaenger / Betreff / Text -> NORMALE Eingabefelder (MailEditor): tippen,
+--     mit ENTER bestaetigen. Der eingegebene Wert steht danach in der Beschriftung.
+--   Gold anhaengen -> Gold/Silber/Kupfer-Muenzmenue (Geschwister), genau wie im
+--     Auktionshaus: in eine Muenze gehen zeigt eine 0..max-Werteliste, ENTER auf
+--     einem Wert setzt ihn und kehrt ins Muenzmenue zurueck (isSelect +
+--     noStepUpAfterSelect); der Gesamtbetrag wird sofort per SetSendMailMoney an
+--     den Brief gehaengt.
+--   Gegenstaende anhaengen -> Taschen-Liste, ENTER haengt den Gegenstand an.
+--   Senden -> prueft Empfaenger/Betreff und ruft SendMail.
+function SkuCore.MailBuildComposeChildren(aLetterEntry)
+	local tLetter = aLetterEntry
 
-			if aName == L["Recepient"] then
-				SkuCore.Mail:MailEditor("TmpTo")
-			elseif aName == L["Topic"] then
-				SkuCore.Mail:MailEditor("TmpSubject")
-			elseif aName == L["Text"] then
-				SkuCore.Mail:MailEditor("TmpBody")
-			elseif aName == L["Send"] then
-				if self.TmpTo and self.TmpSubject then --and tNewMenuEntry.TmpBody then
-					--versenden
-					SendMail(self.TmpTo, self.TmpSubject, self.TmpBody or " ")
-					self.TmpTo = nil
-					self.TmpSubject = nil
-					self.TmpBody = nil
-					self.TmpMoney = nil
-					self.TmpItems = nil
-					self.TmpItemsLock = nil
-				else
-					if not self.TmpTo then
-						SkuOptions.Voice:OutputStringBTtts(L["No Recipient"], false, true, 0.2)
-					end
-					if not self.TmpSubject then
-						SkuOptions.Voice:OutputStringBTtts(L["No topic"], false, true, 0.2)
-					end
-				end
-			elseif tonumber(aName) then
-				SetSendMailMoney(tonumber(aName) * 10000)
-			else
-				local tBagSlot, tItem = string.split(":", aName)
-				local tBag, tSlot = string.split(" ", tBagSlot)
-				if not self.TmpItemsLock then self.TmpItemsLock = {} end
-				self.TmpItemsLock[tBag.."-"..tSlot] = true
-				PickupContainerItem(tBag,tSlot)
-				SendMailAttachmentButton_OnDropAny()
-			end
-		end
-		tNewMenuEntry.BuildChildren = function(self)
-			local tNeuerBrief = self  -- Referenz fuer Fokus-Rueckkehr nach Senden
+	-- 1. Empfaenger (normales Eingabefeld)
+	local tToEntry = SkuOptions:InjectMenuItems(tLetter, {L["Recepient"]..(tLetter.TmpTo and (": "..tLetter.TmpTo) or "")}, SkuGenericMenuItem)
+	tToEntry.OnAction = function(self)
+		SkuCore.Mail:MailEditor("TmpTo", L["Recepient"])
+	end
 
-			-- 1. Gegenstaende anhaengen
-			local tItemsEntry = SkuOptions:InjectMenuItems(self, {L["MAIL_AttachItems"]}, SkuGenericMenuItem)
-			tItemsEntry.sorting = true
-			tItemsEntry.dynamic = true
-			local lItemsEntry = tItemsEntry
-			tItemsEntry.BuildChildren = function(self)
-				for bag = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
-					for slot = 1, GetContainerNumSlots(bag) do
-						local tLocked = self.parent.TmpItemsLock
-						if self.parent.TmpItemsLock then
-							tLocked = self.parent.TmpItemsLock[bag.."-"..slot]
-						end
-						if not tLocked then
-							local itemLink = GetContainerItemLink(bag, slot)
-							local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(bag, slot)
-							local isQuestItem
-							if itemLink and isQuestItem ~= true and SkuCore:IsItemSoulbound(bag, slot) ~= true then
-								local tItemEntry = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, SkuGenericMenuItem)
-								local lBag, lSlot = bag, slot
-								tItemEntry.OnAction = function()
-									local tNB = tNeuerBrief
-									if not tNB.TmpItemsLock then tNB.TmpItemsLock = {} end
-									tNB.TmpItemsLock[lBag.."-"..lSlot] = true
-									pcall(PickupContainerItem, lBag, lSlot)
-									pcall(SendMailAttachmentButton_OnDropAny)
-									local function tForce()
-										if not SkuOptions then return end
-										SkuOptions.currentMenuPosition = lItemsEntry
-										if SkuOptions.ClearFilter then pcall(SkuOptions.ClearFilter, SkuOptions) end
+	-- 2. Betreff (normales Eingabefeld)
+	local tSubjectEntry = SkuOptions:InjectMenuItems(tLetter, {L["Topic"]..(tLetter.TmpSubject and (": "..tLetter.TmpSubject) or "")}, SkuGenericMenuItem)
+	tSubjectEntry.OnAction = function(self)
+		SkuCore.Mail:MailEditor("TmpSubject", L["Topic"])
+	end
+
+	-- 3. Text (normales Eingabefeld)
+	local tTextEntry = SkuOptions:InjectMenuItems(tLetter, {L["Text"]..(tLetter.TmpBody and (": "..tLetter.TmpBody) or "")}, SkuGenericMenuItem)
+	tTextEntry.OnAction = function(self)
+		SkuCore.Mail:MailEditor("TmpBody", L["Text"])
+	end
+
+	-- 4. Gegenstaende anhaengen
+	local tItemsEntry = SkuOptions:InjectMenuItems(tLetter, {L["MAIL_AttachItems"]}, SkuGenericMenuItem)
+	tItemsEntry.sorting = true
+	tItemsEntry.dynamic = true
+	local lItemsEntry = tItemsEntry
+	tItemsEntry.BuildChildren = function(self)
+		for bag = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
+			for slot = 1, GetContainerNumSlots(bag) do
+				local tLocked = tLetter.TmpItemsLock and tLetter.TmpItemsLock[bag.."-"..slot]
+				if not tLocked then
+					local itemLink = GetContainerItemLink(bag, slot)
+					local icon, itemCount = GetContainerItemInfo(bag, slot)
+					if itemLink and SkuCore:IsItemSoulbound(bag, slot) ~= true then
+						local tItemEntry = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, SkuGenericMenuItem)
+						local lBag, lSlot = bag, slot
+						tItemEntry.OnAction = function()
+							if not tLetter.TmpItemsLock then tLetter.TmpItemsLock = {} end
+							tLetter.TmpItemsLock[lBag.."-"..lSlot] = true
+							pcall(PickupContainerItem, lBag, lSlot)
+							pcall(SendMailAttachmentButton_OnDropAny)
+							local function tForce()
+								if not SkuOptions then return end
+								SkuOptions.currentMenuPosition = lItemsEntry
+								if SkuOptions.ClearFilter then pcall(SkuOptions.ClearFilter, SkuOptions) end
+							end
+							if _G.C_Timer and _G.C_Timer.After then
+								_G.C_Timer.After(0.02, tForce)
+								_G.C_Timer.After(0.10, tForce)
+								_G.C_Timer.After(0.30, function()
+									tForce()
+									if SkuOptions.VocalizeCurrentMenuName then
+										pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
 									end
-									if _G.C_Timer and _G.C_Timer.After then
-										_G.C_Timer.After(0.02, tForce)
-										_G.C_Timer.After(0.10, tForce)
-										_G.C_Timer.After(0.30, function()
-											tForce()
-											if SkuOptions.VocalizeCurrentMenuName then
-												pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
-											end
-										end)
-									end
-								end
+								end)
 							end
 						end
 					end
 				end
 			end
+		end
+	end
 
-			-- 2. Gold anhaengen
-			local tGoldEntry = SkuOptions:InjectMenuItems(self, {L["MAIL_AttachGold"]}, SkuGenericMenuItem)
-			tGoldEntry.dynamic = true
-			local lGoldEntry = tGoldEntry
-			tGoldEntry.BuildChildren = function(self)
-				local lGoldParent = self
-				local function tForceCursorToGold()
-					if not SkuOptions then return end
-					SkuOptions.currentMenuPosition = lGoldParent
-					if SkuOptions.ClearFilter then pcall(SkuOptions.ClearFilter, SkuOptions) end
+	-- 5. Gold anhaengen: Gold/Silber/Kupfer-Muenzmenue (wie Auktionshaus).
+	local tGoldEntry = SkuOptions:InjectMenuItems(tLetter, {L["MAIL_AttachGold"]}, SkuGenericMenuItem)
+	tGoldEntry.dynamic = true
+	tGoldEntry.BuildChildren = function(self)
+		local tCfg = tLetter.TmpMoneyCfg
+		if not tCfg then
+			tCfg = {gold = 0, silver = 0, copper = 0}
+			tLetter.TmpMoneyCfg = tCfg
+		end
+
+		-- Gesamtbetrag (Kupfer) an den offenen Brief haengen.
+		local function tApplyMoney()
+			pcall(SetSendMailMoney, (tCfg.gold or 0) * 10000 + (tCfg.silver or 0) * 100 + (tCfg.copper or 0))
+		end
+		local function tParseNum(aValue, aName)
+			local tNum = tonumber(aName)
+			if not tNum and aValue and aValue.name then tNum = tonumber(aValue.name) end
+			return tNum
+		end
+
+		-- Ein Muenz-Eintrag (Geschwister). isSelect + noStepUpAfterSelect: ENTER auf
+		-- einem Wert setzt ihn und bleibt im Muenzmenue. GetCurrentValue positioniert
+		-- den Cursor auf den aktuellen Wert.
+		local function tAddCoin(aKey, aLabel, aMax)
+			local tNode = SkuOptions:InjectMenuItems(self, {aLabel..": "..(tCfg[aKey] or 0)}, SkuGenericMenuItem)
+			tNode.dynamic = true
+			tNode.sorting = true
+			tNode.isSelect = true
+			tNode.noStepUpAfterSelect = true
+			tNode.GetCurrentValue = function(s) return tostring(tCfg[aKey] or 0) end
+			tNode.OnAction = function(s, aValue, aName)
+				tCfg[aKey] = tParseNum(aValue, aName) or 0
+				s.name = aLabel..": "..tCfg[aKey]
+				tApplyMoney()
+				pcall(function() SkuOptions.Voice:OutputStringBTtts(tCfg[aKey].." "..aLabel, true, true, 0.2, nil, nil, nil, 2) end)
+			end
+			tNode.BuildChildren = function(s)
+				for x = 0, aMax do
+					SkuOptions:InjectMenuItems(s, {tostring(x)}, SkuGenericMenuItem)
 				end
-				local function tAddGoldEntry(aLabel, aGold)
-					local e = SkuOptions:InjectMenuItems(self, {aLabel}, SkuGenericMenuItem)
-					e.noMenuNumbers = true
-					e.OnAction = function()
-						pcall(SetSendMailMoney, aGold * 10000)
-						if _G.C_Timer and _G.C_Timer.After then
-							_G.C_Timer.After(0.02, tForceCursorToGold)
-							_G.C_Timer.After(0.10, tForceCursorToGold)
-							_G.C_Timer.After(0.30, function()
-								tForceCursorToGold()
-								if SkuOptions.VocalizeCurrentMenuName then
-									pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
-								end
-							end)
-						end
+			end
+		end
+		tAddCoin("gold", L["Gold"], 999)
+		tAddCoin("silver", L["Silver"], 99)
+		tAddCoin("copper", L["Copper"], 99)
+	end
+
+	-- 6. Senden
+	local tSendEntry = SkuOptions:InjectMenuItems(tLetter, {L["Send"]}, SkuGenericMenuItem)
+	tSendEntry.OnAction = function(self)
+		if not tLetter.TmpTo then
+			SkuOptions.Voice:OutputStringBTtts(L["No Recipient"], false, true, 0.2)
+			return
+		end
+		if not tLetter.TmpSubject then
+			SkuOptions.Voice:OutputStringBTtts(L["No topic"], false, true, 0.2)
+			return
+		end
+		SendMail(tLetter.TmpTo, tLetter.TmpSubject, tLetter.TmpBody or " ")
+		-- Zwischenwerte zuruecksetzen; Anhaenge/Geld liegen bereits am offenen Brief
+		-- und werden von Blizzard nach MAIL_SEND_SUCCESS geleert.
+		tLetter.TmpTo = nil
+		tLetter.TmpSubject = nil
+		tLetter.TmpBody = nil
+		tLetter.TmpMoneyCfg = nil
+		tLetter.TmpItemsLock = nil
+		-- Fokus zurueck auf den Brief-Eintrag (Kinder werden beim naechsten Abstieg
+		-- mit frischen, leeren Beschriftungen neu gebaut). MAIL_SEND_SUCCESS sagt
+		-- "Gesendet" an.
+		if _G.C_Timer and _G.C_Timer.After then
+			C_Timer.After(0.3, function()
+				if SkuOptions then
+					SkuOptions.currentMenuPosition = tLetter
+					if SkuOptions.VocalizeCurrentMenuName then
+						pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
 					end
 				end
-				for x = 1, 9 do
-					tAddGoldEntry("0;"..L["KommaNumbers"]..";0;"..(x * 1), x * 0.01)
-				end
-				for x = 1, 9 do
-					tAddGoldEntry("0;"..L["KommaNumbers"]..";"..(x * 1), x * 0.1)
-				end
-				for x = 1, 25 do
-					tAddGoldEntry(tostring(x), x)
-				end
-				for x = 1, 15 do
-					tAddGoldEntry(tostring(x*5 + 25), x*5 + 25)
-				end
-				for x = 1, 20 do
-					tAddGoldEntry(tostring(x*10 + 100), x*10 + 100)
-				end
-				for x = 1, 20 do
-					tAddGoldEntry(tostring(x*20 + 300), x*20 + 300)
-				end
-				for x = 1, 23 do
-					tAddGoldEntry(tostring(x*50 + 700), x*50 + 700)
-				end
-			end
+			end)
+		end
+	end
+end
 
-			-- 3. Versendevorgang starten (Name, Betreff, Text eingeben und direkt senden)
-			local tSendEntry = SkuOptions:InjectMenuItems(self, {L["MAIL_StartSending"]}, SkuGenericMenuItem)
-			tSendEntry.OnAction = function()
-				SkuCore.Mail:MailEditorCombined(tNeuerBrief)
-			end
+-- W7: Mail menu lifted to file scope so it can be a Local window contributor
+-- (opened via the contextual "Local" menu when the mailbox is shown) instead
+-- of a permanent Core "Mail" child. Body is the unchanged inline build closure.
+function SkuCore.MailMenuBuilder(self)
+		-- Neuer Brief: leerer Verfassen-Baum (Empfaenger/Betreff/Text/Gold/Items/Senden).
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["New letter"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			SkuCore.MailBuildComposeChildren(self)
 		end
 
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Open all"]}, SkuGenericMenuItem)
@@ -1887,90 +1897,14 @@ function SkuCore.MailMenuBuilder(self)
 				tNewMenuEntry.BuildChildren = function(self)
 					local tNewMenuParentEntrySub = SkuOptions:InjectMenuItems(self, {L["Reply"]}, SkuGenericMenuItem)
 					tNewMenuParentEntrySub.dynamic = true
-					tNewMenuParentEntrySub.isSelect = true
 					tNewMenuParentEntrySub.ttsEngine = 2
+					-- Empfaenger/Betreff aus dem Original vorbelegen; alle Felder bleiben
+					-- editierbar. Verfassen-Baum kommt aus dem gemeinsamen Builder (gleiche
+					-- normalen Eingabefelder + Gold/Silber/Kupfer-Muenzmenue wie "Neuer Brief").
 					tNewMenuParentEntrySub.TmpTo = sender
 					tNewMenuParentEntrySub.TmpSubject = subject
-					tNewMenuParentEntrySub.OnAction = function(self, aValue, aName)
-						--dprint(aName)
-						--open the specific edit box for aname and write result to current mi.tmpx
-						if aName ==L["Recepient"] then
-							SkuCore.Mail:MailEditor("TmpTo")
-						elseif aName == L["Topic"] then
-							SkuCore.Mail:MailEditor("TmpSubject")
-						elseif aName == L["Text"] then
-							SkuCore.Mail:MailEditor("TmpBody")
-						elseif aName == L["Send"] then
-							if self.TmpTo and self.TmpSubject then --and tNewMenuEntry.TmpBody then
-								--versenden
-								SendMail(self.TmpTo, self.TmpSubject, self.TmpBody or " ")
-								self.TmpTo = nil
-								self.TmpSubject = nil
-								self.TmpBody = nil
-								self.TmpMoney = nil
-								self.TmpItems = nil
-							end
-						elseif tonumber(aName) then
-							SetSendMailMoney(tonumber(aName) * 10000)
-						else
-							local tBagSlot, tItem = string.split(":", aName)
-							local tBag, tSlot = string.split(" ", tBagSlot)
-							if not self.TmpItemsLock then self.TmpItemsLock = {} end
-							self.TmpItemsLock[tBag.."-"..tSlot] = true
-							PickupContainerItem(tBag,tSlot)
-							SendMailAttachmentButton_OnDropAny()
-						end
-					end
 					tNewMenuParentEntrySub.BuildChildren = function(self)
-						--local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Recepient"]}, SkuGenericMenuItem)
-						--tNewMenuParentEntrySubSub.ttsEngine = 2
-						--local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Topic"]}, SkuGenericMenuItem)
-						--tNewMenuParentEntrySubSub.ttsEngine = 2
-						local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Text"]}, SkuGenericMenuItem)
-						--tNewMenuParentEntrySubSub.ttsEngine = 2
-						local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Gold"]}, SkuGenericMenuItem)
-						--tNewMenuParentEntrySubSub.ttsEngine = 2
-						tNewMenuParentEntrySubSub.dynamic = true
-						tNewMenuParentEntrySubSub.BuildChildren = function(self)
-							for x = 1, 25 do
-								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
-							end
-							for x = 1, 15 do
-								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*5 + 25}, SkuGenericMenuItem)
-							end
-							for x = 1, 20 do
-								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*10 + 100}, SkuGenericMenuItem)
-							end
-							for x = 1, 20 do
-								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*20 + 300}, SkuGenericMenuItem)
-							end
-							for x = 1, 23 do
-								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*50 + 700}, SkuGenericMenuItem)
-							end
-						end
-						local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Items"]}, SkuGenericMenuItem)
-						tNewMenuParentEntrySubSub.dynamic = true
-						tNewMenuParentEntrySubSub.BuildChildren = function(self)
-							for bag = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
-								for slot = 1, GetContainerNumSlots(bag) do
-									local tLocked = self.parent.TmpItemsLock
-									if self.parent.TmpItemsLock then
-										tLocked = self.parent.TmpItemsLock[bag.."-"..slot]
-									end
-									if not tLocked then
-										local itemLink = GetContainerItemLink(bag, slot)
-										local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(bag, slot)
-										if itemLink then
-											--dprint(bag, slot, itemLink)
-											local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, SkuGenericMenuItem)
-										end
-									end
-								end
-							end
-						end
-						--tNewMenuParentEntrySubSub.ttsEngine = 2
-						local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Send"]}, SkuGenericMenuItem)
-						--tNewMenuParentEntrySubSub.ttsEngine = 2
+						SkuCore.MailBuildComposeChildren(self)
 					end
 
 					if hasItem or (money and money > 0) then

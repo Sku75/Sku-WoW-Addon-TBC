@@ -6315,6 +6315,12 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 		SkuOptionsEditBoxEditBox:SetMultiLine(false)
 	end
 	
+	-- Etwaigen fremden OnKeyDown-Handler entfernen, den ein frueherer Aufrufer auf
+	-- der GETEILTEN EditBox hinterlassen haben koennte. Sonst kann ein solcher
+	-- Handler (mit veralteten Closures) in eine spaetere, ganz andere Eingabe
+	-- hineinfunken. ENTER/OK laufen ueber die einmalig gesetzten Hook-Skripte.
+	SkuOptionsEditBoxEditBox:SetScript("OnKeyDown", nil)
+
 	SkuOptionsEditBoxEditBox:Hide()
 	SkuOptionsEditBoxEditBox:SetText("")
 	if aText then
