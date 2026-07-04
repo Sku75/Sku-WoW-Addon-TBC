@@ -6,21 +6,18 @@
 ;  edge of the WoW window, decodes the UTF-8 text it carries, and speaks it via
 ;  the real screen reader (NVDA) with a SAPI fallback.
 ;
-;  AUTO-LOCATING: it scans the bottom band for the 2-cell MAGENTA marker block
-;  (>=24px magenta run, which rejects stray magenta scene pixels), takes its
-;  left edge as the grid origin, and decodes at a fixed 16px pitch (confirmed
-;  exact: render res == screen res). So it no longer depends on a hard-coded
-;  corner coordinate.
+;  Each poll takes ONE atomic BitBlt snapshot of the row into an in-memory
+;  bitmap, then reads every cell from that snapshot -- so a chunk can never tear
+;  across a mid-read update (the bug that dropped all but the last chunk of a
+;  long line). Marker location is found once via PixelSearch and cached.
 ;
-;  Passive screen capture only (PixelGetColor / PixelSearch) -- never touches
-;  WoW memory, so it's ToS/Warden safe. NOT OCR: flat colour cells, decoded by
-;  arithmetic, not glyph recognition.
-;
-;  Requires: WoW borderless-windowed, default gamma (no HDR/high-contrast),
-;  nvdaControllerClient64.dll next to this script. Ctrl+Alt+P pauses.
+;  Passive screen capture only -> ToS/Warden safe. NOT OCR: flat colour cells,
+;  decoded by arithmetic. Requires WoW borderless-windowed, default gamma.
+;  Ctrl+Alt+P pauses.
 ; ============================================================================
 global CELL    := 16     ; must match PB.CELL_PX
-global POLL_MS := 20     ; fast poll; idle polls are ~3 pixel reads (marker cached)
+global VERSION := 5      ; spoken on launch so you can hear which build is live
+global POLL_MS := 20
 
 #SingleInstance Force
 Persistent()
@@ -29,13 +26,16 @@ CoordMode "Pixel", "Screen"
 
 global gLastSeq := -1
 global gLastMarkerOx := -9999
-global gOx := 0, gCy := 0, gHaveMarker := false   ; cached marker location
+global gOx := 0, gCy := 0, gHaveMarker := false
+global gBuf := "", gBufTime := 0
 global gLogFile := A_ScriptDir "\sku_pixel_reader.log"
 global gNvdaOk  := false
 global gSap     := ""
 global gHalf    := CELL // 2
+global gScreenDC := 0, gMemDC := 0, gHBM := 0, gCapW := 0
 
-Log("=== reader started  screen=" A_ScreenWidth "x" A_ScreenHeight " ===")
+Log("=== reader started (v" VERSION ")  screen=" A_ScreenWidth "x" A_ScreenHeight " ===")
+InitCapture()
 
 if FileExist(A_ScriptDir "\nvdaControllerClient64.dll") {
     DllCall("LoadLibrary", "Str", A_ScriptDir "\nvdaControllerClient64.dll", "Ptr")
@@ -49,19 +49,47 @@ try {
     Log("SAPI init failed: " e.Message)
 }
 
+Speak("Sku pixel reader ready, version " VERSION, true)
+Log("announced ready, version " VERSION)
+
 SetTimer Poll, POLL_MS
 return
 
 ; ---------------------------------------------------------------------------
+InitCapture() {
+    global gScreenDC, gMemDC, gHBM, gCapW
+    gScreenDC := DllCall("GetDC", "Ptr", 0, "Ptr")
+    gMemDC := DllCall("CreateCompatibleDC", "Ptr", gScreenDC, "Ptr")
+    gCapW := A_ScreenWidth
+    gHBM := DllCall("CreateCompatibleBitmap", "Ptr", gScreenDC, "Int", gCapW, "Int", 1, "Ptr")
+    DllCall("SelectObject", "Ptr", gMemDC, "Ptr", gHBM)
+}
+
+; snapshot the 1px-tall screen row at y into row 0 of the memory bitmap
+CaptureRow(y) {
+    global gMemDC, gScreenDC, gCapW
+    DllCall("BitBlt", "Ptr", gMemDC, "Int", 0, "Int", 0, "Int", gCapW, "Int", 1
+        , "Ptr", gScreenDC, "Int", 0, "Int", y, "UInt", 0x00CC0020)   ; SRCCOPY
+}
+
+; GetPixel from the snapshot -> COLORREF 0x00BBGGRR
+MemColor(x) {
+    global gMemDC
+    return DllCall("gdi32\GetPixel", "Ptr", gMemDC, "Int", x, "Int", 0, "UInt")
+}
+
+; ---------------------------------------------------------------------------
 Poll() {
-    global gLastSeq, CELL, gHalf, gOx, gCy, gHaveMarker, gLastMarkerOx
-    ; reuse the cached marker if it's still there (cheap: 2 pixel checks); only
-    ; run the full screen scan when the marker moved/vanished.
-    if (!gHaveMarker || !MarkerHere(gOx, gCy)) {
-        if !FindMarker(&gOx, &gCy) {
-            gHaveMarker := false
+    global gLastSeq, gOx, gCy, gHaveMarker, gLastMarkerOx, gBuf, gBufTime
+    ; safety: if a multi-chunk line stalled (final chunk missed), flush after 400ms
+    if (gBuf != "" && (A_TickCount - gBufTime) > 400) {
+        Speak(gBuf, true)
+        gBuf := ""
+    }
+    ; locate the marker on the live screen (once), then reuse it
+    if (!gHaveMarker) {
+        if !FindMarker(&gOx, &gCy)
             return
-        }
         gHaveMarker := true
         if (Abs(gOx - gLastMarkerOx) > 2) {
             gLastMarkerOx := gOx
@@ -69,90 +97,117 @@ Poll() {
         }
     }
 
-    seq := Round(ChanR(gOx, gCy, 2) / 17)      ; cell 2 = seq (R = seq*17)
-    if (seq = gLastSeq)
-        return                                  ; nothing new -> done (the common path)
-
-    len := ReadByte(gOx, gCy, 3)               ; cell 3 = length
-    if (len < 1 || len > 200)
+    CaptureRow(gCy)                             ; atomic snapshot of the whole row
+    if (!MarkerHereMem()) {                     ; marker gone -> re-scan next poll
+        gHaveMarker := false
         return
+    }
 
+    seq := Round(CellR(2) / 17)
+    if (seq = gLastSeq)
+        return                                  ; nothing new (the common path)
+
+    len := ReadByteM(3)
+    if (len < 1 || len > 200) {
+        Log("#" seq " BADlen=" len)
+        return
+    }
     sum := 0, bytes := []
     Loop len {
-        bv := ReadByte(gOx, gCy, 3 + A_Index)  ; cells 4 .. 4+len-1 = payload
-        if (bv < 0)
+        bv := ReadByteM(3 + A_Index)
+        if (bv < 0) {
+            Log("#" seq " BADbyte@" A_Index)
             return
+        }
         bytes.Push(bv)
         sum := Mod(sum + bv, 256)
     }
-    if (ReadByte(gOx, gCy, 4 + len) != sum)    ; cell 4+len = checksum
-        return                                  ; torn frame -> retry next tick
+    if (ReadByteM(4 + len) != sum) {
+        Log("#" seq " BADsum")
+        return
+    }
 
     text := BytesToUtf8(bytes, len)
     if (text = "")
         return
+    gRaw := CellG(2)                            ; cell 2 green: bit0=first, bit1=last
+    state := Round(gRaw / 85)
+    isFirst := (Mod(state, 2) = 1)
+    isLast  := (state >= 2)
     gLastSeq := seq
-    Speak(text)
-    Log("#" seq " (" len "b) " text)
+    if (isFirst)
+        gBuf := text                            ; new line -> reset assembly buffer
+    else
+        gBuf := (gBuf = "") ? text : gBuf . " " . text
+    gBufTime := A_TickCount
+    if (isLast) {
+        Speak(gBuf, true)                       ; whole line assembled -> speak once
+        Log("#" seq " g=" gRaw " st=" state " SPEAK(" StrLen(gBuf) ") " gBuf)
+        gBuf := ""
+    } else {
+        Log("#" seq " g=" gRaw " st=" state " buf+(" len ") " text)
+    }
 }
 
-; is the 2-cell magenta marker still at the cached origin? (cheap re-validate)
-MarkerHere(ox, cy) {
-    global CELL, gHalf
-    return IsMagenta(ox + gHalf, cy) && IsMagenta(ox + CELL + gHalf, cy)
+; --- cell reads from the snapshot (COLORREF byte order) --------------------
+CellColor(i) {
+    global gOx, CELL, gHalf
+    return MemColor(gOx + CELL * i + gHalf)
 }
-
-; find the 2-cell magenta marker in the bottom band; return its left edge + row centre
-FindMarker(&originX, &cy) {
-    y1 := A_ScreenHeight - 30, y2 := A_ScreenHeight - 2
-    mx := 0, my := 0
-    if !PixelSearch(&mx, &my, 0, y1, A_ScreenWidth - 1, y2, 0xFF00FF, 55)
-        return false
-    ; measure the magenta run horizontally around (mx,my)
-    lx := mx
-    while (lx > 0 && IsMagenta(lx - 1, my))
-        lx--
-    rx := mx
-    while (rx < A_ScreenWidth - 1 && IsMagenta(rx + 1, my))
-        rx++
-    if (rx - lx + 1 < 24)                        ; too narrow => stray magenta, not our block
-        return false
-    ; measure vertical extent at a point safely inside the block
-    px := lx + 3
-    ty := my
-    while (ty > 0 && IsMagenta(px, ty - 1))
-        ty--
-    by := my
-    while (by < A_ScreenHeight - 1 && IsMagenta(px, by + 1))
-        by++
-    originX := lx
-    cy := (ty + by) // 2
-    return true
+CellR(i) {
+    return CellColor(i) & 0xFF
 }
-
-IsMagenta(x, y) {
-    c := PixelGetColor(x, y, "RGB")
-    return ((c >> 16) & 0xFF) > 200 && ((c >> 8) & 0xFF) < 70 && (c & 0xFF) > 200
+CellG(i) {
+    return (CellColor(i) >> 8) & 0xFF
 }
-
-; red channel of cell i (centre-sampled)
-ChanR(ox, cy, i) {
-    global CELL, gHalf
-    c := PixelGetColor(ox + CELL * i + gHalf, cy, "RGB")
-    return (c >> 16) & 0xFF
-}
-
-; decode data byte of cell i (R = high nibble, G = low nibble)
-ReadByte(ox, cy, i) {
-    global CELL, gHalf
-    c := PixelGetColor(ox + CELL * i + gHalf, cy, "RGB")
-    hi := Round(((c >> 16) & 0xFF) / 17)
+ReadByteM(i) {
+    c := CellColor(i)
+    hi := Round((c & 0xFF) / 17)
     lo := Round(((c >> 8) & 0xFF) / 17)
     if (hi < 0 || hi > 15 || lo < 0 || lo > 15)
         return -1
     return hi * 16 + lo
 }
+MarkerHereMem() {
+    global gOx, CELL, gHalf
+    return IsMagentaMem(gOx + gHalf) && IsMagentaMem(gOx + CELL + gHalf)
+}
+IsMagentaMem(x) {
+    c := MemColor(x)
+    return (c & 0xFF) > 200 && ((c >> 8) & 0xFF) < 70 && ((c >> 16) & 0xFF) > 200
+}
 
+; --- marker location on the live screen (PixelSearch, RGB byte order) ------
+FindMarker(&originX, &cy) {
+    y1 := A_ScreenHeight - 30, y2 := A_ScreenHeight - 2
+    mx := 0, my := 0
+    if !PixelSearch(&mx, &my, 0, y1, A_ScreenWidth - 1, y2, 0xFF00FF, 55)
+        return false
+    lx := mx
+    while (lx > 0 && IsMagentaScreen(lx - 1, my))
+        lx--
+    rx := mx
+    while (rx < A_ScreenWidth - 1 && IsMagentaScreen(rx + 1, my))
+        rx++
+    if (rx - lx + 1 < 24)
+        return false
+    px := lx + 3
+    ty := my
+    while (ty > 0 && IsMagentaScreen(px, ty - 1))
+        ty--
+    by := my
+    while (by < A_ScreenHeight - 1 && IsMagentaScreen(px, by + 1))
+        by++
+    originX := lx
+    cy := (ty + by) // 2
+    return true
+}
+IsMagentaScreen(x, y) {
+    c := PixelGetColor(x, y, "RGB")
+    return ((c >> 16) & 0xFF) > 200 && ((c >> 8) & 0xFF) < 70 && (c & 0xFF) > 200
+}
+
+; ---------------------------------------------------------------------------
 BytesToUtf8(bytes, len) {
     if (len = 0)
         return ""
@@ -163,22 +218,25 @@ BytesToUtf8(bytes, len) {
     return StrGet(buf, len, "UTF-8")
 }
 
-Speak(text) {
+; interrupt=true cancels current speech first; false appends (queues after)
+Speak(text, interrupt) {
     global gNvdaOk, gSap
     if (gNvdaOk && DllCall("nvdaControllerClient64\nvdaController_testIfRunning") = 0) {
-        DllCall("nvdaControllerClient64\nvdaController_cancelSpeech")
+        if (interrupt)
+            DllCall("nvdaControllerClient64\nvdaController_cancelSpeech")
         DllCall("nvdaControllerClient64\nvdaController_speakText", "WStr", text)
         return
     }
     if IsObject(gSap) {
-        gSap.Speak("", 3)
+        if (interrupt)
+            gSap.Speak("", 3)
         gSap.Speak(text, 1)
     }
 }
 
 Log(msg) {
     global gLogFile
-    FileAppend FormatTime(, "HH:mm:ss") "  " msg "`n", gLogFile, "UTF-8"
+    FileAppend FormatTime(, "HH:mm:ss") "." A_MSec "  " msg "`n", gLogFile, "UTF-8"
 }
 
 ^!p:: {

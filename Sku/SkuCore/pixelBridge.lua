@@ -43,6 +43,11 @@ PB.seq      = 0
 PB.cells    = nil      -- array of Texture objects
 PB.frame    = nil
 PB.lastText = nil
+PB.emitQueue = {}      -- pending continuation chunks of a long line
+PB.lastRenderAt = 0
+PB.ticker   = nil
+PB.PACE     = 0.06     -- min seconds a chunk stays on screen before the next
+                       -- (reader polls every 20ms, so >=1 clean capture per chunk)
 
 ------------------------------------------------------------------- helpers
 -- one byte -> two nibble colour channels (0,17,34,...255); blue stays 0 so the
@@ -70,6 +75,35 @@ local function ClipUtf8(s, n)
 		if i + len - 1 > n then i = i - 1 end
 	end
 	return string.sub(s, 1, i)
+end
+
+-- split a line into <=maxb-byte pieces, preferring word (space) boundaries so
+-- NVDA never mispronounces a word cut across chunks
+local function SplitChunks(s, maxb)
+	s = string.gsub(s, "^%s+", "")
+	s = string.gsub(s, "%s+$", "")
+	local chunks = {}
+	while #s > 0 do
+		if #s <= maxb then
+			chunks[#chunks + 1] = s
+			break
+		end
+		local sp
+		for i = maxb, 1, -1 do
+			if string.byte(s, i) == 32 then sp = i break end
+		end
+		local piece
+		if sp and sp > 1 then
+			piece = string.sub(s, 1, sp - 1)
+			s = string.sub(s, sp + 1)
+		else
+			piece = ClipUtf8(s, maxb)          -- no space: hard split on a char boundary
+			s = string.sub(s, #piece + 1)
+		end
+		s = string.gsub(s, "^%s+", "")
+		if piece ~= "" then chunks[#chunks + 1] = piece end
+	end
+	return chunks
 end
 
 ------------------------------------------------------------------- geometry
@@ -140,19 +174,25 @@ local function SetCellByte(t, b)
 	t:SetColorTexture(r, g, bl, 1)
 end
 
--- render one line into the cells + bump the sequence (assumes frame is ready)
-function PB:Render(text)
+-- render one chunk into the cells + bump the sequence (assumes frame is ready).
+-- first = starts a new message (reader resets its assembly buffer + interrupts);
+-- last  = final chunk (reader speaks the whole assembled line). A single-chunk
+-- line is first AND last, so it speaks instantly; only multi-chunk lines wait to
+-- assemble. The 2-bit state (first + 2*last) rides in the seq cell's green
+-- channel as one of four levels (0/85/170/255).
+function PB:Render(text, first, last)
 	local payload = ClipUtf8(text, self.MAX_BYTES)
 	local len = #payload
 	local sum = 0
 	for i = 1, len do sum = (sum + string.byte(payload, i)) % 256 end
 
 	self.seq = (self.seq + 1) % 16
+	local state = (first and 1 or 0) + (last and 2 or 0)
 
-	-- marker (2x magenta), seq (R=seq*17), len, payload, checksum
+	-- marker (2x magenta), seq cell (R=seq*17, G=first/last state), len, payload, checksum
 	self.cells[0]:SetColorTexture(1, 0, 1, 1)
 	self.cells[1]:SetColorTexture(1, 0, 1, 1)
-	self.cells[2]:SetColorTexture((self.seq * 17) / 255, 0, 0, 1)
+	self.cells[2]:SetColorTexture((self.seq * 17) / 255, (state * 85) / 255, 0, 1)
 	SetCellByte(self.cells[3], len)
 	for i = 1, len do
 		SetCellByte(self.cells[3 + i], string.byte(payload, i))
@@ -163,6 +203,16 @@ function PB:Render(text)
 	for i = 4 + len + 1, #self.cells do
 		self.cells[i]:SetColorTexture(0, 0, 0, 1)
 	end
+	self.lastRenderAt = GetTime()
+end
+
+-- release queued continuation chunks one at a time, holding each on screen at
+-- least PACE so the reader reliably captures it (append, doesn't interrupt)
+function PB:DrainTick()
+	if #self.emitQueue == 0 then return end
+	if (GetTime() - self.lastRenderAt) < self.PACE then return end
+	local item = table.remove(self.emitQueue, 1)
+	self:Render(item.text, false, item.last)
 end
 
 -- build + show the row on demand (so the engine path works without /skupixel)
@@ -170,6 +220,9 @@ function PB:EnsureReady()
 	if not self.frame then self:Build() end
 	if not self.frame:IsShown() then self.frame:Show() end
 	self.enabled = true
+	if not self.ticker then
+		self.ticker = C_Timer.NewTicker(self.PACE / 2, function() self:DrainTick() end)
+	end
 end
 
 -- Global-NVDA mode is a persisted setting (SkuOptions profile: nvdaGlobalTts),
@@ -194,16 +247,25 @@ function PB:Send(text)
 	if text:sub(1, 6) == "sound-" then return end   -- audio-token, not readable text
 	if text == self.lastText then return end
 	self.lastText = text
-	self:Render(text)
+	self.emitQueue = {}
+	self:Render(text, true, true)
 end
 
--- engine path (per-channel NVDA routing from SkuChat): always emits, and
--- self-readies the frame. Interrupt semantics live on the reader side (it does
--- cancelSpeech + speakText), so each new line cuts off the previous one.
+-- engine path (per-channel NVDA routing from SkuChat + global menu output).
+-- Splits long lines into word-bounded chunks: the first chunk renders now and
+-- interrupts NVDA (new line cuts the old); continuation chunks are paced out by
+-- DrainTick and appended so NVDA speaks the whole line in order.
 function PB:Emit(text)
 	if type(text) ~= "string" or text == "" then return end
 	self:EnsureReady()
-	self:Render(text)
+	local chunks = SplitChunks(text, self.MAX_BYTES)
+	if #chunks == 0 then return end
+	-- a new line supersedes any still-pending chunks (message-level interrupt)
+	self.emitQueue = {}
+	for i = 2, #chunks do
+		self.emitQueue[#self.emitQueue + 1] = { text = chunks[i], last = (i == #chunks) }
+	end
+	self:Render(chunks[1], true, #chunks == 1)   -- first; also last if single chunk
 end
 
 ------------------------------------------------------------------- hook Sku voice
