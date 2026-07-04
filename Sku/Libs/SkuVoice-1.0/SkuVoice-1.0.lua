@@ -57,6 +57,14 @@ SkuVoice.TutorialPlaying = 0
 local mSkuVoiceQueue = {}
 local mSkuVoiceQueueBTTS = {}
 local mSkuVoiceQueueBTTS_Speaking = {}
+-- Per-message Blizzard-TTS voice override. Keyed by the FINAL assembled queue
+-- string (the exact value stored in mSkuVoiceQueueBTTS), value = a 1-based menu
+-- index into SkuChat.WowTtsVoices (same domain as the global WowTtsVoice
+-- setting). Kept as a SIDE-map on purpose so the queue entries stay plain
+-- strings — the "queuereset" sentinel and the dedupe-by-text logic are
+-- untouched. nil (no entry) => fall back to the global voice. See
+-- OutputStringBTtts (writes) and the OnUpdate dequeue (reads+clears).
+local mSkuVoiceQueueBTTS_Voice = {}
 SkuVoice.LastPlayedString = ""
 --setmetatable(mSkuVoiceQueue, SkuNav.PrintMT)
 
@@ -115,8 +123,13 @@ function SkuVoice:Create()
 						end
 						if not tIsAlreadySpeakingThat then
 							table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
-							C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tValue, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+							-- Per-message voice override (nil => global voice). Same
+							-- 1-based domain as WowTtsVoice, so the "- 1" API convention
+							-- is identical whether the voice is per-channel or global.
+							local tVoiceIndex = mSkuVoiceQueueBTTS_Voice[tValue] or SkuOptions.db.profile["SkuChat"].WowTtsVoice
+							C_VoiceChat.SpeakText(tVoiceIndex - 1, tValue, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
 						end
+						mSkuVoiceQueueBTTS_Voice[tValue] = nil
 						--print("tLastWait = 0")
 						tLastWait = 0.1
 					else
@@ -455,11 +468,11 @@ function SkuVoice:CheckIgnore(aString)
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial)
+function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial, aVoice)
 	if not aString then
 		return
 	end
-	
+
 	--changing to a new approach with passing a table of arguments instead of a lot of values, but still need to update that everywhere
 	if type(aOverwrite) == "table" then
 		aWait = aOverwrite.wait
@@ -474,6 +487,10 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		aDnQ = aOverwrite.dnQ
 		aIgnoreLinks = aOverwrite.ignoreLinks
 		aIsTutorial = aOverwrite.isTutorial
+		-- Optional per-message Blizzard-TTS voice (1-based index into
+		-- SkuChat.WowTtsVoices). Attached to the queued string below so the
+		-- dequeue can pick it instead of the global voice.
+		aVoice = aOverwrite.voice
 		aOverwrite = aOverwrite.overwrite
 	end
 
@@ -707,6 +724,9 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		else
 			mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTtsMac
 		end
+		if aVoice then
+			mSkuVoiceQueueBTTS_Voice[tFinalStringForBTtsMac] = aVoice
+		end
 		if not aIgnoreLinks then
 			SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTtsMac, "")
 		end
@@ -715,6 +735,9 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 			mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTts
 		else
 			mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTts
+		end
+		if aVoice then
+			mSkuVoiceQueueBTTS_Voice[tFinalStringForBTts] = aVoice
 		end
 
 		if not aIgnoreLinks then

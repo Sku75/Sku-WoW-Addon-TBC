@@ -3,6 +3,7 @@
 local L = Sku.L
 
 local play = 2	--this is just a local constant for output type (play, true, false)
+local skuTts = 3	--audio via Sku's own TTS (see SkuChat/Core.lua for the full state list)
 
 SkuChat.CombatConfigUnitTypes = {
 	--[[
@@ -475,6 +476,81 @@ function CleanStringHelper(aString)
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
+-- Build the output-mode chooser onto a message-type / channel node.
+--
+-- The stored value has four legacy-compatible states:
+--   false     = Muted
+--   true      = Text
+--   play (2)  = Audio via Blizzard TTS (optionally with a per-entry voice)
+--   skuTts (3)= Audio via Sku's own TTS
+-- The Blizzard-TTS voice is a separate 1-based index into SkuChat.WowTtsVoices
+-- (nil => use the global voice). It is persisted next to the value via the
+-- aReadVoice/aWriteVoice closures so the read sites (AddMessage) stay simple.
+--
+-- Menu shape (FLAT):  <Node> -> Muted | Text | Sku TTS | Blizzard TTS -> <voice>*
+-- The four modes are flat siblings; only "Blizzard TTS" descends (into the voice
+-- list). Muted/Text/Sku TTS are self-contained leaves (own OnAction, no isSelect).
+-- After any change we rebuild the enclosing list (Refresh) so the node's state
+-- label + the spoken announce reflect the new value.
+local function BuildOutputModeNode(aTypeNode, aTabIndex, aBaseName, aReadVal, aWriteVal, aReadVoice, aWriteVoice)
+	aTypeNode.tabIndex = aTabIndex
+
+	-- state suffix on the node label
+	local tActive = aReadVal()
+	local tSuffix
+	if tActive == true then
+		tSuffix = L["Text"]
+	elseif tActive == play then
+		local tVi = aReadVoice()
+		local tVName = tVi and SkuChat.WowTtsVoices[tVi]
+		tSuffix = L["Blizzard TTS"]..(tVName and (": "..tVName) or "")
+	elseif tActive == skuTts then
+		tSuffix = L["Sku TTS"]
+	else
+		tSuffix = L["Inactive"]
+	end
+	aTypeNode.name = aBaseName.." ("..tSuffix..")"
+
+	local function Refresh()
+		SkuChat:InitTab(aTabIndex)
+		aTypeNode:OnUpdate(aTypeNode)
+	end
+
+	aTypeNode.dynamic = true
+	aTypeNode.GetCurrentValue = function(self)
+		local v = aReadVal()
+		if v == true then return L["Text"] end
+		if v == play then return L["Blizzard TTS"] end
+		if v == skuTts then return L["Sku TTS"] end
+		return L["Inactive"]
+	end
+	aTypeNode.BuildChildren = function(self)
+		local tMuted = SkuOptions:InjectMenuItems(self, {L["Inactive"]}, SkuGenericMenuItem)
+		tMuted.OnAction = function() aWriteVal(false) Refresh() end
+
+		local tText = SkuOptions:InjectMenuItems(self, {L["Text"]}, SkuGenericMenuItem)
+		tText.OnAction = function() aWriteVal(true) Refresh() end
+
+		local tSku = SkuOptions:InjectMenuItems(self, {L["Sku TTS"]}, SkuGenericMenuItem)
+		tSku.OnAction = function() aWriteVal(skuTts) aWriteVoice(nil) Refresh() end
+
+		local tBliz = SkuOptions:InjectMenuItems(self, {L["Blizzard TTS"]}, SkuGenericMenuItem)
+		tBliz.dynamic = true
+		tBliz.sorting = true
+		tBliz.GetCurrentValue = function(self)
+			local tVi = aReadVoice()
+			return tVi and SkuChat.WowTtsVoices[tVi] or nil
+		end
+		tBliz.BuildChildren = function(self)
+			for tIdx, tVoiceName in pairs(SkuChat.WowTtsVoices) do
+				local tVoiceEntry = SkuOptions:InjectMenuItems(self, {tVoiceName}, SkuGenericMenuItem)
+				tVoiceEntry.OnAction = function() aWriteVal(play) aWriteVoice(tIdx) Refresh() end
+			end
+		end
+	end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:MenuBuilder(aParentEntry)
 	BN_WHISPER = L["Battle Net whisper"]
 
@@ -565,58 +641,30 @@ function SkuChat:MenuBuilder(aParentEntry)
 								tCatEntry.dynamic = true
 								tCatEntry.sorting = true
 								tCatEntry.catType = i
+								tCatEntry.tabIndex = x
 								tCatEntry.BuildChildren = function(self)
 									for w = 1, #v do
-										local tName = _G[v[w].type]
+										local tBaseName = _G[v[w].type]
 										if v[w].text then
-											tName = v[w].text
+											tBaseName = v[w].text
 										end
 
-										local tActive = SkuSettings:Sub("SkuChat").tabs[x].messageTypes[i][w]
-										if tActive == true then
-											tName = tName.." ("..L["Text"]..")"
-										elseif tActive == play then
-											tName = tName.." ("..L["Audio"]..")"
-										else
-											tName = tName.." ("..L["Inactive"]..")"
-										end
-
-										local tTypeEntry = SkuOptions:InjectMenuItems(self, {tName}, SkuGenericMenuItem)
-										tTypeEntry.dynamic = true
-										tTypeEntry.isSelect = true
-										tTypeEntry.typeType = w
-										tTypeEntry.tabIndex = x
-										tTypeEntry.OnAction = function(self, aValue, aName)
-											dprint("OnAction", "aValue", aValue, "aName", aName, "self.name", self.name, "self.typeType", self.typeType, "self.parent.name", self.parent.name, "self.parent.catType", self.parent.catType)
-											dprint(self.parent.parent.name)
-
-											local tNewValue = play
-											if aName == L["Audio"] then
-												tNewValue = play
-											elseif aName == L["Text"] then
-												tNewValue = true
-											elseif aName == L["Inactive"] then
-												tNewValue = false
-											end
-											
-											SkuSettings:Sub("SkuChat").tabs[self.tabIndex].messageTypes[self.parent.catType][self.typeType] = tNewValue
-
-											SkuChat:InitTab(self.tabIndex)
-
-											self:OnUpdate(self)
-										end
-										tTypeEntry.BuildChildren = function(self)
-											if tActive == play then
-												local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Text"]}, SkuGenericMenuItem)
-												local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Inactive"]}, SkuGenericMenuItem)
-											elseif tActive == true then
-												local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Audio"]}, SkuGenericMenuItem)
-												local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Inactive"]}, SkuGenericMenuItem)
-											else
-												local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Audio"]}, SkuGenericMenuItem)
-												local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Text"]}, SkuGenericMenuItem)
-											end
-										end
+										-- capture loop-locals so each closure stays bound to this entry
+										local tCat, tW, tTabIdx = i, w, x
+										local tTypeEntry = SkuOptions:InjectMenuItems(self, {tBaseName}, SkuGenericMenuItem)
+										BuildOutputModeNode(tTypeEntry, tTabIdx, tBaseName,
+											function() return SkuSettings:Sub("SkuChat").tabs[tTabIdx].messageTypes[tCat][tW] end,
+											function(val) SkuSettings:Sub("SkuChat").tabs[tTabIdx].messageTypes[tCat][tW] = val end,
+											function()
+												local tv = SkuSettings:Sub("SkuChat").tabs[tTabIdx].messageTypeVoice
+												return tv and tv[tCat] and tv[tCat][tW]
+											end,
+											function(idx)
+												local tTab = SkuSettings:Sub("SkuChat").tabs[tTabIdx]
+												tTab.messageTypeVoice = tTab.messageTypeVoice or {}
+												tTab.messageTypeVoice[tCat] = tTab.messageTypeVoice[tCat] or {}
+												tTab.messageTypeVoice[tCat][tW] = idx
+											end)
 									end
 								end
 							end
@@ -628,61 +676,36 @@ function SkuChat:MenuBuilder(aParentEntry)
 					tNewMenuSubEntry.sorting = true
 					tNewMenuSubEntry.BuildChildren = function(self)
 						local tChannelList = {GetChannelList()}
-						for q = 1, C_ChatInfo.GetNumActiveChannels() * 3, 3 do 
+						for q = 1, C_ChatInfo.GetNumActiveChannels() * 3, 3 do
+							local tShortName = tChannelList[q + 1]
 							local tNumber = ""
-							local tStatus = L["Inactive"]
-							local tActive = false
 							local tFoundC
 							for y = 1, #SkuSettings:Sub("SkuChat").tabs[x].channels do
-								if SkuSettings:Sub("SkuChat").tabs[x].channels[y].name == tChannelList[q + 1] then
+								if SkuSettings:Sub("SkuChat").tabs[x].channels[y].name == tShortName then
 									tNumber = tChannelList[q]
-									if SkuSettings:Sub("SkuChat").tabs[x].channels[y].status == true then
-										tStatus = L["Text"]
-										tActive = true
-									elseif SkuSettings:Sub("SkuChat").tabs[x].channels[y].status == play then
-										tStatus = L["Audio"]
-										tActive = play
-									end
 									tFoundC = true
 								end
 							end
 							if not tFoundC then
-								SkuSettings:Sub("SkuChat").tabs[x].channels[#SkuSettings:Sub("SkuChat").tabs[x].channels + 1] = {name = tChannelList[q + 1], status = false}
+								SkuSettings:Sub("SkuChat").tabs[x].channels[#SkuSettings:Sub("SkuChat").tabs[x].channels + 1] = {name = tShortName, status = false}
 							end
 
-							local tTypeEntry = SkuOptions:InjectMenuItems(self, {tNumber.."#"..tChannelList[q + 1].." ("..tStatus..")"}, SkuGenericMenuItem)
-							tTypeEntry.dynamic = true
-							tTypeEntry.isSelect = true
-							tTypeEntry.shortName = tChannelList[q + 1] 
-							tTypeEntry.tabIndex = x
-							tTypeEntry.OnAction = function(self, aValue, aName)
-								for y = 1, #SkuSettings:Sub("SkuChat").tabs[x].channels do
-									if SkuSettings:Sub("SkuChat").tabs[x].channels[y].name == self.shortName then
-										if aName == L["Audio"] then
-											SkuSettings:Sub("SkuChat").tabs[x].channels[y].status = play
-										elseif aName == L["Text"] then
-											SkuSettings:Sub("SkuChat").tabs[x].channels[y].status = true
-										elseif aName == L["Inactive"] then
-											SkuSettings:Sub("SkuChat").tabs[x].channels[y].status = false
-										end
+							local tTabIdx, tChanName = x, tShortName
+							local function FindChannel()
+								for y = 1, #SkuSettings:Sub("SkuChat").tabs[tTabIdx].channels do
+									if SkuSettings:Sub("SkuChat").tabs[tTabIdx].channels[y].name == tChanName then
+										return SkuSettings:Sub("SkuChat").tabs[tTabIdx].channels[y]
 									end
-								end									
-
-								self:OnUpdate(self)
-								SkuChat:InitTab(self.tabIndex)
-							end
-							tTypeEntry.BuildChildren = function(self)
-								if tActive == play then
-									local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Text"]}, SkuGenericMenuItem)
-									local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Inactive"]}, SkuGenericMenuItem)
-								elseif tActive == true then
-									local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Audio"]}, SkuGenericMenuItem)
-									local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Inactive"]}, SkuGenericMenuItem)
-								else
-									local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Audio"]}, SkuGenericMenuItem)
-									local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Text"]}, SkuGenericMenuItem)
 								end
 							end
+							local tBaseName = tNumber.."#"..tShortName
+							local tTypeEntry = SkuOptions:InjectMenuItems(self, {tBaseName}, SkuGenericMenuItem)
+							tTypeEntry.shortName = tChanName
+							BuildOutputModeNode(tTypeEntry, tTabIdx, tBaseName,
+								function() local c = FindChannel() return c and c.status end,
+								function(val) local c = FindChannel() if c then c.status = val end end,
+								function() local c = FindChannel() return c and c.voice end,
+								function(idx) local c = FindChannel() if c then c.voice = idx end end)
 						end
 					end			
 					

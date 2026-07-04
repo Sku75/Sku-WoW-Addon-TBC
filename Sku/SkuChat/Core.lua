@@ -8,6 +8,12 @@ Sku_CombatLog_Filter_Defaults = {}
 
 
 local play = 2	--this is just a local constant for output type (play, true, false)
+-- Output-type constant for "audio via Sku's own TTS" (the pre-recorded audio-file
+-- engine), as opposed to `play` (=2) which is "audio via Blizzard TTS". Both are
+-- truthy so every "is this type active?" check (~= false) keeps treating them as
+-- active exactly like before; only AddMessage's speak branch distinguishes them.
+-- Legacy saved values stay valid: false=muted, true=text, 2=Blizzard TTS.
+local skuTts = 3
 local zoneChannels = {
 	general = 1,
 	trade = 2,
@@ -4033,10 +4039,17 @@ function SkuChat:InitTab(tNewTabIndex)
 
 		--get output type
 		local tAudio
+		-- tVoice: optional per-category/per-channel Blizzard-TTS voice (1-based
+		-- index into SkuChat.WowTtsVoices). nil => use the global voice. Only
+		-- consulted for the `play` (Blizzard TTS) branch below.
+		local tVoice
 		for i, v in pairs(SkuChat.ChatFrameMessageTypes) do
 			for w = 1, #v do
 				if v[w].type == messageTypeGroup then
 					tAudio = a.tab.messageTypes[i][w]
+					if a.tab.messageTypeVoice and a.tab.messageTypeVoice[i] then
+						tVoice = a.tab.messageTypeVoice[i][w]
+					end
 				end
 			end
 		end
@@ -4044,6 +4057,7 @@ function SkuChat:InitTab(tNewTabIndex)
 			for x = 1, #a.tab.channels do
 				if a.tab.channels[x].name == messageTypeGroup then
 					tAudio = a.tab.channels[x].status
+					tVoice = a.tab.channels[x].voice
 				end
 			end
 		end
@@ -4086,7 +4100,13 @@ function SkuChat:InitTab(tNewTabIndex)
 
 			--audio output
 			if tAudio == play and not tIsBareAuctionCreated then
-				SkuOptions.Voice:OutputStringBTtts(tFlatBody, false, true, 0.2, nil, nil, nil, 2)
+				-- Blizzard TTS. tVoice (per-category/channel, 1-based index) rides
+				-- along on the queued string and overrides the global voice for
+				-- just this line; nil => global voice (unchanged legacy behaviour).
+				SkuOptions.Voice:OutputStringBTtts(tFlatBody, {wait = true, length = 0.2, engine = 2, voice = tVoice})
+			elseif tAudio == skuTts and not tIsBareAuctionCreated then
+				-- Sku's own TTS (pre-recorded audio-file engine).
+				SkuOptions.Voice:OutputString(tFlatBody, false, true, 0.2)
 			end
 
 			if a.tab.audioOnNewMessage and not tIsBareAuctionCreated then
