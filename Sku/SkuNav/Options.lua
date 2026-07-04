@@ -364,12 +364,20 @@ function SkuNav:getAnnotatedWaypointLabel(originalLabel, id)
 	--layer
 	local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, tSkuWpName, nil))
 
-	-- annotate with "visited" if visited
+	-- Build the prefix (visited marker + layer). Both pieces end in ";", which
+	-- would otherwise glue directly onto originalLabel's leading distance number
+	-- (e.g. "E 0;2 Meter") — some TTS voices then spell that number digit by
+	-- digit. Insert a space after the prefix so the distance is never glued to a
+	-- semicolon. No prefix (no layer, not visited) → return the label unchanged.
+	local tPrefix = tLayerText
 	if SkuNav:waypointWasVisited(tSkuWpName) then
-		return L["visited"]..";"..tLayerText..originalLabel
-	else 
-		return tLayerText..originalLabel
+		tPrefix = L["visited"]..";"..tPrefix
 	end
+
+	if tPrefix ~= "" then
+		return tPrefix.." "..originalLabel
+	end
+	return originalLabel
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
