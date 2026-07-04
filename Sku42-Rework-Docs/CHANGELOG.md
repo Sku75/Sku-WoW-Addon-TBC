@@ -22,6 +22,19 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **Window builders — dropped the redundant Close/Cancel entries (5 windows).**
+  Craft, Trade skill, Class trainer, Trade, and Pet stable each appended a
+  Close/"Schließen"/Cancel button as the last menu entry (`SkuCore/LocalMenu.lua`
+  builders `Build_CraftFrame`, `Build_TradeSkillFrame`, `Build_ClassTrainerFrame`,
+  `Build_TradeFrame`, `Build_PetStableFrame`). Escape already closes each window,
+  so the extra entry was pure noise for a keyboard/screen-reader user; removed all
+  five to match the other windows (gossip/quest/bags/...) which never listed one.
+  The windows' real action buttons (Create / Create-all / Train / Trade-accept /
+  purchase) are untouched — those are context-gated on the Blizzard button's
+  `IsEnabled()`/`IsVisible()`, so they correctly vanish when the action isn't
+  available (nothing to train, enchant missing reagents), which is unchanged.
+  In-game verified.
+
 - **Character frame — flattened the single "Gegenstände" node under "Ausrüstung".**
   In `SkuCore:Build_CharacterFrame` (`SkuCore/LocalMenu.lua`) the equipment branch
   built "Ausrüstung" (`L["Equipment"]`) with exactly one child, "Gegenstände"

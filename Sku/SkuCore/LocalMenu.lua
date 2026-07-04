@@ -3020,24 +3020,9 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 	end
 
 
-	local tFrameName = "ClassTrainerCancelButton"
-	local tFriendlyName = L["Close"]
-	if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
-		table.insert(aParentChilds, tFriendlyName)
-		aParentChilds[tFriendlyName] = {
-			frameName = tFrameName,
-			RoC = "Child",
-			type = "Button",
-			obj = _G[tFrameName],
-			textFirstLine = tFriendlyName,
-			textFull = "",
-			childs = {},
-			func = _G[tFrameName]:GetScript("OnClick"),
-			click = true,
-		}   
-	end   
-
-
+	-- Close button intentionally not listed: Escape already closes the window, so a
+	-- redundant Close entry is just noise for a screen-reader user (matches the other
+	-- windows -- gossip/quest/bags/... -- which never listed one).
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3279,22 +3264,9 @@ function SkuCore:Build_TradeFrame(aParentChilds)
 		}
 	end
 
-	-- Schließen-Button
-	local tCloseName = L["Close"]
-	if _G["TradeFrameCancelButton"] then
-		table.insert(aParentChilds, tCloseName)
-		aParentChilds[tCloseName] = {
-			frameName = "TradeFrameCancelButton",
-			RoC = "Child",
-			type = "Button",
-			obj = _G["TradeFrameCancelButton"],
-			textFirstLine = tCloseName,
-			textFull = "",
-			childs = {},
-			func = _G["TradeFrameCancelButton"]:GetScript("OnClick"),
-			click = true,
-		}
-	end
+	-- Close button intentionally not listed: Escape already closes the window, so a
+	-- redundant Close entry is just noise for a screen-reader user (matches the other
+	-- windows -- gossip/quest/bags/... -- which never listed one).
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3611,23 +3583,9 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 	end
 
 
-	local tFrameName = "TradeSkillFrameCloseButton"
-	local tFriendlyName = L["Schließen"]
-	if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
-		table.insert(aParentChilds, tFriendlyName)
-		aParentChilds[tFriendlyName] = {
-			frameName = tFrameName,
-			RoC = "Child",
-			type = "Button",
-			obj = _G[tFrameName],
-			textFirstLine = tFriendlyName,
-			textFull = "",
-			childs = {},
-			func = _G[tFrameName]:GetScript("OnClick"),
-			click = true,
-		}   
-	end   
-
+	-- Close ("Schließen") button intentionally not listed: Escape already closes
+	-- the window, so a redundant Close entry is just noise for a screen-reader user
+	-- (matches the other windows -- gossip/quest/bags/... -- which never listed one).
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3842,22 +3800,9 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 		end
 	end
 
-	local tFrameName = "CraftFrameCloseButton"
-	local tFriendlyName = L["Schließen"]
-	if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
-		table.insert(aParentChilds, tFriendlyName)
-		aParentChilds[tFriendlyName] = {
-			frameName = tFrameName,
-			RoC = "Child",
-			type = "Button",
-			obj = _G[tFrameName],
-			textFirstLine = tFriendlyName,
-			textFull = "",
-			childs = {},
-			func = _G[tFrameName]:GetScript("OnClick"),
-			click = true,
-		}   
-	end
+	-- Close ("Schließen") button intentionally not listed: Escape already closes
+	-- the window, so a redundant Close entry is just noise for a screen-reader user
+	-- (matches the other windows -- gossip/quest/bags/... -- which never listed one).
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3942,21 +3887,9 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 		end
 	end
 
-	local tFrame = _G["PetStableFrameCloseButton"]
-	if tFrame:IsEnabled() == true then --IsMouseClickEnabled()
-		table.insert(aParentChilds, L["Schließen"])
-		aParentChilds[L["Schließen"]] = {
-			frameName = "PetStableFrameCloseButton",
-			RoC = "Child",
-			type = "Button",
-			obj = tFrame,
-			textFirstLine = L["Schließen"],
-			textFull = "",
-			childs = {},
-			func = tFrame:GetScript("OnClick"),
-			click = true,
-		}
-	end
+	-- Close ("Schließen") button intentionally not listed: Escape already closes the
+	-- window, so a redundant Close entry is just noise for a screen-reader user
+	-- (matches the other windows -- gossip/quest/bags/... -- which never listed one).
 end
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
