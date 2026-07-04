@@ -20,7 +20,7 @@
 ;  nvdaControllerClient64.dll next to this script. Ctrl+Alt+P pauses.
 ; ============================================================================
 global CELL    := 16     ; must match PB.CELL_PX
-global POLL_MS := 80
+global POLL_MS := 20     ; fast poll; idle polls are ~3 pixel reads (marker cached)
 
 #SingleInstance Force
 Persistent()
@@ -29,6 +29,7 @@ CoordMode "Pixel", "Screen"
 
 global gLastSeq := -1
 global gLastMarkerOx := -9999
+global gOx := 0, gCy := 0, gHaveMarker := false   ; cached marker location
 global gLogFile := A_ScriptDir "\sku_pixel_reader.log"
 global gNvdaOk  := false
 global gSap     := ""
@@ -53,33 +54,38 @@ return
 
 ; ---------------------------------------------------------------------------
 Poll() {
-    global gLastSeq, CELL, gHalf
-    global gLastMarkerOx
-    ox := 0, cy := 0
-    if !FindMarker(&ox, &cy)
-        return
-    if (Abs(ox - gLastMarkerOx) > 2) {         ; log marker location once (throttled)
-        gLastMarkerOx := ox
-        Log("marker found at ox=" ox " cy=" cy)
+    global gLastSeq, CELL, gHalf, gOx, gCy, gHaveMarker, gLastMarkerOx
+    ; reuse the cached marker if it's still there (cheap: 2 pixel checks); only
+    ; run the full screen scan when the marker moved/vanished.
+    if (!gHaveMarker || !MarkerHere(gOx, gCy)) {
+        if !FindMarker(&gOx, &gCy) {
+            gHaveMarker := false
+            return
+        }
+        gHaveMarker := true
+        if (Abs(gOx - gLastMarkerOx) > 2) {
+            gLastMarkerOx := gOx
+            Log("marker found at ox=" gOx " cy=" gCy)
+        }
     }
 
-    seq := Round(ChanR(ox, cy, 2) / 17)       ; cell 2 = seq (R = seq*17)
+    seq := Round(ChanR(gOx, gCy, 2) / 17)      ; cell 2 = seq (R = seq*17)
     if (seq = gLastSeq)
-        return
+        return                                  ; nothing new -> done (the common path)
 
-    len := ReadByte(ox, cy, 3)                 ; cell 3 = length
+    len := ReadByte(gOx, gCy, 3)               ; cell 3 = length
     if (len < 1 || len > 200)
         return
 
     sum := 0, bytes := []
     Loop len {
-        bv := ReadByte(ox, cy, 3 + A_Index)    ; cells 4 .. 4+len-1 = payload
+        bv := ReadByte(gOx, gCy, 3 + A_Index)  ; cells 4 .. 4+len-1 = payload
         if (bv < 0)
             return
         bytes.Push(bv)
         sum := Mod(sum + bv, 256)
     }
-    if (ReadByte(ox, cy, 4 + len) != sum)      ; cell 4+len = checksum
+    if (ReadByte(gOx, gCy, 4 + len) != sum)    ; cell 4+len = checksum
         return                                  ; torn frame -> retry next tick
 
     text := BytesToUtf8(bytes, len)
@@ -87,7 +93,13 @@ Poll() {
         return
     gLastSeq := seq
     Speak(text)
-    Log("#" seq " ox=" ox " cy=" cy " (" len "b) " text)
+    Log("#" seq " (" len "b) " text)
+}
+
+; is the 2-cell magenta marker still at the cached origin? (cheap re-validate)
+MarkerHere(ox, cy) {
+    global CELL, gHalf
+    return IsMagenta(ox + gHalf, cy) && IsMagenta(ox + CELL + gHalf, cy)
 }
 
 ; find the 2-cell magenta marker in the bottom band; return its left edge + row centre

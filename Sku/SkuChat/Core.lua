@@ -14,6 +14,11 @@ local play = 2	--this is just a local constant for output type (play, true, fals
 -- active exactly like before; only AddMessage's speak branch distinguishes them.
 -- Legacy saved values stay valid: false=muted, true=text, 2=Blizzard TTS.
 local skuTts = 3
+-- Output-type constant for "audio via the user's real screen reader (NVDA)"
+-- through the pixel bridge (SkuCore/pixelBridge.lua). Truthy like play/skuTts so
+-- "is active?" (~= false) checks are unchanged; only AddMessage's speak branch
+-- routes it. Interrupt semantics (new line cuts old) live on the reader side.
+local nvda = 4
 local zoneChannels = {
 	general = 1,
 	trade = 2,
@@ -4116,10 +4121,19 @@ function SkuChat:InitTab(tNewTabIndex)
 				-- Blizzard TTS. tVoice (per-category/channel, 1-based index) rides
 				-- along on the queued string and overrides the global voice for
 				-- just this line; nil => global voice (unchanged legacy behaviour).
-				SkuOptions.Voice:OutputStringBTtts(tFlatBody, {wait = true, length = 0.2, engine = 2, voice = tVoice})
+				-- explicit=true: this channel's engine was chosen deliberately, so a
+				-- global-NVDA default must NOT override it (per-channel wins).
+				SkuOptions.Voice:OutputStringBTtts(tFlatBody, {wait = true, length = 0.2, engine = 2, voice = tVoice, explicit = true})
 			elseif tAudio == skuTts and not tIsBareAuctionCreated then
 				-- Sku's own TTS (pre-recorded audio-file engine).
-				SkuOptions.Voice:OutputString(tFlatBody, false, true, 0.2)
+				SkuOptions.Voice:OutputString(tFlatBody, {wait = true, length = 0.2, explicit = true})
+			elseif tAudio == nvda and not tIsBareAuctionCreated then
+				-- Real screen reader (NVDA) via the pixel bridge. Emits the line to
+				-- the on-screen cell row; the external reader decodes it and speaks
+				-- it through NVDA, interrupting the previous line. Plays on NVDA's
+				-- own audio, separate from WoW's -- so Sku/Blizzard-TTS channels are
+				-- never cut off by NVDA churn. No in-game audio for this line.
+				if SkuPixelBridge then SkuPixelBridge:Emit(tFlatBody) end
 			end
 
 			if a.tab.audioOnNewMessage and not tIsBareAuctionCreated then

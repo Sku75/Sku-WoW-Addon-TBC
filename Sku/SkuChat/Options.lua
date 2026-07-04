@@ -4,6 +4,7 @@ local L = Sku.L
 
 local play = 2	--this is just a local constant for output type (play, true, false)
 local skuTts = 3	--audio via Sku's own TTS (see SkuChat/Core.lua for the full state list)
+local nvda = 4	--audio via the user's real screen reader (NVDA) through the pixel bridge
 
 SkuChat.CombatConfigUnitTypes = {
 	--[[
@@ -506,6 +507,8 @@ local function BuildOutputModeNode(aTypeNode, aTabIndex, aBaseName, aReadVal, aW
 		tSuffix = L["Blizzard TTS"]..(tVName and (": "..tVName) or "")
 	elseif tActive == skuTts then
 		tSuffix = L["Sku TTS"]
+	elseif tActive == nvda then
+		tSuffix = "NVDA"
 	else
 		tSuffix = L["Inactive"]
 	end
@@ -522,6 +525,7 @@ local function BuildOutputModeNode(aTypeNode, aTabIndex, aBaseName, aReadVal, aW
 		if v == true then return L["Text"] end
 		if v == play then return L["Blizzard TTS"] end
 		if v == skuTts then return L["Sku TTS"] end
+		if v == nvda then return "NVDA" end
 		return L["Inactive"]
 	end
 	aTypeNode.BuildChildren = function(self)
@@ -533,6 +537,9 @@ local function BuildOutputModeNode(aTypeNode, aTabIndex, aBaseName, aReadVal, aW
 
 		local tSku = SkuOptions:InjectMenuItems(self, {L["Sku TTS"]}, SkuGenericMenuItem)
 		tSku.OnAction = function() aWriteVal(skuTts) aWriteVoice(nil) Refresh() end
+
+		local tNvda = SkuOptions:InjectMenuItems(self, {"NVDA"}, SkuGenericMenuItem)
+		tNvda.OnAction = function() aWriteVal(nvda) aWriteVoice(nil) Refresh() end
 
 		local tBliz = SkuOptions:InjectMenuItems(self, {L["Blizzard TTS"]}, SkuGenericMenuItem)
 		tBliz.dynamic = true

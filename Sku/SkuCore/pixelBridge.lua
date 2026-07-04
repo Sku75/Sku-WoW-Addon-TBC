@@ -39,6 +39,10 @@ PB.X_OFFSET_PX  = 160  -- shift the whole row right off the bottom-left corner:
 --   4 .. 4+LEN-1 PAYLOAD  UTF-8 bytes, one per cell
 --   4+LEN        CHECKSUM sum(payload) mod 256, one byte
 PB.enabled  = false
+PB.globalMode = false  -- when true, general Sku speech (menu/tooltips/announces)
+                       -- routes to NVDA via the bridge instead of in-game TTS.
+                       -- Per-channel chat engines still win (see SkuVoice). Session
+                       -- only (reset each load); toggle with /skupixel global.
 PB.seq      = 0
 PB.cells    = nil      -- array of Texture objects
 PB.frame    = nil
@@ -140,13 +144,8 @@ local function SetCellByte(t, b)
 	t:SetColorTexture(r, g, bl, 1)
 end
 
-function PB:Send(text)
-	if not self.enabled or not self.frame then return end
-	if type(text) ~= "string" or text == "" then return end
-	if text:sub(1, 6) == "sound-" then return end   -- audio-token, not readable text
-	if text == self.lastText then return end
-	self.lastText = text
-
+-- render one line into the cells + bump the sequence (assumes frame is ready)
+function PB:Render(text)
 	local payload = ClipUtf8(text, self.MAX_BYTES)
 	local len = #payload
 	local sum = 0
@@ -168,6 +167,32 @@ function PB:Send(text)
 	for i = 4 + len + 1, #self.cells do
 		self.cells[i]:SetColorTexture(0, 0, 0, 1)
 	end
+end
+
+-- build + show the row on demand (so the engine path works without /skupixel)
+function PB:EnsureReady()
+	if not self.frame then self:Build() end
+	if not self.frame:IsShown() then self.frame:Show() end
+	self.enabled = true
+end
+
+-- test/hook path: dedups consecutive identical lines, skips audio tokens
+function PB:Send(text)
+	if not self.enabled or not self.frame then return end
+	if type(text) ~= "string" or text == "" then return end
+	if text:sub(1, 6) == "sound-" then return end   -- audio-token, not readable text
+	if text == self.lastText then return end
+	self.lastText = text
+	self:Render(text)
+end
+
+-- engine path (per-channel NVDA routing from SkuChat): always emits, and
+-- self-readies the frame. Interrupt semantics live on the reader side (it does
+-- cancelSpeech + speakText), so each new line cuts off the previous one.
+function PB:Emit(text)
+	if type(text) ~= "string" or text == "" then return end
+	self:EnsureReady()
+	self:Render(text)
 end
 
 ------------------------------------------------------------------- hook Sku voice
@@ -223,6 +248,11 @@ SlashCmdList["SKUPIXEL"] = function(msg)
 		print("Sku pixel bridge: TEST sent. "..PB:GeometryString())
 	elseif msg == "calib" then
 		PB:Calib(); print("Sku pixel bridge: CALIB ramp shown. "..PB:GeometryString())
+	elseif msg == "global" or msg == "globalon" or msg == "globaloff" then
+		if msg == "globaloff" then PB.globalMode = false
+		elseif msg == "globalon" then PB.globalMode = true; PB:EnsureReady()
+		else PB.globalMode = not PB.globalMode; if PB.globalMode then PB:EnsureReady() end end
+		print("Sku pixel bridge: GLOBAL NVDA "..(PB.globalMode and "ON (menu/tooltips -> NVDA)" or "OFF"))
 	elseif msg == "geo" then
 		PB:Enable(); print("Sku pixel bridge: "..PB:GeometryString())
 	else
