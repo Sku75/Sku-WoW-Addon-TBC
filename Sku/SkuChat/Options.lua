@@ -571,106 +571,6 @@ function SkuChat:MenuBuilder(aParentEntry)
 				tTabEntry.sorting = true
 				tTabEntry.tabIndex = x
 				tTabEntry.BuildChildren = function(self)
-					local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["Rename"]}, SkuGenericMenuItem)
-					tNewTabEntry.isSelect = true
-					tNewTabEntry.OnAction = function(self, aValue, aName)
-						--print("OnAction Rename", "aValue", aValue, "aName", aName, self.name, self.parent.name, self.parent.tabIndex)
-						PlaySound(88)
-						SkuOptions.Voice:OutputStringBTtts(L["Enter name and press ENTER key"], false, true, 0.2, nil, nil, nil, 2)
-						SkuOptions:EditBoxShow(" ", function(self)
-							PlaySound(89)
-							local tText = CleanStringHelper(SkuOptionsEditBoxEditBox:GetText())
-							if tText ~= "" then
-								SkuSettings:Sub("SkuChat").tabs[SkuOptions.currentMenuPosition.tabIndex].name = tText
-								SkuChat:InitTab(SkuOptions.currentMenuPosition.tabIndex)
-								SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
-								SkuOptions.Voice:OutputStringBTtts(L["Umbenannt"], false, true, 0.2, nil, nil, nil, 2)
-							end
-						end)					
-					end
-					local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["Delete"]}, SkuGenericMenuItem)
-					tNewTabEntry.isSelect = true
-					tNewTabEntry.OnAction = function(self, aValue, aName)
-						--print("OnAction Delete", "aValue", aValue, "aName", aName, self.name, self.parent.name)
-						SkuChat:DeleteTab(self.parent.tabIndex)
-						self.parent:OnUpdate(self.parent)
-						SkuOptions.Voice:OutputStringBTtts(L["Deleted"], false, true, 0.2, nil, nil, nil, 2)
-					end
-			
-					local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["set all message types and channels to inactive"]}, SkuGenericMenuItem)
-					tNewTabEntry.isSelect = true
-					tNewTabEntry.tabIndex = x
-					tNewTabEntry.OnAction = function(self, aValue, aName)
-						for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[self.tabIndex].messageTypes) do
-							for u = 1, #v do
-								v[u] = false
-							end
-						end
-						for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[self.tabIndex].channels) do
-							v.status = false
-						end
-
-						SkuChat:InitTab(self.tabIndex)
-						self.parent:OnUpdate(self.parent)
-					end
-
-					local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["set all message types and channels to text"]}, SkuGenericMenuItem)
-					tNewTabEntry.isSelect = true
-					tNewTabEntry.tabIndex = x
-					tNewTabEntry.OnAction = function(self, aValue, aName)
-						for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[self.tabIndex].messageTypes) do
-							for u = 1, #v do
-								v[u] = true
-							end
-						end
-						for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[self.tabIndex].channels) do
-							v.status = true
-						end
-
-						SkuChat:InitTab(self.tabIndex)
-						self.parent:OnUpdate(self.parent)
-					end
-
-					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Nachrichtentypen"]}, SkuGenericMenuItem)
-					tNewMenuSubEntry.dynamic = true
-					tNewMenuSubEntry.sorting = true
-					tNewMenuSubEntry.BuildChildren = function(self)
-						for i, v in pairs(SkuChat.ChatFrameMessageTypes) do
-							if i ~= "SKU" then
-								local tCatEntry = SkuOptions:InjectMenuItems(self, {_G[i]}, SkuGenericMenuItem)
-								tCatEntry.dynamic = true
-								tCatEntry.sorting = true
-								tCatEntry.catType = i
-								tCatEntry.tabIndex = x
-								tCatEntry.BuildChildren = function(self)
-									for w = 1, #v do
-										local tBaseName = _G[v[w].type]
-										if v[w].text then
-											tBaseName = v[w].text
-										end
-
-										-- capture loop-locals so each closure stays bound to this entry
-										local tCat, tW, tTabIdx = i, w, x
-										local tTypeEntry = SkuOptions:InjectMenuItems(self, {tBaseName}, SkuGenericMenuItem)
-										BuildOutputModeNode(tTypeEntry, tTabIdx, tBaseName,
-											function() return SkuSettings:Sub("SkuChat").tabs[tTabIdx].messageTypes[tCat][tW] end,
-											function(val) SkuSettings:Sub("SkuChat").tabs[tTabIdx].messageTypes[tCat][tW] = val end,
-											function()
-												local tv = SkuSettings:Sub("SkuChat").tabs[tTabIdx].messageTypeVoice
-												return tv and tv[tCat] and tv[tCat][tW]
-											end,
-											function(idx)
-												local tTab = SkuSettings:Sub("SkuChat").tabs[tTabIdx]
-												tTab.messageTypeVoice = tTab.messageTypeVoice or {}
-												tTab.messageTypeVoice[tCat] = tTab.messageTypeVoice[tCat] or {}
-												tTab.messageTypeVoice[tCat][tW] = idx
-											end)
-									end
-								end
-							end
-						end
-					end
-
 					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Channels"]}, SkuGenericMenuItem)
 					tNewMenuSubEntry.dynamic = true
 					tNewMenuSubEntry.sorting = true
@@ -733,6 +633,107 @@ function SkuChat:MenuBuilder(aParentEntry)
 								function(idx) local c = FindChannel() if c then c.voice = idx end end)
 						end
 					end			
+
+					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Nachrichtentypen"]}, SkuGenericMenuItem)
+					tNewMenuSubEntry.dynamic = true
+					tNewMenuSubEntry.sorting = true
+					tNewMenuSubEntry.BuildChildren = function(self)
+						for i, v in pairs(SkuChat.ChatFrameMessageTypes) do
+							if i ~= "SKU" then
+								local tCatEntry = SkuOptions:InjectMenuItems(self, {_G[i]}, SkuGenericMenuItem)
+								tCatEntry.dynamic = true
+								tCatEntry.sorting = true
+								tCatEntry.catType = i
+								tCatEntry.tabIndex = x
+								tCatEntry.BuildChildren = function(self)
+									for w = 1, #v do
+										local tBaseName = _G[v[w].type]
+										if v[w].text then
+											tBaseName = v[w].text
+										end
+
+										-- capture loop-locals so each closure stays bound to this entry
+										local tCat, tW, tTabIdx = i, w, x
+										local tTypeEntry = SkuOptions:InjectMenuItems(self, {tBaseName}, SkuGenericMenuItem)
+										BuildOutputModeNode(tTypeEntry, tTabIdx, tBaseName,
+											function() return SkuSettings:Sub("SkuChat").tabs[tTabIdx].messageTypes[tCat][tW] end,
+											function(val) SkuSettings:Sub("SkuChat").tabs[tTabIdx].messageTypes[tCat][tW] = val end,
+											function()
+												local tv = SkuSettings:Sub("SkuChat").tabs[tTabIdx].messageTypeVoice
+												return tv and tv[tCat] and tv[tCat][tW]
+											end,
+											function(idx)
+												local tTab = SkuSettings:Sub("SkuChat").tabs[tTabIdx]
+												tTab.messageTypeVoice = tTab.messageTypeVoice or {}
+												tTab.messageTypeVoice[tCat] = tTab.messageTypeVoice[tCat] or {}
+												tTab.messageTypeVoice[tCat][tW] = idx
+											end)
+									end
+								end
+							end
+						end
+					end
+
+					local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["Rename"]}, SkuGenericMenuItem)
+					tNewTabEntry.isSelect = true
+					tNewTabEntry.OnAction = function(self, aValue, aName)
+						--print("OnAction Rename", "aValue", aValue, "aName", aName, self.name, self.parent.name, self.parent.tabIndex)
+						PlaySound(88)
+						SkuOptions.Voice:OutputStringBTtts(L["Enter name and press ENTER key"], false, true, 0.2, nil, nil, nil, 2)
+						SkuOptions:EditBoxShow(" ", function(self)
+							PlaySound(89)
+							local tText = CleanStringHelper(SkuOptionsEditBoxEditBox:GetText())
+							if tText ~= "" then
+								SkuSettings:Sub("SkuChat").tabs[SkuOptions.currentMenuPosition.tabIndex].name = tText
+								SkuChat:InitTab(SkuOptions.currentMenuPosition.tabIndex)
+								SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
+								SkuOptions.Voice:OutputStringBTtts(L["Umbenannt"], false, true, 0.2, nil, nil, nil, 2)
+							end
+						end)					
+					end
+					local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["Delete"]}, SkuGenericMenuItem)
+					tNewTabEntry.isSelect = true
+					tNewTabEntry.OnAction = function(self, aValue, aName)
+						--print("OnAction Delete", "aValue", aValue, "aName", aName, self.name, self.parent.name)
+						SkuChat:DeleteTab(self.parent.tabIndex)
+						self.parent:OnUpdate(self.parent)
+						SkuOptions.Voice:OutputStringBTtts(L["Deleted"], false, true, 0.2, nil, nil, nil, 2)
+					end
+			
+					local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["set all message types and channels to inactive"]}, SkuGenericMenuItem)
+					tNewTabEntry.isSelect = true
+					tNewTabEntry.tabIndex = x
+					tNewTabEntry.OnAction = function(self, aValue, aName)
+						for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[self.tabIndex].messageTypes) do
+							for u = 1, #v do
+								v[u] = false
+							end
+						end
+						for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[self.tabIndex].channels) do
+							v.status = false
+						end
+
+						SkuChat:InitTab(self.tabIndex)
+						self.parent:OnUpdate(self.parent)
+					end
+
+					local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["set all message types and channels to text"]}, SkuGenericMenuItem)
+					tNewTabEntry.isSelect = true
+					tNewTabEntry.tabIndex = x
+					tNewTabEntry.OnAction = function(self, aValue, aName)
+						for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[self.tabIndex].messageTypes) do
+							for u = 1, #v do
+								v[u] = true
+							end
+						end
+						for i, v in pairs(SkuSettings:Sub("SkuChat").tabs[self.tabIndex].channels) do
+							v.status = true
+						end
+
+						SkuChat:InitTab(self.tabIndex)
+						self.parent:OnUpdate(self.parent)
+					end
+
 					
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Audio notification on chat message"]}, SkuGenericMenuItem)
 					tNewMenuEntry.dynamic = true

@@ -281,6 +281,7 @@ SkuCore.options = {
 			name = L["Play NPC greetings"],
 			desc = "",
 			type = "toggle",
+			forAudioMenu = false,   -- W8: surfaced under Einstellungen -> Audio
 		},
 		doNotHideTooltip = {
 			name = L["do not hide tooltip"],
@@ -2949,12 +2950,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 	-- W7: the SkuCore options no longer get their own "Optionen" wrapper under
 	-- Sonstiges — they are rendered directly into Sonstiges in the build below.
 
-	-- W7: SkuQuest's settings, relocated here (Sonstiges -> Quest) when the quest menu
-	-- became a Local window contributor; same args/db -> saved values preserved.
-	if SkuQuest and SkuQuest.options and SkuQuest.options.args then
-		tSonstiges[#tSonstiges+1] = { kind = "settings", label = "Quest", sorting = true,
-			args = SkuQuest.options.args, db = SkuSettings:Sub("SkuQuest"), module = "SkuQuest" }
-	end
+	-- W8: SkuQuest's settings moved again, out of Sonstiges to a top-level
+	-- Einstellungen entry (the "Quest" spec in tSpecs below); same args/db.
 
 	-- W7: SkuMob's settings, relocated under Kampf when the "Mob" wrapper was dropped
 	-- and the target menu promoted to top level. Same args/db -> saved values preserved.
@@ -2981,6 +2978,38 @@ function SkuCore:MenuBuilder(aParentEntry)
 			build = function(self) SkuOptions:MenuBuilder(self) end },
 		{ kind = "submenu", label = tDeEn("Spieleinstellungen", "Game options"),
 			build = function(self) if SkuCore.GameOptions and SkuCore.GameOptions.GameOptionsMenuBuilder then SkuCore.GameOptions:GameOptionsMenuBuilder(self) end end },
+		-- W8: Audio bundles the sound-related SkuOptions nodes relocated out of
+		-- Allgemein (forAudioMenu=false there; ORIGINAL nodes + keyPrefix "" via
+		-- aIncludeHidden=true, so saved values and behavior are unchanged).
+		{ kind = "submenu", label = "Audio",
+			build = function(self)
+				local a = SkuOptions.options and SkuOptions.options.args
+				if a then
+					SkuOptions:IterateOptionsArgs({
+						backgroundSound = a.backgroundSound,
+						soundChannels   = a.soundChannels,
+						soundSettings   = a.soundSettings,
+					}, self, SkuSettings:Sub("SkuOptions"), "SkuOptions", "", true)
+				end
+				-- W8: "NPC Begrüßungen abspielen" (SkuCore node), relocated from
+				-- Sonstiges; same db/keyPrefix -> saved value intact.
+				if SkuCore.options and SkuCore.options.args and SkuCore.options.args.playNPCGreetings then
+					SkuOptions:IterateOptionsArgs({ playNPCGreetings = SkuCore.options.args.playNPCGreetings }, self, tSub, "SkuCore", "", true)
+				end
+			end },
+		-- W8: Kamera, relocated from the Barrierefreiheit root menu (7.3); the
+		-- builder moved 1:1 to file scope in SkuZOptions/Core.lua.
+		{ kind = "submenu", label = function() return Sku.L["CAM_MenuTitle"] end,
+			build = function(self)
+				if SkuOptions.CameraMenuBuilder then SkuOptions.CameraMenuBuilder(self) end
+			end },
+		-- W8: Visuelle Hilfen, relocated from the Barrierefreiheit root menu.
+		{ kind = "submenu", label = function() return Sku.L["Visuelle Hilfen"] end,
+			build = function(self)
+				if SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsBuildMenu then
+					pcall(function() SkuCore.VisualAids:VisualAidsBuildMenu(self) end)
+				end
+			end },
 		{ kind = "submenu", label = tDeEn("Kampf", "Combat"),
 			build = function(self)
 				SkuMenu:Build(self, tKampf)
@@ -3000,6 +3029,14 @@ function SkuCore:MenuBuilder(aParentEntry)
 				}
 				SkuOptions:IterateOptionsArgs(tScanArgs, self, tSub, "SkuCore", "", true)
 				SkuMenu:Build(self, tScan)
+			end },
+		-- W8: Quest (SkuQuest settings), promoted from Sonstiges to an own
+		-- top-level Einstellungen entry; same args/db -> saved values preserved.
+		{ kind = "submenu", label = "Quest", sorting = true,
+			build = function(self)
+				if SkuQuest and SkuQuest.options and SkuQuest.options.args then
+					SkuOptions:IterateOptionsArgs(SkuQuest.options.args, self, SkuSettings:Sub("SkuQuest"), "SkuQuest")
+				end
 			end },
 		{ kind = "submenu", label = tDeEn("Tastenbelegungen", "Key bindings"), children = tKeybinds },
 		{ kind = "submenu", label = tDeEn("Module", "Modules"),
@@ -3026,6 +3063,11 @@ function SkuCore:MenuBuilder(aParentEntry)
 				-- (keyPrefix "" preserved -> saved value intact).
 				if SkuOptions.options and SkuOptions.options.args and SkuOptions.options.args.TTSSepPause then
 					SkuOptions:IterateOptionsArgs({ TTSSepPause = SkuOptions.options.args.TTSSepPause }, self, SkuSettings:Sub("SkuOptions"), "SkuOptions", "", true)
+				end
+				-- W8: "Fehlende Audio Wörter kopieren", relocated from Allgemein;
+				-- deliberately appended LAST.
+				if SkuOptions.MissingAudioWordsMenuEntry then
+					SkuOptions:MissingAudioWordsMenuEntry(self)
 				end
 			end },
 		{ kind = "submenu", label = tDeEn("Sonstiges", "Other"),

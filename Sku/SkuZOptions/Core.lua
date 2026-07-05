@@ -1868,11 +1868,10 @@ function SkuOptions:CreateMainFrame()
 
 				-- ============================================================
 				-- MENUE 7: BARRIEREFREIHEIT  (Umbau gemaess "Konzept Menue 7")
-				--   7.1 Platzhalter, 7.2 Platzhalter, 7.3 Video-Optionen
-				-- Das bestehende Video-Optionen-Menue wurde 1:1 eine Ebene tiefer
-				-- nach 7.3 verschoben (Inhalt unveraendert). RUECKBAU: diesen
-				-- Wrapper entfernen und das Video-Optionen-Menue wieder direkt in
-				-- SkuOptions.Menu einhaengen.
+				--   7.1 Lautstaerken, 7.2 Sprachausgabe, 7.4 Sonstiges
+				-- Kamera (frueher 7.3) und Visuelle Hilfen sind nach
+				-- Einstellungen verschoben (SkuOptions.CameraMenuBuilder /
+				-- SkuCore:MenuBuilder).
 				-- DOKU: Nachschlagewerke/"Kamera Freigabe Entkopplung.txt"
 				-- ============================================================
 				local tAccessMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["ACC_MenuTitle"]}, SkuGenericMenuItem)
@@ -1937,346 +1936,8 @@ function SkuOptions:CreateMainFrame()
 						for _, tChild in ipairs(self.children) do tChild.noStepUpAfterSelect = true end
 					end
 
-					-- 7.3 Video-Optionen (bestehendes Menue, Inhalt unveraendert)
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["CAM_MenuTitle"]}, SkuGenericMenuItem)
-					tNewMenuEntry.dynamic = true
-					tNewMenuEntry.BuildChildren = function(self)
-					local L = Sku.L
-					local function tCamSay(aText)
-						pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, true, true, 0.2, nil, nil, nil, 2) end)
-					end
-					local function tCamDB()
-						SkuOptions.db.char["SkuCore"] = SkuOptions.db.char["SkuCore"] or {}
-						SkuOptions.db.char["SkuCore"].cameraOptions = SkuOptions.db.char["SkuCore"].cameraOptions or { skuStandard = true, userValues = {} }
-						return SkuOptions.db.char["SkuCore"].cameraOptions
-					end
-					local function tIsLocked()
-						return tCamDB().skuStandard ~= false
-					end
-					local function tApplyCVar(cvar, value)
-						pcall(C_CVar.SetCVar, cvar, tostring(value))
-						pcall(SetCVar, cvar, tostring(value))
-					end
-
-					-- [Kamera-Entkopplung] Persoenliches Kamera-Profil mitschreiben.
-					-- Jede Aenderung im FREIEN Modus wird sofort gesichert, damit
-					-- "Menue freigeben" und das Auto-Laden beim Login immer die
-					-- AKTUELLSTEN Werte verwenden (statt eines alten Schnappschusses).
-					-- RUECKBAU: diese Funktion und ihre Aufrufe (tSaveUser) entfernen.
-					local function tSaveUser(cvar, value)
-						local co = tCamDB()
-						co.userValues = co.userValues or {}
-						co.userValues[cvar] = tostring(value)
-					end
-
-					local tSkuDefaults = {
-						cameraSmoothStyle = "2",
-						cameraViewBlendStyle = "2",
-						nameplateMaxDistance = "41",
-						cameraDistanceMaxZoomFactor = "1",
-						cameraPitchC = "34.25",
-						cameraPitchMoveSpeed = "90",
-						["test_cameraOverShoulder"] = "0",
-						nameplateShowEnemies = "1",
-						nameplateShowFriends = "0",
-						nameplateShowAll = "0",
-					}
-
-					local tDistSteps = {
-						{label = "CAM_DistClose", value = "1"},
-						{label = "CAM_DistNormal", value = "1.5"},
-						{label = "CAM_DistMedium", value = "2"},
-						{label = "CAM_DistFar", value = "2.6"},
-						{label = "CAM_DistVeryFar", value = "3"},
-						{label = "CAM_DistMax", value = "4"},
-					}
-					local tHeightSteps = {
-						{label = "CAM_HeightBehind", value = "15"},
-						{label = "CAM_HeightNormal", value = "34.25"},
-						{label = "CAM_HeightHigh", value = "55"},
-						{label = "CAM_HeightBird", value = "75"},
-					}
-					local tPitchSteps = {
-						{label = "CAM_PitchSlow", value = "45"},
-						{label = "CAM_PitchNormal", value = "90"},
-						{label = "CAM_PitchFast", value = "180"},
-						{label = "CAM_PitchVeryFast", value = "270"},
-					}
-					local tFollowSteps = {
-						{label = "CAM_FollowSmart", value = "1"},
-						{label = "CAM_FollowMoving", value = "4"},
-						{label = "CAM_FollowAlways", value = "2"},
-						{label = "CAM_FollowNever", value = "0"},
-					}
-
-					local function tGetCurrentLabel(aSteps, aCVar)
-						local tCur = GetCVar(aCVar) or ""
-						tCur = tostring(tonumber(tCur) or tCur)
-						for _, s in ipairs(aSteps) do
-							if tostring(tonumber(s.value) or s.value) == tCur then return L[s.label] end
-						end
-						return tCur
-					end
-					local function tBuildSteps(aSelf, aSteps, aCVar)
-						local tCur = GetCVar(aCVar) or ""
-						tCur = tostring(tonumber(tCur) or tCur)
-						for _, s in ipairs(aSteps) do
-							local tName = L[s.label]
-							if tostring(tonumber(s.value) or s.value) == tCur then tName = tName.." "..L["CAM_Active"] end
-							SkuOptions:InjectMenuItems(aSelf, {tName}, SkuGenericMenuItem)
-						end
-					end
-					local function tBuildOnOff(aSelf, aCVar)
-						local tIsOn = (GetCVar(aCVar) ~= "0" and GetCVar(aCVar) ~= nil)
-						local tOnLabel = L["on"]
-						local tOffLabel = L["off"]
-						if tIsOn then tOnLabel = tOnLabel.." "..L["CAM_Active"] end
-						if not tIsOn then tOffLabel = tOffLabel.." "..L["CAM_Active"] end
-						SkuOptions:InjectMenuItems(aSelf, {tOnLabel}, SkuGenericMenuItem)
-						SkuOptions:InjectMenuItems(aSelf, {tOffLabel}, SkuGenericMenuItem)
-					end
-					local function tCleanName(aName)
-						if not aName then return "" end
-						return string.gsub(aName, " "..L["CAM_Active"], "")
-					end
-
-					local function tDoSkuReset()
-						for cvar, default in pairs(tSkuDefaults) do
-							tApplyCVar(cvar, default)
-						end
-						pcall(ResetView, 2)
-						pcall(SetView, 2)
-					end
-
-					-- 7.1 Sku Standard — nach rechts fuer Optionen
-					local tStdStatus = tIsLocked() and L["CAM_StatusLocked"] or L["CAM_StatusFree"]
-					local tSkuStdEntry = SkuOptions:InjectMenuItems(self, {L["CAM_SkuDefault"]..", "..tStdStatus}, SkuGenericMenuItem)
-					tSkuStdEntry.dynamic = true
-					tSkuStdEntry.isSelect = true
-					tSkuStdEntry.OnAction = function(self, aValue, aName)
-						local db = tCamDB()
-						if aName == L["CAM_ActivateSku"] or string.find(aName, L["CAM_ActivateSku"]) then
-							-- SkuStandart einschalten
-							for cvar, _ in pairs(tSkuDefaults) do
-								db.userValues[cvar] = GetCVar(cvar)
-							end
-							db.skuStandard = true
-							db.preferFree = false   -- [Kamera-Entkopplung] beim naechsten Login wieder SkuStandard erzwingen
-							tDoSkuReset()
-							C_Timer.After(0.3, function()
-								tCamSay(L["CAM_SkuDefaultOn"])
-							end)
-							C_Timer.After(3, function()
-								tCamSay(L["CAM_AltF4Reminder"])
-							end)
-						elseif aName == L["CAM_FreeMenu"] then
-							-- Videomenue freigeben
-							db.skuStandard = false
-							db.preferFree = true   -- [Kamera-Entkopplung] Wunsch merken: beim Login mein Profil automatisch laden
-							db.userValues = db.userValues or {}
-							for cvar, _ in pairs(tSkuDefaults) do
-								if db.userValues[cvar] then
-									tApplyCVar(cvar, db.userValues[cvar])
-								end
-							end
-							C_Timer.After(0.3, function()
-								tCamSay(L["CAM_SkuDefaultOff"])
-							end)
-						end
-					end
-					tSkuStdEntry.BuildChildren = function(self)
-						local tSkuLabel = L["CAM_ActivateSku"]
-						local tFreeLabel = L["CAM_FreeMenu"]
-						if tIsLocked() then
-							tSkuLabel = tSkuLabel.." "..L["CAM_Active"]
-						else
-							tFreeLabel = tFreeLabel.." "..L["CAM_Active"]
-						end
-						SkuOptions:InjectMenuItems(self, {tSkuLabel}, SkuGenericMenuItem)
-						SkuOptions:InjectMenuItems(self, {tFreeLabel}, SkuGenericMenuItem)
-					end
-
-					local tLocked = tIsLocked() and ", "..L["CAM_Locked"] or ""
-
-					-- 7.2 Kamera-Entfernung
-					local tDistCur = tGetCurrentLabel(tDistSteps, "cameraDistanceMaxZoomFactor")
-					local tDistEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Distance"]..", "..tDistCur..tLocked}, SkuGenericMenuItem)
-					tDistEntry.dynamic = true
-					tDistEntry.isSelect = true
-					tDistEntry.OnAction = function(self, aValue, aName)
-						if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
-						local tClean = tCleanName(aName)
-						local tMap = {}
-						for _, s in ipairs(tDistSteps) do tMap[L[s.label]] = s.value end
-						if tMap[tClean] then
-							tApplyCVar("cameraDistanceMaxZoomFactor", tMap[tClean])
-							tSaveUser("cameraDistanceMaxZoomFactor", tMap[tClean])
-							local tYards = tonumber(tMap[tClean]) * 15
-							pcall(CameraZoomIn, 50)
-							C_Timer.After(0.1, function() pcall(CameraZoomOut, tYards) end)
-							tCamSay(L["CAM_DistSet"].." "..tClean)
-						end
-					end
-					tDistEntry.BuildChildren = function(self) tBuildSteps(self, tDistSteps, "cameraDistanceMaxZoomFactor") end
-
-					-- 7.3 Kamerahoehe
-					local tHeightCur = tGetCurrentLabel(tHeightSteps, "cameraPitchC")
-					local tHeightEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Height"]..", "..tHeightCur..tLocked}, SkuGenericMenuItem)
-					tHeightEntry.dynamic = true
-					tHeightEntry.isSelect = true
-					tHeightEntry.OnAction = function(self, aValue, aName)
-						if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
-						local tClean = tCleanName(aName)
-						local tMap = {}
-						for _, s in ipairs(tHeightSteps) do tMap[L[s.label]] = s.value end
-						if tMap[tClean] then
-							tApplyCVar("cameraPitchC", tMap[tClean])
-							tSaveUser("cameraPitchC", tMap[tClean])
-							if C_CVar.GetCVar("cameraSmoothStyle") == "2" then
-								tCamSay(L["CAM_HeightSet"].." "..tClean..". "..L["CAM_HeightHint"])
-							else
-								pcall(MouselookStart)
-								C_Timer.After(0.05, function() pcall(MouselookStop) end)
-								tCamSay(L["CAM_HeightSet"].." "..tClean)
-							end
-						end
-					end
-					tHeightEntry.BuildChildren = function(self) tBuildSteps(self, tHeightSteps, "cameraPitchC") end
-
-					-- 7.4 Kamera-Neigung
-					local tPitchCur = tGetCurrentLabel(tPitchSteps, "cameraPitchMoveSpeed")
-					local tPitchEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Pitch"]..", "..tPitchCur..tLocked}, SkuGenericMenuItem)
-					tPitchEntry.dynamic = true
-					tPitchEntry.isSelect = true
-					tPitchEntry.OnAction = function(self, aValue, aName)
-						if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
-						local tClean = tCleanName(aName)
-						local tMap = {}
-						for _, s in ipairs(tPitchSteps) do tMap[L[s.label]] = s.value end
-						if tMap[tClean] then
-							tApplyCVar("cameraPitchMoveSpeed", tMap[tClean])
-							tSaveUser("cameraPitchMoveSpeed", tMap[tClean])
-							tCamSay(L["CAM_PitchSet"].." "..tClean)
-						end
-					end
-					tPitchEntry.BuildChildren = function(self) tBuildSteps(self, tPitchSteps, "cameraPitchMoveSpeed") end
-
-					-- 7.5 Kamera-Verfolgungsstil
-					local tFollowCur = tGetCurrentLabel(tFollowSteps, "cameraSmoothStyle")
-					local tFollowEntry = SkuOptions:InjectMenuItems(self, {L["CAM_FollowChar"]..", "..tFollowCur..tLocked}, SkuGenericMenuItem)
-					tFollowEntry.dynamic = true
-					tFollowEntry.isSelect = true
-					tFollowEntry.OnAction = function(self, aValue, aName)
-						if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
-						local tClean = tCleanName(aName)
-						local tMap = {}
-						for _, s in ipairs(tFollowSteps) do tMap[L[s.label]] = s.value end
-						if tMap[tClean] then
-							tApplyCVar("cameraSmoothStyle", tMap[tClean])
-							tSaveUser("cameraSmoothStyle", tMap[tClean])
-							tCamSay(L["CAM_FollowSet"].." "..tClean)
-						end
-					end
-					tFollowEntry.BuildChildren = function(self) tBuildSteps(self, tFollowSteps, "cameraSmoothStyle") end
-
-					-- 7.6 Interface ein/ausblenden
-					local tUIVisible = UIParent and UIParent:IsShown()
-					local tUIEntry = SkuOptions:InjectMenuItems(self, {L["CAM_UIToggle"]..", "..(tUIVisible and L["on"] or L["off"])}, SkuGenericMenuItem)
-					tUIEntry.dynamic = true
-					tUIEntry.isSelect = true
-					tUIEntry.OnAction = function(self, aValue, aName)
-						local tClean = tCleanName(aName)
-						if tClean == L["CAM_UIOn"] then
-							tCamSay(L["CAM_UIShown"])
-							C_Timer.After(0.3, function()
-								if UIParent then UIParent:Show() end
-							end)
-						elseif tClean == L["CAM_UIOff"] then
-							tCamSay(L["CAM_UIHidden"])
-							C_Timer.After(0.3, function()
-								if UIParent then UIParent:Hide() end
-							end)
-						end
-					end
-					tUIEntry.BuildChildren = function(self)
-						local tVis = UIParent and UIParent:IsShown()
-						local tOnLabel = L["CAM_UIOn"]
-						local tOffLabel = L["CAM_UIOff"]
-						if tVis then tOnLabel = tOnLabel.." "..L["CAM_Active"] end
-						if not tVis then tOffLabel = tOffLabel.." "..L["CAM_Active"] end
-						SkuOptions:InjectMenuItems(self, {tOnLabel}, SkuGenericMenuItem)
-						SkuOptions:InjectMenuItems(self, {tOffLabel}, SkuGenericMenuItem)
-					end
-
-					-- 7.7 Weitere Kamerafunktionen
-					local tMoreEntry = SkuOptions:InjectMenuItems(self, {L["CAM_More"]}, SkuGenericMenuItem)
-					tMoreEntry.dynamic = true
-					tMoreEntry.BuildChildren = function(self)
-						-- Kamera-Uebergang
-						local tTransIsInstant = (GetCVar("cameraViewBlendStyle") == "2")
-						local tTransCur = tTransIsInstant and L["CAM_TransInstant"] or L["CAM_TransSmooth"]
-						local tTransEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Transition"]..", "..tTransCur}, SkuGenericMenuItem)
-						tTransEntry.dynamic = true
-						tTransEntry.isSelect = true
-						tTransEntry.OnAction = function(self, aValue, aName)
-							if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
-							local tClean = tCleanName(aName)
-							if tClean == L["CAM_TransInstant"] then tApplyCVar("cameraViewBlendStyle", "2"); tSaveUser("cameraViewBlendStyle", "2"); tCamSay(L["CAM_TransSet"].." "..L["CAM_TransInstant"])
-							elseif tClean == L["CAM_TransSmooth"] then tApplyCVar("cameraViewBlendStyle", "1"); tSaveUser("cameraViewBlendStyle", "1"); tCamSay(L["CAM_TransSet"].." "..L["CAM_TransSmooth"]) end
-						end
-						tTransEntry.BuildChildren = function(self)
-							local tInst = (GetCVar("cameraViewBlendStyle") == "2")
-							local tA, tB = L["CAM_TransInstant"], L["CAM_TransSmooth"]
-							if tInst then tA = tA.." "..L["CAM_Active"] else tB = tB.." "..L["CAM_Active"] end
-							SkuOptions:InjectMenuItems(self, {tA}, SkuGenericMenuItem)
-							SkuOptions:InjectMenuItems(self, {tB}, SkuGenericMenuItem)
-						end
-
-						-- Ueber-die-Schulter
-						local tShVal = pcall(GetCVar, "test_cameraOverShoulder") and GetCVar("test_cameraOverShoulder") or "0"
-						local tShOn = (tShVal == "1")
-						local tShEntry = SkuOptions:InjectMenuItems(self, {L["CAM_OverShoulder"]..", "..(tShOn and L["on"] or L["off"])}, SkuGenericMenuItem)
-						tShEntry.dynamic = true
-						tShEntry.isSelect = true
-						tShEntry.OnAction = function(self, aValue, aName)
-							if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
-							local tClean = tCleanName(aName)
-							if tClean == L["on"] then pcall(function() tApplyCVar("test_cameraOverShoulder", "1") end); tSaveUser("test_cameraOverShoulder", "1"); tCamSay(L["CAM_OverShoulderOn"])
-							elseif tClean == L["off"] then pcall(function() tApplyCVar("test_cameraOverShoulder", "0") end); tSaveUser("test_cameraOverShoulder", "0"); tCamSay(L["CAM_OverShoulderOff"]) end
-						end
-						tShEntry.BuildChildren = function(self)
-							local tV = pcall(GetCVar, "test_cameraOverShoulder") and GetCVar("test_cameraOverShoulder") or "0"
-							local tOn = (tV == "1")
-							local tA, tB = L["on"], L["off"]
-							if tOn then tA = tA.." "..L["CAM_Active"] else tB = tB.." "..L["CAM_Active"] end
-							SkuOptions:InjectMenuItems(self, {tA}, SkuGenericMenuItem)
-							SkuOptions:InjectMenuItems(self, {tB}, SkuGenericMenuItem)
-						end
-
-						-- Plaketten
-						local tNPEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Nameplates"]}, SkuGenericMenuItem)
-						tNPEntry.dynamic = true
-						tNPEntry.BuildChildren = function(self)
-							local function tBuildNP(aLabel, aCVar)
-								local tOn = (GetCVar(aCVar) == "1")
-								local tE = SkuOptions:InjectMenuItems(self, {aLabel..", "..(tOn and L["on"] or L["off"])}, SkuGenericMenuItem)
-								tE.dynamic = true
-								tE.isSelect = true
-								tE.OnAction = function(self, aValue, aName)
-									if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
-									local tClean = tCleanName(aName)
-									if tClean == L["on"] then tApplyCVar(aCVar, "1"); tSaveUser(aCVar, "1"); tCamSay(aLabel.." "..L["CAM_NPOn"])
-									elseif tClean == L["off"] then tApplyCVar(aCVar, "0"); tSaveUser(aCVar, "0"); tCamSay(aLabel.." "..L["CAM_NPOff"]) end
-								end
-								tE.BuildChildren = function(self) tBuildOnOff(self, aCVar) end
-							end
-							tBuildNP(L["CAM_NPEnemy"], "nameplateShowEnemies")
-							tBuildNP(L["CAM_NPFriendly"], "nameplateShowFriends")
-							tBuildNP(L["CAM_NPAll"], "nameplateShowAll")
-						end
-					end
-
-				end
+					-- 7.3 Kamera: nach Einstellungen -> Kamera verschoben
+					-- (SkuOptions.CameraMenuBuilder, File-Ebene weiter unten).
 					-- ============================================================
 					-- 7.4 SONSTIGES  (Verknuepfungen, KEIN Duplikat der Logik)
 					-- Gleiche Technik wie 7.1/7.2: Original-Options-Knoten via
@@ -2414,14 +2075,8 @@ function SkuOptions:CreateMainFrame()
 							end
 						for _, tChild in ipairs(self.children) do tChild.noStepUpAfterSelect = true end
 					end
-				-- [41.05] Visuelle Hilfen (opt-in, standardmaessig AUS). Logik in SkuCore\visualAids.lua.
-						local tVisualAidsEntry = SkuOptions:InjectMenuItems(self, {L["Visuelle Hilfen"]}, SkuGenericMenuItem)
-						tVisualAidsEntry.dynamic = true
-						tVisualAidsEntry.BuildChildren = function(self)
-							if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsBuildMenu then
-								pcall(function() SkuCore.VisualAids:VisualAidsBuildMenu(self) end)
-							end
-						end
+				-- [41.05->W8] Visuelle Hilfen: nach Einstellungen -> Visuelle Hilfen
+					-- verschoben (SkuCore:MenuBuilder); Logik weiter in SkuCore\visualAids.lua.
 					end --[Menue7] schliesst tAccessMenuEntry.BuildChildren (Barrierefreiheit-Umbau; RUECKBAU: diese Zeile entfernen)
 				-- W7: the old top-level "Optionen" (SkuOptions:MenuBuilder) is folded into
 				-- Einstellungen -> Allgemein, so it is no longer appended here at root.
@@ -5911,6 +5566,348 @@ end
 -- different menu category via an explicit call. Because the relocated call keeps the
 -- same args sub-table, db path, module and keyPrefix, the entry's stored value is
 -- untouched (skuKey is identical) — this only changes WHERE it appears, not its storage.
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Kamera-Menue (frueher Barrierefreiheit 7.3 "Video-Optionen", jetzt
+-- Einstellungen -> Kamera). Builder-Contract wie alle Menu-Builder:
+-- self = der zu befuellende Menue-Knoten. Inhalt 1:1 unveraendert.
+function SkuOptions.CameraMenuBuilder(self)
+					local L = Sku.L
+					local function tCamSay(aText)
+						pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, true, true, 0.2, nil, nil, nil, 2) end)
+					end
+					local function tCamDB()
+						SkuOptions.db.char["SkuCore"] = SkuOptions.db.char["SkuCore"] or {}
+						SkuOptions.db.char["SkuCore"].cameraOptions = SkuOptions.db.char["SkuCore"].cameraOptions or { skuStandard = true, userValues = {} }
+						return SkuOptions.db.char["SkuCore"].cameraOptions
+					end
+					local function tIsLocked()
+						return tCamDB().skuStandard ~= false
+					end
+					local function tApplyCVar(cvar, value)
+						pcall(C_CVar.SetCVar, cvar, tostring(value))
+						pcall(SetCVar, cvar, tostring(value))
+					end
+
+					-- [Kamera-Entkopplung] Persoenliches Kamera-Profil mitschreiben.
+					-- Jede Aenderung im FREIEN Modus wird sofort gesichert, damit
+					-- "Menue freigeben" und das Auto-Laden beim Login immer die
+					-- AKTUELLSTEN Werte verwenden (statt eines alten Schnappschusses).
+					-- RUECKBAU: diese Funktion und ihre Aufrufe (tSaveUser) entfernen.
+					local function tSaveUser(cvar, value)
+						local co = tCamDB()
+						co.userValues = co.userValues or {}
+						co.userValues[cvar] = tostring(value)
+					end
+
+					local tSkuDefaults = {
+						cameraSmoothStyle = "2",
+						cameraViewBlendStyle = "2",
+						nameplateMaxDistance = "41",
+						cameraDistanceMaxZoomFactor = "1",
+						cameraPitchC = "34.25",
+						cameraPitchMoveSpeed = "90",
+						["test_cameraOverShoulder"] = "0",
+						nameplateShowEnemies = "1",
+						nameplateShowFriends = "0",
+						nameplateShowAll = "0",
+					}
+
+					local tDistSteps = {
+						{label = "CAM_DistClose", value = "1"},
+						{label = "CAM_DistNormal", value = "1.5"},
+						{label = "CAM_DistMedium", value = "2"},
+						{label = "CAM_DistFar", value = "2.6"},
+						{label = "CAM_DistVeryFar", value = "3"},
+						{label = "CAM_DistMax", value = "4"},
+					}
+					local tHeightSteps = {
+						{label = "CAM_HeightBehind", value = "15"},
+						{label = "CAM_HeightNormal", value = "34.25"},
+						{label = "CAM_HeightHigh", value = "55"},
+						{label = "CAM_HeightBird", value = "75"},
+					}
+					local tPitchSteps = {
+						{label = "CAM_PitchSlow", value = "45"},
+						{label = "CAM_PitchNormal", value = "90"},
+						{label = "CAM_PitchFast", value = "180"},
+						{label = "CAM_PitchVeryFast", value = "270"},
+					}
+					local tFollowSteps = {
+						{label = "CAM_FollowSmart", value = "1"},
+						{label = "CAM_FollowMoving", value = "4"},
+						{label = "CAM_FollowAlways", value = "2"},
+						{label = "CAM_FollowNever", value = "0"},
+					}
+
+					local function tGetCurrentLabel(aSteps, aCVar)
+						local tCur = GetCVar(aCVar) or ""
+						tCur = tostring(tonumber(tCur) or tCur)
+						for _, s in ipairs(aSteps) do
+							if tostring(tonumber(s.value) or s.value) == tCur then return L[s.label] end
+						end
+						return tCur
+					end
+					local function tBuildSteps(aSelf, aSteps, aCVar)
+						local tCur = GetCVar(aCVar) or ""
+						tCur = tostring(tonumber(tCur) or tCur)
+						for _, s in ipairs(aSteps) do
+							local tName = L[s.label]
+							if tostring(tonumber(s.value) or s.value) == tCur then tName = tName.." "..L["CAM_Active"] end
+							SkuOptions:InjectMenuItems(aSelf, {tName}, SkuGenericMenuItem)
+						end
+					end
+					local function tBuildOnOff(aSelf, aCVar)
+						local tIsOn = (GetCVar(aCVar) ~= "0" and GetCVar(aCVar) ~= nil)
+						local tOnLabel = L["on"]
+						local tOffLabel = L["off"]
+						if tIsOn then tOnLabel = tOnLabel.." "..L["CAM_Active"] end
+						if not tIsOn then tOffLabel = tOffLabel.." "..L["CAM_Active"] end
+						SkuOptions:InjectMenuItems(aSelf, {tOnLabel}, SkuGenericMenuItem)
+						SkuOptions:InjectMenuItems(aSelf, {tOffLabel}, SkuGenericMenuItem)
+					end
+					local function tCleanName(aName)
+						if not aName then return "" end
+						return string.gsub(aName, " "..L["CAM_Active"], "")
+					end
+
+					local function tDoSkuReset()
+						for cvar, default in pairs(tSkuDefaults) do
+							tApplyCVar(cvar, default)
+						end
+						pcall(ResetView, 2)
+						pcall(SetView, 2)
+					end
+
+					-- 7.1 Sku Standard — nach rechts fuer Optionen
+					local tStdStatus = tIsLocked() and L["CAM_StatusLocked"] or L["CAM_StatusFree"]
+					local tSkuStdEntry = SkuOptions:InjectMenuItems(self, {L["CAM_SkuDefault"]..", "..tStdStatus}, SkuGenericMenuItem)
+					tSkuStdEntry.dynamic = true
+					tSkuStdEntry.isSelect = true
+					tSkuStdEntry.OnAction = function(self, aValue, aName)
+						local db = tCamDB()
+						if aName == L["CAM_ActivateSku"] or string.find(aName, L["CAM_ActivateSku"]) then
+							-- SkuStandart einschalten
+							for cvar, _ in pairs(tSkuDefaults) do
+								db.userValues[cvar] = GetCVar(cvar)
+							end
+							db.skuStandard = true
+							db.preferFree = false   -- [Kamera-Entkopplung] beim naechsten Login wieder SkuStandard erzwingen
+							tDoSkuReset()
+							C_Timer.After(0.3, function()
+								tCamSay(L["CAM_SkuDefaultOn"])
+							end)
+							C_Timer.After(3, function()
+								tCamSay(L["CAM_AltF4Reminder"])
+							end)
+						elseif aName == L["CAM_FreeMenu"] then
+							-- Videomenue freigeben
+							db.skuStandard = false
+							db.preferFree = true   -- [Kamera-Entkopplung] Wunsch merken: beim Login mein Profil automatisch laden
+							db.userValues = db.userValues or {}
+							for cvar, _ in pairs(tSkuDefaults) do
+								if db.userValues[cvar] then
+									tApplyCVar(cvar, db.userValues[cvar])
+								end
+							end
+							C_Timer.After(0.3, function()
+								tCamSay(L["CAM_SkuDefaultOff"])
+							end)
+						end
+					end
+					tSkuStdEntry.BuildChildren = function(self)
+						local tSkuLabel = L["CAM_ActivateSku"]
+						local tFreeLabel = L["CAM_FreeMenu"]
+						if tIsLocked() then
+							tSkuLabel = tSkuLabel.." "..L["CAM_Active"]
+						else
+							tFreeLabel = tFreeLabel.." "..L["CAM_Active"]
+						end
+						SkuOptions:InjectMenuItems(self, {tSkuLabel}, SkuGenericMenuItem)
+						SkuOptions:InjectMenuItems(self, {tFreeLabel}, SkuGenericMenuItem)
+					end
+
+					local tLocked = tIsLocked() and ", "..L["CAM_Locked"] or ""
+
+					-- 7.2 Kamera-Entfernung
+					local tDistCur = tGetCurrentLabel(tDistSteps, "cameraDistanceMaxZoomFactor")
+					local tDistEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Distance"]..", "..tDistCur..tLocked}, SkuGenericMenuItem)
+					tDistEntry.dynamic = true
+					tDistEntry.isSelect = true
+					tDistEntry.OnAction = function(self, aValue, aName)
+						if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
+						local tClean = tCleanName(aName)
+						local tMap = {}
+						for _, s in ipairs(tDistSteps) do tMap[L[s.label]] = s.value end
+						if tMap[tClean] then
+							tApplyCVar("cameraDistanceMaxZoomFactor", tMap[tClean])
+							tSaveUser("cameraDistanceMaxZoomFactor", tMap[tClean])
+							local tYards = tonumber(tMap[tClean]) * 15
+							pcall(CameraZoomIn, 50)
+							C_Timer.After(0.1, function() pcall(CameraZoomOut, tYards) end)
+							tCamSay(L["CAM_DistSet"].." "..tClean)
+						end
+					end
+					tDistEntry.BuildChildren = function(self) tBuildSteps(self, tDistSteps, "cameraDistanceMaxZoomFactor") end
+
+					-- 7.3 Kamerahoehe
+					local tHeightCur = tGetCurrentLabel(tHeightSteps, "cameraPitchC")
+					local tHeightEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Height"]..", "..tHeightCur..tLocked}, SkuGenericMenuItem)
+					tHeightEntry.dynamic = true
+					tHeightEntry.isSelect = true
+					tHeightEntry.OnAction = function(self, aValue, aName)
+						if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
+						local tClean = tCleanName(aName)
+						local tMap = {}
+						for _, s in ipairs(tHeightSteps) do tMap[L[s.label]] = s.value end
+						if tMap[tClean] then
+							tApplyCVar("cameraPitchC", tMap[tClean])
+							tSaveUser("cameraPitchC", tMap[tClean])
+							if C_CVar.GetCVar("cameraSmoothStyle") == "2" then
+								tCamSay(L["CAM_HeightSet"].." "..tClean..". "..L["CAM_HeightHint"])
+							else
+								pcall(MouselookStart)
+								C_Timer.After(0.05, function() pcall(MouselookStop) end)
+								tCamSay(L["CAM_HeightSet"].." "..tClean)
+							end
+						end
+					end
+					tHeightEntry.BuildChildren = function(self) tBuildSteps(self, tHeightSteps, "cameraPitchC") end
+
+					-- 7.4 Kamera-Neigung
+					local tPitchCur = tGetCurrentLabel(tPitchSteps, "cameraPitchMoveSpeed")
+					local tPitchEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Pitch"]..", "..tPitchCur..tLocked}, SkuGenericMenuItem)
+					tPitchEntry.dynamic = true
+					tPitchEntry.isSelect = true
+					tPitchEntry.OnAction = function(self, aValue, aName)
+						if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
+						local tClean = tCleanName(aName)
+						local tMap = {}
+						for _, s in ipairs(tPitchSteps) do tMap[L[s.label]] = s.value end
+						if tMap[tClean] then
+							tApplyCVar("cameraPitchMoveSpeed", tMap[tClean])
+							tSaveUser("cameraPitchMoveSpeed", tMap[tClean])
+							tCamSay(L["CAM_PitchSet"].." "..tClean)
+						end
+					end
+					tPitchEntry.BuildChildren = function(self) tBuildSteps(self, tPitchSteps, "cameraPitchMoveSpeed") end
+
+					-- 7.5 Kamera-Verfolgungsstil
+					local tFollowCur = tGetCurrentLabel(tFollowSteps, "cameraSmoothStyle")
+					local tFollowEntry = SkuOptions:InjectMenuItems(self, {L["CAM_FollowChar"]..", "..tFollowCur..tLocked}, SkuGenericMenuItem)
+					tFollowEntry.dynamic = true
+					tFollowEntry.isSelect = true
+					tFollowEntry.OnAction = function(self, aValue, aName)
+						if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
+						local tClean = tCleanName(aName)
+						local tMap = {}
+						for _, s in ipairs(tFollowSteps) do tMap[L[s.label]] = s.value end
+						if tMap[tClean] then
+							tApplyCVar("cameraSmoothStyle", tMap[tClean])
+							tSaveUser("cameraSmoothStyle", tMap[tClean])
+							tCamSay(L["CAM_FollowSet"].." "..tClean)
+						end
+					end
+					tFollowEntry.BuildChildren = function(self) tBuildSteps(self, tFollowSteps, "cameraSmoothStyle") end
+
+					-- 7.6 Interface ein/ausblenden
+					local tUIVisible = UIParent and UIParent:IsShown()
+					local tUIEntry = SkuOptions:InjectMenuItems(self, {L["CAM_UIToggle"]..", "..(tUIVisible and L["on"] or L["off"])}, SkuGenericMenuItem)
+					tUIEntry.dynamic = true
+					tUIEntry.isSelect = true
+					tUIEntry.OnAction = function(self, aValue, aName)
+						local tClean = tCleanName(aName)
+						if tClean == L["CAM_UIOn"] then
+							tCamSay(L["CAM_UIShown"])
+							C_Timer.After(0.3, function()
+								if UIParent then UIParent:Show() end
+							end)
+						elseif tClean == L["CAM_UIOff"] then
+							tCamSay(L["CAM_UIHidden"])
+							C_Timer.After(0.3, function()
+								if UIParent then UIParent:Hide() end
+							end)
+						end
+					end
+					tUIEntry.BuildChildren = function(self)
+						local tVis = UIParent and UIParent:IsShown()
+						local tOnLabel = L["CAM_UIOn"]
+						local tOffLabel = L["CAM_UIOff"]
+						if tVis then tOnLabel = tOnLabel.." "..L["CAM_Active"] end
+						if not tVis then tOffLabel = tOffLabel.." "..L["CAM_Active"] end
+						SkuOptions:InjectMenuItems(self, {tOnLabel}, SkuGenericMenuItem)
+						SkuOptions:InjectMenuItems(self, {tOffLabel}, SkuGenericMenuItem)
+					end
+
+					-- 7.7 Weitere Kamerafunktionen
+					local tMoreEntry = SkuOptions:InjectMenuItems(self, {L["CAM_More"]}, SkuGenericMenuItem)
+					tMoreEntry.dynamic = true
+					tMoreEntry.BuildChildren = function(self)
+						-- Kamera-Uebergang
+						local tTransIsInstant = (GetCVar("cameraViewBlendStyle") == "2")
+						local tTransCur = tTransIsInstant and L["CAM_TransInstant"] or L["CAM_TransSmooth"]
+						local tTransEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Transition"]..", "..tTransCur}, SkuGenericMenuItem)
+						tTransEntry.dynamic = true
+						tTransEntry.isSelect = true
+						tTransEntry.OnAction = function(self, aValue, aName)
+							if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
+							local tClean = tCleanName(aName)
+							if tClean == L["CAM_TransInstant"] then tApplyCVar("cameraViewBlendStyle", "2"); tSaveUser("cameraViewBlendStyle", "2"); tCamSay(L["CAM_TransSet"].." "..L["CAM_TransInstant"])
+							elseif tClean == L["CAM_TransSmooth"] then tApplyCVar("cameraViewBlendStyle", "1"); tSaveUser("cameraViewBlendStyle", "1"); tCamSay(L["CAM_TransSet"].." "..L["CAM_TransSmooth"]) end
+						end
+						tTransEntry.BuildChildren = function(self)
+							local tInst = (GetCVar("cameraViewBlendStyle") == "2")
+							local tA, tB = L["CAM_TransInstant"], L["CAM_TransSmooth"]
+							if tInst then tA = tA.." "..L["CAM_Active"] else tB = tB.." "..L["CAM_Active"] end
+							SkuOptions:InjectMenuItems(self, {tA}, SkuGenericMenuItem)
+							SkuOptions:InjectMenuItems(self, {tB}, SkuGenericMenuItem)
+						end
+
+						-- Ueber-die-Schulter
+						local tShVal = pcall(GetCVar, "test_cameraOverShoulder") and GetCVar("test_cameraOverShoulder") or "0"
+						local tShOn = (tShVal == "1")
+						local tShEntry = SkuOptions:InjectMenuItems(self, {L["CAM_OverShoulder"]..", "..(tShOn and L["on"] or L["off"])}, SkuGenericMenuItem)
+						tShEntry.dynamic = true
+						tShEntry.isSelect = true
+						tShEntry.OnAction = function(self, aValue, aName)
+							if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
+							local tClean = tCleanName(aName)
+							if tClean == L["on"] then pcall(function() tApplyCVar("test_cameraOverShoulder", "1") end); tSaveUser("test_cameraOverShoulder", "1"); tCamSay(L["CAM_OverShoulderOn"])
+							elseif tClean == L["off"] then pcall(function() tApplyCVar("test_cameraOverShoulder", "0") end); tSaveUser("test_cameraOverShoulder", "0"); tCamSay(L["CAM_OverShoulderOff"]) end
+						end
+						tShEntry.BuildChildren = function(self)
+							local tV = pcall(GetCVar, "test_cameraOverShoulder") and GetCVar("test_cameraOverShoulder") or "0"
+							local tOn = (tV == "1")
+							local tA, tB = L["on"], L["off"]
+							if tOn then tA = tA.." "..L["CAM_Active"] else tB = tB.." "..L["CAM_Active"] end
+							SkuOptions:InjectMenuItems(self, {tA}, SkuGenericMenuItem)
+							SkuOptions:InjectMenuItems(self, {tB}, SkuGenericMenuItem)
+						end
+
+						-- Plaketten
+						local tNPEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Nameplates"]}, SkuGenericMenuItem)
+						tNPEntry.dynamic = true
+						tNPEntry.BuildChildren = function(self)
+							local function tBuildNP(aLabel, aCVar)
+								local tOn = (GetCVar(aCVar) == "1")
+								local tE = SkuOptions:InjectMenuItems(self, {aLabel..", "..(tOn and L["on"] or L["off"])}, SkuGenericMenuItem)
+								tE.dynamic = true
+								tE.isSelect = true
+								tE.OnAction = function(self, aValue, aName)
+									if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
+									local tClean = tCleanName(aName)
+									if tClean == L["on"] then tApplyCVar(aCVar, "1"); tSaveUser(aCVar, "1"); tCamSay(aLabel.." "..L["CAM_NPOn"])
+									elseif tClean == L["off"] then tApplyCVar(aCVar, "0"); tSaveUser(aCVar, "0"); tCamSay(aLabel.." "..L["CAM_NPOff"]) end
+								end
+								tE.BuildChildren = function(self) tBuildOnOff(self, aCVar) end
+							end
+							tBuildNP(L["CAM_NPEnemy"], "nameplateShowEnemies")
+							tBuildNP(L["CAM_NPFriendly"], "nameplateShowFriends")
+							tBuildNP(L["CAM_NPAll"], "nameplateShowAll")
+						end
+					end
+
+end
+
 function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPath, aModule, aKeyPrefix, aIncludeHidden)
 	for i, v in SkuSpairs(aArgTable, function(t, a, b) if t[b].order and t[a].order then return t[b].order > t[a].order end end) do
 		if v.forAudioMenu == false and not aIncludeHidden then

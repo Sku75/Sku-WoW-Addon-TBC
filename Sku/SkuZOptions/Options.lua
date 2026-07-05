@@ -63,6 +63,7 @@ SkuOptions.options = {
 			desc = "",
 			type = "select",
 			values = SkuCore.BackgroundSoundFiles,
+			forAudioMenu = false,   -- W8: surfaced under Einstellungen -> Audio
 		},
 		localActive = {
 			order = 5,
@@ -88,6 +89,7 @@ SkuOptions.options = {
 			name = L["Audio-Kanäle"],
 			type = "group",
 			order = 6,
+			forAudioMenu = false,   -- W8: surfaced under Einstellungen -> Audio
 			args= {
 					MasterVolume = {
 						order = 2,
@@ -167,6 +169,7 @@ SkuOptions.options = {
 			name = L["Sound Settings"],
 			type = "group",
 			order = 7,
+			forAudioMenu = false,   -- W8: surfaced under Einstellungen -> Audio
 			args= {
 				Sound_EnableReverb = {
 					order = 1,
@@ -992,23 +995,31 @@ function SkuOptions:MenuBuilder(aParentEntry)
 		SkuOptions:OnProfileReset()
 	end
 
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Fehlende Audio Wörter kopieren"]}, SkuGenericMenuItem)
+	-- W8: "Fehlende Audio Wörter kopieren" ist kein Allgemein-Eintrag mehr —
+	-- SkuCore:MenuBuilder haengt ihn als LETZTEN Eintrag von Einstellungen ->
+	-- Sprachausgabe an (SkuOptions:MissingAudioWordsMenuEntry unten).
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- "Fehlende Audio Wörter kopieren": Woerter ohne Audio-Datei in einer EditBox
+-- zum Kopieren anzeigen (und die gesammelte Liste danach leeren).
+function SkuOptions:MissingAudioWordsMenuEntry(aParentEntry)
+	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(aParentEntry, {L["Fehlende Audio Wörter kopieren"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		if SkuOptions.db.realm then
 			if SkuOptions.db.realm.missingAudio then
 				local tText = ""
 				if SkuOptions.db.realm.missingAudio then
-					for i, v in pairs(SkuOptions.db.realm.missingAudio) do 
+					for i, v in pairs(SkuOptions.db.realm.missingAudio) do
 						tText = tText..i.."\r\n"
 					end
 				end
 				PlaySound(88)
-				SkuOptions.Voice:OutputString(L["Jetzt wort liste mit Steuerung plus C kopieren und Escape drücken"], true, true, 0.2)										
+				SkuOptions.Voice:OutputString(L["Jetzt wort liste mit Steuerung plus C kopieren und Escape drücken"], true, true, 0.2)
 				SkuOptions:EditBoxShow(tText, function(self) PlaySound(89) end)
 				SkuOptions.db.realm.missingAudio = {}
 			end
 		end
 	end
-
 end
