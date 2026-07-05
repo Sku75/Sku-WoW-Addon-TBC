@@ -44,8 +44,10 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
   deterministic regeneration. Data finding: `NpcData.Names.deDE` contains
   9,104 duplicate record keys (a second, partially-untranslated block;
   constructor last-wins semantics are preserved exactly by the ordered chunk
-  merge). In-game fingerprint comparison (baseline vs converted) still
-  pending — see the stage-2 test drill in DB-RESTRUCTURE-PLAN.md appendix.
+  merge). **In-game acceptance PASSED 2026-07-06**: /skudbcheck fingerprints
+  of all 37 datasets identical between converted and pristine format
+  (determinism across /reload also verified; no missing datasets, no
+  chunk-loader errors). The chunk format is the live format from here on.
 
 - **Window builders — dropped the redundant Close/Cancel entries (5 windows).**
   Craft, Trade skill, Class trainer, Trade, and Pet stable each appended a

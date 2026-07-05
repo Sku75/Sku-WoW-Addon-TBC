@@ -866,7 +866,25 @@ What shipped, and deviations from the plan text:
 - SkuNav gained DevGetWaypointCacheTables() (dev accessor over the file-local
   cache tables) so /skudbmem can rank them for stage 4.
 
-### Stage-2 in-game acceptance drill (pending; ~15 minutes)
+### Stage-2 in-game acceptance: PASSED 2026-07-06
+
+Executed (reverse order of the drill below - the converted files were already
+live, so the pristine capture came last; equivalent proof):
+- /skudbcheck baseline1 + baseline2 on the CONVERTED files (00:52, 00:56):
+  _dbcheck.py 1 2 = PASS, all 37 datasets - fingerprint determinism across
+  /reload AND the chunk loader building identically twice; zero MISSING
+  datasets; BugGrabber free of chunk/SkuDB errors.
+- --unwrap, then /skudbcheck pristine on the ORIGINAL files (01:03):
+  _dbcheck.py 2 3 = PASS, all 37 datasets identical in count and fingerprint.
+  Old format and new format build bit-identical tables through the full
+  in-game pipeline (load, ordered chunk merge incl. the 9104 deDE dupe
+  overwrites, SkuQuest fix+merge).
+- Re-converted afterwards (deterministic); _db_manifest.py --check PASS.
+The chunk format is the live format from here on. Still open from the drill:
+/skudbmem ranking capture (stage-4 input) and the /lsw stage-1 memory
+confirmation - both can ride along any future session.
+
+### Stage-2 in-game acceptance drill (as originally planned; kept for reference)
 
 The converted files are LIVE on disk (symlink). The baseline fingerprint must
 come from the ORIGINAL format, so the drill flips the data files (code stays):
