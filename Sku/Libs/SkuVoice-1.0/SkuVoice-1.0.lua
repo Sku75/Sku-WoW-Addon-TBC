@@ -468,41 +468,10 @@ function SkuVoice:CheckIgnore(aString)
 end
 
 ---------------------------------------------------------------------------------------------------------
--- Global NVDA engine. When the SkuOptions "nvdaGlobalTts" setting is on, general Sku speech
--- (menu, tooltips, announcements) is routed to the user's real screen reader via
--- the pixel bridge instead of in-game TTS. Returns true if it handled the string
--- (caller must then return). aExplicit = this call carries an explicit per-channel
--- engine (chat Sku/Blizzard TTS) -> leave it alone so the per-channel choice wins.
-local function NvdaGlobalHandled(aString, aExplicit)
-	if aExplicit then return false end
-	if not SkuPixelBridge then return false end
-	local s = SkuOptions and SkuOptions.db and SkuOptions.db.profile and SkuOptions.db.profile["SkuOptions"]
-	if not (s and s.nvdaGlobalTts == true) then return false end
-	if type(aString) ~= "string" or aString == "" then return false end
-	-- UI sound tokens are beeps, not speech: let them play through WoW audio
-	if string.find(aString, "^sound%-") or string.find(aString, "^male%-")
-		or string.find(aString, "^brian%-") or string.find(aString, "^emma%-") then
-		return false
-	end
-	-- swallow pure big-number / float strings (hidden waypoint ids/coords), same
-	-- intent as the normal path's number filter
-	local n = tonumber(aString)
-	if n and (n > 20000 or n ~= math.floor(n)) then return true end
-	-- normalise Sku markup/separators for natural NVDA speech
-	local t = string.gsub(aString, "§[^;]*", "")
-	t = string.gsub(t, ";", " ")
-	t = string.gsub(t, "%s+", " ")
-	t = string.gsub(t, "^%s*(.-)%s*$", "%1")
-	if t ~= "" then SkuPixelBridge:Emit(t) end
-	return true
-end
-
----------------------------------------------------------------------------------------------------------
 function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial, aVoice)
 	if not aString then
 		return
 	end
-	if NvdaGlobalHandled(aString, type(aOverwrite) == "table" and aOverwrite.explicit) then return end
 
 	--changing to a new approach with passing a table of arguments instead of a lot of values, but still need to update that everywhere
 	if type(aOverwrite) == "table" then
@@ -790,7 +759,6 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 	if not aString then
 		return
 	end
-	if NvdaGlobalHandled(aString, type(aOverwrite) == "table" and aOverwrite.explicit) then return end
 
 	--print("OutputString", aString)
 
