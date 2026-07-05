@@ -300,6 +300,40 @@ fires on /reload too, so the route build is already behind the overlay).
 Options 2/3 (DB rework) declined by the user for now - too much subtle-
 corruption risk without database experience.
 
+## A/B measurement results 2026-07-05 (stopwatch, 11 runs, all four configs)
+
+Baseline = game + !!LoadStopwatch only:
+- Login 1.6 s to world, playable 1.8 s, quiet after <1 s. Reload 0.3 s, zero
+  stutter. 65 MB Lua memory.
+
+Sku family only (7 addons):
+- Login 5.0 s to world => Sku's loading-screen bill ~3.4 s (milestones:
+  1.3 s data-file compile, 0.7 s route build, 0.28 s SkuAuras enable,
+  0.26 s forced GC 673->616 MB, all hidden behind the screen). Reload 3.2 s.
+- Post-load worst frame 0.9 s login / 0.26 s reload - streamed build works.
+- Memory ~610 MB at PEW, ~950 MB after waypoint-cache build.
+
+Everything except Sku (27 addons: DBM fleet, Details, WeakAuras, Questie...):
+- Login 9.1 s to world (>= Sku's bill; high run-to-run variance). Reload 2.2 s.
+- Post-load worst 0.86 s, settled +3 s. Memory only 220-280 MB TOTAL.
+
+Full setup (29 addons):
+- Login 6.7-6.8 s, reload 5.2-13.2 s (variance!). Post-load: consistent
+  1.8-2.6 s stall at +3 s, settled +8-10 s, memory 758->1130 MB.
+
+Conclusions:
+1. Sku is ~1/3 of the loading screen, NOT the majority (game ~1.6 s, Sku
+   ~3.4 s, others ~2-7 s). Pruning DBM/Details modules would save as much as
+   further Sku code work.
+2. The post-load 2-2.6 s stall exists ONLY in the combination (each set alone
+   peaks <1 s). Multiplier = Sku's ~700-950 MB heap making every GC step
+   expensive while the other addons run their +3 s deferred init. Sku is
+   implicated through MEMORY, not CPU.
+3. Sku's memory is ~4x all other addons combined. Only the DB rework
+   (options 2/3: strings + compile-once binary cache) removes that.
+4. The 2026-07-05 fixes are verified: second freeze gone (felt + measured),
+   waypoint build fully streamed, forced GC hidden, loadPerf capture works.
+
 ## Key references
 - LOAD-PERF-NOTES.md (W3 handoff), _wrap_deferred.py, _readperf.py (this folder)
 - Sku/Core.lua:141,338-386,916-965 (perf harness), Sku/SkuDeferredData.lua
