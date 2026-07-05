@@ -71,3 +71,29 @@ for blk in blocks:
     print("=" * 70)
     for t, m in blk:
         print("[%s] %s" % (t, m))
+
+# Since 2026-07-05 the auto-capture at login lives in the eviction-proof
+# SkuDebugLog.loadPerf field (an array of plain strings, overwritten each
+# load) because ring flooding used to evict the in-ring capture.
+lp = block.find('["loadPerf"]')
+if lp >= 0:
+    lb = block.find("{", lp)
+    depth2 = 0
+    lend = lb
+    for j in range(lb, len(block)):
+        c = block[j]
+        if c == "{":
+            depth2 += 1
+        elif c == "}":
+            depth2 -= 1
+            if depth2 == 0:
+                lend = j
+                break
+    print("=" * 70)
+    print("SkuDebugLog.loadPerf (latest load):")
+    for raw in block[lb:lend].splitlines():
+        s = raw.strip().rstrip(",")
+        if len(s) >= 2 and s[0] == '"' and s[-1] == '"':
+            print(clean(s[1:-1].replace('\\"', '"')))
+else:
+    print("(no loadPerf capture yet - needs a Sku session with the 2026-07-05 build)")

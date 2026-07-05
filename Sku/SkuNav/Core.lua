@@ -698,6 +698,11 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 function SkuNav:LoadLinkDataFromProfile()
+	-- [Load-perf 2026-07-05] Stale links are counted and summarised in ONE log
+	-- line instead of one dprint per link: the per-link spam (thousands of
+	-- lines every login) flooded the SkuDebugLog ring and evicted everything
+	-- else, including the load-perf capture.
+	local tStaleSources = 0
 	if SkuDB.SessionRouteData.Links then
 		SkuNav:CheckAndUpdateProfileLinkData()
 		for tSourceWpID, tSourceWpLinks in pairs(SkuDB.SessionRouteData.Links) do
@@ -707,7 +712,7 @@ function SkuNav:LoadLinkDataFromProfile()
 			-- a C_Timer callback, but it aborts the whole build inside the coroutine).
 			local tSourceWpIdx = WaypointCacheLookupIdForCacheIndex[tSourceWpID]
 			if not tSourceWpIdx then
-				dprint("this shouldn't happen NO WaypointCacheLookupIdForCacheIndex[tSourceWpID]", tSourceWpID, tSourceWpLinks)
+				tStaleSources = tStaleSources + 1
 			else
 			local tSourceWpName = WaypointCache[tSourceWpIdx].name
 			WaypointCacheLookupCacheNameForId[tSourceWpName] = tSourceWpID
@@ -729,6 +734,9 @@ function SkuNav:LoadLinkDataFromProfile()
 			end
 			end
 		end
+	end
+	if tStaleSources > 0 then
+		dprint("LoadLinkDataFromProfile: stale link sources skipped (not in cache):", tStaleSources)
 	end
 	SkuNav:SaveLinkDataToProfile()
 	SkuNav:CleanupWaypoints()
@@ -767,8 +775,8 @@ function SkuNav:CheckAndUpdateProfileLinkData()
 		for tSourceWpID, tSourceWpLinks in pairs(SkuDB.SessionRouteData.Links) do
 			tWpcYield()
 			if not WaypointCacheLookupIdForCacheIndex[tSourceWpID] then
-				local typeId, dbIndex, spawn, areaId = SkuNav:GetWpDataFromId(tSourceWpID)
-				dprint("this shouldn't happen UPDATED source deleted, not in db", tSourceWpID, typeId, dbIndex, spawn, areaId)
+				-- [Load-perf 2026-07-05] counted + summarised below instead of one
+				-- dprint per stale link (thousands per login flooded the ring)
 				SkuDB.SessionRouteData.Links[tSourceWpID] = nil
 				tDeletedCounter = tDeletedCounter + 1
 			else
@@ -776,7 +784,6 @@ function SkuNav:CheckAndUpdateProfileLinkData()
 				if SkuNav:GetWaypointData2(tSourceWpName) then
 					for tTargetWpID, tTargetWpDistance in pairs(tSourceWpLinks) do
 						if not WaypointCacheLookupIdForCacheIndex[tTargetWpID] then
-							dprint("this shouldn't happen UPDATED Target deleted, not in db", tSourceWpID, tSourceWpLinks, tSourceWpName, "-", tTargetWpID, tTargetWpDistance, WaypointCacheLookupIdForCacheIndex[tTargetWpID])
 							SkuDB.SessionRouteData.Links[tSourceWpID][tTargetWpID] = nil
 							tDeletedCounter = tDeletedCounter + 1
 						else
@@ -816,7 +823,9 @@ function SkuNav:CheckAndUpdateProfileLinkData()
 		end
 	end
 
-	--print("tDeletedCounter", tDeletedCounter)
+	if tDeletedCounter > 0 then
+		dprint("CheckAndUpdateProfileLinkData: stale link refs removed:", tDeletedCounter)
+	end
 end
 
 ------------------------------------------------------------------------------------------------------------------------

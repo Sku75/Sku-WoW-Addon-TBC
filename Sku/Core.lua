@@ -951,15 +951,25 @@ tPerfLoadFrame:SetScript("OnEvent", function(self, aEvent, aArg1)
 			-- One frame later control has returned to the user, so this stamp marks
 			-- roughly where the visible /reload freeze ends. Auto-persist the whole
 			-- load story to the ring (silent - no chat/TTS spam).
+			-- [Load-perf 2026-07-05] Do NOT write this capture into the ring:
+			-- chatty login diagnostics (the link-consistency phase used to log
+			-- one line per stale link, thousands per login) flood the ring and
+			-- the trim silently evicted the capture. Store it in a dedicated
+			-- eviction-proof field instead (same pattern as
+			-- SkuDebugLog.wpcResult): SkuDebugLog.loadPerf, overwritten each
+			-- load, read out-of-game via _readperf.py.
 			local function tCapture()
-				Sku:DebugLogMark("perf load milestones")
-				Sku:PerformanceDumpLoad(tPerfEmitQuiet)
-				Sku:PerformanceDumpFiles(tPerfEmitQuiet)
-				Sku:PerformanceDumpModules(tPerfEmitQuiet)
-				Sku:PerformanceDumpMem(tPerfEmitQuiet)
+				if type(SkuDebugLog) ~= "table" then SkuDebugLog = {} end
+				local tOut = { "=== load perf capture  " .. date("%Y-%m-%d %H:%M:%S") .. " ===" }
+				local function tEmit(aLine) tOut[#tOut + 1] = aLine end
+				Sku:PerformanceDumpLoad(tEmit)
+				Sku:PerformanceDumpFiles(tEmit)
+				Sku:PerformanceDumpModules(tEmit)
+				Sku:PerformanceDumpMem(tEmit)
 				if GetCVar and GetCVar("scriptProfile") == "1" then
-					Sku:PerformanceDumpAddons(tPerfEmitQuiet, false)
+					Sku:PerformanceDumpAddons(tEmit, false)
 				end
+				SkuDebugLog.loadPerf = tOut
 			end
 			if C_Timer and C_Timer.After then
 				C_Timer.After(0, function()
