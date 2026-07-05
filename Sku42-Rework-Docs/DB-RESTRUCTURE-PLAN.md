@@ -866,6 +866,60 @@ What shipped, and deviations from the plan text:
 - SkuNav gained DevGetWaypointCacheTables() (dev accessor over the file-local
   cache tables) so /skudbmem can rank them for stage 4.
 
+### Stage 3 implemented (2026-07-06) - in-game test PENDING
+
+The eager stage-2 loader is now the streamed master init in
+SkuDB/ChunkLoader.lua. Loading-screen work removed: chunk compile+build
+(~1.3 s), fixes+merge, SkuAuras lists. The route build (~0.7 s) deliberately
+STAYS at PLAYER_LOGIN: it is one atomic loadstring blob (positional arrays =
+not chunkable under the A5 rule), and moving it would trade hidden screen
+time for a visible post-login freeze.
+
+Design as built, including the deviations from the plan text:
+- FAMILY-ORDERED streaming (user request: most relevant data first): quests
+  -> creatures -> objects -> items -> spells. Per family: base+WotLK chunks
+  -> that family's fix functions -> that family's merges (sliced) -> flag
+  Sku:IsDataReady("skudb.<family>"). The fixes/merge audit showed the
+  families are independent (fixes touch only their own tables plus the
+  eager keys/zoneIDs), so per-family flags are SAFE and consumers get data
+  in ~relevance order instead of waiting for one global gate. Risk A8 holds
+  per family: a flag only flips AFTER that family's merge.
+- The fix+merge block MOVED out of SkuQuest:PLAYER_LOGIN into the master
+  (verbatim operations, same relative order per family; quest zone cache +
+  UpdateAllQuestObjects + a silent CheckQuestProgress(true) run as the quest
+  tail). SkuQuest:PLAYER_LOGIN keeps only its settings/timer lines.
+- Guards, per the consumer audit: stage 2's scaffolding pre-creates every
+  table and locale subtable, so ALL indexed reads are nil-safe by shape
+  (same as an unknown id today) and menu/scan iterations degrade to empty
+  for a few seconds and self-heal on the next tick/open. Only the ONE-TIME
+  builds needed explicit sequencing: SkuAuras value lists (extracted to
+  BuildAttributeValueLists, gated at PEW, built by the master - the
+  silently-empty-auras case), the waypoint cache (CreateWaypointCache
+  defers until creatures+objects are ready; master re-issues it async;
+  wpCacheReady=false keeps the existing "Wegpunkte werden noch geladen"
+  hint honest), and the quest zone cache (master tail).
+- Escape hatch: SkuDB.ChunkStreamForceFinish() force-drains the stream
+  synchronously; EnsureWaypointCacheComplete uses it so any path demanding
+  the complete cache immediately still gets it (cost = the old freeze).
+- Budget: 30 ms/frame for the first 8 s, 10 ms after. One readiness line
+  ("Sku Datenbank bereit") when all families are up, then one forced GC.
+- Failures: pcall everywhere, family marked FAILED (flag never set,
+  consumers keep degrading), SkuErrorLog + spoken error, other families
+  continue. PLAYER_LOGIN restart on /reload; profile re-entry sees flags.
+- Fingerprint gate stays authoritative: /skudbcheck AFTER the readiness
+  announcement must still equal the stage-0/2 baseline (the merge content
+  is order-independent across families).
+
+Stage-3 in-game drill (~10 min): (1) /reload - loading screen should be
+~1.5-2 s shorter; hear "Sku Datenbank bereit" a few seconds after control
+returns. (2) Immediately after a /reload open the quest menu and near
+waypoints - at worst a brief loading hint, no error sound. (3) After the
+announcement run /skudbcheck stage3, /reload, then _dbcheck.py against the
+pristine capture - must PASS. (4) One aura must fire in the first fight.
+(5) Three /reloads + a profile switch + an instance port, then
+_read_buggrabber.py clean. (6) /skuperf load shows the family readiness
+stamps, stream-complete ms and stream-GC ms.
+
 ### Stage-2 in-game acceptance: PASSED 2026-07-06
 
 Executed (reverse order of the drill below - the converted files were already

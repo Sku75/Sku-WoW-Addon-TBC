@@ -22,6 +22,27 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **DB rework stage 3 — streamed SkuDB build (the felt login win).** The
+  chunk construction, DB fixes, WotLK/SoD merges and SkuAuras value lists no
+  longer run on the loading screen: `SkuDB/ChunkLoader.lua` streams them
+  after login in user-relevance order (quests → creatures → objects → items
+  → spells; 30 ms/frame for the first 8 s, then 10 ms), setting
+  `Sku:IsDataReady("skudb.<family>")` per family strictly AFTER that
+  family's merge, plus a global `"skudb"` flag and one spoken line "Sku
+  Datenbank bereit". The fix+merge block moved out of
+  `SkuQuest:PLAYER_LOGIN` verbatim; the waypoint-cache build defers until
+  creatures+objects are ready (existing "Wegpunkte werden noch geladen" hint
+  covers the gap; `SkuDB.ChunkStreamForceFinish()` +
+  `EnsureWaypointCacheComplete` keep a synchronous escape hatch); SkuAuras'
+  lists are extracted to `BuildAttributeValueLists` and built by the master
+  (else they'd be silently empty). Indexed DB reads were already nil-safe by
+  shape (stage 2 pre-creates all tables/locale subtables); transient menu/
+  scan iterations degrade to empty for a few seconds and self-heal. Failures
+  are pcall'ed, spoken, logged, and never silently partial. Route build
+  deliberately stays at PLAYER_LOGIN (atomic loadstring blob). In-game test
+  pending — drill in DB-RESTRUCTURE-PLAN.md appendix; the /skudbcheck
+  fingerprint must still match the stage-0 baseline.
+
 - **DB rework stages 0–2 (DB-RESTRUCTURE-PLAN.md).** Stage 0: verification
   toolkit — `_db_convert.py` (whitelist converter, verification built in),
   `_db_manifest.py` + `MANIFEST-DB.txt` (SHA-256 pins for the gitignored data

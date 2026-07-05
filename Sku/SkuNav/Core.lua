@@ -354,7 +354,22 @@ end
 
 function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	--print("CreateWaypointCache")
-	
+
+	-- [DB rework stage 3] The cache passes iterate NpcData.Names and
+	-- objectLookup and embed MERGED localized names (plan risk A8). Built
+	-- before the streamed SkuDB init has finished the creatures+objects
+	-- families, the cache would be silently EMPTY of NPC/object waypoints for
+	-- the whole session. Defer instead: the master sequence
+	-- (SkuDB/ChunkLoader.lua) re-issues the call the moment both families
+	-- (incl. their merges) are complete. wpCacheReady stays false meanwhile,
+	-- so the existing "Wegpunkte werden noch geladen" menu hint covers the gap.
+	if not (Sku:IsDataReady("skudb.creatures") and Sku:IsDataReady("skudb.objects")) then
+		dprint("CreateWaypointCache deferred: skudb not ready")
+		SkuNav.wpCacheReady = false
+		SkuNav.wpcPendingArgs = {aAddLocalizedNames, aAsync}
+		return
+	end
+
 	local C_MapGetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 	WaypointCache = {}
 	WaypointCacheLookupAll = {}
@@ -687,6 +702,19 @@ end
 -- now. No-op once the cache is built. For any path that needs the whole cache at
 -- once (e.g. a synchronous CreateWaypointCache caller, or link loading).
 function SkuNav:EnsureWaypointCacheComplete()
+	-- [DB rework stage 3] While the cache build is still DEFERRED (SkuDB
+	-- stream not finished), force-drain the stream first, then start the
+	-- pending build; the drain below force-finishes it. Cost = what the
+	-- loading screen used to pay, only if something demands the complete
+	-- cache this early.
+	if SkuNav.wpcPendingArgs and SkuDB.ChunkStreamForceFinish then
+		SkuDB.ChunkStreamForceFinish()
+		local tArgs = SkuNav.wpcPendingArgs -- the master may have consumed it
+		if tArgs then
+			SkuNav.wpcPendingArgs = nil
+			SkuNav:CreateWaypointCache(tArgs[1], true)
+		end
+	end
 	local co = SkuNav._wpcCo
 	while co and coroutine.status(co) ~= "dead" do
 		local ok, err = coroutine.resume(co)

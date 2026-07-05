@@ -299,13 +299,14 @@ local function TableCopy(t, deep, seen)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local tItemHook
-function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
-	--print("PLAYER_ENTERING_WORLD", aEvent, aIsInitialLogin, aIsReloadingUi)
-	SkuAuras:InvalidateAuraListCache()
-	SkuSettings:Sub("SkuAuras", nil, "char")
-	SkuSettings:Sub("SkuAuras", nil, "char").Auras = SkuSettings:Sub("SkuAuras", nil, "char").Auras or {}
-
+-- [DB rework stage 3] Build the attribute value lists (iterates ALL of
+-- itemLookup and SpellDataTBC plus the enchant db). Extracted from
+-- PLAYER_ENTERING_WORLD: with the streamed SkuDB build the data is not ready
+-- at PEW - built too early the lists would be silently EMPTY and auras would
+-- never fire this session (plan risk A7). Called from PEW when the data is
+-- ready (normal /reload later in a session, profile switches), otherwise from
+-- the master init sequence (SkuDB/ChunkLoader.lua) once items+spells are up.
+function SkuAuras:BuildAttributeValueLists()
 	local seen = {}
 	SkuAuras.values = TableCopy(SkuAuras.valuesDefault, true, seen)
 
@@ -363,7 +364,25 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 		end
 	end
 	SkuAuras.attributes.weaponEnchantOffHand.values = SkuAuras.attributes.weaponEnchantMainHand.values
-	
+	SkuAuras:InvalidateAuraListCache()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local tItemHook
+function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
+	--print("PLAYER_ENTERING_WORLD", aEvent, aIsInitialLogin, aIsReloadingUi)
+	SkuAuras:InvalidateAuraListCache()
+	SkuSettings:Sub("SkuAuras", nil, "char")
+	SkuSettings:Sub("SkuAuras", nil, "char").Auras = SkuSettings:Sub("SkuAuras", nil, "char").Auras or {}
+
+	-- [DB rework stage 3] gate on the streamed SkuDB init: too early = the
+	-- lists come out empty. The master sequence builds them on completion.
+	if Sku:IsDataReady("skudb.items") and Sku:IsDataReady("skudb.spells") then
+		SkuAuras:BuildAttributeValueLists()
+	else
+		SkuAuras.attributeListsPending = true
+	end
+
 	if not tItemHook then
 		hooksecurefunc("UseContainerItem", function(aBagID, aSlot, aTarget, aReagentBankAccessible)
 			if not SkuAuras:IsEnabled() then return end
