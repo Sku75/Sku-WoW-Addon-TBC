@@ -1442,6 +1442,8 @@ function AuctionHouse:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPric
 
    table.insert(tPriceHistoryData, 1, tTextFull)
 
+   SkuCore:InsertComparisnSections(aItemData[17] or aItemData[21], tPriceHistoryData)
+
    return tTextFirstLine, tPriceHistoryData
 end
 
