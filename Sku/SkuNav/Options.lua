@@ -424,7 +424,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 					end
 				end
 				if #tSortedWaypointList == 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
+					SkuNav:InjectWpListEmptyHint(self)
 				else
 					local tCount = 0
 					for k, v in SkuSpairs(tSortedWaypointList) do
@@ -437,7 +437,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 							tNewMenuEntry.sorting = true
 							tNewMenuEntry.BuildChildren = function(self)
 								if #tSortedWaypointList == 0 then
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
+									SkuNav:InjectWpListEmptyHint(self)
 								else
 									local tMetapaths = SkuNav:GetAllMetaTargetsFromWp5(ssub(v, string.find(v, "#") + 1), SkuSettings:Sub("SkuNav").routesMaxDistance, SkuNav.MaxMetaWPs, nil, true)
 									SkuSettings:Sub("SkuNav").metapathFollowingStart = v
@@ -483,7 +483,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 											table.insert(tSortedList, k)
 										end
 										if #tSortedList == 0 then
-											local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
+											SkuNav:InjectWpListEmptyHint(self)
 										else
 											for tK, tV in ipairs(tSortedList) do
 												local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..L[";Meter"]..tResults[tV].direction.."#"..tV}, SkuGenericMenuItem)
@@ -715,7 +715,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					table.insert(tSortedWaypointList, v.distance..L[";Meter"]..v.direction.."#"..k)
 				end
 				if #tSortedWaypointList == 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
+					SkuNav:InjectWpListEmptyHint(self)
 				else
 					--local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tSortedWaypointList, SkuGenericMenuItem)
 					SkuNav_MenuBuilder_WaypointSelectionMenu(self, tSortedWaypointList)
@@ -732,7 +732,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				local tWaypointList = SkuNav:ListWaypoints2(false, nil, nil, tPlayerContintentId, nil, true, true)
 		
 				if #tWaypointList == 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
+					SkuNav:InjectWpListEmptyHint(self)
 				else
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tWaypointList, SkuGenericMenuItem)
 				end
@@ -768,7 +768,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					table.insert(tSortedWaypointList, v..L[";Meter"].."#"..k)
 				end
 				if #tSortedWaypointList == 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
+					SkuNav:InjectWpListEmptyHint(self)
 				else
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tSortedWaypointList, SkuGenericMenuItem)
 				end
@@ -1076,7 +1076,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			end
 
 			if #tSortedWaypointList == 0 then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
+				SkuNav:InjectWpListEmptyHint(self)
 			else
 				local tCount = 0
 				for k, v in SkuSpairs(tSortedWaypointList) do
@@ -1102,7 +1102,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 								table.insert(tSortedList, k)
 							end
 							if #tSortedList == 0 then
-								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
+								SkuNav:InjectWpListEmptyHint(self)
 							else
 								for tK, tV in ipairs(tSortedList) do
 									local tDistText = tMetapaths[tV].distance..L[";Meter"]..""--
@@ -1198,7 +1198,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				table.insert(tSortedWaypointList, v..L[";Meter"].."#"..k)
 			end
 			if #tSortedWaypointList == 0 then
-				local tNewMenuEntrySub = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
+				SkuNav:InjectWpListEmptyHint(self)
 			else
 				for i, v in pairs(tSortedWaypointList) do
 					local tNewMenuEntrySub = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)

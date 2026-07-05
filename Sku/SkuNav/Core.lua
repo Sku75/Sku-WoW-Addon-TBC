@@ -315,6 +315,30 @@ local WaypointCacheLookupIdForCacheIndex = {}
 local WaypointCacheLookupCacheNameForId = {}
 
 local WaypointCacheLookupPerContintent = {}
+
+-- [Load-perf 2026-07-05] Build readiness: false while a (re)build of the
+-- waypoint cache is streaming, true once link resolution has completed. Menus
+-- use SkuNav:InjectWpListEmptyHint() to tell "still loading" from "empty".
+SkuNav.wpCacheReady = false
+
+-- [Load-perf 2026-07-05] Cooperative yield for the waypoint-cache build, moved
+-- to file scope so the helpers that run as part of the build (the custom-
+-- waypoint pass, LoadLinkDataFromProfile, CheckAndUpdateProfileLinkData,
+-- SaveLinkDataToProfile, CleanupWaypoints) can breathe too - they used to run
+-- as ONE coroutine slice each (the custom pass alone is ~50k records), which
+-- put several multi-hundred-ms frames into VISIBLE post-login time even though
+-- the build counted as "async". Outside the build coroutine (their normal
+-- synchronous callers) this is a no-op.
+local tWpcSliceStart = 0
+local tWpcInBuild = false
+local function tWpcYield()
+	if not tWpcInBuild or not coroutine.running() then return end
+	if debugprofilestop() - tWpcSliceStart > 10 then
+		coroutine.yield()
+		tWpcSliceStart = debugprofilestop()
+	end
+end
+
 function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	--print("CreateWaypointCache")
 	
@@ -329,25 +353,39 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	end
 
 	-- [W3] Time-slice the build so the ~1.5s creature pass no longer blocks the
-	-- login freeze. The body runs inside a coroutine that yields ~10ms per frame;
-	-- PEW calls CreateWaypointCache(nil, true) to pump it in the background, while
-	-- every other caller leaves aAsync nil and the build is drained synchronously
-	-- (unchanged behaviour). SkuNav:EnsureWaypointCacheComplete() force-finishes a
-	-- pending async build for any path that needs the whole cache at once.
-	local tWpcSliceStart
-	local function tWpcYield()
-		if debugprofilestop() - tWpcSliceStart > 10 then
-			coroutine.yield()
-			tWpcSliceStart = debugprofilestop()
+	-- login freeze. The body runs inside a coroutine that yields ~10ms per frame
+	-- (tWpcYield, file scope); PEW calls CreateWaypointCache(nil, true) to pump
+	-- it in the background, while every other caller leaves aAsync nil and the
+	-- build is drained synchronously (unchanged behaviour).
+	-- SkuNav:EnsureWaypointCacheComplete() force-finishes a pending async build
+	-- for any path that needs the whole cache at once.
+	SkuNav.wpCacheReady = false
+
+	-- [Load-perf 2026-07-05] Two-round meta-target passes: the player's
+	-- continent first, so the nearby waypoint lists are usable long before the
+	-- whole-world build finishes. Append-only reordering - the pass ORDER
+	-- (creatures -> objects -> custom -> links) is unchanged, so the
+	-- name-collision merge in the custom pass and the link resolution see
+	-- exactly the same state as before.
+	local tWpcCurrentContinent
+	do
+		local tOk, tAreaId = pcall(SkuNav.GetCurrentAreaId, SkuNav)
+		if tOk and tAreaId and SkuDB.InternalAreaTable[tAreaId] then
+			tWpcCurrentContinent = SkuDB.InternalAreaTable[tAreaId].ContinentID
 		end
 	end
+
 	SkuNav._wpcGen = (SkuNav._wpcGen or 0) + 1
 	local tWpcMyGen = SkuNav._wpcGen
 	SkuNav._wpcCo = coroutine.create(function()
+		tWpcInBuild = true
 		tWpcSliceStart = debugprofilestop()
 
 	--add creatures
-	for i, v in pairs(SkuDB.NpcData.Names[Sku.Loc]) do		
+	-- aWantCurrent: true = only spawns on the player's continent, false = only
+	-- the rest of the world, nil = everything in a single round.
+	local function tWpcAddCreatures(aWantCurrent)
+	for i, v in pairs(SkuDB.NpcData.Names[Sku.Loc]) do
 		if SkuDB.NpcData.Data[i] then
 			local tRoles
 			local tName
@@ -369,7 +407,7 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 						--we don't care for stuff that isn't in the open world
 						if isUiMap then
 							local tData = SkuDB.InternalAreaTable[is]
-							if tData then
+							if tData and (aWantCurrent == nil or ((tData.ContinentID == tWpcCurrentContinent) == aWantCurrent)) then
 								local tNumberOfSpawns = #vs
 								--local tSubname = SkuDB.NpcData.Names[Sku.Loc][i][2]
 								local tRolesString = ""
@@ -428,9 +466,10 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 		end
 		tWpcYield()
 	end
+	end
 
-	coroutine.yield()
 	--add objects
+	local function tWpcAddObjects(aWantCurrent)
 		for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
 			--we don't want stuff like ores, herbs, etc. as default
 			if not SkuDB.objectResourceNames[Sku.Loc][v] or SkuSettings:Sub("SkuNav").showGatherWaypoints == true then
@@ -442,7 +481,7 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 							--we don't care for stuff that isn't in the open world
 							if isUiMap then
 								local tData = SkuDB.InternalAreaTable[is]
-								if tData then
+								if tData and (aWantCurrent == nil or ((tData.ContinentID == tWpcCurrentContinent) == aWantCurrent)) then
 									local tNumberOfSpawns = #vs
 									for sp = 1, tNumberOfSpawns do
 										local _, worldPosition = C_Map.GetWorldPosFromMapPos(isUiMap, CreateVector2D(vs[sp][1] / 100, vs[sp][2] / 100))
@@ -495,7 +534,27 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 					end
 				end
 			end
+			tWpcYield()
 		end
+	end
+
+	-- Round dispatch: current continent first (creatures, then objects), then
+	-- the rest of the world. Falls back to a single whole-world round when the
+	-- player's continent cannot be resolved yet.
+	if tWpcCurrentContinent then
+		tWpcAddCreatures(true)
+		coroutine.yield()
+		tWpcAddObjects(true)
+		if Sku.MetricPoint then Sku:MetricPoint("waypoint cache: current continent meta targets done") end
+		coroutine.yield()
+		tWpcAddCreatures(false)
+		coroutine.yield()
+		tWpcAddObjects(false)
+	else
+		tWpcAddCreatures()
+		coroutine.yield()
+		tWpcAddObjects()
+	end
 
 		coroutine.yield()
 		--add custom
@@ -561,10 +620,16 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 					else
 						dprint("tried caching deleted custom wp", tIndex, tData)
 					end
+					tWpcYield()
 				end
 			end
 
 			SkuNav:LoadLinkDataFromProfile()
+
+			-- [Load-perf 2026-07-05] Build complete: flip readiness (menus stop
+			-- announcing "still loading") and leave build mode.
+			SkuNav.wpCacheReady = true
+			tWpcInBuild = false
 	end)
 
 	-- aAsync (the PEW login path): pump the build a few ms per frame so login is
@@ -619,11 +684,24 @@ function SkuNav:EnsureWaypointCacheComplete()
 	end
 end
 
+-- [Load-perf 2026-07-05] Menu helper: while the waypoint cache is still
+-- streaming after login, an empty list usually means "not built yet", not
+-- "nothing there". Inject an honest hint instead of the generic empty entry
+-- (the lists are volatile/dynamic, so they re-read as the data streams in).
+function SkuNav:InjectWpListEmptyHint(aParent)
+	if SkuNav.wpCacheReady ~= true then
+		SkuOptions:InjectMenuItems(aParent, {L["Wegpunkte werden noch geladen"]}, SkuGenericMenuItem)
+	else
+		SkuOptions:InjectMenuItems(aParent, {L["Empty;list"]}, SkuGenericMenuItem)
+	end
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 function SkuNav:LoadLinkDataFromProfile()
 	if SkuDB.SessionRouteData.Links then
 		SkuNav:CheckAndUpdateProfileLinkData()
 		for tSourceWpID, tSourceWpLinks in pairs(SkuDB.SessionRouteData.Links) do
+			tWpcYield()
 			-- Guard: a stale link can reference a waypoint no longer in the cache.
 			-- Skip it instead of nil-indexing (which previously crashed; harmless in
 			-- a C_Timer callback, but it aborts the whole build inside the coroutine).
@@ -659,6 +737,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function SkuNav:CleanupWaypoints()
 	for i, v in pairs(WaypointCache) do
+		tWpcYield()
 		if v.typeId == 1 then
 			local tHasLinks = false
 			if WaypointCache[i].links.byId ~= nil then
@@ -686,6 +765,7 @@ function SkuNav:CheckAndUpdateProfileLinkData()
 
 	if SkuDB.SessionRouteData.Links then
 		for tSourceWpID, tSourceWpLinks in pairs(SkuDB.SessionRouteData.Links) do
+			tWpcYield()
 			if not WaypointCacheLookupIdForCacheIndex[tSourceWpID] then
 				local typeId, dbIndex, spawn, areaId = SkuNav:GetWpDataFromId(tSourceWpID)
 				dprint("this shouldn't happen UPDATED source deleted, not in db", tSourceWpID, typeId, dbIndex, spawn, areaId)
@@ -752,6 +832,7 @@ function SkuNav:SaveLinkDataToProfile(aWpName)
 		SkuSettings:Sub("SkuNav").Links = nil
 		SkuDB.SessionRouteData.Links = {}
 		for tSourceWpIndex, tSourceWpData in pairs(WaypointCache) do
+			tWpcYield()
 			if tSourceWpData.links then
 				if tSourceWpData.links.byId then
 					SkuDB.SessionRouteData.Links[WaypointCacheLookupCacheNameForId[tSourceWpData.name]] = {}

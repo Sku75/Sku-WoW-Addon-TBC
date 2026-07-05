@@ -452,7 +452,7 @@ SkuGenericMenuItem = {
 			return
 		end
 
-		if self.name == L["Empty;list"] then
+		if self.name == L["Empty;list"] or self.name == L["Wegpunkte werden noch geladen"] then
 			return
 		end
 

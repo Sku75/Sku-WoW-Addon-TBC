@@ -939,6 +939,15 @@ tPerfLoadFrame:SetScript("OnEvent", function(self, aEvent, aArg1)
 			for k, v in pairs(Sku.PerfModules) do
 				Sku.PerfModulesLoad[k] = {init = v.init, enableSelf = v.enableSelf, enableTotal = v.enableTotal}
 			end
+			-- [Load-perf 2026-07-05] Force a full GC now, while the loading screen
+			-- still covers us: file load and the route build leave hundreds of MB
+			-- of garbage, and letting the incremental GC digest that AFTER the
+			-- screen fades was part of the post-load stutter (same trick as
+			-- Questie's QuestieCleanup: collectgarbage at the end of init).
+			local tGcT0 = debugprofilestop()
+			local tGcBeforeKb = collectgarbage("count")
+			collectgarbage("collect")
+			Sku:MetricPoint(string.format("forced GC at PEW = %.0f ms, %.0f MB -> %.0f MB", debugprofilestop() - tGcT0, tGcBeforeKb / 1024, collectgarbage("count") / 1024))
 			-- One frame later control has returned to the user, so this stamp marks
 			-- roughly where the visible /reload freeze ends. Auto-persist the whole
 			-- load story to the ring (silent - no chat/TTS spam).
