@@ -579,7 +579,7 @@ function MinimapScanner:MinimapScan(aRange)
    tCurrentMMPosX, tCurrentMMPosY = (aRange / 2) * -1, (aRange / 2) * -1
    MinimapScanner.IsMMScanning = true
 
-   print("Ressourcen-Scan gestartet (" .. aRange .. " Einheiten)")
+   print(L["Ressourcen-Scan gestartet ("] .. aRange .. L[" Einheiten)"])
    MinimapScanStep()
 end
 
@@ -601,8 +601,8 @@ function MinimapScanner:MinimapScanProcessResults()
    end
 
    if next(tScanResults) == nil then
-      print("Ressourcen-Scan: Nichts gefunden")
-      SkuOptions.Voice:OutputStringBTtts("Nichts gefunden", false, true, 0.2)
+      print(L["Ressourcen-Scan: Nichts gefunden"])
+      SkuOptions.Voice:OutputStringBTtts(L["Nichts gefunden"], false, true, 0.2)
       return
    end
 

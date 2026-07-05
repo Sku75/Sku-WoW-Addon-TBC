@@ -89,26 +89,26 @@ function SkuAuras:ShareSet(aName)
 	local sets = tEnsureSets(); local set = sets and sets[aName]
 	if not set then return end
 	if not (AceComm and SkuAuras.SendCommMessage) then
-		tSay("Teilen nicht moeglich, Kommunikationsbibliothek fehlt")
+		tSay(L["Teilen nicht moeglich, Kommunikationsbibliothek fehlt"])
 		return
 	end
 	local chan = tGroupChannel()
 	if not chan then
-		tSay("Du bist in keiner Gruppe")
+		tSay(L["Du bist in keiner Gruppe"])
 		return
 	end
 	local ok, payload = pcall(function()
 		return SkuOptions:Serialize("AURASET1", set.loc or (Sku.Loc or "enUS"), aName, set.auraData)
 	end)
 	if not ok or type(payload) ~= "string" then
-		tSay("Set konnte nicht vorbereitet werden")
+		tSay(L["Set konnte nicht vorbereitet werden"])
 		return
 	end
 	local me = (UnitName and UnitName("player")) or "?"
-	pcall(SendChatMessage, me.." teilt Aurenset "..aName, chan)
+	pcall(SendChatMessage, me..L[" teilt Aurenset "]..aName, chan)
 	pcall(function() SkuAuras:SendCommMessage(SHARE_PREFIX, payload, chan) end)
-	pcall(SendChatMessage, "Teilen abgeschlossen", chan)
-	tSay("Aurenset "..aName.." geteilt")
+	pcall(SendChatMessage, L["Teilen abgeschlossen"], chan)
+	tSay(string.format(L["Aurenset %s geteilt"], aName))
 end
 
 function SkuAuras:OnAuraSetComm(aPrefix, aMessage, aDist, aSender)
@@ -119,7 +119,7 @@ function SkuAuras:OnAuraSetComm(aPrefix, aMessage, aDist, aSender)
 	local pending = tEnsurePending(); if not pending then return end
 	local tKey = tUniqueName(pending, setName or "Set")
 	pending[tKey] = { from = aSender or "?", loc = loc or "?", auraData = auraData }
-	tSay("Aurenset "..tostring(setName).." von "..tostring(aSender).." empfangen. Unter Auren, Sets, Empfangene Sets annehmen.")
+	tSay(string.format(L["Aurenset %s von %s empfangen. Unter Auren, Sets, Empfangene Sets annehmen."], tostring(setName), tostring(aSender)))
 end
 
 -- Pending-Set in die eigenen Auren uebernehmen (mit Doubletten-Pruefung).
@@ -129,7 +129,7 @@ function SkuAuras:AcceptPendingSet(aKey)
 	local tAuras = SkuSettings:Sub("SkuAuras", nil, "char").Auras
 	if not tAuras then return end
 	if p.loc and p.loc ~= (Sku.Loc or "enUS") then
-		tSay("Achtung, Set ist fuer eine andere Sprache. Auren koennten nicht ausloesen.")
+		tSay(L["Achtung, Set ist fuer eine andere Sprache. Auren koennten nicht ausloesen."])
 	end
 	local tCount = 0
 	for auraName, auraTable in pairs(p.auraData) do
@@ -141,13 +141,13 @@ function SkuAuras:AcceptPendingSet(aKey)
 	end
 	pending[aKey] = nil
 	pcall(function() SkuAuras:UpdateAttributesListWithCurrentAuras() end)
-	tSay("Aurenset uebernommen, "..tCount.." Auren")
+	tSay(string.format(L["Aurenset uebernommen, %s Auren"], tCount))
 end
 
 function SkuAuras:DiscardPendingSet(aKey)
 	local pending = tEnsurePending(); if not pending then return end
 	pending[aKey] = nil
-	tSay("Empfangenes Set verworfen")
+	tSay(L["Empfangenes Set verworfen"])
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -162,12 +162,12 @@ function SkuAuras:BuildSetsMenu(aParent)
 		local tCreate = SkuOptions:InjectMenuItems(self, {L["Set aus aktuellen Auren anlegen"]}, SkuGenericMenuItem)
 		tCreate.OnAction = function()
 			pcall(function()
-				SkuOptions.Voice:OutputStringBTtts("Namen eingeben und Enter, oder Escape zum Abbrechen", false, true, 0.2)
+				SkuOptions.Voice:OutputStringBTtts(L["Namen eingeben und Enter, oder Escape zum Abbrechen"], false, true, 0.2)
 				SkuOptions:EditBoxShow("", function()
 					local tName = strtrim(SkuOptionsEditBoxEditBox:GetText() or "")
-					if tName == "" then tSay("Abgebrochen"); return end
+					if tName == "" then tSay(L["Abgebrochen"]); return end
 					local tFinal, tCount = SkuAuras:SetsCreateFromAllAuras(tName)
-					if tFinal then tSay("Set angelegt") end
+					if tFinal then tSay(L["Set angelegt"]) end
 				end)
 			end)
 		end
@@ -185,7 +185,7 @@ function SkuAuras:BuildSetsMenu(aParent)
 				tDel.BuildChildren = function(self)
 					local tYes = SkuOptions:InjectMenuItems(self, {L["Wirklich loeschen?"]}, SkuGenericMenuItem)
 					tYes.OnAction = function()
-						pcall(function() SkuAuras:SetsDelete(tName); tSay("Set geloescht") end)
+						pcall(function() SkuAuras:SetsDelete(tName); tSay(L["Set geloescht"]) end)
 						-- [41.06] nach dem Loeschen zurueck auf "Sets (teilen)" und neu aufbauen,
 						-- sonst bleibt der geloeschte Eintrag stehen und Enter laeuft ins Leere (beep).
 						C_Timer.After(0.3, function()
@@ -208,7 +208,7 @@ function SkuAuras:BuildSetsMenu(aParent)
 			local tEmpty = true
 			for tKey, tP in pairs(pending) do
 				tEmpty = false
-				local tEntry = SkuOptions:InjectMenuItems(self, {tKey.." von "..tostring(tP.from or "?")}, SkuGenericMenuItem)
+				local tEntry = SkuOptions:InjectMenuItems(self, {tKey..L[" von  "]..tostring(tP.from or "?")}, SkuGenericMenuItem)
 				tEntry.dynamic = true
 				tEntry.BuildChildren = function(self)
 					local tAcc = SkuOptions:InjectMenuItems(self, {L["Annehmen"]}, SkuGenericMenuItem)

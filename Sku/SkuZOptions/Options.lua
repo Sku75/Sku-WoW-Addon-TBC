@@ -962,7 +962,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 		return SkuOptions.db:GetCurrentProfile()
 	end
 
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Löschen"}, SkuGenericMenuItem)
+	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["Löschen"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)

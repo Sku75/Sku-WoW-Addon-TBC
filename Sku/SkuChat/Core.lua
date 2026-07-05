@@ -2422,7 +2422,7 @@ function SkuChat:OnInitialize()
 		title = title or ("Quest " .. questID)
 
 		local first = (L["Quest"] or "Quest")
-			.. (level and level > 0 and (" Stufe " .. level) or "")
+			.. (level and level > 0 and (L[" Stufe "] .. level) or "")
 			.. ", " .. title
 
 		-- Bevorzugt: SkuQuest:GetTTSText liefert exakt denselben Volltext,

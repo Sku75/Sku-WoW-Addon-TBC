@@ -566,7 +566,7 @@ local function tEnsureFollowWarn()
 					C_Timer.After(0.4, function()
 						if tFollowWarnEndPending == true and tMyGen == tFollowWarnGen then
 							tFollowWarnEndPending = false
-							pcall(function() SkuOptions.Voice:OutputStringBTtts("Folgen beendet", true, true, 0.2, true, nil, nil, 2) end)
+							pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Folgen beendet"], true, true, 0.2, true, nil, nil, 2) end)
 						end
 					end)
 				end

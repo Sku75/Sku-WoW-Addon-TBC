@@ -176,7 +176,7 @@ local function tGetActivityInfo(activityID)
 
    -- 3) Defaults
    if not info.name or info.name == "" then
-      info.name = "Aktivität #" .. tostring(activityID)
+      info.name = L["Aktivität #"] .. tostring(activityID)
    end
    info.minLevel = info.minLevel or 0
    info.maxLevel = info.maxLevel or 999

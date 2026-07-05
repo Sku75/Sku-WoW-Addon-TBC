@@ -21,6 +21,7 @@
 -- =====================================================================
 
 local MODULE_NAME, MODULE_PART = "SkuCore", "AudioDevice"
+local L = Sku.L
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
@@ -68,7 +69,7 @@ local function tGetDeviceName(aIndex)
       local ok, name = pcall(Sound_GameSystem_GetOutputDriverNameByIndex, aIndex)
       if ok and type(name) == "string" then return name end
    end
-   return "unbekannt"
+   return L["unbekannt"]
 end
 
 local function tGetCurrentIndex()
@@ -90,49 +91,49 @@ end
 local function tSetDevice(aIndex)
    local tCount = tGetDeviceCount()
    if tCount == 0 then
-      tSay("Keine Audiogeräte gefunden.")
+      tSay(L["Keine Audiogeräte gefunden."])
       return
    end
    -- WoW uses 0-based index for this CVar
    if aIndex < 0 or aIndex >= tCount then
-      tSay("Ungültige Nummer. Gültig: 0 bis " .. (tCount - 1) .. ". Benutze /skuaudio list.")
+      tSay(string.format(L["Ungültige Nummer. Gültig: 0 bis %s. Benutze /skuaudio list."], tCount - 1))
       return
    end
    local tName = tGetDeviceName(aIndex)
    local tOk = pcall(SetCVar, "Sound_OutputDriverIndex", tostring(aIndex))
    if not tOk then
-      tSay("Konnte CVar nicht setzen.")
+      tSay(L["Konnte CVar nicht setzen."])
       return
    end
    tRestartSound()
-   tSay("Gerät gewechselt auf Nummer " .. aIndex .. ": " .. tName)
+   tSay(string.format(L["Gerät gewechselt auf Nummer %s: %s"], aIndex, tName))
 end
 
 local function tListDevices()
    local tCount = tGetDeviceCount()
    if tCount == 0 then
-      tSay("Keine Audiogeräte gefunden.")
+      tSay(L["Keine Audiogeräte gefunden."])
       return
    end
    local tCurrent = tGetCurrentIndex()
-   tSay(tCount .. " Audiogeräte verfügbar. Aktuell Nummer " .. tCurrent .. ".")
+   tSay(string.format(L["%s Audiogeräte verfügbar. Aktuell Nummer %s."], tCount, tCurrent))
    -- WoW indexes are 0-based
    for i = 0, tCount - 1 do
-      local tMark = (i == tCurrent) and " (aktiv)" or ""
-      tSay("Nummer " .. i .. ": " .. tGetDeviceName(i) .. tMark)
+      local tMark = (i == tCurrent) and L[" (aktiv)"] or ""
+      tSay(string.format(L["Nummer %s: %s"], i, tGetDeviceName(i)) .. tMark)
    end
-   tSay("Zum Wechseln: /skuaudio set <Nummer>  oder  /skuaudio find headset")
+   tSay(L["Zum Wechseln: /skuaudio set <Nummer>  oder  /skuaudio find headset"])
 end
 
 local function tCurrent()
    local tIdx = tGetCurrentIndex()
-   tSay("Aktuelles Ausgabegerät: Nummer " .. tIdx .. ": " .. tGetDeviceName(tIdx))
+   tSay(string.format(L["Aktuelles Ausgabegerät: Nummer %s: %s"], tIdx, tGetDeviceName(tIdx)))
 end
 
 local function tFindAndSet(aQuery)
    aQuery = (aQuery or ""):lower():match("^%s*(.-)%s*$")
    if aQuery == "" then
-      tSay("Suchbegriff fehlt. Beispiel: /skuaudio find headset")
+      tSay(L["Suchbegriff fehlt. Beispiel: /skuaudio find headset"])
       return
    end
    local tCount = tGetDeviceCount()
@@ -144,13 +145,13 @@ local function tFindAndSet(aQuery)
       end
    end
    if #tMatches == 0 then
-      tSay("Kein Gerät enthält '" .. aQuery .. "'. /skuaudio list für alle Namen.")
+      tSay(string.format(L["Kein Gerät enthält '%s'. /skuaudio list für alle Namen."], aQuery))
       return
    end
    if #tMatches > 1 then
-      tSay(#tMatches .. " Treffer — bitte genauer:")
+      tSay(string.format(L["%s Treffer — bitte genauer:"], #tMatches))
       for _, m in ipairs(tMatches) do
-         tSay("Nummer " .. m.idx .. ": " .. m.name)
+         tSay(string.format(L["Nummer %s: %s"], m.idx, m.name))
       end
       return
    end
@@ -166,7 +167,7 @@ local function SkuAudioSlashHandler(aMsg)
    tCmd = (tCmd or ""):lower()
    if tCmd == "" then
       tCurrent()
-      tSay("Befehle: list, current, set N, find <text>, restart")
+      tSay(L["Befehle: list, current, set N, find <text>, restart"])
       return
    end
    if tCmd == "list" then
@@ -176,7 +177,7 @@ local function SkuAudioSlashHandler(aMsg)
    elseif tCmd == "set" then
       local tN = tonumber(tArg)
       if not tN then
-         tSay("Bitte eine Zahl angeben. Beispiel: /skuaudio set 2")
+         tSay(L["Bitte eine Zahl angeben. Beispiel: /skuaudio set 2"])
          return
       end
       tSetDevice(tN)
@@ -184,12 +185,12 @@ local function SkuAudioSlashHandler(aMsg)
       tFindAndSet(tArg)
    elseif tCmd == "restart" then
       if tRestartSound() then
-         tSay("Soundsystem neu gestartet.")
+         tSay(L["Soundsystem neu gestartet."])
       else
-         tSay("Funktion nicht verfügbar.")
+         tSay(L["Funktion nicht verfügbar."])
       end
    else
-      tSay("Unbekannt. Verfügbar: list, current, set N, find <text>, restart")
+      tSay(L["Unbekannt. Verfügbar: list, current, set N, find <text>, restart"])
    end
 end
 

@@ -386,7 +386,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 	local inventoryTooltipTextCache = {}
 	local tgbf = _G["GuildBankFrame"]
 
-	local friendlyName = "Bankfächer"
+	local friendlyName = L["Bankfächer"]
 	table.insert(aParentChilds, friendlyName)
 	aParentChilds[friendlyName] = {
 		frameName = "",
@@ -2438,7 +2438,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 			type = "Button",
 			obj = _G[tFrameName],
 			textFirstLine = tFriendlyName,
-			textFull = "Erlernte Berufe öffnen oder verlernen.",
+			textFull = L["Erlernte Berufe öffnen oder verlernen."],
 			childs = {},
 		}
 		local tProfParent = aParentChilds[tFriendlyName].childs
@@ -2541,7 +2541,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 						type = "Button",
 						obj = nil,
 						textFirstLine = tOpen,
-						textFull = "Öffnet das Beruf-Fenster für " .. pName .. ".",
+						textFull = L["Öffnet das Beruf-Fenster für "] .. pName .. ".",
 						childs = {},
 						directAction = true,
 						macrotext = "/cast " .. pName,
@@ -2566,14 +2566,14 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 						type = "Button",
 						obj = nil,
 						textFirstLine = tUnlearn,
-						textFull = "Verlernt " .. pName
-							.. ". Eine Bestätigungs-Abfrage erscheint.",
+						textFull = L["Verlernt "] .. pName
+							.. L[". Eine Bestätigungs-Abfrage erscheint."],
 						childs = {},
 						directAction = true,
 						func = function()
 							if not SkuCore.ConfirmButtonShow then return end
 							local tPrompt = lProfName
-								.. " wirklich verlernen? Eingabe Ja, Escape Nein."
+								.. L[" wirklich verlernen? Eingabe Ja, Escape Nein."]
 
 							-- Fix: Popup ZEITVERSETZT öffnen (analog AH-
 							-- Kauf-Popup, das in einem 1s-Timer aufgemacht
@@ -2633,7 +2633,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 											and SkuOptions.Voice.OutputStringBTtts then
 											pcall(function()
 												SkuOptions.Voice:OutputStringBTtts(
-													lProfName .. " verlernt",
+													lProfName .. L[" verlernt"],
 													false, true, 0.1, nil, nil, nil, 1)
 											end)
 										end
@@ -2681,8 +2681,8 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 											and SkuOptions.Voice.OutputStringBTtts then
 											pcall(function()
 												SkuOptions.Voice:OutputStringBTtts(
-													"Abgebrochen, " .. lProfName
-													.. " nicht verlernt",
+													L["Abgebrochen, "] .. lProfName
+													.. L[" nicht verlernt"],
 													true, true, 0.1, nil, nil, nil, 1)
 											end)
 										end
