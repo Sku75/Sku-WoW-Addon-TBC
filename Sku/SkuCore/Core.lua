@@ -2901,7 +2901,13 @@ function SkuCore:PLAYER_REGEN_ENABLED(...)
 	if SkuCore.CombatMenuKeysClear then pcall(function() SkuCore:CombatMenuKeysClear() end) end
 	if tRestore and SkuOptions.currentMenuPosition and _G["OnSkuOptionsMain"]
 		and _G["OnSkuOptionsMain"]:IsVisible() ~= true then
+		-- combatMenuRestoring: combat often ends while the player is still moving; without
+		-- this flag OnShow's moving-defer would early-return WITHOUT binding the nav keys,
+		-- leaving a visible but key-dead menu that never self-repairs (the ticker reopen is
+		-- gated on IsMenuOpen()==false, and the shown frame makes that true).
+		SkuOptions.combatMenuRestoring = true
 		_G["OnSkuOptionsMain"]:Show()   -- OnShow rebinds nav keys; currentMenuPosition preserved
+		SkuOptions.combatMenuRestoring = nil
 		pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
 		if SkuLogCombat then SkuLogCombat("capture", "restore visual menu at combat end") end
 	end

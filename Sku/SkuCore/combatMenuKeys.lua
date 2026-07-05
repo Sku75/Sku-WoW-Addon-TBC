@@ -710,7 +710,14 @@ function SkuCore:CombatMenuKeysClear()
    if Sku then Sku.combatCharForceOpen = false end   -- out of combat: no phantom char window
    -- If the combat char mirror left CharacterFrame open via our direct :Show(), hide it so
    -- the out-of-combat state is clean (the normal C key toggles it again as usual).
+   -- _suppressGenericFrameHooks: this Hide is cleanup, not the user closing a window. The
+   -- interactFramesList Hide hook would otherwise run GENERIC_OnClose -> CheckFrames, whose
+   -- 0.01s body sees "no window open" and CloseMenu()s the visual menu that
+   -- SkuCore:PLAYER_REGEN_ENABLED restores right after this call (same lever as
+   -- PrimeCombatMirrors; always cleared, even if the Hide errors).
+   SkuCore._suppressGenericFrameHooks = true
    pcall(function() local f = _G["CharacterFrame"]; if f and f:IsShown() then f:Hide() end end)
+   SkuCore._suppressGenericFrameHooks = false
    if SkuLogCombat then SkuLogCombat("secureKeys", "cleared nav keys at combat end") end
 end
 

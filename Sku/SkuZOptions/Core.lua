@@ -3350,7 +3350,11 @@ function SkuOptions:CreateMenuFrame()
 			SkuCore:SetOpenMenuAfterCombat(true)
 			return
 		end
-		if SkuState:IsMoving() == true then
+		-- Moving-defer EXCEPT during the combat-end restore (SkuCore:PLAYER_REGEN_ENABLED
+		-- sets combatMenuRestoring around its Show()): the menu was already open and in use,
+		-- so it must come back key-bound even while the player is still moving -- deferring
+		-- here would show the frame without any nav bindings (key-dead menu).
+		if SkuState:IsMoving() == true and SkuOptions.combatMenuRestoring ~= true then
 			SkuCore:SetOpenMenuAfterMoving(true)
 			return
 		end
