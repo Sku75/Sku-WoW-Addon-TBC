@@ -21,6 +21,12 @@ SkuQuest.options = {
 			type = "toggle",
 			desc = "",
 		},
+		showGroupQuests = {
+			name = L["show group members quests"],
+			order = 1.2,
+			type = "toggle",
+			desc = "",
+		},
 		questMarkerBeacons ={
 			name = L["quest notifications"],
 			type = "group",
@@ -334,6 +340,7 @@ SkuQuest.options = {
 SkuQuest.defaults = {
 	enable = true,
 	showDifficultyColors = true,
+	showGroupQuests = true,
 	questMarkerBeacons = {
 		availableQuests = {
 			enabled = false,
@@ -376,6 +383,7 @@ SkuQuest.defaults = {
 -- the value (name<->id), so they are listed here but stay non-managed.
 SkuSettings:Register("SkuQuest", {
 	["showDifficultyColors"]                              = { scope = "profile", default = true,  type = "boolean" },
+	["showGroupQuests"]                                   = { scope = "profile", default = true,  type = "boolean" },
 
 	["questMarkerBeacons.availableQuests.enabled"]            = { scope = "profile", default = false,     type = "boolean" },
 	["questMarkerBeacons.availableQuests.enableBeacons"]      = { scope = "profile", default = true,      type = "boolean" },
@@ -588,6 +596,70 @@ function SkuQuest:GetQuestStartZoneId(aQuestID)
 		return SkuDB.objectDataTBC[tStartedBy[2][1]][SkuDB.objectKeys["zoneID"]]
 	end
 	return nil
+end
+
+----------------------------------------------------------------------------------------------------------------------------------------
+-- Group members' quests from Questie's party comms. QuestieComms.remoteQuestLogs is
+-- keyed questId -> playerName -> objectives; this re-indexes it player-first:
+--   { ["Membername"] = { [questId] = objectivesTable, ... }, ... }
+-- Realm suffixes are stripped so keys match UnitName(). Members without Questie never
+-- send comms, so they simply have no key here — silent empty result when Questie is
+-- absent/not ready.
+function SkuQuest:GetGroupMemberQuests()
+	local tResult = {}
+	if not SkuQuest:QuestieReady() then
+		return tResult
+	end
+	local tQC = SkuQuest:QuestieModule("QuestieComms")
+	local tLogs = tQC and tQC.remoteQuestLogs
+	if type(tLogs) ~= "table" then
+		return tResult
+	end
+	for tQuestId, tPlayers in pairs(tLogs) do
+		if type(tQuestId) == "number" and type(tPlayers) == "table" then
+			for tPlayerName, tObjectives in pairs(tPlayers) do
+				local tShortName = strsplit("-", tPlayerName)
+				tResult[tShortName] = tResult[tShortName] or {}
+				tResult[tShortName][tQuestId] = tObjectives
+			end
+		end
+	end
+	return tResult
+end
+
+----------------------------------------------------------------------------------------------------------------------------------------
+-- Spoken progress lines for one remote quest from Questie objective data (per
+-- objective: id, type "m"/"o"/"i", fulfilled, required, finished). WoW has no API to
+-- read another player's quest log text, so the lines are reconstructed: target names
+-- come from the Sku database, unknown targets fall back to "Ziel N".
+-- Returns: text (may be ""), isComplete (true when there is at least one objective
+-- and all are finished).
+function SkuQuest:GetGroupQuestProgressText(aQuestID, aObjectives)
+	local tLines = {}
+	local tCount, tDone = 0, 0
+	for tIndex, tObj in pairs(aObjectives or {}) do
+		if type(tObj) == "table" then
+			tCount = tCount + 1
+			local tName
+			if (tObj.type == "m" or tObj.type == "monster") and tObj.id and SkuDB.NpcData.Names[Sku.Loc][tObj.id] then
+				tName = SkuDB.NpcData.Names[Sku.Loc][tObj.id][1]
+			elseif (tObj.type == "o" or tObj.type == "object") and tObj.id then
+				tName = SkuDB.objectLookup[Sku.Loc][tObj.id] or (SkuDB.objectDataTBC[tObj.id] and SkuDB.objectDataTBC[tObj.id][1])
+			elseif (tObj.type == "i" or tObj.type == "item") and tObj.id then
+				tName = SkuDB.itemLookup[Sku.Loc][tObj.id]
+			end
+			tName = tName or (L["Ziel"].." "..(tObj.index or tIndex))
+			if tObj.finished == true then
+				tDone = tDone + 1
+				tLines[#tLines+1] = tName..": "..L["(Fertig) "]
+			elseif tObj.required then
+				tLines[#tLines+1] = tName..": "..tostring(tObj.fulfilled or 0).."/"..tostring(tObj.required)
+			else
+				tLines[#tLines+1] = tName
+			end
+		end
+	end
+	return table.concat(tLines, "\r\n"), (tCount > 0 and tCount == tDone)
 end
 
 ----------------------------------------------------------------------------------------------------------------------------------------
@@ -2054,6 +2126,116 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			end
 		end
 		end }
+
+	-- Quests der Gruppenmitglieder aus Questies Party-Comms. Der Eintrag erscheint NUR
+	-- wenn das Setting an ist, Questie fertig geladen ist und wir in einer Gruppe sind —
+	-- sonst fehlt er komplett. Mitglieder ohne Questie senden keine Daten und bekommen
+	-- einen erklärenden Leereintrag statt einer Questliste.
+	if SkuSettings:Sub("SkuQuest").showGroupQuests == true and SkuQuest:QuestieReady() and IsInGroup() then
+		tSpecs[#tSpecs+1] = { kind = "list", label = L["Gruppenmitglieder"],
+			onAction = function(self, aValue, aName)
+			end,
+			build = function(self)
+			local tMembers = {}
+			local tPrefix, tMax = "party", GetNumSubgroupMembers()
+			if IsInRaid() then
+				tPrefix, tMax = "raid", GetNumGroupMembers()
+			end
+			for i = 1, tMax do
+				local tUnit = tPrefix..i
+				if UnitExists(tUnit) and not UnitIsUnit(tUnit, "player") then
+					tMembers[#tMembers+1] = UnitName(tUnit)
+				end
+			end
+			if #tMembers == 0 then
+				SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+				return
+			end
+			for _, tMemberName in ipairs(tMembers) do
+				local tMemberEntry = SkuOptions:InjectMenuItems(self, {tMemberName}, SkuGenericMenuItem)
+				tMemberEntry.dynamic = true
+				tMemberEntry.BuildChildren = function(self)
+					local tQuests = SkuQuest:GetGroupMemberQuests()[tMemberName]
+					if not tQuests or not next(tQuests) then
+						SkuOptions:InjectMenuItems(self, {L["Keine Questie-Daten empfangen"]}, SkuGenericMenuItem)
+						return
+					end
+					-- gleiche Struktur wie das eigene Questlog: "Alle" plus eine Liste je
+					-- Zone (Zone = Startzone der Quest aus der Datenbank), aktuelle Zone
+					-- zuerst, danach alphabetisch
+					local tByZone = {}
+					for tQuestId, tObjectives in pairs(tQuests) do
+						local tZoneId = SkuQuest:GetQuestStartZoneId(tQuestId)
+						local tZoneName = (tZoneId and SkuDB.InternalAreaTable[tZoneId] and SkuDB.InternalAreaTable[tZoneId].AreaName_lang[Sku.Loc]) or L["Unbekannte Zone"]
+						local tLookup = SkuDB.questLookup[Sku.Loc][tQuestId]
+						local tText, tIsComplete = SkuQuest:GetGroupQuestProgressText(tQuestId, tObjectives)
+						local tLabel = tLookup and tLookup[1] or ("Quest "..tQuestId)
+						if tIsComplete then
+							tLabel = L["(Fertig) "]..tLabel
+						end
+						tByZone[tZoneName] = tByZone[tZoneName] or {}
+						tByZone[tZoneName][#tByZone[tZoneName]+1] = { questId = tQuestId, label = tLabel, text = tText, zoneId = tZoneId }
+					end
+					local tCurrentZoneId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
+					local tCurrentZoneName = tCurrentZoneId and SkuDB.InternalAreaTable[tCurrentZoneId] and SkuDB.InternalAreaTable[tCurrentZoneId].AreaName_lang[Sku.Loc]
+					local tZoneNames = {}
+					for tZoneName in pairs(tByZone) do
+						if tZoneName ~= tCurrentZoneName then
+							tZoneNames[#tZoneNames+1] = tZoneName
+						end
+					end
+					table.sort(tZoneNames)
+					if tCurrentZoneName and tByZone[tCurrentZoneName] then
+						table.insert(tZoneNames, 1, tCurrentZoneName)
+					end
+					local function tAddQuestEntry(aContainer, aQuest, aNameCache)
+						local tLabel = aQuest.label
+						if aNameCache[tLabel] then
+							aNameCache[tLabel] = aNameCache[tLabel] + 1
+							tLabel = tLabel.." "..aNameCache[tLabel]
+						else
+							aNameCache[tLabel] = 0
+						end
+						local tEntry = SkuOptions:InjectMenuItems(aContainer, {tLabel}, SkuGenericMenuItem)
+						tEntry.dynamic = true
+						tEntry.OnEnter = function(self, aValue, aName)
+							-- GetQuestDataStringFromDB indexes questLookup unguarded; skip it
+							-- for quest ids our database doesn't know
+							local tFull = ""
+							if SkuDB.questLookup[Sku.Loc][aQuest.questId] then
+								tFull = SkuQuest:GetQuestDataStringFromDB(aQuest.questId, aQuest.zoneId)
+							end
+							if aQuest.text ~= "" then
+								tFull = (tFull ~= "" and (aQuest.text.."\r\n"..tFull)) or aQuest.text
+							end
+							SkuOptions.currentMenuPosition.textFull = tFull
+						end
+						tEntry.BuildChildren = function(self)
+							CreateQuestSubmenu(self, aQuest.questId)
+						end
+					end
+					--all
+					local tAllEntry = SkuOptions:InjectMenuItems(self, {L["Alle"]}, SkuGenericMenuItem)
+					tAllEntry.sorting = true
+					local tAllNameCache = {}
+					for _, tZoneName in ipairs(tZoneNames) do
+						for _, tQuest in ipairs(tByZone[tZoneName]) do
+							tAddQuestEntry(tAllEntry, tQuest, tAllNameCache)
+						end
+					end
+					--by zone
+					for _, tZoneName in ipairs(tZoneNames) do
+						local tZoneEntry = SkuOptions:InjectMenuItems(self, {tZoneName}, SkuGenericMenuItem)
+						tZoneEntry.sorting = true
+						local tZoneNameCache = {}
+						for _, tQuest in ipairs(tByZone[tZoneName]) do
+							tAddQuestEntry(tZoneEntry, tQuest, tZoneNameCache)
+						end
+					end
+				end
+			end
+			end }
+	end
 
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Questdatenbank"],
 		onAction = function(self, aValue, aName)

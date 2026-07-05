@@ -3262,3 +3262,8 @@ L["Funktion nicht verfügbar."] = "Funktion nicht verfügbar."
 L["Unbekannt. Verfügbar: list, current, set N, find <text>, restart"] = "Unbekannt. Verfügbar: list, current, set N, find <text>, restart"
 L[" teilt Aurenset "] = " teilt Aurenset "
 L["Teilen abgeschlossen"] = "Teilen abgeschlossen"
+-- Sku42: group members quests via Questie party comms (SkuQuest/Options.lua)
+L["Gruppenmitglieder"] = "Gruppenmitglieder"
+L["show group members quests"] = "Quests von Gruppenmitgliedern anzeigen"
+L["Keine Questie-Daten empfangen"] = "Keine Questie-Daten empfangen"
+L["Unbekannte Zone"] = "Unbekannte Zone"
