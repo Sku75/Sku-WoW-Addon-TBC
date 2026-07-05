@@ -1,0 +1,73 @@
+# MANIFEST-DB - SkuDB data-file hashes (gitignored files!)
+# written by _db_manifest.py --write; check with --check
+# upstream cross-check against 22e81c0 (remote upstream-src)
+P f59f8b28611e6d73592b1206f64464a12053957598da65f55b9d607118698087 31101549 routedata_global_wotlk.lua
+P 1b13925f2bccc12c7c064b271421eadedd9ed959ea27b0ede088af1d0265df90 129 SkuDB/Core.lua
+P b3a438887540b00e7981f5d84aadb145b856dfcf65b685b5b41447e3dbe45765 595022 SkuDB/assets/maps.lua
+P c41a0092ad5b04201af8920d68c0b36cebd4cb48a319084f857d6a95f95a45b2 322364 SkuDB/assets/default_waypoints.lua
+P e2a25542cd83f2f8f98062c47d37b20ce2fc9f71befe5fff2fe247ce1a611e39 3942890 SkuDB/assets/quests.lua
+P 501a3b2eea7bcb43b3b1cd62d9d364a96f41d128d472b2f230dbb9cdf1071a6c 173486 SkuDB/assets/quests_fixes.lua
+P 7cff8e63782186206fc0f17c401df23dda6008d560b07792bc42e76a3967a870 5894319 SkuDB/assets/creatures.lua
+P 96ab182ab23d452f2f239c25dbcaf07a240132f9c157e9c5bdb1db83c31f86d9 36943 SkuDB/assets/creatures_fixes.lua
+P e4c1f50aa8303b017c6891697a484214368949c380ad76853981dcfe9c67567a 5703087 SkuDB/assets/items.lua
+P b32e436b7db5c5d84b23facd45b82c139614e22c44e66b82c8823d04ef47d6a6 10088 SkuDB/assets/items_fixes.lua
+P 52c33cf03530c0c5deed5f36bc936db06b63b28d982ac60a538b985eb1cd35fd 1786107 SkuDB/assets/objects.lua
+P 5e36ae65ace871cb0ee5ea723b2af0dc0a610b9a16ed7c46224e2ba92020dd57 29472 SkuDB/assets/objects_fixes.lua
+P 50f8a59fe6b7b27bbecfa13d23eb40ef6d53b5311c57ea8ec5bd42a0b982e099 5295861 SkuDB/assets/spells.lua
+P 8ea73d8a48bc5310d1cdfd371516d722a14edbab1511377cad6185913149d444 74796 SkuDB/assets/polygons.lua
+P 0af29d65a7dc242a262da8b995bd656ad33de32e94ad0ad5135479ba2f04dca2 19373789 SkuDB/assets/routedata_global.lua
+P 3cd9f03439b842aef4c8e32ca9a68653acf7546419b5b4034da02e1750755166 1725 SkuDB/assets/tasks.lua
+P cb7449b9a535dde8624ae54df1aaa582a3901597e9a3011c48928ada67141f5a 5097779 SkuDB/assets/WotLK/quests.lua
+P 11a8750962ca1145dd757bfc878569be0ed82d4eb09a605a7233d37a02f7e11e 44179 SkuDB/assets/WotLK/quests_fixes.lua
+P b2fcb0d56d220b6df0535cef3a57c821400ce5a5f7b53bbd3666a6dd0e65c3f2 7868490 SkuDB/assets/WotLK/creatures.lua
+P ac03bb8f9b441917ebbc756431e1d13e5126c5ae196c8fe909f9c8a80bf7bd2c 21922 SkuDB/assets/WotLK/creatures_fixes.lua
+P 3962cd982084e42533c88f4cbe2f7587d97b44a4b684e76af66eedfb3157a19b 7632132 SkuDB/assets/WotLK/items.lua
+P 185dcd869a34cd772fb7db463718aa8e187f200d3a9126751e3816b46b6e12bb 23377 SkuDB/assets/WotLK/items_fixes.lua
+P c72789acb545beb5b078080b7dbd1d3d0c3c9ecee91ef69dcd4a92c8bc00a52e 2658573 SkuDB/assets/WotLK/objects.lua
+P a53ee18a0913e9b78864d5b28228a1bf9e697d1d29537becc4d80e363eb3bee3 2627 SkuDB/assets/WotLK/objects_fixes.lua
+P 6c06ea119631f474822153f74c212536d42a8576225c7efc83413f4780b4a27b 219801 SkuDB/assets/WotLK/enchantIDs.lua
+P 68ca68e018d621f574502ef89f5b52126843790bba554e1df23312f9f59a6d0d 4104 SkuDB/assets/SoD/quests.lua
+P eefc8bdcaca3a0357645cc3f660df89bd626fd38c3c94b48863d9bf7509139ae 4461 SkuDB/assets/SoD/quests_fixes.lua
+P c48a466fad9c8ffc33ec0a4375e137cb75a781e464f3b6dcea9598a95d6e21bf 150366 SkuDB/assets/SoD/creatures.lua
+P 10fdb8802d5233490879793dd1fa438862fa81a21ef48bd968e2531de130a30d 2024 SkuDB/assets/SoD/creatures_fixes.lua
+P 83c4156d6c4f63d4a91033da6dc08f04e95e91e399523ecde64d864b891d5eec 196481 SkuDB/assets/SoD/items.lua
+P 231499df429dc255a8e00b8cd75d9e2045e69388208c136640229a1aec0bb8b6 1667 SkuDB/assets/SoD/items_fixes.lua
+P 6f6381f2332314671cd1a3a7c442c5d74949c202c99f85870567664bdcdee36f 26377 SkuDB/assets/SoD/objects.lua
+P ff52fa98a4d1ec2099319f8477e396e9f86de27fed7f4b09e4a7e1425eea5d2a 1137 SkuDB/assets/SoD/objects_fixes.lua
+P 9eb93bb02333e1fb88deab8955e7c5440e475463d9c390cfd86da4fa5ae1dd5a 206255 SkuDB/assets/SoD/spells.lua
+G 088265d001ce162bea8f5c60f7140ed332f9ed321916b08ffa773e0d3b50c08a 31101586 routedata_global_wotlk.lua
+G d9972c92237c9b6be03d571b55e7abf2a28e5aea761383acbfeda168668c82d9 19373849 SkuDB/assets/routedata_global.lua
+U routedata_global_wotlk.lua MATCH
+U SkuDB/Core.lua MATCH-EOL
+U SkuDB/assets/maps.lua MATCH
+U SkuDB/assets/default_waypoints.lua MATCH
+U SkuDB/assets/quests.lua MATCH
+U SkuDB/assets/quests_fixes.lua MATCH
+U SkuDB/assets/creatures.lua MATCH
+U SkuDB/assets/creatures_fixes.lua MATCH
+U SkuDB/assets/items.lua MATCH
+U SkuDB/assets/items_fixes.lua MATCH
+U SkuDB/assets/objects.lua MATCH
+U SkuDB/assets/objects_fixes.lua MATCH
+U SkuDB/assets/spells.lua MATCH
+U SkuDB/assets/polygons.lua MATCH
+U SkuDB/assets/routedata_global.lua MATCH
+U SkuDB/assets/tasks.lua MATCH
+U SkuDB/assets/WotLK/quests.lua MATCH
+U SkuDB/assets/WotLK/quests_fixes.lua MATCH
+U SkuDB/assets/WotLK/creatures.lua MATCH
+U SkuDB/assets/WotLK/creatures_fixes.lua MATCH
+U SkuDB/assets/WotLK/items.lua MATCH
+U SkuDB/assets/WotLK/items_fixes.lua MATCH
+U SkuDB/assets/WotLK/objects.lua MATCH
+U SkuDB/assets/WotLK/objects_fixes.lua MATCH
+U SkuDB/assets/WotLK/enchantIDs.lua MATCH
+U SkuDB/assets/SoD/quests.lua MATCH
+U SkuDB/assets/SoD/quests_fixes.lua MATCH
+U SkuDB/assets/SoD/creatures.lua MATCH
+U SkuDB/assets/SoD/creatures_fixes.lua MATCH
+U SkuDB/assets/SoD/items.lua MATCH
+U SkuDB/assets/SoD/items_fixes.lua MATCH
+U SkuDB/assets/SoD/objects.lua MATCH
+U SkuDB/assets/SoD/objects_fixes.lua MATCH
+U SkuDB/assets/SoD/spells.lua MATCH

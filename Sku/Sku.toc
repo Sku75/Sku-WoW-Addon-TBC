@@ -27,6 +27,7 @@ _psB_postWotlkRoutes.lua
 
 Core.lua
 SkuDeferredData.lua
+SkuDBTools.lua
 
 SkuUtil.lua
 SkuState.lua

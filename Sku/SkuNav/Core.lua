@@ -316,6 +316,19 @@ local WaypointCacheLookupCacheNameForId = {}
 
 local WaypointCacheLookupPerContintent = {}
 
+-- [DB rework stage 0] Dev accessor: /skudbmem (SkuDBTools.lua) ranks these
+-- file-local cache tables; they are unreachable from outside this file. The
+-- mapping is built per call because the locals are re-ASSIGNED on rebuilds.
+function SkuNav:DevGetWaypointCacheTables()
+	return {
+		WaypointCache = WaypointCache,
+		WaypointCacheLookupAll = WaypointCacheLookupAll,
+		WaypointCacheLookupIdForCacheIndex = WaypointCacheLookupIdForCacheIndex,
+		WaypointCacheLookupCacheNameForId = WaypointCacheLookupCacheNameForId,
+		WaypointCacheLookupPerContintent = WaypointCacheLookupPerContintent,
+	}
+end
+
 -- [Load-perf 2026-07-05] Build readiness: false while a (re)build of the
 -- waypoint cache is streaming, true once link resolution has completed. Menus
 -- use SkuNav:InjectWpListEmptyHint() to tell "still loading" from "empty".
