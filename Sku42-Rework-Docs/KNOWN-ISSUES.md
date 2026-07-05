@@ -91,6 +91,63 @@ workstreams (noted) — fold them in there when that workstream runs.
 - **Nicer-looking popups.** Improve popup appearance.
 - **Menu rework.** Overhaul the menus — the core of W2 (declarative menu schema +
   registry, decoupled from module structure).
+- **PLANNED: Blizzard-TTS language mixing (German/English auto-switch).** We
+  play on an international server; English/German mixed content is constant.
+  Plan: small Lua language detector (stopword lists + umlauts/ß signal) that
+  sets the per-message voice automatically — the plumbing already exists
+  (per-message `aVoice` override / `mSkuVoiceQueueBTTS_Voice` side-map built
+  for per-channel chat voices). Bonus experiment: the dormant SAPI
+  `<LANG LANGID>` tag code (`SkuVoice-1.0.lua:742`, `SapiLangIds` deDE=407 /
+  enUS=409) might allow MID-sentence language switching, since `<silence>` /
+  `<pitch>` tags already pass through. Depends on which voice backend WoW
+  enumerates today (OneCore vs SAPI5 — under investigation 2026-07-05; SAPI5
+  voices reportedly no longer appear in the voice list). Revisit when that is
+  settled.
+- **PLANNED (conditional): dual-language Sku voice databank loader.** If we
+  generate a new sample databank (e.g. in the user's screen-reader voice),
+  rework the audio-pack loader so the deDE and enUS banks can load SIDE BY
+  SIDE: today both packs write the same globals (`SkuAudioFileIndex` /
+  `SkuAudioDataLenIndex`, pack `Core.lua` overrides `Sku.AudiodataPath`), so
+  only one language exists at runtime. Needed shape: per-language index
+  tables + `SkuVoice:GetAudiodata` (SkuVoice-1.0.lua:1324) trying the
+  detected-language bank first and the other bank as per-word fallback —
+  word-level German/English mixing for the concatenative voice.
+
+## Monitoring (external projects — re-check on request)
+
+- **Syntherceptor (jcsteh) as future replacement for the bundled NVDA-SAPI voice.**
+  Ask: "check the Syntherceptor monitor". SAPI5 voice DLL that forwards speech
+  to NVDA (github.com/jcsteh/syntherceptor, installer at
+  syntherceptor.jantrid.net, GPLv2, free, bundling permitted with GPL text +
+  source link). As of 2026-07-05 NOT suitable for Sku; switch only when ALL of
+  these are true (deliberately no workaround documentation here — public-comms
+  decision of 2026-07-05):
+  1. **Releases are Authenticode-signed.** Blizzard clients refuse to load
+     unsigned SAPI engine DLLs (since ~Oct/Nov 2025), so upstream-signed
+     releases are a hard requirement. Check: download the current installer
+     from syntherceptor.jantrid.net, run `Get-AuthenticodeSignature` on the
+     exe AND the inner `x64\syntherceptor.dll` — need Valid, not NotSigned.
+     Also check `.github/workflows/build.yml` for a signing step (none as of
+     2026-07-05) and the repo for signing-related issues/commits.
+  2. **The game-interrupt problem is fixed on `main`.** As of 2026-07-05 every
+     `Speak()` cancels NVDA speech AND utterances complete instantly
+     (`GetOutputFormat` returns `SPDFID_Text`, no audio timing), so queued
+     game TTS lines clip each other — only the last queued line is heard.
+     Check: issue #1 closed, and/or experimental branches `ssml` /
+     `cancelIfNewSite` merged; read `src/syntherceptor.cpp` `Speak()` — the
+     "cancel speech before each utterance" hack must be gone, ideally replaced
+     by the SSML-completion-callback approach.
+  3. **Fit test against Sku's speech pattern before any switch:** rapid menu
+     navigation must interrupt cleanly AND multi-line queued output (chat
+     backlog, tooltip + menu breadcrumb) must NOT clip. Test with the normal
+     Sku BTTS queue on a dev char.
+  Nice-to-have signals: versioned releases instead of rolling snapshots (today
+  a rolling "snapshots" tag — every update changes the DLL), game-related
+  reports in the issue list, crash reports (a host-app-takedown crash class
+  was fixed 2026-01, issues #2/#3).
+  Alternative to re-check briefly at the same time: SAPIence
+  (github.com/LeonarddeR/SAPIence, LGPL, Rust, same mechanism) — as of
+  2026-07-05 zero releases/binaries, not a candidate yet.
 
 ## Resolved
 
