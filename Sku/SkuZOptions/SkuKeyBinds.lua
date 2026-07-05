@@ -45,6 +45,14 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_ROLLINFO"] = {key = "CTRL-SHIFT-C", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_STOPTTSOUTPUT"] = {key = "CTRL-V", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_QUESTABANDON"] = {key = "CTRL-SHIFT-D", object = "SkuOptions", func = "CreateMainFrame",},
+
+   -- Menu activate/left-click and right-click keys (the old "Linksklick"/"Rechtsklick"
+   -- child entries were removed; these keys act directly on the focused menu item).
+   -- The physical key always clicks the secure menu button with a FIXED virtual button
+   -- name ("ENTER" / "RCLICK"), so rebinding never changes the dispatcher logic.
+   -- Applied while the menu is open (secure buttons' OnShow re-arms on rebind).
+   ["SKU_KEY_MENULEFTCLICK"] = {key = "ENTER", object = "SecureOnSkuOptionsMainOption1", script = "OnShow",},
+   ["SKU_KEY_MENURIGHTCLICK"] = {key = "CTRL-ENTER", object = "SecureOnSkuOptionsMainOption2", script = "OnShow",},
    ["SKU_KEY_CHATOPEN"] = {key = "SHIFT-F2", object = "SkuChat", func = "OnEnable",},
    ["SKU_KEY_TOGGLEREACHRANGE"] = {key = "CTRL-SHIFT-Q", object = "SkuNav", func = "CreateSkuNavMain",},
 
@@ -255,6 +263,23 @@ function SkuOptions:SkuKeyBindsCheckBound(aKey)
          end
       end
    end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Returns the list of physical keys for a binding ({key, key2}, empty strings
+-- skipped). aFallbackKey (optional) is returned as sole entry when the binding
+-- has no keys at all -- used for SKU_KEY_MENULEFTCLICK so the menu can never
+-- end up without an activate key.
+function SkuOptions:SkuKeyBindsGetKeys(aBindingConst, aFallbackKey)
+   local rKeys = {}
+   local tStore = SkuSettings and SkuSettings:Sub("SkuOptions").SkuKeyBinds
+   local tEntry = tStore and tStore[aBindingConst]
+   if tEntry then
+      if tEntry.key and tEntry.key ~= "" then table.insert(rKeys, tEntry.key) end
+      if tEntry.key2 and tEntry.key2 ~= "" then table.insert(rKeys, tEntry.key2) end
+   end
+   if #rKeys == 0 and aFallbackKey then table.insert(rKeys, aFallbackKey) end
+   return rKeys
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

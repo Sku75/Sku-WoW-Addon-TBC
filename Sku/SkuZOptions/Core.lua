@@ -2849,6 +2849,19 @@ function SkuOptions:CreateMenuFrame()
 			aKey = " "
 		end
 
+		-- Normalize the configurable click keys to their LOGICAL names. Out of
+		-- combat the physical keys are override-bound to the secure buttons and
+		-- already arrive as the virtual buttons "ENTER"/"RCLICK"; in combat the
+		-- SkuMenuCapture frame delivers the RAW key name (e.g. "CTRL-ENTER"),
+		-- so map it here. Match only when the key isn't already logical.
+		if aKey ~= "ENTER" and aKey ~= "RCLICK" and SkuOptions.SkuKeyBindsMatchKey then
+			if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_MENURIGHTCLICK") then
+				aKey = "RCLICK"
+			elseif SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_MENULEFTCLICK") then
+				aKey = "ENTER"
+			end
+		end
+
 		if SkuState:IsInCombat() == true then
 			-- Combat-actions Stage 3: if the player opted into combat menu access
 			-- (/skucombatmenu), allow navigation in combat -- moving the cursor and
@@ -3006,24 +3019,58 @@ function SkuOptions:CreateMenuFrame()
 
 		if aKey == "ENTER" or aKey == "SHIFT-ENTER" then
 			tVocalizeReset = false
-			-- Is this ENTER activating a bag-item action node? Capture it NOW,
-			-- before OnSelect runs the action and moves the cursor. The focused
-			-- node must be an actual action (carries a secure `macrotext`) whose
-			-- parent is the bag item (carries bagSlot/itemId) — NOT the item
-			-- node itself (ENTER there merely descends into Linksklick/
-			-- Rechtsklick and must still announce). The event-driven confirm
-			-- speaks the settled item, so suppress only this transient announce.
 			local tCur = SkuOptions.currentMenuPosition
-			if tCur and tCur.macrotext
-				and tCur.parent and (tCur.parent.bagSlot or tCur.parent.itemId) then
-				tSuppressBagAnnounce = true
-				-- Suppress ALL menu announces until the followed entry settles;
-				-- SkuBagConfirmRefresh force-announces it then clears this. The
-				-- timestamp is a safety backstop in case that never happens.
-				if Sku then Sku.tBagAnnounceSuppress = GetTime() + 1.5 end
+			if tCur and tCur.isClickItem == true then
+				-- Click item (the old "Linksklick"/"Rechtsklick" child entries are
+				-- gone): ENTER acts directly as LEFT click. The secure left
+				-- macrotext (if any) already ran on the hardware event before this
+				-- PostClick; run the insecure left action now. The cursor stays on
+				-- the item; RIGHT still descends into the context submenu
+				-- (Kaufen/Sockeln/Zerstören/split/...). clickGate (bag-bar slots)
+				-- mirrors the old "submenu only with a held item" gate.
+				local tGateOk = (not tCur.clickGate) or (tCur.clickGate() == true)
+				if tGateOk and tCur.OnLeftAction then
+					tCur:OnLeftAction()
+				end
+				SkuOptions:ClearFilter()
+			else
+				-- Is this ENTER activating a bag-item action node (e.g. an AH sell
+				-- entry under a bag item)? Capture it NOW, before OnSelect runs the
+				-- action and moves the cursor. The focused node must be an actual
+				-- action (carries a secure `macrotext`) whose parent is the bag
+				-- item (carries bagSlot/itemId). The event-driven confirm speaks
+				-- the settled item, so suppress only this transient announce.
+				if tCur and tCur.macrotext
+					and tCur.parent and (tCur.parent.bagSlot or tCur.parent.itemId) then
+					tSuppressBagAnnounce = true
+					-- Suppress ALL menu announces until the followed entry settles;
+					-- SkuBagConfirmRefresh force-announces it then clears this. The
+					-- timestamp is a safety backstop in case that never happens.
+					if Sku then Sku.tBagAnnounceSuppress = GetTime() + 1.5 end
+				end
+				SkuOptions.currentMenuPosition:OnSelect(true)
+				SkuOptions:ClearFilter()
 			end
-			SkuOptions.currentMenuPosition:OnSelect(true)
-			SkuOptions:ClearFilter()
+		end
+		if aKey == "RCLICK" then
+			tVocalizeReset = false
+			local tCur = SkuOptions.currentMenuPosition
+			if tCur and tCur.isClickItem == true then
+				local tGateOk = (not tCur.clickGate) or (tCur.clickGate() == true)
+				if tGateOk then
+					-- Bag-item right click fires "/script SkuCaptureSellState() /use
+					-- <bag> <slot>" on the secure button: arm the announce-suppress
+					-- window exactly like the old Rechtsklick child did on ENTER.
+					if tCur.rightMacrotext and (tCur.bagSlot or tCur.itemId) then
+						tSuppressBagAnnounce = true
+						if Sku then Sku.tBagAnnounceSuppress = GetTime() + 1.5 end
+					end
+					if tCur.OnRightAction then
+						tCur:OnRightAction()
+					end
+				end
+				SkuOptions:ClearFilter()
+			end
 		end
 		if aKey == "BACKSPACE" then
 			SkuOptions.currentMenuPosition:OnBack()
@@ -3444,7 +3491,17 @@ function SkuOptions:CreateMenuFrame()
 	tFrame:RegisterForClicks("AnyDown")
 
 	tFrame:SetScript("OnShow", function(self)
-		SetOverrideBindingClick(self, true, "ENTER", "SecureOnSkuOptionsMainOption1", "ENTER")
+		-- The menu's activate/left-click key is configurable (SKU_KEY_MENULEFTCLICK,
+		-- default ENTER; ENTER also acts as failsafe fallback when the bind is empty).
+		-- Whatever the physical key, it clicks this button with the FIXED virtual
+		-- button name "ENTER", so everything downstream (secure macro attributes,
+		-- PostClick -> key dispatcher) stays key-agnostic. Also re-run by
+		-- SkuKeyBindsUpdate on rebind -- guard against the hidden/in-combat calls.
+		ClearOverrideBindings(self)
+		if InCombatLockdown() or not self:IsShown() then return end
+		for _, tKey in ipairs(SkuOptions:SkuKeyBindsGetKeys("SKU_KEY_MENULEFTCLICK", "ENTER")) do
+			SetOverrideBindingClick(self, true, tKey, "SecureOnSkuOptionsMainOption1", "ENTER")
+		end
 	end)
 	tFrame:SetScript("OnHide", function(self)
 		ClearOverrideBindings(self)
@@ -3459,6 +3516,37 @@ function SkuOptions:CreateMenuFrame()
 	-- happened" from "idle". The snapshot lets the equipment-slot OnActions skip
 	-- their insecure pick-up/unequip fallback when the macro already did the work,
 	-- which is the fix for enchants/armor-kits being re-picked-up after applying.
+	tFrame:SetScript("PreClick", function(self)
+		SkuOptions.tPreEnterApplyState =
+			((SpellIsTargeting and SpellIsTargeting()) or (GetCursorInfo and GetCursorInfo())) and true or false
+	end)
+	tFrame:SetScript("PostClick", _G["OnSkuOptionsMainOption1"]:GetScript("OnClick"))
+
+	-- Second secure button: the menu's RIGHT-click key (SKU_KEY_MENURIGHTCLICK,
+	-- default CTRL-ENTER). Same design as the ENTER button: the focused node's
+	-- `rightMacrotext` is staged onto it in the generic OnEnter (templates.lua),
+	-- runs on the hardware event (needed for the /use and /click ... RightButton
+	-- paths), then PostClick routes into the key dispatcher as virtual key
+	-- "RCLICK", which runs the node's insecure OnRightAction.
+	tFrame = CreateFrame("Button", "SecureOnSkuOptionsMainOption2", _G["OnSkuOptionsMain"], "SecureActionButtonTemplate")
+	tFrame:SetText("SecureOnSkuOptionsMainOption2")
+	tFrame:SetPoint("TOP", _G["OnSkuOptionsMain"], "BOTTOM", 0, 0)
+	tFrame:RegisterForClicks("AnyDown")
+
+	tFrame:SetScript("OnShow", function(self)
+		ClearOverrideBindings(self)
+		if InCombatLockdown() or not self:IsShown() then return end
+		for _, tKey in ipairs(SkuOptions:SkuKeyBindsGetKeys("SKU_KEY_MENURIGHTCLICK")) do
+			SetOverrideBindingClick(self, true, tKey, "SecureOnSkuOptionsMainOption2", "RCLICK")
+		end
+	end)
+	tFrame:SetScript("OnHide", function(self)
+		ClearOverrideBindings(self)
+	end)
+	-- Same apply-mode snapshot as the ENTER button: the right-click macro
+	-- (/click <Slot> RightButton) consumes cursor/targeting state before the
+	-- insecure OnRightAction runs; the snapshot lets the equipment-slot
+	-- OnRightAction skip its unequip fallback when the macro already applied.
 	tFrame:SetScript("PreClick", function(self)
 		SkuOptions.tPreEnterApplyState =
 			((SpellIsTargeting and SpellIsTargeting()) or (GetCursorInfo and GetCursorInfo())) and true or false
@@ -4700,17 +4788,18 @@ end
 
 function SkuCaptureSellState()
 	if not (SkuOptions and SkuOptions.currentMenuPosition) then return end
-	local pos = SkuOptions.currentMenuPosition          -- item node OR its "Rechtsklick" entry
-	-- The out-of-combat sell/use flow calls this from the item's "Rechtsklick"
-	-- submenu (pos = Rechtsklick, pos.parent = item). The in-combat use
-	-- (SkuCombatUse PostClick) can call it with the cursor still ON the item
-	-- node itself. Anchor on the item node either way, detected by its stable
-	-- identity fields (bagSlot/itemId, carried on rendered bag-item nodes).
+	local pos = SkuOptions.currentMenuPosition          -- item node (or a child action entry)
+	-- Since the click rework the cursor sits ON the bag-item node when the
+	-- right-click "/script SkuCaptureSellState() /use ..." macro runs (out of
+	-- combat via SecureOnSkuOptionsMainOption2, in combat via SkuCombatUse
+	-- PostClick). Anchor on the item node, detected by its stable identity
+	-- fields (bagSlot/itemId). The .parent fallback remains for callers with
+	-- the cursor on a CHILD action entry of the item (e.g. the AH sell submenu).
 	local itemEntry
 	if pos.bagSlot or pos.itemId then
-		itemEntry = pos                                 -- cursor already on the item (combat)
+		itemEntry = pos                                 -- cursor on the item (normal now)
 	else
-		itemEntry = pos.parent                          -- cursor on "Rechtsklick" (normal)
+		itemEntry = pos.parent                          -- cursor on a child action entry
 	end
 	local listEntry = itemEntry and itemEntry.parent    -- "BagN" / "all items" list entry
 	if not listEntry or not listEntry.children then return end
@@ -5069,9 +5158,366 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 				end
 			elseif tNewMenuEntry and aGossipListTable[index].click == true then
 				if aGossipListTable[index].func then
+					-- Click rework: the "Linksklick"/"Rechtsklick" child entries are
+					-- gone. The item node itself carries BOTH actions:
+					--   * LEFT  = activate key (SKU_KEY_MENULEFTCLICK, default ENTER):
+					--     secure `macrotext` (staged on SecureOnSkuOptionsMainOption1
+					--     by the generic OnEnter) + insecure `OnLeftAction` (run by
+					--     the dispatcher's ENTER branch after the macro).
+					--   * RIGHT = SKU_KEY_MENURIGHTCLICK (default CTRL-ENTER):
+					--     `rightMacrotext` (staged on SecureOnSkuOptionsMainOption2)
+					--     + `OnRightAction` (dispatcher's RCLICK branch).
+					-- The context entries (Kaufen/Sockeln/Zerstören/split/AH-sell/...)
+					-- remain as the item's submenu, reached with the RIGHT arrow.
+					tNewMenuEntry.isClickItem = true
+					-- Bag-bar/bank-bag slots: only clickable while an item is held
+					-- (drop the bag in) or for the purchasable bank slot -- the same
+					-- gate the old BuildChildren applied to the whole click submenu.
+					-- Checked at focus time (macro staging) and at keypress.
+					if aGossipListTable[index].isBag and not aGossipListTable[index].isPurchasable then
+						tNewMenuEntry.clickGate = function() return CursorHasItem() == true end
+					end
+
+					-- Equipment-Slot-Erkennung: Buttons mit Name "Character...Slot"
+					-- sind die PaperDollItemSlot-Buttons (HeadSlot, NeckSlot, ...).
+					-- /click <name> LeftButton würde auf TBC-2.5.5 nur
+					-- PaperDollItemSlotButton_OnClick auslösen, das ohne Modifier
+					-- UseInventoryItem aufruft — für Rüstung/Ringe/Trinkets bleibt das
+					-- wirkungslos. Stattdessen rufen wir die Inventar-API direkt:
+					-- PickupInventoryItem für Linksklick (Item an Cursor) und
+					-- Pickup + Place-in-first-empty-bag für Rechtsklick (ausziehen).
+					local tIsEquipmentSlot = false
+					local tEqSlotID
+					if aGossipListTable[index].containerFrameName
+						and string.match(aGossipListTable[index].containerFrameName, "^Character.+Slot$")
+						and aGossipListTable[index].obj
+						and aGossipListTable[index].obj.GetID then
+						tEqSlotID = aGossipListTable[index].obj:GetID()
+						if tEqSlotID and tEqSlotID > 0 then
+							tIsEquipmentSlot = true
+						end
+					end
+
+					-- ============================ LEFT click payload
+					if tIsEquipmentSlot then
+						-- Equipment-Slots via macrotext im Hardware-Event-Kontext
+						-- klicken. Damit funktionieren auch Cursor-Items (Wizard Oil,
+						-- Gift, Schleifsteine) auf ausgerüstete Waffen, ohne
+						-- ADDON_ACTION_FORBIDDEN.
+						local lSlotName = aGossipListTable[index].containerFrameName
+						tNewMenuEntry.macrotext = "/click " .. lSlotName .. " LeftButton"
+						-- Fallback OnLeftAction falls macrotext nicht greift
+						local lSlotID = tEqSlotID
+						tNewMenuEntry.OnLeftAction = function()
+							-- The secure macro (/click <Slot> LeftButton -> PickupInventoryItem)
+							-- ran FIRST (before this OnLeftAction). It natively does the right
+							-- thing with the LIVE cursor/targeting state:
+							--   * SpellIsTargeting (enchant / armor kit / sharpening) -> APPLIES it,
+							--   * item on cursor (armor-set swap) -> PLACES it into the slot,
+							--   * nothing pending -> picks the equipped item up to the cursor.
+							-- So OnLeftAction must only act when the macro did NOT already do so.
+							-- After an apply the cursor is empty and targeting is off again, so
+							-- the live check alone can't detect it -> also honour the pre-macro
+							-- snapshot from the secure PreClick.
+							if SkuOptions.tPreEnterApplyState
+								or GetCursorInfo() or (SpellIsTargeting and SpellIsTargeting()) then
+								-- Macro applied/placed/picked-up already -> just refresh.
+								if _G.C_Timer and _G.C_Timer.After then
+									_G.C_Timer.After(0.1, function()
+										pcall(function() SkuCore:CheckFrames() end)
+										_G.C_Timer.After(0.35, function()
+											if SkuOptions.currentMenuPosition
+												and SkuOptions.currentMenuPosition.OnUpdate then
+												pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
+											end
+										end)
+									end)
+								end
+								return
+							end
+							if _G.PickupInventoryItem then
+								pcall(_G.PickupInventoryItem, lSlotID)
+							end
+							if _G.C_Timer and _G.C_Timer.After then
+								_G.C_Timer.After(0.1, function()
+									pcall(function() SkuCore:CheckFrames() end)
+									_G.C_Timer.After(0.35, function()
+										if SkuOptions.currentMenuPosition
+											and SkuOptions.currentMenuPosition.OnUpdate then
+											pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
+										end
+									end)
+								end)
+							end
+						end
+					elseif aGossipListTable[index].bag ~= nil and aGossipListTable[index].slot ~= nil then
+						-- Bag/bank item (container-API): left click = pick the item up
+						-- to the cursor via PickupContainerItem(bag, slot). Not a
+						-- protected function; also drops a held item into an empty
+						-- slot (this replaces the old empty-slot Linksklick entry).
+						local lBag, lSlot = aGossipListTable[index].bag, aGossipListTable[index].slot
+						tNewMenuEntry.OnLeftAction = function()
+							if _G.PickupContainerItem then pcall(_G.PickupContainerItem, lBag, lSlot) end
+							if _G.C_Timer and _G.C_Timer.After then
+								_G.C_Timer.After(0.1, function()
+									pcall(function() SkuCore:CheckFrames() end)
+									_G.C_Timer.After(0.35, function()
+										if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then
+											pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
+										end
+									end)
+								end)
+							end
+						end
+					elseif aGossipListTable[index].containerFrameName then
+						tNewMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
+						if aGossipListTable[index].obj and aGossipListTable[index].obj.GetParent then
+							if aGossipListTable[index].obj:GetParent() then
+								if aGossipListTable[index].obj:GetParent().rollID then
+									tNewMenuEntry.macrotext = "/script RollOnLoot("..aGossipListTable[index].obj:GetParent().rollID..", "..aGossipListTable[index].obj:GetID()..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
+								end
+								if aGossipListTable[index].obj:GetParent():GetName() == "StaticPopup1" then
+									if string.find(aGossipListTable[index].obj:GetName(), "StaticPopup") and string.find(aGossipListTable[index].obj:GetName(), "Button1") then
+										tNewMenuEntry.macrotext = "/click StaticPopup1Button1 LeftButton"
+										tNewMenuEntry.OnLeftAction = function()
+											C_Timer.After(0.5, function()
+												pcall(function() SkuCore:CheckFrames() end)
+												C_Timer.After(0.35, function()
+													pcall(SkuStepBackAndRefresh)
+												end)
+											end)
+										end
+									elseif string.find(aGossipListTable[index].obj:GetName(), "StaticPopup") and string.find(aGossipListTable[index].obj:GetName(), "Button2") then
+										tNewMenuEntry.macrotext = "/click StaticPopup1Button2 LeftButton"
+										tNewMenuEntry.OnLeftAction = function()
+											C_Timer.After(0.5, function()
+												pcall(function() SkuCore:CheckFrames() end)
+												C_Timer.After(0.35, function()
+													pcall(SkuStepBackAndRefresh)
+												end)
+											end)
+										end
+									end
+								end
+							end
+						end
+					else
+						tNewMenuEntry.OnLeftAction = function()
+							-- Spezial-Cursor-Wiederherstellung NUR für Talent-Frame-
+							-- Einträge. Andere click=true Aktionen — insbesondere
+							-- GossipFrame-Optionen wie "Wohin kann ich fliegen" —
+							-- laufen über den klassischen Pfad. Sonst zerstört das
+							-- Cursor-Reset den Gossip→TaxiFrame-Übergang.
+							local lFrameName = aGossipListTable[index]
+								and aGossipListTable[index].frameName
+							local tIsTalentFrame = type(lFrameName) == "string"
+								and string.find(lFrameName, "PlayerTalentFrameTalent")
+
+							if tIsTalentFrame then
+								local lTalentNode  = tNewMenuEntry
+								local lTalentName  = lTalentNode and lTalentNode.name
+								local lTalentFrame = lFrameName
+								local lListNode    = lTalentNode and lTalentNode.parent
+
+								aGossipListTable[index].func(aGossipListTable[index].obj, "LeftButton")
+								if not aGossipListTable[index].obj:GetName() then
+									SkuCore:CheckFrames()
+								else
+									if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
+										SkuCore:CheckFrames(true)
+									else
+										SkuCore:CheckFrames()
+									end
+								end
+
+								local function tFindEntry()
+									if lTalentNode and lTalentNode.parent then
+										return lTalentNode
+									end
+									if lListNode and lListNode.children then
+										for _, e in pairs(lListNode.children) do
+											if type(e) == "table" then
+												if (lTalentFrame and e.frameName == lTalentFrame)
+													or (lTalentName and e.name == lTalentName) then
+													return e
+												end
+											end
+										end
+									end
+									return nil
+								end
+
+								local function tForceCursor()
+									if not SkuOptions then return end
+									local target = tFindEntry()
+									if target then
+										SkuOptions.currentMenuPosition = target
+										if SkuOptions.ClearFilter then
+											pcall(SkuOptions.ClearFilter, SkuOptions)
+										end
+									end
+								end
+
+								if _G.C_Timer and _G.C_Timer.After then
+									_G.C_Timer.After(0.02, tForceCursor)
+									_G.C_Timer.After(0.10, tForceCursor)
+									_G.C_Timer.After(0.35, function()
+										tForceCursor()
+										if SkuOptions and SkuOptions.VocalizeCurrentMenuName then
+											pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
+										end
+									end)
+								end
+							else
+								-- Klassischer Pfad — unverändert.
+								aGossipListTable[index].func(aGossipListTable[index].obj, "LeftButton")
+								if not aGossipListTable[index].obj:GetName() then
+									SkuCore:CheckFrames()
+								else
+									if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
+										SkuCore:CheckFrames(true)
+									else
+										SkuCore:CheckFrames()
+									end
+								end
+								C_Timer.After(0.35, function()
+									if SkuOptions.currentMenuPosition
+										and SkuOptions.currentMenuPosition.OnUpdate then
+										SkuOptions.currentMenuPosition:OnUpdate()
+									end
+								end)
+							end
+						end
+					end
+
+					-- ============================ RIGHT click payload
+					if tIsEquipmentSlot then
+						local lSlotID = tEqSlotID
+						local lSlotName = aGossipListTable[index].containerFrameName
+						-- Rechtsklick auf ein ausgeruestetes Teil. Das sichere Makro
+						-- "/click <Slot> RightButton" laeuft VOR dieser OnRightAction
+						-- (auf dem Hardware-Event) und ruft nativ UseInventoryItem(slot)
+						-- mit der LIVE-Cursor/Ziel-Lage auf:
+						--  1) Ziel-Modus (Waffenoel/Gift/Schleifstein): WENDET AN.
+						--  2) Gegenstand mit Benutzen-Effekt (Schmuck): loest on-use aus.
+						--  3) Normale Ruestung/Waffe: TBC-2.5.5 macht hier nativ NICHTS
+						--     -> die insecure OnRightAction unten zieht dann aus.
+						-- Entschieden wird in OnRightAction anhand des PreClick-
+						-- Schnappschusses + LIVE-Pruefung, ob das Makro schon gehandelt hat.
+						tNewMenuEntry.rightMacrotext = "/click " .. lSlotName .. " RightButton"
+						tNewMenuEntry.OnRightAction = function()
+							-- Hat das sichere Makro schon angewendet/benutzt? Dann NICHT ausziehen.
+							local tOnUseLive = false
+							if _G.GetInventoryItemLink and _G.GetItemSpell then
+								local tLink = _G.GetInventoryItemLink("player", lSlotID)
+								if tLink and (_G.GetItemSpell(tLink)) then tOnUseLive = true end
+							end
+							if SkuOptions.tPreEnterApplyState or tOnUseLive
+								or GetCursorInfo() or (SpellIsTargeting and SpellIsTargeting()) then
+								dprint("equip rclick action: macro path (refresh only)")
+								if _G.C_Timer and _G.C_Timer.After then
+									_G.C_Timer.After(0.1, function()
+										pcall(function() SkuCore:CheckFrames() end)
+										_G.C_Timer.After(0.35, function()
+											if SkuOptions.currentMenuPosition
+												and SkuOptions.currentMenuPosition.OnUpdate then
+												pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
+											end
+										end)
+									end)
+								end
+								return
+							end
+							-- Fall 3: ausziehen. Defensiv: liegt jetzt doch ein Cursor-Item /
+							-- Ziel-Modus vor (Rebuild-Timing), NICHT ausziehen -> sonst FORBIDDEN.
+							if GetCursorInfo() or (SpellIsTargeting and SpellIsTargeting()) then
+								dprint("equip rclick action: bail, cursor/targeting active")
+								return
+							end
+							dprint("equip rclick action: unequip slot", lSlotID)
+							if _G.GetInventoryItemID then
+								if not _G.GetInventoryItemID("player", lSlotID) then
+									if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.OutputStringBTtts then
+										pcall(function()
+											SkuOptions.Voice:OutputStringBTtts(L["Empty"] or "Empty", true, true, 0.1, nil, nil, nil, 1)
+										end)
+									end
+									return
+								end
+							end
+							if _G.PickupInventoryItem then
+								pcall(_G.PickupInventoryItem, lSlotID)
+							end
+							local tPlaced = false
+							if _G.GetContainerNumSlots and _G.PickupContainerItem then
+								for bag = 0, NUM_BAG_SLOTS or 4 do
+									local nSlots = _G.GetContainerNumSlots(bag) or 0
+									for slot = 1, nSlots do
+										local tLink = _G.GetContainerItemLink and _G.GetContainerItemLink(bag, slot)
+										if not tLink then
+											pcall(_G.PickupContainerItem, bag, slot)
+											tPlaced = true
+											break
+										end
+									end
+									if tPlaced then break end
+								end
+							end
+							if not tPlaced then
+								if _G.ClearCursor then pcall(_G.ClearCursor) end
+								if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.OutputStringBTtts then
+									pcall(function()
+										SkuOptions.Voice:OutputStringBTtts(L["No free bag space"] or "Keine Tasche frei", true, true, 0.1, nil, nil, nil, 1)
+									end)
+								end
+							end
+							if _G.C_Timer and _G.C_Timer.After then
+								_G.C_Timer.After(0.1, function()
+									pcall(function() SkuCore:CheckFrames() end)
+									_G.C_Timer.After(0.35, function()
+										if SkuOptions.currentMenuPosition
+											and SkuOptions.currentMenuPosition.OnUpdate then
+											pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
+										end
+									end)
+								end)
+							end
+						end
+					elseif aGossipListTable[index].bag ~= nil and aGossipListTable[index].slot ~= nil then
+						-- Bag/bank item (container-API): right click = "use" (consume,
+						-- equip, or vendor-sell). UseContainerItem is HARDWARE-EVENT
+						-- gated, so it runs as "/use <bag> <slot>" on the secure
+						-- right-click button. SkuCaptureSellState opens the bag-action
+						-- confirm window (cursor sits on the item node itself, which
+						-- its bagSlot/itemId branch handles); BAG_UPDATE(_DELAYED)
+						-- then fires the confirm once the bag has settled.
+						local lBag, lSlot = aGossipListTable[index].bag, aGossipListTable[index].slot
+						tNewMenuEntry.rightMacrotext =
+							"/script SkuCaptureSellState()\r\n"
+							.. "/use "..lBag.." "..lSlot.."\r\n"
+							.. "/script SkuCore:CheckFrames()"
+					elseif aGossipListTable[index].containerFrameName then
+						tNewMenuEntry.rightMacrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
+					else
+						tNewMenuEntry.OnRightAction = function()
+							aGossipListTable[index].func(aGossipListTable[index].obj, "RightButton")
+							if not aGossipListTable[index].obj:GetName() then
+								SkuCore:CheckFrames()
+							else
+								if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
+									SkuCore:CheckFrames(true)
+								else
+									SkuCore:CheckFrames()
+								end
+							end
+							C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)
+						end
+					end
+
+					-- ============================ context submenu (RIGHT arrow)
 					tNewMenuEntry.BuildChildren = function(self)
+						self.children = {}
 						if ((aGossipListTable[index].isBag and CursorHasItem())) or not aGossipListTable[index].isBag or aGossipListTable[index].isPurchasable then
-							self.children = {}
 							if aGossipListTable[index] and aGossipListTable[index].obj and aGossipListTable[index].obj.GetName and aGossipListTable[index].obj:GetName() and string.find(aGossipListTable[index].obj:GetName(), "MerchantItem") then
 								local tStock = 1000
 								if aGossipListTable[index].obj.numInStock and aGossipListTable[index].obj.numInStock ~= -1 then
@@ -5106,405 +5552,6 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								end
 							end
 	
-							-- After the item-action we step the menu cursor back one
-							-- level (from "Linksklick"/"Rechtsklick" to the item entry
-							-- itself) and rebuild + refresh, all via the short global
-							-- helper SkuStepBackAndRefresh — keeping the macrotext
-							-- well under the 255-char macro line limit. Inline scripts
-							-- here previously truncated mid-statement on TBC/Classic.
-
-							-- Equipment-Slot-Erkennung: Buttons mit Name
-							-- "Character...Slot" sind die PaperDollItemSlot-
-							-- Buttons (HeadSlot, NeckSlot, ShoulderSlot, …).
-							-- /click <name> LeftButton würde auf TBC-2.5.5
-							-- nur PaperDollItemSlotButton_OnClick auslösen,
-							-- das ohne Modifier UseInventoryItem aufruft —
-							-- für Rüstung/Ringe/Trinkets bleibt das wirkungslos
-							-- ("an Cursor heften" und "ausziehen" funktionieren
-							-- nicht). Stattdessen rufen wir die Inventar-API
-							-- direkt: PickupInventoryItem für Linksklick (Item
-							-- an Cursor) und Pickup + Place-in-first-empty-bag
-							-- für Rechtsklick (ausziehen).
-							local tIsEquipmentSlot = false
-							local tEqSlotID
-							if aGossipListTable[index].containerFrameName
-								and string.match(aGossipListTable[index].containerFrameName, "^Character.+Slot$")
-								and aGossipListTable[index].obj
-								and aGossipListTable[index].obj.GetID then
-								tEqSlotID = aGossipListTable[index].obj:GetID()
-								if tEqSlotID and tEqSlotID > 0 then
-									tIsEquipmentSlot = true
-								end
-							end
-
-							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Left click"]}, SkuGenericMenuItem)
-							if tIsEquipmentSlot then
-								-- Equipment-Slots via macrotext im Hardware-Event-
-								-- Kontext klicken. Damit funktionieren auch
-								-- Cursor-Items (Wizard Oil, Gift, Schleifsteine)
-								-- auf ausgerüstete Waffen, ohne
-								-- ADDON_ACTION_FORBIDDEN.
-								local lSlotName = aGossipListTable[index].containerFrameName
-								tNewSubMenuEntry.macrotext = "/click " .. lSlotName .. " LeftButton"
-								-- Fallback OnAction falls macrotext nicht greift
-								local lSlotID = tEqSlotID
-								tNewSubMenuEntry.OnAction = function()
-									-- The secure macro (/click <Slot> LeftButton -> PickupInventoryItem)
-									-- ran FIRST (before this OnAction). It natively does the right thing
-									-- with the LIVE cursor/targeting state:
-									--   * SpellIsTargeting (enchant / armor kit / sharpening) -> APPLIES it,
-									--   * item on cursor (armor-set swap) -> PLACES it into the slot,
-									--   * nothing pending -> picks the equipped item up to the cursor.
-									-- So OnAction must only act when the macro did NOT already do so.
-									-- After an apply the cursor is empty and targeting is off again, so
-									-- the live check alone can't detect it -> also honour the pre-macro
-									-- snapshot from the secure PreClick. Without this the just-enchanted
-									-- item got re-picked-up onto the cursor (the reported bug).
-									if SkuOptions.tPreEnterApplyState
-										or GetCursorInfo() or (SpellIsTargeting and SpellIsTargeting()) then
-										-- Macro applied/placed/picked-up already -> just refresh.
-										if _G.C_Timer and _G.C_Timer.After then
-											_G.C_Timer.After(0.1, function()
-												pcall(function() SkuCore:CheckFrames() end)
-												_G.C_Timer.After(0.35, function()
-													if SkuOptions.currentMenuPosition
-														and SkuOptions.currentMenuPosition.OnUpdate then
-														pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
-													end
-												end)
-											end)
-										end
-										return
-									end
-									if _G.PickupInventoryItem then
-										pcall(_G.PickupInventoryItem, lSlotID)
-									end
-									if _G.C_Timer and _G.C_Timer.After then
-										_G.C_Timer.After(0.1, function()
-											pcall(function() SkuCore:CheckFrames() end)
-											_G.C_Timer.After(0.35, function()
-												if SkuOptions.currentMenuPosition
-													and SkuOptions.currentMenuPosition.OnUpdate then
-													pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
-												end
-											end)
-										end)
-									end
-								end
-							elseif aGossipListTable[index].bag ~= nil and aGossipListTable[index].slot ~= nil then
-								-- Bag/bank item (container-API migration): left-click = pick the
-								-- item up to the cursor via PickupContainerItem(bag, slot). No
-								-- rendered ContainerFrame needed, and it is NOT a protected
-								-- function, so it works in AND out of combat. Then refresh the menu.
-								local lBag, lSlot = aGossipListTable[index].bag, aGossipListTable[index].slot
-								tNewSubMenuEntry.OnAction = function()
-									if _G.PickupContainerItem then pcall(_G.PickupContainerItem, lBag, lSlot) end
-									if _G.C_Timer and _G.C_Timer.After then
-										_G.C_Timer.After(0.1, function()
-											pcall(function() SkuCore:CheckFrames() end)
-											_G.C_Timer.After(0.35, function()
-												if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then
-													pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
-												end
-											end)
-										end)
-									end
-								end
-							elseif aGossipListTable[index].containerFrameName then
-								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
-								if aGossipListTable[index].obj and aGossipListTable[index].obj.GetParent then
-									if aGossipListTable[index].obj:GetParent() then
-										if aGossipListTable[index].obj:GetParent().rollID then
-											tNewSubMenuEntry.macrotext = "/script RollOnLoot("..aGossipListTable[index].obj:GetParent().rollID..", "..aGossipListTable[index].obj:GetID()..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
-										end
-										if aGossipListTable[index].obj:GetParent():GetName() == "StaticPopup1" then
-											if string.find(aGossipListTable[index].obj:GetName(), "StaticPopup") and string.find(aGossipListTable[index].obj:GetName(), "Button1") then
-												tNewSubMenuEntry.macrotext = "/click StaticPopup1Button1 LeftButton"
-												tNewSubMenuEntry.OnAction = function()
-													C_Timer.After(0.5, function()
-														pcall(function() SkuCore:CheckFrames() end)
-														C_Timer.After(0.35, function()
-															pcall(SkuStepBackAndRefresh)
-														end)
-													end)
-												end
-											elseif string.find(aGossipListTable[index].obj:GetName(), "StaticPopup") and string.find(aGossipListTable[index].obj:GetName(), "Button2") then
-												tNewSubMenuEntry.macrotext = "/click StaticPopup1Button2 LeftButton"
-												tNewSubMenuEntry.OnAction = function()
-													C_Timer.After(0.5, function()
-														pcall(function() SkuCore:CheckFrames() end)
-														C_Timer.After(0.35, function()
-															pcall(SkuStepBackAndRefresh)
-														end)
-													end)
-												end
-											end
-										end
-									end
-								end
-							else
-								tNewSubMenuEntry.OnAction = function()
-									-- Spezial-Cursor-Wiederherstellung NUR für
-									-- Talent-Frame-Einträge (siehe Talent-
-									-- Browser-Anpassung). Andere click=true
-									-- Aktionen — insbesondere GossipFrame-
-									-- Optionen wie "Wohin kann ich fliegen"
-									-- — laufen über den klassischen Pfad.
-									-- Sonst zerstört das Cursor-Reset den
-									-- Gossip→TaxiFrame-Übergang (TaxiFrame
-									-- ging beim Test "kurz auf, sofort
-									-- wieder zu").
-									local lFrameName = aGossipListTable[index]
-										and aGossipListTable[index].frameName
-									local tIsTalentFrame = type(lFrameName) == "string"
-										and string.find(lFrameName, "PlayerTalentFrameTalent")
-
-									if tIsTalentFrame then
-										local lTalentNode  = tNewMenuEntry
-										local lTalentName  = lTalentNode and lTalentNode.name
-										local lTalentFrame = lFrameName
-										local lListNode    = lTalentNode and lTalentNode.parent
-
-										aGossipListTable[index].func(aGossipListTable[index].obj, "LeftButton")
-										if not aGossipListTable[index].obj:GetName() then
-											SkuCore:CheckFrames()
-										else
-											if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
-												SkuCore:CheckFrames(true)
-											else
-												SkuCore:CheckFrames()
-											end
-										end
-
-										local function tFindEntry()
-											if lTalentNode and lTalentNode.parent then
-												return lTalentNode
-											end
-											if lListNode and lListNode.children then
-												for _, e in pairs(lListNode.children) do
-													if type(e) == "table" then
-														if (lTalentFrame and e.frameName == lTalentFrame)
-															or (lTalentName and e.name == lTalentName) then
-															return e
-														end
-													end
-												end
-											end
-											return nil
-										end
-
-										local function tForceCursor()
-											if not SkuOptions then return end
-											local target = tFindEntry()
-											if target then
-												SkuOptions.currentMenuPosition = target
-												if SkuOptions.ClearFilter then
-													pcall(SkuOptions.ClearFilter, SkuOptions)
-												end
-											end
-										end
-
-										if _G.C_Timer and _G.C_Timer.After then
-											_G.C_Timer.After(0.02, tForceCursor)
-											_G.C_Timer.After(0.10, tForceCursor)
-											_G.C_Timer.After(0.35, function()
-												tForceCursor()
-												if SkuOptions and SkuOptions.VocalizeCurrentMenuName then
-													pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
-												end
-											end)
-										end
-									else
-										-- Klassischer Pfad — unverändert wie
-										-- vor der Talent-Optimierung.
-										aGossipListTable[index].func(aGossipListTable[index].obj, "LeftButton")
-										if not aGossipListTable[index].obj:GetName() then
-											SkuCore:CheckFrames()
-										else
-											if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
-												SkuCore:CheckFrames(true)
-											else
-												SkuCore:CheckFrames()
-											end
-										end
-										C_Timer.After(0.35, function()
-											if SkuOptions.currentMenuPosition
-												and SkuOptions.currentMenuPosition.OnUpdate then
-												SkuOptions.currentMenuPosition:OnUpdate()
-											end
-										end)
-									end
-								end
-							end
-
-							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Right click"]}, SkuGenericMenuItem)
-							if tIsEquipmentSlot then
-								local lSlotID = tEqSlotID
-								local lSlotName = aGossipListTable[index].containerFrameName
-								-- Rechtsklick auf ein ausgeruestetes Teil. Das sichere Makro
-								-- "/click <Slot> RightButton" laeuft VOR dieser OnAction (auf dem
-								-- Hardware-ENTER) und ruft nativ UseInventoryItem(slot) mit der
-								-- LIVE-Cursor/Ziel-Lage auf:
-								--  1) Ziel-Modus (Waffenoel/Gift/Schleifstein): WENDET AN.
-								--  2) Gegenstand mit Benutzen-Effekt (Schmuck): loest on-use aus.
-								--  3) Normale Ruestung/Waffe: TBC-2.5.5 macht hier nativ NICHTS
-								--     -> die insecure OnAction unten zieht dann aus.
-								-- Frueher wurde 1/2 anhand des ZUSTANDS BEIM MENUE-AUFBAU
-								-- entschieden (tTargeting/tHasOnUse). Das brach, sobald der
-								-- Ziel-Modus erst NACH dem Aufbau aktiv wurde (z.B. Verzauberung:
-								-- Menue stand schon, dann Zielcursor). Deshalb jetzt: Makro IMMER
-								-- binden und in OnAction anhand des PreClick-Schnappschusses +
-								-- LIVE-Pruefung entscheiden, ob das Makro schon gehandelt hat.
-								local tHasOnUse = false
-								if _G.GetInventoryItemLink and _G.GetItemSpell then
-									local tLink = _G.GetInventoryItemLink("player", lSlotID)
-									if tLink and (_G.GetItemSpell(tLink)) then
-										tHasOnUse = true
-									end
-								end
-								dprint("equip rclick build", lSlotName, "slot", lSlotID,
-									"targeting", tostring(SpellIsTargeting and SpellIsTargeting()), "onUse", tHasOnUse)
-								tNewSubMenuEntry.macrotext = "/click " .. lSlotName .. " RightButton"
-								tNewSubMenuEntry.OnAction = function()
-									-- Hat das sichere Makro schon angewendet/benutzt? Dann NICHT ausziehen.
-									-- pre-Schnappschuss faengt den soeben verbrauchten Ziel-Modus;
-									-- on-use LIVE neu berechnen (Makro hat evtl. gerade ausgeloest);
-									-- Cursor/Ziel-Modus jetzt = Rebuild-Timing-Schutz.
-									local tOnUseLive = false
-									if _G.GetInventoryItemLink and _G.GetItemSpell then
-										local tLink = _G.GetInventoryItemLink("player", lSlotID)
-										if tLink and (_G.GetItemSpell(tLink)) then tOnUseLive = true end
-									end
-									if SkuOptions.tPreEnterApplyState or tOnUseLive
-										or GetCursorInfo() or (SpellIsTargeting and SpellIsTargeting()) then
-										dprint("equip rclick action: macro path (refresh only)")
-										if _G.C_Timer and _G.C_Timer.After then
-											_G.C_Timer.After(0.1, function()
-												pcall(function() SkuCore:CheckFrames() end)
-												_G.C_Timer.After(0.35, function()
-													if SkuOptions.currentMenuPosition
-														and SkuOptions.currentMenuPosition.OnUpdate then
-														pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
-													end
-												end)
-											end)
-										end
-										return
-									end
-									-- Fall 3: ausziehen. Defensiv: liegt jetzt doch ein Cursor-Item /
-									-- Ziel-Modus vor (Rebuild-Timing), NICHT ausziehen -> sonst FORBIDDEN.
-									if GetCursorInfo() or (SpellIsTargeting and SpellIsTargeting()) then
-										dprint("equip rclick action: bail, cursor/targeting active")
-										return
-									end
-									dprint("equip rclick action: unequip slot", lSlotID)
-									if _G.GetInventoryItemID then
-										if not _G.GetInventoryItemID("player", lSlotID) then
-											if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.OutputStringBTtts then
-												pcall(function()
-													SkuOptions.Voice:OutputStringBTtts(L["Empty"] or "Empty", true, true, 0.1, nil, nil, nil, 1)
-												end)
-											end
-											return
-										end
-									end
-									if _G.PickupInventoryItem then
-										pcall(_G.PickupInventoryItem, lSlotID)
-									end
-									local tPlaced = false
-									if _G.GetContainerNumSlots and _G.PickupContainerItem then
-										for bag = 0, NUM_BAG_SLOTS or 4 do
-											local nSlots = _G.GetContainerNumSlots(bag) or 0
-											for slot = 1, nSlots do
-												local tLink = _G.GetContainerItemLink and _G.GetContainerItemLink(bag, slot)
-												if not tLink then
-													pcall(_G.PickupContainerItem, bag, slot)
-													tPlaced = true
-													break
-												end
-											end
-											if tPlaced then break end
-										end
-									end
-									if not tPlaced then
-										if _G.ClearCursor then pcall(_G.ClearCursor) end
-										if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.OutputStringBTtts then
-											pcall(function()
-												SkuOptions.Voice:OutputStringBTtts(L["No free bag space"] or "Keine Tasche frei", true, true, 0.1, nil, nil, nil, 1)
-											end)
-										end
-									end
-									if _G.C_Timer and _G.C_Timer.After then
-										_G.C_Timer.After(0.1, function()
-											pcall(function() SkuCore:CheckFrames() end)
-											_G.C_Timer.After(0.35, function()
-												if SkuOptions.currentMenuPosition
-													and SkuOptions.currentMenuPosition.OnUpdate then
-													pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
-												end
-											end)
-										end)
-									end
-								end
-							elseif aGossipListTable[index].bag ~= nil and aGossipListTable[index].slot ~= nil then
-								-- Bag/bank item (container-API migration): right-click = "use"
-								-- (consume, equip, or vendor-sell -- the same context-sensitive
-								-- behaviour the old /click RightButton gave), with no rendered
-								-- ContainerFrame.
-								-- The underlying UseContainerItem(bag, slot) is HARDWARE-EVENT
-								-- gated: an insecure OnAction call is refused with
-								-- ADDON_ACTION_FORBIDDEN for any item whose use casts a spell or
-								-- equips gear (potions, most consumables, gear). So drive it
-								-- through the secure button instead: bake the (bag, slot) into a
-								-- "/use <bag> <slot>" macrotext. Insecure Lua may compute the slot
-								-- numbers here (only the keypress that fires the macro must be a
-								-- hardware event, which SecureOnSkuOptionsMainOption1 provides, and
-								-- SetAttribute is already combat-gated in templates.lua). So this
-								-- works OUT of combat only; IN-combat use is not yet wired (pending
-								-- the Path A rework -- see [[sku42-combat-item-use-design]]).
-								--
-								-- Bag-action confirm wiring: activating this node makes the ENTER
-								-- handler arm the announce-suppress window (the node carries a
-								-- `macrotext` and its parent is a bag item). That window is closed by
-								-- SkuBagConfirmRefresh, which re-pins the cursor by identity
-								-- (bagSlot/itemId) through the post-use bag re-sort and
-								-- force-announces the settled item. It is driven off REAL signals,
-								-- not a fixed delay:
-								--   * SkuCaptureSellState() opens the window (captures the item
-								--     path/index BEFORE the action);
-								--   * /use <bag> <slot> is the action;
-								--   * the client's BAG_UPDATE / BAG_UPDATE_DELAYED events then fire the
-								--     confirm once the bag has actually settled (see
-								--     SkuCore:BAG_UPDATE_DELAYED). The trailing /script only rebuilds
-								--     the menu immediately for responsiveness.
-								-- For the rare use that changes nothing (no bag event at all), the
-								-- user's next navigation keypress closes the window instead (handled
-								-- in the key dispatcher) -- so no fixed-delay fallback is needed.
-								local lBag, lSlot = aGossipListTable[index].bag, aGossipListTable[index].slot
-								tNewSubMenuEntry.macrotext =
-									"/script SkuCaptureSellState()\r\n"
-									.. "/use "..lBag.." "..lSlot.."\r\n"
-									.. "/script SkuCore:CheckFrames()"
-							elseif aGossipListTable[index].containerFrameName then
-								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
-							else
-								tNewSubMenuEntry.OnAction = function()
-									aGossipListTable[index].func(aGossipListTable[index].obj, "RightButton")
-									if not aGossipListTable[index].obj:GetName() then
-										SkuCore:CheckFrames()
-									else
-										if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
-											SkuCore:CheckFrames(true)
-										else
-											SkuCore:CheckFrames()
-										end
-									end
-									C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)
-								end
-							end
-
-
-
 							if aGossipListTable[index].bag ~= nil and aGossipListTable[index].slot ~= nil then
 								-- Bag/bank socket (container-API migration): SocketContainerItem(bag,
 								-- slot) directly, no rendered frame. Mirrors the old macrotext path.

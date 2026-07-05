@@ -356,8 +356,12 @@ SkuGenericMenuItem = {
 		end
 
 		if SkuState:IsInCombat() ~= true then
+			-- clickGate (bag-bar/bank-bag slots): stage the click macros only while
+			-- the gate is open (an item is on the cursor) — mirrors the old behavior
+			-- where the click submenu only existed then.
+			local tClickGateOk = (not self.clickGate) or (self.clickGate() == true)
 			if _G["SecureOnSkuOptionsMainOption1"] then
-				if self.macrotext then
+				if self.macrotext and tClickGateOk then
 					--dprint("macrotext", self.macrotext)
 					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","macro")
 					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext", self.macrotext)
@@ -379,16 +383,35 @@ SkuGenericMenuItem = {
 				-- -> DoCraft), the normal "/click <btn>" secure macro is routed through
 				-- the chat SlashCommand parser (RunMacro -> SendText -> /click ->
 				-- btn:Click()), which drops the genuine hardware event, so the action
-				-- silently no-ops. Instead, bind the menu's Enter DIRECTLY to the real
-				-- Blizzard button while this entry is focused: a native key->button
-				-- hardware event, exactly like a mouse click, no chat parser. Every
-				-- other focused entry restores Enter to the normal secure menu button.
+				-- silently no-ops. Instead, bind the menu's activate key(s) DIRECTLY
+				-- to the real Blizzard button while this entry is focused: a native
+				-- key->button hardware event, exactly like a mouse click, no chat
+				-- parser. Every other focused entry restores the key(s) to the normal
+				-- secure menu button. The key is configurable (SKU_KEY_MENULEFTCLICK,
+				-- default/fallback ENTER); the virtual click button stays "ENTER".
+				local tLeftKeys = SkuOptions:SkuKeyBindsGetKeys("SKU_KEY_MENULEFTCLICK", "ENTER")
 				if self.directClickButton and _G[self.directClickButton] then
-					pcall(SetOverrideBindingClick, _G["SecureOnSkuOptionsMainOption1"], true,
-						"ENTER", self.directClickButton, "LeftButton")
+					for _, tKey in ipairs(tLeftKeys) do
+						pcall(SetOverrideBindingClick, _G["SecureOnSkuOptionsMainOption1"], true,
+							tKey, self.directClickButton, "LeftButton")
+					end
 				else
-					pcall(SetOverrideBindingClick, _G["SecureOnSkuOptionsMainOption1"], true,
-						"ENTER", "SecureOnSkuOptionsMainOption1", "ENTER")
+					for _, tKey in ipairs(tLeftKeys) do
+						pcall(SetOverrideBindingClick, _G["SecureOnSkuOptionsMainOption1"], true,
+							tKey, "SecureOnSkuOptionsMainOption1", "ENTER")
+					end
+				end
+			end
+			-- Right-click secure button: stage the focused node's rightMacrotext
+			-- (e.g. "/use <bag> <slot>" or "/click <frame> RightButton") so the
+			-- configurable right-click key fires it on the hardware event.
+			if _G["SecureOnSkuOptionsMainOption2"] then
+				if self.rightMacrotext and tClickGateOk then
+					_G["SecureOnSkuOptionsMainOption2"]:SetAttribute("type","macro")
+					_G["SecureOnSkuOptionsMainOption2"]:SetAttribute("macrotext", self.rightMacrotext)
+				else
+					_G["SecureOnSkuOptionsMainOption2"]:SetAttribute("type","")
+					_G["SecureOnSkuOptionsMainOption2"]:SetAttribute("macrotext","")
 				end
 			end
 		end

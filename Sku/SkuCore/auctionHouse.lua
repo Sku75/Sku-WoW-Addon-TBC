@@ -994,8 +994,15 @@ local function _ASBRestoreSkuBindings()
    pcall(function()
       local tMain = _G["OnSkuOptionsMainOption1"]
       if not (tMain and tMain.IsShown and tMain:IsShown()) then return end
-      if _G["SecureOnSkuOptionsMainOption1"] then
-         SetOverrideBindingClick(_G["SecureOnSkuOptionsMainOption1"], true, "ENTER", "SecureOnSkuOptionsMainOption1", "ENTER")
+      -- Re-run the secure buttons' OnShow: that re-arms the CONFIGURABLE activate/
+      -- right-click keys (SKU_KEY_MENULEFTCLICK/-RIGHTCLICK) instead of a hardcoded ENTER.
+      local tSec = _G["SecureOnSkuOptionsMainOption1"]
+      if tSec and tSec:GetScript("OnShow") then
+         tSec:GetScript("OnShow")(tSec)
+      end
+      local tSec2 = _G["SecureOnSkuOptionsMainOption2"]
+      if tSec2 and tSec2:GetScript("OnShow") then
+         tSec2:GetScript("OnShow")(tSec2)
       end
       SetOverrideBindingClick(tMain, true, "ESCAPE", "OnSkuOptionsMainOption1", "ESCAPE")
    end)

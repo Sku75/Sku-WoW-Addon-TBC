@@ -1177,14 +1177,15 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 			end
 			aParentChilds[tFriendlyName] = bagItemButton
 
-			-- Give EVERY slot -- empty or filled -- the Links/Rechtsklick submenu. The gossip
-			-- menu only injects it when the entry has BOTH click==true AND a func
-			-- (SkuZOptions/Core.lua ~4932); the container-API migration set these only for
-			-- non-empty slots, which dropped the submenu on EMPTY slots -- and with it the
-			-- ability to DROP a held item into an empty slot (Linksklick -> PickupContainerItem
-			-- (bag, slot), which places the cursor item). The real actions live in the .bag/
-			-- .slot leaves, so this func is a never-called no-op placeholder. (For an empty slot
-			-- the Rechtsklick "/use" and "Sockeln" are simply no-ops -- nothing there to use.)
+			-- Make EVERY slot -- empty or filled -- a click item. The gossip menu only
+			-- attaches the click actions when the entry has BOTH click==true AND a func
+			-- (SkuZOptions/Core.lua, click==true branch); the container-API migration set
+			-- these only for non-empty slots, which dropped the actions on EMPTY slots --
+			-- and with them the ability to DROP a held item into an empty slot (left
+			-- click / ENTER -> PickupContainerItem(bag, slot), which places the cursor
+			-- item). The real actions come from the .bag/.slot fields, so this func is a
+			-- never-called no-op placeholder. (For an empty slot the right-click "/use"
+			-- and "Sockeln" are simply no-ops -- nothing there to use.)
 			bagItemButton.click = true
 			bagItemButton.func = function() end
 			if not isEmpty then
@@ -2743,11 +2744,12 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 	-- neighbours down/up/right/left/first/last }. The secure snippet just FOLLOWS
 	-- these pointers (no loops) -- Down/Up cycle siblings, Right descends to the
 	-- first child, Left ascends (or leaves the mirror at the top level). Equipment
-	-- slot nodes carry "/use <slotID>" AND get a synthetic 2-entry Links/Rechtsklick
-	-- submenu that inherits it -- exactly the bag item + submenu shape, so Enter on
-	-- the item (or its Rechtsklick) fires the on-use item in combat. Everything else
-	-- is read-only (empty macro); reading itself is handled by the normal insecure
-	-- menu nav, so the mirror only needs the structure + the slot /use points.
+	-- slot nodes carry "/use <slotID>" directly -- the USE key on the slot node
+	-- fires the on-use item in combat. (The former synthetic Links/Rechtsklick
+	-- child pair was removed together with the out-of-combat click submenu, so the
+	-- combat shape matches: no extra level anywhere.) Everything else is read-only
+	-- (empty macro); reading itself is handled by the normal insecure menu nav, so
+	-- the mirror only needs the structure + the slot /use points.
 	do
 		local tNodes = {}
 		local function tAdd(aParent)
@@ -2766,11 +2768,10 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 						and string.match(tKey, "^Character.+Slot$")
 					local tSid = tIsSlot and tNode.obj:GetID() or nil
 					if tSid and tSid > 0 then
-						-- equipment slot: arm "/use <slotID>" + synthesize the Links/Rechtsklick
-						-- submenu (both inherit the /use, like a bag item's submenu).
+						-- equipment slot: arm "/use <slotID>" on the slot node itself
+						-- (no synthetic Links/Rechtsklick children anymore -- USE fires
+						-- directly on the slot, matching the reworked insecure menu).
 						tNodes[i].use = "/use " .. tSid
-						local l = tAdd(i); tNodes[l].use = tNodes[i].use   -- Linksklick
-						local r = tAdd(i); tNodes[r].use = tNodes[i].use   -- Rechtsklick
 					elseif type(tNode.childs) == "table" and #tNode.childs > 0 then
 						tWalk(tNode.childs, i)
 					end

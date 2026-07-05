@@ -83,10 +83,11 @@ end
 -- The combat menu key receiver. One frame, two roles on every keypress:
 --   * insecure PostClick -> routes the key to the menu handler (nav/read/open/close), the
 --     same call SkuMenuCapture's OnKeyDown made (Stage 1).
---   * secure _onclick SNIPPET -> the bags MIRROR (Stage 2): tracks a 2-level cursor in
---     lockstep with the navigation (all-items list index + Links/Rechtsklick sub-level),
---     arms the secure use button with "/use <bag> <slot>" for the focused item, and FIRES
---     it (use:Click()) when you press ENTER on Rechtsklick -- a real in-combat right-click.
+--   * secure _onclick SNIPPET -> the bags MIRROR (Stage 2): tracks the cursor in lockstep
+--     with the navigation (view level + all-items list index; items are LEAVES -- the old
+--     Links/Rechtsklick sub-level was removed with the click rework), arms the secure use
+--     button with "/use <bag> <slot>" for the focused item; the USE / right-click key
+--     bound straight to that button FIRES it -- a real in-combat right-click.
 --
 -- The mirror is armed by HOME: press HOME while in the "alle Taschen" (all items) list to
 -- SYNC -- it activates the mirror, aligns index 1 to the list's first item, and the
@@ -125,8 +126,8 @@ local function tEnsureKeyFrame()
       -- SkuBagConfirmRefresh rebuilds the bags menu (CheckFrames is combat-safe here, same
       -- as the SYNC branch) and re-pins the cursor by identity, so the SPOKEN count refreshes
       -- exactly like out of combat. Capture BEFORE routing ENTER below, while
-      -- currentMenuPosition is still on the used item (SkuCaptureSellState handles both the
-      -- item node and its Rechtsklick submenu). NOTE: the secure /use slot MAP can't be
+      -- currentMenuPosition is still on the used item (SkuCaptureSellState anchors on the
+      -- item node itself via bagSlot/itemId). NOTE: the secure /use slot MAP can't be
       -- re-staged mid-combat, but that's the mirror side -- the narration is what refreshes.
       -- only the bag /use path needs the post-action confirm refresh; the trade-accept
       -- /click macro must NOT trigger a bag rebuild, and neither must a character /use
@@ -142,12 +143,12 @@ local function tEnsureKeyFrame()
       -- NOTHING was armed (macro empty) -- so ENTER still activates a plain, non-actionable
       -- menu item in combat. When a macro DID fire (bag/equipment /use, trade accept), the
       -- secure action already IS the activation; routing ENTER too would re-run the item's
-      -- insecure Rechtsklick OnAction (SkuStepBackAndRefresh etc.), which steps the VISIBLE
-      -- cursor off the submenu and rebuilds -- desyncing it from the secure mirror, which
-      -- stays on the submenu (the mirror only moves on nav keys, never on ENTER). It also
-      -- avoided a redundant second action. The bag stack-count refresh is NOT lost: it is
-      -- driven separately by SkuCaptureSellState -> tBagPostAction -> SkuBagConfirmRefresh
-      -- (armed above, ma==1), independent of this routing.
+      -- insecure click action (OnLeftAction/refresh chains), which rebuilds and moves the
+      -- VISIBLE cursor -- desyncing it from the secure mirror (the mirror only moves on nav
+      -- keys, never on ENTER). It also avoided a redundant second action. The bag
+      -- stack-count refresh is NOT lost: it is driven separately by SkuCaptureSellState ->
+      -- tBagPostAction -> SkuBagConfirmRefresh (armed above, ma==1), independent of this
+      -- routing.
       if tCombatMenuActive() and tMacro == "" then
          local tOpt = _G["OnSkuOptionsMainOption1"]
          if tOpt and tOpt:GetScript("OnClick") then
@@ -161,7 +162,7 @@ local function tEnsureKeyFrame()
    -- SkuCore.combatBagTree, pre-staged as vc / v<v>_c / v<v>_s<i>) AND holds the in-combat
    -- TRADE state:
    --   ma 0 = neutral (nothing armed)   ma 1 = bags nav   ma 2 = trade-accept armed
-   --   mlvl 0/1/2 = bag view / item list / Links-Rechtsklick submenu (only for ma 1)
+   --   mlvl 0/1 = bag view / item list (only for ma 1; items are leaves, no sub-level)
    --   manchor 1 = at the "bags-entry anchor" (reached by LEFT out of the bags, or by HOME
    --               while neutral/armed): RIGHT re-syncs bags, DOWN commits to trade-accept,
    --               other nav leaves it.
@@ -199,6 +200,17 @@ local function tEnsureKeyFrame()
          routeKey = "SYNC"          -- RIGHT from the bags-entry anchor = re-sync into bags
       elseif anchor == 1 and key == "LEFT" then
          routeKey = "NOOP"          -- LEFT at the anchor is blocked (no exit into wider menus)
+      elseif ma == 1 and key == "RIGHT" and (self:GetAttribute("mlvl") or 0) == 1 then
+         routeKey = "NOOP"          -- bag items are LEAVES now (click submenu removed): block
+                                    -- the descend on BOTH sides so mirror and menu stay in step
+                                    -- (the insecure item still has a context submenu, but its
+                                    -- entries are insecure-only actions -- not usable in combat)
+      elseif ma == 3 and key == "RIGHT" then
+         local ccur = self:GetAttribute("ccur") or 0
+         if (self:GetAttribute("cr" .. ccur) or 0) == 0 then
+            routeKey = "NOOP"       -- char-tree leaf (incl. equipment slots, whose synthetic
+                                    -- Links/Rechtsklick children were removed): same block
+         end
       end
       -- DOWN from the anchor just arms trade + moves down normally (no special route).
       self:SetAttribute("kroute", c .. "|" .. routeKey)
@@ -313,9 +325,9 @@ local function tEnsureKeyFrame()
          --   DOWN cd / UP cu = cycle siblings; RIGHT cr = descend to first child (0=leaf,stay);
          --   LEFT cl = ascend to parent (0 = top level -> leave the mirror to the neutral
          --   anchor, recoverable via B/HOME/C); END ce = last sibling.
-         -- After moving, arm cm<cur> ("/use <slotID>" on equipment items + their Links/
-         -- Rechtsklick submenu, "" elsewhere); ENTER (bound to SkuCombatUse) fires it. Same
-         -- item+submenu shape as bags.
+         -- After moving, arm cm<cur> ("/use <slotID>" on equipment slot nodes, ""
+         -- elsewhere); the USE / right-click key (bound to SkuCombatUse) fires it.
+         -- Slot nodes are leaves, same as bag items.
          local cur = self:GetAttribute("ccur") or 0
          if key == "LEFT" then
             local l = self:GetAttribute("cl" .. cur) or 0
@@ -400,29 +412,13 @@ local function tEnsureKeyFrame()
             if u and s then u:SetAttribute("macrotext", "/use " .. s) end
             self:SetAttribute("mlog", "item END v=" .. mv .. " i=" .. mi)
          elseif key == "RIGHT" then
-            self:SetAttribute("mlvl", 2)
-            self:SetAttribute("msub", 1)
-            self:SetAttribute("mlog", "enter submenu v=" .. mv .. " i=" .. mi)
+            -- items are LEAVES now (the Links/Rechtsklick sub-level was removed
+            -- together with the out-of-combat click submenu): stay put; the armed
+            -- /use is on the item itself and the USE key fires it directly.
+            self:SetAttribute("mlog", "item RIGHT (leaf) v=" .. mv .. " i=" .. mi)
          elseif key == "LEFT" then
             self:SetAttribute("mlvl", 0)
             self:SetAttribute("mlog", "back to views")
-         end
-      else
-         -- Links/Rechtsklick submenu (arm unchanged; ENTER->SkuCombatUse fires it)
-         local sub = self:GetAttribute("msub") or 1
-         if key == "DOWN" then
-            sub = sub + 1
-            if sub > 2 then sub = 2 end
-            self:SetAttribute("msub", sub)
-            self:SetAttribute("mlog", "sub=" .. sub)
-         elseif key == "UP" then
-            sub = sub - 1
-            if sub < 1 then sub = 1 end
-            self:SetAttribute("msub", sub)
-            self:SetAttribute("mlog", "sub=" .. sub)
-         elseif key == "LEFT" then
-            self:SetAttribute("mlvl", 1)
-            self:SetAttribute("mlog", "back to items")
          end
       end
    ]=])
@@ -591,11 +587,18 @@ function SkuCore:CombatMenuKeysBindNow()
    -- button (the snippet only arms the macro; a hardware key bound straight to the
    -- SecureActionButton is what actually fires a protected action in combat). Its PostClick
    -- also routes ENTER to the menu handler, so it still activates non-bag items. The user
-   -- navigates to the item (or descends to Rechtsklick) and presses this key. Configurable via
-   -- SKU_KEY_COMBATMENU_USE.
+   -- navigates to the item and presses this key (items are leaves now -- the old
+   -- Links/Rechtsklick sub-level is gone). Configurable via SKU_KEY_COMBATMENU_USE.
    local tUse1, tUse2 = tKeyBindKeys("SKU_KEY_COMBATMENU_USE")
    if tUse1 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, tUse1, "SkuCombatUse") end
    if tUse2 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, tUse2, "SkuCombatUse") end
+   -- Seamless with the out-of-combat click rework: the menu RIGHT-CLICK key
+   -- (SKU_KEY_MENURIGHTCLICK, default CTRL-ENTER) fires the same armed use button in
+   -- combat -- in-combat "use" IS the right-click semantic (out of combat that key
+   -- runs "/use <bag> <slot>" / "/click ... RightButton" via SecureOnSkuOptionsMainOption2).
+   local tRc1, tRc2 = tKeyBindKeys("SKU_KEY_MENURIGHTCLICK")
+   if tRc1 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, tRc1, "SkuCombatUse") end
+   if tRc2 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, tRc2, "SkuCombatUse") end
 
    -- Part C: the player's OPEN-BAGS key = open bags + SYNC the mirror on one press. Unlike the
    -- nav/use keys above, B does NOT get its own SKU_KEY_ bind -- it deliberately FOLLOWS the
