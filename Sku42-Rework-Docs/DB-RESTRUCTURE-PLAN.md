@@ -821,3 +821,72 @@ Stage 6 — explicitly parked: route data and WaypointCache memory.
   Modules/Libs/ThreadLib.lua (ticker pump).
 - Measured Questie SavedVariables: 19.6 MB file, ~5.7 MB blobs -> ~11.6 MB
   escaped on disk (~1.9x), doubled by WoW's .bak.
+
+## Appendix: implementation log
+
+### Stages 0-2 implemented (2026-07-06)
+
+Commits: stage 0 = a66176a (toolkit), stage 1 = 15e4296 (registry), stage 2 =
+the conversion commit that follows. Out-of-game verification is COMPLETE; the
+in-game fingerprint comparison is still pending (drill below).
+
+What shipped, and deviations from the plan text:
+- Tools 1-5 built as planned (_db_convert.py, _db_manifest.py + MANIFEST-DB.txt,
+  SkuDBTools.lua with /skudbcheck + /skudbmem, _dbcheck.py, _dbmem.py). Tools
+  6-8 (golden vectors, /skudbverify, fault injectors) are phase-B tools and are
+  deliberately NOT built yet.
+- /skudbcheck is a MANUAL post-login command (captures the post-merge moment;
+  runs sliced, speaks when done, keeps the last 12 captures). The automatic
+  post-build/pre-merge capture of A8 is deferred to stage 3, where the master
+  init sequence gives it a natural hook.
+- The four lookup tables nest per locale; the converter chunks INSIDE each
+  locale subtable (target paths like SkuDB.itemLookup.deDE). Duplicate locale
+  keys are a hard error; duplicate RECORD keys are allowed, counted, and
+  reported, because the data genuinely has them - creatures.lua deDE carries
+  9104 duplicate ids (a second, partially untranslated block). Constructor
+  last-wins semantics are preserved exactly by the ordered chunk merge; the
+  key-SEQUENCE identity check pins this.
+- Verification substitutions, both STRONGER than the letter of the plan: the
+  per-chunk "AST literal-only assert" runs as a byte tokenizer with identical
+  strength (identifiers/calls/operators outside strings are hard errors,
+  unary minus before a number allowed) because ANTLR-based luaparser cannot
+  chew 44 MB of table constructors; IN ADDITION all nine GENERATED files
+  full-parse clean with luaparser (the long-string bodies lex as single
+  tokens, ~25 s total), and the scaffolding also parses with bodies stubbed.
+  Reassembly is checked on the WHOLE interior (chunk bodies concatenate to
+  the byte-identical original interior including separators/comments), which
+  subsumes the per-record byte compare.
+- Numbers: stage-0 baseline manifest = 34 pristine files, ALL matching the
+  upstream-src blobs (commit 22e81c0; SkuDB/Core.lua matches after CRLF->LF,
+  it is git-tracked anyway). Stage 2 = 25 datasets, 471,132 records, 955
+  chunks; regeneration is byte-deterministic (verified by re-run + rehash).
+- SkuDBChunkHashes[path] = sha256 of each dataset's pristine interior is
+  embedded in the generated files - that is the phase-B cache-key content
+  hash (B5), free to carry now.
+- SkuNav gained DevGetWaypointCacheTables() (dev accessor over the file-local
+  cache tables) so /skudbmem can rank them for stage 4.
+
+### Stage-2 in-game acceptance drill (pending; ~15 minutes)
+
+The converted files are LIVE on disk (symlink). The baseline fingerprint must
+come from the ORIGINAL format, so the drill flips the data files (code stays):
+
+1. Out-of-game: py -3 Sku42-Rework-Docs/_db_convert.py --unwrap
+   (restores pristine data files; .baks stay).
+2. Log in fully. Run /skudbcheck baseline1 - it speaks "Datenbankpruefung
+   gestartet", then after a while "Pruefsumme geschrieben, N Datensaetze".
+3. /reload, run /skudbcheck baseline2, /reload (persists it).
+4. Out-of-game: py -3 Sku42-Rework-Docs/_dbcheck.py 1 2 -> must PASS
+   (proves the fingerprint itself is deterministic across reloads).
+5. Out-of-game: py -3 Sku42-Rework-Docs/_db_convert.py --no-filescope-scan
+   (regenerates the converted files, deterministic).
+6. Log in fully. Errors check: BugSack must stay silent. Run
+   /skudbcheck converted, then /reload.
+7. Out-of-game: py -3 Sku42-Rework-Docs/_dbcheck.py 2 3 -> PASS = stage 2
+   accepted (identical fingerprints and record counts, old vs new format).
+8. Optional while there: /skudbmem once (stage-4 ranking data, ~1 min), and
+   /lsw before/after to confirm stage 1's ~50 MB and unchanged load time.
+9. py -3 Sku42-Rework-Docs/_db_manifest.py --check must PASS at the end.
+
+If step 7 FAILS: py -3 _db_convert.py --unwrap + git revert of the stage-2
+commit restores everything; the fingerprints tell WHICH dataset drifted.

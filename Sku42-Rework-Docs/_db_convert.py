@@ -319,15 +319,22 @@ def split_records(data, i, end, where):
         first = False
     if not records:
         die("%s: no records found" % where)
-    keys = [r[0] for r in records]
-    if len(set(keys)) != len(keys):
-        seen, dupes = set(), set()
-        for k in keys:
-            if k in seen:
-                dupes.add(k)
-            seen.add(k)
-        die("%s: duplicate keys: %s" % (where, sorted(dupes)[:10]))
     return records
+
+
+def count_dupes(records):
+    """Duplicate keys DO exist in the data (e.g. creatures.lua deDE carries a
+    second, partially untranslated block re-listing thousands of ids). The
+    original constructor silently last-wins; the chunk loader merges records
+    in the SAME order, so last-wins is preserved exactly - duplicates are
+    therefore allowed, but counted and reported. The key-SEQUENCE identity
+    check (pristine vs output) is what actually pins the semantics."""
+    seen, dupes = set(), 0
+    for k, _, _ in records:
+        if k in seen:
+            dupes += 1
+        seen.add(k)
+    return dupes
 
 
 def find_stmt(data, lhs):
@@ -502,6 +509,12 @@ def locale_subtables(data, lhs, open_pos, close_pos):
         if data[vs] != O_BRACE:
             die("%s[%s]: locale value is not a table" % (lhs, loc))
         subs.append((loc, vs, rec_end))  # rec_end is just past the matching '}'
+    # duplicate LOCALE keys would change semantics (the original constructor
+    # REPLACES the whole subtable, the chunk loader would union) - hard error,
+    # unlike record-level duplicates (see count_dupes)
+    locs = [s[0] for s in subs]
+    if len(set(locs)) != len(locs):
+        die("%s: duplicate locale keys: %s" % (lhs, locs))
     return subs
 
 
@@ -533,7 +546,7 @@ def convert_file(rel, tables):
             piece.append(b'SkuDBChunkHashes["' + lhs.encode("ascii") + b'"] = "'
                          + hashlib.sha256(data[i0:i1]).hexdigest().encode("ascii") + b'"\r\n')
             n = emit_chunks(piece, data, lhs, records, i0, i1)
-            report.append((lhs, len(records), n))
+            report.append((lhs, len(records), n, count_dupes(records)))
         else:
             subs = locale_subtables(data, lhs, open_pos, stmt_end)
             for loc, vs, ve in subs:
@@ -545,7 +558,7 @@ def convert_file(rel, tables):
                 piece.append(b'SkuDBChunkHashes["' + sub_lhs.encode("ascii") + b'"] = "'
                              + hashlib.sha256(data[i0:i1]).hexdigest().encode("ascii") + b'"\r\n')
                 n = emit_chunks(piece, data, sub_lhs, records, i0, i1)
-                report.append((sub_lhs, len(records), n))
+                report.append((sub_lhs, len(records), n, count_dupes(records)))
         out.append(b"".join(piece))
     out.append(data[prev:])
     with open(path, "wb") as f:
@@ -631,10 +644,12 @@ def verify_file(rel, tables, quiet=False):
                 check_literal_only(body, where)
             if new_keys != [k for k, _, _ in orig_records]:
                 die("verify %s: key sequence differs for %s" % (rel, path_name))
-            results.append((path_name, len(orig_records), len(bodies)))
+            dupes = count_dupes(orig_records)
+            results.append((path_name, len(orig_records), len(bodies), dupes))
             if not quiet:
-                print("  PASS %-42s %6d records, %3d chunks, %.1f MB"
-                      % (path_name, len(orig_records), len(bodies), len(orig_interior) / 1e6))
+                print("  PASS %-42s %6d records, %3d chunks, %.1f MB%s"
+                      % (path_name, len(orig_records), len(bodies), len(orig_interior) / 1e6,
+                         (", %d dupe keys (last-wins kept)" % dupes) if dupes else ""))
     if chunks:
         die("verify %s: output contains chunks for unexpected paths: %s"
             % (rel, sorted(chunks)))
@@ -669,7 +684,8 @@ def dotted_name(node):
         if isinstance(idx, N.Name):
             parts.append(idx.id)
         elif isinstance(idx, N.String):
-            parts.append(idx.s)
+            s = idx.s
+            parts.append(s.decode("utf-8", "replace") if isinstance(s, bytes) else s)
         else:
             return None
         node = node.value
@@ -695,7 +711,15 @@ def scan_filescope():
         src = open(path, encoding="utf-8-sig").read()
         tree = ast.parse(src)
 
-        def walk(node, in_func):
+        # iterative walk (deep ASTs blow Python's recursion limit) with a
+        # visited set as cycle guard
+        stack = [(tree, False)]
+        seen = set()
+        while stack:
+            node, in_func = stack.pop()
+            if id(node) in seen:
+                continue
+            seen.add(id(node))
             if isinstance(node, func_types):
                 in_func = True
             if isinstance(node, N.Index) and not in_func:
@@ -710,11 +734,9 @@ def scan_filescope():
                 if isinstance(child, list):
                     for c in child:
                         if hasattr(c, "__dict__"):
-                            walk(c, in_func)
+                            stack.append((c, in_func))
                 elif hasattr(child, "__dict__") and not isinstance(child, str):
-                    walk(child, in_func)
-
-        walk(tree, False)
+                    stack.append((child, in_func))
     if hits:
         for h in hits:
             print("  FAIL", h)
@@ -749,7 +771,7 @@ def main():
         if not verify_only:
             print("converting (from pristine .bak, idempotent):")
             for rel, tables in TARGETS:
-                for name, n_rec, n_chunks in convert_file(rel, tables):
+                for name, n_rec, n_chunks, n_dupes in convert_file(rel, tables):
                     print("  wrote %-42s %6d records, %3d chunks" % (name, n_rec, n_chunks))
         print("verifying output bytes on disk against pristine .bak:")
         for rel, tables in TARGETS:
@@ -766,10 +788,10 @@ def main():
             unwrap()
         sys.exit(2)
     with open(RECORDS_MANIFEST, "w", newline="\n") as f:
-        f.write("# per-dataset record/chunk counts, written by _db_convert.py\n")
-        f.write("# compare in-game record counts via /skudbcheck + _dbcheck.py\n")
-        for name, n_rec, n_chunks in all_reports:
-            f.write("%s|%d|%d\n" % (name, n_rec, n_chunks))
+        f.write("# per-dataset record/chunk/duplicate-key counts, by _db_convert.py\n")
+        f.write("# in-game record counts (/skudbcheck) = records minus dupe keys\n")
+        for name, n_rec, n_chunks, n_dupes in all_reports:
+            f.write("%s|%d|%d|%d\n" % (name, n_rec, n_chunks, n_dupes))
     total_rec = sum(r[1] for r in all_reports)
     total_chunks = sum(r[2] for r in all_reports)
     print("ALL PASS: %d datasets, %d records, %d chunks. Record counts -> %s"

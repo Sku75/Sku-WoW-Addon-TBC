@@ -117,6 +117,7 @@ SkuDB\assets\SoD\items_fixes.lua
 SkuDB\assets\SoD\objects.lua
 SkuDB\assets\SoD\objects_fixes.lua
 SkuDB\assets\SoD\spells.lua
+SkuDB\ChunkLoader.lua
 _psF_postSkuDB.lua
 
 

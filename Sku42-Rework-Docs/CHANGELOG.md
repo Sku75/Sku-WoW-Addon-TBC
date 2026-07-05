@@ -22,6 +22,31 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **DB rework stages 0–2 (DB-RESTRUCTURE-PLAN.md).** Stage 0: verification
+  toolkit — `_db_convert.py` (whitelist converter, verification built in),
+  `_db_manifest.py` + `MANIFEST-DB.txt` (SHA-256 pins for the gitignored data
+  files; all 34 pristine files byte-match the upstream-src blobs of commit
+  22e81c0), in-game `/skudbcheck` (deterministic per-dataset fingerprint →
+  `SkuDebugLog.dbCheck`, differ `_dbcheck.py`) and `/skudbmem` (subtree memory
+  ranking → `SkuDebugLog.dbMem`, reader `_dbmem.py`), both in the new
+  `SkuDBTools.lua`. Stage 1: `Sku:EnsureData` builder registry now pcalls every
+  builder, sets ready only AFTER success (failure = spoken error + SkuErrorLog,
+  never silently partial), nils each builder global and forces a GC — frees the
+  ~48 MB of route source strings that stayed resident forever. Stage 2: the
+  nine big data files (base+WotLK creatures/items/quests/objects + spells)
+  converted to chunked string-literal builders (25 datasets, 471,132 records,
+  955 chunks of ~500 records), built EAGERLY by the new
+  `SkuDB/ChunkLoader.lua` at the end of the SkuDB TOC block — identical
+  timing/semantics by design, pure format-risk retirement. Verified
+  out-of-game: full interior byte reassembly against pristine `.bak`s, key
+  sequence identity, literal-only content, luaparser full parse of all nine
+  generated files, file-scope reference scan over the whole SkuDB block,
+  deterministic regeneration. Data finding: `NpcData.Names.deDE` contains
+  9,104 duplicate record keys (a second, partially-untranslated block;
+  constructor last-wins semantics are preserved exactly by the ordered chunk
+  merge). In-game fingerprint comparison (baseline vs converted) still
+  pending — see the stage-2 test drill in DB-RESTRUCTURE-PLAN.md appendix.
+
 - **Window builders — dropped the redundant Close/Cancel entries (5 windows).**
   Craft, Trade skill, Class trainer, Trade, and Pet stable each appended a
   Close/"Schließen"/Cancel button as the last menu entry (`SkuCore/LocalMenu.lua`
