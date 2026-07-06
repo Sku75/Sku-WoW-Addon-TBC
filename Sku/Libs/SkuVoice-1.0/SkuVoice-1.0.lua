@@ -1,10 +1,25 @@
-local SkuVoice_MAJOR, SkuVoice_MINOR = "SkuVoice-1.0", 1
+﻿local SkuVoice_MAJOR, SkuVoice_MINOR = "SkuVoice-1.0", 1
 local SkuVoice, oldminor = LibStub:NewLibrary(SkuVoice_MAJOR, SkuVoice_MINOR)
 
 --local L = Sku.L
 local L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
 
 if not SkuVoice then return end -- No upgrade needed
+
+-- Blizzard-TTS params provider (W6-B #12): the audio engine no longer reaches
+-- into SkuChat's saved-settings schema by string key. SkuChat registers a
+-- provider via SkuVoice:SetChatTtsProvider that returns the current param table
+-- (fields WowTtsVoice/WowTtsSpeed/WowTtsVolume/WowTtsTags/neverResetQueues/
+-- allChatViaBlizzardTts); the engine only ever calls that. Falls back to sane
+-- defaults if no provider is registered yet.
+local mChatTtsProvider
+local mChatTtsDefaults = { WowTtsVoice = 1, WowTtsSpeed = 3, WowTtsVolume = 50, WowTtsTags = true, neverResetQueues = false, allChatViaBlizzardTts = false }
+local function ChatTts()
+	return (mChatTtsProvider and mChatTtsProvider()) or mChatTtsDefaults
+end
+function SkuVoice:SetChatTtsProvider(aFn)
+	mChatTtsProvider = aFn
+end
 
 local tGenderSuffixes = {
 	["frau"] = "mann",
@@ -106,7 +121,7 @@ function SkuVoice:Create()
 				local tValue = mSkuVoiceQueueBTTS[1]
 				if tValue == "queuereset" then
 						table.remove(mSkuVoiceQueueBTTS, 1)
-						if SkuOptions.db.profile["SkuChat"].neverResetQueues ~= true then
+						if ChatTts().neverResetQueues ~= true then
 							C_VoiceChat.StopSpeakingText()
 						end
 						mSkuVoiceQueueBTTS_Speaking = {}
@@ -126,8 +141,8 @@ function SkuVoice:Create()
 							-- Per-message voice override (nil => global voice). Same
 							-- 1-based domain as WowTtsVoice, so the "- 1" API convention
 							-- is identical whether the voice is per-channel or global.
-							local tVoiceIndex = mSkuVoiceQueueBTTS_Voice[tValue] or SkuOptions.db.profile["SkuChat"].WowTtsVoice
-							C_VoiceChat.SpeakText(tVoiceIndex - 1, tValue, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+							local tVoiceIndex = mSkuVoiceQueueBTTS_Voice[tValue] or ChatTts().WowTtsVoice
+							C_VoiceChat.SpeakText(tVoiceIndex - 1, tValue, 4, ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
 						end
 						mSkuVoiceQueueBTTS_Voice[tValue] = nil
 						--print("tLastWait = 0")
@@ -504,7 +519,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		aIgnoreLinks = true
 	end
 
-	if SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu ~= true and not engine and SkuOptions.db.profile["SkuChat"].allChatViaBlizzardTts ~= true then
+	if SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu ~= true and not engine and ChatTts().allChatViaBlizzardTts ~= true then
 		SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
 		return
 	end
@@ -544,7 +559,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	end
 
 	--empty the queue
-	if aOverwrite == true and SkuOptions.db.profile["SkuChat"].neverResetQueues ~= true then
+	if aOverwrite == true and ChatTts().neverResetQueues ~= true then
 		mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = "queuereset"
 		--print("ADD RESET TO QUEUE")
 		--[[
@@ -664,7 +679,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	local tFinalStringForBTtsMac = ""
 
 	for x = 1, #tStrings do
-		if SkuOptions.db.profile["SkuChat"].WowTtsTags ~= false then
+		if ChatTts().WowTtsTags ~= false then
 			tStrings[x] = string.gsub(tStrings[x], "§01", '<silence msec="100"/>')
 		else
 			tStrings[x] = string.gsub(tStrings[x], "§01", ', ')
@@ -685,7 +700,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 				--tFinalStringForBTts = tFinalStringForBTts..'<silence msec="500"/>'..tStrings[x]
 			end
 
-			if SkuOptions.db.profile["SkuChat"].WowTtsTags ~= false then
+			if ChatTts().WowTtsTags ~= false then
 				tFinalStringForBTts = tFinalStringForBTts..'<silence msec="100"/>'..tStrings[x]
 				tFinalStringForBTtsMac = tFinalStringForBTtsMac..", "..tStrings[x]
 			else
@@ -710,7 +725,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 
 	--tFinalStringForBTts = '<voice required="Language='..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
 	--tFinalStringForBTts = '<LANG LANGID="'..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
-	if SkuOptions.db.profile["SkuChat"].WowTtsTags ~= false then
+	if ChatTts().WowTtsTags ~= false then
 		tFinalStringForBTts = '<pitch middle="0">'..tFinalStringForBTts..'</pitch>'
 	end
 	tFinalStringForBTtsMac = tFinalStringForBTtsMac
@@ -805,7 +820,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		end
 
 
-		if not (string.find(aString, "sound%-") or string.find(aString, "male%-") or string.find(aString, "brian%-") or string.find(aString, "emma%-")) and SkuOptions.db.profile["SkuChat"].allChatViaBlizzardTts == true then
+		if not (string.find(aString, "sound%-") or string.find(aString, "male%-") or string.find(aString, "brian%-") or string.find(aString, "emma%-")) and ChatTts().allChatViaBlizzardTts == true then
 			SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks) -- for strings with lookup in string index
 			return
 		end
@@ -850,7 +865,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 				C_VoiceChat.StopSpeakingText()
 				mSkuVoiceQueueBTTS_Speaking = {}
 				table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
-				C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, aString, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+				C_VoiceChat.SpeakText(ChatTts().WowTtsVoice - 1, aString, 4, ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
 				if not aIgnoreLinks then
 					SkuOptions.TTS:GetLinksTableFromString(aString, "")
 				end
@@ -859,7 +874,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 				mSkuVoiceQueueBTTS_Speaking = {}
 				C_Timer.After(0.05, function() 
 					table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
-					C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, aString, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+					C_VoiceChat.SpeakText(ChatTts().WowTtsVoice - 1, aString, 4, ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
 					if not aIgnoreLinks then
 						SkuOptions.TTS:GetLinksTableFromString(aString, "")
 					end
@@ -1239,7 +1254,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:StopOutputEmptyQueue(aBlizz, aSku)
-	if SkuOptions.db.profile["SkuChat"].neverResetQueues == true then
+	if ChatTts().neverResetQueues == true then
 		return
 	end
 

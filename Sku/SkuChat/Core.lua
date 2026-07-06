@@ -3076,6 +3076,15 @@ function SkuChat:OnEnable()
 	-- registrations that OnDisable dropped.
 	SkuChat:ArmEvents()
 
+	-- W6-B #12: hand the audio engine (SkuVoice) a provider for the Blizzard-TTS
+	-- params instead of letting it read our settings schema by string key. We
+	-- return our live profile subtable (same values as before), so SkuChat can
+	-- rename/restructure those keys freely behind this closure without touching
+	-- SkuVoice.
+	if SkuOptions.Voice and SkuOptions.Voice.SetChatTtsProvider then
+		SkuOptions.Voice:SetChatTtsProvider(function() return SkuSettings:Sub("SkuChat") end)
+	end
+
 	--we need a secure handler to use setbindingclick/ClearBinding IC
 	local b = _G["OnSkuChatToggleSecureHandler"] or CreateFrame("Button", "OnSkuChatToggleSecureHandler", UIParent, "SecureHandlerClickTemplate")
 	b:SetFrameRef("OnSkuChatToggle", OnSkuChatToggle)
