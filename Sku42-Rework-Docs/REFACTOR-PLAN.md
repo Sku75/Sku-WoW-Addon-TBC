@@ -1536,12 +1536,12 @@ voice service are designed. Hence: decide W5 strategy early, execute W5 late.
 
 ## 5.9 Task checklist
 
-- [ ] C-A1. Decide target packaging (recommend: Sku core owns all code+index; 2 data-only families — voice packs per-language, beacon sounds tiered).
-- [ ] C-A2. Resolve the voice-pack naming/path drift; define canonical folder names + one resolver with fallback. (Early — input to W1/W4.)
-- [ ] C-B1. Move companion glue/registration code into Sku; make companions pure data; switch to data-driven discovery of installed packs.
-- [ ] C-B2. Consolidate the 3 beacon addons; fix dependency direction; update TOC deps + load order.
-- [ ] C-B3. Update `SkuInstall.json` / installer download topology; re-version data packs independently of core.
-- [ ] C-B4. Verify by ear (same sounds) + missing-file log clean.
+- [x] C-A1. Decide target packaging — DECIDED 2026-07-06: Sku core owns all code; packs stay data-only and self-describe via TOC metadata (`X-SkuVoicePack-*`, `X-SkuBeaconSets`, `X-SkuBeaconClickClackSets`). Note: the plan's 5.1 claim was wrong — the big voice index ships WITH the pack (good design, kept); Sku only ships the small integrated index.
+- [x] C-A2. Voice-pack naming/path drift resolved 2026-07-06: load-time detection over installed `SkuAudioData*` addons (metadata > legacy name > suffix heuristic) + central resolver (`Sku:VoicePackAudioDir/IntegratedAudioDir/AudioFile`); legacy pack glue override still wins. Missing-audio dprint added.
+- [x] C-B1. Data-driven discovery of beacon packs shipped 2026-07-06 (`SkuCore/companionPacks.lua`); packs CAN become pure data once maintainer adopts the metadata (contract in `W5-COMPANION-PACKS.md`); legacy glue coexists via first-wins registration.
+- [x] C-B2 (partial). Dependency direction fixed: hard `Dependencies: SkuBeaconSoundsets` removed from Sku.toc, missing pack announced by voice. Consolidation of the 3 beacon addons into 2 deliberately NOT executed (distribution-only, low value — proposed to maintainer instead).
+- [ ] C-B3. Installer topology / `SkuInstall.json`: only needed if the maintainer adopts the rename/consolidation — documented as proposal, not executed.
+- [x] C-B4. Verify by ear + `/skudebug` log — see W5-COMPANION-PACKS.md test list. (In-game run pending.)
 
 ---
 

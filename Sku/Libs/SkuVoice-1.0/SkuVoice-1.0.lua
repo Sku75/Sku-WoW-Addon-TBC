@@ -1296,16 +1296,23 @@ function SkuVoice:GetAudiodata(aString)
 	
 	if SkuAudioFileIndexIntegrated[Sku.Loc][aString] ~= nil then
 		tFile = SkuAudioFileIndexIntegrated[Sku.Loc][aString]
-		tPath = [[Interface\AddOns\Sku\SkuAudioData\assets\audio\]]..Sku.Loc..[[\]]
+		tPath = Sku:IntegratedAudioDir()
 		tLen = SkuAudioDataLenIndexIntegrated[Sku.Loc][SkuAudioFileIndexIntegrated[Sku.Loc][aString]]
 	end
-	
+
 	if tFile == nil then
-		if SkuAudioFileIndex[aString] ~= nil then
+		-- W5: Pfad über den Resolver; ohne installiertes Sprachpaket (Dir nil oder
+		-- Index nil) bleibt tFile nil und der Aufrufer fällt auf TTS zurück.
+		local tPackDir = Sku:VoicePackAudioDir()
+		if tPackDir and SkuAudioFileIndex and SkuAudioFileIndex[aString] ~= nil then
 			tFile = SkuAudioFileIndex[aString]
-			tPath = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\]]
+			tPath = tPackDir
 			tLen = SkuAudioDataLenIndex[SkuAudioFileIndex[aString]]
 		end
+	end
+
+	if tFile == nil then
+		dprint("GetAudiodata: no audio file for:", aString)
 	end
 
 	return tFile, tPath, tLen

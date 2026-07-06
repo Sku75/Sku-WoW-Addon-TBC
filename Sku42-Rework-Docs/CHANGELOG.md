@@ -22,6 +22,31 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **W5 companion addons — voice-pack detection, audio-path resolver,
+  data-driven beacon packs.** Sku no longer guesses the voice-pack folder from
+  the locale (`SkuAudioData`/`SkuAudioData_en`, stale vs. the shipped
+  `SkuAudioData_fast_de`): at load it enumerates installed `SkuAudioData*`
+  addons and picks the locale match (new TOC metadata `## X-SkuVoicePack-Locale`
+  / `-ExtraSpeed` preferred, legacy names/suffixes as fallback; legacy pack
+  glue that overrides `Sku.AudiodataPath` still wins). Decision inspectable via
+  `Sku.AudiodataPathInfo`. New central resolver (`Sku:VoicePackAudioDir`,
+  `Sku:IntegratedAudioDir`, `Sku:AudioFile` in `Core.lua`) replaces the
+  hand-built path strings in SkuVoice `GetAudiodata` and SkuMob
+  `EnsureInCombatSounds`; misses now dprint (`GetAudiodata: no audio file
+  for:`). Resolver is path-lookup only — channels, queues and sound handles
+  stay with the callers, so concurrent voice/beacon/aura audio is untouched.
+  Beacon packs: new `SkuCore/companionPacks.lua` registers beacon soundsets
+  data-driven from `## X-SkuBeaconSets` / `## X-SkuBeaconClickClackSets` TOC
+  metadata of installed packs (first-wins vs. legacy pack `Core.lua` glue —
+  both paths coexist); the hard `## Dependencies: SkuBeaconSoundsets` in
+  `Sku.toc` is removed, a missing beacon pack is announced by voice instead of
+  blocking the addon load. Also fixes the 41.05 empty click-clack-menu race at
+  the source (discovery runs before SkuNav's PEW rebuild). `silence_1s.mp3`
+  now ships inside Sku (`SkuZOptions/assets/audio/`), so the speech-cutoff
+  handle trick in `SkuOptions:StopSounds` works without any voice pack. Local
+  companion TOCs updated with the new metadata; maintainer contract in
+  `Sku42-Rework-Docs/W5-COMPANION-PACKS.md`.
+
 - **DB rework levers B + D — lazy links wrapper, derived name→id lookup
   (memory).** Waypoint-cache records no longer pre-allocate an empty
   `{byId,byName}` links wrapper (~94k never-linked records × ~150 bytes ≈

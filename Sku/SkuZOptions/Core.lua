@@ -6097,11 +6097,12 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:StopSounds(aNumberOfSounds)
-	--print("StopSounds", aNumberOfSounds, [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\silence_1s.mp3]])
 	if SkuOptions.db.profile["SkuCore"].playNPCGreetings == true then
 		return
 	end
-	local _, currentSoundHandle = PlaySoundFile([[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\silence_1s.mp3]], "Dialog")--PlaySound(871, "Dialog")
+	-- W5: Stille-Datei liegt jetzt in Sku selbst, damit der Stop-Trick auch ohne
+	-- installiertes Sprachpaket funktioniert (vorher aus dem Sprachpaket-Ordner).
+	local _, currentSoundHandle = PlaySoundFile([[Interface\AddOns\Sku\SkuZOptions\assets\audio\silence_1s.mp3]], "Dialog")--PlaySound(871, "Dialog")
 
 	if currentSoundHandle then
 		for i = 1, aNumberOfSounds do

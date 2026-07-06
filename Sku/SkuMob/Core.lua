@@ -55,8 +55,11 @@ local function EnsureInCombatSounds()
 	SkuMob.InCombatSounds = {}
 	SkuMob.InCombatSounds["Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"] = L["Default beep sound"]
 	for i, v in pairs(SkuAuras.outputSoundFiles) do
-		if SkuAudioFileIndex[i] then
-			SkuMob.InCombatSounds["Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..SkuAudioFileIndex[i]] = v
+		-- W5: Pfad über den Resolver; ohne installiertes Sprachpaket ist tPath nil
+		-- und der Eintrag entfällt (nur der Default-Beep bleibt wählbar).
+		local tPath = SkuAudioFileIndex and Sku:AudioFile(SkuAudioFileIndex[i])
+		if tPath then
+			SkuMob.InCombatSounds[tPath] = v
 		end
 	end
 	SkuMob.options.args.InCombatSound.values = SkuMob.InCombatSounds

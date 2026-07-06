@@ -84,11 +84,68 @@ if not Sku.LocsPartly[GetLocale()] then
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- W5: Sprachpaket-Erkennung. Statt fest verdrahteter Ordnernamen je Locale werden
+-- die installierten SkuAudioData*-Addons aufgezählt und das zur Client-Sprache
+-- passende gewählt. Neue Pakete deklarieren sich per TOC-Metadaten
+-- (## X-SkuVoicePack-Locale, optional ## X-SkuVoicePack-ExtraSpeed) und brauchen
+-- dann keinen eigenen Glue-Code mehr; Alt-Pakete mit eigenem Core.lua laden nach
+-- Sku und überschreiben Sku.AudiodataPath weiterhin selbst (gewinnt wie bisher).
+-- Muss beim Laden von Sku laufen (TOC-Metadaten sind auch für noch nicht geladene
+-- Addons lesbar), damit Ladezeit-Verbraucher schon den richtigen Pfad sehen.
 Sku.AudiodataPath = ""
-if Sku.Loc == "deDE" then
-	Sku.AudiodataPath = "SkuAudioData"
-elseif Sku.Loc == "enUS" or Sku.Loc == "enGB" or Sku.Loc == "enAU" then
-	Sku.AudiodataPath = "SkuAudioData_en"
+Sku.AudiodataPathInfo = "no voice pack found for "..tostring(Sku.Loc)
+do
+	local tGetNum = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
+	local tGetInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
+	local tGetMeta = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
+	local tLegacyPackLocales = {["SkuAudioData"] = "deDE", ["SkuAudioData_en"] = "enUS",}
+	local tSuffixLocales = {["de"] = "deDE", ["en"] = "enUS",}
+	local tWantedLoc = Sku.Loc
+	if tWantedLoc == "enGB" or tWantedLoc == "enAU" then tWantedLoc = "enUS" end
+	local tBest, tBestScore, tBestHow = nil, 0, nil
+	for i = 1, tGetNum() do
+		local tName, _, _, tLoadable = tGetInfo(i)
+		if tName and tLoadable and string.find(tName, "^SkuAudioData") then
+			local tLoc = tGetMeta(tName, "X-SkuVoicePack-Locale")
+			local tScore, tHow = 3, "metadata"
+			if not tLoc then
+				tLoc, tScore, tHow = tLegacyPackLocales[tName], 2, "legacy name"
+			end
+			if not tLoc then
+				tLoc, tScore, tHow = tSuffixLocales[string.match(tName, "_(%a+)$") or ""], 1, "name suffix"
+			end
+			if tLoc == tWantedLoc and tScore > tBestScore then
+				tBest, tBestScore, tBestHow = tName, tScore, tHow
+			end
+		end
+	end
+	if tBest then
+		Sku.AudiodataPath = tBest
+		Sku.AudiodataPathInfo = tBest.." ("..tBestHow..")"
+		local tExtraSpeed = tonumber(tGetMeta(tBest, "X-SkuVoicePack-ExtraSpeed") or "")
+		if tExtraSpeed then
+			Sku.AudiodataExtraSpeed = tExtraSpeed
+		end
+	end
+end
+
+-- W5: zentraler Audio-Pfad-Resolver — die einzigen Stellen, die Sprachdatei-Pfade
+-- zusammensetzen. Liest Sku.AudiodataPath bei jedem Aufruf, damit ein späterer
+-- Override durch Alt-Paket-Glue weiterhin greift. Reine Pfad-Auflösung: Kanäle,
+-- Queues und Sound-Handles bleiben Sache der Aufrufer.
+function Sku:VoicePackAudioDir()
+	if Sku.AudiodataPath == "" then return nil end
+	return [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\]]
+end
+
+function Sku:IntegratedAudioDir()
+	return [[Interface\AddOns\Sku\SkuAudioData\assets\audio\]]..Sku.Loc..[[\]]
+end
+
+function Sku:AudioFile(aFileName)
+	local tDir = Sku:VoicePackAudioDir()
+	if not tDir or not aFileName then return nil end
+	return tDir..aFileName
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
