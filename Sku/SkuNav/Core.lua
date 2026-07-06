@@ -919,6 +919,32 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 					-- written, line above) carries the timestamp; menus stop
 					-- saying "Wegpunkte werden noch geladen" the moment it flips.
 					dprint("waypoint cache ready (async build complete)")
+					-- [2026-07-06] Push-refresh for a WAITING user: if the menu is
+					-- open and the cursor sits on the "Wegpunkte werden noch
+					-- geladen" hint of a waypoint list, rebuild that level now and
+					-- announce its first real entry - the user just waits on the
+					-- hint instead of reopening the list. Focus anywhere else is
+					-- left alone (they are doing something else; the next keypress
+					-- or re-entry picks up fresh data as before). Same open-check
+					-- as the key handler's vocalize gate.
+					pcall(function()
+						local tCur = SkuOptions and SkuOptions.currentMenuPosition
+						if tCur and tCur.name == L["Wegpunkte werden noch geladen"]
+							and tCur.parent and tCur.parent.BuildChildren
+							and (_G["OnSkuOptionsMainOption1"]:IsVisible()
+								or (SkuOptions.combatMenuActive == true and InCombatLockdown())) then
+							local tParent = tCur.parent
+							tParent.children = {}
+							tParent:BuildChildren(tParent)
+							local tFirst = tParent.children and tParent.children[1]
+							if tFirst then
+								SkuOptions.currentMenuPosition = tFirst
+								if tFirst.OnEnter then tFirst:OnEnter() end
+								SkuOptions:VocalizeCurrentMenuName(true)
+								dprint("wp list push-refresh:", tParent.name, "->", #tParent.children, "items, announced", tFirst.name)
+							end
+						end
+					end)
 				end
 			end
 		end
