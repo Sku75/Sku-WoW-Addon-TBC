@@ -459,6 +459,30 @@ Waypoints dominate what stays). Combined model drop ~55-60 MB; real bytes
 ~40-55 MB (the estimate the levers table carried). SessionRouteData's
 ~72 MB line is alias overlap and should NOT change.
 
+### Lever E in-game results (2026-07-06, capture 12:25)
+
+- User-tested: everything working normally (routes, menus, waypoint use).
+- /skudbwpcheck PASS: 144,823 records, 0 Fehler, 57 Namensdubletten,
+  linked 82,479, overrides 3,653 — bit-identical to the post-B+D run, as
+  expected (the cache builds from the live halves only).
+- /skudbmem deltas, prediction vs measured:
+  SkuDBTMP 61.2 -> 12.7 model-MB (predicted ~20-22; the waypoint half
+  held even more of the weight than the line share suggested — what
+  remains is pure link topology: 82,941 tables, 416k numbers, 5 strings).
+  routedata 70.7 -> 59.7 (predicted ~52-56; the TBC link half was ~11
+  model-MB — link lines are cheap number pairs, the split-inflated
+  waypoint records dominate what stays).
+  SessionRouteData 72.2 UNCHANGED (alias overlap, as predicted).
+  WaypointCache 146.3 unchanged.
+- Lever E total: -59.5 model-MB, at the top of the predicted 55-60 band.
+  Cumulative A+B+D+E: ~-134 model-MB off the nav complex. Lua heap at
+  capture: 894 MB (was 1068 MB at the stage-4 capture, pre-all-levers;
+  whole-state number, includes 28 other addons).
+- Outstanding manual checks: link create/delete + reload persistence
+  (also still open from B+D) and the fresh-profile switch (the redirected
+  wotlkMapReset path). Both would fail loudly (WpEnsureLinks trap /
+  Lua error naming LoadDefaultMapData), and no such errors logged.
+
 ### Revert story
 
 Pure code revert (git revert / checkout of SkuNav/Core.lua,
