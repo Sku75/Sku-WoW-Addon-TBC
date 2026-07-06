@@ -475,12 +475,17 @@ local tWpcInBuild = false
 -- 5-10 s of wall time AFTER "Sku Datenbank bereit" was already spoken.
 local tWpcStartedAt = 0
 local function tWpcBudgetMs()
-	if (GetTime() - tWpcStartedAt) >= 8 then return 10 end
+	if (GetTime() - tWpcStartedAt) >= 15 then return 10 end
 	-- while the SkuDB chunk stream still shares the frame (it runs 30 ms
-	-- slices of its own), stay at 30; once the stream is done this build is
-	-- the only heavy worker left and route readiness is what the user is
-	-- actually waiting for - work harder for the remainder.
-	if Sku.IsDataReady and Sku:IsDataReady("skudb") then return 45 end
+	-- slices of its own), stay at 30 so quests/items/spells are not starved;
+	-- once the stream is done this build is the only heavy worker left and
+	-- route readiness is what the user is actually waiting for. [2026-07-06
+	-- option 1] 150 ms/frame by explicit user choice: the game runs choppy
+	-- (~6 fps) for those few seconds, which a screen-reader user does not
+	-- see, and the ~3.8 s of build work lands at ~4-5 s wall time instead of
+	-- 6-9 s at the old 45. The 15 s window (was 8) keeps slower machines from
+	-- falling into the 10 ms crawl before the build finishes.
+	if Sku.IsDataReady and Sku:IsDataReady("skudb") then return 150 end
 	return 30
 end
 local function tWpcYield()
