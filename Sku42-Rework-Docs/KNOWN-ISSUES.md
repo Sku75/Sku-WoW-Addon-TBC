@@ -30,6 +30,21 @@ Carried in from the v41 line / reported by the maintainer. German term kept with
 an English gloss where the term is Sku-specific. Repro/area are best-guess until
 investigated.
 
+- **Menu open via SlashFunc in combat hits ADDON_ACTION_BLOCKED.**
+  - Symptom: one grabbed `[ADDON_ACTION_BLOCKED] 'Sku' ... 'OnSkuOptionsMain:Show()'`
+    during a fight (seen 2026-07-06, session with instance port + combat);
+    stack: SkuZOptions/Core.lua:2164 `self:Show()` <- OnClick handler (1308)
+    <- `SlashFunc` (297). Blizzard blocks the protected Show; no crash.
+  - Repro: open the Sku menu through a SlashFunc path while in combat -
+    e.g. a window auto-open (CheckFrames auto-descend calls SlashFunc on
+    window Show) or `/sku <path>` during a fight.
+  - Suspected cause / area: combat-menu workstream. In-combat opens are
+    supposed to go headless via the SkuMenuCapture route (combatMenuOpen);
+    the SlashFunc->OnClick->Show path has no InCombatLockdown() branch, so
+    it tries the protected visual frame.
+  - Status: open. NOT related to the DB rework (stage 3 verified clean the
+    same session). Fix idea: in the SlashFunc open path, route to the
+    combat menu (or skip the visual Show) when InCombatLockdown().
 - **Arena queries not working** ("Arena Abfragen funktionieren noch nicht").
   - Symptom: arena-related queries / announcements do not function yet.
   - Repro: TBD (enter/query arena context).
