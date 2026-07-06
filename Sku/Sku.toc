@@ -7,7 +7,6 @@ SkuPerfFileStamp.lua
 
 SkuAudioData\assets\SkuAudioFileIndex.lua
 SkuAudioData\assets\SkuAudioDataLenIndex.lua
-SkuAudioData\Core.lua
 
 embeds.xml
 
