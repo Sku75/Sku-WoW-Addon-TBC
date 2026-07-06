@@ -866,6 +866,44 @@ What shipped, and deviations from the plan text:
 - SkuNav gained DevGetWaypointCacheTables() (dev accessor over the file-local
   cache tables) so /skudbmem can rank them for stage 4.
 
+### Stage 4 results (2026-07-06) - memory ranking, go/no-go for stage 5
+
+/skudbmem capture 09:45, Lua heap 1068 MB total (NOTE: whole Lua state incl.
+28 other addons). Estimates are a ranking proxy (crude cost model, interned
+strings counted per slot, aliases overlap by design) - ratios solid,
+absolute MB approximate.
+
+The ranking, grouped:
+- NAV COMPLEX (mutable/aliased, excluded from phase B): WaypointCache
+  221 MB (597k tables, 3.0M strings with 27.8 MB text, 2.2M numbers),
+  routedata ~71 MB (SessionRouteData 72 MB = the same tables via the
+  alias), SkuDBTMP (WotLK routes) 61 MB, the three name-lookup tables +
+  index ~44 MB (largely the same interned strings, but 3x slot overhead).
+  Rough non-overlapping total: ~350-400 MB - THE DOMINANT BLOCK.
+- PHASE-B CANDIDATES: creatures 54+55 MB base+WotLK (post-merge they share
+  row tables, true unique lower, incl. the Names lookups that stay Lua),
+  SpellDataTBC 33.6 MB (best single target: one tree, no expansion twin),
+  items 24+23 MB, objects 19+20 MB, quests 14+14 MB. Realistic phase-B
+  addressable: ~150-200 MB.
+- Everything else (maps, SoD, polygons, keys, enchants): < 6 MB combined.
+
+Decision (risk B11 materialized - the excluded half dominates):
+1. NO-GO for stage 5 as next step. A five-dataset binary codec buys maybe
+   15-20% of the heap for weeks of work.
+2. The better first buy is the WAYPOINTCACHE-SLIMMING lever: 221 MB for
+   ~145k waypoints is ~4 tables and ~21 strings per waypoint - duplicated
+   subtables/per-entry copies that interning/flattening can cut without
+   any binary format, SavedVariables cost, or route-landmine contact.
+   Needs its own analysis doc (stage-6 adjacent) before touching anything.
+3. Second observation, analysis-only: the WotLK trees stay fully resident
+   next to the merged base tables (~100 MB for creatures alone). Whether
+   they can be dropped post-merge needs a consumer audit (enchantIDs and
+   the enUS name lookups ARE read directly) - possible follow-up, not a
+   blind win.
+4. The stage-4 SavedVariables dry run (dummy blobs) is DEFERRED until/if a
+   phase-B dataset is actually greenlit; the cache-slimming lever needs no
+   SavedVariables at all.
+
 ### Stage 3 first in-game results (2026-07-06, same day)
 
 - Works by user report: routes, auras, and "reloading felt quite fast".

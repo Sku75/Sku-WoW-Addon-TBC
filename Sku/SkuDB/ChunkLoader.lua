@@ -142,82 +142,102 @@ local function SkuDBBuildFamilyChunks(aFamily)
 	return true
 end
 
--- sliced last-wins-preserving merge: copy aFrom[k] into aInto[k] where absent
+-- plain last-wins-preserving merge: copy aFrom[k] into aInto[k] where absent.
+-- ATOMIC on purpose: every sub-step below runs inside pcall, and Lua 5.1
+-- cannot yield across a pcall boundary - "attempt to yield across
+-- metamethod/C-call boundary", hit in the wild on an instance /reload
+-- 2026-07-06 when a merge first exceeded the frame budget mid-pcall. The
+-- coroutine now yields only BETWEEN the pcall'ed sub-steps; one merge is a
+-- bounded ~10-80 ms slice.
 local function SkuDBMergeAbsent(aInto, aFrom)
-	local n = 0
 	for i, v in pairs(aFrom) do
 		if not aInto[i] then
 			aInto[i] = v
 		end
-		n = n + 1
-		if n % 2048 == 0 then SkuDBMaybeYield() end
 	end
 end
 
--- per-family fix calls (the same calls SkuQuest:PLAYER_LOGIN made, same
--- relative order: base fix, WotLK fix, SoD fix, then the merges) and the
--- family's merge block, MOVED here verbatim from SkuQuest/Core.lua (the
--- SoD merges stay behind Sku.IsEraSoD exactly as before)
+-- Per-family work as a LIST of atomic sub-steps (fixes first, then the
+-- merges - the same calls in the same relative order SkuQuest:PLAYER_LOGIN
+-- made; SoD merges stay behind Sku.IsEraSoD exactly as before). Each
+-- sub-step is pcall'ed by the master, which yields between them.
 local SkuDBFamilySteps = {
-	quests = function()
-		SkuDB:FixQuestDB(SkuDB)
-		SkuDB:WotLKFixQuestDB(SkuDB.WotLK)
-		SkuDB:SoDFixQuestDB(SkuDB.SoD)
-		SkuDBMergeAbsent(SkuDB.questDataTBC, SkuDB.WotLK.questDataTBC)
-		SkuDBMergeAbsent(SkuDB.questLookup.deDE, SkuDB.WotLK.questLookup.deDE)
-		if Sku.IsEraSoD == true then
-			SkuDBMergeAbsent(SkuDB.questDataTBC, SkuDB.SoD.questDataTBC)
-			SkuDBMergeAbsent(SkuDB.questLookup.deDE, SkuDB.SoD.questLookup.deDE)
-		end
-	end,
-	creatures = function()
-		SkuDB:FixCreaturesDB(SkuDB)
-		SkuDB:WotLKFixCreaturesDB(SkuDB.WotLK)
-		SkuDB:SoDFixCreaturesDB(SkuDB.SoD)
-		SkuDBMergeAbsent(SkuDB.NpcData.Data, SkuDB.WotLK.NpcData.Data)
-		SkuDBMergeAbsent(SkuDB.NpcData.Names.deDE, SkuDB.WotLK.NpcData.Names.deDE)
-		if Sku.IsEraSoD == true then
-			SkuDBMergeAbsent(SkuDB.NpcData.Data, SkuDB.SoD.NpcData.Data)
-			SkuDBMergeAbsent(SkuDB.NpcData.Names.deDE, SkuDB.SoD.NpcData.Names.deDE)
-		end
-	end,
-	objects = function()
-		SkuDB:FixObjectsDB(SkuDB)
-		SkuDB:WotLKFixObjectsDB(SkuDB.WotLK)
-		SkuDB:SoDFixObjectsDB(SkuDB.SoD)
-		SkuDBMergeAbsent(SkuDB.objectDataTBC, SkuDB.WotLK.objectDataTBC)
-		SkuDBMergeAbsent(SkuDB.objectLookup.deDE, SkuDB.WotLK.objectLookup.deDE)
-		-- objectLookup.enUS is CREATED here from the merged deDE key set
-		-- (verbatim behavior of the old merge)
-		SkuDB.objectLookup.enUS = {}
-		local n = 0
-		for i, v in pairs(SkuDB.objectLookup.deDE) do
-			SkuDB.objectLookup.enUS[i] = SkuDB.WotLK.objectLookup.enUS[i]
-			n = n + 1
-			if n % 2048 == 0 then SkuDBMaybeYield() end
-		end
-		if Sku.IsEraSoD == true then
-			SkuDBMergeAbsent(SkuDB.objectDataTBC, SkuDB.SoD.objectDataTBC)
-			SkuDBMergeAbsent(SkuDB.objectLookup.deDE, SkuDB.SoD.objectLookup.deDE)
-			SkuDBMergeAbsent(SkuDB.objectLookup.enUS, SkuDB.SoD.objectLookup.enUS)
-		end
-	end,
-	items = function()
-		SkuDB:FixItemDB(SkuDB)
-		SkuDB:WotLKFixItemDB(SkuDB.WotLK)
-		SkuDB:SoDFixItemDB(SkuDB.SoD)
-		SkuDBMergeAbsent(SkuDB.itemDataTBC, SkuDB.WotLK.itemDataTBC)
-		SkuDBMergeAbsent(SkuDB.itemLookup.deDE, SkuDB.WotLK.itemLookup.deDE)
-		if Sku.IsEraSoD == true then
-			SkuDBMergeAbsent(SkuDB.itemDataTBC, SkuDB.SoD.itemDataTBC)
-			SkuDBMergeAbsent(SkuDB.itemLookup.deDE, SkuDB.SoD.itemLookup.deDE)
-		end
-	end,
-	spells = function()
-		if Sku.IsEraSoD == true then
-			SkuDBMergeAbsent(SkuDB.SpellDataTBC, SkuDB.SoD.SpellDataTBC)
-		end
-	end,
+	quests = {
+		function()
+			SkuDB:FixQuestDB(SkuDB)
+			SkuDB:WotLKFixQuestDB(SkuDB.WotLK)
+			SkuDB:SoDFixQuestDB(SkuDB.SoD)
+		end,
+		function() SkuDBMergeAbsent(SkuDB.questDataTBC, SkuDB.WotLK.questDataTBC) end,
+		function() SkuDBMergeAbsent(SkuDB.questLookup.deDE, SkuDB.WotLK.questLookup.deDE) end,
+		function()
+			if Sku.IsEraSoD == true then
+				SkuDBMergeAbsent(SkuDB.questDataTBC, SkuDB.SoD.questDataTBC)
+				SkuDBMergeAbsent(SkuDB.questLookup.deDE, SkuDB.SoD.questLookup.deDE)
+			end
+		end,
+	},
+	creatures = {
+		function()
+			SkuDB:FixCreaturesDB(SkuDB)
+			SkuDB:WotLKFixCreaturesDB(SkuDB.WotLK)
+			SkuDB:SoDFixCreaturesDB(SkuDB.SoD)
+		end,
+		function() SkuDBMergeAbsent(SkuDB.NpcData.Data, SkuDB.WotLK.NpcData.Data) end,
+		function() SkuDBMergeAbsent(SkuDB.NpcData.Names.deDE, SkuDB.WotLK.NpcData.Names.deDE) end,
+		function()
+			if Sku.IsEraSoD == true then
+				SkuDBMergeAbsent(SkuDB.NpcData.Data, SkuDB.SoD.NpcData.Data)
+				SkuDBMergeAbsent(SkuDB.NpcData.Names.deDE, SkuDB.SoD.NpcData.Names.deDE)
+			end
+		end,
+	},
+	objects = {
+		function()
+			SkuDB:FixObjectsDB(SkuDB)
+			SkuDB:WotLKFixObjectsDB(SkuDB.WotLK)
+			SkuDB:SoDFixObjectsDB(SkuDB.SoD)
+		end,
+		function() SkuDBMergeAbsent(SkuDB.objectDataTBC, SkuDB.WotLK.objectDataTBC) end,
+		function() SkuDBMergeAbsent(SkuDB.objectLookup.deDE, SkuDB.WotLK.objectLookup.deDE) end,
+		function()
+			-- objectLookup.enUS is CREATED here from the merged deDE key set
+			-- (verbatim behavior of the old merge)
+			SkuDB.objectLookup.enUS = {}
+			for i, v in pairs(SkuDB.objectLookup.deDE) do
+				SkuDB.objectLookup.enUS[i] = SkuDB.WotLK.objectLookup.enUS[i]
+			end
+		end,
+		function()
+			if Sku.IsEraSoD == true then
+				SkuDBMergeAbsent(SkuDB.objectDataTBC, SkuDB.SoD.objectDataTBC)
+				SkuDBMergeAbsent(SkuDB.objectLookup.deDE, SkuDB.SoD.objectLookup.deDE)
+				SkuDBMergeAbsent(SkuDB.objectLookup.enUS, SkuDB.SoD.objectLookup.enUS)
+			end
+		end,
+	},
+	items = {
+		function()
+			SkuDB:FixItemDB(SkuDB)
+			SkuDB:WotLKFixItemDB(SkuDB.WotLK)
+			SkuDB:SoDFixItemDB(SkuDB.SoD)
+		end,
+		function() SkuDBMergeAbsent(SkuDB.itemDataTBC, SkuDB.WotLK.itemDataTBC) end,
+		function() SkuDBMergeAbsent(SkuDB.itemLookup.deDE, SkuDB.WotLK.itemLookup.deDE) end,
+		function()
+			if Sku.IsEraSoD == true then
+				SkuDBMergeAbsent(SkuDB.itemDataTBC, SkuDB.SoD.itemDataTBC)
+				SkuDBMergeAbsent(SkuDB.itemLookup.deDE, SkuDB.SoD.itemLookup.deDE)
+			end
+		end,
+	},
+	spells = {
+		function()
+			if Sku.IsEraSoD == true then
+				SkuDBMergeAbsent(SkuDB.SpellDataTBC, SkuDB.SoD.SpellDataTBC)
+			end
+		end,
+	},
 }
 
 local function SkuDBMasterSequence()
@@ -226,10 +246,19 @@ local function SkuDBMasterSequence()
 		local tKey = "skudb." .. tFam
 		if not Sku.DeferredData.ready[tKey] and not Sku.DeferredData.failed[tKey] then
 			if SkuDBBuildFamilyChunks(tFam) then
-				local tOk, tErr = pcall(SkuDBFamilySteps[tFam])
-				if not tOk then
-					SkuDBFail(tFam, "fixes/merge: " .. tostring(tErr))
-				else
+				local tStepsOk = true
+				for _, tStep in ipairs(SkuDBFamilySteps[tFam]) do
+					-- each sub-step is ATOMIC (no yields inside the pcall -
+					-- Lua 5.1 cannot yield across a pcall boundary)
+					local tOk, tErr = pcall(tStep)
+					if not tOk then
+						SkuDBFail(tFam, "fixes/merge: " .. tostring(tErr))
+						tStepsOk = false
+						break
+					end
+					SkuDBMaybeYield()
+				end
+				if tStepsOk then
 					Sku.DeferredData.ready[tKey] = true
 					if Sku.MetricPoint then
 						Sku:MetricPoint(string.format("skudb family '%s' ready = %.0f ms after stream start", tFam, debugprofilestop() - tT0))
@@ -252,8 +281,15 @@ local function SkuDBMasterSequence()
 
 	-- quest tail (was the end of the old SkuQuest:PLAYER_LOGIN merge block):
 	-- zone cache + quest objects, then a silent quest-progress refresh so
-	-- everything that ran guarded during the stream window catches up
-	if Sku:IsDataReady("skudb.quests") and SkuQuest then
+	-- everything that ran guarded during the stream window catches up.
+	-- Requires ALL FOUR data families, not just quests: BuildQuestZoneCache
+	-- chains quest objectives through itemDataTBC (unchecked, e.g.
+	-- itemDataTBC[id][npcDrops]) - with a failed items family that chain hit
+	-- a hole and crashed the tail (cascade seen on the instance /reload
+	-- 2026-07-06). If a family failed, the tail is skipped: quest features
+	-- degrade honestly instead of crashing.
+	if SkuQuest and Sku:IsDataReady("skudb.quests") and Sku:IsDataReady("skudb.creatures")
+		and Sku:IsDataReady("skudb.objects") and Sku:IsDataReady("skudb.items") then
 		local tOk, tErr = pcall(function()
 			SkuQuest:BuildQuestZoneCache()
 			SkuQuest:UpdateAllQuestObjects()
