@@ -487,12 +487,37 @@ local function tWpcBudgetMs()
 	if Sku.IsDataReady and Sku:IsDataReady("skudb") then return 150 end
 	return 30
 end
+-- [2026-07-06 build profiling] Per-phase work accounting: every yield closes
+-- the running time segment into the current phase's bucket, so the completed
+-- build can report where the ~4-8 s of work actually goes (read
+-- SkuDebugLog.wpcResult). Overhead: one table add per actual yield.
+local tWpcPhaseMs = nil
+local tWpcPhaseName = nil
+local function tWpcPhaseSeg()
+	if tWpcPhaseMs and tWpcPhaseName then
+		tWpcPhaseMs[tWpcPhaseName] = (tWpcPhaseMs[tWpcPhaseName] or 0) + (debugprofilestop() - tWpcSliceStart)
+	end
+end
+local function tWpcPhase(aName)
+	tWpcPhaseSeg()
+	tWpcSliceStart = debugprofilestop()
+	tWpcPhaseName = aName
+end
 local function tWpcYield()
 	if not tWpcInBuild or not coroutine.running() then return end
 	if debugprofilestop() - tWpcSliceStart > tWpcBudgetMs() then
+		tWpcPhaseSeg()
 		coroutine.yield()
 		tWpcSliceStart = debugprofilestop()
 	end
+end
+-- Unconditional yield between build passes; keeps the slice clock and the
+-- phase buckets honest across the frame gap (a bare coroutine.yield() would
+-- leave tWpcSliceStart stale and bill the gap to the next phase).
+local function tWpcHardYield()
+	tWpcPhaseSeg()
+	coroutine.yield()
+	tWpcSliceStart = debugprofilestop()
 end
 
 function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
@@ -552,6 +577,8 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	local tWpcMyGen = SkuNav._wpcGen
 	SkuNav._wpcCo = coroutine.create(function()
 		tWpcInBuild = true
+		tWpcPhaseMs = {}
+		tWpcPhaseName = nil
 		tWpcSliceStart = debugprofilestop()
 
 	--add creatures
@@ -694,21 +721,28 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	-- the rest of the world. Falls back to a single whole-world round when the
 	-- player's continent cannot be resolved yet.
 	if tWpcCurrentContinent then
+		tWpcPhase("creatures")
 		tWpcAddCreatures(true)
-		coroutine.yield()
+		tWpcHardYield()
+		tWpcPhase("objects")
 		tWpcAddObjects(true)
 		if Sku.MetricPoint then Sku:MetricPoint("waypoint cache: current continent meta targets done") end
-		coroutine.yield()
+		tWpcHardYield()
+		tWpcPhase("creatures")
 		tWpcAddCreatures(false)
-		coroutine.yield()
+		tWpcHardYield()
+		tWpcPhase("objects")
 		tWpcAddObjects(false)
 	else
+		tWpcPhase("creatures")
 		tWpcAddCreatures()
-		coroutine.yield()
+		tWpcHardYield()
+		tWpcPhase("objects")
 		tWpcAddObjects()
 	end
 
-		coroutine.yield()
+		tWpcHardYield()
+		tWpcPhase("custom")
 		--add custom
 			if SkuDB.SessionRouteData.Waypoints then
 				for tIndex, tData in ipairs(SkuDB.SessionRouteData.Waypoints) do
@@ -779,7 +813,10 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 				end
 			end
 
+			tWpcPhase("links")
 			SkuNav:LoadLinkDataFromProfile()
+			tWpcPhaseSeg()
+			tWpcPhaseName = nil
 
 			-- [Load-perf 2026-07-05] Build complete: flip readiness (menus stop
 			-- announcing "still loading") and leave build mode.
@@ -814,8 +851,18 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 					C_Timer.After(0, tWpcPump)
 				else
 					-- completes after first-frame -> proves the build is off the freeze.
-					tWpcSetResult(string.format("async done = %.1f ms work", SkuNav._wpcWorkMs))
-					if Sku.MetricPoint then Sku:MetricPoint(string.format("waypoint cache async build done = %.1f ms work", SkuNav._wpcWorkMs)) end
+					-- [2026-07-06 build profiling] append the per-phase split.
+					local tPhases = ""
+					if tWpcPhaseMs then
+						for _, tP in ipairs({"creatures", "objects", "custom", "links"}) do
+							if tWpcPhaseMs[tP] then
+								tPhases = tPhases .. string.format("  %s %.0f", tP, tWpcPhaseMs[tP])
+							end
+						end
+						if tPhases ~= "" then tPhases = "  (phases ms:" .. tPhases .. ")" end
+					end
+					tWpcSetResult(string.format("async done = %.1f ms work%s", SkuNav._wpcWorkMs, tPhases))
+					if Sku.MetricPoint then Sku:MetricPoint(string.format("waypoint cache async build done = %.1f ms work%s", SkuNav._wpcWorkMs, tPhases)) end
 					-- [2026-07-06] readiness is logged, not spoken: the voice line
 					-- was reload spam, and the TTS queue delayed it well past the
 					-- actual ready moment anyway. SkuDebugLog.wpcResult (always
