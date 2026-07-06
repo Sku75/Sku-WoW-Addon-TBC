@@ -99,8 +99,14 @@ local function tAddFriendSubmenu(aParent, aIndex, aOnline, aIsBnet)
          C_FriendList.AddOrRemoveFriend(info.name, "")
       end
       C_Timer.After(0.65, function()
-         SkuOptions.currentMenuPosition.parent.parent:OnSelect()
-         SkuOptions:VocalizeCurrentMenuName()
+         -- Re-pin to the friend list by stable id, not a fixed .parent.parent hop
+         -- (W6-B #14) — depth-robust, and the guarded FindAncestorById safely
+         -- no-ops if the cursor moved away during the 0.65s delay.
+         local tAnchor = SkuOptions.currentMenuPosition:FindAncestorById("friendsList")
+         if tAnchor then
+            tAnchor:OnSelect()
+            SkuOptions:VocalizeCurrentMenuName()
+         end
       end)
    end  
 
@@ -357,6 +363,7 @@ function Friends:FriendsMenuBuilder()
       local tNewMenuEntryContacts = SkuOptions:InjectMenuItems(self, {L["Friend List"]}, SkuGenericMenuItem)
       tNewMenuEntryContacts.dynamic = true
       tNewMenuEntryContacts.sorting = true
+      tNewMenuEntryContacts.id = "friendsList"  -- stable nav anchor (W6-B #14)
       tNewMenuEntryContacts.OnEnter = function(self, aValue, aName, aEnterFlag)
          C_FriendList.ShowFriends()
       end
