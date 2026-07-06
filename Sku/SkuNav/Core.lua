@@ -2045,20 +2045,9 @@ function SkuNav:ProcessPlayerDead()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
-local tDeg = {
-	[1] = {a = -202.5, f = L["south-east"],},
-	[2] = {a = -180, f = L["south"],},
-	[3] = {a = -157.5, f = L["south-west"],},
-	[4] = {a = -112.5, f = L["west"],},
-	[5] = {a = -67.5, f = L["north-west"],},
-	[6] = {a = -22.5, f = L["north"],},
-	[7] = {a = 22.5, f = L["north-east"],},
-	[8] = {a = 67.5, f = L["east"],},
-	[9] = {a = 112.5, f = L["south-east"],},
-	[10] = {a = 157.5, f = L["south"],},
-	[11] = {a = 180, f = L["south-west"],},
-}
--- SkuNav:GetDirectionToAsString moved to SkuNav/Geo.lua (W6-B #16)
+-- SkuNav:GetDirectionToAsString moved to SkuNav/Geo.lua (W6-B #16), and with
+-- it its file-local tDeg direction table (was mistakenly left here at the
+-- extraction; it is used by nothing else in this file).
 
 --------------------------------------------------------------------------------------------------------------------------------------
 local ttimeDistanceOutput = 0

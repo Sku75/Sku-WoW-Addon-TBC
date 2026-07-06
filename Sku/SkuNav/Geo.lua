@@ -222,6 +222,23 @@ function SkuNav:GetCurrentAreaId(aUnitId)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [W6-B #16 fix] file-local direction table for GetDirectionToAsString below.
+-- Moved here with the function (it was left behind in SkuNav/Core.lua at the
+-- extraction, so the function saw a nil global tDeg and errored on #tDeg).
+local tDeg = {
+	[1] = {a = -202.5, f = L["south-east"],},
+	[2] = {a = -180, f = L["south"],},
+	[3] = {a = -157.5, f = L["south-west"],},
+	[4] = {a = -112.5, f = L["west"],},
+	[5] = {a = -67.5, f = L["north-west"],},
+	[6] = {a = -22.5, f = L["north"],},
+	[7] = {a = 22.5, f = L["north-east"],},
+	[8] = {a = 67.5, f = L["east"],},
+	[9] = {a = 112.5, f = L["south-east"],},
+	[10] = {a = 157.5, f = L["south"],},
+	[11] = {a = 180, f = L["south-west"],},
+}
+
 function SkuNav:GetDirectionToAsString(tx, ty)
 	local xa, ya = UnitPosition("player")
 	if not xa or not ya or not tx or not ty then
