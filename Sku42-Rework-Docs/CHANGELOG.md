@@ -22,6 +22,15 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **DB rework levers B + D — lazy links wrapper, derived name→id lookup
+  (memory).** Waypoint-cache records no longer pre-allocate an empty
+  `{byId,byName}` links wrapper (~94k never-linked records × ~150 bytes ≈
+  14-15 MB); unlinked records answer a shared read-only wrapper with a loud
+  write-trap, and the link loader/CreateWpLink materialize a real table on
+  first link. The 144.8k-entry name→wpId lookup table (~7 MB) is replaced
+  by derivation (`SkuNav:GetWpIdForWpName`); temp waypoints answer nil as
+  before, duplicate names now consistently answer the canonical record.
+  `/skudbwpcheck` gained a `linked` counter and validates the derivation.
 - **DB rework lever A — slim waypoint-cache records (memory).** The ~145k
   WaypointCache records no longer store constant/derivable fields (createdAt,
   createdBy, size, spawnNr, dbIndex, spawn, uiMapId, contintentId, and the

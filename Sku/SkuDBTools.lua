@@ -401,6 +401,8 @@ local function SkuDBToolsRunWpCheck()
 		                      -- name-keyed lookups can only point at ONE of them (last
 		                      -- wins, pre-existing data quirk, e.g. dozens of trigger
 		                      -- NPCs all named "Luftüberwachung" on shared positions)
+		linked = 0,           -- records with a real (materialized) links table - lever B:
+		                      -- everything else answers the shared empty wrapper
 		errors = 0,
 		examples = {},
 	}
@@ -416,7 +418,6 @@ local function SkuDBToolsRunWpCheck()
 		local tCache = tCaches.WaypointCache
 		local tLookupAll = tCaches.WaypointCacheLookupAll
 		local tIdForIdx = tCaches.WaypointCacheLookupIdForCacheIndex
-		local tNameForId = tCaches.WaypointCacheLookupCacheNameForId
 		local tPerCont = tCaches.WaypointCacheLookupPerContintent
 		for tIdx, tRec in pairs(tCache) do
 			tResult.total = tResult.total + 1
@@ -442,6 +443,9 @@ local function SkuDBToolsRunWpCheck()
 			if rawget(tRec, "createdBy") or rawget(tRec, "size") or rawget(tRec, "contintentId") then
 				tResult.shadowed = tResult.shadowed + 1
 			end
+			if rawget(tRec, "links") then
+				tResult.linked = tResult.linked + 1
+			end
 			-- wpId round-trip through the DERIVED dbIndex/spawn
 			local tWpId = rawget(tRec, "wpId")
 			if tWpId then
@@ -465,10 +469,13 @@ local function SkuDBToolsRunWpCheck()
 				end
 			end
 			if tWpId then
-				local tNameId = tNameForId[tRec.name]
+				-- lever D: name -> id is DERIVED now (SkuNav:GetWpIdForWpName);
+				-- the id must still resolve via IdForCacheIndex to a record
+				-- carrying that name
+				local tNameId = SkuNav.GetWpIdForWpName and SkuNav:GetWpIdForWpName(tRec.name)
 				local tNameRec = tNameId and tCache[tIdForIdx[tNameId]]
 				if not (tNameRec and tNameRec.name == tRec.name) then
-					tFail(tRec.name, "CacheNameForId")
+					tFail(tRec.name, "GetWpIdForWpName")
 				end
 			end
 			local tCont = tRec.contintentId
@@ -488,8 +495,8 @@ local function SkuDBToolsRunWpCheck()
 		tResult.wpCacheReady = SkuNav and SkuNav.wpCacheReady or false
 		SkuDebugLog.wpCheck = tResult
 		local tMsg = string.format("Wegpunkt Prüfung: %d Wegpunkte, %d Fehler", tResult.total, tResult.errors)
-		SkuDBToolsPrint(tMsg .. string.format(" (Sitzung %d, ohne Kommentare %d, überschrieben %d, Namensdubletten %d)",
-			tResult.sessionRecords, tResult.commentsNil, tResult.shadowed, tResult.dupNames))
+		SkuDBToolsPrint(tMsg .. string.format(" (Sitzung %d, ohne Kommentare %d, überschrieben %d, Namensdubletten %d, verlinkt %d)",
+			tResult.sessionRecords, tResult.commentsNil, tResult.shadowed, tResult.dupNames, tResult.linked))
 		SkuDBToolsSpeak(tMsg)
 	end
 	if not (SkuNav and SkuNav.wpCacheReady) then

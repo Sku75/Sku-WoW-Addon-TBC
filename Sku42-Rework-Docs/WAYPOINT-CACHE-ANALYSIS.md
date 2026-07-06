@@ -284,6 +284,51 @@ needs its own careful design, lever-B-adjacent.
   custom-waypoints-first fast path CANNOT work - the route network
   genuinely needs the creature/object cache. The idea is dead, not parked.
 
+## Levers B + D implemented (2026-07-06, in-game test PENDING)
+
+Lever B — lazy links wrapper (SkuNav/Core.lua):
+- Records no longer store a private `{byId=nil,byName=nil}` at build; the
+  metatable's `links` derive answers a SHARED read-only empty wrapper
+  (`WpEmptyLinks`). Its byId/byName read as nil exactly like an unlinked
+  record's own wrapper did, so every guarded read behaves identically.
+- The shared wrapper has a `__newindex` trap that errors loudly - a write
+  into it would leak links into all unlinked waypoints, so a missed write
+  site becomes an immediate visible bug instead of silent corruption.
+- Write sites audited (all in SkuNav/Core.lua; the SkuChat/SkuZOptions/
+  SkuTTS `.links` hits are menu hyperlinks, unrelated):
+  LoadLinkDataFromProfile now materializes the whole wrapper per linked
+  record; CreateWpLink materializes via the new `WpEnsureLinks` helper;
+  SetWaypoint reads its previous links with rawget (the derived shared
+  wrapper must never be stored as a record's own); DeleteWpLink /
+  UpdateWpLinks / DeleteWaypoint / the metapath search only touch records
+  that already have real link tables (guarded, same crash-or-work
+  semantics as before).
+- Saving: ~150 B x ~94k unlinked records ≈ 14-15 MB real.
+
+Lever D — derive the name→wpId lookup (SkuNav/Core.lua + SkuDBTools.lua):
+- `WaypointCacheLookupCacheNameForId` (144.8k entries, ~7 MB real) removed;
+  `WaypointCacheGetIdForName(name)` derives it: LookupAll → record → wpId
+  (or BuildWpIdFromData from the stored fields for SetWaypoint records).
+  Public accessor `SkuNav:GetWpIdForWpName(aName)`.
+- Semantics: unknown names and temp waypoints answer nil (temps were never
+  registered in the old table); duplicate names now answer the CANONICAL
+  record's id (the old table could hold either duplicate's id depending on
+  link-load order — strictly more consistent).
+- All ~25 read/write sites swept; the dev accessor no longer exposes the
+  table (a note marks it), /skudbmem loses that ranking line, /skudbwpcheck
+  validates the derivation instead and gained a `linked` counter (records
+  with a real links table — expect ~50k, the route waypoints).
+
+Test drill (same as lever A):
+/reload → wait until waypoint lists answer → /skudbwpcheck (expect
+0 Fehler, ~57 Namensdubletten, linked ≈ route-wp count) → /skudbmem →
+route smoke test INCLUDING link editing: create a waypoint link, delete a
+waypoint link, follow a metapath, then /reload again and check the links
+survived (SaveLinkDataToProfile round-trip through the derived ids) →
+py -3 _wpcheck.py / _dbmem.py 8, BugGrabber/SkuErrorLog clean. The loud
+wrapper trap means a missed write site shows up as an explicit error
+message naming WpEnsureLinks.
+
 ## Open items before implementation
 
 - Grep-audit ALL write sites to cache records (assignments to record fields

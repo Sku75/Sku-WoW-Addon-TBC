@@ -312,16 +312,44 @@ SkuNav.isAutoSelectEnabled = false
 local WaypointCache = {}
 local WaypointCacheLookupAll = {}
 local WaypointCacheLookupIdForCacheIndex = {}
-local WaypointCacheLookupCacheNameForId = {}
 
 local WaypointCacheLookupPerContintent = {}
 
--- [DB rework lever A, 2026-07-06] Slim waypoint-cache records. The old
+-- [DB rework lever D, 2026-07-06] The former WaypointCacheLookupCacheNameForId
+-- table (name -> wpId, ~145k entries / ~7 MB) was pure composition: name ->
+-- LookupAll -> record -> wpId. Derive it instead. Semantics preserved:
+--  - unknown names and temp waypoints answer nil (temps were never registered)
+--  - duplicate names answer the CANONICAL record's id (LookupAll last-wins;
+--    the old table could hold either duplicate's id depending on link order)
+--  - SetWaypoint-created records have no wpId field; compute from their
+--    stored typeId/dbIndex/spawn/areaId exactly as the old write site did
+local function WaypointCacheGetIdForName(aName)
+	local tIdx = WaypointCacheLookupAll[aName]
+	local tRec = tIdx and WaypointCache[tIdx]
+	if not tRec or tRec.isTempWaypoint == true then
+		return nil
+	end
+	local tWpId = rawget(tRec, "wpId")
+	if tWpId then
+		return tWpId
+	end
+	if tRec.dbIndex then
+		return SkuNav:BuildWpIdFromData(tRec.typeId, tRec.dbIndex, tRec.spawn, rawget(tRec, "areaId"))
+	end
+end
+
+-- public accessor (SkuDBTools /skudbwpcheck and any future external reader)
+function SkuNav:GetWpIdForWpName(aName)
+	return WaypointCacheGetIdForName(aName)
+end
+
+-- [DB rework lever A+B, 2026-07-06] Slim waypoint-cache records. The old
 -- records stored 15 fields (16 hash slots x ~40 bytes) per waypoint although
 -- most fields are constants or derivable; at ~145k waypoints that was the
 -- single biggest memory block in the addon. Records now store only
--- name/wpId/typeId/areaId/worldX/worldY/links (+role on NPC/object wps,
--- +comments/createdBy/size on custom wps when they differ from the default);
+-- name/wpId/typeId/areaId/worldX/worldY (+role on NPC/object wps,
+-- +comments/createdBy/size on custom wps when they differ from the default,
+-- +links ONLY once a record actually has links - lever B);
 -- this shared metatable answers reads of the missing fields:
 --  - dbIndex/spawn: decoded from the bit-packed wpId (GetWpDataFromId)
 --  - spawnNr: alias of spawn (the old constructors always stored the same)
@@ -335,8 +363,32 @@ local WaypointCacheLookupPerContintent = {}
 -- nil and materialize their own per-record table; a shared default table
 -- would be written to by all records at once.
 local tWpCacheBuildTime = 0
+
+-- [DB rework lever B] Shared read-only empty links wrapper: the ~94k
+-- never-linked records no longer allocate a private {byId=nil,byName=nil}
+-- each. Reading .byId/.byName on it answers nil exactly like an unlinked
+-- record's own wrapper always did. WRITING into it would leak links into
+-- every unlinked waypoint at once - trap that loudly; writers must
+-- materialize a real per-record table first (WpEnsureLinks).
+local WpEmptyLinks = setmetatable({}, {
+	__newindex = function()
+		error("SkuNav: write into the shared empty links wrapper - materialize record.links first (WpEnsureLinks)")
+	end,
+})
+local function WpEnsureLinks(aRecord)
+	local tLinks = rawget(aRecord, "links")
+	if not tLinks then
+		tLinks = {}
+		aRecord.links = tLinks
+	end
+	return tLinks
+end
+
 local WpDerivedFields
 WpDerivedFields = {
+	links = function()
+		return WpEmptyLinks
+	end,
 	contintentId = function(aRecord)
 		local tAreaData = SkuDB.InternalAreaTable[rawget(aRecord, "areaId")]
 		if tAreaData then
@@ -396,7 +448,7 @@ function SkuNav:DevGetWaypointCacheTables()
 		WaypointCache = WaypointCache,
 		WaypointCacheLookupAll = WaypointCacheLookupAll,
 		WaypointCacheLookupIdForCacheIndex = WaypointCacheLookupIdForCacheIndex,
-		WaypointCacheLookupCacheNameForId = WaypointCacheLookupCacheNameForId,
+		-- CacheNameForId is derived since lever D - see SkuNav:GetWpIdForWpName
 		WaypointCacheLookupPerContintent = WaypointCacheLookupPerContintent,
 	}
 end
@@ -464,7 +516,6 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	WaypointCache = {}
 	WaypointCacheLookupAll = {}
 	WaypointCacheLookupIdForCacheIndex = {}
-	WaypointCacheLookupCacheNameForId = {}
 	WaypointCacheLookupPerContintent = {}
 	for i, v in pairs(SkuDB.ContinentIds) do
 		WaypointCacheLookupPerContintent[i] = {}
@@ -554,9 +605,8 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 										WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = tFinalName
 										WaypointCacheLookupAll[tFinalName] = tNewIndex
 										WaypointCacheLookupIdForCacheIndex[tWpId] =  tNewIndex
-										WaypointCacheLookupCacheNameForId[tFinalName] = tWpId
-										-- [DB rework lever A] slim record; missing fields
-										-- are served by WpRecordMT (see top of file)
+										-- [DB rework lever A+B] slim record; missing fields
+										-- (incl. links until linked) come from WpRecordMT
 										WaypointCache[tNewIndex] = setmetatable({
 											name = tFinalName,
 											role = tRolesString,
@@ -565,10 +615,6 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 											wpId = tWpId,
 											worldX = tWorldX,
 											worldY = tWorldY,
-											links = {
-												byId = nil,
-												byName = nil,
-											},
 										}, WpRecordMT)
 									end
 								end
@@ -619,9 +665,8 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 											WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = tFinalName
 											WaypointCacheLookupAll[tFinalName] = tNewIndex
 											WaypointCacheLookupIdForCacheIndex[tWpId] =  tNewIndex
-											WaypointCacheLookupCacheNameForId[tFinalName] = tWpId										
-											-- [DB rework lever A] slim record; missing fields
-											-- (incl. role = "") come from WpRecordMT
+											-- [DB rework lever A+B] slim record; missing fields
+											-- (incl. role = "" and links) come from WpRecordMT
 											WaypointCache[tNewIndex] = setmetatable({
 												name = tFinalName,
 												typeId = 3,
@@ -629,10 +674,6 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 												wpId = tWpId,
 												worldX = tWorldX,
 												worldY = tWorldY,
-												links = {
-													byId = nil,
-													byName = nil,
-												},
 											}, WpRecordMT)
 										end
 									end
@@ -682,15 +723,15 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 								if tWaypointData.contintentId then
 									local tWpId = SkuNav:BuildWpIdFromData(1, tIndex, 1, tWaypointData.areaId)
 									local tWpIndex = (#WaypointCache + 1)
-									local tOldLinks = {
-										byId = nil,
-										byName = nil,
-									}
+									-- [DB rework lever B] nil = no links field on the record;
+									-- rawget so an existing record's ABSENT links stay absent
+									-- (the metatable would answer the shared empty wrapper)
+									local tOldLinks = nil
 									if WaypointCacheLookupAll[tName] then
 										if WaypointCacheLookupPerContintent[WaypointCache[WaypointCacheLookupAll[tName]].contintentId] then
 											WaypointCacheLookupPerContintent[WaypointCache[WaypointCacheLookupAll[tName]].contintentId][WaypointCacheLookupAll[tName]] = nil
 										end
-										tOldLinks = WaypointCache[WaypointCacheLookupAll[tName]].links
+										tOldLinks = rawget(WaypointCache[WaypointCacheLookupAll[tName]], "links")
 										tWpIndex = WaypointCacheLookupAll[tName]
 									end
 
@@ -720,8 +761,7 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 
 									WaypointCacheLookupAll[tName] = tWpIndex
 									WaypointCacheLookupIdForCacheIndex[tWpId] =  tWpIndex
-									WaypointCacheLookupCacheNameForId[tName] = tWpId										
-			
+
 									if not WaypointCacheLookupPerContintent[tWaypointData.contintentId] then
 										WaypointCacheLookupPerContintent[tWaypointData.contintentId] = {}
 									end
@@ -846,16 +886,15 @@ function SkuNav:LoadLinkDataFromProfile()
 				tStaleSources = tStaleSources + 1
 			else
 			local tSourceWpName = WaypointCache[tSourceWpIdx].name
-			WaypointCacheLookupCacheNameForId[tSourceWpName] = tSourceWpID
 
 			if WaypointCacheLookupAll[tSourceWpName] then
-				WaypointCache[WaypointCacheLookupAll[tSourceWpName]].links.byName = {}
-				WaypointCache[WaypointCacheLookupAll[tSourceWpName]].links.byId = {}
+				-- [DB rework lever B] materialize the real per-record wrapper here
+				-- (records no longer carry one until they actually have links)
+				WaypointCache[WaypointCacheLookupAll[tSourceWpName]].links = {byId = {}, byName = {}}
 				for tTargetWpID, tTargetWpDistance in pairs(tSourceWpLinks) do
 					local tTargetWpIdx = WaypointCacheLookupIdForCacheIndex[tTargetWpID]
 					if tTargetWpIdx then
 					local tTargetWpName = WaypointCache[tTargetWpIdx].name
-					WaypointCacheLookupCacheNameForId[tTargetWpName] = tTargetWpID
 					if WaypointCacheLookupAll[tTargetWpName] then
 						WaypointCache[WaypointCacheLookupAll[tSourceWpName]].links.byName[tTargetWpName] = tTargetWpDistance
 						WaypointCache[WaypointCacheLookupAll[tSourceWpName]].links.byId[WaypointCacheLookupAll[tTargetWpName]] = tTargetWpDistance
@@ -888,7 +927,6 @@ function SkuNav:CleanupWaypoints()
 			if tHasLinks ~= true and not string.find(v.name, L["Quick waypoint"]) then
 				--print("disconnected custom wp:", v.name)
 				WaypointCacheLookupAll[v.name] = nil
-				WaypointCacheLookupCacheNameForId[v.name] = nil
 				local tWpId = SkuNav:BuildWpIdFromData(1, v.dbIndex, 1, v.areaId)
 				WaypointCacheLookupIdForCacheIndex[tWpId] = nil
 				WaypointCacheLookupPerContintent[v.contintentId][i] = nil
@@ -962,12 +1000,11 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function SkuNav:SaveLinkDataToProfile(aWpName)
 	if aWpName then
-		--SkuDB.SessionRouteData.Links[WaypointCacheLookupCacheNameForId[aWpName]] = WaypointCache[WaypointCacheLookupAll[aWpName]].links.byName
-		SkuDB.SessionRouteData.Links[WaypointCacheLookupCacheNameForId[aWpName]] = {}
+		SkuDB.SessionRouteData.Links[WaypointCacheGetIdForName(aWpName)] = {}
 		for twname, twdist in pairs(WaypointCache[WaypointCacheLookupAll[aWpName]].links.byName) do
-			SkuDB.SessionRouteData.Links[WaypointCacheLookupCacheNameForId[aWpName]][WaypointCacheLookupCacheNameForId[twname]] = twdist
-		end		
-		
+			SkuDB.SessionRouteData.Links[WaypointCacheGetIdForName(aWpName)][WaypointCacheGetIdForName(twname)] = twdist
+		end
+
 	else
 		SkuSettings:Sub("SkuNav").Links = nil
 		SkuDB.SessionRouteData.Links = {}
@@ -975,9 +1012,9 @@ function SkuNav:SaveLinkDataToProfile(aWpName)
 			tWpcYield()
 			if tSourceWpData.links then
 				if tSourceWpData.links.byId then
-					SkuDB.SessionRouteData.Links[WaypointCacheLookupCacheNameForId[tSourceWpData.name]] = {}
+					SkuDB.SessionRouteData.Links[WaypointCacheGetIdForName(tSourceWpData.name)] = {}
 					for twname, twdist in pairs(tSourceWpData.links.byName) do
-						SkuDB.SessionRouteData.Links[WaypointCacheLookupCacheNameForId[tSourceWpData.name]][WaypointCacheLookupCacheNameForId[twname]] = twdist
+						SkuDB.SessionRouteData.Links[WaypointCacheGetIdForName(tSourceWpData.name)][WaypointCacheGetIdForName(twname)] = twdist
 					end
 				end
 			end
@@ -1251,8 +1288,8 @@ function SkuNav:DeleteWpLink(aWpAName, aWpBName)
 	WaypointCache[tWpAIndex].links.byName[aWpBName] = nil
 	WaypointCache[tWpBIndex].links.byName[aWpAName] = nil
 	
-	local tWpAId = WaypointCacheLookupCacheNameForId[aWpAName]
-	local tWpBId = WaypointCacheLookupCacheNameForId[aWpBName]
+	local tWpAId = WaypointCacheGetIdForName(aWpAName)
+	local tWpBId = WaypointCacheGetIdForName(aWpBName)
 
 	SkuDB.SessionRouteData.Links[tWpAId][tWpBId] = nil
 	SkuDB.SessionRouteData.Links[tWpBId][tWpAId] = nil
@@ -1275,19 +1312,23 @@ function SkuNav:CreateWpLink(aWpAName, aWpBName)
 
 		local tDistance = SkuNav:Distance(tWpAData.worldX, tWpAData.worldY, tWpBData.worldX, tWpBData.worldY)
 
-		WaypointCache[tWpAIndex].links.byId = WaypointCache[tWpAIndex].links.byId or {}
-		WaypointCache[tWpAIndex].links.byName = WaypointCache[tWpAIndex].links.byName or {}
-		WaypointCache[tWpAIndex].links.byId[tWpBIndex] = tDistance
-		WaypointCache[tWpAIndex].links.byName[aWpBName] = tDistance
+		-- [DB rework lever B] materialize real per-record wrappers before
+		-- writing (unlinked records only carry the shared read-only wrapper)
+		local tLinksA = WpEnsureLinks(WaypointCache[tWpAIndex])
+		tLinksA.byId = tLinksA.byId or {}
+		tLinksA.byName = tLinksA.byName or {}
+		tLinksA.byId[tWpBIndex] = tDistance
+		tLinksA.byName[aWpBName] = tDistance
 
-		WaypointCache[tWpBIndex].links.byId = WaypointCache[tWpBIndex].links.byId or {}
-		WaypointCache[tWpBIndex].links.byName = WaypointCache[tWpBIndex].links.byName or {}
-		WaypointCache[tWpBIndex].links.byId[tWpAIndex] = tDistance
-		WaypointCache[tWpBIndex].links.byName[aWpAName] = tDistance
+		local tLinksB = WpEnsureLinks(WaypointCache[tWpBIndex])
+		tLinksB.byId = tLinksB.byId or {}
+		tLinksB.byName = tLinksB.byName or {}
+		tLinksB.byId[tWpAIndex] = tDistance
+		tLinksB.byName[aWpAName] = tDistance
 
 
-		local tWpAId = WaypointCacheLookupCacheNameForId[aWpAName]
-		local tWpBId = WaypointCacheLookupCacheNameForId[aWpBName]
+		local tWpAId = WaypointCacheGetIdForName(aWpAName)
+		local tWpBId = WaypointCacheGetIdForName(aWpBName)
 
 		SkuDB.SessionRouteData.Links[tWpAId] = SkuDB.SessionRouteData.Links[tWpAId] or {}
 		SkuDB.SessionRouteData.Links[tWpAId][tWpBId] = tDistance
@@ -1322,13 +1363,13 @@ function SkuNav:UpdateWpLinks(aWpAName)
 		WaypointCache[tWpBIndex].links.byId[tWpAIndex] = tDistance
 		WaypointCache[tWpBIndex].links.byName[aWpAName] = tDistance
 
-		local tWpAId = WaypointCacheLookupCacheNameForId[aWpAName]
-		local tWpBId = WaypointCacheLookupCacheNameForId[aWpBName]
+		local tWpAId = WaypointCacheGetIdForName(aWpAName)
+		local tWpBId = WaypointCacheGetIdForName(aWpBName)
 
 		SkuDB.SessionRouteData.Links[tWpAId] = SkuDB.SessionRouteData.Links[tWpAId] or {}
-		SkuDB.SessionRouteData.Links[tWpAId][WaypointCacheLookupCacheNameForId[WaypointCache[tWpBIndex].name]] = tDistance
-		SkuDB.SessionRouteData.Links[WaypointCacheLookupCacheNameForId[WaypointCache[tWpBIndex].name]] = SkuDB.SessionRouteData.Links[WaypointCacheLookupCacheNameForId[WaypointCache[tWpBIndex].name]] or {}
-		SkuDB.SessionRouteData.Links[WaypointCacheLookupCacheNameForId[WaypointCache[tWpBIndex].name]][tWpAId] = tDistance
+		SkuDB.SessionRouteData.Links[tWpAId][WaypointCacheGetIdForName(WaypointCache[tWpBIndex].name)] = tDistance
+		SkuDB.SessionRouteData.Links[WaypointCacheGetIdForName(WaypointCache[tWpBIndex].name)] = SkuDB.SessionRouteData.Links[WaypointCacheGetIdForName(WaypointCache[tWpBIndex].name)] or {}
+		SkuDB.SessionRouteData.Links[WaypointCacheGetIdForName(WaypointCache[tWpBIndex].name)][tWpAId] = tDistance
 	end
 
 	SkuSettings:Sub("SkuNav", nil, "global").hasCustomMapData = true
@@ -2973,9 +3014,9 @@ function SkuNav:OnMouseMiddleUp()
 				["deDE"] = {},
 				["enUS"] = {},
 			}
-			if SkuDB.SessionRouteData.Waypoints[WaypointCacheLookupCacheNameForId[tWpName]] then
-				SkuDB.SessionRouteData.Waypoints[WaypointCacheLookupCacheNameForId[tWpName]].comments = nil
-				SkuDB.SessionRouteData.Waypoints[WaypointCacheLookupCacheNameForId[tWpName]].lComments = {
+			if SkuDB.SessionRouteData.Waypoints[WaypointCacheGetIdForName(tWpName)] then
+				SkuDB.SessionRouteData.Waypoints[WaypointCacheGetIdForName(tWpName)].comments = nil
+				SkuDB.SessionRouteData.Waypoints[WaypointCacheGetIdForName(tWpName)].lComments = {
 					["deDE"] = {},
 					["enUS"] = {},
 				}
@@ -3771,7 +3812,10 @@ function SkuNav:SetWaypoint(aName, aData, aIsTempWaypoint)
 		["deDE"] = {},
 		["enUS"] = {},
 	}
-	WaypointCache[tWpIndex].links = aData.links or WaypointCache[tWpIndex].links or {byId = nil, byName = nil,}
+	-- [DB rework lever B] rawget: the derived .links is the SHARED empty
+	-- wrapper - storing it as this record's own links would corrupt all
+	-- unlinked waypoints on the first link write
+	WaypointCache[tWpIndex].links = aData.links or rawget(WaypointCache[tWpIndex], "links") or {byId = nil, byName = nil,}
 	WaypointCache[tWpIndex].isTempWaypoint = aIsTempWaypoint
 
 	WaypointCacheLookupAll[aName] = tWpIndex
@@ -3802,8 +3846,6 @@ function SkuNav:SetWaypoint(aName, aData, aIsTempWaypoint)
 			})
 
 			WaypointCache[tWpIndex].dbIndex = #SkuDB.SessionRouteData.Waypoints
-
-			WaypointCacheLookupCacheNameForId[aName] = SkuNav:BuildWpIdFromData(1, WaypointCache[tWpIndex].dbIndex, 1, WaypointCache[tWpIndex].areaId)
 
 			for i, v in pairs(Sku.Locs) do
 				if not SkuDB.SessionRouteData.Waypoints[WaypointCache[tWpIndex].dbIndex].names[v] then
@@ -3956,8 +3998,8 @@ end
 function SkuNav:DeleteWaypoint(aWpName, aIsTempWaypoint)
 	dprint("SkuNav:DeleteWaypoint", aWpName, aIsTempWaypoint)
 	local tWpData = SkuNav:GetWaypointData2(aWpName)
-	local tWpId = WaypointCacheLookupCacheNameForId[aWpName]
-	
+	local tWpId = WaypointCacheGetIdForName(aWpName)
+
 	if not tWpData then
 		return false
 	end
@@ -4006,7 +4048,6 @@ function SkuNav:DeleteWaypoint(aWpName, aIsTempWaypoint)
 			end
 
 			WaypointCacheLookupIdForCacheIndex[SkuNav:BuildWpIdFromData(WaypointCache[tCacheIndex].typeId, WaypointCache[tCacheIndex].dbIndex, WaypointCache[tCacheIndex].spawn, WaypointCache[tCacheIndex].areaid)] = nil
-			WaypointCacheLookupCacheNameForId[aWpName] = nil
 			WaypointCacheLookupPerContintent[tWpData.contintentId][tCacheIndex] = nil
 			WaypointCacheLookupAll[aWpName] = nil
 			WaypointCache[tCacheIndex] = nil
@@ -4150,8 +4191,8 @@ function SkuNav:GetNonAutoLevel(aUid, aUnitName, aSkuWaypointName, aForTarget)
 		end
 		]]
 	elseif aUid == nil and aSkuWaypointName ~= nil then
-		if WaypointCacheLookupCacheNameForId[aSkuWaypointName] then
-			return SkuDB.routedata["global"].WaypointLevels[WaypointCacheLookupCacheNameForId[aSkuWaypointName]], true
+		if WaypointCacheGetIdForName(aSkuWaypointName) then
+			return SkuDB.routedata["global"].WaypointLevels[WaypointCacheGetIdForName(aSkuWaypointName)], true
 		end
 
 	elseif aUid == nil and aForTarget ~= nil then
