@@ -1541,7 +1541,7 @@ voice service are designed. Hence: decide W5 strategy early, execute W5 late.
 - [x] C-B1. Data-driven discovery of beacon packs shipped 2026-07-06 (`SkuCore/companionPacks.lua`); packs CAN become pure data once maintainer adopts the metadata (contract in `W5-COMPANION-PACKS.md`); legacy glue coexists via first-wins registration.
 - [x] C-B2 (partial). Dependency direction fixed: hard `Dependencies: SkuBeaconSoundsets` removed from Sku.toc, missing pack announced by voice. Consolidation of the 3 beacon addons into 2 deliberately NOT executed (distribution-only, low value — proposed to maintainer instead).
 - [ ] C-B3. Installer topology / `SkuInstall.json`: only needed if the maintainer adopts the rename/consolidation — documented as proposal, not executed.
-- [x] C-B4. Verify by ear + `/skudebug` log — see W5-COMPANION-PACKS.md test list. (In-game run pending.)
+- [x] C-B4. Verified in-game 2026-07-06: audio unchanged by ear; `Sku.AudiodataPathInfo` = "SkuAudioData_fast_de (metadata)"; `#GetSoundSets()` = 13.
 
 ---
 

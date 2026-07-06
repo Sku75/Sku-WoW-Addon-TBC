@@ -1,9 +1,12 @@
 # W5 — Companion-addon packaging: metadata contract + maintainer proposal
 
-Status 2026-07-06: Sku-side code SHIPPED (detection, resolver, discovery, soft
-dependency). Pack-side changes are OPTIONAL and backward compatible — old packs
-keep working unchanged. This file is the contract for future pack releases and
-the proposal to the maintainer.
+Status 2026-07-06: Sku-side code SHIPPED and IN-GAME VERIFIED (detection,
+resolver, discovery, soft dependency): audio by ear unchanged,
+`Sku.AudiodataPathInfo` = "SkuAudioData_fast_de (metadata)",
+`#GetSoundSets()` = 13 (WVDebug evals, 2026-07-06 18:36). Pack-side changes
+are OPTIONAL and backward compatible — old packs keep working unchanged. This
+file is the contract for future pack releases and the proposal to the
+maintainer.
 
 ## What Sku now does
 
