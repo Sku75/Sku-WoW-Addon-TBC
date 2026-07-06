@@ -1233,7 +1233,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				SkuOptions.Voice:OutputStringBTtts(L["Active waypoint or route or recording"], false, true, 0.3, true)
 				return
 			end
-			SkuOptions:ImportWpAndLinkData()
+			SkuNav:ImportWpAndLinkData()
 		end
 		]]
 
@@ -1245,7 +1245,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				return
 			end
 			--SkuOptions:ExportWpAndRouteData()
-			SkuOptions:ExportWpAndLinkData()
+			SkuNav:ExportWpAndLinkData()
 		end
 
 		--[[ Entfernt in v41.01.03: Gefaehrlicher Menuepunkt der alle benutzerdefinierten Navigationsdaten unwiderruflich loescht
