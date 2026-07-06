@@ -1,6 +1,36 @@
-# W6 Phase B — high-level cleanup findings (APPROVAL GATE)
+# W6 Phase B — high-level cleanup findings
 
-Status: AWAITING YOUR APPROVAL. Nothing here is applied. Produced by a 9-
+## EXECUTION STATUS (updated 2026-07-07) — read this first on a cold start
+
+This started as an approval gate; much of it is now executed. Progress is logged
+in memory note `sku42-w6-cleanup` and in the git log (commits prefixed `W6-B`).
+Per-finding status:
+
+- DONE & in-game verified: the "step-up after setting a value" core fix (was the
+  real felt bug — stay on the entry, step-up now opt-in via `stepUpAfterSelect`).
+- DONE, committed, awaiting by-ear verify: #1, #2, #3, #4, #5, #6, #7, #8, #9,
+  #10, #11 (Tier 1+2); #12 (SkuVoice←SkuChat provider seam); #14 (foundation:
+  id-first SlashFunc + FindAncestorById + root-entry ids; migrations: Macro &
+  friends re-pins, SkuAuras aura-manage path de-localized); #16 (SkuNav.Geo
+  extracted to SkuNav/Geo.lua + 61 callers repointed); SkuBeacon Bug 2 + the
+  table.remove-in-ipairs quirk.
+- FALSE POSITIVE (no change): Bug 1 (quick-select defaults resolve fine via the
+  locale table; slot 3 has a dedicated handler).
+- DECLINED as unsafe: #13 (SkuAdventureGuide is NOT loaded — not in Sku.toc — so
+  moving the wiki reader into it would break the live link path; corollary: #6 is
+  currently inert but harmless).
+- DELIBERATELY DEFERRED with reason: the "Local"-window descend-by-label paths
+  (stable labels, dynamic window nodes, higher risk than reward).
+- STILL OPEN (not started): **#15** (ChunkLoader readiness registry — the risky
+  one, see its entry below for the yield-across-pcall crash landmine; note it is
+  maintainability-only, NOT a load-speed win), #17 (dispatcher xpcall — small,
+  safe), Phase C #18/#19/#20 + the per-file pass, Bugs 3 & 4 (minor).
+
+Original approval-gate text follows.
+
+---
+
+Status: (historical) AWAITING YOUR APPROVAL. Nothing here is applied. Produced by a 9-
 dimension architectural review (each reviewer verified claims against real
 source, not just the index) + a synthesis pass that deduped, ranked, and split
 off suspected bugs. 33 raw findings became 20 ranked cleanups, 4 suspected bugs
