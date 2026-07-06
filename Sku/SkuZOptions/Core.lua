@@ -1629,7 +1629,7 @@ function SkuOptions:CreateMainFrame()
 					if not SkuOptions.TTS:IsVisible() then
 						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
 					end
-					SkuOptions.TTS:PreviousLine(2, true)
+					SkuOptions.TTS:PreviousLine(true)
 				end
 			end
 			return
@@ -1658,7 +1658,7 @@ function SkuOptions:CreateMainFrame()
 					SkuOptions.TTS:ToggleAutoRead()
 					SkuOptions.TTS.AutoReadEventFlag = nil
 				end					
-				SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
+				SkuOptions.TTS:PreviousLine()
 			end
 		end
 		if a == "SHIFT-DOWN" then
@@ -1674,7 +1674,7 @@ function SkuOptions:CreateMainFrame()
 					SkuOptions.TTS:ToggleAutoRead()
 					SkuOptions.TTS.AutoReadEventFlag = nil
 				end					
-				SkuOptions.TTS:NextLine(SkuOptions.currentMenuPosition.ttsEngine)
+				SkuOptions.TTS:NextLine()
 			end
 		end
 		if a == "CTRL-SHIFT-UP" then
@@ -1691,7 +1691,7 @@ function SkuOptions:CreateMainFrame()
 					SkuOptions.TTS:ToggleAutoRead()
 					SkuOptions.TTS.AutoReadEventFlag = nil
 				end					
-				SkuOptions.TTS:PreviousSection(SkuOptions.currentMenuPosition.ttsEngine)
+				SkuOptions.TTS:PreviousSection()
 			end
 		end
 		if a == "CTRL-SHIFT-DOWN" then
@@ -1708,7 +1708,7 @@ function SkuOptions:CreateMainFrame()
 					SkuOptions.TTS:ToggleAutoRead()
 					SkuOptions.TTS.AutoReadEventFlag = nil
 				end					
-				SkuOptions.TTS:NextSection(SkuOptions.currentMenuPosition.ttsEngine)
+				SkuOptions.TTS:NextSection()
 			end
 		end
 		if a == "SHIFT-PAGEDOWN" then
@@ -1722,7 +1722,7 @@ function SkuOptions:CreateMainFrame()
 				SkuOptions.currentMenuPosition.links = {}
 				SkuOptions.currentMenuPosition.linksSelected = 0
 
-				SkuOptions.TTS:ToggleAutoRead(SkuOptions.currentMenuPosition.ttsEngine)
+				SkuOptions.TTS:ToggleAutoRead()
 				
 			end
 		end
@@ -1741,7 +1741,7 @@ function SkuOptions:CreateMainFrame()
 							SkuOptions.TTS.AutoReadEventFlag = nil
 
 						end					
-						SkuOptions.TTS:NextLink(SkuOptions.currentMenuPosition.ttsEngine)
+						SkuOptions.TTS:NextLink()
 					end
 				end
 			end
@@ -1761,7 +1761,7 @@ function SkuOptions:CreateMainFrame()
 							SkuOptions.TTS.AutoReadEventFlag = nil
 
 						end					
-						SkuOptions.TTS:PreviousLink(SkuOptions.currentMenuPosition.ttsEngine)
+						SkuOptions.TTS:PreviousLink()
 					end
 				end
 			end
@@ -1818,7 +1818,7 @@ function SkuOptions:CreateMainFrame()
 
 					SkuOptions.currentMenuPosition.links = {}
 					SkuOptions.currentMenuPosition.linksSelected = 0
-					SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
+					SkuOptions.TTS:PreviousLine()
 				end
 			end			
 			if SkuOptions.TTS:IsAutoRead() == true then
@@ -2791,7 +2791,7 @@ function SkuOptions:CreateMenuFrame()
 							SkuOptions.TTS:ToggleAutoRead()
 							SkuOptions.TTS.AutoReadEventFlag = nil
 						end					
-						SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
+						SkuOptions.TTS:PreviousLine()
 					end
 				end
 			end
@@ -2813,9 +2813,9 @@ function SkuOptions:CreateMenuFrame()
 							SkuOptions.TTS.AutoReadEventFlag = nil
 						end
 						if wasVisible then
-							SkuOptions.TTS:NextLine(SkuOptions.currentMenuPosition.ttsEngine)
+							SkuOptions.TTS:NextLine()
 						else
-							SkuOptions.TTS:CurrentLine(SkuOptions.currentMenuPosition.ttsEngine)
+							SkuOptions.TTS:CurrentLine()
 						end
 					end
 				end
@@ -2830,7 +2830,7 @@ function SkuOptions:CreateMenuFrame()
 						SkuOptions.currentMenuPosition.links = {}
 						SkuOptions.currentMenuPosition.linksSelected = 0
 
-						SkuOptions.TTS:ToggleAutoRead(SkuOptions.currentMenuPosition.ttsEngine)
+						SkuOptions.TTS:ToggleAutoRead()
 						
 					end
 				end
@@ -2848,7 +2848,7 @@ function SkuOptions:CreateMenuFrame()
 							SkuOptions.TTS:ToggleAutoRead()
 							SkuOptions.TTS.AutoReadEventFlag = nil
 						end					
-						SkuOptions.TTS:PreviousSection(SkuOptions.currentMenuPosition.ttsEngine)
+						SkuOptions.TTS:PreviousSection()
 					end
 				end
 			end
@@ -2865,7 +2865,7 @@ function SkuOptions:CreateMenuFrame()
 							SkuOptions.TTS:ToggleAutoRead()
 							SkuOptions.TTS.AutoReadEventFlag = nil
 						end					
-						SkuOptions.TTS:NextSection(SkuOptions.currentMenuPosition.ttsEngine)
+						SkuOptions.TTS:NextSection()
 					end
 				end
 			end
@@ -2883,7 +2883,7 @@ function SkuOptions:CreateMenuFrame()
 									SkuOptions.TTS.AutoReadEventFlag = nil
 
 								end					
-								SkuOptions.TTS:NextLink(SkuOptions.currentMenuPosition.ttsEngine)
+								SkuOptions.TTS:NextLink()
 							end
 						end
 					end
@@ -2903,7 +2903,7 @@ function SkuOptions:CreateMenuFrame()
 									SkuOptions.TTS.AutoReadEventFlag = nil
 
 								end					
-								SkuOptions.TTS:PreviousLink(SkuOptions.currentMenuPosition.ttsEngine)
+								SkuOptions.TTS:PreviousLink()
 							end
 						end
 					end
@@ -2959,7 +2959,7 @@ function SkuOptions:CreateMenuFrame()
 
 						SkuOptions.currentMenuPosition.links = {}
 						SkuOptions.currentMenuPosition.linksSelected = 0
-						SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
+						SkuOptions.TTS:PreviousLine()
 					end
 				end			
 				if SkuOptions.TTS:IsAutoRead() == true then
@@ -3510,7 +3510,7 @@ function SkuOptions:LoadLinkDataToTooltip(aLinkName, aDontAddToHistory)
 			SkuOptions.TTS:Output(tFormattedWikiSections, 1000)
 			SkuOptions.currentMenuPosition.links = {}
 			SkuOptions.currentMenuPosition.linksSelected = 0
-			SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
+			SkuOptions.TTS:PreviousLine()
 		end
 	end
 end

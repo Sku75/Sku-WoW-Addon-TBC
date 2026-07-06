@@ -1,4 +1,4 @@
----@diagnostic disable: undefined-field
+﻿---@diagnostic disable: undefined-field
 local SkuTTS_MAJOR, SkuTTS_MINOR = "SkuTTS-1.0", 1
 local SkuTTS, oldminor = LibStub:NewLibrary(SkuTTS_MAJOR, SkuTTS_MINOR)
 
@@ -79,25 +79,25 @@ end
 local currentLine = 1
 local currentSection = 1
 sections = {}
-function SkuTTS:NextSection(aEngine, aReset)
+function SkuTTS:NextSection(aReset)
 	--print("NextSection", currentSection, currentLine)	
 	if SkuTTS.MainFrame:IsVisible() == true then
 		if currentSection < #sections then
 			currentSection = currentSection + 1
 			currentLine = 1
 		end
-		SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
+		SkuTTS:ReadLineNumber(currentSection, currentLine, aReset)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuTTS:PreviousSection(aEngine, aReset)
+function SkuTTS:PreviousSection(aReset)
 	--print("PreviousSection", currentSection, currentLine)	
 	if SkuTTS.MainFrame:IsVisible() == true then
 		if currentSection > 1 then
 			currentSection = currentSection - 1
 			currentLine = 1
 		end
-		SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
+		SkuTTS:ReadLineNumber(currentSection, currentLine, aReset)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -105,7 +105,7 @@ function SkuTTS:ReadNextAutoRead()
 	--print("ReadNextAutoRead", currentSection , #sections , currentLine , #sections[currentSection], SkuTTS.AutoReadMode)
 	if SkuTTS.AutoReadMode == true then
 		if currentSection < #sections or (currentSection == #sections and currentLine < #sections[currentSection]) then
-			SkuTTS:NextLine(1)
+			SkuTTS:NextLine()
 		else
 			SkuTTS.AutoReadMode = nil
 			SkuTTS.AutoReadEventFlag = nil
@@ -118,7 +118,7 @@ function SkuTTS:IsAutoRead()
 	return SkuTTS.AutoReadMode
 end
 --------------------------------------------------------------------------------------------------------------------------------------
-function SkuTTS:ToggleAutoRead(aEngine, aReset)
+function SkuTTS:ToggleAutoRead(aReset)
 	--print("ToggleAutoRead", currentSection, currentLine)
 	if SkuTTS.MainFrame:IsVisible() == true then
 		if SkuTTS.AutoReadMode ~= true then
@@ -128,7 +128,7 @@ function SkuTTS:ToggleAutoRead(aEngine, aReset)
 			SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
 			C_Timer.After(0.6, function()
 				SkuTTS.AutoReadEventFlag = true
-				SkuTTS:CurrentLine(aEngine, false)
+				SkuTTS:CurrentLine(false)
 			end)
 		else
 			SkuTTS.AutoReadMode = nil
@@ -139,28 +139,27 @@ function SkuTTS:ToggleAutoRead(aEngine, aReset)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuTTS:CurrentLine(aEngine, aReset)
+function SkuTTS:CurrentLine(aReset)
 	--print("CurrentLine", currentSection, currentLine)	
 	if SkuTTS.MainFrame:IsVisible() == true then
-		SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
+		SkuTTS:ReadLineNumber(currentSection, currentLine, aReset)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuTTS:NextLine(aEngine, aReset)
+function SkuTTS:NextLine(aReset)
 	--print("NextLine", currentSection, currentLine)	
 	if SkuTTS.MainFrame:IsVisible() == true then
-		--SkuTTS:ReadLineNumber(currentSection, currentLine, nil, aEngine)
 		if currentLine < #sections[currentSection] then
 			currentLine = currentLine + 1
 		elseif currentSection < #sections then
 			currentSection = currentSection + 1
 			currentLine = 1
 		end
-		SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
+		SkuTTS:ReadLineNumber(currentSection, currentLine, aReset)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuTTS:PreviousLine(aEngine, aReset)
+function SkuTTS:PreviousLine(aReset)
 	--print("PreviousLine", currentSection, currentLine)		
 	if SkuTTS.MainFrame:IsVisible() == true then
 		if currentLine > 1 then
@@ -171,33 +170,29 @@ function SkuTTS:PreviousLine(aEngine, aReset)
 				currentLine = #sections[currentSection]
 			end
 		end
-		SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
+		SkuTTS:ReadLineNumber(currentSection, currentLine, aReset)
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuTTS:NextLink(aEngine, aReset)
+function SkuTTS:NextLink(aReset)
 	if SkuTTS.MainFrame:IsVisible() == true then
-		SkuTTS:ReadLinkNumber(SkuOptions.currentMenuPosition.linksSelected, aReset, aEngine)
+		SkuTTS:ReadLinkNumber(SkuOptions.currentMenuPosition.linksSelected, aReset)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuTTS:PreviousLink(aEngine, aReset)
+function SkuTTS:PreviousLink(aReset)
 	if SkuTTS.MainFrame:IsVisible() == true then
-		SkuTTS:ReadLinkNumber(SkuOptions.currentMenuPosition.linksSelected, aReset, aEngine)
+		SkuTTS:ReadLinkNumber(SkuOptions.currentMenuPosition.linksSelected, aReset)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuTTS:ReadLinkNumber(aLinkNumber, aNoReset, aEngine)
+function SkuTTS:ReadLinkNumber(aLinkNumber, aNoReset)
 	if  aNoReset == nil then aNoReset = true end
 	if SkuTTS.MainFrame:IsVisible() == true then
 		if (SkuOptions.currentMenuPosition.links) then
 			if SkuOptions.currentMenuPosition.links[aLinkNumber] then
-				--if not aEngine then
-					--SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.links[aLinkNumber], aNoReset, true)
-				--else
 					SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.links[aLinkNumber], aNoReset, true, nil, nil, false, nil, 1)
-				--end
 			end
 		end
 	end
@@ -300,7 +295,7 @@ function SkuTTS:GetLinksTableFromString(aString, aCurrentLinkText, aDontSearchFo
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuTTS:ReadLineNumber(aSectionNumber, aLineNumber, aNoReset, aEngine)
+function SkuTTS:ReadLineNumber(aSectionNumber, aLineNumber, aNoReset)
 	--print("ReadLineNumber, aSectionNumber, aLineNumber", aSectionNumber, aLineNumber)	
 	if aNoReset == nil then aNoReset = true end
 	if SkuTTS.MainFrame:IsVisible() == true then
@@ -358,11 +353,7 @@ function SkuTTS:ReadLineNumber(aSectionNumber, aLineNumber, aNoReset, aEngine)
 				tCleanOutput = string.gsub(tCleanOutput, "|[^%]]+%]%]", "")
 				tCleanOutput = string.gsub(tCleanOutput, "%]%]", "")
 
-				--if not aEngine then
-					--SkuOptions.Voice:OutputStringBTtts(tCleanOutput, aNoReset, true)
-				--else
 					SkuOptions.Voice:OutputStringBTtts(tCleanOutput, aNoReset, true, nil, nil, false, nil, 1)
-				--end
 			end
 		end
 	end

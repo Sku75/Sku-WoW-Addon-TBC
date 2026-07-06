@@ -2910,7 +2910,7 @@ function SkuChat:OnInitialize()
 						SkuOptions.TTS:ToggleAutoRead()
 						SkuOptions.TTS.AutoReadEventFlag = nil
 					end					
-					SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
+					SkuOptions.TTS:PreviousLine()
 				end
 			
 			elseif aKey ==  "SHIFT-DOWN" then
@@ -2927,7 +2927,7 @@ function SkuChat:OnInitialize()
 						SkuOptions.TTS:ToggleAutoRead()
 						SkuOptions.TTS.AutoReadEventFlag = nil
 					end					
-					SkuOptions.TTS:NextLine(SkuOptions.currentMenuPosition.ttsEngine)
+					SkuOptions.TTS:NextLine()
 				end
 			
 			elseif aKey ==  "CTRL-SHIFT-UP" then
@@ -2944,7 +2944,7 @@ function SkuChat:OnInitialize()
 						SkuOptions.TTS:ToggleAutoRead()
 						SkuOptions.TTS.AutoReadEventFlag = nil
 					end					
-					SkuOptions.TTS:PreviousSection(SkuOptions.currentMenuPosition.ttsEngine)
+					SkuOptions.TTS:PreviousSection()
 				end
 			
 			elseif aKey ==  "CTRL-SHIFT-DOWN" then
@@ -2961,7 +2961,7 @@ function SkuChat:OnInitialize()
 						SkuOptions.TTS:ToggleAutoRead()
 						SkuOptions.TTS.AutoReadEventFlag = nil
 					end					
-					SkuOptions.TTS:NextSection(SkuOptions.currentMenuPosition.ttsEngine)
+					SkuOptions.TTS:NextSection()
 				end
 			
 			elseif aKey == "UP" then

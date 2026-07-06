@@ -1835,7 +1835,6 @@ function SkuCore.MailMenuBuilder(self)
 				end
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tSubject}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.ttsEngine = 2
 				tNewMenuEntry.isSelect = true
 				-- [41.02.08] Nach Anhang-Entnahme (auch nach Loeschen) Cursor auf dem
 				-- Brief halten, statt zur Inbox hochzuspringen. MAIL_INBOX_UPDATE ->
@@ -1898,7 +1897,6 @@ function SkuCore.MailMenuBuilder(self)
 				tNewMenuEntry.BuildChildren = function(self)
 					local tNewMenuParentEntrySub = SkuOptions:InjectMenuItems(self, {L["Reply"]}, SkuGenericMenuItem)
 					tNewMenuParentEntrySub.dynamic = true
-					tNewMenuParentEntrySub.ttsEngine = 2
 					-- Empfaenger/Betreff aus dem Original vorbelegen; alle Felder bleiben
 					-- editierbar. Verfassen-Baum kommt aus dem gemeinsamen Builder (gleiche
 					-- normalen Eingabefelder + Gold/Silber/Kupfer-Muenzmenue wie "Neuer Brief").
