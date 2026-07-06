@@ -866,6 +866,31 @@ What shipped, and deviations from the plan text:
 - SkuNav gained DevGetWaypointCacheTables() (dev accessor over the file-local
   cache tables) so /skudbmem can rank them for stage 4.
 
+### Stage 3 first in-game results (2026-07-06, same day)
+
+- Works by user report: routes, auras, and "reloading felt quite fast".
+- FINGERPRINT GATE PASSED: /skudbcheck "stage3" vs the pristine baseline -
+  all 37 datasets identical. The streamed family-ordered build (fixes+merge
+  reordered per family) produces bit-identical data.
+- LoadStopwatch, comparable 29-addon reloads: stage 2 eager = to PEW 5.3 s /
+  first frame 6.0 s; stage 3 = to PEW 3.6 s / first frame 3.8 s. About 1.7 s
+  less loading screen, 2.2 s faster to first frame; worst post-load frame
+  925 ms (was ~2000 ms). More small 50-ms spikes during the stream window -
+  that IS the sliced build, by design. Memory unchanged (phase B's job).
+- One BugSack error on every load, FIXED same day (commit 4d22621): the
+  quest-marker path (QUEST_LOG_UPDATE -> UpdateZoneAvailableQuestList ->
+  GetUnsortedAvailableQuestsTable) crashed on CROSS-FAMILY CHAINED indexing
+  (NpcData.Data[npcId][zoneID] while quests were ready but creatures not;
+  same latent chains in GetResultingWps through itemDataTBC). Lesson for
+  the guard model: single-level indexed reads are nil-safe by shape, but
+  CHAINS whose head id comes from an already-ready family are not - guard
+  entry points of any path that RESOLVES ids across families. Guards added:
+  UpdateZoneAvailableQuestList (4 family flags - not the global flag, the
+  master tail runs before it is set), GetUnsortedAvailableQuestsTable,
+  GetResultingWps; master tail refreshes the beacon list once at stream end.
+- Still open: re-test after the fix (2 reloads, BugGrabber clean), aura in
+  first fight, profile switch + instance port drill, /skudbmem capture.
+
 ### Stage 3 implemented (2026-07-06) - in-game test PENDING
 
 The eager stage-2 loader is now the streamed master init in
