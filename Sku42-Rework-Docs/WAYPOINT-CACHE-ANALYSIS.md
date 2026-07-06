@@ -542,6 +542,19 @@ or merging the sweeps), which touches the link-aliasing landmines
 deliberate alias break). Parked as diminishing returns; route readiness
 now ~work + stream at 150 ms/frame.
 
+FINAL: unified budget shipped on top (56634ce, USER-designed): 150 ms/
+frame TOTAL Sku build budget (the accepted menu-latency ceiling, ~170 ms
+real frames), fixed per phase - stream alone 150 (incl. its 8 s / 10 ms
+crawl REMOVED), stream+wpc 75/75, wpc alone 150; each side switches by
+one status check on the other worker (wpc: IsDataReady "skudb"; stream:
+SkuNav._wpcCo alive). In-game CONFIRMED, 17:48 capture: work 2415 ms
+(phase split identical to the previous run - scheduling changed, work
+did not), routes ready ~3.4 s after first frame (was 6-9 s at the start
+of the day); user reports no annoying lag, speech not stuttering.
+Time-to-routes is CLOSED unless someone reports lag or wants routes
+faster (the three budget values are trivially tunable, one function per
+side).
+
 ## Open items before implementation
 
 - Grep-audit ALL write sites to cache records (assignments to record fields
