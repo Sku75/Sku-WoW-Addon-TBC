@@ -175,6 +175,20 @@ Phase C pass. Risk/effort are the reviewer's estimates.
   `SkuVoice:SetBlizzTtsParams{...}` on load + on settings change. Verify:
   menu-TTS + per-channel-voice paths still speak.
 
+> UPDATE 2026-07-06 — DECLINED as UNSAFE during execution. SkuAdventureGuide is
+> NOT loaded: it has no line in Sku.toc (and never did, per `git log -S`), is not
+> a separate installed addon, and every reference to it is guarded with
+> `if SkuAdventureGuide then` — so the `SkuAdventureGuide` global is nil in the
+> current build. The three reader functions live in SkuZOptions/Core.lua (always
+> loaded) precisely because the module is optional; their LIVE callers are the
+> TTS link-follow keys in SkuZOptions (Core.lua 1784/1799/2926/2940), which fire
+> for any tooltip with links. Moving them into the unloaded module would make
+> `SkuOptions:LoadLinkDataToTooltip` et al. undefined and break live link
+> reading. The reviewer's premise (the module "owns" the feature) was wrong.
+> Corollary: finding #6's SkuAdventureGuide settings migration is currently inert
+> (that file never executes) — harmless, but SkuAdventureGuide is effectively dead
+> code pending a maintainer decision (re-add to the TOC to enable it, or remove).
+
 ### 13. Consolidate the wiki article-reader into SkuAdventureGuide  [split-or-merge, risk medium, effort medium]
 - Now: the wiki "read an article" engine (GetLinkFinalRedirectTarget,
   FormatAndBuildSectionTable, LoadLinkDataToTooltip) lives in
