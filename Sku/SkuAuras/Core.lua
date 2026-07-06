@@ -279,24 +279,8 @@ local function GetItemCooldownLeft(start, duration)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function TableCopy(t, deep, seen)
-	seen = seen or {}
-	if t == nil then return nil end
-	if seen[t] then return seen[t] end
-	local nt = {}
-	for k, v in pairs(t) do
-		if type(v) ~= "userdata" and k ~= "frame" and k ~= 0  then
-			if deep and type(v) == 'table' then
-				nt[k] = TableCopy(v, deep, seen)
-			else
-				nt[k] = v
-			end
-		end
-	end
-	--setmetatable(nt, getmetatable(t), deep, seen))
-	seen[t] = nt
-	return nt
-end
+-- Widget-safe deep copy, consolidated to SkuUtil (W6-B #3).
+local TableCopy = SkuUtil.TableCopy
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- [DB rework stage 3] Build the attribute value lists (iterates ALL of

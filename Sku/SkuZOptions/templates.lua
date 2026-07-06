@@ -10,26 +10,9 @@ local MENU_DROPDOWN_MULTI = 3
 SkuOptions.MenuMT = {
 	__add = function(thisTable, newTable)
 
-		local function TableCopy(t, deep, seen)
-			seen = seen or {}
-			if t == nil then return nil end
-			if seen[t] then return seen[t] end
-			local nt = {}
-			for k, v in pairs(t) do
-				if type(v) ~= "userdata" and k ~= "frame" and k ~= 0  then
-					if deep and type(v) == 'table' then
-						nt[k] = TableCopy(v, deep, seen)
-					else
-						nt[k] = v
-					end
-				end
-			end
-			--setmetatable(nt, getmetatable(t), deep, seen))
-			seen[t] = nt
-			return nt
-		end
+		-- Widget-safe deep copy, consolidated to SkuUtil (W6-B #3).
 		local seen = {}
-		local tTable = TableCopy(newTable, true, seen)
+		local tTable = SkuUtil.TableCopy(newTable, true, seen)
 		table.insert(thisTable, tTable)
 		return thisTable
 	end,

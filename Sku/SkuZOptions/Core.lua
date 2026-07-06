@@ -4296,23 +4296,10 @@ function SkuOptions:ConfirmationDialog(aParent,onOkFunc, message, yesText,noText
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Delegates to the consolidated widget-safe copy in SkuUtil (W6-B #3). Kept as
+-- a public method so the existing SkuOptions:TableCopy call sites are unchanged.
 function SkuOptions:TableCopy(t, deep, seen)
-	seen = seen or {}
-	if t == nil then return nil end
-	if seen[t] then return seen[t] end
-	local nt = {}
-	for k, v in pairs(t) do
-		if type(v) ~= "userdata" and k ~= "frame" and k ~= 0  then
-			if deep and type(v) == 'table' then
-				nt[k] = SkuOptions:TableCopy(v, deep, seen)
-			else
-				nt[k] = v
-			end
-		end
-	end
-	--setmetatable(nt, getmetatable(t), deep, seen))
-	seen[t] = nt
-	return nt
+	return SkuUtil.TableCopy(t, deep, seen)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

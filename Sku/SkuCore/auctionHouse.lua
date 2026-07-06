@@ -1447,49 +1447,7 @@ function AuctionHouse:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPric
    return tTextFirstLine, tPriceHistoryData
 end
 
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuGetCoinText(aCopper, aShort, aVeryShort)
-   local tResultString = GetCoinText(aCopper)
-   if aVeryShort == true then
-      if aCopper < 100 then
-         tResultString = mfloor(aCopper).." "..L["Copper"]
-      elseif aCopper < 10000 then
-         local tRemaining = aCopper - (mfloor(aCopper / 100) * 100)
-         if tRemaining == 0 then 
-            tRemaining = "" 
-         else
-            tRemaining = mfloor(tRemaining)
-         end
-         tResultString = mfloor(aCopper / 100).." "..L["Silver"].." "..tRemaining
-      elseif aCopper >= 10000 then
-         local tRemaining = mfloor((aCopper - (mfloor(aCopper / 10000) * 10000)) / 100)
-         if tRemaining == 0 then tRemaining = "" end
-         tResultString = mfloor(aCopper / 10000).." "..L["Gold"].." "..tRemaining
-      end
-   end
-
-   -- aShort: war als Kurzform (G/S/C statt Gold/Silber/Kupfer) gedacht, wurde
-   -- aber nie umgesetzt (die gsub-Zeilen waren auskommentiert). Parameter bleibt
-   -- aus Signaturgründen erhalten, hat aber keine Wirkung.
-
-   return tResultString
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuEpochValueHelper(aValue)
-   aValue = GetServerTime() - aValue
-
-   if aValue < 60 then
-      return mfloor(aValue)..L[" Sekunden"]
-   elseif aValue < 3600 then
-      return mfloor(aValue / 60)..L[" Minuten"]
-   elseif aValue < 86400 then
-      return mfloor(aValue / 3600)..L[" Stunden"]
-   else
-      return mfloor(aValue / 86400)..L[" Tage"]
-   end
-end
-
+-- SkuGetCoinText and SkuEpochValueHelper moved to SkuUtil.lua (W6-B #5).
 ---------------------------------------------------------------------------------------------------------------------------------------
 function AuctionHouse:AuctionItemNameFormat(aItemData, aIndex, aAddLevel)
    if not aItemData then
