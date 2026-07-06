@@ -98,6 +98,9 @@ function SkuMenu:InjectModuleEntry(aRootMenu, aId)
 		return nil
 	end
 	local tEntry = SkuOptions:InjectMenuItems(aRootMenu, {resolveLabel(spec, aId)}, SkuGenericMenuItem)
+	tEntry.id = aId  -- stable nav anchor = the registry id (W6-B #14): every root
+	                 -- menu is now reachable by a locale-independent id, not its
+	                 -- localized display label.
 	tEntry.dynamic = true
 	if spec.sorting then
 		tEntry.sorting = true
@@ -192,6 +195,7 @@ end
 local PASSTHROUGH_FLAGS = {
 	"sorting", "dynamic", "isSelect", "isMultiselect",
 	"noStepUpAfterSelect", "macrotext", "secureMacro",
+	"id",  -- stable nav anchor (W6-B #14): a Build spec may carry an id
 }
 local PASSTHROUGH_HANDLERS = {
 	onAction = "OnAction", onEnter = "OnEnter", onLeave = "OnLeave",

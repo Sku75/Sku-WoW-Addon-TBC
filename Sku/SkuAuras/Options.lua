@@ -581,7 +581,7 @@ function SkuAuras:UpdateAura(aAuraNameToUpdate, aNewType, aEnabled, aNewAttribut
 		SkuOptions.Voice:OutputStringBTtts(L["Aktualisiert"], true, true, 0.3, true)		
 
 		C_Timer.After(0.01, function()
-			SkuOptions:SlashFunc(L["short"]..L[",SkuAuras,Auren,Auren verwalten,"]..SkuOptions.currentMenuPosition.parent.parent.parent.name..","..tAuraName)
+			SkuOptions:SlashFunc(L["short"]..",SkuAuras,aurenList,aurenVerwalten,"..SkuOptions.currentMenuPosition.parent.parent.parent.name..","..tAuraName)
 			SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
 			SkuOptions:VocalizeCurrentMenuName()
 		end)
@@ -782,7 +782,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 			SkuOptions.Voice:OutputStringBTtts(L["Dupliziert"], true, true, 0.3, true)		
 
 			C_Timer.After(0.01, function()
-				SkuOptions:SlashFunc(L["short"]..L[",SkuAuras,Auren,Auren verwalten,"]..self.parent.parent.name..","..tTestNewName)
+				SkuOptions:SlashFunc(L["short"]..",SkuAuras,aurenList,aurenVerwalten,"..self.parent.parent.name..","..tTestNewName)
 				SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
 				SkuOptions:VocalizeCurrentMenuName()
 			end)
@@ -872,7 +872,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 	-- "settings" kind would force sorting=true, so converting it would change
 	-- its property set.
 	local tSpecs = {}
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Auren"], sorting = true,
+	tSpecs[#tSpecs+1] = { kind = "list", label = L["Auren"], sorting = true, id = "aurenList",  -- stable nav anchor (W6-B #14)
 		build = function(self)
 		-- [41.05] Sets anlegen/teilen (Stufe 1+2), isoliert in SkuAuras\sharing.lua
 		-- [41.06] Sets-Menue an Position 3 verschoben (siehe weiter unten, vor Aura importieren)
@@ -931,6 +931,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.isSelect = true
 		tNewMenuEntry.sorting = true
+		tNewMenuEntry.id = "aurenVerwalten"  -- stable nav anchor (W6-B #14)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			--print("OnAction Auren verwalten", aValue, aName, self.targetAuraName)
 			if not self.targetAuraName then return end
