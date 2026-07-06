@@ -520,6 +520,50 @@ local function tWpcHardYield()
 	tWpcSliceStart = debugprofilestop()
 end
 
+-- [2026-07-06 build perf] Map->world coordinate transform cache. The build
+-- used to call CreateVector2D + C_Map.GetWorldPosFromMapPos once PER SPAWN
+-- (~145k allocations + C calls; profiling showed the creature pass at ~40%
+-- of the build). The map->world mapping is an axis-aligned affine transform
+-- per uiMapId, so derive it from 3 probe calls, VERIFY it against a 4th
+-- probe at the map center, and compute every spawn arithmetically. Any map
+-- that fails the probe check (not affine as assumed, or no world transform)
+-- falls back to the exact old per-spawn C call - correctness by
+-- construction, the shortcut only serves maps where it provably matches.
+local tWpcMapTransform = {}
+local tWpcProbeVec
+local function tWpcProbe(aUiMapId, aX, aY)
+	tWpcProbeVec = tWpcProbeVec or CreateVector2D(0, 0)
+	tWpcProbeVec.x = aX
+	tWpcProbeVec.y = aY
+	local _, tPos = C_Map.GetWorldPosFromMapPos(aUiMapId, tWpcProbeVec)
+	if tPos then return tPos:GetXY() end
+end
+local function tWpcDeriveTransform(aUiMapId)
+	local x00, y00 = tWpcProbe(aUiMapId, 0, 0)
+	local x10, y10 = tWpcProbe(aUiMapId, 1, 0)
+	local x01, y01 = tWpcProbe(aUiMapId, 0, 1)
+	if not (x00 and x10 and x01) then return false end
+	local t = {x00, x10 - x00, x01 - x00, y00, y10 - y00, y01 - y00}
+	local xC, yC = tWpcProbe(aUiMapId, 0.5, 0.5)
+	if not xC
+		or math.abs(t[1] + (t[2] + t[3]) * 0.5 - xC) > 0.05
+		or math.abs(t[4] + (t[5] + t[6]) * 0.5 - yC) > 0.05 then
+		return false
+	end
+	return t
+end
+local function tWpcWorldFromMap(aUiMapId, aRelX, aRelY)
+	local t = tWpcMapTransform[aUiMapId]
+	if t == nil then
+		t = tWpcDeriveTransform(aUiMapId)
+		tWpcMapTransform[aUiMapId] = t
+	end
+	if t == false then
+		return tWpcProbe(aUiMapId, aRelX, aRelY)
+	end
+	return t[1] + t[2] * aRelX + t[3] * aRelY, t[4] + t[5] * aRelX + t[6] * aRelY
+end
+
 function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	--print("CreateWaypointCache")
 
@@ -538,7 +582,6 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 		return
 	end
 
-	local C_MapGetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 	-- [DB rework lever A] the derived createdAt of all records built in this
 	-- pass (the old code stamped GetTime() per record during the same build)
 	tWpCacheBuildTime = GetTime()
@@ -584,29 +627,34 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	--add creatures
 	-- aWantCurrent: true = only spawns on the player's continent, false = only
 	-- the rest of the world, nil = everything in a single round.
+	-- [2026-07-06 build perf] repeated global chains hoisted to locals; the
+	-- per-spawn CreateVector2D + C_Map call replaced by tWpcWorldFromMap.
+	local tWpcNames = SkuDB.NpcData.Names[Sku.Loc]
+	local tWpcNpcData = SkuDB.NpcData.Data
+	local tWpcAreaTable = SkuDB.InternalAreaTable
 	local function tWpcAddCreatures(aWantCurrent)
-	for i, v in pairs(SkuDB.NpcData.Names[Sku.Loc]) do
-		if SkuDB.NpcData.Data[i] then
+	for i, v in pairs(tWpcNames) do
+		if tWpcNpcData[i] then
 			local tRoles
 			local tName
 			local tSubname
-			if SkuDB.NpcData.Names[Sku.Loc][i] then
-				tName = SkuDB.NpcData.Names[Sku.Loc][i][1]
-				tSubname = SkuDB.NpcData.Names[Sku.Loc][i][2]
+			if tWpcNames[i] then
+				tName = tWpcNames[i][1]
+				tSubname = tWpcNames[i][2]
 				tRoles = SkuNav:GetNpcRoles(v[1], i)
 			else
-				tName = SkuDB.NpcData.Data[i][1]
-				tSubname = SkuDB.NpcData.Data[i][14]
-				tRoles = SkuNav:GetNpcRoles(SkuDB.NpcData.Data[i][1], i)
-			end			
-			local tSpawns = SkuDB.NpcData.Data[i][7]
+				tName = tWpcNpcData[i][1]
+				tSubname = tWpcNpcData[i][14]
+				tRoles = SkuNav:GetNpcRoles(tWpcNpcData[i][1], i)
+			end
+			local tSpawns = tWpcNpcData[i][7]
 			if tSpawns then
 				if not sfind(slower(tName), "trigger") then
 					for is, vs in pairs(tSpawns) do
 						local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
 						--we don't care for stuff that isn't in the open world
 						if isUiMap then
-							local tData = SkuDB.InternalAreaTable[is]
+							local tData = tWpcAreaTable[is]
 							if tData and (aWantCurrent == nil or ((tData.ContinentID == tWpcCurrentContinent) == aWantCurrent)) then
 								local tNumberOfSpawns = #vs
 								--local tSubname = SkuDB.NpcData.Names[Sku.Loc][i][2]
@@ -623,9 +671,8 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 									tRolesString = tRolesString..";"..tSubname
 								end
 								for sp = 1, tNumberOfSpawns do
-									local _, worldPosition = C_MapGetWorldPosFromMapPos(isUiMap, CreateVector2D(vs[sp][1] / 100, vs[sp][2] / 100))
-									if worldPosition then
-										local tWorldX, tWorldY = worldPosition:GetXY()
+									local tWorldX, tWorldY = tWpcWorldFromMap(isUiMap, vs[sp][1] / 100, vs[sp][2] / 100)
+									if tWorldX then
 										local tNewIndex = #WaypointCache + 1
 										local tFinalName = tName..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
 										local tWpId = SkuNav:BuildWpIdFromData(2, i, sp, is)
@@ -659,31 +706,35 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	end
 
 	--add objects
+	-- [2026-07-06 build perf] same treatment as the creature pass: hoisted
+	-- locals (incl. the per-iteration SkuSettings:Sub call) + tWpcWorldFromMap.
+	local tWpcObjLookup = SkuDB.objectLookup[Sku.Loc]
+	local tWpcObjResNames = SkuDB.objectResourceNames[Sku.Loc]
+	local tWpcObjData = SkuDB.objectDataTBC
+	local tWpcShowGather = SkuSettings:Sub("SkuNav").showGatherWaypoints == true
 	local function tWpcAddObjects(aWantCurrent)
-		for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
+		for i, v in pairs(tWpcObjLookup) do
 			--we don't want stuff like ores, herbs, etc. as default
-			if not SkuDB.objectResourceNames[Sku.Loc][v] or SkuSettings:Sub("SkuNav").showGatherWaypoints == true then
-				if SkuDB.objectDataTBC[i] then
-					local tSpawns = SkuDB.objectDataTBC[i][4]
+			if not tWpcObjResNames[v] or tWpcShowGather then
+				if tWpcObjData[i] then
+					local tSpawns = tWpcObjData[i][4]
 					if tSpawns then
 						for is, vs in pairs(tSpawns) do
 							local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
 							--we don't care for stuff that isn't in the open world
 							if isUiMap then
-								local tData = SkuDB.InternalAreaTable[is]
+								local tData = tWpcAreaTable[is]
 								if tData and (aWantCurrent == nil or ((tData.ContinentID == tWpcCurrentContinent) == aWantCurrent)) then
 									local tNumberOfSpawns = #vs
 									for sp = 1, tNumberOfSpawns do
-										local _, worldPosition = C_Map.GetWorldPosFromMapPos(isUiMap, CreateVector2D(vs[sp][1] / 100, vs[sp][2] / 100))
-										if worldPosition then
-											local tWorldX, tWorldY = worldPosition:GetXY()
-			
+										local tWorldX, tWorldY = tWpcWorldFromMap(isUiMap, vs[sp][1] / 100, vs[sp][2] / 100)
+										if tWorldX then
 											local tNewIndex = #WaypointCache + 1
 
 											local tRessourceType = ""
-											if SkuDB.objectResourceNames[Sku.Loc][v] == 1 then
+											if tWpcObjResNames[v] == 1 then
 												tRessourceType = ";"..L["herbalism"]
-											elseif SkuDB.objectResourceNames[Sku.Loc][v] == 2 then
+											elseif tWpcObjResNames[v] == 2 then
 												tRessourceType = ";"..L["mining"]
 											end
 
@@ -937,17 +988,24 @@ function SkuNav:LoadLinkDataFromProfile()
 			else
 			local tSourceWpName = WaypointCache[tSourceWpIdx].name
 
-			if WaypointCacheLookupAll[tSourceWpName] then
+			-- [2026-07-06 build perf] the canonical record and its byId/byName
+			-- tables are loop-invariant - resolved once instead of two full
+			-- lookup chains per link (~215k directed links every login).
+			local tSourceCanonIdx = WaypointCacheLookupAll[tSourceWpName]
+			if tSourceCanonIdx then
 				-- [DB rework lever B] materialize the real per-record wrapper here
 				-- (records no longer carry one until they actually have links)
-				WaypointCache[WaypointCacheLookupAll[tSourceWpName]].links = {byId = {}, byName = {}}
+				local tLinks = {byId = {}, byName = {}}
+				WaypointCache[tSourceCanonIdx].links = tLinks
+				local tByName, tById = tLinks.byName, tLinks.byId
 				for tTargetWpID, tTargetWpDistance in pairs(tSourceWpLinks) do
 					local tTargetWpIdx = WaypointCacheLookupIdForCacheIndex[tTargetWpID]
 					if tTargetWpIdx then
 					local tTargetWpName = WaypointCache[tTargetWpIdx].name
-					if WaypointCacheLookupAll[tTargetWpName] then
-						WaypointCache[WaypointCacheLookupAll[tSourceWpName]].links.byName[tTargetWpName] = tTargetWpDistance
-						WaypointCache[WaypointCacheLookupAll[tSourceWpName]].links.byId[WaypointCacheLookupAll[tTargetWpName]] = tTargetWpDistance
+					local tTargetCanonIdx = WaypointCacheLookupAll[tTargetWpName]
+					if tTargetCanonIdx then
+						tByName[tTargetWpName] = tTargetWpDistance
+						tById[tTargetCanonIdx] = tTargetWpDistance
 					end
 					end
 				end
@@ -990,53 +1048,68 @@ end
 function SkuNav:CheckAndUpdateProfileLinkData()
 	local tDeletedCounter = 0
 
-	if SkuDB.SessionRouteData.Links then
-		for tSourceWpID, tSourceWpLinks in pairs(SkuDB.SessionRouteData.Links) do
+	-- [2026-07-06 build perf] the Links table and the per-id index lookups are
+	-- hoisted to locals (the table itself is never replaced inside this
+	-- function, only mutated) - this loop touches every directed link every
+	-- login and repeated the same global chains several times per link.
+	local tLinks = SkuDB.SessionRouteData.Links
+	if tLinks then
+		for tSourceWpID, tSourceWpLinks in pairs(tLinks) do
 			tWpcYield()
-			if not WaypointCacheLookupIdForCacheIndex[tSourceWpID] then
+			local tSourceWpIdx = WaypointCacheLookupIdForCacheIndex[tSourceWpID]
+			if not tSourceWpIdx then
 				-- [Load-perf 2026-07-05] counted + summarised below instead of one
 				-- dprint per stale link (thousands per login flooded the ring)
-				SkuDB.SessionRouteData.Links[tSourceWpID] = nil
+				tLinks[tSourceWpID] = nil
 				tDeletedCounter = tDeletedCounter + 1
 			else
-				local tSourceWpName = WaypointCache[WaypointCacheLookupIdForCacheIndex[tSourceWpID]].name
+				local tSourceWpName = WaypointCache[tSourceWpIdx].name
 				if SkuNav:GetWaypointData2(tSourceWpName) then
 					for tTargetWpID, tTargetWpDistance in pairs(tSourceWpLinks) do
-						if not WaypointCacheLookupIdForCacheIndex[tTargetWpID] then
-							SkuDB.SessionRouteData.Links[tSourceWpID][tTargetWpID] = nil
+						local tTargetWpIdx = WaypointCacheLookupIdForCacheIndex[tTargetWpID]
+						if not tTargetWpIdx then
+							tSourceWpLinks[tTargetWpID] = nil
 							tDeletedCounter = tDeletedCounter + 1
 						else
-							local tTargetWpName = WaypointCache[WaypointCacheLookupIdForCacheIndex[tTargetWpID]].name					
+							local tTargetWpName = WaypointCache[tTargetWpIdx].name
 							if tSourceWpName == tTargetWpName then
-								SkuDB.SessionRouteData.Links[tSourceWpID][tTargetWpID] = nil
+								tSourceWpLinks[tTargetWpID] = nil
 								--print("+++UPDATED deleted", tTargetWpName, "from", tSourceWpName, "because source was linked with self")
 							else
 								if SkuNav:GetWaypointData2(tTargetWpName) then
-									SkuDB.SessionRouteData.Links[tTargetWpID] = SkuDB.SessionRouteData.Links[tTargetWpID] or {}
-									if not SkuDB.SessionRouteData.Links[tTargetWpID][tSourceWpID] then
+									local tBack = tLinks[tTargetWpID]
+									if not tBack then
+										tBack = {}
+										tLinks[tTargetWpID] = tBack
+									end
+									if not tBack[tSourceWpID] then
 										--print("+++UPDATED added", tSourceWpName, "to", tTargetWpName)
-										SkuDB.SessionRouteData.Links[tTargetWpID][tSourceWpID] = tTargetWpDistance
+										tBack[tSourceWpID] = tTargetWpDistance
 									end
 								else
 									--print("+++UPDATED deleted", tTargetWpName, "from", tSourceWpName, "because target does not exist")
-									SkuDB.SessionRouteData.Links[tSourceWpID][tTargetWpID] = nil
+									tSourceWpLinks[tTargetWpID] = nil
 									--print("  +++UPDATED deleted", tTargetWpName, "because target does not exist")
-									SkuDB.SessionRouteData.Links[tTargetWpID] = nil
+									tLinks[tTargetWpID] = nil
 								end
 							end
 						end
 					end
 				else
 					for tTargetWpID, tTargetWpDistance in pairs(tSourceWpLinks) do
-						local tTargetWpName = WaypointCache[WaypointCacheLookupIdForCacheIndex[tTargetWpID]].name										
-						SkuDB.SessionRouteData.Links[tTargetWpID] = SkuDB.SessionRouteData.Links[tTargetWpID] or {}
-						if not SkuDB.SessionRouteData.Links[tTargetWpID][tSourceWpID] then
+						local tTargetWpName = WaypointCache[WaypointCacheLookupIdForCacheIndex[tTargetWpID]].name
+						local tBack = tLinks[tTargetWpID]
+						if not tBack then
+							tBack = {}
+							tLinks[tTargetWpID] = tBack
+						end
+						if not tBack[tSourceWpID] then
 							--print("+++UPDATED deleted", tSourceWpName, "from", tTargetWpName, "because source does not exist")
-							SkuDB.SessionRouteData.Links[tTargetWpID][tSourceWpID] = nil
+							tBack[tSourceWpID] = nil
 						end
 					end
 					--print("  +++UPDATED delted", tSourceWpName, "because source does not exist")
-					SkuDB.SessionRouteData.Links[tSourceWpID] = nil
+					tLinks[tSourceWpID] = nil
 				end
 			end
 		end
@@ -1057,15 +1130,20 @@ function SkuNav:SaveLinkDataToProfile(aWpName)
 
 	else
 		SkuSettings:Sub("SkuNav").Links = nil
-		SkuDB.SessionRouteData.Links = {}
+		-- [2026-07-06 build perf] source id + tables hoisted out of the link
+		-- loop: the source's WaypointCacheGetIdForName derivation was repeated
+		-- for EVERY link (~215k times per login).
+		local tNewLinks = {}
+		SkuDB.SessionRouteData.Links = tNewLinks
 		for tSourceWpIndex, tSourceWpData in pairs(WaypointCache) do
 			tWpcYield()
-			if tSourceWpData.links then
-				if tSourceWpData.links.byId then
-					SkuDB.SessionRouteData.Links[WaypointCacheGetIdForName(tSourceWpData.name)] = {}
-					for twname, twdist in pairs(tSourceWpData.links.byName) do
-						SkuDB.SessionRouteData.Links[WaypointCacheGetIdForName(tSourceWpData.name)][WaypointCacheGetIdForName(twname)] = twdist
-					end
+			local tSourceLinks = tSourceWpData.links
+			if tSourceLinks and tSourceLinks.byId then
+				local tSourceId = WaypointCacheGetIdForName(tSourceWpData.name)
+				local tNew = {}
+				tNewLinks[tSourceId] = tNew
+				for twname, twdist in pairs(tSourceLinks.byName) do
+					tNew[WaypointCacheGetIdForName(twname)] = twdist
 				end
 			end
 		end
