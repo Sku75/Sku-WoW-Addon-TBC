@@ -10,7 +10,7 @@
 -- yet). Build time is recorded into the load timeline (Sku:MetricPoint) and the
 -- combat probes (Sku:Probe) so the construct cost is measurable separately from
 -- the file parse cost reported by /skuperf files.
-Sku.DeferredData = Sku.DeferredData or {registered = {}, ready = {}, failed = {}, buildMs = {}}
+Sku.DeferredData = Sku.DeferredData or {registered = {}, ready = {}, failed = {}, buildMs = {}, buildSteps = {}, buildWorkers = {}}
 
 -- aKey: logical dataset name. aBuilderNames: list of GLOBAL function names that,
 -- when called, construct the dataset's tables.
@@ -79,6 +79,57 @@ end
 -- scanner) cheaply skip a tick instead of forcing a blocking build mid-frame.
 function Sku:IsDataReady(aKey)
 	return Sku.DeferredData.ready[aKey] == true
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [W6-B #15] Post-login build-step registry (readiness scheduler).
+--
+-- Feature modules that need a build step to run once some SkuDB data families
+-- are ready register it HERE, instead of the DB loader (SkuDB/ChunkLoader.lua)
+-- hardcoding and reaching into their internals. That inverts the old upward
+-- coupling: families publish "ready" via the readiness flags above; each module
+-- owns its own build step; ChunkLoader is a generic scheduler that runs any
+-- registered step whose `after` families are all ready.
+--
+-- spec = {
+--   name  = "waypointCache",              -- for logging
+--   after = {"creatures", "objects"},     -- bare family names (skudb.<name> keys)
+--   once  = true,                         -- default true; false = stays armed and
+--                                         --   is re-evaluated every scheduler pass
+--                                         --   (e.g. a request that arrives late)
+--   run   = function(ctx) ... end,        -- the step body
+-- }
+-- ctx.yield()        -- frame-budget yield BETWEEN atomic sub-steps. NEVER call
+--                    --   it inside a pcall: Lua 5.1 cannot yield across a pcall
+--                    --   boundary (the 2026-07-06 instance-reload crash). A run
+--                    --   fn must pcall its own risky work and yield only at its
+--                    --   own top level, exactly as the tails did in-loader.
+-- ctx.fail(fam, msg) -- mark a data family failed + log + speak (per-family
+--                    --   failure isolation).
+function Sku:RegisterBuildStep(aSpec)
+	Sku.DeferredData.buildSteps[#Sku.DeferredData.buildSteps + 1] = aSpec
+end
+
+-- [W6-B #15] Shared post-login frame-budget arbiter. The two background build
+-- workers (the SkuDB chunk stream and the SkuNav waypoint-cache build) run as
+-- separate coroutines pumped on OnUpdate; they must split a fixed 150 ms/frame
+-- TOTAL ceiling (user-chosen; ~170 ms real frames stay menu-usable) while both
+-- are alive, and take the whole 150 alone. Previously each side peeked at the
+-- OTHER's coroutine/flag to decide its slice. Now each worker registers its OWN
+-- liveness probe and the arbiter counts the live ones, so neither names the
+-- other. Equivalent to the old logic: 2 live -> 75 each, 1 live -> 150.
+function Sku:RegisterBuildWorker(aName, aIsAliveFn)
+	Sku.DeferredData.buildWorkers[aName] = aIsAliveFn
+end
+
+function Sku:BuildFrameBudgetMs()
+	local tN = 0
+	for _, tAlive in pairs(Sku.DeferredData.buildWorkers) do
+		local tOk, tLive = pcall(tAlive)
+		if tOk and tLive then tN = tN + 1 end
+	end
+	if tN < 1 then tN = 1 end
+	return 150 / tN
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

@@ -474,17 +474,50 @@ local tWpcInBuild = false
 -- then calmer. At the old flat 10 ms the ~3 s of build work stretched to
 -- 5-10 s of wall time AFTER "Sku Datenbank bereit" was already spoken.
 local function tWpcBudgetMs()
-	-- [2026-07-06] Sku's post-login build budget is a fixed 150 ms/frame
-	-- TOTAL by explicit user choice (~170 ms real frames = the accepted
-	-- ceiling for menu responsiveness; a screen-reader user does not see the
-	-- ~6 fps). Split evenly with the SkuDB chunk stream while it still runs
-	-- (75 each - counterpart: SkuDBBudgetMs in SkuDB/ChunkLoader.lua), the
-	-- full 150 once the stream is done. Deliberately NO time-window fallback:
+	-- [W6-B #15] Sku's post-login build budget is a fixed 150 ms/frame TOTAL by
+	-- explicit user choice (~170 ms real frames = the accepted ceiling for menu
+	-- responsiveness; a screen-reader user does not see the ~6 fps). The shared
+	-- arbiter (Sku:BuildFrameBudgetMs) splits it evenly among the live build
+	-- workers - 75 while the SkuDB chunk stream also runs, the full 150 once it
+	-- is done - and this build registers itself as a worker below, so neither
+	-- side names the other's coroutine. Deliberately NO time-window fallback:
 	-- the build is bounded and always ends, and on slow machines a mid-build
-	-- drop to a 10 ms crawl multiplied the tail (measured: a 15 s window
-	-- barely covered an energy-save run).
-	if Sku.IsDataReady and Sku:IsDataReady("skudb") then return 150 end
-	return 75
+	-- drop to a 10 ms crawl multiplied the tail.
+	if Sku.BuildFrameBudgetMs then return Sku:BuildFrameBudgetMs() end
+	return 150
+end
+
+-- [W6-B #15] register the waypoint-cache build as a background build worker so
+-- the shared budget arbiter can split the frame budget. The probe references
+-- only SkuNav._wpcCo (this module's own coroutine).
+if Sku.RegisterBuildWorker then
+	Sku:RegisterBuildWorker("waypointCache", function()
+		return SkuNav._wpcCo ~= nil and coroutine.status(SkuNav._wpcCo) ~= "dead"
+	end)
+end
+
+-- [W6-B #15] register the deferred waypoint-cache trigger as a post-login build
+-- step owned by SkuNav (was hardcoded in SkuDB/ChunkLoader.lua). The cache
+-- passes iterate MERGED creature+object names, so it can only start once those
+-- two families are complete; the master sequence runs this the moment they are.
+-- Always async (see CreateWaypointCache): a synchronous build here would drain
+-- seconds inside one master slice. `once = false` keeps it armed so a request
+-- that arrives late (e.g. a profile switch mid-stream) is still picked up - the
+-- old end-of-sequence safety net. Self-guards on wpcPendingArgs (only fires if
+-- a build was actually deferred), so re-evaluation each pass is a cheap no-op.
+if Sku.RegisterBuildStep then
+	Sku:RegisterBuildStep({
+		name = "waypointCache",
+		after = {"creatures", "objects"},
+		once = false,
+		run = function()
+			if SkuNav.wpcPendingArgs then
+				local tArgs = SkuNav.wpcPendingArgs
+				SkuNav.wpcPendingArgs = nil
+				pcall(function() SkuNav:CreateWaypointCache(tArgs[1], true) end)
+			end
+		end,
+	})
 end
 -- [2026-07-06 build profiling] Per-phase work accounting: every yield closes
 -- the running time segment into the current phase's bucket, so the completed

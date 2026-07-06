@@ -1649,3 +1649,38 @@ function SkuQuest:ZONE_CHANGED_INDOORS(...)
 		SkuQuest:UpdateZoneAvailableQuestList()
 	end
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [W6-B #15] Post-login quest build tail, owned by SkuQuest (was hardcoded in
+-- SkuDB/ChunkLoader.lua). The streamed SkuDB init runs this the moment all four
+-- data families are ready. It requires ALL FOUR, not just quests:
+-- BuildQuestZoneCache chains quest objectives through itemDataTBC (unchecked,
+-- e.g. itemDataTBC[id][npcDrops]) - with a failed items family that chain hit a
+-- hole and crashed the tail (cascade seen on the instance /reload 2026-07-06).
+-- The scheduler only fires a step once its `after` families are READY (failed
+-- families never read ready), so a failed family skips the tail - quest
+-- features degrade honestly instead of crashing. ctx.yield() sits BETWEEN the
+-- pcall'd sub-steps (never inside one - Lua 5.1 cannot yield across a pcall).
+if Sku.RegisterBuildStep then
+	Sku:RegisterBuildStep({
+		name = "questTail",
+		after = {"quests", "creatures", "objects", "items"},
+		run = function(ctx)
+			-- zone cache + quest objects (was the end of the old
+			-- SkuQuest:PLAYER_LOGIN merge block)
+			local tOk, tErr = pcall(function()
+				SkuQuest:BuildQuestZoneCache()
+				SkuQuest:UpdateAllQuestObjects()
+			end)
+			if not tOk then ctx.fail("quests", "quest tail: " .. tostring(tErr)) end
+			ctx.yield()
+			-- silent quest-progress refresh so everything that ran guarded
+			-- during the stream window catches up
+			pcall(function() SkuQuest:CheckQuestProgress(true) end)
+			-- quest-marker beacons: their updater bailed out empty while the
+			-- stream was running (guard in GetUnsortedAvailableQuestsTable);
+			-- refresh once now instead of waiting for the next QUEST_LOG_UPDATE
+			pcall(function() SkuQuest:UpdateZoneAvailableQuestList() end)
+		end,
+	})
+end

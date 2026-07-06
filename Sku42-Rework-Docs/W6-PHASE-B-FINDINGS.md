@@ -21,9 +21,24 @@ Per-finding status:
   currently inert but harmless).
 - DELIBERATELY DEFERRED with reason: the "Local"-window descend-by-label paths
   (stable labels, dynamic window nodes, higher risk than reward).
-- STILL OPEN (not started): **#15** (ChunkLoader readiness registry — the risky
-  one, see its entry below for the yield-across-pcall crash landmine; note it is
-  maintainability-only, NOT a load-speed win), #17 (dispatcher xpcall — small,
+- DONE, committed, awaiting by-ear + instance-/reload verify: **#15**
+  (ChunkLoader readiness registry, the risky one). Inverted: added
+  `Sku:RegisterBuildStep{name,after,once,run}` + a generic scheduler
+  `SkuDBRunReadySteps` in ChunkLoader (runs each step after every family and
+  once at the end, firing it the moment its `after` families are ready). The
+  three hardcoded tails moved into their owning modules — SkuNav's wpc trigger
+  (once=false, self-guards on wpcPendingArgs, keeps the late-request safety
+  net), SkuQuest's quest tail (after all four families, ctx.yield between the
+  pcall'd sub-steps), SkuAuras's value lists (after items+spells). Budget:
+  unified via `Sku:RegisterBuildWorker(name, isAliveFn)` +
+  `Sku:BuildFrameBudgetMs()` (150 / live-worker count) — each side owns its own
+  liveness probe, so neither names the other's coroutine. The yield-across-pcall
+  landmine is preserved (steps pcall their own work, ctx.yield only at top
+  level). Behavior-preserving; only harmless timing shift = the quest tail now
+  fires after the items family instead of after spells (verified no spell dep in
+  BuildQuestZoneCache/UpdateAllQuestObjects). Registry infra lives in
+  SkuDeferredData.lua (loads before all consumers).
+- STILL OPEN (not started): #17 (dispatcher xpcall — small,
   safe), Phase C #18/#19/#20 + the per-file pass, Bugs 3 & 4 (minor).
 
 Original approval-gate text follows.

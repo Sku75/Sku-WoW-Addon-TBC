@@ -13,11 +13,18 @@
 -- fix functions -> run that family's WotLK/SoD merge (sliced) -> set the
 -- readiness flag Sku:IsDataReady("skudb.<family>"). Consumers therefore never
 -- see pre-merge data (risk A8) - a family is either absent-but-guarded or
--- complete INCLUDING its merge. After the objects family the deferred
--- waypoint-cache build starts (it reads merged creature+object names); after
--- all families the quest zone cache + quest objects tail runs, the global
--- "skudb" flag is set, ONE readiness line is spoken, the SkuAuras value lists
--- build, and a forced GC returns the build garbage.
+-- complete INCLUDING its merge.
+--
+-- [W6-B #15] Per-module post-login build steps (the waypoint-cache trigger,
+-- the quest zone-cache tail, the SkuAuras value lists) are NOT hardcoded here
+-- anymore. Each owning module registers its step via Sku:RegisterBuildStep
+-- with the data families it depends on; this loader is a generic scheduler
+-- (SkuDBRunReadySteps) that runs each step as soon as its families are ready
+-- (after every family, and once at the end). So SkuNav's cache fires the moment
+-- creatures+objects merge, the quest tail once all four families are up, and
+-- the aura lists once items+spells are up - without this file knowing their
+-- construction order or private pending-flags. Then the global "skudb" flag is
+-- set and a forced GC returns the build garbage.
 --
 -- Failure semantics (risk A10): every chunk, fix and merge step runs under
 -- pcall. A failure marks the family FAILED (flag never set - consumers keep
@@ -78,19 +85,27 @@ SkuDBStreamFrame:Hide()
 local SkuDBStreamCo = nil
 local SkuDBFrameStart = 0
 
--- [2026-07-06] Sku's post-login build budget is a fixed 150 ms/frame TOTAL
--- (user-chosen ceiling; ~170 ms real frames keep menus usable), split evenly
--- between the two background workers while both run: the stream takes 75
--- while the waypoint-cache build shares the frame, the full 150 alone
--- (phase 1: creatures+objects before the wpc build can start, and again if
--- the wpc build finishes first). Counterpart: tWpcBudgetMs in SkuNav/Core.lua.
--- No time-window crawl: the work is bounded and CPU-scaled - the old
--- 8 s / 10 ms fallback stretched slow machines mid-build (same reasoning as
--- the wpc crawl removal, commit e4acaa7).
+-- [W6-B #15] Post-login build frame budget: a fixed 150 ms/frame TOTAL
+-- (user-chosen ceiling; ~170 ms real frames keep menus usable) split evenly
+-- among the LIVE background build workers via the shared arbiter
+-- (Sku:BuildFrameBudgetMs). Each worker owns its own liveness probe, so this
+-- loader no longer names SkuNav's waypoint-cache coroutine (and vice-versa) -
+-- the split still works out to 75 each while both run, 150 alone. No
+-- time-window crawl: the work is bounded and CPU-scaled - the old 8 s / 10 ms
+-- fallback stretched slow machines mid-build (same reasoning as the wpc crawl
+-- removal, commit e4acaa7).
 local function SkuDBBudgetMs()
-	local tWpcCo = SkuNav and SkuNav._wpcCo
-	if tWpcCo and coroutine.status(tWpcCo) ~= "dead" then return 75 end
+	if Sku.BuildFrameBudgetMs then return Sku:BuildFrameBudgetMs() end
 	return 150
+end
+
+-- [W6-B #15] register this loader's stream coroutine as a background build
+-- worker so the shared arbiter can split the frame budget. The probe references
+-- only SkuDBStreamCo (this file's own coroutine).
+if Sku.RegisterBuildWorker then
+	Sku:RegisterBuildWorker("skudbStream", function()
+		return SkuDBStreamCo ~= nil and coroutine.status(SkuDBStreamCo) ~= "dead"
+	end)
 end
 
 local function SkuDBMaybeYield()
@@ -254,6 +269,41 @@ local SkuDBFamilySteps = {
 	},
 }
 
+-- [W6-B #15] Generic build-step scheduler. Runs any module-registered step
+-- (Sku:RegisterBuildStep) whose `after` data families are all ready. Called
+-- after every family completes AND once at the end of the sequence, so a step
+-- fires as soon as its dependencies exist. The context object hands each step
+-- the master coroutine's frame-budget yield and the per-family failure path
+-- WITHOUT the step needing this file's locals - so the owning module can hold
+-- its own build tail. SkuDBBuildCtx.yield/fail are the module-locals declared
+-- above (both plain functions; a step calls ctx.yield() / ctx.fail(fam, msg)).
+local SkuDBBuildCtx = {yield = SkuDBMaybeYield, fail = SkuDBFail}
+
+local function SkuDBRunReadySteps()
+	local tSteps = Sku.DeferredData and Sku.DeferredData.buildSteps
+	if not tSteps then return end
+	for i = 1, #tSteps do
+		local tStep = tSteps[i]
+		if not tStep._done then
+			local tReady = true
+			for _, tFam in ipairs(tStep.after) do
+				if not Sku:IsDataReady("skudb." .. tFam) then
+					tReady = false
+					break
+				end
+			end
+			if tReady then
+				-- run() is NOT pcall-wrapped here (a step must pcall its own
+				-- risky work and yield only at its top level - Lua 5.1 cannot
+				-- yield across a pcall boundary). Trivial orchestration only.
+				tStep.run(SkuDBBuildCtx)
+				if tStep.once ~= false then tStep._done = true end
+				SkuDBMaybeYield()
+			end
+		end
+	end
+end
+
 local function SkuDBMasterSequence()
 	local tT0 = debugprofilestop()
 	for _, tFam in ipairs(FAMILY_ORDER) do
@@ -280,42 +330,21 @@ local function SkuDBMasterSequence()
 				end
 			end
 		end
-		-- the waypoint-cache build reads MERGED creature+object names; start
-		-- the deferred one as soon as those two families are complete. Always
-		-- async: the original caller returned long ago, and a synchronous
-		-- build here would drain seconds inside one master slice.
-		if tFam == "objects" and SkuNav and SkuNav.wpcPendingArgs
-			and Sku:IsDataReady("skudb.creatures") and Sku:IsDataReady("skudb.objects") then
-			local tArgs = SkuNav.wpcPendingArgs
-			SkuNav.wpcPendingArgs = nil
-			pcall(function() SkuNav:CreateWaypointCache(tArgs[1], true) end)
-		end
+		-- [W6-B #15] run any registered build step whose families just became
+		-- ready (e.g. SkuNav's waypoint-cache trigger the moment creatures+
+		-- objects are merged - it reads their names). The loader no longer
+		-- knows those modules' construction order or private pending-flags.
+		SkuDBRunReadySteps()
 		SkuDBMaybeYield()
 	end
 
-	-- quest tail (was the end of the old SkuQuest:PLAYER_LOGIN merge block):
-	-- zone cache + quest objects, then a silent quest-progress refresh so
-	-- everything that ran guarded during the stream window catches up.
-	-- Requires ALL FOUR data families, not just quests: BuildQuestZoneCache
-	-- chains quest objectives through itemDataTBC (unchecked, e.g.
-	-- itemDataTBC[id][npcDrops]) - with a failed items family that chain hit
-	-- a hole and crashed the tail (cascade seen on the instance /reload
-	-- 2026-07-06). If a family failed, the tail is skipped: quest features
-	-- degrade honestly instead of crashing.
-	if SkuQuest and Sku:IsDataReady("skudb.quests") and Sku:IsDataReady("skudb.creatures")
-		and Sku:IsDataReady("skudb.objects") and Sku:IsDataReady("skudb.items") then
-		local tOk, tErr = pcall(function()
-			SkuQuest:BuildQuestZoneCache()
-			SkuQuest:UpdateAllQuestObjects()
-		end)
-		if not tOk then SkuDBFail("quests", "quest tail: " .. tostring(tErr)) end
-		SkuDBMaybeYield()
-		pcall(function() SkuQuest:CheckQuestProgress(true) end)
-		-- quest-marker beacons: their updater bailed out empty while the
-		-- stream was running (guard in GetUnsortedAvailableQuestsTable);
-		-- refresh once now instead of waiting for the next QUEST_LOG_UPDATE
-		pcall(function() SkuQuest:UpdateZoneAvailableQuestList() end)
-	end
+	-- [W6-B #15] final scheduler pass: catch any step whose families only
+	-- became ready at the very end, plus re-armed steps (SkuNav's wpc safety
+	-- net for a request that arrived after its families were built). The quest
+	-- tail (all four families) and the SkuAuras value lists (items+spells)
+	-- normally already fired in-loop the moment their families completed; each
+	-- lives in its owning module now (SkuQuest / SkuAuras / SkuNav).
+	SkuDBRunReadySteps()
 
 	-- global readiness: everything incl. merges is in place
 	local tAllReady = true
@@ -331,24 +360,9 @@ local function SkuDBMasterSequence()
 			SkuDB.chunkLoad.ms, SkuDB.chunkLoad.chunks, tostring(tAllReady)))
 	end
 
-	-- SkuAuras value lists (iterate items+spells wholesale; would have been
-	-- silently EMPTY if built before readiness - risk A7's dangerous case)
-	if SkuAuras and SkuAuras.attributeListsPending and Sku:IsDataReady("skudb.items") and Sku:IsDataReady("skudb.spells") then
-		SkuAuras.attributeListsPending = nil
-		local tOk, tErr = pcall(function() SkuAuras:BuildAttributeValueLists() end)
-		if not tOk then SkuDBFail("spells", "aura lists: " .. tostring(tErr)) end
-	end
-	SkuDBMaybeYield()
-
-	-- safety net: a waypoint-cache request that arrived while the sequence was
-	-- already past the objects trigger (unusual event ordering, e.g. a profile
-	-- switch mid-stream) would otherwise stay deferred forever
-	if SkuNav and SkuNav.wpcPendingArgs
-		and Sku:IsDataReady("skudb.creatures") and Sku:IsDataReady("skudb.objects") then
-		local tArgs = SkuNav.wpcPendingArgs
-		SkuNav.wpcPendingArgs = nil
-		pcall(function() SkuNav:CreateWaypointCache(tArgs[1], true) end)
-	end
+	-- [W6-B #15] the SkuAuras value lists and the SkuNav wpc safety net that
+	-- used to sit here now run through SkuDBRunReadySteps() above (registered
+	-- by their owning modules).
 
 	-- readiness is LOGGED, not spoken (2026-07-06: the voice line was reload
 	-- spam; failures below still speak). The moment stays visible in the

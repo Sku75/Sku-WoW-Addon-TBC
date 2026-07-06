@@ -1936,3 +1936,27 @@ function SkuAuras:ActionButtonUsable(aActionID)
 
 	return true
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [W6-B #15] Post-login aura value-lists build step, owned by SkuAuras (was
+-- hardcoded in SkuDB/ChunkLoader.lua). BuildAttributeValueLists iterates the
+-- items+spells data wholesale, so built before those families are ready it
+-- comes out silently EMPTY (plan risk A7's dangerous case) - the streamed init
+-- runs it the moment both families are ready. Self-guards on
+-- attributeListsPending (set by PLAYER_ENTERING_WORLD when the data was not yet
+-- ready at login): if PEW already built the lists this session, the flag is nil
+-- and this is a no-op. Single pcall, no internal yield (BuildAttributeValueLists
+-- is one bounded slice, as it was when it lived in the loader).
+if Sku.RegisterBuildStep then
+	Sku:RegisterBuildStep({
+		name = "auraValueLists",
+		after = {"items", "spells"},
+		run = function(ctx)
+			if SkuAuras.attributeListsPending then
+				SkuAuras.attributeListsPending = nil
+				local tOk, tErr = pcall(function() SkuAuras:BuildAttributeValueLists() end)
+				if not tOk then ctx.fail("spells", "aura lists: " .. tostring(tErr)) end
+			end
+		end,
+	})
+end
