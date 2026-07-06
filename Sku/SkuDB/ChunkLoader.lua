@@ -76,13 +76,21 @@ end
 local SkuDBStreamFrame = CreateFrame("Frame")
 SkuDBStreamFrame:Hide()
 local SkuDBStreamCo = nil
-local SkuDBStreamStartedAt = 0
 local SkuDBFrameStart = 0
 
--- generous budget right after login (the user is still orienting), calmer
--- afterwards
+-- [2026-07-06] Sku's post-login build budget is a fixed 150 ms/frame TOTAL
+-- (user-chosen ceiling; ~170 ms real frames keep menus usable), split evenly
+-- between the two background workers while both run: the stream takes 75
+-- while the waypoint-cache build shares the frame, the full 150 alone
+-- (phase 1: creatures+objects before the wpc build can start, and again if
+-- the wpc build finishes first). Counterpart: tWpcBudgetMs in SkuNav/Core.lua.
+-- No time-window crawl: the work is bounded and CPU-scaled - the old
+-- 8 s / 10 ms fallback stretched slow machines mid-build (same reasoning as
+-- the wpc crawl removal, commit e4acaa7).
 local function SkuDBBudgetMs()
-	return (GetTime() - SkuDBStreamStartedAt) < 8 and 30 or 10
+	local tWpcCo = SkuNav and SkuNav._wpcCo
+	if tWpcCo and coroutine.status(tWpcCo) ~= "dead" then return 75 end
+	return 150
 end
 
 local function SkuDBMaybeYield()
@@ -405,7 +413,6 @@ end)
 SkuDBStreamFrame:RegisterEvent("PLAYER_LOGIN")
 SkuDBStreamFrame:SetScript("OnEvent", function()
 	if SkuDBStreamCo then return end -- already running (idempotent)
-	SkuDBStreamStartedAt = GetTime()
 	SkuDBStreamCo = coroutine.create(SkuDBMasterSequence)
 	SkuDBStreamFrame:Show()
 end)

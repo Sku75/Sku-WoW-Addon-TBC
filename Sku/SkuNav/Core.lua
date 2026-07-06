@@ -474,18 +474,17 @@ local tWpcInBuild = false
 -- then calmer. At the old flat 10 ms the ~3 s of build work stretched to
 -- 5-10 s of wall time AFTER "Sku Datenbank bereit" was already spoken.
 local function tWpcBudgetMs()
-	-- Once the SkuDB chunk stream is done this build is the only heavy worker
-	-- left and route readiness is what the user is actually waiting for.
-	-- [2026-07-06 option 1] 150 ms/frame by explicit user choice: the game
-	-- runs choppy (~6 fps) for those seconds, which a screen-reader user does
-	-- not see, and wall time approaches the pure work time (~3.8 s full power,
-	-- ~8.4 s on an energy-save laptop). Deliberately NO time-window fallback
-	-- here: the build is bounded and always ends, and on slow machines a
-	-- mid-build drop to a 10 ms crawl multiplied the tail (measured: the 15 s
-	-- window barely covered an energy-save run). While the stream still shares
-	-- the frame, stay at 30 so quests/items/spells are not starved.
+	-- [2026-07-06] Sku's post-login build budget is a fixed 150 ms/frame
+	-- TOTAL by explicit user choice (~170 ms real frames = the accepted
+	-- ceiling for menu responsiveness; a screen-reader user does not see the
+	-- ~6 fps). Split evenly with the SkuDB chunk stream while it still runs
+	-- (75 each - counterpart: SkuDBBudgetMs in SkuDB/ChunkLoader.lua), the
+	-- full 150 once the stream is done. Deliberately NO time-window fallback:
+	-- the build is bounded and always ends, and on slow machines a mid-build
+	-- drop to a 10 ms crawl multiplied the tail (measured: a 15 s window
+	-- barely covered an energy-save run).
 	if Sku.IsDataReady and Sku:IsDataReady("skudb") then return 150 end
-	return 30
+	return 75
 end
 -- [2026-07-06 build profiling] Per-phase work accounting: every yield closes
 -- the running time segment into the current phase's bucket, so the completed
