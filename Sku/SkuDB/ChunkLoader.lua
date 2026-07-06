@@ -261,6 +261,10 @@ local function SkuDBMasterSequence()
 		if not tOk then SkuDBFail("quests", "quest tail: " .. tostring(tErr)) end
 		SkuDBMaybeYield()
 		pcall(function() SkuQuest:CheckQuestProgress(true) end)
+		-- quest-marker beacons: their updater bailed out empty while the
+		-- stream was running (guard in GetUnsortedAvailableQuestsTable);
+		-- refresh once now instead of waiting for the next QUEST_LOG_UPDATE
+		pcall(function() SkuQuest:UpdateZoneAvailableQuestList() end)
 	end
 
 	-- global readiness: everything incl. merges is in place

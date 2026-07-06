@@ -1547,6 +1547,17 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:UpdateZoneAvailableQuestList(aForce)
+	-- [DB rework stage 3] The whole quest-marker path chains through quest,
+	-- creature, object AND item data (GetUnsortedAvailableQuestsTable,
+	-- GetQuestTargetIds, GetResultingWps). Skip cheaply until those families
+	-- are streamed+merged; the master sequence calls this once at the end of
+	-- its quest tail, and QUEST_LOG_UPDATE re-fires it naturally afterwards.
+	-- (Checks the four family flags, NOT the global "skudb" flag: the master
+	-- tail runs before the global flag is set.)
+	if not (Sku:IsDataReady("skudb.quests") and Sku:IsDataReady("skudb.creatures")
+		and Sku:IsDataReady("skudb.objects") and Sku:IsDataReady("skudb.items")) then
+		return
+	end
 	SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons = SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons or {}
 	SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons.activeBeaconsIgnore = SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons.activeBeaconsIgnore or {}
 

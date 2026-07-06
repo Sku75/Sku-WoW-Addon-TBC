@@ -941,6 +941,15 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, aOnly3, aOnlyUiMapId)
 	--dprint("GetResultingWps", aSubIDTable, aSubType, aQuestID, tResultWPs, aOnly3)
+	-- [DB rework stage 3] Resolves item/creature/object chains with UNCHECKED
+	-- chained indexing (e.g. itemDataTBC[id][objectDrops] at the top of the
+	-- item branch). While the streamed init has not finished those families
+	-- the chain head is nil -> crash. Bail out; tResultWPs stays empty and
+	-- callers re-run on their next natural trigger (menu reopen,
+	-- QUEST_LOG_UPDATE, the master's post-stream refresh).
+	if not (Sku:IsDataReady("skudb.creatures") and Sku:IsDataReady("skudb.objects") and Sku:IsDataReady("skudb.items")) then
+		return
+	end
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 	local tCurrentAreaId = SkuNav:GetCurrentAreaId()
 	if aSubType == "item" then
@@ -1763,6 +1772,17 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:GetUnsortedAvailableQuestsTable()
+	-- [DB rework stage 3] Cross-family reads: this resolves quest startedBy
+	-- ids through NpcData.Data and objectDataTBC (chained indexing, e.g.
+	-- NpcData.Data[npcId][zoneID]). In the streamed-init window "quests ready,
+	-- creatures/objects not yet" that chain crashes (BugSack error on every
+	-- load, seen 2026-07-06). Bail out empty instead: QUEST_LOG_UPDATE fires
+	-- again soon and the master sequence runs a CheckQuestProgress refresh
+	-- after the quest tail, so the lists catch up within seconds.
+	if not (Sku:IsDataReady("skudb.quests") and Sku:IsDataReady("skudb.creatures") and Sku:IsDataReady("skudb.objects")) then
+		tCurrentQuestLogQuestsTable = {}
+		return {}, {}, tCurrentQuestLogQuestsTable
+	end
 	local tUiMap = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
 	local tPlayX, tPlayY = UnitPosition("player")
 	local tShowQuestsTable = {}
