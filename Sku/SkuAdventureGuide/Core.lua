@@ -162,8 +162,9 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide:PLAYER_LOGIN(...)
-	SkuOptions.db.global[MODULE_NAME] = SkuOptions.db.global[MODULE_NAME] or {}
-	SkuOptions.db.global[MODULE_NAME].seenLinksHistory = SkuOptions.db.global[MODULE_NAME].seenLinksHistory or {}
+	-- seenLinksHistory is a global-scope runtime store (W6-B #6: own access via
+	-- the SkuSettings facade; Sub creates the subtable, replacing the `or {}` idiom).
+	SkuSettings:Sub(MODULE_NAME, "seenLinksHistory", "global")
 
 	--we're building an additional lookup table that is sorted by link lenght; we will need that for efficient free text search
 	local tSortedLookup = {}
@@ -226,12 +227,14 @@ function SkuAdventureGuide:AddLinkToHistory(aLinkName)
 	end
 
 	--play link notification if this account hasn't seen this link
-	if not SkuOptions.db.global[MODULE_NAME].seenLinksHistory[tLinkNameLower] or SkuOptions.db.profile["SkuAdventureGuide"].history.ignoreSeenLinks == false then
-		SkuOptions.db.global[MODULE_NAME].seenLinksHistory[tLinkNameLower] = true
+	local tSeenLinks = SkuSettings:Sub(MODULE_NAME, "seenLinksHistory", "global")
+	local tHistory = SkuSettings:Sub(MODULE_NAME, "history")
+	if not tSeenLinks[tLinkNameLower] or tHistory.ignoreSeenLinks == false then
+		tSeenLinks[tLinkNameLower] = true
 		if SkuOptions.TTS:IsVisible() ~= true then
 			if tSkuAdventureGuideOutputBlocker == false then
 				tSkuAdventureGuideOutputBlocker = true
-				SkuAdventureGuide:PlaySound(SkuAdventureGuide.HistoryNotifySounds[SkuOptions.db.profile["SkuAdventureGuide"].history.soundOnNewLinkInHistory])
+				SkuAdventureGuide:PlaySound(SkuAdventureGuide.HistoryNotifySounds[tHistory.soundOnNewLinkInHistory])
 				C_Timer.After(0.1, function() 
 					tSkuAdventureGuideOutputBlocker = false 
 				end)

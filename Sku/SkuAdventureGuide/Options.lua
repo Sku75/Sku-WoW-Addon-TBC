@@ -1,7 +1,11 @@
-﻿local MODULE_NAME = "SkuAdventureGuide"
+local MODULE_NAME = "SkuAdventureGuide"
 local L = Sku.L
-local slower = string.lower	
+local slower = string.lower
 
+-- W6-B #6: migrated onto the W1/W2 settings pattern (the last module that had
+-- skipped it). Leaf nodes carry no inline get/set — the SkuSettings:Register
+-- schema below is the source of truth, and MenuBuilder passes the module name so
+-- IterateOptionsArgs auto-manages get/set through SkuSettings (skuManaged).
 SkuAdventureGuide.options = {
 	name = MODULE_NAME,
 	type = "group",
@@ -11,12 +15,6 @@ SkuAdventureGuide.options = {
 			name = L["Bullet lists as numbers"],
 			desc = "",
 			type = "toggle",
-			set = function(info, val) 
-				SkuOptions.db.profile[MODULE_NAME].formatEnumsInArticles = val
-			end,
-			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].formatEnumsInArticles
-			end,
 		},
 		history = {
 			order = 2,
@@ -29,24 +27,12 @@ SkuAdventureGuide.options = {
 					desc = "",
 					type = "select",
 					values = SkuAdventureGuide.HistoryNotifySounds,
-					set = function(info, val) 
-						SkuOptions.db.profile[MODULE_NAME].history.soundOnNewLinkInHistory = val
-					end,
-					get = function(info) 
-						return SkuOptions.db.profile[MODULE_NAME].history.soundOnNewLinkInHistory
-					end,
 				},
 				ignoreSeenLinks = {
 					order = 2,
 					name = L["Do not add seen links in history"],
 					desc = "",
 					type = "toggle",
-					set = function(info, val) 
-						SkuOptions.db.profile[MODULE_NAME].history.ignoreSeenLinks = val
-					end,
-					get = function(info) 
-						return SkuOptions.db.profile[MODULE_NAME].history.ignoreSeenLinks
-					end,
 				},
 			},
 		},
@@ -60,12 +46,6 @@ SkuAdventureGuide.options = {
 					name = L["List links in tooltips"],
 					desc = "",
 					type = "toggle",
-					set = function(info, val) 
-						SkuOptions.db.profile[MODULE_NAME].links.enableLinksInTooltips = val
-					end,
-					get = function(info) 
-						return SkuOptions.db.profile[MODULE_NAME].links.enableLinksInTooltips
-					end,
 				},
 				tooltipLinksIndicator = {
 					order = 2,
@@ -73,12 +53,6 @@ SkuAdventureGuide.options = {
 					desc = "",
 					type = "select",
 					values = SkuAdventureGuide.tooltipLinksIndicatorValues,
-					set = function(info, val) 
-						SkuOptions.db.profile[MODULE_NAME].links.tooltipLinksIndicator = val
-					end,
-					get = function(info) 
-						return SkuOptions.db.profile[MODULE_NAME].links.tooltipLinksIndicator
-					end,
 				},
 				--[[
 				globalLinkListOnly = {
@@ -86,10 +60,10 @@ SkuAdventureGuide.options = {
 					name = L["Only global link list in last line"],
 					desc = "",
 					type = "toggle",
-					set = function(info, val) 
+					set = function(info, val)
 						SkuOptions.db.profile[MODULE_NAME].links.globalLinkListOnly = val
 					end,
-					get = function(info) 
+					get = function(info)
 						return SkuOptions.db.profile[MODULE_NAME].links.globalLinkListOnly
 					end,
 				},
@@ -112,6 +86,17 @@ SkuAdventureGuide.defaults = {
 		--globalLinkListOnly = false,
 	},
 }
+
+-- Flat schema (dotted keys mirror the nested args) — the authoritative
+-- scope/default/type for each key. All profile scope (the seenLinksHistory
+-- runtime store is global and not a menu setting, so it is not registered here).
+SkuSettings:Register(MODULE_NAME, {
+	["formatEnumsInArticles"]            = { scope = "profile", type = "boolean", default = true },
+	["history.soundOnNewLinkInHistory"]  = { scope = "profile", type = "string",  default = "sound-notification15" },
+	["history.ignoreSeenLinks"]          = { scope = "profile", type = "boolean", default = true },
+	["links.enableLinksInTooltips"]      = { scope = "profile", type = "boolean", default = true },
+	["links.tooltipLinksIndicator"]      = { scope = "profile", type = "string",  default = "word" },
+})
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide:MenuBuilder(aParentEntry)
@@ -178,7 +163,5 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.sorting = true
-	SkuOptions:IterateOptionsArgs(SkuAdventureGuide.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
+	SkuOptions:IterateOptionsArgs(SkuAdventureGuide.options.args, tNewMenuEntry, SkuSettings:Sub(MODULE_NAME), MODULE_NAME)
 end
-
-
