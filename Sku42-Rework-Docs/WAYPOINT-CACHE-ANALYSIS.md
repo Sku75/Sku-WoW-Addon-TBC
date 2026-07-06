@@ -492,6 +492,42 @@ to hand-wiring, the free block disappears, next /reload rebuilds
 everything from the unchanged data files. wotlkMapReset=true written by
 the redirected branch is the same value the old branch wrote.
 
+## Build-time profiling + work reduction (2026-07-06 evening, test PENDING)
+
+Route readiness after login is bounded by the waypoint-cache build's pure
+WORK (scheduling was fixed separately: 150 ms/frame once the chunk stream
+is done, no time-window crawl - commits fb3ce0a/e4acaa7; energy-save mode
+scales ALL work uniformly ~2.2-2.4x, that is the CPU clock, not Sku).
+Per-phase profiling added to the build (segments closed into buckets at
+every yield; result in SkuDebugLog.wpcResult). Measured split, full power,
+fresh login, 3383.7 ms total: creatures 1365, objects 274, custom 289,
+links 1455 - creatures + links = 83%.
+
+Work cuts shipped (commit b89730a), no content change:
+- tWpcWorldFromMap: the map->world mapping is an affine transform per
+  uiMapId. Derived from 3 probe calls, VERIFIED against a 4th probe at the
+  map center (0.05 world-unit tolerance); every spawn then computed
+  arithmetically. ~145k per-spawn CreateVector2D + C_Map.GetWorldPos-
+  FromMapPos calls become ~500 probes. Maps failing the probe check fall
+  back to the exact old per-spawn C call (correctness by construction).
+- Link passes: loop-invariant lookup chains hoisted - LoadLinkDataFrom-
+  Profile resolved the source record via two full chains PER LINK
+  (~215k links), SaveLinkDataToProfile re-derived the source's
+  GetIdForName PER LINK, CheckAndUpdateProfileLinkData re-read the same
+  index lookups and the SessionRouteData.Links global chain several times
+  per link. All now locals; semantics preserved verbatim (incl. the odd
+  nil-assignments and the counted-vs-uncounted deletions).
+- Creature/object passes: repeated global chains (NpcData, objectLookup,
+  InternalAreaTable, objectResourceNames) and the PER-ITERATION
+  SkuSettings:Sub call hoisted to build-scope locals.
+
+Verification drill: /reload -> /skudbwpcheck MUST stay PASS 0 Fehler with
+identical counters (144,823 records, 57 dupNames, linked 82,479 - the
+transform shortcut cannot change counts, only coordinates would drift and
+the probe check guards those) -> route follow + beacon on a known
+waypoint sounds at the same position -> read wpcResult phase split for
+the before/after work delta.
+
 ## Open items before implementation
 
 - Grep-audit ALL write sites to cache records (assignments to record fields
