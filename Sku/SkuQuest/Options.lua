@@ -865,7 +865,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3, aOnlyUiMapId)
-	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
+	local _, _, tPlayerContinentID  = SkuNav.Geo:GetAreaData(SkuNav.Geo:GetCurrentAreaId())
 
 	for i, tNpcID in pairs(aCreatureIds) do
 		--dprint("CreateRtWpSubmenu", i, tNpcID)		
@@ -874,12 +874,12 @@ local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3, aOnlyUiMapId
 			local tSpawns = SkuDB.NpcData.Data[i][7]
 			if tSpawns then
 				for is, vs in pairs(tSpawns) do
-					local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
+					local isUiMap = SkuNav.Geo:GetUiMapIdFromAreaId(is)
 					--we don't care for stuff that isn't in the open world
 					if isUiMap and (not aOnlyUiMapId or aOnlyUiMapId == isUiMap ) then
 						local tData = SkuDB.InternalAreaTable[is]
 						if tData then
-							if SkuNav:GetContinentNameFromContinentId(tData.ContinentID) then
+							if SkuNav.Geo:GetContinentNameFromContinentId(tData.ContinentID) then
 								if tData.ContinentID == tPlayerContinentID then
 									local tNumberOfSpawns = #vs
 									if tNumberOfSpawns > 3 and aOnly3 == true then
@@ -924,7 +924,7 @@ local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3, aOnlyUiMapId
 										if not aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] then
 											aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] = {}
 										end
-										table.insert(aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString], L["Anderer Kontinent"]..";"..SkuNav:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
+										table.insert(aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString], L["Anderer Kontinent"]..";"..SkuNav.Geo:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
 									end
 
 								end
@@ -950,8 +950,8 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 	if not (Sku:IsDataReady("skudb.creatures") and Sku:IsDataReady("skudb.objects") and Sku:IsDataReady("skudb.items")) then
 		return
 	end
-	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
-	local tCurrentAreaId = SkuNav:GetCurrentAreaId()
+	local _, _, tPlayerContinentID  = SkuNav.Geo:GetAreaData(SkuNav.Geo:GetCurrentAreaId())
+	local tCurrentAreaId = SkuNav.Geo:GetCurrentAreaId()
 	if aSubType == "item" then
 		for i, tItemId in pairs(aSubIDTable) do
 			--dprint("  i, tItemId", i, tItemId)
@@ -965,12 +965,12 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 						local tObjectName = SkuDB.objectLookup[Sku.Loc][tObjectId] or SkuDB.objectDataTBC[tObjectId][1]
 						if tObjectSpawns then
 							for is, vs in pairs(tObjectSpawns) do
-								local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
+								local isUiMap = SkuNav.Geo:GetUiMapIdFromAreaId(is)
 								if isUiMap and (not aOnlyUiMapId or aOnlyUiMapId == isUiMap ) then
 									--if is == tCurrentAreaId then
 										local tData = SkuDB.InternalAreaTable[is]
 										if tData then
-											if SkuNav:GetContinentNameFromContinentId(tData.ContinentID) then
+											if SkuNav.Geo:GetContinentNameFromContinentId(tData.ContinentID) then
 												if tData.ContinentID == tPlayerContinentID then
 													local tNumberOfSpawns = #vs
 													if tNumberOfSpawns > 3 and aOnly3 == true then
@@ -991,7 +991,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 														if not tResultWPs[tObjectName] then
 															tResultWPs[tObjectName] = {}
 														end
-														table.insert(tResultWPs[tObjectName], L["Anderer Kontinent"]..";"..SkuNav:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
+														table.insert(tResultWPs[tObjectName], L["Anderer Kontinent"]..";"..SkuNav.Geo:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
 													end
 												end
 											end
@@ -1021,7 +1021,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 				local tSpawns = SkuDB.objectDataTBC[tObjectId][4]
 				if tSpawns then
 					for is, vs in pairs(tSpawns) do
-						local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
+						local isUiMap = SkuNav.Geo:GetUiMapIdFromAreaId(is)
 						--we don't care for stuff that isn't in the open world
 						if isUiMap then
 							local tData = SkuDB.InternalAreaTable[is]
@@ -1052,7 +1052,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 											if not tResultWPs[tObjectName] then
 												tResultWPs[tObjectName] = {}
 											end
-											table.insert(tResultWPs[tObjectName], L["Anderer Kontinent"]..";"..SkuNav:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
+											table.insert(tResultWPs[tObjectName], L["Anderer Kontinent"]..";"..SkuNav.Geo:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
 
 										end
 									end
@@ -1071,7 +1071,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 		for i, tWaypointName in pairs(aSubIDTable) do
 			local tData = SkuNav:GetWaypointData2(tWaypointName)
 			if tData then
-				local isUiMap = SkuNav:GetUiMapIdFromAreaId(tData.areaId)
+				local isUiMap = SkuNav.Geo:GetUiMapIdFromAreaId(tData.areaId)
 				--we don't care for stuff that isn't in the open world
 				if isUiMap then
 					if not tResultWPs[tWaypointName] then
@@ -1215,7 +1215,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 															local tDirectionTargetWp = ""
 															if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
 																local tWpData = SkuNav:GetWaypointData2(tV)
-																local tDirectionString = SkuNav:GetDirectionToAsString(tWpData.worldX, tWpData.worldY)
+																local tDirectionString = SkuNav.Geo:GetDirectionToAsString(tWpData.worldX, tWpData.worldY)
 																if tDirectionString then
 																	tDirectionTargetWp = ";"..tDirectionString
 																end
@@ -1318,11 +1318,11 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 												if tMetapaths[tNearWps[x].wpName] then
 													local EndMetapathWpObj = SkuNav:GetWaypointData2(tNearWps[x].wpName)
 													local tEndTargetWpObj = SkuNav:GetWaypointData2(wpName)
-													local tDistToEndTargetWp = SkuNav:Distance(EndMetapathWpObj.worldX, EndMetapathWpObj.worldY, tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
+													local tDistToEndTargetWp = SkuNav.Geo:Distance(EndMetapathWpObj.worldX, EndMetapathWpObj.worldY, tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
 
 													local tDirectionTargetWp = ""
 													if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
-														local tDirectionString = SkuNav:GetDirectionToAsString(tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
+														local tDirectionString = SkuNav.Geo:GetDirectionToAsString(tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
 														if tDirectionString then
 															tDirectionTargetWp = ";"..tDirectionString
 														end
@@ -1401,12 +1401,12 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						local tResults = {}
 						for wpIndex, wpName in pairs(wpTable) do
 							local tWpObj = SkuNav:GetWaypointData2(wpName)
-							local tDistanceTargetWp = SkuNav:Distance(tPlayX, tPlayY, tWpObj.worldX, tWpObj.worldY)
+							local tDistanceTargetWp = SkuNav.Geo:Distance(tPlayX, tPlayY, tWpObj.worldX, tWpObj.worldY)
 
 							-- add direction to wp
 							local tDirectionTargetWp = ""
 							if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
-								local tDirectionString = SkuNav:GetDirectionToAsString(tWpObj.worldX, tWpObj.worldY)
+								local tDirectionString = SkuNav.Geo:GetDirectionToAsString(tWpObj.worldX, tWpObj.worldY)
 								if tDirectionString then
 									tDirectionTargetWp = ";"..tDirectionString
 								end
@@ -1497,7 +1497,7 @@ function SkuQuest:GetTriggerEndWps(aQuestId)
 	local tWaypoints = {}
 	if SkuDB.questDataTBC[aQuestId][SkuDB.questKeys["triggerEnd"]] ~= nil then 
 		for zone, data in pairs(SkuDB.questDataTBC[aQuestId][SkuDB.questKeys["triggerEnd"]][2]) do
-			local _, taName = SkuNav:GetAreaData(zone)
+			local _, taName = SkuNav.Geo:GetAreaData(zone)
 			if taName then
 				if SkuDB.questLookup[Sku.Loc][aQuestId] then
 					tWaypoints[#tWaypoints + 1] = SkuDB.questLookup[Sku.Loc][aQuestId][1]..";"..taName..";"..L["Questziel"]..";"..data[1][1]..";"..data[1][2]
@@ -1783,7 +1783,7 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 		tCurrentQuestLogQuestsTable = {}
 		return {}, {}, tCurrentQuestLogQuestsTable
 	end
-	local tUiMap = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
+	local tUiMap = SkuNav.Geo:GetAreaIdFromUiMapId(SkuNav.Geo:GetBestMapForUnit("player"))
 	local tPlayX, tPlayY = UnitPosition("player")
 	local tShowQuestsTable = {}
 
@@ -1989,7 +1989,7 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 	local tcount = 0
 	local tUnSortedTable = {}
 	local tIdTable = {}
-	local tPlayerTopAreaId = SkuNav:GetAreaIdFromUiMapId(tUiMap)
+	local tPlayerTopAreaId = SkuNav.Geo:GetAreaIdFromUiMapId(tUiMap)
 	for i, v in pairs(tShowQuestsTable) do
 		local tDistanceToQuestGiver = 0
 		if SkuDB.questDataTBC[i] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then
@@ -1998,10 +1998,10 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 				if SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap] then
 					local tSpawnX, tSpawnY = SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap][1][1], SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap][1][2]
 					if tSpawnX ~= -1 and tSpawnY ~= -1 then
-						local tContintentId = select(3, SkuNav:GetAreaData(is))
-						local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
+						local tContintentId = select(3, SkuNav.Geo:GetAreaData(is))
+						local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav.Geo:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
 						local tX, tY = worldPosition:GetXY()
-						local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tX, tY)
+						local tDistance, _  = SkuNav.Geo:Distance(tPlayX, tPlayY, tX, tY)
 						tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = {tDistance, tX, tY, i}
 						tIdTable[tDistance..L[";Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
 					end
@@ -2015,10 +2015,10 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 				if tObjectSpawns[tUiMap] then
 					local tSpawnX, tSpawnY = tObjectSpawns[tUiMap][1][1], tObjectSpawns[tUiMap][1][2]
 					if tSpawnX ~= -1 and tSpawnY ~= -1 then
-						local tContintentId = select(3, SkuNav:GetAreaData(is))
-						local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
+						local tContintentId = select(3, SkuNav.Geo:GetAreaData(is))
+						local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav.Geo:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
 						local tX, tY = worldPosition:GetXY()
-						local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tX, tY)
+						local tDistance, _  = SkuNav.Geo:Distance(tPlayX, tPlayY, tX, tY)
 						tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = {tDistance, tX, tY, i}
 						tIdTable[tDistance..L[";Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
 					end
@@ -2196,7 +2196,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 						tByZone[tZoneName] = tByZone[tZoneName] or {}
 						tByZone[tZoneName][#tByZone[tZoneName]+1] = { questId = tQuestId, label = tLabel, text = tText, zoneId = tZoneId }
 					end
-					local tCurrentZoneId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
+					local tCurrentZoneId = SkuNav.Geo:GetAreaIdFromUiMapId(SkuNav.Geo:GetBestMapForUnit("player"))
 					local tCurrentZoneName = tCurrentZoneId and SkuDB.InternalAreaTable[tCurrentZoneId] and SkuDB.InternalAreaTable[tCurrentZoneId].AreaName_lang[Sku.Loc]
 					local tZoneNames = {}
 					for tZoneName in pairs(tByZone) do

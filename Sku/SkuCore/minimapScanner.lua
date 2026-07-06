@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "minimapScanner"
 local L = Sku.L
 local _G = _G
@@ -625,20 +625,20 @@ function MinimapScanner:MinimapScanProcessResults()
             if xa then
                xa = xa + (yCenter * -1)
                ya = ya + xCenter
-               local tDistance = SkuNav:Distance(0, 0, xCenter, yCenter)
+               local tDistance = SkuNav.Geo:Distance(0, 0, xCenter, yCenter)
                if i == "Kobaltablagerung" then
                   i = "Kobaltvorkommen"
                end
                if i == "Reiche Kobaltablagerung" then
                   i = "Reiches Kobaltvorkommen"
                end
-               print((tQuickWpNumber or "").." "..i.." "..SkuNav:GetDirectionToAsString(xa, ya).." "..math.floor(tDistance * tMinimapYardsMod) .. " " .. L["Meter"])
-               SkuOptions.Voice:OutputStringBTtts((tQuickWpNumber or "").." "..i.." "..SkuNav:GetDirectionToAsString(xa, ya).." "..math.floor(tDistance * tMinimapYardsMod).." ".. L["Meter"], false, true, 0.2)
+               print((tQuickWpNumber or "").." "..i.." "..SkuNav.Geo:GetDirectionToAsString(xa, ya).." "..math.floor(tDistance * tMinimapYardsMod) .. " " .. L["Meter"])
+               SkuOptions.Voice:OutputStringBTtts((tQuickWpNumber or "").." "..i.." "..SkuNav.Geo:GetDirectionToAsString(xa, ya).." "..math.floor(tDistance * tMinimapYardsMod).." ".. L["Meter"], false, true, 0.2)
 
                if tQuickWpNumber then
-                  local tAreaId = SkuNav:GetCurrentAreaId()
+                  local tAreaId = SkuNav.Geo:GetCurrentAreaId()
                   local worldx, worldy = UnitPosition("player")
-                  local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())) or -1
+                  local tPlayerContintentId = select(3, SkuNav.Geo:GetAreaData(SkuNav.Geo:GetCurrentAreaId())) or -1
                   local tTime = GetTime()
                   SkuNav:SetWaypoint(L["Quick waypoint"] .. ";" .. tQuickWpNumber, {
                      ["contintentId"] = tPlayerContintentId,

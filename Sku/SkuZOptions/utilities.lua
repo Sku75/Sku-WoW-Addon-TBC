@@ -1,4 +1,4 @@
-local MODULE_NAME = "SkuOptions"
+﻿local MODULE_NAME = "SkuOptions"
 local L = Sku.L
 local _G = _G
 
@@ -743,7 +743,7 @@ function SkuTranslateStringDeToEn(aString)
 						for i, v in pairs(SkuDB.NpcData.Names.deDE) do
 							if v[1] == tName then
 								for tZone, tCoords in pairs(SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns]) do
-									local _, taName = SkuNav:GetAreaData(tZone)
+									local _, taName = SkuNav.Geo:GetAreaData(tZone)
 									if taName == tArea then
 										for _, tCoord in pairs(tCoords) do
 											if tostring(tCoord[1]) == tostring(tCoordX) and tostring(tCoord[2]) == tostring(tCoordY) then
@@ -1478,9 +1478,9 @@ function SkuSwitchDataToLK()
 
 	if _G["SkuNavMMMainFrameZoneSelect"] then
 		C_Timer.NewTimer(1, function()
-			if SkuNav:GetCurrentAreaId() then
-				_G["SkuNavMMMainFrameZoneSelect"].value = SkuNav:GetCurrentAreaId()
-				_G["SkuNavMMMainFrameZoneSelect"]:SetText(SkuDB.InternalAreaTable[SkuNav:GetCurrentAreaId()].AreaName_lang[Sku.Loc])	
+			if SkuNav.Geo:GetCurrentAreaId() then
+				_G["SkuNavMMMainFrameZoneSelect"].value = SkuNav.Geo:GetCurrentAreaId()
+				_G["SkuNavMMMainFrameZoneSelect"]:SetText(SkuDB.InternalAreaTable[SkuNav.Geo:GetCurrentAreaId()].AreaName_lang[Sku.Loc])	
 			end
 		end)
 	end

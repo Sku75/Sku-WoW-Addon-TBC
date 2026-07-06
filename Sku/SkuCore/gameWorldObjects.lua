@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "gameWorldObjects"  
 local L = Sku.L
 local _G = _G
@@ -172,7 +172,7 @@ function GameWorldObjects:GameWorldObjectsTurnToWp(aWaypointName)
    if aWaypointName and aWaypointName ~= "" then
       local fPlayerPosX, fPlayerPosY = UnitPosition("player")
       local tData = SkuNav:GetWaypointData2(aWaypointName)
-      local _, _, degree = SkuNav:GetDirectionTo(fPlayerPosX, fPlayerPosY, tData.worldX, tData.worldY)
+      local _, _, degree = SkuNav.Geo:GetDirectionTo(fPlayerPosX, fPlayerPosY, tData.worldX, tData.worldY)
       -- [Kamera-Entkopplung 41.02.07] Kamera-Snap NUR im SkuStandard.
       -- Der Drehwinkel (degree) ist oben rein rechnerisch ermittelt und
       -- kameraunabhaengig. Bei Freigabe bleibt die freie Kamera erhalten;

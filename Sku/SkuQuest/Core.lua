@@ -1514,12 +1514,12 @@ local function doQuestMarkerBeacons(aType, tUnSortedTable)
 							if SkuSettings:Sub("SkuQuest").questMarkerBeacons[aType].chatNotification == true then
 								if not SkuQuest.activeBeaconsTmpIgnoreChat[v[4]] then
 									local playerX, playerY = UnitPosition("player")
-									local tDistance = SkuNav:Distance(playerX, playerY, v[2], v[3]) or 0
+									local tDistance = SkuNav.Geo:Distance(playerX, playerY, v[2], v[3]) or 0
 
 									if aType == "availableQuests" then
-										print(L["Quest available"]..": "..i.." ("..tDistance.." "..L["meters"].." "..SkuNav:GetDirectionToAsString(v[2], v[3])..")")
+										print(L["Quest available"]..": "..i.." ("..tDistance.." "..L["meters"].." "..SkuNav.Geo:GetDirectionToAsString(v[2], v[3])..")")
 									elseif aType == "currentQuests" then
-										print(L["Quest for hand-in"]..": "..i.." ("..tDistance.." "..L["meters"].." "..SkuNav:GetDirectionToAsString(v[2], v[3])..")")
+										print(L["Quest for hand-in"]..": "..i.." ("..tDistance.." "..L["meters"].." "..SkuNav.Geo:GetDirectionToAsString(v[2], v[3])..")")
 									end
 									SkuQuest.activeBeaconsTmpIgnoreChat[v[4]] = true
 								end
@@ -1561,7 +1561,7 @@ function SkuQuest:UpdateZoneAvailableQuestList(aForce)
 	SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons = SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons or {}
 	SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons.activeBeaconsIgnore = SkuSettings:Sub("SkuQuest", nil, "char").questMarkerBeacons.activeBeaconsIgnore or {}
 
-	local tPlayerUIMap = SkuNav:GetBestMapForUnit("player")
+	local tPlayerUIMap = SkuNav.Geo:GetBestMapForUnit("player")
 	if tPlayerUIMap and tPlayerUIMap ~= SkuQuest.activeBeaconsOldUiMapId then
 		SkuQuest.activeBeaconsOldUiMapId = tPlayerUIMap
 		SkuQuest.activeBeaconsTmpIgnore = {}
@@ -1588,7 +1588,7 @@ function SkuQuest:UpdateZoneAvailableQuestList(aForce)
 		if SkuSettings:Sub("SkuQuest").questMarkerBeacons.availableQuests.enabled == true then
 			doQuestMarkerBeacons("availableQuests", tUnSortedTable)
 
-			local tPlayerUIMap = SkuNav:GetBestMapForUnit("player")
+			local tPlayerUIMap = SkuNav.Geo:GetBestMapForUnit("player")
 			local tPlayX, tPlayY = UnitPosition("player")
 			local numEntries = GetNumQuestLogEntries()
 			local tCompleted = {}
@@ -1607,7 +1607,7 @@ function SkuQuest:UpdateZoneAvailableQuestList(aForce)
 								for wpIndex, wpName in pairs(wpTable) do
 									local tWpObj = SkuNav:GetWaypointData2(wpName)
 									if tWpObj then
-										local tDistanceTargetWp = SkuNav:Distance(tPlayX, tPlayY, tWpObj.worldX, tWpObj.worldY)
+										local tDistanceTargetWp = SkuNav.Geo:Distance(tPlayX, tPlayY, tWpObj.worldX, tWpObj.worldY)
 										tCompleted[title] = {tDistanceTargetWp, tWpObj.worldX, tWpObj.worldY, aQuestID}
 									end
 								end
@@ -1627,25 +1627,25 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local old_ZONE_CHANGED_X = ""
 function SkuQuest:ZONE_CHANGED_NEW_AREA(...)
-	if old_ZONE_CHANGED_X ~= SkuNav:GetBestMapForUnit("player") then
-		--print(old_ZONE_CHANGED_X, SkuNav:GetBestMapForUnit("player"))
-		old_ZONE_CHANGED_X = SkuNav:GetBestMapForUnit("player")
+	if old_ZONE_CHANGED_X ~= SkuNav.Geo:GetBestMapForUnit("player") then
+		--print(old_ZONE_CHANGED_X, SkuNav.Geo:GetBestMapForUnit("player"))
+		old_ZONE_CHANGED_X = SkuNav.Geo:GetBestMapForUnit("player")
 		SkuQuest:UpdateZoneAvailableQuestList()
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:ZONE_CHANGED(...)
-	if old_ZONE_CHANGED_X ~= SkuNav:GetBestMapForUnit("player") then
-		old_ZONE_CHANGED_X = SkuNav:GetBestMapForUnit("player")
+	if old_ZONE_CHANGED_X ~= SkuNav.Geo:GetBestMapForUnit("player") then
+		old_ZONE_CHANGED_X = SkuNav.Geo:GetBestMapForUnit("player")
 		SkuQuest:UpdateZoneAvailableQuestList()
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:ZONE_CHANGED_INDOORS(...)
-	if old_ZONE_CHANGED_X ~= SkuNav:GetBestMapForUnit("player") then
-		old_ZONE_CHANGED_X = SkuNav:GetBestMapForUnit("player")
+	if old_ZONE_CHANGED_X ~= SkuNav.Geo:GetBestMapForUnit("player") then
+		old_ZONE_CHANGED_X = SkuNav.Geo:GetBestMapForUnit("player")
 		SkuQuest:UpdateZoneAvailableQuestList()
 	end
 end

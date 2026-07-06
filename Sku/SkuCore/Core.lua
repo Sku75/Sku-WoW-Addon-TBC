@@ -676,7 +676,7 @@ function SkuCore:PanicModeCollectData()
 			return
 		end
 		
-		local _, _, tDegreesFinal = SkuNav:GetDirectionTo(x, y, 30000, y)
+		local _, _, tDegreesFinal = SkuNav.Geo:GetDirectionTo(x, y, 30000, y)
 		if not tDegreesFinal then
 			return
 		end
@@ -691,7 +691,7 @@ function SkuCore:PanicModeCollectData()
 		end
 		local tPrevWPx = tLastPanicPos.x
 		local tPrevWPy = tLastPanicPos.y
-		local tDist = SkuNav:Distance(tPrevWPx, tPrevWPy, x, y)
+		local tDist = SkuNav.Geo:Distance(tPrevWPx, tPrevWPy, x, y)
 
 		local tDynDist = 0
 		if tDiff < 0 then
@@ -715,7 +715,7 @@ function SkuCore:PanicModeCollectData()
 			local tDelFrom = 999
 			for x = 1, #tPanicData do
 				if tPanicData[x] and tPanicData[x + 1] then
-					tFullDistance = tFullDistance + SkuNav:Distance(tPanicData[x].x, tPanicData[x].y, tPanicData[x + 1].x, tPanicData[x + 1].y)
+					tFullDistance = tFullDistance + SkuNav.Geo:Distance(tPanicData[x].x, tPanicData[x].y, tPanicData[x + 1].x, tPanicData[x + 1].y)
 					if tFullDistance > tPanicMaxRecDistance then
 						tDelFrom = x
 					end
@@ -794,12 +794,12 @@ function SkuCore:PanicModeStart()
 			------------------------------------------------- calculate final
 			local tPlayerPosX, tPlayerPosY = UnitPosition("player")
 			if tPanicData[SkuCorePanicCurrentPoint] then
-				if SkuNav:Distance(tPlayerPosX, tPlayerPosY, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y) < SkuCorePanicBeaconDistance then
+				if SkuNav.Geo:Distance(tPlayerPosX, tPlayerPosY, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y) < SkuCorePanicBeaconDistance then
 					if SkuCorePanicCurrentPoint == #tPanicData then
 						SkuCore:PanicModeStart()
 					else
 						for x = SkuCorePanicCurrentPoint, #tPanicData do
-							if SkuNav:Distance(tPlayerPosX, tPlayerPosY, tPanicData[x].x, tPanicData[x].y) > SkuCorePanicBeaconDistance then
+							if SkuNav.Geo:Distance(tPlayerPosX, tPlayerPosY, tPanicData[x].x, tPanicData[x].y) > SkuCorePanicBeaconDistance then
 								SkuCorePanicCurrentPoint = x
 								if not SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", tPanicBeaconName) then
 									local tBeaconType = SkuNav:GetBeaconSoundSetName(1)
@@ -1551,7 +1551,7 @@ function SkuCore:OnEnable()
 
 							--collect terrain data test
 							--[[
-							local tExtMap = SkuNav:GetBestMapForUnit("player")
+							local tExtMap = SkuNav.Geo:GetBestMapForUnit("player")
 							if not SkuCoreDB.TerrainData then
 								SkuCoreDB.TerrainData = {}
 							end

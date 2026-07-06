@@ -4303,3 +4303,9 @@ function SkuNav.Geo:GetContinentNameFromContinentId(...) return SkuNav:GetContin
 function SkuNav.Geo:GetDirectionTo(...)                  return SkuNav:GetDirectionTo(...) end
 function SkuNav.Geo:GetDirectionToAsString(...)          return SkuNav:GetDirectionToAsString(...) end
 function SkuNav.Geo:Distance(...)                        return SkuNav:Distance(...) end
+function SkuNav.Geo:GetAreaIdFromAreaName(...)           return SkuNav:GetAreaIdFromAreaName(...) end
+function SkuNav.Geo:GetSubAreaIds(...)                   return SkuNav:GetSubAreaIds(...) end
+function SkuNav.Geo:IntersectionPoint(...)               return SkuNav:IntersectionPoint(...) end
+-- W6-B #16: the implementations now live in SkuNav/Geo.lua; this facade still
+-- forwards to the SkuNav:* names (kept there) and is the explicit narrow
+-- interface callers are repointed onto.
