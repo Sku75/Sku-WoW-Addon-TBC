@@ -532,25 +532,23 @@ SkuGenericMenuItem = {
 
 						SkuOptions.currentMenuPosition = self.selectTarget
 
-						-- Step-Up nach Setting-Wechsel: Cursor auf den
-						-- Eltern-Knoten des selectTarget setzen, sodass
-						-- der User auf Kategorien-Ebene landet (z.B. von
-						-- "Aktiviert" auf "Debuffs", dessen Geschwister
-						-- zur Navigation zur Verfügung stehen).
-						-- WICHTIG: KEIN OnUpdate-Aufruf hier — der würde
-						-- die Eltern-Children neu bauen und dabei in den
-						-- OnPostSelect/CheckFrames-Pfad fallen, was das
-						-- Menü teilweise schließt. Wir verschieben den
-						-- Cursor schlicht per Pointer-Zuweisung — die
-						-- gesamte Struktur bleibt valide, der nächste
-						-- Pfeil-Druck navigiert zu Geschwistern auf der
-						-- Eltern-Ebene.
-						if not self.selectTarget.noStepUpAfterSelect
+						-- W6-B: after setting a value, STAY on the setting entry
+						-- (selectTarget) — the user just changed it, so the cursor
+						-- should remain there to speak the new value and allow another
+						-- change, not jump up a level. The old default stepped UP to
+						-- the parent category (landing "one level too high"), which the
+						-- vast majority of call sites already opted out of via
+						-- noStepUpAfterSelect (auction coin/filter entries, mail,
+						-- gameOptions, visualAids, aura config, ...). The step-up is now
+						-- OPT-IN via `stepUpAfterSelect` for the rare node that really
+						-- wants to land on the category level.
+						-- (No OnUpdate here — that would rebuild the parent's children
+						-- via the OnPostSelect/CheckFrames path and partially close the
+						-- menu; we only move the cursor by pointer assignment.)
+						if self.selectTarget.stepUpAfterSelect
 							and self.selectTarget.parent
 							and self.selectTarget.parent.name
 							and SkuOptions.currentMenuPosition then
-							-- TTS für "Aktiviert: Nein" sofort ausgeben
-							-- (auf altem Cursor), DANN Cursor auf parent.
 							pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
 							SkuOptions.currentMenuPosition = self.selectTarget.parent
 						end
