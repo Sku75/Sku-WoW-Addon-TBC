@@ -32,7 +32,17 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
   expected; see `WAYPOINT-CACHE-ANALYSIS.md`). New validation command
   `/skudbwpcheck` (SkuDBTools.lua, reader `_wpcheck.py`) type-checks every
   legacy field through the metatable, round-trips the wpId bitfield, and
-  cross-checks the four lookup tables.
+  cross-checks the four lookup tables. Measured in-game same day:
+  WaypointCache 221 -> 154 MB (cost-model metric), functionality confirmed;
+  the checker's initial 118 errors were a pre-existing data quirk (59
+  duplicate waypoint names from identically-named trigger NPCs, last-wins
+  as always) and are now counted as `dupNames` instead.
+- **Waypoint/route readiness after login.** The waypoint-cache build now
+  uses the chunk stream's budget heuristic (30 ms/frame for its first 8 s,
+  then 10 ms) instead of a flat 10 ms — its ~3 s of work no longer trickles
+  out over 5-10 s after "Sku Datenbank bereit". When the build (including
+  the route links) completes, Sku speaks "Wegpunkte und Routen bereit", so
+  database readiness and navigation readiness are separate announcements.
 - **DB rework stage 3 — streamed SkuDB build (the felt login win).** The
   chunk construction, DB fixes, WotLK/SoD merges and SkuAuras value lists no
   longer run on the loading screen: `SkuDB/ChunkLoader.lua` streams them

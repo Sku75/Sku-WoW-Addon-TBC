@@ -416,9 +416,18 @@ SkuNav.wpCacheReady = false
 -- synchronous callers) this is a no-op.
 local tWpcSliceStart = 0
 local tWpcInBuild = false
+-- [Load-perf 2026-07-06] Same budget heuristic as the SkuDB chunk stream
+-- (SkuDBBudgetMs): a generous slice right after the build starts - the user
+-- is still orienting and routes are unusable until the build ends anyway -
+-- then calmer. At the old flat 10 ms the ~3 s of build work stretched to
+-- 5-10 s of wall time AFTER "Sku Datenbank bereit" was already spoken.
+local tWpcStartedAt = 0
+local function tWpcBudgetMs()
+	return (GetTime() - tWpcStartedAt) < 8 and 30 or 10
+end
 local function tWpcYield()
 	if not tWpcInBuild or not coroutine.running() then return end
-	if debugprofilestop() - tWpcSliceStart > 10 then
+	if debugprofilestop() - tWpcSliceStart > tWpcBudgetMs() then
 		coroutine.yield()
 		tWpcSliceStart = debugprofilestop()
 	end
@@ -480,6 +489,7 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 
 	SkuNav._wpcGen = (SkuNav._wpcGen or 0) + 1
 	local tWpcMyGen = SkuNav._wpcGen
+	tWpcStartedAt = GetTime()
 	SkuNav._wpcCo = coroutine.create(function()
 		tWpcInBuild = true
 		tWpcSliceStart = debugprofilestop()
@@ -757,6 +767,15 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 					-- completes after first-frame -> proves the build is off the freeze.
 					tWpcSetResult(string.format("async done = %.1f ms work", SkuNav._wpcWorkMs))
 					if Sku.MetricPoint then Sku:MetricPoint(string.format("waypoint cache async build done = %.1f ms work", SkuNav._wpcWorkMs)) end
+					-- [Load-perf 2026-07-06] "Sku Datenbank bereit" (chunk stream)
+					-- fires BEFORE this build ends; until here waypoint lists and
+					-- routes still say "Wegpunkte werden noch geladen". One line so
+					-- the user knows when navigation is actually usable.
+					pcall(function()
+						if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.OutputStringBTtts then
+							SkuOptions.Voice:OutputStringBTtts(L["Wegpunkte und Routen bereit"], false, true, 0.3)
+						end
+					end)
 				end
 			end
 		end

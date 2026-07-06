@@ -217,6 +217,48 @@ Verification:
   waypoint list menu, check a custom wp's comments entry → /reload →
   `py -3 _wpcheck.py` and `py -3 _dbmem.py 8`, BugGrabber/SkuErrorLog clean.
 
+## Lever A first in-game results (2026-07-06, same day)
+
+- User-tested: functionality fine (routes, menus, waypoint use).
+- /skudbmem: SkuNav.WaypointCache 221.3 -> 153.7 MB (cost-model metric).
+  String slots 3.03M -> 1.81M, number slots 2.19M -> 1.37M — exactly the
+  dropped per-record fields; table count unchanged as designed (records,
+  links wrappers, and comment aliases still exist). Matches the ~45 MB
+  real-bytes prediction for lever A alone.
+- /skudbwpcheck: 144,823 records walked, 0 sessionRecords, 0 commentsNil
+  (every route waypoint carries an lComments alias — the dropped fallback
+  table never fired), 3,653 records with stored overrides (real
+  createdBy/size/contintentId from route data — the shadowing works).
+- 118 reported "Fehler" were ALL one pre-existing data quirk, NOT a lever-A
+  break: 59 waypoints named after trigger NPCs (dozens of distinct npcIds
+  all called "Luftüberwachung", no subname) share identical waypoint names,
+  so the name-keyed lookups can only point at one of each pair — exactly as
+  in every previous version (last-wins). Verified in
+  SkuDB/assets/creatures.lua (ids 2614, 2615, 21974, 21993, 21996-22003,
+  22063, 22065, 22066, ...). The checker now classifies these as a
+  dupNames counter (name -> id -> a record CARRYING that name is the real
+  invariant); expect 0 Fehler + ~59 Namensdubletten on re-run.
+
+## Readiness gap fixed (same day)
+
+User report: "Sku Datenbank bereit" is spoken, but Shift-F10 still answers
+"Wegpunkte werden noch geladen". Cause: the spoken line belongs to the SkuDB
+chunk stream; the waypoint-cache build (which ends with the link load that
+routes need) starts mid-stream and ran its ~3.0 s of sliced work at a flat
+10 ms/frame — 5-10 s of wall time beyond the announcement. Two changes:
+- tWpcYield now uses the same budget heuristic as the chunk stream
+  (30 ms/frame for the first 8 s after the build starts, then 10 ms) —
+  the ~3 s of work fits inside the generous window, cutting the tail to
+  roughly a third.
+- When the async build completes, Sku now speaks "Wegpunkte und Routen
+  bereit" (new locale string, deDE/enUS), so "Datenbank bereit" (menus/DB)
+  and navigation readiness are separately announced instead of guessed.
+Genuinely-earlier partial readiness (current-continent waypoints + partial
+link load before the world rounds) was considered and parked: the link
+loader's cleanup pass deletes links whose endpoints are missing, so running
+it against a half-built cache would destroy cross-continent route data —
+needs its own careful design, lever-B-adjacent.
+
 ## Open items before implementation
 
 - Grep-audit ALL write sites to cache records (assignments to record fields

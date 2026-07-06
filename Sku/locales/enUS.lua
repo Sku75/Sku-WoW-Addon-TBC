@@ -856,6 +856,7 @@ L["Empty"]  = "Empty" --
 L["empty"] = "empty"
 L["Empty;list"]  = "list;empty" --
 L["Wegpunkte werden noch geladen"] = "waypoints still loading"
+L["Wegpunkte und Routen bereit"] = "waypoints and routes ready"
 L["enable Beacons"] = "enable Beacons"
 L["Enable in dungeons/raids only"] = "Enable in dungeons/raids only"
 L["Enabled"]  = "Activated" --

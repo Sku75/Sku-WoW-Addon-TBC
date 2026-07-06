@@ -397,6 +397,10 @@ local function SkuDBToolsRunWpCheck()
 		sessionRecords = 0,   -- SetWaypoint-created (no wpId; store all fields)
 		commentsNil = 0,      -- custom records without comments (new: nil, was empty table)
 		shadowed = 0,         -- records with stored createdBy/size/contintentId overrides
+		dupNames = 0,         -- records sharing their name with another record: the
+		                      -- name-keyed lookups can only point at ONE of them (last
+		                      -- wins, pre-existing data quirk, e.g. dozens of trigger
+		                      -- NPCs all named "Luftüberwachung" on shared positions)
 		errors = 0,
 		examples = {},
 	}
@@ -442,13 +446,29 @@ local function SkuDBToolsRunWpCheck()
 				local tRebuilt = SkuNav:BuildWpIdFromData(tRec.typeId, tRec.dbIndex, tRec.spawn, tRec.areaId)
 				if tRebuilt ~= tWpId then tFail(tRec.name, "wpId roundtrip") end
 				if tIdForIdx[tWpId] ~= tIdx then tFail(tRec.name, "IdForCacheIndex") end
-				if tNameForId[tRec.name] ~= tWpId then tFail(tRec.name, "CacheNameForId") end
 			else
 				-- SetWaypoint-created this session: stores all fields itself
 				tResult.sessionRecords = tResult.sessionRecords + 1
 			end
-			-- lookup consistency
-			if tLookupAll[tRec.name] ~= tIdx then tFail(tRec.name, "LookupAll") end
+			-- lookup consistency. With duplicate names the name-keyed lookups
+			-- point at whichever identically-named record won (as they always
+			-- did); the invariant is name -> a record CARRYING that name.
+			local tCanonIdx = tLookupAll[tRec.name]
+			if tCanonIdx ~= tIdx then
+				local tCanon = tCanonIdx and tCache[tCanonIdx]
+				if tCanon and tCanon.name == tRec.name then
+					tResult.dupNames = tResult.dupNames + 1
+				else
+					tFail(tRec.name, "LookupAll")
+				end
+			end
+			if tWpId then
+				local tNameId = tNameForId[tRec.name]
+				local tNameRec = tNameId and tCache[tIdForIdx[tNameId]]
+				if not (tNameRec and tNameRec.name == tRec.name) then
+					tFail(tRec.name, "CacheNameForId")
+				end
+			end
 			local tCont = tRec.contintentId
 			if type(tCont) == "number" then
 				if not (tPerCont[tCont] and tPerCont[tCont][tIdx] == tRec.name) then
@@ -466,8 +486,8 @@ local function SkuDBToolsRunWpCheck()
 		tResult.wpCacheReady = SkuNav and SkuNav.wpCacheReady or false
 		SkuDebugLog.wpCheck = tResult
 		local tMsg = string.format("Wegpunkt Prüfung: %d Wegpunkte, %d Fehler", tResult.total, tResult.errors)
-		SkuDBToolsPrint(tMsg .. string.format(" (Sitzung %d, ohne Kommentare %d, überschrieben %d)",
-			tResult.sessionRecords, tResult.commentsNil, tResult.shadowed))
+		SkuDBToolsPrint(tMsg .. string.format(" (Sitzung %d, ohne Kommentare %d, überschrieben %d, Namensdubletten %d)",
+			tResult.sessionRecords, tResult.commentsNil, tResult.shadowed, tResult.dupNames))
 		SkuDBToolsSpeak(tMsg)
 	end
 	if not (SkuNav and SkuNav.wpCacheReady) then

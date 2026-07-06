@@ -77,7 +77,7 @@ def main():
             i = j
             continue
         for key in ("t", "took", "total", "errors", "sessionRecords",
-                    "commentsNil", "shadowed", "wpCacheReady"):
+                    "commentsNil", "shadowed", "dupNames", "wpCacheReady"):
             if s.startswith('["%s"]' % key):
                 fields[key] = scalar(s)
         i += 1
@@ -91,6 +91,7 @@ def main():
     print("Sitzungs-Records (ohne wpId, alles gespeichert): %s" % fields.get("sessionRecords", "?"))
     print("Custom ohne Kommentare (jetzt nil statt Leertabelle): %s" % fields.get("commentsNil", "?"))
     print("Records mit gespeicherten Overrides (createdBy/size/contintentId): %s" % fields.get("shadowed", "?"))
+    print("Namensdubletten (Datenbestand, kein Fehler - z.B. Trigger-NPCs): %s" % fields.get("dupNames", "?"))
     err = fields.get("errors", "?")
     print("FEHLER: %s" % err)
     if examples:
