@@ -172,8 +172,15 @@ Sku is built on **Ace3** (AceAddon, AceEvent, AceConfig, AceComm, etc., under
 
 Module folders (each typically has `Core.lua` + `Options.lua`):
 
-- `SkuDispatcher/` — central event broker. Modules subscribe/publish here
-  rather than wiring WoW events directly.
+- `SkuDispatcher/` — event broker, used as a **deliberate hybrid**, not the
+  single mandatory bus. Two real jobs: (1) the `SKU_*` custom events are the
+  genuine cross-module publish/subscribe channel; (2) `RegisterEventCallback`
+  fan-out for raw WoW events is used by the **SkuCore object family** (Core,
+  aqCombat, aq, DialTargeting, turnToUnit, skuFocus), because several SkuCore
+  sub-files must subscribe to the *same* WoW event and one AceEvent object
+  can't. Every OTHER module registers its own WoW events directly via its own
+  AceEvent object — that is idiomatic Ace3 and intended (per-module lifecycle
+  ownership), NOT a thing to "fix" by routing through the dispatcher.
 - `SkuCore/` — the bulk of features (one file per feature): `aq.lua` /
   `aqCombat.lua` (health & combat monitoring), `gameWorldObjects.lua`,
   `minimapScanner.lua`, `auctionHouse.lua`, `mail.lua`, `friends.lua`,
