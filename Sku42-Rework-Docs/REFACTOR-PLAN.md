@@ -1625,7 +1625,7 @@ of the whole addon. Correct me if you meant something else.)
 
 ## 6.7 Task checklist
 
-- [ ] D-A1. Build the documentation/LLM index (per-module + per-file map); store in `Sku42-Rework-Docs/`; verify coverage.
+- [x] D-A1. Build the documentation/LLM index (per-module + per-file map); store in `Sku42-Rework-Docs/`; verify coverage. **DONE 2026-07-06** — 84 per-file entries under `Sku42-Rework-Docs/index/` (every tracked Sku source file + the 4 real companion addons), top map `index/INDEX.md` (regen via `scratchpad/gen_index.py`). Preliminary cleanup candidates captured in `W6-PHASE-B-SEED-FINDINGS.md` (structured for the ~50 second-run files; the ~27 first-run files' entries are complete but their candidates get gathered in Phase B proper).
 - [ ] D-B1. Batched high-level review against the index; produce a deduped, prioritized findings list.
 - [ ] D-B2. Approval gate; then execute approved structural items, behavior-preserving, with verification + commits; update the index.
 - [ ] D-C1. Batched per-file review against the updated index; produce a findings list.
