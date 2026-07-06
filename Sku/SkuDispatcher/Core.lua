@@ -60,7 +60,20 @@ function SkuDispatcher:RegisterEventCallback(aEventName, aCallbackFunc, aOnlyOne
 	if not SkuDispatcher.Registered[aEventName] then
 		SkuDispatcher[aEventName] = function(...)
 			for callbackFunc, tOnlyOneCallbackFlag in pairs(SkuDispatcher.Registered[aEventName].callbacks) do
-				callbackFunc(...)
+				-- [W6-B #17] isolate each subscriber: without this a single
+				-- callback error propagates out of the loop and every LATER
+				-- callback silently never runs for this dispatch. Several
+				-- SkuCore-family files (aq, aqCombat, DialTargeting, turnToUnit,
+				-- skuFocus, Core) subscribe to the SAME WoW event through here,
+				-- so one faulty subscriber would suppress the others until a
+				-- /reload. pcall forwards the varargs natively (Lua 5.1); on
+				-- error log once and keep dispatching the rest.
+				local tOk, tErr = pcall(callbackFunc, ...)
+				if not tOk then
+					local tMsg = string.format("dispatch '%s' callback error: %s", tostring(aEventName), tostring(tErr))
+					if SkuErrorLog and SkuErrorLog.Log then pcall(function() SkuErrorLog:Log("skuDispatcher", tMsg) end) end
+					dprint(tMsg)
+				end
 				if tOnlyOneCallbackFlag == true then
 					SkuDispatcher:UnregisterEventCallback(aEventName, callbackFunc)
 				end

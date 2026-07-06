@@ -38,8 +38,14 @@ Per-finding status:
   fires after the items family instead of after spells (verified no spell dep in
   BuildQuestZoneCache/UpdateAllQuestObjects). Registry infra lives in
   SkuDeferredData.lua (loads before all consumers).
-- STILL OPEN (not started): #17 (dispatcher xpcall — small,
-  safe), Phase C #18/#19/#20 + the per-file pass, Bugs 3 & 4 (minor).
+- DONE, committed, awaiting by-ear verify: #17 (SkuDispatcher per-callback
+  error isolation) — wrapped the bare `callbackFunc(...)` in the dispatch loop
+  (SkuDispatcher/Core.lua:63) with `pcall` so one subscriber's error no longer
+  aborts the loop and starves the later SkuCore-family callbacks; logs once to
+  SkuErrorLog("skuDispatcher") + dprint and continues. Behavior-preserving on
+  the happy path.
+- STILL OPEN (not started): Phase C #18/#19/#20 + the per-file pass, Bugs 3 & 4
+  (minor).
 
 Original approval-gate text follows.
 
