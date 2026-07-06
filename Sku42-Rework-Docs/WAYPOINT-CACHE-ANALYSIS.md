@@ -352,6 +352,122 @@ message naming WpEnsureLinks.
   CreateWpLink/SetWaypoint materialization paths only run on link editing;
   the loud trap would catch a miss immediately).
 
+## Lever E audit (2026-07-06): free the dead route-tree halves
+
+Claim verified: on the TBC client `SkuNav:LoadDefaultMapData` (SkuNav/
+Core.lua) wires SessionRouteData.Waypoints from SkuDB.routedata.global
+(the TBC route file, SkuDBBuildRouteGlobal) but SessionRouteData.Links
+from SkuDBTMP.routedata.global (the WotLK route file,
+SkuDBBuildRouteWotlk). Each file therefore carries a live half and a dead
+half. File anatomy (line shares as a size proxy):
+
+- WotLK file (1,135,218 lines -> SkuDBTMP, dbMem 61.2 model-MB):
+  WaypointsNew 65.9% DEAD, Waypoints `{}` empty DEAD, WaypointLevels +
+  SequenceNumbers ~0.7% DEAD, Links 33.4% LIVE (the session link source),
+  SessionRouteData `{}` DEAD (historic artifact, see Core.lua:2825).
+- TBC file (1,061,353 lines -> SkuDB.routedata, dbMem 70.7 model-MB):
+  WaypointsNew->Waypoints 72% LIVE (IS SessionRouteData.Waypoints, IS the
+  cache-comments alias source), Links 27.1% DEAD on TBC, WaypointLevels
+  LIVE (GetNonAutoLevel, SkuMob, export), SequenceNumbers LIVE (export).
+
+### Consumer list — every SkuDBTMP.* read addon-wide
+
+- SkuNav/Core.lua:3561 `SkuDBTMP.routedata.global.Links` — LIVE, stays.
+- SkuNav/Core.lua:2825 — comment only.
+- SkuDBTools.lua:327 — dev /skudbmem measurement, `type(SkuDBTMP)`
+  guarded; after lever E it simply measures the smaller remainder.
+- EXTERNAL: WowVision `tbc/sku/nav/core.lua` reads
+  SkuDBTMP.routedata.global WaypointLevels (:294, nil-guarded with
+  SkuNavData fallback), WaypointsNew/Waypoints (:1499, guarded conversion
+  it skips when WaypointsNew is nil; nothing reads its Waypoints copy),
+  and Links (:1517 — stays live). Since the deferred-builder rework
+  SkuDBTMP does not exist at all unless Sku itself runs EnsureData, so
+  WowVision's guards already handle every lever-E shape. Degrades to its
+  own SkuNavData — no break.
+
+### Consumer list — every SkuDB.routedata.global.Links read
+
+- SkuNav/Core.lua LoadDefaultMapData else-branch — non-TBC clients only,
+  untouched (the free runs inside the isTBC branch only).
+- SkuNav/Core.lua PEW wotlkMapReset branch — one-time per PROFILE (true
+  on both profiles in current SkuOptionsDB, but any fresh profile fires
+  it: the profile-switch risk path). REDIRECTED to LoadDefaultMapData(true).
+- SkuZOptions/Core.lua OnProfileReset — REDIRECTED to
+  LoadDefaultMapData(true) (kept its CreateWaypointCache call).
+- SkuNav/Options.lua showGatherWaypoints OnAction — REDIRECTED to
+  LoadDefaultMapData(true) (kept its CreateWaypointCache call).
+- SkuZOptions ExportWpAndLinkData reads SessionRouteData.Links (the live
+  alias) + routedata WaypointLevels/SequenceNumbers (both stay);
+  ImportWpAndLinkData REPLACES SessionRouteData wholesale — neither
+  touches routedata.Links. The old commented-out export copy does, but is
+  dead code.
+- SkuZOptions/utilities.lua translate tools read
+  `SkuDB.routedata[Sku.Loc]` — a locale key that does not exist in the
+  current format (dev tool, already non-functional, not a lever-E
+  consumer).
+
+All three redirected paths previously wired the TBC-file links on the
+TBC client — DIVERGING from every normal login (WotLK-file links) until
+the next reload. The redirect is therefore also a consistency fix; the
+only user-visible change is that a brand-new profile's FIRST session now
+uses the same link network as every later session.
+
+### Rebuild on demand: NOT possible — and not needed
+
+Sku:EnsureData nils each builder global after its one successful build
+(SkuDeferredData.lua:59, deliberate: the builders pin ~48 MB of source
+string) and the ready-flag makes EnsureData a no-op afterwards. So a
+nil'ed subtree is gone until /reload. That is why the three rare paths
+are redirected to the chokepoint instead of rebuilding: after the
+redirect there is NO remaining reader of either dead half. WaypointLevels
+stays resident on the SkuDB side for GetNonAutoLevel.
+
+### Aliasing safety
+
+- SessionRouteData.Waypoints IS SkuDB.routedata.global.Waypoints, and
+  cache comments alias its lComments subtables — that half is untouched.
+- SkuDBTMP's waypoint half is never aliased into anything on the Sku
+  side (the WaypointsNew split at Core.lua:3538 runs on SkuDB only).
+- SessionRouteData.Links on TBC only ever points at the SkuDBTMP table
+  (or a SaveLinkDataToProfile replacement); after the redirects no code
+  path can point it at SkuDB.routedata.global.Links, so nil-ing that
+  reference orphans exactly one subtree.
+- The free is idempotent (nil-ing nil) and sits AFTER the wiring inside
+  the same isTBC branch, so every later LoadDefaultMapData(true) call
+  (PEW zone-ins, profile switches, the redirected paths) re-wires the
+  still-live tables and re-nils nothing.
+
+### GO/NO-GO per subtree
+
+- SkuDBTMP.routedata.global.WaypointsNew + Waypoints: GO (the bulk).
+- SkuDBTMP.routedata.global.WaypointLevels + SequenceNumbers: GO (small).
+- SkuDBTMP.SessionRouteData: GO (empty artifact table).
+- SkuDBTMP.routedata.global.Links: NO — live session link source.
+- SkuDB.routedata.global.Links: GO (after the three redirects).
+- SkuDB.routedata.global Waypoints/WaypointLevels/SequenceNumbers: NO —
+  live.
+
+### Free point and expected numbers
+
+The free is one block in LoadDefaultMapData's isTBC branch, right after
+the Links wire (nil the five SkuDBTMP keys + SkuDB...Links). It runs the
+first time at PLAYER_LOGIN; the existing forced GC at PEW (Core.lua:949)
+sweeps the orphans behind the loading screen — no extra collectgarbage.
+Expected /skudbmem deltas (model metric): SkuDBTMP 61.2 -> ~20-22 (only
+Links remains), routedata 70.7 -> ~52-56 (loses Links; the split-inflated
+Waypoints dominate what stays). Combined model drop ~55-60 MB; real bytes
+~40-55 MB (the estimate the levers table carried). SessionRouteData's
+~72 MB line is alias overlap and should NOT change.
+
+### Revert story
+
+Pure code revert (git revert / checkout of SkuNav/Core.lua,
+SkuNav/Options.lua, SkuZOptions/Core.lua) — no data format, no
+SavedVariables contact, no migration. The redirected reset paths go back
+to hand-wiring, the free block disappears, next /reload rebuilds
+everything from the unchanged data files. wotlkMapReset=true written by
+the redirected branch is the same value the old branch wrote.
+
 ## Open items before implementation
 
 - Grep-audit ALL write sites to cache records (assignments to record fields
@@ -361,6 +477,7 @@ message naming WpEnsureLinks.
 - Lever B: enumerate every `.links` write site (found: constructors,
   LoadLinkDataFromProfile:762, SetWaypointLinks area ~3895).
 - Lever E: consumer audit of SkuDBTMP.* and routedata.global.Links,
-  including the wotlkMapReset and custom-map-data branches.
+  including the wotlkMapReset and custom-map-data branches. DONE — see
+  "Lever E audit" above; implemented, in-game test pending.
 - After each lever: /skudbcheck fingerprint (data unchanged) + /skudbmem
   re-capture (memory delta) + a route-follow smoke test in game.

@@ -190,11 +190,11 @@ SkuNav.options = {
 			desc = "",
 			type = "toggle",
 			OnAction = function(self, info, val)
-				local t = SkuDB.routedata["global"]["Waypoints"]
-				SkuDB.SessionRouteData.Waypoints = t
-
-				local tl = SkuDB.routedata["global"]["Links"]
-				SkuDB.SessionRouteData.Links = tl
+				-- [DB rework lever E] Was a hand-wire of SessionRouteData from
+				-- SkuDB.routedata Waypoints+Links; the TBC link half is freed
+				-- after login and the correct per-client wiring lives in
+				-- LoadDefaultMapData.
+				SkuNav:LoadDefaultMapData(true)
 				SkuNav:CreateWaypointCache()
 
 				for x = 1, 4 do

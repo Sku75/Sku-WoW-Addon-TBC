@@ -3560,6 +3560,20 @@ function SkuNav:LoadDefaultMapData(aForce)
 		if Sku.isTBC then
 			local tl = SkuDBTMP.routedata["global"]["Links"]
 			SkuDB.SessionRouteData.Links = tl
+
+			-- [DB rework lever E] On the TBC client the live route tables are
+			-- SkuDB...Waypoints plus SkuDBTMP...Links (wired above). Their twins —
+			-- the WotLK waypoint half of SkuDBTMP and the TBC link half of SkuDB —
+			-- are never read again this session (every reset path goes through
+			-- LoadDefaultMapData now), so drop the references and let the GC
+			-- collect them (~40-55 MB). Not rebuildable without /reload:
+			-- EnsureData nils the builder globals after the one successful build.
+			SkuDBTMP.routedata["global"]["WaypointsNew"] = nil
+			SkuDBTMP.routedata["global"]["Waypoints"] = nil
+			SkuDBTMP.routedata["global"]["WaypointLevels"] = nil
+			SkuDBTMP.routedata["global"]["SequenceNumbers"] = nil
+			SkuDBTMP.SessionRouteData = nil
+			SkuDB.routedata["global"]["Links"] = nil
 		else
 			local tl = SkuDB.routedata["global"]["Links"]
 			SkuDB.SessionRouteData.Links = tl
@@ -3592,10 +3606,12 @@ function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	--routedata reset to default on first login with wrath client
 	if SkuSettings:Sub("SkuNav").wotlkMapReset ~= true then
 		SkuSettings:Sub("SkuNav").wotlkMapReset = true
-		local t = SkuDB.routedata["global"]["Waypoints"]
-		SkuDB.SessionRouteData.Waypoints = t
-		local tl = SkuDB.routedata["global"]["Links"]
-		SkuDB.SessionRouteData.Links = tl
+		-- [DB rework lever E] Was a hand-wire of SessionRouteData from
+		-- SkuDB.routedata Waypoints+Links. On TBC that wired the TBC-file links,
+		-- DIVERGING from every normal login (which wires the SkuDBTMP links) for
+		-- one session — and the TBC link half is freed now. LoadDefaultMapData
+		-- does the same reset with the correct per-client link source.
+		SkuNav:LoadDefaultMapData(true)
 	end
 
 	if aIsInitialLogin == true or aIsReloadingUi == true then
