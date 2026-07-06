@@ -124,6 +124,7 @@ SkuMob\Core.lua
 SkuMob\Options.lua
 
 SkuNav\Core.lua
+SkuNav\Geo.lua
 SkuNav\specialNavigationTasks.lua
 SkuNav\Visited.lua
 SkuNav\SkuMM.lua
