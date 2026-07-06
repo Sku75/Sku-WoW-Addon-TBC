@@ -1,4 +1,4 @@
-local SKUBEACON_MAJOR, SKUBEACON_MINOR = "SkuBeacon-1.0", 2
+﻿local SKUBEACON_MAJOR, SKUBEACON_MINOR = "SkuBeacon-1.0", 2
 local SkuBeacon, oldminor = LibStub:NewLibrary(SKUBEACON_MAJOR, SKUBEACON_MINOR)
 if not SkuBeacon then return end
 
@@ -153,10 +153,13 @@ local function OnUpdate(self, aTime)
 					local tPlayerPosX, tPlayerPosY = UnitPosition("player")
 					local tDistance = GetDistance(tPlayerPosX, tPlayerPosY, tBeacon.posX, tBeacon.posY)
 					local tDistanceYards = tDistance
-					if not tDistance then
-						SkuBeacon:DestroyBeacon(vRefs, vBeacons)
-						return
-					end
+					-- (W6-B Bug 2) A nil distance means UnitPosition("player") returned nil
+					-- (loading screen / inside an instance) or this beacon has no position
+					-- yet. That is transient: SKIP this beacon this frame and keep it alive.
+					-- Destroying it + `return` here used to tear down an actively-followed
+					-- beacon on a passing nil and skip every remaining beacon that frame.
+					-- The ping block below is guarded by `if tDistance and ...`, so falling
+					-- through is a clean no-op for this beacon this frame.
 
 					if tDistance and (not tBeacon.maxDistance or tDistance < tBeacon.maxDistance) then
 						if tBeacon.distanceChangedCallback and tDistanceYards ~= tBeacon.oldDistance and tDistanceYards <= tBeacon.maxDistance then
@@ -484,7 +487,11 @@ function SkuBeacon:DestroyBeacon(aReference, aBeaconName)
 	Debug("  aBeaconName:", aBeaconName)
 	if not gBeaconRepo[aReference] then return false end
 
-	for i, v in ipairs(gBeaconRepo[aReference]) do
+	-- Iterate backwards (W6-B quirk fix): this list is mutated with table.remove
+	-- inside the loop, so a forward ipairs skips the entry right after each
+	-- removal — which left beacons behind on a "destroy all" (aBeaconName nil).
+	for i = #gBeaconRepo[aReference], 1, -1 do
+		local v = gBeaconRepo[aReference][i]
 		if (aBeaconName and v == aBeaconName) or (not aBeaconName) then
 			SkuBeacon:StopBeacon(aReference, aBeaconName)
 			gBeaconRepo[aReference][v] = nil
