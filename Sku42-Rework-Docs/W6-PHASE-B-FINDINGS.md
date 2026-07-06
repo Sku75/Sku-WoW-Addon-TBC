@@ -308,18 +308,30 @@ Phase C pass. Risk/effort are the reviewer's estimates.
 
 ## Suspected BUGS (SEPARATE track — fixing them changes behavior, decide apart from cleanup)
 
-### Bug 1 (HIGH). All four default MenuQuickSelect keybinds are dead after the W7 root rename
-- SKU_KEY_MENUQUICK1-4 fire `SlashFunc(short..","..storedPath)`
-  (SkuZOptions/Core.lua:2183) with a localized-label path. The shipped DEFAULTS
-  (Options.lua:690-693 AND the schema defaults 777-780) start with a root
-  segment that no longer exists: 1 & 2 & 4 begin "SkuNav,..." but the Navigation
-  root display name is "Navigation" (L["SkuNavMenuEntry"], deDE.lua:2367), not
-  "SkuNav"; 3 = "SkuCore,Aktionsleisten" and the SkuCore/Core root was removed in
-  W7. Since a SlashFunc miss is a silent no-op, pressing any of the four on a
-  default profile does nothing, with no feedback — invisible to a blind user.
-- Fix: correct the four default strings in BOTH the defaults table and the schema
-  defaults in lockstep; repoint/drop the SkuCore one. Durable fix is the id-based
-  navigation (cleanup #14).
+### Bug 1 — FALSE POSITIVE (verified 2026-07-06 during execution, no fix made)
+- Original claim: all four default MenuQuickSelect keybinds are dead after the W7
+  root rename, because the default paths start with "SkuNav"/"SkuCore".
+- Verification result: NOT a bug. The reviewer read the path KEY but missed two
+  layers of indirection:
+  1. The defaults are `L["SkuNav,..."]`, and the locale table maps those keys to
+     the CURRENT labels: deDE.lua:2364-2366 resolve slots 1/2/4 to
+     "Navigation,Wegpunkt,Auswählen,Aktuelle Karte Entfernung" /
+     "Navigation,Route,Route folgen,Ziele Entfernung" / "Navigation,Alles
+     abwählen" (enUS to the English equivalents). Every deep segment exists in
+     the live SkuNav menu (L["Waypoint"]="Wegpunkt", L["Auswählen"],
+     L["Aktuelle Karte Entfernung"], L["Route"], L["Route folgen"],
+     L["Ziele Entfernung"], L["Deselect all"]="Alles abwählen"). So slots 1/2/4
+     resolve to valid current paths and fire through the generic loop
+     (SkuZOptions/Core.lua:2180-2185).
+  2. Slot 3 (SKU_KEY_MENUQUICK3) is intercepted at SkuZOptions/Core.lua:1335-1340
+     — it calls SkuCore:ActionBarsShowHandler() and `return`s BEFORE the generic
+     firing loop, so the stale "Core,Aktionsleisten" default string is never
+     used. The comment there (1328-1334) explicitly documents this as the W7
+     replacement for that stale path.
+- Only residue (cosmetic, not fixed): slot 3's stored default string is now dead
+  data (never read) and would look meaningless if a user opened the
+  MenuQuickSelect3 setting. Harmless; left as-is pending a decision. The id-based
+  navigation (cleanup #14) is still the durable hardening for this whole class.
 
 ### Bug 2 (HIGH). SkuBeacon OnUpdate: a transient nil player position permanently destroys the beacon and starves later beacons
 - The single OnUpdate pump (SkuBeacon-1.0.lua:146-159) reads UnitPosition("player")
