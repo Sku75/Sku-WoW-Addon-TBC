@@ -31,7 +31,13 @@
 SkuDB = SkuDB or {}
 SkuDB.chunkLoad = {families = {}, failed = {}, chunks = 0, ms = 0}
 
-local FAMILY_ORDER = {"quests", "creatures", "objects", "items", "spells"}
+-- [Load-perf 2026-07-06] creatures+objects moved AHEAD of quests: the
+-- waypoint-cache build (and with it route/link readiness, which the user
+-- waits for most) can only start once those two families are merged. Quest
+-- data arrives a couple of seconds later instead; the quest tail below
+-- always gated on all four families anyway, and every quest consumer is
+-- readiness-guarded, so only the quest-data availability moment shifts.
+local FAMILY_ORDER = {"creatures", "objects", "quests", "items", "spells"}
 
 local function SkuDBFamilyOfPath(aPath)
 	if string.find(aPath, ".NpcData.", 1, true) then return "creatures" end

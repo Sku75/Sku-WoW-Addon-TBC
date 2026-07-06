@@ -43,6 +43,14 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
   out over 5-10 s after "Sku Datenbank bereit". When the build (including
   the route links) completes, Sku speaks "Wegpunkte und Routen bereit", so
   database readiness and navigation readiness are separate announcements.
+  Round 2: SkuDB stream family order changed to creatures → objects →
+  quests → items → spells so the cache build starts as early as possible
+  (quest features unlock at the same absolute time — all quest consumers
+  gate on quests+creatures+objects together, which is order-independent),
+  and once the stream finishes the build works 45 ms/frame for the rest of
+  its generous window. Verified: route links reference ~119k creature/
+  object waypoint ids, so routes genuinely cannot be ready before those
+  families — this is the floor.
 - **DB rework stage 3 — streamed SkuDB build (the felt login win).** The
   chunk construction, DB fixes, WotLK/SoD merges and SkuAuras value lists no
   longer run on the loading screen: `SkuDB/ChunkLoader.lua` streams them

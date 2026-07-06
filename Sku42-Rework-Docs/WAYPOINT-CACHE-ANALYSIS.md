@@ -259,6 +259,31 @@ loader's cleanup pass deletes links whose endpoints are missing, so running
 it against a half-built cache would destroy cross-continent route data —
 needs its own careful design, lever-B-adjacent.
 
+## Second in-game round (2026-07-06): 4 errors + time-to-routes
+
+- Re-test: 0 real defects. 57 Namensdubletten (as predicted), and the 4
+  remaining "Fehler" were the four Schnellwegpunkt route records, which
+  legitimately have NO areaId (always did; wpId encodes the default 1, the
+  contintentId shadow-store kicked in correctly). Checker now allows nil
+  areaId on typeId-1 records. Full reconciliation of round 1: 118 = 57
+  dup-name records x 2 lookup checks + these same 4.
+- Time-to-routes attacked on two fronts (user: loading now smooth, but
+  routes used to be usable immediately after the old slow load):
+  1. FAMILY_ORDER reordered to creatures, objects, quests, items, spells.
+     The wpc build (whose end = route readiness) starts after
+     creatures+objects; quests-first made it wait behind the largest
+     family for nothing. KEY INSIGHT: all quest consumers gate on
+     quests AND creatures AND objects together, so their unlock time is
+     the SUM of the three families - order-independent. The reorder
+     delays nothing and buys the whole quests-family duration.
+  2. tWpcBudgetMs: once the chunk stream is done (global "skudb" ready)
+     the build takes 45 ms/frame instead of 30 for the rest of its 8 s
+     window - it is the only heavy worker left at that point.
+- Checked and closed: route links reference 104,835 creature + 14,073
+  object waypoint ids (counted in routedata_global_wotlk.lua Links), so a
+  custom-waypoints-first fast path CANNOT work - the route network
+  genuinely needs the creature/object cache. The idea is dead, not parked.
+
 ## Open items before implementation
 
 - Grep-audit ALL write sites to cache records (assignments to record fields

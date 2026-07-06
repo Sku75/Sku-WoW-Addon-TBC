@@ -433,7 +433,9 @@ local function SkuDBToolsRunWpCheck()
 			if type(tRec.dbIndex) ~= "number" then tFail(tRec.name, "dbIndex") end
 			if type(tRec.spawn) ~= "number" then tFail(tRec.name, "spawn") end
 			if tRec.spawnNr ~= tRec.spawn then tFail(tRec.name, "spawnNr~=spawn") end
-			if type(tRec.areaId) ~= "number" then tFail(tRec.name, "areaId") end
+			-- custom records may legitimately lack areaId (the Schnellwegpunkt
+			-- route records never had one; wpId encodes the default 1 then)
+			if type(tRec.areaId) ~= "number" and tTypeId ~= 1 then tFail(tRec.name, "areaId") end
 			if type(tRec.contintentId) ~= "number" then tFail(tRec.name, "contintentId") end
 			if tRec.uiMapId == nil and tTypeId ~= 1 then tFail(tRec.name, "uiMapId nil") end
 			if tTypeId == 1 and tRec.comments == nil then tResult.commentsNil = tResult.commentsNil + 1 end

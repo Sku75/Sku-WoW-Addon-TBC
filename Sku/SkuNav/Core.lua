@@ -423,7 +423,13 @@ local tWpcInBuild = false
 -- 5-10 s of wall time AFTER "Sku Datenbank bereit" was already spoken.
 local tWpcStartedAt = 0
 local function tWpcBudgetMs()
-	return (GetTime() - tWpcStartedAt) < 8 and 30 or 10
+	if (GetTime() - tWpcStartedAt) >= 8 then return 10 end
+	-- while the SkuDB chunk stream still shares the frame (it runs 30 ms
+	-- slices of its own), stay at 30; once the stream is done this build is
+	-- the only heavy worker left and route readiness is what the user is
+	-- actually waiting for - work harder for the remainder.
+	if Sku.IsDataReady and Sku:IsDataReady("skudb") then return 45 end
+	return 30
 end
 local function tWpcYield()
 	if not tWpcInBuild or not coroutine.running() then return end
