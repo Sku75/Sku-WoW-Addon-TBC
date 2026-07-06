@@ -329,6 +329,29 @@ py -3 _wpcheck.py / _dbmem.py 8, BugGrabber/SkuErrorLog clean. The loud
 wrapper trap means a missed write site shows up as an explicit error
 message naming WpEnsureLinks.
 
+## Levers B + D first in-game results (2026-07-06, same day)
+
+- /skudbwpcheck PASS: 144,823 records, 0 Fehler, 57 Namensdubletten.
+- NEW DATA: linked = 82,479 — far more than the ~50k route waypoints. The
+  link network attaches to ~32k creature/object waypoints too (consistent
+  with the 104,835 creature link refs counted earlier). Lever B therefore
+  saved less than estimated: 62,344 unlinked records (144,823 − 82,479)
+  x ~150 B ≈ 9-10 MB real, not 14-21.
+- Correctness arithmetic: table count dropped 597,459 → 535,115 = exactly
+  −62,344 = one wrapper per unlinked record. Cost-model metric
+  153.7 → 146.3 MB; the CacheNameForId line (13.4 model / ~7 MB real) is
+  gone from the ranking (lever D).
+- Cumulative A+B+D: model 221.3 → 146.3 MB; real ≈ 60-62 MB.
+- Logs: no write-trap error, no new SkuErrorLog entries in any post-lever
+  session. BugGrabber only shows WowVision-port and old entries. NOTE for
+  the record: two "yield across metamethod/C-call boundary" stream
+  failures logged 09:45/09:51 that morning (items/quests fixes+merge,
+  BEFORE lever A) did not recur in 5+ sessions since — watch item, not
+  chased.
+- Outstanding manual check: link create/delete + reload persistence (the
+  CreateWpLink/SetWaypoint materialization paths only run on link editing;
+  the loud trap would catch a miss immediately).
+
 ## Open items before implementation
 
 - Grep-audit ALL write sites to cache records (assignments to record fields
