@@ -315,7 +315,12 @@ function SkuOptions:SlashFunc(input, aSilent)
 						end
 					end
 
-					if fields[x] == slower(tMenu[y].name) then
+					-- Match a path segment against the node's stable `id` first, then
+					-- fall back to its localized display `name` (W6-B #14). This is a
+					-- pure superset: existing label paths keep working unchanged, and
+					-- id paths are locale-independent and survive menu renames.
+					local tNodeId = tMenu[y].id and slower(tostring(tMenu[y].id))
+					if fields[x] == tNodeId or fields[x] == slower(tMenu[y].name) then
 						tFoundMenuPos = tMenu[y]
 						tMenu[y].OnSelect(tMenu[y], true)
 						tMenu = tMenu[y].children

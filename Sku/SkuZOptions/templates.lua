@@ -147,6 +147,26 @@ SkuGenericMenuItem = {
 	BuildChildren = function(self)
 		--dprint("BuildChildren generic", self.name)
 	end,
+	-- Stable node identity (W6-B #14). `id` is an OPTIONAL per-instance string set
+	-- on STRUCTURAL ANCHOR nodes (never on this shared template — it would copy to
+	-- every node). It gives menu navigation a language-independent handle so paths
+	-- and re-pins no longer depend on the localized display `name` or on counting
+	-- fixed .parent hops.
+	--
+	-- FindAncestorById walks up the .parent chain (including self) to the nearest
+	-- node whose id == aId; returns it or nil. Use this to re-pin the cursor after
+	-- an action instead of `self.parent.parent.parent`, which breaks whenever the
+	-- menu depth changes.
+	FindAncestorById = function(self, aId)
+		local tNode = self
+		while tNode do
+			if tNode.id == aId then
+				return tNode
+			end
+			tNode = tNode.parent
+		end
+		return nil
+	end,
 	-- Option-2 "live data" support for node-based menus.
 	--
 	-- A level whose children grow/change while the menu sits open (e.g.
