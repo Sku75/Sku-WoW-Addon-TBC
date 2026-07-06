@@ -50,7 +50,12 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
   and once the stream finishes the build works 45 ms/frame for the rest of
   its generous window. Verified: route links reference ~119k creature/
   object waypoint ids, so routes genuinely cannot be ready before those
-  families — this is the floor.
+  families — this is the floor. Round 3 (user-confirmed 0 Fehler, waypoints
+  usable before the announcement even landed): both readiness lines are now
+  LOGGED instead of spoken — "Sku Datenbank bereit" and "Wegpunkte und
+  Routen bereit" were reload voice spam, and the TTS queue delayed them
+  past actual readiness anyway. Failure lines still speak. Timestamps
+  remain in the loadPerf capture and SkuDebugLog.wpcResult.
 - **DB rework stage 3 — streamed SkuDB build (the felt login win).** The
   chunk construction, DB fixes, WotLK/SoD merges and SkuAuras value lists no
   longer run on the loading screen: `SkuDB/ChunkLoader.lua` streams them

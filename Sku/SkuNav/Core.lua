@@ -773,15 +773,12 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 					-- completes after first-frame -> proves the build is off the freeze.
 					tWpcSetResult(string.format("async done = %.1f ms work", SkuNav._wpcWorkMs))
 					if Sku.MetricPoint then Sku:MetricPoint(string.format("waypoint cache async build done = %.1f ms work", SkuNav._wpcWorkMs)) end
-					-- [Load-perf 2026-07-06] "Sku Datenbank bereit" (chunk stream)
-					-- fires BEFORE this build ends; until here waypoint lists and
-					-- routes still say "Wegpunkte werden noch geladen". One line so
-					-- the user knows when navigation is actually usable.
-					pcall(function()
-						if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.OutputStringBTtts then
-							SkuOptions.Voice:OutputStringBTtts(L["Wegpunkte und Routen bereit"], false, true, 0.3)
-						end
-					end)
+					-- [2026-07-06] readiness is logged, not spoken: the voice line
+					-- was reload spam, and the TTS queue delayed it well past the
+					-- actual ready moment anyway. SkuDebugLog.wpcResult (always
+					-- written, line above) carries the timestamp; menus stop
+					-- saying "Wegpunkte werden noch geladen" the moment it flips.
+					dprint("waypoint cache ready (async build complete)")
 				end
 			end
 		end

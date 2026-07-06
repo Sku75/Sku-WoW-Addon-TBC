@@ -342,9 +342,11 @@ local function SkuDBMasterSequence()
 		pcall(function() SkuNav:CreateWaypointCache(tArgs[1], true) end)
 	end
 
-	-- one readiness line, then return the build garbage in one sweep
+	-- readiness is LOGGED, not spoken (2026-07-06: the voice line was reload
+	-- spam; failures below still speak). The moment stays visible in the
+	-- loadPerf MetricPoint capture and, with /skudebug on, in this dprint.
 	if tAllReady then
-		SkuDBSpeak("Sku Datenbank bereit")
+		dprint("SkuDB stream: alle Familien bereit")
 	end
 	local tGcT0 = debugprofilestop()
 	collectgarbage("collect")
