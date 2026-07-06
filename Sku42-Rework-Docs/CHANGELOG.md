@@ -22,6 +22,17 @@ W4 modularization) from `REFACTOR-PLAN.md` where relevant.
 
 ## Unreleased (42.00 — in progress)
 
+- **DB rework lever A — slim waypoint-cache records (memory).** The ~145k
+  WaypointCache records no longer store constant/derivable fields (createdAt,
+  createdBy, size, spawnNr, dbIndex, spawn, uiMapId, contintentId, and the
+  per-custom empty comments table); a shared `WpRecordMT` metatable answers
+  those reads by deriving from the stored wpId/areaId or returning the old
+  uniform defaults, so every consumer field read (and write) behaves as
+  before. Records shrink from 16 to 8 hash slots (~320 bytes each, ~45 MB
+  expected; see `WAYPOINT-CACHE-ANALYSIS.md`). New validation command
+  `/skudbwpcheck` (SkuDBTools.lua, reader `_wpcheck.py`) type-checks every
+  legacy field through the metatable, round-trips the wpId bitfield, and
+  cross-checks the four lookup tables.
 - **DB rework stage 3 — streamed SkuDB build (the felt login win).** The
   chunk construction, DB fixes, WotLK/SoD merges and SkuAuras value lists no
   longer run on the loading screen: `SkuDB/ChunkLoader.lua` streams them

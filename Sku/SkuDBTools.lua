@@ -15,6 +15,14 @@
 --                          cache, counts tables/strings/numbers and sums
 --                          string bytes; persists to SkuDebugLog.dbMem.
 --                          Ranked out-of-game by _dbmem.py. Stage-4 tool.
+--   /skudbwpcheck        - [DB rework lever A] validates the slim waypoint-
+--                          cache records: reads every legacy field of every
+--                          record THROUGH the shared metatable and type-checks
+--                          it, round-trips wpId vs BuildWpIdFromData over the
+--                          derived dbIndex/spawn, and cross-checks the four
+--                          lookup tables. Persists to SkuDebugLog.wpCheck
+--                          (reader: _wpcheck.py). Run after the cache build
+--                          ("Wegpunkte werden noch geladen" hint gone).
 --
 -- Both fingerprints and estimates are computed by the SAME code before and
 -- after any conversion, so comparisons never cross implementations.
@@ -374,4 +382,106 @@ end
 SLASH_SKUDBMEM1 = "/skudbmem"
 SlashCmdList["SKUDBMEM"] = function()
 	SkuDBToolsRunMem()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [DB rework lever A] /skudbwpcheck - structural validation of the slim
+-- waypoint-cache records (see WpRecordMT in SkuNav/Core.lua). Every check
+-- reads the record fields the normal way, so all derived fields pass through
+-- the metatable exactly like consumer code does.
+local function SkuDBToolsRunWpCheck()
+	local tT0 = debugprofilestop()
+	local tResult = {
+		total = 0,
+		byType = {},
+		sessionRecords = 0,   -- SetWaypoint-created (no wpId; store all fields)
+		commentsNil = 0,      -- custom records without comments (new: nil, was empty table)
+		shadowed = 0,         -- records with stored createdBy/size/contintentId overrides
+		errors = 0,
+		examples = {},
+	}
+	local function tFail(aName, aWhat)
+		tResult.errors = tResult.errors + 1
+		if #tResult.examples < 20 then
+			tResult.examples[#tResult.examples + 1] = tostring(aWhat) .. ": " .. tostring(aName)
+		end
+	end
+	local function tWork()
+		if not (SkuNav and SkuNav.DevGetWaypointCacheTables) then return end
+		local tCaches = SkuNav:DevGetWaypointCacheTables()
+		local tCache = tCaches.WaypointCache
+		local tLookupAll = tCaches.WaypointCacheLookupAll
+		local tIdForIdx = tCaches.WaypointCacheLookupIdForCacheIndex
+		local tNameForId = tCaches.WaypointCacheLookupCacheNameForId
+		local tPerCont = tCaches.WaypointCacheLookupPerContintent
+		for tIdx, tRec in pairs(tCache) do
+			tResult.total = tResult.total + 1
+			local tTypeId = tRec.typeId
+			tResult.byType[tTypeId] = (tResult.byType[tTypeId] or 0) + 1
+			-- every legacy field must answer with the right type
+			if type(tRec.name) ~= "string" then tFail(tIdx, "name") end
+			if type(tRec.worldX) ~= "number" or type(tRec.worldY) ~= "number" then tFail(tRec.name, "worldXY") end
+			if type(tRec.role) ~= "string" then tFail(tRec.name, "role") end
+			if type(tRec.links) ~= "table" then tFail(tRec.name, "links") end
+			if type(tRec.createdAt) ~= "number" then tFail(tRec.name, "createdAt") end
+			if type(tRec.createdBy) ~= "string" then tFail(tRec.name, "createdBy") end
+			if type(tRec.size) ~= "number" then tFail(tRec.name, "size") end
+			if type(tRec.dbIndex) ~= "number" then tFail(tRec.name, "dbIndex") end
+			if type(tRec.spawn) ~= "number" then tFail(tRec.name, "spawn") end
+			if tRec.spawnNr ~= tRec.spawn then tFail(tRec.name, "spawnNr~=spawn") end
+			if type(tRec.areaId) ~= "number" then tFail(tRec.name, "areaId") end
+			if type(tRec.contintentId) ~= "number" then tFail(tRec.name, "contintentId") end
+			if tRec.uiMapId == nil and tTypeId ~= 1 then tFail(tRec.name, "uiMapId nil") end
+			if tTypeId == 1 and tRec.comments == nil then tResult.commentsNil = tResult.commentsNil + 1 end
+			if rawget(tRec, "createdBy") or rawget(tRec, "size") or rawget(tRec, "contintentId") then
+				tResult.shadowed = tResult.shadowed + 1
+			end
+			-- wpId round-trip through the DERIVED dbIndex/spawn
+			local tWpId = rawget(tRec, "wpId")
+			if tWpId then
+				local tRebuilt = SkuNav:BuildWpIdFromData(tRec.typeId, tRec.dbIndex, tRec.spawn, tRec.areaId)
+				if tRebuilt ~= tWpId then tFail(tRec.name, "wpId roundtrip") end
+				if tIdForIdx[tWpId] ~= tIdx then tFail(tRec.name, "IdForCacheIndex") end
+				if tNameForId[tRec.name] ~= tWpId then tFail(tRec.name, "CacheNameForId") end
+			else
+				-- SetWaypoint-created this session: stores all fields itself
+				tResult.sessionRecords = tResult.sessionRecords + 1
+			end
+			-- lookup consistency
+			if tLookupAll[tRec.name] ~= tIdx then tFail(tRec.name, "LookupAll") end
+			local tCont = tRec.contintentId
+			if type(tCont) == "number" then
+				if not (tPerCont[tCont] and tPerCont[tCont][tIdx] == tRec.name) then
+					tFail(tRec.name, "PerContinent")
+				end
+			end
+			SkuDBToolsOps = SkuDBToolsOps + 32
+			SkuDBToolsMaybeYield()
+		end
+	end
+	local function tDone()
+		if type(SkuDebugLog) ~= "table" then SkuDebugLog = {} end
+		tResult.t = date("%Y-%m-%d %H:%M:%S")
+		tResult.took = string.format("%.1f", (debugprofilestop() - tT0) / 1000)
+		tResult.wpCacheReady = SkuNav and SkuNav.wpCacheReady or false
+		SkuDebugLog.wpCheck = tResult
+		local tMsg = string.format("Wegpunkt Prüfung: %d Wegpunkte, %d Fehler", tResult.total, tResult.errors)
+		SkuDBToolsPrint(tMsg .. string.format(" (Sitzung %d, ohne Kommentare %d, überschrieben %d)",
+			tResult.sessionRecords, tResult.commentsNil, tResult.shadowed))
+		SkuDBToolsSpeak(tMsg)
+	end
+	if not (SkuNav and SkuNav.wpCacheReady) then
+		SkuDBToolsPrint("Wegpunkt Cache ist noch nicht fertig gebaut - später erneut ausführen")
+		SkuDBToolsSpeak("Wegpunkt Cache noch nicht bereit")
+		return
+	end
+	if SkuDBToolsStartJob("skudbwpcheck", tWork, tDone) then
+		SkuDBToolsPrint("Wegpunkt Prüfung läuft (im Hintergrund, Ansage am Ende) ...")
+		SkuDBToolsSpeak("Wegpunkt Prüfung gestartet")
+	end
+end
+
+SLASH_SKUDBWPCHECK1 = "/skudbwpcheck"
+SlashCmdList["SKUDBWPCHECK"] = function()
+	SkuDBToolsRunWpCheck()
 end

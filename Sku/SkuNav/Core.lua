@@ -316,6 +316,78 @@ local WaypointCacheLookupCacheNameForId = {}
 
 local WaypointCacheLookupPerContintent = {}
 
+-- [DB rework lever A, 2026-07-06] Slim waypoint-cache records. The old
+-- records stored 15 fields (16 hash slots x ~40 bytes) per waypoint although
+-- most fields are constants or derivable; at ~145k waypoints that was the
+-- single biggest memory block in the addon. Records now store only
+-- name/wpId/typeId/areaId/worldX/worldY/links (+role on NPC/object wps,
+-- +comments/createdBy/size on custom wps when they differ from the default);
+-- this shared metatable answers reads of the missing fields:
+--  - dbIndex/spawn: decoded from the bit-packed wpId (GetWpDataFromId)
+--  - spawnNr: alias of spawn (the old constructors always stored the same)
+--  - uiMapId: from areaId via GetUiMapIdFromAreaId (memoized)
+--  - contintentId: from areaId via InternalAreaTable
+--  - createdAt/createdBy/size/role: the uniform values the old constructors
+--    stored on every record (cache build time, "SkuNav", 1, "")
+-- Field WRITES keep working everywhere: assigning any of these creates a real
+-- slot on that one record and shadows the derived default (SetWaypoint does).
+-- comments deliberately has NO default: consumers (SkuMM, Options) check for
+-- nil and materialize their own per-record table; a shared default table
+-- would be written to by all records at once.
+local tWpCacheBuildTime = 0
+local WpDerivedFields
+WpDerivedFields = {
+	contintentId = function(aRecord)
+		local tAreaData = SkuDB.InternalAreaTable[rawget(aRecord, "areaId")]
+		if tAreaData then
+			return tAreaData.ContinentID
+		end
+	end,
+	uiMapId = function(aRecord)
+		local tAreaId = rawget(aRecord, "areaId")
+		if tAreaId then
+			return SkuNav:GetUiMapIdFromAreaId(tAreaId)
+		end
+	end,
+	dbIndex = function(aRecord)
+		local tWpId = rawget(aRecord, "wpId")
+		if tWpId then
+			local _, tDbIndex = SkuNav:GetWpDataFromId(tWpId)
+			return tDbIndex
+		end
+	end,
+	spawn = function(aRecord)
+		local tWpId = rawget(aRecord, "wpId")
+		if tWpId then
+			local _, _, tSpawn = SkuNav:GetWpDataFromId(tWpId)
+			return tSpawn
+		end
+	end,
+	spawnNr = function(aRecord)
+		return aRecord.spawn
+	end,
+	createdAt = function()
+		return tWpCacheBuildTime
+	end,
+	createdBy = function()
+		return "SkuNav"
+	end,
+	size = function()
+		return 1
+	end,
+	role = function()
+		return ""
+	end,
+}
+local WpRecordMT = {
+	__index = function(aRecord, aKey)
+		local tDerive = WpDerivedFields[aKey]
+		if tDerive then
+			return tDerive(aRecord)
+		end
+	end,
+}
+
 -- [DB rework stage 0] Dev accessor: /skudbmem (SkuDBTools.lua) ranks these
 -- file-local cache tables; they are unreachable from outside this file. The
 -- mapping is built per call because the locals are re-ASSIGNED on rebuilds.
@@ -371,6 +443,9 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	end
 
 	local C_MapGetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
+	-- [DB rework lever A] the derived createdAt of all records built in this
+	-- pass (the old code stamped GetTime() per record during the same build)
+	tWpCacheBuildTime = GetTime()
 	WaypointCache = {}
 	WaypointCacheLookupAll = {}
 	WaypointCacheLookupIdForCacheIndex = {}
@@ -464,26 +539,21 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 										WaypointCacheLookupAll[tFinalName] = tNewIndex
 										WaypointCacheLookupIdForCacheIndex[tWpId] =  tNewIndex
 										WaypointCacheLookupCacheNameForId[tFinalName] = tWpId
-										WaypointCache[tNewIndex] = {
+										-- [DB rework lever A] slim record; missing fields
+										-- are served by WpRecordMT (see top of file)
+										WaypointCache[tNewIndex] = setmetatable({
 											name = tFinalName,
 											role = tRolesString,
 											typeId = 2,
-											dbIndex = i,
-											spawn = sp,
-											contintentId = tData.ContinentID,
 											areaId = is,
-											uiMapId = isUiMap,
+											wpId = tWpId,
 											worldX = tWorldX,
 											worldY = tWorldY,
-											createdAt = GetTime(),
-											createdBy = "SkuNav",
-											size = 1,
-											spawnNr = sp,
 											links = {
 												byId = nil,
 												byName = nil,
 											},
-										}
+										}, WpRecordMT)
 									end
 								end
 							end
@@ -534,26 +604,20 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 											WaypointCacheLookupAll[tFinalName] = tNewIndex
 											WaypointCacheLookupIdForCacheIndex[tWpId] =  tNewIndex
 											WaypointCacheLookupCacheNameForId[tFinalName] = tWpId										
-											WaypointCache[tNewIndex] = {
+											-- [DB rework lever A] slim record; missing fields
+											-- (incl. role = "") come from WpRecordMT
+											WaypointCache[tNewIndex] = setmetatable({
 												name = tFinalName,
-												role = "",
 												typeId = 3,
-												dbIndex = i,
-												spawn = sp,
-												contintentId = tData.ContinentID,
 												areaId = is,
-												uiMapId = isUiMap,
+												wpId = tWpId,
 												worldX = tWorldX,
 												worldY = tWorldY,
-												createdAt = GetTime(),
-												createdBy = "SkuNav",
-												size = 1,
-												spawnNr = sp,
 												links = {
 													byId = nil,
 													byName = nil,
 												},
-											}
+											}, WpRecordMT)
 										end
 									end
 								end
@@ -600,7 +664,7 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 							local tWaypointData = tData
 							if tWaypointData then
 								if tWaypointData.contintentId then
-									local isUiMap = SkuNav:GetUiMapIdFromAreaId(tWaypointData.areaId)
+									local tWpId = SkuNav:BuildWpIdFromData(1, tIndex, 1, tWaypointData.areaId)
 									local tWpIndex = (#WaypointCache + 1)
 									local tOldLinks = {
 										byId = nil,
@@ -614,27 +678,31 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 										tWpIndex = WaypointCacheLookupAll[tName]
 									end
 
-									WaypointCache[tWpIndex] = {
+									-- [DB rework lever A] slim record; only fields that differ
+									-- from WpRecordMT's derived defaults are stored. comments
+									-- is nil when the route data has none (readers all guard;
+									-- the old per-record empty {deDE={},enUS={}} is gone).
+									WaypointCache[tWpIndex] = setmetatable({
 										name = tName,
-										role = "",
 										typeId = 1,
-										dbIndex = tIndex,
-										spawn = 1,
-										contintentId = tWaypointData.contintentId,
 										areaId = tWaypointData.areaId,
-										uiMapId = isUiMap,
+										wpId = tWpId,
 										worldX = tWaypointData.worldX,
 										worldY = tWaypointData.worldY,
-										createdAt = GetTime(),--tWaypointData.createdAt,
-										createdBy = tWaypointData.createdBy,
-										size = tWaypointData.size or 1,
-										comments = tWaypointData.lComments or {["deDE"] = {},["enUS"] = {},},
-										spawnNr = nil,
+										comments = tWaypointData.lComments,
 										links = tOldLinks,
-									}
+									}, WpRecordMT)
+									if tWaypointData.createdBy and tWaypointData.createdBy ~= "SkuNav" then
+										WaypointCache[tWpIndex].createdBy = tWaypointData.createdBy
+									end
+									if tWaypointData.size and tWaypointData.size ~= 1 then
+										WaypointCache[tWpIndex].size = tWaypointData.size
+									end
+									if tWaypointData.contintentId ~= WpDerivedFields.contintentId(WaypointCache[tWpIndex]) then
+										WaypointCache[tWpIndex].contintentId = tWaypointData.contintentId
+									end
 
 									WaypointCacheLookupAll[tName] = tWpIndex
-									local tWpId = SkuNav:BuildWpIdFromData(1, tIndex, 1, tWaypointData.areaId)
 									WaypointCacheLookupIdForCacheIndex[tWpId] =  tWpIndex
 									WaypointCacheLookupCacheNameForId[tName] = tWpId										
 			
@@ -3648,10 +3716,13 @@ function SkuNav:SetWaypoint(aName, aData, aIsTempWaypoint)
 		tWpIndex = WaypointCacheLookupAll[aName]
 	else
 		tWpIndex = #WaypointCache + 1
-		WaypointCache[tWpIndex] = {
+		-- [DB rework lever A] user-created records keep storing all their
+		-- fields below (they are few); the metatable only covers derived
+		-- reads (e.g. spawnNr) for consistency with the build-time records
+		WaypointCache[tWpIndex] = setmetatable({
 			name = aName,
 			typeId = 1,
-		}
+		}, WpRecordMT)
 		tIsNew = true
 	end
 	
