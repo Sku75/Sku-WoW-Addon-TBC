@@ -528,6 +528,20 @@ the probe check guards those) -> route follow + beacon on a known
 waypoint sounds at the same position -> read wpcResult phase split for
 the before/after work delta.
 
+RESULTS (same day, in-game CONFIRMED): wpcheck PASS identical counters,
+beacon position correct by ear. Work 3383.7 -> 2387.8 ms (-29%), both
+full power: creatures 1365 -> 730 (-47%), objects 274 -> 80 (-71%),
+custom 289 -> 272 (untouched, sanity check), links 1455 -> 1306 (-10%).
+The transform cache carried the win; the link hoists were modest because
+links' cost is inherent (three full sweeps over ~215k directed links:
+CheckAndUpdate validation, byId/byName build, SaveLinkDataToProfile full
+rebuild). Links is now 55% of the build - a deeper cut would need a
+structural change (e.g. skipping the Save rebuild when nothing changed,
+or merging the sweeps), which touches the link-aliasing landmines
+(canonical-id vs raw-id keys for dup names, SaveLinkDataToProfile's
+deliberate alias break). Parked as diminishing returns; route readiness
+now ~work + stream at 150 ms/frame.
+
 ## Open items before implementation
 
 - Grep-audit ALL write sites to cache records (assignments to record fields
