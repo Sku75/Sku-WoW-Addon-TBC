@@ -113,7 +113,8 @@ function MacroMenuBuilderList(aParent, isGlobal)
         local name, iconTexture, body, isLocal = GetMacroInfo(i)
         local tListEntry = SkuOptions:InjectMenuItems(aParent, { name }, SkuGenericMenuItem)
         tListEntry.dynamic = true
-        tListEntry["Id"] = i
+        tListEntry["Id"] = i          -- capital Id: the WoW macro index (unrelated to nav)
+        tListEntry.id = "macroEntry"  -- lowercase id: stable nav anchor (W6-B #14)
         tListEntry.BuildChildren = MacroMenuBuilderEntryButtons
     end
 end
@@ -125,7 +126,10 @@ function MacroMenuBuilderEntryButtons(aParent)
         SkuOptions:ConfirmationDialog(menuEntry, function(self)
             DeleteMacro(aParent["Id"])
             C_Timer.After(0.1, function()
-                SkuOptions.currentMenuPosition.parent.parent.parent:OnSelect()
+                -- Re-pin to the macro entry via its stable id instead of a fixed
+                -- .parent.parent.parent hop (W6-B #14). Same target, depth-robust.
+                local tAnchor = SkuOptions.currentMenuPosition:FindAncestorById("macroEntry")
+                if tAnchor then tAnchor:OnSelect() end
                 SkuOptions.currentMenuPosition:OnUpdate()
             end)
         end)
