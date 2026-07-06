@@ -473,18 +473,17 @@ local tWpcInBuild = false
 -- is still orienting and routes are unusable until the build ends anyway -
 -- then calmer. At the old flat 10 ms the ~3 s of build work stretched to
 -- 5-10 s of wall time AFTER "Sku Datenbank bereit" was already spoken.
-local tWpcStartedAt = 0
 local function tWpcBudgetMs()
-	if (GetTime() - tWpcStartedAt) >= 15 then return 10 end
-	-- while the SkuDB chunk stream still shares the frame (it runs 30 ms
-	-- slices of its own), stay at 30 so quests/items/spells are not starved;
-	-- once the stream is done this build is the only heavy worker left and
-	-- route readiness is what the user is actually waiting for. [2026-07-06
-	-- option 1] 150 ms/frame by explicit user choice: the game runs choppy
-	-- (~6 fps) for those few seconds, which a screen-reader user does not
-	-- see, and the ~3.8 s of build work lands at ~4-5 s wall time instead of
-	-- 6-9 s at the old 45. The 15 s window (was 8) keeps slower machines from
-	-- falling into the 10 ms crawl before the build finishes.
+	-- Once the SkuDB chunk stream is done this build is the only heavy worker
+	-- left and route readiness is what the user is actually waiting for.
+	-- [2026-07-06 option 1] 150 ms/frame by explicit user choice: the game
+	-- runs choppy (~6 fps) for those seconds, which a screen-reader user does
+	-- not see, and wall time approaches the pure work time (~3.8 s full power,
+	-- ~8.4 s on an energy-save laptop). Deliberately NO time-window fallback
+	-- here: the build is bounded and always ends, and on slow machines a
+	-- mid-build drop to a 10 ms crawl multiplied the tail (measured: the 15 s
+	-- window barely covered an energy-save run). While the stream still shares
+	-- the frame, stay at 30 so quests/items/spells are not starved.
 	if Sku.IsDataReady and Sku:IsDataReady("skudb") then return 150 end
 	return 30
 end
@@ -551,7 +550,6 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 
 	SkuNav._wpcGen = (SkuNav._wpcGen or 0) + 1
 	local tWpcMyGen = SkuNav._wpcGen
-	tWpcStartedAt = GetTime()
 	SkuNav._wpcCo = coroutine.create(function()
 		tWpcInBuild = true
 		tWpcSliceStart = debugprofilestop()
