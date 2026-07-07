@@ -191,6 +191,16 @@ local function MakeSelect(aParent, aName, opts, aGetCurrentLabel, aSetByLabel)
    return e
 end
 
+local function tSetByLabel(opts, setting, aName, label)
+   for _, o in ipairs(opts) do
+      if tostring(o.label) == tostring(label) then
+         SetValue(setting, o.value)
+         tSay(aName .. " " .. tostring(o.label))
+         return
+      end
+   end
+end
+
 local function MakeDropdown(aParent, aName, setting, opts)
    local function curLabel()
       local cur = tCall(setting, "GetValue")
@@ -199,15 +209,7 @@ local function MakeDropdown(aParent, aName, setting, opts)
       end
       return tostring(cur)
    end
-   local function setByLabel(label)
-      for _, o in ipairs(opts) do
-         if tostring(o.label) == tostring(label) then
-            SetValue(setting, o.value)
-            tSay(aName .. " " .. tostring(o.label))
-            return
-         end
-      end
-   end
+   local function setByLabel(label) tSetByLabel(opts, setting, aName, label) end
    MakeSelect(aParent, aName, opts, curLabel, setByLabel)
 end
 
@@ -265,15 +267,7 @@ local function MakeSlider(aParent, aName, setting, mn, mx, step, steps)
       end
       return tostring(best.label)
    end
-   local function setByLabel(label)
-      for _, o in ipairs(opts) do
-         if tostring(o.label) == tostring(label) then
-            SetValue(setting, o.value)
-            tSay(aName .. " " .. tostring(o.label))
-            return
-         end
-      end
-   end
+   local function setByLabel(label) tSetByLabel(opts, setting, aName, label) end
    MakeSelect(aParent, aName, opts, nearestLabel, setByLabel)
 end
 
