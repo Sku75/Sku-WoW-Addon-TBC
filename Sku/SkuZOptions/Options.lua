@@ -969,7 +969,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-		SkuOptions.db:DeleteProfile(aName, silent)
+		SkuOptions.db:DeleteProfile(aName)
 	end
 	tNewMenuSubEntry.BuildChildren = function(self)
 		local tList = SkuOptions.db:GetProfiles()

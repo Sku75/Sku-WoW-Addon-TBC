@@ -1027,7 +1027,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 							local tData = SkuDB.InternalAreaTable[is]
 							if tData then
 								if tPlayerContinentID == tData.ContinentID then
-									if (not aAreaId) or aAreaId == isUiMap then
+									if (not aOnlyUiMapId) or aOnlyUiMapId == isUiMap then
 										local tNumberOfSpawns = #vs
 										if tNumberOfSpawns > 3 and aOnly3 == true then
 											tNumberOfSpawns = 3
@@ -1042,7 +1042,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 										end
 									end
 								else
-									if (not aAreaId) or aAreaId == isUiMap then
+									if (not aOnlyUiMapId) or aOnlyUiMapId == isUiMap then
 										local tNumberOfSpawns = #vs
 										if tNumberOfSpawns > 3 and aOnly3 == true then
 											tNumberOfSpawns = 3
@@ -1998,7 +1998,6 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 				if SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap] then
 					local tSpawnX, tSpawnY = SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap][1][1], SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap][1][2]
 					if tSpawnX ~= -1 and tSpawnY ~= -1 then
-						local tContintentId = select(3, SkuNav.Geo:GetAreaData(is))
 						local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav.Geo:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
 						local tX, tY = worldPosition:GetXY()
 						local tDistance, _  = SkuNav.Geo:Distance(tPlayX, tPlayY, tX, tY)
@@ -2015,7 +2014,6 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 				if tObjectSpawns[tUiMap] then
 					local tSpawnX, tSpawnY = tObjectSpawns[tUiMap][1][1], tObjectSpawns[tUiMap][1][2]
 					if tSpawnX ~= -1 and tSpawnY ~= -1 then
-						local tContintentId = select(3, SkuNav.Geo:GetAreaData(is))
 						local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav.Geo:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
 						local tX, tY = worldPosition:GetXY()
 						local tDistance, _  = SkuNav.Geo:Distance(tPlayX, tPlayY, tX, tY)
