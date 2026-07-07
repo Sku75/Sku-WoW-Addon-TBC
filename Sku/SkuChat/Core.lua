@@ -2286,6 +2286,29 @@ function SkuChat:ArmEvents()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- W6-C #36: shared TTS-reading-frame navigation for the SHIFT-UP/DOWN and
+-- CTRL-SHIFT-UP/DOWN chat keys. The four blocks were identical except the terminal
+-- TTS method; the caller passes the current line datalink text + itemId. (SHIFT-DOWN
+-- previously wrote the visibility test as `== false` rather than `not`; identical for
+-- a boolean IsVisible().)
+local function tSkuChatTtsFrameNav(aTextFull, aItemId, aMethod)
+	SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+	SkuOptions.currentMenuPosition.textFull = aTextFull
+	if SkuOptions.currentMenuPosition.textFull ~= "" then
+		local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, aItemId)
+		if not SkuOptions.TTS:IsVisible() then
+			SkuOptions.TTS:Output(tTextFull, 1000)
+		end
+		SkuOptions.currentMenuPosition.links = {}
+		SkuOptions.currentMenuPosition.linksSelected = 0
+		if SkuOptions.TTS:IsAutoRead() == true then
+			SkuOptions.TTS:ToggleAutoRead()
+			SkuOptions.TTS.AutoReadEventFlag = nil
+		end
+		SkuOptions.TTS[aMethod](SkuOptions.TTS)
+	end
+end
+
 function SkuChat:OnInitialize()
 	local function CloseChatMenuHelper()
 		_G["OnSkuChatToggle"].menuOpen = false
@@ -2904,72 +2927,16 @@ function SkuChat:OnInitialize()
 
 
 			elseif aKey ==  "SHIFT-UP" then
-				SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
-				SkuOptions.currentMenuPosition.textFull = tSkuCurrentLineDatalinktTextFull
-				if SkuOptions.currentMenuPosition.textFull ~= "" then
-					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, tSkuCurrentLineDatalinktItemId)
-					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(tTextFull, 1000)
-					end
-					SkuOptions.currentMenuPosition.links = {}
-					SkuOptions.currentMenuPosition.linksSelected = 0
-					if SkuOptions.TTS:IsAutoRead() == true then
-						SkuOptions.TTS:ToggleAutoRead()
-						SkuOptions.TTS.AutoReadEventFlag = nil
-					end					
-					SkuOptions.TTS:PreviousLine()
-				end
+				tSkuChatTtsFrameNav(tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId, "PreviousLine")
 			
 			elseif aKey ==  "SHIFT-DOWN" then
-				SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
-				SkuOptions.currentMenuPosition.textFull = tSkuCurrentLineDatalinktTextFull
-				if SkuOptions.currentMenuPosition.textFull ~= "" then
-					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, tSkuCurrentLineDatalinktItemId)
-					if SkuOptions.TTS:IsVisible() == false then
-						SkuOptions.TTS:Output(tTextFull, 1000)
-					end
-					SkuOptions.currentMenuPosition.links = {}
-					SkuOptions.currentMenuPosition.linksSelected = 0
-					if SkuOptions.TTS:IsAutoRead() == true then
-						SkuOptions.TTS:ToggleAutoRead()
-						SkuOptions.TTS.AutoReadEventFlag = nil
-					end					
-					SkuOptions.TTS:NextLine()
-				end
+				tSkuChatTtsFrameNav(tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId, "NextLine")
 			
 			elseif aKey ==  "CTRL-SHIFT-UP" then
-				SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
-				SkuOptions.currentMenuPosition.textFull = tSkuCurrentLineDatalinktTextFull
-				if SkuOptions.currentMenuPosition.textFull ~= "" then
-					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, tSkuCurrentLineDatalinktItemId)
-					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(tTextFull, 1000)
-					end
-					SkuOptions.currentMenuPosition.links = {}
-					SkuOptions.currentMenuPosition.linksSelected = 0
-					if SkuOptions.TTS:IsAutoRead() == true then
-						SkuOptions.TTS:ToggleAutoRead()
-						SkuOptions.TTS.AutoReadEventFlag = nil
-					end					
-					SkuOptions.TTS:PreviousSection()
-				end
+				tSkuChatTtsFrameNav(tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId, "PreviousSection")
 			
 			elseif aKey ==  "CTRL-SHIFT-DOWN" then
-				SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
-				SkuOptions.currentMenuPosition.textFull = tSkuCurrentLineDatalinktTextFull
-				if SkuOptions.currentMenuPosition.textFull ~= "" then
-					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, tSkuCurrentLineDatalinktItemId)
-					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(tTextFull, 1000)
-					end
-					SkuOptions.currentMenuPosition.links = {}
-					SkuOptions.currentMenuPosition.linksSelected = 0
-					if SkuOptions.TTS:IsAutoRead() == true then
-						SkuOptions.TTS:ToggleAutoRead()
-						SkuOptions.TTS.AutoReadEventFlag = nil
-					end					
-					SkuOptions.TTS:NextSection()
-				end
+				tSkuChatTtsFrameNav(tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId, "NextSection")
 			
 			elseif aKey == "UP" then
 			--elseif aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_LINEPREV"].key then
