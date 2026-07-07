@@ -23,6 +23,22 @@ SkuNavRecordingPoly = 0
 SkuNavRecordingPolySub = 0
 SkuNavRecordingPolyFor = 0
 
+-- [W6-C #32] shared quest-waypoint cache rebuild (was copy-pasted 7x across the
+-- SkuMM open/filter-button handlers). The QuestZoneCache guard (only the first
+-- copy had it) is now always present - a cheap no-op once the cache exists.
+local function RebuildQuestWps()
+	SkuQuest.QuestWpCache = {}
+	if not SkuQuest.QuestZoneCache then
+		SkuQuest:BuildQuestZoneCache()
+	end
+	local tPlayerAreaId = SkuNav:GetCurrentAreaId()
+	for i, _ in pairs(SkuDB.questDataTBC) do
+		if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
+			SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
+		end
+	end
+end
+
 
 local minimap_size = {
 	indoor = {
@@ -677,16 +693,7 @@ function SkuNav:SkuNavMMOpen()
 				for i, child in ipairs(children) do
 					child.selected = child.selectedDefault
 				end
-				SkuQuest.QuestWpCache = {}
-				if not SkuQuest.QuestZoneCache then
-					SkuQuest:BuildQuestZoneCache()
-				end
-				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
-				for i, _ in pairs(SkuDB.questDataTBC) do
-					if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
-						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
-					end
-				end					
+				RebuildQuestWps()
 			end)			
 			MainFrameObj:SetBackdrop({bgFile="Interface\\Tooltips\\UI-Tooltip-Background", edgeFile="", tile = false, tileSize = 0, edgeSize = 0, insets = { left = 0, right = 0, top = 0, bottom = 0 }})
 			MainFrameObj:SetBackdropColor(1, 1, 1, 1)
@@ -874,65 +881,35 @@ function SkuNav:SkuNavMMOpen()
 			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowFilter", tOptionsParent, "Filter", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameFollow"], "TOPLEFT", 100, -40)
 			tButtonObj:SetScript("OnMouseUp", function(self, button)
 				self.selected  = self.selected  ~= true
-				SkuQuest.QuestWpCache = {}
-				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
-				for i, _ in pairs(SkuDB.questDataTBC) do
-					if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
-						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
-					end
-				end
+				RebuildQuestWps()
 			end)
 			_G["SkuNavMMMainFrameShowFilter"].selectedDefault = false
 
 			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowQuestStartWps", tOptionsParent, "Starts", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameFollow"], "TOPLEFT", 100, -60)
 			tButtonObj:SetScript("OnMouseUp", function(self, button)
 				self.selected  = self.selected  ~= true
-				SkuQuest.QuestWpCache = {}
-				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
-				for i, _ in pairs(SkuDB.questDataTBC) do
-					if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
-						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
-					end
-				end
+				RebuildQuestWps()
 			end)
 			_G["SkuNavMMMainFrameShowQuestStartWps"].selectedDefault = true
 
 			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowQuestObjectiveWps", tOptionsParent, "Objectives", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameShowQuestStartWps"], "TOPLEFT", 95, 0)
 			tButtonObj:SetScript("OnMouseUp", function(self, button)
 				self.selected  = self.selected  ~= true
-				SkuQuest.QuestWpCache = {}
-				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
-				for i, _ in pairs(SkuDB.questDataTBC) do
-					if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
-						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
-					end
-				end				
+				RebuildQuestWps()
 			end)
 			_G["SkuNavMMMainFrameShowQuestObjectiveWps"].selectedDefault = true
 
 			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowQuestFinishWps", tOptionsParent, "Finish", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameShowQuestStartWps"], "TOPLEFT", 0, -20)
 			tButtonObj:SetScript("OnMouseUp", function(self, button)
 				self.selected  = self.selected  ~= true
-				SkuQuest.QuestWpCache = {}
-				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
-				for i, _ in pairs(SkuDB.questDataTBC) do
-					if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
-						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
-					end
-				end				
+				RebuildQuestWps()
 			end)
 			_G["SkuNavMMMainFrameShowQuestFinishWps"].selectedDefault = true
 
 			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowLimitWps", tOptionsParent, "Limit", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameShowQuestFinishWps"], "TOPLEFT", 95, 0)
 			tButtonObj:SetScript("OnMouseUp", function(self, button)
 				self.selected  = self.selected  ~= true
-				SkuQuest.QuestWpCache = {}
-				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
-				for i, _ in pairs(SkuDB.questDataTBC) do
-					if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
-						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
-					end
-				end				
+				RebuildQuestWps()
 			end)
 			_G["SkuNavMMMainFrameShowLimitWps"].selectedDefault = false
 
@@ -1062,13 +1039,7 @@ function SkuNav:SkuNavMMOpen()
 			if not SkuQuest.QuestZoneCache then
 				SkuQuest:BuildQuestZoneCache()
 			end
-			SkuQuest.QuestWpCache = {}
-			local tPlayerAreaId = SkuNav:GetCurrentAreaId()
-			for i, _ in pairs(SkuDB.questDataTBC) do
-				if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
-					SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
-				end
-			end			
+			RebuildQuestWps()
 
 			-- EditBox
 			local f = CreateFrame("Frame", "SkuNavMMMainFrameEditBox", tOptionsParent, BackdropTemplateMixin and "BackdropTemplate" or nil)--, "DialogBoxFrame")
