@@ -40,13 +40,7 @@ function Mail:OnEnable()
 	Mail:RegisterEvent("MAIL_SHOW", "MAIL_SHOW")
 	Mail:RegisterEvent("MAIL_INBOX_UPDATE", "MAIL_INBOX_UPDATE")
 	Mail:RegisterEvent("MAIL_CLOSED", "MAIL_CLOSED")
-	Mail:RegisterEvent("MAIL_SEND_INFO_UPDATE", "MAIL_SEND_INFO_UPDATE")
 	Mail:RegisterEvent("MAIL_SEND_SUCCESS", "MAIL_SEND_SUCCESS")
-	Mail:RegisterEvent("MAIL_FAILED", "MAIL_FAILED")
-	Mail:RegisterEvent("MAIL_SUCCESS", "MAIL_SUCCESS")
-	Mail:RegisterEvent("CLOSE_INBOX_ITEM", "CLOSE_INBOX_ITEM")
-	Mail:RegisterEvent("MAIL_LOCK_SEND_ITEMS", "MAIL_LOCK_SEND_ITEMS")
-	Mail:RegisterEvent("MAIL_UNLOCK_SEND_ITEMS", "MAIL_UNLOCK_SEND_ITEMS")
 
    if not gMailHookInstalled then
       gMailHookInstalled = true
@@ -93,44 +87,9 @@ function Mail:MAIL_CLOSED(...)
 end
 
 ------------------------------------------------------------------------------------------------------------
-function Mail:MAIL_SEND_INFO_UPDATE(...)
-   --dprint("MAIL_SEND_INFO_UPDATE", ...)
-end
-
-------------------------------------------------------------------------------------------------------------
 function Mail:MAIL_SEND_SUCCESS(...)
    --dprint("MAIL_SEND_SUCCESS", ...)
    SkuOptions.Voice:OutputStringBTtts(L["Sent"], false, true, 0.2)
-end
-
-------------------------------------------------------------------------------------------------------------
-function Mail:MAIL_SUCCESS(...)
-   --dprint("MAIL_SUCCESS", ...)
-end
-
-------------------------------------------------------------------------------------------------------------
-function Mail:CLOSE_INBOX_ITEM(...)
-   --dprint("CLOSE_INBOX_ITEM", ...)
-end
-
-------------------------------------------------------------------------------------------------------------
-function Mail:MAIL_LOCK_SEND_ITEMS(...)
-   --dprint("MAIL_LOCK_SEND_ITEMS", ...)
-end
-
-------------------------------------------------------------------------------------------------------------
-function Mail:MAIL_UNLOCK_SEND_ITEMS(...)
-   --dprint("MAIL_UNLOCK_SEND_ITEMS", ...)
-end
-
-------------------------------------------------------------------------------------------------------------
-function Mail:MAIL_UNLOCK_SEND_ITEMS(...)
-   --dprint("MAIL_UNLOCK_SEND_ITEMS", ...)
-end
-
-------------------------------------------------------------------------------------------------------------
-function Mail:MAIL_FAILED(...)
-   --dprint("MAIL_FAILED", ...)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
