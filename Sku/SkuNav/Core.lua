@@ -1500,7 +1500,6 @@ function SkuNav:UpdateWpLinks(aWpAName)
 		WaypointCache[tWpBIndex].links.byName[aWpAName] = tDistance
 
 		local tWpAId = WaypointCacheGetIdForName(aWpAName)
-		local tWpBId = WaypointCacheGetIdForName(aWpBName)
 
 		SkuDB.SessionRouteData.Links[tWpAId] = SkuDB.SessionRouteData.Links[tWpAId] or {}
 		SkuDB.SessionRouteData.Links[tWpAId][WaypointCacheGetIdForName(WaypointCache[tWpBIndex].name)] = tDistance
@@ -1772,7 +1771,6 @@ local tOldPolyZones = {
    [3] = {[1] = 0, [2] = 0, [3] = 0, [4] = 0,},
    [4] = {[1] = 0,},
 }
-local tdiold, tdisold = 0,0
 SkuNav.MoveToWp = 0
 local tCurrentDragWpName
 
@@ -2014,8 +2012,6 @@ function SkuNav:ProcessGlobalDirection()
 	if (IsShiftKeyDown() and IsAltKeyDown()) or SkuSettings:Sub("SkuNav").autoGlobalDirection == true then
 		if GetServerTime() - ttimeDistanceOutput > 0.5 or SkuSettings:Sub("SkuNav").autoGlobalDirection == true then
 			local x, y = UnitPosition("player")
-			local tDirection = SkuNav:GetDirectionTo(x, y, 30000, y)
-			tDirection = 12 - tDirection if tDirection == 0 then tDirection = 12 end
 
 			local _, _, afinal = SkuNav:GetDirectionTo(x, y, 30000, y)
 			local tDeg = {
@@ -2406,7 +2402,6 @@ end
 local metapathFollowingTargetNameAnnounced = false
 SkuNavMmDrawTimer = 0.2
 function SkuNav:CreateSkuNavControl()
-	local ttimeDegreesChangeInitial = nil
 	local ttime = GetServerTime()
 	local ttimeDraw = GetServerTime()
 
