@@ -47,56 +47,6 @@ SkuNav.PrintMT = {
 	end,
 	}
 
-	---@diagnostic disable: undefined-field, undefined-doc-name
----------------------------------------------------------------------------------------------------------------------------------------
-local MODULE_NAME = "SkuNav"
-local _G = _G
-local L = Sku.L
-
-SkuNav = SkuNav or LibStub("AceAddon-3.0"):NewAddon("SkuNav", "AceConsole-3.0", "AceEvent-3.0")
-
-local lastLayer = ""
-
-local lastDirection = -1
-local lastDistance = 0
-SkuDrawFlag = false
-
-local slower = string.lower
-local sfind = string.find
-local ssplit = string.split
-local ssub = string.sub
-local tinsert = table.insert
-
-SkuNav.BeaconSoundSetNames  = {}
-
-SkuMetapathFollowingMetapathsTMP = {}
-
-SkuNav.PrintMT = {
-	__tostring = function(thisTable)
-		local tStr = ""
-		local function tf(ttable, tTab)
-			for k, v in pairs(ttable) do
-				if k ~= "parent" and v ~= "parent" and k ~= "prev" and v ~= "prev" and k ~= "next" and v ~= "next"  then
-					if type(v) ~= "userdata" and k ~= "frame" and k ~= 0  then
-						if type(v) == 'table' then
-							dprint(tTab..k..":")
-							tf(v, tTab.."  ")
-						elseif type(v) == "function" then
-							dprint(tTab..k..": function")
-						elseif type(v) == "boolean" then
-							dprint(tTab..k..": "..tostring(v))
-						else
-							dprint(tTab..k..": "..v)
-						end
-					end
-				end
-			end
-		end
-		tf(thisTable, "")
-	end,
-	}
-
-
 ------------------------------------------------------------------------------------------------------------------------
 local COSMIC_MAP_ID = 946
 local WORLD_MAP_ID = 947

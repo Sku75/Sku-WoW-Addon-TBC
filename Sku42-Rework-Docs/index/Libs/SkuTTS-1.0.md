@@ -5,10 +5,10 @@
 - SkuTTS:Output(text, duration) — main entry: text may be string/table/function; splits into sections/lines, renders the frame, plays an open ping, sets auto-close time (duration -1 = close next tick semantics via CloseAt).
 - SkuTTS:Hide() — hides the frame, empties the voice queue, plays a close ping, clears auto-read.
 - SkuTTS:IsVisible() — frame visibility.
-- Navigation: NextSection / PreviousSection / NextLine / PreviousLine / CurrentLine(aEngine, aReset) — move the section/line cursor and read via ReadLineNumber.
-- SkuTTS:ReadLineNumber(aSectionNumber, aLineNumber, aNoReset, aEngine) — the core reader: strips markup, injects link indicators, speaks the line.
+- Navigation: NextSection / PreviousSection / NextLine / PreviousLine / CurrentLine(aReset) — move the section/line cursor and read via ReadLineNumber. ([W6-B #8] the dead `aEngine` TTS-engine-selector param was dropped from these + ReadLineNumber/ReadLinkNumber; output always goes through Blizzard TTS.)
+- SkuTTS:ReadLineNumber(aSectionNumber, aLineNumber, aNoReset) — the core reader: strips markup, injects link indicators, speaks the line.
 - Auto-read: ToggleAutoRead / IsAutoRead / ReadNextAutoRead — event-chained sequential reading of the whole pane.
-- Links: NextLink / PreviousLink / ReadLinkNumber(aLinkNumber, ...) — read the currently-selected link; GetLinksTableFromString(aString, aCurrentLinkText, aDontSearchForLinks) — harvest links from markup ([[...]]) or free text via SkuDB.Wiki lookup; IsLinkInLinkList(aLinkName, aLinkList) — dedupe helper.
+- Links: NextLink / PreviousLink / ReadLinkNumber(aLinkNumber, aNoReset) — read the currently-selected link; GetLinksTableFromString(aString, aCurrentLinkText, aDontSearchForLinks) — harvest links from markup ([[...]]) or free text via SkuDB.Wiki lookup; IsLinkInLinkList(aLinkName, aLinkList) — dedupe helper.
 - SkuTTS:Release() — empty stub.
 ## Dependencies (outgoing)
 - LibStub, LibSharedMedia-3.0 (font registration/fetch), Sku.L.
@@ -31,6 +31,6 @@
 ## Invariants & gotchas
 - `sections` is a bare global, not SkuTTS.sections — collides with any other global of that name and is shared mutable state.
 - ReadLineNumber MUTATES sections[..][..] in place, appending link indicators/§ markup to the stored line; re-reading the same line re-parses the already-mutated text (the §-truncation guards exist precisely to undo this) — fragile.
-- Every OutputStringBTtts call passes aSpell=1 (8th positional arg) with the alternate BTtts-only branch commented out; the "if not aEngine" branches are all dead-commented, so output always goes through Blizzard TTS.
+- Output always goes through Blizzard TTS: the OutputStringBTtts calls pass aSpell=1 and the old `aEngine` selector plumbing was removed in [W6-B #8] (it switched nothing — both leaf branches were already commented out).
 - IsLinkInLinkList returns nil (not false) on no-match — callers rely on falsiness.
-- Font paths point at Interface\AddOns\SkuCore\Libs\SkuTTS-1.0\fonts\... but this lib lives under Sku\Libs\SkuTTS-1.0 — verify the font path resolves on the real install (possible stale path from a prior layout).
+- [W6-B #20] Font paths were corrected from the stale Interface\AddOns\SkuCore\Libs\SkuTTS-1.0\fonts\... to Interface\AddOns\Sku\Libs\SkuTTS-1.0\fonts\... (this lib lives under Sku\Libs, and there is no SkuCore\Libs). The wrong path made LSM silently fall back, so the sighted TTS debug pane never used the Playfair/Raleway fonts. Cosmetic-only (affects the sighted debug backdrop, not speech).

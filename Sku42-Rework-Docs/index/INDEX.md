@@ -95,7 +95,8 @@ addons. `dprint` writes the `SkuDebugLog` ring; `SkuErrorLog` captures errors.
 
 - [SkuNav/Core.lua](SkuNav/Core.md) — The heart of Sku's audio-beacon navigation.
 - [SkuNav/data.lua](SkuNav/data.md) — Static data/constants module for SkuNav (audio-beacon navigation).
-- [SkuNav/importExport.lua](SkuNav/importExport.md) — Intended home for SkuNav route import/export logic (per the `--todo` it should absorb the import/export code still living in SkuOptions).
+- [SkuNav/Geo.lua](SkuNav/Geo.md) — The stateless geo/map-math service extracted from SkuNav/Core.lua (W6-B #16): area/uiMap id conversions, direction/distance, IntersectionPoint — the SkuNav.Geo facade callers depend on.
+- [SkuNav/importExport.lua](SkuNav/importExport.md) — SkuNav route/link import & export (moved here from SkuZOptions in W6-B #7); also guard-creates the SkuNav AceAddon object.
 - [SkuNav/Options.lua](SkuNav/Options.md) — Defines SkuNav's user-facing settings (SkuNav.options AceConfig-style args table, SkuNav.defaults, and the W1/W2 SkuSettings:Register schema) and builds the whole SkuNav menu tree via SkuNav:MenuBuilder — the "Navigation" branch of the Sku menu: deselect-all, waypoint selection (recent / current map…
 - [SkuNav/SkuMM.lua](SkuNav/SkuMM.md) — Implements the visual map rendering for SkuNav: (a) drawing waypoints and route lines onto the standard WoW Minimap (SkuNav:DrawAll path) and (b) the "Sku extra minimap" (SkuMM) — a large, standalone, movable/resizable world-map window (SkuNavMMMainFrame) built from 63x63 BLP map tiles with pan/zoom…
 - [SkuNav/specialNavigationTasks.lua](SkuNav/specialNavigationTasks.md) — "Navigation mode without coordinates" — a small step-sequencer that guides the player through scripted movement tasks (turn to heading, move forward for N seconds, ascend, pitch to angle) in places where world coordinates are unavailable or useless, mainly vehicle/taxi-style sequences.
@@ -137,7 +138,7 @@ addons. `dprint` writes the `SkuDebugLog` ring; `SkuErrorLog` captures errors.
 ## SkuAudioData — audio file / length index tables
 
 - [SkuAudioData/assets/SkuAudioFileIndex.lua + SkuAudioData/assets/SkuAudioDataLenIndex.lua](SkuAudioData/asset-indexes.md) — Two large static lookup tables (thin generated data, no logic) that map Sku's spoken-string keys to pre-recorded audio files and those files to their playback durations.
-- [SkuAudioData/Core.lua](SkuAudioData/Core.md) — Bootstrap file for the SkuAudioData module (audio file index / length tables used for pre-recorded voice output).
+- (SkuAudioData/Core.lua — DELETED in W6-B #2: it was a no-op bootstrap whose mis-named `SkuCoreaqCombatControl` frame collided with aqCombat's control frame; removed with its TOC line so aqCombat owns its own frame.)
 
 ## Libs — Sku's own libraries + third-party stack
 
