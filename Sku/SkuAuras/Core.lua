@@ -1073,6 +1073,33 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 	local tWE_hasMH, tWE_mhExp, tWE_mhCharges, tWE_mhId,
 	      tWE_hasOH, tWE_ohExp, tWE_ohCharges, tWE_ohId = GetWeaponEnchantInfo()
 
+	-- [W6-C #34] shared weapon-enchant-ID -> display-name resolver (was duplicated
+	-- inline for main/off hand in getAuraList; a 3rd copy diverged - see
+	-- ResolveWeaponEnchantName, left as-is).
+	local function tAddWeaponEnchantName(aHasEnchant, aEnchantID, aBuffList)
+		if aHasEnchant == true then
+			if aEnchantID and aEnchantID > 0 and SkuDB.WotLK.enchantIDs[aEnchantID] then
+				local tName
+				if Sku.Loc == "enUS" then
+					tName = SkuDB.WotLK.enchantIDs[aEnchantID][1]
+				elseif Sku.Loc == "deDE" then
+					tName = SkuDB.WotLK.enchantIDs[aEnchantID][2]
+				end
+				if tName and SkuDB.WotLK.enchantIDs[aEnchantID][3] ~= nil then
+					if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[aEnchantID][3]] then
+						tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[aEnchantID][3]][Sku.Loc][1]
+					end
+				elseif tName and SkuDB.WotLK.enchantIDs[aEnchantID][4] ~= nil then
+					if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[aEnchantID][4]] then
+						tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[aEnchantID][4]][Sku.Loc][1]
+					end
+				end
+				if tName then
+					aBuffList[tName] = tName
+				end
+			end
+		end
+	end
 	local function getAuraList(unit, filter, durationForAuraName, aScratch)
 		filter = filter or "HELPFUL|HARMFUL"
 		-- [W3/P4 #2] Reuse a caller-supplied scratch buffer (wiped) instead of
@@ -1103,52 +1130,8 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 		--add weapon enchants
 		if unit == "player" and filter == "HELPFUL" then
 			local hasMainHandEnchant, mainHandExpiration, mainHandCharges, mainHandEnchantID, hasOffHandEnchant, offHandExpiration, offHandCharges, offHandEnchantID = tWE_hasMH, tWE_mhExp, tWE_mhCharges, tWE_mhId, tWE_hasOH, tWE_ohExp, tWE_ohCharges, tWE_ohId
-			if hasMainHandEnchant == true then
-				if mainHandEnchantID and mainHandEnchantID > 0 and SkuDB.WotLK.enchantIDs[mainHandEnchantID] then
-					local tName
-					if Sku.Loc == "enUS" then
-						tName = SkuDB.WotLK.enchantIDs[mainHandEnchantID][1]
-					elseif Sku.Loc == "deDE" then
-						tName = SkuDB.WotLK.enchantIDs[mainHandEnchantID][2]
-					end
-					if tName and SkuDB.WotLK.enchantIDs[mainHandEnchantID][3] ~= nil then
-						if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[mainHandEnchantID][3]] then
-							tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[mainHandEnchantID][3]][Sku.Loc][1]
-						end
-					elseif tName and SkuDB.WotLK.enchantIDs[mainHandEnchantID][4] ~= nil then
-						if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[mainHandEnchantID][4]] then
-							tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[mainHandEnchantID][4]][Sku.Loc][1]
-						end
-					end
-
-					if tName then
-						tBuffList[tName] = tName
-					end
-				end
-			end
-			if hasOffHandEnchant == true then
-				if offHandEnchantID and offHandEnchantID > 0 and SkuDB.WotLK.enchantIDs[offHandEnchantID] then
-					local tName
-					if Sku.Loc == "enUS" then
-						tName = SkuDB.WotLK.enchantIDs[offHandEnchantID][1]
-					elseif Sku.Loc == "deDE" then
-						tName = SkuDB.WotLK.enchantIDs[offHandEnchantID][2]
-					end
-					if tName and SkuDB.WotLK.enchantIDs[offHandEnchantID][3] ~= nil then
-						if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[offHandEnchantID][3]] then
-							tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[offHandEnchantID][3]][Sku.Loc][1]
-						end
-					elseif tName and SkuDB.WotLK.enchantIDs[offHandEnchantID][4] ~= nil then
-						if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[offHandEnchantID][4]] then
-							tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[offHandEnchantID][4]][Sku.Loc][1]
-						end
-					end
-		
-					if tName then
-						tBuffList[tName] = tName
-					end
-				end
-			end
+			tAddWeaponEnchantName(hasMainHandEnchant, mainHandEnchantID, tBuffList)
+			tAddWeaponEnchantName(hasOffHandEnchant, offHandEnchantID, tBuffList)
 		end
 
 		if not durationForAuraName then
