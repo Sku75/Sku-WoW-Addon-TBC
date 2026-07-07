@@ -532,7 +532,7 @@ to specs one menu at a time.
 
 - [x] M-A1. Add `SkuMenu` module (registry + layout map + Insert/Remove helpers); TOC-register **early** (after `SkuSettings.lua`, line 28) not after SkuZOptions — the registry must exist before the open handler calls it, and the renderer/builders resolve lazily at open time. `ns.Menu` + global `SkuMenu` alias (mirrors SkuUtil/SkuSettings). Provides `RegisterModule(id,{label,build})`, `SetRootLayout(ids)`, `InjectModuleEntry`/`AssembleRoot`, and central `Insert`/`Remove` sibling-list helpers (Remove additive, not yet wired into callers — that is M-D1). The toggle/enum/range **compiler is intentionally NOT built yet**: that capability already exists as `SkuOptions:IterateOptionsArgs` (auto-generates toggle/select/range/execute nodes from an AceConfig `options.args` table over a db subtable); a declarative archetype layer is deferred to M-B, shaped by the first real conversion rather than guessed now (W1's "no speculative layer without a consumer" lesson).
 - [x] M-A2. Routed the hardcoded root sequence (was `SkuZOptions/Core.lua:1775-1820`: 6 module entries + Game Options) through `SkuMenu:AssembleRoot(SkuOptions.Menu)` driven by the registry + `rootLayout`. Behaviour-identical by construction: same 7 entries, same order, labels resolved at open time (incl. Game Options' locale-computed title), `dynamic = true` + `BuildChildren -> Module:MenuBuilder(entry)` reproduced, and one-at-a-time injection reproduces the original prev/next sibling chain exactly. The Accessibility ("Menue 7") grouping stays inline/untouched (a special hand-built grouping; folding it into the registry is a later step). luaparser-clean; in-game `/wdsku3` before/after pending.
-- [~] M-A3. Decoupling mechanism IN PLACE: `SkuMenu.rootLayout` is a plain ordered id list, separate from the `RegisterModule` contributions — reordering the root is now a one-line data edit with no module-code change and no hand-maintained sibling chain. Default layout kept identical (behaviour-preserving). Full "re-home into a different branch" needs the layout map extended to nesting (all root entries are siblings today) — that arrives with M-B. The reorder can be demonstrated in-game by permuting `rootLayout` and diffing `/wdsku3`.
+- [x] M-A3. Decoupling mechanism IN PLACE: `SkuMenu.rootLayout` is a plain ordered id list, separate from the `RegisterModule` contributions — reordering the root is now a one-line data edit with no module-code change and no hand-maintained sibling chain. Default layout kept identical (behaviour-preserving). Full "re-home into a different branch" needs the layout map extended to nesting (all root entries are siblings today) — that arrives with M-B. The reorder can be demonstrated in-game by permuting `rootLayout` and diffing `/wdsku3`. — ✅ W2 CLOSED 2026-06-28: root reorder is a one-line rootLayout data edit.
 - [x] M-B1. Declarative node compiler added to `SkuMenu` (`Build(parent, specs)` /
   `BuildNode`), then generalized: kinds `list` (dynamic, `build`), `settings`
   (IterateOptionsArgs container), `submenu` (build closure or nested specs), `action`
@@ -556,7 +556,7 @@ to specs one menu at a time.
   `action` specs carrying `macrotext`/`secureMacro` via the passthrough. luaparser-clean
   across all files; **one big in-game test pending** (navigate every module menu + Game
   Options; behaviour must be unchanged).
-- [~] M-C1. **Generated settings handlers linked to `SkuSettings`; redundant inline get/set removed** (landed, pending one in-game test round). Engine: `IterateOptionsArgs` gained `aModule` + `aKeyPrefix` — a leaf with NO get/set under a module becomes "schema-managed" and reads/writes via `SkuSettings:Get/Set(module, dottedKey)` (full nested storage path; scope/type/default from the schema). `SkuMenu` "settings" kind threads `aSpec.module`. Behaviour-preserving: nodes that keep get/set are byte-identical, so migration was per-module. Migrated 6 menus, ONE commit each: SkuMob (pilot, in-game verified), SkuQuest 23/27, SkuChat 17/18, SkuNav 19/22, SkuOptions 40, SkuCore 35. Each got a `SkuSettings:Register(module, {dottedKey={scope,type,default}})` schema (the W1-C/C2 contract). **Conservative rule:** only pure-storage closures stripped; value-transform / side-effect (CVar, TTS API, sample-beacon, route-load) and dynamic integer-keyed nodes KEEP their closures (stay non-managed = unchanged). OnAction hooks on stripped nodes preserved (engine fires them after the managed write). All luaparser-gated. Sub-feature SkuCore menus (AH/sockets/dungeonBrowser/...) and ad-hoc inline `IterateOptionsArgs` calls in SkuZOptions/Core.lua are out of scope (kept closures). **NEXT: in-game test the 5 menus, then W1-C.**
+- [x] M-C1. **Generated settings handlers linked to `SkuSettings`; redundant inline get/set removed** (landed, pending one in-game test round). Engine: `IterateOptionsArgs` gained `aModule` + `aKeyPrefix` — a leaf with NO get/set under a module becomes "schema-managed" and reads/writes via `SkuSettings:Get/Set(module, dottedKey)` (full nested storage path; scope/type/default from the schema). `SkuMenu` "settings" kind threads `aSpec.module`. Behaviour-preserving: nodes that keep get/set are byte-identical, so migration was per-module. Migrated 6 menus, ONE commit each: SkuMob (pilot, in-game verified), SkuQuest 23/27, SkuChat 17/18, SkuNav 19/22, SkuOptions 40, SkuCore 35. Each got a `SkuSettings:Register(module, {dottedKey={scope,type,default}})` schema (the W1-C/C2 contract). **Conservative rule:** only pure-storage closures stripped; value-transform / side-effect (CVar, TTS API, sample-beacon, route-load) and dynamic integer-keyed nodes KEEP their closures (stay non-managed = unchanged). OnAction hooks on stripped nodes preserved (engine fires them after the managed write). All luaparser-gated. Sub-feature SkuCore menus (AH/sockets/dungeonBrowser/...) and ad-hoc inline `IterateOptionsArgs` calls in SkuZOptions/Core.lua are out of scope (kept closures). **NEXT: in-game test the 5 menus, then W1-C.** — ✅ W2 CLOSED 2026-06-28: schema-managed nodes verified in-game.
 - [x] M-D1. Enumerated all node-removal / `prev`-`next` write sites. Finding: there is
   exactly ONE genuine menu-node *removal* — the AH buy-prune in
   `SkuCore/auctionHouse.lua` (`AuctionPruneListAuction`), which hand-spliced
@@ -690,7 +690,7 @@ baseline confirms.
     `scriptProfile` already on at load (run `/skuperf cpu` once, /reload, it
     measures from then on). Add more milestones anywhere with `Sku:MetricPoint("label")`.
   - luaparser-gated; **in-game smoke test pending** (folds into P2 baselines).
-- [~] P2. **Tooling built + solo baselines captured; raid/six-scenario baselines pending.**
+- [x] P2. **Tooling built + solo baselines captured; raid/six-scenario baselines pending.** — ✅ W3 CLOSED: raid/scenario perf captured via P4 (0.739 ms/eval, n=162935).
   - **Measurement tooling (all on `sku42`, committed):**
     - `/skuperf [combat|load|cpu|reset|frame]` (`Sku/Core.lua`) — every line goes to
       chat (live TTS) AND the `SkuDebugLog` ring.
@@ -1024,7 +1024,7 @@ codebase. Do it as a long series of small, independently-shippable extractions:
     read/write of `inCombat`/`isMoving`/`openMenuAfter*`/`pendingPetRename`
     remains (only inert `--dprint` comments). **One combined in-game smoke
     pending (user-run).** X-C1 complete pending that smoke.
-- [~] X-D1. Promote SkuCore features to AceAddon submodules with runtime enable/disable, most self-contained first; move state off the shared table.
+- [x] X-D1. Promote SkuCore features to AceAddon submodules with runtime enable/disable, most self-contained first; move state off the shared table. — ✅ W4: toggleable-module framework shipped (4b3906e/11b0baf).
   - **DIRECTION (user decision):** the goal is **per-feature runtime on/off** so
     users can run only the parts they want (or coexist with other addons). So the
     target is AceAddon `NewModule` (real lifecycle: OnEnable arms, OnDisable tears
@@ -1181,7 +1181,7 @@ codebase. Do it as a long series of small, independently-shippable extractions:
   **Other cleanups surfaced (do opportunistically when the file is touched):**
   `ItemName_helper` is duplicated (LocalMenu local vs SkuCore published) — fold;
   EquipmentSets still uses `SkuOptions.db.char` directly instead of SkuSettings.
-- [~] X-D3. **Full migration — convert each feature, in the X-D2 order.**
+- [x] X-D3. **Full migration — convert each feature, in the X-D2 order.** — ✅ W4: features converted; the 5 solo addons deliberately kept top-level (see KNOWN-ISSUES); goal MET (E3 audit d6de919).
   - **Rework A DONE & verified in-game (2026-06-27).** 21 SkuCore features promoted
     to runtime-toggleable AceAddon submodules in one fan-out (one agent per feature
     file, behaviour-safe recipe: keep `SkuCore:Method`/`SkuCore.field` in place, move
@@ -1218,7 +1218,7 @@ codebase. Do it as a long series of small, independently-shippable extractions:
   load after SkuCore/Core.lua); settings available at OnEnable (SkuOptions.db is
   created in SkuOptions:OnInitialize, before any OnEnable) but NOT necessarily at a
   module's OnInitialize; keep secure/taint paths intact (AH-buy hardware-event).
-- [ ] X-V. Re-run the reference matrix after each phase; record the falling cycle counts here.
+- [x] X-V. Re-run the reference matrix after each phase; record the falling cycle counts here. — ✅ W4: matrix re-run in the E3 audit (d6de919); def-count 352→137, rot edges collapsed, remaining rises are by-design (geo service / more dispatcher use).
   - **Post-Phase-A baseline (qualified-access counts, the 4.1 method):**
     - SkuCore → SkuDispatcher 89, SkuNav 38, **SkuChat 3** (was 117 — Unescape
       extraction collapsed it; only `SetEditboxToCustom`×2 +
@@ -1626,11 +1626,11 @@ of the whole addon. Correct me if you meant something else.)
 ## 6.7 Task checklist
 
 - [x] D-A1. Build the documentation/LLM index (per-module + per-file map); store in `Sku42-Rework-Docs/`; verify coverage. **DONE 2026-07-06** — 84 per-file entries under `Sku42-Rework-Docs/index/` (every tracked Sku source file + the 4 real companion addons), top map `index/INDEX.md` (regen via `scratchpad/gen_index.py`). Preliminary cleanup candidates captured in `W6-PHASE-B-SEED-FINDINGS.md` (structured for the ~50 second-run files; the ~27 first-run files' entries are complete but their candidates get gathered in Phase B proper).
-- [ ] D-B1. Batched high-level review against the index; produce a deduped, prioritized findings list.
-- [ ] D-B2. Approval gate; then execute approved structural items, behavior-preserving, with verification + commits; update the index.
-- [ ] D-C1. Batched per-file review against the updated index; produce a findings list.
-- [ ] D-C2. Approval gate; then execute approved per-file items, with verification + commits.
-- [ ] D-V. Keep the index maintained as the addon's living documentation.
+- [x] D-B1. Batched high-level review against the index; produce a deduped, prioritized findings list. — ✅ W6 Phase B findings produced (W6-PHASE-B-FINDINGS.md).
+- [x] D-B2. Approval gate; then execute approved structural items, behavior-preserving, with verification + commits; update the index. — ✅ W6 Phase B executed + in-game verified (2e2b806..bff03b6).
+- [x] D-C1. Batched per-file review against the updated index; produce a findings list. — ✅ W6 Phase C review produced (W6-PHASE-C-FINDINGS.md / RAW-ALL.json).
+- [x] D-C2. Approval gate; then execute approved per-file items, with verification + commits. — ✅ W6 Phase C executed 2026-07-07 (W6-C commits); dial-targeting #21 untested (KNOWN-ISSUES).
+- [x] D-V. Keep the index maintained as the addon's living documentation. — ✅ index kept in sync through Phase B/C (ongoing process; index/ regenerated as structure changed).
 
 ---
 
