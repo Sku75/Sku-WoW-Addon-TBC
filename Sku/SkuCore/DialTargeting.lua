@@ -4,6 +4,16 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+local function tDisableTargeting(self)
+   if SkuCore.inCombat ~= true then
+      if _G["SkuSecureTargetingFrame"] then
+         SecureHandlerExecute(_G["SkuSecureTargetingFrame"], [=[
+            self:ClearBindings()
+         ]=])
+      end
+   end
+end
+
 -- W4 Phase D: DialTargeting is a real AceAddon SUBMODULE of SkuCore so it can be
 -- turned on/off at runtime. The lifecycle is split into OnEnable (arm) / OnDisable
 -- (disarm); all existing SkuCore:DialTargeting* methods and the SkuCore.DialTargeting
@@ -68,15 +78,7 @@ function DialTargeting:DialTargetingOnInitialize()
    tSkuSecureTargetingFrame:SetAttribute("unit", "player")
    tSkuSecureTargetingFrame:SetAttribute("groupType", nil)
    tSkuSecureTargetingFrame:SetAttribute("enabled", false)
-   tSkuSecureTargetingFrame.Disable = function(self)
-      if SkuCore.inCombat ~= true then
-         if _G["SkuSecureTargetingFrame"] then
-            SecureHandlerExecute(_G["SkuSecureTargetingFrame"], [=[
-               self:ClearBindings()
-            ]=])
-         end
-      end
-   end
+   tSkuSecureTargetingFrame.Disable = tDisableTargeting
    tSkuSecureTargetingFrame:HookScript("OnClick", function()
       if SkuSettings:Sub("SkuCore").dialTargeting.keySound == L["On second key"] or SkuSettings:Sub("SkuCore").dialTargeting.keySound == L["On first and second key"] then
          PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\blip_low.mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
@@ -142,15 +144,7 @@ function DialTargeting:DialTargetingOnInitialize()
    tSkuSecureTargetingFrame:SetFrameRef("SkuSecureTargetingToggleHandler", tSkuSecureTargetingToggleHandler)
    tSkuSecureStateDriveFrame:SetFrameRef("SkuSecureTargetingFrame", tSkuSecureTargetingFrame)
    tSkuSecureStateDriveFrame:SetFrameRef("SkuSecureTargetingToggleHandler", tSkuSecureTargetingToggleHandler)
-   tSkuSecureTargetingToggleHandler.Disable = function(self)
-      if SkuCore.inCombat ~= true then
-         if _G["SkuSecureTargetingFrame"] then
-            SecureHandlerExecute(_G["SkuSecureTargetingFrame"], [=[
-               self:ClearBindings()
-            ]=])
-         end
-      end
-   end   
+   tSkuSecureTargetingToggleHandler.Disable = tDisableTargeting
 	tSkuSecureTargetingToggleHandler:SetAttribute("lastButton", "")
 	tSkuSecureTargetingToggleHandler:SetAttribute("_onclick", [=[
       if self:GetAttribute("lastButton") == "" then
