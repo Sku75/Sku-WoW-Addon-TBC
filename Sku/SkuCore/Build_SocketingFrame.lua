@@ -68,6 +68,21 @@ end
 --      Sockel-Farbphrasen (rot, gelb, blau, prismatisch, meta) —
 --      das ist der zuverlässigste Pfad, weil jede Gem-Tooltip diese
 --      Phrase enthält.
+local function tClassifyGem(itemType, itemSubType, itemEquipLoc, classID, subClassID)
+   if classID == 3 then return true end
+   if classID == 7 and (subClassID == 4 or subClassID == 1) then return true end
+   if itemEquipLoc == "INVTYPE_RELIC" then return true end
+   for _, s in ipairs({ itemType, itemSubType }) do
+      if type(s) == "string" then
+         local sl = string.lower(s)
+         if string.find(sl, "gem") or string.find(sl, "edelstein") or string.find(sl, "sockel") then
+            return true
+         end
+      end
+   end
+   return false
+end
+
 local function tIsGem(aItemLink, aItemId)
    if not aItemLink then return false end
 
@@ -77,40 +92,13 @@ local function tIsGem(aItemLink, aItemId)
    if _G.GetItemInfoInstant then
       local _, itemType, itemSubType, itemEquipLoc, _, classID, subClassID =
          tSafe(_G.GetItemInfoInstant, aItemId or aItemLink)
-      -- classID == 3 ist auf modernen Builds "Gem".
-      if classID == 3 then return true end
-      -- Fallback: classID == 7 (Trade Goods) mit Edelstein-Subklasse.
-      -- Auf manchen TBC-Backports liegen Edelsteine dort.
-      if classID == 7 and (subClassID == 4 or subClassID == 1) then
-         return true
-      end
-      if itemEquipLoc == "INVTYPE_RELIC" then return true end
-      for _, s in ipairs({ itemType, itemSubType }) do
-         if type(s) == "string" then
-            local sl = string.lower(s)
-            if string.find(sl, "gem") or string.find(sl, "edelstein")
-               or string.find(sl, "sockel") then
-               return true
-            end
-         end
-      end
+      if tClassifyGem(itemType, itemSubType, itemEquipLoc, classID, subClassID) then return true end
    end
 
    -- Fallback auf GetItemInfo (gleiche Checks, falls Instant fehlt).
    local itemName, _, _, _, _, itemType, itemSubType, _, itemEquipLoc, _, _, classId, subClassId =
       tSafe(_G.GetItemInfo, aItemLink)
-   if classId == 3 then return true end
-   if classId == 7 and (subClassId == 4 or subClassId == 1) then return true end
-   if itemEquipLoc == "INVTYPE_RELIC" then return true end
-   for _, s in ipairs({ itemType, itemSubType }) do
-      if type(s) == "string" then
-         local sl = string.lower(s)
-         if string.find(sl, "gem") or string.find(sl, "edelstein")
-            or string.find(sl, "sockel") then
-            return true
-         end
-      end
-   end
+   if tClassifyGem(itemType, itemSubType, itemEquipLoc, classId, subClassId) then return true end
    -- 4. Tooltip-Parsing über GetRegions() — funktioniert unabhängig
    --    von Cache und globalen FontString-Namen.
    if _G.SkuScanningTooltip then
