@@ -144,6 +144,19 @@ local function BuildCombatTooltip(aCombat, aName, aAll)
    ]]   
    local tTooltipText = {}
    local tPlayerName = UnitName("player")
+   local function tAppendRanking(tActorList, header, valueFn, extraSpace)
+      local tText = header..":\r\n"
+      local tRank = 1
+      for i, actor in ipairs(tActorList) do
+         if (aCombat.playing_solo == true and actor.displayName == tPlayerName) or (aCombat.playing_solo ~= true and aCombat.raid_roster[actor.displayName]) or aAll == true then
+            local efDPS = valueFn(actor)
+            tText = tText..tRank.." "..actor.nome.." "..(SkuQuest.classesFriendly[actor.classe] or L["unknown"])..extraSpace..efDPS.."\r\n"
+            tRank = tRank + 1
+         end
+      end
+      table.insert(tTooltipText, tText)
+   end
+
 
    --
    table.insert(tTooltipText, aName)
@@ -153,48 +166,21 @@ local function BuildCombatTooltip(aCombat, aName, aAll)
    table.sort(tActorList, function(a, b)
       return a.total / aCombat:GetCombatTime() > b.total / aCombat:GetCombatTime()
    end)
-   local tText = L["DPS"]..":\r\n"
-   local tRank = 1
-   for i, actor in ipairs(tActorList) do
-      if (aCombat.playing_solo == true and actor.displayName == tPlayerName) or (aCombat.playing_solo ~= true and aCombat.raid_roster[actor.displayName]) or aAll == true then
-         local efDPS = math.floor(actor.total / aCombat:GetCombatTime())
-         tText = tText..tRank.." "..actor.nome.." "..(SkuQuest.classesFriendly[actor.classe] or L["unknown"]).." "..efDPS.."\r\n"
-         tRank = tRank + 1
-      end
-   end
-   table.insert(tTooltipText, tText)
+   tAppendRanking(tActorList, L["DPS"], function(actor) return math.floor(actor.total / aCombat:GetCombatTime()) end, " ")
 
    --dmg total
    local tActorList = aCombat:GetActorList(DETAILS_SUBATTRIBUTE_DAMAGEDONE)
    table.sort(tActorList, function(a, b)
       return a.total > b.total
    end)
-   local tText = L["Damage total"]..":\r\n"
-   local tRank = 1
-   for i, actor in ipairs(tActorList) do
-      if (aCombat.playing_solo == true and actor.displayName == tPlayerName) or (aCombat.playing_solo ~= true and aCombat.raid_roster[actor.displayName]) or aAll == true then
-         local efDPS = math.floor(actor.total)
-         tText = tText..tRank.." "..actor.nome.." "..(SkuQuest.classesFriendly[actor.classe] or L["unknown"]).." ".." "..efDPS.."\r\n"
-         tRank = tRank + 1
-      end
-   end
-   table.insert(tTooltipText, tText)
+   tAppendRanking(tActorList, L["Damage total"], function(actor) return math.floor(actor.total) end, "  ")
 
    --dmg taken
    local tActorList = aCombat:GetActorList(DETAILS_SUBATTRIBUTE_DAMAGEDONE)
    table.sort(tActorList, function(a, b)
       return a.damage_taken > b.damage_taken
    end)
-   local tText = L["Damage taken"]..":\r\n"
-   local tRank = 1
-   for i, actor in ipairs(tActorList) do
-      if (aCombat.playing_solo == true and actor.displayName == tPlayerName) or (aCombat.playing_solo ~= true and aCombat.raid_roster[actor.displayName]) or aAll == true then
-         local efDPS = math.floor(actor.damage_taken)
-         tText = tText..tRank.." "..actor.nome.." "..(SkuQuest.classesFriendly[actor.classe] or L["unknown"]).." ".." "..efDPS.."\r\n"
-         tRank = tRank + 1
-      end
-   end
-   table.insert(tTooltipText, tText)
+   tAppendRanking(tActorList, L["Damage taken"], function(actor) return math.floor(actor.damage_taken) end, "  ")
 
    return tTooltipText
 end
