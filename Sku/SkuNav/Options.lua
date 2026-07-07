@@ -1,5 +1,21 @@
 ﻿local MODULE_NAME = "SkuNav"
 local L = Sku.L
+local function BuildSortedUniqueRouteWps(tRoutesInRange)
+	local tSortedWaypointList = {}
+	for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do
+		local tFnd = false
+		for tK, tV in pairs(tSortedWaypointList) do
+			if tV == v.nearestWpRange..L[";Meter"].."#"..v.nearestWP then
+				tFnd = true
+			end
+		end
+		if tFnd == false then
+			table.insert(tSortedWaypointList, v.nearestWpRange..L[";Meter"].."#"..v.nearestWP)
+		end
+	end
+	return tSortedWaypointList
+end
+
 
 local ssub = string.sub
 local slen = string.len
@@ -410,18 +426,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 				local wpTable = {SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC}
 				local tCoveredWps = {}
 				local tMaxAllowedDistanceToTargetWp = 500
-				local tSortedWaypointList = {}
-				for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do --nach wert
-					local tFnd = false
-					for tK, tV in pairs(tSortedWaypointList) do
-						if tV == v.nearestWpRange..L[";Meter"].."#"..v.nearestWP then
-							tFnd = true
-						end
-					end
-					if tFnd == false then
-						table.insert(tSortedWaypointList, v.nearestWpRange..L[";Meter"].."#"..v.nearestWP)
-					end
-				end
+				local tSortedWaypointList = BuildSortedUniqueRouteWps(tRoutesInRange)
 				if #tSortedWaypointList == 0 then
 					SkuNav:InjectWpListEmptyHint(self)
 				else
@@ -1061,18 +1066,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			local tPlayX, tPlayY = UnitPosition("player")
 			local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(tPlayX, tPlayY, SkuNav.MaxMetaEntryRange)--SkuSettings:Sub("SkuNav").nearbyWpRange)
 
-			local tSortedWaypointList = {}
-			for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do --nach wert
-				local tFnd = false
-				for tK, tV in pairs(tSortedWaypointList) do
-					if tV == v.nearestWpRange..L[";Meter"].."#"..v.nearestWP then
-						tFnd = true
-					end
-				end
-				if tFnd == false then
-					table.insert(tSortedWaypointList, v.nearestWpRange..L[";Meter"].."#"..v.nearestWP)
-				end
-			end
+			local tSortedWaypointList = BuildSortedUniqueRouteWps(tRoutesInRange)
 
 			if #tSortedWaypointList == 0 then
 				SkuNav:InjectWpListEmptyHint(self)
