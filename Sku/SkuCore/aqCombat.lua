@@ -427,6 +427,36 @@ end
 local tthreatWarningNotFirstHigherThanLastWarning = 0
 local tthreatWarningIsFirstSecondHigherThanLastWarning = 0
 local tOorIntervalTime = -2
+local function tCombatInCounts(value, creatureGUID, tPlayerGUID, tAllPartyRaidUnits)
+   -- [W6-C #20] shared "does this in-combat creature count?" classifier, extracted
+   -- from the two identical value==4/3/2 cascades (relativeNumberUnitsInCombat and
+   -- unitsAddedToCombat branches). Each caller keeps its own counter increment.
+   if value == 4 then
+      local tt = SkuCore.threatTable[creatureGUID]
+      if tt and tt[tPlayerGUID] and tt[tPlayerGUID].status and tt[tPlayerGUID].isTanking == true then
+         return true
+      end
+   elseif value == 3 then
+      local tt = SkuCore.threatTable[creatureGUID]
+      if tt then
+         for q = 1, #tAllPartyRaidUnits do
+            local tPartyGuid = UnitGUID(tAllPartyRaidUnits[q])
+            local tEntry = tt[tPartyGuid]
+            if tEntry and tEntry.status then
+               if tEntry.isTanking == true then
+                  return true
+               elseif aqCombat:aqCombatIsPartyOrRaidMember(SkuCore.inOutCombatQueue.combatIn[creatureGUID]) then
+                  return true
+               end
+            end
+         end
+      end
+   elseif value == 2 then
+      return true
+   end
+   return false
+end
+
 local function aqCombatCreateControlFrame()
    local f = _G["SkuCoreaqCombatControl"] or CreateFrame("Frame", "SkuCoreaqCombatControl", UIParent)
    local ttime = 0
@@ -696,47 +726,7 @@ local function aqCombatCreateControlFrame()
                local tCount = 0
                for creatureGUID, value in pairs(SkuCore.inOutCombatQueue.combatIn) do
                   if aqCombatCheckElite(creatureGUID) == true then
-                     if tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value == 4 then
-                        if SkuCore.threatTable[creatureGUID] then
-                           if SkuCore.threatTable[creatureGUID][tPlayerGUID] then   
-                              if SkuCore.threatTable[creatureGUID][tPlayerGUID].status then
-                                 if SkuCore.threatTable[creatureGUID][tPlayerGUID].isTanking == true then
-                                    SkuCore.inOutCombatQueue.current = SkuCore.inOutCombatQueue.current + 1
-                                    tChanged = true
-                                 end
-                              end
-                           end
-                        end
-
-                     elseif tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value == 3 then
-                        local tAdded
-                        for q = 1, #tAllPartyRaidUnits do
-                           local tPartyUnitToTest = tAllPartyRaidUnits[q]
-                           local tPartyGuid = UnitGUID(tPartyUnitToTest)
-                           if SkuCore.threatTable[creatureGUID] then
-                              if SkuCore.threatTable[creatureGUID][tPartyGuid] then   
-                                 if SkuCore.threatTable[creatureGUID][tPartyGuid].status then
-                                    if SkuCore.threatTable[creatureGUID][tPartyGuid].isTanking == true then
-                                       if not tAdded then
-                                          tAdded = creatureGUID
-                                          SkuCore.inOutCombatQueue.current = SkuCore.inOutCombatQueue.current + 1
-                                       end
-
-                                       tChanged = true
-                                    end
-                                 elseif aqCombat:aqCombatIsPartyOrRaidMember(SkuCore.inOutCombatQueue.combatIn[creatureGUID]) then
-                                    if not tAdded then
-                                       tAdded = creatureGUID
-                                       SkuCore.inOutCombatQueue.current = SkuCore.inOutCombatQueue.current + 1
-                                    end
-
-                                    tChanged = true
-                                 end
-                              end
-                           end
-                        end
-                     
-                     elseif tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value == 2 then
+                     if tCombatInCounts(tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value, creatureGUID, tPlayerGUID, tAllPartyRaidUnits) then
                         SkuCore.inOutCombatQueue.current = SkuCore.inOutCombatQueue.current + 1
                         tChanged = true
                      end
@@ -783,45 +773,7 @@ local function aqCombatCreateControlFrame()
                local tCount = 0
                for creatureGUID, value in pairs(SkuCore.inOutCombatQueue.combatIn) do
                   if aqCombatCheckElite(creatureGUID) == true then
-                     if tCurrentSettings.combat.hostile.unitsAddedToCombat.value == 4 then
-                        if SkuCore.threatTable[creatureGUID] then
-                           if SkuCore.threatTable[creatureGUID][tPlayerGUID] then   
-                              if SkuCore.threatTable[creatureGUID][tPlayerGUID].status then
-                                 if SkuCore.threatTable[creatureGUID][tPlayerGUID].isTanking == true then
-                                    tCountIn = tCountIn + 1
-                                    tChanged = true
-                                 end
-                              end
-                           end
-                        end
-
-                     elseif tCurrentSettings.combat.hostile.unitsAddedToCombat.value == 3 then
-                        local tAdded
-                        for q = 1, #tAllPartyRaidUnits do
-                           local tPartyUnitToTest = tAllPartyRaidUnits[q]
-                           local tPartyGuid = UnitGUID(tPartyUnitToTest)
-                           if SkuCore.threatTable[creatureGUID] then
-                              if SkuCore.threatTable[creatureGUID][tPartyGuid] then   
-                                 if SkuCore.threatTable[creatureGUID][tPartyGuid].status then
-                                    if SkuCore.threatTable[creatureGUID][tPartyGuid].isTanking == true then
-                                       if not tAdded then
-                                          tAdded = creatureGUID
-                                          tCountIn = tCountIn + 1
-                                          tChanged = true
-                                       end
-                                    end
-                                 elseif aqCombat:aqCombatIsPartyOrRaidMember(SkuCore.inOutCombatQueue.combatIn[creatureGUID]) then
-                                    if not tAdded then
-                                       tAdded = creatureGUID
-                                       tCountIn = tCountIn + 1
-                                       tChanged = true
-                                    end
-                                 end
-                              end
-                           end
-                        end
-                     
-                     elseif tCurrentSettings.combat.hostile.unitsAddedToCombat.value == 2 then
+                     if tCombatInCounts(tCurrentSettings.combat.hostile.unitsAddedToCombat.value, creatureGUID, tPlayerGUID, tAllPartyRaidUnits) then
                         tCountIn = tCountIn + 1
                         tChanged = true
                      end
