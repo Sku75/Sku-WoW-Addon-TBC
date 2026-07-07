@@ -23,7 +23,7 @@
 --   * AcceptSockets() commits all placed gems and closes the dialog.
 --   * CloseSocketInfo() cancels.
 ---------------------------------------------------------------------------------------------------------------------------------------
-local MODULE_NAME, MODULE_PART = "SkuCore", "Socketing"
+local MODULE_PART = "Socketing"
 local L = Sku.L
 local _G = _G
 

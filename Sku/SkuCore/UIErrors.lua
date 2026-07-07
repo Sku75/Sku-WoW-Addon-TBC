@@ -1,7 +1,6 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
-local MODULE_NAME, MODULE_PART = "SkuCore", "UIErrors"
+local MODULE_PART = "UIErrors"
 local L = Sku.L
-local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 

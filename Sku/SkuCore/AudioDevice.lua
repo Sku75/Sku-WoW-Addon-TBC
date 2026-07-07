@@ -20,7 +20,7 @@
 -- is used additionally for direct TTS, as a belt-and-braces fallback.
 -- =====================================================================
 
-local MODULE_NAME, MODULE_PART = "SkuCore", "AudioDevice"
+local MODULE_PART = "AudioDevice"
 local L = Sku.L
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")

@@ -1,7 +1,4 @@
-﻿local MODULE_NAME = "SkuDispatcher"
-local _G = _G
-local L = Sku.L
-
+﻿
 SkuDispatcher = LibStub("AceAddon-3.0"):NewAddon("SkuDispatcher", "AceConsole-3.0", "AceEvent-3.0")
 
 ---------------------------------------------------------------------------------------------------------------------------------------

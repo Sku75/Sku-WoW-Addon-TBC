@@ -1,4 +1,4 @@
-local MODULE_NAME, MODULE_PART = "SkuCore", "JunkAndRepair"
+local MODULE_PART = "JunkAndRepair"
 local L = Sku.L
 local _G = _G
 

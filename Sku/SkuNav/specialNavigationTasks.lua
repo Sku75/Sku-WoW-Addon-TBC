@@ -1,6 +1,5 @@
 ---@diagnostic disable: undefined-field, undefined-doc-name
 ---------------------------------------------------------------------------------------------------------------------------------------
-local MODULE_NAME = "SkuNav"
 local _G = _G
 local L = Sku.L
 

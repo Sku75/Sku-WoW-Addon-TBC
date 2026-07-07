@@ -6,7 +6,7 @@
 -- Enthalten: Lesebalken, Plaketten-Farben (nach Reaktion), Maus-Finder (Aufleuchten).
 ---------------------------------------------------------------------------------------------------------------------------------------
 
-local MODULE_NAME, MODULE_PART = "SkuCore", "VisualAids"
+local MODULE_PART = "VisualAids"
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
