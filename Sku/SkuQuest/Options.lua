@@ -1031,8 +1031,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 			end
 		end
 	elseif aSubType == "object" then
-		local tWpList = {}
-		for i, tObjectId in pairs(aSubIDTable) do
+			for i, tObjectId in pairs(aSubIDTable) do
 			if SkuDB.objectDataTBC[tObjectId] then
 				local tSpawns = SkuDB.objectDataTBC[tObjectId][4]
 				if tSpawns then
@@ -1782,7 +1781,7 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 	local tShowQuestsTable = {}
 
 	tCurrentQuestLogQuestsTable = {}
-	local numEntries, numQuests = GetNumQuestLogEntries()
+	local numEntries = GetNumQuestLogEntries()
 	if (numEntries >= 0) then
 		for questLogID = 1, numEntries do
 			local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
@@ -2060,7 +2059,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			ExpandQuestHeader(0)
 		end
 
-		local numEntries, numQuests = GetNumQuestLogEntries()
+		local numEntries = GetNumQuestLogEntries()
 		--numEntries = 0	
 		if (numEntries == 0) then
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
