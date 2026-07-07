@@ -69,86 +69,22 @@ function RangeCheck:RangeCheckUpdateRanges()
          Misc = {},
       }
       ]]
-      SkuSettings:Sub("SkuCore", nil, "char").RangeChecks= {
+      local tDefBands = {5, 8, 10, 15, 20, 25, 30, 35, 40, 45, 60}
+      local function tMakeDefaultBands()
+         local t = {}
+         for _, d in ipairs(tDefBands) do
+            t[d] = {["sound"] = L["vocalized"]}
+         end
+         return t
+      end
+      SkuSettings:Sub("SkuCore", nil, "char").RangeChecks = {
          ["Misc"] = {
-            [8] = {
-               ["sound"] = L["vocalized"],
-            },
-            [28] = {
-               ["sound"] = L["vocalized"],
-            },
+            [8] = {["sound"] = L["vocalized"]},
+            [28] = {["sound"] = L["vocalized"]},
          },
-         ["Friendly"] = {
-            [25] = {
-               ["sound"] = L["vocalized"],
-            },
-            [35] = {
-               ["sound"] = L["vocalized"],
-            },
-            [15] = {
-               ["sound"] = L["vocalized"],
-            },
-            [8] = {
-               ["sound"] = L["vocalized"],
-            },
-            [45] = {
-               ["sound"] = L["vocalized"],
-            },
-            [5] = {
-               ["sound"] = L["vocalized"],
-            },
-            [10] = {
-               ["sound"] = L["vocalized"],
-            },
-            [20] = {
-               ["sound"] = L["vocalized"],
-            },
-            [40] = {
-               ["sound"] = L["vocalized"],
-            },
-            [30] = {
-               ["sound"] = L["vocalized"],
-            },
-            [60] = {
-               ["sound"] = L["vocalized"],
-            },
-         },
-         ["Hostile"] = {
-            [25] = {
-               ["sound"] = L["vocalized"],
-            },
-            [35] = {
-               ["sound"] = L["vocalized"],
-            },
-            [15] = {
-               ["sound"] = L["vocalized"],
-            },
-            [8] = {
-               ["sound"] = L["vocalized"],
-            },
-            [45] = {
-               ["sound"] = L["vocalized"],
-            },
-            [5] = {
-               ["sound"] = L["vocalized"],
-            },
-            [10] = {
-               ["sound"] = L["vocalized"],
-            },
-            [20] = {
-               ["sound"] = L["vocalized"],
-            },
-            [40] = {
-               ["sound"] = L["vocalized"],
-            },
-            [30] = {
-               ["sound"] = L["vocalized"],
-            },
-            [60] = {
-               ["sound"] = L["vocalized"],
-            },
-         },
-      }      
+         ["Friendly"] = tMakeDefaultBands(),
+         ["Hostile"] = tMakeDefaultBands(),
+      }
    end
 
    if tFirstRangeUpdateSilent then
