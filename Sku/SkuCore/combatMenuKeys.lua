@@ -24,6 +24,11 @@
 -- 26 letters would hijack ability keys). See [[sku42-combat-item-use-design]].
 ---------------------------------------------------------------------------------------------------------------------------------------
 local _G = _G
+local function tResetMenuToRoot()
+   if SkuOptions.Menu and SkuOptions.Menu[1] then
+      SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
+   end
+end
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
@@ -452,9 +457,7 @@ local function tEnsureKeyFrame()
             -- takes its fresh-open (auto-descend) path, and clear any in-flight post-USE
             -- confirm so its pending re-pin can't yank the cursor off the first entry.
             if SkuClearBagPostAction then pcall(SkuClearBagPostAction) end
-            if SkuOptions.Menu and SkuOptions.Menu[1] then
-               SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
-            end
+            tResetMenuToRoot()
             pcall(function() if OpenAllBags then OpenAllBags() end end)
             pcall(function() SkuCore:CheckFrames() end)
             if SkuLogCombat then SkuLogCombat("secureKeys", "SYNC -> reset+OpenAllBags+CheckFrames combat=" .. (tInCombat() and 1 or 0)) end
@@ -484,9 +487,7 @@ local function tEnsureKeyFrame()
                if tCf and not tCf:IsShown() then tCf:Show() end
             end)
             if SkuClearBagPostAction then pcall(SkuClearBagPostAction) end
-            if SkuOptions.Menu and SkuOptions.Menu[1] then
-               SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
-            end
+            tResetMenuToRoot()
             pcall(function() SkuCore:CheckFrames() end)
             if _G.C_Timer and _G.C_Timer.After then
                _G.C_Timer.After(0.12, function()
@@ -513,9 +514,7 @@ local function tEnsureKeyFrame()
             -- RIGHT re-syncs bags, DOWN arms trade). SlashFunc is combat-safe (same path SYNC uses).
             SkuOptions.combatMenuActive = true
             if Sku then Sku.combatCharForceOpen = false end   -- leaving the char mirror -> drop the phantom char window
-            if SkuOptions.Menu and SkuOptions.Menu[1] then
-               SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
-            end
+            tResetMenuToRoot()
             pcall(function() SkuOptions:SlashFunc(tL("short") .. "," .. tL("Local")) end)
             if SkuLogCombat then SkuLogCombat("secureKeys", "ANCHOR -> Local root (bags-entry anchor)") end
             return
@@ -535,9 +534,7 @@ local function tEnsureKeyFrame()
             -- otherwise re-navigate to this stale combat position. (Combat-end only restores
             -- the visual menu when it was still OPEN, i.e. combatMenuActive == true, so this
             -- ESC-closed case is not covered there.)
-            if SkuOptions.Menu and SkuOptions.Menu[1] then
-               SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
-            end
+            tResetMenuToRoot()
             if SkuLogCombat then SkuLogCombat("secureKeys", "ESC -> close + reset cursor") end
             return
          end
