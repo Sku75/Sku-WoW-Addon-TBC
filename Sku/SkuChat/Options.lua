@@ -239,11 +239,11 @@ SkuChat.options = {
 					values = {
 						[1] = SkuChat.timeStampFormats[1],
 						[2] = L["Format"].." 1: "..BetterDate(SkuChat.timeStampFormats[2], time(exampleTime)),
-						[3] = L["Format"].." 2: "..BetterDate(SkuChat.timeStampFormats[2], time(exampleTime)),
-						[4] = L["Format"].." 3: "..BetterDate(SkuChat.timeStampFormats[3], time(exampleTime)),
-						[5] = L["Format"].." 4: "..BetterDate(SkuChat.timeStampFormats[4], time(exampleTime)),
-						[6] = L["Format"].." 5: "..BetterDate(SkuChat.timeStampFormats[5], time(exampleTime)),
-						[7] = L["Format"].." 6: "..BetterDate(SkuChat.timeStampFormats[6], time(exampleTime)),
+						[3] = L["Format"].." 2: "..BetterDate(SkuChat.timeStampFormats[3], time(exampleTime)),
+						[4] = L["Format"].." 3: "..BetterDate(SkuChat.timeStampFormats[4], time(exampleTime)),
+						[5] = L["Format"].." 4: "..BetterDate(SkuChat.timeStampFormats[5], time(exampleTime)),
+						[6] = L["Format"].." 5: "..BetterDate(SkuChat.timeStampFormats[6], time(exampleTime)),
+						[7] = L["Format"].." 6: "..BetterDate(SkuChat.timeStampFormats[7], time(exampleTime)),
 					},
 				},
 

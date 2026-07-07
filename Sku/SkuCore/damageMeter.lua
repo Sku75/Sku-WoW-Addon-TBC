@@ -217,9 +217,6 @@ function DamageMeter:DamageMeterMenuBuilder()
          local tNewMenuEntry
          
          local tTime = ""
-         if Combat and Combat.end_time then
-            tTime = Combat.data_fim
-         end
 
          local tAll
          if tCombatId == -1 then
