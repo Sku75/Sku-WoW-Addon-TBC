@@ -1,5 +1,21 @@
 ﻿local MODULE_NAME = "SkuQuest"
 local L = Sku.L
+local function BuildSortedUniqueRouteWps(tRoutesInRange)
+	local tSortedWaypointList = {}
+	for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do
+		local tFnd = false
+		for tK, tV in pairs(tSortedWaypointList) do
+			if tV == v.nearestWpRange..L[";Meter"].."#"..v.nearestWP then
+				tFnd = true
+			end
+		end
+		if tFnd == false then
+			table.insert(tSortedWaypointList, v.nearestWpRange..L[";Meter"].."#"..v.nearestWP)
+		end
+	end
+	return tSortedWaypointList
+end
+
 
 SkuQuest.questMarkerBeaconsTypeValues = {
 	[-1] = L["schneller je näher, lauter je näher"],
@@ -1146,18 +1162,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 				end
 				tNewMenuSubEntry1.BuildChildren = function(self)
 					SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = nil
-					local tSortedWaypointList = {}
-					for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do --nach wert
-						local tFnd = false
-						for tK, tV in pairs(tSortedWaypointList) do
-							if tV == v.nearestWpRange..L[";Meter"].."#"..v.nearestWP then
-								tFnd = true
-							end
-						end
-						if tFnd == false then
-							table.insert(tSortedWaypointList, v.nearestWpRange..L[";Meter"].."#"..v.nearestWP)
-						end
-					end
+					local tSortedWaypointList = BuildSortedUniqueRouteWps(tRoutesInRange)
 
 					if #tSortedWaypointList == 0 then
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
@@ -1277,18 +1282,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 				end
 				tNewMenuSubEntry1.BuildChildren = function(self)
 					local tMaxAllowedDistanceToTargetWp = 500
-					local tSortedWaypointList = {}
-					for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do --nach wert
-						local tFnd = false
-						for tK, tV in pairs(tSortedWaypointList) do
-							if tV == v.nearestWpRange..L[";Meter"].."#"..v.nearestWP then
-								tFnd = true
-							end
-						end
-						if tFnd == false then
-							table.insert(tSortedWaypointList, v.nearestWpRange..L[";Meter"].."#"..v.nearestWP)
-						end
-					end
+					local tSortedWaypointList = BuildSortedUniqueRouteWps(tRoutesInRange)
 					if #tSortedWaypointList == 0 then
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 					else
