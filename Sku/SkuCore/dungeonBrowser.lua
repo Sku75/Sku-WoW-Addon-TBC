@@ -790,6 +790,11 @@ do
    end
 
    f:SetScript("OnEvent", function(self, event, msg)
+      -- [W6-C B9] no-op while the feature is disabled. This frame registers its
+      -- WHO_LIST_UPDATE/CHAT_MSG_SYSTEM events at file load (not in OnEnable), so
+      -- unregistering in OnDisable would leave it dead after a re-enable; guard the
+      -- handler instead (same pattern the unremovable hooks use).
+      if DungeonBrowser and not DungeonBrowser:IsEnabled() then return end
       if event == "CHAT_MSG_SYSTEM" and type(msg) == "string" then
          -- Chat-Pattern parsen. Beobachtete Anniversary-DE-Zeile:
          --   "|Hplayer:NAME|h[NAME]|h Stufe LEVEL CLASS"
