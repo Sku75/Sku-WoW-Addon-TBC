@@ -892,12 +892,9 @@ function aqCombat:aqCombatOnInitialize()
    SkuDispatcher:RegisterEventCallback("SKU_UNIT_DIED", aqCombat.aqCombat_SKU_UNIT_DIED)
    SkuDispatcher:RegisterEventCallback("SKU_SPELL_CAST_START", aqCombat.aqCombat_SKU_SPELL_CAST_START)
    
-   SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", aqCombat.aqCombat_PLAYER_ENTERING_WORLD)
    SkuDispatcher:RegisterEventCallback("RAID_TARGET_UPDATE", aqCombat.aqCombatCheckGameRaidTargets)
 	SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_DISABLED", aqCombat.aqCombat_PLAYER_REGEN_DISABLED)
 	SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", aqCombat.aqCombat_PLAYER_REGEN_ENABLED)
-	--SkuDispatcher:RegisterEventCallback("UNIT_THREAT_LIST_UPDATE", aqCombat.aqCombatUNIT_THREAT_LIST_UPDATE)
-	--SkuDispatcher:RegisterEventCallback("UNIT_THREAT_SITUATION_UPDATE", aqCombat.aqCombatUNIT_THREAT_SITUATION_UPDATE)
 
 	SkuDispatcher:RegisterEventCallback("PLAYER_TARGET_CHANGED", aqCombat.aqCombatPLAYER_TARGET_CHANGED)
    SkuDispatcher:RegisterEventCallback("GROUP_ROSTER_UPDATE", aqCombat.aqCombat_GROUP_ROSTER_UPDATE)
@@ -1130,7 +1127,6 @@ function aqCombat:OnDisable()
    SkuDispatcher:UnregisterEventCallback("COMBAT_LOG_EVENT_UNFILTERED", aqCombat.aqCombat_COMBAT_LOG_EVENT_UNFILTERED)
    SkuDispatcher:UnregisterEventCallback("SKU_UNIT_DIED", aqCombat.aqCombat_SKU_UNIT_DIED)
    SkuDispatcher:UnregisterEventCallback("SKU_SPELL_CAST_START", aqCombat.aqCombat_SKU_SPELL_CAST_START)
-   SkuDispatcher:UnregisterEventCallback("PLAYER_ENTERING_WORLD", aqCombat.aqCombat_PLAYER_ENTERING_WORLD)
    SkuDispatcher:UnregisterEventCallback("RAID_TARGET_UPDATE", aqCombat.aqCombatCheckGameRaidTargets)
    SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_DISABLED", aqCombat.aqCombat_PLAYER_REGEN_DISABLED)
    SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", aqCombat.aqCombat_PLAYER_REGEN_ENABLED)
@@ -1206,40 +1202,6 @@ function aqCombat:aqCombatPLAYER_TARGET_CHANGED(aEvent, a, b, c, d)
          end
       end
    end
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function aqCombat:aqCombatUNIT_THREAT_LIST_UPDATE(aEven, aUnitId)
-   --print("TankingUNIT_THREAT_LIST_UPDATE", aEven, aUnitId)
-   --for i = 1, #tUnitsToTestOnGameRaidTargets do
-      --local tguid = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
-      --if tguid then
-         --local isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation("player", aUnitId)
-         --if status then
-            --print(" ", "player", aUnitId, isTanking, status, scaledPercentage, rawPercentage, threatValue)
-
-         --end
-      --end
-   --end
-
-   --local isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation("player", aUnitId)
-   --if status == nil then
-      --print(" unit left combat", aUnitId)
-   --end
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function aqCombat:aqCombatUNIT_THREAT_SITUATION_UPDATE(aEven, aUnitId)
-   --print("TankingUNIT_THREAT_SITUATION_UPDATE", aEven, aUnitId)
-   --for i = 1, #tUnitsToTestOnGameRaidTargets do
-      --local tguid = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
-      --if tguid then
-         --local isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation("player", aUnitId)
-         --if status then
-            --print(" ", "player", aUnitId, isTanking, status, scaledPercentage, rawPercentage, threatValue)
-         --end
-      --end
-   --end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1504,12 +1466,6 @@ function aqCombat:aqCombat_PLAYER_REGEN_ENABLED()
       combatIn = {},
 		combatOut = {},
    }
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function aqCombat:aqCombat_PLAYER_ENTERING_WORLD()
-
-
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
