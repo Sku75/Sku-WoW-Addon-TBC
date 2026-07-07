@@ -454,49 +454,25 @@ function MinimapScanner:RestoreMinimap()
    if InCombatLockdown() == true then
       return
    end
-   if tMinimapStore.point == nil or tMinimapStore.relativeTo == nil then
-      --print(tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y)
-      --print("d", tMinimapDefaults.point, tMinimapDefaults.relativeTo, tMinimapDefaults.relativePoint, tMinimapDefaults.x, tMinimapDefaults.y)
+   local s = (tMinimapStore.point == nil or tMinimapStore.relativeTo == nil) and tMinimapDefaults or tMinimapStore
+   Minimap:SetParent(s.parent)
+   Minimap:SetScale(s.scale or 1)
+   Minimap:SetZoom(s.zoom or 0)
+   Minimap:SetAlpha(s.alpha or 1)
+   Minimap:ClearAllPoints()
+   Minimap:SetPoint(s.point, s.relativeTo, s.relativePoint, s.x, s.y)
+   MinimapCluster:SetFrameLevel(s.frameLevel)
+   MinimapCluster:SetFrameStrata(s.frameStrata)
+   GameTooltip:SetScale(s.GameTooltipScale)
+   Minimap:SetMouseClickEnabled(true)
+   MinimapCluster:SetMouseClickEnabled(true)
 
-      Minimap:SetParent(tMinimapDefaults.parent)
-      Minimap:SetScale(tMinimapDefaults.scale or 1)
-      Minimap:SetZoom(tMinimapDefaults.zoom or 0)
-      Minimap:SetAlpha(tMinimapDefaults.alpha or 1)
-      Minimap:ClearAllPoints()
-      Minimap:SetPoint(tMinimapDefaults.point, tMinimapDefaults.relativeTo, tMinimapDefaults.relativePoint, tMinimapDefaults.x, tMinimapDefaults.y)
-      MinimapCluster:SetFrameLevel(tMinimapDefaults.frameLevel)
-      MinimapCluster:SetFrameStrata(tMinimapDefaults.frameStrata)
-      GameTooltip:SetScale(tMinimapDefaults.GameTooltipScale)
-      Minimap:SetMouseClickEnabled(true)
-      MinimapCluster:SetMouseClickEnabled(true)
-
-      for k, v in pairs(MinimapScanner.minimapChildren) do
-         if v.MMA_VISIBLE then
-            v:Show()
-         end
-         v:SetFrameStrata(v.MMA_FRAME_STRATA)
-         v:SetFrameLevel(v.MMA_FRAME_LEVEL)
+   for k, v in pairs(MinimapScanner.minimapChildren) do
+      if v.MMA_VISIBLE then
+         v:Show()
       end
-   else
-      Minimap:SetParent(tMinimapStore.parent)
-      Minimap:SetScale(tMinimapStore.scale or 1)
-      Minimap:SetZoom(tMinimapStore.zoom or 0)
-      Minimap:SetAlpha(tMinimapStore.alpha or 1)
-      Minimap:ClearAllPoints()
-      Minimap:SetPoint(tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y)
-      MinimapCluster:SetFrameLevel(tMinimapStore.frameLevel)
-      MinimapCluster:SetFrameStrata(tMinimapStore.frameStrata)
-      GameTooltip:SetScale(tMinimapStore.GameTooltipScale)
-      Minimap:SetMouseClickEnabled(true)
-      MinimapCluster:SetMouseClickEnabled(true)
-
-      for k, v in pairs(MinimapScanner.minimapChildren) do
-         if v.MMA_VISIBLE then
-            v:Show()
-         end
-         v:SetFrameStrata(v.MMA_FRAME_STRATA)
-         v:SetFrameLevel(v.MMA_FRAME_LEVEL)
-      end
+      v:SetFrameStrata(v.MMA_FRAME_STRATA)
+      v:SetFrameLevel(v.MMA_FRAME_LEVEL)
    end
    --SkuCore.noMouseOverNotification = nil
 end
