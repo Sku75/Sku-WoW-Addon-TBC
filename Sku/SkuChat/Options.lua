@@ -6,12 +6,6 @@ local play = 2	--this is just a local constant for output type (play, true, fals
 local skuTts = 3	--audio via Sku's own TTS (see SkuChat/Core.lua for the full state list)
 
 SkuChat.CombatConfigUnitTypes = {
-	--[[
-	{
-		text = COMBATLOG_FILTER_STRING_ME,
-		type = COMBATLOG_FILTER_ME,
-	},
-	]]
 	{
 		text = COMBATLOG_FILTER_STRING_ME,
 		type = COMBATLOG_FILTER_MINE,
@@ -40,12 +34,6 @@ SkuChat.CombatConfigUnitTypes = {
 		text = COMBATLOG_FILTER_STRING_UNKNOWN_UNITS,
 		type = COMBATLOG_FILTER_UNKNOWN_UNITS,
 	},
-	--[[
-	{
-		text = "Everything",
-		type = COMBATLOG_FILTER_EVERYTHING,
-	},
-	]]
 }
 
 SkuChat.CombatConfigMessageTypes = {
@@ -113,16 +101,6 @@ SkuChat.CombatConfigMessageTypes = {
 		text = SPELLS.." "..POWER_GAINS,
 		type = {"SPELL_ENERGIZE"},
 	},
-	--[[
-	[5] = {
-		text = SPELLS.." "..DRAINS,
-		type = {"SPELL_DRAIN", "SPELL_LEECH"},
-	},
-	[5] = {
-		text = SPELLS.." "..INTERRUPTS,
-		type = {"SPELL_INTERRUPT"},
-	},
-	]]
 	{
 		text = SPELLS.." "..SPECIAL,
 		type = {"SPELL_INSTAKILL", "SPELL_DURABILITY_DAMAGE", "SPELL_DURABILITY_DAMAGE_ALL"},
@@ -758,31 +736,6 @@ function SkuChat:MenuBuilder(aParentEntry)
 							end
 						end
 					end
-					--[[
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Audio notification on chat message"]}, SkuGenericMenuItem)
-					tNewMenuEntry.dynamic = true
-					tNewMenuEntry.isSelect = true
-					tNewMenuEntry.OnAction = function(self, aValue, aName)
-						if aName == L["On"] then
-							SkuSettings:Sub("SkuChat").tabs[x].audioOnNewMessage = true
-						elseif aName == L["Off"] then
-							SkuSettings:Sub("SkuChat").tabs[x].audioOnNewMessage = false
-						end
-					end
-					tNewMenuEntry.BuildChildren = function(self)
-						tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
-						tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
-					end
-					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-						local tValue = L["On"]
-						if SkuSettings:Sub("SkuChat").tabs[x].audioOnNewMessage == true then
-							tValue = L["On"]
-						else
-							tValue = L["Off"]
-						end
-						return tValue
-					end
-					]]
 				end
 			end
 		end

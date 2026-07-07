@@ -54,20 +54,6 @@ SkuAdventureGuide.options = {
 					type = "select",
 					values = SkuAdventureGuide.tooltipLinksIndicatorValues,
 				},
-				--[[
-				globalLinkListOnly = {
-					order = 2,
-					name = L["Only global link list in last line"],
-					desc = "",
-					type = "toggle",
-					set = function(info, val)
-						SkuOptions.db.profile[MODULE_NAME].links.globalLinkListOnly = val
-					end,
-					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].links.globalLinkListOnly
-					end,
-				},
-				]]
 			},
 		},
 	},
@@ -83,7 +69,6 @@ SkuAdventureGuide.defaults = {
 	links = {
 		enableLinksInTooltips = true,
 		tooltipLinksIndicator = "word",
-		--globalLinkListOnly = false,
 	},
 }
 

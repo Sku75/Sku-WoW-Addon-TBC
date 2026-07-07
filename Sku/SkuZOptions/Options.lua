@@ -306,27 +306,6 @@ SkuOptions.options = {
 					desc = "",
 					type = "toggle",
 				},
-				--[[
-				showError = {
-					order = 3,
-					name = L["Fehler anzeigen"] ,
-					desc = "",
-					type = "execute",
-					set = function(info,val)
-						--SkuSettings:Sub("SkuOptions").debugOptions.showError = val
-					end,
-					get = function(info)
-						--return SkuSettings:Sub("SkuOptions").debugOptions.showError
-					end,
-					func = function(info,val)
-						if SkuOpenSack then
-							SkuOpenSack()
-						else
-							print("bugsack addon not installed")
-						end
-					end,
-				},
-				]]
 			},
 		},
 	
@@ -746,7 +725,6 @@ SkuOptions.defaults = {
 		},				
 	debugOptions = {
 		soundOnError = false,
-		showError = L["fehler anzeigen default"],
 		},
 	}
 

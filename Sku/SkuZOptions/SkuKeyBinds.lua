@@ -13,8 +13,6 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_MMSCANWIDE"] = {key = "CTRL-SHIFT-F", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_MMSCANNARROW"] = {key = "CTRL-SHIFT-R", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_STARTRRFOLLOW"] = {key = "CTRL-SHIFT-Z", object = "SkuNav", func = "CreateSkuNavMain",},
-   --["SKU_KEY_SKUMMOPEN"] = {key = "ALT-K", object = "SkuNav", func = "CreateSkuNavMain",},
-   --["SKU_KEY_SKURTMMDISPLAY"] = {key = "ALT-L", object = "SkuNav", func = "CreateSkuNavMain",},
    ["SKU_KEY_MOVETONEXTWP"] = {key = "CTRL-SHIFT-W", object = "SkuNav", func = "CreateSkuNavMain",},
    ["SKU_KEY_MOVETOPREVWP"] = {key = "CTRL-SHIFT-S", object = "SkuNav", func = "CreateSkuNavMain",},
    ["SKU_KEY_ADDLARGEWP"] = {key = "ALT-O", object = "SkuNav", func = "CreateSkuNavMain",},
@@ -158,11 +156,6 @@ SkuOptions.skuDefaultKeyBindings = {
 
    ["SKU_KEY_TARGETHEALTH"] = {key = "", object = "SkuCoreControlOption1", script = "OnHide",},
 
-   --["SKU_KEY_CHAT_LINEPREV"] = {key = "UP", object = "SkuChat", func = "OnEnable",},
-   --["SKU_KEY_CHAT_LINENEXT"] = {key = "DOWN", object = "SkuChat", func = "OnEnable",},
-   --["SKU_KEY_CHAT_TABPREV"] = {key = "LEFT", object = "SkuChat", func = "OnEnable",},
-   --["SKU_KEY_CHAT_TABNEXT"] = {key = "RIGHT", object = "SkuChat", func = "OnEnable",},
-   --["SKU_KEY_CHAT_LINEMENU"] = {key = "CTRL-ENTER", object = "SkuChat", func = "OnEnable",},
    
 }
 for x = 1, 8 do
