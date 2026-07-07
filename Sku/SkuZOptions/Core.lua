@@ -897,27 +897,27 @@ function SkuOptions:UpdateOverviewText(aPageId)
 		end
 	end
 	if hasOffHandEnchant == true then
-		if hasOffHandEnchantID and hasOffHandEnchantID > 0 and SkuDB.WotLK.enchantIDs[hasOffHandEnchantID] then
+		if offHandEnchantID and offHandEnchantID > 0 and SkuDB.WotLK.enchantIDs[offHandEnchantID] then
 			local tName
 			if Sku.Loc == "enUS" then
-				tName = SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][1]
+				tName = SkuDB.WotLK.enchantIDs[offHandEnchantID][1]
 			elseif Sku.Loc == "deDE" then
-				tName = SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][2]
+				tName = SkuDB.WotLK.enchantIDs[offHandEnchantID][2]
 			end
-			if tName and SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][3] ~= nil then
-				if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][3]] then
-					tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][3]][Sku.Loc][1]
+			if tName and SkuDB.WotLK.enchantIDs[offHandEnchantID][3] ~= nil then
+				if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[offHandEnchantID][3]] then
+					tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[offHandEnchantID][3]][Sku.Loc][1]
 				end
-			elseif tName and SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][4] ~= nil then
-				if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][4]] then
-					tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][4]][Sku.Loc][1]
+			elseif tName and SkuDB.WotLK.enchantIDs[offHandEnchantID][4] ~= nil then
+				if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[offHandEnchantID][4]] then
+					tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[offHandEnchantID][4]][Sku.Loc][1]
 				end
 			end
 
 			if tName then
 				local tTimeString = ""
-				if hasOffHandExpiration and hasOffHandExpiration > 0 then
-					local tRemainingSec = hasOffHandExpiration / 1000
+				if offHandExpiration and offHandExpiration > 0 then
+					local tRemainingSec = offHandExpiration / 1000
 					if tRemainingSec > 60 then
 						if tRemainingSec > 3600 then
 							tTimeString = (math.floor(tRemainingSec / 3600) + 1)..L[" Stunden"]
