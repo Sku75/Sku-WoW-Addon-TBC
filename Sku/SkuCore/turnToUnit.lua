@@ -209,7 +209,6 @@ function TurnToUnit:TurnToUnit_NAME_PLATE_UNIT_ADDED(aEvent, aNameplateId)
          end
       end
 
-      local tUnitFrame = C_NamePlate.GetNamePlateForUnit(aNameplateId).UnitFrame
       if TurnToUnit.gameMarker and GetRaidTargetIndex(aNameplateId) and TurnToUnit.gameMarker == GetRaidTargetIndex(aNameplateId) then
          tFound = true
       end
