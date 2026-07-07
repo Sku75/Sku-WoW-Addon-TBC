@@ -57,7 +57,6 @@ function SkuNav:ImportWpAndLinkData()
 			for i, v in pairs(tLinks) do
 				tImportCounterLinks = tImportCounterLinks + 1
 			end
-			SkuDB.SessionRouteData.Links = {}
 			SkuDB.SessionRouteData.Links = tLinks
 
 			--done

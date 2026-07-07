@@ -84,12 +84,6 @@ local function setupHelper()
          end
       end
    end)
-   tFrame:SetScript("OnShow", function(self)
-      if SkuCore.inCombat == true then
-         return
-      end
-
-   end)
    tFrame:SetScript("OnHide", function(self)
       if SkuCore.inCombat == true then
          return

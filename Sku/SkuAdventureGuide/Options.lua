@@ -132,7 +132,7 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 					end
 				end
 			else
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
 			end
 		end
 

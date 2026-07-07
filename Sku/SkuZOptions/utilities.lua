@@ -11,7 +11,6 @@ local lshift, rshift, arshift = bit.lshift, bit.rshift, bit.arshift
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuGetItemIdFromItemLink(aLink)
 	if not aLink then return end
-	local tr = 0
 	local a, b, c, d, e = strsplit("%:", aLink)
 	return b
 end

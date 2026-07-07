@@ -189,7 +189,7 @@ end
 function DamageMeter:DamageMeterMenuBuilder()
    if SkuCore.DamageMeter and not SkuCore.DamageMeter:IsEnabled() then return end
    if Details == nil then
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Details addon not installed"]}, SkuGenericMenuItem)
+      SkuOptions:InjectMenuItems(self, {L["Details addon not installed"]}, SkuGenericMenuItem)
       return
    end
 
@@ -232,7 +232,7 @@ function DamageMeter:DamageMeterMenuBuilder()
          Combat = Details:GetCombat(tCombatId) -- -1 all
       end
       if tEmpty == true then
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["empty"]}, SkuGenericMenuItem)
+         SkuOptions:InjectMenuItems(self, {L["empty"]}, SkuGenericMenuItem)
       end
    end
 

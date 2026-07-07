@@ -1088,7 +1088,6 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 		ContainerFrame1Hook = true
 	end
 
-	local tEmptyCounter = 1
 	local tCurrentParentContainer = nil
 	local allBagResults = {}
 	local tBagResultsByBag = {}
@@ -1190,7 +1189,6 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 
 			-- position number prefix within the bag
 			bagItemButton.textFirstLine = (#tBagResultsByBag[bagId].childs + 1) .. " " .. bagItemButton.textFirstLine
-			tEmptyCounter = tEmptyCounter + 1
 			if not isEmpty and tCount and tCount > 1 then
 				bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. tCount
 			end

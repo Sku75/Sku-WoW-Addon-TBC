@@ -833,7 +833,6 @@ function Aq:AqOnInitialize()
 	Aq:RegisterEvent("MIRROR_TIMER_STOP")
 	Aq:RegisterEvent("MIRROR_TIMER_PAUSE")
 	Aq:RegisterEvent("UNIT_HEALTH")
-	Aq:RegisterEvent("UNIT_POWER_FREQUENT")
 	Aq:RegisterEvent("UNIT_POWER_UPDATE")
 
 	Aq:RegisterEvent("UNIT_AURA")
@@ -1255,7 +1254,6 @@ function Aq:OnDisable()
 	Aq:UnregisterEvent("MIRROR_TIMER_STOP")
 	Aq:UnregisterEvent("MIRROR_TIMER_PAUSE")
 	Aq:UnregisterEvent("UNIT_HEALTH")
-	Aq:UnregisterEvent("UNIT_POWER_FREQUENT")
 	Aq:UnregisterEvent("UNIT_POWER_UPDATE")
 	Aq:UnregisterEvent("UNIT_AURA")
 
@@ -1521,9 +1519,6 @@ function Aq:UNIT_HEALTH(eventName, aUnitID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function Aq:UNIT_POWER_FREQUENT(eventName, unitTarget, powerType)
-	--Aq:UNIT_POWER_UPDATE("UNIT_POWER_FREQUENT", unitTarget, powerType)
-end
 function Aq:UNIT_POWER_UPDATE(eventName, unitTarget, powerType)
 	if unitTarget == "player" then
 		if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet] then

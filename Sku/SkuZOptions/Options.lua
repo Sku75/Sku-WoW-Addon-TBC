@@ -892,15 +892,15 @@ function SkuOptions:MenuBuilder(aParentEntry)
 
 					tNewMenuSubEntry.BuildChildren = function(self)
 						if tPos > 1 and tPos < 999 then
-							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Up"]}, SkuGenericMenuItem)
+							SkuOptions:InjectMenuItems(self, {L["Up"]}, SkuGenericMenuItem)
 						end
 						if tPos < tNumberItems then
-							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Down"]}, SkuGenericMenuItem)
+							SkuOptions:InjectMenuItems(self, {L["Down"]}, SkuGenericMenuItem)
 						end
 						if tPos == 999 then
-							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Show"]}, SkuGenericMenuItem)
+							SkuOptions:InjectMenuItems(self, {L["Show"]}, SkuGenericMenuItem)
 						else
-							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Hide"]}, SkuGenericMenuItem)
+							SkuOptions:InjectMenuItems(self, {L["Hide"]}, SkuGenericMenuItem)
 						end
 
 					end

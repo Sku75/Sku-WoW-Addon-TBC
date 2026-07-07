@@ -396,7 +396,6 @@ local function DrawPolyZonesMM(aFrame)
 	for x = 1, #SkuDB.Polygons.data do
 		if SkuDB.Polygons.data[x].continentId == tPlayerContintentId then		
 			if #SkuDB.Polygons.data[x].nodes > 2 then
-				local tRouteColor = {r = 1, g = 1, b = 1, a = 1}
 				for line = 2, #SkuDB.Polygons.data[x].nodes do
 					local tRouteColor = SkuDB.Polygons.eTypes[SkuDB.Polygons.data[x].type][2][SkuDB.Polygons.data[x].subtype][2]
 					local x1, y1 = SkuNavMMWorldToContent(SkuDB.Polygons.data[x].nodes[line].x, SkuDB.Polygons.data[x].nodes[line].y)

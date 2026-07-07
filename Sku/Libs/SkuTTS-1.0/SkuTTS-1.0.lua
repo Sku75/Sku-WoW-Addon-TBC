@@ -29,9 +29,7 @@ function SkuTTS:Create()
 			if SkuTTS.AutoReadMode == true and SkuTTS.AutoReadEventFlag == true then
 				SkuTTS:ReadNextAutoRead()
 			end
-			if SkuTTS.AutoReadEventFlag ~= true then
-				SkuTTS.AutoReadEventFlag = true
-			end
+			SkuTTS.AutoReadEventFlag = true
 		end
 	end)
 	f:RegisterEvent("VOICE_CHAT_TTS_PLAYBACK_FINISHED")
