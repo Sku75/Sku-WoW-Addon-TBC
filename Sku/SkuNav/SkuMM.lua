@@ -104,40 +104,6 @@ function SkuNavMMWorldToContent(aPosY, aPosX)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
-function SkuNav:DrawTerrainData(aFrame)
-	--SkuNav:ClearLines(aFrame)
-	if SkuSettings:Sub("SkuNav").showRoutesOnMinimap ~= true or not SkuCoreDB.TerrainData then
-		return
-	end
-	local tExtMap = SkuNav:GetBestMapForUnit("player")
-
-	if not SkuCoreDB.TerrainData[tExtMap] then
-		return
-	end
-
-	local fPlayerPosX, fPlayerPosY = UnitPosition("player")
-	local fPlayerInstanceId = select(8, GetInstanceInfo())
-
-
-	local tRouteColor = {r = 1, g = 1, b = 1, a = 1}
-	for ix, vx in pairs(SkuCoreDB.TerrainData[tExtMap]) do
-		for iy, vy in pairs(vx) do
-			if vy == true then
-				local indoors = GetCVar("minimapZoom")+0 == Minimap:GetZoom() and "outdoor" or "indoor"
-				local zoom = Minimap:GetZoom()
-				local mapRadius = minimap_size[indoors][zoom]
-
-				local x, y = -(fPlayerPosX - ix), (fPlayerPosY - iy) 
-				x, y = x * ((mapRadius)/(minimap_size[indoors][5])), y  * ((mapRadius)/(minimap_size[indoors][5]))
-
-				DrawLine(y, x, y + 1, x + 1, 0.8, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame)
-			end
-
-		end
-	end
-end
-
-------------------------------------------------------------------------------------------------------------------------
 local function ClearWaypoints()
 	SkuLineRepo:ReleaseAll()
 	SkuWaypointWidgetRepo:ReleaseAll()
