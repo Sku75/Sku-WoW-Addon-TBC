@@ -66,12 +66,24 @@ investigated.
     hotkey silently does nothing. It worked before the menu right-click rework.
   - Repro: on a weapon (equipped slot, or a bag oil targeting a weapon), trigger
     the right-click action via Ctrl+Enter — the oil is not applied, nothing spoken.
-  - Suspected area (best guess): the Enter=left / Ctrl+Enter=right menu-click
-    rework (SKU_KEY_MENURIGHTCLICK / secure twin SecureOnSkuOptionsMainOption2) vs
-    the equip-slot right-click oil path (`/click <Slot> RightButton`,
-    SpellIsTargeting) in SkuCore/Options.lua + SkuZOptions/Core.lua — likely the
-    secure right-click twin no longer reaches the oil-apply path.
-  - Status: open (regression).
+  - ROOT CAUSE (found 2026-07-07): the equip-slot right-click secure macro was
+    `/click <Slot> RightButton`. A macro `/click` reads the LIVE keyboard state,
+    so the synthesized click fired with Ctrl still physically held (the default
+    SKU_KEY_MENURIGHTCLICK is CTRL-ENTER). On a PaperDoll slot button,
+    `IsModifiedClick("DRESSUP")` is bound to Ctrl, so Ctrl+click routed to
+    `DressUpItemLink` (dressing-room preview) instead of `UseInventoryItem`,
+    which is what completes the oil-targeting -> oil never applied, no error.
+    Only the character-window equip slots hit this branch, which is why every
+    other Ctrl+Enter right-click (bag `/use`, merchant/loot/popup `/click`)
+    was unaffected. Pre-rework the same macro fired via plain ENTER (no
+    modifier), so it worked.
+  - FIX (SkuZOptions/Core.lua, RIGHT-click payload for `tIsEquipmentSlot`):
+    replaced `/click <Slot> RightButton` with `/use <slotID>` (the canonical
+    `/use 16` weapon-oil macro). It calls `UseInventoryItem(slotID)` directly,
+    bypassing the button OnClick, so it is modifier-immune and unifies the
+    apply-oil and fire-on-use cases; plain gear still no-ops and falls through
+    to OnRightAction's unequip.
+  - Status: fixed in code, PENDING in-game verification.
 - **Some default keybinds are not bound for a brand-new user.**
   - Symptom: on a fresh install (no saved bindings) some keys Sku is supposed to
     bind by default come up unbound.

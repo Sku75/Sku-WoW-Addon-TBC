@@ -5030,18 +5030,27 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 					-- ============================ RIGHT click payload
 					if tIsEquipmentSlot then
 						local lSlotID = tEqSlotID
-						local lSlotName = aGossipListTable[index].containerFrameName
 						-- Rechtsklick auf ein ausgeruestetes Teil. Das sichere Makro
-						-- "/click <Slot> RightButton" laeuft VOR dieser OnRightAction
-						-- (auf dem Hardware-Event) und ruft nativ UseInventoryItem(slot)
-						-- mit der LIVE-Cursor/Ziel-Lage auf:
-						--  1) Ziel-Modus (Waffenoel/Gift/Schleifstein): WENDET AN.
+						-- "/use <slotID>" laeuft VOR dieser OnRightAction (auf dem
+						-- Hardware-Event) und ruft nativ UseInventoryItem(slot) mit der
+						-- LIVE-Cursor/Ziel-Lage auf:
+						--  1) Ziel-Modus (Waffenoel/Gift/Schleifstein): WENDET AN
+						--     (das klassische "/use 16"-Waffenoel-Makro schliesst das
+						--     schwebende Item-Targeting auf diesen Slot ab).
 						--  2) Gegenstand mit Benutzen-Effekt (Schmuck): loest on-use aus.
-						--  3) Normale Ruestung/Waffe: TBC-2.5.5 macht hier nativ NICHTS
+						--  3) Normale Ruestung/Waffe: macht nativ NICHTS
 						--     -> die insecure OnRightAction unten zieht dann aus.
 						-- Entschieden wird in OnRightAction anhand des PreClick-
 						-- Schnappschusses + LIVE-Pruefung, ob das Makro schon gehandelt hat.
-						tNewMenuEntry.rightMacrotext = "/click " .. lSlotName .. " RightButton"
+						-- WICHTIG: NICHT "/click <Slot> RightButton" benutzen! Der
+						-- Rechtsklick-Key ist standardmaessig STRG-Enter; ein per Makro
+						-- synthetisierter Klick liest den LIVE-Tastaturzustand, also gilt
+						-- der Klick als STRG-Klick. Auf einem PaperDoll-Slot ist STRG =
+						-- IsModifiedClick("DRESSUP") -> oeffnet die Anprobe statt
+						-- UseInventoryItem, das Oel wird NICHT angewendet (Regression nach
+						-- dem Menue-Klick-Rework). "/use <slotID>" umgeht den Button-OnClick
+						-- komplett und ist damit modifier-unabhaengig.
+						tNewMenuEntry.rightMacrotext = "/use " .. lSlotID
 						tNewMenuEntry.OnRightAction = function()
 							-- Hat das sichere Makro schon angewendet/benutzt? Dann NICHT ausziehen.
 							local tOnUseLive = false
