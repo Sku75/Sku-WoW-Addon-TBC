@@ -392,7 +392,7 @@ function aqCombat:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
          if UnitGUID("raid"..x) == aUnitIdGuid then
             aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "raid"..x
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
-            return "raid"
+            return "raid"..x
          end
          if UnitGUID("raidpet"..x) == aUnitIdGuid then
             aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "raidpet"..x
