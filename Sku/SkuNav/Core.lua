@@ -3549,7 +3549,7 @@ end
 
 local old_ZONE_CHANGED_X = ""
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:ZONE_CHANGED_NEW_AREA(...)
+local function tAnnounceZoneChange()
 	if old_ZONE_CHANGED_X ~= GetMinimapZoneText() then
 		old_ZONE_CHANGED_X = GetMinimapZoneText()
 		if SkuSettings:Sub("SkuNav").vocalizeZoneNames == true then
@@ -3557,26 +3557,9 @@ function SkuNav:ZONE_CHANGED_NEW_AREA(...)
 		end
 	end
 end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:ZONE_CHANGED(...)
-	if old_ZONE_CHANGED_X ~= GetMinimapZoneText() then
-		old_ZONE_CHANGED_X = GetMinimapZoneText()
-		if SkuSettings:Sub("SkuNav").vocalizeZoneNames == true then
-			SkuOptions.Voice:OutputString(old_ZONE_CHANGED_X, true, true, 0.2)
-		end
-	end
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:ZONE_CHANGED_INDOORS(...)
-	if old_ZONE_CHANGED_X ~= GetMinimapZoneText() then
-		old_ZONE_CHANGED_X = GetMinimapZoneText()
-		if SkuSettings:Sub("SkuNav").vocalizeZoneNames == true then
-			SkuOptions.Voice:OutputString(old_ZONE_CHANGED_X, true, true, 0.2)
-		end
-	end
-end
+function SkuNav:ZONE_CHANGED_NEW_AREA(...) tAnnounceZoneChange() end
+function SkuNav:ZONE_CHANGED(...) tAnnounceZoneChange() end
+function SkuNav:ZONE_CHANGED_INDOORS(...) tAnnounceZoneChange() end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_DEAD(...)
