@@ -706,8 +706,10 @@ SkuSettings:Register("SkuCore", {
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
-	if aName == L["Neu belegen"] then
+-- W6-C #16b: shared primary/secondary rebind-capture (SkuCore command binds).
+-- The two branches were identical except (a) SetBinding vs SetBinding2 and
+-- (b) which friendly key is voiced. aSecondary selects both.
+local function tRebindCaptureCommand(self, aSecondary)
 		SkuOptions.bindingMode = true
 
 		C_Timer.After(0.001, function()
@@ -767,7 +769,7 @@ local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
 						end
 					end
 
-					SkuCore:SetBinding(aKey, self.command)
+					if aSecondary then SkuCore:SetBinding2(aKey, self.command) else SkuCore:SetBinding(aKey, self.command) end
 					
 					local tCommand, tCategory, tKey1, tKey2 = GetBinding(self.index, GetCurrentBindingSet())
 					local aFriendlyKey1, tFriendlyKey2 = tKey1 or L["nichts"], tKey2 or L["nichts"]
@@ -782,7 +784,7 @@ local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
 						_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
 						_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
 					end
-					SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..aFriendlyKey1, true, true, 0.2, true, nil, nil, 2)
+					SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..(aSecondary and tFriendlyKey2 or aFriendlyKey1), true, true, 0.2, true, nil, nil, 2)
 				elseif aKey == "ESCAPE" then
 					SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2, true, nil, nil, 2)
 				end
@@ -793,90 +795,116 @@ local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
 
 			ArmBindCaptureKeys(f)
 		end)											
+end
+
+-- W6-C #16b: shared primary/secondary rebind-capture (SkuKeyBinds const binds).
+-- Branches were identical except SkuKeyBindsSetBinding vs ...SetBinding2 and which
+-- friendly key is voiced (aSecondary selects both). The secondary path also picks
+-- up the two gated dprint breadcrumbs that only the primary had — debug-only, no
+-- user-visible change.
+local function tRebindCaptureKeyBind(self, aSecondary)
+						SkuOptions.bindingMode = true
+
+						C_Timer.After(0.001, function()
+							SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2, true, nil, nil, 2)
+
+							local f = _G["SkuCoreBindControlFrame"] or CreateFrame("Button", "SkuCoreBindControlFrame", UIParent, "UIPanelButtonTemplate")
+							f.menuTarget = self
+							f.bindingConst = self.bindingConst
+							f.prevKey = nil
+		
+							f:SetSize(80, 22)
+							f:SetText("SkuCoreBindControlFrame")
+							f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
+							f:SetPoint("CENTER")
+							f:SetScript("OnClick", function(self, aKey, aB)
+								dprint("SkuCoreBindControlFrame OnClick", aKey, aB)
+								if aKey ~= "ESCAPE" then
+									if not self.bindingConst or not self.menuTarget then return end
+									-- The in-combat menu keys (SKU_KEY_COMBATMENU_*) are ALLOWED to take
+									-- otherwise-reserved keys (arrows / enter / backspace): they are bound
+									-- ONLY during combat (override cleared at combat end), so reusing the
+									-- menu-nav keys there is intended, and arrow-key movers need to relocate
+									-- them onto (possibly modified) arrows. Skip the block list for those
+									-- consts only; every other bind keeps the reserved-key protection.
+									local tAllowReserved = string.find(self.bindingConst, "SKU_KEY_COMBATMENU_", 1, true) ~= nil
+									if not tAllowReserved then
+										for z = 1, #tBlockedKeysParts do
+											if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then
+												SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+												self.prevKey = nil
+												return
+											end
+										end
+										for z = 1, #tBlockedKeysBinds do
+											if aKey == tBlockedKeysBinds[z] or string.lower(aKey) == string.lower(tBlockedKeysBinds[z]) then
+												SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+												return
+											end
+										end
+									end
+
+									dprint(self.bindingConst, self.menuTarget, self.menuTarget.name, self.prevKey)
+
+									local tCommand = SkuCore:CheckBound(aKey)
+									local bindingConst = SkuOptions:SkuKeyBindsCheckBound(aKey)
+									if tCommand or bindingConst then
+										if not self.prevKey or self.prevKey ~= aKey then
+											self.prevKey = aKey
+											if bindingConst then
+												SkuOptions.Voice:OutputStringBTtts(L["Warning! That key is already bound to"].." "..L[bindingConst]..L[". Press the key again to confirm new binding. The current bound action will be unbound!"], true, true, 0.2, true, nil, nil, 2)
+											elseif tCommand then
+												SkuOptions.Voice:OutputStringBTtts(L["Warning! That key is already bound to"].." ".._G["BINDING_NAME_"..tCommand]..L[". Press the key again to confirm new binding. The current bound action will be unbound!"], true, true, 0.2, true, nil, nil, 2)
+											end
+											return 
+										end
+									end
+
+									if tCommand or bindingConst and self.prevKey == aKey then
+										if bindingConst then
+											SkuOptions:SkuKeyBindsDeleteConflictingKey(bindingConst, aKey)
+										elseif tCommand then
+											SetBinding(aKey)
+											SkuCore:SaveBindings()
+										end
+									end
+
+									if aSecondary then SkuOptions:SkuKeyBindsSetBinding2(self.bindingConst, aKey) else SkuOptions:SkuKeyBindsSetBinding(self.bindingConst, aKey) end
+
+									local tKey1 = SkuOptions:SkuKeyBindsGetBinding(self.bindingConst)
+									local tKey2 = SkuOptions:SkuKeyBindsGetBinding2(self.bindingConst)
+									local tFriendlyKey1 = (tKey1 ~= "" and tKey1) or L["nichts"]
+									local tFriendlyKey2 = (tKey2 ~= "" and tKey2) or L["nichts"]
+									for kLocKey, vLocKey in pairs(SkuCore.Keys.LocNames) do
+										tFriendlyKey1 = gsub(tFriendlyKey1, kLocKey, vLocKey)
+										tFriendlyKey2 = gsub(tFriendlyKey2, kLocKey, vLocKey)
+									end
+									if tCommand or bindingConst then
+										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
+									else
+										self.menuTarget.name = L[self.bindingConst]..L[" Taste 1: "]..(tFriendlyKey1 or L["nichts"])..L[" Taste 2: "]..(tFriendlyKey2 or L["nichts"])
+										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
+										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
+									end
+									SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..(aSecondary and tFriendlyKey2 or tFriendlyKey1), true, true, 0.2, true, nil, nil, 2)
+								elseif aKey == "ESCAPE" then
+									self.prevKey = nil
+									SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2, true, nil, nil, 2)
+								end
+								ClearOverrideBindings(self)
+								SkuOptions.bindingMode = nil
+							end)
+							SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindControlFrame", "ESCAPE")
+		
+							ArmBindCaptureKeys(f)
+						end)											
+end
+
+local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
+	if aName == L["Neu belegen"] then
+		tRebindCaptureCommand(self, false)
 	elseif aName == L["Sekundäre Taste neu belegen"] then
-		SkuOptions.bindingMode = true
-
-		C_Timer.After(0.001, function()
-			SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2, true, nil, nil, 2)
-
-			local f = _G["SkuCoreBindControlFrame"] or CreateFrame("Button", "SkuCoreBindControlFrame", UIParent, "UIPanelButtonTemplate")
-			f.menuTarget = self
-			f.command = self.command
-			f.category = self.category
-			f.index = self.index
-			f.prevKey = nil
-
-			f:SetSize(80, 22)
-			f:SetText("SkuCoreBindControlFrame")
-			f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
-			f:SetPoint("CENTER")
-			f:SetScript("OnClick", function(self, aKey, aB)
-				if aKey ~= "ESCAPE" then
-					if not self.command or not self.category or not self.menuTarget or not self.index then return end
-					for z = 1, #tBlockedKeysParts do
-						if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then
-							SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
-							self.prevKey = nil
-							return
-						end
-					end
-
-					for z = 1, #tBlockedKeysBinds do
-						if aKey == tBlockedKeysBinds[z] or string.lower(aKey) == string.lower(tBlockedKeysBinds[z]) then
-							SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
-							return
-						end
-					end
-
-					local tCommand = SkuCore:CheckBound(aKey)
-					local bindingConst = SkuOptions:SkuKeyBindsCheckBound(aKey)
-					if tCommand or bindingConst then
-						if not self.prevKey or self.prevKey ~= aKey then
-							self.prevKey = aKey
-							if bindingConst then
-								SkuOptions.Voice:OutputStringBTtts(L["Warning! That key is already bound to"].." "..L[bindingConst]..L[". Press the key again to confirm new binding. The current bound action will be unbound!"], true, true, 0.2, true, nil, nil, 2)
-							elseif tCommand then
-								SkuOptions.Voice:OutputStringBTtts(L["Warning! That key is already bound to"].." ".._G["BINDING_NAME_"..tCommand]..L[". Press the key again to confirm new binding. The current bound action will be unbound!"], true, true, 0.2, true, nil, nil, 2)
-							end
-							return
-						end
-					end
-
-					if tCommand or bindingConst and self.prevKey == aKey then
-						if bindingConst then
-							SkuOptions:SkuKeyBindsDeleteConflictingKey(bindingConst, aKey)
-						elseif tCommand then
-							SetBinding(aKey)
-							SkuCore:SaveBindings()
-						end
-					end
-
-					SkuCore:SetBinding2(aKey, self.command)
-
-					local tCommand, tCategory, tKey1, tKey2 = GetBinding(self.index, GetCurrentBindingSet())
-					local aFriendlyKey1, tFriendlyKey2 = tKey1 or L["nichts"], tKey2 or L["nichts"]
-					for kLocKey, vLocKey in pairs(SkuCore.Keys.LocNames) do
-						aFriendlyKey1 = gsub(aFriendlyKey1, kLocKey, vLocKey)
-						tFriendlyKey2 = gsub(tFriendlyKey2, kLocKey, vLocKey)
-					end
-					if tCommand or bindingConst then
-						_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-					else
-						self.menuTarget.name = _G["BINDING_NAME_" .. tCommand]..L[" Taste 1: "]..(aFriendlyKey1)..L[" Taste 2: "]..(tFriendlyKey2)
-						_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
-						_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-					end
-					SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..tFriendlyKey2, true, true, 0.2, true, nil, nil, 2)
-				elseif aKey == "ESCAPE" then
-					SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2, true, nil, nil, 2)
-				end
-				ClearOverrideBindings(self)
-				SkuOptions.bindingMode = nil
-			end)
-			SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindControlFrame", "ESCAPE")
-
-			ArmBindCaptureKeys(f)
-		end)
+		tRebindCaptureCommand(self, true)
 	elseif aName == L["Belegung löschen"] then
 		if not self.command or not self.category or not self.index then return end
 		SkuCore:DeleteBinding(self.command)
@@ -2399,190 +2427,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 						return
 					end
 					if aName == L["Neu belegen"] then
-						SkuOptions.bindingMode = true
-
-						C_Timer.After(0.001, function()
-							SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2, true, nil, nil, 2)
-
-							local f = _G["SkuCoreBindControlFrame"] or CreateFrame("Button", "SkuCoreBindControlFrame", UIParent, "UIPanelButtonTemplate")
-							f.menuTarget = self
-							f.bindingConst = self.bindingConst
-							f.prevKey = nil
-		
-							f:SetSize(80, 22)
-							f:SetText("SkuCoreBindControlFrame")
-							f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
-							f:SetPoint("CENTER")
-							f:SetScript("OnClick", function(self, aKey, aB)
-								dprint("SkuCoreBindControlFrame OnClick", aKey, aB)
-								if aKey ~= "ESCAPE" then
-									if not self.bindingConst or not self.menuTarget then return end
-									-- The in-combat menu keys (SKU_KEY_COMBATMENU_*) are ALLOWED to take
-									-- otherwise-reserved keys (arrows / enter / backspace): they are bound
-									-- ONLY during combat (override cleared at combat end), so reusing the
-									-- menu-nav keys there is intended, and arrow-key movers need to relocate
-									-- them onto (possibly modified) arrows. Skip the block list for those
-									-- consts only; every other bind keeps the reserved-key protection.
-									local tAllowReserved = string.find(self.bindingConst, "SKU_KEY_COMBATMENU_", 1, true) ~= nil
-									if not tAllowReserved then
-										for z = 1, #tBlockedKeysParts do
-											if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then
-												SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
-												self.prevKey = nil
-												return
-											end
-										end
-										for z = 1, #tBlockedKeysBinds do
-											if aKey == tBlockedKeysBinds[z] or string.lower(aKey) == string.lower(tBlockedKeysBinds[z]) then
-												SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
-												return
-											end
-										end
-									end
-
-									dprint(self.bindingConst, self.menuTarget, self.menuTarget.name, self.prevKey)
-
-									local tCommand = SkuCore:CheckBound(aKey)
-									local bindingConst = SkuOptions:SkuKeyBindsCheckBound(aKey)
-									if tCommand or bindingConst then
-										if not self.prevKey or self.prevKey ~= aKey then
-											self.prevKey = aKey
-											if bindingConst then
-												SkuOptions.Voice:OutputStringBTtts(L["Warning! That key is already bound to"].." "..L[bindingConst]..L[". Press the key again to confirm new binding. The current bound action will be unbound!"], true, true, 0.2, true, nil, nil, 2)
-											elseif tCommand then
-												SkuOptions.Voice:OutputStringBTtts(L["Warning! That key is already bound to"].." ".._G["BINDING_NAME_"..tCommand]..L[". Press the key again to confirm new binding. The current bound action will be unbound!"], true, true, 0.2, true, nil, nil, 2)
-											end
-											return 
-										end
-									end
-
-									if tCommand or bindingConst and self.prevKey == aKey then
-										if bindingConst then
-											SkuOptions:SkuKeyBindsDeleteConflictingKey(bindingConst, aKey)
-										elseif tCommand then
-											SetBinding(aKey)
-											SkuCore:SaveBindings()
-										end
-									end
-
-									SkuOptions:SkuKeyBindsSetBinding(self.bindingConst, aKey)
-
-									local tKey1 = SkuOptions:SkuKeyBindsGetBinding(self.bindingConst)
-									local tKey2 = SkuOptions:SkuKeyBindsGetBinding2(self.bindingConst)
-									local tFriendlyKey1 = (tKey1 ~= "" and tKey1) or L["nichts"]
-									local tFriendlyKey2 = (tKey2 ~= "" and tKey2) or L["nichts"]
-									for kLocKey, vLocKey in pairs(SkuCore.Keys.LocNames) do
-										tFriendlyKey1 = gsub(tFriendlyKey1, kLocKey, vLocKey)
-										tFriendlyKey2 = gsub(tFriendlyKey2, kLocKey, vLocKey)
-									end
-									if tCommand or bindingConst then
-										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-									else
-										self.menuTarget.name = L[self.bindingConst]..L[" Taste 1: "]..(tFriendlyKey1 or L["nichts"])..L[" Taste 2: "]..(tFriendlyKey2 or L["nichts"])
-										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
-										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-									end
-									SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..tFriendlyKey1, true, true, 0.2, true, nil, nil, 2)
-								elseif aKey == "ESCAPE" then
-									self.prevKey = nil
-									SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2, true, nil, nil, 2)
-								end
-								ClearOverrideBindings(self)
-								SkuOptions.bindingMode = nil
-							end)
-							SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindControlFrame", "ESCAPE")
-		
-							ArmBindCaptureKeys(f)
-						end)											
+						tRebindCaptureKeyBind(self, false)
 					elseif aName == L["Sekundäre Taste neu belegen"] then
-						SkuOptions.bindingMode = true
-
-						C_Timer.After(0.001, function()
-							SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2, true, nil, nil, 2)
-
-							local f = _G["SkuCoreBindControlFrame"] or CreateFrame("Button", "SkuCoreBindControlFrame", UIParent, "UIPanelButtonTemplate")
-							f.menuTarget = self
-							f.bindingConst = self.bindingConst
-							f.prevKey = nil
-
-							f:SetSize(80, 22)
-							f:SetText("SkuCoreBindControlFrame")
-							f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
-							f:SetPoint("CENTER")
-							f:SetScript("OnClick", function(self, aKey, aB)
-								if aKey ~= "ESCAPE" then
-									if not self.bindingConst or not self.menuTarget then return end
-									-- Same reserved-key exception as the primary-key handler above: SKU_KEY_COMBATMENU_*
-									-- may take arrows / enter / backspace (bound only during combat).
-									local tAllowReserved = string.find(self.bindingConst, "SKU_KEY_COMBATMENU_", 1, true) ~= nil
-									if not tAllowReserved then
-										for z = 1, #tBlockedKeysParts do
-											if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then
-												SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
-												self.prevKey = nil
-												return
-											end
-										end
-										for z = 1, #tBlockedKeysBinds do
-											if aKey == tBlockedKeysBinds[z] or string.lower(aKey) == string.lower(tBlockedKeysBinds[z]) then
-												SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
-												return
-											end
-										end
-									end
-
-									local tCommand = SkuCore:CheckBound(aKey)
-									local bindingConst = SkuOptions:SkuKeyBindsCheckBound(aKey)
-									if tCommand or bindingConst then
-										if not self.prevKey or self.prevKey ~= aKey then
-											self.prevKey = aKey
-											if bindingConst then
-												SkuOptions.Voice:OutputStringBTtts(L["Warning! That key is already bound to"].." "..L[bindingConst]..L[". Press the key again to confirm new binding. The current bound action will be unbound!"], true, true, 0.2, true, nil, nil, 2)
-											elseif tCommand then
-												SkuOptions.Voice:OutputStringBTtts(L["Warning! That key is already bound to"].." ".._G["BINDING_NAME_"..tCommand]..L[". Press the key again to confirm new binding. The current bound action will be unbound!"], true, true, 0.2, true, nil, nil, 2)
-											end
-											return
-										end
-									end
-
-									if tCommand or bindingConst and self.prevKey == aKey then
-										if bindingConst then
-											SkuOptions:SkuKeyBindsDeleteConflictingKey(bindingConst, aKey)
-										elseif tCommand then
-											SetBinding(aKey)
-											SkuCore:SaveBindings()
-										end
-									end
-
-									SkuOptions:SkuKeyBindsSetBinding2(self.bindingConst, aKey)
-
-									local tKey1 = SkuOptions:SkuKeyBindsGetBinding(self.bindingConst)
-									local tKey2 = SkuOptions:SkuKeyBindsGetBinding2(self.bindingConst)
-									local tFriendlyKey1 = (tKey1 ~= "" and tKey1) or L["nichts"]
-									local tFriendlyKey2 = (tKey2 ~= "" and tKey2) or L["nichts"]
-									for kLocKey, vLocKey in pairs(SkuCore.Keys.LocNames) do
-										tFriendlyKey1 = gsub(tFriendlyKey1, kLocKey, vLocKey)
-										tFriendlyKey2 = gsub(tFriendlyKey2, kLocKey, vLocKey)
-									end
-									if tCommand or bindingConst then
-										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-									else
-										self.menuTarget.name = L[self.bindingConst]..L[" Taste 1: "]..(tFriendlyKey1 or L["nichts"])..L[" Taste 2: "]..(tFriendlyKey2 or L["nichts"])
-										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
-										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-									end
-									SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..tFriendlyKey2, true, true, 0.2, true, nil, nil, 2)
-								elseif aKey == "ESCAPE" then
-									self.prevKey = nil
-									SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2, true, nil, nil, 2)
-								end
-								ClearOverrideBindings(self)
-								SkuOptions.bindingMode = nil
-							end)
-							SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindControlFrame", "ESCAPE")
-
-							ArmBindCaptureKeys(f)
-						end)
+						tRebindCaptureKeyBind(self, true)
 					elseif aName == L["Belegung löschen"] then
 						if not self.bindingConst then return end
 						SkuOptions:SkuKeyBindsDeleteBinding(self.bindingConst)
