@@ -30,6 +30,24 @@ Carried in from the v41 line / reported by the maintainer. German term kept with
 an English gloss where the term is Sku-specific. Repro/area are best-guess until
 investigated.
 
+- **Dial targeting (#21 dedup) UNTESTED in-game.**
+  - Symptom: none observed — but the change is unverified. The W6-C #21 refactor
+    (commit `d5a4eb9`) extracted the shared `tClearUnitNameSlots()` +
+    `tApplyNumpadBindings(aNumpadFrameName)` helpers from the raid/raid10/party
+    branches of `DialTargetingRosterUpdate` (secure `SetOverrideBindingClick`).
+    It loaded clean, but numpad member-selection was NOT exercised in a group.
+  - Repro (to verify / to reproduce any regression): in a **party**, enable dial
+    targeting and press numpad digits to select members by slot; then in a **raid**
+    (raid uses two-digit entry via `SkuSecureTargetingToggleHandler`). Confirm the
+    correct unit is targeted in each.
+  - Suspected cause / area: `SkuCore/DialTargeting.lua` — verified identical modulo
+    the numpad-owner frame (raid = ToggleHandler, raid10/party = TargetingFrame), so
+    a regression is unlikely; needs a by-ear group test to close. All other W6-C
+    Phase-C changes (dead-code sweep, `Sku.deEn` l10n, #16b rebind handlers, #36
+    chat TTS-frame nav, aqCombat/SkuKeyBinds/Macro dedups) are in-game confirmed
+    working 2026-07-07.
+  - Status: open (untested; revert candidate = `d5a4eb9` alone if it misbehaves).
+
 - **Menu open via SlashFunc in combat hits ADDON_ACTION_BLOCKED.**
   - Symptom: one grabbed `[ADDON_ACTION_BLOCKED] 'Sku' ... 'OnSkuOptionsMain:Show()'`
     during a fight (seen 2026-07-06, session with instance port + combat);
