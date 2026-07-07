@@ -4341,6 +4341,9 @@ function SkuCore:ConfirmButtonShow(aText, aOkScript, aEscScript)
 
 		-- EditBox
 		local eb = CreateFrame("EditBox", "SkuAuctionConfirmEditBox", SkuAuctionConfirmScrollFrame)
+		-- [W6-B #18] silence the nav beacon while typing here (was a hardcoded
+		-- name in SkuBeacon-1.0; register at creation so the name can't drift)
+		do local tB = LibStub and LibStub("SkuBeacon-1.0", true) if tB and tB.RegisterTextInputFrame then tB:RegisterTextInputFrame("SkuAuctionConfirmEditBox") end end
 		eb:SetSize(sf:GetSize())
 		--eb:SetMultiLine(true)
 		eb:SetAutoFocus(false) -- dont automatically focus

@@ -25,11 +25,14 @@ local function tSay(aText)
 	end
 end
 
+-- [W6-B Bug 3] widget-safe deep copy: delegate to SkuUtil.TableCopy so aura
+-- snapshots get the same frame/userdata/slot-0 skip every other copy path uses.
+-- The old plain recursive copy lacked that skip, so a shared/persisted aura set
+-- could snapshot live frame references. Non-tables pass through unchanged, as
+-- before (SkuUtil.TableCopy expects a table).
 local function tDeepCopy(aValue)
 	if type(aValue) ~= "table" then return aValue end
-	local t = {}
-	for k, v in pairs(aValue) do t[k] = tDeepCopy(v) end
-	return t
+	return SkuUtil.TableCopy(aValue, true)
 end
 
 local function tEnsureSets()

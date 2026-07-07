@@ -6309,6 +6309,9 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 
 		-- EditBox
 		local eb = CreateFrame("EditBox", "SkuOptionsEditBoxEditBox", SkuOptionsEditBoxScrollFrame)
+		-- [W6-B #18] register with SkuBeacon so the nav beacon stays silent while
+		-- typing here (was a hardcoded name inside the lib)
+		do local tB = LibStub and LibStub("SkuBeacon-1.0", true) if tB and tB.RegisterTextInputFrame then tB:RegisterTextInputFrame("SkuOptionsEditBoxEditBox") end end
 		eb:SetSize(sf:GetSize())
 
 		eb:SetAutoFocus(false) -- dont automatically focus
@@ -6505,6 +6508,8 @@ end
 function SkuOptions:EditBoxPasteShow(aText, aOkScript)
 	if not _G["SkuOptionsEditBoxPaste"] then
 		local f = CreateFrame('frame', "SkuOptionsEditBoxPaste", UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
+		-- [W6-B #18] register with SkuBeacon (was a hardcoded name inside the lib)
+		do local tB = LibStub and LibStub("SkuBeacon-1.0", true) if tB and tB.RegisterTextInputFrame then tB:RegisterTextInputFrame("SkuOptionsEditBoxPaste") end end
 
 		f:SetBackdrop({		 bgFile = 'Interface/Tooltips/UI-Tooltip-Background',		 edgeFile = 'Interface/Tooltips/UI-Tooltip-Border', edgeSize = 16,		 insets = {left = 4, right = 4, top = 4, bottom = 4}	})
 		f:SetBackdropColor(0.2, 0.2, 0.2)

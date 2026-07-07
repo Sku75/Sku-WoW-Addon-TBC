@@ -1076,6 +1076,10 @@ function SkuNav:SkuNavMMOpen()
 
 			-- EditBox
 			local f = CreateFrame("Frame", "SkuNavMMMainFrameEditBox", tOptionsParent, BackdropTemplateMixin and "BackdropTemplate" or nil)--, "DialogBoxFrame")
+			-- [W6-B #18] register the nav write frame + its editbox (below) with
+			-- SkuBeacon so the beacon stays silent while typing (was a hardcoded
+			-- name list inside the lib)
+			do local tB = LibStub and LibStub("SkuBeacon-1.0", true) if tB and tB.RegisterTextInputFrame then tB:RegisterTextInputFrame("SkuNavMMMainFrameEditBox") end end
 			f:SetPoint("TOPLEFT", _G["SkuNavMMMainFrameWrite"], "TOPLEFT", 2, -100)
 			f:SetSize(170,80)
 			f:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",edgeFile = "", Size = 0, insets = { left = 0, right = 0, top = 0, bottom = 0 },})
@@ -1087,6 +1091,7 @@ function SkuNav:SkuNavMMOpen()
 			sf:SetWidth(f:GetWidth() - 5)
 
 			local eb = CreateFrame("EditBox", "SkuNavMMMainEditBoxEditBox", _G["SkuNavMMMainEditBoxScrollFrame"])
+			do local tB = LibStub and LibStub("SkuBeacon-1.0", true) if tB and tB.RegisterTextInputFrame then tB:RegisterTextInputFrame("SkuNavMMMainEditBoxEditBox") end end
 			eb:SetSize(f:GetSize())
 			eb:SetMultiLine(true)
 			eb:SetAutoFocus(false)

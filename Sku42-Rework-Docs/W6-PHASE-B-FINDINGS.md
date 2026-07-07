@@ -44,8 +44,19 @@ Per-finding status:
   aborts the loop and starves the later SkuCore-family callbacks; logs once to
   SkuErrorLog("skuDispatcher") + dprint and continues. Behavior-preserving on
   the happy path.
-- STILL OPEN (not started): Phase C #18/#19/#20 + the per-file pass, Bugs 3 & 4
-  (minor).
+- DONE, committed, awaiting by-ear verify: #18 (SkuBeacon text-input-frame
+  registration API — Sku frames now register at creation, only Blizzard globals
+  are lib defaults; MINOR bumped 2→3), #19 (deleted dead CollectString + extracted
+  shared SkuVoice:TokenizeNumberToAudio for the two live paths, behavior-preserving
+  via a "btts"/"audio" mode — the >13000 integer-ladder divergence kept as-is,
+  not unified, pending a by-ear decision), #20 (removed dead StopAllOutputs comment
+  block; the OutputString dead `if engine then` guard → plain `do` block; SkuTTS
+  font paths SkuCore→Sku), Bug 3 (SkuAuras/sharing.lua tDeepCopy delegates to the
+  widget-safe SkuUtil.TableCopy), Bug 4 (folded into #20's OutputString engine fix —
+  a truthy engine no longer silently mutes).
+- STILL OPEN (not started): the #14 leftover "Local"-window label paths
+  (deliberately deferred). SkuAdventureGuide: LEAVE the code in (removed for perf,
+  may never be re-added; harmless to keep). That closes the Phase-B/C review.
 
 Original approval-gate text follows.
 

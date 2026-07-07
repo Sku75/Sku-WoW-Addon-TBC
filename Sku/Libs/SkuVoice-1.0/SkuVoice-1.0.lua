@@ -483,6 +483,71 @@ function SkuVoice:CheckIgnore(aString)
 end
 
 ---------------------------------------------------------------------------------------------------------
+-- [W6-B #19] Shared number-to-audio tokenizer for the two live speech paths
+-- (OutputStringBTtts and OutputString). Appends the audio tokens for ONE
+-- already-split, numeric field into aStrings. Was copy-pasted (and drifted) in
+-- both paths plus the now-deleted dead CollectString. aMode preserves the two
+-- paths' historically DIFFERENT number handling verbatim:
+--   "btts"  (Blizzard-TTS path): skips fields containing "." or "," and does
+--           NOT tokenize floats (Blizzard TTS voices decimals itself); a value
+--           above 13000 is dropped (no audio file for it).
+--   "audio" (Sku audio-file path): tokenizes a float as integer + Komma +
+--           fraction; a value above 13000 falls through the rounding ladder.
+-- The float difference is deliberate; the >13000 divergence is legacy and kept
+-- as-is here (behavior-preserving) - a future by-ear pass may unify it.
+function SkuVoice:TokenizeNumberToAudio(aToken, aStrings, aVocalizeAsIs, aMode)
+	if not aVocalizeAsIs then
+		if aMode == "btts" and (string.find(tostring(aToken), "%.") or string.find(tostring(aToken), ",")) then
+			return
+		end
+		local tFloatNumber = string.format("%.1f", tonumber(aToken))
+		if tonumber(tFloatNumber) < 1000000 then
+			if (tFloatNumber - string.format("%d", tFloatNumber)) > 0 then
+				--float
+				if aMode == "audio" then
+					local tIVal = string.format("%d", tFloatNumber)
+					local tFVal = string.format("%d", string.format("%.1f", (tFloatNumber - tIVal) * 10))
+					table.insert(aStrings, tIVal)
+					table.insert(aStrings, L["Komma"])
+					table.insert(aStrings, tFVal)
+				end
+				-- "btts": the decimal is left for Blizzard TTS to voice, not tokenized
+			else
+				--int
+				local tNumber = math.floor(tonumber(aToken))
+				if tNumber == 0 then
+					table.insert(aStrings, 0)
+				else
+					local tRemaining = tNumber
+					if tNumber > 13000 and aMode == "btts" then
+						--no audio available: drop it
+						tRemaining = 0
+						tNumber = 0
+					end
+					if tNumber > 999 then
+						local tRound = SkuVoice:UtilRound(tRemaining, 10000)
+						table.insert(aStrings, tRound)
+						tRemaining = tRemaining - tRound
+					end
+					if tRemaining > 99 then
+						local tRound = SkuVoice:UtilRound(tRemaining, 1000)
+						table.insert(aStrings, tRound)
+						tRemaining = tRemaining - tRound
+					end
+					if tRemaining > 0 then
+						table.insert(aStrings, tRemaining)
+					end
+				end
+			end
+		end
+	else
+		for z = 1, string.len(aToken) do
+			table.insert(aStrings, string.sub(aToken, z, z))
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------
 function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial, aVoice)
 	if not aString then
 		return
@@ -616,59 +681,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 
 		for x = 1, #tSplittedString do
 			if tonumber(tSplittedString[x]) then
-				--print(x, "  NUMBER", tSplittedString[x])
-				if not aVocalizeAsIs then
-					if not string.find(tostring(tSplittedString[x]), "%.") and not string.find(tostring(tSplittedString[x]), ",") then
-						local tFloatNumber = string.format("%.1f", tonumber(tSplittedString[x]))
-						--print("tFloatNumber", tFloatNumber)
-						if tonumber(tFloatNumber) < 1000000 then
-							if (tFloatNumber - string.format("%d", tFloatNumber)) > 0 then
-								--float
-								local tIVal = string.format("%d", tFloatNumber)
-								local tFVal = string.format("%d", string.format("%.1f", (tFloatNumber - tIVal) * 10))
-								--print("float tIVal, tFVal", tIVal, tFVal)
-								--table.insert(tStrings, tIVal)
-								--table.insert(tStrings, L["KommaNumbers"])
-								--table.insert(tStrings, tFVal)
-							else
-								--int
-								local tNumber = math.floor(tonumber(tSplittedString[x]))
-								--print("int ", tNumber)
-								if tNumber == 0 then
-									table.insert(tStrings, 0)
-								else
-									local tRemaining = tNumber
-									if tNumber > 13000 then
-										--no audio available
-										tRemaining = 0
-										tNumber = 0
-										--print(1)
-									end
-									if tNumber > 999 then
-										local tRound = SkuVoice:UtilRound(tRemaining, 10000)
-										table.insert(tStrings, tRound)
-										tRemaining = tRemaining - tRound
-										--print(2)
-									end
-									if tRemaining > 99 then
-										local tRound = SkuVoice:UtilRound(tRemaining, 1000)
-										table.insert(tStrings, tRound)
-										tRemaining = tRemaining - tRound
-										--print(4)
-									end
-									if tRemaining > 0 then
-										table.insert(tStrings, tRemaining)
-										--print(4)
-									end
-								end
-							end
-						end
-					end
-				else
-					for z = 1, string.len(tSplittedString[x]) do
-						table.insert(tStrings, string.sub(tSplittedString[x], z, z))
-					end
-				end
+				SkuVoice:TokenizeNumberToAudio(tSplittedString[x], tStrings, aVocalizeAsIs, "btts")
 			else
 				table.insert(tStrings, tSplittedString[x])
 			end
@@ -843,46 +856,14 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		aSoundChannel = aSoundChannel or SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head"
 	end
 
-	if engine then
-		--[[
-		--dprint("engine", aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine)
-		local tIt = true
-		while tIt == true do
-			tIt = false
-			for i, v in pairs(mSkuVoiceQueue) do
-				if v.doNotOverwrite ~= true then
-					--stop it first; just to be sure
-					if v.soundHandle then
-						StopSound(v.soundHandle, 0)
-					end
-					table.remove(mSkuVoiceQueue, i)
-					tIt = true
-				end
-			end
-		end
-		if engine ~= 3 then
-			if IsMacClient() == true then
-				C_VoiceChat.StopSpeakingText()
-				mSkuVoiceQueueBTTS_Speaking = {}
-				table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
-				C_VoiceChat.SpeakText(ChatTts().WowTtsVoice - 1, aString, 4, ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
-				if not aIgnoreLinks then
-					SkuOptions.TTS:GetLinksTableFromString(aString, "")
-				end
-			else
-				C_VoiceChat.StopSpeakingText()
-				mSkuVoiceQueueBTTS_Speaking = {}
-				C_Timer.After(0.05, function() 
-					table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
-					C_VoiceChat.SpeakText(ChatTts().WowTtsVoice - 1, aString, 4, ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
-					if not aIgnoreLinks then
-						SkuOptions.TTS:GetLinksTableFromString(aString, "")
-					end
-				end)
-			end
-		end
-		]]
-	else
+	-- [W6-B #20 / Bug 4] the engine (force-Blizzard-TTS) branch here was fully
+	-- commented out, so a truthy `engine` fell through to an empty `then` and
+	-- SILENTLY MUTED the caller. OutputString is the Sku audio-file path; the
+	-- Blizzard-TTS force path lives in OutputStringBTtts. Dropped the dead guard
+	-- so this always runs the real audio output (behavior-preserving: callers
+	-- reach here with engine falsy today; a truthy engine now plays audio
+	-- instead of muting).
+	do
 		if not tIsSound then
 			-- don't vocalize numbers > 20000 or floats
 			-- that is for the unique auto wp ids and the coords; we don't want hear them, but we still need them in the wp names
@@ -979,47 +960,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 
 			for x = 1, #tSplittedString do
 				if tonumber(tSplittedString[x]) then
-					if not aVocalizeAsIs then
-						local tFloatNumber = string.format("%.1f", tonumber(tSplittedString[x]))
-						if tonumber(tFloatNumber) < 1000000 then
-							if (tFloatNumber - string.format("%d", tFloatNumber)) > 0 then
-								--float
-								local tIVal = string.format("%d", tFloatNumber)
-								local tFVal = string.format("%d", string.format("%.1f", (tFloatNumber - tIVal) * 10))
-								table.insert(tStrings, tIVal)
-								table.insert(tStrings, L["Komma"])
-								table.insert(tStrings, tFVal)
-							else
-								--int
-								local tNumber = math.floor(tonumber(tSplittedString[x]))
-								if tNumber == 0 then
-									table.insert(tStrings, 0)
-								else
-									local tRemaining = tNumber
-									if tNumber > 13000 then
-										--no audio available
-									end
-									if tNumber > 999 then
-										local tRound = SkuVoice:UtilRound(tRemaining, 10000)
-										table.insert(tStrings, tRound)
-										tRemaining = tRemaining - tRound
-									end
-									if tRemaining > 99 then
-										local tRound = SkuVoice:UtilRound(tRemaining, 1000)
-										table.insert(tStrings, tRound)
-										tRemaining = tRemaining - tRound
-									end
-									if tRemaining > 0 then
-										table.insert(tStrings, tRemaining)
-									end
-								end
-							end
-						end
-					else
-						for z = 1, string.len(tSplittedString[x]) do
-							table.insert(tStrings, string.sub(tSplittedString[x], z, z))
-						end
-					end
+					SkuVoice:TokenizeNumberToAudio(tSplittedString[x], tStrings, aVocalizeAsIs, "audio")
 				else
 					table.insert(tStrings, tSplittedString[x])
 				end
@@ -1135,124 +1076,6 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuVoice:CollectString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel) -- for strings with lookup in string index
-	--dprint(aString)
-	if not aString then
-		return
-	end
-	aIsMulti = aIsMulti or false
-	if string.find(aString, ";") then
-		aIsMulti = true
-	end
-
-	if not aString or not SkuAudioDataLenIndex or not SkuAudioFileIndex then
-		return
-	end
-	if aString == "" then
-		return
-	end
-
-	-- don't vocalize numbers > 20000 or floats
-	-- that is for the unique auto wp ids and the coords; we don't want hear them, but we still need them in the wp names
-	local tNumberTest = tonumber(aString)
-	if tNumberTest then
-		local tFloat = math.floor(tNumberTest)
-		if (tNumberTest > 20000) or (tNumberTest - tFloat > 0) then
-			return
-		end
-	end
-
-	aString = Unescape(aString)
-	aString = aString:gsub("\"", "")
-
-	local tStrings = {}
-	if (string.find(aString, "sound-") or string.find(aString, "male%-")) then
-		table.insert(tStrings, aString)
-	else
-		aString = string.lower(aString)
-		aString= SplitString(aString)
-
-		local sep, tSplittedString = ";", {}
-		if type(aString) == "string" then
-			local pattern = string.format("([^%s]+)", sep)
-			aString:gsub(pattern, function(c) tSplittedString[#tSplittedString+1] = c end)
-		else
-			tSplittedString = {aString}
-		end
-
-		for x = 1, #tSplittedString do
-			if tonumber(tSplittedString[x]) then
-				local tFloatNumber = string.format("%.1f", tonumber(tSplittedString[x]))
-				if tonumber(tFloatNumber) < 1000000 then
-					if (tFloatNumber - string.format("%d", tFloatNumber)) > 0 then
-						--float
-						local tIVal = string.format("%d", tFloatNumber)
-						local tFVal = string.format("%d", string.format("%.1f", (tFloatNumber - tIVal) * 10))
-						table.insert(tStrings, tIVal)
-						table.insert(tStrings, L["Komma"])
-						table.insert(tStrings, tFVal)
-					else
-						--int
-						local tNumber = math.floor(tonumber(tSplittedString[x]))
-						if tNumber == 0 then
-							table.insert(tStrings, 0)
-						else
-							local tRemaining = tNumber
-							if tNumber > 13000 then
-								--no audio available
-							end
-							if tNumber > 999 then
-								local tRound = SkuVoice:UtilRound(tRemaining, 10000)
-								table.insert(tStrings, tRound)
-								tRemaining = tRemaining - tRound
-							end
-							if tRemaining > 99 then
-								local tRound = SkuVoice:UtilRound(tRemaining, 1000)
-								table.insert(tStrings, tRound)
-								tRemaining = tRemaining - tRound
-							end
-							if tRemaining > 0 then
-								table.insert(tStrings, tRemaining)
-							end
-						end
-					end
-				end
-			else
-				table.insert(tStrings, tSplittedString[x])
-			end
-		end
-	end
-
-	for x = 1, #tStrings do
-		local tFile = SkuAudioFileIndex[tostring(tStrings[x])]
-
-		if tFile == nil then
-			local tModString = string.lower(tostring(tStrings[x]))
-			tFile = SkuAudioFileIndex[tModString]
-		end
-		if tFile == nil then
-			local tModString = string.upper(string.sub(tostring(tStrings[x]),1,1))..string.sub(tostring(tStrings[x]),2)
-			tFile = SkuAudioFileIndex[tModString]
-		end
-		if tFile == nil then
-			tFile = SkuAudioFileIndex["sound-audiofehltbeep"]
-			if SkuOptions.db then
-
-				if SkuOptions.db.realm.missingAudio == nil then
-					SkuOptions.db.realm.missingAudio = {}
-				end
-				if not SkuOptions.db.realm.missingAudio[tStrings[x]] then
-					SkuOptions.db.realm.missingAudio[tStrings[x]] = 1
-				else
-					SkuOptions.db.realm.missingAudio[tStrings[x]] = SkuOptions.db.realm.missingAudio[tStrings[x]] + 1
-				end
-
-			end
-		end
-	end
-end
-
----------------------------------------------------------------------------------------------------------
 function SkuVoice:StopOutputEmptyQueue(aBlizz, aSku)
 	if ChatTts().neverResetQueues == true then
 		return
@@ -1276,28 +1099,8 @@ function SkuVoice:StopOutputEmptyQueue(aBlizz, aSku)
 		C_VoiceChat.StopSpeakingText()
 	end
 end
---[[
----------------------------------------------------------------------------------------------------------
-function SkuVoice:StopAllOutputs()
-	--print("StopAllOutputs")
-	for i = 1, table.getn(mSkuVoiceQueue) do
-		if mSkuVoiceQueue[i] then
-			if mSkuVoiceQueue[i].soundHandle then
-				StopSound(mSkuVoiceQueue[i].soundHandle, 0)
-			end
-		end
-	end
-	mSkuVoiceQueue = {}
-	mSkuVoiceQueueBTTS_Speaking = {}
-	if IsMacClient() == true then
-		table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
-		C_VoiceChat.StopSpeakingText()
-	else
-		table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
-		C_VoiceChat.StopSpeakingText()
-	end	
-end
-]]
+-- [W6-B #20] dead SkuVoice:StopAllOutputs removed (was entirely inside a
+-- --[[ ]] block, never defined, referenced an undefined tValue, called nowhere).
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:Release()
 

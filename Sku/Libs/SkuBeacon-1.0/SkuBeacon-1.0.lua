@@ -1,4 +1,4 @@
-﻿local SKUBEACON_MAJOR, SKUBEACON_MINOR = "SkuBeacon-1.0", 2
+﻿local SKUBEACON_MAJOR, SKUBEACON_MINOR = "SkuBeacon-1.0", 3
 local SkuBeacon, oldminor = LibStub:NewLibrary(SKUBEACON_MAJOR, SKUBEACON_MINOR)
 if not SkuBeacon then return end
 
@@ -91,6 +91,23 @@ local function GetDistance(sx, sy, dx, dy)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [W6-B #18] Text-input frames that must silence the beacon key recognizer
+-- while focused/shown. Only Blizzard globals are built in here; feature modules
+-- register their OWN editboxes via SkuBeacon:RegisterTextInputFrame at frame
+-- creation (was a hardcoded auction/options/nav/macro name list in OnUpdate, so
+-- this low-level lib no longer knows feature-module frame names). Keyed by name
+-- = set semantics, and built once instead of re-created every OnUpdate tick.
+local gTextInputFrames = {
+	["ChatFrame1EditBox"] = true,
+	["MacroFrame"] = true,
+}
+function SkuBeacon:RegisterTextInputFrame(aFrameName)
+	if type(aFrameName) == "string" then
+		gTextInputFrames[aFrameName] = true
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tTime = 0
 local tPrevCleanedDirection = true
 local tBeaconRunning = false
@@ -99,17 +116,7 @@ local function OnUpdate(self, aTime)
 	if tTime > 0.05 then
 		if _G["SkuBeaconSkriptRecognizerTurn"] then
 			local tDisable = false
-			local tFrames = {
-				"SkuAuctionConfirmEditBox",
-				"SkuOptionsEditBoxEditBox",
-				"SkuOptionsEditBoxPaste",
-				"SkuNavMMMainEditBoxEditBox",
-				"SkuNavMMMainFrameEditBox",
-				"ChatFrame1EditBox",
-				"MacroFrame",
-			}
-
-			for i, v in pairs(tFrames) do
+			for v in pairs(gTextInputFrames) do
 				if _G[v] then
 					if _G[v].HasFocus then
 						if _G[v]:HasFocus() == true then

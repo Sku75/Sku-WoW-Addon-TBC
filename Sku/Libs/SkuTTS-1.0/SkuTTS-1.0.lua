@@ -15,8 +15,11 @@ SkuTTS.CloseAt = 0
 SkuTTS.AutoReadEventFlag = nil
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuTTS:Create()
-	LSM:Register("font", "Playfair", [[Interface\AddOns\SkuCore\Libs\SkuTTS-1.0\fonts\PlayfairDisplay-Regular.ttf]])
-	LSM:Register("font", "Raleway", [[Interface\AddOns\SkuCore\Libs\SkuTTS-1.0\fonts\Raleway-Regular.ttf]])
+	-- [W6-B #20] corrected the addon folder: the fonts live under AddOns\Sku,
+	-- not AddOns\SkuCore (which has no Libs\SkuTTS-1.0). The wrong path made LSM
+	-- silently fall back, so the sighted TTS debug pane never used these fonts.
+	LSM:Register("font", "Playfair", [[Interface\AddOns\Sku\Libs\SkuTTS-1.0\fonts\PlayfairDisplay-Regular.ttf]])
+	LSM:Register("font", "Raleway", [[Interface\AddOns\Sku\Libs\SkuTTS-1.0\fonts\Raleway-Regular.ttf]])
 
 	local f = CreateFrame("Frame", "SkuTTSMainFrame", UIParent, BackdropTemplateMixin and "BackdropTemplate")
 	local ttime = 0
