@@ -187,6 +187,17 @@ local OwnDB = {}
 
 local OnEnterAllFlag = nil
 
+-- [W6-C #17] shared AH result-list sort comparators (SortBy 1-6), used by both
+-- AuctionHouseBuildItemFullScanDBMenu and AuctionGroupResults.
+local tSortComparators = {
+   [1] = function(a, b) return a.pricePerItem.buy    < b.pricePerItem.buy    end,
+   [2] = function(a, b) return a.pricePerAuction.buy < b.pricePerAuction.buy end,
+   [3] = function(a, b) return a.pricePerItem.bid    < b.pricePerItem.bid    end,
+   [4] = function(a, b) return a.pricePerAuction.bid < b.pricePerAuction.bid end,
+   [5] = function(a, b) return (a.level or 0) > (b.level or 0) end,
+   [6] = function(a, b) return (a.level or 0) < (b.level or 0) end,
+}
+
 -- ===========================================================================
 -- SECTION 2 — SESSION LIFECYCLE & AH OPEN/CLOSE EVENTS
 -- OnInitialize registers the AH events and creates the scan/serialize ticker
@@ -2815,15 +2826,7 @@ function AuctionHouse:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex
       -- nutzt nur name/dupes/level, die alle erhalten bleiben).
       tCurrentDBCleanSorted = tCurrentDBClean
       local tSortBy = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.SortBy or 1
-      local tComparators = {
-         [1] = function(a, b) return a.pricePerItem.buy    < b.pricePerItem.buy    end,
-         [2] = function(a, b) return a.pricePerAuction.buy < b.pricePerAuction.buy end,
-         [3] = function(a, b) return a.pricePerItem.bid    < b.pricePerItem.bid    end,
-         [4] = function(a, b) return a.pricePerAuction.bid < b.pricePerAuction.bid end,
-         [5] = function(a, b) return (a.level or 0) > (b.level or 0) end,
-         [6] = function(a, b) return (a.level or 0) < (b.level or 0) end,
-      }
-      table.sort(tCurrentDBCleanSorted, tComparators[tSortBy] or tComparators[1])
+      table.sort(tCurrentDBCleanSorted, tSortComparators[tSortBy] or tSortComparators[1])
    
       for tIndex, tDataTmp in pairs(tCurrentDBCleanSorted) do
          local tData = tDataTmp.dupes[1]
@@ -3037,15 +3040,7 @@ function AuctionHouse:AuctionGroupResults()
    -- Betreten müssen DENSELBEN Vergleich nutzen, sonst springt die
    -- Reihenfolge.
    local tSortBy = SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.SortBy or 1
-   local tComparators = {
-      [1] = function(a, b) return a.pricePerItem.buy    < b.pricePerItem.buy    end,
-      [2] = function(a, b) return a.pricePerAuction.buy < b.pricePerAuction.buy end,
-      [3] = function(a, b) return a.pricePerItem.bid    < b.pricePerItem.bid    end,
-      [4] = function(a, b) return a.pricePerAuction.bid < b.pricePerAuction.bid end,
-      [5] = function(a, b) return (a.level or 0) > (b.level or 0) end,
-      [6] = function(a, b) return (a.level or 0) < (b.level or 0) end,
-   }
-   table.sort(tCurrentDBClean, tComparators[tSortBy] or tComparators[1])
+   table.sort(tCurrentDBClean, tSortComparators[tSortBy] or tSortComparators[1])
    return tCurrentDBClean
 end
 
