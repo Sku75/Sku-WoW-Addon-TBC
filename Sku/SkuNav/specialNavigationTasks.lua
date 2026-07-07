@@ -207,7 +207,7 @@ function SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT(aTriggerName)
 							SkuNav:NavigationModeWoCoordinatesNextStep()
 						end
 
-					elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "pitchEndless" then
+					elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "pitch" or SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "pitchEndless" then
 						if tPitch then
 							local tDegree = tPitch
 							SkuOptions.Voice:OutputStringBTtts(string.format("%.2f", tDegree), true, true, 0.2, nil, nil, nil, 2, nil, true)						
@@ -215,15 +215,6 @@ function SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT(aTriggerName)
 								SkuNav:NavigationModeWoCoordinatesNextStep()
 							end
 						end				
-
-					elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "pitch" then
-						if tPitch then
-							local tDegree = tPitch
-							SkuOptions.Voice:OutputStringBTtts(string.format("%.2f", tDegree), true, true, 0.2, nil, nil, nil, 2, nil, true)						
-							if tDegree >= SkuDB.Tasks[tCurrentTask][tCurrentStep].value - 0.02 and tDegree <= SkuDB.Tasks[tCurrentTask][tCurrentStep].value + 0.02  then
-								SkuNav:NavigationModeWoCoordinatesNextStep()
-							end
-						end
 	
 					elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "forward" then
 						if aTriggerName == "MoveForwardStart" then
@@ -267,24 +258,15 @@ function SkuNav:NavigationModeWoCoordinatesRecordForwardStop()
 	tCurrentMovementDone = 0
 end
 
-function SkuNav:NavigationModeWoCoordinatesRecordForward(aTriggerName)
+local function tRecordMovement(aTriggerName, aStartTrigger, aStopTrigger)
 	if tCurrentMovementStartAtRec > -1 then
-		if aTriggerName == "MoveForwardStart" then
+		if aTriggerName == aStartTrigger then
 			tCurrentMovementStartAtRec = GetTimePreciseSec()
-		elseif aTriggerName == "MoveForwardStop" then
+		elseif aTriggerName == aStopTrigger then
 			tCurrentMovementDone = tCurrentMovementDone + (GetTimePreciseSec() - tCurrentMovementStartAtRec)
-			--print(tCurrentMovementDone)
 		end
 	end
 end
 
-function SkuNav:NavigationModeWoCoordinatesRecordUp(aTriggerName)
-	if tCurrentMovementStartAtRec > -1 then
-		if aTriggerName == "JumpOrAscendStart" then
-			tCurrentMovementStartAtRec = GetTimePreciseSec()
-		elseif aTriggerName == "AscendStop" then
-			tCurrentMovementDone = tCurrentMovementDone + (GetTimePreciseSec() - tCurrentMovementStartAtRec)
-			--print(tCurrentMovementDone)
-		end
-	end
-end
+function SkuNav:NavigationModeWoCoordinatesRecordForward(aTriggerName) tRecordMovement(aTriggerName, "MoveForwardStart", "MoveForwardStop") end
+function SkuNav:NavigationModeWoCoordinatesRecordUp(aTriggerName) tRecordMovement(aTriggerName, "JumpOrAscendStart", "AscendStop") end
