@@ -3283,7 +3283,6 @@ end
 -- separately by QuerySerializeRunning — it runs after the scan is already idle.
 function AuctionHouse:AuctionScanSetState(aState, aMode)
    local SC = SkuCore.AuctionScan
-   local tPrev = SC.state
    SC.state = aState
    if aState == "idle" then
       SC.mode = nil

@@ -1,18 +1,5 @@
 ---@diagnostic disable: undefined-field, undefined-doc-name, undefined-doc-param
 
---[[
-local oGetEngravingModeEnabled = C_Engraving.GetEngravingModeEnabled
-C_Engraving.GetEngravingModeEnabled = function()
-	--local oValue = oGetEngravingModeEnabled()
-	return true
-end
-
-local oIsEngravingEnabled = C_Engraving.IsEngravingEnabled
-C_Engraving.IsEngravingEnabled = function()
-	--local oValue = oIsEngravingEnabled()
-	return true
-end
-]]
 
 local oIsInventorySlotEngravable = C_Engraving.IsInventorySlotEngravable
 C_Engraving.IsInventorySlotEngravable = function(containerIndex, slotIndex)
@@ -24,42 +11,6 @@ C_Engraving.IsInventorySlotEngravable = function(containerIndex, slotIndex)
 end
 
 
---[[
-local oGetRuneCategories = C_Engraving.GetRuneCategories
-C_Engraving.GetRuneCategories = function(shouldFilter, ownedOnly)
-	--local oValue = oGetRuneCategories(false, false)
-	return {INVSLOT_LEGS, INVSLOT_FEET}
-end
-
-local oGetRunesForCategory = C_Engraving.GetRunesForCategory
-C_Engraving.GetRunesForCategory = function(category, ownedOnly)
-	--local oValue = oGetRunesForCategory(category, ownedOnly)
-	return {
-		[1] = {
-		skillLineAbilityID = 48626,--", Type = "number", Nilable = false },
-		itemEnchantmentID = 1,--", Type = "number", Nilable = false },
-		name = "Rune of Furious Thunder", --", Type = "cstring", Nilable = false },
-		iconTexture = 133816,--", Type = "number", Nilable = false },
-		equipmentSlot = INVSLOT_LEGS,--", Type = "number", Nilable = false },
-		level = 1, --", Type = "number", Nilable = false },
-		learnedAbilitySpellIDs = {409999,},-- Type = "table", InnerType = "number", Nilable = false },
-	},
-	[2] = {
-		skillLineAbilityID = 48626,--", Type = "number", Nilable = false },
-		itemEnchantmentID = 168598,--", Type = "number", Nilable = false },
-		name = "Rune of Furious Thunder", --", Type = "cstring", Nilable = false },
-		iconTexture = 133816,--", Type = "number", Nilable = false },
-		equipmentSlot = INVSLOT_LEGS,--", Type = "number", Nilable = false },
-		level = 1, --", Type = "number", Nilable = false },
-		learnedAbilitySpellIDs = {409999,},-- Type = "table", InnerType = "number", Nilable = false },
-	},
-}
-end
-
-SetCVar("alwaysShowRuneIcons", "1")
-
-C_AddOns.LoadAddOn("Blizzard_EngravingUI")
-]]
 ---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME = "Sku"
 -- WoW passes (addonName, privateNamespace) to every file of this addon; the

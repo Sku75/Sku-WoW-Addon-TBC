@@ -23,9 +23,6 @@ SkuNavRecordingPoly = 0
 SkuNavRecordingPolySub = 0
 SkuNavRecordingPolyFor = 0
 
-local slower = string.lower
-local sfind = string.find
-local ssplit = string.split
 
 local minimap_size = {
 	indoor = {
@@ -289,7 +286,6 @@ do
 	end 
 end
 
-local oldtSkuNavMMZoom
 function SkuNavDrawLine(sx, sy, ex, ey, lineW, lineAlpha, r, g, b, prt, lineframe, pA, pB) 
 	if not sx or not sy or not ex or not ey then return nil end
 

@@ -332,7 +332,6 @@ SkuSettings:Register("SkuNav", {
 	["routesMaxDistance"]                  = { scope = "profile", default = 5000,       type = "number"  },
 })
 
-local slower = string.lower
 local sfind = string.find
 
 ---------------------------------------------------------------------------------------------------------------------------------------

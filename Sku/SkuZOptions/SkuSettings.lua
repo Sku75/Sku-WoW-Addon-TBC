@@ -24,7 +24,7 @@
 -- Lives on the addon-private namespace (ns.Settings) with the global SkuSettings
 -- as a thin published alias, mirroring SkuUtil (W4 Phase A).
 
-local ADDON_NAME, ns = ...
+local _, ns = ...
 ns = ns or {}
 
 ns.Settings = ns.Settings or {}

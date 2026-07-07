@@ -5,15 +5,6 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
-local tRolenamesLookup = {
-	[1] = "DAMAGER",
-	[2] = "TANK",
-	[3] = "HEALER",
-	["DAMAGER"] = 1,
-	["TANK"] = 2,
-	["HEALER"] = 3,
-}	
-
 local tBagSlotListSorted = {
 	[1] = 0,
 	[2] = 1,

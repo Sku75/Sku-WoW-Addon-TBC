@@ -33,13 +33,6 @@ end)
 -- Slot-Reihenfolge fürs Anlegen. INVSLOT 4 (Hemd) und 19 (Tabard) sind
 -- mit dabei, damit komplette Sets unterstützt werden.
 local SLOT_ORDER = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 }
-local SLOT_NAMES = {
-   [1]="Kopf", [2]="Hals", [3]="Schulter", [4]="Hemd", [5]="Brust",
-   [6]="Gürtel", [7]="Beine", [8]="Füße", [9]="Handgelenk", [10]="Hände",
-   [11]="Ring 1", [12]="Ring 2", [13]="Schmuckstück 1", [14]="Schmuckstück 2",
-   [15]="Rücken", [16]="Haupthand", [17]="Nebenhand", [18]="Distanz",
-   [19]="Wappenrock",
-}
 -- Slot-Paare (für Konflikt-Tausch)
 local PAIR_OF = { [11]=12, [12]=11, [13]=14, [14]=13 }
 
