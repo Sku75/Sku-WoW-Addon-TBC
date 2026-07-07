@@ -214,7 +214,7 @@ end
 function aqCombat:aqCombatCreatureGuidToUnitId(aUnitGUID)
    for i = 1, #tUnitsToTestOnGameRaidTargets do
       local tCreatureGUID = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
-      if UnitGUID(tUnitsToTestOnGameRaidTargets[i]) then
+      if tCreatureGUID then
          if tCreatureGUID == aUnitGUID then
             return tUnitsToTestOnGameRaidTargets[i]
          end
@@ -1421,15 +1421,15 @@ end
 -- Sku raid target
 ---------------------------------------------------------------------------------------------------------------------------------------
 function aqCombat:aqCombatGetSkuRaidTarget(aUnitGUID)
-   for i, v in pairs(SkuCore.SkuRaidTargetRepo) do
-      if i == aUnitGUID then
-         return v
-      end
+   -- W6-C: the two loops only ever matched by GUID key, so they are plain hash
+   -- lookups on the GUID-keyed repos (reading t[nil] is safe -> nil).
+   local tLive = SkuCore.SkuRaidTargetRepo[aUnitGUID]
+   if tLive ~= nil then
+      return tLive
    end
-   for i, v in pairs(SkuCore.SkuRaidTargetRepoDead) do
-      if i == aUnitGUID then
-         return v, true
-      end
+   local tDead = SkuCore.SkuRaidTargetRepoDead[aUnitGUID]
+   if tDead ~= nil then
+      return tDead, true
    end
 end
 

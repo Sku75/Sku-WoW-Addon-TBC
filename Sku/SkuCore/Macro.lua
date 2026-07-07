@@ -25,12 +25,16 @@ function Macro:OnDisable()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function MacroMenuBuilderNew(aParent)
-    CreateTextBox(aParent, L["MacroName"], L["EnterMacroName"], function(value)
-        aParent["Name"] = value
+    -- W6-C: shared "set field then re-pin the menu next frame" for both text boxes.
+    local function tSetAndRepin(aField, aValue)
+        aParent[aField] = aValue
         C_Timer.After(0.1, function()
             SkuOptions.currentMenuPosition:OnSelect()
             SkuOptions.currentMenuPosition:OnUpdate()
         end)
+    end
+    CreateTextBox(aParent, L["MacroName"], L["EnterMacroName"], function(value)
+        tSetAndRepin("Name", value)
     end)
 
     local tScopeMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["MacroScope"] }, SkuGenericMenuItem)
@@ -47,11 +51,7 @@ function MacroMenuBuilderNew(aParent)
     end
 
     CreateTextBox(aParent, L["MacroBody"], L["EnterMacroBody"], function(value)
-        aParent["MacroBody"] = value
-        C_Timer.After(0.1, function()
-            SkuOptions.currentMenuPosition:OnSelect()
-            SkuOptions.currentMenuPosition:OnUpdate()
-        end)
+        tSetAndRepin("MacroBody", value)
     end, true)
 
     local tCreateMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["CreateMacro"] }, SkuGenericMenuItem)

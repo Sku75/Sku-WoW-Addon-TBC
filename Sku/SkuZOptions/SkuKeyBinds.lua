@@ -232,12 +232,14 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsCheckBound(aKey)
+   local tBinds = SkuSettings:Sub("SkuOptions").SkuKeyBinds
    for i, v in pairs(SkuOptions.skuDefaultKeyBindings) do
-      if SkuSettings:Sub("SkuOptions").SkuKeyBinds[i] then
-         if SkuSettings:Sub("SkuOptions").SkuKeyBinds[i].key == aKey then
+      local tEntry = tBinds[i]
+      if tEntry then
+         if tEntry.key == aKey then
             return i
          end
-         if SkuSettings:Sub("SkuOptions").SkuKeyBinds[i].key2 and SkuSettings:Sub("SkuOptions").SkuKeyBinds[i].key2 == aKey then
+         if tEntry.key2 and tEntry.key2 == aKey then
             return i
          end
       end
