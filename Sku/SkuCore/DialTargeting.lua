@@ -207,6 +207,31 @@ function DialTargeting:DialTargetingGetCurrentRoster()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
+-- W6-C #21: shared secure-binding helpers for DialTargetingRosterUpdate. The raid,
+-- raid10 and party branches all cleared the same 10x5 unitNameSlot attribute grid
+-- and re-applied the same NUMPAD override bindings; the ONLY difference was which
+-- frame owns the NUMPAD 0-9 digit clicks (raid -> the toggle handler for two-digit
+-- entry; raid10/party -> the targeting frame). NUMPADPLUS/DECIMAL and the two
+-- ClearOverrideBindings are identical in every branch.
+local function tClearUnitNameSlots()
+   for x = 1, 10 do
+      for y = 1, 5 do
+         _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", x).."-"..string.format("%02d", y), nil)
+      end
+   end
+end
+
+local function tApplyNumpadBindings(aNumpadFrameName)
+   ClearOverrideBindings(_G["SkuSecureTargetingFrame"])
+   ClearOverrideBindings(_G["SkuSecureTargetingToggleHandler"])
+   for x = 0, 9 do
+      SetOverrideBindingClick(_G[aNumpadFrameName], true, "NUMPAD"..x, aNumpadFrameName, "Button"..x)
+   end
+   SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADPLUS", "SkuSecureTargetingFrame", "Button100")
+   SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADDECIMAL", "SkuSecureTargetingFrame", "Button99")
+end
+
 function DialTargeting:DialTargetingRosterUpdate()
    if 
       ((UnitInRaid("player") and (SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Raid"] or SkuSettings:Sub("SkuCore").dialTargeting.enabled == L["Party and Raid"]))) 
@@ -242,11 +267,7 @@ function DialTargeting:DialTargetingRosterUpdate()
          if SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10 == L["Off"] or tNumCurMembers > 10 then
             _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "raid")
             
-            for x = 1, 10 do
-               for y = 1, 5 do
-                  _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", x).."-"..string.format("%02d", y), nil)
-               end
-            end
+            tClearUnitNameSlots()
             local tsubgroupcounter = {}
             for x = 1, MAX_RAID_MEMBERS do
                local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
@@ -256,21 +277,11 @@ function DialTargeting:DialTargetingRosterUpdate()
                   _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", subgroup).."-"..string.format("%02d", tsubgroupcounter[subgroup]), name)
                end
             end
-            ClearOverrideBindings(_G["SkuSecureTargetingFrame"])
-            ClearOverrideBindings(_G["SkuSecureTargetingToggleHandler"])
-            for x = 0, 9 do
-               SetOverrideBindingClick(_G["SkuSecureTargetingToggleHandler"], true, "NUMPAD"..x, "SkuSecureTargetingToggleHandler", "Button"..x)
-            end
-            SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADPLUS", "SkuSecureTargetingFrame", "Button100")
-            SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADDECIMAL", "SkuSecureTargetingFrame", "Button99")
+            tApplyNumpadBindings("SkuSecureTargetingToggleHandler")
          else
             _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "raid10")
          
-            for x = 1, 10 do
-               for y = 1, 5 do
-                  _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", x).."-"..string.format("%02d", y), nil)
-               end
-            end
+            tClearUnitNameSlots()
             local tsubgroupcounter = {}
             for x = 1, MAX_RAID_MEMBERS do
                local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
@@ -281,23 +292,13 @@ function DialTargeting:DialTargetingRosterUpdate()
                end
             end
    
-            ClearOverrideBindings(_G["SkuSecureTargetingFrame"])
-            ClearOverrideBindings(_G["SkuSecureTargetingToggleHandler"])
-            for x = 0, 9 do
-               SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPAD"..x, "SkuSecureTargetingFrame", "Button"..x)
-            end
-            SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADPLUS", "SkuSecureTargetingFrame", "Button100")
-            SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADDECIMAL", "SkuSecureTargetingFrame", "Button99")
+            tApplyNumpadBindings("SkuSecureTargetingFrame")
          end
 
       elseif UnitInParty("player") == true then
          _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "party")
          
-         for x = 1, 10 do
-            for y = 1, 5 do
-               _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", x).."-"..string.format("%02d", y), nil)
-            end
-         end
+         tClearUnitNameSlots()
          local tsubgroupcounter = {[1] = 0}
          for x = 1, 5 do
             local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
@@ -312,13 +313,7 @@ function DialTargeting:DialTargetingRosterUpdate()
          end
 
 
-         ClearOverrideBindings(_G["SkuSecureTargetingFrame"])
-         ClearOverrideBindings(_G["SkuSecureTargetingToggleHandler"])
-         for x = 0, 9 do
-            SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPAD"..x, "SkuSecureTargetingFrame", "Button"..x)
-         end
-         SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADPLUS", "SkuSecureTargetingFrame", "Button100")
-         SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADDECIMAL", "SkuSecureTargetingFrame", "Button99")
+         tApplyNumpadBindings("SkuSecureTargetingFrame")
       
       else
          _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", nil)
