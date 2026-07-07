@@ -72,16 +72,12 @@ local function tScanTooltipRegions(aTooltipObj, aQualityString, aEffectiveILvl)
 			local text = region:GetText()
 			if text then
 				if tLineCounter == 1 and aQualityString and SkuSettings:Sub("SkuCore").itemSettings.ShowItemQality == true then
-					tTooltipText = tTooltipText..text.." ("..aQualityString..")
-"
+					tTooltipText = tTooltipText..text.." ("..aQualityString..")\r\n"
 				elseif tLineCounter == 2 and aEffectiveILvl then
-					tTooltipText = tTooltipText..L["Item Level"]..": "..aEffectiveILvl.."
-"
-					tTooltipText = tTooltipText..text.."
-"
+					tTooltipText = tTooltipText..L["Item Level"]..": "..aEffectiveILvl.."\r\n"
+					tTooltipText = tTooltipText..text.."\r\n"
 				else
-					tTooltipText = tTooltipText..text.."
-"
+					tTooltipText = tTooltipText..text.."\r\n"
 				end
 				tLineCounter = tLineCounter + 1
 			end
