@@ -4,6 +4,15 @@ local L = Sku.L
 
 SkuChat = LibStub("AceAddon-3.0"):NewAddon("SkuChat", "AceConsole-3.0", "AceEvent-3.0")
 
+local function tClearLinkReadoutIfNoLinks(self)
+	local tLineData = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history[SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine]
+	if (not tLineData.itemLinks or #tLineData.itemLinks == 0)
+		and (not tLineData.questLinks or #tLineData.questLinks == 0)
+		and self.menuOpen == false then
+		tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+	end
+end
+
 Sku_CombatLog_Filter_Defaults = {}
 
 
@@ -2971,12 +2980,7 @@ function SkuChat:OnInitialize()
 					SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine = tHistoryCurrentLine - 1
 				end
 				SkuChat:ReadLine(SkuChat.currentTab, SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine)
-				local tLineData = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history[SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine]
-				if (not tLineData.itemLinks or #tLineData.itemLinks == 0)
-					and (not tLineData.questLinks or #tLineData.questLinks == 0)
-					and self.menuOpen == false then
-					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
-				end
+				tClearLinkReadoutIfNoLinks(self)
 
 			elseif aKey == "DOWN" then
 				local tHistoryCurrentLine = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine
@@ -2984,12 +2988,7 @@ function SkuChat:OnInitialize()
 					SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine = tHistoryCurrentLine + 1
 				end
 				SkuChat:ReadLine(SkuChat.currentTab, SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine)
-				local tLineData = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history[SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine]
-				if (not tLineData.itemLinks or #tLineData.itemLinks == 0)
-					and (not tLineData.questLinks or #tLineData.questLinks == 0)
-					and self.menuOpen == false then
-					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
-				end
+				tClearLinkReadoutIfNoLinks(self)
 
 			elseif aKey == "LEFT" then
 				if SkuChat.currentTab > 1 then
@@ -3001,12 +3000,7 @@ function SkuChat:OnInitialize()
 					SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine = 1
 				end
 				SkuChat:ReadLine(SkuChat.currentTab, SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine, true)
-				local tLineData = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history[SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine]
-				if (not tLineData.itemLinks or #tLineData.itemLinks == 0)
-					and (not tLineData.questLinks or #tLineData.questLinks == 0)
-					and self.menuOpen == false then
-					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
-				end
+				tClearLinkReadoutIfNoLinks(self)
 
 			elseif aKey == "RIGHT" then
 				if SkuChat.currentTab < #SkuSettings:Sub("SkuChat").tabs then
@@ -3018,12 +3012,7 @@ function SkuChat:OnInitialize()
 					SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine = 1
 				end
 				SkuChat:ReadLine(SkuChat.currentTab, SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine, true)
-				local tLineData = SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].history[SkuSettings:Sub("SkuChat").tabs[SkuChat.currentTab].historyCurrentLine]
-				if (not tLineData.itemLinks or #tLineData.itemLinks == 0)
-					and (not tLineData.questLinks or #tLineData.questLinks == 0)
-					and self.menuOpen == false then
-					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
-				end
+				tClearLinkReadoutIfNoLinks(self)
 
 			end
 
