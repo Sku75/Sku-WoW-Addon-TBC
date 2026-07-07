@@ -48,21 +48,6 @@ investigated.
     working 2026-07-07.
   - Status: open (untested; revert candidate = `d5a4eb9` alone if it misbehaves).
 
-- **Menu open via SlashFunc in combat hits ADDON_ACTION_BLOCKED.**
-  - Symptom: one grabbed `[ADDON_ACTION_BLOCKED] 'Sku' ... 'OnSkuOptionsMain:Show()'`
-    during a fight (seen 2026-07-06, session with instance port + combat);
-    stack: SkuZOptions/Core.lua:2164 `self:Show()` <- OnClick handler (1308)
-    <- `SlashFunc` (297). Blizzard blocks the protected Show; no crash.
-  - Repro: open the Sku menu through a SlashFunc path while in combat -
-    e.g. a window auto-open (CheckFrames auto-descend calls SlashFunc on
-    window Show) or `/sku <path>` during a fight.
-  - Suspected cause / area: combat-menu workstream. In-combat opens are
-    supposed to go headless via the SkuMenuCapture route (combatMenuOpen);
-    the SlashFunc->OnClick->Show path has no InCombatLockdown() branch, so
-    it tries the protected visual frame.
-  - Status: open. NOT related to the DB rework (stage 3 verified clean the
-    same session). Fix idea: in the SlashFunc open path, route to the
-    combat menu (or skip the visual Show) when InCombatLockdown().
 - **Arena queries not working** ("Arena Abfragen funktionieren noch nicht").
   - Symptom: arena-related queries / announcements do not function yet.
   - Repro: TBD (enter/query arena context).
@@ -76,42 +61,46 @@ investigated.
   - Suspected area: `SkuCore/skuFocus.lua` and how it relates to WoW's focus.
     Good candidate to reconcile during W4 (state ownership / one writer).
   - Status: open.
-
-## Code quality (deferred — documented, not scheduled)
-
-Low-value cleanups left after W4. Recorded so they aren't rediscovered as
-"surprises"; intentionally not fixed (cost/risk > benefit).
-
-- **Geo callers not repointed onto `SkuNav.Geo`.** ~59 external calls still use
-  `SkuNav:X` directly. The facade is declared (W4-B) but repointing gives ZERO
-  coupling-metric change (still the token `SkuNav`) and adds a delegation call on
-  hot geo paths (`Distance`, `GetCurrentAreaId`) — mild perf cost vs W3. Leave.
-- **Last category-C read-only state on SkuCore.** `talentSet` (write-once const in
-  TBC), `GossipList`, `SkuRaidTargetIndex` are still bare `SkuCore.<field>` reads
-  cross-module. Benign single-owner read-only data; wrapping in services is churn
-  for no real decoupling. Leave (revisit only if one becomes mutable).
-- **`SetOpenMenuAfter*` is shared state, not an event.** SkuZOptions sets these via
-  the SkuCore owner-API (already the clean form, W4-C). A dispatcher-event rewrite
-  would obscure that it's persistent state SkuCore reads+clears, and the call sites
-  are asymmetric (one commented out, Core.lua:1760). Leave as the owner-API edge.
-- **Solo addons stay top-level AceAddons, not SkuCore submodules** (SkuChat / Nav /
-  Quest / Auras / Mob). NOT just a cosmetic keyword: `NewAddon`→`NewModule` moves
-  AceAddon **lifecycle ownership** (init/enable ordering) under SkuCore and forces
-  `GetAddon`→`GetModule` at every resolver — real blast-radius on the 5 biggest,
-  most-coupled units for no functional gain. They are ALREADY unified where it
-  matters: own namespace + one Features menu + one toggle API; the dual-path
-  knowledge is contained to `ModuleManager:ResolveToggleObject` (the `external`
-  flag), so consumers treat all features uniformly. Treat THIS note as the answer
-  to "wait, are these special?" — they're peers by design, managed identically.
+- **Ctrl+Enter (right-click) no longer applies weapon oils — regression.**
+  - Symptom: applying a weapon oil to a weapon via the Ctrl+Enter "right-click"
+    hotkey silently does nothing. It worked before the menu right-click rework.
+  - Repro: on a weapon (equipped slot, or a bag oil targeting a weapon), trigger
+    the right-click action via Ctrl+Enter — the oil is not applied, nothing spoken.
+  - Suspected area (best guess): the Enter=left / Ctrl+Enter=right menu-click
+    rework (SKU_KEY_MENURIGHTCLICK / secure twin SecureOnSkuOptionsMainOption2) vs
+    the equip-slot right-click oil path (`/click <Slot> RightButton`,
+    SpellIsTargeting) in SkuCore/Options.lua + SkuZOptions/Core.lua — likely the
+    secure right-click twin no longer reaches the oil-apply path.
+  - Status: open (regression).
+- **Some default keybinds are not bound for a brand-new user.**
+  - Symptom: on a fresh install (no saved bindings) some keys Sku is supposed to
+    bind by default come up unbound.
+  - Repro: fresh account / cleared `SkuOptions.SkuKeyBinds`; after first login,
+    check which SKU_KEY_* defaults are actually bound.
+  - Suspected area: default-binding application in SkuZOptions/SkuKeyBinds.lua
+    (`skuDefaultKeyBindings` + the first-login apply pass).
+  - Status: open.
+- **"Share quest" button missing.**
+  - Symptom: the action/button to share a quest with the group is not present.
+  - Repro: open a shareable quest; no share action is offered.
+  - Suspected area: SkuQuest quest-window builder (SkuQuest/Options.lua).
+  - Status: open.
+- **Aura rename re-pins two levels up (onto "Auren verwalten") instead of the aura.**
+  - Symptom: after changing an aura's name, the cursor lands two levels up on
+    "Auren verwalten" rather than back on the renamed aura. Every other rename/set
+    of this kind re-pins correctly.
+  - Repro: Auren -> aura list -> an aura -> rename it -> cursor lands on
+    "Auren verwalten", not the aura.
+  - Suspected area: SkuAuras/Options aura-rename OnAction re-descend (the W6-B #14
+    path using ",SkuAuras,aurenList,aurenVerwalten,") — re-pinning to the list
+    parent instead of the aura node (wrong FindAncestorById target / an extra step-up).
+  - Status: open.
 
 ## Feature requests / wishlist
 
 Maintainer-requested features for the v42 line. Several overlap existing
 workstreams (noted) — fold them in there when that workstream runs.
 
-- **Shift+Enter / Ctrl+Enter for left- and right-click.** Keyboard bindings in
-  menus to trigger a left-click (Shift+Enter) and right-click (Ctrl+Enter).
-  Relates to W2 (menu action semantics) and secure-action handling.
 - **Default macro to insert.** Provide a ready-made default macro the user can
   insert (e.g. into the macro UI) for common Sku actions — so a screen-reader
   user does not have to author secure macros by hand. Scope/contents TBD with
@@ -119,11 +108,6 @@ workstreams (noted) — fold them in there when that workstream runs.
 - **Quest button functionality.** Add quest-button functionality (a button /
   menu action to interact with quests — accept/turn-in/track). Relates to
   `SkuQuest`; exact behaviour TBD with the maintainer.
-- **Loading times.** Reduce addon load/reload time. Relates to W3 (load-time cost
-  of the big Lua data tables: `routedata_global_wotlk.lua`, `SkuDB/assets`).
-- **Nicer-looking popups.** Improve popup appearance.
-- **Menu rework.** Overhaul the menus — the core of W2 (declarative menu schema +
-  registry, decoupled from module structure).
 - **PLANNED: Blizzard-TTS language mixing (German/English auto-switch).** We
   play on an international server; English/German mixed content is constant.
   Plan: small Lua language detector (stopword lists + umlauts/ß signal) that
@@ -145,6 +129,24 @@ workstreams (noted) — fold them in there when that workstream runs.
   tables + `SkuVoice:GetAudiodata` (SkuVoice-1.0.lua:1324) trying the
   detected-language bank first and the other bank as per-word fallback —
   word-level German/English mixing for the concatenative voice.
+- **Rework the addon's default settings to match current usage.** The shipped
+  defaults are ~5 years old and no longer reflect how we actually play; refresh
+  to sensible modern defaults (which monitors/auras/menus are on, volumes, etc.).
+- **Equipment-set slash commands + macroability.** Make the equip slash commands
+  work with WoW equipment sets, and make those actions macroable (triggerable from
+  a macro / in combat).
+- **Monitor performance pass.** Check and improve the performance of the monitors
+  (health / power / combat / etc.).
+- **Monitor + aura reaction-time & precision pass.** Measure reaction time and
+  precision of the monitors and auras; improve where possible.
+- **Discovery mode.** New mode — scope/behaviour TBD with the maintainer.
+- **Dungeon browser — real implementation.** Replace the current parked/partial
+  dungeon browser with a full implementation (the B8 rework noted during W6).
+- **Guild window.** Make the guild window accessible (candidate for the
+  make-a-Blizzard-window-accessible recipe already used for Game Options).
+- **Stuck-detection experiments for dungeons.** Ideas to test — fall detection and
+  similar systems — to give the player more "am I stuck / where am I" information
+  in dungeons.
 
 ## Monitoring (external projects — re-check on request)
 
@@ -184,6 +186,13 @@ workstreams (noted) — fold them in there when that workstream runs.
 
 ## Resolved
 
+- **Menu open in combat** — resolved in practice (maintainer-confirmed 2026-07-07:
+  opening / reading / navigating the Sku menu in combat works flawlessly). In-combat
+  opens go headless via the non-secure SkuMenuCapture route (`combatMenuOpen`) to
+  `OnSkuOptionsMainOption1`, deliberately bypassing the protected visual
+  `OnSkuOptionsMain:Show()` that produced the old `ADDON_ACTION_BLOCKED` grab. (If a
+  stray SlashFunc→Show ever resurfaces the block in an edge path, route that path
+  through the combat menu when `InCombatLockdown()`.)
 - **Weapon/spell oil (Zauberöl) — applying to an equipped weapon threw a Lua
   error** — fixed 2026-06-30 (`SkuZOptions/Core.lua`, equipment-slot right-click
   handler). Using an oil starts a spell-TARGETING mode (`SpellIsTargeting()`,
