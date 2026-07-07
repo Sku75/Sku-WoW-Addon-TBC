@@ -162,7 +162,7 @@ function UIErrors:UIErrorEventHandler(aEvent, tMessage, tMessage1)
 
    --cd
    if (tMessage == ERR_SPELL_COOLDOWN or tMessage == ERR_ABILITY_COOLDOWN) then
-      if (SkuSettings:Sub("SkuCore").UIErrors.CrowdControlled ~= tOff) then
+      if (SkuSettings:Sub("SkuCore").UIErrors.Cooldown ~= tOff) then
          UIErrors:OutputError(SkuSettings:Sub("SkuCore").UIErrors.Cooldown, tSoundChannel, L["cooldown"])
       end
       tIsBase = true

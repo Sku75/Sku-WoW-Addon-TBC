@@ -115,9 +115,9 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_MENUQUICK10"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_MENUQUICK10SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
    
-   ["SKU_KEY_NOTIFYONRESOURCES"] = {key = "", object = "SkuCoreControlOption1", func = "OnHide",},
+   ["SKU_KEY_NOTIFYONRESOURCES"] = {key = "", object = "SkuCoreControlOption1", script = "OnHide",},
 
-   ["SKU_KEY_DOMONITORPARTYHEALTH2CONTI"] = {key = "", object = "SkuCoreControlOption1", func = "OnHide",},
+   ["SKU_KEY_DOMONITORPARTYHEALTH2CONTI"] = {key = "", object = "SkuCoreControlOption1", script = "OnHide",},
 
    ["SKU_KEY_ENABLESOFTTARGETINGENEMY"] = {key = "SHIFT-I", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_ENABLESOFTTARGETINGFRIENDLY"] = {key = "SHIFT-P", object = "SkuOptions", func = "CreateMainFrame",},
