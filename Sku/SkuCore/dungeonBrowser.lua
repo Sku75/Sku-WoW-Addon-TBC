@@ -1007,6 +1007,14 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function tBuildPhaseB(aParent)
    local active = tGetActiveEntry() or {}
+   -- [W6-C B8 diag] one-time: dump the live LFG active-entry fields so we can read
+   -- the REAL listed roles (server may have used the spec-role fallback when no
+   -- checkbox was set). Remove once the correct role source is wired.
+   do
+      local diag = {}
+      for k, v in pairs(active) do diag[#diag + 1] = tostring(k).."="..tostring(v) end
+      dprint("dungeonBrowser", "B8 activeEntry:", table.concat(diag, " | "))
+   end
    local myRoles = tDB().roles or {}
    local roleLabels = {}
    if myRoles.TANK then roleLabels[#roleLabels + 1] = ROLE_NAMES.TANK end
