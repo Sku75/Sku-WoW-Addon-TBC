@@ -95,13 +95,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Hilfsfunktionen
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function tCall(aFn, ...)
-   if type(aFn) ~= "function" then return nil end
-   local results = { pcall(aFn, ...) }
-   if not results[1] then return nil end
-   return select(2, unpack(results))
-end
-
 -- Sehr toleranter Activity-Info-Reader. Probiert alle bekannten APIs
 -- und Daten-Layouts durch und gibt IMMER ein Result zurück (im
 -- Zweifel mit Default-Levels 1..999, sodass kein Aktivitäts-ID
@@ -396,12 +389,6 @@ function DungeonBrowser:DungeonBrowserDoEnroll()
       end
    else
       tSayChat(L["DB_EnrollFailed"] .. tostring(err), "ff8800")
-   end
-end
-
-local function tRemoveListing()
-   if _G.C_LFGList and _G.C_LFGList.RemoveListing then
-      tCall(_G.C_LFGList.RemoveListing)
    end
 end
 
