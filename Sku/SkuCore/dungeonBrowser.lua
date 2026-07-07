@@ -1007,7 +1007,12 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function tBuildPhaseB(aParent)
    local active = tGetActiveEntry() or {}
-   local statusLabel = L["DB_StatusListedAs"] .. (ROLE_NAMES[tDB().role] or "?")
+   local myRoles = tDB().roles or {}
+   local roleLabels = {}
+   if myRoles.TANK then roleLabels[#roleLabels + 1] = ROLE_NAMES.TANK end
+   if myRoles.HEALER then roleLabels[#roleLabels + 1] = ROLE_NAMES.HEALER end
+   if myRoles.DAMAGER then roleLabels[#roleLabels + 1] = ROLE_NAMES.DAMAGER end
+   local statusLabel = L["DB_StatusListedAs"] .. (#roleLabels > 0 and table.concat(roleLabels, ", ") or "?")
    if active.title then statusLabel = statusLabel .. " — " .. active.title end
    local tStatus = SkuOptions:InjectMenuItems(aParent, {statusLabel}, SkuGenericMenuItem)
    tStatus.dynamic = false
