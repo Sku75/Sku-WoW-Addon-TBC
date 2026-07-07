@@ -603,56 +603,11 @@ function SkuCore:PLAYER_STOPPED_MOVING()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PanicModeStartStopBackgroundSound(aStartStop)
-	if 1 == 1 then return end
-	if aStartStop == true then
-		if SkuCore.currentBackgroundSoundHandle == nil then
-			local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\background\\benny_hill.mp3", "Talking Head")
-			if soundHandle then
-				SkuCore.currentBackgroundSoundHandle = soundHandle
-				if SkuCore.currentBackgroundSoundTimerHandle then
-					SkuCore.currentBackgroundSoundTimerHandle:Cancel()
-					SkuCore.currentBackgroundSoundTimerHandle = nil
-				end
-				if SkuCore.currentBackgroundSoundTimerHandle == nil then
-					SkuCore.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(238,8, function()
-						--StopSound(SkuOptions.currentBackgroundSoundHandle, 0)
-						SkuCore.currentBackgroundSoundTimerHandle = nil
-						SkuCore.currentBackgroundSoundHandle = nil
-						SkuCore:StartStopBackgroundSound(true)
-					end)
-				else
-					if SkuCore.currentBackgroundSoundTimerHandle then
-						SkuCore.currentBackgroundSoundTimerHandle:Cancel()
-						SkuCore.currentBackgroundSoundTimerHandle = nil
-					end
-					SkuCore.currentBackgroundSoundTimerHandle = nil
-					SkuCore.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(238,8, function()
-						SkuCore.currentBackgroundSoundTimerHandle = nil
-						SkuCore.currentBackgroundSoundHandle = nil
-						SkuCore:StartStopBackgroundSound(true)
-					end)
-				end
-			end
-		else
-			StopSound(SkuCore.currentBackgroundSoundHandle, 0)
-			SkuCore.currentBackgroundSoundHandle = nil
-		end
-		
-		return
-	end
-	
-	if aStartStop == false then
-		if SkuCore.currentBackgroundSoundHandle ~= nil then
-			StopSound(SkuCore.currentBackgroundSoundHandle, 0)
-			SkuCore.currentBackgroundSoundHandle = nil
-		end
-		if SkuCore.currentBackgroundSoundTimerHandle then
-			SkuCore.currentBackgroundSoundTimerHandle:Cancel()
-			SkuCore.currentBackgroundSoundTimerHandle = nil
-		end
-
-		return
-	end
+	-- [W6-C #4] Intentional no-op: panic mode plays no background sound. The former
+	-- body was permanently dead (guarded by `if 1 == 1 then return end`) and, if it
+	-- had ever run, called an undefined method (SkuCore:StartStopBackgroundSound -
+	-- the real one is SkuOptions:StartStopBackgroundSound). Kept as a no-op so the
+	-- three PanicModeStart call sites need no change.
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

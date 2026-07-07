@@ -163,11 +163,6 @@ local function DialogkeyCreateControlFrame()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function DialogKey:DialogKeyLogin()
-	DialogkeyCreateControlFrame()
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
 -- Arm the feature. Called automatically by AceAddon when the module is enabled
 -- (at SkuCore enable, and again whenever the user toggles it back on).
 function DialogKey:OnEnable()
