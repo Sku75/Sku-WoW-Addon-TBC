@@ -1012,20 +1012,17 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function tBuildPhaseB(aParent)
    local active = tGetActiveEntry() or {}
-   -- [W6-C B8 diag] one-time: dump the live LFG active-entry fields so we can read
-   -- the REAL listed roles (server may have used the spec-role fallback when no
-   -- checkbox was set). Remove once the correct role source is wired.
-   do
-      local diag = {}
-      for k, v in pairs(active) do diag[#diag + 1] = tostring(k).."="..tostring(v) end
-      dprint("dungeonBrowser", "B8 activeEntry:", table.concat(diag, " | "))
-   end
+   -- [W6-C B8] The LFG API (C_LFGList.GetActiveEntryInfo) does NOT return the
+   -- listed roles, so the only client-side role source is the player's role
+   -- checkboxes (tDB().roles). When none are checked the server lists you by your
+   -- spec role, which TBC can't reliably recompute - so we show "keine Rolle
+   -- gewählt" rather than guess a possibly-wrong role.
    local myRoles = tDB().roles or {}
    local roleLabels = {}
    if myRoles.TANK then roleLabels[#roleLabels + 1] = ROLE_NAMES.TANK end
    if myRoles.HEALER then roleLabels[#roleLabels + 1] = ROLE_NAMES.HEALER end
    if myRoles.DAMAGER then roleLabels[#roleLabels + 1] = ROLE_NAMES.DAMAGER end
-   local statusLabel = L["DB_StatusListedAs"] .. (#roleLabels > 0 and table.concat(roleLabels, ", ") or "?")
+   local statusLabel = L["DB_StatusListedAs"] .. (#roleLabels > 0 and table.concat(roleLabels, ", ") or L["DB_StatusNoRole"])
    if active.title then statusLabel = statusLabel .. " — " .. active.title end
    local tStatus = SkuOptions:InjectMenuItems(aParent, {statusLabel}, SkuGenericMenuItem)
    tStatus.dynamic = false
