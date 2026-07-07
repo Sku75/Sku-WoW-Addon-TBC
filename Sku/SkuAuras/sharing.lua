@@ -35,19 +35,15 @@ local function tDeepCopy(aValue)
 	return SkuUtil.TableCopy(aValue, true)
 end
 
-local function tEnsureSets()
+local function tEnsure(aKey)
 	local p = SkuOptions and SkuOptions.db and SkuOptions.db.char and SkuSettings:Sub("SkuAuras", nil, "char")
 	if not p then return nil end
-	p.Sets = p.Sets or {}
-	return p.Sets
+	p[aKey] = p[aKey] or {}
+	return p[aKey]
 end
 
-local function tEnsurePending()
-	local p = SkuOptions and SkuOptions.db and SkuOptions.db.char and SkuSettings:Sub("SkuAuras", nil, "char")
-	if not p then return nil end
-	p.PendingSets = p.PendingSets or {}
-	return p.PendingSets
-end
+local function tEnsureSets() return tEnsure("Sets") end
+local function tEnsurePending() return tEnsure("PendingSets") end
 
 -- Name eindeutig machen: existiert er schon, aufsteigende Zahl anhaengen.
 local function tUniqueName(aTbl, aBase)

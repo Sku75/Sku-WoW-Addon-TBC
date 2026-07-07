@@ -188,45 +188,31 @@ function SkuOptions:SkuKeyBindsGetBinding2(aBindingConst)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuOptions:SkuKeyBindsSetBinding(aBindingConst, aNewKey)
+local function tSetKeyBindField(aBindingConst, aField, aValue)
    if not SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst] then
       return
    end
-   SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst].key = aNewKey
+   SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst][aField] = aValue
    SkuOptions:SkuKeyBindsUpdate()
    return true
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuOptions:SkuKeyBindsSetBinding2(aBindingConst, aNewKey)
-   if not SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst] then
-      return
-   end
-   SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst].key2 = aNewKey
-   SkuOptions:SkuKeyBindsUpdate()
-   return true
-end
+function SkuOptions:SkuKeyBindsSetBinding(aBindingConst, aNewKey) return tSetKeyBindField(aBindingConst, "key", aNewKey) end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:SkuKeyBindsSetBinding2(aBindingConst, aNewKey) return tSetKeyBindField(aBindingConst, "key2", aNewKey) end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsDeleteBinding(aBindingConst)
    dprint("SkuKeyBindsDeleteBinding", aBindingConst)
-   if not SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst] then
-      return
-   end
-   SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst].key = ""
-   SkuOptions:SkuKeyBindsUpdate()
-   return true
+   return tSetKeyBindField(aBindingConst, "key", "")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsDeleteBinding2(aBindingConst)
    dprint("SkuKeyBindsDeleteBinding2", aBindingConst)
-   if not SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst] then
-      return
-   end
-   SkuSettings:Sub("SkuOptions").SkuKeyBinds[aBindingConst].key2 = ""
-   SkuOptions:SkuKeyBindsUpdate()
-   return true
+   return tSetKeyBindField(aBindingConst, "key2", "")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
