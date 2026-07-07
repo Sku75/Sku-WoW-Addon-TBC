@@ -22,7 +22,7 @@ SkuCore.JunkAndRepair = JunkAndRepair   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-	return (GetLocale and GetLocale() == "deDE") and "Schrott verkaufen & reparieren" or "Sell junk & repair"
+	return Sku.deEn("Schrott verkaufen & reparieren", "Sell junk & repair")
 end)
 
 -- Feature-private state (module upvalues, shared by OnEnable/OnDisable and the

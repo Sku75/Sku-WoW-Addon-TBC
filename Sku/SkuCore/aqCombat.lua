@@ -34,7 +34,7 @@ SkuCore.aqCombat = aqCombat   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return (GetLocale and GetLocale() == "deDE") and "Kampf-Monitor" or "Combat monitor"
+   return Sku.deEn("Kampf-Monitor", "Combat monitor")
 end)
 
 local aqCombatVoices = {

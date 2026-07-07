@@ -18,7 +18,7 @@ SkuCore.DialogKey = DialogKey   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-	return (GetLocale and GetLocale() == "deDE") and "Dialogtaste" or "Dialog key"
+	return Sku.deEn("Dialogtaste", "Dialog key")
 end)
 
 -- Feature-private state: the hidden OnKeyDown driver frame, reused across

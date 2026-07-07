@@ -44,7 +44,7 @@ SkuCore.Socketing = Socketing   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return (GetLocale and GetLocale() == "deDE") and "Sockeln" or "Socketing"
+   return Sku.deEn("Sockeln", "Socketing")
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------------

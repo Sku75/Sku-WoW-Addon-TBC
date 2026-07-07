@@ -34,7 +34,7 @@ SkuCore.DualSpecProbe = DualSpecProbe   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("DualSpecProbe", function()
-   return (GetLocale and GetLocale() == "deDE") and "Dualspec-Test" or "Dual-spec probe"
+   return Sku.deEn("Dualspec-Test", "Dual-spec probe")
 end)
 
 -- The /skuspec handler, defined as an upvalue so OnEnable can install it into

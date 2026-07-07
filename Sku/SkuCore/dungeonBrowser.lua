@@ -47,7 +47,7 @@ SkuCore.DungeonBrowser = DungeonBrowser   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule("DungeonBrowser", function()
-   return (GetLocale and GetLocale() == "deDE") and "Dungeonbrowser" or "Dungeon browser"
+   return Sku.deEn("Dungeonbrowser", "Dungeon browser")
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------------

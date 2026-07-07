@@ -28,7 +28,7 @@ SkuCore.GameWorldObjects = GameWorldObjects   -- published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("GameWorldObjects", function()
-   return (GetLocale and GetLocale() == "deDE") and "Spielweltobjekte" or "World objects"
+   return Sku.deEn("Spielweltobjekte", "World objects")
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------------

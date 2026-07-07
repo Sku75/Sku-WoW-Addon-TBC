@@ -41,7 +41,7 @@ SkuCore.GameOptions = GameOptions   -- keep a published handle (harmless)
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule("GameOptions", function()
-   return (GetLocale and GetLocale() == "deDE") and "Spieloptionen" or "Game options"
+   return Sku.deEn("Spieloptionen", "Game options")
 end)
 
 -- Locale: tiny self-contained table (no global locale-file edits needed;

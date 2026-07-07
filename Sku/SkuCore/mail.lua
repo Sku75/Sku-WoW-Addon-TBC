@@ -23,7 +23,7 @@ SkuCore.Mail = Mail   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("Mail", function()
-	return (GetLocale and GetLocale() == "deDE") and "Post" or "Mail"
+	return Sku.deEn("Post", "Mail")
 end)
 
 local gLastError = ""

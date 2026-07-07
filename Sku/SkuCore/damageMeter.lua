@@ -24,7 +24,7 @@ DamageMeter.damageMeter = {}
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("DamageMeter", function()
-	return (GetLocale and GetLocale() == "deDE") and "Schadensmesser" or "Damage meter"
+	return Sku.deEn("Schadensmesser", "Damage meter")
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------------

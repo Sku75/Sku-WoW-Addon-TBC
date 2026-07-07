@@ -33,7 +33,7 @@ SkuCore.AtlasLootIntegration = AtlasLootIntegration   -- keep the published hand
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule("AtlasLootIntegration", function()
-   return (GetLocale and GetLocale() == "deDE") and "AtlasLoot-Integration" or "AtlasLoot integration"
+   return Sku.deEn("AtlasLoot-Integration", "AtlasLoot integration")
 end)
 
 -- Erweiterung-Reiter, identisch zur AtlasLoot-Game-Version-Numerierung:

@@ -27,7 +27,7 @@ SkuCore.UIErrors = UIErrors   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return (GetLocale and GetLocale() == "deDE") and "Oberflächenfehler" or "UI errors"
+   return Sku.deEn("Oberflächenfehler", "UI errors")
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------------

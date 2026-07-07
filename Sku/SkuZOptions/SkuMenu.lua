@@ -304,14 +304,14 @@ SkuMenu:RegisterModule("SkuChat",  { label = function() return L()["SkuChatMenuE
 SkuMenu:RegisterModule("SkuQuest", { label = function() return L()["SkuQuestMenuEntry"] end, build = function(entry) SkuQuest:MenuBuilder(entry) end })
 -- W7: "Core" grab-bag is gone; SkuCore:MenuBuilder now builds the aggregated
 -- "Einstellungen" (Settings) tree.
-SkuMenu:RegisterModule("Einstellungen", { label = function() return (GetLocale and GetLocale() == "deDE") and "Einstellungen" or "Settings" end, build = function(entry) SkuCore:MenuBuilder(entry)  end })
+SkuMenu:RegisterModule("Einstellungen", { label = function() return Sku.deEn("Einstellungen", "Settings") end, build = function(entry) SkuCore:MenuBuilder(entry)  end })
 SkuMenu:RegisterModule("SkuAuras", { label = function() return L()["SkuAurasMenuEntry"] end, build = function(entry) SkuAuras:MenuBuilder(entry) end })
 
 -- Game Options: Blizzard's built-in game options (modern Settings system, else
 -- only reachable via the Escape menu) made accessible through Sku's menu. Logic
 -- in SkuCore/gameOptions.lua. Title is locale-computed at open time, as before.
 SkuMenu:RegisterModule("GameOptions", {
-	label = function() return (GetLocale and GetLocale() == "deDE") and "Spieloptionen" or "Game Options" end,
+	label = function() return Sku.deEn("Spieloptionen", "Game Options") end,
 	build = function(entry)
 		if SkuCore and SkuCore.GameOptions and SkuCore.GameOptions.GameOptionsMenuBuilder then
 			SkuCore.GameOptions:GameOptionsMenuBuilder(entry)
@@ -343,7 +343,7 @@ SkuMenu:RegisterModule("Addons", {
 -- routed to Einstellungen and Makros to the Sku macro menu. SkuCore:GameMenuShowHandler
 -- navigates here when the Blizzard GameMenuFrame is invoked.
 SkuMenu:RegisterModule("GameMenu", {
-	label = function() return (GetLocale and GetLocale() == "deDE") and "Spielmenü" or "Game menu" end,
+	label = function() return Sku.deEn("Spielmenü", "Game menu") end,
 	build = function(entry) if SkuCore and SkuCore.GameOptions and SkuCore.GameOptions.GameMenuBuilder then SkuCore.GameOptions:GameMenuBuilder(entry) end end,
 })
 

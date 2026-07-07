@@ -109,6 +109,15 @@ function SkuGetCoinText(aCopper, aShort, aVeryShort)
 	return tResultString
 end
 
+-- Locale-select label helper (W6-C #52): returns the German string on a deDE
+-- client, else the English string. Consolidates the ~25 inline
+-- `(GetLocale() == "deDE") and <de> or <en>` label ternaries (mostly the module
+-- display-name getters). Defined on Sku (created in Core.lua, loaded before
+-- SkuUtil) so every module's registration callback can reach it.
+function Sku.deEn(aDe, aEn)
+	return (GetLocale and GetLocale() == "deDE") and aDe or aEn
+end
+
 -- Format a past server-time epoch as a spoken "N seconds/minutes/hours/days" age.
 function SkuEpochValueHelper(aValue)
 	local L = Sku.L

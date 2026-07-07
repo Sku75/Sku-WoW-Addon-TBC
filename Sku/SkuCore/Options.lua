@@ -200,7 +200,7 @@ SkuCore.options = {
 			type = "toggle",
 		},
 		followCollision = {
-			name = (GetLocale and GetLocale() == "deDE") and "Kollisionswarnung beim Folgen" or "Follow collision warning",
+			name = Sku.deEn("Kollisionswarnung beim Folgen", "Follow collision warning"),
 			desc = "",
 			type = "toggle",
 		},
@@ -2873,7 +2873,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	-- and the target menu promoted to top level. Same args/db -> saved values preserved.
 	if SkuMob and SkuMob.options and SkuMob.options.args then
 		tKampf[#tKampf+1] = { kind = "settings",
-			label = function() return (GetLocale and GetLocale() == "deDE") and "Ziel Optionen" or "Target options" end,
+			label = function() return Sku.deEn("Ziel Optionen", "Target options") end,
 			sorting = true,
 			args = SkuMob.options.args, db = SkuSettings:Sub("SkuMob"), module = "SkuMob" }
 	end
@@ -3006,7 +3006,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	-- so it lands ahead of the categories (which get appended after it). See the
 	-- SkuCore:SettingsSearch* helpers above. On the scratch tree used by the search
 	-- walk this same entry is added and skipped via its isSettingsSearch flag.
-	local tSearchLabel = (GetLocale and GetLocale() == "deDE") and "Einstellungen durchsuchen" or "Search settings"
+	local tSearchLabel = Sku.deEn("Einstellungen durchsuchen", "Search settings")
 	local tSearchEntry = SkuOptions:InjectMenuItems(aParentEntry, {tSearchLabel}, SkuGenericMenuItem)
 	tSearchEntry.isSettingsSearch = true
 	tSearchEntry.searchNavRoot = aParentEntry

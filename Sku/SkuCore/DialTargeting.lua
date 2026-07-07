@@ -30,7 +30,7 @@ SkuCore.DialTargeting = DialTargeting   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return (GetLocale and GetLocale() == "deDE") and "Zielwahl per Tastenfeld" or "Dial targeting"
+   return Sku.deEn("Zielwahl per Tastenfeld", "Dial targeting")
 end)
 
 

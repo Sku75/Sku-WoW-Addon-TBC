@@ -27,7 +27,7 @@ local M = SkuCore.EquipmentSets
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule("EquipmentSets", function()
-   return (GetLocale and GetLocale() == "deDE") and "Ausrüstungssets" or "Equipment sets"
+   return Sku.deEn("Ausrüstungssets", "Equipment sets")
 end)
 
 -- Slot-Reihenfolge fürs Anlegen. INVSLOT 4 (Hemd) und 19 (Tabard) sind

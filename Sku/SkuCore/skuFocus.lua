@@ -22,7 +22,7 @@ SkuCore.SkuFocus = SkuFocus   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return (GetLocale and GetLocale() == "deDE") and "Fokus" or "Focus"
+   return Sku.deEn("Fokus", "Focus")
 end)
 
 

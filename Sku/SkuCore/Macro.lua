@@ -14,7 +14,7 @@ SkuCore.Macro = Macro   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-    return (GetLocale and GetLocale() == "deDE") and "Makros" or "Macros"
+    return Sku.deEn("Makros", "Macros")
 end)
 
 -- No lifecycle to arm/disarm: this is a pure menu-builder feature.

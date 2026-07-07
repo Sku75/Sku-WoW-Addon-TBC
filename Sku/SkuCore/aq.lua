@@ -37,7 +37,7 @@ SkuCore.Aq = Aq   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("Aq", function()
-	return (GetLocale and GetLocale() == "deDE") and "Lebens- & Energiemonitor" or "Health & power monitor"
+	return Sku.deEn("Lebens- & Energiemonitor", "Health & power monitor")
 end)
 
 -- Frame handle for the AqCreateControlFrame OnUpdate driver, so OnDisable can stop it.

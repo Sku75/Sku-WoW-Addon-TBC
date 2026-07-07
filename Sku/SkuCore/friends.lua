@@ -23,7 +23,7 @@ SkuCore.Friends = Friends   -- keep a published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("Friends", function()
-   return (GetLocale and GetLocale() == "deDE") and "Freunde" or "Friends"
+   return Sku.deEn("Freunde", "Friends")
 end)
 
 -- Track whether the FriendsFrame "Show" hook has been installed (a hooksecurefunc

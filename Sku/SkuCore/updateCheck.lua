@@ -53,7 +53,7 @@ SkuCore.UpdateCheck = UpdateCheck   -- keep a published handle (harmless if unus
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule("UpdateCheck", function()
-  return (GetLocale and GetLocale() == "deDE") and "Aktualisierungspr\195\188fung" or "Update check"
+  return Sku.deEn("Aktualisierungspr\195\188fung", "Update check")
 end)
 
 local ADDON_NAME   = "Sku"

@@ -36,7 +36,7 @@ SkuCore.VisualAids = VisualAids   -- published handle (harmless; entry points us
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-	return (GetLocale and GetLocale() == "deDE") and "Visuelle Hilfen" or "Visual aids"
+	return Sku.deEn("Visuelle Hilfen", "Visual aids")
 end)
 
 -- Lazy-sichere Default-Struktur. Auch NEUE Profile starten mit allem AUS, ohne

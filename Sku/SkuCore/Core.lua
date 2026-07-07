@@ -428,7 +428,7 @@ function SkuCore:UpdateGameMenuRootEntry()
 	end
 	if SkuCore.gameMenuActive == true then
 		if not tExisting then
-			local tLabel = (GetLocale and GetLocale() == "deDE") and "Spielmenü" or "Game menu"
+			local tLabel = Sku.deEn("Spielmenü", "Game menu")
 			local tEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {tLabel}, SkuGenericMenuItem)
 			tEntry.dynamic = true
 			tEntry.isGameMenuRoot = true

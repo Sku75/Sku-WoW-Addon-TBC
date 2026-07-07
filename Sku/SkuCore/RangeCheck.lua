@@ -26,7 +26,7 @@ SkuCore.RangeCheck = RangeCheck   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return (GetLocale and GetLocale() == "deDE") and "Reichweitenprüfung" or "Range check"
+   return Sku.deEn("Reichweitenprüfung", "Range check")
 end)
 
 RangeCheck.RangeCheckValues = {

@@ -159,7 +159,7 @@ end
 -- builder be referenced by id) but it is no longer appended to the root layout.
 if SkuMenu then
 	SkuMenu:RegisterModule("Features", {
-		label = function() return (GetLocale and GetLocale() == "deDE") and "Funktionen an/aus" or "Features on/off" end,
+		label = function() return Sku.deEn("Funktionen an/aus", "Features on/off") end,
 		build = function(entry) SkuCore:FeaturesMenuBuilder(entry) end,
 	})
 end
