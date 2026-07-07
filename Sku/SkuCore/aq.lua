@@ -128,44 +128,44 @@ local ttimeMonRaid2QueueCurrentTime = 0
 local ttimeMonRaid2QueueDefaultOutputLength = 0.2
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function ttimeMonParty2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRole, aHealthAbsoluteValue, aIgnorePrio)
-	aLength = aLength or ttimeMonParty2QueueDefaultOutputLength
+local function tHealth2QueueAdd(aQueue, aBranch, aDefaultLen, aUnitNumber, aVolume, aPitch, aLength, aRole, aHealthAbsoluteValue, aIgnorePrio)
+	aLength = aLength or aDefaultLen
 
-	if #ttimeMonParty2Queue > 0 then
-		if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.prioOutput[aRole] == true and aIgnorePrio ~= true then
+	if #aQueue > 0 then
+		if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][aBranch].health2.prioOutput[aRole] == true and aIgnorePrio ~= true then
 			local tFound
 			local tFoundVol
-			for x = 1, #ttimeMonParty2Queue do
-				if ttimeMonParty2Queue[x].tUnitNumber == aUnitNumber then
+			for x = 1, #aQueue do
+				if aQueue[x].tUnitNumber == aUnitNumber then
 					tFound = x
-					tFoundVol = ttimeMonParty2Queue[x].tVolume
+					tFoundVol = aQueue[x].tVolume
 				end
 			end
 			if tFound then
-				table.remove(ttimeMonParty2Queue, tFound)
+				table.remove(aQueue, tFound)
 			end
 			if tFoundVol and tFoundVol > aVolume then
 				aVolume = tFoundVol
 			end
-			if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
-				table.insert(ttimeMonParty2Queue, 1, {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,})
-			elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
-				table.insert(ttimeMonParty2Queue, 1, {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,})
+			if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][aBranch].health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
+				table.insert(aQueue, 1, {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,})
+			elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][aBranch].health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
+				table.insert(aQueue, 1, {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,})
 			end
-			table.insert(ttimeMonParty2Queue, 1, {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,})
+			table.insert(aQueue, 1, {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,})
 			return
 		else
-			for x = 1, #ttimeMonParty2Queue do
-				if ttimeMonParty2Queue[x].tUnitNumber == aUnitNumber then
-					ttimeMonParty2Queue[x].tPitch = aPitch	
-					if ttimeMonParty2Queue[x].tVolume < aVolume	then
-						ttimeMonParty2Queue[x].tVolume = aVolume
+			for x = 1, #aQueue do
+				if aQueue[x].tUnitNumber == aUnitNumber then
+					aQueue[x].tPitch = aPitch	
+					if aQueue[x].tVolume < aVolume	then
+						aQueue[x].tVolume = aVolume
 					end
-					ttimeMonParty2Queue[x].lenght = aLength
-					if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
-						table.insert(ttimeMonParty2Queue, x + 1, {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,})
-					elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
-						table.insert(ttimeMonParty2Queue, x + 1, {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,})
+					aQueue[x].lenght = aLength
+					if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][aBranch].health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
+						table.insert(aQueue, x + 1, {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,})
+					elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][aBranch].health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
+						table.insert(aQueue, x + 1, {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,})
 					end
 		
 					return
@@ -174,12 +174,16 @@ local function ttimeMonParty2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRo
 		end
 	end
 
-	ttimeMonParty2Queue[#ttimeMonParty2Queue + 1] = {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,}
-	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
-		ttimeMonParty2Queue[#ttimeMonParty2Queue + 1] = {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,}
-	elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
-		ttimeMonParty2Queue[#ttimeMonParty2Queue + 1] = {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,}
+	aQueue[#aQueue + 1] = {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,}
+	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][aBranch].health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
+		aQueue[#aQueue + 1] = {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,}
+	elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][aBranch].health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
+		aQueue[#aQueue + 1] = {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,}
 	end	
+end
+
+local function ttimeMonParty2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRole, aHealthAbsoluteValue, aIgnorePrio)
+	tHealth2QueueAdd(ttimeMonParty2Queue, "party", ttimeMonParty2QueueDefaultOutputLength, aUnitNumber, aVolume, aPitch, aLength, aRole, aHealthAbsoluteValue, aIgnorePrio)
 end
 
 
@@ -250,8 +254,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function ttimeMonRaid2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRole, aHealthAbsoluteValue, aIgnorePrio, aUnitID)
-	aLength = aLength or ttimeMonRaid2QueueDefaultOutputLength
-
 	--check if subgroup is enabled
 	if GetUnitsRaidSubgroup(aUnitID) == nil or SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.unitsAndSubgroupsSelection[L["Subgroup"].." "..GetUnitsRaidSubgroup(aUnitID)] == false then
 		return
@@ -263,55 +265,7 @@ local function ttimeMonRaid2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRol
 		end
 	end
 
-	if #ttimeMonRaid2Queue > 0 then
-		if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.prioOutput[aRole] == true and aIgnorePrio ~= true then
-			local tFound
-			local tFoundVol
-			for x = 1, #ttimeMonRaid2Queue do
-				if ttimeMonRaid2Queue[x].tUnitNumber == aUnitNumber then
-					tFound = x
-					tFoundVol = ttimeMonRaid2Queue[x].tVolume
-				end
-			end
-			if tFound then
-				table.remove(ttimeMonRaid2Queue, tFound)
-			end
-			if tFoundVol and tFoundVol > aVolume then
-				aVolume = tFoundVol
-			end
-			if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
-				table.insert(ttimeMonRaid2Queue, 1, {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,})
-			elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
-				table.insert(ttimeMonRaid2Queue, 1, {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,})
-			end
-			table.insert(ttimeMonRaid2Queue, 1, {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,})
-			return
-		else
-			for x = 1, #ttimeMonRaid2Queue do
-				if ttimeMonRaid2Queue[x].tUnitNumber == aUnitNumber then
-					ttimeMonRaid2Queue[x].tPitch = aPitch	
-					if ttimeMonRaid2Queue[x].tVolume < aVolume	then
-						ttimeMonRaid2Queue[x].tVolume = aVolume
-					end
-					ttimeMonRaid2Queue[x].lenght = aLength
-					if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
-						table.insert(ttimeMonRaid2Queue, x + 1, {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,})
-					elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
-						table.insert(ttimeMonRaid2Queue, x + 1, {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,})
-					end
-		
-					return
-				end
-			end
-		end
-	end
-
-	ttimeMonRaid2Queue[#ttimeMonRaid2Queue + 1] = {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,}
-	if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
-		ttimeMonRaid2Queue[#ttimeMonRaid2Queue + 1] = {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,}
-	elseif SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
-		ttimeMonRaid2Queue[#ttimeMonRaid2Queue + 1] = {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,}
-	end	
+	tHealth2QueueAdd(ttimeMonRaid2Queue, "raid", ttimeMonRaid2QueueDefaultOutputLength, aUnitNumber, aVolume, aPitch, aLength, aRole, aHealthAbsoluteValue, aIgnorePrio)
 end
 
 
