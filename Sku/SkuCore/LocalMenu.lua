@@ -63,6 +63,33 @@ local function ItemName_helper(aText)
 end
 
 
+local function tScanTooltipRegions(aTooltipObj, aQualityString, aEffectiveILvl)
+	local tTooltipText = ""
+	local tLineCounter = 1
+	for i = 1, select("#", aTooltipObj:GetRegions()) do
+		local region = select(i, aTooltipObj:GetRegions())
+		if region and region:GetObjectType() == "FontString" then
+			local text = region:GetText()
+			if text then
+				if tLineCounter == 1 and aQualityString and SkuSettings:Sub("SkuCore").itemSettings.ShowItemQality == true then
+					tTooltipText = tTooltipText..text.." ("..aQualityString..")
+"
+				elseif tLineCounter == 2 and aEffectiveILvl then
+					tTooltipText = tTooltipText..L["Item Level"]..": "..aEffectiveILvl.."
+"
+					tTooltipText = tTooltipText..text.."
+"
+				else
+					tTooltipText = tTooltipText..text.."
+"
+				end
+				tLineCounter = tLineCounter + 1
+			end
+		end
+	end
+	return tTooltipText
+end
+
 local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
 
 	local tTooltipObj = aTooltipObject or GameTooltip
@@ -101,25 +128,7 @@ local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
 		tEffectiveILvl = GetDetailedItemLevelInfo(ItemLink)
 	end
 
-	local tTooltipText = ""
-	local tLineCounter = 1
-	for i = 1, select("#", tTooltipObj:GetRegions()) do
-		local region = select(i, tTooltipObj:GetRegions())
-		if region and region:GetObjectType() == "FontString" then
-			local text = region:GetText() -- string or nil
-			if text then
-				if tLineCounter == 1 and tQualityString and SkuSettings:Sub("SkuCore").itemSettings.ShowItemQality == true then
-					tTooltipText = tTooltipText..text.." ("..tQualityString..")\r\n"
-				elseif tLineCounter == 2 and tEffectiveILvl then
-					tTooltipText = tTooltipText..L["Item Level"]..": "..tEffectiveILvl.."\r\n"
-					tTooltipText = tTooltipText..text.."\r\n"
-				else
-					tTooltipText = tTooltipText..text.."\r\n"
-				end
-				tLineCounter = tLineCounter + 1
-			end
-		end
-	end
+	local tTooltipText = tScanTooltipRegions(tTooltipObj, tQualityString, tEffectiveILvl)
 
 	if not aTooltipObject then
 		tTooltipObj:SetOwner(UIParent, "Center")
@@ -187,25 +196,7 @@ local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
 				tEffectiveILvl = GetDetailedItemLevelInfo(ItemLink)
 			end
 
-			local tTooltipText = ""
-			local tLineCounter = 1
-			for i = 1, select("#", GameTooltip:GetRegions()) do
-				local region = select(i, GameTooltip:GetRegions())
-				if region and region:GetObjectType() == "FontString" then
-					local text = region:GetText() -- string or nil
-					if text then
-						if tLineCounter == 1 and tQualityString and SkuSettings:Sub("SkuCore").itemSettings.ShowItemQality == true then
-							tTooltipText = tTooltipText..text.." ("..tQualityString..")\r\n"
-						elseif tLineCounter == 2 and tEffectiveILvl then
-							tTooltipText = tTooltipText..L["Item Level"]..": "..tEffectiveILvl.."\r\n"
-							tTooltipText = tTooltipText..text.."\r\n"
-						else
-							tTooltipText = tTooltipText..text.."\r\n"
-						end
-						tLineCounter = tLineCounter + 1
-					end
-				end
-			end		
+			local tTooltipText = tScanTooltipRegions(GameTooltip, tQualityString, tEffectiveILvl)
 			getItemTooltipTextHelper(function(tooltip)
 				if itemId then
 					tooltip:SetItemByID(itemId)
