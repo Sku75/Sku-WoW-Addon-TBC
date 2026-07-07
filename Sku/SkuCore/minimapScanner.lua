@@ -135,7 +135,6 @@ SkuCore.RessourceTypes = {
 }
 
 
-MinimapScanner.IsScanning = false
 
 local tMinimapYardsMod = 3.125
 local tScanResults = {}
@@ -143,7 +142,6 @@ local tMinimapStore = {}
 local tMinimapDefaults = {}
 local tRange = 15
 local tCurrentMMPosX, tCurrentMMPosY = -(tRange / 2), -(tRange / 2)
-local fx, fy = 0, 0
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Minimap-State save/restore helpers — werden von allen Scan-Pfaden
@@ -417,8 +415,6 @@ local function MinimapScanStep()
    C_Timer.After(0, function()
       local tResultString = MinimapScanner:MinimapScanFindActiveRessource(tCurrentMMPosX, tCurrentMMPosY)
       if tResultString then
-         --fx, fy = tCurrentMMPosX, tCurrentMMPosY
-         --print(tResultString, fx, fy)
          if not tScanResults[tResultString] then
             tScanResults[tResultString] = 0
          end

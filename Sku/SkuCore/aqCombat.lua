@@ -723,7 +723,6 @@ local function aqCombatCreateControlFrame()
 
                local tPlayerGUID = UnitGUID("player")
                local tChanged = false
-               local tCount = 0
                for creatureGUID, value in pairs(SkuCore.inOutCombatQueue.combatIn) do
                   if aqCombatCheckElite(creatureGUID) == true then
                      if tCombatInCounts(tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value, creatureGUID, tPlayerGUID, tAllPartyRaidUnits) then
@@ -770,7 +769,6 @@ local function aqCombatCreateControlFrame()
                local tPlayerGUID = UnitGUID("player")
                local tChanged = false
 
-               local tCount = 0
                for creatureGUID, value in pairs(SkuCore.inOutCombatQueue.combatIn) do
                   if aqCombatCheckElite(creatureGUID) == true then
                      if tCombatInCounts(tCurrentSettings.combat.hostile.unitsAddedToCombat.value, creatureGUID, tPlayerGUID, tAllPartyRaidUnits) then
@@ -1201,7 +1199,6 @@ local function tAddHelper(event, tCreatureGUID, tMobName, tPartyGuid, tPartyname
 end
 
 local tGUIDCache = {creatures = {}, nonCreatures = {}}
-local tNonCreatureGUIDCache = {}
 function aqCombat:aqCombat_COMBAT_LOG_EVENT_UNFILTERED()
    local arg1, event, arg3, sourceGUID, sourceName, arg6, arg7, targetGUID, targetName = CombatLogGetCurrentEventInfo()
 

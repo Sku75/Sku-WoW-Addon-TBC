@@ -80,8 +80,6 @@ local mSkuVoiceQueueBTTS_Speaking = {}
 -- untouched. nil (no entry) => fall back to the global voice. See
 -- OutputStringBTtts (writes) and the OnUpdate dequeue (reads+clears).
 local mSkuVoiceQueueBTTS_Voice = {}
-SkuVoice.LastPlayedString = ""
---setmetatable(mSkuVoiceQueue, SkuNav.PrintMT)
 
 function SkuVoice:Create()
 	local f = CreateFrame("Frame", "SkuVoiceMainFrame", UIParent)
@@ -112,9 +110,6 @@ function SkuVoice:Create()
 					--print("  Q R: ", x, mSkuVoiceQueueBTTS[1])
 					table.remove(mSkuVoiceQueueBTTS, 1)
 				end
-			end
-			for x = 1, #mSkuVoiceQueueBTTS do
-				--print("  Q: ", x, mSkuVoiceQueueBTTS[x])
 			end
 			if #mSkuVoiceQueueBTTS > 0 then
 				--print("           ", tLastWait, mSkuVoiceQueueBTTS[1])
@@ -741,7 +736,6 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	if ChatTts().WowTtsTags ~= false then
 		tFinalStringForBTts = '<pitch middle="0">'..tFinalStringForBTts..'</pitch>'
 	end
-	tFinalStringForBTtsMac = tFinalStringForBTtsMac
 
 	tFinalStringForBTts = string.gsub(tFinalStringForBTts, ";", " ")
 	tFinalStringForBTtsMac = string.gsub(tFinalStringForBTtsMac, ";", " ")

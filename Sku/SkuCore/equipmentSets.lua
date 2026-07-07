@@ -258,7 +258,6 @@ function M:Equip(aName)
    -- Dabei zuerst die Doppelslot-Paare auflösen, damit wir nicht zwei
    -- Mal denselben Ring im selben Slot platzieren.
    local plan = {}  -- invSlot → locator
-   local skipBag, skipSlot = nil, nil
    -- Reihenfolge: Doppelslots zuerst paarweise lösen
    local processed = {}
 

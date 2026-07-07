@@ -110,7 +110,7 @@ function MacroMenuBuilderList(aParent, isGlobal)
     end
 
     for i = from, to do
-        local name, iconTexture, body, isLocal = GetMacroInfo(i)
+        local name = GetMacroInfo(i)
         local tListEntry = SkuOptions:InjectMenuItems(aParent, { name }, SkuGenericMenuItem)
         tListEntry.dynamic = true
         tListEntry["Id"] = i          -- capital Id: the WoW macro index (unrelated to nav)

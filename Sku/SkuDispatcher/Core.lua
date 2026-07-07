@@ -28,7 +28,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuDispatcher:UnregisterEventCallback(aEventName, aCallbackFunc)
-	--print("UnregisterEventCallback(", aEventName, aCallbackFunc)
 	if not SkuDispatcher.Registered[aEventName] then
 		return
 	end

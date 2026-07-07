@@ -347,7 +347,7 @@ function SkuBeacon:Create(aReference)
 
 	-- create our frame for onupdate timer
 	if not _G["SkuBeaconLibControlFrame"] then
-		local f = _G["SkuBeaconLibControlFrame"] or CreateFrame("Frame", "SkuBeaconLibControlFrame", UIParent)
+		local f = CreateFrame("Frame", "SkuBeaconLibControlFrame", UIParent)
 		f:SetScript("OnUpdate", OnUpdate)
 	end
 

@@ -12,20 +12,6 @@ local SkuMobDB = {
 	lastTargetGuid = 0,
 	nextAudioQ = "",
 	lastAudioQ = "",
-	soundFiles = {
-		[100] = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\0805210501-09.mp3]],
-		[90] = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\0805210501-08.mp3]],
-		[80] = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\0805210501-07.mp3]],
-		[70] = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\0805210501-06.mp3]],
-		[60] = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\0805210501-05.mp3]],
-		[50] = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\0805210501-04.mp3]],
-		[40] = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\0805210501-03.mp3]],
-		[30] = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\0805210501-02.mp3]],
-		[20] = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\021321052314.mp3]],
-		[10] = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\021321052311.mp3]],
-		[0] = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\female2--0.mp3]],
-		[L["dead"]] = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\0805210501-10.mp3]],
-		},
 	}
 
 

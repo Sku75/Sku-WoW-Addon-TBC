@@ -57,7 +57,6 @@ local function SellJunkFunc()
    local SoldCount, Rarity, ItemPrice = 0, 0, 0
    local CurrentItemLink, void
 
-   local tSouldSomething = false
    -- Traverse bags and sell grey items
    for BagID = 0, 4 do
       for BagSlot = 1, GetContainerNumSlots(BagID) do
@@ -70,7 +69,6 @@ local function SellJunkFunc()
                if MerchantFrame:IsShown() then
                   -- If merchant frame is open, vendor the item
                   UseContainerItem(BagID, BagSlot)
-                  tSouldSomething = true
                   -- Perform actions on first iteration
                   if SellJunkTicker._remainingIterations == IterationCount then
                      -- Calculate total price

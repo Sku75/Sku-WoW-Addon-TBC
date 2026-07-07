@@ -4312,19 +4312,6 @@ end
 -- false cleanly on clients without sockets. Used to conditionally add a
 -- "Sockeln" entry to the item context menu.
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function SkuItemHasSockets(aItemLink)
-	if not aItemLink or aItemLink == "" then return false end
-	if not _G.GetItemStats then return false end
-	local ok, stats = pcall(_G.GetItemStats, aItemLink)
-	if not ok or type(stats) ~= "table" then return false end
-	for k, v in pairs(stats) do
-		if type(k) == "string" and string.find(k, "EMPTY_SOCKET") then
-			if type(v) ~= "number" or v > 0 then return true end
-		end
-	end
-	return false
-end
-
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- ----------------------------------------------------------------------
 -- Global helper used by /script lines inside macrotext entries.
@@ -5978,7 +5965,6 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 						end
 					end
 
-					local tFlag
 					for is, vs in pairs(SkuCore.BackgroundSoundFiles) do
 						if aName == is or aName == vs then
 							SkuOptions:StartStopBackgroundSound(false)

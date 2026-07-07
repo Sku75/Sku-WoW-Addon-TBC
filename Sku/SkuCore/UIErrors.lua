@@ -77,8 +77,6 @@ function UIErrors:UIErrorEventHandler(aEvent, tMessage, tMessage1)
 
    local tIsBase
 
-   tMessage = tMessage
-
    --OutOfRangeMelee
    if (tMessage == ERR_BADATTACKPOS or tMessage == ERR_OUT_OF_RANGE) then
       if SkuSettings:Sub("SkuCore").UIErrors.OutOfRangeMelee ~= tOff then
@@ -144,7 +142,7 @@ function UIErrors:UIErrorEventHandler(aEvent, tMessage, tMessage1)
 
    --NotFacing
 
-   if (tMessage == ERR_BADATTACKFACING or tMessage == SPELL_FAILED_UNIT_NOT_INFRONT or tMessage == ERR_BADATTACKFACING or tMessage == SPELL_FAILED_NOT_BEHIND or tMessage == SPELL_FAILED_UNIT_NOT_BEHIND) then
+   if (tMessage == ERR_BADATTACKFACING or tMessage == SPELL_FAILED_UNIT_NOT_INFRONT or tMessage == SPELL_FAILED_NOT_BEHIND or tMessage == SPELL_FAILED_UNIT_NOT_BEHIND) then
       if (SkuSettings:Sub("SkuCore").UIErrors.NotFacing ~= tOff) then
          UIErrors:OutputError(SkuSettings:Sub("SkuCore").UIErrors.NotFacing, tSoundChannel, L["Dir"])
       end
@@ -168,10 +166,6 @@ function UIErrors:UIErrorEventHandler(aEvent, tMessage, tMessage1)
       tIsBase = true
    end
    
-   --[ERR_SPELL_COOLDOWN] = true,
-	--[ERR_ABILITY_COOLDOWN] = true,
-
-
    if tMessage == 50 then --"interrupted"; unknown constant
       if UIErrors:UNIT_SPELLCAST_INTERRUPTED("UNIT_SPELLCAST_INTERRUPTED", "player") then
          tIsBase = true

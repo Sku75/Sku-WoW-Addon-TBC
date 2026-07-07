@@ -395,7 +395,7 @@ end
 
 function Sku:Performance()
 	if not _G["SkuPerformance"] then
-		local f = _G["SkuPerformance"] or CreateFrame("Frame", "SkuPerformance", UIParent, BackdropTemplateMixin and "BackdropTemplate")
+		local f = CreateFrame("Frame", "SkuPerformance", UIParent, BackdropTemplateMixin and "BackdropTemplate")
 		local ttime = 0
 		f:SetMovable(true)
 		f:EnableMouse(true)

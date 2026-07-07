@@ -63,7 +63,6 @@ SkuMob.defaults = {
 	vocalizePlayerNamePlaceholdersSkuTts = false,
 	repeatRaidTargetMarkers = true,
 	autoSetSkuRaidTargetsToInCombatCreatures = false,
-	autoSetSkuRaidTargetsToInCombatCreatures = false,
 	InCombatSound = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3",	
 }
 
@@ -354,7 +353,6 @@ local function tBuildTargetMenu(aParent)
 	local tIsSelf     = tHasTarget and UnitIsUnit("target", "player")
 	local tIsPlayer   = tHasTarget and UnitIsPlayer("target")
 	local tIsPet      = tHasTarget and UnitIsUnit("target", "pet")
-	local tIsFriend   = tHasTarget and UnitIsFriend("player", "target")
 
 	-- =========================================================
 	-- ZWEIG 1: Anderer Spieler im Ziel

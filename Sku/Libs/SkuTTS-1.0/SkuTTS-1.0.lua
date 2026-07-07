@@ -125,7 +125,6 @@ function SkuTTS:ToggleAutoRead(aReset)
 	--print("ToggleAutoRead", currentSection, currentLine)
 	if SkuTTS.MainFrame:IsVisible() == true then
 		if SkuTTS.AutoReadMode ~= true then
-			SkuTTS.AutoReadEventFlag = nil
 			SkuTTS.AutoReadMode = true
 			SkuTTS.AutoReadEventFlag = nil
 			SkuOptions.Voice:StopOutputEmptyQueue(true, nil)

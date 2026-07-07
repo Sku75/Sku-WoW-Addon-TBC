@@ -70,7 +70,6 @@ local function tAddFriendSubmenu(aParent, aIndex, aOnline, aIsBnet)
                local accountInfo = C_BattleNet.GetFriendAccountInfo(aIndex)
                BNSetFriendNote(accountInfo.bnetAccountID, self:GetText() or "")
             else
-               local info = C_FriendList.GetFriendInfoByIndex(aIndex)
                C_FriendList.SetFriendNotesByIndex(aIndex, self:GetText() or "")
             end
             C_Timer.After(0.65, function()

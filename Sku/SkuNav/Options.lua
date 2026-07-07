@@ -424,7 +424,6 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 					SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC = ssub(SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC, string.find(SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC, "#") + 1)
 				end
 				local wpTable = {SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC}
-				local tCoveredWps = {}
 				local tMaxAllowedDistanceToTargetWp = 500
 				local tSortedWaypointList = BuildSortedUniqueRouteWps(tRoutesInRange)
 				if #tSortedWaypointList == 0 then
@@ -496,7 +495,6 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 													SkuSettings:Sub("SkuNav").metapathFollowingEndTarget = tResults[tV].targetWpName
 													SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = true
 												end
-												tCoveredWps[tV] = true
 											end
 										end
 									end
