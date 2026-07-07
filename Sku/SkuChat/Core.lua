@@ -13,8 +13,6 @@ local function tClearLinkReadoutIfNoLinks(self)
 	end
 end
 
-Sku_CombatLog_Filter_Defaults = {}
-
 
 local play = 2	--this is just a local constant for output type (play, true, false)
 -- Output-type constant for "audio via Sku's own TTS" (the pre-recorded audio-file
@@ -4045,7 +4043,6 @@ function SkuChat:InitTab(tNewTabIndex)
 
 
 		--mask bnet names
-		local tNewBody
 		body = MaskBattleNetNames(body)
 
 		--get output type
@@ -4122,7 +4119,6 @@ function SkuChat:InitTab(tNewTabIndex)
 
 			if a.tab.audioOnNewMessage and not tIsBareAuctionCreated then
 				if SkuState:IsInCombat() == true then
-					SkuChatNewLineInCombat = true
 				else
 					if SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].audioOnNewMessage ~= "sound-silence0.1" then
 						SkuOptions.Voice:OutputString(SkuSettings:Sub("SkuChat").tabs[tNewTabIndex].audioOnNewMessage, false, true, 0.1)

@@ -57,18 +57,7 @@ function RangeCheck:RangeCheckUpdateRanges()
       C_Timer.After(0.1, function() RangeCheck:RangeCheckUpdateRanges() end)
       return
    end
-   if not SkuSettings:Sub("SkuCore", nil, "char") then
-      SkuSettings:Sub("SkuCore", nil, "char")
-   end
-
    if not SkuSettings:Sub("SkuCore", nil, "char").RangeChecks then
-      --[[
-      SkuSettings:Sub("SkuCore", nil, "char").RangeChecks = {
-         Friendly = {},
-         Hostile = {},
-         Misc = {},
-      }
-      ]]
       local tDefBands = {5, 8, 10, 15, 20, 25, 30, 35, 40, 45, 60}
       local function tMakeDefaultBands()
          local t = {}
@@ -201,15 +190,4 @@ function RangeCheck:DoRangeCheck(aForceFlag)
       end
    end
 
-   -- local meleeChecker = rc:GetFriendMaxChecker(rc.MeleeRange) or rc:GetFriendMinChecker(rc.MeleeRange) -- use the closest checker (MinChecker) if no valid Melee checker is found
-   -- for i = 1, 4 do
-   --     -- TODO: check if unit is valid, etc
-   --     if meleeChecker("party" .. i) then
-   --         print("Party member " .. i .. " is in Melee range")
-   --     end
-   -- end
-
-   -- local safeDistanceChecker = rc:GetHarmMinChecker(30)
-   -- -- negate the result of the checker!
-   -- local isSafelyAway = not safeDistanceChecker('target')
 end
