@@ -66,6 +66,29 @@ local tModifierKeys = {
 
 local tStandardChars = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ü", "ö", "ß", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", ",", ".", "-", "#", "+", "ß", "´", "<"}
 local tStandardNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",}
+local function ArmBindCaptureKeys(f)
+	for i, v in pairs(_G) do
+		if string.find(i, "KEY_") == 1 then
+			if not string.find(i, "ESC") then
+				for x = 1, #tModifierKeys do
+					SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindControlFrame", tModifierKeys[x]..string.sub(i, 5))
+				end
+			end
+		end
+	end
+
+	for x = 1, #tStandardChars do
+		for y = 1, #tModifierKeys do
+			SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardChars[x])
+		end
+	end
+	for x = 1, #tStandardNumbers do
+		for y = 1, #tModifierKeys do
+			SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardNumbers[x])
+		end
+	end
+end
+
 
 local tActionBarData = {
 	MultiBarLeft = {friendlyName = L["Left Multi Bar"], buttonName = "MultiBarLeftButton", command = "MULTIACTIONBAR4BUTTON", header = "BINDING_HEADER_MULTIACTIONBAR"},
@@ -772,26 +795,7 @@ local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
 			end)
 			SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindControlFrame", "ESCAPE")
 
-			for i, v in pairs(_G) do 
-				if string.find(i, "KEY_") == 1 then 
-					if not string.find(i, "ESC") then
-						for x = 1, #tModifierKeys do
-							SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindControlFrame", tModifierKeys[x]..string.sub(i, 5))
-						end
-					end
-				end 
-			end
-
-			for x = 1, #tStandardChars do
-				for y = 1, #tModifierKeys do
-					SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardChars[x])
-				end
-			end
-			for x = 1, #tStandardNumbers do
-				for y = 1, #tModifierKeys do
-					SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardNumbers[x])
-				end
-			end
+			ArmBindCaptureKeys(f)
 		end)											
 	elseif aName == L["Sekundäre Taste neu belegen"] then
 		SkuOptions.bindingMode = true
@@ -875,26 +879,7 @@ local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
 			end)
 			SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindControlFrame", "ESCAPE")
 
-			for i, v in pairs(_G) do
-				if string.find(i, "KEY_") == 1 then
-					if not string.find(i, "ESC") then
-						for x = 1, #tModifierKeys do
-							SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindControlFrame", tModifierKeys[x]..string.sub(i, 5))
-						end
-					end
-				end
-			end
-
-			for x = 1, #tStandardChars do
-				for y = 1, #tModifierKeys do
-					SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardChars[x])
-				end
-			end
-			for x = 1, #tStandardNumbers do
-				for y = 1, #tModifierKeys do
-					SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardNumbers[x])
-				end
-			end
+			ArmBindCaptureKeys(f)
 		end)
 	elseif aName == L["Belegung löschen"] then
 		if not self.command or not self.category or not self.index then return end
@@ -1037,27 +1022,7 @@ local function BindingHelper(aCurrentMenuEntry, aType, aButtonId, aParentEntry, 
 	end)
 	SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindControlFrame", "ESCAPE")
 
-	for i, v in pairs(_G) do 
-		if string.find(i, "KEY_") == 1 then 
-			if not string.find(i, "ESC") then
-				--dprint(i, v, string.find(i, "KEY_"), string.sub(i, 5))
-				for x = 1, #tModifierKeys do
-					SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindControlFrame", tModifierKeys[x]..string.sub(i, 5))
-				end
-			end
-		end 
-	end
-
-	for x = 1, #tStandardChars do
-		for y = 1, #tModifierKeys do
-			SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardChars[x])
-		end
-	end
-	for x = 1, #tStandardNumbers do
-		for y = 1, #tModifierKeys do
-			SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardNumbers[x])
-		end
-	end
+	ArmBindCaptureKeys(f)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2536,26 +2501,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 							end)
 							SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindControlFrame", "ESCAPE")
 		
-							for i, v in pairs(_G) do 
-								if string.find(i, "KEY_") == 1 then 
-									if not string.find(i, "ESC") then
-										for x = 1, #tModifierKeys do
-											SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindControlFrame", tModifierKeys[x]..string.sub(i, 5))
-										end
-									end
-								end 
-							end
-		
-							for x = 1, #tStandardChars do
-								for y = 1, #tModifierKeys do
-									SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardChars[x])
-								end
-							end
-							for x = 1, #tStandardNumbers do
-								for y = 1, #tModifierKeys do
-									SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardNumbers[x])
-								end
-							end
+							ArmBindCaptureKeys(f)
 						end)											
 					elseif aName == L["Sekundäre Taste neu belegen"] then
 						SkuOptions.bindingMode = true
@@ -2644,26 +2590,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 							end)
 							SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindControlFrame", "ESCAPE")
 
-							for i, v in pairs(_G) do
-								if string.find(i, "KEY_") == 1 then
-									if not string.find(i, "ESC") then
-										for x = 1, #tModifierKeys do
-											SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindControlFrame", tModifierKeys[x]..string.sub(i, 5))
-										end
-									end
-								end
-							end
-
-							for x = 1, #tStandardChars do
-								for y = 1, #tModifierKeys do
-									SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardChars[x])
-								end
-							end
-							for x = 1, #tStandardNumbers do
-								for y = 1, #tModifierKeys do
-									SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardNumbers[x])
-								end
-							end
+							ArmBindCaptureKeys(f)
 						end)
 					elseif aName == L["Belegung löschen"] then
 						if not self.bindingConst then return end
