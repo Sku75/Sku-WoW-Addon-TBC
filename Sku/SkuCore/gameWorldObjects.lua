@@ -157,11 +157,6 @@ function GameWorldObjects:GameWorldObjectsRestoreView()
       SkuCore.MinimapScanner.noMouseOverNotification = nil
       SetCVar("cameraPitchMoveSpeed", GameWorldObjects.gameWorldObjectsScanFrame.oldCameraPitchMoveSpeed)
       SetView(2)
-      --[[
-      if Questie_BaseFrame and SkuCore.inCombat == false then
-         Questie_BaseFrame:Show()
-      end
-      ]]
       SkuOptions:StartStopBackgroundSound(false)
    end
 end
@@ -582,11 +577,6 @@ function GameWorldObjects:GameWorldObjectsScan(aContinue, aFindList, aHStepSizeD
    end
 
    tResetRequired = true
-   --[[
-   if Questie_BaseFrame and SkuCore.inCombat == false then
-      Questie_BaseFrame:Hide()
-   end
-   ]]
 
    tFrame.isScanningActive = true
    SkuOptions:StartStopBackgroundSound(true, SkuSettings:Sub("SkuCore").scanBackgroundSound)

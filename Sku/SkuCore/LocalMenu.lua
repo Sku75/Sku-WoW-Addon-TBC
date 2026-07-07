@@ -648,41 +648,6 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 		}   		
 	end
 
---[[
-	--info
-	local tName = _G["GuildBankFrameTab4"]:GetText()
-	table.insert(aParentChilds, tName)
-	aParentChilds[tName] = {
-		frameName = "",
-		RoC = "Child",
-		type = "Button",
-		obj = nil,
-		textFirstLine = tName,
-		textFull = "",
-		--noMenuNumbers = true,
-		childs = {},
-	}
-
-	if _G["GuildBankInfoScrollFrame"]:IsVisible() == true and _G["GuildBankInfoSaveButton"]:IsVisible() == true then
-
-
-	else
-		local tSlotName = L["anzeigen"]
-		table.insert(aParentChilds[tName].childs, "GuildBankFrameTab4")
-		aParentChilds[tName].childs["GuildBankFrameTab4"] = {
-			frameName = "GuildBankFrameTab4",
-			RoC = "Child",
-			type = "Button",
-			obj = _G["GuildBankFrameTab4"],
-			textFirstLine = tSlotName,
-			textFull = "",
-			noMenuNumbers = true,
-			childs = {},
-			click = true,
-			func = _G["GuildBankFrameTab4"]:GetScript("OnClick"),
-		}   		
-	end
-]]
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1331,11 +1296,6 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
 					if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
 						local tText = SkuUtil:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
-						--[[
-						if string.find(tText, "Equip Container") then
-							tText = L["Empty"]
-						end
-						]]
 						tText = x.." "..tText
 						aParentChilds[tFriendlyName].textFirstLine, aParentChilds[tFriendlyName].textFull = SkuCore:ItemName_helper(tText)
 					end
@@ -2357,44 +2317,6 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 		SkuCore:BuildEngravingFrame(aParentChilds)
 	end
 
---[[
-	--Currency
-	local tFrameName = ""
-	local tFriendlyName = L["Currency"]
-	table.insert(aParentChilds, tFriendlyName)
-	aParentChilds[tFriendlyName] = {
-		frameName = tFrameName,
-		RoC = "Child",
-		type = "Button",
-		obj = _G[tFrameName],
-		textFirstLine = tFriendlyName,
-		textFull = "",
-		childs = {},
-		--click = true,
-	}   
-	local tParentCurrency = aParentChilds[tFriendlyName].childs
-
-		for i = 1, 10 do
-			local name, isHeader, isExpanded, isUnused, isWatched, count, icon, maxQuantity, maxEarnable, quantityEarned, isTradeable, itemID = GetCurrencyListInfo(i)
-			--print(name, isHeader, isExpanded, isUnused, isWatched, count, icon, maxQuantity, maxEarnable, quantityEarned, isTradeable, itemID)
-			if name and isHeader ~= true then
-				--print(, itemID)
-				local tFrameName = ""
-				local tFriendlyName = SkuUtil:Unescape(name.." "..count)
-				table.insert(tParentCurrency, tFriendlyName)
-				tParentCurrency[tFriendlyName] = {
-					frameName = tFrameName,
-					RoC = "Child",
-					type = "Button",
-					obj = _G[tFrameName],
-					textFirstLine = tFriendlyName,
-					textFull = "",
-					childs = {},
-					--click = true,
-				}
-			end
-		end
-]]
 
 	-- ====================================================================
 	-- Berufe (Professions)
@@ -3271,84 +3193,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 		childs = {},
 	}
 
-	--[[
 
-	local tFrameName = ""
-	--local tSearchText = TradeSkillFrameEditBox:GetText() or ""
-	local tFriendlyName = L["Filter"]
-	local tLabel = tFriendlyName
-	if tSearchText ~= "" and tSearchText ~= L["Search"] then
-		tLabel = tLabel.." = "..tSearchText
-	end
-	table.insert(aParentChilds, tFriendlyName)
-	aParentChilds[tFriendlyName] = {
-		frameName = tFrameName,
-		RoC = "Child",
-		type = "Button",
-		obj = _G["TradeSkillFrameEditBox"],
-		textFirstLine = tLabel,
-		textFull = "",
-		childs = {},
-		func = function()
-			C_Timer.After(0.8, function()
-				SkuOptions.Voice:OutputStringBTtts(L["Enter search term and complete with enter or press escape to clear the search term"], true, true, 0.8, true, nil, nil, 1, nil, nil, true)
-			end)
-			if _G["TradeSkillFrameEditBox"] then
-				TradeSkillFrameEditBox:SetFocus()
-				TradeSkillFrameEditBox:HookScript("OnEscapePressed", function(self)
-					C_Timer.After(0.1, function()
-						PlaySound(89) 
-						TradeSkillFrameEditBox:SetText("")
-						SkuOptions.currentMenuPosition:OnUpdate()
-					end)
-
-				end)
-				TradeSkillFrameEditBox:HookScript("OnEnterPressed", function(self)
-					C_Timer.After(0.1, function()
-						PlaySound(89) 
-						SkuOptions.currentMenuPosition:OnUpdate()
-					end)
-
-				end)
-				
-			end
-		end,            
-		click = true,
-	}
-	]]
-
-	--[[
-	local tFrameName = "TradeSkillFrameAvailableFilterCheckButton"
-	if _G[tFrameName] then
-		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
-			local tChecked = L["not checked"]
-			if _G[tFrameName]:GetChecked() == true then
-				tChecked = L["checked"]
-			end
-			local tFriendlyName = L["Have materials"]
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName.." ("..tChecked..")",
-				textFull = "",
-				childs = {},
-				func = function(self, aButton)
-					if self:GetChecked() == true then
-						self:SetChecked(false)
-					else
-						self:SetChecked(true)
-					end
-
-					self:GetScript("OnClick")(self, aButton)             
-				end,            
-				click = true,
-			}   
-		end
-	end
-	]]
 
 	local tFrameName = "TradeSkillListScrollFrameScrollBarScrollUpButton"
 	if _G[tFrameName] then
@@ -3399,11 +3244,6 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 
 				--local tCountText = _G[tFrameName.."Count"]:GetText()
 				local tFriendlyName = SkuUtil:Unescape(_G[tFrameName].text:GetText())
-				--[[
-				if tCountText then
-					tFriendlyName = tFriendlyName.." "..tCountText
-				end
-				]]
 
 				if tDifficulty == "subheader" or tDifficulty == "header" then
 					tFriendlyName = tFriendlyName.." ("..L["category"]..")"
@@ -3471,12 +3311,6 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 			tRequirements = tRequirements..tReqStr.."\r\n"
 		end
 	end
-	--[[
-	local tCost = ""
-	if _G["CraftCost"] and _G["CraftCost"]:GetText() then
-		tCost = SkuUtil:Unescape(_G["CraftCost"]:GetText()) or ""
-	end
-]]	
 	local tDescription = ""
 	if _G["TradeSkillDescription"] and _G["TradeSkillDescription"]:GetText() then
 		tDescription = SkuUtil:Unescape(_G["TradeSkillDescription"]:GetText()) or ""

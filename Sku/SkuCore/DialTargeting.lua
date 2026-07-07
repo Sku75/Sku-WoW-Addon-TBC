@@ -311,15 +311,6 @@ function DialTargeting:DialTargetingRosterUpdate()
             end
          end
 
-         --[[
-         for x = 1, 10 do
-            for y = 1, 5 do
-               if _G["SkuSecureTargetingFrame"]:GetAttribute("unitNameSlot"..string.format("%02d", x).."-"..string.format("%02d", y)) then
-                  print("G", x, "S", y, _G["SkuSecureTargetingFrame"]:GetAttribute("unitNameSlot"..string.format("%02d", x).."-"..string.format("%02d", y), nil))
-               end
-            end
-         end
-         ]]
 
          ClearOverrideBindings(_G["SkuSecureTargetingFrame"])
          ClearOverrideBindings(_G["SkuSecureTargetingToggleHandler"])

@@ -921,12 +921,6 @@ function SkuAuras:MenuBuilder(aParentEntry)
 				end
 			end		
 		end
-		--[[
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Neu aus Vorlage"}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.BuildChildren = function(self)
-		end
-		]]
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Auren verwalten"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.isSelect = true
@@ -1186,21 +1180,6 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		
 	end }
 	SkuMenu:Build(aParentEntry, tSpecs)
-	--[[
-	---
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {"Zauberdatenbank"}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.sorting = true
-	tNewMenuParentEntry.OnAction = function(self, aValue, aName)
-
-	end
-	tNewMenuParentEntry.BuildChildren = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Eigene"}, SkuGenericMenuItem)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Spieler"}, SkuGenericMenuItem)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Alle"}, SkuGenericMenuItem)
-	end
-
-	]]
 
 	---
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
