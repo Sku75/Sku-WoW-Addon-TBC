@@ -281,7 +281,7 @@ local function monitorRaidHealth2ContiOutput(aForce)
 			if v == w then
 
 
-				local tIndex, tUnitID = x, i
+				local tUnitID = i
 				local tUnitGUID = UnitGUID(tUnitID)
 				if tUnitGUID then
 					local tRoleID = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.roleAssigments[tUnitNumbersRaid[tUnitID]]

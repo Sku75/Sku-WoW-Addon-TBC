@@ -707,7 +707,6 @@ SkuSettings:Register("SkuCore", {
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
-	print("cat OnAction 2", aValue, aName, self.name)
 	if aName == L["Neu belegen"] then
 		SkuOptions.bindingMode = true
 
@@ -727,7 +726,6 @@ local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
 			f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
 			f:SetPoint("CENTER")
 			f:SetScript("OnClick", function(self, aKey, aB)
-				print(aKey, aB)
 				if aKey ~= "ESCAPE" then
 					if not self.command or not self.category or not self.menuTarget or not self.index then return end
 					for z = 1, #tBlockedKeysParts do
@@ -746,7 +744,6 @@ local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
 					end
 
 					local tCommand = SkuCore:CheckBound(aKey)
-					print("tCommand, aKey", tCommand, aKey)
 					local bindingConst = SkuOptions:SkuKeyBindsCheckBound(aKey)
 					if tCommand or bindingConst then
 						if not self.prevKey or self.prevKey ~= aKey then
@@ -785,7 +782,6 @@ local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
 						_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
 						_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
 					end
-					print("aFriendlyKey1", aFriendlyKey1)
 					SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..aFriendlyKey1, true, true, 0.2, true, nil, nil, 2)
 				elseif aKey == "ESCAPE" then
 					SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2, true, nil, nil, 2)
@@ -1275,11 +1271,6 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 							ClearCursor()
 						end
 					end
-				elseif self.macroID then
-					ClearCursor()
-					PickupMacro(self.macroID)
-					PlaceAction(self.buttonObj.action)
-					ClearCursor()
 				elseif self.equipmentSetID then
 					ClearCursor()
 					PickupAction(self.buttonObj.action)

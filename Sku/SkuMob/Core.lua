@@ -366,13 +366,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 
 		local tUnitName = GetUnitName(aUnitId, false)
 		local tUnitLevel = UnitLevel(aUnitId)
-		local tUnitIsEnemy = UnitIsEnemy("player",aUnitId)
-		local tUnitIsFriend = UnitIsFriend("player",aUnitId)
-		local tCreatureType = UnitCreatureType(aUnitId)
-		local tCreatureFamily = UnitCreatureFamily(aUnitId)
 		local tClassification = UnitClassification(aUnitId)
-		local ok, tInteractDistance = pcall(CheckInteractDistance, aUnitId, 4)
-		if not ok then tInteractDistance = nil end
 
 		local noSubText
 
@@ -419,7 +413,6 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			noSubText = true
 		end
 
-		local tUnitReaction = UnitReaction("player", aUnitId)
 			--[[
 			1 Exceptionally hostile
 			2 Very Hostile
@@ -431,14 +424,6 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			8 Exalted
 			]]
 
-		--threat meter
-		local status = UnitThreatSituation("player", aUnitId)
-		--dprint(tUnitLevel, tUnitIsEnemy, tUnitIsFriend, tCreatureType, tCreatureFamily, tClassification, tInteractDistance, tUnitReaction, status, isTanking, status, threatpct, rawthreatpct, threatvalue)
-		if status then
-			local isTanking, status, threatpct, rawthreatpct, threatvalue = UnitDetailedThreatSituation("player", aUnitId) --https://wowwiki-archive.fandom.com/wiki/API_UnitDetailedThreatSituation
-			--local statustxts = { "low on threat",  "overnuking", "losing threat", "tanking securely" }
-			--dprint("You are " .. statustxts[status + 1] .. ".")
-		end
 
 		--target in combat indicator
 		local tRosterNames = {}
