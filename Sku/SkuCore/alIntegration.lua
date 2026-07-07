@@ -1437,7 +1437,7 @@ local function addToItemsRepos(aItemId, aNpcID, aContentInteralName, aBossIndex,
 
    local tName = C_Item.GetItemNameByID(aItemId)
    if tName and tName  ~= "" then
-      tItemNameTable[tName] = {itemID = aItemId, npcId = aNnpcID, internalName = aContentInteralName, bossIndex = aBossIndex, ttype = nil, difficultyIndex = aDifficultyIndex}
+      tItemNameTable[tName] = {itemID = aItemId, npcId = aNpcID, internalName = aContentInteralName, bossIndex = aBossIndex, ttype = nil, difficultyIndex = aDifficultyIndex}
    end
 end
 

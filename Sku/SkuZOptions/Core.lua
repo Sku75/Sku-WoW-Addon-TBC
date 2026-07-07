@@ -6208,12 +6208,6 @@ function SkuOptions:SendTrackingStatusUpdates(aStatusUpdate)
 		if SkuStatus.followUnitName then
 			table.insert(tUpdateList, "FN".."-"..SkuStatus.followUnitName)
 		end
-		if SkuStatus.follow == 0 then
-			tIndex, tValue = "F", 4
-		else
-			tIndex, tValue = "F", 1
-		end
-		table.insert(tUpdateList, tIndex.."-"..tValue)
 		if SkuStatus.interacting == 2 then
 			tIndex, tValue = "I", 2
 		elseif SkuStatus.interacting == 1 then

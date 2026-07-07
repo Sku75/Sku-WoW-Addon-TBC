@@ -2516,7 +2516,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 					dprint("autoLootDefault", C_CVar.GetCVar("autoLootDefault", "1"))
 					C_CVar.SetCVar("alwaysShowActionBars", "1")
 					C_CVar.SetCVar("cameraSmoothStyle", "2")
-					C_CVar.GetCVar("removeChatDelay", "1")
+					C_CVar.SetCVar("removeChatDelay", "1")
 
 					SetCVar("cameraViewBlendStyle", 2) --Controls if the camera moves from saved positions - 1 smoothly 2 instantly
 
@@ -2573,7 +2573,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 					C_CVar.SetCVar("autoLootDefault", "1")
 					C_CVar.SetCVar("alwaysShowActionBars", "1")
 					C_CVar.SetCVar("cameraSmoothStyle", "2")
-					C_CVar.GetCVar("removeChatDelay", "1")
+					C_CVar.SetCVar("removeChatDelay", "1")
 				end
 			end)
 
@@ -2711,7 +2711,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			C_CVar.SetCVar("autoLootDefault", "1")
 			C_CVar.SetCVar("alwaysShowActionBars", "1")
 			C_CVar.SetCVar("cameraSmoothStyle", "2")
-			C_CVar.GetCVar("removeChatDelay", "1")
+			C_CVar.SetCVar("removeChatDelay", "1")
 
 			SetCVar("cameraViewBlendStyle", 2)
 
