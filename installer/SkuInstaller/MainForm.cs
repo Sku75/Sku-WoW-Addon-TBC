@@ -375,7 +375,41 @@ namespace SkuInstaller
                 plan.SettingsNeedWriting = true;
                 plan.NeedsGameClosed = true;
             }
+
+            // TOC interface sync: keep every installed addon's "## Interface:" line
+            // in step with the client(s), so they load after a client patch even if
+            // nothing was re-downloaded. Drift alone counts as work (so a pure
+            // "client patched" run isn't reported as up to date) but does NOT force
+            // the game closed — a TOC is a tiny text file, safe to rewrite live and
+            // picked up on the next /reload. Symlinked dev folders are left alone.
+            plan.DesiredInterface = WowLocator.InterfaceVersionList(_addonsFolder);
+            if (!string.IsNullOrEmpty(plan.DesiredInterface))
+            {
+                foreach (var spec in AllManagedSpecs())
+                {
+                    string folder = System.IO.Path.Combine(_addonsFolder, spec.FolderName);
+                    if (!System.IO.Directory.Exists(folder)) continue;              // will get the right number when installed + synced below
+                    if (AddonInstaller.IsSymlinked(_addonsFolder, spec.FolderName)) continue;
+
+                    string cur = TocSync.ReadInterface(_addonsFolder, spec.FolderName);
+                    if (cur != null && !string.Equals(cur, plan.DesiredInterface, StringComparison.Ordinal))
+                        plan.TocInterfaceIssues.Add($"{spec.FolderName}: {cur} -> {plan.DesiredInterface}");
+                }
+                if (plan.TocInterfaceIssues.Count > 0)
+                    plan.TocInterfaceNeedsSync = true;
+            }
+            else
+            {
+                Logger.Warning("Could not determine client interface version(s); skipping TOC sync.");
+            }
             return plan;
+        }
+
+        /// <summary>Every addon the installer manages: the core set plus every language pack.</summary>
+        private static IEnumerable<AddonSpec> AllManagedSpecs()
+        {
+            foreach (var s in Config.CoreAddons) yield return s;
+            foreach (var s in Config.LanguagePacks) yield return s;
         }
 
         /// <summary>
@@ -390,6 +424,14 @@ namespace SkuInstaller
 
             if (plan.SettingsNeedWriting)
                 GameSettings.Apply(_addonsFolder, Announce);
+
+            // Sync every installed addon's TOC "## Interface:" to the client(s).
+            // Unconditional (idempotent) so a just-downloaded addon whose shipped
+            // TOC lags the client gets corrected too, not only the skipped ones.
+            if (!string.IsNullOrEmpty(plan.DesiredInterface))
+                foreach (var spec in AllManagedSpecs())
+                    if (System.IO.Directory.Exists(System.IO.Path.Combine(_addonsFolder, spec.FolderName)))
+                        TocSync.SyncInterface(_addonsFolder, spec.FolderName, plan.DesiredInterface, Announce);
         }
 
         private void EnsureShortcuts(bool wantDesktop)

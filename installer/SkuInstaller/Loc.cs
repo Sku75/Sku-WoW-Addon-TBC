@@ -95,6 +95,7 @@ namespace SkuInstaller
             ["ai.installing"]        = "{0}: installing files…",
             ["ai.locked"]            = "{0}: {1} file(s) were in use — close the game and run the updater again.",
             ["ai.installed"]         = "{0}: installed {1}.",
+            ["toc.synced"]           = "{0}: interface version {1} -> {2} (matches your game client).",
             // game settings progress (used from GameSettings)
             ["gs.setGlobal"]         = "Game setting: {0} = {1} (global).",
             ["gs.setAccount"]        = "Game setting: {0} = {1} (account).",
@@ -155,6 +156,7 @@ namespace SkuInstaller
             ["ai.installing"]        = "{0}: installiere Dateien…",
             ["ai.locked"]            = "{0}: {1} Datei(en) waren in Benutzung – schließe das Spiel und starte den Updater erneut.",
             ["ai.installed"]         = "{0}: installiert ({1}).",
+            ["toc.synced"]           = "{0}: Interface-Version {1} -> {2} (passend zu deinem Spielclient).",
             ["gs.setGlobal"]         = "Spieleinstellung: {0} = {1} (global).",
             ["gs.setAccount"]        = "Spieleinstellung: {0} = {1} (Account).",
             ["gs.deferred"]          = "Spieleinstellung: {0} wird nach deinem ersten Login gesetzt (noch kein Account-Profil vorhanden).",

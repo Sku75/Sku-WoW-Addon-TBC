@@ -283,5 +283,109 @@ namespace SkuInstaller
             }
             return null;
         }
+
+        // --- Client interface version (for TOC "## Interface:" sync) ---
+        //
+        // WoW records each installed product's build version in ".build.info" at the
+        // WoW base dir (a "|"-delimited table with a header row). The TOC interface
+        // number is that build's first three dotted parts folded as
+        // major*10000 + minor*100 + patch  (2.5.6 -> 20506, 1.15.8 -> 11508).
+
+        /// <summary>
+        /// The Interface version(s) of the installed, Sku-supported client(s)
+        /// (Anniversary + Classic Era), formatted as a TOC "## Interface:" list —
+        /// highest first, e.g. "20506, 11508". Empty string if none can be read.
+        /// The .build.info at a base dir lists every product, so reading the base
+        /// that owns <paramref name="addonsFolder"/> already yields both clients;
+        /// if that fails (e.g. a custom/throwaway path) we scan the machine.
+        /// </summary>
+        public static string InterfaceVersionList(string addonsFolder)
+        {
+            var versions = new System.Collections.Generic.List<int>();
+
+            string baseDir = BaseDirOf(addonsFolder);
+            if (baseDir != null)
+                CollectInterfaceVersions(baseDir, versions);
+
+            if (versions.Count == 0)
+                foreach (var bd in CandidateBaseDirs())
+                    CollectInterfaceVersions(bd, versions);
+
+            var ordered = versions.Distinct().OrderByDescending(v => v);
+            return string.Join(", ", ordered);
+        }
+
+        /// <summary>WoW base dir that owns an AddOns tree (…\&lt;base&gt;\_flavor_\Interface\AddOns).</summary>
+        private static string BaseDirOf(string addonsFolder)
+        {
+            try
+            {
+                var interfaceDir = Directory.GetParent(addonsFolder); // Interface
+                var flavor = interfaceDir?.Parent;                    // _flavor_
+                var baseDir = flavor?.Parent;                         // WoW base
+                return baseDir?.FullName;
+            }
+            catch { return null; }
+        }
+
+        /// <summary>
+        /// Adds the interface number of each Sku-supported product found in
+        /// &lt;baseDir&gt;\.build.info (Anniversary + Classic Era only — never
+        /// wow_classic/retail, which run different interface numbers).
+        /// </summary>
+        private static void CollectInterfaceVersions(string baseDir, System.Collections.Generic.List<int> into)
+        {
+            if (string.IsNullOrEmpty(baseDir)) return;
+            string buildInfo = Path.Combine(baseDir, ".build.info");
+            if (!File.Exists(buildInfo)) return;
+
+            try
+            {
+                var lines = File.ReadAllLines(buildInfo);
+                if (lines.Length < 2) return;
+
+                // Header names carry a "!TYPE:len" suffix — strip it to find columns.
+                var headers = lines[0].Split('|');
+                int verCol = -1, prodCol = -1;
+                for (int i = 0; i < headers.Length; i++)
+                {
+                    string name = headers[i].Split('!')[0].Trim();
+                    if (name.Equals("Version", StringComparison.OrdinalIgnoreCase)) verCol = i;
+                    else if (name.Equals("Product", StringComparison.OrdinalIgnoreCase)) prodCol = i;
+                }
+                if (verCol < 0 || prodCol < 0) return;
+
+                for (int r = 1; r < lines.Length; r++)
+                {
+                    if (string.IsNullOrWhiteSpace(lines[r])) continue;
+                    var cols = lines[r].Split('|');
+                    if (verCol >= cols.Length || prodCol >= cols.Length) continue;
+
+                    string product = cols[prodCol].Trim();
+                    if (product != Config.AnniversaryFlavor && product != "wow_classic_era")
+                        continue;
+
+                    int iface = InterfaceFromBuildVersion(cols[verCol].Trim());
+                    if (iface > 0) into.Add(iface);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Warning($"Could not read .build.info in {baseDir}: {ex.Message}");
+            }
+        }
+
+        /// <summary>"2.5.6.68502" -> 20506 (major*10000 + minor*100 + patch). 0 if unparseable.</summary>
+        internal static int InterfaceFromBuildVersion(string build)
+        {
+            if (string.IsNullOrWhiteSpace(build)) return 0;
+            var parts = build.Split('.');
+            if (parts.Length < 3) return 0;
+            if (int.TryParse(parts[0], out int maj) &&
+                int.TryParse(parts[1], out int min) &&
+                int.TryParse(parts[2], out int pat))
+                return maj * 10000 + min * 100 + pat;
+            return 0;
+        }
     }
 }

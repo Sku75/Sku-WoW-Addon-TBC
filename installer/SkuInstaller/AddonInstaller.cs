@@ -38,8 +38,18 @@ namespace SkuInstaller
         public System.Collections.Generic.List<string> SettingsIssues =
             new System.Collections.Generic.List<string>();
 
-        /// <summary>True if there's anything to do at all (addons or settings).</summary>
-        public bool HasWork => Items.Count > 0 || SettingsNeedWriting;
+        /// <summary>
+        /// Installed addons whose TOC "## Interface:" line no longer matches the
+        /// client(s) and needs rewriting so they keep loading after a client patch.
+        /// </summary>
+        public bool TocInterfaceNeedsSync;
+        /// <summary>The interface list to write, e.g. "20506, 11508" (from the client's .build.info).</summary>
+        public string DesiredInterface;
+        public System.Collections.Generic.List<string> TocInterfaceIssues =
+            new System.Collections.Generic.List<string>();
+
+        /// <summary>True if there's anything to do at all (addons, settings, or TOC sync).</summary>
+        public bool HasWork => Items.Count > 0 || SettingsNeedWriting || TocInterfaceNeedsSync;
     }
 
     /// <summary>

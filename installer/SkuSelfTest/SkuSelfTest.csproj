@@ -30,6 +30,7 @@
     <Compile Include="..\SkuInstaller\InstallManifest.cs" Link="InstallManifest.cs" />
     <Compile Include="..\SkuInstaller\AddonInstaller.cs"  Link="AddonInstaller.cs" />
     <Compile Include="..\SkuInstaller\GameSettings.cs"    Link="GameSettings.cs" />
+    <Compile Include="..\SkuInstaller\TocSync.cs"         Link="TocSync.cs" />
   </ItemGroup>
 
 </Project>

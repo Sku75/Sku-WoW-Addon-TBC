@@ -204,6 +204,43 @@ Mechanics:
 the Social Contract, and auto-login are account/server- or launcher-side one-time
 interactions — there's no CVar for them. The installer can't pre-accept these.
 
+## TOC interface sync — client-patch resilience (`TocSync.cs`, implemented)
+
+A WoW client patch can bump the **interface number** an addon must advertise in
+its TOC `## Interface:` line — e.g. the Anniversary client went 1.15.8 → 2.5.6,
+i.e. `11508` → `20506`. An addon whose TOC still names the old number is flagged
+out of date and can stop loading, *even the companions the updater didn't
+re-download this run*. So on **every** run (update available or not) the updater
+rewrites each installed managed addon's interface line to the current client
+number(s). This is the belt to `checkAddonVersion 0`'s suspenders — together
+they survive a major client bump.
+
+Mechanics:
+- **Source of truth is the client, not the download.** The number(s) come from
+  `WowLocator.InterfaceVersionList` reading `<WoW base>\.build.info` (the `Version`
+  column per `Product`, folded `major*10000 + minor*100 + patch`). This is
+  deliberately *not* taken from the downloaded zip's TOC, because the shipped Sku
+  TOC can itself lag the client — the exact failure this guards against.
+- **Multi-client by design.** `.build.info` lists every product, so we write the
+  union of the Sku-supported clients present (Anniversary + Classic Era), highest
+  first — e.g. `## Interface: 20506, 11508` — so one TOC loads on both. Other
+  products (retail/MoP `wow_classic`) are filtered out.
+- **Drift counts as work but stays live.** If a TOC is out of step the run isn't
+  reported "up to date"; but a TOC is a tiny text file, so the sync never forces
+  the game closed — it's rewritten in place and picked up on the next `/reload`.
+  A TOC locked by the running game is skipped and retried next run.
+- **Idempotent + BOM-safe.** Already-matching lines are left untouched; the
+  UTF-8 BOM and existing line endings are preserved; only the interface line is
+  touched.
+- **Symlink guard (shared with the installer).** A symlinked/junctioned addon
+  folder (a developer's `Sku` → git checkout) is never rewritten, so the sync
+  can't clobber source through the symlink. On a dev box that means companions
+  get synced but the checked-out `Sku` TOC is left to the developer.
+
+Verify headlessly (no download, no live install touched):
+`SkuSelfTest.exe toctest` — checks the version math, reads the real machine
+`.build.info`, and round-trips a throwaway BOM TOC, printing PASS/FAIL lines.
+
 ## Default Sku settings (blank for now)
 
 `DefaultSettings.cs` is **parked for a future iteration — its call site in
@@ -264,6 +301,7 @@ installer/
     InstallManifest.cs       ← the per-addon installed-tag record (SkuInstall.json)
     Shortcut.cs              ← persistent updater copy + desktop/Start-menu shortcuts
     GameSettings.cs          ← enforce the blocker CVars (checkAddonVersion, AllowDangerousScripts)
+    TocSync.cs               ← rewrite each addon's TOC "## Interface:" to the client number(s)
     DefaultSettings.cs       ← blank hook for seeding default Sku options
     Logger.cs                ← optional desktop log (matches Arena behaviour)
     MainForm.cs              ← single accessible install/update window
@@ -315,8 +353,8 @@ exercising the no-re-download path.
 ## Status of each file (so review is targeted)
 
 - `Config.cs`, `GitHubClient.cs`, `WowLocator.cs`, `AddonInstaller.cs`,
-  `InstallManifest.cs`, `GameSettings.cs`, `Shortcut.cs`, `Logger.cs` — real,
-  reviewable logic.
+  `InstallManifest.cs`, `GameSettings.cs`, `TocSync.cs`, `Shortcut.cs`,
+  `Logger.cs` — real, reviewable logic.
 - `Program.cs`, `MainForm.cs` — real flow, but the UI is a single window kept
   intentionally simple; expand into the Arena-style multi-page wizard later.
 - `DefaultSettings.cs` — intentional stub (seeding Sku *addon* options; the
