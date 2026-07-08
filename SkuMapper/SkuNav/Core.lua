@@ -821,8 +821,15 @@ function SkuNav:GetCurrentAreaId(aUnitId, pr)
 	local tMinimapZoneText = GetMinimapZoneText()
 	local tAreaId
 
+	-- [bugfix] tPlayerUIMap was undeclared (a nil global), and the extra
+	-- `ParentAreaID == C_Map.GetBestMapForUnit("player")` compared an internal
+	-- parent-area index against a raw uiMapId — so this loop never matched and
+	-- zone detection always fell through to the name-only fallback below. Aligned
+	-- to Sku's fixed GetCurrentAreaId: match by minimap zone name + resolved
+	-- uiMap, honouring aUnitId.
+	local tPlayerUIMap = SkuNav:GetBestMapForUnit(aUnitId or "player")
 	for i, v in pairs(SkuDB.InternalAreaTable) do
-		if (v.AreaName_lang[Sku.Loc] == tMinimapZoneText) and v.ParentAreaID == C_Map.GetBestMapForUnit("player") and (SkuNav:GetUiMapIdFromAreaId(i) == tPlayerUIMap) then
+		if (v.AreaName_lang[Sku.Loc] == tMinimapZoneText) and (SkuNav:GetUiMapIdFromAreaId(i) == tPlayerUIMap) then
 			tAreaId = i
 			break
 		end

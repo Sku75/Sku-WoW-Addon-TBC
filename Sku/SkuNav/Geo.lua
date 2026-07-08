@@ -195,6 +195,14 @@ function SkuNav:GetCurrentAreaId(aUnitId)
 	--dprint("GetCurrentAreaId")
 	local tMinimapZoneText = GetMinimapZoneText()
 	local tAreaId
+	-- [bugfix] tPlayerUIMap was never declared in this function (unlike its
+	-- sibling GetAreaIdFromAreaName), so the comparison below tested against a nil
+	-- global: the loop only ever matched zones whose uiMap failed to resolve, the
+	-- intended uiMap disambiguation was dead, and every normal open-world zone
+	-- fell through to the weaker name-only fallback (which can return the wrong
+	-- areaId when two zones share a name). Declare it as the sibling does, and
+	-- honour aUnitId the same way the fallback below already does.
+	local tPlayerUIMap = SkuNav:GetBestMapForUnit(aUnitId or "player")
 	for i, v in pairs(SkuDB.InternalAreaTable) do
 		if (v.AreaName_lang[Sku.Loc] == tMinimapZoneText) and (SkuNav:GetUiMapIdFromAreaId(i) == tPlayerUIMap) then
 			tAreaId = i
