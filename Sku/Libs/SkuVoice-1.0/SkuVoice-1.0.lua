@@ -92,12 +92,18 @@ local mSkuVoiceQueueBTTS_Voice = {}
 local mBttsCacheBust = 0
 local function BttsCacheBust(aString)
 	mBttsCacheBust = (mBttsCacheBust % 64) + 1
-	-- Unique suffix for WoW's audio cache using an SSML <bookmark> tag rather than
-	-- an invisible character: SAPI parses bookmarks out as metadata, so they never
-	-- enter NVDA's text pipeline (zero prosody effect), and our engine patch skips
-	-- them anyway. WoW's SpeakText treats the text as XML (it injects its own
-	-- start/end bookmarks), so this rides the same path.
-	return aString .. string.format('<bookmark mark="skc%d"/>', mBttsCacheBust)
+	-- Two things:
+	-- 1) Leading U+00A0 NO-BREAK SPACE (C2 A0): quest text is spoken as several
+	--    separate queued utterances; each is assembled with a LEADING space that
+	--    XML normalization trims, so NVDA glues a punctuation-less header to the
+	--    next utterance's first word ("questtext"+"vor" -> "questtextvor"). U+00A0
+	--    is not XML whitespace, so it survives trimming and keeps the word
+	--    boundary at the seam, without being spoken.
+	-- 2) Trailing <bookmark> tag: WoW's 12.0 audio cache replays cached (silent)
+	--    audio for the bridge on repeats; a cycling bookmark makes each string
+	--    unique -> cache miss. SAPI parses it out as metadata (inaudible) and our
+	--    engine patch strips it anyway.
+	return "\194\160" .. aString .. string.format('<bookmark mark="skc%d"/>', mBttsCacheBust)
 end
 
 function SkuVoice:Create()
