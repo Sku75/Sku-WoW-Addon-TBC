@@ -3,7 +3,8 @@
 Sku is a World of Warcraft addon that provides a complete screen-reader
 interface, making the game accessible for blind and visually impaired players
 (works with NVDA/JAWS). This repo is a **development workspace** for the TBC
-Anniversary version (Interface 11508, currently v41.06).
+Anniversary version (Interface 20506, 11508 — TBC 2.5.6 + Era 1.15.8;
+currently v41.06).
 
 ## Origin & contribution model (read first)
 
