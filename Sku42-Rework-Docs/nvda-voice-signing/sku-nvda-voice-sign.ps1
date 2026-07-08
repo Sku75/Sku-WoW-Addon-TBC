@@ -52,7 +52,10 @@ param(
 # copies of the same build. Regenerate with -Mode Pin when bundling a new
 # SAPI2SR version.  Current pins: SAPI2SR-Setup-1.0.0.0 payload.
 $PinnedPeHashes = @{
-	'250418EF8273BA053725FDAD4494719A9AB9AC780804A1797C2544C210B41974' = 'sapi2sr_engine.dll x64 (1.0.0.0)'
+	# Sku bookmark-fix build: the engine's ISpTTSEngine::Speak loop was patched to
+	# skip SPVA_Bookmark fragments (WoW 12.0.x emits boundary bookmarks named
+	# start/end; the stock engine spoke the mark names). See ../ bookmark-fix notes.
+	'A7F300BA5D0ABA24D33AA9F31617D98B1D620CC68ECC363A78D26E63AD1D3930' = 'sapi2sr_engine.dll x64 (1.0.0.0 + Sku bookmark fix + speakText route)'
 	'1281E2B96CD5CAC5672E8ECCD7406A3FB29F80EAA1AC3BFE99E13CBE0CFE9360' = 'sapi2sr_engine.dll x86 (1.0.0.0)'
 }
 

@@ -81,14 +81,45 @@ local mSkuVoiceQueueBTTS_Speaking = {}
 -- OutputStringBTtts (writes) and the OnUpdate dequeue (reads+clears).
 local mSkuVoiceQueueBTTS_Voice = {}
 
+-- BTTS cache-buster (WoW 12.0 engine): the new client caches synthesized audio
+-- by text and, on a repeat, REPLAYS the cached audio without re-invoking the
+-- voice. For a real voice (Hedda) that replay is audible; for an out-of-band
+-- screen-reader bridge (NVDA/SAPI2SR) the cached audio is silent AND the bridge
+-- is never called, so already-spoken lines go silent on revisit. Appending a
+-- cycling run of U+200B ZERO WIDTH SPACE (invisible, not spoken by NVDA) makes
+-- each utterance's text unique -> every SpeakText is a cache MISS -> the voice
+-- is always invoked. Only applied to the Blizzard-TTS (SpeakText) path.
+local mBttsCacheBust = 0
+local function BttsCacheBust(aString)
+	mBttsCacheBust = (mBttsCacheBust % 64) + 1
+	return aString .. string.rep("\226\128\139", mBttsCacheBust)
+end
+
 function SkuVoice:Create()
 	local f = CreateFrame("Frame", "SkuVoiceMainFrame", UIParent)
 	f:RegisterEvent("VOICE_CHAT_TTS_PLAYBACK_FINISHED")
-	f:SetScript("OnEvent", function(self, aEventName)
+	-- BTTS diag: also watch STARTED/FAILED so we can see whether WoW's TTS
+	-- engine actually accepts each utterance and whether FINISHED still fires
+	-- (if FINISHED stops firing, the dedup list never clears and playback stalls).
+	f:RegisterEvent("VOICE_CHAT_TTS_PLAYBACK_STARTED")
+	f:RegisterEvent("VOICE_CHAT_TTS_SPEAK_TEXT_UPDATE")
+	-- BTTS diag: the new (patch 12.0.0) TTS engine wraps utterances with
+	-- boundary bookmarks; a real SAPI voice consumes them silently, but a
+	-- SAPI->screenreader bridge voice speaks the mark names ("start"/"end").
+	-- Log the bookmark event to capture the exact mark names as proof.
+	pcall(function() f:RegisterEvent("VOICE_CHAT_TTS_PLAYBACK_BOOKMARK") end)
+	f:SetScript("OnEvent", function(self, aEventName, ...)
 		if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FINISHED" then
+			if dprint then dprint("BTTS event FINISHED", ...) end
 			if mSkuVoiceQueueBTTS_Speaking[1] then
 				table.remove(mSkuVoiceQueueBTTS_Speaking, 1)
 			end
+		elseif aEventName == "VOICE_CHAT_TTS_PLAYBACK_STARTED" then
+			if dprint then dprint("BTTS event STARTED", ...) end
+		elseif aEventName == "VOICE_CHAT_TTS_SPEAK_TEXT_UPDATE" then
+			if dprint then dprint("BTTS event SPEAK_TEXT_UPDATE", ...) end
+		elseif aEventName == "VOICE_CHAT_TTS_PLAYBACK_BOOKMARK" then
+			if dprint then dprint("BTTS event BOOKMARK", ...) end
 		end
 	end)
 	local fTime = 0
@@ -111,12 +142,19 @@ function SkuVoice:Create()
 					table.remove(mSkuVoiceQueueBTTS, 1)
 				end
 			end
+			-- BTTS diag (lag/stall hunt): surface a growing backlog. If the queue
+			-- or the "currently speaking" dedup set climbs, the dequeue is stalling
+			-- (FINISHED not clearing / lower-layer not draining).
+			if dprint and (#mSkuVoiceQueueBTTS > 4 or #mSkuVoiceQueueBTTS_Speaking > 3) then
+				dprint("BTTS DEPTH", "queue="..#mSkuVoiceQueueBTTS, "speaking="..#mSkuVoiceQueueBTTS_Speaking, "wait="..tostring(tLastWait))
+			end
 			if #mSkuVoiceQueueBTTS > 0 then
 				--print("           ", tLastWait, mSkuVoiceQueueBTTS[1])
 				local tValue = mSkuVoiceQueueBTTS[1]
 				if tValue == "queuereset" then
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						if ChatTts().neverResetQueues ~= true then
+							if dprint then dprint("BTTS queuereset -> StopSpeakingText") end
 							C_VoiceChat.StopSpeakingText()
 						end
 						mSkuVoiceQueueBTTS_Speaking = {}
@@ -137,7 +175,26 @@ function SkuVoice:Create()
 							-- 1-based domain as WowTtsVoice, so the "- 1" API convention
 							-- is identical whether the voice is per-channel or global.
 							local tVoiceIndex = mSkuVoiceQueueBTTS_Voice[tValue] or ChatTts().WowTtsVoice
-							C_VoiceChat.SpeakText(tVoiceIndex - 1, tValue, 4, ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
+							-- BTTS diag: the EXACT string + params handed to WoW.
+							if dprint then dprint("BTTS SpeakText", "voice="..tostring(tVoiceIndex - 1), "speed="..tostring(ChatTts().WowTtsSpeed), "vol="..tostring(ChatTts().WowTtsVolume), "text=["..tostring(tValue).."]") end
+							-- Patch 12.0.0 (ported to the Anniversary client) REMOVED the
+							-- `destination` arg from C_VoiceChat.SpeakText and added an
+							-- optional `overlap`. New signature:
+							--   SpeakText(voiceID, text, rate, volume [, overlap])
+							-- The old call passed the now-dead destination (4) here, which
+							-- shifted rate/volume by one and let the old volume land in the
+							-- new `overlap` slot (truthy => overlap on). That mangled call
+							-- made the engine speak "start"/"end" around every utterance and
+							-- ignored the user's speed/volume. Proven on-client: Enum.
+							-- VoiceTtsDestination is now nil and a clean 4-arg call speaks
+							-- with no boundary words. overlap is omitted (defaults false) so
+							-- Sku keeps driving its own queue without overlapping speech.
+							C_VoiceChat.SpeakText(tVoiceIndex - 1, BttsCacheBust(tValue), ChatTts().WowTtsSpeed, ChatTts().WowTtsVolume)
+						else
+							-- BTTS diag: a queued line was DROPPED because an identical
+							-- string is still flagged "speaking" (FINISHED never cleared it).
+							-- Repeated drops here == the "goes silent" symptom.
+							if dprint then dprint("BTTS DEDUP-SKIP", "speaking="..#mSkuVoiceQueueBTTS_Speaking, "text=["..tostring(tValue).."]") end
 						end
 						mSkuVoiceQueueBTTS_Voice[tValue] = nil
 						--print("tLastWait = 0")
