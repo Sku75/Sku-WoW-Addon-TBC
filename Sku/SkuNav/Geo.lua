@@ -358,18 +358,34 @@ SlashCmdList["SKUZONEPROBE"] = function()
 	local tSkuUiMap = tSkuAreaId and SkuNav:GetUiMapIdFromAreaId(tSkuAreaId)
 	p("Sku areaId:", tSkuAreaId, tSkuName, "-> uiMap", tSkuUiMap)
 
-	-- 4) the real test: does the route data actually hold waypoints keyed to the
-	-- areaId Sku resolved? If this is 0 while you're clearly in a mapped zone, the
-	-- current-zone id and the route-data id are on different numbering schemes.
-	local tRouteCount = 0
-	if tSkuAreaId and SkuDB.SessionRouteData and SkuDB.SessionRouteData.Waypoints then
-		for _, wp in ipairs(SkuDB.SessionRouteData.Waypoints) do
-			if type(wp) == "table" and wp.areaId == tSkuAreaId then
-				tRouteCount = tRouteCount + 1
+	-- 4) the real test: how many route waypoints exist for this area, both as
+	-- LOADED (SessionRouteData = raw base data) and as SURVIVED (WaypointCache,
+	-- after link-based CleanupWaypoints deletes unlinked customs). A big
+	-- loaded >> survived drop is the base/WotLK hybrid starving the zone. Reported
+	-- for the current area AND its PARENT zone, so a tiny sub-area (e.g. a chapel)
+	-- can't hide the zone total.
+	local function tLoaded(aId)
+		local n = 0
+		if aId and SkuDB.SessionRouteData and SkuDB.SessionRouteData.Waypoints then
+			for _, wp in ipairs(SkuDB.SessionRouteData.Waypoints) do
+				if type(wp) == "table" and wp.areaId == aId then n = n + 1 end
 			end
 		end
+		return n
 	end
-	p("route waypoints for Sku areaId", tSkuAreaId, ":", tRouteCount)
+	local function tCached(aId)
+		local n = 0
+		if aId and type(WaypointCache) == "table" then
+			for _, v in pairs(WaypointCache) do
+				if type(v) == "table" and v.areaId == aId and v.typeId == 1 then n = n + 1 end
+			end
+		end
+		return n
+	end
+	p("current areaId", tSkuAreaId, ": loaded", tLoaded(tSkuAreaId), "-> survived in cache", tCached(tSkuAreaId))
+	local tParentId = tSkuAreaId and select(4, SkuNav:GetAreaData(tSkuAreaId))
+	local tParentName = tParentId and select(2, SkuNav:GetAreaData(tParentId))
+	p("parent zone areaId", tParentId, tParentName, ": loaded", tLoaded(tParentId), "-> survived in cache", tCached(tParentId))
 
 	-- 5) mismatch flags
 	if tSkuUiMap ~= tUiMap then
