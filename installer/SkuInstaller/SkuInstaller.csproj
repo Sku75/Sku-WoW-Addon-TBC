@@ -24,4 +24,11 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Bundled SAPI2SR NVDA-SAPI bridge payload (x64 bookmark-fixed engine +
+         x86 + companions + the signing script). Extracted+installed at runtime
+         by Sapi2SrInstaller. -->
+    <EmbeddedResource Include="payload\sapi2sr-payload.zip" />
+  </ItemGroup>
+
 </Project>

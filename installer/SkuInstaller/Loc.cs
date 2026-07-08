@@ -101,6 +101,16 @@ namespace SkuInstaller
             ["gs.setAccount"]        = "Game setting: {0} = {1} (account).",
             ["gs.deferred"]          = "Game setting: {0} will be set after your first login (no account profile yet).",
             ["gs.noWtf"]             = "Game settings: no WTF folder here; skipped.",
+            // SAPI2SR NVDA voice bridge (checkbox + Sapi2SrInstaller progress)
+            ["ui.sapi2sr"]           = "Enable NVDA as a voice in WoW (installs && signs the NVDA-SAPI voice, recommended)",
+            ["acc.sapi2sr"]          = "Enable NVDA as a voice in WoW",
+            ["sapi2sr.installing"]   = "NVDA voice: installing the SAPI2SR bridge…",
+            ["sapi2sr.copied"]       = "NVDA voice: {0} file(s) installed.",
+            ["sapi2sr.registering"]  = "NVDA voice: registering the SAPI voice…",
+            ["sapi2sr.signing"]      = "NVDA voice: signing so WoW will load it…",
+            ["sapi2sr.signFailed"]   = "NVDA voice: signing did not finish (code {0}); the voice may stay silent until repaired.",
+            ["sapi2sr.done"]         = "NVDA voice: ready. Start WoW fresh to use it.",
+            ["sapi2sr.failed"]       = "NVDA voice install failed: {0}",
         };
 
         private static readonly Dictionary<string, string> De = new Dictionary<string, string>
@@ -161,6 +171,15 @@ namespace SkuInstaller
             ["gs.setAccount"]        = "Spieleinstellung: {0} = {1} (Account).",
             ["gs.deferred"]          = "Spieleinstellung: {0} wird nach deinem ersten Login gesetzt (noch kein Account-Profil vorhanden).",
             ["gs.noWtf"]             = "Spieleinstellungen: kein WTF-Ordner hier; übersprungen.",
+            ["ui.sapi2sr"]           = "NVDA als Stimme in WoW aktivieren (installiert && signiert die NVDA-SAPI-Stimme, empfohlen)",
+            ["acc.sapi2sr"]          = "NVDA als Stimme in WoW aktivieren",
+            ["sapi2sr.installing"]   = "NVDA-Stimme: installiere die SAPI2SR-Brücke…",
+            ["sapi2sr.copied"]       = "NVDA-Stimme: {0} Datei(en) installiert.",
+            ["sapi2sr.registering"]  = "NVDA-Stimme: registriere die SAPI-Stimme…",
+            ["sapi2sr.signing"]      = "NVDA-Stimme: signiere, damit WoW sie lädt…",
+            ["sapi2sr.signFailed"]   = "NVDA-Stimme: Signierung nicht abgeschlossen (Code {0}); die Stimme bleibt evtl. stumm, bis das behoben ist.",
+            ["sapi2sr.done"]         = "NVDA-Stimme: bereit. Starte WoW neu, um sie zu nutzen.",
+            ["sapi2sr.failed"]       = "NVDA-Stimme-Installation fehlgeschlagen: {0}",
         };
     }
 }

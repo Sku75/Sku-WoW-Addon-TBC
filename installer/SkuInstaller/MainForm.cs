@@ -33,6 +33,7 @@ namespace SkuInstaller
         private ComboBox _langCombo;
         private CheckBox _forceCheck;
         private CheckBox _desktopShortcutCheck;
+        private CheckBox _sapi2srCheck;
         private Button _browseButton, _installButton, _closeButton;
         private TextBox _log;
         private Label _statusLabel;
@@ -65,7 +66,7 @@ namespace SkuInstaller
             StartPosition = FormStartPosition.CenterScreen;
             MaximizeBox = false;
             MinimizeBox = false;
-            ClientSize = new Size(580, 532);
+            ClientSize = new Size(580, 560);
             Font = new Font("Segoe UI", 9.5f);
 
             int y = 12;
@@ -120,6 +121,10 @@ namespace SkuInstaller
 
             _desktopShortcutCheck = new CheckBox { Left = 12, Top = y, Width = 540, Checked = true };
             Controls.Add(_desktopShortcutCheck);
+            y += 28;
+
+            _sapi2srCheck = new CheckBox { Left = 12, Top = y, Width = 540, Checked = true };
+            Controls.Add(_sapi2srCheck);
             y += 32;
 
             _installButton = new Button { Left = 12, Top = y, Width = 220, Height = 32 };
@@ -169,6 +174,7 @@ namespace SkuInstaller
 
             _forceCheck.Text = Loc.Get("ui.force");
             _desktopShortcutCheck.Text = Loc.Get("ui.desktopShortcut");
+            _sapi2srCheck.Text = Loc.Get("ui.sapi2sr");
 
             // The "Custom" entry is the only localized flavor item.
             _flavorCombo.Items[_customFlavorIndex] = Loc.Get("ui.gameVersionCustom");
@@ -185,6 +191,7 @@ namespace SkuInstaller
             _langCombo.AccessibleName = Loc.Get("acc.voiceLanguage");
             _forceCheck.AccessibleName = Loc.Get("acc.force");
             _desktopShortcutCheck.AccessibleName = Loc.Get("acc.desktopShortcut");
+            _sapi2srCheck.AccessibleName = Loc.Get("acc.sapi2sr");
             _statusLabel.AccessibleName = Loc.Get("acc.status");
             _log.AccessibleName = Loc.Get("acc.progressLog");
 
@@ -258,6 +265,7 @@ namespace SkuInstaller
             int langIdx = Math.Max(0, _langCombo.SelectedIndex);
             bool wantDesktop = _desktopShortcutCheck.Checked;
             bool force = _forceCheck.Checked;
+            bool wantSapi2sr = _sapi2srCheck.Checked;
 
             SetBusy(true);
             GitHubClient github = null;
@@ -276,6 +284,7 @@ namespace SkuInstaller
                 {
                     manifest.Save(_addonsFolder);
                     EnsureShortcuts(wantDesktop);
+                    if (wantSapi2sr) await Task.Run(() => Sapi2SrInstaller.Install(Announce));
                     Announce(Loc.Get("status.upToDate"));
                     MessageBox.Show(this, Loc.Get("dlg.upToDate.text"), Loc.Get("dlg.upToDate.title"),
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -294,6 +303,8 @@ namespace SkuInstaller
                 }
 
                 await Task.Run(() => ExecutePlan(installer, plan, force));
+
+                if (wantSapi2sr) await Task.Run(() => Sapi2SrInstaller.Install(Announce));
 
                 manifest.Save(_addonsFolder);
                 // Parked for a future iteration — we don't want to enforce specific
@@ -464,6 +475,7 @@ namespace SkuInstaller
             _langCombo.Enabled = !busy;
             _forceCheck.Enabled = !busy;
             _desktopShortcutCheck.Enabled = !busy;
+            _sapi2srCheck.Enabled = !busy;
             UseWaitCursor = busy;
             if (busy) _statusLabel.Text = Loc.Get("ui.working");
         }

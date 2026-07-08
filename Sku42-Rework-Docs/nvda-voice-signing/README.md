@@ -6,6 +6,15 @@ Background: Blizzard clients refuse to load unsigned SAPI engine DLLs
 (loader gate, ~Oct/Nov 2025) — the voice lists but stays silent.
 `sku-nvda-voice-sign.ps1` is the complete, self-contained backend.
 
+**Status: IMPLEMENTED in the Sku installer.** `installer/SkuInstaller/
+Sapi2SrInstaller.cs` bundles the whole SAPI2SR payload (embedded zip
+`installer/SkuInstaller/payload/sapi2sr-payload.zip`: the x64 bookmark-fixed
+engine + x86 + companions + this script), lays it down to `C:\Program Files\
+SAPI2SR`, registers the voice via `regsvr32` (the engine's DllRegisterServer
+writes the CLSID + Speech voice token), then runs this script `-Mode Install`.
+Gated by a default-checked "Enable NVDA as a voice in WoW" checkbox in
+`MainForm`. The contract below is what that code does.
+
 ## Installer contract (checkbox, opt-out)
 
 - Add a checkbox to the Sku installer, **checked by default**:
