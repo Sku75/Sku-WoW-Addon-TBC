@@ -305,3 +305,72 @@ function SkuNav:IntersectionPoint(x1, y1, x2, y2, x3, y3, x4, y4)
 		 end
 	end
 end
+
+------------------------------------------------------------------------------------------------------------------------
+-- /skuzoneprobe (/szp) — read-only zone-id diagnostic. Dumps the CLIENT's real
+-- identifiers for where the player stands (uiMapID + the AreaTable ids the client
+-- reports at that position) next to what SkuNav resolves from its static tables,
+-- and flags mismatches. Purpose: detect cross-cycle zone renumbering — the client
+-- reporting different ids than Sku's InternalAreaTable/ExternalMapID assume (which
+-- has needed hand-patches before, see GetBestMapForUnit). Prints to chat only;
+-- changes nothing.
+------------------------------------------------------------------------------------------------------------------------
+SLASH_SKUZONEPROBE1 = "/skuzoneprobe"
+SLASH_SKUZONEPROBE2 = "/szp"
+SlashCmdList["SKUZONEPROBE"] = function()
+	local p = function(...) print("|cff66ccffSkuZoneProbe|r", ...) end
+	if not SkuNav then p("SkuNav not loaded yet"); return end
+
+	-- 1) what the client reports
+	local tUiMap = C_Map.GetBestMapForUnit("player")
+	local tInfo = tUiMap and C_Map.GetMapInfo(tUiMap)
+	p("client uiMap:", tUiMap, tInfo and tInfo.name, "| type", tInfo and tInfo.mapType, "| parent", tInfo and tInfo.parentMapID)
+	p("names: zone", GetRealZoneText(), "| sub", GetSubZoneText(), "| minimap", GetMinimapZoneText())
+
+	-- 2) the client's real AreaTable ids at the player's position
+	local tRealAreas = {}
+	local tPos = tUiMap and C_Map.GetPlayerMapPosition(tUiMap, "player")
+	if tPos and C_MapExplorationInfo and C_MapExplorationInfo.GetExploredAreaIDsAtPosition then
+		local tIds = C_MapExplorationInfo.GetExploredAreaIDsAtPosition(tUiMap, tPos)
+		if tIds then
+			for _, tId in ipairs(tIds) do
+				tRealAreas[tId] = true
+				p("client areaID:", tId, C_Map.GetAreaInfo(tId))
+			end
+		end
+	end
+	if not next(tRealAreas) then
+		p("client areaID: (none reported at this position)")
+	end
+
+	-- 3) what Sku resolves for the same spot
+	local tSkuAreaId = SkuNav:GetCurrentAreaId()
+	local tSkuName = tSkuAreaId and select(2, SkuNav:GetAreaData(tSkuAreaId))
+	local tSkuUiMap = tSkuAreaId and SkuNav:GetUiMapIdFromAreaId(tSkuAreaId)
+	p("Sku areaId:", tSkuAreaId, tSkuName, "-> uiMap", tSkuUiMap)
+
+	-- 4) the real test: does the route data actually hold waypoints keyed to the
+	-- areaId Sku resolved? If this is 0 while you're clearly in a mapped zone, the
+	-- current-zone id and the route-data id are on different numbering schemes.
+	local tRouteCount = 0
+	if tSkuAreaId and SkuDB.SessionRouteData and SkuDB.SessionRouteData.Waypoints then
+		for _, wp in ipairs(SkuDB.SessionRouteData.Waypoints) do
+			if type(wp) == "table" and wp.areaId == tSkuAreaId then
+				tRouteCount = tRouteCount + 1
+			end
+		end
+	end
+	p("route waypoints for Sku areaId", tSkuAreaId, ":", tRouteCount)
+
+	-- 5) mismatch flags
+	if tSkuUiMap ~= tUiMap then
+		p("MISMATCH: Sku maps its areaId to uiMap", tSkuUiMap, "but the client is on", tUiMap)
+	else
+		p("uiMap OK (Sku agrees with the client)")
+	end
+	if tSkuAreaId and not tRealAreas[tSkuAreaId] then
+		p("NOTE: Sku's areaId", tSkuAreaId, "is NOT among the client's reported AreaTable ids here (renumber, or Sku uses an internal id scheme)")
+	elseif tSkuAreaId then
+		p("areaId OK (Sku's areaId is one the client reports here)")
+	end
+end
