@@ -13,6 +13,20 @@ Einbau
 Kartendaten
 - Import und Export laufen ueber ein Textfeld (Copy/Paste): /sku import bzw. /sku export.
 
+Neu in 4.9
+- Die Basis-Kartendaten werden wieder aus Skus AKTUELLEN Routendaten geladen
+  (routedata_global.lua). LoadDefaultMapData war seit der Umstellung auf die neue
+  Datenstruktur wirkungslos; eine frische Installation startete leer, und ein
+  Export konnte dadurch vorhandene Routen loeschen. Jetzt wird wieder aus den
+  ausgelieferten Daten aufgebaut (mit Aufteilung der gepackten en/de-Namen).
+- Undo fuer "Kommentar hinzufuegen" korrigiert (es speicherte den Wegpunktnamen
+  an der Stelle der Undo-Funktion und lief beim Rueckgaengigmachen auf Fehler).
+- Export veraendert die Live-Daten nicht mehr (Kommentare/createdAt): jeder
+  Wegpunkt wird vorher kopiert; wiederholte Exporte verschlechtern die Daten nicht.
+- Toter Code entfernt (ein ungenutzter /way-Text-Import-Prototyp, ein doppeltes
+  SkuSpairs).
+- Weiterhin ueber Kopieren/Einfuegen (Export/Import); kompatibel mit Sku 42.
+
 Neu in 4.8
 - Export unter neueren Clients repariert: der Aufruf GetAddOnMetadata gibt es dort nicht
   mehr; genutzt wird jetzt C_AddOns.GetAddOnMetadata (mit Rueckfall auf den alten Aufruf).

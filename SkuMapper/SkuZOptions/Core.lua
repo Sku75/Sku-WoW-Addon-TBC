@@ -500,10 +500,13 @@ function SkuOptions:ExportWpAndLinkData()
 	--SequenceNumbers
 	tExportDataTable.SequenceNumbers = SkuOptions.db.global["SkuNav"].SequenceNumbers
 	
-	--build Waypoints
+	--build Waypoints (shallow/deep-copy each record first, so stripping
+	--comments/createdAt for the export blob does NOT mutate the live working
+	--data — the previous code nil'd these fields on the real db entries)
 	for i, v in ipairs(SkuOptions.db.global["SkuNav"].Waypoints) do
-		local tWpData = SkuOptions.db.global["SkuNav"].Waypoints[i]
-		if tWpData then
+		local tSrc = SkuOptions.db.global["SkuNav"].Waypoints[i]
+		if tSrc then
+			local tWpData = SkuTableCopy(tSrc, true)
 			tWpData.comments = nil
 			tWpData.createdAt = nil
 			table.insert(tExportDataTable.waypoints, tWpData)
@@ -576,7 +579,7 @@ function SkuOptions:AddCommentToWp(aName)
 				SkuNav:SetWaypoint(aName, tWpData)
 
 				--history
-				SkuNav:History_Generic(function(self, aName, aCommenIndex)
+				SkuNav:History_Generic("Add comment", function(self, aName, aCommenIndex)
 					local tWpData = SkuNav:GetWaypointData2(aName)
 					table.remove(tWpData.comments[Sku.Loc], aCommenIndex)
 					for i, v in pairs(Sku.Locs) do

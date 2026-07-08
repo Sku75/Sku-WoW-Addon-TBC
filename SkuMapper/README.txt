@@ -59,6 +59,20 @@ Slash commands
 ------------------------------------------------
 Release notes
 
+r4.9
+	- Route baseline is now seeded from Sku's CURRENT shipped route data
+	  (routedata_global.lua) again. LoadDefaultMapData was a no-op since the
+	  update to the new map data structure, so a fresh install started empty and
+	  an export could wipe existing routes. It now rebuilds from the shipped
+	  data and splits the packed en/de names, matching Sku.
+	- Fixed the Undo entry for "Add comment" (it stored the waypoint name where
+	  the undo function belonged and errored on undo).
+	- Export no longer strips comments/createdAt off the live working data (it
+	  copies each waypoint first); repeated exports don't degrade your data.
+	- Removed dead code (an unused /way-text import prototype, a duplicate
+	  SkuSpairs).
+	- Still uses the copy/paste export/import path; compatible with Sku 42.
+
 r4.5
 	- Uldum area fixed
 

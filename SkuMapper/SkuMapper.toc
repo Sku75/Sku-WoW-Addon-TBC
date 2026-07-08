@@ -1,8 +1,8 @@
 ## Interface: 11508
-## Title: SkuMapper (4.8)
+## Title: SkuMapper (4.9)
 ## SavedVariables: SkuOptionsDB
 ## Dependencies:
-## Version: 4.8
+## Version: 4.9
 ## X-Curse-Project-ID: 
 
 embeds.xml
@@ -25,6 +25,11 @@ SkuDB\assets\items.lua
 SkuDB\assets\objects.lua
 SkuDB\assets\spells.lua
 SkuDB\assets\polygons.lua
+
+# Route baseline (regenerated from Sku/SkuDB/assets/routedata_global.lua). Only
+# defines the SkuDBBuildRouteGlobal() builder at load; SkuNav:LoadDefaultMapData
+# calls it to seed the editable working set. Gitignored/large — see .gitignore.
+SkuDB\assets\routedata_global.lua
 
 SkuDB\assets\WotLK\enchantIDs.lua
 
