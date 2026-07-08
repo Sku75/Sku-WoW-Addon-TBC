@@ -2814,7 +2814,6 @@ function SkuCore:MenuBuilder(aParentEntry)
 						WowTtsVoice           = a.WowTtsVoice,
 						WowTtsSpeed           = a.WowTtsSpeed,
 						WowTtsVolume          = a.WowTtsVolume,
-						WowTtsTags            = a.WowTtsTags,
 						joinSkuChannel        = a.joinSkuChannel,
 						neverResetQueues      = a.neverResetQueues,
 						allChatViaBlizzardTts = a.allChatViaBlizzardTts,

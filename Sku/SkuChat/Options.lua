@@ -342,12 +342,6 @@ SkuChat.options = {
 			desc = "",
 			type = "range",
 		},
-		WowTtsTags = {
-			order = 5,
-			name = L["TTS pause tags"],
-			desc = "",
-			type = "toggle",
-		},
 		joinSkuChannel = {
 			order = 7,
 			name = L["Sku Chat Channel beitreten"],
@@ -398,7 +392,6 @@ SkuChat.defaults = {
 	WowTtsVoice = 1,
 	WowTtsSpeed = 3,
 	WowTtsVolume = 50,
-	WowTtsTags = true,
 	joinSkuChannel = true,
 	neverResetQueues = false,
 	allChatViaBlizzardTts = false,
@@ -426,7 +419,6 @@ SkuSettings:Register("SkuChat", {
 	["WowTtsVoice"]                       = { scope = "profile", default = 1,      type = "number"  },
 	["WowTtsSpeed"]                       = { scope = "profile", default = 3,      type = "number"  },
 	["WowTtsVolume"]                      = { scope = "profile", default = 50,     type = "number"  },
-	["WowTtsTags"]                        = { scope = "profile", default = true,  type = "boolean" },
 	["joinSkuChannel"]                    = { scope = "profile", default = true,  type = "boolean" },
 	["neverResetQueues"]                  = { scope = "profile", default = false, type = "boolean" },
 	["allChatViaBlizzardTts"]             = { scope = "profile", default = false, type = "boolean" },

@@ -9,11 +9,11 @@ if not SkuVoice then return end -- No upgrade needed
 -- Blizzard-TTS params provider (W6-B #12): the audio engine no longer reaches
 -- into SkuChat's saved-settings schema by string key. SkuChat registers a
 -- provider via SkuVoice:SetChatTtsProvider that returns the current param table
--- (fields WowTtsVoice/WowTtsSpeed/WowTtsVolume/WowTtsTags/neverResetQueues/
+-- (fields WowTtsVoice/WowTtsSpeed/WowTtsVolume/neverResetQueues/
 -- allChatViaBlizzardTts); the engine only ever calls that. Falls back to sane
 -- defaults if no provider is registered yet.
 local mChatTtsProvider
-local mChatTtsDefaults = { WowTtsVoice = 1, WowTtsSpeed = 3, WowTtsVolume = 50, WowTtsTags = true, neverResetQueues = false, allChatViaBlizzardTts = false }
+local mChatTtsDefaults = { WowTtsVoice = 1, WowTtsSpeed = 3, WowTtsVolume = 50, neverResetQueues = false, allChatViaBlizzardTts = false }
 local function ChatTts()
 	return (mChatTtsProvider and mChatTtsProvider()) or mChatTtsDefaults
 end
@@ -755,11 +755,14 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	local tFinalStringForBTtsMac = ""
 
 	for x = 1, #tStrings do
-		if ChatTts().WowTtsTags ~= false then
-			tStrings[x] = string.gsub(tStrings[x], "§01", '<silence msec="100"/>')
-		else
-			tStrings[x] = string.gsub(tStrings[x], "§01", ', ')
-		end
+		-- §01 is a pause/separation marker. Render it as a comma: a NATURAL
+		-- prosodic pause that also keeps words apart on every voice. (The old
+		-- WowTtsTags "on" path emitted <silence msec="100"/> instead, which felt
+		-- robotic on real SAPI voices and — because a screen-reader bridge can't
+		-- honor a silence fragment — dropped the separator entirely and merged
+		-- words on NVDA. That setting is removed; the Sku audio-file TTS keeps its
+		-- own §01 handling elsewhere.)
+		tStrings[x] = string.gsub(tStrings[x], "§01", ', ')
 
 		--unmask bnet names
 		tStrings[x] = string.gsub(tStrings[x], "$skuk1", "|K")
@@ -776,13 +779,10 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 				--tFinalStringForBTts = tFinalStringForBTts..'<silence msec="500"/>'..tStrings[x]
 			end
 
-			if ChatTts().WowTtsTags ~= false then
-				tFinalStringForBTts = tFinalStringForBTts..'<silence msec="100"/>'..tStrings[x]
-				tFinalStringForBTtsMac = tFinalStringForBTtsMac..", "..tStrings[x]
-			else
-				tFinalStringForBTts = tFinalStringForBTts..' '..tStrings[x]
-				tFinalStringForBTtsMac = tFinalStringForBTtsMac.." "..tStrings[x]
-			end
+			-- Join segments with a real space so every voice (real SAPI + bridge)
+			-- gets a genuine word boundary. (Was <silence> under WowTtsTags on.)
+			tFinalStringForBTts = tFinalStringForBTts..' '..tStrings[x]
+			tFinalStringForBTtsMac = tFinalStringForBTtsMac.." "..tStrings[x]
 
 		end
 
@@ -801,9 +801,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 
 	--tFinalStringForBTts = '<voice required="Language='..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
 	--tFinalStringForBTts = '<LANG LANGID="'..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
-	if ChatTts().WowTtsTags ~= false then
-		tFinalStringForBTts = '<pitch middle="0">'..tFinalStringForBTts..'</pitch>'
-	end
+	-- (dropped the '<pitch middle="0">' wrapper: middle=0 is neutral, a no-op.)
 
 	tFinalStringForBTts = string.gsub(tFinalStringForBTts, ";", " ")
 	tFinalStringForBTtsMac = string.gsub(tFinalStringForBTtsMac, ";", " ")
