@@ -1731,6 +1731,17 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 				tHasEntries = true
 			end
 
+			-- "Share quest" — teilt die aktuell gewählte Quest mit der Gruppe
+			-- (QuestLogPushQuest). Immer sichtbar, nicht mehr an Pre-Quests gekoppelt.
+			do
+				local tNewMenuEntryShare = SkuOptions:InjectMenuItems(aParent, {L["Share quest"]}, SkuGenericMenuItem)
+				tNewMenuEntryShare.dynamic = false
+				tNewMenuEntryShare.OnAction = function(self, aValue, aName)
+					SkuQuest:OnSkuQuestPush()
+				end
+				tHasEntries = true
+			end
+
 			if #tPreQuestTable > 0 then
 				tHasEntries = true
 				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Pre Quests"]}, SkuGenericMenuItem)
@@ -1751,12 +1762,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 					end
 				end
 
-				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Share quest"]}, SkuGenericMenuItem)
-				tNewMenuSubEntry.dynamic = false
-				tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-					SkuQuest:OnSkuQuestPush()
-				end				
-			end			
+			end
 		end
 	end
 
