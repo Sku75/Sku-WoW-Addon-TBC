@@ -629,17 +629,30 @@ function SkuQuest:GetGroupMemberQuests()
 	local tQC = SkuQuest:QuestieModule("QuestieComms")
 	local tLogs = tQC and tQC.remoteQuestLogs
 	if type(tLogs) ~= "table" then
+		dprint("groupQuests GetGroupMemberQuests: no remoteQuestLogs table (tQC=", tQC ~= nil, ")")
 		return tResult
 	end
+	local tRawQuestCount, tRawPairCount = 0, 0
 	for tQuestId, tPlayers in pairs(tLogs) do
 		if type(tQuestId) == "number" and type(tPlayers) == "table" then
+			tRawQuestCount = tRawQuestCount + 1
 			for tPlayerName, tObjectives in pairs(tPlayers) do
+				tRawPairCount = tRawPairCount + 1
 				local tShortName = strsplit("-", tPlayerName)
 				tResult[tShortName] = tResult[tShortName] or {}
 				tResult[tShortName][tQuestId] = tObjectives
 			end
 		end
 	end
+	-- Log the re-indexed keyset so an in-game group test shows exactly which
+	-- player names carry data (compare against the UnitName() member keys).
+	local tKeys = {}
+	for tName, tQ in pairs(tResult) do
+		local tN = 0
+		for _ in pairs(tQ) do tN = tN + 1 end
+		tKeys[#tKeys+1] = tName.."="..tN
+	end
+	dprint("groupQuests GetGroupMemberQuests: rawQuests=", tRawQuestCount, "rawPairs=", tRawPairCount, "players={", table.concat(tKeys, ", "), "}")
 	return tResult
 end
 
@@ -2167,7 +2180,11 @@ function SkuQuest:MenuBuilder(aParentEntry)
 				tMemberEntry.dynamic = true
 				tMemberEntry.BuildChildren = function(self)
 					local tQuests = SkuQuest:GetGroupMemberQuests()[tMemberName]
+					local tQuestCount = 0
+					if tQuests then for _ in pairs(tQuests) do tQuestCount = tQuestCount + 1 end end
+					dprint("groupQuests member BuildChildren: member=", tMemberName, "matched=", tQuests ~= nil, "questCount=", tQuestCount)
 					if not tQuests or not next(tQuests) then
+						dprint("groupQuests member BuildChildren: no data for", tMemberName, "-> fallback entry")
 						SkuOptions:InjectMenuItems(self, {L["Keine Questie-Daten empfangen"]}, SkuGenericMenuItem)
 						return
 					end
@@ -2176,19 +2193,30 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					-- zuerst, danach alphabetisch
 					local tByZone = {}
 					for tQuestId, tObjectives in pairs(tQuests) do
-						local tZoneId = SkuQuest:GetQuestStartZoneId(tQuestId)
-						local tZoneName = (tZoneId and SkuDB.InternalAreaTable[tZoneId] and SkuDB.InternalAreaTable[tZoneId].AreaName_lang[Sku.Loc]) or L["Unbekannte Zone"]
-						local tLookup = SkuDB.questLookup[Sku.Loc][tQuestId]
-						local tText, tIsComplete = SkuQuest:GetGroupQuestProgressText(tQuestId, tObjectives)
-						local tLabel = tLookup and tLookup[1] or ("Quest "..tQuestId)
-						if tIsComplete then
-							tLabel = L["(Fertig) "]..tLabel
+						-- Per-quest pcall: a single quest that our DB can't resolve (or a
+						-- lookup that errors) must NOT abort the whole member's list and
+						-- leave it silent. Log the failure and skip that one quest.
+						local tOk, tErr = pcall(function()
+							local tZoneId = SkuQuest:GetQuestStartZoneId(tQuestId)
+							local tZoneEntry = tZoneId and SkuDB.InternalAreaTable[tZoneId]
+							local tZoneName = (tZoneEntry and tZoneEntry.AreaName_lang and tZoneEntry.AreaName_lang[Sku.Loc]) or L["Unbekannte Zone"]
+							local tLookup = SkuDB.questLookup[Sku.Loc][tQuestId]
+							local tText, tIsComplete = SkuQuest:GetGroupQuestProgressText(tQuestId, tObjectives)
+							local tLabel = tLookup and tLookup[1] or ("Quest "..tQuestId)
+							if tIsComplete then
+								tLabel = L["(Fertig) "]..tLabel
+							end
+							dprint("groupQuests   quest id=", tQuestId, "zone=", tZoneName, "label=", tLabel, "textLen=", tText and #tText or 0)
+							tByZone[tZoneName] = tByZone[tZoneName] or {}
+							tByZone[tZoneName][#tByZone[tZoneName]+1] = { questId = tQuestId, label = tLabel, text = tText, zoneId = tZoneId }
+						end)
+						if not tOk then
+							dprint("groupQuests   quest id=", tQuestId, "SKIPPED, error:", tostring(tErr))
 						end
-						tByZone[tZoneName] = tByZone[tZoneName] or {}
-						tByZone[tZoneName][#tByZone[tZoneName]+1] = { questId = tQuestId, label = tLabel, text = tText, zoneId = tZoneId }
 					end
 					local tCurrentZoneId = SkuNav.Geo:GetAreaIdFromUiMapId(SkuNav.Geo:GetBestMapForUnit("player"))
-					local tCurrentZoneName = tCurrentZoneId and SkuDB.InternalAreaTable[tCurrentZoneId] and SkuDB.InternalAreaTable[tCurrentZoneId].AreaName_lang[Sku.Loc]
+					local tCurZoneEntry = tCurrentZoneId and SkuDB.InternalAreaTable[tCurrentZoneId]
+					local tCurrentZoneName = tCurZoneEntry and tCurZoneEntry.AreaName_lang and tCurZoneEntry.AreaName_lang[Sku.Loc]
 					local tZoneNames = {}
 					for tZoneName in pairs(tByZone) do
 						if tZoneName ~= tCurrentZoneName then
@@ -2229,9 +2257,11 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					local tAllEntry = SkuOptions:InjectMenuItems(self, {L["Alle"]}, SkuGenericMenuItem)
 					tAllEntry.sorting = true
 					local tAllNameCache = {}
+					local tAllCount = 0
 					for _, tZoneName in ipairs(tZoneNames) do
 						for _, tQuest in ipairs(tByZone[tZoneName]) do
 							tAddQuestEntry(tAllEntry, tQuest, tAllNameCache)
+							tAllCount = tAllCount + 1
 						end
 					end
 					--by zone
@@ -2243,6 +2273,10 @@ function SkuQuest:MenuBuilder(aParentEntry)
 							tAddQuestEntry(tZoneEntry, tQuest, tZoneNameCache)
 						end
 					end
+					-- Final tally: how many children this member's list actually got. If
+					-- this logs zones>0 / all>0 but you still hear silence, the problem is
+					-- in the menu render/vocalize layer, not the data build.
+					dprint("groupQuests member BuildChildren DONE: member=", tMemberName, "zones=", #tZoneNames, "allEntries=", tAllCount, "childrenOnSelf=", self.children and #self.children or 0)
 				end
 			end
 			end }
