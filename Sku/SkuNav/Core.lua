@@ -3443,22 +3443,49 @@ function SkuNav:LoadDefaultMapData(aForce)
 		SkuDB.SessionRouteData.Waypoints = t
 
 		if Sku.isTBC then
-			local tl = SkuDBTMP.routedata["global"]["Links"]
-			SkuDB.SessionRouteData.Links = tl
+			-- [Route phase fix 2026-07-09, Option C — UNION] On TBC, waypoints come
+			-- from SkuDB.routedata (the base/Era dataset, wired above). For links we
+			-- UNION the two datasets:
+			--   * SkuDBTMP links = the WotLK graph — 2-4x denser in Outland, which is
+			--     why Duugu's original hybrid chose it for TBC (the TBC endgame). Kept.
+			--   * SkuDB links = the Era graph — self-consistent with the Era waypoints,
+			--     so it reconnects the ~7 old-world zones (EPL etc.) whose custom
+			--     waypoints the WotLK links strand (EPL: loaded 1527 -> survived 0).
+			-- Merge Era edges INTO the WotLK table without overwriting existing WotLK
+			-- edges. In aligning zones (incl. all Outland) the WotLK graph is kept and
+			-- Era adds only what's missing; in diverging zones the stranded WotLK links
+			-- get cleaned by CleanupWaypoints while the Era links keep those waypoints
+			-- alive. Net result >= the hybrid everywhere. The plain hybrid (WotLK-only
+			-- links) killed EPL; pure Era links halved Outland — the union avoids both.
+			-- See Sku42-Rework-Docs/ROUTE-PHASE-RESOLUTION.md.
+			local tWotlk = SkuDBTMP.routedata["global"]["Links"]
+			local tEra   = SkuDB.routedata["global"]["Links"]
+			if tEra then   -- present on the first build only; freed just below
+				for tSrc, tTargets in pairs(tEra) do
+					local tDst = tWotlk[tSrc]
+					if tDst == nil then
+						tWotlk[tSrc] = tTargets           -- Era-only source: adopt whole
+					else
+						for tTgt, tDist in pairs(tTargets) do
+							if tDst[tTgt] == nil then
+								tDst[tTgt] = tDist        -- add only Era-only edges
+							end
+						end
+					end
+				end
+				SkuDB.routedata["global"]["Links"] = nil  -- merged in; free the wrapper
+			end
+			SkuDB.SessionRouteData.Links = tWotlk
 
-			-- [DB rework lever E] On the TBC client the live route tables are
-			-- SkuDB...Waypoints plus SkuDBTMP...Links (wired above). Their twins —
-			-- the WotLK waypoint half of SkuDBTMP and the TBC link half of SkuDB —
-			-- are never read again this session (every reset path goes through
-			-- LoadDefaultMapData now), so drop the references and let the GC
-			-- collect them (~40-55 MB). Not rebuildable without /reload:
-			-- EnsureData nils the builder globals after the one successful build.
+			-- The WotLK WAYPOINT half is genuinely dead on TBC (we navigate the Era
+			-- waypoints); drop it for the GC. Keep SkuDBTMP...Links — it IS the live
+			-- unioned link table now. Guard is re-callable: on a reset LoadDefaultMapData
+			-- re-runs, tEra is already nil (skip merge), tWotlk still holds the union.
 			SkuDBTMP.routedata["global"]["WaypointsNew"] = nil
 			SkuDBTMP.routedata["global"]["Waypoints"] = nil
 			SkuDBTMP.routedata["global"]["WaypointLevels"] = nil
 			SkuDBTMP.routedata["global"]["SequenceNumbers"] = nil
 			SkuDBTMP.SessionRouteData = nil
-			SkuDB.routedata["global"]["Links"] = nil
 		else
 			local tl = SkuDB.routedata["global"]["Links"]
 			SkuDB.SessionRouteData.Links = tl
