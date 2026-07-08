@@ -274,3 +274,104 @@ that direction is chosen.
   blob into Sku 42 and confirm the waypoints/links import ("Waypoints imported"
   / "Links imported" counts non-zero, routes navigable). Layers/sequence will
   NOT carry until the 4.2 patch is applied.
+
+---
+
+## 7. Route-data reality: base vs WotLK files, versioning, hybrid correctness
+
+Investigated because SkuMapper edits this data and we needed to know which set is
+authoritative. Evidence is `file:line` in `Sku/`; data counts from the two route
+files directly.
+
+### 7.1 The two files both cover the whole world
+
+`routedata_global.lua` (base, builder `SkuDBBuildRouteGlobal`) and
+`routedata_global_wotlk.lua` (builder `SkuDBBuildRouteWotlk`, stamped 40.3) are
+BOTH full-world sets. Both contain every expansion — each has Outland (~10.7-10.9k
+waypoints) AND Northrend (~13.3k). It is NOT an "Era/TBC world file vs a WotLK
+world file". They cover the same ~272 zones; **246 of 271 shared zones are
+byte-for-byte identical**. Only ~25 differ, ~7 meaningfully.
+
+### 7.2 Q1 — which is more complete? Neither; a union is
+
+Per continent (live waypoints):
+- Eastern Kingdoms: base 12,206 vs WotLK 10,757 (base +1,449)
+- Kalimdor: base 14,221 vs WotLK 14,257 (WotLK +36)
+- Outland: base 10,738 vs WotLK 10,854 (WotLK +116)
+- Northrend: base 13,259 vs WotLK 13,381 (WotLK +122)
+
+Base wins Eastern Kingdoms (almost entirely one zone); WotLK is marginally ahead
+everywhere else. Neither is a superset — the most complete data is the union.
+
+### 7.3 Q2 — same area, different versions? Yes, in ~7 zones
+
+Meaningful divergences (areaId = classic AreaTable id; names from
+`InternalAreaTable`):
+- **Eastern Plaguelands (139): base 1,527 vs WotLK 151.** Base fully mapped;
+  WotLK a stub. This one zone is the entire EK gap.
+- **Western Plaguelands (28): base 741 vs WotLK 730, only ~213 shared.** Same
+  zone, two different route layouts — a genuine different version.
+- Netherstorm (3523): base 1,097 / WotLK 1,213 (+116 WotLK)
+- Swamp of Sorrows (8): base 284 / WotLK 183 (+101 base)
+- Icecrown (210): base 486 / WotLK 568 (+82 WotLK)
+- Stormwind City (1519): base 440 / WotLK 503 (+63 WotLK)
+- Durotar (14) +23 WotLK; Westfall (40) +18 base (base superset).
+
+The other ~18 differ by only a few waypoints (minor edits). The pattern does NOT
+line up with "WotLK is newer/more complete" — base has the fuller Plaguelands,
+WotLK the fuller Northrend/cities. This reads like **two snapshots of an evolving
+community map that diverged**, not expansion-versioned zones.
+
+### 7.4 Q3 — versioning + is the hybrid correct?
+
+**No real versioning exists.** The only branch is a single all-or-nothing
+`if Sku.isTBC` in `LoadDefaultMapData` (`SkuNav/Core.lua:3445`): on TBC, seed
+`SessionRouteData.Waypoints` from the BASE file but `SessionRouteData.Links` from
+the WOTLK file (`SkuDBTMP`), and nil the base file's own links. There is no
+per-zone / per-expansion / per-waypoint version metadata — only one global
+`SkuDBTMP.routedata.version = 40.3` stamp. `Sku.isWotLK`/`isWrath` don't exist.
+
+**Custom-waypoint id = GLOBAL flat array position + packed areaId.**
+`BuildWpIdFromData(1, tIndex, 1, areaId)` (`Core.lua:794`) where `tIndex` is the
+`ipairs` position in the whole `SessionRouteData.Waypoints` array; `areaId` is
+packed into separate bits. Deleted waypoints are kept as `{false}` tombstones so
+positions don't shift within a file's edit history — that is the id-stability
+mechanism.
+
+**The hybrid is correct in ~98% of the world and broken in the divergent zones.**
+The wotlk Links are keyed by ids computed against the WOTLK waypoint positions but
+are applied to the BASE array. Because both files fork from a common ancestor and
+keep matching tombstones, the two arrays stay position-aligned for ~98% of slots
+(first divergence at slot ~70; quartile match 99.9/99.9/98.9/93.5%), so it does
+NOT cascade world-wide. But where a zone's block shifts (Plaguelands foremost), a
+wotlk link id lands on a base position holding a DIFFERENT zone; the embedded
+areaId makes the lookup miss, so `CheckAndUpdateProfileLinkData` /
+`LoadLinkDataFromProfile` (`Core.lua:993-1099`) **silently prune** those links
+(no crash). Net effect in EPL/WPL etc.: the waypoints still exist and are
+selectable (they come from the base array), but their connective route-link graph
+degrades — a plausible source of "wrong routes / dead ends" reports.
+
+**Map recognition has TBC-era gaps.** `SkuNav/Geo.lua` resolves uiMapId<->areaId
+from static TBC tables (`InternalAreaTable`, `ExternalMapID`). A WotLK-remapped or
+unknown uiMapId returns nil with no fallback (`GetUiMapIdFromAreaId` Geo.lua:111,
+`GetAreaIdFromUiMapId` :139); the creature/object cache passes then silently skip
+those spawns (`Core.lua:636, 705`). Plus a **latent bug**: `GetCurrentAreaId`
+(`Geo.lua:194`) compares against `tPlayerUIMap` which is never declared in that
+function (a nil global), so its first loop never matches normal open-world zones
+and it falls through to a name-match fallback; if `GetBestMapForUnit` returns a
+uiMapId absent from the TBC `ExternalMapID`, it returns nil.
+
+### 7.5 What this means for SkuMapper's editing surface
+
+- WAYPOINTS: the base file is authoritative (used verbatim at runtime). SkuMapper
+  4.9 seeds from the base file (§3.1) — correct.
+- LINKS: on TBC the wotlk file is the authoritative link source, but it only
+  aligns with the base waypoints in the ~98% of zones the two share. The
+  Plaguelands link graph is the weak spot. A mapper who re-links EPL/WPL against
+  the base waypoints and exports would actually FIX the hybrid there.
+- Recommended follow-ups (not done — need decisions + in-game tests):
+  1. Reconcile base vs wotlk in the ~7 divergent zones (regenerate the wotlk link
+     set against base positions, or drop the two-file hybrid and ship one
+     self-consistent set).
+  2. Fix the `GetCurrentAreaId` `tPlayerUIMap` nil-global bug (`Geo.lua:199`).
+  3. Add a real per-zone provenance/version field if zones will keep diverging.
