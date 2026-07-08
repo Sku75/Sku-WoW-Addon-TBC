@@ -92,7 +92,12 @@ local mSkuVoiceQueueBTTS_Voice = {}
 local mBttsCacheBust = 0
 local function BttsCacheBust(aString)
 	mBttsCacheBust = (mBttsCacheBust % 64) + 1
-	return aString .. string.rep("\226\128\139", mBttsCacheBust)
+	-- Unique suffix for WoW's audio cache using an SSML <bookmark> tag rather than
+	-- an invisible character: SAPI parses bookmarks out as metadata, so they never
+	-- enter NVDA's text pipeline (zero prosody effect), and our engine patch skips
+	-- them anyway. WoW's SpeakText treats the text as XML (it injects its own
+	-- start/end bookmarks), so this rides the same path.
+	return aString .. string.format('<bookmark mark="skc%d"/>', mBttsCacheBust)
 end
 
 function SkuVoice:Create()
