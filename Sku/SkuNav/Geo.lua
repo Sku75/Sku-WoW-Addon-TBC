@@ -318,8 +318,17 @@ end
 SLASH_SKUZONEPROBE1 = "/skuzoneprobe"
 SLASH_SKUZONEPROBE2 = "/szp"
 SlashCmdList["SKUZONEPROBE"] = function()
-	local p = function(...) print("|cff66ccffSkuZoneProbe|r", ...) end
-	if not SkuNav then p("SkuNav not loaded yet"); return end
+	if not SkuNav then print("SkuZoneProbe: SkuNav not loaded yet"); return end
+	-- Write results into the SkuDebugLog ring so they can be read out-of-game (no
+	-- chat pasting). Force log ON for the duration regardless of the current flag,
+	-- then restore it; dprint still echoes to chat too if Sku.debug.print is on. A
+	-- marker line makes this block easy to find in the ring.
+	local d = Sku.debug or {}
+	Sku.debug = d
+	local tSavedLog = d.log
+	d.log = true
+	Sku:DebugLogMark("skuzoneprobe")
+	local p = function(...) dprint("SkuZoneProbe", ...) end
 
 	-- 1) what the client reports
 	local tUiMap = C_Map.GetBestMapForUnit("player")
@@ -373,4 +382,7 @@ SlashCmdList["SKUZONEPROBE"] = function()
 	elseif tSkuAreaId then
 		p("areaId OK (Sku's areaId is one the client reports here)")
 	end
+
+	d.log = tSavedLog
+	print("|cff66ccffSkuZoneProbe|r logged to SkuDebugLog (marker 'skuzoneprobe') - /reload, then read it back")
 end
