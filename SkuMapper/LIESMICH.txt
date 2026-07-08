@@ -1,0 +1,19 @@
+SkuMapper 4.8 (Karten-Tool fuer Sku)
+
+Wozu
+- Zum Erstellen und Bearbeiten von Kartendaten (Wegpunkte, Routen) fuer das SkuAddon.
+  Sichtbares Tool, gedacht fuer sehende Helfer.
+
+Einbau
+1. Den Ordner SkuMapper nach Interface\AddOns kopieren und das Addon aktivieren.
+   Nach einem Blizzard-Patch ggf. "Veraltete AddOns laden" im AddOn-Fenster setzen.
+2. Karte oeffnen: Escape, Tastenbelegung, Kategorie Other (Sonstiges), Eintrag
+   "Open Sku Minimap" eine Taste zuweisen, dann diese Taste druecken.
+
+Kartendaten
+- Import und Export laufen ueber ein Textfeld (Copy/Paste): /sku import bzw. /sku export.
+
+Neu in 4.8
+- Export unter neueren Clients repariert: der Aufruf GetAddOnMetadata gibt es dort nicht
+  mehr; genutzt wird jetzt C_AddOns.GetAddOnMetadata (mit Rueckfall auf den alten Aufruf).
+  Vorher stuerzte /sku export ab ("attempt to call a nil value").

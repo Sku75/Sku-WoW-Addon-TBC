@@ -1,0 +1,52 @@
+## Interface: 11508
+## Title: SkuMapper (4.8)
+## SavedVariables: SkuOptionsDB
+## Dependencies:
+## Version: 4.8
+## X-Curse-Project-ID: 
+
+embeds.xml
+
+Libs\HereBeDragons\HereBeDragons-2.0.lua
+Libs\HereBeDragons\HereBeDragons-Pins-2.0.lua
+Libs\HereBeDragons\HereBeDragons-Migrate.lua
+
+locales\enUS.lua
+locales\deDE.lua
+
+Core.lua
+
+SkuDB\Core.lua
+SkuDB\assets\maps.lua
+SkuDB\assets\default_waypoints.lua
+SkuDB\assets\quests.lua
+SkuDB\assets\creatures.lua
+SkuDB\assets\items.lua
+SkuDB\assets\objects.lua
+SkuDB\assets\spells.lua
+SkuDB\assets\polygons.lua
+
+SkuDB\assets\WotLK\enchantIDs.lua
+
+SkuDB\assets\WotLK\creatures.lua
+SkuDB\assets\WotLK\objects.lua
+SkuDB\assets\WotLK\creatures_fixes.lua
+SkuDB\assets\WotLK\objects_fixes.lua
+
+SkuDB\assets\TBC\creatures.lua
+SkuDB\assets\TBC\objects.lua
+SkuDB\assets\TBC\creatures_fixes.lua
+SkuDB\assets\TBC\objects_fixes.lua
+
+SkuNav\Core.lua
+SkuNav\SkuMM.lua
+SkuNav\data.lua
+SkuNav\Options.lua
+SkuNav\history.lua
+
+SkuQuest\Core.lua
+SkuQuest\Options.lua
+
+SkuZOptions\utilities.lua
+SkuZOptions\Core.lua
+SkuZOptions\Options.lua
