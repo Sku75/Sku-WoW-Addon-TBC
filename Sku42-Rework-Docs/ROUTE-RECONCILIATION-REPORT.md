@@ -48,9 +48,12 @@ waypoints but WotLK's sparse links):
 
 - **Eastern Plaguelands (139)** — base 1,527 wp / WotLK 151. The hybrid gives it
   only **363 links** (60 stranded → ~303 usable). Base's own set would give
-  **3,583**. So the hybrid delivers under 10% of EPL's available routing: 1,527
-  waypoints shown, almost none properly connected. This is the worst case and
-  matches the "improvements are stranded in the base zone" intuition exactly.
+  **3,583**. So the hybrid delivers under 10% of EPL's available routing.
+  **[LIVE-CORRECTED — see "Live confirmation" below]** In-game `/szp` shows the
+  real outcome is worse than this static estimate: 1,527 loaded → **0 survive**
+  (every custom EPL waypoint is deleted by `CleanupWaypoints` for lack of a
+  resolving link — the "~303 usable" here was optimistic because the offline
+  resolver counted any same-areaId index match as resolved). Worst case, confirmed.
 - **Western Plaguelands (28)** — base 741 / WotLK 730 but only 213 shared (two
   different mappings). Hybrid strands **1,466** links; base_own 1,712 vs ~712
   usable. Base is the better, self-consistent map here.
@@ -129,3 +132,46 @@ with more waypoints. This qualifies the options above:
 - Longer term, correct handling is per-phase route selection (the addon picks the
   data matching the running client's phase), which does not exist today. See
   the timeline note in the SkuMapper audit and project memory.
+
+## Live confirmation (EPL) + /skuzoneprobe — 2026-07-08/09
+
+Added a read-only diagnostic **`/skuzoneprobe`** (`/szp`) in `Sku/SkuNav/Geo.lua`
+(commits 787aba0, 21171eb, d6c828b). It dumps, for the player's position: the
+client's real `uiMapID` (`C_Map.GetBestMapForUnit`) + the real AreaTable ids
+(`C_MapExplorationInfo.GetExploredAreaIDsAtPosition`, each named via
+`C_Map.GetAreaInfo`) vs what SkuNav resolves (`GetCurrentAreaId`), plus
+**loaded** (`SessionRouteData`) and **survived** (`WaypointCache` after cleanup)
+route-waypoint counts for the current area AND its parent zone. It writes to the
+`SkuDebugLog` ring (read back after the last `=== skuzoneprobe` marker), so no
+chat pasting. Note: the client's zone DATA is in DB2 files, not the interface Lua;
+the live `C_Map` API is the only ground truth.
+
+Result standing in Eastern Plaguelands (Chapel of the Hopeful Light):
+
+- **Numbering is consistent — no cross-cycle renumber.** Client AreaTable id 2268
+  == Sku areaId 2268; uiMap 1423 both sides; parent 1415. `uiMap OK` / `areaId OK`.
+  Sku's areaId scheme IS the client's AreaTable scheme on this client.
+- **The hybrid destroys 100% of EPL's custom routes.** Parent zone 139 reported
+  **`loaded 1527 -> survived in cache 0`**: the base data loads all 1,527 EPL
+  waypoints, the WotLK link set resolves none of them (array positions differ),
+  and `CleanupWaypoints` deletes every zero-link custom waypoint — all 1,527. So
+  it is 1527 → 0, not the "~120 survive" earlier estimated.
+- **What's left (the "few points, one WotLK-only") = creature/object auto-waypoints**
+  (typeId 2/3), which come from the shared TBC+WotLK-merged SkuDB, not the route
+  files, so cleanup never touches them; some are WotLK-only NPCs with an EPL spawn.
+- Aside: the current area resolves to the **sub-area** the player stands in (from
+  the minimap zone text), e.g. chapel 2268 — nav granularity is sub-area, not zone.
+
+This confirms end-to-end the mechanism in §7.4/2.7: base is the authored map for
+TBC-reachable zones, but because the hybrid supplies WotLK links, cleanup deletes
+those zones' whole custom route net at load (EPL total; WPL/Swamp/Westfall partial).
+
+## Next step — external phase snapshots (planned, not started)
+
+To settle which of base/WotLK is TBC-phase-correct empirically (rather than by
+"fuller"), the maintainer is sourcing OLD map versions from "neuralgigpoint": an
+**Era** snapshot and an **end-of-WotLK** snapshot. `SkuAddon LK.zip` (end-of-WotLK)
+already sits untracked in the worktree root as a reference (not committed).
+Compare Era / TBC / end-WotLK route data per zone → decide the TBC-phase-correct
+source per zone → fix the link source (base links for base-authored TBC zones) so
+`survived` goes 0 → ~1500. Then re-run `/szp` in EPL to verify.
