@@ -106,3 +106,26 @@ Recommendation for a TBC-only ship: option 2 or the EPL/WPL slice of option 1.
 Both need one in-game check afterwards (walk the Plaguelands, confirm routing
 connects). Not started — awaiting your decision, and you noted you may source a
 non-mixed file instead.
+
+## Timeline caveat — "fuller" is not "TBC-correct"
+
+The Anniversary realm runs a CYCLICAL timeline (Era → TBC → WotLK → loops back to
+Era → …) and we are on **TBC, which is BEFORE WotLK**. Maps genuinely change between
+phases (e.g. Eastern Plaguelands had the Death Knight "Scarlet Enclave" carved out in
+WotLK). So the WotLK route file is a FUTURE / different map state, and the correct
+data for a zone is the one matching the CURRENT phase (TBC) — NOT simply the file
+with more waypoints. This qualifies the options above:
+
+- "Collapse to base" (option 2) fixes the link-starvation and is the fuller data,
+  but base being fuller does NOT guarantee it is TBC-accurate — some of its extra
+  waypoints could be WotLK-era placements pointing at things that don't exist on TBC
+  yet (the user observed exactly this: an EPL waypoint aiming at a WotLK-only
+  feature). The file labels can't be trusted at face value (base EPL 1,527 is fuller
+  than the wotlk file's 151 — the opposite of "wotlk added more").
+- So before shipping any collapsed/merged set, the base-richer changed zones
+  (Eastern/Western Plaguelands above all) should be **spot-checked against the TBC
+  map**, not accepted just because they have more points. Sourcing a known
+  TBC-phase route set (the "non-mixed file" idea) sidesteps this entirely.
+- Longer term, correct handling is per-phase route selection (the addon picks the
+  data matching the running client's phase), which does not exist today. See
+  the timeline note in the SkuMapper audit and project memory.

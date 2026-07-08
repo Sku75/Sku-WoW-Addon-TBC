@@ -319,8 +319,19 @@ Meaningful divergences (areaId = classic AreaTable id; names from
 
 The other ~18 differ by only a few waypoints (minor edits). The pattern does NOT
 line up with "WotLK is newer/more complete" — base has the fuller Plaguelands,
-WotLK the fuller Northrend/cities. This reads like **two snapshots of an evolving
-community map that diverged**, not expansion-versioned zones.
+WotLK the fuller Northrend/cities.
+
+**Timeline framing (important — corrects an earlier assumption).** This is NOT just
+community-mapping drift. The Anniversary realm runs a CYCLICAL timeline — Era → TBC →
+WotLK → loops back to Era → … — and maps genuinely CHANGE between phases (e.g.
+Eastern Plaguelands had the Death Knight "Scarlet Enclave" carved out in WotLK). We
+are currently on **TBC, which is *before* WotLK**, so the WotLK route data is a
+FUTURE / different map state. Therefore "authoritative" = **matches the current phase
+(TBC)**, NOT "the fuller file". Preferring base because it has more EPL waypoints is
+NOT automatically correct — some of base's extras could be WotLK-era placements that
+don't exist on TBC yet (the "more but broken" risk). The base-vs-WotLK file *labels*
+can't be trusted at face value either (base EPL is fuller than the wotlk file — the
+opposite of "wotlk added more"). Reason by phase, not by count.
 
 ### 7.4 Q3 — versioning + is the hybrid correct?
 
