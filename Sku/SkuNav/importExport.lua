@@ -26,7 +26,7 @@ function SkuNav:ImportWpAndLinkData()
 		local tIgnoredCounterWps = 0
 
 		if tSerializedData ~= "" then
-			local tSuccess, tVersion, tLinks, tWaypoints = SkuOptions:Deserialize(tSerializedData)
+			local tSuccess, tVersion, tLinks, tWaypoints, tSequenceNumbers, tWaypointLevels = SkuOptions:Deserialize(tSerializedData)
 
 			--if tVersion ~= 22 then
 				--SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Falsche Version."], false, true, 0.2, nil, nil, nil, 2)										
@@ -64,6 +64,25 @@ function SkuNav:ImportWpAndLinkData()
 			print(L["Links importiert:"], tImportCounterLinks)
 			print(L["Wegpunkte importiert:"], tImportCounterWps)
 			print(L["Wegpunkte ignoriert:"], tIgnoredCounterWps)
+
+			--layers + sequence numbers (SkuMapper export fields 4 & 5). Sku reads
+			--both from SkuDB.routedata["global"] (runtime nav ordering + re-export),
+			--so apply them there. Guarded so older 3-field blobs are unaffected and
+			--a missing routedata table can't error the import.
+			if (tSequenceNumbers or tWaypointLevels) and SkuDB.routedata and SkuDB.routedata["global"] then
+				if tSequenceNumbers then
+					SkuDB.routedata["global"].SequenceNumbers = tSequenceNumbers
+					local c = 0
+					for _ in pairs(tSequenceNumbers) do c = c + 1 end
+					print("Sequence Numbers imported", c)
+				end
+				if tWaypointLevels then
+					SkuDB.routedata["global"].WaypointLevels = tWaypointLevels
+					local c = 0
+					for _ in pairs(tWaypointLevels) do c = c + 1 end
+					print("Waypoint layers imported", c)
+				end
+			end
 
 			SkuNav:CreateWaypointCache()
 

@@ -103,15 +103,44 @@ blob**, and the supported ingress, `SkuNav:ImportWpAndLinkData`
 
 Core (waypoints + links) round-trips today. Two consequences remain:
 
-- **Gap A — layers & sequence dropped on import.** Sku 42's import reads only
-  the first 3 blob fields, so `WaypointLevels` (layers) and `SequenceNumbers`
-  a mapper reorganizes never land via `/sku import`; only a full route-file
-  regeneration carries them. Fix is small but touches Sku 42 runtime (see 4.2)
-  — left as a recommendation, not applied, because it needs an in-game test.
+- **Gap A — layers & sequence dropped on import. FIXED (see 4.2).** Sku 42's
+  import read only the first 3 blob fields, so `WaypointLevels` (layers) and
+  `SequenceNumbers` a mapper reorganized never landed via `/sku import`. Now
+  applied: the import reads all 5 fields and writes layers/sequence back into
+  `SkuDB.routedata["global"]` (guarded).
 - **Gap B — import is session-only.** `ImportWpAndLinkData` writes to
   `SessionRouteData`, wiped next login. The real round-trip is therefore
   "mapper exports blob → maintainer regenerates the shipped file → ship", which
   is exactly the manual step the redesign in section 5 targets.
+
+### 2.7 What data SkuMapper's bundle had vs Sku 42 — no loss
+
+Diffing the actual route files:
+
+- SkuMapper 4.8's bundled `routedata_global.lua` (version stamp **40.3**, 49,533
+  waypoints, 192,084 link assignments, ~29.9 MB) is **byte-for-byte identical to
+  Sku 42's current `routedata_global_wotlk.lua`** (same builder body, same
+  counts). The "40.3" is only a stale version STRING inside the WotLK route
+  builder — the CONTENT is Sku 42's current WotLK-merged route set. SkuMapper was
+  NOT shipping ancient data.
+- Sku 42's base `routedata_global.lua` has **50,708 waypoints / ~144k link
+  assignments / ~18 MB** — MORE waypoints (+1,175) than the bundle, across the
+  same zones (both ~272 areaIds; only differences are 2 lone waypoints in obscure
+  areas one way, 1 the other). By waypoints, ours is a superset: no loss, newer.
+- The two files are the two halves of Sku 42's dual-client TBC route system: on
+  TBC, Sku navigates with waypoints from the base `routedata_global.lua` (50,708)
+  but LINKS from `routedata_global_wotlk.lua` (192k); the base file's own 144k
+  links are dropped on TBC (`LoadDefaultMapData` nils
+  `SkuDB.routedata["global"].Links`).
+- **Open decision (maintainer intent, not a bug).** SkuMapper's seed (§3.1)
+  loads the SELF-CONSISTENT base file (50,708 waypoints + its own 144k links) —
+  safe, and matches the canonical base route file. If mappers should instead edit
+  the WotLK-merged link set (the 192k links the TBC client actually navigates
+  with), the seed must pull links from `routedata_global_wotlk.lua` — but that
+  file's waypoint array is ordered differently from the base file (diverges by
+  index ~68), so the two can't be paired without reconciling link IDs first. Left
+  on the base file pending that decision. No route/waypoint data is lost either
+  way; this is about WHICH of two existing link sets is the editing surface.
 
 ---
 
@@ -143,8 +172,9 @@ change still needs one live check (see section 6).
 ### 3.1 Route baseline re-enabled (the "regenerate routedata" work)
 
 `SkuNav:LoadDefaultMapData` was a **no-op**: the lines that seed from
-`SkuDB.routedata["global"]` were commented out, and the bundled
-`routedata_global.lua` (v40.3) was not even in the TOC. Result: a fresh install
+`SkuDB.routedata["global"]` were commented out, and the bundled route file
+(which turned out to be Sku 42's own WotLK route set — see §2.7) was not even in
+the TOC. Result: a fresh install
 started with an empty custom set, and because export writes the whole set, a
 careless export could ship an empty route DB.
 
@@ -189,22 +219,15 @@ copy:
    `SkuMapper/SkuDB/assets/` (this is the "regenerate the route baseline" step;
    the `.gitignore` documents it too). Repeat whenever Sku's routes change.
 
-### 4.2 Recommended Sku 42-side patch (Gap A) — NOT applied
+### 4.2 Sku 42-side patch (Gap A) — APPLIED
 
-To make layers and sequence numbers survive the copy/paste path, extend
-`Sku/SkuNav/importExport.lua:ImportWpAndLinkData` to read the 4th/5th blob
-fields and apply them to `SkuDB.routedata["global"]` so export (which reads them
-from there, `importExport.lua:97,109`) and the live nav pick them up:
-
-```lua
-local tSuccess, tVersion, tLinks, tWaypoints, tSeq, tLevels = SkuOptions:Deserialize(tSerializedData)
--- …after the existing waypoint/link import…
-if tSeq then SkuDB.routedata["global"].SequenceNumbers = tSeq end
-if tLevels then SkuDB.routedata["global"].WaypointLevels = tLevels end
-```
-
-Guarded with `if tSeq`/`if tLevels`, old 3-field blobs are unaffected. Deferred
-because it changes shipped-addon runtime and wants a live check.
+`Sku/SkuNav/importExport.lua:ImportWpAndLinkData` now reads the 4th/5th blob
+fields and applies them to `SkuDB.routedata["global"]` (which export at
+`importExport.lua:97,109` and the live nav both read), so layers + sequence
+survive `/sku import`. Guarded (`if tSequenceNumbers`/`if tWaypointLevels` +
+`SkuDB.routedata["global"]` existence) so old 3-field blobs and a not-yet-built
+route table can't break the import. Prints imported counts for verification.
+Still wants one in-game confirmation (section 6).
 
 ---
 
