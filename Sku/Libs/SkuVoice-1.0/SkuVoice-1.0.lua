@@ -659,7 +659,11 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	end
 
 
-	aString = string.gsub(aString, "%.%.%.", ";"..L["period"]..";"..L["period"]..";"..L["period"]..";")
+	-- Ellipsis: leave "..." raw so NVDA/SAPI apply their own pronunciation. (The
+	-- old code expanded it into three localized "period" word-tokens, so a
+	-- screen-reader received the literal words "Punkt Punkt Punkt" instead of an
+	-- ellipsis and never got to apply its ellipsis rule. This is the Blizzard-TTS
+	-- path only; the audio-file TTS returns earlier and keeps its own handling.)
 
 	local tString = ""
 	if aSpell == true then
