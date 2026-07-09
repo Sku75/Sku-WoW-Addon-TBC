@@ -1,0 +1,25 @@
+# Sku dev repo — keep code under version control, leave bulky release assets
+# on disk only (the addon folder is symlinked into WoW's AddOns, so these
+# files must remain present locally; they just don't belong in git).
+
+# === Binary assets (audio, fonts, images) ===
+*.mp3
+*.ogg
+*.wav
+*.ttf
+*.otf
+*.png
+*.jpg
+*.jpeg
+*.tga
+*.blp
+*.xlsx
+
+# === Large generated game-data tables (not hand-edited source) ===
+/routedata_global_wotlk.lua
+/SkuDB/assets/
+
+# === OS / editor cruft ===
+.DS_Store
+Thumbs.db
+*.bak

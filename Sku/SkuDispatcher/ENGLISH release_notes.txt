@@ -1,0 +1,155 @@
+-------------------------------------------------------------------------------------------------------	
+- Sku Era Addon Release Notes
+-------------------------------------------------------------------------------------------------------	
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.32
+	- Fixed a bug with resource scanning and notifications on resources.
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.31
+	- Updated the chat module to the current Wrath version (including Read Chat Links feature in line context menu, etc.)
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.30
+	- Again fixed a bug with reading the tooltip of items you're currently rolling on with CTRL + SHIFT + T. This time for real. :D
+	- Fixed a bug with leaving chat channels
+	
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.29
+	- Tried to change the target sku focus x key code to remove lag.
+	- Fixed a bug with Pet Action Bar with pets that don't have special abilities. Pet action bar should now show up as intended with not special pet abilities.
+	- Fixed Train button in the Beast Training menu for hunter pets. Should not be blocked anymore.
+	- Fixed the blocked Enchant button in Enchanting menu. Should not be blocked anymore.
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.28
+	- Fixed a bug with the route calculation that was sometimes generating incorrect routes leading into walls, etc.
+	- Fixed another bug with the auction house categories for full scan results by item and removed overlooked debug outputs.
+	- Added a new feature: Sku focus units
+		This is adding 8 extra focus units. Basically they are working like the usual focus slash command, but they are using unit names instead of specific units. 
+		This means, they won't always target a specific unit like the standard /focus command. They will target the next available mob with a specific name (!) or part of a name.
+		Imagine that like you doing /tar with a name. It's exactly the same. If there is only one npc, mob or player with that name around, then it will target that one. If there are multiple units with the name (or part of then name), then it will target a random unit of those.
+		There are 8 new Sku key binds to set focus 1 to 8 to your current target. ("Set focus x to the name of your current target")
+		There are 8 new Sku key binds to target focus 1 to 8. ("Target focus x")
+		There is a new slash command to set focus 1 to 8 to your current target: /focusX (/focus1, /focus2, and so on. Attention for screenreader users: /focus1 is one command. There's space before the number.) 
+		And there is a slash command to target focus 1 to 8: /click focusX (/click focus1, /click focus2, and so on. Again, focus1 without a space before the number! So, /click space focus1.)
+		The /focusX command provides some enhanced options. Using it without any additions will set the focus x to your targets name.
+		Using it with any addition will set the focusx to that name. Example: /focus1 william. This will target every unit with a name starting with "William".
+		And you can use it with fixed game unit ids. Like party1, party2, pet, player, raid1 to raidx, boss1 to bossx, and so on. With a unit id added it will use the name of that unit (if the unit exists). Example: /focus1 party1 will target the name of party member one.
+	- Fixed a bug that was breaking the sort feature for the bank.
+	- Updated/fixed a view routes in Strangle, Westfall and Dun Morogh
+	- Added a Share Quest sub menu option to quest menu entries
+	- Added the End key to jump to the last audio menu entry
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.27
+	- Added bag sorting options to bag menus (below the last slot of each bag, same as in Wrath)
+	- Moved the Pre-Quests entry in quest log down.
+	- Fixed the Hearthstone details on overview page.
+	- Fixed a bug with the Control + Shift + T key for reading the tooltip of the item you're currently rolling on.
+	- Fixed a bug with the Select next waypoint of same type	feature.
+	- Fixed a bug that was leading to several missing audio outputs.
+	- Fixed a bug in route calculation that was leading to incorrect routes, like in Wetlands leading over Murloc camps and stuff.
+	- Fixed auction house categories with weird results.
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.26
+	- Fixed a bug with game key binds, that was breaking Core > Game Key Binds > Reset all.
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.25
+	- Fixed a bug that was breaking the loot roll feature. Should work again.
+	- Fixed the stable master.
+	- Fixed a bug that was causing empty lists from auction house full scans.
+	- Added/updated a bunch of features from Wrath version. That could have introduced unexpected errors. Please report if there are any.
+	- Added turn to unit feature from wrath
+	- Added all monitors from wrath
+	- Added sku makers from wrath
+	- Added sku auras from wrath
+	- Added the auto select next resource waypoint feature from Wrath
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.24
+	- Moved the runes menu to the character menu
+	- Fixed the talent menu. Should work now.
+	- The Turn to beacon hot key (default: I) is not longer fixed and can be set to any key. Starting the wow menu script isn't required anymore to use that feature.
+	- Added the Turn to Unit feature from Wrath
+		This is auto turning you to units like your target, party members, mobs with game markers like Skull, or mobs with sku markers like Blue.
+		The feature is not 100% accurate. Sometimes it is turning you straight to the unit. Sometimes it ends up left or right of the unit. It gets less accurate the closer the unit is. It gets less accurate the faster the speed setting is (see below). It depends on your machines speed/your fps. Faster is more accurate. Low fps can lead to completely inaccurate results.
+		It works reliably with units up to 41 meters away. If the unit is more than 41 meters away, the success rate will be quite worse. It works everywhere. Open world, dungeons, even battlegrounds. It works for all unit types. However, the unit must by on your physical level. Units above or below you, or units behind walls etc. won’t work.
+		There are 6 new keybindings to use this feature: Sku key binds > Turn to unit 1-6. They are are bound to no key by default. Each keybind is turning you to a different unit (see below). 1 is your target, 2 is skull, 3 is cross, 4 is square, and 5 & 6 are nothing
+		There are settings under Core > Options > Turn to target:
+		- Unit selection: This is where you set the units for the 6 key bindings. The default units for key 1-6 are: target, skull, cross, square, nothing, nothing
+		- Speed: the faster, the less accurate
+		- Enhanced settings: do not touch unless prompted	
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.23
+	- Added a runes menu: Core > Options > Runes. Select a rune and the Engrave submenu entry. That will highlight your mouse cursor with the engraving spell. Then do a left click on an appropiate item in your bags or character inventory to engrave that item. Just as with Enchanting.
+	- Added rune skills/spells to the F11 action bar config menu: Core > Action Bars > Action bar > Action button x > Runes. That menu has only spells if you are wearing engraved items that do provide spells/abilities.
+	- Added known Season of Discovery items, npcs, spells, etc. to the databases
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.22
+	- Chat tab, auction house, and bank errors fixed by Chaos
+	- Added soft targeting feature
+	- Added sound on falling feature
+	- Fixed several bugs leading to Fatality warnings
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.21
+	- Fixed db for more objects with curly apostrophe
+	- More fixes for 11404 ptr
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.20
+	- Scanning fixed
+	- Updates for upcoming Classic HC realms
+	- Updated routes and waypoints data to Classic (including Stormwind)
+	- Updated German creature names database to the old ones from Classic (partly untranslated)
+	- Tradeskills/professions frame fixed
+	- Friends list fixed (bnet friends are disabled for now)
+	- Talent frame fixed
+	- Updated the internal routes and waypoints data structure to the current Wrath version
+	- Fixed a bug in sku libraries that were causing bugs in other addons (like the hardcore addon)
+	- Fixed a lot of internal errors
+	- Fixed tooltips of Felix' belongings
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.19
+	- Auction house fixed
+	- Send mail fixed
+	- New chat tab fixed
+	- Trainer frame fixed
+	- Incorrect unit level on dead targets fixed
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.18
+	- Fixed bugs with the local menu
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.17
+	- First working version with all known bugs fixed. Talent frame not implemented yet.
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku Era r32.16
+	- Initial release
+
+
