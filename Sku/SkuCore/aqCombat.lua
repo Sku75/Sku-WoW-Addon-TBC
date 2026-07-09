@@ -427,6 +427,11 @@ end
 local tthreatWarningNotFirstHigherThanLastWarning = 0
 local tthreatWarningIsFirstSecondHigherThanLastWarning = 0
 local tOorIntervalTime = -2
+-- Last value the relative-enemies-in-combat feature spoke. The counter recounts
+-- the live enemy set every tick and announces only when this changes; kept as a
+-- file upvalue (NOT reset in PLAYER_REGEN_ENABLED) so the final "0" after combat
+-- is still announced once threatTable is cleared.
+local tRelativeLastAnnounced = 0
 local function tCombatInCounts(value, creatureGUID, tPlayerGUID, tAllPartyRaidUnits)
    -- [W6-C #20] shared "does this in-combat creature count?" classifier, extracted
    -- from the two identical value==4/3/2 cascades (relativeNumberUnitsInCombat and
@@ -439,15 +444,25 @@ local function tCombatInCounts(value, creatureGUID, tPlayerGUID, tAllPartyRaidUn
    elseif value == 3 then
       local tt = SkuCore.threatTable[creatureGUID]
       if tt then
+         -- Eager path: the combat log already recorded a party/raid member
+         -- engaging this mob (combatIn attacker, stored when it was added). For
+         -- "enemies attacking party or you" that alone is sufficient, so count
+         -- it immediately WITHOUT waiting for the threat API (.status) to
+         -- populate -- in a busy raid that threat data lags the pull by seconds.
+         -- This restores the historical behaviour of starting the count as soon
+         -- as anyone in the group is fighting, independent of the player's own
+         -- combat state. (Dead/left mobs are already excluded before this by the
+         -- recount's live-entry check, so eagerness cannot re-inflate the count.)
+         if aqCombat:aqCombatIsPartyOrRaidMember(SkuCore.inOutCombatQueue.combatIn[creatureGUID]) then
+            return true
+         end
+         -- Threat path: a party/raid member holds actual aggro. Covers mobs the
+         -- periodic threat scan surfaced where no combatIn attacker was recorded.
          for q = 1, #tAllPartyRaidUnits do
             local tPartyGuid = UnitGUID(tAllPartyRaidUnits[q])
             local tEntry = tt[tPartyGuid]
-            if tEntry and tEntry.status then
-               if tEntry.isTanking == true then
-                  return true
-               elseif aqCombat:aqCombatIsPartyOrRaidMember(SkuCore.inOutCombatQueue.combatIn[creatureGUID]) then
-                  return true
-               end
+            if tEntry and tEntry.status and tEntry.isTanking == true then
+               return true
             end
          end
       end
@@ -718,37 +733,41 @@ local function aqCombatCreateControlFrame()
                tCurrentUpdateRate = (21 - tCurrentSettings.combat.updateRate)
 
                -- Sweep entries that silently left combat (evade/leash/despawn
-               -- without a death event) so the counter can decrement cleanly.
+               -- without a death event) so they drop out of the recount below.
                tStaleSweep()
 
+               -- Authoritative RECOUNT instead of a running plus/minus delta.
+               -- threatTable holds one entry per discovered enemy (found via the
+               -- unchanged nameplate + group-target scan): a table while it is
+               -- alive/in combat, false once it dies (SKU_UNIT_DIED) or is
+               -- stale-swept. Counting the live entries that pass the current
+               -- mode filter every tick makes the number self-healing -- a missed
+               -- add or a double-remove can no longer drift it. The old delta
+               -- underflowed to a false "0" because deaths decremented
+               -- unconditionally while adds were mode-gated (tCombatInCounts);
+               -- applying the SAME filter to every candidate here removes that
+               -- asymmetry, so modes 3/4 can no longer collapse to 0 while
+               -- enemies remain.
                local tPlayerGUID = UnitGUID("player")
-               local tChanged = false
-               for creatureGUID, value in pairs(SkuCore.inOutCombatQueue.combatIn) do
-                  if aqCombatCheckElite(creatureGUID) == true then
-                     if tCombatInCounts(tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value, creatureGUID, tPlayerGUID, tAllPartyRaidUnits) then
-                        SkuCore.inOutCombatQueue.current = SkuCore.inOutCombatQueue.current + 1
-                        tChanged = true
+               local tCount = 0
+               for creatureGUID, tEntry in pairs(SkuCore.threatTable) do
+                  if type(tEntry) == "table" then
+                     if aqCombatCheckElite(creatureGUID) == true then
+                        if tCombatInCounts(tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value, creatureGUID, tPlayerGUID, tAllPartyRaidUnits) then
+                           tCount = tCount + 1
+                        end
                      end
-
-                     SkuCore.inOutCombatQueue.combatIn[creatureGUID] = nil
-                  end
-               end
-               
-               for creatureGUID, _ in pairs(SkuCore.inOutCombatQueue.combatOut) do
-                  if aqCombatCheckElite(creatureGUID) == true then
-                     SkuCore.inOutCombatQueue.current = SkuCore.inOutCombatQueue.current - 1
-                     tChanged = true
-                     SkuCore.inOutCombatQueue.combatOut[creatureGUID] = nil
                   end
                end
 
-               if SkuCore.inOutCombatQueue.current < 0 then
-                  SkuCore.inOutCombatQueue.current = 0
-               end
+               -- Keep the published field in sync for external readers.
+               SkuCore.inOutCombatQueue.current = tCount
 
-               if tChanged == true then
+               if tCount ~= tRelativeLastAnnounced then
+                  dprint("aqCombat enemies-in-combat recount:", tCount, "prev", tRelativeLastAnnounced, "mode", tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value)
+                  tRelativeLastAnnounced = tCount
                   local tSetting = tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat
-                  SkuCoreAqCombatOutput(tSetting.voiceOutput, {number1 = SkuCore.inOutCombatQueue.current,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                  SkuCoreAqCombatOutput(tSetting.voiceOutput, {number1 = tCount,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                end
 
                ttime2 = 0
@@ -1155,46 +1174,79 @@ function aqCombat:aqCombatPLAYER_TARGET_CHANGED(aEvent, a, b, c, d)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function tAddHelper(event, tCreatureGUID, tMobName, tPartyGuid, tPartyname)
-   if 
-      sfind(event, "_DAMAGE") or 
-      sfind(event, "_MISSED") or 
-      sfind(event, "_APPLIED") or 
-      sfind(event, "_CAST_SUCCESS") or 
-      sfind(event, "_CAST_START") or 
-      sfind(event, "_CAST_FAILED")
-   then      
-      C_Timer.After(0.5, function()
-         local tMobUnitId = aqCombat:aqCombatCreatureGuidToUnitId(tCreatureGUID)
-         local tPartyUnitId = aqCombat:aqCombatCreatureGuidToUnitId(tPartyGuid)
+-- Coalesced combat-log add path. Instead of one C_Timer.After(0.5) per
+-- qualifying combat-log event -- which in a raid means hundreds of short-lived
+-- closures/tables per second and the GC churn that hitches the frame -- events
+-- are recorded into a pending set (a cheap table write) and a SINGLE 0.5s flush
+-- is scheduled per burst. Same ~0.5s settle delay (so a fresh mob's unit token
+-- has time to exist before we resolve it), but the whole burst is applied
+-- atomically, so a multi-pull is announced as one number by the next recount.
+local tPendingAdds = {}          -- [creatureGUID] = {name=, partyGuid=, partyName=}
+local tPendingAddScheduled = false
+-- Coalescing window: how long the shared flush waits after the first pending add
+-- before applying the whole burst. Smaller = the first number is announced sooner,
+-- but a pull whose mobs engage over a longer span may split into two
+-- announcements. 0.3s reacts faster than 0.5s while still catching near-
+-- simultaneous (AoE / pack) pulls, which cluster within a frame or two. The
+-- add-flush breadcrumb below logs batch sizes so this can be confirmed/tuned.
+local tFlushWindow = 0.3
 
-         --local isTanking, status, scaledPercentage, rawPercentage, threatValue
-         
-         if tMobUnitId and tPartyUnitId then
-            --isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation(tPartyUnitId, tMobUnitId)
-         
-            if UnitIsDeadOrGhost(tMobUnitId) ~= true then
-               aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tMobUnitId, tMobName, tPartyGuid, tPartyUnitId, tPartyname)
+local function tFlushPendingAdds()
+   tPendingAddScheduled = false
+   local tBatch, tAdded = 0, 0
+   for tCreatureGUID, tInfo in pairs(tPendingAdds) do
+      tPendingAdds[tCreatureGUID] = nil
+      tBatch = tBatch + 1
 
-               SkuCore.threatTable[tCreatureGUID].name = tMobName
-               SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec() 
+      local tMobUnitId = aqCombat:aqCombatCreatureGuidToUnitId(tCreatureGUID)
+      local tPartyUnitId = aqCombat:aqCombatCreatureGuidToUnitId(tInfo.partyGuid)
 
-               if SkuCore.threatTable[tCreatureGUID][tPartyGuid] == nil then
-                  SkuCore.threatTable[tCreatureGUID][tPartyGuid] = {
-                     isTanking = nil,
-                     wasTanking = nil,
-                     status = nil,
-                     scaledPercentage = nil,
-                     rawPercentage = nil,
-                     threatValue = nil,
-                  }
-               end
+      if tMobUnitId and tPartyUnitId then
+         if UnitIsDeadOrGhost(tMobUnitId) ~= true then
+            aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tMobUnitId, tInfo.name, tInfo.partyGuid, tPartyUnitId, tInfo.partyName)
 
-               SkuCore.threatTable[tCreatureGUID][tPartyGuid].lastUpdate = GetTimePreciseSec()
-               SkuCore.aqCombatCheckThreat = true
+            SkuCore.threatTable[tCreatureGUID].name = tInfo.name
+            SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec()
+
+            if SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid] == nil then
+               SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid] = {
+                  isTanking = nil,
+                  wasTanking = nil,
+                  status = nil,
+                  scaledPercentage = nil,
+                  rawPercentage = nil,
+                  threatValue = nil,
+               }
             end
+
+            SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid].lastUpdate = GetTimePreciseSec()
+            SkuCore.aqCombatCheckThreat = true
+            tAdded = tAdded + 1
          end
-      end)
+      end
+   end
+   if tBatch > 0 then
+      dprint("aqCombat add-flush: window", tFlushWindow, "batch", tBatch, "resolved+added", tAdded)
+   end
+end
+
+local function tAddHelper(event, tCreatureGUID, tMobName, tPartyGuid, tPartyname)
+   if
+      sfind(event, "_DAMAGE") or
+      sfind(event, "_MISSED") or
+      sfind(event, "_APPLIED") or
+      sfind(event, "_CAST_SUCCESS") or
+      sfind(event, "_CAST_START") or
+      sfind(event, "_CAST_FAILED")
+   then
+      -- Record the pending add (last party attacker in the window wins; the
+      -- periodic control-frame threat scan fills in the other party members'
+      -- threat entries anyway) and arm one shared flush for the burst.
+      tPendingAdds[tCreatureGUID] = {name = tMobName, partyGuid = tPartyGuid, partyName = tPartyname}
+      if not tPendingAddScheduled then
+         tPendingAddScheduled = true
+         C_Timer.After(tFlushWindow, tFlushPendingAdds)
+      end
    end
 end
 
@@ -1390,23 +1442,17 @@ function aqCombat:aqCombat_PLAYER_REGEN_ENABLED()
    SkuCore.aqCombatCheckThreat = nil
    aqCombat:aqCombatClearSkuRaidTargets()
 
-   -- If the enemy-in-combat counter is active and was still above zero when
-   -- the player leaves combat, the user never hears the final "0" because
-   -- the OnUpdate counter loop stops running. Announce it once here so the
-   -- count-down is audibly completed — particularly important in group play
-   -- where mobs evade/leash silently after a wipe or pull-break.
-   if SkuCore.inOutCombatQueue and (SkuCore.inOutCombatQueue.current or 0) > 0 then
-      local tOk, tSettings = pcall(function()
-         return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet]
-      end)
-      if tOk and tSettings and tSettings.combat and tSettings.combat.enabled == true
-         and tSettings.combat.hostile and tSettings.combat.hostile.relativeNumberUnitsInCombat
-         and tSettings.combat.hostile.relativeNumberUnitsInCombat.value > 1 then
-         local tSetting = tSettings.combat.hostile.relativeNumberUnitsInCombat
-         pcall(function()
-            SkuCoreAqCombatOutput(tSetting.voiceOutput, {number1 = 0,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
-         end)
-      end
+   -- The relative-enemies counter no longer needs a hand-placed "force 0" here:
+   -- clearing threatTable below empties the live set, and the queue OnUpdate keeps
+   -- running out of combat, so its next recount tick naturally reports 0 and
+   -- announces it (tRelativeLastAnnounced is deliberately NOT reset here, so the
+   -- transition to 0 is still detected). This is the self-healing property of the
+   -- recount replacing the old drift-prone delta.
+
+   -- Drop any combat-log adds still waiting to flush so a late flush can't
+   -- resurrect a phantom enemy into the freshly-cleared threatTable.
+   for tGuid in pairs(tPendingAdds) do
+      tPendingAdds[tGuid] = nil
    end
 
    SkuCore.threatTable = {}
