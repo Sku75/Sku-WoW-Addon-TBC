@@ -148,9 +148,12 @@ workstreams (noted) — fold them in there when that workstream runs.
   work with WoW equipment sets, and make those actions macroable (triggerable from
   a macro / in combat).
 - **Monitor performance pass.** Check and improve the performance of the monitors
-  (health / power / combat / etc.).
+  (health / power / etc.). NOTE: the **combat** monitor's enemies-in-combat
+  counter is DONE (2026-07-09 — see Resolved); health/power and the rest remain.
 - **Monitor + aura reaction-time & precision pass.** Measure reaction time and
-  precision of the monitors and auras; improve where possible.
+  precision of the monitors and auras; improve where possible. NOTE: the **combat**
+  monitor's enemies-in-combat reactivity/precision is DONE (2026-07-09 — see
+  Resolved, swarm case pending raid re-test); health/power/aura remain.
 - **Discovery mode.** New mode — scope/behaviour TBD with the maintainer.
 - **Dungeon browser — real implementation.** Replace the current parked/partial
   dungeon browser with a full implementation (the B8 rework noted during W6).
@@ -159,6 +162,32 @@ workstreams (noted) — fold them in there when that workstream runs.
 - **Stuck-detection experiments for dungeons.** Ideas to test — fall detection and
   similar systems — to give the player more "am I stuck / where am I" information
   in dungeons.
+
+## Pending in-game validation (raid)
+
+- **Enemies-in-combat swarm count (admit-by-GUID) — awaiting raid re-test.**
+  - Status: committed, works in code, UNVALIDATED in a real raid. No raid access
+    until ~2026-07-16 — re-check after that.
+  - Context: the combat-monitor "enemies in combat" counter was rewritten and is
+    confirmed working for normal groups (up to ~9) — correctness (no false zero),
+    efficiency (single coalesced add flush, no per-event timer storm) and
+    reactivity (eager count-on-engagement, 0.3s window) are DONE and validated in
+    live fights (see Resolved). The one open piece is a large SIMULTANEOUS add
+    swarm: a boss summoning ~12 at once only reached ~4–9 and oscillated up/down,
+    because admission was gated on unit-token resolution and ~half the adds had no
+    nameplate/target. Fix (admit-by-GUID) admits a combat-log-engaged creature by
+    its GUID even without a token; mode 3 only, mode 4 unaffected.
+  - Re-check (capture protocol): `/skudebug clear` → `/skudebug log on` → fight a
+    summoning boss → `/reload`. Expect by ear: count climbs to ~the true number
+    quickly and holds, clean countdown, no up-down-up churn. In the log, `add-flush`
+    shows `guid-added` climbing and `batch` ≈ counted total, with near-zero
+    `stale-sweep drop` during the fight. WATCH FOR the tradeoff: the count reading
+    too high, or holding a number for a few seconds after the pack is dead (the
+    looser "counts what it can't see" — the 6s stale sweep should clean it; confirm
+    it settles).
+  - Area: `SkuCore/aqCombat.lua` (`tFlushPendingAdds` admit-by-GUID branch;
+    recount; `tCombatInCounts` mode-3 eager path). Levers: `tFlushWindow` (0.3s),
+    `tStaleThreshold` (6s).
 
 ## Monitoring (external projects — re-check on request)
 
@@ -198,6 +227,20 @@ workstreams (noted) — fold them in there when that workstream runs.
 
 ## Resolved
 
+- **Combat monitor — "enemies in combat" counter rewritten (correctness +
+  efficiency + reactivity)** — 2026-07-09 (commits `5fbfa22`, `f35638c`, plus the
+  admit-by-GUID follow-up). Was: rarely announced the number in raids, spoke a
+  false "0" when one of several mobs died, laggy first announcement. Now an
+  authoritative RECOUNT of the live enemy set each tick (self-healing, no
+  underflow — killed the false zero), eager count-on-engagement (mode 3 counts as
+  soon as a group member engages a mob, no threat-API wait), a single coalesced
+  0.3s add flush replacing hundreds of per-event `C_Timer` closures (no GC
+  hitching), keep-alive for mobs that briefly lose their token, and admit-by-GUID
+  so a large add swarm reaches the true count. Validated in live fights up to 9
+  mobs; the ~12-at-once swarm case is committed but pending a raid re-test — see
+  "Pending in-game validation (raid)". Diagnostic breadcrumbs left in (cheap when
+  logging is off): `recount:`, `add-flush … guid-added … kept-alive`,
+  `stale-sweep drop:`.
 - **Menu open in combat** — resolved in practice (maintainer-confirmed 2026-07-07:
   opening / reading / navigating the Sku menu in combat works flawlessly). In-combat
   opens go headless via the non-secure SkuMenuCapture route (`combatMenuOpen`) to

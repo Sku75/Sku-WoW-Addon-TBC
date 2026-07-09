@@ -1199,15 +1199,18 @@ local tFlushWindow = 0.3
 
 local function tFlushPendingAdds()
    tPendingAddScheduled = false
-   local tBatch, tAdded, tKept = 0, 0, 0
+   local tBatch, tAdded, tGuidAdd, tKept = 0, 0, 0, 0
    for tCreatureGUID, tInfo in pairs(tPendingAdds) do
       tPendingAdds[tCreatureGUID] = nil
       tBatch = tBatch + 1
 
       local tMobUnitId = aqCombat:aqCombatCreatureGuidToUnitId(tCreatureGUID)
       local tPartyUnitId = aqCombat:aqCombatCreatureGuidToUnitId(tInfo.partyGuid)
+         or aqCombat:aqCombatIsPartyOrRaidMember(nil, tInfo.partyGuid)
 
       if tMobUnitId and tPartyUnitId and UnitIsDeadOrGhost(tMobUnitId) ~= true then
+         -- Resolved & alive: full token-based add. Also seeds this party member's
+         -- threat sub-entry so mode 4 / threat warnings have data to work with.
          aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tMobUnitId, tInfo.name, tInfo.partyGuid, tPartyUnitId, tInfo.partyName)
 
          SkuCore.threatTable[tCreatureGUID].name = tInfo.name
@@ -1227,21 +1230,36 @@ local function tFlushPendingAdds()
          SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid].lastUpdate = GetTimePreciseSec()
          SkuCore.aqCombatCheckThreat = true
          tAdded = tAdded + 1
-      elseif not tMobUnitId and type(SkuCore.threatTable[tCreatureGUID]) == "table" then
-         -- Keep-alive for an already-tracked mob we can't resolve to a live unit
-         -- token this window (it ran beyond nameplate range / line of sight) but
-         -- a party/raid member is STILL exchanging combat-log events with it, so
-         -- it is demonstrably alive and being fought. Refresh lastUpdate from
-         -- that activity so the stale sweep doesn't drop it (which was making a
-         -- distant straggler's count flicker 1<->0). Real deaths still remove it
-         -- via SKU_UNIT_DIED (GUID-based, no token needed); a genuine evade/leash
-         -- stops the combat-log events, so it goes quiet and is swept as before.
-         SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec()
-         tKept = tKept + 1
+      elseif tPartyUnitId and not tMobUnitId then
+         -- Admit-by-GUID (this also subsumes the old keep-alive refresh). We can't
+         -- resolve the MOB to a live unit token this window -- e.g. a boss just
+         -- summoned a swarm of adds and only a few have nameplates / are targeted
+         -- -- but the combat log proves a party/raid member is engaging it. For
+         -- mode 3 ("enemies attacking party or you") that evidence alone counts,
+         -- so admit it by its GUID. combatIn stores the resolved PARTY token, which
+         -- is exactly what the mode-3 eager gate checks, so the recount counts it.
+         -- This lets the number reach the true total in a swarm instead of capping
+         -- at whatever subset currently has a token, and holds already-admitted
+         -- mobs across resolution gaps. Elite filtering still works from the GUID
+         -- via NpcData; removal stays reliable via SKU_UNIT_DIED (GUID-based) and
+         -- the stale sweep once the mob goes quiet. Mode 4 is unaffected: with no
+         -- threat sub-entry a GUID-only mob is not known to be attacking YOU, so it
+         -- correctly does not count there.
+         local tWasNew = (SkuCore.threatTable[tCreatureGUID] == nil)
+         aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, nil, tInfo.name, tInfo.partyGuid, tPartyUnitId, tInfo.partyName)
+         if type(SkuCore.threatTable[tCreatureGUID]) == "table" then
+            SkuCore.threatTable[tCreatureGUID].name = SkuCore.threatTable[tCreatureGUID].name or tInfo.name
+            SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec()
+            if tWasNew then
+               tGuidAdd = tGuidAdd + 1
+            else
+               tKept = tKept + 1
+            end
+         end
       end
    end
    if tBatch > 0 then
-      dprint("aqCombat add-flush: window", tFlushWindow, "batch", tBatch, "resolved+added", tAdded, "kept-alive", tKept)
+      dprint("aqCombat add-flush: window", tFlushWindow, "batch", tBatch, "resolved+added", tAdded, "guid-added", tGuidAdd, "kept-alive", tKept)
    end
 end
 
