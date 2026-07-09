@@ -712,6 +712,12 @@ local function aqCombatCreateControlFrame()
          if tEntry and tEntry ~= false and type(tEntry) == "table" then
             local tLast = tEntry.lastUpdate
             if tLast and (tNow - tLast) > tStaleThreshold then
+               -- Diagnostic: a mob dropped for going quiet (no combat-log/threat
+               -- refresh for tStaleThreshold s). This is the event that would
+               -- wrongly lower the count if a boss/add merely changed appearance
+               -- or briefly lost its nameplate while still alive. If one shows up
+               -- right before a count drop on such a boss, the sweep is the cause.
+               dprint("aqCombat stale-sweep drop:", tEntry.name or "?", "idle", string.format("%.1f", tNow - tLast).."s")
                -- Already queued for removal? Skip to avoid double-decrement.
                if not SkuCore.inOutCombatQueue.combatOut[tGuid] then
                   SkuCore.inOutCombatQueue.combatOut[tGuid] = true
@@ -1193,7 +1199,7 @@ local tFlushWindow = 0.3
 
 local function tFlushPendingAdds()
    tPendingAddScheduled = false
-   local tBatch, tAdded = 0, 0
+   local tBatch, tAdded, tKept = 0, 0, 0
    for tCreatureGUID, tInfo in pairs(tPendingAdds) do
       tPendingAdds[tCreatureGUID] = nil
       tBatch = tBatch + 1
@@ -1201,32 +1207,41 @@ local function tFlushPendingAdds()
       local tMobUnitId = aqCombat:aqCombatCreatureGuidToUnitId(tCreatureGUID)
       local tPartyUnitId = aqCombat:aqCombatCreatureGuidToUnitId(tInfo.partyGuid)
 
-      if tMobUnitId and tPartyUnitId then
-         if UnitIsDeadOrGhost(tMobUnitId) ~= true then
-            aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tMobUnitId, tInfo.name, tInfo.partyGuid, tPartyUnitId, tInfo.partyName)
+      if tMobUnitId and tPartyUnitId and UnitIsDeadOrGhost(tMobUnitId) ~= true then
+         aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tMobUnitId, tInfo.name, tInfo.partyGuid, tPartyUnitId, tInfo.partyName)
 
-            SkuCore.threatTable[tCreatureGUID].name = tInfo.name
-            SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec()
+         SkuCore.threatTable[tCreatureGUID].name = tInfo.name
+         SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec()
 
-            if SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid] == nil then
-               SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid] = {
-                  isTanking = nil,
-                  wasTanking = nil,
-                  status = nil,
-                  scaledPercentage = nil,
-                  rawPercentage = nil,
-                  threatValue = nil,
-               }
-            end
-
-            SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid].lastUpdate = GetTimePreciseSec()
-            SkuCore.aqCombatCheckThreat = true
-            tAdded = tAdded + 1
+         if SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid] == nil then
+            SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid] = {
+               isTanking = nil,
+               wasTanking = nil,
+               status = nil,
+               scaledPercentage = nil,
+               rawPercentage = nil,
+               threatValue = nil,
+            }
          end
+
+         SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid].lastUpdate = GetTimePreciseSec()
+         SkuCore.aqCombatCheckThreat = true
+         tAdded = tAdded + 1
+      elseif not tMobUnitId and type(SkuCore.threatTable[tCreatureGUID]) == "table" then
+         -- Keep-alive for an already-tracked mob we can't resolve to a live unit
+         -- token this window (it ran beyond nameplate range / line of sight) but
+         -- a party/raid member is STILL exchanging combat-log events with it, so
+         -- it is demonstrably alive and being fought. Refresh lastUpdate from
+         -- that activity so the stale sweep doesn't drop it (which was making a
+         -- distant straggler's count flicker 1<->0). Real deaths still remove it
+         -- via SKU_UNIT_DIED (GUID-based, no token needed); a genuine evade/leash
+         -- stops the combat-log events, so it goes quiet and is swept as before.
+         SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec()
+         tKept = tKept + 1
       end
    end
    if tBatch > 0 then
-      dprint("aqCombat add-flush: window", tFlushWindow, "batch", tBatch, "resolved+added", tAdded)
+      dprint("aqCombat add-flush: window", tFlushWindow, "batch", tBatch, "resolved+added", tAdded, "kept-alive", tKept)
    end
 end
 
