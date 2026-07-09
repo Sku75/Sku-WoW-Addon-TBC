@@ -1,0 +1,5 @@
+## Interface: 20506, 11508
+## Title: !!LoadStopwatch
+## Notes: Wall-clock login/reload freeze measurement (Sku 42 rework tooling). Leading !! so it loads before every other addon.
+## SavedVariables: LoadStopwatchDB
+main.lua

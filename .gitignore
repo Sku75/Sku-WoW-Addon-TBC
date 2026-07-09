@@ -1,0 +1,5 @@
+old-addon-versions/
+
+# personal dev config & local-only dirs (untracked)
+/CLAUDE.md
+/archive/

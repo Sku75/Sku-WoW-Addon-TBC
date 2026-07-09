@@ -1,0 +1,24 @@
+# SkuMapper — bulky binary assets and large generated data tables are kept on
+# disk so the tool runs, but are NOT version-controlled (same policy as Sku/).
+#
+# Regenerate the route baseline from the sibling addon before packaging:
+#   copy  Sku/SkuDB/assets/routedata_global.lua  ->  SkuMapper/SkuDB/assets/
+# (see Sku42-Rework-Docs/SKUMAPPER-AUDIT.md).
+
+# Minimap render tiles (~500 MB) — static, one-time download, not map data.
+SkuNav/assets/
+
+# Large generated game-data tables (creatures/items/objects/quests/spells/
+# routes/wiki/…). These are byte-identical copies of Sku's own SkuDB assets.
+SkuDB/assets/
+
+# Audio
+audio/
+*.mp3
+*.ogg
+
+# Fonts / images
+*.ttf
+*.otf
+*.blp
+*.tga

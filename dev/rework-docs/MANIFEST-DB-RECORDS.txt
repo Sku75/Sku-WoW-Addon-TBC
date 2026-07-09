@@ -1,0 +1,27 @@
+# per-dataset record/chunk/duplicate-key counts, by _db_convert.py
+# in-game record counts (/skudbcheck) = records minus dupe keys
+SkuDB.NpcData.Names.deDE|26477|53|9104
+SkuDB.NpcData.Names.enUS|18696|38|0
+SkuDB.NpcData.Data|18696|38|0
+SkuDB.itemLookup.deDE|24998|50|0
+SkuDB.itemLookup.enUS|24998|50|0
+SkuDB.itemDataTBC|25005|51|0
+SkuDB.SpellDataTBC|49117|99|0
+SkuDB.questLookup.deDE|6476|13|0
+SkuDB.questLookup.enUS|6532|14|0
+SkuDB.questDataTBC|6514|14|0
+SkuDB.objectDataTBC|9024|19|0
+SkuDB.objectLookup.deDE|2136|5|0
+SkuDB.objectLookup.enUS|2136|5|0
+SkuDB.WotLK.NpcData.Names.enUS|26428|53|0
+SkuDB.WotLK.NpcData.Names.deDE|26450|53|0
+SkuDB.WotLK.NpcData.Data|29601|60|0
+SkuDB.WotLK.itemLookup.deDE|37906|76|0
+SkuDB.WotLK.itemLookup.enUS|37906|76|0
+SkuDB.WotLK.itemDataTBC|36752|74|0
+SkuDB.WotLK.questLookup.deDE|9093|19|0
+SkuDB.WotLK.questLookup.enUS|9093|19|0
+SkuDB.WotLK.questDataTBC|9086|19|0
+SkuDB.WotLK.objectDataTBC|12963|26|0
+SkuDB.WotLK.objectLookup.enUS|11979|24|0
+SkuDB.WotLK.objectLookup.deDE|3070|7|0

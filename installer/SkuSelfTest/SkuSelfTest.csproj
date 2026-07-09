@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Headless console harness that links the installer's ENGINE files (no
+       WinForms, no admin manifest) so the full download/extract/install pipeline
+       can be driven and verified from the command line. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>SkuSelfTest</AssemblyName>
+    <RootNamespace>SkuInstaller</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <!-- Link the engine sources (exclude MainForm.cs / Program.cs / Shortcut.cs /
+       DefaultSettings.cs — not needed for the download pipeline). -->
+  <ItemGroup>
+    <Compile Include="..\SkuInstaller\Config.cs"          Link="Config.cs" />
+    <Compile Include="..\SkuInstaller\Logger.cs"          Link="Logger.cs" />
+    <Compile Include="..\SkuInstaller\Loc.cs"             Link="Loc.cs" />
+    <Compile Include="..\SkuInstaller\GitHubClient.cs"    Link="GitHubClient.cs" />
+    <Compile Include="..\SkuInstaller\WowLocator.cs"      Link="WowLocator.cs" />
+    <Compile Include="..\SkuInstaller\InstallManifest.cs" Link="InstallManifest.cs" />
+    <Compile Include="..\SkuInstaller\AddonInstaller.cs"  Link="AddonInstaller.cs" />
+    <Compile Include="..\SkuInstaller\GameSettings.cs"    Link="GameSettings.cs" />
+    <Compile Include="..\SkuInstaller\TocSync.cs"         Link="TocSync.cs" />
+  </ItemGroup>
+
+</Project>

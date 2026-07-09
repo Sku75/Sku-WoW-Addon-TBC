@@ -1,0 +1,221 @@
+<Bindings>
+   <Binding name="Open Sku Minimap">
+		if _G["SkuNavZoneSelector"] and _G["SkuNavZoneSelector"]:IsShown() == true then
+			print("not possible. zone selector open.")
+         SkuNav:PlayFailSound()
+			return
+		end
+
+      SkuOptions.db.profile["SkuNav"].showSkuMM = SkuOptions.db.profile["SkuNav"].showSkuMM == false
+      SkuNav:SkuNavMMOpen()
+   </Binding>
+   <Binding name="Add Normal Waypoint">
+		if SkuOptions.db.profile["SkuNav"].routeRecordingDelete == true then
+			print("not possible. link deleting in progress.")
+         SkuNav:PlayFailSound()
+			return
+		end
+		if _G["SkuNavZoneSelector"] and _G["SkuNavZoneSelector"]:IsShown() == true then
+			print("not possible. zone selector open.")
+         SkuNav:PlayFailSound()
+			return
+		end
+
+      local tWpSize = 1
+   
+		local tNewWpName = SkuNav:CreateWaypoint(nil, nil, nil, tWpSize, nil, nil, true)
+		SkuNav:History_Generic("Create normal waypoint", SkuNav.DeleteWaypoint, tNewWpName, nil, nil)
+
+      if SkuOptions.db.profile["SkuNav"].routeRecording == true and 
+         SkuOptions.db.profile["SkuNav"].routeRecordingLastWp and
+         SkuOptions.db.profile["SkuNav"].routeRecordingDelete ~= true
+      then
+         SkuNav:CreateWpLink(tNewWpName, SkuOptions.db.profile["SkuNav"].routeRecordingLastWp)
+         SkuOptions.db.profile["SkuNav"].routeRecordingLastWp = tNewWpName
+      end
+		
+      print("WP created (normal)")
+
+		SkuOptions.db.global["SkuNav"].hasCustomMapData = true
+   </Binding>
+   <Binding name="Add Large Waypoint">
+		if SkuOptions.db.profile["SkuNav"].routeRecordingDelete == true then
+			print("not possible. link deleting in progress.")
+         SkuNav:PlayFailSound()
+			return
+		end
+		if _G["SkuNavZoneSelector"] and _G["SkuNavZoneSelector"]:IsShown() == true then
+			print("not possible. zone selector open.")
+         SkuNav:PlayFailSound()
+			return
+		end
+
+      local tWpSize = 5
+      
+		local tNewWpName = SkuNav:CreateWaypoint(nil, nil, nil, tWpSize, nil, nil, true)
+		SkuNav:History_Generic("Create large waypoint", SkuNav.DeleteWaypoint, tNewWpName, nil, nil)
+      if SkuOptions.db.profile["SkuNav"].routeRecording == true and 
+         SkuOptions.db.profile["SkuNav"].routeRecordingLastWp and
+         SkuOptions.db.profile["SkuNav"].routeRecordingDelete ~= true
+      then
+         SkuNav:CreateWpLink(tNewWpName, SkuOptions.db.profile["SkuNav"].routeRecordingLastWp)
+         SkuOptions.db.profile["SkuNav"].routeRecordingLastWp = tNewWpName
+      end
+		
+      print("WP created (large)")
+
+		SkuOptions.db.global["SkuNav"].hasCustomMapData = true
+   </Binding>
+   <Binding name="Select waypoints under mouse (same as CTRL + ALT + MIDDLE MOUSE)">
+		if SkuOptions.db.profile["SkuNav"].routeRecordingDelete == true then
+			print("not possible. link deleting in progress.")
+         SkuNav:PlayFailSound()
+			return
+		end
+		if _G["SkuNavZoneSelector"] and _G["SkuNavZoneSelector"]:IsShown() == true then
+			print("not possible. zone selector open.")
+         SkuNav:PlayFailSound()
+			return
+		end
+
+		if SkuNav.tWpEditMode == 2 then
+			local tWaypointCacheId = WaypointCacheLookupAll[SkuWaypointWidgetCurrent]
+			local tWpData = SkuNav:GetWaypointData2(SkuWaypointWidgetCurrent)
+			SkuNav.Tracks = {
+				startid = nil,
+				endids = {},
+			}
+			SkuNav:RebuildTracks()
+			SkuNav.Tracks = {
+				startid = tWaypointCacheId,
+				endids = {},
+			}
+			SkuNav:RebuildTracks()
+
+			local tOldTracks = SkuNav.Tracks
+			SkuNav:History_Generic("Select mouseover waypoints", function(self, aOldTracks)
+				print("aTracks", aOldTracks)
+				SkuNav.Tracks = aOldTracks
+				SkuNav:RebuildTracks()
+			end,
+			tOldTracks
+			)		
+
+			return
+
+		else
+			local tcontintentId = select(3, SkuNav:GetAreaData(SkuNav:GetAreaIdFromMapDropdown()))
+			for i, v in SkuWaypointWidgetRepoMM:EnumerateActive() do
+				if i:IsVisible() == true and _G["SkuNavMMMainFrameScrollFrame1"]:IsMouseOver() then
+					if i.aText and i.aText ~= "line" then
+						if i.isMode1Mouseover == true then
+							print(i, v, i.aText)
+							for x = 1, #WaypointCache do
+								if WaypointCacheLookupPerContintent[tcontintentId][x] then
+									if WaypointCache[x].name == i.aText then
+										if WaypointCache[x].tackStep == nil then --and WaypointCache[x].tackStart == nil and WaypointCache[x].tackend == nil
+											WaypointCache[x].tackStep = 99999
+										else
+											WaypointCache[x].tackStep = nil
+										end
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+			return
+		end
+
+		SkuOptions.db.global["SkuNav"].hasCustomMapData = true
+   </Binding>
+   <Binding name="Rename an existing waypoint">
+		if _G["SkuNavZoneSelector"] and _G["SkuNavZoneSelector"]:IsShown() == true then
+			print("not possible. zone selector open.")
+         SkuNav:PlayFailSound()
+			return
+		end
+
+      SkuNav:OnMouseMiddleUp()
+   </Binding>
+   <Binding name="Cancel current recording/deleting">
+		if _G["SkuNavZoneSelector"] and _G["SkuNavZoneSelector"]:IsShown() == true then
+			print("not possible. zone selector open.")
+         SkuNav:PlayFailSound()
+			return
+		end
+
+      SkuNav:OnCancelRecording()
+   </Binding>
+
+   <Binding name="Show Routes On Game Minimap">
+		if _G["SkuNavZoneSelector"] and _G["SkuNavZoneSelector"]:IsShown() == true then
+			print("not possible. zone selector open.")
+         SkuNav:PlayFailSound()
+			return
+		end
+
+      SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap = SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap ~= true
+   </Binding>
+   <Binding name="Toggle Game Minimap Size">
+		if _G["SkuNavZoneSelector"] and _G["SkuNavZoneSelector"]:IsShown() == true then
+			print("not possible. zone selector open.")
+         SkuNav:PlayFailSound()
+			return
+		end
+
+      SkuNav.MinimapFull = SkuNav.MinimapFull == false
+      if SkuNav.MinimapFull == true then
+         MinimapCluster:SetScale(3.5)
+      else
+         MinimapCluster:SetScale(1)
+      end   
+   </Binding>
+   <Binding name="Undo">
+		SkuNav:History_Undo()
+   </Binding>
+	   <Binding name="Unselect waypoints">
+
+			local tcontintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId()))
+
+			local tOldTracksa = SkuTableCopy(SkuNav.Tracks, true)
+			local tOldTracksb = {}
+			for x = 1, #WaypointCache do
+				if WaypointCache[x] and WaypointCache[x].tackStep and WaypointCache[x].tackStep == 99999 then
+					tOldTracksb[x] = true
+				end
+			end
+			SkuNav:History_Generic("Clear selection", function(self, aOldTracksa, aOldTracksb)
+				for x = 1, #WaypointCache do
+					if aOldTracksb[x] == true then
+						WaypointCache[x].tackStep = 99999
+					else
+						WaypointCache[x].tackStep = nil
+					end
+				end
+				SkuNav.Tracks = SkuTableCopy(aOldTracksa, true)
+				SkuNav:RebuildTracks()						
+			end,
+			tOldTracksa, tOldTracksb
+			)		
+
+
+			SkuNav.Tracks = {
+				startid = nil,
+				endids = {},
+			}
+			for x = 1, #WaypointCache do
+				if WaypointCacheLookupPerContintent[tcontintentId][x] then
+					WaypointCache[x].tackStart = nil
+					WaypointCache[x].tackStep = nil
+					WaypointCache[x].tackend = nil
+				end
+			end					
+			SkuNav:RebuildTracks()
+
+			PlaySound(89)
+   </Binding>
+
+
+</Bindings>
