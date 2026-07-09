@@ -1,9 +1,8 @@
 # Sku 42 — Known Issues
 
 Running log of known issues, regressions, and gotchas for the Sku 42 rework.
-Keep entries short and actionable. Move resolved items to a "Resolved" section
-(with the commit/date that fixed them) rather than deleting, so we keep the
-history.
+Keep entries short and actionable. Remove items once they are fixed — the commit
+history is the record — to keep this list short and current.
 
 ## Format (per entry)
 
@@ -30,24 +29,6 @@ Carried in from the v41 line / reported by the maintainer. German term kept with
 an English gloss where the term is Sku-specific. Repro/area are best-guess until
 investigated.
 
-- **Dial targeting (#21 dedup) UNTESTED in-game.**
-  - Symptom: none observed — but the change is unverified. The W6-C #21 refactor
-    (commit `d5a4eb9`) extracted the shared `tClearUnitNameSlots()` +
-    `tApplyNumpadBindings(aNumpadFrameName)` helpers from the raid/raid10/party
-    branches of `DialTargetingRosterUpdate` (secure `SetOverrideBindingClick`).
-    It loaded clean, but numpad member-selection was NOT exercised in a group.
-  - Repro (to verify / to reproduce any regression): in a **party**, enable dial
-    targeting and press numpad digits to select members by slot; then in a **raid**
-    (raid uses two-digit entry via `SkuSecureTargetingToggleHandler`). Confirm the
-    correct unit is targeted in each.
-  - Suspected cause / area: `SkuCore/DialTargeting.lua` — verified identical modulo
-    the numpad-owner frame (raid = ToggleHandler, raid10/party = TargetingFrame), so
-    a regression is unlikely; needs a by-ear group test to close. All other W6-C
-    Phase-C changes (dead-code sweep, `Sku.deEn` l10n, #16b rebind handlers, #36
-    chat TTS-frame nav, aqCombat/SkuKeyBinds/Macro dedups) are in-game confirmed
-    working 2026-07-07.
-  - Status: open (untested; revert candidate = `d5a4eb9` alone if it misbehaves).
-
 - **Arena queries not working** ("Arena Abfragen funktionieren noch nicht").
   - Symptom: arena-related queries / announcements do not function yet.
   - Repro: TBD (enter/query arena context).
@@ -61,29 +42,6 @@ investigated.
   - Suspected area: `SkuCore/skuFocus.lua` and how it relates to WoW's focus.
     Good candidate to reconcile during W4 (state ownership / one writer).
   - Status: open.
-- **Ctrl+Enter (right-click) no longer applies weapon oils — regression.**
-  - Symptom: applying a weapon oil to a weapon via the Ctrl+Enter "right-click"
-    hotkey silently does nothing. It worked before the menu right-click rework.
-  - Repro: on a weapon (equipped slot, or a bag oil targeting a weapon), trigger
-    the right-click action via Ctrl+Enter — the oil is not applied, nothing spoken.
-  - ROOT CAUSE (found 2026-07-07): the equip-slot right-click secure macro was
-    `/click <Slot> RightButton`. A macro `/click` reads the LIVE keyboard state,
-    so the synthesized click fired with Ctrl still physically held (the default
-    SKU_KEY_MENURIGHTCLICK is CTRL-ENTER). On a PaperDoll slot button,
-    `IsModifiedClick("DRESSUP")` is bound to Ctrl, so Ctrl+click routed to
-    `DressUpItemLink` (dressing-room preview) instead of `UseInventoryItem`,
-    which is what completes the oil-targeting -> oil never applied, no error.
-    Only the character-window equip slots hit this branch, which is why every
-    other Ctrl+Enter right-click (bag `/use`, merchant/loot/popup `/click`)
-    was unaffected. Pre-rework the same macro fired via plain ENTER (no
-    modifier), so it worked.
-  - FIX (SkuZOptions/Core.lua, RIGHT-click payload for `tIsEquipmentSlot`):
-    replaced `/click <Slot> RightButton` with `/use <slotID>` (the canonical
-    `/use 16` weapon-oil macro). It calls `UseInventoryItem(slotID)` directly,
-    bypassing the button OnClick, so it is modifier-immune and unifies the
-    apply-oil and fire-on-use cases; plain gear still no-ops and falls through
-    to OnRightAction's unequip.
-  - Status: fixed in code, PENDING in-game verification.
 - **Some default keybinds are not bound for a brand-new user.**
   - Symptom: on a fresh install (no saved bindings) some keys Sku is supposed to
     bind by default come up unbound.
@@ -91,11 +49,6 @@ investigated.
     check which SKU_KEY_* defaults are actually bound.
   - Suspected area: default-binding application in SkuZOptions/SkuKeyBinds.lua
     (`skuDefaultKeyBindings` + the first-login apply pass).
-  - Status: open.
-- **"Share quest" button missing.**
-  - Symptom: the action/button to share a quest with the group is not present.
-  - Repro: open a shareable quest; no share action is offered.
-  - Suspected area: SkuQuest quest-window builder (SkuQuest/Options.lua).
   - Status: open.
 - **Aura rename re-pins two levels up (onto "Auren verwalten") instead of the aura.**
   - Symptom: after changing an aura's name, the cursor lands two levels up on
@@ -107,6 +60,16 @@ investigated.
     path using ",SkuAuras,aurenList,aurenVerwalten,") — re-pinning to the list
     parent instead of the aura node (wrong FindAncestorById target / an extra step-up).
   - Status: open.
+- **Ctrl+Shift+Tab targeting of special protected NPCs broken (starting zones).**
+  - Symptom: the special handling that targets special/protected NPCs (notably in
+    the starting zones) via Ctrl+Shift+Tab no longer selects them. Worked before
+    the newest client update.
+  - Repro: in a starting zone, press Ctrl+Shift+Tab to target a special/protected
+    NPC — it is not selected as it was before the patch.
+  - Suspected area: Sku's special/protected-NPC targeting bound to Ctrl+Shift+Tab
+    (targeting path); likely a client-side API/behaviour change in the latest
+    patch. Exact file TBD.
+  - Status: open (regression, newest client update).
 
 ## Feature requests / wishlist
 
@@ -149,11 +112,12 @@ workstreams (noted) — fold them in there when that workstream runs.
   a macro / in combat).
 - **Monitor performance pass.** Check and improve the performance of the monitors
   (health / power / etc.). NOTE: the **combat** monitor's enemies-in-combat
-  counter is DONE (2026-07-09 — see Resolved); health/power and the rest remain.
+  counter is DONE (2026-07-09, commits `5fbfa22`/`f35638c`/`40eed35`); health/power
+  and the rest remain.
 - **Monitor + aura reaction-time & precision pass.** Measure reaction time and
   precision of the monitors and auras; improve where possible. NOTE: the **combat**
-  monitor's enemies-in-combat reactivity/precision is DONE (2026-07-09 — see
-  Resolved, swarm case pending raid re-test); health/power/aura remain.
+  monitor's enemies-in-combat reactivity/precision is DONE (2026-07-09; swarm case
+  pending raid re-test — see "Pending in-game validation"); health/power/aura remain.
 - **Discovery mode.** New mode — scope/behaviour TBD with the maintainer.
 - **Dungeon browser — real implementation.** Replace the current parked/partial
   dungeon browser with a full implementation (the B8 rework noted during W6).
@@ -162,6 +126,9 @@ workstreams (noted) — fold them in there when that workstream runs.
 - **Stuck-detection experiments for dungeons.** Ideas to test — fall detection and
   similar systems — to give the player more "am I stuck / where am I" information
   in dungeons.
+- **Soft-target vs hard-target setting — improve / maybe fix.** Revisit the
+  soft-target vs hard-target targeting setting: improve its behaviour, and fix it
+  if the latest client changed how soft targeting works. Scope TBD.
 
 ## Pending in-game validation (raid)
 
@@ -172,7 +139,7 @@ workstreams (noted) — fold them in there when that workstream runs.
     confirmed working for normal groups (up to ~9) — correctness (no false zero),
     efficiency (single coalesced add flush, no per-event timer storm) and
     reactivity (eager count-on-engagement, 0.3s window) are DONE and validated in
-    live fights (see Resolved). The one open piece is a large SIMULTANEOUS add
+    live fights up to ~9 mobs. The one open piece is a large SIMULTANEOUS add
     swarm: a boss summoning ~12 at once only reached ~4–9 and oscillated up/down,
     because admission was gated on unit-token resolution and ~half the adds had no
     nameplate/target. Fix (admit-by-GUID) admits a combat-log-engaged creature by
@@ -189,8 +156,25 @@ workstreams (noted) — fold them in there when that workstream runs.
     recount; `tCombatInCounts` mode-3 eager path). Levers: `tFlushWindow` (0.3s),
     `tStaleThreshold` (6s).
 
-## Monitoring (external projects — re-check on request)
+## Monitoring (re-check on request)
 
+- **Dial targeting (#21 dedup) — untested in a group/raid.** The W6-C #21 refactor
+  (commit `d5a4eb9`) extracted shared `tClearUnitNameSlots()` /
+  `tApplyNumpadBindings(aNumpadFrameName)` helpers from the raid/raid10/party
+  branches of `DialTargetingRosterUpdate` (secure `SetOverrideBindingClick`). It
+  loads clean and is identical modulo the numpad-owner frame (raid = ToggleHandler,
+  raid10/party = TargetingFrame), so a regression is unlikely — but numpad
+  member-selection was never exercised in a group. Re-check: in a **party** press
+  numpad digits to select members by slot; in a **raid** (two-digit entry via
+  `SkuSecureTargetingToggleHandler`) confirm the correct unit is targeted. Area
+  `SkuCore/DialTargeting.lua`; revert candidate = `d5a4eb9` alone if it misbehaves.
+- **TTS queue cancels/drops under a burst of many messages.** When a lot of TTS
+  lines arrive in a very short time (heavy chat backlog, many events firing
+  announcements at once), the queue appears to cancel or drop lines instead of
+  speaking them in order. Possibly a regression from the last WoW client update
+  (the 12.0 TTS overhaul touched this area). Re-check whether it still happens and
+  whether the BTTS queue / SAPI timing needs a fix. Area: SkuTTS / SkuVoice BTTS
+  queue (`OutputStringBTtts` / queue handling).
 - **Syntherceptor (jcsteh) as future replacement for the bundled NVDA-SAPI voice.**
   Ask: "check the Syntherceptor monitor". SAPI5 voice DLL that forwards speech
   to NVDA (github.com/jcsteh/syntherceptor, installer at
@@ -224,49 +208,3 @@ workstreams (noted) — fold them in there when that workstream runs.
   Alternative to re-check briefly at the same time: SAPIence
   (github.com/LeonarddeR/SAPIence, LGPL, Rust, same mechanism) — as of
   2026-07-05 zero releases/binaries, not a candidate yet.
-
-## Resolved
-
-- **Combat monitor — "enemies in combat" counter rewritten (correctness +
-  efficiency + reactivity)** — 2026-07-09 (commits `5fbfa22`, `f35638c`, plus the
-  admit-by-GUID follow-up). Was: rarely announced the number in raids, spoke a
-  false "0" when one of several mobs died, laggy first announcement. Now an
-  authoritative RECOUNT of the live enemy set each tick (self-healing, no
-  underflow — killed the false zero), eager count-on-engagement (mode 3 counts as
-  soon as a group member engages a mob, no threat-API wait), a single coalesced
-  0.3s add flush replacing hundreds of per-event `C_Timer` closures (no GC
-  hitching), keep-alive for mobs that briefly lose their token, and admit-by-GUID
-  so a large add swarm reaches the true count. Validated in live fights up to 9
-  mobs; the ~12-at-once swarm case is committed but pending a raid re-test — see
-  "Pending in-game validation (raid)". Diagnostic breadcrumbs left in (cheap when
-  logging is off): `recount:`, `add-flush … guid-added … kept-alive`,
-  `stale-sweep drop:`.
-- **Menu open in combat** — resolved in practice (maintainer-confirmed 2026-07-07:
-  opening / reading / navigating the Sku menu in combat works flawlessly). In-combat
-  opens go headless via the non-secure SkuMenuCapture route (`combatMenuOpen`) to
-  `OnSkuOptionsMainOption1`, deliberately bypassing the protected visual
-  `OnSkuOptionsMain:Show()` that produced the old `ADDON_ACTION_BLOCKED` grab. (If a
-  stray SlashFunc→Show ever resurfaces the block in an edge path, route that path
-  through the combat menu when `InCombatLockdown()`.)
-- **Weapon/spell oil (Zauberöl) — applying to an equipped weapon threw a Lua
-  error** — fixed 2026-06-30 (`SkuZOptions/Core.lua`, equipment-slot right-click
-  handler). Using an oil starts a spell-TARGETING mode (`SpellIsTargeting()`,
-  NOT a cursor item), so the old unequip path's `PickupInventoryItem` was
-  `ADDON_ACTION_FORBIDDEN`. Right-click on an equipped item is now a three-path,
-  build-time decision: (1) targeting active → secure `/click <Slot> RightButton`
-  applies the oil/poison/stone/enchant; (2) item has an on-use effect
-  (`GetItemSpell`) → secure `/use <slotID>` fires it; (3) plain gear → manual
-  unequip to first free bag. All three confirmed in-game by the maintainer.
-- **Dynamic updating of bag entries, values, etc.** — DONE (W2 live menus,
-  2026-06-28). `liveName` leaf getters + `volatileChildren` lists + event-driven
-  bag re-pin by stable identity (bagSlot→itemId) with a speak-when-settled gate,
-  replacing stale snapshots without re-anchoring the menu.
-- **SkuAuras "Optionen" submenu empty placeholder** — confirmed resolved by the
-  maintainer 2026-06-30 (Auren → Optionen now has content / the dead entry is
-  gone, following the W2/W7 menu rework).
-- **v42 worktree was missing the gitignored runtime assets** — fixed by copying
-  all 12,809 gitignored files (`SkuDB/assets/`, `routedata_global_wotlk.lua`,
-  `audio/`, scattered binaries) from the v41 tree into `Sku-TBC-42\Sku\`
-  (2026-06-25). The worktree is now runnable once the symlink points at it.
-  Note: the large *external* audio companions (voice DB, beacons, ~790 MB) are
-  separate installed addons and were not touched — see Workstream 5.

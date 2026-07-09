@@ -209,11 +209,13 @@ function SkuOptions:SlashFunc(input, aSilent)
 				local tSpeakText = SkuChat.InvitePlayerName..L[" eingeladen"]
 				if IsMacClient() == true then
 					C_VoiceChat.StopSpeakingText()
-					C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tSpeakText,  4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+					-- 2.5.6: neue SpeakText-Signatur (voiceID, text, rate, volume[, overlap]);
+					-- der alte 'destination'-Arg (4) ist weg (siehe SkuVoice-1.0:203).
+					C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tSpeakText, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
 				else
 					C_VoiceChat.StopSpeakingText()
 					C_Timer.After(0.05, function() 
-						C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tSpeakText, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+						C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tSpeakText, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
 					end)
 				end				
 				return

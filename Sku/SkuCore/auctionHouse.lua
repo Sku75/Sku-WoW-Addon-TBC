@@ -33,6 +33,14 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+-- 2.5.6-Fix (ported from v41.09 hotfix): Blizzards eigener Auktionshaus-Code
+-- (Blizzard_AuctionUI.lua) rechnet noch mit der globalen Konstante
+-- CASTING_BAR_ALPHA_STEP, die 2.5.6 aus FrameXML entfernt hat. Fehlt sie, kracht
+-- Blizzards AH-Animation jeden Frame ("attempt to perform arithmetic on a nil
+-- value") -> Fehlerflut, "Spiel laeuft langsamer" und AH-Menue-Spuk. Wir stellen
+-- den historischen FrameXML-Wert wieder her, aber nur wenn er wirklich fehlt.
+if CASTING_BAR_ALPHA_STEP == nil then CASTING_BAR_ALPHA_STEP = 0.05 end
+
 -- W4 Phase D: AuctionHouse is a real AceAddon SUBMODULE of SkuCore, so it can be
 -- turned on/off at runtime (OnEnable/OnDisable), mirroring the JunkAndRepair pilot
 -- and the RangeCheck shared-service convert. Every existing SkuCore:Auction* method
