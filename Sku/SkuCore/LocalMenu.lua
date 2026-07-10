@@ -664,379 +664,310 @@ local function SortProcessingSoundHelper()
 			if tIsProcessing > 0 then
 				--SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)
 			else
-				self:Cancel() 
+				self:Cancel()
 				tIsProcessingHandle = nil
 				C_Timer.After(0.1, function()
-					SkuOptions.currentMenuPosition.parent:OnUpdate()
+					if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.parent then
+						SkuOptions.currentMenuPosition.parent:OnUpdate()
+					end
 					SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
 				end)
 			end
-		
+
 		end)
 	end
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Modern container-API bag sort engine (migration from the old click-simulation).
+--
+-- Item data is READ via C_Container.GetContainerItemInfo (falling back to the
+-- classic globals) and items are MOVED with PickupContainerItem -- so sorting no
+-- longer depends on the bags being physically open / rendered as ContainerFrameNItemM
+-- frames (the reworked bag menu is container-API driven; this closes the last piece
+-- that still drove the UI by simulated clicks).
+--
+-- Algorithm: a SELECTION sort per bag (place the correct item into each slot once),
+-- executed ONE swap per BAG_UPDATE_DELAYED "settle" so we never act on a slot whose
+-- item is still locked/in-flight. This guarantees termination (<= N-1 swaps per bag)
+-- and removes the old bubble-sort death-loop (a swap that failed to change the slots
+-- made the comparator re-fire forever). The "all bags" action processes bags ONE AT A
+-- TIME (single game cursor) instead of spawning a coroutine per bag that fought over it.
+--
+-- Every step is pcall-guarded and traced via dprint("bagSort", ...) + SkuErrorLog;
+-- errors and missing settle events abort/advance cleanly instead of wedging or
+-- silently swallowing (the old coroutine.resume dropped every error on the floor).
+---------------------------------------------------------------------------------------------------------------------------------------
+local tSortSettleTimeout = 0.75           -- watchdog: proceed if no BAG_UPDATE_DELAYED lands
+local tSortJob = nil                      -- singleton in-flight job (nil = idle)
+local tSortDriver                         -- event frame for BAG_UPDATE_DELAYED
+local tSortStep                           -- forward declaration (mutually referenced)
+
+-- Read one slot. Returns an entry table for a filled slot, or nil for an empty slot.
+-- Covers both the new (C_Container -> info table) and classic (multi-return) APIs.
+local function tSortReadEntry(bag, slot)
+	local id, link, quality, locked
+	if _G.C_Container and _G.C_Container.GetContainerItemInfo then
+		local ok, info = pcall(_G.C_Container.GetContainerItemInfo, bag, slot)
+		if ok then
+			if info == nil then
+				return nil                -- confirmed empty
+			elseif info.hyperlink or info.itemID then
+				id, link, quality, locked = info.itemID, info.hyperlink, info.quality, info.isLocked
+			end
+		end
+	end
+	if not link and _G.GetContainerItemInfo then
+		local ok, a, b, c, d, e, f, g, h, i2, j = pcall(_G.GetContainerItemInfo, bag, slot)
+		if ok then
+			if type(a) == "table" then
+				id, link, quality, locked = a.itemID, a.hyperlink, a.quality, a.isLocked
+			else
+				-- classic multi-return: isLocked=3, quality=4, itemLink=7, itemID=10
+				link, id, quality, locked = g, j, d, c
+			end
+		end
+	end
+	if not link and not id then return nil end
+	local name
+	if link and _G.C_Item and _G.C_Item.GetItemNameByID then
+		name = _G.C_Item.GetItemNameByID(link)
+	end
+	if not name and link then
+		name = link:match("%[(.-)%]")     -- localized name straight from the hyperlink
+	end
+	if not name and id and _G.C_Item and _G.C_Item.GetItemNameByID then
+		name = _G.C_Item.GetItemNameByID(id)
+	end
+	return { id = id, link = link, quality = quality or 0, name = name or "", locked = locked }
+end
+
+-- Strict "a should come before b" ordering. Empty slots (nil) always sink to the end
+-- in BOTH directions, so items pack toward the front. Ties return false (no move).
+local function tSortMakeBefore(mode, dir)
+	return function(a, b)
+		if a == nil then return false end      -- empty is never "before"
+		if b == nil then return true end       -- filled before empty
+		if mode == "collapse" then
+			return false                       -- keep item order; only empties move
+		elseif mode == "quality" then
+			if a.quality == b.quality then return false end
+			if dir == "asc" then return a.quality < b.quality else return a.quality > b.quality end
+		else -- name
+			if a.name == b.name then return false end
+			if dir == "asc" then return a.name < b.name else return a.name > b.name end
+		end
+	end
+end
+
+local function tSortNumSlots(bag)
+	if _G.C_Container and _G.C_Container.GetContainerNumSlots then
+		local ok, n = pcall(_G.C_Container.GetContainerNumSlots, bag)
+		if ok and n then return n end
+	end
+	if _G.GetContainerNumSlots then
+		local ok, n = pcall(_G.GetContainerNumSlots, bag)
+		if ok and n then return n end
+	end
+	return 0
+end
+
+local function tSortPickup(bag, slot)
+	if _G.PickupContainerItem then return pcall(_G.PickupContainerItem, bag, slot) end
+	if _G.C_Container and _G.C_Container.PickupContainerItem then
+		return pcall(_G.C_Container.PickupContainerItem, bag, slot)
+	end
+	return false
+end
+
+-- Occupancy-agnostic swap of two slots in the SAME bag. 2-3 pickups; guarantees the
+-- cursor ends empty for every case (both filled / one empty / both empty) so the old
+-- "item stranded on the cursor" desync can't happen.
+local function tSortSwapSlots(bag, s1, s2)
+	tSortPickup(bag, s1)
+	tSortPickup(bag, s2)
+	if _G.CursorHasItem and _G.CursorHasItem() then
+		tSortPickup(bag, s1)
+	end
+	if _G.CursorHasItem and _G.CursorHasItem() and _G.ClearCursor then
+		_G.ClearCursor()
+	end
+end
+
+local function tSortBankVisible()
+	return _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true
+end
+
+-- Bank main (-1), bank bags (5..11) and the reagent bank (-3) can only be moved while
+-- the bank UI is open; backpack/bags (0..4) and the keyring (-2) are always reachable
+-- through the container API (no need to force the bag frames open anymore).
+local function tSortBagEligible(bag)
+	if tSortNumSlots(bag) <= 0 then return false end
+	if bag == -1 or bag == -3 or (bag >= 5 and bag <= 11) then
+		return tSortBankVisible()
+	end
+	return true
+end
+
+local function tSortFinish(aAbortMsg)
+	local job = tSortJob
+	if not job then return end
+	tSortJob = nil
+	if tSortDriver then tSortDriver:UnregisterEvent("BAG_UPDATE_DELAYED") end
+	if job.watchdog then pcall(function() job.watchdog:Cancel() end) job.watchdog = nil end
+	if tIsProcessing > 0 then tIsProcessing = tIsProcessing - 1 end
+	SkuCore.CursorSilent = false
+	SkuOptions.Voice.TutorialPlaying = 0
+	pcall(function() SkuOptions.Voice:StopOutputEmptyQueue() end)
+	SortProcessingSoundHelper()           -- plays the "done" chime once tIsProcessing hits 0
+	if _G.SkuBagIdleRefresh then pcall(_G.SkuBagIdleRefresh) end   -- silent menu re-sync
+	dprint("bagSort", aAbortMsg and ("aborted: "..aAbortMsg) or "done")
+end
+
+local function tSortArmWatchdog()
+	local job = tSortJob
+	if not job then return end
+	if job.watchdog then pcall(function() job.watchdog:Cancel() end) end
+	if _G.C_Timer and _G.C_Timer.NewTimer then
+		job.watchdog = _G.C_Timer.NewTimer(tSortSettleTimeout, function()
+			if tSortJob ~= job or not job.waiting then return end
+			job.waiting = false
+			dprint("bagSort", "settle timeout -> forcing next step")
+			tSortStep()
+		end)
+	end
+end
+
+tSortStep = function()
+	local job = tSortJob
+	if not job then return end
+	local ok, err = pcall(function()
+		while true do
+			local bag = job.bags[job.bagIdx]
+			if bag == nil then
+				tSortFinish()             -- all bags processed
+				return
+			end
+			if not tSortBagEligible(bag) then
+				dprint("bagSort", "skip bag", bag, "(ineligible)")
+				job.bagIdx, job.p, job.steps = job.bagIdx + 1, 1, 0
+			else
+				local n = tSortNumSlots(bag)
+				local entries = {}
+				for s = 1, n do entries[s] = tSortReadEntry(bag, s) end
+
+				local p = job.p
+				while p <= n - 1 do
+					if job.steps >= (n + 2) then     -- belt-and-suspenders swap cap
+						dprint("bagSort", "step cap hit on bag", bag)
+						p = n                        -- treat bag as done
+						break
+					end
+					-- selection min in [p..n]
+					local minIdx = p
+					for q = p + 1, n do
+						if job.before(entries[q], entries[minIdx]) then minIdx = q end
+					end
+					if minIdx ~= p then
+						if (entries[p] and entries[p].locked) or (entries[minIdx] and entries[minIdx].locked) then
+							dprint("bagSort", "locked slot, waiting", "bag="..bag, "p="..p, "q="..minIdx)
+							job.waiting = true
+							tSortArmWatchdog()
+							return
+						end
+						dprint("bagSort", "swap", "bag="..bag, "p="..p, "q="..minIdx,
+							(entries[minIdx] and entries[minIdx].name) or "empty")
+						job.steps = job.steps + 1
+						job.p = p + 1            -- slot p is final after this swap
+						tSortSwapSlots(bag, p, minIdx)
+						job.waiting = true
+						tSortArmWatchdog()
+						return                   -- wait for the bag to settle
+					end
+					p = p + 1
+				end
+				-- no swap needed through the rest of this bag -> bag done
+				dprint("bagSort", "bag done", bag)
+				job.bagIdx, job.p, job.steps = job.bagIdx + 1, 1, 0
+			end
+		end
+	end)
+	if not ok then
+		if SkuErrorLog and SkuErrorLog.Log then pcall(function() SkuErrorLog:Log("bagSort", tostring(err)) end) end
+		dprint("bagSort", "step error", tostring(err))
+		tSortFinish("error")
+	end
+end
+
+local function tSortOnEvent(self, event)
+	if event == "BAG_UPDATE_DELAYED" and tSortJob and tSortJob.waiting then
+		tSortJob.waiting = false
+		if tSortJob.watchdog then pcall(function() tSortJob.watchdog:Cancel() end) tSortJob.watchdog = nil end
+		dprint("bagSort", "settled (BAG_UPDATE_DELAYED)")
+		tSortStep()
+	end
+end
+
+-- Entry point for every sort/collapse menu action. mode = "collapse"|"quality"|"name",
+-- dir = "asc"|"desc" (ignored for collapse), aBagId = a single bag or nil for all bags.
+local function tSortStart(mode, dir, aBagId)
+	if tSortJob then
+		dprint("bagSort", "busy, ignoring request", mode, dir or "-", aBagId ~= nil and aBagId or "all")
+		return
+	end
+	local bags = {}
+	if aBagId ~= nil then
+		bags[1] = aBagId
+	else
+		for q = 1, #tBagSlotListSorted do
+			bags[#bags + 1] = tBagSlotListSorted[q]
+		end
+	end
+	if not tSortDriver and _G.CreateFrame then
+		tSortDriver = _G.CreateFrame("Frame")
+		tSortDriver:SetScript("OnEvent", tSortOnEvent)
+	end
+	tSortJob = {
+		bags = bags,
+		bagIdx = 1,
+		p = 1,
+		steps = 0,
+		before = tSortMakeBefore(mode, dir),
+		waiting = false,
+	}
+	if tSortDriver then tSortDriver:RegisterEvent("BAG_UPDATE_DELAYED") end
+	tIsProcessing = tIsProcessing + 1
+	SkuCore.CursorSilent = true
+	SkuOptions.Voice.TutorialPlaying = 1
+	SortProcessingSoundHelper()
+	dprint("bagSort", "start", "mode="..mode, "dir="..(dir or "-"),
+		"bags="..(aBagId ~= nil and tostring(aBagId) or "all"))
+	tSortStep()
+end
+
+-- Builds the 5 sort/cleanup leaf nodes under a "Sorting and cleanup" node. aBagId is a
+-- single bag id, or nil for the top-level "all bags" variant. Node names/keys are
+-- unchanged from the previous implementation.
 local function BagSortMenuHelper(aParentChilds, aBagId)
-
-	local function tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, slotId)
-		local containerFrameName = ""
-		if tCurrentContainerFrameNumber then
-			containerFrameName = "ContainerFrame"..(tCurrentContainerFrameNumber).."Item"..(tNumSlots - slotId + 1)
-		end
-		if tCurrentContainerFrameNumber == nil and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true then
-			tCurrentContainerFrameNumber = -1
-			containerFrameName = "BankFrameItem"..slotId
-		end
-		return _G[containerFrameName]
+	local function tAddSortNode(aName, aMode, aDir)
+		table.insert(aParentChilds, aName)
+		aParentChilds[aName] = {
+			frameName = nil,
+			RoC = "Child",
+			type = "Button",
+			textFirstLine = aName,
+			textFull = "",
+			noMenuNumbers = true,
+			childs = {},
+			func = function() tSortStart(aMode, aDir, aBagId) end,
+		}
 	end
 
-
-	--collapse
-	local tFriendlyName = L["Remove empty bag slots (collapse)"]
-	table.insert(aParentChilds, tFriendlyName)
-	aParentChilds[tFriendlyName] = {
-		frameName = nil,
-		RoC = "Child",
-		type = "Button",
-		textFirstLine = tFriendlyName,
-		textFull = "",
-		noMenuNumbers = true,
-		childs = {},
-		func = function()
-			SkuCore.CursorSilent = true
-			SkuOptions.Voice.TutorialPlaying = 1
-			for i, v in pairs(tBagSlotList) do
-				if i == aBagId or aBagId == nil then
-					local tCurrentContainerFrameNumber = IsBagOpen(i)
-					local tNumSlots = GetContainerNumSlots(i)
-					if tNumSlots > 0 and (tCurrentContainerFrameNumber or (i == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true)) then
-						local tCompleted = true
-						local co = coroutine.create(function ()
-							while tCompleted == true do
-								local tLastEmptySlotFrame = nil
-								tCompleted = false
-								for slotId = 1, tNumSlots do
-									local containerFrameName = ""
-									if tCurrentContainerFrameNumber then
-										containerFrameName = "ContainerFrame"..(tCurrentContainerFrameNumber).."Item"..(tNumSlots - slotId + 1)
-									end
-									if i == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true then
-										tCurrentContainerFrameNumber = -1
-										containerFrameName = "BankFrameItem"..slotId
-									end
-						
-									local containerFrame = _G[containerFrameName]
-									local maybeText = getItemTooltipTextFromBagItem(nil, nil, nil, containerFrame)
-									local tFirst, tFull
-									if maybeText then
-										tFirst, tFull = SkuCore:ItemName_helper(maybeText)
-										if tFirst == "" then tFirst = nil end
-									end
-
-									if tFirst and tLastEmptySlotFrame ~= nil then
-										containerFrame:GetScript("OnClick")(containerFrame, "LeftButton")
-										tLastEmptySlotFrame:GetScript("OnClick")(tLastEmptySlotFrame, "LeftButton") 
-										tLastEmptySlotFrame = containerFrame
-										tCompleted = true
-										coroutine.yield()
-										break
-									elseif not tFirst and tLastEmptySlotFrame == nil then
-										tLastEmptySlotFrame = containerFrame
-										if slotId == tNumSlots then
-											tCompleted = false
-										end
-									elseif slotId == tNumSlots and tLastEmptySlotFrame == nil then
-										tCompleted = false
-									end
-								end
-							end
-						end)
-
-						tIsProcessing = tIsProcessing + 1
-						SortProcessingSoundHelper()
-						cbObject = C_Timer.NewTicker(0.5, function(self) 
-							if coroutine.status(co) == "suspended" then
-								SortProcessingSoundHelper()
-								coroutine.resume(co)
-							else
-								tIsProcessing = tIsProcessing - 1
-								self:Cancel() 
-								SkuCore.CursorSilent = false
-								SkuOptions.Voice.TutorialPlaying = 0
-								SkuOptions.Voice:StopOutputEmptyQueue()
-								SortProcessingSoundHelper()
-							end
-						end)
-					end
-				end
-			end
-		end,
-	}   
-
-
-
-	--sort by quality
-	local function SortByQualityHelper(tCurrentContainerFrameNumber, tNumSlots, i, aEvaluateFunc)
-		SkuCore.CursorSilent = true
-		SkuOptions.Voice.TutorialPlaying = 1
-		local co = coroutine.create(function ()
-			local tProcess = true
-			while tProcess do
-				tProcess = nil
-				for count = 1, tNumSlots - 1 do
-					local tPickContainerFrame = tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, count)
-					local tPlaceContainerFrame = tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, count + 1)
-					local tPickQuali, tPlaceQuali
-					if i == -1 then
-						local invSlot = BankButtonIDToInvSlotID(count)
-						local pickItemLink = GetInventoryItemLink("player", invSlot)
-						if not pickItemLink then
-							tPickQuali = "zzzzzzzzzz"
-						else
-							tPickQuali = C_Item.GetItemQualityByID(pickItemLink)
-						end
-
-						local invSlot = BankButtonIDToInvSlotID(count + 1)
-						local placeItemlink = GetInventoryItemLink("player", invSlot)
-						if not placeItemlink then
-							tPlaceQuali = "zzzzzzzzzz"
-						else
-							tPlaceQuali = C_Item.GetItemQualityByID(placeItemlink)
-						end
-					else
-						_G["SkuScanningTooltip"]:ClearLines()
-						_G["SkuScanningTooltip"]:SetBagItem(i, count)
-						local itemName, pickItemLink = _G["SkuScanningTooltip"]:GetItem()
-						tPickQuali = 99999
-						if pickItemLink then
-							tPickQuali = C_Item.GetItemQualityByID(pickItemLink)
-						end
-						_G["SkuScanningTooltip"]:ClearLines()
-						_G["SkuScanningTooltip"]:SetBagItem(i, count + 1)
-						local itemName, placeItemLink = _G["SkuScanningTooltip"]:GetItem()
-						tPlaceQuali = 99999
-						if placeItemLink then
-							tPlaceQuali = C_Item.GetItemQualityByID(placeItemLink)
-						end
-					end
-
-					if aEvaluateFunc(tPickQuali, tPlaceQuali) == true then
-						if pickItemLink then
-							tPickContainerFrame:GetScript("OnClick")(tPickContainerFrame, "LeftButton")
-							tPlaceContainerFrame:GetScript("OnClick")(tPlaceContainerFrame, "LeftButton")
-						else
-							tPlaceContainerFrame:GetScript("OnClick")(tPlaceContainerFrame, "LeftButton")
-							tPickContainerFrame:GetScript("OnClick")(tPickContainerFrame, "LeftButton")
-						end
-						tProcess = true
-						break
-					end
-				end
-				coroutine.yield()
-			end
-		end)
-
-		tIsProcessing = tIsProcessing + 1
-		SortProcessingSoundHelper()
-		cbObject = C_Timer.NewTicker(0.01, function(self) 
-			if coroutine.status(co) == "suspended" then
-				SortProcessingSoundHelper()
-				local tret = coroutine.resume(co)
-			else
-				tIsProcessing = tIsProcessing - 1
-				self:Cancel() 
-				SkuCore.CursorSilent = false
-				SkuOptions.Voice.TutorialPlaying = 0
-				SkuOptions.Voice:StopOutputEmptyQueue()
-				SortProcessingSoundHelper()
-			end
-		end)
-	end
-
-	local tFriendlyName = L["Sort items by quality"].." "..L["ascending"]
-	table.insert(aParentChilds, tFriendlyName)
-	aParentChilds[tFriendlyName] = {
-		frameName = nil,
-		RoC = "Child",
-		type = "Button",
-		textFirstLine = tFriendlyName,
-		textFull = "",
-		noMenuNumbers = true,
-		childs = {},
-		func = function()
-			for i, v in pairs(tBagSlotList) do
-				if i == aBagId or aBagId == nil then
-					local tCurrentContainerFrameNumber = IsBagOpen(i)
-					local tNumSlots = GetContainerNumSlots(i)
-					if tNumSlots > 0 and (tCurrentContainerFrameNumber or (i == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true)) then
-						SortByQualityHelper(tCurrentContainerFrameNumber, tNumSlots, i, function(a, b)
-						 	return a > b
-						end)
-					end
-				end
-			end
-		end,
-	}   
-	local tFriendlyName = L["Sort items by quality"].." "..L["descending"]
-	table.insert(aParentChilds, tFriendlyName)
-	aParentChilds[tFriendlyName] = {
-		frameName = nil,
-		RoC = "Child",
-		type = "Button",
-		textFirstLine = tFriendlyName,
-		textFull = "",
-		noMenuNumbers = true,
-		childs = {},
-		func = function()
-			--print("func Sort by quality descending", aBagId)
-			for i, v in pairs(tBagSlotList) do
-				if i == aBagId or aBagId == nil then
-					local tCurrentContainerFrameNumber = IsBagOpen(i)
-					local tNumSlots = GetContainerNumSlots(i)
-					if tNumSlots > 0 and (tCurrentContainerFrameNumber or (i == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true)) then
-						SortByQualityHelper(tCurrentContainerFrameNumber, tNumSlots, i, function(a, b)
-						 	return a < b
-						end)
-					end
-				end
-			end
-		end,
-	}   
-
-
-
-
-
-	--sort by name
-	local function SortByNameHelper(tCurrentContainerFrameNumber, tNumSlots, i, aEvaluateFunc)
-		SkuCore.CursorSilent = true
-		SkuOptions.Voice.TutorialPlaying = 1
-		local co = coroutine.create(function ()
-			local tProcess = true
-			while tProcess do
-				tProcess = nil
-				for count = 1, tNumSlots - 1 do
-					local tPickContainerFrame = tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, count)
-					local tPlaceContainerFrame = tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, count + 1)
-					local pickitemName, placeitemName
-					if i == -1 then
-						local invSlot = BankButtonIDToInvSlotID(count)
-						local pickItemLink = GetInventoryItemLink("player", invSlot)
-						if not pickItemLink then
-							pickitemName = "zzzzzzzzzz"
-						else
-							pickitemName = C_Item.GetItemNameByID(pickItemLink)
-						end
-
-						local invSlot = BankButtonIDToInvSlotID(count + 1)
-						local placeItemlink = GetInventoryItemLink("player", invSlot)
-						if not placeItemlink then
-							placeitemName = "zzzzzzzzzz"
-						else
-							placeitemName = C_Item.GetItemNameByID(placeItemlink)
-						end
-					else
-						_G["SkuScanningTooltip"]:ClearLines()
-						_G["SkuScanningTooltip"]:SetBagItem(i, count)
-						pickitemName, pickItemLink = _G["SkuScanningTooltip"]:GetItem()
-						if not pickitemName then
-							pickitemName = "zzzzzzzzzz"
-						end
-						_G["SkuScanningTooltip"]:ClearLines()
-						_G["SkuScanningTooltip"]:SetBagItem(i, count + 1)
-						placeitemName = _G["SkuScanningTooltip"]:GetItem()
-						if not placeitemName then
-							placeitemName = "zzzzzzzzzz"
-						end
-					end
-					if aEvaluateFunc(pickitemName, placeitemName) == true then
-						if pickItemLink then
-							tPickContainerFrame:GetScript("OnClick")(tPickContainerFrame, "LeftButton")
-							tPlaceContainerFrame:GetScript("OnClick")(tPlaceContainerFrame, "LeftButton")
-						else
-							tPlaceContainerFrame:GetScript("OnClick")(tPlaceContainerFrame, "LeftButton")
-							tPickContainerFrame:GetScript("OnClick")(tPickContainerFrame, "LeftButton")
-						end
-						tProcess = true
-						break
-					end
-				end
-				coroutine.yield()
-			end
-		end)
-
-		tIsProcessing = tIsProcessing + 1
-		SortProcessingSoundHelper()
-		cbObject = C_Timer.NewTicker(0.01, function(self) 
-			if coroutine.status(co) == "suspended" then
-				SortProcessingSoundHelper()
-				local tret = coroutine.resume(co)
-			else
-				tIsProcessing = tIsProcessing - 1
-				self:Cancel() 
-				SkuCore.CursorSilent = false
-				SkuOptions.Voice.TutorialPlaying = 0
-				SkuOptions.Voice:StopOutputEmptyQueue()
-				SortProcessingSoundHelper()
-			end
-		end)
-	end
-
-	--sort by name
-	local tFriendlyName = L["Sort items by name"].." "..L["ascending"]
-	table.insert(aParentChilds, tFriendlyName)
-	aParentChilds[tFriendlyName] = {
-		frameName = nil,
-		RoC = "Child",
-		type = "Button",
-		textFirstLine = tFriendlyName,
-		textFull = "",
-		noMenuNumbers = true,
-		childs = {},
-		func = function()
-			for i, v in pairs(tBagSlotList) do
-				if i == aBagId or aBagId == nil then
-					local tCurrentContainerFrameNumber = IsBagOpen(i)
-					local tNumSlots = GetContainerNumSlots(i)
-					if tNumSlots > 0 and (tCurrentContainerFrameNumber or (i == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true)) then
-						SortByNameHelper(tCurrentContainerFrameNumber, tNumSlots, i, function(a, b)
-						 	return a > b
-						end)
-					end
-				end
-			end
-		end,
-	}   
-	local tFriendlyName = L["Sort items by name"].." "..L["descending"]
-	table.insert(aParentChilds, tFriendlyName)
-	aParentChilds[tFriendlyName] = {
-		frameName = nil,
-		RoC = "Child",
-		type = "Button",
-		textFirstLine = tFriendlyName,
-		textFull = "",
-		noMenuNumbers = true,
-		childs = {},
-		func = function()
-			for i, v in pairs(tBagSlotList) do
-				if i == aBagId or aBagId == nil then
-					local tCurrentContainerFrameNumber = IsBagOpen(i)
-					local tNumSlots = GetContainerNumSlots(i)
-					if tNumSlots > 0 and (tCurrentContainerFrameNumber or (i == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true)) then
-						SortByNameHelper(tCurrentContainerFrameNumber, tNumSlots, i, function(a, b)
-						 	return a < b
-						end)
-					end
-				end
-			end
-		end,
-	}   
-
-
-
-
-
-
+	tAddSortNode(L["Remove empty bag slots (collapse)"], "collapse", nil)
+	tAddSortNode(L["Sort items by quality"].." "..L["ascending"],  "quality", "asc")
+	tAddSortNode(L["Sort items by quality"].." "..L["descending"], "quality", "desc")
+	tAddSortNode(L["Sort items by name"].." "..L["ascending"],  "name", "asc")
+	tAddSortNode(L["Sort items by name"].." "..L["descending"], "name", "desc")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1751,7 +1682,10 @@ local function tBuildActiveSpecUI(aParentChilds)
 		local tFrameName = "PlayerTalentFrameTab"..x
 		if _G[tFrameName] and _G[tFrameName]:IsVisible() == true then
 			local tttFirst, tttFull = _G[tFrameName]:GetText()
-			local tFriendlyName = tttFirst
+			-- GetText() can be nil while the talent frame is still initialising; a nil
+			-- key here threw "table index is nil" (LocalMenu.lua BugGrabber entry). Fall
+			-- back to a generic tab name so the node is still built.
+			local tFriendlyName = tttFirst or (L["Tab"].." "..x)
 			table.insert(aParentChilds, tFriendlyName)
 			aParentChilds[tFriendlyName] = {
 				frameName = tFrameName,
