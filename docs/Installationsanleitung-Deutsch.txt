@@ -17,6 +17,24 @@ Ein Tipp für den ganzen Vorgang: Immer nur einen Download oder einen
 Kopiervorgang gleichzeitig. Geh Schritt für Schritt vor, das vermeidet Fehler.
 
 
+Der einfache Weg: der Sku Installer (automatische Installation)
+Es gibt jetzt ein kleines, Screenreader-freundliches Windows-Programm - den Sku
+Installer -, das den gesamten Addon-Teil für dich erledigt: Es findet deinen
+World-of-Warcraft-Ordner, lädt Sku zusammen mit allen benötigten Begleit-Addons
+herunter, kopiert alles an die richtige Stelle und schaltet die Spieleinstellungen
+ein, die Sku braucht. Lade es von der Sku-Homepage herunter:
+https://sku75.github.io/Sku-WoW-Addon-TBC/
+Starte es und erlaube ihm, wenn Windows fragt, die Ausführung als Administrator.
+Das Spiel selbst muss bereits installiert sein (Schritte 1 und 2 weiter unten),
+und du brauchst weiterhin einmalig sehende Hilfe für die Battle.net-Login-
+Bildschirme und den Lizenzvertrag. Wenn du den Installer nutzt, ersetzt er
+Schritt 3 vollständig sowie den Teil "Veraltete AddOns laden" aus Schritt 4 - du
+setzt dann nur noch die Haken bei den Sku-Addons und lädst neu.
+
+Die folgenden Schritte beschreiben die MANUELLE Installation, für alle, die die
+Dateien lieber von Hand kopieren oder den Installer nicht ausführen können.
+
+
 Überblick der Schritte
 1. Battle.net-Account anlegen und Abo abschließen.
 2. Spiel installieren und einmal starten (sehende Hilfe).
