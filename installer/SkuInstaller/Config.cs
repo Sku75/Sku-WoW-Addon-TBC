@@ -13,6 +13,13 @@ namespace SkuInstaller
         /// <summary>Release asset filename, e.g. "SkuBeaconSoundsets.zip".</summary>
         public string AssetName;
 
+        /// <summary>
+        /// The release tag this asset is pinned to, e.g. "v41.02.05". The installer
+        /// builds a direct github.com download URL from (Tag, AssetName); it does
+        /// NOT query api.github.com, so it never hits the 60-request/hour rate limit.
+        /// </summary>
+        public string Tag;
+
         /// <summary>Human label for progress/announcements.</summary>
         public string DisplayName;
 
@@ -52,10 +59,25 @@ namespace SkuInstaller
 
         public const string SiteUrl = "https://sku75.github.io/Sku-WoW-Addon-TBC/";
 
-        // api.github.com endpoint for ALL releases (newest first). We search all
-        // of them per asset because assets are spread across tags.
-        public static string ReleasesApiUrl =>
-            $"https://api.github.com/repos/{RepoOwner}/{RepoName}/releases";
+        // ── BUMP EACH RELEASE ────────────────────────────────────────────────
+        // The installer pins DIRECT github.com release-download URLs instead of
+        // enumerating releases through api.github.com. The API caps unauthenticated
+        // callers at 60 requests/hour PER IP, which was 403-ing users on shared /
+        // CGNAT / VPN addresses before a single download even started.
+        //
+        // The newest Sku main-addon release is pinned here by version. When a new
+        // main addon is published, update MainVersion to its tag — this works for
+        // prereleases too (a direct download URL ignores the "Latest" badge, unlike
+        // /releases/latest). Tag and asset name both derive from it:
+        //   tag  = "v" + MainVersion       e.g. "v42.02"
+        //   file = "Sku-" + MainVersion    e.g. "Sku-42.02.zip"
+        public const string MainVersion = "42.02";
+        public static string MainTag => "v" + MainVersion;
+        public static string MainAssetName => "Sku-" + MainVersion + ".zip";
+
+        // Companions + language packs rarely change; they are pinned to this
+        // (older) release that carries all of their assets.
+        public const string CompanionTag = "v41.02.05";
 
         /// <summary>Manifest filename written into the AddOns folder.</summary>
         public const string ManifestFileName = "SkuInstall.json";
@@ -79,10 +101,10 @@ namespace SkuInstaller
         /// </summary>
         public static readonly List<AddonSpec> CoreAddons = new List<AddonSpec>
         {
-            new AddonSpec { FolderName = "Sku",                        AssetName = "Sku-{ver}.zip",                  DisplayName = "Sku (main addon)",            Required = true, IsPrimary = true },
-            new AddonSpec { FolderName = "SkuBeaconSoundsets",         AssetName = "SkuBeaconSoundsets.zip",         DisplayName = "Beacon Soundsets",            Required = true, IsMedia = true },
-            new AddonSpec { FolderName = "SkuCustomBeaconsEssential",  AssetName = "SkuCustomBeaconsEssential.zip",  DisplayName = "Custom Beacons (Essential)",  Required = true, IsMedia = true },
-            new AddonSpec { FolderName = "SkuCustomBeaconsAdditional", AssetName = "SkuCustomBeaconsAdditional.zip", DisplayName = "Custom Beacons (Additional)", Required = true, IsMedia = true },
+            new AddonSpec { FolderName = "Sku",                        AssetName = MainAssetName,                    Tag = MainTag,      DisplayName = "Sku (main addon)",            Required = true, IsPrimary = true },
+            new AddonSpec { FolderName = "SkuBeaconSoundsets",         AssetName = "SkuBeaconSoundsets.zip",         Tag = CompanionTag, DisplayName = "Beacon Soundsets",            Required = true, IsMedia = true },
+            new AddonSpec { FolderName = "SkuCustomBeaconsEssential",  AssetName = "SkuCustomBeaconsEssential.zip",  Tag = CompanionTag, DisplayName = "Custom Beacons (Essential)",  Required = true, IsMedia = true },
+            new AddonSpec { FolderName = "SkuCustomBeaconsAdditional", AssetName = "SkuCustomBeaconsAdditional.zip", Tag = CompanionTag, DisplayName = "Custom Beacons (Additional)", Required = true, IsMedia = true },
         };
 
         /// <summary>
@@ -92,18 +114,10 @@ namespace SkuInstaller
         public static readonly List<AddonSpec> LanguagePacks = new List<AddonSpec>
         {
             // Display names match the Sku GitHub download page verbatim (language-neutral).
-            new AddonSpec { FolderName = "SkuAudioData_en",      AssetName = "SkuAudioData_en.zip",      DisplayName = "SkuAudioData English",     IsMedia = true },
-            new AddonSpec { FolderName = "SkuAudioData",         AssetName = "SkuAudioData.zip",         DisplayName = "SkuAudioData German",      IsMedia = true },
-            new AddonSpec { FolderName = "SkuAudioData_fast_de", AssetName = "SkuAudioData_fast_de.zip", DisplayName = "SkuAudioData German Fast", IsMedia = true },
+            new AddonSpec { FolderName = "SkuAudioData_en",      AssetName = "SkuAudioData_en.zip",      Tag = CompanionTag, DisplayName = "SkuAudioData English",     IsMedia = true },
+            new AddonSpec { FolderName = "SkuAudioData",         AssetName = "SkuAudioData.zip",         Tag = CompanionTag, DisplayName = "SkuAudioData German",      IsMedia = true },
+            new AddonSpec { FolderName = "SkuAudioData_fast_de", AssetName = "SkuAudioData_fast_de.zip", Tag = CompanionTag, DisplayName = "SkuAudioData German Fast", IsMedia = true },
         };
 
-        /// <summary>
-        /// The main addon asset name is versioned (Sku-41.06.zip). We resolve the
-        /// concrete name at runtime from the newest release tag. This helper turns
-        /// the "{ver}" template into a regex-friendly prefix/suffix the resolver
-        /// can match against actual asset names.
-        /// </summary>
-        public const string PrimaryAssetPrefix = "Sku-";
-        public const string PrimaryAssetSuffix = ".zip";
     }
 }

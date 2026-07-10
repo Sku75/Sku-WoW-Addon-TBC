@@ -52,8 +52,7 @@ namespace SkuInstaller
             Console.WriteLine();
 
             var github = new GitHubClient();
-            int relCount = github.GetReleasesAsync().GetAwaiter().GetResult().Count;
-            Console.WriteLine($"GitHub releases found: {relCount}");
+            Console.WriteLine($"Pinned releases: main {Config.MainTag}, companions {Config.CompanionTag}");
             Console.WriteLine();
 
             var manifest = InstallManifest.Load(folder);
@@ -64,10 +63,8 @@ namespace SkuInstaller
 
             foreach (var spec in work)
             {
-                Console.WriteLine($"[{spec.FolderName}] resolving on GitHub…");
-                AssetRef resolved = spec.IsPrimary
-                    ? github.ResolvePrimaryAsync().GetAwaiter().GetResult()
-                    : github.ResolveAssetAsync(spec.AssetName).GetAwaiter().GetResult();
+                Console.WriteLine($"[{spec.FolderName}] resolving pinned asset…");
+                AssetRef resolved = github.ResolveAsset(spec);
 
                 if (resolved == null) { Console.WriteLine("    -> NOT FOUND, skipping"); continue; }
                 Console.WriteLine($"    -> {resolved.AssetName}  (tag {resolved.Tag})");

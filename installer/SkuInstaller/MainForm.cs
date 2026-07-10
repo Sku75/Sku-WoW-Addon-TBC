@@ -353,9 +353,7 @@ namespace SkuInstaller
             var plan = new InstallPlan();
             foreach (var spec in work)
             {
-                AssetRef resolved = spec.IsPrimary
-                    ? github.ResolvePrimaryAsync().GetAwaiter().GetResult()
-                    : github.ResolveAssetAsync(spec.AssetName).GetAwaiter().GetResult();
+                AssetRef resolved = github.ResolveAsset(spec);
 
                 bool needs, firstInstall;
                 if (force)

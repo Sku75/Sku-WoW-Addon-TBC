@@ -65,11 +65,20 @@ to do anything but inform the user.
 
 Repo: `Sku75/Sku-WoW-Addon-TBC`. Assets are spread across release tags. The
 main addon ships on the newest tag; the bulky companions stay pinned on an
-older tag and rarely change. The installer therefore searches *all* releases
-(newest first) for each asset filename and takes the first hit — so it doesn't
-matter which tag an asset lives on.
+older tag and rarely change. Each asset's `(tag, filename)` is pinned in
+`Config.cs` and the installer builds the **direct** github.com release-download
+URL (`.../releases/download/<tag>/<file>`) for it.
 
-- `Sku-41.06.zip` (tag `v41.06`) — main addon. Drives the "is there an update".
+We deliberately do **not** enumerate releases through `api.github.com`: that
+endpoint caps unauthenticated callers at **60 requests/hour per IP**, and users
+behind shared / CGNAT / VPN addresses were getting a `403 rate limit exceeded`
+on the first metadata fetch — before any download started. The direct
+download host is not rate-limited, and (unlike `/releases/latest`) serves
+**prerelease** assets fine, which the current main addon needs. The cost: the
+`MainVersion` pin in `Config.cs` must be bumped when a new main-addon release
+ships (the release build already rebuilds this installer each time).
+
+- `Sku-42.02.zip` (tag `v42.02`) — main addon. Drives the "is there an update".
 - `SkuBeaconSoundsets.zip` (tag `v41.02.05`, ~99 MB) — hard dependency.
 - Language pack — pick ONE: `SkuAudioData_en.zip`, `SkuAudioData.zip` (German),
   `SkuAudioData_fast_de.zip` (tag `v41.02.05`).

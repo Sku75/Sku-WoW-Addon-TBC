@@ -1,12 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 
 namespace SkuInstaller
 {
@@ -19,14 +15,24 @@ namespace SkuInstaller
     }
 
     /// <summary>
-    /// Talks to the GitHub releases API. Because Sku spreads its assets across
-    /// several release tags, we fetch ALL releases once (newest first) and then
-    /// resolve each asset to the first release that contains it.
+    /// Resolves Sku's release assets to direct download URLs and streams them down.
+    ///
+    /// We deliberately do NOT call the api.github.com REST API. That endpoint caps
+    /// unauthenticated callers at 60 requests/hour PER source IP, and users behind
+    /// shared / CGNAT / VPN addresses were getting a 403 "rate limit exceeded" on
+    /// the very first metadata fetch — before any download had even started. Instead
+    /// each managed addon is pinned in <see cref="Config"/> to a (Tag, AssetName)
+    /// pair and we build the github.com release-download URL directly. That host is
+    /// not rate-limited and serves prerelease assets exactly like stable ones —
+    /// unlike /releases/latest, which only ever resolves the "Latest"-badged release.
+    ///
+    /// Trade-off: the pins in <see cref="Config"/> must be bumped when a new release
+    /// ships. The release build already rebuilds and re-uploads this installer each
+    /// time, so that's one extra constant to update alongside the version bump.
     /// </summary>
     public class GitHubClient : IDisposable
     {
         private readonly HttpClient _http;
-        private List<Dictionary<string, object>> _releasesCache;
 
         public GitHubClient()
         {
@@ -35,97 +41,30 @@ namespace SkuInstaller
 
             _http = new HttpClient();
             _http.DefaultRequestHeaders.Add("User-Agent", "SkuInstaller");
-            _http.DefaultRequestHeaders.Add("Accept", "application/vnd.github+json");
             _http.Timeout = TimeSpan.FromMinutes(10); // companions are large
         }
 
-        /// <summary>Fetches and caches the releases array (newest first).</summary>
-        public async Task<List<Dictionary<string, object>>> GetReleasesAsync()
+        /// <summary>
+        /// Build the download reference for one managed addon from its pinned
+        /// (Tag, AssetName) in <see cref="Config"/>. No network call — the URL is
+        /// constructed, so this can't rate-limit or fail on a transient API error.
+        /// </summary>
+        public AssetRef ResolveAsset(AddonSpec spec) => new AssetRef
         {
-            if (_releasesCache != null)
-                return _releasesCache;
-
-            Logger.Info($"Fetching releases: {Config.ReleasesApiUrl}");
-            string json = await _http.GetStringAsync(Config.ReleasesApiUrl);
-
-            // DeserializeObject keeps a consistent shape: JSON objects -> Dictionary,
-            // JSON arrays -> object[]. (Deserialize<List<Dictionary>> mistyped the
-            // nested "assets" arrays, so asset lookups matched nothing.)
-            var ser = new JavaScriptSerializer { MaxJsonLength = int.MaxValue };
-            var raw = ser.DeserializeObject(json);
-
-            var list = new List<Dictionary<string, object>>();
-            if (raw is IEnumerable outer)
-                foreach (var o in outer)
-                    if (o is Dictionary<string, object> rel)
-                        list.Add(rel);
-
-            _releasesCache = list;
-            Logger.Info($"Got {_releasesCache.Count} releases");
-            return _releasesCache;
-        }
+            AssetName = spec.AssetName,
+            Tag = spec.Tag,
+            DownloadUrl = BuildDownloadUrl(spec.Tag, spec.AssetName),
+        };
 
         /// <summary>
-        /// Resolve an exact asset filename (e.g. "SkuBeaconSoundsets.zip") to the
-        /// newest release that carries it. Returns null if no release has it.
+        /// The github.com release-download URL for a tagged asset, e.g.
+        /// https://github.com/OWNER/REPO/releases/download/v42.02/Sku-42.02.zip .
+        /// It 302-redirects to the storage backend and is NOT the rate-limited
+        /// api.github.com host.
         /// </summary>
-        public async Task<AssetRef> ResolveAssetAsync(string assetName)
-        {
-            var releases = await GetReleasesAsync();
-            foreach (var rel in releases) // already newest-first from the API
-            {
-                var hit = FindAssetInRelease(rel, a =>
-                    string.Equals(a, assetName, StringComparison.OrdinalIgnoreCase));
-                if (hit != null) return hit;
-            }
-            Logger.Warning($"Asset not found in any release: {assetName}");
-            return null;
-        }
-
-        /// <summary>
-        /// Resolve the versioned primary asset (Sku-XX.YY.zip) to the newest
-        /// release that carries a matching name. Returns the asset ref plus the
-        /// version string extracted from the filename.
-        /// </summary>
-        public async Task<AssetRef> ResolvePrimaryAsync()
-        {
-            var releases = await GetReleasesAsync();
-            var rx = new Regex("^" + Regex.Escape(Config.PrimaryAssetPrefix) +
-                               @"[0-9][0-9A-Za-z\.\-]*" +
-                               Regex.Escape(Config.PrimaryAssetSuffix) + "$",
-                               RegexOptions.IgnoreCase);
-
-            foreach (var rel in releases)
-            {
-                var hit = FindAssetInRelease(rel, a => rx.IsMatch(a));
-                if (hit != null) return hit;
-            }
-            Logger.Warning("Primary Sku asset (Sku-*.zip) not found in any release.");
-            return null;
-        }
-
-        private static AssetRef FindAssetInRelease(
-            Dictionary<string, object> rel, Func<string, bool> nameMatches)
-        {
-            string tag = rel.TryGetValue("tag_name", out var t) ? t as string : null;
-            if (!(rel.TryGetValue("assets", out var assetsObj) && assetsObj is IEnumerable assets))
-                return null;
-
-            foreach (var aObj in assets)
-            {
-                if (!(aObj is Dictionary<string, object> a)) continue;
-                string name = a.TryGetValue("name", out var n) ? n as string : null;
-                if (name == null || !nameMatches(name)) continue;
-
-                return new AssetRef
-                {
-                    AssetName = name,
-                    Tag = tag,
-                    DownloadUrl = a.TryGetValue("browser_download_url", out var u) ? u as string : null,
-                };
-            }
-            return null;
-        }
+        public static string BuildDownloadUrl(string tag, string assetName) =>
+            $"https://github.com/{Config.RepoOwner}/{Config.RepoName}/releases/download/" +
+            $"{Uri.EscapeDataString(tag)}/{Uri.EscapeDataString(assetName)}";
 
         /// <summary>
         /// Streamed download with progress. <paramref name="progress"/> gets
