@@ -3048,7 +3048,7 @@ L["MOB_PetRenameConfirm"] = "Umbenennung bestätigen: "
 L["MOB_PetRenameSaved"] = "Name gespeichert. Gehe zurück und wähle Umbenennung bestätigen."
 
 -- ACC_* — Barrierefreiheit (Menuepunkt 7 Umbau, 41.02.07)
-L["ACC_MenuTitle"] = "Barrierefreiheit"
+L["ACC_MenuTitle"] = "Schnellmenü"
 L["ACC_Placeholder1"] = "Platzhalter Lautstärken"
 L["ACC_Placeholder2"] = "Platzhalter Sprachausgabe"
 L["ACC_VolumesTitle"] = "Lautstärke"

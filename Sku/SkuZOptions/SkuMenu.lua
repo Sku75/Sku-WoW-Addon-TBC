@@ -339,6 +339,26 @@ SkuMenu:RegisterModule("Addons", {
 	build = function(entry) if SkuCore and SkuCore.AddonsMenuBuilder then SkuCore:AddonsMenuBuilder(entry) end end,
 })
 
+-- Werkzeuge (Tools): a root container for the "Dial Targeting" and "Soft Targeting"
+-- tools, both relocated here from Einstellungen -> Kampf. Dial Targeting reuses its
+-- own dynamic builder; Soft Targeting renders its AceConfig group via IterateOptionsArgs
+-- with the ORIGINAL db/keyPrefix (aIncludeHidden=true, since it is flagged
+-- forAudioMenu=false) so saved values are preserved.
+SkuMenu:RegisterModule("Werkzeuge", {
+	label = function() return Sku.deEn("Werkzeuge", "Tools") end,
+	build = function(entry)
+		if SkuCore and SkuCore.DialTargeting and SkuCore.DialTargeting.DialTargetingMenuBuilder then
+			local tDial = SkuOptions:InjectMenuItems(entry, {L()["Dial Targeting"]}, SkuGenericMenuItem)
+			tDial.dynamic = true
+			tDial.sorting = true
+			tDial.BuildChildren = SkuCore.DialTargeting.DialTargetingMenuBuilder
+		end
+		if SkuOptions.options and SkuOptions.options.args and SkuOptions.options.args.softTargeting then
+			SkuOptions:IterateOptionsArgs({ softTargeting = SkuOptions.options.args.softTargeting }, entry, SkuSettings:Sub("SkuOptions"), "SkuOptions", "", true)
+		end
+	end,
+})
+
 -- W7: the Escape game menu (Spielmenue) — the live game-menu actions, with Optionen
 -- routed to Einstellungen and Makros to the Sku macro menu. SkuCore:GameMenuShowHandler
 -- navigates here when the Blizzard GameMenuFrame is invoked.
@@ -357,6 +377,7 @@ SkuMenu:SetRootLayout({
 	"SkuMob",      -- target
 	"SkuNav",      -- nav
 	"SkuChat",     -- chat
+	"Werkzeuge",   -- tools (between chat and monitor)
 	"Monitor",
 	"Macros",
 	"SkuAuras",    -- auren

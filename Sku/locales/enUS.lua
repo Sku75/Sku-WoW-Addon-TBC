@@ -3047,7 +3047,7 @@ L["MOB_PetRenameConfirm"] = "Confirm rename: "
 L["MOB_PetRenameSaved"] = "Name saved. Go back and choose Confirm rename."
 
 -- ACC_* — Accessibility (menu item 7 restructure, 41.02.07)
-L["ACC_MenuTitle"] = "Accessibility"
+L["ACC_MenuTitle"] = "Quick menu"
 L["ACC_Placeholder1"] = "Placeholder volume"
 L["ACC_Placeholder2"] = "Placeholder speech"
 L["ACC_VolumesTitle"] = "Volume"

@@ -363,6 +363,7 @@ SkuCore.options = {
 			name = L["Fall detection settings"],
 			type = "group",
 			order = 10,
+			forAudioMenu = false,   -- relocated to the Monitor menu (aq.lua MonitorMenuBuilder)
 			args= {
 				delay = {
 					name = L["Delay before output trigger (milliseconds)"],
@@ -399,6 +400,7 @@ SkuCore.options = {
 			name = L["Error feedback"],
 			type = "group",
 			order = 4,
+			forAudioMenu = false,   -- relocated to the Monitor menu (aq.lua MonitorMenuBuilder)
 			args= {
 				ErrorSoundChannel={
 					name = L["sound channel"],
@@ -1522,6 +1524,9 @@ local function RangecheckMenuBuilder(aParent, aType)
 	end
 
 end
+-- Exposed so the Monitor menu (SkuCore\aq.lua Aq:MonitorMenuBuilder) can reuse the
+-- range-check builder: the "Entfernung" list was relocated from Kampf to Monitor.
+SkuCore.RangecheckMenuBuilder = RangecheckMenuBuilder
 
 local Sku_Mail_OpenAll_Listener
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2229,7 +2234,8 @@ end
 -- only their assignment heads; their build closures are unchanged.
 function SkuCore:MenuBuilder(aParentEntry)
 	--dprint("SkuCore:MenuBuilder", aParentEntry)
-	local tKampf, tKeybinds, tSonstiges, tScan = {}, {}, {}, {}
+	-- tKampf dropped: the Kampf submenu is gone (contents relocated to Monitor/Werkzeuge).
+	local tKeybinds, tSonstiges, tScan = {}, {}, {}
 
 	-- Mail: now a Local window contributor (SkuCore.MailMenuBuilder) -- W7
 
@@ -2237,24 +2243,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 	-- Shift-F11-only "Aktionsleisten" root entry (SkuCore.ActionBarsMenuBuilder,
 	-- spliced by SkuCore:UpdateActionBarsRootEntry).
 
-	tKampf[#tKampf+1] = { kind = "list", label = L["Entfernung"],
-		build = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Freundlich"]}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.BuildChildren = function(self)
-			RangecheckMenuBuilder(self, "Friendly")
-		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Feindlich"]}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.BuildChildren = function(self)
-			RangecheckMenuBuilder(self, "Hostile")
-		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unbekannt"]}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.BuildChildren = function(self)
-			RangecheckMenuBuilder(self, "Misc")
-		end
-	end }
+	-- "Entfernung" (Reichweiten-Checks) relocated from Kampf to the Monitor menu
+	-- (SkuCore\aq.lua Aq:MonitorMenuBuilder); same RangecheckMenuBuilder logic.
 
 	tKeybinds[#tKeybinds+1] = { kind = "list", label = L["Spiel Tastenbelegung"],
 		build = function(self)
@@ -2690,9 +2680,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 	-- Auktionshaus: now a Local window contributor (AuctionHouseMenuBuilder) -- W7
 	-- Monitor: promoted to a top-level entry (SkuMenu "Monitor") -- W7
 
-	-- DIAL-TARGETING (41.02.06e) — Entfernbar: Block löschen + DialTargeting.lua + TOC + Core.lua Init
-	tKampf[#tKampf+1] = { kind = "list", label = L["Dial Targeting"], sorting = true,
-		build = SkuCore.DialTargeting.DialTargetingMenuBuilder }
+	-- DIAL-TARGETING (41.02.06e): relocated to the top-level "Werkzeuge" (Tools) menu
+	-- (SkuZOptions\SkuMenu.lua). Entfernbar: Block dort löschen + DialTargeting.lua + TOC + Core.lua Init
 
 	-- Social: now a Local window contributor (FriendsMenuBuilder) -- W7
 	-- Damage Meter + Atlas Loot: moved into the top-level "Addons" menu
@@ -2716,14 +2705,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 	-- W8: SkuQuest's settings moved again, out of Sonstiges to a top-level
 	-- Einstellungen entry (the "Quest" spec in tSpecs below); same args/db.
 
-	-- W7: SkuMob's settings, relocated under Kampf when the "Mob" wrapper was dropped
-	-- and the target menu promoted to top level. Same args/db -> saved values preserved.
-	if SkuMob and SkuMob.options and SkuMob.options.args then
-		tKampf[#tKampf+1] = { kind = "settings",
-			label = function() return Sku.deEn("Ziel Optionen", "Target options") end,
-			sorting = true,
-			args = SkuMob.options.args, db = SkuSettings:Sub("SkuMob"), module = "SkuMob" }
-	end
+	-- W7: SkuMob's settings ("Ziel Optionen") were under Kampf; now relocated to the
+	-- Monitor menu (SkuCore\aq.lua Aq:MonitorMenuBuilder). Same args/db -> saved values preserved.
 
 	-- W7: top-level Einstellungen layout. Allgemein reuses the old "Optionen" menu
 	-- (SkuOptions:MenuBuilder); Spieleinstellungen reuses the Game Options builder;
@@ -2748,16 +2731,24 @@ function SkuCore:MenuBuilder(aParentEntry)
 			build = function(self)
 				local a = SkuOptions.options and SkuOptions.options.args
 				if a then
+					-- backgroundSound (Hintergrund Audio) selection removed: feature no
+					-- longer offered in the Audio menu.
+					-- Existing (more important) entry first: the Audio-Kanaele group.
 					SkuOptions:IterateOptionsArgs({
-						backgroundSound = a.backgroundSound,
-						soundChannels   = a.soundChannels,
-						soundSettings   = a.soundSettings,
+						soundChannels = a.soundChannels,
 					}, self, SkuSettings:Sub("SkuOptions"), "SkuOptions", "", true)
 				end
 				-- W8: "NPC Begrüßungen abspielen" (SkuCore node), relocated from
 				-- Sonstiges; same db/keyPrefix -> saved value intact.
 				if SkuCore.options and SkuCore.options.args and SkuCore.options.args.playNPCGreetings then
 					SkuOptions:IterateOptionsArgs({ playNPCGreetings = SkuCore.options.args.playNPCGreetings }, self, tSub, "SkuCore", "", true)
+				end
+				-- Soundeinstellungen flattened: instead of an extra "Sound Settings" submenu,
+				-- its toggles render DIRECTLY into the Audio menu, placed BELOW the existing
+				-- (more important) entries above. Same db/keyPrefix (soundSettings.<key> under
+				-- SkuOptions) -> saved values preserved.
+				if a and a.soundSettings and a.soundSettings.args then
+					SkuOptions:IterateOptionsArgs(a.soundSettings.args, self, SkuSettings:Sub("SkuOptions").soundSettings, "SkuOptions", "soundSettings.", true)
 				end
 			end },
 		-- W8: Kamera, relocated from the Barrierefreiheit root menu (7.3); the
@@ -2773,14 +2764,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 					pcall(function() SkuCore.VisualAids:VisualAidsBuildMenu(self) end)
 				end
 			end },
-		{ kind = "submenu", label = tDeEn("Kampf", "Combat"),
-			build = function(self)
-				SkuMenu:Build(self, tKampf)
-				-- Soft targeting, relocated from SkuOptions options (keyPrefix preserved).
-				if SkuOptions.options and SkuOptions.options.args and SkuOptions.options.args.softTargeting then
-					SkuOptions:IterateOptionsArgs({ softTargeting = SkuOptions.options.args.softTargeting }, self, SkuSettings:Sub("SkuOptions"), "SkuOptions", "", true)
-				end
-			end },
+		-- "Kampf" (Combat) submenu removed: all of its contents were relocated —
+		-- Entfernung and Ziel Optionen to the Monitor menu, Dial Targeting and Soft
+		-- Targeting to the top-level "Werkzeuge" menu — leaving it empty.
 		{ kind = "submenu", label = tDeEn("Scan", "Scan"),
 			build = function(self)
 				-- Scan-related settings relocated from the SkuCore "Options" group.

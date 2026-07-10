@@ -4139,6 +4139,57 @@ function Aq:MonitorMenuBuilder()
 	tNewMenuEntry.sorting = true
 	tNewMenuEntry.BuildChildren = SkuCore.aqCombat.aqCombatMenuBuilder
 
+	-- Entfernung (Reichweiten-Checks): relocated here from the Kampf menu. Reuses the
+	-- shared RangecheckMenuBuilder exposed by SkuCore\Options.lua.
+	local tRangeEntry = SkuOptions:InjectMenuItems(self, {L["Entfernung"]}, SkuGenericMenuItem)
+	tRangeEntry.dynamic = true
+	tRangeEntry.BuildChildren = function(self)
+		local tFriendly = SkuOptions:InjectMenuItems(self, {L["Freundlich"]}, SkuGenericMenuItem)
+		tFriendly.dynamic = true
+		tFriendly.BuildChildren = function(self)
+			SkuCore.RangecheckMenuBuilder(self, "Friendly")
+		end
+		local tHostile = SkuOptions:InjectMenuItems(self, {L["Feindlich"]}, SkuGenericMenuItem)
+		tHostile.dynamic = true
+		tHostile.BuildChildren = function(self)
+			SkuCore.RangecheckMenuBuilder(self, "Hostile")
+		end
+		local tMisc = SkuOptions:InjectMenuItems(self, {L["Unbekannt"]}, SkuGenericMenuItem)
+		tMisc.dynamic = true
+		tMisc.BuildChildren = function(self)
+			SkuCore.RangecheckMenuBuilder(self, "Misc")
+		end
+	end
 
-	
+	-- Fall detection ("Fallerkennungs Einstellungen") and Error feedback ("Fehler
+	-- Feedback"): relocated here from the Einstellungen -> Sonstiges menu (flagged
+	-- forAudioMenu=false there, so aIncludeHidden=true is needed to render them). Same
+	-- db/keyPrefix -> saved values preserved.
+	if SkuCore.options and SkuCore.options.args then
+		SkuOptions:IterateOptionsArgs({
+			fallSettings = SkuCore.options.args.fallSettings,
+			UIErrors     = SkuCore.options.args.UIErrors,
+		}, self, SkuSettings:Sub("SkuCore"), "SkuCore", "", true)
+	end
+
+	-- Quest notifications ("Quest Benachrichtigungen"): MIRRORED here (also still shown
+	-- under Einstellungen -> Quest). Same args/db/keyPrefix, so both locations edit the
+	-- exact same saved values.
+	if SkuQuest and SkuQuest.options and SkuQuest.options.args and SkuQuest.options.args.questMarkerBeacons then
+		SkuOptions:IterateOptionsArgs({
+			questMarkerBeacons = SkuQuest.options.args.questMarkerBeacons,
+		}, self, SkuSettings:Sub("SkuQuest"), "SkuQuest")
+	end
+
+	-- Ziel Optionen (SkuMob's target options): relocated here from Einstellungen -> Kampf.
+	-- Same args/db -> saved values preserved.
+	if SkuMob and SkuMob.options and SkuMob.options.args then
+		local tTargetOpts = SkuOptions:InjectMenuItems(self, {Sku.deEn("Ziel Optionen", "Target options")}, SkuGenericMenuItem)
+		tTargetOpts.dynamic = true
+		tTargetOpts.sorting = true
+		tTargetOpts.BuildChildren = function(self)
+			SkuOptions:IterateOptionsArgs(SkuMob.options.args, self, SkuSettings:Sub("SkuMob"), "SkuMob")
+		end
+	end
+
 end
