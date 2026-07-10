@@ -71,7 +71,18 @@ SkuVoice.TutorialPlaying = 0
 
 local mSkuVoiceQueue = {}
 local mSkuVoiceQueueBTTS = {}
+-- Dedup guard for the Blizzard-TTS path: the set of lines Sku has handed to
+-- C_VoiceChat.SpeakText and believes are still playing, so an identical line
+-- queued while the first is speaking isn't spoken twice. Each entry is a table
+-- {text=, at=}: `at` is GetTime() at hand-off so a wedged entry (its
+-- FINISHED/FAILED never fired) can be force-expired (see tBttsSpeakingTtl). Was
+-- a flat list of strings; became tables so the guard can self-heal instead of
+-- suppressing every future identical line forever.
 local mSkuVoiceQueueBTTS_Speaking = {}
+-- Max seconds a line stays flagged "speaking" before the pump force-clears it.
+-- Pure self-heal net for a dropped FINISHED/FAILED — set well above any real
+-- utterance so it never clips legitimate playback, only breaks a permanent wedge.
+local tBttsSpeakingTtl = 12
 -- Per-message Blizzard-TTS voice override. Keyed by the FINAL assembled queue
 -- string (the exact value stored in mSkuVoiceQueueBTTS), value = a 1-based menu
 -- index into SkuChat.WowTtsVoices (same domain as the global WowTtsVoice
@@ -119,9 +130,17 @@ function SkuVoice:Create()
 	-- SAPI->screenreader bridge voice speaks the mark names ("start"/"end").
 	-- Log the bookmark event to capture the exact mark names as proof.
 	pcall(function() f:RegisterEvent("VOICE_CHAT_TTS_PLAYBACK_BOOKMARK") end)
+	-- FAILED is the third event the queue MUST watch (per the WoW-Vision hint):
+	-- some voices / the SAPI->screenreader bridge FAIL an utterance instead of
+	-- FINISHING it. Without draining on FAILED the entry stuck in the dedup guard
+	-- forever, so every later identical line was dropped ("skips newly incoming").
+	f:RegisterEvent("VOICE_CHAT_TTS_PLAYBACK_FAILED")
 	f:SetScript("OnEvent", function(self, aEventName, ...)
-		if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FINISHED" then
-			if dprint then dprint("BTTS event FINISHED", ...) end
+		if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FINISHED" or aEventName == "VOICE_CHAT_TTS_PLAYBACK_FAILED" then
+			if dprint then dprint("BTTS event "..aEventName, ...) end
+			-- Drain the oldest speaking entry on BOTH end and fail (FIFO — the
+			-- guard's only job is short-lived dedup, so oldest-out is good enough;
+			-- the TTL sweep backstops any out-of-order or missing event).
 			if mSkuVoiceQueueBTTS_Speaking[1] then
 				table.remove(mSkuVoiceQueueBTTS_Speaking, 1)
 			end
@@ -141,6 +160,22 @@ function SkuVoice:Create()
 		fTimeBTTS = fTimeBTTS + time
 		if fTimeBTTS > 0.01 then
 			fTimeBTTS = 0
+			-- Self-heal: drop any speaking entry whose FINISHED/FAILED never
+			-- arrived (dropped by some voices / the bridge). Without this a wedged
+			-- entry suppresses every future identical line via the dedup below.
+			local tNow = GetTime()
+			local tSweep = true
+			while tSweep do
+				tSweep = false
+				for z = 1, #mSkuVoiceQueueBTTS_Speaking do
+					if (tNow - mSkuVoiceQueueBTTS_Speaking[z].at) > tBttsSpeakingTtl then
+						if dprint then dprint("BTTS SPEAKING-EXPIRE", "text=["..tostring(mSkuVoiceQueueBTTS_Speaking[z].text).."]") end
+						table.remove(mSkuVoiceQueueBTTS_Speaking, z)
+						tSweep = true
+						break
+					end
+				end
+			end
 			local tLastReset
 			for x = 1, #mSkuVoiceQueueBTTS do
 				if mSkuVoiceQueueBTTS[x] == "queuereset" then
@@ -175,13 +210,13 @@ function SkuVoice:Create()
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						local tIsAlreadySpeakingThat
 						for z = 1, #mSkuVoiceQueueBTTS_Speaking do
-							--print(z, mSkuVoiceQueueBTTS_Speaking[z])
-							if mSkuVoiceQueueBTTS_Speaking[z] == tValue then
+							--print(z, mSkuVoiceQueueBTTS_Speaking[z].text)
+							if mSkuVoiceQueueBTTS_Speaking[z].text == tValue then
 								tIsAlreadySpeakingThat = true
 							end
 						end
 						if not tIsAlreadySpeakingThat then
-							table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
+							table.insert(mSkuVoiceQueueBTTS_Speaking, {text = tValue, at = GetTime()})
 							-- Per-message voice override (nil => global voice). Same
 							-- 1-based domain as WowTtsVoice, so the "- 1" API convention
 							-- is identical whether the voice is per-channel or global.
