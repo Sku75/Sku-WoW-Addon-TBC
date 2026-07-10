@@ -4161,15 +4161,24 @@ function Aq:MonitorMenuBuilder()
 		end
 	end
 
-	-- Fall detection ("Fallerkennungs Einstellungen") and Error feedback ("Fehler
-	-- Feedback"): relocated here from the Einstellungen -> Sonstiges menu (flagged
-	-- forAudioMenu=false there, so aIncludeHidden=true is needed to render them). Same
-	-- db/keyPrefix -> saved values preserved.
+	-- Fall detection ("Fallerkennungs Einstellungen"): relocated here from the
+	-- Einstellungen -> Sonstiges menu (flagged forAudioMenu=false there, so
+	-- aIncludeHidden=true is needed to render it). Same db/keyPrefix -> saved values.
 	if SkuCore.options and SkuCore.options.args then
 		SkuOptions:IterateOptionsArgs({
 			fallSettings = SkuCore.options.args.fallSettings,
-			UIErrors     = SkuCore.options.args.UIErrors,
 		}, self, SkuSettings:Sub("SkuCore"), "SkuCore", "", true)
+	end
+
+	-- Error feedback ("Fehlerfeedback"): custom nested builder (per category: TTS
+	-- voice / Sprachhinweis / Tonhinweis / Stumm). Replaces the old flat select
+	-- list; same saved values (SkuCore.UIErrors.*), fully backward compatible. See
+	-- SkuCore.UIErrors:MenuBuilder in SkuCore/UIErrors.lua.
+	if SkuCore.UIErrors and SkuCore.UIErrors.MenuBuilder then
+		local tErrFb = SkuOptions:InjectMenuItems(self, {L["Error feedback"]}, SkuGenericMenuItem)
+		tErrFb.dynamic = true
+		tErrFb.sorting = false
+		tErrFb.BuildChildren = SkuCore.UIErrors.MenuBuilder
 	end
 
 	-- Quest notifications ("Quest Benachrichtigungen"): MIRRORED here (also still shown

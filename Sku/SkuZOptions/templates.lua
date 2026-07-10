@@ -356,6 +356,34 @@ SkuGenericMenuItem = {
 					end)
 				end
 			end
+		elseif self.errorPreviewFile then
+			-- Fehlerfeedback: audition the beep / spoken clip when this leaf gets focus.
+			if tCurrentErrorUtteranceTimerHandle then
+				tCurrentErrorUtteranceTimerHandle:Cancel()
+			end
+			tCurrentErrorUtteranceTimerHandle = C_Timer.NewTimer(0.4, function()
+				if tPrevErrorUtterance then
+					StopSound(tPrevErrorUtterance)
+				end
+				local willPlay, soundHandle = PlaySoundFile(self.errorPreviewFile, SkuOptions.db.profile.SkuCore.UIErrors.ErrorSoundChannel or "Talking Head")
+				if willPlay then
+					tPrevErrorUtterance = soundHandle
+				end
+			end)
+		elseif self.errorPreviewVoiceIndex ~= nil then
+			-- Fehlerfeedback: audition a TTS voice (0 => the user's global voice) by
+			-- speaking the error's label in it. overwrite=true so scrolling the voice
+			-- list replaces the previous audition instead of piling up.
+			local tText = self.errorPreviewText or "TTS"
+			local tVoice = (self.errorPreviewVoiceIndex ~= 0) and self.errorPreviewVoiceIndex or nil
+			if tCurrentErrorUtteranceTimerHandle then
+				tCurrentErrorUtteranceTimerHandle:Cancel()
+			end
+			tCurrentErrorUtteranceTimerHandle = C_Timer.NewTimer(0.35, function()
+				pcall(function()
+					SkuOptions.Voice:OutputStringBTtts(tText, {overwrite = true, wait = false, length = 0.3, engine = 1, instant = true, voice = tVoice})
+				end)
+			end)
 		end
 
 		if SkuState:IsInCombat() ~= true then
