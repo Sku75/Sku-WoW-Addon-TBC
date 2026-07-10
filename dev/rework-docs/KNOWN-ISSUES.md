@@ -156,6 +156,39 @@ workstreams (noted) — fold them in there when that workstream runs.
     recount; `tCombatInCounts` mode-3 eager path). Levers: `tFlushWindow` (0.3s),
     `tStaleThreshold` (6s).
 
+## Possible changes (undecided)
+
+Design changes we've reasoned through but deliberately have NOT made, because
+they trade a known small problem for a new dependency/behaviour change. Kept
+here so a future session doesn't re-derive the analysis from scratch.
+
+- **BTTS queue: feed one utterance at a time (fix the cancel-leak).**
+  - What: today Sku fast-feeds several lines into Blizzard's TTS engine at once
+    (`OutputStringBTtts` / the `#queue > 1` dequeue in `SkuVoice-1.0.lua`), and
+    the engine holds the queue. Change = only call `SpeakText` when nothing is
+    playing and advance on `VOICE_CHAT_TTS_PLAYBACK_FINISHED`/`_FAILED`, so the
+    engine never holds more than one item and Sku owns the real queue.
+  - Why it's the correct fix: `C_VoiceChat.StopSpeakingText()` is broken — it
+    only stops the CURRENT item and leaves the rest of the engine's queue
+    playing. Once Sku hands off several items it cannot recall them, so an
+    overwrite/reset leaks stale trailing speech (the remaining half of the TTS
+    burst bug). One-at-a-time makes cancel reliable because there's only ever
+    one item in the engine; the rest sit in Sku's own queue, which it can flush.
+    This is the approach the WoW-Vision dev took (own queue + monkeypatched
+    SpeakText, gated on STARTED/FINISHED/FAILED).
+  - Why we DIDN'T do it yet: it makes pacing depend on FINISHED/FAILED firing
+    promptly — weakest on exactly the flaky voices/bridge we care about. Risks:
+    small gaps between lines (no engine pre-buffer of the next utterance), and
+    on a laggy voice the failure mode shifts from "says stale stuff" to
+    "pauses/stalls". The 12s self-heal watchdog would become load-bearing (must
+    advance the queue on a lost event) and need to be shorter/smarter (scaled to
+    utterance length). Bigger regression surface — needs testing across real
+    SAPI voices AND the NVDA/SAPI bridge.
+  - Recommendation if revisited: implement behind a setting, default OFF, and
+    A/B per voice in-game before considering it the default. Area:
+    `SkuVoice-1.0.lua` (`OutputStringBTtts`, the OnUpdate BTTS dequeue,
+    `mSkuVoiceQueueBTTS*`). Related shipped fix: `e6a9868`.
+
 ## Monitoring (re-check on request)
 
 - **Dial targeting (#21 dedup) — untested in a group/raid.** The W6-C #21 refactor
@@ -168,13 +201,16 @@ workstreams (noted) — fold them in there when that workstream runs.
   numpad digits to select members by slot; in a **raid** (two-digit entry via
   `SkuSecureTargetingToggleHandler`) confirm the correct unit is targeted. Area
   `SkuCore/DialTargeting.lua`; revert candidate = `d5a4eb9` alone if it misbehaves.
-- **TTS queue cancels/drops under a burst of many messages.** When a lot of TTS
-  lines arrive in a very short time (heavy chat backlog, many events firing
-  announcements at once), the queue appears to cancel or drop lines instead of
-  speaking them in order. Possibly a regression from the last WoW client update
-  (the 12.0 TTS overhaul touched this area). Re-check whether it still happens and
-  whether the BTTS queue / SAPI timing needs a fix. Area: SkuTTS / SkuVoice BTTS
-  queue (`OutputStringBTtts` / queue handling).
+- **TTS queue cancels/drops under a burst of many messages.** PARTIALLY FIXED
+  (commit `e6a9868`, 2026-07-10). The "skips newly incoming items" half was a
+  wedged dedup guard (`mSkuVoiceQueueBTTS_Speaking`): a FAILED utterance (some
+  voices / the NVDA-SAPI bridge) never drained the guard, so later identical
+  lines were dropped forever. Now handles `VOICE_CHAT_TTS_PLAYBACK_FAILED` and
+  self-expires stuck entries (12s TTL). Confirmed fixed in-game. The REMAINING
+  half — stale lines still speaking after an overwrite/reset — is inherent to
+  feeding many items into Blizzard's engine at once + Blizzard's broken
+  `StopSpeakingText()`, and needs the one-at-a-time change tracked under
+  "Possible changes (undecided)" below. Area: `SkuVoice-1.0.lua` BTTS queue.
 - **Syntherceptor (jcsteh) as future replacement for the bundled NVDA-SAPI voice.**
   Ask: "check the Syntherceptor monitor". SAPI5 voice DLL that forwards speech
   to NVDA (github.com/jcsteh/syntherceptor, installer at
