@@ -5132,18 +5132,45 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 							end
 						end
 					elseif aGossipListTable[index].bag ~= nil and aGossipListTable[index].slot ~= nil then
-						-- Bag/bank item (container-API): right click = "use" (consume,
-						-- equip, or vendor-sell). UseContainerItem is HARDWARE-EVENT
-						-- gated, so it runs as "/use <bag> <slot>" on the secure
-						-- right-click button. SkuCaptureSellState opens the bag-action
-						-- confirm window (cursor sits on the item node itself, which
-						-- its bagSlot/itemId branch handles); BAG_UPDATE(_DELAYED)
-						-- then fires the confirm once the bag has settled.
 						local lBag, lSlot = aGossipListTable[index].bag, aGossipListTable[index].slot
-						tNewMenuEntry.rightMacrotext =
-							"/script SkuCaptureSellState()\r\n"
-							.. "/use "..lBag.." "..lSlot.."\r\n"
-							.. "/script SkuCore:CheckFrames()"
+						-- Bank storage (main bank -1, reagent bank -3, bank bags 5..11):
+						-- right click pushes the item OUT of the bank into the first free
+						-- regular bag. That is pure item MOVEMENT (not a hardware-gated
+						-- "use"/consume), so it runs INSECURELY here. The secure
+						-- "/use <bag> <slot>" macro path silently no-ops for the negative
+						-- bank container id, which is why the bank right-click did nothing.
+						-- The plain UseContainerItem moves the item fine but does NOT refresh
+						-- our menu, so drive CheckFrames()/OnUpdate() after the bag settles
+						-- (that was the "item still showed in the bank list" symptom).
+						local tIsBankContainer = (lBag == -1 or lBag == -3 or (lBag >= 5 and lBag <= 11))
+						if tIsBankContainer then
+							tNewMenuEntry.OnRightAction = function()
+								-- Drive the SAME event-driven confirm the normal-bag "/use"
+								-- path uses, so the refresh and the announce are reactions to
+								-- the real BAG_UPDATE(_DELAYED) -- no fixed-timer rebuilds and
+								-- no double announce. SkuCaptureSellState anchors this item
+								-- node by identity and opens the confirm window; the suppress
+								-- flag swallows the transient post-keypress announce, and
+								-- SkuBagConfirmRefresh (fired from SkuCore:BAG_UPDATE_DELAYED
+								-- once the bags settle) rebuilds the menu, re-pins the emptied
+								-- slot by bagSlot and force-announces it exactly once.
+								if _G.SkuCaptureSellState then pcall(_G.SkuCaptureSellState) end
+								if Sku then Sku.tBagAnnounceSuppress = GetTime() + 1.5 end
+								if _G.UseContainerItem then pcall(_G.UseContainerItem, lBag, lSlot) end
+							end
+						else
+							-- Real bags (0..4): right click = "use" (consume, equip, or
+							-- vendor-sell). UseContainerItem is HARDWARE-EVENT gated for those,
+							-- so it runs as "/use <bag> <slot>" on the secure right-click
+							-- button. SkuCaptureSellState opens the bag-action confirm window
+							-- (cursor sits on the item node itself, which its bagSlot/itemId
+							-- branch handles); BAG_UPDATE(_DELAYED) then fires the confirm once
+							-- the bag has settled.
+							tNewMenuEntry.rightMacrotext =
+								"/script SkuCaptureSellState()\r\n"
+								.. "/use "..lBag.." "..lSlot.."\r\n"
+								.. "/script SkuCore:CheckFrames()"
+						end
 					elseif aGossipListTable[index].containerFrameName then
 						tNewMenuEntry.rightMacrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 					else
