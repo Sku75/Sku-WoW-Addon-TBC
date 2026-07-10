@@ -168,6 +168,30 @@ local function getItemTooltipTextHelper(tooltipSetter)
 	end
 end
 
+-- Point a scanning/GameTooltip at a container slot's item. SetBagItem populates
+-- for the normal bags but returns NOTHING for the bank MAIN container (-1) in the
+-- 2.5.6 client: that left every filled bank slot rendered as "Empty" even though
+-- the item was there and interactable (the item id/link read fine via the
+-- container API -- only the name lookup went through SetBagItem and came back
+-- blank). Fall back to the item hyperlink (available from the container API for
+-- every container incl. the bank / reagent bank) so the name/description always
+-- resolves. No change for the normal bags: SetBagItem fills the tooltip, GetItem
+-- is non-nil, and we skip the fallback.
+local function tSetTooltipContainerItem(tooltip, bag, slot)
+	tooltip:SetBagItem(bag, slot)
+	-- Gate the fallback on the actual tooltip TEXT being empty (the same "asd"/""
+	-- probe used everywhere else), not on GetItem(), so a stale item from a prior
+	-- scan can never suppress the fallback.
+	local text = TooltipLines_helper(tooltip:GetRegions())
+	if text == "" or text == "asd" then
+		local link = GetContainerItemLink and GetContainerItemLink(bag, slot)
+		if link then
+			tooltip:ClearLines()
+			tooltip:SetHyperlink(link)
+		end
+	end
+end
+
 local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
 	if button then
 		if button:GetScript("OnEnter") then
@@ -197,7 +221,7 @@ local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
 				if itemId then
 					tooltip:SetItemByID(itemId)
 				else
-					tooltip:SetBagItem(bag, slot)
+					tSetTooltipContainerItem(tooltip, bag, slot)
 				end
 			end)
 			return SkuUtil:Unescape(tTooltipText)
@@ -208,7 +232,7 @@ local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
 			if itemId then
 				tooltip:SetItemByID(itemId)
 			else
-				tooltip:SetBagItem(bag, slot)
+				tSetTooltipContainerItem(tooltip, bag, slot)
 			end
 		end)
 	end
