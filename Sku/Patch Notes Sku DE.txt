@@ -4,6 +4,73 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v42.03
+
+    Bankfenster: Item-Namen und Rechtsklick wiederhergestellt
+        Einfach: Bankplaetze zeigten "Leer", obwohl ein Gegenstand drin lag, und ein
+            Rechtsklick auf einen Bankplatz tat nichts. Bankplaetze lesen jetzt wieder
+            ihren Item-Namen vor, und Rechtsklick (Strg+Enter) legt den Gegenstand in
+            die Taschen.
+        Technisch: Die Container-API-Umstellung las Namen ueber
+            GameTooltip:SetBagItem, das fuer den Bank-Hauptcontainer (id -1) auf 2.5.6
+            nichts liefert; ein Hyperlink-Fallback (SetHyperlink via
+            GetContainerItemLink) stellt den Namen wieder her. Der Bank-Rechtsklick
+            nutzt jetzt ein unsicheres UseContainerItem (Bank-Bewegungen sind nicht
+            hardware-gated) mit Event-basiertem Refresh auf BAG_UPDATE_DELAYED.
+
+    Taschen sortieren und aufraeumen: neu gebaut, keine Fehlerschleifen mehr
+        Einfach: Sortieren oder Aufraeumen konnte interne Taschenfehler ausloesen,
+            Gegenstaende verlegen oder sich endlos aufhaengen. Das Sortieren ist neu
+            geschrieben und zuverlaessig, braucht die Taschen nicht mehr offen, und
+            "alle Taschen sortieren" funktioniert.
+        Technisch: Der Klick-Simulations-Bubblesort (Coroutine auf 0.01s-Ticker) ist
+            durch eine C_Container-Engine ersetzt: PickupContainerItem-Tausch,
+            Selectionsort (garantiertes Ende), ein Tausch pro BAG_UPDATE_DELAYED mit
+            Watchdog und Schrittlimit je Tasche, alles pcall-geschuetzt und getract.
+            Behebt zusaetzlich einen Talentfenster-Absturz ("table index is nil").
+
+    Fehler-Feedback: pro Fehler waehlen, wie er gemeldet wird
+        Einfach: Jeder Fehlertyp (nicht in Reichweite, betaeubt, falsche Richtung,
+            unterbrochen, keine Sichtlinie, ...) hat jetzt ein eigenes Untermenue, in
+            dem du waehlst, wie er angesagt wird: eine TTS-Stimme, ein gesprochener
+            Sprachhinweis (Marlene oder Hans, deutsch oder englisch), ein kurzer Ton
+            oder Stille. Die alten gesprochenen Hinweis-Clips sind wieder waehlbar.
+        Technisch: SkuCore\UIErrors.lua bekommt einen verschachtelten Menuebauer
+            (analog zu den Chat-Stimmen pro Kanal); der Wert bleibt ein einzelner
+            String ("voice" / "voice#<n>" / Clip-Pfad / Ton-Pfad / silent), bestehende
+            Einstellungen bleiben erhalten. OutputError decodiert "voice#<n>" und gibt
+            den Stimmindex an OutputStringBTtts; die Fokus-Vorschau spielt die Auswahl
+            an.
+
+    Menues umsortiert
+        Einfach: Neues Menue "Werkzeuge" mit Dial Targeting und Soft Targeting. Der
+            Monitor enthaelt jetzt zusaetzlich Entfernung, Fallerkennung,
+            Fehler-Feedback, Ziel-Optionen und Quest-Benachrichtigungen. Das
+            Audio-Menue ist verschlankt. Das alte Menue "Barrierefreiheit" heisst jetzt
+            "Schnellmenue".
+        Technisch: Verschiebungen in SkuZOptions/SkuMenu und SkuCore\aq.lua
+            MonitorMenuBuilder; RangecheckMenuBuilder fuer Wiederverwendung freigelegt;
+            das nun leere Kampf-Untermenue entfernt; gleiche db/keyPrefix, daher
+            bleiben gespeicherte Werte erhalten.
+
+    Gruppenmitglieder-Quests: kein Absturz mehr bei Fortschritt
+        Einfach: Das Oeffnen einer Quest eines Gruppenmitglieds mit Zielfortschritt
+            fuehrte manchmal zu einem Fehler und brach das Vorlesen ab. Sie oeffnet
+            jetzt zuverlaessig.
+        Technisch: Der Gruppenmitglieder-OnEnter haengte an die Sektionen-TABELLE aus
+            GetQuestDataStringFromDB an; er baut jetzt eine echte Sektionentabelle
+            (Live-Fortschritt zuerst) wie der eigene Questpfad.
+
+    Installer: funktioniert hinter geteilten / VPN-Verbindungen
+        Einfach: Der Installer konnte mit "rate limit exceeded" scheitern, bevor
+            ueberhaupt ein Download begann, bei geteilten oder VPN-Verbindungen. Das
+            passiert jetzt nicht mehr.
+        Technisch: Die api.github.com-Release-Abfrage (Limit 60/h/IP) entfaellt; die
+            (Tag, Dateiname)-Paare sind in Config gepinnt und direkte
+            github.com/.../releases/download-URLs werden gebaut.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v41.06
 
     Freundesliste: "Einladen" funktioniert wieder

@@ -4,6 +4,66 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.03
+
+    Bank window: item names and right-click restored
+        Simple: Bank slots showed "Empty" even when they held an item, and right-
+            clicking a bank slot did nothing. Bank slots now read out their item name
+            again, and right-click (Ctrl+Enter) moves the item into your bags.
+        Technical: The container-API bag rework read names via GameTooltip:SetBagItem,
+            which returns nothing for the bank main container (id -1) on 2.5.6; a
+            hyperlink fallback (SetHyperlink via GetContainerItemLink) restores the
+            name. The bank right-click now runs an insecure UseContainerItem (bank
+            moves are not hardware-gated) with an event-driven refresh on
+            BAG_UPDATE_DELAYED.
+
+    Bag sorting and cleanup: rebuilt, no more error loops
+        Simple: Sorting or cleaning up bags could spam internal bag errors, misplace
+            items or get stuck in an endless loop. Sorting is rewritten to be reliable,
+            no longer needs the bags to be open, and "sort all bags" works.
+        Technical: Replaced the click-simulation bubble sort (coroutine on a 0.01s
+            ticker) with a C_Container engine: PickupContainerItem swaps, a selection
+            sort (guaranteed termination), one swap per BAG_UPDATE_DELAYED settle with a
+            watchdog and per-bag step cap, all pcall-guarded and traced. Also guards a
+            talent-frame "table index is nil" crash.
+
+    Error feedback: choose how each error is signalled
+        Simple: Each error type (out of range, stunned, wrong direction, interrupted,
+            no line of sight, ...) now has its own submenu where you pick how it is
+            announced: a TTS voice, a spoken voice hint (Marlene or Hans, German or
+            English), a short sound, or silence. The old spoken hint clips are
+            selectable again.
+        Technical: SkuCore\UIErrors.lua gains a nested menu builder (mirrors the chat
+            per-channel voice pattern); the value stays one persisted string
+            ("voice" / "voice#<n>" / clip path / beep path / silent) so existing
+            settings carry over. OutputError decodes "voice#<n>" and passes the voice
+            index to OutputStringBTtts; focus-preview auditions the choice.
+
+    Menus reorganized
+        Simple: New "Werkzeuge" (Tools) menu holds Dial Targeting and Soft Targeting.
+            Monitor now also holds Distance, Fall detection, Error feedback, Target
+            options and Quest notifications. The Audio menu is flattened. The old
+            "Barrierefreiheit" menu is now called "Schnellmenue" (Quick menu).
+        Technical: Moves in SkuZOptions/SkuMenu and SkuCore\aq.lua MonitorMenuBuilder;
+            RangecheckMenuBuilder exposed for reuse; the now-empty Kampf submenu
+            removed; same db/keyPrefix so saved values are preserved.
+
+    Group-member quests: no longer crash on progress
+        Simple: Opening a group member's quest that had objective progress sometimes
+            errored and aborted the read. It now opens reliably.
+        Technical: The group-member OnEnter concatenated onto the sections TABLE from
+            GetQuestDataStringFromDB; it now builds a proper sections table (live
+            progress first) like the own-quest-log path.
+
+    Installer: works behind shared / VPN connections
+        Simple: The installer could fail with "rate limit exceeded" before any download
+            started, on shared or VPN internet connections. It no longer does.
+        Technical: Dropped the api.github.com release enumeration (60 req/h/IP cap);
+            asset (tag, filename) pairs are pinned in Config and direct
+            github.com/.../releases/download URLs are built instead.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v41.06
 
     Friends list: "Invite" works again

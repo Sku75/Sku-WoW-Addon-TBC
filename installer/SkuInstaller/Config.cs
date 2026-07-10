@@ -71,7 +71,7 @@ namespace SkuInstaller
         // /releases/latest). Tag and asset name both derive from it:
         //   tag  = "v" + MainVersion       e.g. "v42.02"
         //   file = "Sku-" + MainVersion    e.g. "Sku-42.02.zip"
-        public const string MainVersion = "42.02";
+        public const string MainVersion = "42.03";
         public static string MainTag => "v" + MainVersion;
         public static string MainAssetName => "Sku-" + MainVersion + ".zip";
 
