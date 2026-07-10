@@ -2244,16 +2244,29 @@ function SkuQuest:MenuBuilder(aParentEntry)
 						local tEntry = SkuOptions:InjectMenuItems(aContainer, {tLabel}, SkuGenericMenuItem)
 						tEntry.dynamic = true
 						tEntry.OnEnter = function(self, aValue, aName)
-							-- GetQuestDataStringFromDB indexes questLookup unguarded; skip it
-							-- for quest ids our database doesn't know
-							local tFull = ""
-							if SkuDB.questLookup[Sku.Loc][aQuest.questId] then
-								tFull = SkuQuest:GetQuestDataStringFromDB(aQuest.questId, aQuest.zoneId)
-							end
+							-- GetQuestDataStringFromDB returns a SECTIONS TABLE, and the menu
+							-- render path (AddExtraTooltipData) accepts a string OR a section
+							-- table. Build that same shape: the live per-objective progress as
+							-- the first section, then the static DB sections. Skip the DB lookup
+							-- for quest ids our database doesn't know (it indexes questLookup
+							-- unguarded). Concatenating the table directly was the crash
+							-- ("attempt to concatenate a table value") that hit every quest
+							-- with objective progress.
+							local tSections = {}
 							if aQuest.text ~= "" then
-								tFull = (tFull ~= "" and (aQuest.text.."\r\n"..tFull)) or aQuest.text
+								tSections[#tSections+1] = aQuest.text
 							end
-							SkuOptions.currentMenuPosition.textFull = tFull
+							if SkuDB.questLookup[Sku.Loc][aQuest.questId] then
+								local tDbSections = SkuQuest:GetQuestDataStringFromDB(aQuest.questId, aQuest.zoneId)
+								if type(tDbSections) == "table" then
+									for _, tSection in ipairs(tDbSections) do
+										tSections[#tSections+1] = tSection
+									end
+								elseif type(tDbSections) == "string" and tDbSections ~= "" then
+									tSections[#tSections+1] = tDbSections
+								end
+							end
+							SkuOptions.currentMenuPosition.textFull = tSections
 						end
 						tEntry.BuildChildren = function(self)
 							CreateQuestSubmenu(self, aQuest.questId)
