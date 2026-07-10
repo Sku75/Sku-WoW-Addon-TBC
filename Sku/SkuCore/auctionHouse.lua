@@ -1566,6 +1566,7 @@ function AuctionHouse:StrategyBuyStart(itemName, maxPricePerUnit, totalAmount)
 		maxFails = 5, active = true, searching = false, totalSpent = 0,
 		purchaseLog = {}, skipCount = 0, triedPrices = {},
 	}
+	dprint("strat: start", { item = itemName, maxPricePerUnit = maxPricePerUnit, want = totalAmount })
 	tStratSay(L["STRAT_Starting"]..": "..totalAmount.." "..itemName)
 	C_Timer.After(1.5, function() AuctionHouse:StrategyBuySearch() end)
 end
@@ -1640,18 +1641,42 @@ function AuctionHouse:StrategyBuyProcessResults()
 	if not sb or not sb.active then return end
 	local numResults = GetNumAuctionItems("list")
 
-	-- Alle passenden Einzelstück-Auktionen sammeln, bereits versuchte Preise meiden
+	-- Passende Auktionen sammeln. Bewertet wird der STÜCKPREIS (buyout/count) gegen
+	-- das Limit (maxPrice ist "pro Stück"). Stapel sind erlaubt — ABER nur, solange
+	-- ihre Stückzahl die noch BENÖTIGTE Restmenge nicht überschreitet, sonst würde
+	-- z.B. bei "2 gewünscht" versehentlich ein 5er-Stapel gekauft. Bereits (in dieser
+	-- Fehlschlag-Serie) versuchte Auktionen werden über einen STABILEN Inhalts-Key
+	-- gemieden (itemId+buyout+count), NICHT über den flüchtigen Listen-Index.
+	local tRemaining = sb.totalWanted - sb.bought
 	local tCandidates = {}
+	local tSeenAny, tOverStack, tOverPrice, tTried = 0, 0, 0, 0
 	for i = 1, numResults do
 		local tInfo = {GetAuctionItemInfo("list", i)}
 		local name, count, buyout, itemId = tInfo[1], tInfo[3], tInfo[10], tInfo[17]
-		if buyout and buyout > 0 and count and count == 1 then
-			if buyout <= sb.maxPrice and not sb.triedPrices[buyout.."-"..i] then
-				tCandidates[#tCandidates + 1] = {idx = i, buyout = buyout, name = name, itemId = itemId}
+		if buyout and buyout > 0 and count and count >= 1 then
+			tSeenAny = tSeenAny + 1
+			local tKey = (itemId or "?").."-"..buyout.."-"..count
+			if count > tRemaining then
+				tOverStack = tOverStack + 1          -- Stapel zu groß → würde überkaufen
+			elseif buyout > sb.maxPrice * count then
+				tOverPrice = tOverPrice + 1          -- Stückpreis über Limit
+			elseif sb.triedPrices[tKey] then
+				tTried = tTried + 1                  -- in dieser Serie schon erfolglos
+			else
+				tCandidates[#tCandidates + 1] = {
+					idx = i, buyout = buyout, name = name, itemId = itemId,
+					count = count, perUnit = buyout / count, key = tKey,
+				}
 			end
 		end
 	end
-	table.sort(tCandidates, function(a, b) return a.buyout < b.buyout end)
+	-- Bestes Angebot = günstigster Stückpreis.
+	table.sort(tCandidates, function(a, b) return a.perUnit < b.perUnit end)
+	dprint("strat: process results", {
+		numResults = numResults, matching = tSeenAny, candidates = #tCandidates,
+		remaining = tRemaining, rejOverStack = tOverStack, rejOverPrice = tOverPrice,
+		rejTried = tTried, fails = sb.fails, maxFails = sb.maxFails,
+	})
 
 	-- Günstigstes noch nicht versuchtes Angebot wählen
 	local tPick = tCandidates[1]
@@ -1672,6 +1697,8 @@ function AuctionHouse:StrategyBuyProcessResults()
 	local bestBuyout = tPick.buyout
 	local bestName   = tPick.name
 	local bestItemId = tPick.itemId
+	local bestCount  = tPick.count
+	local bestKey    = tPick.key
 	if sb.waitTimer then sb.waitTimer:Cancel(); sb.waitTimer = nil end
 
 	-- Gemeinsame "Kauf nicht zustande gekommen"-Logik (No-Op / Auktion weg):
@@ -1679,7 +1706,7 @@ function AuctionHouse:StrategyBuyProcessResults()
 	local function stratFail(reason)
 		sb.fails = sb.fails + 1
 		sb.skipCount = sb.skipCount + 1
-		sb.triedPrices[bestBuyout.."-"..bestIdx] = true
+		sb.triedPrices[bestKey] = true
 		if sb.fails >= sb.maxFails then
 			tStratSay(L["STRAT_MaxFails"]); sb.active = false
 		else
@@ -1693,7 +1720,7 @@ function AuctionHouse:StrategyBuyProcessResults()
 		tStratSay(L["STRAT_NoMoney"]); sb.active = false; return
 	end
 
-	local tPrompt = L["STRAT_PressEnter"]..", 1 "..bestName..", "..SkuGetCoinText(bestBuyout, false, true)..". "..L["Kauf "]..(sb.bought + 1)..L[" von "]..sb.totalWanted..". "..L["STRAT_EnterBuy"]
+	local tPrompt = L["STRAT_PressEnter"]..", "..bestCount.." "..bestName..", "..SkuGetCoinText(bestBuyout, false, true)..". "..L["Kauf "]..(sb.bought + 1)..L[" von "]..sb.totalWanted..". "..L["STRAT_EnterBuy"]
 
 	-- Strategiekauf benutzt jetzt EXAKT denselben internen Kaufweg wie der normale
 	-- Kauf: Enter → Hardware-Event → direkter PlaceAuctionBid (über
@@ -1703,23 +1730,23 @@ function AuctionHouse:StrategyBuyProcessResults()
 	-- Preislimit, Zusammenfassung) lebt in den Ergebnis-Handlern.
 	AuctionHouse:AuctionArmKeypressBid({
 		x = bestIdx, type = 2,
-		itemName = bestName, itemCount = 1,
-		expItemId = bestItemId, expBuyout = bestBuyout, expCount = 1,
+		itemName = bestName, itemCount = bestCount,
+		expItemId = bestItemId, expBuyout = bestBuyout, expCount = bestCount,
 		bidAmount = bestBuyout, prompt = tPrompt,
 		onSuccess = function(diff)
 			if not sb or not sb.active then return end
-			sb.bought = sb.bought + 1
+			sb.bought = sb.bought + bestCount
 			sb.totalSpent = sb.totalSpent + bestBuyout
 			sb.fails = 0
 			sb.skipCount = 0
 			sb.triedPrices = {}
-			sb.purchaseLog[#sb.purchaseLog + 1] = {name = bestName, price = bestBuyout}
+			sb.purchaseLog[#sb.purchaseLog + 1] = {name = bestName, price = bestBuyout, count = bestCount}
 			tStratSay(L["STRAT_BuyOK"].." "..(sb.bought)..L[" von "]..sb.totalWanted)
 			if sb.bought >= sb.totalWanted then
 				-- Zusammenfassung mit Aufzählung
 				local tSummary = L["STRAT_Done"]..". "
 				for k, v in ipairs(sb.purchaseLog) do
-					tSummary = tSummary..L["Kauf "]..k..", 1 "..v.name.." "..L["STRAT_For"].." "..SkuGetCoinText(v.price, false, true)..". "
+					tSummary = tSummary..L["Kauf "]..k..", "..(v.count or 1).." "..v.name.." "..L["STRAT_For"].." "..SkuGetCoinText(v.price, false, true)..". "
 				end
 				tSummary = tSummary..L["STRAT_Total"]..": "..SkuGetCoinText(sb.totalSpent, false, true)
 				C_Timer.After(1, function() tStratSay(tSummary) end)
@@ -1736,9 +1763,16 @@ function AuctionHouse:StrategyBuyProcessResults()
 			if not sb or not sb.active then return end
 			sb.fails = sb.fails + 1
 			sb.skipCount = sb.skipCount + 1
-			sb.triedPrices[bestBuyout.."-"..bestIdx] = true
-			tStratSay(L["STRAT_AuctionGone"])
-			C_Timer.After(1, function() AuctionHouse:StrategyBuySearch() end)
+			sb.triedPrices[bestKey] = true
+			-- Wie stratFail: nach zu vielen Fehlschlägen AUFGEBEN. Früher fehlte hier
+			-- der maxFails-Deckel → eine ständig "weg"-gemeldete Auktion ließ den
+			-- Strategiekauf endlos weitersuchen (die beobachtete Endlosschleife).
+			if sb.fails >= sb.maxFails then
+				tStratSay(L["STRAT_AuctionGone"].." "..L["STRAT_MaxFails"]); sb.active = false
+			else
+				tStratSay(L["STRAT_AuctionGone"].." "..sb.fails..L[" von "]..sb.maxFails)
+				C_Timer.After(1, function() AuctionHouse:StrategyBuySearch() end)
+			end
 		end,
 		onCancel = function(wasActive)
 			if sb then sb.active = false end
