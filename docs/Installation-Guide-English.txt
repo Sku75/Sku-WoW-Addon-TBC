@@ -4,7 +4,7 @@ SkuAddon - Installation Guide
 What is Sku?
 Sku is an addon for World of Warcraft. It makes the game playable for blind and
 visually impaired people through a screen reader (NVDA or JAWS). This guide is for
-the Anniversary version of The Burning Crusade, game version 2.5.5.
+the Anniversary version of The Burning Crusade, game version 2.5.6.
 
 Please read first:
 Installing Sku is NOT possible for fully blind screen reader users on their own.
@@ -54,7 +54,7 @@ Some of this can be done blind, but not everything. Plan for support here.
 available on every system, but should be set.
 - In the Battle.net app, find the game "World of Warcraft Classic" and download the
 client.
-- Set the correct game version: Anniversary, The Burning Crusade, version 2.5.5.
+- Set the correct game version: Anniversary, The Burning Crusade, version 2.5.6.
 - Click "Play".
 - On start there is often a second login screen. This one cannot be used with
 screen readers. Log in here - and be sure to tick the box for automatic login or
@@ -98,7 +98,7 @@ Note on updating: in future, when updating you only need to replace the Sku addo
 Step 4: Enable the addons in the game (sighted help needed)
 - Start the game via Battle.net: on the "World of Warcraft Classic" tab press
 Enter, then you land on "Play". The announcement should read: "Play, Anniversary of
-Burning Crusade, version 2.5.5 ...". If the version is wrong, you can find the
+Burning Crusade, version 2.5.6 ...". If the version is wrong, you can find the
 dropdown lists with Shift+Tab and set the correct version.
 - After "Play" the server is usually chosen automatically. At the login screen
 press Enter.
