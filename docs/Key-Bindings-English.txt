@@ -46,7 +46,7 @@ Additional addon functions and key bindings:
 
 Shift and F1 opens the Sku menu
 Shift and F2 opens the chat in reading mode. Arrow up and down to read lines. The first number announced is the chat line number.
-F5 to F8 = Activate quick waypoint
+Shift and F5 to F8 = Activate quick waypoint
 Ctrl and Shift and F5 to F8 = Set quick waypoint to my position
 Shift F9 = Show and activate waypoints in the area
 Shift and F10 = Start route navigation - The first point announced is your entry point into the network. Press right arrow once and search for your destination using the filter. Press Enter to start the navigation guidance.
@@ -78,18 +78,18 @@ CTRL NUM 0 = Remove target marker
 
 NUM 7 = Right-click at your feet
 NUM 8 = Right-click just in front of you.
-NUM 9 = Turn towards the current audio beacon (approximately).
+I = Turn towards the current audio beacon (approximately).
 
 Num Lock on and off = Toggle auto-run on and off
 
-Ctrl and W = Advance one beacon in route navigation
-Ctrl and S = Go back one beacon.
+Ctrl and Shift and W = Advance one beacon in route navigation
+Ctrl and Shift and S = Go back one beacon.
 
 Resource tracking:
 If you have learned a profession that requires you to search for plants, ores or gases, you need to place the tracking skill on an action button and activate it by pressing it. After death it is usually deactivated again.
 When the tracking is active, you will be notified when a resource appears on the minimap.
-Then press Ctrl and F = Herb/Mining radar, trigger approx. 100-metre scan.
-Ctrl and R = Precise herb/mining scan at approx. 50 metres
+Then press Ctrl and Shift and F = Herb/Mining radar, trigger approx. 100-metre scan.
+Ctrl and Shift and R = Precise herb/mining scan at approx. 50 metres
 After the herb/mining scan, the found resources are announced with numbers. You can then activate them directly as a beacon using the quick waypoint keys (Shift F5 to F8).
 Press Shift F5 for quick waypoint 1. This is also the first herb that was found. The quick waypoints are set to the locations.
 You have to run in a straight line and hope you don't fall off anything.

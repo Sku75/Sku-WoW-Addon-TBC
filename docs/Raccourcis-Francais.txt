@@ -46,7 +46,7 @@ Fonctions supplementaires de l'addon et touches additionnelles :
 
 Shift et F1 ouvre le menu Sku
 Shift et F2 ouvre le chat en mode lecture. Fleche haut et bas pour lire les lignes. Le premier chiffre annonce est le numero de la ligne de chat.
-F5 a F8 = Activer un point de passage rapide
+Shift et F5 a F8 = Activer un point de passage rapide
 Ctrl et Shift et F5 a F8 = Placer un point de passage rapide a ma position
 Shift F9 = Afficher et activer les points de passage aux alentours
 Shift et F10 = Demarrer la navigation par itineraire - Le premier point annonce est votre point d'entree dans le reseau. Appuyez une fois sur fleche droite et cherchez votre destination avec le filtre. Appuyez sur Entree pour demarrer le guidage.
@@ -78,18 +78,18 @@ CTRL NUM 0 = Supprimer le marqueur de cible
 
 NUM 7 = Clic droit a vos pieds
 NUM 8 = Clic droit juste devant vous.
-NUM 9 = Se tourner vers le beacon audio actuel (approximativement).
+I = Se tourner vers le beacon audio actuel (approximativement).
 
 Activation/desactivation du pave numerique = Activer/desactiver la course automatique
 
-Ctrl et W = Avancer d'un beacon dans la navigation
-Ctrl et S = Reculer d'un beacon.
+Ctrl et Shift et W = Avancer d'un beacon dans la navigation
+Ctrl et Shift et S = Reculer d'un beacon.
 
 Recherche de ressources :
 Si vous avez appris un metier qui necessite de chercher des plantes, des minerais ou des gaz, vous devez placer la competence de recherche sur un bouton d'action et l'activer en appuyant dessus. Apres la mort, elle est generalement desactivee.
 Lorsque la recherche est activee, vous serez notifie quand une ressource apparait sur la minicarte.
-Appuyez alors sur Ctrl et F = Radar herboristerie/minage, declencher un scan d'environ 100 metres.
-Ctrl et R = Scan precis herboristerie/minage sur environ 50 metres
+Appuyez alors sur Ctrl et Shift et F = Radar herboristerie/minage, declencher un scan d'environ 100 metres.
+Ctrl et Shift et R = Scan precis herboristerie/minage sur environ 50 metres
 Apres le scan, les ressources trouvees sont annoncees avec des numeros. Vous pouvez les activer directement comme beacon avec les touches de point de passage rapide (Shift F5 a F8).
 Appuyez sur Shift F5 pour le point de passage rapide 1. C'est aussi la premiere herbe trouvee. Les points de passage rapides sont places sur les emplacements trouves.
 Vous devez courir en ligne droite en esperant ne pas tomber.

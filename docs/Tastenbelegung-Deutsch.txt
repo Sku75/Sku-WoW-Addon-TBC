@@ -46,7 +46,7 @@ Weitere Funktionen des Addons und weitere Belegungen:
 
 Shift und F1 öffnet das Sku-Menü
 Shift und F2 öffnet den Chat in die Lesefunktion. Pfeil hoch und runter zum Lesen der Zeilen. Die erste Zahl, die angesagt wird, ist die Chatzeile.
-F5 bis F8 = Schnellwegpunkt aktivieren
+Shift und F5 bis F8 = Schnellwegpunkt aktivieren
 Strg und Shift und F5 bis F8 = Schnellwegpunkt auf meine Position legen
 Shift F9 = Wegpunkte in der Umgebung anzeigen und aktivieren
 Shift und F10 = Routennavigation beginnen - Der erste Punkt, der angesagt wird, ist dein Einstiegspunkt ins Netz. Drücke einmal Pfeil rechts und suche mit dem Filter dein Ziel. Mit Enter startet die Navigationsführung dann.
@@ -78,18 +78,18 @@ STRG NUM 0 = Zielmarkierung löschen/entfernen
 
 NUM 7 = Rechtsklick zu deinen Füßen
 NUM 8 = Rechtsklick knapp vor dir.
-NUM 9 = Zum aktuellen Audio-Beacon drehen (ungefähr).
+I = Zum aktuellen Audio-Beacon drehen (ungefähr).
 
 Num-Block ein- und ausschalten = Dauerlaufen ein- und ausschalten
 
-Strg und W = Einen Beacon in der Routenführung weiterschalten
-Strg und S = Einen Beacon zurückschalten.
+Strg und Shift und W = Einen Beacon in der Routenführung weiterschalten
+Strg und Shift und S = Einen Beacon zurückschalten.
 
 Ressourcensuche:
 Wenn du einen Beruf gelernt hast, bei dem du Pflanzen, Erze oder Gase suchen musst, dann musst du den Skill dafür einmal auf einen Aktionsbutton legen und durch Drücken aktivieren. Nach dem Tod ist er meist wieder deaktiviert.
 Wenn du die Suche aktiviert hast, wirst du benachrichtigt, wenn eine Ressource auf der Minimap auftaucht.
-Drücke dann Strg und F = Kräutersuche/Mineralsuche-Radar, ca. 100-Meter-Scan auslösen.
-Strg und R = Genauer Kräutersuche/Mineralsuche-Scan auf ca. 50 Meter
+Drücke dann Strg und Shift und F = Kräutersuche/Mineralsuche-Radar, ca. 100-Meter-Scan auslösen.
+Strg und Shift und R = Genauer Kräutersuche/Mineralsuche-Scan auf ca. 50 Meter
 Nach dem Kräutersuche/Mineralsuche-Scan werden die gefundenen Ressourcen mit Nummern angesagt. Du kannst diese dann direkt mit den Schnellwegpunkttasten (Shift F5 bis F8) als Beacon aktivieren.
 Drücke Shift F5 für Schnellwegpunkt 1. Das ist dann auch das erste Kraut, welches gefunden wurde. Die Schnellwegpunkte werden auf die Fundstellen gesetzt.
 Du musst Luftlinie laufen und hoffen, nirgendwo runterzufallen.
