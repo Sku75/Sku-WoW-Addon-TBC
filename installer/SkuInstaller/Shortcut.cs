@@ -95,5 +95,49 @@ namespace SkuInstaller
                 Logger.Warning($"Could not create shortcut in {folder}: {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// Creates a general-purpose .lnk (with optional arguments/working dir) on
+        /// the desktop and/or in the Start menu. Used for the WoW Login Tool
+        /// launcher (target = AutoHotkey.exe, arguments = START.ahk). Each failure
+        /// is logged but non-fatal.
+        /// </summary>
+        public static void CreateLauncher(string lnkName, string target, string arguments,
+                                          string workingDir, string description,
+                                          bool desktop, bool startMenu)
+        {
+            if (desktop)
+                TryCreateLauncher(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory),
+                                  lnkName, target, arguments, workingDir, description);
+            if (startMenu)
+                TryCreateLauncher(Environment.GetFolderPath(Environment.SpecialFolder.Programs),
+                                  lnkName, target, arguments, workingDir, description);
+        }
+
+        private static void TryCreateLauncher(string folder, string lnkName, string target,
+                                              string arguments, string workingDir, string description)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(folder)) return;
+                Directory.CreateDirectory(folder);
+                string lnkPath = Path.Combine(folder, lnkName);
+
+                Type shellType = Type.GetTypeFromProgID("WScript.Shell");
+                dynamic shell = Activator.CreateInstance(shellType);
+                dynamic sc = shell.CreateShortcut(lnkPath);
+                sc.TargetPath = target;
+                if (!string.IsNullOrEmpty(arguments)) sc.Arguments = arguments;
+                sc.WorkingDirectory = workingDir ?? Path.GetDirectoryName(target);
+                if (!string.IsNullOrEmpty(description)) sc.Description = description;
+                sc.Save();
+
+                Logger.Info($"Created launcher shortcut: {lnkPath}");
+            }
+            catch (Exception ex)
+            {
+                Logger.Warning($"Could not create launcher shortcut in {folder}: {ex.Message}");
+            }
+        }
     }
 }

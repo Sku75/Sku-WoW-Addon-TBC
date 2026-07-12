@@ -22,9 +22,23 @@ namespace SkuInstaller
         private string _addonsFolder;
         private bool _busy;
 
+        /// <summary>
+        /// One-click update mode (entered from the pre-flight UpdatePromptForm):
+        /// preselect the already-installed language pack and auto-run the install
+        /// as soon as the window is shown, so the user doesn't walk the whole form.
+        /// </summary>
+        private readonly bool _autoUpdate;
+        private bool _autoStarted;
+
         private List<WowFlavor> _flavors;
         private int _customFlavorIndex;
         private bool _suppressFlavorEvent;
+
+        // The voice-pack default tracks the installer language (English UI ->
+        // English pack, German UI -> German Fast) until the user picks one
+        // explicitly; after that we leave their choice alone.
+        private bool _suppressVoiceEvent;
+        private bool _voicePackTouched;
 
         private Label _flavorLabel, _addonsLabel, _installerLangLabel, _voiceLangLabel;
         private ComboBox _flavorCombo;
@@ -34,12 +48,14 @@ namespace SkuInstaller
         private CheckBox _forceCheck;
         private CheckBox _desktopShortcutCheck;
         private CheckBox _sapi2srCheck;
+        private CheckBox _loginToolCheck;
         private Button _browseButton, _installButton, _closeButton;
         private TextBox _log;
         private Label _statusLabel;
 
-        public MainForm(string pathArg)
+        public MainForm(string pathArg, bool autoUpdate = false)
         {
+            _autoUpdate = autoUpdate;
             _flavors = WowLocator.DetectFlavors();
             _addonsFolder = pathArg; // may be null
             BuildUi();
@@ -57,7 +73,67 @@ namespace SkuInstaller
                 _flavorCombo.SelectedIndex = _customFlavorIndex;
             _suppressFlavorEvent = false;
 
+            // In update mode, keep the language pack the user already has installed
+            // instead of silently defaulting to English.
+            if (_autoUpdate)
+                PreselectInstalledLanguagePack();
+
             ApplyTexts();
+        }
+
+        /// <summary>
+        /// The voice-pack selected by default for the current installer language:
+        /// English UI -> English pack, German UI -> German Fast. Resolved by folder
+        /// name so it survives list reordering; falls back to the first entry.
+        /// </summary>
+        private int DefaultLanguagePackIndex()
+        {
+            string want = Loc.Current == Lang.De ? "SkuAudioData_fast_de" : "SkuAudioData_en";
+            int idx = Config.LanguagePacks.FindIndex(p => p.FolderName == want);
+            return idx >= 0 ? idx : 0;
+        }
+
+        private void OnVoicePackChanged(object sender, EventArgs e)
+        {
+            if (_suppressVoiceEvent) return;
+            _voicePackTouched = true;   // user made an explicit choice — stop tracking the UI language
+        }
+
+        /// <summary>
+        /// Selects the language pack whose folder already exists in the AddOns
+        /// folder (so an auto-update refreshes the installed pack, not the
+        /// language default). Leaves the default selection if none is found.
+        /// </summary>
+        private void PreselectInstalledLanguagePack()
+        {
+            if (string.IsNullOrEmpty(_addonsFolder)) return;
+            for (int i = 0; i < Config.LanguagePacks.Count; i++)
+            {
+                string folder = System.IO.Path.Combine(_addonsFolder, Config.LanguagePacks[i].FolderName);
+                if (System.IO.Directory.Exists(folder))
+                {
+                    _suppressVoiceEvent = true;
+                    _langCombo.SelectedIndex = i;
+                    _suppressVoiceEvent = false;
+                    _voicePackTouched = true;   // reflects what's really installed; don't override on UI-language switch
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// In one-click update mode, kick off the install/update automatically once
+        /// the window is up (the user's single click was the "Update now" button in
+        /// the pre-flight prompt). Guarded so it only fires once.
+        /// </summary>
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            if (_autoUpdate && !_autoStarted)
+            {
+                _autoStarted = true;
+                OnInstall(_installButton, EventArgs.Empty);
+            }
         }
 
         private void BuildUi()
@@ -66,7 +142,7 @@ namespace SkuInstaller
             StartPosition = FormStartPosition.CenterScreen;
             MaximizeBox = false;
             MinimizeBox = false;
-            ClientSize = new Size(580, 560);
+            ClientSize = new Size(580, 588);
             Font = new Font("Segoe UI", 9.5f);
 
             int y = 12;
@@ -111,7 +187,10 @@ namespace SkuInstaller
             };
             foreach (var lp in Config.LanguagePacks)
                 _langCombo.Items.Add(lp.DisplayName);
-            _langCombo.SelectedIndex = 0;
+            _suppressVoiceEvent = true;
+            _langCombo.SelectedIndex = DefaultLanguagePackIndex();
+            _suppressVoiceEvent = false;
+            _langCombo.SelectedIndexChanged += OnVoicePackChanged;
             Controls.Add(_langCombo);
             y += 36;
 
@@ -125,6 +204,10 @@ namespace SkuInstaller
 
             _sapi2srCheck = new CheckBox { Left = 12, Top = y, Width = 540, Checked = true };
             Controls.Add(_sapi2srCheck);
+            y += 28;
+
+            _loginToolCheck = new CheckBox { Left = 12, Top = y, Width = 540, Checked = true };
+            Controls.Add(_loginToolCheck);
             y += 32;
 
             _installButton = new Button { Left = 12, Top = y, Width = 220, Height = 32 };
@@ -175,6 +258,7 @@ namespace SkuInstaller
             _forceCheck.Text = Loc.Get("ui.force");
             _desktopShortcutCheck.Text = Loc.Get("ui.desktopShortcut");
             _sapi2srCheck.Text = Loc.Get("ui.sapi2sr");
+            _loginToolCheck.Text = Loc.Get("ui.loginTool");
 
             // The "Custom" entry is the only localized flavor item.
             _flavorCombo.Items[_customFlavorIndex] = Loc.Get("ui.gameVersionCustom");
@@ -192,6 +276,7 @@ namespace SkuInstaller
             _forceCheck.AccessibleName = Loc.Get("acc.force");
             _desktopShortcutCheck.AccessibleName = Loc.Get("acc.desktopShortcut");
             _sapi2srCheck.AccessibleName = Loc.Get("acc.sapi2sr");
+            _loginToolCheck.AccessibleName = Loc.Get("acc.loginTool");
             _statusLabel.AccessibleName = Loc.Get("acc.status");
             _log.AccessibleName = Loc.Get("acc.progressLog");
 
@@ -214,6 +299,16 @@ namespace SkuInstaller
         private void OnInstallerLanguageChanged(object sender, EventArgs e)
         {
             Loc.Set(_installerLangCombo.SelectedIndex == 1 ? Lang.De : Lang.En);
+
+            // Keep the voice-pack default in step with the installer language,
+            // unless the user has already picked a pack themselves.
+            if (!_voicePackTouched)
+            {
+                _suppressVoiceEvent = true;
+                _langCombo.SelectedIndex = DefaultLanguagePackIndex();
+                _suppressVoiceEvent = false;
+            }
+
             ApplyTexts();
         }
 
@@ -266,6 +361,7 @@ namespace SkuInstaller
             bool wantDesktop = _desktopShortcutCheck.Checked;
             bool force = _forceCheck.Checked;
             bool wantSapi2sr = _sapi2srCheck.Checked;
+            bool wantLoginTool = _loginToolCheck.Checked;
 
             SetBusy(true);
             GitHubClient github = null;
@@ -285,8 +381,13 @@ namespace SkuInstaller
                     manifest.Save(_addonsFolder);
                     EnsureShortcuts(wantDesktop);
                     if (wantSapi2sr) await Task.Run(() => Sapi2SrInstaller.Install(Announce));
+                    if (wantLoginTool)
+                    {
+                        var gh = github;
+                        await Task.Run(() => LoginToolInstaller.Install(_addonsFolder, gh, Announce, force));
+                    }
                     Announce(Loc.Get("status.upToDate"));
-                    MessageBox.Show(this, Loc.Get("dlg.upToDate.text"), Loc.Get("dlg.upToDate.title"),
+                    MessageBox.Show(this, ComposeDoneSummary(plan, wantLoginTool), Loc.Get("dlg.upToDate.title"),
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
@@ -305,6 +406,11 @@ namespace SkuInstaller
                 await Task.Run(() => ExecutePlan(installer, plan, force));
 
                 if (wantSapi2sr) await Task.Run(() => Sapi2SrInstaller.Install(Announce));
+                if (wantLoginTool)
+                {
+                    var gh = github;
+                    await Task.Run(() => LoginToolInstaller.Install(_addonsFolder, gh, Announce, force));
+                }
 
                 manifest.Save(_addonsFolder);
                 // Parked for a future iteration — we don't want to enforce specific
@@ -314,10 +420,7 @@ namespace SkuInstaller
                 EnsureShortcuts(wantDesktop);
 
                 Announce(Loc.Get("status.done"));
-                string done = plan.NeedsGameClosed
-                    ? Loc.Get("dlg.doneBattlenet.text")
-                    : Loc.Get("dlg.doneReload.text");
-                MessageBox.Show(this, done, Loc.Get("dlg.done.title"),
+                MessageBox.Show(this, ComposeDoneSummary(plan, wantLoginTool), Loc.Get("dlg.done.title"),
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -335,6 +438,46 @@ namespace SkuInstaller
                 github?.Dispose();
                 SetBusy(false);
             }
+        }
+
+        /// <summary>
+        /// Builds the final "Done" dialog text from what this run actually did:
+        /// a headline, one line per thing that happened (addons updated, settings
+        /// written, TOC matched to the client, login tool ready), and — when
+        /// something changed — the single next step (reload vs restart via
+        /// Battle.net). Only lines that apply are included, so the message is short
+        /// and truthful; a screen reader reads it top to bottom in one pass.
+        /// The NVDA-voice step is deliberately not summarised here.
+        /// </summary>
+        private string ComposeDoneSummary(InstallPlan plan, bool wantLoginTool)
+        {
+            var blocks = new List<string>
+            {
+                plan.HasWork ? Loc.Get("summary.headline.done") : Loc.Get("summary.headline.upToDate"),
+            };
+
+            var details = new List<string>();
+            foreach (var item in plan.Items)
+            {
+                string ver = (item.Resolved?.Tag ?? "").TrimStart('v', 'V');
+                details.Add(Loc.Format("summary.updated", item.Spec.DisplayName, ver));
+            }
+            if (plan.Items.Count == 0 && !plan.HasWork)
+                details.Add(Loc.Get("summary.addonsCurrent"));
+            if (plan.SettingsNeedWriting)
+                details.Add(Loc.Get("summary.settings"));
+            if (plan.TocInterfaceNeedsSync && !string.IsNullOrEmpty(plan.DesiredInterface))
+                details.Add(Loc.Format("summary.client", plan.DesiredInterface));
+            if (wantLoginTool && LoginToolInstaller.IsInstalled(_addonsFolder))
+                details.Add(Loc.Get("summary.loginTool"));
+
+            if (details.Count > 0)
+                blocks.Add(string.Join(Environment.NewLine, details));
+
+            if (plan.HasWork)
+                blocks.Add(plan.NeedsGameClosed ? Loc.Get("summary.battlenet") : Loc.Get("summary.reload"));
+
+            return string.Join(Environment.NewLine + Environment.NewLine, blocks);
         }
 
         /// <summary>
@@ -474,6 +617,7 @@ namespace SkuInstaller
             _forceCheck.Enabled = !busy;
             _desktopShortcutCheck.Enabled = !busy;
             _sapi2srCheck.Enabled = !busy;
+            _loginToolCheck.Enabled = !busy;
             UseWaitCursor = busy;
             if (busy) _statusLabel.Text = Loc.Get("ui.working");
         }
