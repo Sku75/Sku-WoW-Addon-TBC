@@ -1,0 +1,845 @@
+-------------------------------------------------------------------------------------------------------
+- Sku Anniversary Addon Release Notes (Deutsch)
+-------------------------------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v42.03
+
+    Bankfenster: Item-Namen und Rechtsklick wiederhergestellt
+        Einfach: Bankplaetze zeigten "Leer", obwohl ein Gegenstand drin lag, und ein
+            Rechtsklick auf einen Bankplatz tat nichts. Bankplaetze lesen jetzt wieder
+            ihren Item-Namen vor, und Rechtsklick (Strg+Enter) legt den Gegenstand in
+            die Taschen.
+        Technisch: Die Container-API-Umstellung las Namen ueber
+            GameTooltip:SetBagItem, das fuer den Bank-Hauptcontainer (id -1) auf 2.5.6
+            nichts liefert; ein Hyperlink-Fallback (SetHyperlink via
+            GetContainerItemLink) stellt den Namen wieder her. Der Bank-Rechtsklick
+            nutzt jetzt ein unsicheres UseContainerItem (Bank-Bewegungen sind nicht
+            hardware-gated) mit Event-basiertem Refresh auf BAG_UPDATE_DELAYED.
+
+    Taschen sortieren und aufraeumen: neu gebaut, keine Fehlerschleifen mehr
+        Einfach: Sortieren oder Aufraeumen konnte interne Taschenfehler ausloesen,
+            Gegenstaende verlegen oder sich endlos aufhaengen. Das Sortieren ist neu
+            geschrieben und zuverlaessig, braucht die Taschen nicht mehr offen, und
+            "alle Taschen sortieren" funktioniert.
+        Technisch: Der Klick-Simulations-Bubblesort (Coroutine auf 0.01s-Ticker) ist
+            durch eine C_Container-Engine ersetzt: PickupContainerItem-Tausch,
+            Selectionsort (garantiertes Ende), ein Tausch pro BAG_UPDATE_DELAYED mit
+            Watchdog und Schrittlimit je Tasche, alles pcall-geschuetzt und getract.
+            Behebt zusaetzlich einen Talentfenster-Absturz ("table index is nil").
+
+    Fehler-Feedback: pro Fehler waehlen, wie er gemeldet wird
+        Einfach: Jeder Fehlertyp (nicht in Reichweite, betaeubt, falsche Richtung,
+            unterbrochen, keine Sichtlinie, ...) hat jetzt ein eigenes Untermenue, in
+            dem du waehlst, wie er angesagt wird: eine TTS-Stimme, ein gesprochener
+            Sprachhinweis (Marlene oder Hans, deutsch oder englisch), ein kurzer Ton
+            oder Stille. Die alten gesprochenen Hinweis-Clips sind wieder waehlbar.
+        Technisch: SkuCore\UIErrors.lua bekommt einen verschachtelten Menuebauer
+            (analog zu den Chat-Stimmen pro Kanal); der Wert bleibt ein einzelner
+            String ("voice" / "voice#<n>" / Clip-Pfad / Ton-Pfad / silent), bestehende
+            Einstellungen bleiben erhalten. OutputError decodiert "voice#<n>" und gibt
+            den Stimmindex an OutputStringBTtts; die Fokus-Vorschau spielt die Auswahl
+            an.
+
+    Menues umsortiert
+        Einfach: Neues Menue "Werkzeuge" mit Dial Targeting und Soft Targeting. Der
+            Monitor enthaelt jetzt zusaetzlich Entfernung, Fallerkennung,
+            Fehler-Feedback, Ziel-Optionen und Quest-Benachrichtigungen. Das
+            Audio-Menue ist verschlankt. Das alte Menue "Barrierefreiheit" heisst jetzt
+            "Schnellmenue".
+        Technisch: Verschiebungen in SkuZOptions/SkuMenu und SkuCore\aq.lua
+            MonitorMenuBuilder; RangecheckMenuBuilder fuer Wiederverwendung freigelegt;
+            das nun leere Kampf-Untermenue entfernt; gleiche db/keyPrefix, daher
+            bleiben gespeicherte Werte erhalten.
+
+    Gruppenmitglieder-Quests: kein Absturz mehr bei Fortschritt
+        Einfach: Das Oeffnen einer Quest eines Gruppenmitglieds mit Zielfortschritt
+            fuehrte manchmal zu einem Fehler und brach das Vorlesen ab. Sie oeffnet
+            jetzt zuverlaessig.
+        Technisch: Der Gruppenmitglieder-OnEnter haengte an die Sektionen-TABELLE aus
+            GetQuestDataStringFromDB an; er baut jetzt eine echte Sektionentabelle
+            (Live-Fortschritt zuerst) wie der eigene Questpfad.
+
+    Installer: funktioniert hinter geteilten / VPN-Verbindungen
+        Einfach: Der Installer konnte mit "rate limit exceeded" scheitern, bevor
+            ueberhaupt ein Download begann, bei geteilten oder VPN-Verbindungen. Das
+            passiert jetzt nicht mehr.
+        Technisch: Die api.github.com-Release-Abfrage (Limit 60/h/IP) entfaellt; die
+            (Tag, Dateiname)-Paare sind in Config gepinnt und direkte
+            github.com/.../releases/download-URLs werden gebaut.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.06
+
+    Freundesliste: "Einladen" funktioniert wieder
+        Einfach: Im Fenster Freunde liess sich ein Freund nicht einladen (Fehlerton).
+            Jetzt klappt die Einladung wieder, auch fuer Battle.net-Freunde.
+        Technisch: InviteUnit ist in 2.5.5 keine globale Funktion mehr; der normale
+            Freund-Zweig (SkuCore\friends.lua) nutzt jetzt C_PartyInfo.InviteUnit mit
+            Fallback, wie der Battle.net-Zweig.
+
+    Auren-Sets teilen: besser bedienbar
+        Einfach: "Sets (teilen)" steht jetzt an 3. Stelle (unter Neue Aura und Auren
+            verwalten). "Set aus aktuellen Auren anlegen" heisst jetzt "Neues Set aus
+            aktuellen Auren erstellen". Beim Anlegen kann der Name jetzt direkt getippt
+            werden (vorher ging nur Einfuegen). Die Ansage ist auf "Set angelegt"
+            vereinfacht, da der frei gewaehlte Name nicht vertonbar ist.
+        Technisch: SkuAuras\sharing.lua nutzt jetzt SkuOptions:EditBoxShow (mit
+            Tastatur-Fokus) statt EditBoxPasteShow; Menue-Reihenfolge in
+            SkuAuras\Options.lua angepasst; Ansage nur einmal.
+
+    Auren-Sets teilen: "Set loeschen" funktioniert jetzt zuverlaessig
+        Einfach: Beim Loeschen eines Sets blieb der Eintrag manchmal stehen und das
+            naechste Enter machte nur einen Fehlerton. Jetzt wird das Set geloescht,
+            das Menue springt zurueck zur Set-Liste und baut sie neu auf.
+        Technisch: Nach SetsDelete navigiert das Menue zurueck auf "Sets (teilen)"
+            und ruft OnSelect / VocalizeCurrentMenuName (SkuAuras\sharing.lua); Ansage
+            auf "Set geloescht" vereinfacht.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.05
+
+    Gegnerstatus Kampf: Kampf/passiv beim Anvisieren (Aus / Beep / Ansage)
+        Einfach: Neuer Punkt unter Barrierefreiheit, Sonstiges: "Gegnerstatus Kampf".
+            "Beep" (Standard) ist das bisherige Verhalten - ein Ton vor dem Gegnernamen,
+            wenn der Gegner mit dir oder deiner Gruppe kaempft. "Ansage" behaelt den Ton
+            und sagt zusaetzlich "im Kampf" bzw. "passiv" vor dem Namen. "Aus" schaltet
+            Ton und Statusansage ab. Der Durchschalt-Knopf bleibt unveraendert.
+        Technisch: In SkuMob\Core.lua (PLAYER_TARGET_CHANGED) wird der vorhandene
+            InCombatSound nur noch gespielt, wenn der Modus nicht "aus" ist; im Modus
+            "Ansage" wird "im kampf" analog zum vorhandenen "passiv" vor den Namen
+            gehaengt. Neuer DB-Wert profile.SkuMob.enemyCombatStatusMode
+            (off/beep/announce, Standard beep -> bestehende Charaktere unveraendert).
+            Menue in SkuZOptions\Core.lua, Locale "im kampf" in deDE/enUS. Reiner
+            Ansage-Code, kein Taint.
+
+    Stabilitaet: Absturz beim freundlichen Lebens-/Heil-Monitor behoben
+        Einfach: Der Fehler "fatality", der auftreten konnte, wenn man im Kampf auf
+            sich selbst oder einen Begleiter wechselte (bei aktiver Option "eingehende
+            Heilung einrechnen"), ist behoben. Die Lebensansagen laufen normal weiter.
+        Technisch: In SkuCore\aq.lua holte UNIT_HEALTH den Wert
+            UnitGetIncomingHeals(unit, "player") ohne nil-Absicherung; bei fehlender
+            eingehender Spielerheilung (Normalfall) ergab die Subtraktion "Zahl minus
+            nil" einen Lua-Fehler. An vier Stellen "or 0" ergaenzt.
+
+    Stabilitaet: seltener Menue-Fehler (Core.lua:4021) behoben
+        Einfach: Ein Fehlerton, der ganz selten beim Navigieren in bestimmten Menue-
+            Zustaenden (z.B. offene Chatzeile per Strg+Enter, dann Pfeil) auftrat, ist weg.
+        Technisch: In SkuOptions:VocalizeMultipartString lief eine Debug-Brotkrumen-Schleife
+            "while tTable.parent.name do" ohne nil-Schutz; an einem Wurzelknoten ohne parent
+            -> "attempt to index field 'parent'". Guard ergaenzt (tTable und tTable.parent
+            geprueft). Reiner Debug-Pfad, keine Funktionsaenderung.
+
+    Folgen-Warnung: kein faelschliches "Folgen beendet" beim erneuten Folgen-Druck
+        Einfach: Wenn du beim Folgen die Folgen-Taste erneut druckst (um es zu pruefen),
+            unterbricht WoW das Folgen kurz und baut es sofort neu auf. Vorher kam dabei
+            faelschlich "Folgen beendet". Jetzt bleibt es in diesem Fall beim normalen Bling;
+            "Folgen beendet" kommt nur noch bei einem ECHTEN Abbruch.
+        Technisch: Die Ansage bei AUTOFOLLOW_END wird um 0,4 s verzoegert und unterdrueckt,
+            wenn in der Zwischenzeit ein AUTOFOLLOW_BEGIN kommt (Wieder-Folgen). Generation-
+            Zaehler gegen veraltete Timer. In SkuCore\visualAids.lua.
+
+    Fix: "Ton fuer Klick bei Beacons" - Menue war manchmal leer (Navigation, Optionen)
+        Einfach: Die Auswahl des Klick-Tons (Beep/Click) war manchmal leer und nicht
+            umstellbar (der An/Aus-Schalter ging trotzdem). Grund war ein Ladereihenfolge-
+            Rennen: die Klick-Toene kommen aus dem Zusatz-Addon SkuBeaconSoundsets und werden
+            erst beim Betreten der Welt registriert - Sku baute die Liste aber manchmal
+            schon vorher (leer) auf. Jetzt wird die Liste kurz nach dem Laden zuverlaessig
+            nachgebaut.
+        Technisch: Additiver, verzoegerter Nachzieher in SkuNav\Options.lua (NICHT in der
+            geschuetzten SkuNav\Core.lua): auf PLAYER_ENTERING_WORLD + C_Timer.After baut er
+            SkuNav.ClickClackSoundsets neu aus BeaconLib:GetClickClackSoundSets() und zeigt
+            die Auswahl (clickClackSoundset.values) darauf um. pcall-geschuetzt, No-Op falls
+            SkuBeaconSoundsets fehlt. WICHTIG: ist SkuBeaconSoundsets deaktiviert/fehlt,
+            bleibt die Liste leer (dann fehlen auch die Beacon-Sounds) - haeufige Ursache
+            von "Audioproblemen" bei Nutzern. Details: Heute\Diagnose - Klick bei Beacon
+            Tonmenue leer.txt.
+
+    Maus: alternative Steuerung ("zum Ziel laufen") sauber abschaltbar + Schalter im Menue
+        Einfach: Im Barrierefreiheitsmenue unter Sonstiges gibt es jetzt den Schalter
+            "Bei Interagieren zum Ziel laufen". Sehende koennen die automatische
+            Lauf-bei-Klick-Steuerung damit abschalten; sie stoert die normale Maus nicht mehr.
+        Technisch: Der WorldFrame-Maushandler wird nicht mehr per SetScript ueberschrieben,
+            sondern additiv per HookScript GENAU EINMAL installiert (Guard-Flag, nicht im
+            100ms-Pfad) und tut nichts, solange interactMove aus ist. Schalter ueber den
+            vorhandenen Options-Knoten in die Barrierefreiheit (Sonstiges) eingehaengt.
+
+    Plaketten an die Kamera gekoppelt
+        Einfach: Die freundlichen Plaketten werden nur noch erzwungen, solange in der
+            Kamera der SkuStandard aktiv ist. Bei freigegebenem Kameramenue kannst du die
+            Plaketten selbst veraendern oder ausschalten.
+        Technisch: Der Zwang nameplateShowFriends=1 im OnUpdate-Loop wird nur noch
+            angewendet, wenn cameraOptions.skuStandard ~= false (reiner Read mit voller
+            and-Kette, Kampf-Gate bleibt erhalten).
+
+    Neu: Schwarzer Lesebalken (Barrierefreiheit, fuer Sehbehinderte)
+        Einfach: Ein schwarzer Balken am oberen oder unteren Bildschirmrand zeigt gross
+            und kontrastreich NUR den aktuellen Menuepunkt (nicht den ganzen Pfad), der
+            gerade vorgelesen wird. Nur sichtbar, wenn das Menue offen ist. Standard AUS.
+            Im neuen Menuepunkt Barrierefreiheit, Visuelle Hilfen, kannst du ihn ein- und
+            ausschalten und Schriftgroesse (bis sehr gross; groesser wird auch fetter),
+            Position (oben/unten) und Deckkraft einstellen. Lange Zeilen laufen rechts
+            heraus - das ist gewollt. Korrektur: bei sehr grosser Schrift waechst der Balken
+            jetzt nach UNTEN (Text war oben abgeschnitten); er wird nicht mehr oben am
+            Bildschirmrand abgeschnitten.
+        Technisch: Neues nicht-secure FontString-Frame an UIParent (EnableMouse(false),
+            kein Taint), gespeist aus SkuOptions.currentMenuPosition.name (nur die aktuelle
+            Zeile), event-getrieben (kein OnUpdate, nicht im 100ms-Loop), Text NACH der
+            Sprachausgabe gesetzt. Schrift via SetFont mit THICKOUTLINE ab mittlerer Groesse
+            (Fettung). FontString jetzt an TOPLEFT verankert (JustifyV TOP), Balkenhoehe
+            px+40%+12, damit grosse Schrift nach unten waechst statt am oberen Rand
+            abzuschneiden. Logik isoliert in SkuCore\visualAids.lua; Werte pro Profil unter
+            db.profile.SkuCore.visualAids.lineBar. Neuer Menuepunkt "Visuelle Hilfen".
+
+    Neu: Plaketten-Farben (Barrierefreiheit, fuer Sehbehinderte)
+        Einfach: In Barrierefreiheit, Visuelle Hilfen, Plaketten-Farben kannst du die
+            Plaketten nach Reaktion einfaerben (Feind, Neutral, Freund), jede Farbe selbst
+            waehlen, dazu Modus (nur Ziel oder alle Plaketten), Groesse und Deckkraft.
+            Standard AUS. Ein Warnhinweis erklaert, dass die Farben reine Anzeige sind.
+        Technisch: Eigene Funktion in SkuCore\visualAids.lua, eigener Opt-in-Flag (nicht
+            testMode), ereignisgesteuert (NAME_PLATE_UNIT_ADDED/REMOVED, PLAYER_TARGET_CHANGED),
+            kein C_Timer-Fan-out, nicht im 100ms-Loop, keine TOOLTIP-Strata. Volle nil-Guards
+            (UnitReaction, 4-stufige Frame-Pruefung). Im AUS-Zustand sind die Events abgemeldet.
+
+    Neu: Maus-Finder (Barrierefreiheit, fuer Sehbehinderte)
+        Einfach: In Barrierefreiheit, Visuelle Hilfen, Maus-Finder einschalten. Die Taste
+            vergibst du jetzt DIREKT im Maus-Finder-Menue (dritter Punkt "maus finden",
+            nach rechts, Neu belegen) - genau wie in der Sku Tastenbelegung, du musst sie
+            nicht mehr separat suchen. Der reine Texthinweis ist entfallen. Auf Tastendruck
+            leuchtet kurz eine kontrastreiche Markierung um die Maus auf (Pulsring oder
+            Kompass-Striche waehlbar). Standard AUS.
+        Technisch: Sauber geformter Tasten-Eintrag SKU_KEY_MOUSEFINDER (kein leerer Eintrag,
+            daher kein Login-Crash), Handler ruft ein nicht-interaktives Overlay
+            (EnableMouse(false)) zentriert auf GetCursorPosition, etwa ein Viertel Bildschirm,
+            blendet via C_Timer.After automatisch aus. Kein Secure-Button, kein Taint. Der
+            Tastenbelegungs-Eintrag im Maus-Finder-Menue ist vollstaendig in
+            SkuCore\visualAids.lua gekapselt (eigener Capture-Helper, schreibt in dieselbe
+            SkuKeyBinds-DB wie das Hauptmenue); SkuCore\Options.lua bleibt unangetastet.
+
+    Neu: Anzahl der Gegner ansagen (Barrierefreiheit, Sonstiges)
+        Einfach: Unter Barrierefreiheit, Sonstiges gibt es jetzt "Anzahl der Gegner
+            ansagen" mit drei Einstellungen: "nur Elitegegner", "alle Gegner" und
+            "ausgeschaltet". Damit setzt du mit einem Griff die passende Kombination, ohne
+            die zwei Einzelschalter im Monitor feindlich suchen zu muessen.
+        Technisch: Komfort-Auswahl, die zwei vorhandene Werte koppelt (in
+            db.char.SkuCore.aq[talentSet].combat.hostile): relativeNumberUnitsInCombat.value
+            und ignoreNonElite. Zuordnung: nur Elite -> ignoreNonElite=true, value=3 (Gegner
+            die dich/Gruppe angreifen); alle Gegner -> ignoreNonElite=false, value=3;
+            ausgeschaltet -> ignoreNonElite=true, value=1 (aus). Korrektur: bei "alle Gegner"
+            und "nur Elite" wird jetzt ZUSAETZLICH der Kampfmonitor-Master aktiviert
+            (db.char.SkuCore.aq[talentSet].combat.enabled=true) - vorher kam auf einem
+            Charakter, bei dem der Master aus war, trotz "alle Gegner" keine Ansage. Bei
+            "ausgeschaltet" bleibt der Master bewusst unberuehrt (nur die zwei Einzeloptionen
+            werden gesetzt), damit anderes Kampfmonitoring nicht angetastet wird.
+
+    Neu: Warnton wenn das Folgen abbricht (Barrierefreiheit, Sonstiges)
+        Einfach: Unter Barrierefreiheit, Sonstiges gibt es jetzt "Warnton wenn Folgen
+            abbricht" (ein/aus, Standard aus). Wenn du jemandem folgst (Autofollow) und
+            das Folgen endet - egal ob das Ziel zu weit weg ist, stehen bleibt oder du dich
+            bewegst -, kommt die Ansage "Folgen beendet". Eine Distanzmessung oder das
+            Festlegen einer Person ist dafuer nicht noetig.
+        Technisch: Schlanker Listener auf die oeffentlichen Events AUTOFOLLOW_BEGIN/END in
+            SkuCore\visualAids.lua; Ansage nur, wenn vorher ein Folgen begann und der
+            Schalter (db.profile.SkuCore.followBreakWarn) an ist. Kein Taint, keine
+            Distanzmessung, kein OnUpdate. Hinweis: eine Warnung, wenn JEMAND ANDERES
+            aufhoert DIR zu folgen, ist technisch nicht moeglich (kein Event dafuer).
+
+    Neu: Taste "naechster Gegner im Kampf" (Sku Tastenbelegung)
+        Einfach: In der Sku Tastenbelegung (Menue Core) gibt es die neue Aktion
+            "naechster Gegner im Kampf". Belegst du sie mit einer Taste, schaltest du auf
+            Tastendruck durch die nahen Gegner - auch mitten im Kampf. Sku sagt das neue
+            Ziel wie gewohnt an. Standard: keine Taste vergeben.
+        Technisch: SICHERE Umsetzung ueber einen SecureActionButton (Makro /targetenemy),
+            an den die gewaehlte Taste per SetOverrideBindingClick gebunden wird. Damit ist
+            der Zielwechsel im Kampf erlaubt (kein ADDON_ACTION_BLOCKED, kein Taint).
+            SKU_KEY_NEXTCOMBATENEMY -> SkuCore:UpdateNextCombatEnemyBinding (in
+            SkuCore\visualAids.lua), Bindung wird im Kampf zurueckgestellt und via
+            PLAYER_REGEN_ENABLED nachgezogen. Hinweis: /targetenemy schaltet durch nahe
+            angreifbare Gegner, nicht exakt gefiltert nur auf die, die mit dir kaempfen -
+            eine exakt gefilterte Variante waere ein groesserer, spaeterer Ausbau.
+
+    Neu: Auren-Sets anlegen und in der Gruppe teilen (Stufe 1+2)
+        Einfach: Im Menue Auren gibt es jetzt "Sets (teilen)". Du kannst aus deinen
+            aktuellen Auren ein benanntes Set anlegen (gleicher Name vorhanden -> es wird
+            eine Zahl angehaengt), Sets auflisten und loeschen. Ein Set laesst sich "An
+            Gruppe teilen": deine Gruppe sieht "<du> teilt Aurenset <Name>" und am Ende
+            "Teilen abgeschlossen". Wer Sku hat und in der Gruppe ist, bekommt das Set unter
+            "Empfangene Sets" und kann es dort annehmen (mit Doubletten-Pruefung) oder
+            verwerfen. Hinweis: in dieser Stufe nur zwischen gleicher Clientsprache; der
+            Sprach-Uebersetzer kommt spaeter.
+        Technisch: Isoliert in NEUER Datei SkuAuras\sharing.lua, pcall-geschuetzt, aendert
+            das bestehende Auren-System NICHT (Auren bleiben name-basiert). Sets:
+            db.char.SkuAuras.Sets (Schnappschuss). Transport ueber AceComm-3.0 (Embed in
+            SkuAuras, Prefix SkuAuraSetV1, automatisches Zerteilen) plus AceSerializer
+            (SkuOptions:Serialize/Deserialize). Empfang in db.char.SkuAuras.PendingSets;
+            Annehmen importiert mit Doubletten-Pruefung und ruft
+            UpdateAttributesListWithCurrentAuras. Sichtbare Gruppen-Ansage via
+            SendChatMessage, Daten versteckt per Addon-Nachricht. Kein Taint. Spaeter:
+            Stufe 3 (accountweite Bibliothek), Stufe 4 (Sprach-Uebersetzer ueber
+            SkuDB.SpellDataTBC). Details im Plan im Heute-Ordner.
+
+    Standardwert: Fortlaufend-Lautstaerke der Gesundheits-Monitore jetzt 100
+        Einfach: Bei einer NEUEN Installation ist die Lautstaerke fuer die fortlaufende
+            Ausgabe der Gesundheits-Monitore (Spieler, Gruppe, Raid, Pet) jetzt 100 statt
+            50 - passend zur Ereignis-Lautstaerke (die war schon 100). Bestehende Profile
+            bleiben unveraendert.
+        Technisch: Default continouslyVolume in SkuCore\aq.lua von 50 auf 100 (4 Stellen:
+            player/party/raid/pet health). Greift nur, wenn der Wert noch nil ist (Neuanlage).
+
+    Soft-Targeting: "Hardtarget vor Softtarget" wirkt jetzt + kein Kampf-Fehler mehr
+        Einfach: Die Einstellung "Hardtarget zaehlt vor Softtarget" hatte bisher KEINE
+            Wirkung - ein Zauber ging trotz festem Ziel auf das Soft-Ziel. Behoben: mit
+            festem (hard) Ziel zaehlt jetzt das feste Ziel. Ausserdem verschwindet der
+            "ADDON_ACTION_BLOCKED"-Fehler, der nach Login beim ersten freundlichen Ziel im
+            Kampf auftrat.
+        Technisch: In UpdateSoftTargetingSettings (SkuZOptions/Core.lua) setzten frueher
+            BEIDE Zweige SoftTargetMatchLocked = 0 (Bug) -> bei matchLocked>0 jetzt = 1.
+            Zudem sind SoftTarget-CVars im Kampf gesperrt: die Funktion ueberspringt im
+            Kampf alle SetCVar-Aufrufe (InCombatLockdown-Guard) und zieht sie nach
+            Kampfende (PLAYER_REGEN_ENABLED) einmal nach. Kein Funktionsverlust (CVars sind
+            im Kampf ohnehin eingefroren), kein ADDON_ACTION_BLOCKED mehr.
+
+    Versionsnummer auf 41.05 angehoben.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.04
+
+    Auktionshaus: Kaufmeldungen jetzt in der richtigen Sprache
+        Einfach: Wenn beim Kauf etwas schiefgeht (z. B. man drueckt zu frueh
+            Enter), kommt die Meldung jetzt auf Englisch, wenn man den englischen
+            Client spielt - vorher kam sie immer auf Deutsch.
+        Technisch: Drei fest einprogrammierte deutsche Texte im Kaufpfad
+            (auctionHouse.lua) sind jetzt ueber L[...] lokalisiert; Schluessel in
+            deDE.lua und enUS.lua ergaenzt.
+
+    Auktionshaus: Komplettscan startet zuverlaessig, keine falsche 16-Minuten-Sperre
+        Einfach: Frueher konnte der Komplettscan stumm fehlschlagen und danach
+            16 Minuten gesperrt sein, ohne dass je gescannt wurde. Jetzt startet er
+            entweder wirklich, oder es kommt die Ansage "Scan noch nicht moeglich,
+            bitte kurz warten" - und die Sperre wird nur gesetzt, wenn wirklich
+            gescannt wurde. Der Fokus bleibt auf dem Scan-Punkt.
+        Technisch: AuctionHouseStartQuery gibt true nur zurueck, wenn
+            QueryAuctionItems tatsaechlich abgesetzt wurde; der getAll-Scan wird
+            vorher gegen CanSendAuctionQuery geprueft. Der Zeitstempel
+            (AuctionLastFullScanTime) wird nur bei echtem Start gesetzt.
+            noStepUpAfterSelect haelt den Fokus.
+
+    Auktionshaus: Fokus bleibt beim Filtern/Sortieren
+        Einfach: Nach dem Waehlen von z. B. "selten" oder "Level absteigend"
+            springt der Fokus nicht mehr eine Ebene zu weit zurueck, sondern bleibt
+            auf dem Filter.
+        Technisch: Die fuenf Filter-/Sortier-Eintraege (Level min/max, Qualitaet,
+            nur benutzbare, Sortierung) haben jetzt noStepUpAfterSelect = true.
+
+    AtlasLoot/Wunschliste: keine Raid-Lags mehr
+        Einfach: Die Wunschliste hat im Raid-Kampf bei vielen Chat-Nachrichten
+            gebremst. Das ist behoben - der Wunsch-Item-Ton beim Looten/Wuerfeln/
+            Verlinken funktioniert weiter.
+        Technisch: Statt pro Chat-Zeile/Item-Link die ganze Favoritenliste mit
+            GetItemInfoInstant zu durchlaufen, gibt es jetzt einen itemID-Cache
+            (O(1)-Lookup), der nur bei Aenderung neu gebaut wird. Bei leerer
+            Wunschliste brechen die Chat-Handler sofort ab.
+
+    AtlasLoot: Strg+Shift+L vereinfacht
+        Einfach: Strg+Shift+L oeffnet jetzt einfach Atlas Loot. Der automatische
+            Sprung auf die aktuelle Instanz oder den Boss im Ziel wurde entfernt -
+            er war unzuverlaessig und konnte Fehler machen.
+        Technisch: Die Kontext-Erkennung (Instanz/Boss/Schwierigkeit) in
+            AtlasLootShortcut wurde entfernt; es wird immer der Standard-Pfad
+            geoeffnet und das Kontext-Flag geleert.
+
+    Freundesliste: Battle.net-Freunde einladen
+        Einfach: Man kann jetzt einen Battle.net-Freund, der gerade WoW spielt,
+            ueber das Menue in die Gruppe einladen. Vorher passierte nichts.
+        Technisch: Im Invite-OnAction (friends.lua) gibt es jetzt einen BNet-Zweig:
+            Charaktername + Realm aus gameAccountInfo, Einladung via
+            C_PartyInfo.InviteUnit (Fallback InviteUnit/BNInviteFriend). Spielt der
+            Freund nicht WoW, kommt eine Ansage.
+
+    Auren: Anzeigename stuerzt nicht mehr ab
+        Einfach: Beim Anzeigen oder Durchblaettern von Auren konnte es einen
+            Lua-Fehler geben, wenn eine Aura einen Wert oder eine Aktion
+            benutzte, die das Addon gerade nicht aufloesen konnte. Das ist behoben.
+        Technisch: BuildAuraName (SkuAuras/Options.lua) macht alle dynamischen
+            Lookups (Types, attributes, Operators, values, actions, outputs) jetzt
+            nil-sicher; bei unbekanntem Schluessel wird der Rohschluessel angezeigt
+            statt eines Fehlers.
+
+    Nicht in dieser Version (bewusst verschoben)
+        - Taschen: Fokus/Aktualisierung nach "wird an dich gebunden" - beruehrt den
+          empfindlichen Taschen-Frame-Bereich und wird separat angegangen.
+        - Soft-/Hardtarget (Hardtarget soll Softtarget verdraengen; weniger
+          Target-Spam bei rausgezoomter Kamera) - liegt im geschuetzten
+          Zielsystem; nur analysiert, noch nicht umgesetzt.
+
+    Versionsanzeige
+        - Sku.toc und SkuDispatcher/Sku.toc auf v41.04 aktualisiert.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.03
+
+    Barrierefreiheit-Menue: 7.4 Sonstiges
+        - Neuer Unterpunkt 7.4 "Sonstiges" unter Menuepunkt 7. Schnellzugriff auf:
+          Spieltooltip nicht ausblenden, Alle Tooltips lesen, NPC-Begruessungen,
+          Menuenummern ansagen, Untermenues ansagen.
+        - Verknuepfungen auf die bestehenden Optionen - Aenderungen wirken in
+          beide Richtungen. Der Cursor bleibt nach dem Umschalten auf dem Eintrag.
+
+    AtlasLoot/Wunschliste: Boss-Quelle im Tooltip (Ansicht "Nach Slot")
+        - In der Wunschliste unter "Nach Slot" wird die Drop-Quelle (Instanz und
+          Boss) jetzt zuverlaessig im Tooltip angezeigt - auch direkt nach dem
+          Login, ohne vorher die Ansicht "Nach Dungeon" geoeffnet zu haben.
+
+    Auren: Waffenbuff-Bedingungen (neu)
+        - Vier neue Bedingungen: "Deine Waffenverzauberung Haupthand" und "... Nebenhand"
+          (enthaelt / enthaelt nicht) sowie deren verbleibende Dauer in Sekunden.
+        - Damit lassen sich Alarme bauen, z. B. wenn ein Gift/Oel/Schaerfstein auf
+          der Haupthand laeuft oder die Rest-Dauer unter einen Wert faellt.
+        - Rein zusaetzlich gebaut; bestehende Auren sind unveraendert.
+
+    Versionsanzeige
+        - Sku.toc und SkuDispatcher/Sku.toc auf v41.03 aktualisiert.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.02.08
+
+    Menue 7 "Barrierefreiheit" mit Schnellzugriffen
+        - Menuepunkt 7 heisst jetzt "Barrierefreiheit". Darunter:
+          7.1 Lautstaerke, 7.2 Sprachausgabe, 7.3 Kamera.
+        - 7.1 Lautstaerke: Gesamt-, Soundeffekte-, Musik-, Umgebungs- und
+          Dialoglautstaerke, Beacon-Lautstaerke sowie Hall, positionsbezogener
+          Tiefpassfilter, DSP-Effekte, Sound im Hintergrund und Zonenmusik ohne
+          Verzoegerung. Es sind Verknuepfungen auf die bestehenden Optionen -
+          Aenderungen wirken in beide Richtungen (Barrierefreiheit und Originalmenue).
+        - 7.2 Sprachausgabe: TTS-Stimme, -Geschwindigkeit und -Lautstaerke.
+        - 7.3 Kamera: das bisherige Video-Optionen-Menue (Verfolgung, Zoom usw.).
+        - Die urspruenglichen Menues (Optionen/Optionen, Navigation/Optionen,
+          Chat/Optionen) bleiben unveraendert erhalten.
+        - Nach einer Wertaenderung bleibt der Cursor auf dem jeweiligen Regler
+          (nur im 7er-Menue), sodass man zuegig mehrere Werte einstellen kann.
+
+    Briefkasten: Fokus bleibt auf dem Brief
+        - Nach dem Entnehmen von Gold oder einem Gegenstand bleibt der Cursor
+          auf dem Brief stehen, statt zur Briefliste hochzuspringen. Per Pfeil-
+          rechts oeffnet man die (aktualisierten) Anhaenge erneut und entnimmt
+          weitere. Beim Loeschen wird sauber der Nachbar-Brief fokussiert.
+
+    Navigation: Menuepunkt "Daten" ausgeblendet
+        - Der Punkt "Daten" unter Navigation ist nicht mehr sichtbar.
+
+    Versionsanzeige
+        - Sku.toc und SkuDispatcher/Sku.toc auf v41.02.08 aktualisiert.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.02.07
+
+    Kamera: Freie Kamera nach Brechen des SkuStandards
+        - Wird der SkuStandard freigegeben, bleibt die selbst eingestellte
+          Kamera jetzt erhalten - auch beim Drehen mit T oder zum Wegpunkt.
+          Der erzwungene Kamera-Sprung (SetView) wirkt nur noch im SkuStandard.
+          Die Drehung selbst funktioniert weiterhin korrekt.
+        - Persoenlicher Kamera-Speicher: Aenderungen im freien Modus werden
+          gespeichert und nach dem Login automatisch wieder geladen. Der sichere
+          SkuStandard bleibt Standard fuer alle anderen Nutzer.
+        - Menue 7 "Video-Optionen" als Grundlage fuer die neue Struktur.
+
+    Versionsanzeige
+        - Sku.toc und SkuDispatcher/Sku.toc auf v41.02.07 aktualisiert.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.02.06
+
+    Kamera-Optionen (Menuepunkt 7)
+        - Neues Menue "Kamera-Optionen" ersetzt den bisherigen Platzhalter "Reserviert".
+        - Sku Standard sperren/entsperren: Sperrt alle Kameraeinstellungen auf den Sku-Standard (noetig fuer Wegpunktnavigation). Beim Sperren wird eine Bestaetigung abgefragt und ein vollstaendiger Kamera-Reset durchgefuehrt inkl. SaveView(2). Beim Entsperren werden die gespeicherten User-Einstellungen wiederhergestellt.
+        - Kamera-Entfernung: 6 Stufen von Nah (Faktor 1) bis Maximum (Faktor 4). Zoom wird physisch ausgefuehrt.
+        - Kamera-Hoehe: 4 Stufen von flach bis Vogelperspektive. Hinweis: funktioniert nur wenn Verfolgungsstil nicht auf Immer steht.
+        - Kamera-Neigungsgeschwindigkeit: 4 Stufen von Langsam bis Sehr schnell.
+        - Kamera-Verfolgungsstil: 4 Optionen wie im WoW-Original (Intelligent, Nur bei Bewegung, Immer, Niemals). "Immer" ist der Sku Standard fuer Wegpunktnavigation.
+        - Interface ein/ausblenden: Blendet die gesamte WoW-Oberflaeche ein oder aus.
+        - Weitere Kamerafunktionen: Kamera-Uebergang (sofort/sanft), Ueber-die-Schulter-Ansicht, Plaketten (Gegner/Freundliche/Alle ein/aus).
+        - Alle Einstellungen zeigen ihren aktuellen Wert im Menuenamen an. Aktive Option mit "(eingestellt)" markiert.
+        - Bei gesperrtem Sku Standard sind alle Untermenues blockiert mit Ansage.
+        - Einstellungen bleiben ueber Logout/Login erhalten (persistent in SavedVariables).
+
+    Auktionshaus: Absturz auf englischem Client behoben
+        - Beim Oeffnen des Auktionshauses konnte ein Fehler auftreten (ipairs auf nil), wenn AuctionCategories noch nicht von Blizzard initialisiert war. Fix: nil-Guard vor beiden ipairs-Schleifen und 0.3s Verzoegerung beim Menue-Aufbau.
+
+    AtlasLoot: Lokalisierung korrigiert
+        - Die Gruppen "Instanzen", "Schlachtzuege" und "Weltbosse" unter AtlasLoot Listen waren hardcoded auf Deutsch. Sie verwenden jetzt L[]-Eintraege und erscheinen auf englischen Clients korrekt. Ebenso "Heroisch", "Normal" und der Schwierigkeitsgrad-Fallback.
+
+    Charakterfenster: Gegenstand im Slot
+        - CheckFrames wird nach dem Aufnehmen eines Gegenstands aus einem Equipment-Slot nicht mehr sofort aufgerufen. Dadurch kann der Gegenstand in die Tasche gelegt werden, ohne dass das Menue den Slot-Zustand verfaelscht.
+
+    Soulbind-Bestaetigung: Fokus-Verbesserung
+        - Nach dem Bestaetigen der "Gegenstand wird gebunden"-Abfrage springt der Fokus nicht mehr auf die Taschen-Ebene zurueck. Stattdessen wird CheckFrames verzoegert aufgerufen und der Cursor korrekt positioniert.
+
+    Weltkarte: Visuelles Flackern reduziert
+        - Das Addon oeffnete und schloss die Weltkarte im Hintergrund (alle 0.15s), um Positionsdaten zu lesen. Wenn die Karte bereits offen war, verursachte dies visuelles Flackern. Fix: Show/Hide wird nur noch ausgefuehrt, wenn die Karte nicht sichtbar ist.
+
+    Versionsanzeige
+        - Sku.toc und SkuDispatcher/Sku.toc aktualisiert auf v41.02.06.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.02.05
+
+    Begleiter-Aktionsleiste: Automodus repariert
+        - Der Automodus (Autocast) fuer Begleiterfaehigkeiten funktioniert jetzt. Die Umschaltung nutzt macrotext mit /click RightButton im Hardware-Event-Kontext. Menue zeigt "Permanent (aktiviert/deaktiviert)" mit Untereintraegen zum Ein- und Ausschalten.
+
+    Rollenabfrage-Fenster zugaenglich gemacht
+        - Die Rollenabfrage des Gruppenleiters oeffnet jetzt ein Sku-Menue mit den Optionen "Tank", "Heiler" und "Schaden". Enter auf eine Rolle waehlt sie und bestaetigt sofort. Bereits gewaehlte Rollen werden nicht zurueckgesetzt.
+
+    Equipment-Slot Doppelklick behoben
+        - Linksklick auf ausgeruestete Gegenstaende im Charakterfenster nahm den Gegenstand auf und legte ihn sofort wieder ab. Ursache: macrotext und OnAction feuerten beide. Fix: OnAction prueft per GetCursorInfo ob der Gegenstand bereits am Cursor haengt.
+
+    Tastenbelegung: Konflikt-Aufloesung repariert
+        - Beim Umbelegen einer Taste auf eine andere Aktion wurden bisher ALLE Belegungen der alten Aktion geloescht (primaer und sekundaer). Jetzt wird nur die konfliktbehaftete Taste entfernt, die andere Belegung bleibt erhalten.
+
+    Sockelfenster: Duplikat-Edelsteine repariert
+        - Gleichnamige Edelsteine werden jetzt gruppiert und mit Anzahl angezeigt (z.B. "Gediegener Zirkon 2x"). Nach dem Einsetzen in einen Sockel wird der genutzte Taschenplatz als belegt markiert, sodass der naechste Sockelplatz den verbleibenden Stein korrekt anzeigt und einsetzen kann.
+
+    Wunschliste: Kategorie "Sonstiges" hinzugefuegt
+        - Items ohne Equipment-Slot (Tokens, Rezepte, Reittiere) koennen jetzt zur Wunschliste hinzugefuegt werden. Sie erscheinen unter "Nach Slot" in der neuen Kategorie "Sonstiges".
+
+    Tastenbelegungsliste beigelegt
+        - Drei Readme-Dateien im Sku-Ordner: Standard-Tastenbelegung fuer blinde Spieler auf Deutsch, Englisch und Franzoesisch.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.02.04
+
+    PageDown/PageUp im Sku-Menue korrigiert
+        - PageDown/Up springt nicht mehr 10 Menuepunkte im Sku-Menue. Die Tasten loesen jetzt nur noch das Blaettern in Berufefenstern (Rezeptlisten) aus und aktualisieren das Menue entsprechend. In allen anderen Menues (Taschen, Auktionshaus etc.) haben die Tasten keine Wirkung mehr.
+
+    Lokalisierung: Ausruestungssets
+        - Der Menuepunkt "Ausruestungssets" im Charakterfenster war bisher ein hardcoded deutscher String. Er verwendet jetzt L["Equipment sets"] und erscheint auf englischen Clients korrekt als "Equipment sets".
+
+    Lokalisierung: Sockelfenster
+        - Der Frame-Name "Sockeln" auf der ersten Menue-Ebene war bisher ein hardcoded String. Er verwendet jetzt L["Sockeln"] und erscheint auf englischen Clients korrekt als "Socket".
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.02.03
+
+    Briefkasten: Neue kombinierte Eingabe
+        - Neuer Brief hat jetzt drei Menuepunkte: "Gegenstaende anhaengen", "Gold anhaengen" und "Versendevorgang starten". Die Reihenfolge ist logisch: zuerst optionale Anhaenge, dann Versand.
+        - "Versendevorgang starten" oeffnet ein Eingabefeld. Bedienung: Name eingeben, Tab druecken, Betreff eingeben, Tab druecken, optional Text eingeben, Enter druecken. Der Brief wird direkt gesendet.
+        - Nach dem Anhaengen von Gegenstaenden oder Gold kehrt der Fokus automatisch zum jeweiligen Menuepunkt zurueck. Nach dem Senden kehrt der Fokus auf "Neuer Brief" zurueck.
+        - Technisch: Neue Funktion SkuCore:MailEditorCombined() in mail.lua. Nutzt OnKeyDown-Handler auf der EditBox fuer Tab- und Enter-Erkennung. Tab wechselt das Feld (Name/Betreff/Text), Enter schliesst ab und ruft SendMail() direkt auf. Das Menue bleibt offen (MailFrame muss fuer SendMail() sichtbar sein).
+
+    Hexenmeister-Begleiter: Eigenes Zielmenue
+        - Das Zielmenue fuer Hexenmeister-Begleiter (Daemonen) zeigt jetzt die korrekten Aktionen: Schlachtzugsymbol, Fokus setzen, Interagieren und Freigeben. Bisher wurden faelschlich die Jaeger-Pet-Aktionen angezeigt.
+        - Technisch: SkuMob/Options.lua, tIsPet-Block: Klassenpruefung via UnitClass("player"). HUNTER zeigt Jaeger-Aktionen, alle anderen Klassen zeigen das generische Pet-Menue.
+
+    Fehlende Audiowoerter behoben
+        - "Tabulatortaste" und "absenden" durch "Tab" und "Senden" ersetzt, da die urspruenglichen Woerter keine Audiodateien im SkuAudioData hatten und einen Beep ausloesten.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.02.02 (Arbeitsversion)
+
+    Erkenntnisse aus der Briefkasten-Reparatur:
+        - CloseMenu() schliesst auch das Blizzard MailFrame. SendMail() benoetigt aber ein offenes MailFrame. Daher darf CloseMenu() NICHT vor der Mail-Eingabe aufgerufen werden.
+        - EditBox OnEnterPressed feuert nicht wenn SetScript("OnKeyDown") gesetzt ist. Enter muss im OnKeyDown-Handler manuell abgefangen werden.
+        - SkuOptionsEditBoxOkScript ist eine lokale Variable in SkuZOptions/Core.lua und kann nicht aus anderen Dateien (z.B. mail.lua) aufgerufen werden. Callbacks muessen als lokale Funktionen im aufrufenden Scope definiert werden.
+        - RegisterForClicks("AnyDown") verhindert Double-Enter, blockiert aber EditBox-OnEnterPressed (feuert auf Key-Up). Loesung: OnKeyDown-Handler auf der EditBox faengt Enter direkt ab — unabhaengig vom SecureActionButton-Override-Binding.
+        - Debounce-Ansatz (100ms Sperre im PostClick) funktioniert fuer Taschen und Wunschliste, bricht aber Briefkasten und andere EditBox-Eingaben.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.02.01 (Arbeitsversion)
+
+    Doppeltes Ausloesen von Enter behoben
+        - Der SecureActionButton reagierte auf Taste-runter UND Taste-hoch, wodurch jeder Enter-Druck zwei Aktionen ausloeste. Betroffen waren alle Menues: Taschen (Enter sprang 2 Ebenen statt 1), Auktionshaus, Wunschliste (Items wurden sofort wieder entfernt). Fix: RegisterForClicks auf AnyDown geaendert (1x pro Tastendruck).
+        - Technisch: SkuZOptions/Core.lua Zeile 2738. "AnyUp, AnyDown" -> "AnyDown". AnyDown liefert Hardware-Event-Kontext (wichtig fuer Linksklick/Gegenstaende). AnyUp allein liefert keinen Hardware-Kontext.
+
+    Stallmeister repariert
+        - Die Stallmeister-Funktionen aus Version 40.x wurden uebernommen, da sie funktionsfaehig sind. Der Stallmeister ist nun wieder bedienbar.
+        - Technisch: SkuCore/LocalMenu.lua, Build_PetStableFrame 1:1 aus Vorlage 2.x kopiert. Nutzt tFrame:GetScript("OnDragStart")(...) und OnReceiveDrag — funktioniert im Gossip/LocalMenu-System ueber den click=true-Pfad des Gossip-Builders.
+
+    Pet-Umbenennung repariert
+        - Fix: Menue wird vor dem Eingabefeld geschlossen (CloseMenu), EditBoxShow statt EditBoxPasteShow, mit Verzoegerung (C_Timer.After 0.3s).
+        - Technisch: SkuMob/Options.lua. EditBoxPasteShow war fuer Paste-Eingabe (OnChar, min. 10 Zeichen). EditBoxShow ist fuer Tastatur-Eingabe (OnEnterPressed). CloseMenu() hebt das Enter-Override-Binding auf, sodass die EditBox Enter empfangen kann.
+
+    secureMacro-System fuer geschuetzte Funktionen
+        - Das SecureActionButton-Attribut wurde mit dem ungueltigen Mausbutton-Parameter "ENTER" gesetzt. TBC 2.5.5 findet type/macrotext-Attribute nicht fuer unbekannte Button-Namen (kein Fallback auf Default-Attribute).
+        - Fix: Neues secureMacro-Flag auf Menu-Eintraegen. Wenn gesetzt, werden zusaetzlich typeENTER/macrotextENTER-Attribute gesetzt, die der SecureActionButton korrekt verarbeitet. Eintraege ohne secureMacro loeschen diese Attribute (verhindert Konflikte mit Linksklick/OnAction).
+        - Technisch: SkuZOptions/templates.lua OnEnter-Handler (Zeile 274). SkuMob/Options.lua: secureMacro=true auf PetDismiss und PetRename-Bestaetigungseintrag.
+        - Erkenntnis: macrotext feuert NICHT im Gossip/LocalMenu-System (getestet mit /say, /run, /click — keine Ausgabe). macrotext feuert NUR im SkuMob/SkuGenericMenuItem-System (bewiesen durch PetRename/PetDismiss).
+
+    Tier freigeben / Tier zuruecklassen
+        - Lokalisierung an In-Game-Begriffe angepasst.
+        - secureMacro-Flag fuer PetDismiss (/petdismiss im Hardware-Event-Kontext).
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.02
+
+    Versionssprung 40.x auf 41.x
+        - Performance verbessert, Wiki-Bereich entfernt.
+        - Lokalisierung der neuen Inhalte: Sockeln, AtlasLoot-Wunschliste, Dropdown-Menue, Dungeonfinder.
+
+    Bugfix: Zahlen- und Buchstabentasten auf englischem Client blockiert
+        - Beim Einloggen auf einem englischen WoW-Client wurden nach einem automatischen Profilwechsel alle Buchstaben-, Zahlen- und Leertasten-Eingaben durch verwaiste Override-Bindings blockiert. Betroffen war z. B. die Taste 7 (und damit / auf QWERTZ-Tastaturen). Ursache: SkuKeyBindsUpdate() rief direkt den OnShow-Handler des Menuefensters auf, der saemtliche Menue-Navigations-Bindings setzte, ohne dass OnHide sie wieder raeumte. Der betroffene Keybinding-Eintrag (SKU_KEY_QUESTABANDON) wurde korrigiert.
+        - Zusaetzlich werden alle Modul-OnEnable-Aufrufe in den Profil-Handlern (OnProfileChanged, OnProfileCopied, OnProfileReset) nun per pcall geschuetzt, damit SkuKeyBindsUpdate() auch bei einzelnen Modul-Fehlern immer erreicht wird.
+        - Die Deduplizierung in SkuKeyBindsUpdate wurde repariert: Funktionen wie CreateMainFrame werden jetzt nur noch einmal statt ~30-mal aufgerufen.
+
+    Lokalisierung: Sockelfenster
+        - Alle ~20 hardcoded deutschen Strings in Build_SocketingFrame.lua durch L[]-Aufrufe ersetzt. Auf englischen Clients erscheinen nun korrekte englische Texte (Sockelfarben, Menuepunkte, Statusmeldungen).
+        - Kritischer Menueabgleich (child.name == "Sockeln") lokalisiert, sodass das Sockelmenue auf englischen Clients korrekt gefunden wird.
+
+    Fehlender Locale-Key
+        - L["Warlock"] in enUS.lua ergaenzt. Der Key war in deDE.lua vorhanden, fehlte aber in der englischen Locale-Datei.
+
+    API-Kompatibilitaet
+        - SetMinResize/SetMaxResize in SkuNav/SkuMM.lua durch Capability Detection ersetzt (SetResizeBounds bevorzugt, Fallback auf SetMinResize). Verhindert moegliche Fehler auf TBC Anniversary (Interface 11508).
+
+    Versionsanzeige
+        - Sku.toc und SkuDispatcher/Sku.toc auf v41.01.04 aktualisiert (ohne beta).
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.01.03 beta
+
+    Pet-Umbenennung
+        - ADDON_ACTION_BLOCKED behoben: Der SecureActionButton war durch einen HookScript-Handler getaintet. WoW blockierte deshalb den geschuetzten PetRename()-Aufruf. Der HookScript wurde durch PostClick ersetzt, der die sichere Macro-Ausfuehrung nicht beeintraechtigt.
+        - Menu-Rebuild nach Namenseingabe wiederhergestellt: Nach dem Eintippen des neuen Namens wird das Menu jetzt automatisch aktualisiert, damit der Bestaetigungseintrag sofort sichtbar ist.
+
+    Auktionshaus
+        - Absturz bei "Neue Auktion" behoben: Wenn ein Gegenstand im Inventar noch nicht vollstaendig im Client-Cache geladen war, fuehrte ein nil-Wert bei der Namensabfrage zum Absturz. Items ohne gecachten Namen werden jetzt uebersprungen.
+
+    Navigation
+        - Absturz bei Spezialaufgaben behoben: Wenn die Aufgaben-Datenbank nicht geladen war, fuehrte der Zugriff auf SkuDB.Tasks zum Absturz. Es wird jetzt vorher geprueft ob die Daten vorhanden sind.
+        - Gefaehrlichen Menuepunkt entfernt: Der Menuepunkt "Alle Routen und Wegpunkte loeschen" unter Navigation/Daten wurde entfernt. Er haette alle benutzerdefinierten Navigationsdaten unwiderruflich geloescht.
+        - Export-Funktion freigeschaltet: Unter Navigation/Daten kann die Routendaten-Kartierung jetzt als Text exportiert werden, um sie im SkuMapper-Tool zu importieren.
+
+    Wunschliste (Atlasloot)
+        - Audio-Feedback bei Enter repariert: Die Rueckmeldung beim Hinzufuegen/Entfernen von Wunschlisten-Items wurde von einer internen Bereinigung sofort geloescht. Die Sprachausgabe wird jetzt leicht verzoegert abgespielt, sodass sie zuverlaessig hoerbar ist.
+
+    Stabilitaet
+        - Nil-Guard fuer Menueposition-Name: Verhindert den Folgefehler "bad argument #1 to find (string expected, got nil)" wenn das Menue in einem ungueltigen Zustand ist.
+
+    Versionsanzeige
+        - Sku.toc und SkuDispatcher/Sku.toc aktualisiert auf v41.01.03 beta.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.01.02 beta
+
+	Fehlerbehebungen (Sound)
+		- Sound-Verlust behoben: Wenn das gespeicherte Profil eine Gesamt-Lautstaerke von 0 enthielt (z.B. durch beschaedigte SavedVariables), wurden beim Login alle WoW-Sound-Kanaele auf stumm gesetzt. Es gibt jetzt einen Schutz: Wird im Profil eine Gesamt-Lautstaerke von 0 erkannt, liest das Addon die aktuellen Blizzard-Einstellungen neu ein, anstatt die 0 anzuwenden.
+		- CVar-Reads abgesichert: Alle Lautstaerke-Abfragen beim Profil-Erststart verwenden jetzt tonumber() mit Fallback auf 100 Prozent. Falls WoW einen ungueltigen Wert zurueckgibt, wird die volle Lautstaerke verwendet statt stumm.
+		- Vorbestehenden CVar-Bug behoben: Drei Sound-Einstellungen (DSP-Effekte, Sound im Hintergrund, Zonenmusik ohne Verzoegerung) wurden bisher nicht korrekt an WoW uebergeben, weil durch einen Copy-Paste-Fehler immer derselbe CVar-Name verwendet wurde. Die drei Einstellungen werden jetzt korrekt angewendet.
+
+	Hinweis zur Installation
+		- Nach dem Kopieren des neuen Addons wird empfohlen, einmalig die Sku-SavedVariables zu loeschen. Die Datei befindet sich unter WTF/Account/ACCOUNTNAME/SavedVariables/Sku.lua im WoW-Ordner. Dadurch wird ein frisches Profil erstellt, das die korrekten Blizzard-Lautstaerken uebernimmt.
+
+	Versionsanzeige
+		- Sku.toc und SkuDispatcher/Sku.toc aktualisiert auf Titel/Version v41.01.02 beta.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v41.01.01 beta
+
+	Performance
+		- Wiki/Tutorial-Modul entfernt: Das Modul "Tutorials und Wiki" (Menuepunkt 7) wurde vollstaendig entfernt. Das spart ca. 30 MB Arbeitsspeicher (28 MB Wiki-Datenbank plus Lookup-Index) und beschleunigt den Login spuerbar, da 39.600 Zeilen weniger geparst werden muessen.
+		- Kein permanenter OnUpdate-Handler mehr: Der Frame-Handler, der bei jedem Wiki-Menueoeffnen lief (~60x pro Sekunde), existiert nicht mehr.
+
+	Menue
+		- Menuepunkt 7 ist jetzt ein Platzhalter mit dem Namen "Reserviert". Er zeigt den Hinweis "Dieser Bereich wird derzeit ueberarbeitet" an. Der Bereich wird in einer zukuenftigen Version mit neuen Inhalten befuellt.
+
+	Tastenbelegung
+		- Die Standard-Tastenbelegung SHIFT-F4 (Abenteuerfuehrer oeffnen) wurde entfernt, da das zugehoerige Modul nicht mehr existiert. Spieler, die die Taste manuell umbelegt hatten, muessen nichts tun — der Eintrag wird ignoriert und verursacht keinen Fehler.
+
+	Sicherheit
+		- Nil-Guards fuer Wiki-Referenzen: Alle Stellen im TTS-System (SkuTTS), im Optionssystem (SkuZOptions) und in der Sprachausgabe (SkuVoice), die auf Wiki-Daten zugreifen, sind jetzt mit Nil-Pruefungen abgesichert. Damit wird sichergestellt, dass keine Fehlermeldungen auftreten, obwohl die Wiki-Daten nicht mehr geladen werden.
+
+	Fehlerbehebungen
+		- tasks.lua (Navigations-Aufgaben fuer DK-Quests) wurde faelschlicherweise mit dem Wiki-Modul entfernt. Die Datei wurde wiederhergestellt. Behebt den Fehler "bad argument #1 to 'pairs' (table expected, got nil)" in specialNavigationTasks.lua.
+
+	Begleit-Addons
+		- SkuAudioData_fast_de: Interface-Version auf 11508 aktualisiert, Abhaengigkeit zu Sku hinzugefuegt. Behebt "attempt to index global 'Sku' (a nil value)".
+		- SkuBeaconSoundsets: Interface-Version auf 11508 aktualisiert.
+		- SkuCustomBeaconsAdditional: Interface-Version auf 11508 aktualisiert, Abhaengigkeiten hinzugefuegt.
+		- SkuCustomBeaconsEssential: Interface-Version auf 11508 aktualisiert, Abhaengigkeiten hinzugefuegt.
+		- Die korrigierten TOC-Dateien liegen im Ergebnisordner neben dem Sku-Ordner. Einfach in die bestehenden Addon-Ordner im Spiel kopieren.
+
+	Versionsanzeige
+		- Sku.toc und SkuDispatcher/Sku.toc aktualisiert auf Titel/Version v41.01.01 beta.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v40.06
+
+	Wunschliste
+		- Items hinzufuegen/entfernen repariert: Die Wunschliste reagiert jetzt zuverlaessig beim Hinzufuegen und Entfernen von Items. Vorher konnte die Aktion still fehlschlagen, wenn das Item noch nicht im Cache war oder der Menu-Rebuild einen Fehler ausloeste.
+		- Audio-Feedback: Beim Hinzufuegen eines Items wird jetzt "Auf Wunschliste gesetzt" angesagt, beim Entfernen "Von Wunschliste entfernt". Bisher gab es keinerlei Rueckmeldung.
+		- Cache-Fallback: Wenn ein Item beim ersten Versuch noch nicht im Client-Cache liegt, wird es automatisch angefragt und nach kurzer Verzoegerung erneut versucht.
+
+	Pet-Umbenennung
+		- Bestaetigung repariert: Der Zwei-Schritt-Prozess (Name eingeben, dann "Umbenennung bestaetigen" waehlen) funktioniert wieder zuverlaessig. Der fehlerhafte Menu-Rebuild nach der Namenseingabe, der den Absturz "attempt to call method 'BuildChildren' (a nil value)" ausloeste, wurde entfernt.
+
+	Stallmeister
+		- Drag/Drop repariert: Pet-Tausch zwischen aktivem Begleiter und Stallplaetzen nutzt jetzt macrotext im Hardware-Event-Kontext. Vorher lief der Klick im Addon-Kontext und konnte von Blizzard blockiert werden.
+		- Kaufpreis: Der Button "Weiteren Platz kaufen" zeigt jetzt den Preis in Gold/Silber/Kupfer an.
+		- Automatischer Refresh: Nach einem Pet-Tausch oder Stallplatz-Kauf wird das Stallmeister-Fenster automatisch aktualisiert (PET_STABLE_UPDATE Event).
+		- Event-Registrierung: PET_STABLE_SHOW, PET_STABLE_CLOSED und PET_STABLE_UPDATE werden jetzt korrekt im SkuDispatcher registriert. Die Event-Handler existierten vorher, wurden aber nie aufgerufen.
+
+	Fehlerbehebungen
+		- VocalizeCurrentMenuName: Nil-Guard fuer BuildChildren eingefuegt. Verhindert den generischen Absturz "attempt to call method 'BuildChildren' (a nil value)", der in mehreren Menuebereichen (Wunschliste, Pet-Umbenennung, Stallmeister) auftreten konnte.
+
+	Versionsanzeige
+		- Sku.toc und SkuDispatcher/Sku.toc aktualisiert auf Titel/Version v40.06.
+
+
+-------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v40.05
+
+	Wunschliste
+		- Sound bei Chat-Link: Wenn ein Wunschlisten-Gegenstand im Party-, Raid-, Sag- oder Schrei-Chat verlinkt wird, ertoennt jetzt der gleiche Hinweiston wie beim Wuerfelfenster.
+		- Farbcodes entfernt: Dungeon-Namen und Boss-Namen aus AtlasLoot werden jetzt ohne WoW-Farbcodes (|cff...) angezeigt. Betrifft sowohl die Ansicht "Nach Dungeon" als auch den Tooltip mit Boss-Drop-Quellen.
+
+	Fehlerbehebungen
+		- Fehlende Locale-Eintraege: L["Up"] und L["Down"] fuer die Wunschlisten-Reihenfolge hinzugefuegt. Behebt "AceLocale-3.0: Missing entry for 'Down'" Fehler.
+		- Kampflog: CombatLog_OnEvent wird jetzt auf Verfuegbarkeit geprueft, bevor es aufgerufen wird. Behebt den Absturz "attempt to call global 'CombatLog_OnEvent' (a nil value)" auf TBC Anniversary.
+		- Gegenstandsliste: C_Item.GetItemNameByID wird jetzt mit einem Fallback abgesichert. Behebt den Absturz "attempt to concatenate a nil value" wenn ein Item noch nicht im Cache ist.
+		- Interaktionsdistanz: CheckInteractDistance wird jetzt per pcall aufgerufen. Behebt "ADDON_ACTION_BLOCKED CheckInteractDistance()" im Kampf.
+
+	Versionsanzeige
+		- Sku.toc und SkuDispatcher/Sku.toc aktualisiert auf Titel/Version v40.05.
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku v40.04.01
+
+	Atlas Loot
+		- Atlas Loot ist jetzt ueber Strg+Shift+L erreichbar (wenn installiert). Das Tastenkuerzel kann unter Shift+F1, Core, Skutastenbelegung frei umbelegt werden.
+		- Wunschliste mit Sound: Wenn ein Wunschlisten-Item im Loot erscheint, ertoennt ein Sound. Beim Erhalten des Items wird es automatisch von der Wunschliste entfernt.
+		- Wunschliste: Neue Menuestruktur mit zwei Untermenues "Nach Dungeon" und "Nach Slot". "Nach Dungeon" zeigt nur Dungeons, die Items auf der Wunschliste haben (Format: "Anzahl Dungeonname"). "Nach Slot" enthaelt die bisherige Slot-basierte Liste.
+
+	Ausruestungsmanager
+		- Der Ausruestungsmanager ist im Charakterfenster (Taste C) erreichbar. Ausruestungssets koennen gespeichert, angelegt, ueberschrieben, umbenannt und geloescht werden.
+		- Makro erstellen: Neuer Menueeintrag bei jedem Ausruestungsset. Erstellt ein Charaktermakro, das beim Ausfuehren das Set anlegt. Bereits vorhandene Makros werden aktualisiert.
+		- Lokalisierung: Alle Menue-Eintraege und Statusmeldungen des Ausruestungsmanagers sind jetzt lokalisiert. Auf englischen Clients erscheinen alle Texte auf Englisch.
+
+	Ziel-Aktionsmenue (CTRL+T) / Pet-Aktionen
+		- Zuruecklassen repariert: "Zuruecklassen" verwendet jetzt macrotext (/petdismiss) statt eines Addon-Kontext-Aufrufs. Dadurch wird ADDON_ACTION_FORBIDDEN vermieden und das Pet wird zuverlaessig temporaer weggeschickt.
+		- Umbenennen repariert: Die Pet-Umbenennung funktioniert jetzt ueber ein Zwei-Schritt-Verfahren. Schritt 1: Name eingeben. Schritt 2: "Umbenennung bestaetigen" waehlen (macrotext im Hardware-Kontext). Dadurch wird ADDON_ACTION_FORBIDDEN beim Speichern des Namens vermieden.
+		- Aufloesen mit Sicherheitsabfrage: "Pet aufloesen" heisst jetzt "Pet dauerhaft entlassen" und erfordert eine Bestaetigung ueber einen Sicherheitsdialog. Der bisherige Code rief PetAbandon direkt auf, was das Pet permanent entliess, ohne dass der Benutzer gewarnt wurde.
+
+	PopUp-Erkennung
+		- Verzoegerter Zweitaufruf: StaticPopup_Show ruft CheckFrames jetzt zusaetzlich mit 0,15 Sekunden Verzoegerung auf. Damit werden PopUps (z.B. Verzauberung ueberschreiben, Pet-Umbenennung bestaetigen) zuverlaessig im Sku-Menue angezeigt, auch wenn der PopUp-Inhalt beim ersten Aufruf noch nicht vollstaendig gesetzt ist.
+
+	Fehlerprotokoll (ErrorLog)
+		- Kampf-Throttling: Waehrend des Kampfes werden maximal 5 Fehler pro Sekunde protokolliert. Ueberzaehlige Fehler werden verworfen. Die BugGrabber-Bridge wird im Kampf vollstaendig pausiert. Dadurch wird die Fehlermeldung "insecure scripts exceeded execution limit" in Raids (z.B. Karazhan, AQ40) vermieden.
+		- Lokalisierung: Alle Slash-Befehl-Hilfe und Statusmeldungen sind jetzt lokalisiert.
+
+	Lokalisierung
+		- Rund 70 neue L[]-Eintraege in beiden Locale-Dateien (AL_*, EQ_*, ERRLOG_*, MOB_*).
+		- Hardcoded deutsche Strings in alIntegration.lua, equipmentSets.lua und ErrorLog.lua durch L[]-Aufrufe ersetzt.
+		- equipmentSets.lua: Fehlerhaftes Locale-System (SkuLocale) durch Sku.L ersetzt.
+
+	Versionsanzeige
+		- Sku.toc und SkuDispatcher/Sku.toc auf Title/Version v40.04.01 aktualisiert.
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku v40.04
+
+	Dungeon-Browser
+		- Lokalisierung: Alle Menue-Eintraege des Dungeon-Browsers (Rollen, Status, Dungeon-Liste, Spielerliste, Aktionen) verwenden jetzt das Lokalisierungssystem. Auf englischen Clients erscheinen alle Texte korrekt auf Englisch.
+		- Heroische Dungeons: Der Dungeon-Browser zeigt jetzt auch heroische Dungeons an. Diese erscheinen in einer eigenen Sektion unterhalb der normalen Dungeons mit dem Praefix "Heroisch: " vor dem Namen. Heroische Dungeons koennen wie normale Dungeons ausgewaehlt und angemeldet werden.
+		- Tastenkuerzel: Der Dungeon-Browser hat jetzt ein eigenes Tastenkuerzel unter Shift+F1, Core, Skutastenbelegung, Taste zuweisen, "Dungeon Browser oeffnen". Standard ist keine Taste belegt; der User kann frei zuweisen.
+		- Alle abwaehlen: Neuer Button "Alle abwaehlen" im Dungeon-Browser. Setzt alle Dungeon-Auswahlen auf einmal zurueck.
+		- Anzeige: Der Hinweis "Ausgewaehlt" wird jetzt vor den Dungeon-Namen gesetzt (statt dahinter), damit blinde Spieler beim Durchblaettern sofort hoeren, ob ein Dungeon bereits markiert ist.
+		- Technisch: ~39 neue L[]-Eintraege (DB_*) in beiden Locale-Dateien. Hardcoded Strings in dungeonBrowser.lua durch L[]-Aufrufe ersetzt. Zwei "not info.isHeroic"-Filter entfernt (tGetEligibleDungeons und tBuildPhaseB). Heroische Dungeons werden in Phase A als eigene Sektion mit L["DB_HeroicSection"] dargestellt. SKU_KEY_OPENDUNGEONBROWSER in SkuKeyBinds.lua definiert, Handler und Override-Binding in SkuZOptions/Core.lua. DungeonBrowserDeselectAll() setzt db.selection = {} und triggert Menu-Rebuild.
+
+	Navigation / Nahe Route
+		- Bugfix: "Nahe Route" bricht nicht mehr nach dem ersten Wegpunkt ab. Die Navigation ueber "Nahe Route" (im Questbuch und im SkuNav-Menue) wurde nach Erreichen des ersten Wegpunkts faelschlicherweise mit "Route folgen beendet" abgebrochen, anstatt zum Ziel weiterzufuehren. Dieser Fehler trat zonenuebergreifend auf und betraf alle Nahe-Route-Navigationen. Das Problem ist behoben -- Nahe Routen fuehren nun zuverlaessig bis zum Ziel.
+		- Technisch: Die BuildChildren der "Closest route"-Handler in SkuQuest/Options.lua (Zeilen 1101ff) und SkuNav/Options.lua (Zeilen 447ff) verwendeten eine flache Struktur, die metapathFollowingStart und metapathFollowingMetapaths einmalig fuer den ersten Einstiegspunkt setzte. Der bereits korrigierte "Route"-Handler setzte in seinen Per-Entry-Point-Submenues metapathFollowingTarget = nil, was bei Menue-Navigation zwischen Geschwistern die Nahe-Route-Daten zerstoerte. Fix: Gleiche Umstrukturierung auf Per-Entry-Point-Submenues wie beim "Route"-Handler -- jeder Einstiegspunkt berechnet seine eigenen Metapaths in seiner eigenen BuildChildren-Funktion.
+
+	Chat-Einladung
+		- Bugfix: Die Einladungsfunktion im Chat-Kontextmenue (CTRL+Enter) funktioniert wieder. Bisher konnte ein Fehler auftreten, wenn InviteUnit als globale Funktion nicht verfuegbar war.
+		- Technisch: SkuChat/Core.lua Zeile 2688: InviteUnit() durch C_PartyInfo.InviteUnit()-Fallback ersetzt (gleicher Pattern wie in SkuMob/Options.lua).
+
+	Ziel-Aktionsmenue (CTRL+T)
+		- Pet-Aktionen erweitert: Zwei neue Eintraege im Pet-Untermenue. "Zuruecklassen" schickt das Pet temporaer weg (es kann jederzeit wieder gerufen werden). "Umbenennen" oeffnet ein Eingabefeld, in dem ein neuer Name eingegeben und mit Eingabetaste bestaetigt werden kann.
+		- Lokalisierung: Alle Eintraege des Ziel-Aktionsmenues (Untersuchen, Folgen, Handeln, Duell, Fluestern, Einladen, Freund hinzufuegen, Ignorieren, Anfuehrer uebergeben, Entfernen, Pet-Aktionen, Pet-Modus, Raid-Markierungen, Spieler melden, Pluendermethode, Instanzen zuruecksetzen, Gruppe verlassen) sind jetzt lokalisiert. Auf englischen Clients erscheinen alle Texte auf Englisch.
+		- Technisch: SkuMob/Options.lua: ~78 neue L[]-Eintraege (MOB_*) in beiden Locale-Dateien. Alle hardcoded Strings in tRaidMarkers, tReportReasons, tLootMethods, tBuildPetModeSubmenu und tBuildTargetMenu durch L[]-Aufrufe ersetzt. PetDismiss (nur temporaer) und PetRename (ueber EditBoxPasteShow) als neue tAddAction-Eintraege im tIsPet-Zweig.
+
+	Charakterfenster (Equipment-Slots)
+		- Bugfix: Wizard Oil, Gifte und Schleifsteine koennen jetzt ueber das Sku-Menue auf ausgeruestete Waffen angewendet werden, ohne ADDON_ACTION_FORBIDDEN-Fehler. Bisher wurde der Klick auf Equipment-Slots aus dem Addon-Kontext ausgefuehrt, was von Blizzard blockiert wurde.
+		- Technisch: SkuZOptions/Core.lua Zeile 3958: Equipment-Slot-Linksklick verwendet jetzt macrotext ("/click SlotName LeftButton") statt reinem OnAction mit PickupInventoryItem. Dadurch laeuft der Klick im Hardware-Event-Kontext und Blizzard erlaubt die Interaktion. Der bisherige OnAction-Code bleibt als Fallback erhalten.
+
+	Rollenabfrage
+		- Bugfix: Die manuelle Rollenabfrage (Tank/Heiler/Schaden) verursacht keinen Absturz mehr. Bisher konnte ein Fehler auftreten, wenn die Rollenbuttons keine .role-Eigenschaft hatten, was zu einem nil-Fehler fuehrte und einen Reload erforderte.
+		- Technisch: SkuCore/LocalMenu.lua Zeile 2026: Nil-Guard und Fallback-Rollennamen (TANK/HEALER/DAMAGER) eingefuegt. tButtons[x] wird zusaetzlich auf Existenz geprueft.
+
+	Aura-Export
+		- Bugfix: "Alle Auren exportieren" funktioniert wieder und wirft keinen Fehler mehr. Die Funktion GetAddOnMetadata war in neueren WoW-Versionen nicht verfuegbar und verursachte beim Export einen Absturz.
+		- Technisch: SkuAuras/Options.lua Zeile 812: GetAddOnMetadata durch sicheren Fallback-Pattern ersetzt (GetAddOnMetadata oder C_AddOns.GetAddOnMetadata, mit "unknown" als letztem Fallback). Gleicher Fix auch in SkuZOptions/Core.lua Zeile 5252 (Wegpunkt-Export).
+
+	/sku version Befehl
+		- Bugfix: Der Chat-Befehl "/sku version" gibt jetzt zuverlaessig die Addon-Version aus. Bisher konnte die Ausgabe leer bleiben, wenn GetAddOnInfo nicht verfuegbar war.
+		- Technisch: SkuZOptions/Core.lua Zeile 128: GetAddOnInfo durch sicheren GetAddOnMetadata-Fallback ergaenzt (gleicher Pattern wie ErrorLog.lua). Ausgabe zeigt jetzt Titel und Versionsnummer.
+
+	Minimap-Ressourcen-Scan
+		- Bugfix: Die passive Minimap-Ueberwachung (Erz, Kraeuter, etc.) faengt keine Mausklicks mehr ab. Bisher konnte beim Klicken an verschiedenen Stellen im Addon ein "Ping"-Geraeusch ertoennen und der Klick wurde nicht ausgefuehrt, weil die unsichtbare 1-Pixel-Minimap unter dem Cursor Klicks abgefangen hat.
+		- Technisch: SkuCore/minimapScanner.lua: In MinimapScanFast() werden jetzt vor dem Positionieren der Minimap unter den Cursor alle sichtbaren Minimap-Kinder (insbesondere MiniMapTrackingFrame) versteckt. Schutz portiert aus Version 1.x (Zeilen 479-484). RestoreMinimap stellt die Kinder per MMA_VISIBLE wieder her.
+		- Bugfix: Kraeutersuche, Bergbau und weitere Tracking-Funktionen funktionieren jetzt korrekt mit dem passiven Minimap-Scan. Bisher wurde der Tracking-Zustand bei jedem Scan-Durchlauf deaktiviert und konnte nicht wiederhergestellt werden, weil die C_Minimap.GetTrackingInfo-Rueckgabe (Tabelle statt Einzelwerte) falsch entpackt wurde. Kraeuter und Erze erschienen nicht mehr auf der Minimap, obwohl der Buff-Balken die Suche als aktiv anzeigte.
+		- Technisch: GetTrackingInfo-Aufrufe in tCaptureMinimapState() und in der Tracking-Disable-Schleife von MinimapScanFast() verwenden jetzt den gleichen type(result)=="table"-Check wie SlashActiveSeekings und SkuZOptions/Core.lua. tCaptureMinimapState/tApplyMinimapState sichern und stellen den Tracking-Zustand korrekt wieder her.
+		- Bugfix: Der passive Minimap-Scan kuendigt Kraeuter, Erze und andere Ressourcen beim Laufen jetzt wieder per Sprache an. Bisher blieb die Ansage aus, weil die Tooltip-Auswertung im passiven Scan-Pfad die Ressourcennamen nie korrekt erkennen konnte -- die Matching-Logik verwendete exakte Gleichheit statt Teilstring-Suche und konnte bei Sonderzeichen (Apostrophe in "Khadgar's Whisker" etc.) oder fehlenden Abhaengigkeiten den Tooltip-Text nicht zuordnen.
+		- Technisch: C_Timer.After-Callback in MinimapScanFast() verwendet jetzt denselben string.find-Substring-Match wie der aktive Scan (MinimapScanFindActiveRessource). SkuChat:Unescape wird optional genutzt, blockiert aber nicht mehr die Verarbeitung. gmatch-Fragmentierung und exakte Gleichheitspruefung entfernt.
+
+	Versionsanzeige
+		- Sku.toc und SkuDispatcher/Sku.toc auf Title/Version v40.04 aktualisiert.
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku v40.03y
+
+	Briefkasten
+		- Mehrfach-Anhaenge: nach dem Entnehmen eines einzelnen Anhangs werden die verbleibenden Anhaenge im selben Brief wieder zuverlaessig per Sapi vorgelesen. Auto-Jump-Pfad entfernt -- der Briefkasten nutzt jetzt wieder den Standard-Refresh (MAIL_INBOX_UPDATE, currentMenuPosition:OnUpdate), exakt wie beim physischen Wieder-Oeffnen des Briefkastens.
+
+	Atlas Loot
+		- Tastenkuerzel zum Oeffnen frei umbelegbar: unter Shift+F1, Core, Skutastenbelegung, Taste zuweisen erscheint jetzt der Eintrag "Atlas Loot oeffnen". Die Standardtaste bleibt Strg+Shift+L; der User kann sie aber wie alle anderen Sku-Tastenkuerzel auf eine eigene Kombination umlegen. Die neue Belegung wird sofort wirksam.
+		- Zielorientierter Sprung in Boss-/Instanz-Submenue deutlich verbessert:
+			Pfad-Reihenfolge entspricht jetzt exakt der Menue-Hierarchie (Listen, Plugin, Erweiterung, Gruppe, Instanz/Raid, Boss, Schwierigkeit, Items). Die Schwierigkeitsstufe wurde vorher faelschlich vor die Instanz gesetzt -- Pfad konnte nie aufgeloest werden.
+			Schwierigkeits-Erkennung dreifach abgesichert: primaer GetInstanceInfo, sekundaer die Charakterportrait-Einstellung (GetDungeonDifficulty / GetRaidDifficulty -- wird beim Betreten der Instanz festgenagelt und ist daher zuverlaessig), tertiaer Default "Normal" fuer Welt-Bosse.
+			Lookup-Tabellen werden jetzt bereits beim Login (mit gestaffelten Retries 5/10/20/35/60 s) und bei Zonenwechsel ins Instanz-Innere vorbefuellt. Damit ist der Sprung beim ersten Tastendruck ohne Latenz nutzbar.
+		- Wunschlisten-Auto-Remove: sobald der "I feel Good"-Sound spielt (Wunschlisten-Item ist im Inventar gelandet), wird das Item automatisch aus allen Wunschlisten-Slots entfernt. Vergleich primaer per itemID, mit Hyperlink-Pattern als Fallback. Items wie Ringe oder Schmuckstuecke, die in zwei Slots gleichzeitig stehen koennen, werden vollstaendig abgeraeumt.
+
+	Charakterfenster (Equipment-Slots)
+		- Linksklick / Rechtsklick auf ausgeruestete Items funktioniert wieder. Auf TBC-Anniversary 2.5.5 ruft /click <slot> LeftButton ohne Modifier-Taste nur UseInventoryItem auf -- wirkungslos fuer Ruestung, Ringe und Schmuckstuecke. Sku nutzt fuer Equipment-Slots jetzt den direkten API-Pfad:
+			Linksklick: PickupInventoryItem(slotID) -- Item heftet sich an den Cursor (zum Umsetzen, Verkaufen oder Abstecken).
+			Rechtsklick: ausziehen -- PickupInventoryItem + Iteration ueber die Taschen, erstes freies Fach, PickupContainerItem. Bei vollen Taschen Cursor leeren und Sapi-Hinweis "Keine Tasche frei". Bei leerem Slot Sapi-Hinweis "Leer".
+
+	Dungeon-Browser
+		- Auto-Refresh entfernt: die Spielerliste wird nicht mehr automatisch alle 10 Sekunden aktualisiert. Der bisherige Ticker griff faelschlich auf alle Sku-Menues durch (currentMenuPosition:OnUpdate unabhaengig vom aktuellen Menue-Pfad) und unterbrach Ansagen in komplett unbeteiligten Untermenues.
+		- Manueller "Liste aktualisieren"-Button: loest /who-Suche aus und rebuildet das Dungeon-Browser-Menue gezielt nach 0,6 s. Cross-Menue-Schutz: wenn der User in der Zwischenzeit wegnavigiert ist, passiert nichts.
+		- Sapi-Feedback nach erfolgreichem Refresh: "Aktualisiert. N Spieler gefunden" (oder "Keine Spieler gefunden" / "1 Spieler gefunden"). Wird zeitversetzt nach der OnUpdate-Vokalisierung abgesetzt, damit die Status-Ansage nicht unterdrueckt wird.
+		- Phasenwechsel A nach B (Anmeldung): zwei zeitversetzte Paesse -- erster Pass mit Sapi-Ansage des neuen Status, zweiter Pass stumm im Hintergrund (DungeonBrowserRebuildSilent), um die per /who eingelaufenen Spieler nachzuziehen. Status-Ansage laeuft jetzt vollstaendig durch, und die Spielerliste ist trotzdem sofort gefuellt.
+		- Phasenwechsel B nach A (Abmeldung): Doppel-Rebuild auf einen reduziert; Sapi-Ansage wird nicht mehr abgeschnitten.
+		- Verhalten bei Gruppeneinladung: Sku-Menue bleibt waehrend eines offenen Einladungs-Popups offen. Skus Standard-Pfad fokussiert das Popup, der User kann direkt mit Ja/Nein interagieren. Bei Annehmen schliesst Blizzard das Container-Frame automatisch -- Sku-Menue folgt und schliesst sich. Bei Ablehnen bleibt das Container-Frame stehen und das Sku-Menue ebenfalls.
+
+	Stabilitaet / Quest-Tooltip
+		- Crash beim Quest-Tooltip-Aufruf (Shift+Pfeil-Runter) im Schattenmondtal behoben. Ursache: tInternalChannelName konnte in CHAT_MSG_CHANNEL_NOTICE/YOU_LEFT nil werden (zonen-spezifischer Channel ohne Mapping), string.lower(nil) crashte. Der nachfolgende Lua-Error riss den currentMenuPosition-Pointer mit sich, wodurch alle weiteren Pfeil-/Enter-Tastendrucke mit "attempt to index nil" kaskadierten -- Sku-Menue blieb bis zum Reload unbedienbar.
+		- Drei zusammenwirkende Schutzschichten:
+			1. Direkter nil-Guard in SkuChat/Core.lua vor dem string.lower-Aufruf.
+			2. Defensiver nil-Schutz im SkuGenericMenuItem-OnUpdate (templates.lua) fuer currentMenuPosition:OnEnter / VocalizeCurrentMenuName.
+			3. Recovery-Guard im OnClick-Key-Dispatcher: bei nil-currentMenuPosition wird Menu[1] als Fallback gesetzt, andernfalls der Tastendruck still verworfen -- kein Crash-Spam mehr.
+
+	Versionsanzeige
+		- Sku.toc und SkuDispatcher/Sku.toc auf Title/Version v40.03y aktualisiert.
+
+
+-------------------------------------------------------------------------------------------------------
