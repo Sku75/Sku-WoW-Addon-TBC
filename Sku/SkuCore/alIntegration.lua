@@ -755,143 +755,181 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
          tNewSubMenuEntry.dynamic = true
          tNewSubMenuEntry.sorting = true
          tNewSubMenuEntry.BuildChildren = function(self)
-            -- Spezialfall "Berufe": Classic + BC zusammenfassen, nach
-            -- Skill-Level sortieren, KEINE Erweiterungs-Unterteilung.
+            -- Spezialfall "Berufe": KEINE Erweiterungs-Unterteilung. Statt-
+            -- dessen Classic- und BC-Modul je Beruf zu einem Eintrag und ihre
+            -- gleichnamigen Kategorien zusammenlegen (Details unten).
             local tPluginTitle = tostring(tModules.module[pluginIndex].tt_title or "")
             local tIsProfessionPlugin = tPluginTitle:lower():find("beruf")
                or tPluginTitle:lower():find("crafting")
                or tPluginTitle:lower():find("profession")
 
             if tIsProfessionPlugin then
-               local tModulList = AtlasLoot.ItemDB:GetModuleList(tModules.module[pluginIndex].addonName)
-               local moduleData = AtlasLoot.ItemDB:Get(tModules.module[pluginIndex].addonName)
+               -- Berufe: Das Classic- und das BC-Modul EINES Berufs (z. B.
+               -- "Enchanting" + "EnchantingBC") zu EINEM Menüeintrag
+               -- verschmelzen und ihre gleichnamigen Kategorien (z. B.
+               -- "Handgelenke") zusammenlegen, damit ein Kategorie-Blatt sowohl
+               -- Classic- als auch TBC-Rezepte in EINER nach Skill sortierten
+               -- Liste zeigt. AtlasLoot legt die Erweiterungen als getrennte
+               -- Module (gameVersion 1 = Classic, 2 = BC) unter demselben
+               -- Crafting-Plugin ab; data-wrath.lua registriert seine Module
+               -- nur auf dem WotLK-Client, daher ist "alle geladenen Module
+               -- eines Berufs zusammenfassen" automatisch phasen-korrekt (auf
+               -- TBC erscheinen nur Classic + BC).
+               local tAddonName = tModules.module[pluginIndex].addonName
+               local tModulList = AtlasLoot.ItemDB:GetModuleList(tAddonName)
+               local moduleData = AtlasLoot.ItemDB:Get(tAddonName)
                local tDifficulties = moduleData:GetDifficultys()
 
-               -- Flache Sammlung mit Sortierschlüssel
-               local tFlat = {}
+               -- Module nach Anzeigename (Beruf) gruppieren. "Enchanting" und
+               -- "EnchantingBC" liefern beide denselben lokalisierten Namen
+               -- ("Verzauberkunst") und landen so in derselben Gruppe.
+               local tGroupOrder = {}
+               local tGroups = {}
                for moduleIndex = 1, #tModulList do
                   local contentInteralName = tModulList[moduleIndex]
                   local mod = moduleData[contentInteralName]
-                  local name = mod:GetName() or ""
-                  -- Skill-Level aus Name extrahieren (erstes Zahl-Token,
-                  -- z. B. "Alchemie 1-300" → 1, "Schmiedekunst 300-375"
-                  -- → 300). Fällt das Pattern fehl, sortieren wir
-                  -- Classic (gameVersion=1) vor BC (gameVersion=2)
-                  -- über einen Offset.
-                  -- Skill-Level aus dem Namen ziehen. Berufe ohne
-                  -- erkennbare Zahl (z. B. "Erste Hilfe", "Kochkunst")
-                  -- bekommen einen sehr hohen Wert und landen damit
-                  -- ans Ende der Liste — der Listenanfang ist somit
-                  -- der Beruf mit dem niedrigsten Skill (typischerweise
-                  -- 1).
-                  local tSkill = tonumber(name:match("(%d+)"))
-                  if not tSkill then
-                     tSkill = 999999  -- ans Ende
-                  elseif mod.gameVersion == 2 and tSkill < 300 then
-                     -- BC mit Skill < 300 hinter Classic einsortieren
-                     tSkill = tSkill + 100000
+                  local profName = SkuUtil:Unescape(mod:GetName() or "")
+                  if not tGroups[profName] then
+                     tGroups[profName] = {}
+                     tGroupOrder[#tGroupOrder + 1] = profName
                   end
-                  tFlat[#tFlat + 1] = {
-                     name = name,
+                  tGroups[profName][#tGroups[profName] + 1] = {
                      contentInteralName = contentInteralName,
-                     skill = tSkill,
-                     gameVersion = mod.gameVersion,
+                     gameVersion = mod.gameVersion or 0,
                   }
                end
-
-               -- Sortieren: primär Skill-Level, sekundär gameVersion
-               -- (Classic vor BC), tertiär Name.
-               table.sort(tFlat, function(a, b)
-                  if a.skill ~= b.skill then return a.skill < b.skill end
-                  if a.gameVersion ~= b.gameVersion then
+               -- Innerhalb eines Berufs die Module nach gameVersion ordnen
+               -- (Classic 1 vor BC 2 vor WotLK 3), damit gleiche Skill-Level
+               -- stabil Classic-vor-BC ausfallen.
+               for _, tMods in pairs(tGroups) do
+                  table.sort(tMods, function(a, b)
                      return (a.gameVersion or 0) < (b.gameVersion or 0)
-                  end
-                  return a.name < b.name
-               end)
+                  end)
+               end
 
-               -- Lokale tBuildModuleEntry analog zur Standard-Variante
-               local function tBuildModuleEntry(aSelf, contentInteralName)
-                  local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aSelf,
-                     {SkuUtil:Unescape(moduleData[contentInteralName]:GetName())}, SkuGenericMenuItem)
-                  tNewSubMenuEntry.dynamic = true
-                  tNewSubMenuEntry.sorting = true
-                  tNewSubMenuEntry.BuildChildren = function(self)
-                     for bossIndex = 1, #moduleData[contentInteralName].items do
-                        local tabVal = moduleData[contentInteralName].items[bossIndex]
-                        if tabVal then
-                           local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self,
-                              {SkuUtil:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))}, SkuGenericMenuItem)
-                           tNewSubMenuEntry.dynamic = true
-                           tNewSubMenuEntry.sorting = true
-                           tNewSubMenuEntry.BuildChildren = function(self)
-                              -- Berufe haben nur eine Schwierigkeitsstufe
-                              -- ("Normal"). Diese überflüssige Zwischen-
-                              -- ebene überspringen wir und rendern die
-                              -- Rezepte direkt unter der Kategorie.
-                              local bossData = moduleData[contentInteralName].items[bossIndex]
-                              local difficultyIndex
-                              for d = 1, #tDifficulties do
-                                 if bossData[d] then difficultyIndex = d; break end
-                              end
-                              if not difficultyIndex then
-                                 SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
-                                 return
-                              end
-                              local items = AtlasLoot.ItemDB:GetItemTable(tModules.module[pluginIndex].addonName, contentInteralName, bossIndex, difficultyIndex)
-                              if items then
-                                 -- Sortierung nach benötigtem Skill-
-                                 -- Level. Rezepte ohne erkennbares Level
-                                 -- an den Anfang (Skill 0).
-                                 local tSorted = {}
-                                 for itemIndex = 1, #items do
-                                    local id = items[itemIndex][2]
-                                    local sk = 0
-                                    if type(id) == "number"
-                                       and AtlasLoot.Data.Profession.GetProfessionData then
-                                       local prof = AtlasLoot.Data.Profession.GetProfessionData(id)
-                                       if type(prof) == "table" and type(prof[3]) == "number" then
-                                          sk = prof[3]
-                                       end
-                                    end
-                                    tSorted[#tSorted + 1] = { row = items[itemIndex], skill = sk }
-                                 end
-                                 table.sort(tSorted, function(a, b)
-                                    return (a.skill or 0) < (b.skill or 0)
-                                 end)
-                                 for _, entry in ipairs(tSorted) do
-                                    local row = entry.row
-                                    if type(row[2]) == "number" then
-                                       if AtlasLoot.Data.ItemSet.GetSetName(row[2]) then
-                                          AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "set", row[2])
-                                       elseif (C_Item.GetItemNameByID(row[2])) and AtlasLoot.Data.Profession.IsProfessionSpell(row[2]) ~= true then
-                                          AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", row[2], tabVal.npcID, contentInteralName, bossIndex, nil, difficultyIndex)
-                                       else
-                                          local tName = GetSpellInfo(row[2])
-                                          if tName then
-                                             AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "spell", row[2])
-                                          end
-                                       end
-                                       if row[2] > 1000000 then
-                                          local tSetId = tonumber(string.sub(tostring(row[2]), 5))
-                                          AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "set", tSetId)
-                                       end
-                                    else
-                                       AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "collection", row[2])
-                                    end
-                                 end
-                              else
-                                 SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+               -- Rezepte einer (evtl. aus mehreren Modulen zusammengelegten)
+               -- Kategorie rendern: alle Rezeptzeilen einsammeln, modulübergrei-
+               -- fend nach benötigtem Skill sortieren und ausgeben. Jede Zeile
+               -- merkt sich ihr Herkunftsmodul/-Boss/-Difficulty, damit der
+               -- Item-Builder Drop-/Quell-Infos korrekt auflösen kann.
+               local function tRenderCategory(aSelf, aSources)
+                  local tSorted = {}
+                  for _, src in ipairs(aSources) do
+                     local items = AtlasLoot.ItemDB:GetItemTable(tAddonName, src.contentInteralName, src.bossIndex, src.difficultyIndex)
+                     if items then
+                        for itemIndex = 1, #items do
+                           local id = items[itemIndex][2]
+                           local sk = 0
+                           if type(id) == "number"
+                              and AtlasLoot.Data.Profession.GetProfessionData then
+                              local prof = AtlasLoot.Data.Profession.GetProfessionData(id)
+                              if type(prof) == "table" and type(prof[3]) == "number" then
+                                 sk = prof[3]
                               end
                            end
+                           tSorted[#tSorted + 1] = {
+                              row = items[itemIndex],
+                              skill = sk,
+                              contentInteralName = src.contentInteralName,
+                              bossIndex = src.bossIndex,
+                              difficultyIndex = src.difficultyIndex,
+                              npcID = src.npcID,
+                           }
                         end
+                     end
+                  end
+                  if #tSorted == 0 then
+                     SkuOptions:InjectMenuItems(aSelf, {L["Empty"]}, SkuGenericMenuItem)
+                     return
+                  end
+                  table.sort(tSorted, function(a, b)
+                     return (a.skill or 0) < (b.skill or 0)
+                  end)
+                  for _, entry in ipairs(tSorted) do
+                     local row = entry.row
+                     if type(row[2]) == "number" then
+                        if AtlasLoot.Data.ItemSet.GetSetName(row[2]) then
+                           AtlasLootIntegration:alIntegrationItemMenuBuilder(aSelf, "set", row[2])
+                        elseif (C_Item.GetItemNameByID(row[2])) and AtlasLoot.Data.Profession.IsProfessionSpell(row[2]) ~= true then
+                           AtlasLootIntegration:alIntegrationItemMenuBuilder(aSelf, "item", row[2], entry.npcID, entry.contentInteralName, entry.bossIndex, nil, entry.difficultyIndex)
+                        else
+                           local tName = GetSpellInfo(row[2])
+                           if tName then
+                              AtlasLootIntegration:alIntegrationItemMenuBuilder(aSelf, "spell", row[2])
+                           end
+                        end
+                        if row[2] > 1000000 then
+                           local tSetId = tonumber(string.sub(tostring(row[2]), 5))
+                           AtlasLootIntegration:alIntegrationItemMenuBuilder(aSelf, "set", tSetId)
+                        end
+                     else
+                        AtlasLootIntegration:alIntegrationItemMenuBuilder(aSelf, "collection", row[2])
                      end
                   end
                end
 
-               for _, entry in ipairs(tFlat) do
-                  tBuildModuleEntry(self, entry.contentInteralName)
+               -- Einen Beruf (mit ALLEN zusammengelegten Modulen) als einen
+               -- Menüeintrag aufbauen; darunter die nach lokalisiertem Namen
+               -- zusammengelegten Kategorien.
+               local function tBuildProfessionEntry(aParent, aProfName, aMods)
+                  local tProfEntry = SkuOptions:InjectMenuItems(aParent, {aProfName}, SkuGenericMenuItem)
+                  tProfEntry.dynamic = true
+                  tProfEntry.sorting = true
+                  tProfEntry.BuildChildren = function(self)
+                     -- Kategorien modulübergreifend nach lokalisiertem Namen
+                     -- zusammenlegen (Reihenfolge des ersten Auftretens; Classic
+                     -- vor BC, da aMods bereits nach gameVersion sortiert ist).
+                     local tCatOrder = {}
+                     local tCats = {}
+                     for _, m in ipairs(aMods) do
+                        local contentInteralName = m.contentInteralName
+                        local mod = moduleData[contentInteralName]
+                        for bossIndex = 1, #mod.items do
+                           local tabVal = mod.items[bossIndex]
+                           if tabVal then
+                              -- Erste vorhandene Difficulty der Kategorie wählen
+                              -- (Berufe haben praktisch nur "Normal"); die über-
+                              -- flüssige Difficulty-Zwischenebene entfällt.
+                              local difficultyIndex
+                              for d = 1, #tDifficulties do
+                                 if tabVal[d] then difficultyIndex = d; break end
+                              end
+                              if difficultyIndex then
+                                 local catName = SkuUtil:Unescape(mod:GetNameForItemTable(bossIndex) or "")
+                                 if not tCats[catName] then
+                                    tCats[catName] = {}
+                                    tCatOrder[#tCatOrder + 1] = catName
+                                 end
+                                 tCats[catName][#tCats[catName] + 1] = {
+                                    contentInteralName = contentInteralName,
+                                    bossIndex = bossIndex,
+                                    difficultyIndex = difficultyIndex,
+                                    npcID = tabVal.npcID,
+                                 }
+                              end
+                           end
+                        end
+                     end
+
+                     for _, catName in ipairs(tCatOrder) do
+                        local tSources = tCats[catName]
+                        local tCatEntry = SkuOptions:InjectMenuItems(self, {catName}, SkuGenericMenuItem)
+                        tCatEntry.dynamic = true
+                        tCatEntry.sorting = true
+                        tCatEntry.BuildChildren = function(self)
+                           tRenderCategory(self, tSources)
+                        end
+                     end
+                     if #tCatOrder == 0 then
+                        SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+                     end
+                  end
                end
-               if #tFlat == 0 then
+
+               for _, profName in ipairs(tGroupOrder) do
+                  tBuildProfessionEntry(self, profName, tGroups[profName])
+               end
+               if #tGroupOrder == 0 then
                   SkuOptions:InjectMenuItems(self, {L["No data"]}, SkuGenericMenuItem)
                end
                return
