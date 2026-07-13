@@ -4,6 +4,111 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v42.04
+
+    Startgebiete: Strg+Shift+Tab wechselt wieder durch geschuetzte NPCs
+        Einfach: Seit dem WoW-Client-Update vom 9. Juli wechselte die Spezialtaste
+            Strg+Shift+Tab nicht mehr durch die geschuetzten (sonst nicht anvisierbaren)
+            NPCs in den Startgebieten - der Druck hob nur noch das Ziel auf. Sie
+            funktioniert wieder.
+        Technisch: Client-Build 2.5.6.68575 hat die CVar nameplateShowFriends entfernt
+            (aufgeteilt in nameplateShowFriendlyPlayers + nameplateShowFriendlyNpcs).
+            GetCVar auf den entfallenen Namen liefert nil ohne Fehler, Skus
+            Zwangs-Einschalten lief also stumm ins Leere, freundliche Plaketten
+            erschienen nie und das Namens-Repo hinter SkuCoreSecureTabButton blieb
+            leer. Ein neuer gecachter Resolver SkuCore.FriendlyNameplateCVars()
+            waehlt den CVar-Satz je Client (der Era-Client behaelt den alten
+            Sammelnamen) und wird vom Zwangs-Einschalten des Wechslers, der
+            Login-CVar-Basis und dem Kamera-Menue genutzt (der Umschalter fuer
+            freundliche Plaketten setzt jetzt eine CVar-Liste).
+
+    Navigations-Menue: verflacht, Shift+F9/F10-Schnelllisten ueberarbeitet
+        Einfach: Die Eintraege liegen jetzt direkt unter Navigation (Einheiten Route
+            oben, dann Direkter Wegpunkt - umbenannt von "Auswaehlen" -, Besuchte
+            loeschen, Schnellwegpunkt setzen); die alten Huellen "Wegpunkt" / "Route
+            folgen" und die doppelten Eintraege "Alles abwaehlen" / "Abwaehlen" sind
+            weg (Shift+F12 bricht die Navigation bereits lautlos ab). Die
+            Navigations-Einstellungen sind aus dem Nav-Menue ausgezogen: allgemeine
+            Einstellungen nach Einstellungen -> Navigation, Beacon-Einstellungen nach
+            Monitor -> Beacon. Shift+F9 / Shift+F10 oeffnen die Listen der nahen
+            Wegpunkte / nahen Routenziele direkt, und LINKS aus so einer Schnellliste
+            wechselt in das vollstaendigere Menue, das sie abkuerzt.
+        Technisch: Die Schnelltasten nutzen einen eigenen Handler plus transienten
+            Root-Eintrag (wie der Shift+F11-Aktionsleisten-Handler) statt des
+            fragilen lokalisierten SlashFunc-Label-Laufs; gemeinsame Listen-Builder
+            auf SkuNav-Modulebene gehoben; die veralteten
+            MenuQuickSelect1-4-Pfad-Defaults sind stillgelegt und die funktionslose
+            "Schnellwahl"-Einstellungsgruppe ist versteckt. Gleiche args/db,
+            gespeicherte Werte bleiben erhalten.
+
+    AtlasLoot-Berufe: Classic- und TBC-Rezepte in einer Liste
+        Einfach: Im AtlasLoot-Berufemenue erschien jeder Beruf doppelt (z.B.
+            "Verzauberkunst" fuer Classic und noch einmal fuer TBC), und eine
+            Kategorie wie Armschienen-Verzauberungen zeigte nur die Rezepte einer
+            Aera. Jeder Beruf ist jetzt ein einzelner Eintrag, und jede Kategorie
+            listet die Rezepte beider Aeren, sortiert nach benoetigtem Skill.
+        Technisch: Der Berufe-Zweig fuehrt auf zwei Ebenen zusammen: Crafting-Module
+            werden nach lokalisiertem Berufsnamen gruppiert (Enchanting +
+            EnchantingBC -> ein Eintrag), dann werden gleichnamige Kategorien ueber
+            die Module hinweg vereinigt und das Blatt rendert die Rezepte beider
+            Module nach Skill sortiert. WotLK-Module sperren sich selbst auf den
+            WotLK-Client, die TBC-Phase ergibt also genau Classic + BC.
+
+    Briefkasten: getippte Feldinhalte werden zuverlaessig vorgelesen
+        Einfach: Nach dem Eintippen von Empfaenger, Betreff oder Text in ein
+            Brieffeld wurde die Bestaetigung (z.B. "Empfaenger: Spielername") mit der
+            Sku-Audio-Stimme gesprochen, die freien Text wie Spielernamen nicht
+            sprechen kann - die Zeile blieb stumm oder unvollstaendig. Die
+            Bestaetigung nutzt jetzt immer die Blizzard-TTS-Stimme.
+        Technisch: Die MailEditor-Bestaetigungen uebergeben engine 2 (Blizzard-TTS)
+            an OutputStringBTtts statt des Standard-Audiodatenbank-Pfads.
+
+    Klassenlehrer: Fokus bleibt auf "Ausbilden"
+        Einfach: Ein Druck auf "Ausbilden" beim Klassenlehrer sprang mit dem Fokus an
+            den oberen Rand des Fensters. Er bleibt jetzt auf dem Ausbilden-Knopf,
+            nachdem sich die Liste beruhigt hat - mehrere Faehigkeiten hintereinander
+            lernen ist damit je ein Tastendruck.
+        Technisch: Das Re-Pinnen nach dem Ausbilden suchte den Knopf in den KINDERN
+            des fokussierten Eintrags statt in dessen Geschwistern; der
+            Fenster-Neuaufbau verankert per Index, daher traf es nie. Es durchsucht
+            jetzt die Ebene, auf der der Cursor steht (parent.children, dann
+            children), und das zwischenzeitliche CheckFrames laeuft stumm, sodass nur
+            die Endposition angesagt wird.
+
+    Flugmeister: "Schliessen" wird nicht mehr gelistet
+        Einfach: Das Flugmeister-Fenster listete einen Eintrag "Schliessen". Sku
+            listet Schliessen-Knoepfe nirgends (Escape schliesst jedes Fenster),
+            daher ist er weg.
+        Technisch: Das "Schliessen"-Label haengte der Fallback fuer Knoepfe ohne
+            Schriftzug automatisch an den namenlosen TaxiCloseButton. "Schliessen"
+            steht jetzt in blockedWidgetStrings, generisch gespiegelte Fenster lassen
+            Schliessen-Knoepfe damit aus wie die handgebauten Fensterspiegel schon
+            immer.
+
+    Menues umsortiert
+        Einfach: "Sku Menue im Kampf" ist von Monitor -> Kampf in ein wieder
+            eingefuehrtes Untermenue Einstellungen -> Kampf gezogen. "Tier Hunger
+            ansagen" liegt jetzt unter Monitor -> Tier -> Gesundheit. Das Auren-Menue
+            hat seine doppelte Ebene verloren: einmal RECHTS vom Auren-Eintrag landet
+            direkt auf "Neue Aura" (der funktionslose Eintrag "Optionen" ist weg).
+        Technisch: Gleiche Einstellungen und Speicherung (combatMenuOpen,
+            classes.hunter.petHappyness) - nur die Menueposition hat sich geaendert.
+            SkuAuras:MenuBuilder baut die Liste direkt in den Modul-Root-Eintrag; die
+            SlashFunc-Ankerpfade haben das aurenList-Segment verloren.
+
+    Dokumentation: Hinweise zur Standard-Tastenbelegung korrigiert
+        Einfach: Die Hilfedateien "Standard-Tastenbelegung fuer blinde Spieler"
+            (Deutsch, Englisch, Franzoesisch) nannten mehrere veraltete
+            Standardtasten. Korrigiert: Kraeuter-/Erz-Scan ist Strg+Shift+F /
+            Strg+Shift+R, einen Beacon vor/zurueck ist Strg+Shift+W / Strg+Shift+S,
+            Schnellwegpunkte sind Shift+F5 bis Shift+F8, zum Beacon drehen ist I. Die
+            README verweist jetzt auf die aktuelle Download-Seite, die diese
+            Hilfedateien und die Patch Notes auch direkt verlinkt.
+        Technisch: Gegen skuDefaultKeyBindings in SkuZOptions/SkuKeyBinds.lua
+            geprueft; die Website-Kopien unter docs/ tragen dieselben Korrekturen.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.03
 
     Bankfenster: Item-Namen und Rechtsklick wiederhergestellt

@@ -4,6 +4,101 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.04
+
+    Starting zones: Ctrl+Shift+Tab cycles protected NPCs again
+        Simple: Since the WoW client update of July 9 the special Ctrl+Shift+Tab key no
+            longer cycled through the protected (otherwise untargetable) NPCs in the
+            starting zones - pressing it just cleared your target. It works again.
+        Technical: Client build 2.5.6.68575 removed the CVar nameplateShowFriends
+            (split into nameplateShowFriendlyPlayers + nameplateShowFriendlyNpcs).
+            GetCVar on the gone name returns nil without an error, so Sku's force-on
+            silently stopped, friendly nameplates never appeared and the name repo
+            behind SkuCoreSecureTabButton stayed empty. A new cached resolver
+            SkuCore.FriendlyNameplateCVars() picks the CVar set per client (the Era
+            client keeps the old umbrella name) and is used by the cycler's force-on,
+            the login CVar baseline and the camera menu (the friendly nameplates
+            toggle now sets a CVar list).
+
+    Navigation menu: flattened, Shift+F9/F10 quick lists reworked
+        Simple: The Navigation menu entries now sit directly under Navigation (Units
+            route on top, then Direct waypoint - renamed from "Select" -, Clear
+            visited, Set quick waypoint); the old "Waypoint" / "Follow route" wrappers
+            and the redundant "Deselect all" / "Deselect" entries are gone (Shift+F12
+            already cancels navigation silently). The navigation settings moved out of
+            the Nav menu: general settings to Settings -> Navigation, beacon settings
+            to Monitor -> Beacon. Shift+F9 / Shift+F10 open the nearby-waypoints /
+            nearby-route-destinations lists directly, and LEFT from such a quick list
+            switches into the fuller menu it shortcuts into.
+        Technical: The quick keys use a dedicated handler plus a transient root entry
+            (like the Shift+F11 action-bars handler) instead of the fragile localized
+            SlashFunc label-walk; shared list builders hoisted to SkuNav module scope;
+            the stale MenuQuickSelect1-4 label-path defaults are retired and the inert
+            "quick select" settings group is hidden. Same args/db, saved values kept.
+
+    AtlasLoot professions: Classic and TBC recipes in one list
+        Simple: In the AtlasLoot profession menu each profession appeared twice (e.g.
+            "Enchanting" for Classic and again for TBC) and a category such as bracer
+            enchants only showed one era's recipes. Each profession is now a single
+            entry and every category lists both eras' recipes, sorted by required
+            skill.
+        Technical: The profession branch merges at two levels: crafting modules are
+            grouped by localized profession name (Enchanting + EnchantingBC -> one
+            entry), then same-named categories are merged across modules and the leaf
+            renders both modules' recipes sorted by skill. WotLK modules self-gate to
+            the WotLK client, so the TBC phase yields exactly Classic + BC.
+
+    Mailbox: typed field contents are read back reliably
+        Simple: After typing recipient, subject or text into a mail field, the
+            confirmation (e.g. "Recipient: Playername") was spoken with the Sku audio
+            voice, which cannot speak free text like player names - the line stayed
+            silent or incomplete. The confirmation now always uses the Blizzard TTS
+            voice.
+        Technical: The MailEditor confirmation calls pass engine 2 (Blizzard TTS) to
+            OutputStringBTtts instead of the default audio-databank path.
+
+    Class trainer: focus stays on "Train"
+        Simple: Pressing "Train" at a class trainer jumped the focus to the top of the
+            window. It now stays on the Train button after the skill list has settled,
+            so training several skills in a row is one keypress each.
+        Technical: The post-train re-pin searched the focused entry's CHILDREN for the
+            Train button instead of its siblings; the window rebuild re-anchors by
+            index, so it never matched. It now searches the level the cursor is on
+            (parent.children, then children), and the intermediate CheckFrames runs
+            quiet so only the final position is announced.
+
+    Flightmaster: "Close" no longer listed
+        Simple: The flightmaster window listed a "Close" entry. Sku never lists close
+            buttons (Escape closes every window), so it is gone.
+        Technical: The "Close" label was auto-attached to the nameless TaxiCloseButton
+            by the buttons-without-fontstring fallback. "Close" is now in
+            blockedWidgetStrings, so generically mirrored windows drop close buttons
+            like the hand-built window mirrors always did.
+
+    Menus reorganized
+        Simple: "Sku menu in combat" moved from Monitor -> Combat to a re-added
+            Settings -> Combat submenu. "Notice on pet starving" moved to Monitor ->
+            Pet -> Health. The Auras menu lost its duplicated level: one RIGHT from
+            the Auras entry lands directly on "New aura" (the functionless "Options"
+            entry is gone).
+        Technical: Same settings and storage (combatMenuOpen,
+            classes.hunter.petHappyness) - only the menu placement changed.
+            SkuAuras:MenuBuilder builds the list directly into the module root entry;
+            the SlashFunc anchor paths dropped the aurenList segment.
+
+    Documentation: standard key binding hints corrected
+        Simple: The "Standard Key Bindings for Blind Players" help files (English,
+            German, French) named several outdated defaults. Corrected: herb/ore scan
+            is Ctrl+Shift+F / Ctrl+Shift+R, advance/back one beacon is Ctrl+Shift+W /
+            Ctrl+Shift+S, quick waypoints are Shift+F5 to Shift+F8, turn to beacon is
+            I. The README now points at the current download page, which also links
+            these help files and the patch notes directly.
+        Technical: Verified against skuDefaultKeyBindings in
+            SkuZOptions/SkuKeyBinds.lua; the website copies under docs/ carry the same
+            corrections.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.03
 
     Bank window: item names and right-click restored
