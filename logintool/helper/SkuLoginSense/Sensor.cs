@@ -96,7 +96,10 @@ namespace SkuLoginSense
 
         // ---------- fiducial checks (port of checks.ahk, BC-aware) ----------
 
-        static bool InRange(int test, int expect) => test >= expect - 2 && test <= expect + 2;
+        // +-5: fiducial colors live in DXT RGB565 endpoints whose GPU decode can
+        // differ from the nominal value by a few units; all fiducials are far
+        // enough apart that this cannot make two checks collide.
+        static bool InRange(int test, int expect) => test >= expect - 5 && test <= expect + 5;
 
         bool Match(GameData.Rgb c, string colorName)
         {

@@ -79,9 +79,13 @@ IsRealmQueue()
 }
 
 ;------------------------------------------------------------------------------------------
+; Tolerance +-5: the Phase 3 fiducial recolor stores colors in DXT RGB565
+; endpoints, whose GPU decode can differ from the nominal value by a few
+; units (e.g. 140 stored -> 139/140 rendered). All fiducial colors are far
+; enough apart that +-5 cannot make two checks collide.
 IsColorRange(aTestColorValue, aCompareColorValue)
 {
-	if(aTestColorValue >= (aCompareColorValue - 2) and aTestColorValue <= (aCompareColorValue + 2))
+	if(aTestColorValue >= (aCompareColorValue - 5) and aTestColorValue <= (aCompareColorValue + 5))
 	{
 		return true
 	}
@@ -609,10 +613,18 @@ IsConnectingToGame()
 }
 
 ;------------------------------------------------------------------------------------------
+; Selected-row highlight. Legacy textures used flat white; the Phase 3
+; redesign recolors the highlight to flat dark blue (0,40,120 texture,
+; ~0,40,121 rendered) so the gold text on it stays OCR-readable. Accept
+; both so the tool works with either texture generation installed.
 IsWhiteUI(x, y)
 {
 	tRGBColor := GetColorAtUiPos(x, y)
 	if (tRGBColor.r > 250 and tRGBColor.g > 250 and tRGBColor.b > 250)
+	{
+		return true
+	}
+	if (IsColorRange(tRGBColor.r, 0) = true and IsColorRange(tRGBColor.g, 40) = true and IsColorRange(tRGBColor.b, 121) = true)
 	{
 		return true
 	}

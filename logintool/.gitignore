@@ -10,3 +10,7 @@ log.txt
 # Helper build output
 helper/**/bin/
 helper/**/obj/
+
+# Texture backups made by tools/make_fiducial_textures.py (bulky, like the
+# textures themselves; the pristine originals also live in the release zips)
+tools/texture_originals/

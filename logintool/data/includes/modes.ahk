@@ -122,7 +122,7 @@ WatchInQueue:
 				tValue := true
 
 				tRGBColor := GetColorAtUiPos(9799, 450)
-				if (IsColorRange(tRGBColor.r, 255) = true and IsColorRange(tRGBColor.g, 0) = true and IsColorRange(tRGBColor.b, 0) = true)
+				if (IsColorRange(tRGBColor.r, gGameUiColors.GenericRedButton.r) = true and IsColorRange(tRGBColor.g, gGameUiColors.GenericRedButton.g) = true and IsColorRange(tRGBColor.b, gGameUiColors.GenericRedButton.b) = true)
 				{
 					;tValue := true
 				}
@@ -132,7 +132,7 @@ WatchInQueue:
 				}
 
 				tRGBColor := GetColorAtUiPos(10194, 450)
-				if (IsColorRange(tRGBColor.r, 255) = true and IsColorRange(tRGBColor.g, 0) = true and IsColorRange(tRGBColor.b, 0) = true)
+				if (IsColorRange(tRGBColor.r, gGameUiColors.GenericRedButton.r) = true and IsColorRange(tRGBColor.g, gGameUiColors.GenericRedButton.g) = true and IsColorRange(tRGBColor.b, gGameUiColors.GenericRedButton.b) = true)
 				{
 					;tValue := true
 				}

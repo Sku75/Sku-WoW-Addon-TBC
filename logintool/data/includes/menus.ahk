@@ -580,7 +580,7 @@ InitMenu:
 		;tRGBColor := GetColorAtUiPos(-280, 724)
 		tRGBColor := GetColorAtUiPos(gGameUiWidgets.CharSelectionScreenDeleteChar.x, gGameUiWidgets.CharSelectionScreenDeleteChar.y)
 		;MsgBox % tRGBColor.r tRGBColor.g tRGBColor.b
-		if (IsColorRange(tRGBColor.r, 255) = true and IsColorRange(tRGBColor.g, 0) = true and IsColorRange(tRGBColor.b, 0) = true)
+		if (IsColorRange(tRGBColor.r, gGameUiColors.GenericRedButton.r) = true and IsColorRange(tRGBColor.g, gGameUiColors.GenericRedButton.g) = true and IsColorRange(tRGBColor.b, gGameUiColors.GenericRedButton.b) = true)
 		{
 			;gMainMenu.childs[5].onEnter()
 			;enter char name and press enter or esc to abort
