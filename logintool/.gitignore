@@ -14,3 +14,9 @@ helper/**/obj/
 # Texture backups made by tools/make_fiducial_textures.py (bulky, like the
 # textures themselves; the pristine originals also live in the release zips)
 tools/texture_originals/
+
+# Release zip output (ships as a GitHub release asset, not in git)
+dist/
+
+# v2 smoke-test output
+v2/test_sense_out.txt

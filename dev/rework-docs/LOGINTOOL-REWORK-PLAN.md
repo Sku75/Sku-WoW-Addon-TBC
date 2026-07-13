@@ -157,6 +157,34 @@ world, create char, delete char, switch realm.
   queues exist, reimplement via OCR of the queue popup text in Phase 5.)
 - Exact delete keywords for frFR/ruRU/esES clients (Phase 5 makes this moot).
 
+## Execution status (2026-07-13, one-session run)
+
+All six phases implemented and committed (a767c65, 9b9b513, 1cfe03f,
+d2c6668 + Phase 6). Checkpoint B (helper vs screenshots + live client)
+PASSED. Remaining USER checkpoints, consolidated into one in-game session:
+- A: v1 tool still works end to end (textures in the client are still the
+  OLD generation until C installs the new ones — test A first!)
+- C: install recolored textures + new tool, verify the blue selection row
+  really is the highlighted char slot, helper identifies every glue screen
+- D: v2 full flow — select char by real name, enter world, create char,
+  delete char (popup spoken + keyword typed), switch realm
+
+## Release procedure (ONLY after checkpoints A/C/D pass)
+
+1. `powershell logintool\tools\build_release_zip.ps1` →
+   `logintool/dist/WoW-Login-Tool.zip` (root folder "WoW Login Tool";
+   ships v1 + v2 + helper exe + fonts + recolored textures + EMPTY
+   settings.ini).
+2. Attach the zip to the next Sku release tag (`gh release ...`).
+3. Bump `installer/SkuInstaller/Config.cs` `LoginToolTag` to that tag,
+   rebuild the installer (`dotnet build -c Release`, never release.ps1
+   with -ExecutionPolicy Bypass), attach the exe to the release.
+4. The installer now also: installs the font override into
+   <flavor>\Fonts (never deletes the folder), embeds/extracts BOTH AHK
+   runtimes (AutoHotkey.exe = v1.1, AutoHotkeyV2.exe = v2), and points
+   the shortcut at `v2\START.ahk` when present.
+5. Update docs/index.html if the login tool is mentioned with a version.
+
 ## Testing infrastructure already in place
 
 - `logintool/fontprobe/font_probe.ps1` — countdown capture + OCR print

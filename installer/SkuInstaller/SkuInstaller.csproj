@@ -29,10 +29,12 @@
          x86 + companions + the signing script). Extracted+installed at runtime
          by Sapi2SrInstaller. -->
     <EmbeddedResource Include="payload\sapi2sr-payload.zip" />
-    <!-- Portable AutoHotkey v1.1 (x64) + its GPL license, dropped next to the
-         WoW Login Tool's START.ahk so the tool runs without a system-wide AHK
-         install. Deployed at runtime by LoginToolInstaller. -->
+    <!-- Portable AutoHotkey runtimes + GPL license, dropped next to the WoW
+         Login Tool so it runs without a system-wide AHK install. v1.1 runs the
+         legacy START.ahk fallback, v2 runs the reworked v2\START.ahk driver
+         (preferred when present). Deployed at runtime by LoginToolInstaller. -->
     <EmbeddedResource Include="payload\AutoHotkeyU64.exe" />
+    <EmbeddedResource Include="payload\AutoHotkey64_v2.exe" />
     <EmbeddedResource Include="payload\AutoHotkey-license.txt" />
   </ItemGroup>
 

@@ -117,6 +117,12 @@ namespace SkuInstaller
                         announce(Loc.Get("lt.noInterface"));
                         Logger.Warning($"WoW Login Tool: Interface folder not found (interfaceDir={interfaceDir}); textures not installed.");
                     }
+
+                    // 5. Font override: copy the readable font (shipped in the
+                    //    zip's fonts\ folder) into <flavor>\Fonts. The folder
+                    //    PRE-EXISTS with Blizzard's own *.slug data — only add
+                    //    our four TTFs, never delete anything.
+                    InstallFontOverride(source, interfaceDir, announce);
                 }
                 finally
                 {
@@ -137,20 +143,67 @@ namespace SkuInstaller
             }
         }
 
-        /// <summary>Drops the portable AutoHotkey next to START.ahk and (re)creates the launcher shortcut.</summary>
+        /// <summary>
+        /// Maps the shipped readable font (fonts\AtkinsonHyperlegible-*.ttf in the
+        /// zip) onto WoW's four stock font names in &lt;flavor&gt;\Fonts. Regular
+        /// covers the UI/list fonts, Bold the title/large-number fonts. Takes
+        /// effect on the next client start; removing the four files reverts it.
+        /// </summary>
+        private static void InstallFontOverride(string source, string interfaceDir, Action<string> announce)
+        {
+            try
+            {
+                string fontsPayload = Path.Combine(source, "fonts");
+                string regular = Path.Combine(fontsPayload, "AtkinsonHyperlegible-Regular.ttf");
+                string bold = Path.Combine(fontsPayload, "AtkinsonHyperlegible-Bold.ttf");
+                if (interfaceDir == null || !File.Exists(regular) || !File.Exists(bold))
+                    return;   // old zip without fonts, or no client Interface
+
+                string flavorDir = Directory.GetParent(interfaceDir)?.FullName;
+                if (flavorDir == null) return;
+                string fontsDir = Path.Combine(flavorDir, "Fonts");
+
+                announce(Loc.Get("lt.fonts"));
+                Directory.CreateDirectory(fontsDir);   // pre-exists on Anniversary; created elsewhere
+                File.Copy(regular, Path.Combine(fontsDir, "FRIZQT__.TTF"), overwrite: true);
+                File.Copy(regular, Path.Combine(fontsDir, "ARIALN.TTF"), overwrite: true);
+                File.Copy(bold, Path.Combine(fontsDir, "MORPHEUS.TTF"), overwrite: true);
+                File.Copy(bold, Path.Combine(fontsDir, "skurri.ttf"), overwrite: true);
+                Logger.Info($"WoW Login Tool: font override installed into {fontsDir}.");
+            }
+            catch (Exception ex)
+            {
+                // Best-effort like everything else here (fonts need write access
+                // under Program Files; the installer normally runs elevated).
+                Logger.Warning($"WoW Login Tool: font override failed: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Drops the portable AutoHotkey runtimes next to START.ahk and
+        /// (re)creates the launcher shortcut. The v2 driver (v2\START.ahk,
+        /// present in reworked zips) is preferred; old zips fall back to the
+        /// v1 script + v1 runtime.
+        /// </summary>
         private static void EnsureRuntimeAndShortcut(string toolDir, Action<string> announce)
         {
-            string ahkExe = Path.Combine(toolDir, "AutoHotkey.exe");
+            string ahkV1Exe = Path.Combine(toolDir, "AutoHotkey.exe");
+            string ahkV2Exe = Path.Combine(toolDir, "AutoHotkeyV2.exe");
 
             announce(Loc.Get("lt.ahk"));
-            ExtractEmbedded("AutoHotkeyU64.exe", ahkExe);
+            ExtractEmbedded("AutoHotkeyU64.exe", ahkV1Exe);
+            ExtractEmbedded("AutoHotkey64_v2.exe", ahkV2Exe);
             ExtractEmbedded("AutoHotkey-license.txt", Path.Combine(toolDir, "AutoHotkey-license.txt"));
+
+            bool hasV2 = File.Exists(Path.Combine(toolDir, "v2", "START.ahk")) && File.Exists(ahkV2Exe);
+            string target = hasV2 ? ahkV2Exe : ahkV1Exe;
+            string arguments = hasV2 ? "\"v2\\START.ahk\"" : "\"START.ahk\"";
 
             announce(Loc.Get("lt.shortcut"));
             Shortcut.CreateLauncher(
                 lnkName: Config.LoginToolFolderName + ".lnk",
-                target: ahkExe,
-                arguments: "\"START.ahk\"",
+                target: target,
+                arguments: arguments,
                 workingDir: toolDir,
                 description: "WoW Login Tool — audio menu for the WoW login and character screens",
                 desktop: true,

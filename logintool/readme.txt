@@ -1,28 +1,58 @@
 WoW Login Tool
 
-PLEASE NOTE:
-The tool isn't working anymore (or at least very unreliable) for Retail. It can't be fixed.
-It's still working for Cataclysm and Classic (Era, SoD, etc.).
+VERSION 2 (OCR rework):
+This release contains two generations of the tool:
+- v2 (recommended, folder "v2"): senses the game by capturing the game
+  window and reading the text on it with the Windows OCR (both are built
+  into Windows 10/11). It announces your REAL character names ("Xynayya,
+  Stufe 36 Priesterin, Sturmwind"), reads the live realm list for all
+  regions and languages, and reads error/confirmation popups out loud
+  verbatim. Selection happens by clicking the recognized text directly -
+  the old slow arrow-down scanning is gone.
+- v1 (legacy, START.ahk in this folder): the previous pixel-only tool,
+  kept as a fallback.
+The tool never reads or writes the game's memory and never injects into
+the game process. It looks at the screen and presses keys/clicks - the
+same things a sighted player does.
+
+Primary tested game version: WoW Classic Anniversary (Burning Crusade).
+Cataclysm/Era/Retail remain selectable as an untested baseline - testers
+and contributors welcome.
 
 IMPORTANT:
 Carefully follow the instructions below to set up the tool, otherwise it won't work.
 If the tool isn't working, please consult the "Common problems when the tool doesn't work" section below.
 If you need help, feel free to ask in our Discord: https://discord.gg/FsfKeqxZV4
 
-# Setting up the tool
-1. If you not already have Autohotkey installed, you need to download and install it here: https://www.autohotkey.com/download/ahk-install.exe
+# Setting up the tool (automatic)
+The Sku installer (https://sku75.github.io/Sku-WoW-Addon-TBC/) sets up
+everything: the tool, the login-screen textures, the readable font, the
+AutoHotkey runtimes, and a "WoW Login Tool" shortcut on the desktop and in
+the Start menu. If you used it, you are done - skip to "Using the tool".
+
+# Setting up the tool (manual)
+1. AutoHotkey: v2 of the tool needs AutoHotkey v2, the legacy v1 tool needs
+   AutoHotkey v1.1. Download from https://www.autohotkey.com/ (skip this
+   step if the Sku installer put AutoHotkeyV2.exe/AutoHotkey.exe into the
+   tool folder already).
 2. Open the "CopyTheContentOfThisFolderToInterface" folder in the WoW Login Tool folder you've downloaded. There should be 5 folders in this folder ("BUTTONS", "DialogFrame", etc.).
 3. Copy all 5 folders.
 4. Browse to the WoW game files. Depending on your setup, this could be "C:\Program Files (x86)\World of Warcraft".
 5. In the WoW game files, open the folder for the version of the game you want to play:
+	- for Classic Anniversary (Burning Crusade), open "_anniversary_"
 	- for Classic Cataclysm, open "_classic_"
 	- for Retail open "_retail_"
 	- for Classic Era open "_classic_era_"
 6. Inside this folder, open the Interface folder.
 7. Paste the 5 folders you copied in step 2 into the Interface folder. Important: overwrite any existing files and folders!
-8. Run the tool: Go to your WoW Login Tool folder and run the file named START.ahk.
-9. There will be a setup on the first start. Choose the correct settings and follow the instructions.
-10. You're done.
+8. Recommended: install the readable font override. Run (as administrator)
+   the script fonts\install_wow_fonts.ps1 from the tool folder, passing your
+   client folder if it is not the Anniversary default. This makes the game's
+   text much easier for the OCR (and for low-vision players) to read.
+9. Run the tool: for v2 run "v2\START.ahk" (with AutoHotkey v2); for the
+   legacy tool run "START.ahk" (with AutoHotkey v1).
+10. There will be a setup on the first start. Choose the correct settings and follow the instructions.
+11. You're done.
 
 # What does the tool do?
 The tool adds audio accessibility to the World of Warcraft login experience. It provides an audio interface for creating characters, choosing servers, etc. 
@@ -43,13 +73,15 @@ If all this isn't helping, please feel free to join our Discord server and ask f
 
 # Using the tool
 Important: Do not press any keys while the tool is working (it will play the blip, blip sound). Do not move the mouse or click while the tool is running.
-Run START.ahk from the tools folder. The first time you start it, it will ask you to do a quick setup.
+Start the tool via the "WoW Login Tool" shortcut (or v2\START.ahk). The first time you start it, it will ask you to do a quick setup.
 Use the left and right arrow keys to navigate to the submenu of an item.
 Use the up and down arrow keys to navigate to the previous or next item in the audio menu.
 Use the Enter key to choose a menu item.
 To exit the tool, press alt + escape.
 Each time you tab out of the game (Pause mode) and back in (Login mode), the tool needs to initialise. This is by design. Just wait for the audio menu to come up.
-The tool isn't recognizing the names and classes of your characters. It is just refering them by numbers. Character 1, 2, etc. You need to keep track of what number is what character by yourself. New characters will always be added to the end of the list.
+v2 announces your characters by their real name, level, class and zone, read
+live from the screen. (The legacy v1 tool refers to characters by numbers
+only: Character 1, 2, etc.)
 
 # Keys
 Arrow keys: navigate in the audio menu
@@ -78,6 +110,28 @@ Go to https://duugu.github.io/Sku and check the Updates section of this page to 
 Open the Excel spreadsheet data\localization\translations.xlsx in your WoW Login Tool folder and follow the instructions on the Instructions tab.
 
 # Release Notes
+	r2.0 (OCR rework)
+		- New v2 driver (AutoHotkey v2 + SkuLoginSense helper): the tool now SEES the
+		  screen. Window capture (Windows.Graphics.Capture) + Windows OCR, fully
+		  offline, out-of-process (never touches the game's memory).
+		- Real character names, levels, classes and zones in the character menu;
+		  selection clicks the recognized entry directly (no more arrow-down scanning).
+		- Realm switching reads the live realm list - all regions and languages work,
+		  the hardcoded realm tables are gone.
+		- Popups are read out loud verbatim; the delete confirmation types the
+		  localized keyword for you (now also French, Russian, Spanish).
+		- Redesigned login-screen textures: dark red buttons and a dark blue selection
+		  bar instead of pure red/white - readable for the OCR and for low-vision
+		  players. Copy CopyTheContentOfThisFolderToInterface again when updating!
+		- Readable font override (Atkinson Hyperlegible) ships in fonts\ and is
+		  installed automatically by the Sku installer.
+		- SAPI fixes: no more voice-swap race, deliberate interrupt-vs-queue behavior,
+		  output device configurable in settings.ini (gAudioOutputMatch=, empty =
+		  system default), errors are logged to log.txt.
+		- The addons menu was removed (the Sku installer enables addons); "select
+		  region" is back as main menu item 9.
+		- The legacy v1 tool is still included as a fallback (START.ahk).
+
 	r1.16
 		- Fixed a bug with character creation on Classic Era.
 
