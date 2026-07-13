@@ -13,7 +13,10 @@
 }
 
 !F1:: {
-    global gLoginInitialized
+    global gLoginInitialized, gAbortFlow
+    ; Always signal any running flow to stop, so this key is a reliable
+    ; "get me out" even while a flow is clicking.
+    gAbortFlow := true
     if (gMode = 1 || gMode = -1) {
         SwitchToPlay()
     } else if (gMode = 0) {

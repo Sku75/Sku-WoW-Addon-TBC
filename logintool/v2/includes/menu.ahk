@@ -11,6 +11,7 @@ global gMenuLanguage := ""
 global gMenuRegion := ""
 global gMenuGametype := ""
 global gBusy := false           ; an action/flow is running
+global gAbortFlow := false      ; set by Alt+F1 / focus loss to stop a flow
 global gIsChecking := false
 global gEnterCharacterNameFlag := false
 global gDeleteCharacterNameFlag := false
@@ -98,7 +99,7 @@ MenuLeft() {
 }
 
 MenuAction() {
-    global gBusy
+    global gBusy, gAbortFlow
     if (gCurrentItem = "" || gCurrentItem.action = "")
         return
     if gBusy {
@@ -106,10 +107,26 @@ MenuAction() {
         return
     }
     gBusy := true
+    gAbortFlow := false
     try (gCurrentItem.action)(gCurrentItem)
     catch as e
         Log("MenuAction failed: " e.Message " @ " e.Line)
     gBusy := false
+}
+
+; A running flow must stop the moment the user tabs away from the game or asks
+; to stop (Alt+F1) - otherwise its clicks keep pulling focus back and the user
+; is trapped. Every flow wait-loop calls this and returns immediately if true.
+FlowAbort(where) {
+    global gAbortFlow
+    if (gAbortFlow || !IsWoWWindowFocus()) {
+        Log(where ": aborting flow (abort=" gAbortFlow " focus=" IsWoWWindowFocus() ")")
+        gAbortFlow := false
+        gEnterCharacterNameFlag := false
+        gDeleteCharacterNameFlag := false
+        return true
+    }
+    return false
 }
 
 ; ---------- startup + mode machine ----------
@@ -131,7 +148,7 @@ Main() {
 }
 
 CheckMode() {
-    global gIsChecking, gLastGlueSense
+    global gIsChecking, gLastGlueSense, gBusy, gMode
     if (gIsChecking || gBusy)
         return
     gIsChecking := true

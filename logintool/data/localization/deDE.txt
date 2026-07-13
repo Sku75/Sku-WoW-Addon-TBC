@@ -49,6 +49,7 @@ enter delete and press enter, or press escape to cancel the deleting process.==G
 press enter to confirm the deletion, or press escape to cancel.==Drücke die Eingabetaste, um das Löschen zu bestätigen, oder drücke Escape, um abzubrechen.
 delete character==Charakter löschen
 switched to Server==Server gewechselt
+Could not switch server.==Server konnte nicht gewechselt werden.
 The server is full. You are in queue.==Der Server ist voll. Du befindest dich in der Warteschlange.
 Please wait.==Bitte warte.
 Creation is canceled. Please wait.==Die Erstellung wird abgebrochen. Bitte warte.

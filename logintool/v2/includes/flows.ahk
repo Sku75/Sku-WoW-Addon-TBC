@@ -84,7 +84,9 @@ InitLogin(s := "") {
         return
     }
     if (screen = "realmselect") {
-        ClickWidget("RealmSelectionCancelButton")
+        ; Escape reliably closes the realm dialog; the cancel-button coordinate
+        ; drifts at 16:10 and would leave it open.
+        Send("{Escape}")
         Sleep(1000)
         return
     }
@@ -296,6 +298,8 @@ CreateCharAction(genderIndex, raceIndex, classIndex, zoneIndex) {
     ; Wait for the creation screen.
     tries := 0
     loop {
+        if FlowAbort("CreateChar")
+            return
         Sleep(700)
         s := SenseQuick()
         if SenseCheck(s, "charcreate")
@@ -334,6 +338,8 @@ EnterCharacterNameHandler() {
     Say(T("Please wait."))
     tries := 0
     loop {
+        if FlowAbort("EnterCharacterName")
+            return
         Sleep(1200)
         s := Sense()
         if !SenseOk(s) {
@@ -448,6 +454,8 @@ DeleteCharacterNameHandler() {
     global gDeleteCharacterNameFlag
     tries := 0
     loop {
+        if FlowAbort("DeleteCharacterName")
+            return
         s := SenseQuick()
         if SenseProbeMatches(s, "CharDeleteConfirmButton", "GenericRedButton") {
             gDeleteCharacterNameFlag := false
@@ -511,6 +519,8 @@ SwitchRealmOpenAction(menuItem) {
         ClickWidget("CharSelectionRealmsButton")
         tries := 0
         loop {
+            if FlowAbort("SwitchRealmOpen")
+                return
             Sleep(700)
             s := SenseQuick()
             if SenseCheck(s, "realmselect")
@@ -582,62 +592,68 @@ RealmTabAction(tab, menuItem) {
 
 RealmSelectAction(row) {
     Say(T("switching to server. please wait."))
-    Log("RealmSelect: '" row["text"] "' select+join")
-    ; Join by double-clicking the realm row - the standard WoW realm-list
-    ; gesture. This avoids the separate OK button, whose stored coordinate
-    ; drifts with aspect ratio (same failure the login button had).
+    Log("RealmSelect: '" row["text"] "' select")
+    ; Select the realm with an OCR-rect click (reliable), then JOIN by pressing
+    ; Enter - keyboard is coordinate-free, unlike the OK button whose stored
+    ; coordinate drifts at this aspect ratio. Escape (below) cancels the same way.
     ClickOcrRect(row)
-    Sleep(300)
-    DoubleClickOcrRect(row)
-    Sleep(1200)
-
-    ; If the dialog is still open, the double-click only selected the realm -
-    ; fall back to the OK button coordinate.
-    s := SenseQuick()
-    if SenseCheck(s, "realmselect") {
-        Log("RealmSelect: still on realmselect after join, clicking OK button")
-        ClickWidget("ServerListOkButton")
-        Sleep(1200)
-    }
+    Sleep(500)
+    Send("{Enter}")
+    Sleep(1500)
 
     tries := 0
-    stuckOnDialog := 0
+    stuck := 0
     loop {
+        if FlowAbort("RealmSelect")
+            return
         s := Sense()
         if SenseCheck(s, "charselect") && !AnyPopup(s) {
             Log("RealmSelect: reached charselect")
             Say(T("switched to Server"))
             RefreshCharacterMenuSettled()   ; wait for all slots to render
-            Sleep(600)
+            Sleep(400)
             gMainMenu.children[1].Enter()
             return
         }
         if AnyPopup(s) {
-            ; High-population warning, hardcore warning, wrong-language error:
-            ; speak it, click it away.
+            ; High-population / hardcore / wrong-language popup: speak, dismiss.
             Log("RealmSelect: popup - " s["screen"])
             SpeakAndClosePopup(s)
-            stuckOnDialog := 0
+            stuck := 0
         } else if SenseCheck(s, "charcreate") {
             Send("{Esc}")
-            stuckOnDialog := 0
+            stuck := 0
         } else if SenseCheck(s, "realmselect") {
-            ; Still on the dialog. A legitimate switch shows this briefly while
-            ; the dialog closes; but selecting the realm we're already on does
-            ; nothing, so after a few stuck reads cancel out rather than hang.
-            stuckOnDialog++
-            if (stuckOnDialog >= 4) {
-                Log("RealmSelect: dialog stuck open, cancelling to char select")
-                ClickWidget("RealmSelectionCancelButton")
+            ; Still on the dialog. Retry the join a couple of ways, then give up
+            ; cleanly (escape out) instead of spam-clicking to a timeout.
+            stuck++
+            if (stuck = 2) {
+                Log("RealmSelect: still open, re-selecting + Enter")
+                ClickOcrRect(row)
+                Sleep(300)
+                Send("{Enter}")
+            } else if (stuck = 4) {
+                Log("RealmSelect: still open, trying double-click join")
+                DoubleClickOcrRect(row)
+            } else if (stuck >= 6) {
+                Log("RealmSelect: could not join, escaping out")
+                Send("{Escape}")
+                Sleep(1000)
+                Say(T("Could not switch server."))
+                RefreshCharacterMenuSettled()
+                Sleep(400)
+                gMainMenu.children[1].Enter()
+                return
             }
         } else {
             Say(T("wait"))
-            stuckOnDialog := 0
+            stuck := 0
         }
-        Sleep(1200)
+        Sleep(1000)
         tries++
-        if (tries > 25) {
+        if (tries > 15) {
             Log("RealmSelect: timed out")
+            Send("{Escape}")
             FailFlow()
             return
         }

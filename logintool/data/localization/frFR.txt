@@ -49,6 +49,7 @@ enter delete and press enter, or press escape to cancel the deleting process.==E
 press enter to confirm the deletion, or press escape to cancel.==Appuyez sur entrée pour confirmer la suppression, ou sur échap pour annuler.
 delete character==Supprimer le personnage
 switched to Server==Le royaume a été changé
+Could not switch server.==Impossible de changer de royaume.
 The server is full. You are in queue.==Le royaume est plein, vous êtes dans la file d’attente
 Please wait.==Veuillez atendre
 Creation is canceled. Please wait.==La création est annulée, veuillez patienter
