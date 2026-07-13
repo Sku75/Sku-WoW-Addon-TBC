@@ -80,7 +80,7 @@ InitMenu:
 	gMainMenu.childs[tMainItemN].parent := gMainMenu
 	gMainMenu.childs[tMainItemN].name := L["login with selected character"]
 	gMainMenuchilds2Action(this){
-		tRGBColor := GetColorAtUiPos(9918, 705)
+		tRGBColor := GetColorAtUiPos(gGameUiWidgets.loginButton.x, gGameUiWidgets.loginButton.y)
 		if (IsColorRange(tRGBColor.r, 139) = true and IsColorRange(tRGBColor.g, 139) = true and IsColorRange(tRGBColor.b, 139) = true)
 		{
 			gMainMenu.childs[1].onEnter()

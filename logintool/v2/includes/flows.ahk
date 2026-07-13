@@ -212,12 +212,36 @@ SelectCharacterAction(entry) {
 }
 
 LoginSelectedAction() {
-    s := SenseQuick()
+    ; The enter-world button is found by its own OCR label in the
+    ; bottom-center strip - the legacy data.ini coordinate (calibrated on
+    ; older clients) misses the centered Anniversary button. The strip
+    ; excludes the selected-character name (~0.855h) and the corner buttons.
+    s := Sense()
+    if !SenseOk(s)
+        return
+    w := s["width"], h := s["height"]
+    button := ""
+    if s.Has("lines") {
+        for line in s["lines"] {
+            cx := line["x"] + line["w"] / 2
+            cy := line["y"] + line["h"] / 2
+            if (cx >= 0.38 * w && cx <= 0.62 * w && cy >= 0.88 * h && cy <= 0.96 * h) {
+                button := line
+                break
+            }
+        }
+    }
+    if (button != "") {
+        Log("LoginSelectedAction: clicking OCR button '" button["text"] "'")
+        ClickOcrRect(button)
+        return
+    }
     if SenseProbeMatches(s, "loginButton", "GenericDarkGreyButton") {
         ; No character selected - the login button is greyed out.
         gMainMenu.children[1].Enter()
         return
     }
+    Log("LoginSelectedAction: no OCR button found, widget fallback")
     ClickWidget("loginButton")
 }
 
