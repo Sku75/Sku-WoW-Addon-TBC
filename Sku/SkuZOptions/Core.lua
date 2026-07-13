@@ -189,7 +189,9 @@ function SkuOptions:SlashFunc(input, aSilent)
 				SetCVar("nameplateShowEnemyPets", 1)
 				SetCVar("nameplateShowEnemyGuardians", 1)
 				SetCVar("nameplateShowEnemyTotems", 0)
-				SetCVar("nameplateShowFriends", 1)
+				for _, tCVar in ipairs(SkuCore.FriendlyNameplateCVars()) do
+					SetCVar(tCVar, 1)
+				end
 				SetCVar("nameplateShowFriendlyPets", 1)
 				SetCVar("nameplateMaxDistance", 41)
 				SetCVar("nameplateMotion", 1)
@@ -5643,9 +5645,14 @@ function SkuOptions.CameraMenuBuilder(self)
 						cameraPitchMoveSpeed = "90",
 						["test_cameraOverShoulder"] = "0",
 						nameplateShowEnemies = "1",
-						nameplateShowFriends = "0",
 						nameplateShowAll = "0",
 					}
+					-- Friendly plates: CVar name(s) differ per client since the 2.5.6
+					-- July-2026 build split nameplateShowFriends (see
+					-- SkuCore.FriendlyNameplateCVars); resolve instead of hardcoding.
+					for _, tCVar in ipairs(SkuCore.FriendlyNameplateCVars()) do
+						tSkuDefaults[tCVar] = "0"
+					end
 
 					local tDistSteps = {
 						{label = "CAM_DistClose", value = "1"},
@@ -5922,21 +5929,30 @@ function SkuOptions.CameraMenuBuilder(self)
 						local tNPEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Nameplates"]}, SkuGenericMenuItem)
 						tNPEntry.dynamic = true
 						tNPEntry.BuildChildren = function(self)
+							-- aCVar: string oder Liste (Freundlich = pro Client aufgeloeste
+							-- Namen, siehe SkuCore.FriendlyNameplateCVars). Zustand liest
+							-- der erste Eintrag, gesetzt werden alle.
 							local function tBuildNP(aLabel, aCVar)
-								local tOn = (GetCVar(aCVar) == "1")
+								local tCVars = (type(aCVar) == "table") and aCVar or {aCVar}
+								local tOn = (GetCVar(tCVars[1]) == "1")
 								local tE = SkuOptions:InjectMenuItems(self, {aLabel..", "..(tOn and L["on"] or L["off"])}, SkuGenericMenuItem)
 								tE.dynamic = true
 								tE.isSelect = true
 								tE.OnAction = function(self, aValue, aName)
 									if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
 									local tClean = tCleanName(aName)
-									if tClean == L["on"] then tApplyCVar(aCVar, "1"); tSaveUser(aCVar, "1"); tCamSay(aLabel.." "..L["CAM_NPOn"])
-									elseif tClean == L["off"] then tApplyCVar(aCVar, "0"); tSaveUser(aCVar, "0"); tCamSay(aLabel.." "..L["CAM_NPOff"]) end
+									if tClean == L["on"] then
+										for _, c in ipairs(tCVars) do tApplyCVar(c, "1"); tSaveUser(c, "1") end
+										tCamSay(aLabel.." "..L["CAM_NPOn"])
+									elseif tClean == L["off"] then
+										for _, c in ipairs(tCVars) do tApplyCVar(c, "0"); tSaveUser(c, "0") end
+										tCamSay(aLabel.." "..L["CAM_NPOff"])
+									end
 								end
-								tE.BuildChildren = function(self) tBuildOnOff(self, aCVar) end
+								tE.BuildChildren = function(self) tBuildOnOff(self, tCVars[1]) end
 							end
 							tBuildNP(L["CAM_NPEnemy"], "nameplateShowEnemies")
-							tBuildNP(L["CAM_NPFriendly"], "nameplateShowFriends")
+							tBuildNP(L["CAM_NPFriendly"], SkuCore.FriendlyNameplateCVars())
 							tBuildNP(L["CAM_NPAll"], "nameplateShowAll")
 						end
 					end

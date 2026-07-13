@@ -854,6 +854,32 @@ function SkuCore:ResolveFollowLeader()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [2026-07] The 2.5.6.68575 anniversary client (2026-07-09) REMOVED the umbrella
+-- CVar nameplateShowFriends and split it into nameplateShowFriendlyPlayers +
+-- nameplateShowFriendlyNpcs; the Era client (1.15.8) still has the umbrella.
+-- Resolve ONCE which set THIS client knows (verified against the exe string
+-- tables of both clients). Every friendly-plate read/force loops over the
+-- resolved list. Consumers: the Ctrl+Shift+Tab starting-zone cycler below
+-- (friendly plates feed its name repo), the PLAYER_ENTERING_WORLD CVar
+-- baseline, and the Kamera menu (SkuZOptions/Core.lua).
+local tFriendlyNameplateCVars
+function SkuCore.FriendlyNameplateCVars()
+	if not tFriendlyNameplateCVars then
+		if C_CVar.GetCVarInfo("nameplateShowFriends") ~= nil then
+			tFriendlyNameplateCVars = {"nameplateShowFriends"}
+		else
+			tFriendlyNameplateCVars = {}
+			for _, tName in ipairs({"nameplateShowFriendlyPlayers", "nameplateShowFriendlyNpcs"}) do
+				if C_CVar.GetCVarInfo(tName) ~= nil then
+					table.insert(tFriendlyNameplateCVars, tName)
+				end
+			end
+		end
+	end
+	return tFriendlyNameplateCVars
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tSkuCoreNamePlateRepo = {}
 function SkuCore:NAME_PLATE_CREATED(...)
 	--dprint("NAME_PLATE_CREATED", ...)
@@ -1145,8 +1171,12 @@ function SkuCore:OnEnable()
 			-- nachhinkt, waehrend InCombatLockdown() schon true ist -> SetCVar wuerde dann
 			-- ADDON_ACTION_BLOCKED ausloesen. Daher hier zusaetzlich das maßgebliche
 			-- InCombatLockdown() pruefen (gegen das "unloesbare" Kampf-Erst-Mal-Fehler).
-			if tCamLocked and not InCombatLockdown() and GetCVar("nameplateShowFriends") == "0" then
-				SetCVar("nameplateShowFriends", "1")
+			if tCamLocked and not InCombatLockdown() then
+				for _, tCVar in ipairs(SkuCore.FriendlyNameplateCVars()) do
+					if GetCVar(tCVar) == "0" then
+						SetCVar(tCVar, "1")
+					end
+				end
 			end
 
 			if #tSkuCoreNamePlateRepo > 0 then
@@ -2439,7 +2469,9 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	SkuOptions.db.char["SkuAuras"] = SkuOptions.db.char["SkuAuras"] or {}
 
 	SetCVar("nameplateShowEnemies", 1)
-	SetCVar("nameplateShowFriends", 1)
+	for _, tCVar in ipairs(SkuCore.FriendlyNameplateCVars()) do
+		SetCVar(tCVar, 1)
+	end
 	SetCVar("nameplateShowAll", 1)
 
 	if isInitialLogin == true then
