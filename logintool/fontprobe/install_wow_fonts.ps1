@@ -32,12 +32,16 @@ if (-not (Test-Path (Join-Path $ClientDir "WowClassic.exe"))) {
 $fontsDir = Join-Path $ClientDir "Fonts"
 
 if ($Remove) {
-    if (Test-Path $fontsDir) {
-        Remove-Item -Recurse -Force -Confirm:$false $fontsDir
-        Write-Output "Removed $fontsDir - client uses built-in fonts again after restart."
-    } else {
-        Write-Output "Nothing to remove: $fontsDir does not exist."
+    # Only remove OUR four override files. The Fonts folder pre-exists in the
+    # Anniversary client and holds Blizzard's own data files (*.slug) - never
+    # delete the folder itself.
+    $ours = @("FRIZQT__.TTF", "ARIALN.TTF", "MORPHEUS.TTF", "skurri.ttf")
+    $removed = 0
+    foreach ($name in $ours) {
+        $p = Join-Path $fontsDir $name
+        if (Test-Path $p) { Remove-Item -Force -Confirm:$false $p; $removed++ }
     }
+    Write-Output "Removed $removed override font(s) from $fontsDir - client uses built-in fonts again after restart."
     exit 0
 }
 
