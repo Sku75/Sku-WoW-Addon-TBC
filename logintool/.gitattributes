@@ -1,0 +1,3 @@
+# data.ini is UTF-16 LE — keep git from treating it as text (eol conversion
+# would corrupt it and diffs are meaningless anyway).
+data/data.ini -text

@@ -1,0 +1,8 @@
+# Bulky binary assets — stay on disk / ship in the release zip, not in git
+# (same rule as Sku/ and SkuMapper/: source is tracked, assets are not).
+CopyTheContentOfThisFolderToInterface/
+data/screenshots/
+data/localization/translations.xlsx
+
+# Runtime files
+log.txt
