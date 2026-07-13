@@ -305,6 +305,7 @@ function SkuOptions:SlashFunc(input, aSilent)
 			pcall(function() if SkuCore and SkuCore.UpdateLocalRootEntry then SkuCore:UpdateLocalRootEntry() end end)
 			pcall(function() if SkuCore and SkuCore.UpdateGameMenuRootEntry then SkuCore:UpdateGameMenuRootEntry() end end)
 			pcall(function() if SkuCore and SkuCore.UpdateActionBarsRootEntry then SkuCore:UpdateActionBarsRootEntry() end end)
+			pcall(function() if SkuNav and SkuNav.UpdateQuickRootEntry then SkuNav:UpdateQuickRootEntry() end end)
 
 			local tMenu = SkuOptions.Menu
 			local tFoundMenuPos = nil
@@ -1346,6 +1347,21 @@ function SkuOptions:CreateMainFrame()
 			return
 		end
 
+		-- Shift-F9 / Shift-F10 (SKU_KEY_MENUQUICK1 / -2): dedicated quick-open of the
+		-- two navigation lists. Handled directly like Shift-F11 above -- SkuNav opens
+		-- the target list through its own controlled root entry, instead of the old
+		-- fragile localized audio-menu-path walk. Placed before the general MENUQUICK
+		-- loop (further down this handler) so it never falls through to the walk. The
+		-- SET variants (Ctrl-Shift-F9/-F10) are different keys and still reach the loop.
+		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_MENUQUICK1") then
+			if SkuNav and SkuNav.OpenWaypointsQuick then SkuNav:OpenWaypointsQuick() end
+			return
+		end
+		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_MENUQUICK2") then
+			if SkuNav and SkuNav.OpenRouteDestinationsQuick then SkuNav:OpenRouteDestinationsQuick() end
+			return
+		end
+
 		if not SkuOptions.TTS:IsVisible() then
 			tCurrentOverviewPage = nil
 			if a == "SHIFT-UP" then
@@ -2096,6 +2112,7 @@ function SkuOptions:CreateMainFrame()
 			pcall(function() if SkuCore and SkuCore.UpdateLocalRootEntry then SkuCore:UpdateLocalRootEntry() end end)
 			pcall(function() if SkuCore and SkuCore.UpdateGameMenuRootEntry then SkuCore:UpdateGameMenuRootEntry() end end)
 			pcall(function() if SkuCore and SkuCore.UpdateActionBarsRootEntry then SkuCore:UpdateActionBarsRootEntry() end end)
+			pcall(function() if SkuNav and SkuNav.UpdateQuickRootEntry then SkuNav:UpdateQuickRootEntry() end end)
 
 			--set menu to entry first
 			SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
@@ -2230,6 +2247,8 @@ function SkuOptions:CreateMainFrame()
 		-- Same for the Shift-F11 "Aktionsleisten" session: clear the flag so the
 		-- hidden entry is removed again on the next normal open.
 		if SkuCore then SkuCore.actionBarsMenuActive = false end
+		-- Same for the Shift-F9/Shift-F10 navigation quick lists.
+		if SkuNav then SkuNav.navQuickMenuActive = nil end
 		SkuOptions:HideVisualMenu()
 	end)
 

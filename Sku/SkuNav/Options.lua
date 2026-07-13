@@ -511,55 +511,16 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:MenuBuilder(aParentEntry)
-	--dprint("SkuNav:MenuBuilder", aParentEntry)
-	local tSpecs = {}
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Shared navigation menu builders/actions, hoisted to module scope so BOTH the
+-- normal Nav menu AND the dedicated Shift-F9/Shift-F10 quick entries
+-- (SkuNav:UpdateQuickRootEntry) can reuse them without duplicating logic and
+-- without walking a localized menu path. Behaviour is identical to the former
+-- inline closures they were extracted from.
 
-	tSpecs[#tSpecs+1] = { kind = "action", label = L["Deselect all"],
-		onAction = function(self, aValue, aName)
-		--dprint("Route und Wegpunkt abwählen", self.name, aName)
-		SkuNav:EndFollowingWpOrRt()
-		SkuNav:ClearWaypointsTemporary()
-		PlaySound(835)
-	end }
-
-	--wps
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Waypoint"],
-		build = function(self)
-		--[[
-		local tNewMenuEntry = SkuOptions:BuildMenuSegment_TitleBuilder(self, L["New"])
-		tNewMenuEntry.OnAction = function(self, aValue, aName)
-			--dprint("Wegpunkt neu OnAction", self.name, aName, self.TMPSize, self.selectTarget, self.selectTarget.name, self.selectTarget.TMPSize)
-			--dprint(self.selectTarget.TMPSize)
-			if SkuSettings:Sub("SkuNav").metapathFollowing == true or SkuSettings:Sub("SkuNav").selectedWaypoint ~= "" then
-				SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
-				SkuOptions.Voice:OutputStringBTtts(L["Active waypoint or route or recording"], false, true, 0.3, true)
-				return
-			end
-			if aName == L["Nothing selected"] then
-				return
-			end
-
-			if sfind(aName, L["Selected"]..";") > 0 then
-				aName = ssub(aName, slen(L["Selected"]..";") + 1)
-			end
-			if SkuNav:GetWaypointData2(aName) then
-				SkuOptions.Voice:OutputStringBTtts(L["nicht erstellt"], false, true, 0.3, true)
-				SkuOptions.Voice:OutputStringBTtts(L["name schon vorhanden"], false, true, 0.3, true)
-				return
-			end
-
-			local tRName = SkuNav:CreateWaypoint(aName, nil, nil, self.selectTarget.TMPSize or 1)
-			if tRName then
-				--PlaySound(835)
-				SkuOptions.Voice:OutputStringBTtts(L["Wegpunkt erstellt"], false, true, 0.2)
-			end
-		end
-]]
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Auswählen"]}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.isSelect = true
-		tNewMenuEntry.OnAction = function(self, aValue, aName)
+-- Waypoint selection action (the "Auswählen" isSelect target): selects the
+-- chosen waypoint / closes a route, exactly as before.
+function SkuNav.WaypointSelectOnAction(self, aValue, aName)
 			--dprint("OnAction Auswählen", self.name,aValue,  aName, SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC, SkuSettings:Sub("SkuNav").metapathFollowingStart)
 			if SkuSettings:Sub("SkuNav").routeRecording == true then
 				SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
@@ -634,32 +595,11 @@ function SkuNav:MenuBuilder(aParentEntry)
 					SkuOptions.Voice:OutputStringBTtts(L["Wegpunkt nicht ausgewählt"], false, true, 0.3, true)
 				end
 			end
-		end
-		tNewMenuEntry.BuildChildren = function(self)
-			SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = nil
-			--recent wps 
-			if #SkuSettings:Sub("SkuNav").RecentWPs > 0 then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Recent"]}, SkuGenericMenuItem)
-				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.sorting = true
-				tNewMenuEntry.BuildChildren = function(self)
-					for i, v in pairs(SkuSettings:Sub("SkuNav").RecentWPs) do
-						--dprint("recent: ", i, v)
-					end
-					if #SkuSettings:Sub("SkuNav").RecentWPs == 0 then
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
-					else
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, SkuSettings:Sub("SkuNav").RecentWPs, SkuGenericMenuItem)
-					end
-				end
-			end
+end
 
-			--wps in current map sortet by range
-			local tAutoLen = slen(L["auto"]) + 1
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Aktuelle Karte Entfernung"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.sorting = true
-			tNewMenuEntry.BuildChildren = function(self)
+-- Builds the "current map, by distance" waypoint list into aParentNode.
+function SkuNav.WaypointsCurrentMapBuildChildren(self)
+	local tAutoLen = slen(L["auto"]) + 1
 				SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = nil
 				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
 				local tSubAreaIds = SkuNav:GetSubAreaIds(tCurrentAreaId)
@@ -722,7 +662,352 @@ function SkuNav:MenuBuilder(aParentEntry)
 					--local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tSortedWaypointList, SkuGenericMenuItem)
 					SkuNav_MenuBuilder_WaypointSelectionMenu(self, tSortedWaypointList)
 				end
+end
+
+-- Starts following the selected route / unit route (the isSelect target for the
+-- route-destination and unit-route lists).
+function SkuNav.RouteFollowOnAction(self, aValue, aName)
+		dprint("OnAction", self.name, aValue, aName)
+
+		SkuNav:ClearWaypointsTemporary()
+
+		if SkuSettings:Sub("SkuNav").routeRecording == true then
+			SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
+			SkuOptions.Voice:OutputStringBTtts(L["Recording in progress"], false, true, 0.3, true)
+			return
+		end
+
+		--if SkuSettings:Sub("SkuNav").metapathFollowing == true or SkuSettings:Sub("SkuNav").selectedWaypoint ~= "" then
+		if SkuSettings:Sub("SkuNav").metapathFollowing == true or SkuSettings:Sub("SkuNav").selectedWaypoint ~= "" then
+			SkuNav:EndFollowingWpOrRt()
+		end
+
+		SkuSettings:Sub("SkuNav").metapathFollowing = false
+
+
+		SkuSettings:Sub("SkuNav").metapathFollowingStart = SkuSettings:Sub("SkuNav").metapathFollowingStartTMP
+		SkuSettings:Sub("SkuNav").metapathFollowingMetapaths = SkuMetapathFollowingMetapathsTMP
+
+		if SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypoint == true and SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData then
+			if #SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData < 2 then
+				return
 			end
+
+			if string.find(aName, ";") then
+				SkuSettings:Sub("SkuNav").metapathFollowingTargetName = ssub(aName, 1, string.find(aName, ";") - 1)
+			end
+			
+			SkuSettings:Sub("SkuNav").metapathFollowingStart = L["Einheiten;Route;"].."1"
+			SkuSettings:Sub("SkuNav").metapathFollowingTarget = L["Einheiten;Route;"]..#SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData
+			SkuSettings:Sub("SkuNav").metapathFollowingMetapaths = {}
+			SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[1] = SkuSettings:Sub("SkuNav").metapathFollowingTarget
+			SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget] = {
+				pathWps = {},
+				distance = 0,
+			}
+				
+			--build metaroute table
+			for x = 1, #SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData do
+				--create tmp wps
+				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
+				local isUiMap = SkuNav:GetUiMapIdFromAreaId(tCurrentAreaId)
+				local _, worldPosition = C_Map.GetWorldPosFromMapPos(isUiMap, CreateVector2D(SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData[x][1] / 100, SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData[x][2] / 100))
+				local tX, tY = worldPosition:GetXY()
+				local tNameOfNewWp = SkuNav:CreateWaypoint(L["Einheiten;Route;"]..x, tX, tY, 1, true, true)
+				if tNameOfNewWp then
+					--add to mt rt
+					SkuSettings:Sub("SkuNav").WaypointsTemporary[#SkuSettings:Sub("SkuNav").WaypointsTemporary + 1] = tNameOfNewWp
+					table.insert(SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget].pathWps, tNameOfNewWp)
+				end
+			end
+
+			local tDistance = 0
+			local tDistanceToStartWp = 0
+			for z = 2, #SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget].pathWps do
+				local tWpA = SkuNav:GetWaypointData2(SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget].pathWps[z - 1])
+				local tWpB = SkuNav:GetWaypointData2(SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget].pathWps[z])
+				tDistance = tDistance + SkuNav:Distance(tWpA.worldX, tWpA.worldY, tWpB.worldX, tWpB.worldY)
+				if tDistanceToStartWp == 0 then
+					tDistanceToStartWp = tDistance
+				end
+			end
+			SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget].distance = tDistance
+			SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget].distanceToStartWp = tDistanceToStartWp
+
+			--start follow
+			SkuSettings:Sub("SkuNav").metapathFollowingCurrentWp = 1
+			SkuSettings:Sub("SkuNav").metapathFollowing = true
+
+			SkuNav:SelectWP(SkuSettings:Sub("SkuNav").metapathFollowingStart, true)
+			SkuOptions.Voice:OutputStringBTtts(L["Einheiten Route folgen gestartet"], false, true, 0.2)
+			SkuOptions:CloseMenu()
+			SkuDispatcher:TriggerSkuEvent("SKU_UNITROUTE_STARTED")
+			return
+		elseif SkuSettings:Sub("SkuNav").metapathFollowingStart then
+			if SkuSettings:Sub("SkuNav").metapathFollowingMetapaths then
+				if string.find(SkuSettings:Sub("SkuNav").metapathFollowingStart, "#") then
+					SkuSettings:Sub("SkuNav").metapathFollowingStart = ssub(SkuSettings:Sub("SkuNav").metapathFollowingStart, string.find(SkuSettings:Sub("SkuNav").metapathFollowingStart, "#") + 1)
+				end
+				SkuSettings:Sub("SkuNav").metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuSettings:Sub("SkuNav").metapathFollowingStart, SkuSettings:Sub("SkuNav").routesMaxDistance, SkuNav.MaxMetaWPs, aName)--
+				SkuSettings:Sub("SkuNav").metapathFollowingTarget = aName
+				SkuSettings:Sub("SkuNav").metapathFollowingCurrentWp = 1
+				SkuSettings:Sub("SkuNav").metapathFollowing = true
+
+				local tBaseName = SkuNav:StripBaseNameFromWaypointName(SkuSettings:Sub("SkuNav").metapathFollowingTarget)
+				if tBaseName then
+					SkuNav.lastSelectedWaypointFullName = SkuSettings:Sub("SkuNav").metapathFollowingTarget
+				end
+				
+				SkuNav:SelectWP(SkuSettings:Sub("SkuNav").metapathFollowingStart, true)
+				SkuOptions.Voice:OutputStringBTtts(L["Metaroute folgen gestartet"], false, true, 0.2)
+
+				SkuOptions:CloseMenu()
+				SkuDispatcher:TriggerSkuEvent("SKU_ROUTE_STARTED")
+			end
+		end
+end
+
+-- Builds the "nearby route destinations, by distance" list into aParentNode.
+function SkuNav.RouteDestinationsBuildChildren(self)
+			--SkuSettings:Sub("SkuNav").metapathFollowingMetapaths = nil
+			--SkuSettings:Sub("SkuNav").metapathFollowingStart = nil
+			SkuSettings:Sub("SkuNav").metapathFollowingStartTMP = nil
+			SkuMetapathFollowingMetapathsTMP = nil
+			local tPlayX, tPlayY = UnitPosition("player")
+			local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(tPlayX, tPlayY, SkuNav.MaxMetaEntryRange)--SkuSettings:Sub("SkuNav").nearbyWpRange)
+
+			local tSortedWaypointList = BuildSortedUniqueRouteWps(tRoutesInRange)
+
+			if #tSortedWaypointList == 0 then
+				SkuNav:InjectWpListEmptyHint(self)
+			else
+				local tCount = 0
+				for k, v in SkuSpairs(tSortedWaypointList) do
+					if tCount < 10 then
+
+						local tSkuWpName = ssub(v, string.find(v, "#") + 1)
+						local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, tSkuWpName, nil))
+
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Entry point: "]..tLayerText..v}, SkuGenericMenuItem)
+						tNewMenuEntry.dynamic = true
+						tNewMenuEntry.sorting = true
+						tNewMenuEntry.BuildChildren = function(self)
+							SkuSettings:Sub("SkuNav").metapathFollowingStartTMP = v
+							local tMetapaths = SkuNav:GetAllMetaTargetsFromWp5(ssub(v, string.find(v, "#") + 1), SkuSettings:Sub("SkuNav").routesMaxDistance, SkuNav.MaxMetaWPs)--
+							SkuMetapathFollowingMetapathsTMP = tMetapaths
+							local tData = {}
+							for i, v in pairs(tMetapaths) do--
+								tData[i] = tMetapaths[i].distance
+							end
+
+							local tSortedList = {}
+							for k,v in SkuSpairs(tData, function(t,a,b) return t[b] > t[a] end) do
+								table.insert(tSortedList, k)
+							end
+							if #tSortedList == 0 then
+								SkuNav:InjectWpListEmptyHint(self)
+							else
+								for tK, tV in ipairs(tSortedList) do
+									local tDistText = tMetapaths[tV].distance..L[";Meter"]..""--
+									if tMetapaths[tV].distance >= SkuSettings:Sub("SkuNav").routesMaxDistance then
+										tDistText = L["weit"]
+									end
+
+									-- add direction to wp
+									local tDirectionTargetWp = ""
+									if SkuSettings:Sub("SkuNav").showGlobalDirectionInWaypointLists == true then
+										local tWpData = SkuNav:GetWaypointData2(tV)
+										local tDirectionString = SkuNav:GetDirectionToAsString(tWpData.worldX, tWpData.worldY)
+										if tDirectionString then
+											tDirectionTargetWp = ";"..tDirectionString
+										end
+									end
+									tDistText = tDistText..tDirectionTargetWp									
+
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV, tV) }, SkuGenericMenuItem) --
+									tNewMenuEntry.OnEnter = function(self)
+										SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypoint = nil
+										SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData = nil
+									end
+			
+								end
+							end
+--print("filled", debugprofilestop() - beginTime)
+
+						end
+						tCount = tCount + 1
+					end
+				end
+			end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Shift-F9 / Shift-F10 quick entries. Modelled on the Shift-F11 "Aktionsleisten"
+-- entry (SkuCore:UpdateActionBarsRootEntry / ActionBarsShowHandler): these are NOT
+-- browsable menu nodes -- they are spliced into the root ONLY for a quick-key
+-- session (SkuNav.navQuickMenuActive) and removed again when the Sku menu closes
+-- (SkuZOptions OnHide clears the flag). This replaces the old fragile, localized
+-- audio-menu-path walk (MenuQuickSelect1/2 -> SlashFunc) with a direct open of a
+-- single controlled node that reuses the SAME builders the normal menu uses.
+-- navQuickMenuActive is "waypoints" (nearby waypoints on the current map) or
+-- "routes" (nearby route destinations).
+SkuNav.navQuickMenuActive = SkuNav.navQuickMenuActive or nil
+
+function SkuNav:UpdateQuickRootEntry()
+	if not SkuOptions or not SkuOptions.Menu then return end
+	local tExisting
+	for x = 1, #SkuOptions.Menu do
+		if SkuOptions.Menu[x].isNavQuickRoot then tExisting = SkuOptions.Menu[x] break end
+	end
+	local tMode = SkuNav.navQuickMenuActive
+	if tMode == "waypoints" or tMode == "routes" then
+		-- Drop a stale entry from the other mode so a fresh one is built.
+		if tExisting and tExisting.navQuickMode ~= tMode and SkuMenu and SkuMenu.Remove then
+			SkuMenu:Remove(tExisting)
+			tExisting = nil
+		end
+		if not tExisting then
+			local tLabel = (tMode == "routes") and L["Ziele Entfernung"] or L["Aktuelle Karte Entfernung"]
+			local tEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {tLabel}, SkuGenericMenuItem)
+			tEntry.id = (tMode == "routes") and "navRouteDestinationsQuick" or "navWaypointsQuick"
+			tEntry.isNavQuickRoot = true
+			tEntry.navQuickMode = tMode
+			tEntry.dynamic = true
+			tEntry.sorting = true
+			tEntry.isSelect = true
+			if tMode == "routes" then
+				tEntry.OnAction = SkuNav.RouteFollowOnAction
+				-- LEFT (OnBack) from a quick-list item drops into the full Navigation
+				-- menu instead of the bare root: wrap the shared builder to tag each
+				-- top-level child with the redirect. Only the quick entry does this;
+				-- the same builder used by the normal menu is untouched.
+				tEntry.BuildChildren = function(self)
+					SkuNav.RouteDestinationsBuildChildren(self)
+					for _, c in ipairs(self.children or {}) do c.OnBack = SkuNav.QuickBackToNavMenu end
+				end
+			else
+				tEntry.OnAction = SkuNav.WaypointSelectOnAction
+				-- LEFT (OnBack) drops into the full "Direct waypoint" menu.
+				tEntry.BuildChildren = function(self)
+					SkuNav.WaypointsCurrentMapBuildChildren(self)
+					for _, c in ipairs(self.children or {}) do c.OnBack = SkuNav.QuickBackToDirectWaypointMenu end
+				end
+			end
+		end
+	elseif tExisting and SkuMenu and SkuMenu.Remove then
+		SkuMenu:Remove(tExisting)
+	end
+end
+
+-- Shift-F9: open the "nearby waypoints (current map)" list directly. Sets the
+-- session flag (so UpdateQuickRootEntry splices the entry) then navigates to it by
+-- its stable id -- SlashFunc handles opening the menu and the combat/moving defer.
+function SkuNav:OpenWaypointsQuick()
+	SkuNav.navQuickMenuActive = "waypoints"
+	pcall(function() SkuOptions:SlashFunc(Sku.L["short"] .. ",navWaypointsQuick") end)
+end
+
+-- Shift-F10: open the "nearby route destinations" list directly.
+function SkuNav:OpenRouteDestinationsQuick()
+	SkuNav.navQuickMenuActive = "routes"
+	pcall(function() SkuOptions:SlashFunc(Sku.L["short"] .. ",navRouteDestinationsQuick") end)
+end
+
+-- LEFT-arrow (OnBack) redirects for the two quick lists: instead of stepping back
+-- to the bare root, land in the fuller menu the quick key is a shortcut into
+-- (Shift-F9 -> "Direct waypoint", Shift-F10 -> the Navigation menu). Clearing
+-- navQuickMenuActive first makes the SlashFunc preamble drop the now-orphan quick
+-- root (UpdateQuickRootEntry), so it doesn't linger among the root entries. Set as
+-- the OnBack of the quick list's top-level items; called as item:OnBack() so self
+-- is that item (used only to fire its OnLeave, matching the generic OnBack).
+function SkuNav.QuickBackToDirectWaypointMenu(self)
+	if self and self.OnLeave then pcall(function() self:OnLeave() end) end
+	SkuNav.navQuickMenuActive = nil
+	pcall(function() SkuOptions:SlashFunc(Sku.L["short"] .. ",SkuNav,navDirectWaypoint") end)
+end
+
+function SkuNav.QuickBackToNavMenu(self)
+	if self and self.OnLeave then pcall(function() self:OnLeave() end) end
+	SkuNav.navQuickMenuActive = nil
+	pcall(function() SkuOptions:SlashFunc(Sku.L["short"] .. ",SkuNav") end)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:MenuBuilder(aParentEntry)
+	--dprint("SkuNav:MenuBuilder", aParentEntry)
+	-- Nav menu is FLATTENED: the former "Wegpunkt" and "Route folgen" wrapper
+	-- levels are gone -- their entries are injected DIRECTLY under Nav (the two
+	-- builder closures below are invoked at the bottom of this function). Also
+	-- removed here: the top-level "Alles abwählen" action (redundant with the
+	-- dedicated Shift-F12 cancel key, SkuNav:CancelNavigationSilent) and the
+	-- "Optionen" settings group (non-beacon nav settings moved to Einstellungen ->
+	-- Navigation, beacon settings to Monitor -> Beacon).
+
+	--wps (flattened: the former "Wegpunkt" submenu's children, built under Nav)
+	local tBuildWaypointNodes = function(self)
+		--[[
+		local tNewMenuEntry = SkuOptions:BuildMenuSegment_TitleBuilder(self, L["New"])
+		tNewMenuEntry.OnAction = function(self, aValue, aName)
+			--dprint("Wegpunkt neu OnAction", self.name, aName, self.TMPSize, self.selectTarget, self.selectTarget.name, self.selectTarget.TMPSize)
+			--dprint(self.selectTarget.TMPSize)
+			if SkuSettings:Sub("SkuNav").metapathFollowing == true or SkuSettings:Sub("SkuNav").selectedWaypoint ~= "" then
+				SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
+				SkuOptions.Voice:OutputStringBTtts(L["Active waypoint or route or recording"], false, true, 0.3, true)
+				return
+			end
+			if aName == L["Nothing selected"] then
+				return
+			end
+
+			if sfind(aName, L["Selected"]..";") > 0 then
+				aName = ssub(aName, slen(L["Selected"]..";") + 1)
+			end
+			if SkuNav:GetWaypointData2(aName) then
+				SkuOptions.Voice:OutputStringBTtts(L["nicht erstellt"], false, true, 0.3, true)
+				SkuOptions.Voice:OutputStringBTtts(L["name schon vorhanden"], false, true, 0.3, true)
+				return
+			end
+
+			local tRName = SkuNav:CreateWaypoint(aName, nil, nil, self.selectTarget.TMPSize or 1)
+			if tRName then
+				--PlaySound(835)
+				SkuOptions.Voice:OutputStringBTtts(L["Wegpunkt erstellt"], false, true, 0.2)
+			end
+		end
+]]
+		-- Top-level node renamed to "Direct waypoint" (was "Auswählen"). Only the
+		-- DISPLAY label changes here; the L["Auswählen"] key is still used for the
+		-- per-waypoint "select" sub-option and the aName check in WaypointSelectOnAction.
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {Sku.deEn("Direkter Wegpunkt", "Direct waypoint")}, SkuGenericMenuItem)
+		tNewMenuEntry.id = "navDirectWaypoint"   -- stable target for the Shift-F9 LEFT redirect
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.isSelect = true
+		tNewMenuEntry.OnAction = SkuNav.WaypointSelectOnAction
+		tNewMenuEntry.BuildChildren = function(self)
+			SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = nil
+			--recent wps 
+			if #SkuSettings:Sub("SkuNav").RecentWPs > 0 then
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Recent"]}, SkuGenericMenuItem)
+				tNewMenuEntry.dynamic = true
+				tNewMenuEntry.sorting = true
+				tNewMenuEntry.BuildChildren = function(self)
+					for i, v in pairs(SkuSettings:Sub("SkuNav").RecentWPs) do
+						--dprint("recent: ", i, v)
+					end
+					if #SkuSettings:Sub("SkuNav").RecentWPs == 0 then
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
+					else
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, SkuSettings:Sub("SkuNav").RecentWPs, SkuGenericMenuItem)
+					end
+				end
+			end
+
+			--wps in current map sortet by range
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Aktuelle Karte Entfernung"]}, SkuGenericMenuItem)
+			tNewMenuEntry.id = "navWaypointCurrentMap"
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.sorting = true
+			tNewMenuEntry.BuildChildren = SkuNav.WaypointsCurrentMapBuildChildren
 
 			-- all wps
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alle aktueller Kontinent"]}, SkuGenericMenuItem)
@@ -774,29 +1059,6 @@ function SkuNav:MenuBuilder(aParentEntry)
 				else
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tSortedWaypointList, SkuGenericMenuItem)
 				end
-			end
-		end
-
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Abwählen"]}, SkuGenericMenuItem)
-		tNewMenuEntry.OnAction = function(self, aValue, aName)
-			--dprint("OnAction Aktuellen abwählen", self.name, aName)
-			if SkuSettings:Sub("SkuNav").metapathFollowing == true or SkuSettings:Sub("SkuNav").routeRecording == true then
-				SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
-				SkuOptions.Voice:OutputStringBTtts(L["Active waypoint or route or recording"], false, true, 0.3, true)
-				return
-			end
-
-			if SkuNav:GetWaypointData2(SkuSettings:Sub("SkuNav").selectedWaypoint) then
-				if SkuSettings:Sub("SkuNav").selectedWaypoint ~= "" then
-					if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuSettings:Sub("SkuNav").selectedWaypoint) then
-						SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuSettings:Sub("SkuNav").selectedWaypoint)
-					end
-					SkuOptions.Voice:OutputStringBTtts(L["Wegpunkt abgewählt"], false, true, 0.3, true)
-					--SkuSettings:Sub("SkuNav").selectedWaypoint = ""
-					SkuNav:SelectWP("", true)
-					SkuDispatcher:TriggerSkuEvent("SKU_NAVIGATION_STOPPED")
-				end
-				--PlaySound(835)
 			end
 		end
 
@@ -948,189 +1210,18 @@ function SkuNav:MenuBuilder(aParentEntry)
 			end
 		end
 		]]
-	end }
+	end
 
-	--rts
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Route folgen"], isSelect = true,
-		onAction = function(self, aValue, aName)
-		dprint("OnAction", self.name, aValue, aName)
-
-		SkuNav:ClearWaypointsTemporary()
-
-		if SkuSettings:Sub("SkuNav").routeRecording == true then
-			SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
-			SkuOptions.Voice:OutputStringBTtts(L["Recording in progress"], false, true, 0.3, true)
-			return
-		end
-
-		--if SkuSettings:Sub("SkuNav").metapathFollowing == true or SkuSettings:Sub("SkuNav").selectedWaypoint ~= "" then
-		if SkuSettings:Sub("SkuNav").metapathFollowing == true or SkuSettings:Sub("SkuNav").selectedWaypoint ~= "" then
-			SkuNav:EndFollowingWpOrRt()
-		end
-
-		SkuSettings:Sub("SkuNav").metapathFollowing = false
-
-
-		SkuSettings:Sub("SkuNav").metapathFollowingStart = SkuSettings:Sub("SkuNav").metapathFollowingStartTMP
-		SkuSettings:Sub("SkuNav").metapathFollowingMetapaths = SkuMetapathFollowingMetapathsTMP
-
-		if SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypoint == true and SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData then
-			if #SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData < 2 then
-				return
-			end
-
-			if string.find(aName, ";") then
-				SkuSettings:Sub("SkuNav").metapathFollowingTargetName = ssub(aName, 1, string.find(aName, ";") - 1)
-			end
-			
-			SkuSettings:Sub("SkuNav").metapathFollowingStart = L["Einheiten;Route;"].."1"
-			SkuSettings:Sub("SkuNav").metapathFollowingTarget = L["Einheiten;Route;"]..#SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData
-			SkuSettings:Sub("SkuNav").metapathFollowingMetapaths = {}
-			SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[1] = SkuSettings:Sub("SkuNav").metapathFollowingTarget
-			SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget] = {
-				pathWps = {},
-				distance = 0,
-			}
-				
-			--build metaroute table
-			for x = 1, #SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData do
-				--create tmp wps
-				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
-				local isUiMap = SkuNav:GetUiMapIdFromAreaId(tCurrentAreaId)
-				local _, worldPosition = C_Map.GetWorldPosFromMapPos(isUiMap, CreateVector2D(SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData[x][1] / 100, SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData[x][2] / 100))
-				local tX, tY = worldPosition:GetXY()
-				local tNameOfNewWp = SkuNav:CreateWaypoint(L["Einheiten;Route;"]..x, tX, tY, 1, true, true)
-				if tNameOfNewWp then
-					--add to mt rt
-					SkuSettings:Sub("SkuNav").WaypointsTemporary[#SkuSettings:Sub("SkuNav").WaypointsTemporary + 1] = tNameOfNewWp
-					table.insert(SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget].pathWps, tNameOfNewWp)
-				end
-			end
-
-			local tDistance = 0
-			local tDistanceToStartWp = 0
-			for z = 2, #SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget].pathWps do
-				local tWpA = SkuNav:GetWaypointData2(SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget].pathWps[z - 1])
-				local tWpB = SkuNav:GetWaypointData2(SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget].pathWps[z])
-				tDistance = tDistance + SkuNav:Distance(tWpA.worldX, tWpA.worldY, tWpB.worldX, tWpB.worldY)
-				if tDistanceToStartWp == 0 then
-					tDistanceToStartWp = tDistance
-				end
-			end
-			SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget].distance = tDistance
-			SkuSettings:Sub("SkuNav").metapathFollowingMetapaths[SkuSettings:Sub("SkuNav").metapathFollowingTarget].distanceToStartWp = tDistanceToStartWp
-
-			--start follow
-			SkuSettings:Sub("SkuNav").metapathFollowingCurrentWp = 1
-			SkuSettings:Sub("SkuNav").metapathFollowing = true
-
-			SkuNav:SelectWP(SkuSettings:Sub("SkuNav").metapathFollowingStart, true)
-			SkuOptions.Voice:OutputStringBTtts(L["Einheiten Route folgen gestartet"], false, true, 0.2)
-			SkuOptions:CloseMenu()
-			SkuDispatcher:TriggerSkuEvent("SKU_UNITROUTE_STARTED")
-			return
-		elseif SkuSettings:Sub("SkuNav").metapathFollowingStart then
-			if SkuSettings:Sub("SkuNav").metapathFollowingMetapaths then
-				if string.find(SkuSettings:Sub("SkuNav").metapathFollowingStart, "#") then
-					SkuSettings:Sub("SkuNav").metapathFollowingStart = ssub(SkuSettings:Sub("SkuNav").metapathFollowingStart, string.find(SkuSettings:Sub("SkuNav").metapathFollowingStart, "#") + 1)
-				end
-				SkuSettings:Sub("SkuNav").metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuSettings:Sub("SkuNav").metapathFollowingStart, SkuSettings:Sub("SkuNav").routesMaxDistance, SkuNav.MaxMetaWPs, aName)--
-				SkuSettings:Sub("SkuNav").metapathFollowingTarget = aName
-				SkuSettings:Sub("SkuNav").metapathFollowingCurrentWp = 1
-				SkuSettings:Sub("SkuNav").metapathFollowing = true
-
-				local tBaseName = SkuNav:StripBaseNameFromWaypointName(SkuSettings:Sub("SkuNav").metapathFollowingTarget)
-				if tBaseName then
-					SkuNav.lastSelectedWaypointFullName = SkuSettings:Sub("SkuNav").metapathFollowingTarget
-				end
-				
-				SkuNav:SelectWP(SkuSettings:Sub("SkuNav").metapathFollowingStart, true)
-				SkuOptions.Voice:OutputStringBTtts(L["Metaroute folgen gestartet"], false, true, 0.2)
-
-				SkuOptions:CloseMenu()
-				SkuDispatcher:TriggerSkuEvent("SKU_ROUTE_STARTED")
-			end
-		end
-	end,
-		build = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Ziele Entfernung"]}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.sorting = true
-		tNewMenuEntry.BuildChildren = function(self)
-			--SkuSettings:Sub("SkuNav").metapathFollowingMetapaths = nil
-			--SkuSettings:Sub("SkuNav").metapathFollowingStart = nil
-			SkuSettings:Sub("SkuNav").metapathFollowingStartTMP = nil
-			SkuMetapathFollowingMetapathsTMP = nil
-			local tPlayX, tPlayY = UnitPosition("player")
-			local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(tPlayX, tPlayY, SkuNav.MaxMetaEntryRange)--SkuSettings:Sub("SkuNav").nearbyWpRange)
-
-			local tSortedWaypointList = BuildSortedUniqueRouteWps(tRoutesInRange)
-
-			if #tSortedWaypointList == 0 then
-				SkuNav:InjectWpListEmptyHint(self)
-			else
-				local tCount = 0
-				for k, v in SkuSpairs(tSortedWaypointList) do
-					if tCount < 10 then
-
-						local tSkuWpName = ssub(v, string.find(v, "#") + 1)
-						local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, tSkuWpName, nil))
-
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Entry point: "]..tLayerText..v}, SkuGenericMenuItem)
-						tNewMenuEntry.dynamic = true
-						tNewMenuEntry.sorting = true
-						tNewMenuEntry.BuildChildren = function(self)
-							SkuSettings:Sub("SkuNav").metapathFollowingStartTMP = v
-							local tMetapaths = SkuNav:GetAllMetaTargetsFromWp5(ssub(v, string.find(v, "#") + 1), SkuSettings:Sub("SkuNav").routesMaxDistance, SkuNav.MaxMetaWPs)--
-							SkuMetapathFollowingMetapathsTMP = tMetapaths
-							local tData = {}
-							for i, v in pairs(tMetapaths) do--
-								tData[i] = tMetapaths[i].distance
-							end
-
-							local tSortedList = {}
-							for k,v in SkuSpairs(tData, function(t,a,b) return t[b] > t[a] end) do
-								table.insert(tSortedList, k)
-							end
-							if #tSortedList == 0 then
-								SkuNav:InjectWpListEmptyHint(self)
-							else
-								for tK, tV in ipairs(tSortedList) do
-									local tDistText = tMetapaths[tV].distance..L[";Meter"]..""--
-									if tMetapaths[tV].distance >= SkuSettings:Sub("SkuNav").routesMaxDistance then
-										tDistText = L["weit"]
-									end
-
-									-- add direction to wp
-									local tDirectionTargetWp = ""
-									if SkuSettings:Sub("SkuNav").showGlobalDirectionInWaypointLists == true then
-										local tWpData = SkuNav:GetWaypointData2(tV)
-										local tDirectionString = SkuNav:GetDirectionToAsString(tWpData.worldX, tWpData.worldY)
-										if tDirectionString then
-											tDirectionTargetWp = ";"..tDirectionString
-										end
-									end
-									tDistText = tDistText..tDirectionTargetWp									
-
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV, tV) }, SkuGenericMenuItem) --
-									tNewMenuEntry.OnEnter = function(self)
-										SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypoint = nil
-										SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypointData = nil
-									end
-			
-								end
-							end
---print("filled", debugprofilestop() - beginTime)
-
-						end
-						tCount = tCount + 1
-					end
-				end
-			end
-		end
+	--rts (flattened): the route-destinations list ("Ziele Entfernung") is no
+	-- longer a browsable menu entry -- it opens directly via Shift-F10
+	-- (SkuNav:OpenRouteDestinationsQuick). Only "Einheiten Route" stays here; it
+	-- uses the shared route-follow action SkuNav.RouteFollowOnAction.
+	local tBuildRouteNodes = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Einheiten Route"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.sorting = true
+		tNewMenuEntry.isSelect = true
+		tNewMenuEntry.OnAction = SkuNav.RouteFollowOnAction
 		tNewMenuEntry.BuildChildren = function(self)
 			SkuSettings:Sub("SkuNav").metapathFollowingUnitDbWaypoint = nil
 			--SkuSettings:Sub("SkuNav").metapathFollowingMetapaths = nil
@@ -1206,9 +1297,10 @@ function SkuNav:MenuBuilder(aParentEntry)
 				end
 			end
 		end
-	end }
+	end
 
-	SkuMenu:Build(aParentEntry, tSpecs)
+	tBuildRouteNodes(aParentEntry)      -- Einheiten Route at the top
+	tBuildWaypointNodes(aParentEntry)
 
 	-- [41.02.08] Menuepunkt "Daten" vollstaendig ausgeblendet (Nutzerwunsch).
 	-- RUECKBAU: dieses "if false then" und das zugehoerige "end" weiter unten entfernen.
@@ -1258,8 +1350,9 @@ function SkuNav:MenuBuilder(aParentEntry)
 	end
 	end -- [41.02.08] schliesst das ausblendende "if false then" fuer "Daten"
 
-	SkuMenu:Build(aParentEntry, {
-		{ kind = "settings", label = L["Options"], sorting = true,
-			args = SkuNav.options.args, db = SkuSettings:Sub("SkuNav"), module = "SkuNav" },
-	})
+	-- Settings ("Optionen") intentionally NOT built here anymore: the non-beacon
+	-- nav settings now live under Einstellungen -> Navigation (SkuCore/Options.lua),
+	-- the beacon settings under Monitor -> Beacon (SkuCore/aq.lua). Both render the
+	-- SAME SkuNav.options.args via IterateOptionsArgs against SkuSettings:Sub(
+	-- "SkuNav"), so saved values are unchanged.
 end

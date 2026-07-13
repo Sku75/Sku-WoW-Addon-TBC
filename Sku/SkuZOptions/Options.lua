@@ -313,6 +313,10 @@ SkuOptions.options = {
 			name = L["Schnellwahl"],
 			type = "group",
 			order = 9,
+			-- Hidden: slots 1-4 are now dedicated hardwired keys (Shift-F9/F10/F11/F12),
+			-- so these path-input fields no longer do anything. Kept in the schema so
+			-- saved values migrate cleanly; just not shown in the menu.
+			forAudioMenu = false,
 			args={
 					MenuQuickSelect1 = {
 						order = 1,
@@ -666,10 +670,16 @@ SkuOptions.defaults = {
 	visualAudioMenu = false,
 	--useBlizzTtsInMenu = false,
 	allModules  = {
-		MenuQuickSelect1 = L["SkuNav,Wegpunkt,Auswählen,Aktuelle Karte Entfernung"],
-		MenuQuickSelect2 = L["SkuNav,Route,Route folgen,Ziele Entfernung"],
-		MenuQuickSelect3 = L["SkuCore,Aktionsleisten"],
-		MenuQuickSelect4 = L["SkuNav,Alles abwählen"],
+		-- Slots 1-4 are now dedicated hardwired keys (handled directly in
+		-- SkuZOptions OnClick), NOT audio-menu-path walks: Shift-F9 = nearby
+		-- waypoints, Shift-F10 = nearby route destinations, Shift-F11 = action bars,
+		-- Shift-F12 = cancel navigation. Their stored paths are no longer read on
+		-- press, so the old fragile localized defaults are cleared. Slots 5-10 stay
+		-- available as generic user-set menu bookmarks.
+		MenuQuickSelect1 = "",
+		MenuQuickSelect2 = "",
+		MenuQuickSelect3 = "",
+		MenuQuickSelect4 = "",
 		},
 	soundChannels  = {
 		MasterVolume = -1, --this is to check if the profile has sound settings. take the current blizz settings, if not.
@@ -752,10 +762,10 @@ SkuSettings:Register("SkuOptions", {
 	["soundSettings.Sound_EnableSoundWhenGameIsInBG"] = { scope = "profile", default = false, type = "boolean" },
 	["soundSettings.Sound_ZoneMusicNoDelay"] = { scope = "profile", default = false, type = "boolean" },
 	["debugOptions.soundOnError"] = { scope = "profile", default = false, type = "boolean" },
-	["allModules.MenuQuickSelect1"] = { scope = "profile", default = L["SkuNav,Wegpunkt,Auswählen,Aktuelle Karte Entfernung"], type = "string" },
-	["allModules.MenuQuickSelect2"] = { scope = "profile", default = L["SkuNav,Route,Route folgen,Ziele Entfernung"], type = "string" },
-	["allModules.MenuQuickSelect3"] = { scope = "profile", default = L["SkuCore,Aktionsleisten"], type = "string" },
-	["allModules.MenuQuickSelect4"] = { scope = "profile", default = L["SkuNav,Alles abwählen"], type = "string" },
+	["allModules.MenuQuickSelect1"] = { scope = "profile", default = "", type = "string" },
+	["allModules.MenuQuickSelect2"] = { scope = "profile", default = "", type = "string" },
+	["allModules.MenuQuickSelect3"] = { scope = "profile", default = "", type = "string" },
+	["allModules.MenuQuickSelect4"] = { scope = "profile", default = "", type = "string" },
 	["softTargeting.enemy.enabled"] = { scope = "profile", default = false, type = "boolean" },
 	["softTargeting.enemy.arc"] = { scope = "profile", default = 1, type = "number" },
 	["softTargeting.enemy.range"] = { scope = "profile", default = 60, type = "number" },

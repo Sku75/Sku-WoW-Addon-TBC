@@ -2787,6 +2787,33 @@ function SkuCore:MenuBuilder(aParentEntry)
 					SkuOptions:IterateOptionsArgs(SkuQuest.options.args, self, SkuSettings:Sub("SkuQuest"), "SkuQuest")
 				end
 			end },
+		-- Navigation settings, relocated here from the Nav menu's "Optionen". Only
+		-- the NON-beacon nav settings render here; the beacon settings (volume, click
+		-- on beacon, sound sets) live under Monitor -> Beacon. Same args/db (SkuNav)
+		-- via IterateOptionsArgs -> saved values are unchanged.
+		{ kind = "submenu", label = L["SkuNavMenuEntry"], sorting = true,
+			build = function(self)
+				if SkuNav and SkuNav.options and SkuNav.options.args then
+					local a = SkuNav.options.args
+					SkuOptions:IterateOptionsArgs({
+						vocalizeFullDirectionDistance      = a.vocalizeFullDirectionDistance,
+						vocalizeZoneNames                  = a.vocalizeZoneNames,
+						nearbyWpRange                      = a.nearbyWpRange,
+						standardWpReachedRange             = a.standardWpReachedRange,
+						autoGlobalDirection                = a.autoGlobalDirection,
+						showGlobalDirectionInWaypointLists = a.showGlobalDirectionInWaypointLists,
+						trackVisited                       = a.trackVisited,
+						timeForVisitedToExpire             = a.timeForVisitedToExpire,
+						showGatherWaypoints                = a.showGatherWaypoints,
+						showRoutesOnMinimap                = a.showRoutesOnMinimap,
+						showSkuMM                          = a.showSkuMM,
+						tomtomWp                           = a.tomtomWp,
+						autoNextWaypoint                   = a.autoNextWaypoint,
+						outputDistance                     = a.outputDistance,
+						routesMaxDistance                  = a.routesMaxDistance,
+					}, self, SkuSettings:Sub("SkuNav"), "SkuNav")
+				end
+			end },
 		{ kind = "submenu", label = tDeEn("Tastenbelegungen", "Key bindings"), children = tKeybinds },
 		{ kind = "submenu", label = tDeEn("Module", "Modules"),
 			build = function(self) if SkuCore.FeaturesMenuBuilder then SkuCore:FeaturesMenuBuilder(self) end end },
