@@ -615,6 +615,16 @@ RealmSelectAction(row) {
             gMainMenu.children[1].Enter()
             return
         }
+        ; A realm switch can end in a disconnect that drops the client to the
+        ; login screen (server/session event - not the tool). Read the prompt
+        ; aloud and STOP; do NOT click, because the login screen's red buttons
+        ; (incl. Quit) would otherwise be mistaken for popup buttons.
+        if (s["screen"] = "login") {
+            Log("RealmSelect: dropped to login screen (likely disconnect) - stopping")
+            text := PopupText(s)
+            Say(text != "" ? text : T("Please wait."))
+            return
+        }
         if AnyPopup(s) {
             ; High-population / hardcore / wrong-language popup: speak, dismiss.
             Log("RealmSelect: popup - " s["screen"])
