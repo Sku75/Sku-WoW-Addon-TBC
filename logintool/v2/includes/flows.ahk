@@ -461,8 +461,10 @@ CancelDelete() {
 ; ---------- realm switching via OCR ----------
 
 SwitchRealmOpenAction(menuItem) {
+    Log("SwitchRealmOpen: begin")
     s := SenseQuick()
     if !SenseCheck(s, "realmselect") {
+        Log("SwitchRealmOpen: clicking Realms button")
         ClickWidget("CharSelectionRealmsButton")
         tries := 0
         loop {
@@ -472,6 +474,7 @@ SwitchRealmOpenAction(menuItem) {
                 break
             tries++
             if (tries > 15) {
+                Log("SwitchRealmOpen: realmselect never appeared")
                 FailFlow()
                 return
             }
@@ -479,6 +482,7 @@ SwitchRealmOpenAction(menuItem) {
         }
     }
     BuildRealmMenu(menuItem)
+    Log("SwitchRealmOpen: built " menuItem.children.Length " entries")
     if (menuItem.children.Length > 0)
         menuItem.children[1].Enter()
     else
@@ -514,6 +518,7 @@ BuildRealmMenu(menuItem) {
         node := MenuNode(T("select language") ": " tab["text"], menuItem)
         node.action := RealmTabClosure(tab, menuItem)
     }
+    Log("BuildRealmMenu: " rows.Length " realm rows, " menuItem.children.Length " total entries")
 }
 
 RealmSelectClosure(row) {
@@ -534,15 +539,30 @@ RealmTabAction(tab, menuItem) {
 
 RealmSelectAction(row) {
     Say(T("switching to server. please wait."))
+    Log("RealmSelect: '" row["text"] "' select+join")
+    ; Join by double-clicking the realm row - the standard WoW realm-list
+    ; gesture. This avoids the separate OK button, whose stored coordinate
+    ; drifts with aspect ratio (same failure the login button had).
     ClickOcrRect(row)
-    Sleep(600)
-    ClickWidget("ServerListOkButton")
+    Sleep(300)
+    DoubleClickOcrRect(row)
     Sleep(1200)
 
+    ; If the dialog is still open, the double-click only selected the realm -
+    ; fall back to the OK button coordinate.
+    s := SenseQuick()
+    if SenseCheck(s, "realmselect") {
+        Log("RealmSelect: still on realmselect after join, clicking OK button")
+        ClickWidget("ServerListOkButton")
+        Sleep(1200)
+    }
+
     tries := 0
+    stuckOnDialog := 0
     loop {
         s := Sense()
         if SenseCheck(s, "charselect") && !AnyPopup(s) {
+            Log("RealmSelect: reached charselect")
             RefreshCharacterMenu(s)
             Say(T("switched to Server"))
             Sleep(1200)
@@ -552,15 +572,29 @@ RealmSelectAction(row) {
         if AnyPopup(s) {
             ; High-population warning, hardcore warning, wrong-language error:
             ; speak it, click it away.
+            Log("RealmSelect: popup - " s["screen"])
             SpeakAndClosePopup(s)
+            stuckOnDialog := 0
         } else if SenseCheck(s, "charcreate") {
             Send("{Esc}")
+            stuckOnDialog := 0
+        } else if SenseCheck(s, "realmselect") {
+            ; Still on the dialog. A legitimate switch shows this briefly while
+            ; the dialog closes; but selecting the realm we're already on does
+            ; nothing, so after a few stuck reads cancel out rather than hang.
+            stuckOnDialog++
+            if (stuckOnDialog >= 4) {
+                Log("RealmSelect: dialog stuck open, cancelling to char select")
+                ClickWidget("RealmSelectionCancelButton")
+            }
         } else {
             Say(T("wait"))
+            stuckOnDialog := 0
         }
         Sleep(1200)
         tries++
         if (tries > 25) {
+            Log("RealmSelect: timed out")
             FailFlow()
             return
         }

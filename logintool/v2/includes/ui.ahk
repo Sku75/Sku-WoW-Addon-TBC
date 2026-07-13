@@ -105,6 +105,15 @@ ClickOcrRect(line) {
     Click()
 }
 
+; Double-click an OCR line rect (e.g. a realm row: select + join in one
+; gesture, avoiding a separate OK button whose coordinate can drift).
+DoubleClickOcrRect(line) {
+    p := PxToScreen(line["x"] + line["w"] / 2, line["y"] + line["h"] / 2)
+    MouseMove(Round(p.x), Round(p.y), 0)
+    Sleep(30)
+    Click(Round(p.x), Round(p.y), 2)
+}
+
 ; Native 1 Hz probes (the only sensing that does NOT go through the helper,
 ; to keep the mode watcher free of helper round-trips).
 IsIngameNative() {
