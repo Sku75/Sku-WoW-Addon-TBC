@@ -51,13 +51,13 @@ global gIsChecking
 global tPopupClosed
 global Mode := -1
 global gInQueue := false
-global gOrgSapiVoiceObject
 
 
 ;------------------------------------------------------------------------------------------
 ClearLogFile()
-SetSapiAudioOutputBySubstring(gAudioOutputMatch)
 LoadSettings()
+SetSapiAudioOutputBySubstring(gAudioOutputMatch)
+ApplyToolVoice()
 LoadLocalizationData()
 SwitchToMode_1()
 

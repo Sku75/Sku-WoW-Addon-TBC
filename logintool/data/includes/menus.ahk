@@ -588,9 +588,10 @@ InitMenu:
 			MouseMove, tmp.X, tmp.Y, 0
 			Send {Click}
 
-			; BC Anniversary delete popup expects a case-sensitive keyword (uppercase "LÖSCHEN" in deDE,
-			; "DELETE" in enEN). Click into the edit box to ensure focus, clear it, then auto-type the
-			; keyword so blind users never have to produce umlauts/caps manually.
+			; The delete popup expects the localized DELETE_CONFIRM_STRING keyword (the client compares
+			; case-insensitively via strupper). Click into the edit box to ensure focus, clear it, then
+			; auto-type the keyword so blind users never have to produce umlauts/Cyrillic manually.
+			; Values from the per-locale GlueStrings dumps; esES reuses the esMX value (verify in-client).
 			WaitForX(1, 700)
 			tmpEdit := UiToScreen(gGameUiWidgets.DeleteCharPopupEditBox.x, gGameUiWidgets.DeleteCharPopupEditBox.y)
 			MouseMove, floor(tmpEdit.X), floor(tmpEdit.Y), 0
@@ -600,10 +601,9 @@ InitMenu:
 			WaitForX(1, 100)
 			Send {Backspace}
 			WaitForX(1, 150)
-			if (gHasSetupLanguage = "deDE")
-				SendInput, {Text}LÖSCHEN
-			else if (gHasSetupLanguage = "enEN")
-				SendInput, {Text}DELETE
+			tDeleteKeywords := {deDE: "LÖSCHEN", enEN: "DELETE", frFR: "EFFACER", ruRU: "УДАЛИТЬ", esES: "BORRAR"}
+			if (tDeleteKeywords[gHasSetupLanguage] != "")
+				SendInput % "{Text}" . tDeleteKeywords[gHasSetupLanguage]
 			WaitForX(1, 300)
 
 			gDeleteCharacterNameFlag := true
@@ -761,71 +761,6 @@ InitMenu:
 		gMainMenu.childs[tMainItemN].childs[tLangNumber].onAction := Func("gMainMenuchilds9ChildsXChildsYAction").Bind(gMainMenuLanguage.childs[tLangNumber], tLangNumber, i)
 	}
 	UpdateChilds(gMainMenu.childs[tMainItemN])	
-
-	;menu item 9 - addons (overwrites the Region slot above, same as Version did before)
-	tMainItemN := 9
-	gMainMenu.childs[tMainItemN] := new baseMenuEntryObject
-	gMainMenu.childs[tMainItemN].parent := gMainMenu
-	gMainMenu.childs[tMainItemN].name := L["addons"]
-	gMainMenu.childs[tMainItemN].childs := []
-
-		;9.1 activate all
-		gMainMenu.childs[tMainItemN].childs[1] := new baseMenuEntryObject
-		gMainMenu.childs[tMainItemN].childs[1].parent := gMainMenu.childs[tMainItemN]
-		gMainMenu.childs[tMainItemN].childs[1].name := L["activate all addons"]
-		gMainMenuAddonsEnableAllAction(this)
-		{
-			AddonListAction("enableAll")
-			gCurrentMenuItem := gMainMenu.childs[9].childs[1]
-			gMainMenu.childs[9].childs[1].onEnter()
-		}
-		gMainMenu.childs[tMainItemN].childs[1].onAction := Func("gMainMenuAddonsEnableAllAction").Bind(gMainMenu.childs[tMainItemN].childs[1])
-
-		;9.2 deactivate all
-		gMainMenu.childs[tMainItemN].childs[2] := new baseMenuEntryObject
-		gMainMenu.childs[tMainItemN].childs[2].parent := gMainMenu.childs[tMainItemN]
-		gMainMenu.childs[tMainItemN].childs[2].name := L["deactivate all addons"]
-		gMainMenuAddonsDisableAllAction(this)
-		{
-			AddonListAction("disableAll")
-			gCurrentMenuItem := gMainMenu.childs[9].childs[2]
-			gMainMenu.childs[9].childs[2].onEnter()
-		}
-		gMainMenu.childs[tMainItemN].childs[2].onAction := Func("gMainMenuAddonsDisableAllAction").Bind(gMainMenu.childs[tMainItemN].childs[2])
-
-		;9.3 load out of date addons (submenu yes/no)
-		gMainMenu.childs[tMainItemN].childs[3] := new baseMenuEntryObject
-		gMainMenu.childs[tMainItemN].childs[3].parent := gMainMenu.childs[tMainItemN]
-		gMainMenu.childs[tMainItemN].childs[3].name := L["load out of date addons"]
-		gMainMenu.childs[tMainItemN].childs[3].childs := []
-
-			;9.3.1 yes
-			gMainMenu.childs[tMainItemN].childs[3].childs[1] := new baseMenuEntryObject
-			gMainMenu.childs[tMainItemN].childs[3].childs[1].parent := gMainMenu.childs[tMainItemN].childs[3]
-			gMainMenu.childs[tMainItemN].childs[3].childs[1].name := L["yes"]
-			gMainMenuAddonsLoadOutdatedYesAction(this)
-			{
-				AddonListAction("loadOutdatedYes")
-				gCurrentMenuItem := gMainMenu.childs[9].childs[3].childs[1]
-				gMainMenu.childs[9].childs[3].childs[1].onEnter()
-			}
-			gMainMenu.childs[tMainItemN].childs[3].childs[1].onAction := Func("gMainMenuAddonsLoadOutdatedYesAction").Bind(gMainMenu.childs[tMainItemN].childs[3].childs[1])
-
-			;9.3.2 no
-			gMainMenu.childs[tMainItemN].childs[3].childs[2] := new baseMenuEntryObject
-			gMainMenu.childs[tMainItemN].childs[3].childs[2].parent := gMainMenu.childs[tMainItemN].childs[3]
-			gMainMenu.childs[tMainItemN].childs[3].childs[2].name := L["no"]
-			gMainMenuAddonsLoadOutdatedNoAction(this)
-			{
-				AddonListAction("loadOutdatedNo")
-				gCurrentMenuItem := gMainMenu.childs[9].childs[3].childs[2]
-				gMainMenu.childs[9].childs[3].childs[2].onEnter()
-			}
-			gMainMenu.childs[tMainItemN].childs[3].childs[2].onAction := Func("gMainMenuAddonsLoadOutdatedNoAction").Bind(gMainMenu.childs[tMainItemN].childs[3].childs[2])
-
-			UpdateChilds(gMainMenu.childs[tMainItemN].childs[3])
-
-		UpdateChilds(gMainMenu.childs[tMainItemN])
 
 	;menu item 10 - version
 	tMainItemN := 10
@@ -1353,7 +1288,7 @@ EnterCharacterNameHandler()
 			gEnterCharacterNameFlag := false
 			PlayUtterance(L["Character created"])
 			WaitForX(3, 500)
-			PlayUtterance(L["character number:"] . " " . (gNumberOfCharsOnCurrentRealm + 1))
+			PlayUtterance(L["character number:"] . " " . (gNumberOfCharsOnCurrentRealm + 1), true) ;queue: must not purge "Character created"
 			sleep 600
 
 			tFoundSuccessOrFail := true
@@ -1398,7 +1333,7 @@ EnterCharacterNameHandler()
 
 					PlayUtterance(L["Failed. The name is not available, or the names format is not allowed."])
 					WaitForX(4, 1000)
-					PlayUtterance(L["enter the name for the new character and press enter, or escape to cancel character creation."])
+					PlayUtterance(L["enter the name for the new character and press enter, or escape to cancel character creation."], true) ;queue: must not purge the failure message
 					WaitForX(5, 1000)
 }
 			}

@@ -11,6 +11,7 @@ WriteSettings(aReset)
 		tFileHandle.WriteLine("gHasSetupRegion=" . gHasSetupRegion)
 		tFileHandle.WriteLine("gHasSetup=" . gHasSetup)
 		tFileHandle.WriteLine("gHasSetupVersion=" . gHasSetupVersion)
+		tFileHandle.WriteLine("gAudioOutputMatch=" . gAudioOutputMatch)
 	}
 }
 
@@ -54,6 +55,10 @@ LoadSettings()
 			if(tArray[1] == "gHasSetupVersion")
 			{
 				global gHasSetupVersion := tArray[2]
+			}
+			if(tArray[1] == "gAudioOutputMatch")
+			{
+				global gAudioOutputMatch := tArray[2]
 			}
 		}
 	}

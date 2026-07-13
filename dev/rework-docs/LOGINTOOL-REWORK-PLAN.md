@@ -63,12 +63,17 @@ the user tests few times, not per-change.
 ### Phase 1 — v1 cleanup (small diffs, still AHK v1)
 1. Remove the addons menu (menus.ahk 765-828) and AddonListAction
    (helpers.ahk 245-325) — the installer handles addon enabling now.
-   Decide: restore "select region" as item 9 or renumber (region is still
-   reachable via first-start setup; recommend renumber + keep setup path).
-2. Strip to BurningCrusade-only: gametypes.ini → one entry; delete
-   Retail/Cata/Classic branches (UpdateFavoriteSlots, GetLockedRaces,
-   GetNumberOfChars50Retail, retail customize clicks, per-gametype
-   scrollbar math); keep data.ini sections for now (packaging trims later).
+   Removing the addons block un-shadows the "select region" menu, which
+   stays as item 9 (needed for multi-client/multi-region support).
+2. ~~Strip to BurningCrusade-only~~ **AMENDED 2026-07-13 (user decision):
+   keep compatibility with ALL clients** (Retail/Cata/Classic/BC/Era).
+   gametypes.ini keeps all entries; Retail/Cata/Classic branches
+   (UpdateFavoriteSlots, GetLockedRaces, GetNumberOfChars50Retail,
+   customize clicks, per-gametype scrollbar math) stay in place as a
+   minimal untested-but-present baseline so someone with a Retail install
+   can contribute fixes later. Phase 5 OCR makes most per-client tables
+   moot anyway (char/realm/popup data read live); only char-creation
+   click positions remain per-gametype in data.ini.
 3. SAPI fixes: set the tool voice ONCE (not per utterance — kills the
    voice-swap race); make purge-vs-queue deliberate (purge on nav
    keypresses, queue on sequential announcements); log SAPI exceptions to

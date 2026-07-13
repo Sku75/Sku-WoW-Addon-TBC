@@ -1,9 +1,10 @@
 ﻿global sap := ComObjCreate("SAPI.SpVoice")
 
 ;------------------------------------------------------------------
-; Hardcoded substring to match desired SAPI audio output device (case-insensitive).
-; Change this if your headset has a different description.
-global gAudioOutputMatch := "Headset"
+; Substring to match the desired SAPI audio output device (case-insensitive).
+; Loaded from settings.ini (gAudioOutputMatch=...); empty = system default device.
+; The available device names are written to log.txt on every start.
+global gAudioOutputMatch := ""
 
 ;------------------------------------------------------------------
 EnumerateWaveOutDevices()
@@ -145,11 +146,34 @@ SetSapiVoiceByNumber(newVoiceNumber)
 ;------------------------------------------------------------------------------------------
 SetToolVoiceByName(newVoiceName)
 {
-	global gHasSetupVoice :=  newVoiceName
+	global gHasSetupVoice := newVoiceName
+	ApplyToolVoice()
 }
 
 ;------------------------------------------------------------------------------------------
-PlayUtterance(aText)
+; Apply the configured tool voice + rate ONCE. PlayUtterance must never touch sap.Voice:
+; swapping the voice around every async Speak() raced with still-playing utterances.
+ApplyToolVoice()
+{
+	global sap
+	try
+	{
+		SetSapiVoiceByName(gHasSetupVoice)
+		sap.Rate := 5
+		AddToLogFile("ApplyToolVoice: voice='" . gHasSetupVoice . "' rate=5")
+	}
+	catch e
+	{
+		AddToLogFile("ApplyToolVoice FAILED: " . e.Message)
+	}
+}
+
+;------------------------------------------------------------------------------------------
+; aQueue = false (default): purge anything still speaking first (SVSFlagsAsync|SVSFPurgeBeforeSpeak)
+;   - right for menu navigation, where a new announcement must interrupt the old one.
+; aQueue = true: append after the current utterance (SVSFlagsAsync)
+;   - right for the second half of back-to-back announcements that must both be heard.
+PlayUtterance(aText, aQueue := false)
 {
 
 	if(aText = L["wait"])
@@ -171,18 +195,19 @@ PlayUtterance(aText)
 		;OutputDebug, % aText
 		aText := StrReplace(aText, "_", " ")
 
+		tFlags := 3 ;SVSFlagsAsync|SVSFPurgeBeforeSpeak
+		if(aQueue = true)
+		{
+			tFlags := 1 ;SVSFlagsAsync
+		}
+
 		try
 		{
-			global gOrgSapiVoiceObject := sap.Voice
-
-			SetSapiVoiceByName(gHasSetupVoice)
-			sap.Rate := 5
-			sap.Speak(aText, 3)
-			sap.Voice := gOrgSapiVoiceObject
+			sap.Speak(aText, tFlags)
 		}
-		catch e 
+		catch e
 		{
-			;OutputDebug % "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!sap.speak err" . e
+			AddToLogFile("PlayUtterance sap.Speak FAILED (flags=" . tFlags . "): " . e.Message . " text=" . aText)
 		}
 	}
 }
