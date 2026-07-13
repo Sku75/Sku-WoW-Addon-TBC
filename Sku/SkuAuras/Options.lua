@@ -581,7 +581,7 @@ function SkuAuras:UpdateAura(aAuraNameToUpdate, aNewType, aEnabled, aNewAttribut
 		SkuOptions.Voice:OutputStringBTtts(L["Aktualisiert"], true, true, 0.3, true)		
 
 		C_Timer.After(0.01, function()
-			SkuOptions:SlashFunc(L["short"]..",SkuAuras,aurenList,aurenVerwalten,"..SkuOptions.currentMenuPosition.parent.parent.parent.name..","..tAuraName)
+			SkuOptions:SlashFunc(L["short"]..",SkuAuras,aurenVerwalten,"..SkuOptions.currentMenuPosition.parent.parent.parent.name..","..tAuraName)
 			SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
 			SkuOptions:VocalizeCurrentMenuName()
 		end)
@@ -782,7 +782,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 			SkuOptions.Voice:OutputStringBTtts(L["Dupliziert"], true, true, 0.3, true)		
 
 			C_Timer.After(0.01, function()
-				SkuOptions:SlashFunc(L["short"]..",SkuAuras,aurenList,aurenVerwalten,"..self.parent.parent.name..","..tTestNewName)
+				SkuOptions:SlashFunc(L["short"]..",SkuAuras,aurenVerwalten,"..self.parent.parent.name..","..tTestNewName)
 				SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
 				SkuOptions:VocalizeCurrentMenuName()
 			end)
@@ -865,15 +865,13 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:MenuBuilder(aParentEntry)
-	-- W2 M-B: top-level "Auren" entry expressed as a declarative SkuMenu "list"
-	-- spec (dynamic + sorting, BuildChildren rebuilt each visit). The deeper
-	-- entries built inside the closure stay hand-built/verbatim. The "Optionen"
-	-- entry below is left hand-built on purpose: it carries sorting=nil and the
-	-- "settings" kind would force sorting=true, so converting it would change
-	-- its property set.
-	local tSpecs = {}
-	tSpecs[#tSpecs+1] = { kind = "list", label = L["Auren"], sorting = true, id = "aurenList",  -- stable nav anchor (W6-B #14)
-		build = function(self)
+	-- Flattened: the top-level "Auren" entry holds the aura list DIRECTLY. The
+	-- old intermediate "Auren" list level and its empty "Optionen" sibling
+	-- (SkuAuras.options.args is {}) are gone, so ONE right-arrow from the root
+	-- entry lands on "Neue aura". SlashFunc anchor paths dropped the aurenList
+	-- segment accordingly. The entries below stay hand-built/verbatim.
+	aParentEntry.sorting = true
+	local tBuildList = function(self)
 		-- [41.05] Sets anlegen/teilen (Stufe 1+2), isoliert in SkuAuras\sharing.lua
 		-- [41.06] Sets-Menue an Position 3 verschoben (siehe weiter unten, vor Aura importieren)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Neue aura"]}, SkuGenericMenuItem)
@@ -1178,10 +1176,6 @@ function SkuAuras:MenuBuilder(aParentEntry)
 			SkuOptions.Voice:OutputStringBTtts(L["noch nicht implementiert"], false, true, 0.1, true)
 		end
 		
-	end }
-	SkuMenu:Build(aParentEntry, tSpecs)
-
-	---
-	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
-	SkuOptions:IterateOptionsArgs(SkuAuras.options.args, tNewMenuEntry, SkuSettings:Sub("SkuAuras"))
+	end
+	tBuildList(aParentEntry)
 end

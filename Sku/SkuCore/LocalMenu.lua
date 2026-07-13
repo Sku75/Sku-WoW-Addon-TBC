@@ -2848,22 +2848,35 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 						_G["ClassTrainerTrainButton"]:Click()
 						pcall(function() SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true) end)
 						C_Timer.After(0.5, function()
-							pcall(function() SkuCore:CheckFrames() end)
+							-- aQuiet: the index-based re-anchor inside CheckFrames may land
+							-- anywhere after the skill list changed; only the identity re-pin
+							-- below is spoken.
+							pcall(function() SkuCore:CheckFrames(nil, nil, true) end)
 							C_Timer.After(0.35, function()
 								pcall(function()
-									if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.children then
-										local tTarget = _G["ClassTrainerTrainButton"]
-											and _G["ClassTrainerTrainButton"]:IsVisible()
-											and _G["ClassTrainerTrainButton"]:IsEnabled()
-											and _G["ClassTrainerTrainButton"]:GetText()
-										if tTarget then
-											tTarget = SkuUtil:Unescape(tTarget)
-											for _, child in ipairs(SkuOptions.currentMenuPosition.children) do
+									local tTarget = _G["ClassTrainerTrainButton"]
+										and _G["ClassTrainerTrainButton"]:IsVisible()
+										and _G["ClassTrainerTrainButton"]:IsEnabled()
+										and _G["ClassTrainerTrainButton"]:GetText()
+									if tTarget and SkuOptions.currentMenuPosition then
+										tTarget = SkuUtil:Unescape(tTarget)
+										-- CheckFrames re-anchors by INDEX, so after training the
+										-- cursor can sit on any entry of the trainer window level
+										-- (or on the window node itself). Search the level the
+										-- cursor is on (siblings) AND its children, by name.
+										local function tFindIn(aList)
+											if type(aList) ~= "table" then return nil end
+											for _, child in ipairs(aList) do
 												if child.name == tTarget then
-													SkuOptions.currentMenuPosition = child
-													break
+													return child
 												end
 											end
+										end
+										local tPos = SkuOptions.currentMenuPosition
+										local tHit = (tPos.parent and tFindIn(tPos.parent.children))
+											or tFindIn(tPos.children)
+										if tHit then
+											SkuOptions.currentMenuPosition = tHit
 										end
 									end
 									SkuOptions:VocalizeCurrentMenuName()

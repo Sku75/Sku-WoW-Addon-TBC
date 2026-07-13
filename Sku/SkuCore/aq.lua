@@ -2799,13 +2799,39 @@ function Aq:MonitorMenuBuilder()
 					end
 				end
 				C_Timer.After(0.001, function()
-					SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
-				end)				
+					SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
+				end)
 			end
 			tNewMenuEntry.BuildChildren = function(self)
 				for x = 1, #tVoices do
 					SkuOptions:InjectMenuItems(self, {tVoices[x].name}, SkuGenericMenuItem)
 				end
+			end
+
+			-- "Tier Hunger ansagen" (Notice on pet starving), relocated from
+			-- Einstellungen -> Sonstiges. Same profile-scoped
+			-- SkuSettings:Sub("SkuCore").classes.hunter.petHappyness -> saved value intact.
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Notice on pet starving"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.sorting = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuSettings:Sub("SkuCore").classes.hunter.petHappyness == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuSettings:Sub("SkuCore").classes.hunter.petHappyness = false
+				elseif aName == L["Yes"] then
+					SkuSettings:Sub("SkuCore").classes.hunter.petHappyness = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
 			end
 		end
 	end

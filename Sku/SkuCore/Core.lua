@@ -3221,6 +3221,11 @@ local blockedWidgetStrings = {
 	[L["Freund hinzufügen"]] = true,
 	[L["Fenster verschieben"]] = true,
 	[L["Spieler melden wegen:"]] = true,
+	-- Close buttons are never listed anywhere (Escape closes the window); the
+	-- hand-built window mirrors already skip them, this catches the generically
+	-- walked windows (e.g. the flightmaster's TaxiCloseButton, auto-labeled
+	-- "Schließen" via tButtonsWoFontstrings).
+	[L["Close"]] = true,
 }
 
 local friendlyFrameNames = {

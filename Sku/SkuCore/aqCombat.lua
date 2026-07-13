@@ -1630,11 +1630,13 @@ local function tSoundMenuBuilder(self, aSetting)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function aqCombat:aqCombatMenuBuilder()
-   -- Combat menu accessibility toggle (open/read/navigate Sku menu, bags, character,
-   -- quest log while in combat). Profile-scoped SkuSettings:Sub("SkuCore").combatMenuOpen
-   -- (registered default ON). Same flag /skucombatmenu toggles.
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Sku menu in combat"]}, SkuGenericMenuItem)
+-- Combat menu accessibility toggle (open/read/navigate Sku menu, bags, character,
+-- quest log while in combat). Profile-scoped SkuSettings:Sub("SkuCore").combatMenuOpen
+-- (registered default ON). Same flag /skucombatmenu toggles.
+-- Relocated from the Monitor -> Kampf menu to Einstellungen -> Kampf (built by
+-- SkuCore:MenuBuilder in SkuCore/Options.lua); same setting -> saved value intact.
+function aqCombat.CombatMenuOpenMenuBuilder(aParentEntry)
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Sku menu in combat"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.sorting = true
    tNewMenuEntry.isSelect = true
@@ -1656,7 +1658,10 @@ function aqCombat:aqCombatMenuBuilder()
       SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
       SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
    end
+end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+function aqCombat:aqCombatMenuBuilder()
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.sorting = true

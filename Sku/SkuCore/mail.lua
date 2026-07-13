@@ -135,11 +135,13 @@ function Mail:MailEditor(aTargetValue, aLabelPrefix)
 			_G.C_Timer.After(0.30, function()
 				tRepin()
 				if aLabelPrefix and tFieldEntry then
-					SkuOptions.Voice:OutputStringBTtts(tFieldEntry.name, false, true, 0.2)
+					-- engine 2 = Blizzard TTS, immer: der Wert ist Freitext (Spielername,
+					-- Betreff, Brieftext), den die Sku-Audiodatenbank nicht kennt.
+					SkuOptions.Voice:OutputStringBTtts(tFieldEntry.name, false, true, 0.2, nil, nil, nil, 2)
 				end
 			end)
 		elseif aLabelPrefix and tFieldEntry then
-			SkuOptions.Voice:OutputStringBTtts(tFieldEntry.name, false, true, 0.2)
+			SkuOptions.Voice:OutputStringBTtts(tFieldEntry.name, false, true, 0.2, nil, nil, nil, 2)
 		end
 	end)
 end

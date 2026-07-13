@@ -316,7 +316,7 @@ SkuCore.options = {
 			name = L["Classes"],
 			type = "group",
 			order = 2,
-			forAudioMenu = false,   -- W7: Classes menu removed; pet-starving toggle moved to Sonstiges
+			forAudioMenu = false,   -- W7: Classes menu removed; pet-starving toggle lives in Monitor -> Tier -> Gesundheit (aq.lua)
 			args= {
 				hunter={
 					name = L["Hunter"],
@@ -2764,9 +2764,16 @@ function SkuCore:MenuBuilder(aParentEntry)
 					pcall(function() SkuCore.VisualAids:VisualAidsBuildMenu(self) end)
 				end
 			end },
-		-- "Kampf" (Combat) submenu removed: all of its contents were relocated —
-		-- Entfernung and Ziel Optionen to the Monitor menu, Dial Targeting and Soft
-		-- Targeting to the top-level "Werkzeuge" menu — leaving it empty.
+		-- "Kampf" (Combat): the W7 contents stay relocated (Entfernung and Ziel
+		-- Optionen in the Monitor menu, Dial/Soft Targeting under Werkzeuge). The
+		-- submenu is back for the "Sku Menü im Kampf" toggle, moved here from the
+		-- Monitor -> Kampf menu (same combatMenuOpen setting -> saved value intact).
+		{ kind = "submenu", label = tDeEn("Kampf", "Combat"),
+			build = function(self)
+				if SkuCore.aqCombat and SkuCore.aqCombat.CombatMenuOpenMenuBuilder then
+					SkuCore.aqCombat.CombatMenuOpenMenuBuilder(self)
+				end
+			end },
 		{ kind = "submenu", label = tDeEn("Scan", "Scan"),
 			build = function(self)
 				-- Scan-related settings relocated from the SkuCore "Options" group.
@@ -2851,12 +2858,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 				-- W7: the SkuCore options rendered DIRECTLY into Sonstiges (no "Optionen"
 				-- wrapper); forAudioMenu=false entries stay hidden (they live in Scan etc.).
 				SkuOptions:IterateOptionsArgs(SkuCore.options.args, self, tSub, "SkuCore")
-				-- "Notice on pet starving", relocated out of the removed Classes menu
-				-- (keyPrefix "classes.hunter." preserved so the saved value survives).
-				if SkuCore.options.args.classes and SkuCore.options.args.classes.args
-					and SkuCore.options.args.classes.args.hunter then
-					SkuOptions:IterateOptionsArgs(SkuCore.options.args.classes.args.hunter.args, self, tSub, "SkuCore", "classes.hunter.", true)
-				end
+				-- "Notice on pet starving" no longer renders here: relocated to the
+				-- Monitor -> Tier -> Gesundheit menu (aq.lua MonitorMenuBuilder), same
+				-- classes.hunter.petHappyness setting.
 			end },
 	}
 
