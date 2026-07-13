@@ -11,6 +11,9 @@ namespace SkuLoginSense
     ///
     ///   SkuLoginSense sense [options]        one-shot: capture + classify + OCR, JSON to stdout
     ///   SkuLoginSense save <out.png> [opts]  capture the WoW window to a PNG (debug)
+    ///   SkuLoginSense repl [options]         persistent mode: one command per stdin line
+    ///                                        ("sense", "sense --no-ocr", "save x.png", "exit"),
+    ///                                        one JSON line per command on stdout
     ///
     /// Options:
     ///   --image <png>          sense an existing screenshot instead of capturing
@@ -65,7 +68,77 @@ namespace SkuLoginSense
                 return 0;
             }
 
+            if (mode == "repl")
+            {
+                // Persistent mode for the AHK driver: avoids paying process +
+                // OCR-engine startup per sense. Base options given on the
+                // command line apply to every request; per-line extra args are
+                // merged on top (e.g. "sense --no-ocr").
+                string line;
+                while ((line = Console.In.ReadLine()) != null)
+                {
+                    line = line.Trim();
+                    if (line.Length == 0) continue;
+                    if (line == "exit" || line == "quit") break;
+                    var parts = SplitCommandLine(line);
+                    try
+                    {
+                        if (parts[0] == "save" && parts.Length >= 2)
+                        {
+                            var (bmp2, m2, d2) = Acquire(opt);
+                            using (bmp2)
+                            {
+                                bmp2.Save(parts[1], System.Drawing.Imaging.ImageFormat.Png);
+                                Console.WriteLine("{\"saved\":" + Quote(Path.GetFullPath(parts[1])) +
+                                    ",\"method\":" + Quote(m2) + "}");
+                            }
+                        }
+                        else if (parts[0] == "sense")
+                        {
+                            var merged = new Dictionary<string, string>(opt, StringComparer.OrdinalIgnoreCase);
+                            foreach (var kv in ParseOptions(parts, 1)) merged[kv.Key] = kv.Value;
+                            RunSense(merged);
+                        }
+                        else
+                        {
+                            Console.WriteLine("{\"error\":\"unknown repl command\"}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("{\"error\":" + Quote(ex.Message) + "}");
+                    }
+                    Console.Out.Flush();
+                }
+                return 0;
+            }
+
             if (mode != "sense") { PrintUsage(); return 1; }
+            RunSense(opt);
+            return 0;
+        }
+
+        static string[] SplitCommandLine(string line)
+        {
+            var parts = new List<string>();
+            var current = new StringBuilder();
+            bool inQuotes = false;
+            foreach (char c in line)
+            {
+                if (c == '"') { inQuotes = !inQuotes; continue; }
+                if (c == ' ' && !inQuotes)
+                {
+                    if (current.Length > 0) { parts.Add(current.ToString()); current.Clear(); }
+                    continue;
+                }
+                current.Append(c);
+            }
+            if (current.Length > 0) parts.Add(current.ToString());
+            return parts.ToArray();
+        }
+
+        static void RunSense(Dictionary<string, string> opt)
+        {
 
             var (frame, capMethod, capDesc) = Acquire(opt);
             using (frame)
@@ -99,7 +172,6 @@ namespace SkuLoginSense
                 EmitJson(frame, capMethod, capDesc, gameData, screen, checks, lines, ocrLang,
                     includeProbes: opt.ContainsKey("probes") ? sensor : null);
             }
-            return 0;
         }
 
         static (Bitmap bmp, string method, string desc) Acquire(Dictionary<string, string> opt)

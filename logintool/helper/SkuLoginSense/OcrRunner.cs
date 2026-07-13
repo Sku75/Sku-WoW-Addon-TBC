@@ -22,8 +22,16 @@ namespace SkuLoginSense
     /// </summary>
     public static class OcrRunner
     {
+        static string _cachedRequest;
+        static OcrEngine _cachedEngine;
+
         public static string ResolveLanguage(string requested, out OcrEngine engine)
         {
+            if (_cachedEngine != null && _cachedRequest == requested)
+            {
+                engine = _cachedEngine;
+                return engine.RecognizerLanguage?.LanguageTag;
+            }
             engine = null;
             if (!string.IsNullOrEmpty(requested))
             {
@@ -31,6 +39,8 @@ namespace SkuLoginSense
                 catch { }
             }
             if (engine == null) engine = OcrEngine.TryCreateFromUserProfileLanguages();
+            _cachedRequest = requested;
+            _cachedEngine = engine;
             return engine?.RecognizerLanguage?.LanguageTag;
         }
 
