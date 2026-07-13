@@ -138,23 +138,35 @@ AcceptContract() {
 
 ; ---------- character list via OCR ----------
 
-; Parse the right-side character list: blocks of up to 3 lines
-; (name / level+class / zone), separated by a vertical gap.
+; A character block's middle line is "<Level> N <Class>" - the localized level
+; word is the reliable signal that a block is a character and not the realm
+; header ("Realm wechseln") or a bottom button ("Neuen Charakter erstellen").
+global gLevelWords := ["Stufe", "Level", "Niveau", "Nivel", "Уровень"]
+
+BlockIsCharacter(detailLines) {
+    for line in detailLines {
+        for word in gLevelWords {
+            if InStr(line, word)
+                return true
+        }
+    }
+    return false
+}
+
+; Parse the right-side character list into blocks of lines separated by a
+; vertical gap, then keep only the blocks that contain a level line. This is
+; position-independent: it does not matter how high or low the list sits, or
+; whether the realm header / create / delete buttons were also recognized.
 OcrCharList(s) {
     chars := []
     if !SenseOk(s)
         return chars
-    lines := OcrLinesInRegion(s, 0.775, 0.05, 1.0, 0.88)
-    ; Drop the realm header ("Thunderstrike", "Realm wechseln") - it sits in
-    ; the top strip above the first character slot.
-    filtered := []
-    for line in lines {
-        if (line["y"] > s["height"] * 0.085)
-            filtered.Push(line)
-    }
+    ; Right-hand panel, generous vertical span (the list floats vertically).
+    lines := OcrLinesInRegion(s, 0.74, 0.0, 1.0, 0.97)
+
     ; Sort by y (insertion sort, lists are small).
     sorted := []
-    for line in filtered {
+    for line in lines {
         inserted := false
         for i, existing in sorted {
             if (line["y"] < existing["y"]) {
@@ -166,18 +178,45 @@ OcrCharList(s) {
         if !inserted
             sorted.Push(line)
     }
+
+    ; Group into blocks by vertical gap.
     gapThreshold := s["height"] * 0.030
+    blocks := []
     current := ""
     for line in sorted {
         if (current = "" || line["y"] - current.lastY > gapThreshold) {
-            current := {name: line["text"], details: "", clickLine: line, lastY: line["y"]}
-            chars.Push(current)
+            current := {name: line["text"], details: "", detailLines: [line["text"]], clickLine: line, lastY: line["y"]}
+            blocks.Push(current)
         } else {
             current.details .= (current.details = "" ? "" : ", ") line["text"]
+            current.detailLines.Push(line["text"])
             current.lastY := line["y"]
         }
     }
+
+    ; Keep only real character blocks.
+    for block in blocks {
+        if BlockIsCharacter(block.detailLines)
+            chars.Push(block)
+    }
     return chars
+}
+
+; Fresh character list after the screen changed (realm switch, create, delete).
+; The game needs a moment to draw all character slots; capturing too soon shows
+; only the ones already rendered. Settle, capture, and if the count grew on a
+; second look take the larger list.
+RefreshCharacterMenuSettled() {
+    Sleep(1000)
+    s := Sense()
+    first := OcrCharList(s)
+    Sleep(700)
+    s2 := Sense()
+    second := OcrCharList(s2)
+    if (second.Length >= first.Length)
+        RefreshCharacterMenu(s2)
+    else
+        RefreshCharacterMenu(s)
 }
 
 RefreshCharacterMenu(s := "") {
@@ -187,6 +226,10 @@ RefreshCharacterMenu(s := "") {
     charNode := gMainMenu.children[1]
     charNode.children := []
     gLastCharList := OcrCharList(s)
+    names := ""
+    for entry in gLastCharList
+        names .= (names = "" ? "" : " | ") entry.name
+    Log("RefreshCharacterMenu: " gLastCharList.Length " chars [" names "]")
     if (gLastCharList.Length = 0) {
         MenuNode(T("Empty - No characters on this server."), charNode)
         return
@@ -317,7 +360,7 @@ EnterCharacterNameHandler() {
             gPendingCreate := ""
             Say(T("Character created"))
             Sleep(1200)
-            RefreshCharacterMenu(s)
+            RefreshCharacterMenuSettled()   ; new slot needs a moment to draw
             SayQueued(T("character number:") " " gLastCharList.Length)
             Sleep(800)
             gMainMenu.Enter()
@@ -412,7 +455,7 @@ DeleteCharacterNameHandler() {
             Say(T("character deleted"))
             Click()
             Sleep(1500)
-            RefreshCharacterMenu()
+            RefreshCharacterMenuSettled()   ; list shrinks; let it redraw
             gMainMenu.children[1].Enter()
             return
         }
@@ -563,9 +606,9 @@ RealmSelectAction(row) {
         s := Sense()
         if SenseCheck(s, "charselect") && !AnyPopup(s) {
             Log("RealmSelect: reached charselect")
-            RefreshCharacterMenu(s)
             Say(T("switched to Server"))
-            Sleep(1200)
+            RefreshCharacterMenuSettled()   ; wait for all slots to render
+            Sleep(600)
             gMainMenu.children[1].Enter()
             return
         }
