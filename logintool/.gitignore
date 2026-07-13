@@ -6,3 +6,7 @@ data/localization/translations.xlsx
 
 # Runtime files
 log.txt
+
+# Helper build output
+helper/**/bin/
+helper/**/obj/
