@@ -71,7 +71,7 @@ namespace SkuInstaller
         // /releases/latest). Tag and asset name both derive from it:
         //   tag  = "v" + MainVersion       e.g. "v42.02"
         //   file = "Sku-" + MainVersion    e.g. "Sku-42.02.zip"
-        public const string MainVersion = "42.03";
+        public const string MainVersion = "42.04";
         public static string MainTag => "v" + MainVersion;
         public static string MainAssetName => "Sku-" + MainVersion + ".zip";
 
@@ -87,7 +87,7 @@ namespace SkuInstaller
         // copied into the client's Interface folder and a readable-font override.
         // Pinned to the release that carries the zip; bump if a newer one ships
         // (LoginToolInstaller upgrades in place via its version marker).
-        public const string LoginToolTag = "v42.03";
+        public const string LoginToolTag = "v42.04";
         public const string LoginToolAsset = "WoW-Login-Tool.zip";
         public const string LoginToolFolderName = "WoW Login Tool";
 
