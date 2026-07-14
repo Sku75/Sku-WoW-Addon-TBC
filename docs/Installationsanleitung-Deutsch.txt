@@ -145,17 +145,23 @@ Schritt 6: Login-Tool einrichten
 Die Login-Bildschirme von WoW lassen sich mit Screenreadern nicht bedienen. Damit
 du dich künftig selbst einloggen und Charaktere erstellen oder löschen kannst,
 richtest du zum Schluss das WoW-Login-Tool ein.
-- Installiere AutoHotkey von autohotkey.com.
-- Lade das Login-Tool von der Sku-Homepage herunter (es ist dort verlinkt):
-https://sku75.github.io/Sku-WoW-Addon-TBC/
-- Entpacke es und folge der beiliegenden Readme-Datei. Sie beschreibt Schritt für
-Schritt, welche Ordner und Dateien (unter anderem das Startmenü) du wohin
-kopieren musst. Führe das genau so aus.
-- Starte das Login-Tool über seine Programmdatei. ALT+ESC beendet das Tool. ALT+F1
-schaltet zwischen Menü und Spielmodus um - das macht das Tool aber meist
-automatisch.
-- Danach kannst du das Login-Tool zum Einloggen sowie zum Erstellen und Löschen
-von Charakteren verwenden.
+- Am einfachsten: Der automatische Sku-Installer (siehe oben) richtet das
+Login-Tool komplett ein, wenn du das entsprechende Kontrollkästchen aktiviert
+lässt - inklusive der benötigten Texturen, Schriftarten und der
+AutoHotkey-Laufzeit. Er legt auch eine Verknüpfung "WoW Login Tool" auf dem
+Desktop und im Startmenü an. Dann ist hier nichts weiter zu tun.
+- Manuell: Installiere AutoHotkey Version 2 von autohotkey.com, lade das
+Login-Tool von der Sku-Homepage herunter (es ist dort verlinkt:
+https://sku75.github.io/Sku-WoW-Addon-TBC/), entpacke es und folge der
+beiliegenden Readme-Datei. Sie beschreibt Schritt für Schritt, welche Ordner
+und Dateien du wohin kopieren musst. Starte danach v2\START.ahk im
+Login-Tool-Ordner.
+- ALT+ESC beendet das Tool. ALT+F1 schaltet zwischen Menü und Spielmodus um -
+das macht das Tool aber meist automatisch. ALT+F1 bricht auch einen laufenden
+Ablauf ab.
+- Danach kannst du das Login-Tool zum Einloggen, zum Realmwechsel sowie zum
+Erstellen und Löschen von Charakteren verwenden. Es liest dabei die echten
+Bildschirminhalte vor (Charakternamen, Realmlisten und Meldungen).
 
 Jetzt bist du spielfertig.
 

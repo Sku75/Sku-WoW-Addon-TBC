@@ -79,13 +79,15 @@ namespace SkuInstaller
         // (older) release that carries all of their assets.
         public const string CompanionTag = "v41.02.05";
 
-        // The WoW Login Tool (by Yennister/Duugu) — a standalone AutoHotkey v1
-        // script that gives the WoW login / character-select / server screens
-        // (which are NOT screen-reader accessible) an audio menu. It is NOT a WoW
-        // addon: it installs as its own program folder next to the game, plus a
-        // set of login-screen textures copied into the client's Interface folder.
-        // Pinned to the release that carries the zip; bump if a newer one ships.
-        public const string LoginToolTag = "v41.03";
+        // The WoW Login Tool (originally by Yennister/Duugu; reworked r2.0 with an
+        // AutoHotkey v2 + OCR driver) — a standalone tool that gives the WoW
+        // login / character-select / server screens (which are NOT screen-reader
+        // accessible) an audio menu. It is NOT a WoW addon: it installs as its own
+        // program folder next to the game, plus login-screen fiducial textures
+        // copied into the client's Interface folder and a readable-font override.
+        // Pinned to the release that carries the zip; bump if a newer one ships
+        // (LoginToolInstaller upgrades in place via its version marker).
+        public const string LoginToolTag = "v42.03";
         public const string LoginToolAsset = "WoW-Login-Tool.zip";
         public const string LoginToolFolderName = "WoW Login Tool";
 

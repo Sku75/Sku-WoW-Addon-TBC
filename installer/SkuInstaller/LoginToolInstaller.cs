@@ -9,20 +9,24 @@ namespace SkuInstaller
 {
     /// <summary>
     /// Installs the WoW Login Tool (see <see cref="Config.LoginToolTag"/>). Unlike a
-    /// WoW addon, the tool has three moving parts:
-    ///   1. its program folder (START.ahk + data\*), placed next to the game as
-    ///      &lt;WoW base&gt;\WoW Login Tool;
+    /// WoW addon, the tool has several moving parts:
+    ///   1. its program folder (v1 START.ahk + v2\ driver + helper\SkuLoginSense.exe
+    ///      + data\*), placed next to the game as &lt;WoW base&gt;\WoW Login Tool;
     ///   2. a set of login-screen textures that MUST be copied into the client's
     ///      Interface folder — the tool recognises the login/character screens by
-    ///      the exact colours of these textures (readme step 2-7);
-    ///   3. an AutoHotkey v1 runtime to run START.ahk. The tool cannot bootstrap
-    ///      this itself (a .ahk needs AHK just to launch), so we drop a portable
-    ///      AutoHotkey.exe (embedded in the installer) next to the script and make
-    ///      the launcher shortcut point AutoHotkey.exe at START.ahk.
+    ///      the exact colours of these textures, and data.ini's colour tables match
+    ///      THIS texture generation (old textures + new data.ini misclassify);
+    ///   3. a readable-font override copied into &lt;flavor&gt;\Fonts;
+    ///   4. portable AutoHotkey runtimes (v1.1 and v2, embedded in the installer) —
+    ///      a .ahk needs AHK just to launch, so the tool cannot bootstrap this
+    ///      itself. The launcher shortcut points the v2 runtime at v2\START.ahk
+    ///      when the zip ships it, else the v1 runtime at START.ahk.
     ///
     /// Everything is best-effort: failures are logged + announced but never abort
-    /// the surrounding Sku install. Idempotent — skips a re-download when already
-    /// present unless <paramref name="force"/> is set.
+    /// the surrounding Sku install. Idempotent — skips a re-download when the
+    /// installed release (version marker) already matches <see cref="Config.LoginToolTag"/>,
+    /// unless <paramref name="force"/> is set; older installs (or pre-marker ones)
+    /// are upgraded in place, preserving the user's data\settings.ini.
     /// </summary>
     internal static class LoginToolInstaller
     {
@@ -31,6 +35,13 @@ namespace SkuInstaller
 
         /// <summary>Files/dirs in the upstream zip we don't ship (dev cruft / regenerated).</summary>
         private static readonly string[] SkipNames = { ".claude", "log.txt" };
+
+        /// <summary>
+        /// Marker file in the tool folder recording which release tag is deployed,
+        /// so a re-run can tell "current" from "needs upgrade". Installs made by
+        /// older installers have no marker and therefore upgrade.
+        /// </summary>
+        private const string VersionMarkerFile = "installed-release.txt";
 
         private static string TempRoot => Path.Combine(Path.GetTempPath(), "SkuInstaller_logintool");
 
@@ -55,6 +66,17 @@ namespace SkuInstaller
             catch { return false; }
         }
 
+        /// <summary>Release tag recorded by the last install, or null (pre-marker install).</summary>
+        private static string InstalledTag(string toolDir)
+        {
+            try
+            {
+                string path = Path.Combine(toolDir, VersionMarkerFile);
+                return File.Exists(path) ? File.ReadAllText(path).Trim() : null;
+            }
+            catch { return null; }
+        }
+
         public static void Install(string addonsFolder, GitHubClient github, Action<string> announce, bool force)
         {
             announce = announce ?? (_ => { });
@@ -67,10 +89,18 @@ namespace SkuInstaller
                 string startScript = Path.Combine(toolDir, "START.ahk");
                 if (File.Exists(startScript) && !force)
                 {
-                    announce(Loc.Get("lt.present"));
-                    Logger.Info($"WoW Login Tool already present at {toolDir}; skipping (use force to reinstall).");
-                    EnsureRuntimeAndShortcut(toolDir, announce);   // still make sure AHK + shortcut exist
-                    return;
+                    string installed = InstalledTag(toolDir);
+                    if (string.Equals(installed, Config.LoginToolTag, StringComparison.OrdinalIgnoreCase))
+                    {
+                        announce(Loc.Get("lt.present"));
+                        Logger.Info($"WoW Login Tool {installed} already present at {toolDir}; skipping (use force to reinstall).");
+                        EnsureRuntimeAndShortcut(toolDir, announce);   // still make sure AHK + shortcut exist
+                        return;
+                    }
+                    // Older deployment (pre-marker installs count as oldest): fall
+                    // through to a full reinstall. That also refreshes the Interface
+                    // textures, which the new data.ini colour tables depend on.
+                    Logger.Info($"WoW Login Tool at {toolDir} is {(installed ?? "an older release (no version marker)")}; upgrading to {Config.LoginToolTag}.");
                 }
 
                 Directory.CreateDirectory(TempRoot);
@@ -130,7 +160,12 @@ namespace SkuInstaller
                     SafeDeleteDir(staging);
                 }
 
-                // 5. AutoHotkey runtime + launcher shortcut.
+                // 6. Record which release is now deployed (drives the skip/upgrade
+                //    decision on the next run).
+                try { File.WriteAllText(Path.Combine(toolDir, VersionMarkerFile), Config.LoginToolTag); }
+                catch (Exception ex) { Logger.Warning($"Login Tool: could not write version marker: {ex.Message}"); }
+
+                // 7. AutoHotkey runtimes + launcher shortcut.
                 EnsureRuntimeAndShortcut(toolDir, announce);
 
                 announce(Loc.Get("lt.done"));
@@ -245,6 +280,22 @@ namespace SkuInstaller
                     continue;
 
                 string target = Path.Combine(dst, rel);
+
+                // Never clobber a completed first-start setup: the zip ships
+                // data\settings.ini EMPTY (so the setup wizard runs on fresh
+                // installs), but an upgrading user's filled-in settings (game
+                // type, region, language, voice) must survive — the v2 driver
+                // reads the same schema as v1.
+                if (string.Equals(rel, "data" + Path.DirectorySeparatorChar + "settings.ini", StringComparison.OrdinalIgnoreCase))
+                {
+                    var existing = new FileInfo(target);
+                    if (existing.Exists && existing.Length > 0)
+                    {
+                        Logger.Info("Login Tool: keeping existing data\\settings.ini (user setup).");
+                        continue;
+                    }
+                }
+
                 Directory.CreateDirectory(Path.GetDirectoryName(target));
                 try { File.Copy(file, target, overwrite: true); }
                 catch (IOException ex) { Logger.Warning($"Login Tool: in use, skipped {target}: {ex.Message}"); }
