@@ -146,8 +146,22 @@ alerts per boss) — are **pure data on the mod object**
    `localization.cats`). Options: booleans as Ein/Aus, `mod.dropdowns`
    keys as value lists; writes assign `mod.Options[k]` + call
    `mod.optionFuncs[k]`. Labels run through `DBMText` ($spell:/$journal:/
-   {rt} templating like DBM-GUI parseDescription, then CleanText). DBM
-   CORE options (bars, global sounds) are hand-built panels — not covered.
+   {rt} templating like DBM-GUI parseDescription, then CleanText).
+   **DBM CORE options — ALSO BUILT (same day):** "Allgemeine Einstellungen"
+   first entry in the DBM submenu. The core panels are hand-built widget
+   frames, but DBM-GUI builds them all EAGERLY at load and tags every
+   widget with `mytype` — so this is a generic widget walk (the
+   make-a-Blizzard-window-accessible recipe): panel tree from
+   `DBM_GUI.tabs[Enums.Tabs.CORE].buttons` ({frame(.ID/.displayName),
+   parentID}), areas as submenus, then per widget: checkbutton = fire
+   OnShow to sync + GetChecked/:Click() (runs DBM's own handlers),
+   slider = GetValue/SetValue, DBM dropdown2 = .values/.value/.text +
+   mirror of its SetSelected sequence (v.func → callfunc →
+   onSelectionChangedCallback, sound preview kept), button = Click,
+   textbox = EditBox + OnEnterPressed. DBM-GUI is LoadOnDemand;
+   `LoadAddOn("DBM-GUI")` runs synchronously on first open of the entry
+   (what /dbm does, minus showing the window). Skipped as visual:
+   line/textblock/spelldesc/scroll, color pickers.
 4. **Tier 2 polish**: split `CategorySet.AddOns` categories out of
    Spieleinstellungen into the same AddOns menu; add subcategory support;
    evaluate canvas widget-walking per addon — open.

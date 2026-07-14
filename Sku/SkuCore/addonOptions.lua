@@ -52,6 +52,8 @@ local _L = {
    loadFailed  = _DE and "konnte nicht geladen werden"   or "could not be loaded",
    dbmEnabled  = _DE and "Bossmodul aktiviert"    or "Boss mod enabled",
    dbmNoMods   = _DE and "Keine Bossmodule geladen - sie laden beim Betreten der Instanz" or "No boss mods loaded - they load on entering the instance",
+   dbmCore     = _DE and "Allgemeine Einstellungen" or "General settings",
+   dbmChoice   = _DE and "Auswahl"                or "Choice",
 }
 
 -- ---------------------------------------------------------------------
@@ -722,7 +724,249 @@ local function DBMBuildModChildren(aSelf, aMod)
    end
 end
 
+-- ---------------------------------------------------------------------
+-- DBM CORE settings (the /dbm general options: warnings, bars, spoken
+-- alerts, filters, ...). Those panels are hand-built widget frames, but
+-- DBM-GUI builds them all EAGERLY at addon load and tags every widget
+-- with `mytype`, so a generic widget walk works (the proven
+-- make-a-Blizzard-window-accessible recipe, applied to DBM_GUI):
+--  - panel tree: DBM_GUI.tabs[DBM_GUI.Enums.Tabs.CORE].buttons — array of
+--    { frame = panelFrame (.ID/.displayName), parentID } (PanelPrototype/
+--    ListFrameButtonsPrototype).
+--  - widgets: children of the panel frame and its "area" boxes.
+--  - checkbutton: OnShow syncs the checked state from the live option and
+--    OnClick writes it back -> fire OnShow to read, :Click() to change
+--    (runs the addon's own side effects, never touches options directly).
+--  - slider: GetValue/SetValue (SetValue fires OnValueChanged).
+--  - dropdown2 (DBM's own widget): .values {text,value}, current in
+--    .value/.text; applying mirrors its internal SetSelected sequence
+--    (v.func -> .callfunc -> onSelectionChangedCallback, sound preview).
+--  - button: GetText/Click. textbox: label region + Get/SetText.
+--  - line/textblock/spelldesc/scroll: visual only -> skipped.
+-- DBM-GUI is LoadOnDemand and LoadAddOn is synchronous, so the menu loads
+-- it on first open — same thing /dbm does, minus showing the window.
+-- ---------------------------------------------------------------------
+
+local function DBMGuiLabel(aText)
+   if type(aText) ~= "string" then return aText ~= nil and tostring(aText) or "" end
+   aText = aText:gsub("<[^>]->", ""):gsub("&amp;", "&"):gsub("&lt;", "<"):gsub("&gt;", ">")
+   return CleanText(aText) or ""
+end
+
+local function tRegionText(aFontString)
+   if aFontString and aFontString.GetText then
+      local ok, t = pcall(aFontString.GetText, aFontString)
+      if ok and type(t) == "string" then return t end
+   end
+   return nil
+end
+
+local function DBMGuiCheckbutton(aSelf, aBtn)
+   local tName = DBMGuiLabel(aBtn.text or tRegionText(_G[(aBtn:GetName() or "") .. "Text"]) or "?")
+   if tName == "" then return end
+   local function tSync()
+      local tOnShow = aBtn:GetScript("OnShow")
+      if tOnShow then pcall(tOnShow, aBtn) end
+   end
+   MakeSelect(aSelf, tName, tOnOffOpts(),
+      function()
+         tSync()
+         return aBtn:GetChecked() and _L.on or _L.off
+      end,
+      function(aLabel)
+         tSync()
+         local tWant = (aLabel == _L.on)
+         if (not not aBtn:GetChecked()) ~= tWant then
+            pcall(aBtn.Click, aBtn)
+         end
+         tSay(tName .. " " .. aLabel)
+      end)
+end
+
+local function DBMGuiSlider(aSelf, aSlider)
+   local tName = DBMGuiLabel(tRegionText(aSlider.textFrame) or "?")
+   local okMM, mn, mx = pcall(aSlider.GetMinMaxValues, aSlider)
+   if not okMM or type(mn) ~= "number" or type(mx) ~= "number" or mx <= mn then
+      MakeLabel(aSelf, tName .. _L.unsupported)
+      return
+   end
+   local okS, step = pcall(aSlider.GetValueStep, aSlider)
+   local opts = BuildRangeOpts(mn, mx, (okS and type(step) == "number" and step > 0) and step or nil, mx <= 1.0001)
+   MakeSelect(aSelf, tName, opts,
+      function()
+         local ok, cur = pcall(aSlider.GetValue, aSlider)
+         if not ok or type(cur) ~= "number" then return "" end
+         local best, bestDiff = opts[1], math.huge
+         for _, o in ipairs(opts) do
+            local d = math.abs(o.value - cur)
+            if d < bestDiff then best, bestDiff = o, d end
+         end
+         return best.label
+      end,
+      function(aLabel)
+         for _, o in ipairs(opts) do
+            if o.label == aLabel then
+               pcall(aSlider.SetValue, aSlider, o.value)
+               tSay(tName .. " " .. o.label)
+               return
+            end
+         end
+      end)
+end
+
+local function DBMGuiDropdown(aSelf, aDrop)
+   local tName = DBMGuiLabel(tRegionText(_G[(aDrop:GetName() or "") .. "TitleText"]) or "")
+   if aDrop.valueGetter and aDrop.RefreshLazyValues then pcall(aDrop.RefreshLazyValues, aDrop) end
+   local tValues = aDrop.values
+   if type(tValues) ~= "table" or #tValues == 0 then
+      if tName ~= "" then MakeLabel(aSelf, tName .. _L.unsupported) end
+      return
+   end
+   if tName == "" then tName = _L.dbmChoice end
+   local opts = {}
+   for _, v in ipairs(tValues) do
+      local tLabel = DBMGuiLabel(tostring(v.text))
+      if tLabel == "" then tLabel = tostring(v.value) end
+      opts[#opts + 1] = { value = v.value, label = tLabel, raw = v }
+   end
+   MakeSelect(aSelf, tName, opts,
+      function()
+         local cur = aDrop.value
+         for _, o in ipairs(opts) do
+            if o.value == cur then return o.label end
+         end
+         return aDrop.text and DBMGuiLabel(tostring(aDrop.text)) or ""
+      end,
+      function(aLabel)
+         for _, o in ipairs(opts) do
+            if o.label == aLabel then
+               local v = o.raw
+               aDrop.value = v.value
+               aDrop.text = v.text
+               if v.sound and _G.DBM then pcall(function() _G.DBM:PlaySoundFile(v.value) end) end
+               if v.func then pcall(v.func, v.value) end
+               if aDrop.callfunc then pcall(aDrop.callfunc, v.value) end
+               if aDrop.onSelectionChangedCallback then pcall(aDrop.onSelectionChangedCallback, aDrop, v.value) end
+               tSay(tName .. " " .. o.label)
+               return
+            end
+         end
+      end)
+end
+
+local function DBMGuiButton(aSelf, aBtn)
+   local ok, tText = pcall(aBtn.GetText, aBtn)
+   local tName = DBMGuiLabel((ok and tText) or "")
+   if tName == "" then return end
+   local e = Inject(aSelf, tName)
+   e.dynamic = false
+   e.OnAction = function()
+      pcall(aBtn.Click, aBtn)
+      tSay(tName .. " " .. _L.executed)
+   end
+end
+
+local function DBMGuiTextbox(aSelf, aBox)
+   local tName = DBMGuiLabel(tRegionText(_G[(aBox:GetName() or "") .. "Text"]) or "?")
+   local e = Inject(aSelf, tName)
+   e.dynamic = false
+   e.OnAction = function()
+      local okG, cur = pcall(aBox.GetText, aBox)
+      tSay(_L.typeText)
+      SkuOptions:EditBoxShow((okG and type(cur) == "string") and cur or "", function()
+         local tText = SkuOptionsEditBoxEditBox:GetText() or ""
+         pcall(aBox.SetText, aBox, tText)
+         local tEnter = aBox:GetScript("OnEnterPressed")
+         if tEnter then pcall(tEnter, aBox) end
+         tSay(tName .. " " .. tText)
+      end)
+   end
+end
+
+-- Child frames in reading order (top -> bottom, left -> right).
+local function tSortedChildren(aFrame)
+   local kids = { aFrame:GetChildren() }
+   table.sort(kids, function(a, b)
+      local at = (a.GetTop and a:GetTop()) or 0
+      local bt = (b.GetTop and b:GetTop()) or 0
+      if at ~= bt then return at > bt end
+      return ((a.GetLeft and a:GetLeft()) or 0) < ((b.GetLeft and b:GetLeft()) or 0)
+   end)
+   return kids
+end
+
+local DBMGuiWalkContainer
+DBMGuiWalkContainer = function(aSelf, aFrame)
+   for _, kid in ipairs(tSortedChildren(aFrame)) do
+      local tType = kid.mytype
+      local ok = pcall(function()
+         if tType == "area" then
+            local tTitle = DBMGuiLabel(tRegionText(_G[(kid:GetName() or "") .. "Title"]) or "?")
+            local sub = Inject(aSelf, tTitle ~= "" and tTitle or "?")
+            sub.dynamic = true
+            sub.BuildChildren = function(self)
+               DBMGuiWalkContainer(self, kid)
+               if #self.children == 0 then Inject(self, _L.empty) end
+            end
+         elseif tType == "checkbutton" then
+            DBMGuiCheckbutton(aSelf, kid)
+         elseif tType == "slider" then
+            DBMGuiSlider(aSelf, kid)
+         elseif tType == "dropdown2" or tType == "dropdown" then
+            DBMGuiDropdown(aSelf, kid)
+         elseif tType == "button" then
+            DBMGuiButton(aSelf, kid)
+         elseif tType == "textbox" then
+            DBMGuiTextbox(aSelf, kid)
+         end
+         -- line/textblock/spelldesc/scroll/panel and untagged frames: visual, skip
+      end)
+      if not ok and dprint then
+         dprint("addonOptions: DBM widget failed", tostring(tType))
+      end
+   end
+end
+
+local function DBMCoreBuildLevel(aSelf, aButtons, aParentID)
+   for _, b in ipairs(aButtons) do
+      local tPanel = b.frame
+      if b.parentID == aParentID and tPanel and tPanel.displayName then
+         local e = Inject(aSelf, DBMGuiLabel(tostring(tPanel.displayName)))
+         e.dynamic = true
+         local tID = tPanel.ID
+         e.BuildChildren = function(self)
+            DBMCoreBuildLevel(self, aButtons, tID)
+            DBMGuiWalkContainer(self, tPanel)
+            if #self.children == 0 then Inject(self, _L.empty) end
+         end
+      end
+   end
+end
+
+local function DBMInjectCoreSettings(aSelf)
+   local e = Inject(aSelf, _L.dbmCore)
+   e.dynamic = true
+   e.BuildChildren = function(self)
+      if not _G.DBM_GUI then
+         local tLoad = (C_AddOns and C_AddOns.LoadAddOn) or LoadAddOn
+         if tLoad then pcall(tLoad, "DBM-GUI") end
+      end
+      local gui = _G.DBM_GUI
+      local tTab = gui and gui.tabs and gui.Enums and gui.Enums.Tabs and gui.Enums.Tabs.CORE
+         and gui.tabs[gui.Enums.Tabs.CORE] or nil
+      local tButtons = tTab and tTab.buttons or nil
+      if type(tButtons) ~= "table" then
+         Inject(self, _L.unavailable)
+         return
+      end
+      if dprint then dprint("addonOptions: DBM core panels", #tButtons) end
+      DBMCoreBuildLevel(self, tButtons, nil)
+      if #self.children == 0 then Inject(self, _L.empty) end
+   end
+end
+
 local function DBMBuildModList(aSelf)
+   DBMInjectCoreSettings(aSelf)
    local tMods = {}
    for _, tMod in ipairs(_G.DBM.Mods) do
       local tName = (tMod.localization and tMod.localization.general and tMod.localization.general.name) or tMod.id
