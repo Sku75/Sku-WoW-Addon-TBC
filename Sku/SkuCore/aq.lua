@@ -712,7 +712,7 @@ local beginTime = debugprofilestop()
 														tTypeString = i
 													end
 													C_Timer.After(tPause, function()
-														if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberFirst == true then
+														if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.numberFirst == true then
 															Aq:MonitorOutputPlayerStatus({[1] = tNumber, [2] = tTypeString}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.voice].path)
 														else
 															Aq:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.voice].path)
@@ -766,7 +766,7 @@ local beginTime = debugprofilestop()
 														tTypeString = i
 													end
 													C_Timer.After(tPause, function()
-														if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberFirst == true then
+														if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.numberFirst == true then
 															Aq:MonitorOutputPlayerStatus({[1] = tNumber, [2] = tTypeString}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.voice].path)
 														else
 															Aq:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.voice].path)
@@ -867,12 +867,17 @@ function Aq:AqOnLogin()
 		SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid = SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid or {}
 		SkuSettings:Sub("SkuCore", nil, "char").aq[q].global = SkuSettings:Sub("SkuCore", nil, "char").aq[q].global or {}
 
-		--global
-		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].global.numberFirst == nil then
-			SkuSettings:Sub("SkuCore", nil, "char").aq[q].global.numberFirst = false
+		--numberFirst moved from the removed "Global" menu into the party/raid debuff
+		--monitors as separate per-monitor settings; seed each once from the old
+		--global value so existing users keep their choice (numberOnly migrates to
+		--combat.numberOnly in aqCombat.lua the same way)
+		SkuSettings:Sub("SkuCore", nil, "char").aq[q].party.debuffs = SkuSettings:Sub("SkuCore", nil, "char").aq[q].party.debuffs or {}
+		SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.debuffs = SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.debuffs or {}
+		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].party.debuffs.numberFirst == nil then
+			SkuSettings:Sub("SkuCore", nil, "char").aq[q].party.debuffs.numberFirst = SkuSettings:Sub("SkuCore", nil, "char").aq[q].global.numberFirst == true
 		end
-		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].global.numberOnly == nil then
-			SkuSettings:Sub("SkuCore", nil, "char").aq[q].global.numberOnly = false
+		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.debuffs.numberFirst == nil then
+			SkuSettings:Sub("SkuCore", nil, "char").aq[q].raid.debuffs.numberFirst = SkuSettings:Sub("SkuCore", nil, "char").aq[q].global.numberFirst == true
 		end
 
 
@@ -1698,7 +1703,7 @@ function Aq:UNIT_AURA(aEventName, aUnitID)
 										tTypeString = i
 									end
 
-									if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberFirst == true then
+									if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.numberFirst == true then
 										Aq:MonitorOutputPlayerStatus({[1] = tNumber, [2] = tTypeString,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)								
 									else
 										Aq:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)								
@@ -1721,7 +1726,7 @@ function Aq:UNIT_AURA(aEventName, aUnitID)
 									if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.outputStyle == 1 then
 										tTypeString = i
 									end
-									if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberFirst == true then
+									if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.numberFirst == true then
 										Aq:MonitorOutputPlayerStatus({[1] = tNumber, [2] = tTypeString,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)								
 									else
 										Aq:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber,}, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.eventVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tSubR].debuffs.voice].path)								
@@ -1930,55 +1935,13 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function Aq:MonitorMenuBuilder()
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Global"]}, SkuGenericMenuItem)
-	tNewMenuEntry.dynamic = true
-	tNewMenuEntry.BuildChildren = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unit number first"]}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.sorting = true
-		tNewMenuEntry.isSelect = true
-		tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-			if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberFirst == true then
-				return L["Yes"]
-			else
-				return L["No"]
-			end
-		end
-		tNewMenuEntry.OnAction = function(self, aValue, aName)
-			if aName == L["No"] then
-				SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberFirst = false
-			elseif aName == L["Yes"] then
-				SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberFirst = true
-			end
-		end
-		tNewMenuEntry.BuildChildren = function(self)
-			SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-			SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-		end
-		
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Only unit numbers"]}, SkuGenericMenuItem)
-		tNewMenuEntry.dynamic = true
-		tNewMenuEntry.sorting = true
-		tNewMenuEntry.isSelect = true
-		tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-			if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberOnly == true then
-				return L["Yes"]
-			else
-				return L["No"]
-			end
-		end
-		tNewMenuEntry.OnAction = function(self, aValue, aName)
-			if aName == L["No"] then
-				SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberOnly = false
-			elseif aName == L["Yes"] then
-				SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberOnly = true
-			end
-		end
-		tNewMenuEntry.BuildChildren = function(self)
-			SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-			SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-		end		
-	end
+	--the old "Global" folder is gone: "Unit number first" now lives in the party/raid
+	--debuff menus (per-monitor setting), "Only unit numbers" in the Combat menu
+
+	--Gesundheit und Status: container for the player/pet/party/raid unit monitors
+	local tHealthStatusEntry = SkuOptions:InjectMenuItems(self, {L["Gesundheit und Status"]}, SkuGenericMenuItem)
+	tHealthStatusEntry.dynamic = true
+	tHealthStatusEntry.BuildChildren = function(self)
 
 	--player
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["player"]}, SkuGenericMenuItem)
@@ -3428,8 +3391,8 @@ function Aq:MonitorMenuBuilder()
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
 				SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.outputStyle = self.toutputStyle
 				C_Timer.After(0.001, function()
-					SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
-				end)				
+					SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
+				end)
 			end
 			tNewMenuEntry.BuildChildren = function(self)
 				for x = 1, #tOutputStyles do
@@ -3438,6 +3401,29 @@ function Aq:MonitorMenuBuilder()
 						self.selectTarget.toutputStyle = x
 					end
 				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unit number first"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.sorting = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.numberFirst == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.numberFirst = false
+				elseif aName == L["Yes"] then
+					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.numberFirst = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
@@ -4073,8 +4059,8 @@ function Aq:MonitorMenuBuilder()
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
 				SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.outputStyle = self.toutputStyle
 				C_Timer.After(0.001, function()
-					SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
-				end)				
+					SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
+				end)
 			end
 			tNewMenuEntry.BuildChildren = function(self)
 				for x = 1, #tOutputStyles do
@@ -4083,6 +4069,29 @@ function Aq:MonitorMenuBuilder()
 						self.selectTarget.toutputStyle = x
 					end
 				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unit number first"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.sorting = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.numberFirst == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.numberFirst = false
+				elseif aName == L["Yes"] then
+					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.numberFirst = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
@@ -4155,9 +4164,10 @@ function Aq:MonitorMenuBuilder()
 					SkuOptions:InjectMenuItems(self, {tVoices[x].name}, SkuGenericMenuItem)
 				end
 			end
-		end			
+		end
 	end
 
+	end --Gesundheit und Status container (player/pet/party/raid moved inside)
 
 	--combat
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Combat"]}, SkuGenericMenuItem)

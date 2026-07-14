@@ -1089,6 +1089,7 @@ L["Gesamt"] = "Gesamt"
 L["Gesprochen"]  = "Gesprochen" --
 L["Gesundheit änderung"] = "Gesundheit änderung"
 L["Gesundheit hat sich verändert"] = "Gesundheit hat sich verändert"
+L["Gesundheit und Status"] = "Gesundheit und Status"
 L["gesundheit"] = "gesundheit"
 L["Gesundheit: "] = "Gesundheit: "
 L["Gewähltes Attribut enthält den gewählten Wert"] = "Gewähltes Attribut enthält den gewählten Wert"

@@ -1088,6 +1088,7 @@ L["Gesamt"]  = "Overall" --
 L["Gesprochen"]  = "Spoken" --
 L["Gesundheit änderung"]  = "health updated" --
 L["Gesundheit hat sich verändert"]  = "Health has been updated" --
+L["Gesundheit und Status"]  = "Health and status" --
 L["gesundheit"]  = "health" --
 L["Gesundheit: "]  = "Health: " --
 L["Gewähltes Attribut enthält den gewählten Wert"]  = "Selected attribute contains the selected value" --

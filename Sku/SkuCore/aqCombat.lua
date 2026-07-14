@@ -143,7 +143,7 @@ local tCurrentUpdateRate = 1
 function SkuCoreAqCombatGetVoiceString(aString, aTable)
    local tResult = (aString:gsub('($%b{})', function(w) 
       local tFinalString = aTable[w:sub(3, -2)] or w
-      if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].global.numberOnly == true then
+      if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.numberOnly == true then
          if sfind(tFinalString, "raidpet") then
             tFinalString = string.gsub(tFinalString, "raidpet", "")
          elseif sfind(tFinalString, "raid") then
@@ -918,6 +918,13 @@ function aqCombat:aqCombatOnLogin()
       if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.voiceVolume == nil then
          SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.voiceVolume = 2
       end
+
+      --moved here from the removed Monitor "Global" menu; seed once from the old
+      --global.numberOnly so existing users keep their choice
+      if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.numberOnly == nil then
+         local tOldGlobal = SkuSettings:Sub("SkuCore", nil, "char").aq[x].global
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.numberOnly = (tOldGlobal and tOldGlobal.numberOnly) == true
+      end
       
 
       --hostile
@@ -1685,24 +1692,6 @@ function aqCombat:aqCombatMenuBuilder()
       SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
    end
 
-   ---
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Update rate (performance)"]}, SkuGenericMenuItem)
-   tNewMenuEntry.dynamic = true
-   tNewMenuEntry.sorting = true
-   tNewMenuEntry.isSelect = true
-   tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-      return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.updateRate
-   end
-   tNewMenuEntry.OnAction = function(self, aValue, aName)
-      SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.updateRate = tonumber(aName)
-      tCurrentUpdateRate = (21 - SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.updateRate)
-   end
-   tNewMenuEntry.BuildChildren = function(self)
-      for x = 1, 20 do
-         SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
-      end
-   end   
-
    ----
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
@@ -1768,6 +1757,29 @@ function aqCombat:aqCombatMenuBuilder()
    tNewMenuEntry.BuildChildren = function(self)
       SkuOptions:InjectMenuItems(self, {L["Low"]}, SkuGenericMenuItem)
       SkuOptions:InjectMenuItems(self, {L["High"]}, SkuGenericMenuItem)
+   end
+
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Only unit numbers"]}, SkuGenericMenuItem)
+   tNewMenuEntry.dynamic = true
+   tNewMenuEntry.sorting = true
+   tNewMenuEntry.isSelect = true
+   tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+      if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.numberOnly == true then
+         return L["Yes"]
+      else
+         return L["No"]
+      end
+   end
+   tNewMenuEntry.OnAction = function(self, aValue, aName)
+      if aName == L["No"] then
+         SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.numberOnly = false
+      elseif aName == L["Yes"] then
+         SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.numberOnly = true
+      end
+   end
+   tNewMenuEntry.BuildChildren = function(self)
+      SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+      SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
    end
 
 
@@ -2478,7 +2490,26 @@ function aqCombat:aqCombatMenuBuilder()
             for x = 0, 30 do
                SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
             end
-         end         
+         end
+      end
+   end
+
+   --Update rate: legacy pre-optimization performance lever, rarely needed nowadays,
+   --so it sits at the very end of the menu
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Update rate (performance)"]}, SkuGenericMenuItem)
+   tNewMenuEntry.dynamic = true
+   tNewMenuEntry.sorting = true
+   tNewMenuEntry.isSelect = true
+   tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+      return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.updateRate
+   end
+   tNewMenuEntry.OnAction = function(self, aValue, aName)
+      SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.updateRate = tonumber(aName)
+      tCurrentUpdateRate = (21 - SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.updateRate)
+   end
+   tNewMenuEntry.BuildChildren = function(self)
+      for x = 1, 20 do
+         SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
       end
    end
 end
