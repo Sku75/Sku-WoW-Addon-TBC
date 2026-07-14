@@ -387,6 +387,17 @@ local function IsMacroButton(aLabel)
    return false
 end
 
+-- Recognise the game-menu "AddOns" button: natively it opens the inaccessible
+-- Settings AddOns tab / addon list, so route it to Sku's AddOn settings menu
+-- (Addons -> AddOn-Einstellungen, built by SkuCore/addonOptions.lua).
+local function IsAddonsButton(aLabel)
+   if _G.ADDONS and aLabel == _G.ADDONS then return true end
+   for _, s in ipairs({ "AddOns", "Addons", "Add-Ons" }) do
+      if aLabel == s then return true end
+   end
+   return false
+end
+
 -- W7: navigate the Sku audio menu to a path, deferred one frame so we don't fight
 -- the action currently being processed (same idea as the Escape hook).
 local function tNavTo(aPath)
@@ -437,6 +448,10 @@ function GameOptions:GameMenuBuilder(aParentEntry)
          -- "Makros" -> Sku's macro menu.
          SkuMenu:BuildNode(aParentEntry, { kind = "action", label = label, dynamic = false,
             onAction = function() tNavTo("short," .. ((Sku and Sku.L and Sku.L["Macros"]) or "Macros")) end })
+      elseif IsAddonsButton(label) then
+         -- "AddOns" -> Sku's AddOn settings (generic AceConfig renderer).
+         SkuMenu:BuildNode(aParentEntry, { kind = "action", label = label, dynamic = false,
+            onAction = function() tNavTo("short,Addons," .. Sku.deEn("AddOn-Einstellungen", "AddOn settings")) end })
       else
          -- Sku's menu keys arrive via hardware-event override bindings, so :Click()
          -- counts as a hardware event (protected Logout/Quit are allowed).

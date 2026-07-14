@@ -1558,6 +1558,13 @@ function SkuCore:AddonsMenuBuilder(aParentEntry)
 		tSpecs[#tSpecs+1] = { kind = "list", label = L["Damage Meter"], sorting = true,
 			build = SkuCore.DamageMeter.DamageMeterMenuBuilder }
 	end
+	-- Other addons' AceConfig settings (Questie, ECS, ...) rendered generically;
+	-- logic in SkuCore/addonOptions.lua. The Escape menu's "AddOns" button routes
+	-- here too (gameOptions.lua GameMenuBuilder).
+	if SkuCore.AddonOptions and SkuCore.AddonOptions.AddonOptionsMenuBuilder then
+		tSpecs[#tSpecs+1] = { kind = "list", label = Sku.deEn("AddOn-Einstellungen", "AddOn settings"), sorting = false,
+			build = function(entry) SkuCore.AddonOptions:AddonOptionsMenuBuilder(entry) end }
+	end
 	SkuMenu:Build(aParentEntry, tSpecs)
 end
 
