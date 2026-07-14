@@ -166,6 +166,13 @@ alerts per boss) — are **pure data on the mod object**
    Spieleinstellungen into the same AddOns menu; add subcategory support;
    evaluate canvas widget-walking per addon — open.
 
+Top level is a CURATED list (KNOWN_APPS in addonOptions.lua): clean
+hand-picked labels (Atlas Loot / Deadly Boss Mods / Extended Character
+Stats / Questie, sorted), LoD options addons (AtlasLootClassic_Options)
+loaded TRANSPARENTLY on first open — extend that table to add more addons
+by hand. Unknown AceConfig registrations still appear generically after
+the curated entries.
+
 First in-game test (2026-07-14): ECS + Questie listed and readable; toggles
 work. Feedback fixed in v1.1: spacers/headers were spoken (Questie
 `Spacer()` = `type="description"`, `name=" "`) → header/description entries

@@ -47,9 +47,6 @@ local _L = {
    empty       = _DE and "leer"                   or "empty",
    executed    = _DE and "ausgeführt"             or "done",
    typeText    = _DE and "Text eingeben und Enter, oder Escape zum Abbrechen" or "Type text and press Enter, or Escape to cancel",
-   loadPrefix  = _DE and "Einstellungen laden: "  or "Load settings: ",
-   loaded      = _DE and "geladen - Liste erneut öffnen" or "loaded - reopen the list",
-   loadFailed  = _DE and "konnte nicht geladen werden"   or "could not be loaded",
    dbmEnabled  = _DE and "Bossmodul aktiviert"    or "Boss mod enabled",
    dbmNoMods   = _DE and "Keine Bossmodule geladen - sie laden beim Betreten der Instanz" or "No boss mods loaded - they load on entering the instance",
    dbmCore     = _DE and "Allgemeine Einstellungen" or "General settings",
@@ -983,15 +980,8 @@ local function DBMBuildModList(aSelf)
    if #tMods == 0 then Inject(aSelf, _L.dbmNoMods) end
 end
 
-local function InjectDBMEntry(aParentEntry)
-   if not (_G.DBM and type(_G.DBM.Mods) == "table") then return end
-   local e = Inject(aParentEntry, "Deadly Boss Mods")
-   e.dynamic = true
-   e.BuildChildren = function(self) DBMBuildModList(self) end
-end
-
 -- ---------------------------------------------------------------------
--- Top level: one submenu per registered app.
+-- Top level: curated addon list + generic fallback.
 -- ---------------------------------------------------------------------
 local function AppDisplayName(aAppName)
    local root = FetchRoot(aAppName)
@@ -1003,33 +993,33 @@ local function AppDisplayName(aAppName)
    return aAppName
 end
 
--- Some addons ship their config as a separate load-on-demand addon
--- (AtlasLootClassic_Options, WeakAurasOptions, ...) — those only appear in
--- the registry once loaded. Offer them as "load" entries; after loading,
--- re-entering the list (it is dynamic) shows the new app.
-local function tListLoadableConfigAddons(aSelf)
-   local tGetNum = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
+-- ---------------------------------------------------------------------
+-- Curated addon list. Each known addon gets a clean, hand-picked label;
+-- addons whose config lives in a separate load-on-demand addon name it as
+-- lodAddon — it is loaded TRANSPARENTLY on first open (LoadAddOn is
+-- synchronous), no separate "load" step. Extend this table to add more
+-- addons by hand. Anything ELSE that registers an AceConfig table still
+-- shows up generically after the curated entries, so new addons are
+-- discoverable without a code change.
+-- ---------------------------------------------------------------------
+local KNOWN_APPS = {
+   { app = "AtlasLoot", label = "Atlas Loot", lodAddon = "AtlasLootClassic_Options" },
+   { app = "ECS",       label = "Extended Character Stats" },
+   { app = "Questie",   label = "Questie" },
+}
+
+local function tAddonInstalled(aName)
    local tGetInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
+   if not tGetInfo then return false end
+   local ok, tName = pcall(tGetInfo, aName)
+   return ok and tName ~= nil
+end
+
+local function tEnsureLoaded(aName)
    local tIsLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
-   local tIsLoD = (C_AddOns and C_AddOns.IsAddOnLoadOnDemand) or IsAddOnLoadOnDemand
    local tLoad = (C_AddOns and C_AddOns.LoadAddOn) or LoadAddOn
-   if not (tGetNum and tGetInfo and tIsLoaded and tIsLoD and tLoad) then return end
-   for i = 1, tGetNum() do
-      local tName = tGetInfo(i)
-      if type(tName) == "string"
-         and (tName:lower():find("option") or tName:lower():find("config"))
-         and tIsLoD(i) and not tIsLoaded(i) then
-         local e = Inject(aSelf, _L.loadPrefix .. tName)
-         e.dynamic = false
-         e.OnAction = function()
-            local okLoad, loaded = pcall(tLoad, tName)
-            if okLoad and loaded ~= nil then
-               tSay(tName .. " " .. _L.loaded)
-            else
-               tSay(tName .. " " .. _L.loadFailed)
-            end
-         end
-      end
+   if tIsLoaded and tLoad and not tIsLoaded(aName) then
+      pcall(tLoad, aName)
    end
 end
 
@@ -1040,22 +1030,49 @@ function AddonOptions:AddonOptionsMenuBuilder(aParentEntry)
       Inject(aParentEntry, _L.unavailable)
       return
    end
-   local apps = {}
-   for appName in reg:IterateOptionsTables() do
-      if type(appName) == "string" and not EXCLUDED[appName] then
-         apps[#apps + 1] = { app = appName, name = CleanText(AppDisplayName(appName)) }
+
+   -- Curated entries (plus DBM, which has its own adapter), sorted by label.
+   local tEntries = {}
+   local tListed = {}
+   for _, k in ipairs(KNOWN_APPS) do
+      local tAvailable = reg:GetOptionsTable(k.app) ~= nil
+         or (k.lodAddon and tAddonInstalled(k.lodAddon))
+      if tAvailable then
+         tListed[k.app] = true
+         local tApp, tLod = k.app, k.lodAddon
+         tEntries[#tEntries + 1] = { label = k.label, build = function(self)
+            if tLod then tEnsureLoaded(tLod) end
+            BuildGroup(self, tApp, {})
+         end }
       end
    end
-   table.sort(apps, function(a, b) return a.name < b.name end)
-   for _, a in ipairs(apps) do
-      local e = Inject(aParentEntry, a.name)
+   if _G.DBM and type(_G.DBM.Mods) == "table" then
+      tEntries[#tEntries + 1] = { label = "Deadly Boss Mods", build = function(self)
+         DBMBuildModList(self)
+      end }
+   end
+
+   -- Any other registered AceConfig apps (future addons), generically.
+   local tOthers = {}
+   for appName in reg:IterateOptionsTables() do
+      if type(appName) == "string" and not EXCLUDED[appName] and not tListed[appName] then
+         tOthers[#tOthers + 1] = { app = appName, name = CleanText(AppDisplayName(appName)) }
+      end
+   end
+   table.sort(tOthers, function(a, b) return a.name < b.name end)
+   for _, a in ipairs(tOthers) do
+      local tApp = a.app
+      tEntries[#tEntries + 1] = { label = a.name, build = function(self)
+         BuildGroup(self, tApp, {})
+      end }
+   end
+
+   table.sort(tEntries, function(a, b) return a.label < b.label end)
+   for _, tE in ipairs(tEntries) do
+      local e = Inject(aParentEntry, tE.label)
       e.dynamic = true
-      local appName = a.app
-      e.BuildChildren = function(self) BuildGroup(self, appName, {}) end
+      local tBuild = tE.build
+      e.BuildChildren = function(self) tBuild(self) end
    end
-   pcall(InjectDBMEntry, aParentEntry)
-   pcall(tListLoadableConfigAddons, aParentEntry)
-   if #apps == 0 and not (_G.DBM and type(_G.DBM.Mods) == "table") then
-      Inject(aParentEntry, _L.empty)
-   end
+   if #tEntries == 0 then Inject(aParentEntry, _L.empty) end
 end
