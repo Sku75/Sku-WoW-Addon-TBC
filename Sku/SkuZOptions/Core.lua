@@ -3202,9 +3202,16 @@ function SkuOptions:CreateMenuFrame()
 	-- happened" from "idle". The snapshot lets the equipment-slot OnActions skip
 	-- their insecure pick-up/unequip fallback when the macro already did the work,
 	-- which is the fix for enchants/armor-kits being re-picked-up after applying.
+	-- tPreEnterTargetingState is the TARGETING-ONLY flavor of that snapshot: the
+	-- bag-item OnLeftAction needs "a spell was awaiting an item target" WITHOUT
+	-- the cursor-item half — a held cursor ITEM must still fall through to its
+	-- PickupContainerItem (drop/swap into the slot), only a completed spell
+	-- apply (via the staged "/use <bag> <slot>" applyMacrotext) must skip it.
 	tFrame:SetScript("PreClick", function(self)
 		SkuOptions.tPreEnterApplyState =
 			((SpellIsTargeting and SpellIsTargeting()) or (GetCursorInfo and GetCursorInfo())) and true or false
+		SkuOptions.tPreEnterTargetingState =
+			(SpellIsTargeting and SpellIsTargeting()) and true or false
 	end)
 	tFrame:SetScript("PostClick", _G["OnSkuOptionsMainOption1"]:GetScript("OnClick"))
 
@@ -3236,6 +3243,8 @@ function SkuOptions:CreateMenuFrame()
 	tFrame:SetScript("PreClick", function(self)
 		SkuOptions.tPreEnterApplyState =
 			((SpellIsTargeting and SpellIsTargeting()) or (GetCursorInfo and GetCursorInfo())) and true or false
+		SkuOptions.tPreEnterTargetingState =
+			(SpellIsTargeting and SpellIsTargeting()) and true or false
 	end)
 	tFrame:SetScript("PostClick", _G["OnSkuOptionsMainOption1"]:GetScript("OnClick"))
 
@@ -4866,6 +4875,15 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 						-- ADDON_ACTION_FORBIDDEN.
 						local lSlotName = aGossipListTable[index].containerFrameName
 						tNewMenuEntry.macrotext = "/click " .. lSlotName .. " LeftButton"
+						-- Apply-Modus (SpellIsTargeting beim Fokussieren): statt des
+						-- "/click ... LeftButton" ein "/use <slotID>" stagen (generic
+						-- OnEnter, templates.lua). Der synthetisierte /click liest den
+						-- LIVE-Tastaturzustand — ein umgebundener Linksklick-Key mit
+						-- Modifier (z.B. SHIFT-...) würde als ModifiedClick zaehlen
+						-- (Anprobe/Chat-Link) und NICHT anwenden; "/use" umgeht den
+						-- Button-OnClick komplett (dieselbe Loesung wie beim
+						-- Rechtsklick, s.u.).
+						tNewMenuEntry.applyMacrotext = "/use " .. tEqSlotID
 						-- Fallback OnLeftAction falls macrotext nicht greift
 						local lSlotID = tEqSlotID
 						tNewMenuEntry.OnLeftAction = function()
@@ -4916,7 +4934,44 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 						-- protected function; also drops a held item into an empty
 						-- slot (this replaces the old empty-slot Linksklick entry).
 						local lBag, lSlot = aGossipListTable[index].bag, aGossipListTable[index].slot
+						-- Apply-Modus: der NATIVE Linksklick auf ein Taschen-Item hat
+						-- einen eigenen Zweig (ContainerFrame_Shared.lua:
+						-- SpellCanTargetItem -> UseContainerItem), der die schwebende
+						-- Verzauberung / das Ruestungsset auf DIESES Item anwendet.
+						-- UseContainerItem ist Hardware-Event-gegated, also laeuft es
+						-- als "/use <bag> <slot>" auf dem sicheren Linksklick-Button
+						-- (applyMacrotext, gestaged im generic OnEnter NUR solange
+						-- SpellIsTargeting). Ohne diesen Zweig griff Enter zum blanken
+						-- PickupContainerItem und wendete NIE an — Anwenden ging nur
+						-- per Rechtsklick (Nutzer-Reports "Linksklick geht nicht").
+						-- Nur echte Taschen (0..4): fuer Bank-Container no-opt das
+						-- sichere "/use" mit negativer/hoher Container-ID ohnehin.
+						if lBag >= 0 and lBag <= (NUM_BAG_SLOTS or 4) then
+							tNewMenuEntry.applyMacrotext = "/use "..lBag.." "..lSlot
+						end
 						tNewMenuEntry.OnLeftAction = function()
+							-- Hat das sichere Apply-Makro die Zielauswahl schon
+							-- abgeschlossen (Targeting-Schnappschuss aus PreClick)?
+							-- Dann NICHT aufheben, sonst landet das frisch
+							-- verzauberte Item am Cursor (Doppel-Aktions-Bug in
+							-- Taschen-Ausfuehrung). Bewusst NICHT der breite
+							-- tPreEnterApplyState: ein gehaltenes Cursor-ITEM muss
+							-- weiter zum PickupContainerItem durchfallen
+							-- (ablegen/tauschen in diesen Slot).
+							if SkuOptions.tPreEnterTargetingState
+								or (SpellIsTargeting and SpellIsTargeting()) then
+								if _G.C_Timer and _G.C_Timer.After then
+									_G.C_Timer.After(0.1, function()
+										pcall(function() SkuCore:CheckFrames() end)
+										_G.C_Timer.After(0.35, function()
+											if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then
+												pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
+											end
+										end)
+									end)
+								end
+								return
+							end
 							if _G.PickupContainerItem then pcall(_G.PickupContainerItem, lBag, lSlot) end
 							if _G.C_Timer and _G.C_Timer.After then
 								_G.C_Timer.After(0.1, function()

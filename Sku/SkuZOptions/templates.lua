@@ -392,13 +392,29 @@ SkuGenericMenuItem = {
 			-- where the click submenu only existed then.
 			local tClickGateOk = (not self.clickGate) or (self.clickGate() == true)
 			if _G["SecureOnSkuOptionsMainOption1"] then
-				if self.macrotext and tClickGateOk then
-					--dprint("macrotext", self.macrotext)
+				-- Apply-mode override: while a spell is awaiting an ITEM target
+				-- (enchant, armor kit, weapon oil, sharpening stone), the native
+				-- left click applies it via the hardware-gated Use*Item path.
+				-- Nodes that carry `applyMacrotext` (bag items: "/use <bag> <slot>",
+				-- equip slots: "/use <slot>") stage that instead of their normal
+				-- left macro while targeting is live. "/use" is also modifier-
+				-- independent — a synthesized "/click ... LeftButton" reads the
+				-- LIVE keyboard state, so a rebound left key with CTRL/SHIFT
+				-- would turn into a modified click (dress-up/chat-link) and never
+				-- apply (same trap the right-click "/use <slot>" fix avoids).
+				-- Focus-time staging covers the normal flow: targeting starts
+				-- (craft button / using the kit), THEN the target item is focused.
+				local tMacrotext = self.macrotext
+				if self.applyMacrotext and SpellIsTargeting and SpellIsTargeting() then
+					tMacrotext = self.applyMacrotext
+				end
+				if tMacrotext and tClickGateOk then
+					--dprint("macrotext", tMacrotext)
 					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","macro")
-					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext", self.macrotext)
+					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext", tMacrotext)
 					if self.secureMacro then
 						_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("typeENTER","macro")
-						_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotextENTER", self.macrotext)
+						_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotextENTER", tMacrotext)
 					end
 				else
 					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","")
