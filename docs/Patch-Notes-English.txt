@@ -6,6 +6,25 @@
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.04
 
+    Bags: applying enchantments and armor kits with the left click works again
+        Simple: With an enchantment or an armor kit waiting for a target item,
+            pressing Enter (left click) on the target item in the bags did
+            nothing - only Ctrl+Enter (right click) applied it. Enter now applies
+            it, like the standard UI does. On equipped items both keys already
+            worked.
+        Technical: The bag item's Enter action was a plain insecure
+            PickupContainerItem; the native left click routes through the
+            hardware-event-gated UseContainerItem when SpellCanTargetItem(). Bag
+            items and equipment slots now carry an applyMacrotext ("/use bag slot"
+            resp. "/use slot") that the menu stages on the secure left-click
+            button while SpellIsTargeting() is live at focus time; a
+            targeting-only PreClick snapshot lets the insecure fallback skip its
+            pickup after the macro applied, without breaking drop/swap of a held
+            cursor item. The /use form is also modifier-independent - a
+            synthesized "/click ... LeftButton" reads the live keyboard state, so
+            a rebound left-click key with a modifier would count as a modified
+            click (dress-up/chat link) and never apply.
+
     Starting zones: Ctrl+Shift+Tab cycles protected NPCs again
         Simple: Since the WoW client update of July 9 the special Ctrl+Shift+Tab key no
             longer cycled through the protected (otherwise untargetable) NPCs in the

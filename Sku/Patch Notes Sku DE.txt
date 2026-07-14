@@ -6,6 +6,27 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.04
 
+    Taschen: Verzauberungen und Ruestungssets per Linksklick anwenden geht wieder
+        Einfach: Wartete eine Verzauberung oder ein Ruestungsset auf ein
+            Ziel-Item, passierte beim Druck auf Enter (Linksklick) auf dem
+            Ziel-Item in den Taschen nichts - nur Strg+Enter (Rechtsklick)
+            wendete an. Enter wendet jetzt an, wie in der Standard-UI. Auf
+            angelegten Gegenstaenden funktionierten beide Tasten bereits.
+        Technisch: Die Enter-Aktion eines Taschen-Items war ein blankes insecure
+            PickupContainerItem; der native Linksklick laeuft bei
+            SpellCanTargetItem() ueber das Hardware-Event-gegatete
+            UseContainerItem. Taschen-Items und Ausruestungs-Slots tragen jetzt
+            ein applyMacrotext ("/use Tasche Slot" bzw. "/use Slot"), das das
+            Menue beim Fokussieren waehrend SpellIsTargeting() auf den sicheren
+            Linksklick-Button staged; ein Targeting-only-PreClick-Schnappschuss
+            laesst den insecure Fallback sein Aufheben ueberspringen, wenn das
+            Makro schon angewendet hat, ohne das Ablegen/Tauschen eines
+            gehaltenen Cursor-Items zu brechen. Die /use-Form ist zudem
+            Modifier-unabhaengig - ein synthetisierter "/click ... LeftButton"
+            liest den Live-Tastaturzustand, eine umbelegte Linksklick-Taste mit
+            Modifier wuerde also als modifizierter Klick zaehlen
+            (Anprobe/Chat-Link) und nie anwenden.
+
     Startgebiete: Strg+Shift+Tab wechselt wieder durch geschuetzte NPCs
         Einfach: Seit dem WoW-Client-Update vom 9. Juli wechselte die Spezialtaste
             Strg+Shift+Tab nicht mehr durch die geschuetzten (sonst nicht anvisierbaren)
