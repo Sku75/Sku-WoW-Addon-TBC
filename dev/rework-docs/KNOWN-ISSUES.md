@@ -12,16 +12,12 @@ history is the record — to keep this list short and current.
   - Suspected cause / area: file or workstream.
   - Status: open / investigating / workaround / blocked.
 
-## Setup / environment gotchas (carried from the rework setup)
+## Setup / environment gotchas
 
-- **Shared SavedVariables with v41.** Same addon name + same account = same
-  `Sku.lua` (`SkuOptionsDB`). v42's settings-schema rework (W1) can rewrite the
-  saved settings v41 expects. Test v42 against the WTF backup / a copied account,
-  or accept that v42 testing migrates the live settings. Never run both clients
-  at once.
-- **Symlink swap to test v42.** WoW loads the addon via the `AddOns\Sku` symlink.
-  It currently points at the v41 tree (`...\Sku-TBC\Sku`). To test v42, repoint
-  it (admin, `mklink /D`) at `...\Sku-TBC-42\Sku`, and point it back to test v41.
+- **Live addon via symlink.** WoW loads the addon via the `AddOns\Sku` symlink
+  (under the `_anniversary_` client), pointing at this repo's `Sku/` folder —
+  edits here are live after `/reload`. (The old v41-vs-v42 dual-worktree swap is
+  over: v42 shipped, single consolidated repo.)
 
 ## Open issues (bugs)
 
@@ -56,20 +52,13 @@ investigated.
     of this kind re-pins correctly.
   - Repro: Auren -> aura list -> an aura -> rename it -> cursor lands on
     "Auren verwalten", not the aura.
-  - Suspected area: SkuAuras/Options aura-rename OnAction re-descend (the W6-B #14
-    path using ",SkuAuras,aurenList,aurenVerwalten,") — re-pinning to the list
-    parent instead of the aura node (wrong FindAncestorById target / an extra step-up).
-  - Status: open.
-- **Ctrl+Shift+Tab targeting of special protected NPCs broken (starting zones).**
-  - Symptom: the special handling that targets special/protected NPCs (notably in
-    the starting zones) via Ctrl+Shift+Tab no longer selects them. Worked before
-    the newest client update.
-  - Repro: in a starting zone, press Ctrl+Shift+Tab to target a special/protected
-    NPC — it is not selected as it was before the patch.
-  - Suspected area: Sku's special/protected-NPC targeting bound to Ctrl+Shift+Tab
-    (targeting path); likely a client-side API/behaviour change in the latest
-    patch. Exact file TBD.
-  - Status: open (regression, newest client update).
+  - Suspected area: SkuAuras/Options aura-rename OnAction re-descend — re-pinning
+    to the list parent instead of the aura node (wrong FindAncestorById target /
+    an extra step-up). NOTE: v42.04 flattened the Auras menu (commit `cf22823` —
+    intermediate level removed, SlashFunc anchor paths dropped the `aurenList`
+    segment), so the old ",SkuAuras,aurenList,aurenVerwalten," path in earlier
+    notes is stale — RE-TEST after the flatten before debugging.
+  - Status: open (re-test after the 42.04 aura menu flatten).
 
 ## Feature requests / wishlist
 
@@ -129,6 +118,29 @@ workstreams (noted) — fold them in there when that workstream runs.
 - **Soft-target vs hard-target setting — improve / maybe fix.** Revisit the
   soft-target vs hard-target targeting setting: improve its behaviour, and fix it
   if the latest client changed how soft targeting works. Scope TBD.
+- **AddOn settings menu — shipped, could be improved.** Addons →
+  "AddOn-Einstellungen" (SkuCore/addonOptions.lua) renders other addons'
+  AceConfig settings (Questie, ECS, AtlasLoot via load entry); the Escape
+  menu's "AddOns" button routes there. Works in-game, not fully bug-free
+  yet — polish candidates: verify enabled sliders/dropdowns across more
+  addons (dprint breadcrumbs are in), confirm-prompt buttons, color/
+  keybinding types, Blizzard-Settings AddOns-category split. Details +
+  findings: `ADDON-SETTINGS-ACCESS.md` (same folder).
+- **PLANNED: Pet training points on the overview page.** Add the hunter pet's
+  training points (spent/available) to the pet overview page, next to the
+  existing pet info. Area: the character/pet frame mirror in SkuCore.
+- **PLANNED: Rework the quick menu ("Schnellmenue", formerly
+  "Barrierefreiheit").** The quick menu was only renamed in 42.03; its contents
+  and structure still need a real pass — decide what belongs in a quick menu,
+  remove/relocate the rest. Scope TBD with the maintainer.
+- **PLANNED: Sensible defaults for the chat settings.** Pick good shipped
+  defaults for the chat settings (which channels are read, voices, etc.).
+  Part of / overlaps the general "rework the default settings" entry above —
+  fold in when that runs, but chat is called out as a priority.
+- **PLANNED: Escape-menu entries act on RIGHT arrow, not Enter.** The entries
+  of the escape (game) menu should react to arrow RIGHT instead of Enter, so
+  they behave like the rest of the Sku menu tree. Area: the game-menu mirror
+  (gameOptions/LocalMenu path).
 
 ## Pending in-game validation (raid)
 
