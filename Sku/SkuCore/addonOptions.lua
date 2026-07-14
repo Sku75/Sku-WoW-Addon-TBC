@@ -50,6 +50,8 @@ local _L = {
    loadPrefix  = _DE and "Einstellungen laden: "  or "Load settings: ",
    loaded      = _DE and "geladen - Liste erneut öffnen" or "loaded - reopen the list",
    loadFailed  = _DE and "konnte nicht geladen werden"   or "could not be loaded",
+   dbmEnabled  = _DE and "Bossmodul aktiviert"    or "Boss mod enabled",
+   dbmNoMods   = _DE and "Keine Bossmodule geladen - sie laden beim Betreten der Instanz" or "No boss mods loaded - they load on entering the instance",
 }
 
 -- ---------------------------------------------------------------------
@@ -183,10 +185,11 @@ local function EvalText(aInfo, aTab, aValue)
    return aValue
 end
 
--- Strip WoW UI escape sequences (color codes, textures, atlas refs) so the
--- spoken menu name is clean text.
+-- Strip WoW UI escape sequences (color codes, textures, atlas refs,
+-- hyperlink wrappers) so the spoken menu name is clean text.
 local function CleanText(aText)
    if type(aText) ~= "string" then return aText end
+   aText = aText:gsub("|H.-|h(.-)|h", "%1")
    aText = aText:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "")
    aText = aText:gsub("|T.-|t", ""):gsub("|A.-|a", "")
    aText = aText:gsub("\n", " ")
@@ -552,6 +555,198 @@ BuildGroup = function(aSelf, aAppName, aPath)
 end
 
 -- ---------------------------------------------------------------------
+-- DBM (Deadly Boss Mods) adapter. DBM registers nothing with AceConfig or
+-- the Blizzard Settings list; its /dbm window is hand-built frames. But
+-- the per-boss-mod options are pure data on each mod object (see
+-- ADDON-SETTINGS-ACCESS.md): DBM.Mods -> Options.Enabled, groupOptions
+-- (per-spell option groups), categorySort/optionCategories (+localization,
+-- dropdowns, optionFuncs). Writes are plain table assignments — insecure,
+-- no taint. Loaded mods only: DBM loads boss mods on entering the zone, so
+-- you configure them where you fight. DBM's CORE options (bar positions,
+-- global sounds, ...) are hand-built GUI panels and are NOT covered here.
+-- ---------------------------------------------------------------------
+
+-- DBM option labels use templating (mirrors DBM-GUI parseDescription):
+-- $spell:N -> spell name, $spell:ejN / $journal:N -> journal section name,
+-- {rtN} -> raid target name; then the generic escape-code cleanup.
+local function DBMText(aText)
+   if type(aText) ~= "string" then return tostring(aText) end
+   local DBM = _G.DBM
+   aText = aText:gsub("%$spell:ej(%d+)", "$journal:%1")
+   aText = aText:gsub("%$spell:(%-?%d+)", function(id)
+      local n = tonumber(id)
+      if n and n < 0 then return "$journal:" .. -n end
+      local ok, name = pcall(function() return DBM:GetSpellName(n) end)
+      if ok and type(name) == "string" then return name end
+      return id
+   end)
+   aText = aText:gsub("%$journal:(%d+)", function(id)
+      local ok, name = pcall(function() return DBM:EJ_GetSectionInfo(tonumber(id)) end)
+      if ok and type(name) == "string" then return name end
+      return id
+   end)
+   aText = aText:gsub("{rt(%d)}", function(n)
+      return _G["RAID_TARGET_" .. n] or ("Symbol " .. n)
+   end)
+   return CleanText(aText)
+end
+
+local mOnOff = nil
+local function tOnOffOpts()
+   mOnOff = mOnOff or { { value = true, label = _L.on }, { value = false, label = _L.off } }
+   return mOnOff
+end
+
+-- One boss-mod option (a member of a spell group or a category): boolean ->
+-- on/off select, dropdown key -> value select. Mirrors DBM-GUI addOptions.
+local function DBMAddOption(aParent, aMod, aKey)
+   if aKey == _G.DBM_OPTION_SPACER then return end
+   if type(aKey) ~= "string" then return end   -- {line=..} separators etc.
+   local tName = DBMText(tostring((aMod.localization and aMod.localization.options and aMod.localization.options[aKey]) or aKey))
+   if type(aMod.Options[aKey]) == "boolean" then
+      MakeSelect(aParent, tName, tOnOffOpts(),
+         function()
+            return aMod.Options[aKey] and _L.on or _L.off
+         end,
+         function(aLabel)
+            local v = (aLabel == _L.on)
+            if aMod.Options[aKey] ~= v then
+               aMod.Options[aKey] = v
+               if aMod.optionFuncs and aMod.optionFuncs[aKey] then pcall(aMod.optionFuncs[aKey]) end
+            end
+            tSay(tName .. " " .. aLabel)
+         end)
+   elseif aMod.dropdowns and aMod.dropdowns[aKey] then
+      local opts = {}
+      for _, val in ipairs(aMod.dropdowns[aKey]) do
+         opts[#opts + 1] = { value = val,
+            label = DBMText(tostring((aMod.localization and aMod.localization.options and aMod.localization.options[val]) or val)) }
+      end
+      MakeSelect(aParent, tName, opts,
+         function()
+            local cur = aMod.Options[aKey]
+            for _, o in ipairs(opts) do
+               if o.value == cur then return o.label end
+            end
+            return tostring(cur)
+         end,
+         function(aLabel)
+            for _, o in ipairs(opts) do
+               if o.label == aLabel then
+                  aMod.Options[aKey] = o.value
+                  if aMod.optionFuncs and aMod.optionFuncs[aKey] then pcall(aMod.optionFuncs[aKey]) end
+                  tSay(tName .. " " .. aLabel)
+                  return
+               end
+            end
+         end)
+   end
+end
+
+-- Spell-group title, mirroring DBM-GUI: custom .title, spell name for a
+-- numeric key (negative = journal section), "ej"/"at" prefixes, else key.
+local function DBMGroupTitle(aKey, aOptions)
+   local DBM = _G.DBM
+   if type(aOptions) == "table" and aOptions.title then return DBMText(tostring(aOptions.title)) end
+   local tNum = tonumber(aKey)
+   if tNum then
+      if tNum < 0 then
+         local ok, name = pcall(function() return DBM:EJ_GetSectionInfo(-tNum) end)
+         if ok and type(name) == "string" then return CleanText(name) end
+      else
+         local ok, name = pcall(function() return DBM:GetSpellName(tNum) end)
+         if ok and type(name) == "string" then return CleanText(name) end
+      end
+   elseif type(aKey) == "string" and aKey:find("^ej") then
+      local ok, name = pcall(function() return DBM:EJ_GetSectionInfo(aKey:gsub("ej", "")) end)
+      if ok and type(name) == "string" then return CleanText(name) end
+   elseif type(aKey) == "string" and aKey:find("^at") then
+      local ok, name = pcall(function() return (select(2, GetAchievementInfo(tonumber(aKey:gsub("at", "")) or 0))) end)
+      if ok and type(name) == "string" then return CleanText(name) end
+   end
+   return tostring(aKey)
+end
+
+-- One mod's children: master enable, then the per-spell groups, then the
+-- classic categories (announces, timers, ...).
+local function DBMBuildModChildren(aSelf, aMod)
+   MakeSelect(aSelf, _L.dbmEnabled, tOnOffOpts(),
+      function()
+         return aMod.Options.Enabled and _L.on or _L.off
+      end,
+      function(aLabel)
+         local tWant = (aLabel == _L.on)
+         if (not not aMod.Options.Enabled) ~= tWant then
+            pcall(function() aMod:Toggle() end)
+         end
+         tSay(_L.dbmEnabled .. " " .. aLabel)
+      end)
+
+   -- Per-spell option groups (the modern DBM layout). Ordered __pairs
+   -- metamethod when present; "line..." keys are visual separators.
+   if type(aMod.groupOptions) == "table" then
+      local mt = getmetatable(aMod.groupOptions)
+      local tPairs = (mt and mt.__pairs) or pairs
+      for tKey, tOptions in tPairs(aMod.groupOptions) do
+         if not (type(tKey) == "string" and tKey:find("^line")) and type(tOptions) == "table" then
+            local sub = Inject(aSelf, DBMGroupTitle(tKey, tOptions))
+            sub.dynamic = true
+            sub.BuildChildren = function(self)
+               for _, tOptKey in ipairs(tOptions) do
+                  pcall(DBMAddOption, self, aMod, tOptKey)
+               end
+               if #self.children == 0 then Inject(self, _L.empty) end
+            end
+         end
+      end
+   end
+
+   -- Classic category areas.
+   if type(aMod.categorySort) == "table" then
+      local tSeen = {}
+      for _, tCat in ipairs(aMod.categorySort) do
+         local tCategory = aMod.optionCategories and aMod.optionCategories[tCat]
+         if not tSeen[tCat] and type(tCategory) == "table" then
+            tSeen[tCat] = true
+            local tLabel = DBMText(tostring((aMod.localization and aMod.localization.cats and aMod.localization.cats[tCat]) or tCat))
+            local sub = Inject(aSelf, tLabel)
+            sub.dynamic = true
+            sub.BuildChildren = function(self)
+               for _, tOptKey in ipairs(tCategory) do
+                  pcall(DBMAddOption, self, aMod, tOptKey)
+               end
+               if #self.children == 0 then Inject(self, _L.empty) end
+            end
+         end
+      end
+   end
+end
+
+local function DBMBuildModList(aSelf)
+   local tMods = {}
+   for _, tMod in ipairs(_G.DBM.Mods) do
+      local tName = (tMod.localization and tMod.localization.general and tMod.localization.general.name) or tMod.id
+      tMods[#tMods + 1] = { mod = tMod, name = CleanText(tostring(tName or "?")) }
+   end
+   table.sort(tMods, function(a, b) return a.name < b.name end)
+   for _, m in ipairs(tMods) do
+      local e = Inject(aSelf, m.name)
+      e.dynamic = true
+      local tMod = m.mod
+      e.BuildChildren = function(self) DBMBuildModChildren(self, tMod) end
+   end
+   if dprint then dprint("addonOptions: DBM mods", #tMods) end
+   if #tMods == 0 then Inject(aSelf, _L.dbmNoMods) end
+end
+
+local function InjectDBMEntry(aParentEntry)
+   if not (_G.DBM and type(_G.DBM.Mods) == "table") then return end
+   local e = Inject(aParentEntry, "Deadly Boss Mods")
+   e.dynamic = true
+   e.BuildChildren = function(self) DBMBuildModList(self) end
+end
+
+-- ---------------------------------------------------------------------
 -- Top level: one submenu per registered app.
 -- ---------------------------------------------------------------------
 local function AppDisplayName(aAppName)
@@ -614,6 +809,9 @@ function AddonOptions:AddonOptionsMenuBuilder(aParentEntry)
       local appName = a.app
       e.BuildChildren = function(self) BuildGroup(self, appName, {}) end
    end
+   pcall(InjectDBMEntry, aParentEntry)
    pcall(tListLoadableConfigAddons, aParentEntry)
-   if #apps == 0 then Inject(aParentEntry, _L.empty) end
+   if #apps == 0 and not (_G.DBM and type(_G.DBM.Mods) == "table") then
+      Inject(aParentEntry, _L.empty)
+   end
 end

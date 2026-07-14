@@ -120,12 +120,13 @@ workstreams (noted) — fold them in there when that workstream runs.
   if the latest client changed how soft targeting works. Scope TBD.
 - **AddOn settings menu — shipped, could be improved.** Addons →
   "AddOn-Einstellungen" (SkuCore/addonOptions.lua) renders other addons'
-  AceConfig settings (Questie, ECS, AtlasLoot via load entry); the Escape
-  menu's "AddOns" button routes there. Works in-game, not fully bug-free
-  yet — polish candidates: verify enabled sliders/dropdowns across more
-  addons (dprint breadcrumbs are in), confirm-prompt buttons, color/
-  keybinding types, Blizzard-Settings AddOns-category split. Details +
-  findings: `ADDON-SETTINGS-ACCESS.md` (same folder).
+  AceConfig settings (Questie, ECS, AtlasLoot via load entry) plus a DBM
+  per-boss-mod adapter; the Escape menu's "AddOns" button routes there.
+  Works in-game, not fully bug-free yet — polish candidates: verify enabled
+  sliders/dropdowns across more addons (dprint breadcrumbs are in),
+  confirm-prompt buttons, color/keybinding types, Blizzard-Settings
+  AddOns-category split, DBM core options. Details + findings:
+  `ADDON-SETTINGS-ACCESS.md` (same folder).
 - **PLANNED: Pet training points on the overview page.** Add the hunter pet's
   training points (spent/available) to the pet overview page, next to the
   existing pet info. Area: the character/pet frame mirror in SkuCore.

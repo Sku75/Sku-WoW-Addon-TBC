@@ -135,7 +135,19 @@ alerts per boss) — are **pure data on the mod object**
    The Escape game menu's "AddOns" button (natively opens the inaccessible
    Settings AddOns tab) now routes there (gameOptions.lua IsAddonsButton).
    Acceptance test: full Questie settings usable.
-3. **Tier 3 DBM per-mod adapter** (own submenu under the same entry) — open.
+3. **Tier 3 DBM per-mod adapter — BUILT 2026-07-14, pending in-game test.**
+   "Deadly Boss Mods" entry in the same list (only when DBM is loaded):
+   lists loaded boss mods from `DBM.Mods` (they load on entering the zone;
+   a hint entry says so when none are loaded). Per mod: "Bossmodul
+   aktiviert" (via `mod:Toggle()`), then the per-spell option groups
+   (`mod.groupOptions`, ordered `__pairs`, titles resolved like DBM-GUI:
+   custom title / `GetSpellName` / EJ section / achievement), then the
+   classic categories (`categorySort`/`optionCategories`/
+   `localization.cats`). Options: booleans as Ein/Aus, `mod.dropdowns`
+   keys as value lists; writes assign `mod.Options[k]` + call
+   `mod.optionFuncs[k]`. Labels run through `DBMText` ($spell:/$journal:/
+   {rt} templating like DBM-GUI parseDescription, then CleanText). DBM
+   CORE options (bars, global sounds) are hand-built panels — not covered.
 4. **Tier 2 polish**: split `CategorySet.AddOns` categories out of
    Spieleinstellungen into the same AddOns menu; add subcategory support;
    evaluate canvas widget-walking per addon — open.
