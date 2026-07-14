@@ -215,12 +215,12 @@
             To select a realm and create a character you need the WoW Login Tool. Start it from the "WoW Login Tool" shortcut on your desktop (the Sku Installer placed it there).
          </p></li>
          <li><p>
-            The WoW Login Tool has a voice prompt. The Sku Installer already configured it (voice, language, region and game), so there is no setup step on first start.
-            Then is says Paused. It silently waits for the game to be started and launched. If it detects the WoW game window the WoW Login Tool automatically switches to Login mode.<br>            
+            The WoW Login Tool has a voice prompt. On the very first start it runs a short spoken setup: you choose the voice, the language, the region and the game version with the arrow keys and ENTER. Your answers are saved, so this happens only once.
+            Then it says Paused. It silently waits for the game to be started and launched. If it detects the WoW game window the WoW Login Tool automatically switches to Login mode.<br>
          </p></li>
          <li><p>
             It says, Login Mode. That means that the tool is now in login mode, and will assist you with logging into the game, realm selection, and character creation.<br>
-            Note: It would be helpful to read/listen to the next steps on another device (tablet, smartphone, whatever is available). The WoW Login Tool will be activated every time the WoW window gets focused upon. It pauses whenever the WoW window loses focus (for example, if you're switching to this page to listen to the next step). On every new activation (if you're switching back to the WoW window) it needs to be reanitialized and starts with the main menu again. All your previously completed steps in that script will be lost every time you switch to another window and back. Reading/listening to the steps on another device would avoid that. Alternatively just read all the steps and complete them without leaving the WoW window.
+            Note: It would be helpful to read/listen to the next steps on another device (tablet, smartphone, whatever is available). The WoW Login Tool will be activated every time the WoW window gets focused upon. It pauses whenever the WoW window loses focus (for example, if you're switching to this page to listen to the next step). If the tool is in the middle of an action when the WoW window loses focus, it stops that action safely within about a second; you can also abort a running action yourself with ALT + F1. On every new activation (if you're switching back to the WoW window) it starts with the main menu again, so steps you had already reached in the menu have to be navigated to again. Reading/listening to the steps on another device would avoid that. Alternatively just read all the steps and complete them without leaving the WoW window.
          </p></li>
          <li><p>
             The tool performs an initialization and automatically gets you to the character selection screen of the game. While the tool is processing, you will hear a sound. Wait for that sound to stop. Do not move the mouse, press any key or switch to other windows until processing is completed.
@@ -243,7 +243,7 @@
          You need to select a realm first. Go to Change realm and press RIGHT to enter the submenu of Change realm. There you will find a list of languages (these are the languages for available realms). Select a language and move right to the submenu of the selected language. That submenu contains a list of all realms in that language. Select a realm. Then press ENTER to choose it.
       </p></li>
       <li><p>
-         The WoW Login Tool gets active and selects the new realm. You will hear the sound again. Don't do anything until the tool has completed the process. Do not move the mouse. Do not press any key. Just put your hands in the air. :)
+         The WoW Login Tool gets active and selects the new realm. It reads the realm list live from the screen, so you hear the actual realm names. You will hear the sound again. Don't do anything until the tool has completed the process. Do not move the mouse. Do not press any key. Just put your hands in the air. :) If you really need to stop the tool mid-action, press ALT + F1.
       </p></li>
       </ul>      
             
@@ -273,7 +273,7 @@
          </ul>            
          </p></li>
          <li><p>
-            Again, wait for the tool. It will create the character and ask you to enter a character name. Type your desired name and press ENTER. The script will check if that name is available and valid. If it is not, you will have to enter a new name and press ENTER again. That continues until the name is available and valid. Then the tool actually creates the character and you end up back in the audio menu.<br>
+            Again, wait for the tool. It will create the character and ask you to enter a character name. Type your desired name and press ENTER. The script will check if that name is available and valid. If it is not, you will have to enter a new name and press ENTER again. That continues until the name is available and valid. If the game shows a message (for example that the name is already taken), the tool reads it out loud. Then the tool actually creates the character and you end up back in the audio menu.<br>
             Tips on character names:</p>
             <ul>
                <li><p>
@@ -288,19 +288,16 @@
             </ul>            
          </p></li>
          <li><p>
-            Once you have created your character, it will automatically be placed in slot #1 of your character list. There are 10 slots for characters. New characters are automatically placed on the next free slot. So the next one you create would be slot #2 and so on.
-         </p></li>
-         <li><p>
-            If you have more than one character, you might want to write down the name, race, class and slot # of the created character. The tool only works with the slot numbers, not with the names of the characters.
+            Once you have created your character, it appears in your character list. The tool reads the list straight from the screen with the real character names, levels and classes - for example "1: Anna, level 1 Priest" - so you always hear exactly which character you are choosing.
          </p></li>
          <li><p>
             Once you have created your first character, you can enter the game world with that character.
          </p></li>
          <li><p>
-            In order to enter the world with your first character in slot #1, you first need to select that character. Go to Select character, then right, and then select Slot #1. Then press ENTER.
+            In order to enter the world with your first character, you first need to select it. Go to Select character, then right, and then select your character by its announced name. Then press ENTER.
          </p></li>
          <li><p>
-            The script will select the character in slot #1, and automatically switches to the Log in with selected character menu item. That is what you want to do. Just press ENTER to select the option.
+            The script will select that character, and automatically switches to the Log in with selected character menu item. That is what you want to do. Just press ENTER to select the option.
          </p></li>
          <li><p>
             Now you are entering the game world with your new character. The tool says Play Mode, and will now be in play mode. If that doesn't happen, you can always press ALT + F1 to switch between login and play mode.
