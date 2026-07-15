@@ -1,4 +1,4 @@
-; The OCR-driven flows: login init, character list, character creation,
+﻿; The OCR-driven flows: login init, character list, character creation,
 ; deletion, realm switching, popup reading.
 ;
 ; Region constants are fractions of the capture size (validated against the
@@ -10,6 +10,12 @@
 global gLoginInitialized := false
 global gPendingCreate := ""       ; {gender, race, class, zone} while naming
 global gLastCharList := []
+global gCharCursor := 0           ; character the game's own selection sits on
+                                  ; (1..gLastCharList.Length, 0 = unknown)
+global gCharListFromWalk := false ; true: list came from the counted walk, so
+                                  ; entries below the fold are in it and their
+                                  ; stored click rects are stale. false: list is
+                                  ; the visible section, rects are current.
 
 ; ---------- generic OCR helpers ----------
 
@@ -64,13 +70,13 @@ SpeakAndClosePopup(s) {
 ; ---------- login initialization (single-pass steps, driven by CheckMode) ----------
 
 InitLogin(s := "") {
-    global gLoginInitialized
+    global gLoginInitialized, gBusy
     if !SenseOk(s)
         s := SenseQuick()
     if !SenseOk(s)
         return
     screen := s["screen"]
-    Log("InitLogin step: " screen)
+    Log("InitLogin step: " screen (IsCharCreateScreen(s) ? "" : (SenseCheck(s, "charselect") ? " (charselect wins)" : "")))
 
     if SenseCheck(s, "outdatedAddons") {
         ClickWidget("OutdatedAddonsWarning1Button")
@@ -79,23 +85,39 @@ InitLogin(s := "") {
         Sleep(800)
         return
     }
-    if (screen = "contract") {
+    ; Checks, not the helper's screen verdict: the verdict picks ONE screen and
+    ; gets it wrong when the scene behind the UI is dark (see sense.ahk).
+    if SenseCheck(s, "contract") {
         AcceptContract()
         return
     }
-    if (screen = "realmselect") {
+    if SenseCheck(s, "realmselect") {
         ; Escape reliably closes the realm dialog; the cancel-button coordinate
         ; drifts at 16:10 and would leave it open.
         Send("{Escape}")
         Sleep(1000)
         return
     }
-    if (screen = "charcreate") {
+    ; IsCharCreateScreen, not screen = "charcreate": the helper mistakes the
+    ; character screen for the creation screen whenever the scene behind the
+    ; UI is dark (see sense.ahk). Escaping out of it opened WoW's own menu and
+    ; left the tool mute.
+    if IsCharCreateScreen(s) {
+        ; Escaping out of the creation screen is right when we arrive there
+        ; unexpectedly - but NOT while the user is in the middle of creating a
+        ; character. Tabbing away and back pauses and re-inits the tool, and
+        ; this used to throw away the creation in progress: escape, then wait
+        ; up to 30 s for a creation that can no longer finish, which looks
+        ; exactly like the tool hanging.
+        if (gEnterCharacterNameFlag || gPendingCreate != "") {
+            Log("InitLogin: creation in progress, leaving the screen alone")
+            return
+        }
         Send("{Esc}")
         Sleep(1000)
         return
     }
-    if (screen = "login") {
+    if SenseCheck(s, "login") {
         full := Sense()
         if AnyPopup(full) {
             SpeakAndClosePopup(full)
@@ -105,7 +127,11 @@ InitLogin(s := "") {
         }
         return
     }
-    if (screen = "charselect") {
+    ; The check, not the helper's verdict: with a dark scene behind the UI it
+    ; reports "charcreate" for the character screen, and this branch - the one
+    ; that builds the menu - never ran. The tool reached "login mode" and then
+    ; went quiet.
+    if SenseCheck(s, "charselect") {
         if SenseCheck(s, "deletePopup") {
             ClickWidget("DeleteCharPopupOkButton")
             Sleep(600)
@@ -116,10 +142,29 @@ InitLogin(s := "") {
             SpeakAndClosePopup(full)
             return
         }
-        RefreshCharacterMenu(full)
+        ; Counting the list walks the characters with the arrow keys and takes
+        ; a while on a full realm; block menu actions meanwhile so a keypress
+        ; cannot start a second flow on top of the walk.
+        ; Announce it: the walk is otherwise seconds of silence, and silence is
+        ; the one state a blind user cannot interpret.
+        SayQueued(T("Please wait, the character list is being rebuilt."))
+        wasBusy := gBusy
+        gBusy := true
+        try {
+            RefreshCharacterMenu(full)
+        } finally {
+            gBusy := wasBusy
+        }
         gLoginInitialized := true
-        gMainMenu.Enter()
+        gMainMenu.EnterQueued()
+        return
     }
+    ; No marker matched: WoW's own menu, a cinematic, a screen we do not know.
+    ; This is the Alt+F1 path - CheckMode does not even get here for an unknown
+    ; screen. Returning silently is what left the user stranded with no idea
+    ; whether the tool was thinking or dead.
+    Log("InitLogin: no known screen (" screen ") - telling the user")
+    Say(T("Unknown screen. Close the dialog in the game, then press Alt F1 twice."))
 }
 
 AcceptContract() {
@@ -155,16 +200,62 @@ BlockIsCharacter(detailLines) {
     return false
 }
 
+IsLevelLine(text) {
+    for word in gLevelWords {
+        if InStr(text, word)
+            return true
+    }
+    return false
+}
+
+; A block whose first line is already the level line lost its name to OCR - the
+; name is the line above it. Announcing "Stufe 39 Priester" as a character name
+; is worse than useless, so the walk re-reads such a block once.
+BlockHasName(block) {
+    return IsObject(block) && !IsLevelLine(block.name)
+}
+
 ; Parse the right-side character list into blocks of lines separated by a
 ; vertical gap, then keep only the blocks that contain a level line. This is
 ; position-independent: it does not matter how high or low the list sits, or
 ; whether the realm header / create / delete buttons were also recognized.
+; Every line of a character entry - name, "Stufe N Klasse", zone - starts at
+; the same left edge, so that edge is the majority of all lines in the panel.
+; Stray recognitions off to the side (a sliver of the background art came back
+; as "-w" on a live client, and landed in front of the real name of character
+; one) sit clearly beside it and are dropped.
+DominantLeftEdge(lines) {
+    counts := Map()
+    for line in lines {
+        key := Round(line["x"] / 5)
+        counts[key] := counts.Has(key) ? counts[key] + 1 : 1
+    }
+    best := "", bestCount := 0
+    for key, count in counts {
+        if (count > bestCount) {
+            best := key * 5
+            bestCount := count
+        }
+    }
+    return best
+}
+
 OcrCharList(s) {
     chars := []
     if !SenseOk(s)
         return chars
     ; Right-hand panel, generous vertical span (the list floats vertically).
     lines := OcrLinesInRegion(s, 0.74, 0.0, 1.0, 0.97)
+
+    edge := DominantLeftEdge(lines)
+    if (edge != "") {
+        aligned := []
+        for line in lines {
+            if (Abs(line["x"] - edge) <= s["width"] * 0.012)
+                aligned.Push(line)
+        }
+        lines := aligned
+    }
 
     ; Sort by y (insertion sort, lists are small).
     sorted := []
@@ -204,30 +295,587 @@ OcrCharList(s) {
     return chars
 }
 
+; ---------- counting the character list (ported from v1) ----------
+;
+; OCR alone only ever sees the visible section of the list: a realm can hold up
+; to 50 characters while the panel shows nine slots, so everything below the
+; fold was missing from the menu. v1 walked the list with the arrow keys before
+; showing the main menu (menus.ahk GetNumberOfChars50Classic) and this is that
+; walk, with the names read along the way.
+;
+; v1 counted by pressing Down until the highlight reappeared on slot 1: past
+; the last character the selection wraps around to character 1, which also
+; scrolls the list back to the top. Measured on a live 2.5.6 client the
+; selection instead stops dead on the last character, so a port of that loop
+; alone counts to 50 and gives up. Rather than betting on either behaviour,
+; the walk here recognizes both from how the highlight moves:
+;
+;   - The highlight walks slot by slot; once it reaches the edge of the panel
+;     the list scrolls underneath it and the highlight stays on that slot.
+;   - So a highlight that JUMPS BACK across the panel (down->slot 1, or
+;     up->last slot) can only be the wrap-around.
+;   - And a step that changes nothing at all - same slot, same visible names -
+;     can only be the selection stopping at the end of the list.
+;
+; Whichever the client does, the walk ends knowing the count and leaves the
+; selection on character 1, which is what the menu numbering promises.
+;
+; What v1 could not do is read the names, so its menu was a bare list of
+; numbers. Here every step also picks the OCR block sitting at the highlighted
+; slot, which gives name, level and class for characters far below the fold.
+; A fresh OCR pass is only needed when the highlight did not move: as long as
+; it walks from slot to slot the list cannot have scrolled and the previous
+; pass still describes it. Lists that fit on screen cost one OCR pass in total.
+
+global gCharWalkMaxSteps := 55    ; a realm holds at most 50 characters
+global gCharWalkStepMs := 300     ; settle time after each key (v1 used ~266)
+global gCharSenseCount := 0       ; looks at the screen per walk, for the log
+
+; The OCR character block sitting at the given slot, or "" if none matches.
+CharBlockAtSlot(blocks, s, slot) {
+    if (!SenseOk(s) || slot < 1 || slot > gCharUIPositions.Length || gCharUIPositions[slot] = "")
+        return ""
+    ; Slot positions are v1 UI coords (768-high space); OCR rects are capture px.
+    targetY := s["height"] * (gCharUIPositions[slot].y / 768.0)
+    tolerance := s["height"] * 0.03
+    best := "", bestDistance := ""
+    for block in blocks {
+        top := block.clickLine["y"]
+        bottom := block.lastY + block.clickLine["h"]
+        if (targetY >= top && targetY <= bottom)
+            distance := 0
+        else
+            distance := targetY < top ? top - targetY : targetY - bottom
+        if (distance > tolerance)
+            continue
+        if (bestDistance = "" || distance < bestDistance) {
+            best := block
+            bestDistance := distance
+        }
+    }
+    return best
+}
+
+; Press an arrow key once and let the client react. Beeps every few steps so a
+; long walk does not sound like a freeze. Returns the highlighted slot
+; afterwards, which the callers need anyway.
+;
+; Pass the slot the highlight was on before: the client usually moves it within
+; ~100 ms, and since a probe costs ~17 ms we can watch for that and continue
+; the moment it happens instead of always sleeping out the full settle time.
+; When the highlight cannot move - the list scrolls underneath it, or the list
+; ended - there is nothing to watch for and we wait the full time as before,
+; which is also what the OCR that follows such a step needs.
+CharWalkStep(key, step, previousSlot := 0) {
+    Send("{" key "}")
+    ; No beeping here: every walk is announced ("the character list is being
+    ; rebuilt"), which tells the user what the silence means.
+    deadline := A_TickCount + gCharWalkStepMs
+    Sleep(40)
+    if (previousSlot > 0) {
+        loop {
+            slot := SelectedCharSlot()
+            ; A moved highlight ends the step early - but only once it holds
+            ; still. While the list scrolls the bar travels across the panel,
+            ; and a probe taken mid-animation reports whatever slot it is
+            ; passing (slot 1 included, which reads exactly like a wrap-around
+            ; and once made the walk count 9 characters instead of 15).
+            if (slot > 0 && slot != previousSlot) {
+                Sleep(70)
+                if (SelectedCharSlot() = slot)
+                    return slot
+                continue
+            }
+            if (A_TickCount >= deadline)
+                break
+            Sleep(25)
+        }
+    }
+    remaining := deadline - A_TickCount
+    if (remaining > 0)
+        Sleep(remaining)
+    return SelectedCharSlot()
+}
+
+; Wait until the character list has a highlight, i.e. the screen is settled
+; enough to walk. Costs ~17 ms per look, so polling is cheap.
+WaitForHighlight(ms) {
+    deadline := A_TickCount + ms
+    loop {
+        if (SelectedCharSlot() > 0)
+            return true
+        if (A_TickCount >= deadline)
+            break
+        Sleep(150)
+    }
+    ; Nothing lit up, and that is usually not a fault:
+    ;   - on a freshly started client nothing is selected yet, so there is no
+    ;     bar to find at all;
+    ;   - after a deletion the selection can sit on a character that is
+    ;     scrolled out of view - seen with Skubella (3) selected while the list
+    ;     showed 6..14. The bar exists, it is simply not on screen.
+    ; Either way Down helps: it selects the first character, or walks the
+    ; selection until it comes into view (the list follows it). One press is
+    ; not enough for the second case - the selection may be several rows away.
+    Log("WaitForHighlight: no visible highlight, pressing Down to bring it into view")
+    loop 12 {
+        Send("{Down}")
+        Sleep(400)
+        if (SelectedCharSlot() > 0) {
+            Log("WaitForHighlight: highlight visible after " A_Index " presses")
+            return true
+        }
+    }
+    return false
+}
+
+; The highlighted slot, with one retry: a capture that lands in the middle of a
+; redraw can miss the bar, and a single miss would otherwise abort the walk.
+SelectedCharSlotStable() {
+    slot := SelectedCharSlot()
+    if (slot > 0)
+        return slot
+    Sleep(150)
+    return SelectedCharSlot()
+}
+
+; The visible list boiled down to a comparable string. Used to tell "the list
+; scrolled" from "nothing happened at all"; normalized because OCR is not
+; pixel-stable between passes.
+CharListSignature(blocks) {
+    signature := ""
+    for block in blocks
+        signature .= RegExReplace(StrLower(block.name), "[^a-z]", "") "/"
+    return signature
+}
+
+; Sensing during the walk only ever reads the character panel, so tell the
+; helper to OCR that strip instead of the whole frame: measured 266 ms per
+; look instead of 403 ms, and the walk does a lot of them. Line rects come
+; back in full-frame coordinates either way.
+CharPanelRegion() {
+    client := WowClientRect()
+    if (client = "")
+        return ""
+    x := Round(client.w * 0.74)
+    return "--region " x ",0," (client.w - x) "," Round(client.h * 0.97)
+}
+
+; The selected character's name, as printed under the character model
+; (measured at ~0.46w / 0.845h on a live client). Reads a full frame, so only
+; worth it when the list panel did not yield the name.
+SelectedCharNameOnScreen() {
+    s := Sense()
+    if !SenseOk(s)
+        return ""
+    for line in OcrLinesInRegion(s, 0.36, 0.83, 0.64, 0.87) {
+        if (Trim(line["text"]) != "")
+            return line["text"]
+    }
+    return ""
+}
+
+; Highlighted slot + the visible list as OCR sees it right now.
+CharSnapshot() {
+    global gCharSenseCount
+    slot := SelectedCharSlotStable()
+    s := Sense(CharPanelRegion())
+    gCharSenseCount++
+    blocks := OcrCharList(s)
+    return {slot: slot, s: s, blocks: blocks, signature: CharListSignature(blocks)}
+}
+
+; Get onto character 1. Two ways there, and the fast one is v1's:
+;
+; Press Down until the highlight wraps around past the last character, which
+; lands on character 1 and scrolls the list back to the top. This needs no OCR
+; at all, just the pixel probe, and a look at the screen costs ~400 ms against
+; ~300 ms for a keypress - so it is by far the cheaper walk.
+;
+; v1 waited for "slot 1 is lit" and this did too, which is subtly wrong: slot 1
+; is character 1 only when the list is scrolled to the top. The wrap-around is
+; what we actually mean, and it is recognizable on its own - see below.
+;
+; It only works on a client that wraps around. Measured on 2.5.6 this one
+; does, but Era/Retail are not verified, so a client that never wraps falls
+; back to the slow climb, which needs no wrap-around.
+WalkToFirstChar() {
+    slot := SelectedCharSlot()
+    if (slot = 0) {
+        Log("WalkToFirstChar: no highlight found, climbing instead")
+        return ClimbToFirstChar()
+    }
+    stuckAtTop := 0
+    loop gCharWalkMaxSteps {
+        if FlowAbort("WalkToFirstChar")
+            return false
+        previous := slot
+        slot := CharWalkStep("Down", A_Index, previous)
+        if (slot = 0) {
+            Log("WalkToFirstChar: lost the highlight after " A_Index " steps")
+            return false
+        }
+        ; The wrap-around is the highlight JUMPING BACK up the panel, not
+        ; merely sitting on slot 1. Walking down, it can only move down or
+        ; stick to the bottom slot while the list scrolls underneath - so a
+        ; jump back can be nothing else.
+        ;
+        ; "Slot 1 is lit" would mean character 1 only if the list were
+        ; scrolled to the top. After a deletion it is not: slot 1 then showed
+        ; Skuminator (character 7), the walk took him for character 1, and
+        ; every comparison after that failed - 55 steps, then a fall back to
+        ; the nine visible characters.
+        if (slot < previous) {
+            Log("WalkToFirstChar: wrapped to character 1 after " A_Index " steps down")
+            return true
+        }
+        ; A realm with a single character never jumps - the highlight simply
+        ; stays put. Two steps without any movement mean we are already there.
+        if (slot = 1 && previous = 1) {
+            stuckAtTop++
+            if (stuckAtTop >= 2) {
+                Log("WalkToFirstChar: highlight will not move - single character")
+                return true
+            }
+        } else {
+            stuckAtTop := 0
+        }
+    }
+    Log("WalkToFirstChar: no wrap-around in " gCharWalkMaxSteps " steps down, climbing instead")
+    return ClimbToFirstChar()
+}
+
+; The wrap-around-free way up: press Up until a step changes nothing at all.
+; Costs one look at the screen per scrolled step, so it is only the fallback.
+;
+; Note "highlight sits on slot 1" alone does NOT mean character 1: walking up,
+; the highlight reaches slot 1 and stays there while the list scrolls past it.
+; The end of the list is where a step changes nothing (no wrap-around) or where
+; the highlight jumps to the bottom of the panel (wrap-around).
+ClimbToFirstChar() {
+    snapshot := CharSnapshot()
+    if (snapshot.slot = 0) {
+        Log("ClimbToFirstChar: no highlight found")
+        return false
+    }
+    loop gCharWalkMaxSteps {
+        if FlowAbort("ClimbToFirstChar")
+            return false
+        previousSlot := snapshot.slot
+        previousSignature := snapshot.signature
+        slot := CharWalkStep("Up", A_Index, previousSlot)
+        if (slot = 0) {
+            Log("ClimbToFirstChar: lost the highlight after " A_Index " steps")
+            return false
+        }
+        if (slot < previousSlot) {
+            ; Still climbing, list unchanged - no need to look at it.
+            snapshot.slot := slot
+            continue
+        }
+        if (slot > previousSlot) {
+            ; Jumped down the panel: Up off character 1 wrapped to the last
+            ; character, so one Down puts us back on character 1.
+            Log("ClimbToFirstChar: wrapped at the top, stepping back down")
+            CharWalkStep("Down", 1)
+            return true
+        }
+        ; Same slot: either the list scrolled under the highlight, or we are at
+        ; the top and the key did nothing.
+        fresh := CharSnapshot()
+        if (fresh.signature = previousSignature) {
+            Log("ClimbToFirstChar: reached the top after " A_Index " steps")
+            return true
+        }
+        snapshot := fresh
+    }
+    Log("ClimbToFirstChar: no top within " gCharWalkMaxSteps " steps")
+    return false
+}
+
+; Walk the whole list from character 1 down and collect every entry.
+; Returns the full list, plus whether the end came from a wrap-around (which
+; leaves the selection back on character 1) or from the selection stopping on
+; the last character. Returns "" if the walk could not be trusted.
+WalkCharacterList() {
+    chars := []
+    snapshot := CharSnapshot()
+    if (snapshot.slot = 0) {
+        Log("WalkCharacterList: no highlight found")
+        return ""
+    }
+    loop gCharWalkMaxSteps {
+        if FlowAbort("WalkCharacterList")
+            return ""
+        entry := CharBlockAtSlot(snapshot.blocks, snapshot.s, snapshot.slot)
+        if !BlockHasName(entry) {
+            ; Either no block at the highlight, or one that lost its name to a
+            ; capture taken mid-redraw. Worth one more look.
+            snapshot := CharSnapshot()
+            retry := CharBlockAtSlot(snapshot.blocks, snapshot.s, snapshot.slot)
+            if BlockHasName(retry)
+                entry := retry
+            else if IsObject(entry) {
+                ; Still nothing: the name is also printed large under the
+                ; character model, and that is the highlighted character - the
+                ; one we are collecting right now. The walk's own sensing only
+                ; covers the list panel, so this needs a full frame.
+                name := SelectedCharNameOnScreen()
+                if (name != "") {
+                    Log("WalkCharacterList: name missing at slot " snapshot.slot
+                        . ", taking '" name "' from under the model")
+                    entry := {name: name, details: entry.details,
+                              detailLines: entry.detailLines,
+                              clickLine: entry.clickLine, lastY: entry.lastY}
+                }
+            }
+        }
+        if !IsObject(entry) {
+            Log("WalkCharacterList: no OCR block at slot " snapshot.slot ", character " A_Index)
+            entry := {name: T("character") " " A_Index, details: "", detailLines: [], clickLine: "", lastY: 0}
+        }
+        chars.Push(entry)
+
+        previousSlot := snapshot.slot
+        previousSignature := snapshot.signature
+        slot := CharWalkStep("Down", A_Index, previousSlot)
+        if (slot = 0) {
+            Log("WalkCharacterList: lost the highlight at character " A_Index)
+            return ""
+        }
+        if (slot > previousSlot) {
+            ; Walking down, list unchanged - the names we have still apply.
+            snapshot.slot := slot
+            continue
+        }
+        if (slot < previousSlot) {
+            ; Looks like the wrap-around. Confirm it: after wrapping, the list
+            ; is back at the top and the highlight is on character 1, so the
+            ; name at the highlight must be the first name we collected. A
+            ; misread mid-scroll would otherwise end the count early and
+            ; silently drop every character below it.
+            fresh := CharSnapshot()
+            entry := CharBlockAtSlot(fresh.blocks, fresh.s, fresh.slot)
+            if (IsObject(entry) && chars.Length > 0
+                && SameCharName(entry.name, chars[1].name)) {
+                Log("WalkCharacterList: wrapped around after " chars.Length " characters")
+                return {chars: chars, wrapped: true}
+            }
+            Log("WalkCharacterList: slot jumped back at " chars.Length
+                . " but the highlight shows '" (IsObject(entry) ? entry.name : "?")
+                . "', not '" (chars.Length > 0 ? chars[1].name : "?") "' - misread, continuing")
+            snapshot := fresh
+            continue
+        }
+        fresh := CharSnapshot()
+        if (fresh.signature = previousSignature) {
+            Log("WalkCharacterList: list ends at " chars.Length " characters (no wrap-around)")
+            return {chars: chars, wrapped: false}
+        }
+        snapshot := fresh
+    }
+    Log("WalkCharacterList: no end within " gCharWalkMaxSteps " steps")
+    return ""
+}
+
+; The full character list: count it the v1 way, read the names via OCR.
+; Returns "" when the walk is not possible, so callers keep the plain OCR list.
+CountAndReadCharacters() {
+    global gCharCursor := 0
+    global gCharSenseCount := 0
+    startTick := A_TickCount
+    if (gCharUIPositions.Length = 0) {
+        Log("CountAndReadCharacters: no gCharUIPositions in data.ini for this game type")
+        return ""
+    }
+    ; Park the mouse: hovering a slot highlights it and would be miscounted.
+    MoveToWidget("CharSelectionScreenSafeMousePos")
+    Sleep(200)
+
+    ; An empty realm has nothing to walk, and the walk would spend 50 fruitless
+    ; keypresses finding that out. If a realm has characters at least the top
+    ; ones are on screen, so "OCR sees nothing" means empty - confirmed with a
+    ; second look, because a list captured mid-redraw can come back empty.
+    if (OcrCharList(Sense()).Length = 0) {
+        Sleep(700)
+        if (OcrCharList(Sense()).Length = 0) {
+            Log("CountAndReadCharacters: no characters on this realm")
+            return ""
+        }
+    }
+
+    ; The walk needs the highlight - it is the only thing telling us where we
+    ; are. Callers rebuild the menu right after a deletion, a creation or a
+    ; realm switch, and the screen can still be busy then: a dialog covering
+    ; the list, or the list still being drawn. Starting anyway found no
+    ; highlight, and the menu silently ended up holding just the nine visible
+    ; characters. Wait for it rather than walk blind.
+    if !WaitForHighlight(3000) {
+        Log("CountAndReadCharacters: no highlight on the character list - not walking")
+        return ""
+    }
+
+    if !WalkToFirstChar()
+        return ""
+    ; The wrap-around scrolls the list back to the top, and that takes a moment
+    ; longer than the highlight takes to move. Reading immediately captured the
+    ; list as it still was, so character 1 came out as whoever happened to sit
+    ; in slot 1 - and every later comparison against it then failed.
+    Sleep(500)
+    result := WalkCharacterList()
+    if (!IsObject(result) || result.chars.Length = 0)
+        return ""
+    ; A wrap-around already put the selection back on character 1; a list that
+    ; simply ended left it on the last character, so climb back up. The menu
+    ; numbers characters from 1 and the selection has to agree with that.
+    ; The count is known by now, so step up that far directly and let
+    ; WalkToFirstChar confirm the top - it costs one step when we are already
+    ; there, and repairs the position if the client swallowed a keypress.
+    if !result.wrapped {
+        slot := SelectedCharSlot()
+        loop result.chars.Length - 1 {
+            if FlowAbort("CountAndReadCharacters")
+                return ""
+            slot := CharWalkStep("Up", A_Index, slot)
+        }
+        ; This client has no wrap-around - we just watched the list end - so
+        ; confirm the top by climbing, not by pressing Down and waiting for a
+        ; wrap that will never come.
+        if !ClimbToFirstChar() {
+            Log("CountAndReadCharacters: could not return to character 1")
+            return ""
+        }
+    }
+    gCharCursor := 1
+    Log("CountAndReadCharacters: " result.chars.Length " characters, selection back on 1"
+        . " (" (A_TickCount - startTick) " ms, " gCharSenseCount " screen reads)")
+    return result.chars
+}
+
+; Names differ slightly between OCR passes; compare them stripped down.
+NormalizedName(text) {
+    return RegExReplace(StrLower(text), "[^a-z]", "")
+}
+
+; Same character? OCR is not stable enough for an exact match - the same entry
+; came back as "USkUbello" in one pass and "Skubello" in the next, which made
+; the cursor check reject a selection that was in fact correct. One name
+; containing the other is close enough, given the alternative is refusing to
+; select a character that is right there.
+SameCharName(a, b) {
+    a := NormalizedName(a), b := NormalizedName(b)
+    if (a = "" || b = "")
+        return false
+    return a = b || InStr(a, b) || InStr(b, a)
+}
+
+; Is the game's selection really on the character we think it is? Reads the
+; name at the highlighted slot and compares it to the list entry.
+CharCursorMatches(index) {
+    if (index < 1 || index > gLastCharList.Length)
+        return false
+    snapshot := CharSnapshot()
+    if (snapshot.slot = 0)
+        return false
+    entry := CharBlockAtSlot(snapshot.blocks, snapshot.s, snapshot.slot)
+    if !IsObject(entry)
+        return false
+    return SameCharName(entry.name, gLastCharList[index].name)
+}
+
+; Move the game's own selection from gCharCursor to the given character with
+; the arrow keys, which reaches entries no matter how far below the fold they
+; sit. Steps towards the target rather than counting on a wrap-around, so it
+; holds either way.
+;
+; The result is VERIFIED before it is believed: counting keypresses is not
+; proof that the game acted on all of them. A swallowed keypress used to leave
+; the selection short of the target while the tool still announced the intended
+; character - and logging in would then have entered the game with the wrong
+; one. On a mismatch, resync to character 1 and try once more; if it still does
+; not match, say so (return false) rather than claim a selection we do not have.
+MoveCharCursorTo(index) {
+    global gCharCursor
+    total := gLastCharList.Length
+    if (total = 0 || index < 1 || index > total)
+        return false
+    loop 2 {
+        if (gCharCursor < 1) {
+            if !WalkToFirstChar()
+                return false
+            gCharCursor := 1
+        }
+        key := index > gCharCursor ? "Down" : "Up"
+        steps := Abs(index - gCharCursor)
+        slot := SelectedCharSlot()
+        loop steps {
+            if FlowAbort("MoveCharCursorTo")
+                return false
+            slot := CharWalkStep(key, A_Index, slot)
+        }
+        gCharCursor := index
+        if CharCursorMatches(index) {
+            Log("MoveCharCursorTo: selection on " index " (" gLastCharList[index].name ")")
+            return true
+        }
+        Log("MoveCharCursorTo: selection is NOT on " index " (" gLastCharList[index].name ") - resyncing")
+        gCharCursor := 0  ; position unknown: next round starts from character 1
+    }
+    Log("MoveCharCursorTo: gave up on " index)
+    return false
+}
+
 ; Fresh character list after the screen changed (realm switch, create, delete).
-; The game needs a moment to draw all character slots; capturing too soon shows
-; only the ones already rendered. Settle, capture, and if the count grew on a
-; second look take the larger list.
+; The game needs a moment to draw the character slots, and the walk starts by
+; reading them, so let the screen settle first.
 RefreshCharacterMenuSettled() {
     Sleep(1000)
-    s := Sense()
+    RefreshCharacterMenu()
+}
+
+; The list the menu is built from. The counted walk is authoritative; only when
+; it cannot run (no slot data, highlight not recognizable) do we fall back to
+; the visible-section OCR, which then needs the old settle-and-retry because a
+; list captured too early shows only the slots drawn so far.
+CharacterListForMenu(s) {
+    global gCharListFromWalk := true
+    chars := CountAndReadCharacters()
+    if IsObject(chars)
+        return chars
+
+    ; Failed? Almost always because the screen was not ready yet - a dialog
+    ; still up, the list still being drawn. Reporting that to the user is the
+    ; wrong answer: just wait and do it again, which is exactly what they would
+    ; do with Alt+F1 twice. Only if THAT fails is there something to report.
+    Log("CharacterListForMenu: walk failed, waiting and trying once more")
+    Sleep(1500)
+    chars := CountAndReadCharacters()
+    if IsObject(chars) {
+        Log("CharacterListForMenu: second attempt worked")
+        return chars
+    }
+
+    gCharListFromWalk := false
+    ; Falling back means the list holds only what is on screen - up to 50
+    ; characters can exist and nine are visible. Saying nothing here presents a
+    ; wrong list as a correct one, which is worse than admitting the gap: the
+    ; user sees the list end at 9 and has no idea why.
+    Log("CharacterListForMenu: walk unavailable, using visible-section OCR")
+    SayQueued(T("The character list may be incomplete. Press Alt F1 twice to rebuild it."))
+    if !SenseOk(s)
+        s := Sense()
     first := OcrCharList(s)
     Sleep(700)
     s2 := Sense()
     second := OcrCharList(s2)
-    if (second.Length >= first.Length)
-        RefreshCharacterMenu(s2)
-    else
-        RefreshCharacterMenu(s)
+    return second.Length >= first.Length ? second : first
 }
 
 RefreshCharacterMenu(s := "") {
     global gLastCharList
-    if !SenseOk(s)
-        s := Sense()
     charNode := gMainMenu.children[1]
     charNode.children := []
-    gLastCharList := OcrCharList(s)
+    gLastCharList := CharacterListForMenu(s)
     names := ""
     for entry in gLastCharList
         names .= (names = "" ? "" : " | ") entry.name
@@ -239,21 +887,38 @@ RefreshCharacterMenu(s := "") {
     for index, entry in gLastCharList {
         label := index ": " entry.name (entry.details != "" ? ", " entry.details : "")
         node := MenuNode(label, charNode)
-        node.action := SelectCharClosure(entry)
+        node.action := SelectCharClosure(index)
     }
 }
 
-SelectCharClosure(entry) {
-    return (item) => SelectCharacterAction(entry)
+SelectCharClosure(index) {
+    return (item) => SelectCharacterAction(index)
 }
 
-SelectCharacterAction(entry) {
-    ClickOcrRect(entry.clickLine)
-    Sleep(400)
+SelectCharacterAction(index) {
+    if (index > gLastCharList.Length)
+        return
+    entry := gLastCharList[index]
+    ; Two ways to select, and they must not be mixed up. A walked list has
+    ; entries that are off screen, and every stored click rect is from wherever
+    ; the list happened to be scrolled during the walk - clicking one now would
+    ; hit whatever sits at that spot today. So: walked list -> arrow keys only,
+    ; verified. Visible-section list -> the rects are current, click them.
+    if gCharListFromWalk {
+        if !MoveCharCursorTo(index) {
+            Say(T("Something went wrong. Please restart the game and try again."))
+            return
+        }
+    } else {
+        if !IsObject(entry.clickLine)
+            return
+        ClickOcrRect(entry.clickLine)
+        Sleep(400)
+    }
     Say(entry.name " " T("selected"))
-    Sleep(800)
-    ; Same UX as v1: jump to "login with selected character".
-    gMainMenu.children[2].Enter()
+    ; Same UX as v1: jump to "login with selected character". Appended, so the
+    ; character's name is not cut off halfway.
+    gMainMenu.children[2].EnterQueued()
 }
 
 LoginSelectedAction() {
@@ -294,6 +959,7 @@ LoginSelectedAction() {
 
 CreateCharAction(genderIndex, raceIndex, classIndex, zoneIndex) {
     global gPendingCreate
+    Log("CreateChar: gender=" genderIndex " race=" raceIndex " class=" classIndex " zone=" zoneIndex)
     ClickWidget("ChatSelectionScreenCreateCharButton")
     ; Wait for the creation screen.
     tries := 0
@@ -302,7 +968,7 @@ CreateCharAction(genderIndex, raceIndex, classIndex, zoneIndex) {
             return
         Sleep(700)
         s := SenseQuick()
-        if SenseCheck(s, "charcreate")
+        if IsCharCreateScreen(s)
             break
         tries++
         if (tries > 20) {
@@ -335,6 +1001,7 @@ CreateCharAction(genderIndex, raceIndex, classIndex, zoneIndex) {
 ; Enter keystroke into the game already).
 EnterCharacterNameHandler() {
     global gEnterCharacterNameFlag, gPendingCreate
+    Log("EnterCharacterName: waiting for the client to accept the name")
     Say(T("Please wait."))
     tries := 0
     loop {
@@ -346,14 +1013,15 @@ EnterCharacterNameHandler() {
             tries++
             continue
         }
+        Log("EnterCharacterName: try " tries ", screen=" s["screen"])
         ; Hardcore warning popup or similar on the create screen.
-        if (s["screen"] = "charcreate" && AnyPopup(s)) {
+        if (IsCharCreateScreen(s) && AnyPopup(s)) {
             SpeakAndClosePopup(s)
             ; The popup was the name-rejected error if we're still here after
             ; closing: let the user retype.
             Sleep(400)
             s2 := SenseQuick()
-            if (SenseCheck(s2, "charcreate")) {
+            if IsCharCreateScreen(s2) {
                 Send("^a")
                 Sleep(100)
                 Send("{Backspace}")
@@ -361,15 +1029,25 @@ EnterCharacterNameHandler() {
                 return  ; flag stays set, user retries
             }
         }
-        if (s["screen"] = "charselect") {
+        ; The check, not the verdict: a freshly created night elf makes the
+        ; helper call this screen "charcreate" (see sense.ahk), and the
+        ; creation would never be recognized as finished.
+        if SenseCheck(s, "charselect") {
             gEnterCharacterNameFlag := false
             gPendingCreate := ""
             Say(T("Character created"))
+            ; The walk takes several seconds and only beeps - say what is going
+            ; on. Queued: must not clip "Character created".
+            SayQueued(T("Please wait, the character list is being rebuilt."))
             Sleep(1200)
             RefreshCharacterMenuSettled()   ; new slot needs a moment to draw
-            SayQueued(T("character number:") " " gLastCharList.Length)
-            Sleep(800)
-            gMainMenu.Enter()
+            ; No number is announced and the new character is not selected.
+            ; Identifying it by diffing the old and new list does not survive
+            ; OCR: the same entry read as "SkUbello" once and "USkUbello" the
+            ; next time, so the first "new" name was character 2 - the tool then
+            ; announced "character 2" and put the selection there, on the wrong
+            ; character. The list is correct, the user picks from it.
+            gMainMenu.EnterQueued()
             return
         }
         tries++
@@ -392,11 +1070,16 @@ CancelCharacterName() {
         Sleep(1200)
         s := SenseQuick()
         if SenseCheck(s, "charselect") {
-            RefreshCharacterMenu()
-            gMainMenu.children[3].Enter()
+            ; A cancelled creation adds no character, so the list is unchanged -
+            ; no need to walk it again, which would cost seconds and, right
+            ; after the screen switches back, might find no highlight yet. Only
+            ; the game's own selection may have moved: mark the cursor unknown
+            ; and let MoveCharCursorTo resync when a character is picked.
+            global gCharCursor := 0
+            gMainMenu.children[3].EnterQueued()
             return
         }
-        if SenseCheck(s, "charcreate")
+        if IsCharCreateScreen(s)
             Send("{Esc}")
         tries++
         if (tries > 15) {
@@ -408,9 +1091,19 @@ CancelCharacterName() {
 
 ; ---------- character deletion ----------
 
-DeleteKeyword() {
-    keywords := Map("deDE", "LÖSCHEN", "enEN", "DELETE", "frFR", "EFFACER", "ruRU", "УДАЛИТЬ", "esES", "BORRAR")
-    return keywords.Has(String(gHasSetupLanguage)) ? keywords[String(gHasSetupLanguage)] : ""
+; Escape whatever dialog is up and wait until the plain character screen is
+; back. Counting needs the list visible AND the highlight on it - starting
+; while a dialog still covers them yields no highlight, and the menu then ends
+; up with only the visible section of the list.
+WaitForCharSelect(attempts) {
+    loop attempts {
+        s := SenseQuick()
+        if (SenseCheck(s, "charselect") && !SenseCheck(s, "deletePopup") && SelectedCharSlot() > 0)
+            return true
+        Send("{Escape}")
+        Sleep(700)
+    }
+    return false
 }
 
 DeleteCharAction() {
@@ -433,17 +1126,14 @@ DeleteCharAction() {
         Sleep(Min(6000, 900 + StrLen(text) * 45))
     }
 
-    ; Focus the edit box, clear it, type the localized DELETE keyword (the
-    ; client compares case-insensitively).
+    ; Focus the edit box and clear it, but let the USER type the keyword: the
+    ; prompt asks them to, and if the tool typed it as well the field ended up
+    ; with the word twice and the client refused the deletion.
     ClickWidget("DeleteCharPopupEditBox")
     Sleep(250)
     Send("^a")
     Sleep(120)
     Send("{Backspace}")
-    Sleep(150)
-    keyword := DeleteKeyword()
-    if (keyword != "")
-        SendText(keyword)
     Sleep(300)
 
     global gDeleteCharacterNameFlag := true
@@ -462,9 +1152,12 @@ DeleteCharacterNameHandler() {
             MoveToWidget("CharDeleteConfirmButton")
             Say(T("character deleted"))
             Click()
+            ; The walk that follows takes several seconds and only beeps, so
+            ; say what is happening. Queued: must not clip "character deleted".
+            SayQueued(T("Please wait, the character list is being rebuilt."))
             Sleep(1500)
             RefreshCharacterMenuSettled()   ; list shrinks; let it redraw
-            gMainMenu.children[1].Enter()
+            gMainMenu.EnterQueued()         ; same landing spot as after creating
             return
         }
         if SenseProbeMatches(s, "CharDeleteConfirmButton", "GenericLightGreyButton") {
@@ -477,9 +1170,17 @@ DeleteCharacterNameHandler() {
         }
         tries++
         if (tries > 8) {
+            ; Neither confirm nor reject within ~3 s - give up on this deletion.
+            ; The dialog is most likely still up, covering the character list:
+            ; rebuilding the menu now found no highlight at all and fell back to
+            ; the nine visible characters, leaving the menu in a broken state.
+            ; Clear the screen first, then rebuild.
             gDeleteCharacterNameFlag := false
+            Log("DeleteCharacterName: no verdict, closing the dialog before rebuilding")
+            if !WaitForCharSelect(10)
+                Log("DeleteCharacterName: character screen did not come back")
             RefreshCharacterMenu()
-            gMainMenu.children[1].Enter()
+            gMainMenu.EnterQueued()
             return
         }
         Sleep(400)
@@ -496,7 +1197,7 @@ CancelDelete() {
     loop {
         s := SenseQuick()
         if SenseCheck(s, "charselect") {
-            gMainMenu.children[1].Enter()
+            gMainMenu.children[1].EnterQueued()
             return
         }
         Send("{Esc}")
@@ -583,6 +1284,13 @@ RealmTabClosure(tab, menuItem) {
 }
 
 RealmTabAction(tab, menuItem) {
+    ; Same as RealmSelectAction: a stored rect is only safe while the dialog
+    ; that owns it is still up.
+    if !SenseCheck(SenseQuick(), "realmselect") {
+        Log("RealmTab: realm dialog is not open - refusing to click")
+        Say(T("Something went wrong. Please restart the game and try again."))
+        return
+    }
     ClickOcrRect(tab)
     Sleep(900)
     BuildRealmMenu(menuItem)
@@ -591,6 +1299,17 @@ RealmTabAction(tab, menuItem) {
 }
 
 RealmSelectAction(row) {
+    ; The dialog MUST still be open. The row rect was captured when the menu
+    ; was built; if the dialog has closed since, that rect points at the middle
+    ; of the character screen - the click lands on the 3D scene and the Enter
+    ; below then hits "enter world", logging in with whatever character is
+    ; selected. That is exactly what happened: Enter on "Spineshatter" put the
+    ; user into the game.
+    if !SenseCheck(SenseQuick(), "realmselect") {
+        Log("RealmSelect: realm dialog is not open - refusing to click")
+        Say(T("Something went wrong. Please restart the game and try again."))
+        return
+    }
     Say(T("switching to server. please wait."))
     Log("RealmSelect: '" row["text"] "' select")
     ; Select the realm with an OCR-rect click (reliable), then JOIN by pressing
@@ -607,19 +1326,30 @@ RealmSelectAction(row) {
         if FlowAbort("RealmSelect")
             return
         s := Sense()
+        ; In the world? Then this is not a realm switch any more - stop instead
+        ; of beeping at a game the user is now playing.
+        if SenseCheck(s, "ingame") {
+            Log("RealmSelect: client is in the world - stopping")
+            return
+        }
         if SenseCheck(s, "charselect") && !AnyPopup(s) {
             Log("RealmSelect: reached charselect")
             Say(T("switched to Server"))
+            SayQueued(T("Please wait, the character list is being rebuilt."))
             RefreshCharacterMenuSettled()   ; wait for all slots to render
             Sleep(400)
-            gMainMenu.children[1].Enter()
+            gMainMenu.EnterQueued()         ; same landing spot as create/delete
             return
         }
         ; A realm switch can end in a disconnect that drops the client to the
         ; login screen (server/session event - not the tool). Read the prompt
         ; aloud and STOP; do NOT click, because the login screen's red buttons
         ; (incl. Quit) would otherwise be mistaken for popup buttons.
-        if (s["screen"] = "login") {
+        ; "login" only counts when nothing else claims the screen: the realm
+        ; dialog sits on top of the login screen and lights its marker too, so
+        ; a bare SenseCheck here mistook the open dialog for a disconnect and
+        ; abandoned the switch.
+        if (SenseCheck(s, "login") && !SenseCheck(s, "realmselect") && !SenseCheck(s, "charselect")) {
             Log("RealmSelect: dropped to login screen (likely disconnect) - stopping")
             text := PopupText(s)
             Say(text != "" ? text : T("Please wait."))
@@ -630,7 +1360,7 @@ RealmSelectAction(row) {
             Log("RealmSelect: popup - " s["screen"])
             SpeakAndClosePopup(s)
             stuck := 0
-        } else if SenseCheck(s, "charcreate") {
+        } else if IsCharCreateScreen(s) {
             Send("{Esc}")
             stuck := 0
         } else if SenseCheck(s, "realmselect") {
@@ -650,9 +1380,10 @@ RealmSelectAction(row) {
                 Send("{Escape}")
                 Sleep(1000)
                 Say(T("Could not switch server."))
+                SayQueued(T("Please wait, the character list is being rebuilt."))
                 RefreshCharacterMenuSettled()
                 Sleep(400)
-                gMainMenu.children[1].Enter()
+                gMainMenu.EnterQueued()
                 return
             }
         } else {

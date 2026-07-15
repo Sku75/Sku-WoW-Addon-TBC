@@ -13,6 +13,7 @@ global gMenuGametype := ""
 global gBusy := false           ; an action/flow is running
 global gAbortFlow := false      ; set by Alt+F1 / focus loss to stop a flow
 global gIsChecking := false
+global gUnknownAnnounced := false   ; "unknown screen" is said once, not every 2.5 s
 global gEnterCharacterNameFlag := false
 global gDeleteCharacterNameFlag := false
 global gLastGlueSense := 0
@@ -49,6 +50,15 @@ class MenuNode {
     Enter() {
         global gCurrentItem := this
         Say(this.name)
+    }
+
+    ; Same, but appended instead of interrupting. For when a flow lands on a
+    ; menu item by itself: Enter() would cut off whatever the flow just
+    ; announced ("Charakter Nummer: 15" clipped by "Hauptmenü"). User-driven
+    ; navigation keeps using Enter() - there the interruption is the point.
+    EnterQueued() {
+        global gCurrentItem := this
+        SayQueued(this.name)
     }
 }
 
@@ -169,8 +179,17 @@ CheckMode() {
                 gLastGlueSense := A_TickCount
                 s := SenseQuick()
                 if (SenseOk(s) && s["screen"] != "ingame" && s["screen"] != "unknown") {
+                    global gUnknownAnnounced := false
                     SwitchToLogin()
                     InitLogin(s)
+                } else if (SenseOk(s) && s["screen"] = "unknown" && !gUnknownAnnounced) {
+                    ; A screen the tool has no marker for - WoW's own menu is
+                    ; the common one. It used to just say nothing at all, which
+                    ; leaves a blind user with no way to tell "thinking" from
+                    ; "dead". Say it once, and say what gets out of it.
+                    global gUnknownAnnounced := true
+                    Log("CheckMode: unknown screen - telling the user")
+                    Say(T("Unknown screen. Close the dialog in the game, then press Alt F1 twice."))
                 }
             }
         }
@@ -289,7 +308,7 @@ BuildMainMenu() {
         node.action := RegionSelectClosure(r.code, true)
     }
 
-    MenuNode(T("Version") ": " gSettingsVersion, gMainMenu)
+    MenuNode("WoW Logintool V" gSettingsVersion ", " T("Version") ": V" gSettingsVersion, gMainMenu)
 }
 
 CreateCharClosure(genderIndex, raceIndex, classIndex, zoneIndex) {

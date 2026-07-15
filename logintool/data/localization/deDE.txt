@@ -36,8 +36,9 @@ select character==Charakter auswählen
 enter the name for the new character and press enter, or escape to cancel character creation.==Gib den Namen des neuen Charakters ein und drücke die Eingabetaste oder brich die Charaktererstellung mit Escape ab.
 Failed You already have the maximum number of character on this server.==Fehlgeschlagen. Du hast bereits die maximale Anzahl Chars auf diesem Server.
 switching to server. please wait.==Server wird gewechselt. Bitte warte.
-Deleting failed. Type delete again and press enter, or press escape to cancel the deleting process.==Löschen fehlgeschlagen. Tippe erneut Löschen ein und drücke die Eingabetaste, oder drücke Escape, um den Löschvorgang abzubrechen.
+Deleting failed. Type delete again and press enter, or press escape to cancel the deleting process.==Löschen fehlgeschlagen. Schreibe das Wort LÖSCHEN in Großbuchstaben und drücke Enter. Oder drücke Escape, um abzubrechen.
 character deleted==Charakter gelöscht
+Please wait, the character list is being rebuilt.==Bitte warten, Charakterliste wird neu aufgebaut.
 Failed. The name is not available, or the names format is not allowed.==Fehlgeschlagen. Der Name ist nicht verfügbar, oder der Name ist nicht erlaubt.
 Character created==Charakter erstellt
 Empty - No characters on this server.==Leer. Keine Chars auf diesem Server.
@@ -46,7 +47,7 @@ select region==Region auswählen
 select game type==Spieltyp auswählen
 select voice==Stimme auswählen
 enter delete and press enter, or press escape to cancel the deleting process.==Gib Löschen ein und drücke die Eingabetaste, oder drücke Escape, um den Löschvorgang abzubrechen.
-press enter to confirm the deletion, or press escape to cancel.==Drücke die Eingabetaste, um das Löschen zu bestätigen, oder drücke Escape, um abzubrechen.
+press enter to confirm the deletion, or press escape to cancel.==Schreibe das Wort LÖSCHEN in Großbuchstaben und drücke Enter. Oder drücke Escape, um abzubrechen.
 delete character==Charakter löschen
 switched to Server==Server gewechselt
 Could not switch server.==Server konnte nicht gewechselt werden.
@@ -120,3 +121,5 @@ all addons deactivated==Alle Addons deaktiviert
 out of date addons will be loaded==Veraltete Addons werden geladen
 out of date addons will not be loaded==Veraltete Addons werden nicht geladen
 addon menu only available on character selection screen==Das Addon Menü ist nur auf dem Charakterauswahlbildschirm verfügbar
+Unknown screen. Close the dialog in the game, then press Alt F1 twice.==Unbekannter Bildschirm. Schließe den Dialog im Spiel und drücke dann zweimal Alt F1.
+The character list may be incomplete. Press Alt F1 twice to rebuild it.==Achtung, die Charakterliste ist möglicherweise unvollständig. Drücke zweimal Alt F1, um sie neu aufzubauen.

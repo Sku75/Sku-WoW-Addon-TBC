@@ -187,6 +187,24 @@ SenseProbe(s, name) {
     return ""
 }
 
+; Are we really on the character creation screen?
+;
+; The helper's own answer cannot be trusted here. It recognizes the creation
+; screen partly by darkness at a fixed point (CharCreationBackdrop reads 0,0,0
+; there) - but that point lies on the 3D scene behind the UI, and the scene is
+; the selected character's starting zone. A night elf's zone is a night scene,
+; dark enough (measured 3,2,4) to fire the marker while the character list is
+; plainly on screen: the helper then reports charselect AND charcreate at once
+; and calls it charcreate. The tool escaped out of the "creation screen" it
+; thought it was on, which opened WoW's own menu - a screen it does not know,
+; so it went silent.
+;
+; On the real creation screen charselect is never set (verified against a live
+; client), so it settles the tie.
+IsCharCreateScreen(s) {
+    return SenseCheck(s, "charcreate") && !SenseCheck(s, "charselect")
+}
+
 SenseProbeMatches(s, widgetName, colorName) {
     p := SenseProbe(s, widgetName)
     if (p = "" || !gColors.Has(colorName))

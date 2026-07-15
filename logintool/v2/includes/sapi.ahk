@@ -7,11 +7,67 @@
 
 global sap := ComObject("SAPI.SpVoice")
 
+; ---------- making purge work through the SAPI2SR bridge ----------
+;
+; "SAPI2SR" is not a synthesizer: it is a bridge that hands the text to the
+; running screen reader (nvdaController_speakText) and returns immediately.
+; So SVSFPurgeBeforeSpeak finds SAPI's own queue already empty and purges
+; nothing, while NVDA has every text queued up and reads them all in turn -
+; arrowing three characters down speaks all three instead of just the last.
+; With a real voice (Hedda) the same purge interrupts correctly, which is what
+; pinned this down.
+;
+; The fix is to cancel where the speech actually is: NVDA. Its controller
+; client ships with SAPI2SR, so it is present wherever that voice is.
+global gNvdaCancelSpeech := 0
+
+; 64-bit AutoHotkey needs the 64-bit client, i.e. the one under the real
+; Program Files rather than the x86 folder.
+NvdaClientPath() {
+    for base in [EnvGet("ProgramW6432"), EnvGet("ProgramFiles"), "C:\Program Files"] {
+        if (base = "")
+            continue
+        path := base "\SAPI2SR\nvdaControllerClient.dll"
+        if FileExist(path)
+            return path
+    }
+    return ""
+}
+
+NvdaInit() {
+    global gNvdaCancelSpeech := 0
+    if !InStr(gHasSetupVoice, "SAPI2SR")
+        return  ; a real voice: SAPI purges on its own
+    dll := NvdaClientPath()
+    if (dll = "") {
+        Log("NvdaInit: nvdaControllerClient.dll not found - SAPI2SR speech will not interrupt")
+        return
+    }
+    handle := DllCall("LoadLibrary", "Str", dll, "Ptr")
+    if !handle {
+        Log("NvdaInit: LoadLibrary failed for " dll)
+        return
+    }
+    gNvdaCancelSpeech := DllCall("GetProcAddress", "Ptr", handle, "AStr", "nvdaController_cancelSpeech", "Ptr")
+    Log("NvdaInit: " (gNvdaCancelSpeech ? "cancelSpeech ready" : "cancelSpeech missing") " (" dll ")")
+}
+
+; Silence the screen reader now. No-op with a real voice, and harmless when the
+; bridge talks to a reader other than NVDA (the call just reports an error).
+NvdaCancelSpeech() {
+    if !gNvdaCancelSpeech
+        return
+    try DllCall(gNvdaCancelSpeech, "Int")
+    catch as e
+        Log("NvdaCancelSpeech failed: " e.Message)
+}
+
 SapiInit() {
     SetSapiAudioOutputBySubstring(gAudioOutputMatch)
     if (gHasSetupVoice = "")
         global gHasSetupVoice := sap.Voice.GetDescription()
     ApplyToolVoice()
+    NvdaInit()
 }
 
 ApplyToolVoice() {
@@ -48,6 +104,7 @@ SetSapiVoiceByName(name) {
 SetToolVoiceByName(name) {
     global gHasSetupVoice := name
     ApplyToolVoice()
+    NvdaInit()  ; switching to or away from SAPI2SR changes who has to be cancelled
 }
 
 SetSapiAudioOutputBySubstring(substring) {
@@ -95,6 +152,11 @@ SpeakInternal(text, flags) {
         return
     }
     text := StrReplace(text, "_", " ")
+    ; Purge means purge: stop what the screen reader is still saying, otherwise
+    ; the bridge just appends and every skipped menu entry gets read out.
+    ; Queued announcements (SayQueued) must NOT do this.
+    if (flags & 2)  ; SVSFPurgeBeforeSpeak
+        NvdaCancelSpeech()
     try sap.Speak(text, flags)
     catch as e
         Log("sap.Speak FAILED (flags=" flags "): " e.Message " text=" text)
