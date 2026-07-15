@@ -65,18 +65,30 @@ to do anything but inform the user.
 
 Repo: `Sku75/Sku-WoW-Addon-TBC`. Assets are spread across release tags. The
 main addon ships on the newest tag; the bulky companions stay pinned on an
-older tag and rarely change. Each asset's `(tag, filename)` is pinned in
-`Config.cs` and the installer builds the **direct** github.com release-download
-URL (`.../releases/download/<tag>/<file>`) for it.
+older tag and rarely change. Every download uses the **direct** github.com
+release-download URL (`.../releases/download/<tag>/<file>`).
 
 We deliberately do **not** enumerate releases through `api.github.com`: that
 endpoint caps unauthenticated callers at **60 requests/hour per IP**, and users
 behind shared / CGNAT / VPN addresses were getting a `403 rate limit exceeded`
-on the first metadata fetch — before any download started. The direct
-download host is not rate-limited, and (unlike `/releases/latest`) serves
-**prerelease** assets fine, which the current main addon needs. The cost: the
-`MainVersion` pin in `Config.cs` must be bumped when a new main-addon release
-ships (the release build already rebuilds this installer each time).
+on the first metadata fetch — before any download started. Neither the direct
+download host nor the plain website is rate-limited.
+
+The **main addon's newest version is discovered live** at startup from the
+redirect of `github.com/.../releases/latest` (the website URL 302s to
+`/releases/tag/<tag>`; we read the tag from the final URL — no API call). That
+is what lets an old installer exe keep finding new releases. The
+`FallbackMainVersion` pin in `Config.cs` covers offline/outage cases and is
+still bumped each release; a live-resolved version is only adopted when it is
+NEWER than the pin, so a fresh exe never downgrades anyone.
+
+**Release rules this depends on:** the newest main-addon release must carry
+GitHub's "Latest" badge (publish without `--prerelease`, or un-flag it), and
+side releases (SkuMapper etc.) must not take the badge (`--latest=false`).
+Companions and the login tool stay pinned to their tags in `Config.cs`.
+
+Quick headless check of the discovery (no download):
+`SkuSelfTest.exe resolve` — prints pin, resolved version, and PASS/FAIL.
 
 - `Sku-42.02.zip` (tag `v42.02`) — main addon. Drives the "is there an update".
 - `SkuBeaconSoundsets.zip` (tag `v41.02.05`, ~99 MB) — hard dependency.

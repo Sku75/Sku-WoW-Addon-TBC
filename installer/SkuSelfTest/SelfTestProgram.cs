@@ -40,6 +40,22 @@ namespace SkuInstaller
                 return;
             }
 
+            if (args.Length > 0 && args[0] == "resolve")
+            {
+                // Network-only check of the live "latest release" discovery —
+                // exactly what Program.Main runs at startup, no download.
+                Console.WriteLine("=== Latest-release resolution (releases/latest redirect) ===");
+                Console.WriteLine($"    built-in pin : {Config.FallbackMainVersion}");
+                GitHubClient.ResolveAndAdoptLatestMainVersion();
+                Console.WriteLine($"    effective    : {Config.MainVersion}  (tag {Config.MainTag}, asset {Config.MainAssetName})");
+                var primarySpec = Config.CoreAddons.Find(s => s.IsPrimary);
+                Console.WriteLine($"    primary spec : tag {primarySpec.Tag}, asset {primarySpec.AssetName}");
+                bool consistent = primarySpec.Tag == Config.MainTag && primarySpec.AssetName == Config.MainAssetName;
+                Console.WriteLine(consistent ? "    PASS: spec matches effective version" : "    FAIL: spec out of step with effective version");
+                if (!consistent) Environment.ExitCode = 1;
+                return;
+            }
+
             string folder = args.Length > 0
                 ? args[0]
                 : Path.Combine(Path.GetTempPath(), "SkuFullTest", "AddOns");
@@ -51,8 +67,12 @@ namespace SkuInstaller
             Console.WriteLine($"Voice pack    : [{lang}] {Config.LanguagePacks[lang].DisplayName}");
             Console.WriteLine();
 
+            // Same startup step as the real installer: discover the newest release
+            // online, fall back to the build-time pin.
+            GitHubClient.ResolveAndAdoptLatestMainVersion();
+
             var github = new GitHubClient();
-            Console.WriteLine($"Pinned releases: main {Config.MainTag}, companions {Config.CompanionTag}");
+            Console.WriteLine($"Releases: main {Config.MainTag} (pin {Config.FallbackMainVersion}), companions {Config.CompanionTag}");
             Console.WriteLine();
 
             var manifest = InstallManifest.Load(folder);

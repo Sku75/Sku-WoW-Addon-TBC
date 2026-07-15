@@ -30,6 +30,12 @@ namespace SkuInstaller
                 Logger.Warning("Not running as administrator.");
             }
 
+            // Discover the newest main-addon release from the github.com "latest"
+            // redirect so this exe keeps finding releases published after it was
+            // built. Must run before the pre-flight prompt / MainForm — both read
+            // Config.MainVersion. On failure the build-time pin stays in effect.
+            GitHubClient.ResolveAndAdoptLatestMainVersion();
+
             // Pre-flight: if Sku is already installed, show a small "update or
             // reinstall" prompt (like the Accessible Arena installer) so a returning
             // user can update with one click instead of walking the whole form. A

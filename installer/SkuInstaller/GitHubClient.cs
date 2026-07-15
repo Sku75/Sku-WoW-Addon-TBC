@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SkuInstaller
@@ -20,15 +22,19 @@ namespace SkuInstaller
     /// We deliberately do NOT call the api.github.com REST API. That endpoint caps
     /// unauthenticated callers at 60 requests/hour PER source IP, and users behind
     /// shared / CGNAT / VPN addresses were getting a 403 "rate limit exceeded" on
-    /// the very first metadata fetch — before any download had even started. Instead
-    /// each managed addon is pinned in <see cref="Config"/> to a (Tag, AssetName)
-    /// pair and we build the github.com release-download URL directly. That host is
-    /// not rate-limited and serves prerelease assets exactly like stable ones —
-    /// unlike /releases/latest, which only ever resolves the "Latest"-badged release.
+    /// the very first metadata fetch — before any download had even started.
     ///
-    /// Trade-off: the pins in <see cref="Config"/> must be bumped when a new release
-    /// ships. The release build already rebuilds and re-uploads this installer each
-    /// time, so that's one extra constant to update alongside the version bump.
+    /// The MAIN addon's newest version is discovered live from the redirect of
+    /// github.com/OWNER/REPO/releases/latest (the website URL, NOT the API — it
+    /// 302s to /releases/tag/&lt;tag&gt; and we read the tag out of the final URL).
+    /// That's how an old installer exe still finds releases published after it was
+    /// built. It requires the newest main-addon release to carry GitHub's "Latest"
+    /// badge — i.e. NOT be flagged pre-release, and no side release (SkuMapper etc.)
+    /// may take the badge. If the redirect can't be resolved (offline, outage, badge
+    /// on a non-main release), the build-time pin in <see cref="Config"/> is the
+    /// fallback. Companions and the login tool stay pinned to their (Tag, AssetName)
+    /// pairs; every download uses the direct github.com release-download URL, which
+    /// is not rate-limited.
     /// </summary>
     public class GitHubClient : IDisposable
     {
@@ -42,6 +48,73 @@ namespace SkuInstaller
             _http = new HttpClient();
             _http.DefaultRequestHeaders.Add("User-Agent", "SkuInstaller");
             _http.Timeout = TimeSpan.FromMinutes(10); // companions are large
+        }
+
+        /// <summary>
+        /// Startup step (shared by installer and self-test): resolve the newest
+        /// main-addon version online and adopt it into <see cref="Config"/> when it
+        /// is NEWER than the build-time pin. Never adopts an older one — if the
+        /// "Latest" badge ever lags (e.g. a release accidentally flagged
+        /// pre-release), a freshly-pinned exe must not downgrade anyone.
+        /// </summary>
+        public static void ResolveAndAdoptLatestMainVersion()
+        {
+            using (var github = new GitHubClient())
+            {
+                string resolved = github.ResolveLatestMainVersionAsync().GetAwaiter().GetResult();
+                if (string.IsNullOrEmpty(resolved))
+                {
+                    Logger.Info($"Using built-in version pin {Config.MainVersion}.");
+                }
+                else if (AddonInstaller.CompareVersions(resolved, Config.MainVersion) > 0)
+                {
+                    Logger.Info($"Newest release online: {resolved} (built-in pin {Config.MainVersion}) — adopting it.");
+                    Config.OverrideMainVersion(resolved);
+                }
+                else
+                {
+                    Logger.Info($"Newest release online: {resolved}; built-in pin {Config.MainVersion} is current.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Resolve the newest main-addon version (e.g. "42.05") from the
+        /// github.com/.../releases/latest redirect. Not an API call, so it can't
+        /// rate-limit. Returns null on any failure — offline, timeout, or a
+        /// "Latest" tag that doesn't look like a main-addon version tag
+        /// (v&lt;digits&gt;…) — and the caller falls back to the build-time pin.
+        /// </summary>
+        public async Task<string> ResolveLatestMainVersionAsync()
+        {
+            string url = $"https://github.com/{Config.RepoOwner}/{Config.RepoName}/releases/latest";
+            try
+            {
+                // Own short timeout: _http.Timeout is sized for multi-hundred-MB
+                // downloads and would leave an offline user staring at a frozen
+                // start for far too long.
+                using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15)))
+                using (var resp = await _http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cts.Token))
+                {
+                    resp.EnsureSuccessStatusCode();
+                    // HttpClient auto-follows the 302; the final request URI is
+                    // .../releases/tag/<tag>. ResponseHeadersRead avoids pulling
+                    // the HTML release page body.
+                    string finalPath = resp.RequestMessage?.RequestUri?.AbsolutePath ?? string.Empty;
+                    var m = Regex.Match(finalPath, @"/releases/tag/v(\d[\d.]*)$");
+                    if (!m.Success)
+                    {
+                        Logger.Warning($"/releases/latest resolved to '{finalPath}' — not a main-addon tag; using the built-in pin.");
+                        return null;
+                    }
+                    return m.Groups[1].Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Warning($"Could not resolve /releases/latest ({ex.Message}); using the built-in pin.");
+                return null;
+            }
         }
 
         /// <summary>

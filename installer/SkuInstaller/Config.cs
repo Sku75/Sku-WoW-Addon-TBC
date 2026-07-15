@@ -59,21 +59,49 @@ namespace SkuInstaller
 
         public const string SiteUrl = "https://sku75.github.io/Sku-WoW-Addon-TBC/";
 
-        // ── BUMP EACH RELEASE ────────────────────────────────────────────────
-        // The installer pins DIRECT github.com release-download URLs instead of
-        // enumerating releases through api.github.com. The API caps unauthenticated
-        // callers at 60 requests/hour PER IP, which was 403-ing users on shared /
-        // CGNAT / VPN addresses before a single download even started.
+        // ── MAIN-ADDON VERSION: live "Latest" redirect, this pin as fallback ──
+        // At startup the installer resolves the newest main-addon version from the
+        // github.com/.../releases/latest redirect (GitHubClient.
+        // ResolveLatestMainVersionAsync — the website URL, not the rate-limited
+        // api.github.com), so an OLD installer exe still finds releases published
+        // after it was built. All downloads still use DIRECT release-download URLs.
         //
-        // The newest Sku main-addon release is pinned here by version. When a new
-        // main addon is published, update MainVersion to its tag — this works for
-        // prereleases too (a direct download URL ignores the "Latest" badge, unlike
-        // /releases/latest). Tag and asset name both derive from it:
+        // FallbackMainVersion is the build-time pin used when the redirect can't be
+        // resolved (offline, GitHub outage, badge on a non-main release). Bump it
+        // each release anyway — it keeps the "which version is this exe for" story
+        // honest and covers users installing while GitHub is unreachable.
+        //
+        // ★RELEASE RULES this depends on:
+        //   1. The newest main-addon release must carry GitHub's "Latest" badge —
+        //      publish it WITHOUT --prerelease (or un-flag it afterwards).
+        //   2. Side releases (SkuMapper etc.) must NOT take the badge — publish
+        //      them with --latest=false or as prereleases. (A non-vNN.NN "Latest"
+        //      tag fails validation and falls back to this pin, but then old exes
+        //      stop seeing updates until the badge is fixed.)
+        //
+        // Tag and asset name both derive from the effective version:
         //   tag  = "v" + MainVersion       e.g. "v42.02"
         //   file = "Sku-" + MainVersion    e.g. "Sku-42.02.zip"
-        public const string MainVersion = "42.04";
+        public const string FallbackMainVersion = "42.04";
+        public static string MainVersion { get; private set; } = FallbackMainVersion;
         public static string MainTag => "v" + MainVersion;
         public static string MainAssetName => "Sku-" + MainVersion + ".zip";
+
+        /// <summary>
+        /// Adopt a live-resolved main-addon version: updates <see cref="MainVersion"/>
+        /// and re-points the primary <see cref="AddonSpec"/> in <see cref="CoreAddons"/>
+        /// (whose Tag/AssetName were baked at static init from the fallback pin).
+        /// </summary>
+        public static void OverrideMainVersion(string version)
+        {
+            MainVersion = version;
+            var primary = CoreAddons.Find(s => s.IsPrimary);
+            if (primary != null)
+            {
+                primary.Tag = MainTag;
+                primary.AssetName = MainAssetName;
+            }
+        }
 
         // Companions + language packs rarely change; they are pinned to this
         // (older) release that carries all of their assets.
