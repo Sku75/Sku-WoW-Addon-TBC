@@ -5,7 +5,7 @@
 #SingleInstance Force
 SetWorkingDir A_ScriptDir "\.."
 
-global gSettingsVersion := "2.0"
+global gSettingsVersion := "2"
 
 #Include includes\log.ahk
 #Include includes\json.ahk

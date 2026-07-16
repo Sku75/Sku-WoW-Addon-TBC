@@ -36,8 +36,9 @@ select character==Select character
 enter the name for the new character and press enter, or escape to cancel character creation.==Enter the name for the new character and press enter, or escape to cancel character creation.
 Failed You already have the maximum number of character on this server.==Failed. You already have the maximum number of character on this server.
 switching to server. please wait.==Changing server. Please wait.
-Deleting failed. Type delete again and press enter, or press escape to cancel the deleting process.==Deleting failed. Type Delete again and press enter, or press escape to cancel the deleting process.
+Deleting failed. Type delete again and press enter, or press escape to cancel the deleting process.==Deleting failed. Type the word DELETE in capital letters and press enter. Or press escape to cancel.
 character deleted==Character deleted
+Please wait, the character list is being rebuilt.==Please wait, the character list is being rebuilt.
 Failed. The name is not available, or the names format is not allowed.==Failed. The name is not available, or the name is not allowed.
 Character created==Character created
 Empty - No characters on this server.==Empty. No characters on this server.
@@ -46,7 +47,7 @@ select region==Select region
 select game type==Select game type
 select voice==Select voice
 enter delete and press enter, or press escape to cancel the deleting process.==Enter Delete and press enter, or press escape to cancel the deleting process.
-press enter to confirm the deletion, or press escape to cancel.==Press enter to confirm the deletion, or press escape to cancel.
+press enter to confirm the deletion, or press escape to cancel.==Type the word DELETE in capital letters and press enter. Or press escape to cancel.
 delete character==Delete character
 switched to Server==Server changed
 Could not switch server.==Could not switch server.
@@ -120,3 +121,5 @@ all addons deactivated==All addons deactivated
 out of date addons will be loaded==Out of date addons will be loaded
 out of date addons will not be loaded==Out of date addons will not be loaded
 addon menu only available on character selection screen==The addon menu is only available on the character selection screen
+Unknown screen. Close the dialog in the game, then press Alt F1 twice.==Unknown screen. Close the dialog in the game, then press Alt F1 twice.
+The character list may be incomplete. Press Alt F1 twice to rebuild it.==The character list may be incomplete. Press Alt F1 twice to rebuild it.

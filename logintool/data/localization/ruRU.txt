@@ -36,8 +36,9 @@ select character==Выбрать персонажа
 enter the name for the new character and press enter, or escape to cancel character creation.==Введите имя нового персонажа и нажмите enter или нажмите escape для отмены создания персонажа.
 Failed You already have the maximum number of character on this server.==Ошибка. У вас уже максимальное количество персонажей на этом сервере.
 switching to server. please wait.==Идёт смена сервера, пожалуйста, подождите.
-Deleting failed. Type delete again and press enter, or press escape to cancel the deleting process.==Произошла ошибка при удалении персонажа. Пожалуйста, напечатайте delete снова и нажмите enter или нажмите escape для отмены удаления.
+Deleting failed. Type delete again and press enter, or press escape to cancel the deleting process.==Произошла ошибка при удалении. Напечатайте слово УДАЛИТЬ заглавными буквами и нажмите Enter. Или нажмите Escape для отмены.
 character deleted==Персонаж удалён
+Please wait, the character list is being rebuilt.==Пожалуйста, подождите, список персонажей строится заново.
 Failed. The name is not available, or the names format is not allowed.==Ошибка. Выбранное имя недоступно или запрещено.
 Character created==Персонаж создан
 Empty - No characters on this server.==Пусто. Нет персонажей на этом сервере.
@@ -46,7 +47,7 @@ select region==Выберите регион
 select game type==Выберите версию игры
 select voice==Выберите голос
 enter delete and press enter, or press escape to cancel the deleting process.==Напечатайте delete и нажмите enter или нажмите escape для отмены удаления.
-press enter to confirm the deletion, or press escape to cancel.==Нажмите enter для подтверждения удаления или escape для отмены.
+press enter to confirm the deletion, or press escape to cancel.==Напечатайте слово УДАЛИТЬ заглавными буквами и нажмите Enter. Или нажмите Escape для отмены.
 delete character==Удалить персонажа
 switched to Server==Сервер изменён
 Could not switch server.==Не удалось сменить сервер.
@@ -120,3 +121,5 @@ all addons deactivated==Все аддоны отключены
 out of date addons will be loaded==Устаревшие аддоны будут загружены
 out of date addons will not be loaded==Устаревшие аддоны не будут загружены
 addon menu only available on character selection screen==Меню аддонов доступно только на экране выбора персонажа
+Unknown screen. Close the dialog in the game, then press Alt F1 twice.==Неизвестный экран. Закройте диалог в игре, затем дважды нажмите Alt F1.
+The character list may be incomplete. Press Alt F1 twice to rebuild it.==Внимание, список персонажей может быть неполным. Дважды нажмите Alt F1, чтобы построить его заново.

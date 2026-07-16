@@ -16,6 +16,7 @@ global gRaces := []           ; {name, x, y, classes: [names]}
 global gGenders := []         ; {name, x, y}
 global gStartingZones := []   ; {name, x, y}
 global gClassBoxes := []      ; {x, y}
+global gCharUIPositions := [] ; {x, y} per visible character slot (v1 data.ini)
 
 LoadSettings() {
     global
@@ -85,6 +86,14 @@ GetGametypes() {
 
 LoadLocalization() {
     global L := Map()
+    ; Keys are looked up case-insensitively, as they were under AutoHotkey v1
+    ; where object keys ignored case. The data files depend on it: data.ini
+    ; asks for "human" and "warrior" while the localization files answer with
+    ; "Human==Mensch" and "Warrior==Krieger". A v2 Map compares case-sensitively
+    ; by default, which silently left every race and class name untranslated -
+    ; the menu then announced the raw English key. Verified that no key exists
+    ; in two different casings in any of the five localization files.
+    L.CaseSense := "Off"
     langCode := (gHasSetupLanguage != false && gHasSetupLanguage != "") ? gHasSetupLanguage : "enEN"
     if !FileExist("data\localization\" langCode ".txt")
         langCode := "enEN"
@@ -107,6 +116,7 @@ T(key) {
 ; [Gametype], [Gametype-Region], [Gametype-Language], [Gametype-Region-Language]
 LoadGameData() {
     global gWidgets := Map(), gColors := Map(), gRaces := [], gGenders := [], gStartingZones := [], gClassBoxes := []
+    global gCharUIPositions := []
     if (gHasSetup = false)
         return
     inSection := false
@@ -155,6 +165,17 @@ LoadGameData() {
             case "gClassBoxes":
                 if (values.Length >= 3)
                     gClassBoxes.Push({x: Number(values[2]), y: Number(values[3])})
+            ; Visible character slots: "slot,x,y". A later, more specific
+            ; section overrides the same slot, so index by slot number.
+            case "gCharUIPositions":
+                if (values.Length >= 3) {
+                    slot := Number(values[1])
+                    if (slot >= 1) {
+                        while (gCharUIPositions.Length < slot)
+                            gCharUIPositions.Push("")
+                        gCharUIPositions[slot] := {x: Number(values[2]), y: Number(values[3])}
+                    }
+                }
         }
     }
 }

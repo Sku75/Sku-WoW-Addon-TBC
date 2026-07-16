@@ -114,6 +114,108 @@ DoubleClickOcrRect(line) {
     Click(Round(p.x), Round(p.y), 2)
 }
 
+; Color at a WoW UI coordinate, as {r, g, b}, or "" if unreadable.
+; For more than a couple of points use ScreenColors - see there.
+GetColorAtUiPos(uiX, uiY) {
+    p := UiToScreen(uiX, uiY)
+    try color := PixelGetColor(p.x, p.y, "RGB")
+    catch
+        return ""
+    return {r: (color >> 16) & 0xFF, g: (color >> 8) & 0xFF, b: color & 0xFF}
+}
+
+; Colors at many screen points at once.
+;
+; Reading a pixel straight off the screen costs ~16 ms EVERY time - it is a
+; round trip through the compositor, and holding the device context open does
+; not help (measured: 9 points 148 ms, 36 points 600 ms, per keypress). That,
+; not the OCR, was where the character walk spent its time. Copying the region
+; into a memory bitmap once costs ~15 ms and reading pixels out of THAT is
+; essentially free: the same 36-point sweep measures 17 ms.
+;
+; points: array of {x, y} in screen coords. Returns an array of {r, g, b},
+; index-aligned with points, or an empty array if the copy failed.
+ScreenColors(points) {
+    result := []
+    if (points.Length = 0)
+        return result
+    minX := points[1].x, maxX := points[1].x
+    minY := points[1].y, maxY := points[1].y
+    for p in points {
+        minX := Min(minX, p.x), maxX := Max(maxX, p.x)
+        minY := Min(minY, p.y), maxY := Max(maxY, p.y)
+    }
+    width := maxX - minX + 1, height := maxY - minY + 1
+
+    screenDC := DllCall("GetDC", "Ptr", 0, "Ptr")
+    if !screenDC
+        return result
+    memDC := DllCall("gdi32\CreateCompatibleDC", "Ptr", screenDC, "Ptr")
+    bitmap := DllCall("gdi32\CreateCompatibleBitmap", "Ptr", screenDC, "Int", width, "Int", height, "Ptr")
+    previous := DllCall("gdi32\SelectObject", "Ptr", memDC, "Ptr", bitmap, "Ptr")
+    copied := DllCall("gdi32\BitBlt", "Ptr", memDC, "Int", 0, "Int", 0, "Int", width, "Int", height,
+        "Ptr", screenDC, "Int", minX, "Int", minY, "UInt", 0x00CC0020)  ; SRCCOPY
+    if copied {
+        for p in points {
+            ; GetPixel returns a COLORREF: 0x00BBGGRR.
+            color := DllCall("gdi32\GetPixel", "Ptr", memDC, "Int", p.x - minX, "Int", p.y - minY, "UInt")
+            if (color = 0xFFFFFFFF)  ; CLR_INVALID
+                result.Push("")
+            else
+                result.Push({r: color & 0xFF, g: (color >> 8) & 0xFF, b: (color >> 16) & 0xFF})
+        }
+    }
+    DllCall("gdi32\SelectObject", "Ptr", memDC, "Ptr", previous)
+    DllCall("gdi32\DeleteObject", "Ptr", bitmap)
+    DllCall("gdi32\DeleteDC", "Ptr", memDC)
+    DllCall("ReleaseDC", "Ptr", 0, "Ptr", screenDC)
+    return result
+}
+
+; Selected-row highlight, ported from v1 checks.ahk IsWhiteUI: legacy textures
+; draw the selection flat white, the Phase 3 redesign draws it flat dark blue
+; (0,40,121 in the texture). Accept both so counting works with either texture
+; generation installed.
+;
+; The blue does NOT arrive on screen as the texture's exact value: measured on
+; a live 1680x1050 client it renders anywhere from 0,40,120 to 22,69,152 along
+; the same bar, so v1's +-5 window around the texture value misses it. Match
+; the bar by its shape instead - very little red, moderate green, strong blue,
+; with a wide gap between the channels. That range contains no other colour on
+; the character screen (the background is near-black, the buttons are 140,0,0).
+IsSelectionHighlight(c) {
+    if (c = "")
+        return false
+    if (c.r > 250 && c.g > 250 && c.b > 250)
+        return true
+    return c.r <= 45 && c.g >= 30 && c.g <= 90 && c.b >= 100 && c.b <= 170
+        && c.g - c.r >= 15 && c.b - c.g >= 45
+}
+
+; Which character slot is currently highlighted (1..n), or 0 if none.
+; Probes a few points across each row - the stored x sits close to the edge of
+; the bar, where the colour is washed out the most - and reads them all from a
+; single copy of the slot column, which is what makes this affordable to call
+; after every keypress.
+SelectedCharSlot() {
+    points := [], slotOf := []
+    for slot, pos in gCharUIPositions {
+        if (pos = "")
+            continue
+        for offset in [0, 10, -10, 20] {
+            points.Push(UiToScreen(pos.x + offset, pos.y))
+            slotOf.Push(slot)
+        }
+    }
+    colors := ScreenColors(points)
+    ; Points are in slot order, so the first hit is the topmost lit slot.
+    for index, color in colors {
+        if IsSelectionHighlight(color)
+            return slotOf[index]
+    }
+    return 0
+}
+
 ; Native 1 Hz probes (the only sensing that does NOT go through the helper,
 ; to keep the mode watcher free of helper round-trips).
 IsIngameNative() {
