@@ -55,6 +55,11 @@ under `logintool/` (see `dev/rework-docs/LOGINTOOL-REWORK-PLAN.md`).
   realm-name filter, which stripped umlauts instead of keeping them.
 - The delete prompts name the keyword in capitals ("LÖSCHEN wurde in
   Großbuchstaben eingetragen…"), since the field is case-sensitive in practice.
+  All five localization files carry the reworded prompts (LÖSCHEN / DELETE /
+  EFFACER / BORRAR / УДАЛИТЬ) and the new announcements (list rebuild, unknown
+  screen, list may be incomplete) — the tool no longer types the keyword
+  itself, so a prompt that still said "press enter to confirm" would have
+  walked French, Spanish and Russian users into a failed deletion.
 - The character screen is no longer mistaken for the creation screen. The
   helper recognizes the creation screen partly by darkness at a fixed point,
   but that point sits on the 3D scene behind the UI - which is the selected

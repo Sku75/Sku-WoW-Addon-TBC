@@ -36,8 +36,9 @@ select character==Séléctionner le personnage
 enter the name for the new character and press enter, or escape to cancel character creation.==Entrez le nom pour votre nouveau personnage puis appuyez sur entrer ou échape pour annuler.
 Failed You already have the maximum number of character on this server.==La création de personnage a échouée, vous avez atteint le nombre maximum de personnage sur le serveur
 switching to server. please wait.==Changement de royaume, veuillez patienter
-Deleting failed. Type delete again and press enter, or press escape to cancel the deleting process.==La suppression du personnage a échoué, veuillez écrire EFFACER  à nouveau et appuyez sur ENTRER ou appuyez sur échape pour annuler.
+Deleting failed. Type delete again and press enter, or press escape to cancel the deleting process.==La suppression a échoué. Écrivez le mot EFFACER en majuscules et appuyez sur Entrée. Ou appuyez sur Échap pour annuler.
 character deleted==Le personnage a bien été supprimé
+Please wait, the character list is being rebuilt.==Veuillez patienter, la liste des personnages est en cours de reconstruction.
 Failed. The name is not available, or the names format is not allowed.==Echec, le nom du personnage a déjà été pris ou n’est pas approprié.
 Character created==Le personnage a été créer.
 Empty - No characters on this server.==Vide, il n’y a aucuns personnage sur ce royaume
@@ -46,7 +47,7 @@ select region==Séléctionner la région
 select game type==Séléctionner le type de jeu
 select voice==Séléctionner la voix
 enter delete and press enter, or press escape to cancel the deleting process.==Ecrivez EFFACER puis appuyez sur ENTRER, sinon appuyez sur échape pour annuler la suppression du personnage.
-press enter to confirm the deletion, or press escape to cancel.==Appuyez sur entrée pour confirmer la suppression, ou sur échap pour annuler.
+press enter to confirm the deletion, or press escape to cancel.==Écrivez le mot EFFACER en majuscules et appuyez sur Entrée. Ou appuyez sur Échap pour annuler.
 delete character==Supprimer le personnage
 switched to Server==Le royaume a été changé
 Could not switch server.==Impossible de changer de royaume.
@@ -120,3 +121,5 @@ all addons deactivated==Tous les modules sont désactivés
 out of date addons will be loaded==Les modules obsolètes seront chargés
 out of date addons will not be loaded==Les modules obsolètes ne seront pas chargés
 addon menu only available on character selection screen==Le menu des modules n'est disponible que sur l'écran de sélection des personnages
+Unknown screen. Close the dialog in the game, then press Alt F1 twice.==Écran inconnu. Fermez la boîte de dialogue dans le jeu, puis appuyez deux fois sur Alt F1.
+The character list may be incomplete. Press Alt F1 twice to rebuild it.==Attention, la liste des personnages est peut-être incomplète. Appuyez deux fois sur Alt F1 pour la reconstruire.

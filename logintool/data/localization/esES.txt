@@ -36,8 +36,9 @@ select character==Elegir personaje
 enter the name for the new character and press enter, or escape to cancel character creation.==Ingrese el nombre para el nuevo personaje y presione enter, o escape para cancelar
 Failed You already have the maximum number of character on this server.==Error, alcanzó el límite de personajes para este servidor
 switching to server. please wait.==Cambiando servidor, espere
-Deleting failed. Type delete again and press enter, or press escape to cancel the deleting process.==Error al eliminar. Vuelva a escribir borrar y presione enter, o escape para cancelar
+Deleting failed. Type delete again and press enter, or press escape to cancel the deleting process.==Error al eliminar. Escriba la palabra BORRAR en mayúsculas y presione enter. O presione escape para cancelar.
 character deleted==Personaje eliminado
+Please wait, the character list is being rebuilt.==Por favor espere, la lista de personajes se está reconstruyendo.
 Failed. The name is not available, or the names format is not allowed.==Error, el nombre no está disponible o no es válido
 Character created==Personaje creado
 Empty - No characters on this server.==Vacío, no hay personajes en este servidor
@@ -46,7 +47,7 @@ select region==Seleccionar región
 select game type==Seleccionar tipo de juego
 select voice==Seleccionar voz
 enter delete and press enter, or press escape to cancel the deleting process.==Escriba borrar y presione enter, o escape para cancelar
-press enter to confirm the deletion, or press escape to cancel.==Presione enter para confirmar la eliminación, o escape para cancelar.
+press enter to confirm the deletion, or press escape to cancel.==Escriba la palabra BORRAR en mayúsculas y presione enter. O presione escape para cancelar.
 delete character==Eliminar personaje
 switched to Server==Servidor cambiado
 Could not switch server.==No se pudo cambiar de servidor.
@@ -120,3 +121,5 @@ all addons deactivated==Todos los complementos desactivados
 out of date addons will be loaded==Los complementos obsoletos se cargarán
 out of date addons will not be loaded==Los complementos obsoletos no se cargarán
 addon menu only available on character selection screen==El menú de complementos solo está disponible en la pantalla de selección de personaje
+Unknown screen. Close the dialog in the game, then press Alt F1 twice.==Pantalla desconocida. Cierre el diálogo en el juego y luego presione dos veces Alt F1.
+The character list may be incomplete. Press Alt F1 twice to rebuild it.==Atención, la lista de personajes puede estar incompleta. Presione dos veces Alt F1 para reconstruirla.
