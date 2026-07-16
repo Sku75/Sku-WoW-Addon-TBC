@@ -4,6 +4,100 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v42.05
+
+    Berufe: Rezept-Tooltip mit Shift+Pfeil-runter (alle Berufe)
+        Einfach: Steht der Fokus in der Rezeptliste auf einem Rezept, liest
+            Shift+Pfeil-runter jetzt einen Tooltip vor: Name des Ergebnisses, die
+            Materialien je Zeile als "vorhanden Schraegstrich benoetigt", und den
+            Tooltip des fertigen Gegenstands. Er zeigt das FOKUSSIERTE Rezept, auch
+            wenn gerade ein anderes ausgewaehlt ist. Gilt fuer alle normalen Berufe
+            und fuer Verzauberkunst. Der bisherige Tooltip auf dem ausgewaehlten
+            Rezept bleibt erhalten.
+        Technisch: Jede Rezeptzeile traegt ihren echten Index (Knopf-GetID). Der
+            Tooltip wird ueber diesen Index aus GetTradeSkillReagentInfo bzw.
+            GetCraftReagentInfo (vorhanden/benoetigt) und dem Ergebnis-Item-Link
+            gebaut, ohne die Auswahl zu veraendern.
+
+    Berufe: Filter "Ressourcen vorhanden" (alle Berufe)
+        Einfach: Ganz oben im Berufefenster ein Umschalter. Enter schaltet Ein/Aus
+            und sagt den neuen Zustand. Bei Ein bleiben nur herstellbare Rezepte in
+            der Liste. Standard Aus, gemerkt pro Beruf und Charakter. Die
+            Tierausbildung bekommt keinen Filter (dort gibt es keine Materialien).
+        Technisch: Normale Berufe ueber Blizzards TradeSkillOnlyShowMakeable;
+            Verzauberkunst filtert selbst ueber GetCraftInfo.numAvailable.
+
+    Auren-Sets: accountweit verfuegbar
+        Einfach: Angelegte und empfangene Auren-Sets stehen jetzt auf allen
+            Charakteren des Accounts zur Verfuegung, nicht mehr nur auf einem.
+        Technisch: Speicher von char- auf global-Scope umgestellt; der Login-Reset
+            der globalen SkuAuras-Tabelle leert jetzt nur noch das Debug-Log und
+            erhaelt die Sets und empfangenen Sets.
+
+    Auren-Sets: Umbenennen und Aktivieren
+        Einfach: Im Untermenue eines Sets gibt es jetzt zusaetzlich Umbenennen und
+            Aktivieren. Aktivieren ersetzt die aktuellen Auren durch die des Sets und
+            fragt vorher nach (Enter bestaetigt, Escape bricht ab).
+
+    Auren-Menue aufgeraeumt
+        Einfach: Der tote Punkt "Auren Sets importieren" ist entfernt. Die alte
+            Set-Verwaltung mit den drei Test-Sets ist raus. Der Teilen-Punkt heisst
+            jetzt "Set Verwaltung".
+
+    Auren: Absturz beim Anlegen einer neuen Aura behoben
+        Einfach: Beim Anlegen einer neuen Aura (neue Aura, wenn, dann, nach rechts auf
+            Aktion) kam ein Fehler. Er ist behoben.
+
+    Duale Talentspezialisierung: Umskillen ohne Reload
+        Einfach: Nach dem Wechsel der aktiven Spezialisierung wird der Talentbaum
+            sofort korrekt angezeigt; ein /reload ist nicht mehr noetig.
+        Technisch: Beim ACTIVE_TALENT_GROUP_CHANGED wird der Blizzard-Talentrahmen auf
+            die neue aktive Gruppe gezogen und neu gezeichnet, bevor Sku sein Menue baut.
+
+    Talent: richtige Namen der Registerkarten in der inaktiven Spezialisierung
+        Einfach: In der nicht aktiven Spezialisierung hiessen die Talentbaeume bei
+            manchen Klassen "Registerkarte 201", "281" und aehnlich statt richtig.
+            Jetzt stehen die echten Baumnamen.
+        Technisch: Name vom Blizzard-Reiterknopf PlayerTalentFrameTab statt vom
+            gruppen-parametrisierten API-Wert, mit Zahl-Fallback.
+
+    Trainer: Preis im Bestaetigungsdialog
+        Einfach: Beim Zuruecksetzen der Talentpunkte, beim Kauf der dualen
+            Talentspezialisierung und bei anderen Gold-Bestaetigungen steht jetzt oben
+            ein Eintrag "Kosten" mit dem Goldbetrag.
+        Technisch: Der StaticPopup-Leser nimmt jetzt StaticPopup1MoneyFrame.staticMoney
+            als ersten Kind-Eintrag mit auf (ueber SkuGetCoinText).
+
+    Questie: Chatmitteilungen fernbedienen
+        Einfach: Unter Addons gibt es jetzt Questie (wenn Questie geladen ist). Dort
+            laesst sich der Kanal der Chatmitteilungen einstellen (Aus / Gruppe /
+            Schlachtzug / Beides) und einzeln an- und ausschalten: Quest angenommen,
+            abgebrochen, Fortschritt, abgeschlossen, Quest-Gegenstand.
+        Technisch: Setzt Questie.db.profile.questAnnounce* direkt; Questie persistiert selbst.
+
+    Begleiter: nicht verwendete Trainingspunkte werden angezeigt
+        Einfach: Auf der Uebersichtsseite stand bei den Trainingspunkten des Begleiters
+            immer 0. Jetzt steht dort die echte Zahl.
+        Technisch: GetPetTrainingPoints statt UnitCharacterPoints("pet") (TBC hat keine
+            Pet-Talentpunkte).
+
+    Freundesliste: "Entfernen" ganz nach unten
+        Einfach: Im Untermenue eines Freundes steht "Entfernen" jetzt als letzter
+            Eintrag statt weit oben.
+
+    Monitor: "Tier Hunger ansagen" richtig einsortiert
+        Einfach: Der Punkt lag eine Ebene zu tief. Er liegt jetzt unter Monitor,
+            Gesundheit und Status, Tier, als Geschwister von Gesundheit.
+
+    Post: Schluesselbund-Gegenstaende anhaengbar
+        Einfach: Beim Brief verfassen zeigt "Gegenstand hinzufuegen" jetzt auch
+            Gegenstaende aus dem Schluesselbund (z.B. einen nicht seelengebundenen
+            Silberdietrich) und laesst sie versenden. Seelengebundene Schluessel
+            bleiben ausgeblendet. Die Schluesselbund-Eintraege stehen am Ende der
+            Liste, die Tascheninhalte davor.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.04
 
     Taschen: Verzauberungen und Ruestungssets per Linksklick anwenden geht wieder

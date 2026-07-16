@@ -4,6 +4,90 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.05
+
+    Professions: recipe tooltip via Shift+Arrow-down (all professions)
+        Simple: With the focus on a recipe in the list, Shift+Arrow-down now reads a
+            tooltip: the result name, the reagents per line as "have slash required",
+            and the finished item's tooltip. It shows the FOCUSED recipe, even if a
+            different one is selected. Works for all normal professions and for
+            Enchanting. The existing tooltip on the selected recipe stays.
+        Technical: Each recipe row carries its real index (button GetID); the tooltip
+            is built from GetTradeSkillReagentInfo / GetCraftReagentInfo and the result
+            item link by that index, without changing the selection.
+
+    Professions: "materials available" filter (all professions)
+        Simple: A toggle at the top of the profession window. Enter switches it on/off
+            and says the state. When on, only makeable recipes stay in the list.
+            Default off, remembered per profession and character. Beast training gets
+            no filter (no materials there).
+        Technical: Normal professions via Blizzard's TradeSkillOnlyShowMakeable;
+            Enchanting filters itself via GetCraftInfo.numAvailable.
+
+    Aura sets: available account-wide
+        Simple: Created and received aura sets are now available on all characters of
+            the account, no longer just one.
+        Technical: Set storage moved from char to global scope; the login reset of the
+            global SkuAuras table now clears only the debug log and keeps the sets.
+
+    Aura sets: rename and activate
+        Simple: A set's submenu now also has Rename and Activate. Activate replaces the
+            current auras with the set's and asks first (Enter confirms, Escape cancels).
+
+    Aura menu cleaned up
+        Simple: The dead "import aura sets" entry is gone. The old set management with
+            the three test sets is removed. The share entry is now called "Set management".
+
+    Auras: crash when creating a new aura fixed
+        Simple: Creating a new aura threw an error. Fixed.
+
+    Dual talent specialization: switching specs without reload
+        Simple: After switching the active spec the talent tree is shown correctly
+            right away; a /reload is no longer needed.
+        Technical: On ACTIVE_TALENT_GROUP_CHANGED the Blizzard talent frame is pulled to
+            the new active group and redrawn before Sku builds its menu.
+
+    Talents: correct tab names in the inactive specialization
+        Simple: In the inactive specialization the talent trees showed as
+            "tab 201", "281" and similar for some classes instead of their names. The
+            real tree names are shown now.
+        Technical: Name taken from the Blizzard tab button PlayerTalentFrameTab instead
+            of the group-parametrized API value, with a numeric fallback.
+
+    Trainer: price in the confirmation dialog
+        Simple: When resetting talent points, buying dual talent specialization, and on
+            other gold confirmations, a "Cost" line with the gold amount now shows at
+            the top.
+        Technical: The StaticPopup reader now includes StaticPopup1MoneyFrame.staticMoney
+            as the first child entry (via SkuGetCoinText).
+
+    Questie: remote-control chat announcements
+        Simple: Under Addons there is now Questie (when Questie is loaded). There you
+            can set the chat-announcement channel (Off / Group / Raid / Both) and toggle
+            each individually: quest accepted, abandoned, progress, completed, quest item.
+        Technical: Sets Questie.db.profile.questAnnounce* directly; Questie persists itself.
+
+    Pet: unspent training points are shown
+        Simple: The overview page always showed 0 for the pet's training points. It now
+            shows the real number.
+        Technical: GetPetTrainingPoints instead of UnitCharacterPoints("pet") (TBC has
+            no pet talent points).
+
+    Friends list: "Remove" moved to the bottom
+        Simple: In a friend's submenu, "Remove" is now the last entry instead of near
+            the top.
+
+    Monitor: "notice on pet starving" placed correctly
+        Simple: The entry sat one level too deep. It is now under Monitor, Health and
+            status, Pet, next to Health.
+
+    Mail: keyring items can be attached
+        Simple: When composing mail, "add item" now also shows keyring items (e.g. a
+            non-soulbound silver skeleton key) and lets you send them. Soulbound keys
+            stay hidden. Keyring entries are at the end of the list, bag contents first.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.04
 
     Bags: applying enchantments and armor kits with the left click works again
