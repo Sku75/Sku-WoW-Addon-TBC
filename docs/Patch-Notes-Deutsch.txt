@@ -4,6 +4,21 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v42.06
+
+    Verzauberkunst: Absturz beim Oeffnen des Fensters behoben
+        Einfach: Das Verzauberkunst-Fenster konnte beim Oeffnen einen Fehler
+            ausloesen. Das ist behoben.
+        Technisch: Die in 42.05 ergaenzten Craft-Menuepunkte (Filter und Tooltip)
+            sind jetzt vollstaendig pcall-geschuetzt, sodass unerwartetes
+            API-Verhalten auf diesem Backport das Menue nicht mehr crasht.
+
+    Auktionshaus: klarere Ansage beim Scan-Start
+        Einfach: Beim Starten des Auktionshaus-Scans wird jetzt "Auktion gestartet,
+            bitte warten" gesagt.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.05
 
     Berufe: Rezept-Tooltip mit Shift+Pfeil-runter (alle Berufe)

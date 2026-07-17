@@ -4,6 +4,20 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.06
+
+    Enchanting: crash when opening the window fixed
+        Simple: Opening the enchanting window could throw an error. Fixed.
+        Technical: The craft menu items added in 42.05 (filter and tooltip) are now
+            fully pcall-guarded, so unexpected API behavior on this backport no
+            longer crashes the menu.
+
+    Auction house: clearer announcement on scan start
+        Simple: Starting the auction house scan now says "Auction scan started,
+            please wait".
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.05
 
     Professions: recipe tooltip via Shift+Arrow-down (all professions)
