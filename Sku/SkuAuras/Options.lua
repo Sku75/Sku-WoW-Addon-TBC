@@ -259,13 +259,13 @@ function SkuAuras:NewAuraAttributeBuilder(self)
 					local i, v = tSortedList[x], tSortedList[x]
 					
 					local tIsInvalid
-					if string.find(i , "skuAura") ~= nil and SkuAuras:AuraUsedInOtherAuras(self.parent.parent.parent.name) ~= nil then
+					if string.find(i , "skuAura") ~= nil and (self.parent and self.parent.parent and self.parent.parent.parent and self.parent.parent.parent.name) ~= nil and SkuAuras:AuraUsedInOtherAuras(self.parent.parent.parent.name) ~= nil then
 						tIsInvalid = true
 					else
 						if SkuAuras.attributes["skuAura"..i] ~= nil then
 							tIsInvalid = true
 						else
-							if i ~= "skuAura"..self.parent.parent.parent.name then
+							if not (self.parent and self.parent.parent and self.parent.parent.parent and self.parent.parent.parent.name) or i ~= "skuAura"..self.parent.parent.parent.name then
 								if SkuAuras:AuraHasOtherAuras(string.gsub(i, "skuAura", "")) ~= true then
 								else
 									tIsInvalid = true
@@ -1111,6 +1111,9 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		end
 
 
+		-- [Fix Nr22] Alte Set-Verwaltung (SkuAuras.AuraSets mit 3 Test-Sets) stillgelegt.
+		-- Ersetzt durch die neue Set-Verwaltung ("Set Verwaltung", frueher "Sets (teilen)").
+		if false then
 		local tTypeItem = SkuOptions:InjectMenuItems(self, {L["Aura Sets verwalten"]}, SkuGenericMenuItem)
 		tTypeItem.dynamic = true
 		tTypeItem.isSelect = true
@@ -1168,14 +1171,9 @@ function SkuAuras:MenuBuilder(aParentEntry)
 				local tEmpty = SkuOptions:InjectMenuItems(self, {L["leer"]}, SkuGenericMenuItem)
 			end
 		end
-		local tTypeItem = SkuOptions:InjectMenuItems(self, {L["Aura Set importieren"]}, SkuGenericMenuItem)
-		tTypeItem.dynamic = false
-		tTypeItem.isSelect = true
-		tTypeItem.OnAction = function(self, aValue, aName)
-			--dprint("OnAction Set importieren")
-			SkuOptions.Voice:OutputStringBTtts(L["noch nicht implementiert"], false, true, 0.1, true)
-		end
-		
+		end -- [Fix Nr22] Ende des stillgelegten alten Set-Verwaltung-Blocks
+		-- [Fix Nr19] Menuepunkt "Aura Set importieren" entfernt (war nur Platzhalter
+		-- "noch nicht implementiert"). Die neue Set-Verwaltung liegt unter "Set Verwaltung".
 	end
 	tBuildList(aParentEntry)
 end

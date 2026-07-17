@@ -1117,7 +1117,14 @@ function SkuOptions:UpdateOverviewText(aPageId)
 			petSection = petSection .. "\r\n"..L["Pet happiness"]..": "..SkuCore.PetHappinessString[happiness]
 		end
 
-		if UnitCharacterPoints("pet") then
+		-- [Fix Nr13] In TBC (2.5.6) haben Pets keine Talentpunkte (erst WotLK),
+		-- UnitCharacterPoints("pet") liefert daher 0. Jaeger-Pets nutzen hier
+		-- Trainingspunkte: frei = gesamt - vergeben.
+		if GetPetTrainingPoints then
+			local tTotal, tSpent = GetPetTrainingPoints()
+			local tUnspent = (tTotal or 0) - (tSpent or 0)
+			petSection = petSection .. "\r\n" .. L["Unspent pet training points"]..": "..tUnspent
+		elseif UnitCharacterPoints("pet") then
 			petSection = petSection .. "\r\n" .. L["Unspent pet talent points"]..": "..UnitCharacterPoints("pet")
 		end
 
@@ -2824,6 +2831,61 @@ function SkuOptions:CreateMenuFrame()
 				end
 			end
 			if aKey == "SHIFT-DOWN" then
+				-- [Rezept-Tooltip] Listen-Rezept (leeres textFull, aber skuRecipeInfo):
+				-- Tooltip aus dem Rezept-Index per API bauen und in textFull legen, damit
+				-- die normale Ausgabe unten ihn vorliest (wie beim Auren-Tooltip). Der
+				-- Index kommt vom sichtbaren Listenknopf, daher unabhaengig von der Auswahl.
+				if SkuOptions.currentMenuPosition.skuRecipeInfo and (not SkuOptions.currentMenuPosition.textFull or SkuOptions.currentMenuPosition.textFull == "") then
+					local tInfo = SkuOptions.currentMenuPosition.skuRecipeInfo
+					local tOk, tText = pcall(function()
+						local i = tInfo.index
+						local tName, tNum, tGetReagent, tGetLink, tGetReagentLink
+						if tInfo.api == "craft" then
+							tName = _G.GetCraftInfo and _G.GetCraftInfo(i)
+							tNum = (_G.GetCraftNumReagents and _G.GetCraftNumReagents(i)) or 0
+							tGetReagent = _G.GetCraftReagentInfo
+							tGetReagentLink = _G.GetCraftReagentItemLink
+							tGetLink = _G.GetCraftItemLink
+						else
+							tName = _G.GetTradeSkillInfo and _G.GetTradeSkillInfo(i)
+							tNum = (_G.GetTradeSkillNumReagents and _G.GetTradeSkillNumReagents(i)) or 0
+							tGetReagent = _G.GetTradeSkillReagentInfo
+							tGetReagentLink = _G.GetTradeSkillReagentItemLink
+							tGetLink = _G.GetTradeSkillItemLink
+						end
+						local tOut = (tName or "").."\r\n"
+						if tGetReagent then
+							for r = 1, tNum do
+								local rn, _, req, have = tGetReagent(i, r)
+								-- [Rezept-Tooltip] Fehlt der Name (Zutat noch nicht im Item-Cache),
+								-- aus dem Reagenzien-Item-Link holen. IMMER eine Zeile ausgeben, damit
+								-- keine Zutat fehlt; vorhanden/benoetigt kommen aus der Reagenzien-API.
+								if (not rn or rn == "") and tGetReagentLink then
+									local rlink = tGetReagentLink(i, r)
+									if rlink then
+										local n = rlink:match("%[(.-)%]")
+										if n and n ~= "" then rn = n end
+									end
+								end
+								tOut = tOut..((rn and rn ~= "") and rn or "?").." "..tostring(have or 0).."/"..tostring(req or 0).."\r\n"
+							end
+						end
+						if tGetLink and TooltipLines_helper and SkuScanningTooltip then
+							local tLink = tGetLink(i)
+							if tLink then
+								SkuScanningTooltip:ClearLines()
+								SkuScanningTooltip:SetHyperlink(tLink)
+								SkuScanningTooltip:Show()
+								local tt = SkuUtil:Unescape(TooltipLines_helper(SkuScanningTooltip:GetRegions()))
+								if tt and tt ~= "" and tt ~= "asd" then tOut = tOut..L["gegenstand"]..":\r\n"..tt end
+							end
+						end
+						return tOut
+					end)
+					if tOk and type(tText) == "string" and tText ~= "" then
+						SkuOptions.currentMenuPosition.textFull = tText
+					end
+				end
 				if SkuOptions.currentMenuPosition.textFull then
 					if SkuOptions.currentMenuPosition.textFull ~= "" then
 						local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
@@ -4009,7 +4071,14 @@ function SkuOptions:PLAYER_ENTERING_WORLD(...)
 			tWidget:Show()
 		end
 
-		SkuOptions.db.global["SkuAuras"] = {}
+		-- [Fix Nr5] Nur das transiente Debug-Log der Sitzung leeren, NICHT die ganze
+		-- globale SkuAuras-Tabelle. Sonst gingen die accountweiten Auren-Sets
+		-- (db.global.SkuAuras.Sets / .PendingSets) bei JEDEM Login verloren.
+		if SkuOptions.db.global["SkuAuras"] then
+			SkuOptions.db.global["SkuAuras"].log = nil
+		else
+			SkuOptions.db.global["SkuAuras"] = {}
+		end
 
 		SkuMob.interactTempDisabled = nil
 		SkuMob:PLAYER_TARGET_CHANGED()
@@ -4787,6 +4856,12 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 			-- and OnEnter never sees it.
 			if aGossipListTable[index].directClickButton then
 				tNewMenuEntry.directClickButton = aGossipListTable[index].directClickButton
+			end
+			-- [Rezept-Tooltip] skuRecipeInfo (api + Rezeptindex) auf den Knoten uebertragen,
+			-- damit Shift Runter den Rezept-Tooltip per API bauen kann. Ohne diese Kopie
+			-- bleibt das Feld nur am Roh-Spec und der Handler sieht es nie.
+			if aGossipListTable[index].skuRecipeInfo then
+				tNewMenuEntry.skuRecipeInfo = aGossipListTable[index].skuRecipeInfo
 			end
 
 			-- "directAction" path: an entry that should fire its `func`

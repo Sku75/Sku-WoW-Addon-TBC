@@ -1459,10 +1459,44 @@ end
 -- Triggers a full rebuild so the "(aktiv)" markers and spec-specific contents
 -- update correctly.
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [Fix Nr17] Nach dem Umskillen zeigt der Blizzard-Talentrahmen weiter die zuvor
+-- angezeigte Gruppe; Skus aktiver Builder liest diese Live-Widgets und braeuchte sonst
+-- /reload. Darum den Rahmen erst auf die neue aktive Gruppe ziehen und neu zeichnen,
+-- dann Skus Menue neu aufbauen. Alles pcall-geschuetzt (Blizzard-Interna).
+local function tForcePlayerTalentFrameToActiveGroup()
+	-- aktive Gruppe direkt ueber die API (Handler liegt vor den tGet*-Helfern)
+	local tActive
+	if _G.C_SpecializationInfo and _G.C_SpecializationInfo.GetActiveSpecGroup then
+		local ok, v = pcall(_G.C_SpecializationInfo.GetActiveSpecGroup)
+		if ok and type(v) == "number" then tActive = v end
+	end
+	if not tActive and _G.GetActiveTalentGroup then
+		local ok, v = pcall(_G.GetActiveTalentGroup)
+		if ok and type(v) == "number" then tActive = v end
+	end
+	-- 1) Ansicht auf die aktive Gruppe umschalten (Spec-Tabs, falls vorhanden)
+	if tActive then
+		local tTab = _G["PlayerSpecTab"..tostring(tActive)]
+		if tTab and tTab.Click then pcall(function() tTab:Click() end) end
+		local tPtf = _G["PlayerTalentFrame"]
+		if type(tPtf) == "table" then
+			pcall(function() tPtf.selectedPlayerSpec = tActive end)
+			pcall(function() tPtf.talentGroup = tActive end)
+		end
+	end
+	-- 2) Blizzard-Rahmen neu zeichnen
+	if _G.PlayerTalentFrame_Refresh then pcall(_G.PlayerTalentFrame_Refresh)
+	elseif _G.PlayerTalentFrame_Update then pcall(_G.PlayerTalentFrame_Update) end
+end
+
 function SkuCore:ACTIVE_TALENT_GROUP_CHANGED()
 	if _G["PlayerTalentFrame"] and _G["PlayerTalentFrame"]:IsVisible() then
+		tForcePlayerTalentFrameToActiveGroup()
 		if SkuOptions and SkuOptions.IsMenuOpen and SkuOptions:IsMenuOpen() == true then
 			C_Timer.After(0.3, function()
+				-- vor dem Sku-Neuaufbau nochmal den Blizzard-Rahmen frisch zeichnen,
+				-- damit die Live-Widgets die neue aktive Gruppe zeigen
+				tForcePlayerTalentFrameToActiveGroup()
 				pcall(function() SkuCore:CheckFrames() end)
 				if SkuOptions and SkuOptions.currentMenuPosition then
 					local tPos = SkuOptions.currentMenuPosition
@@ -1639,8 +1673,20 @@ local function tBuildInactiveSpec(aParent, groupIdx)
 
 	for tab = 1, numTabs do
 		local ok2, tabName, _, points = pcall(_G.GetTalentTabInfo, tab, false, false, groupIdx)
+		-- [Fix Nr18] Der per groupIdx gelieferte tabName ist bei manchen Klassen (inaktive
+		-- Gruppe) eine Zahl statt des Baumnamens. Die drei Talentbaeume heissen in beiden
+		-- Spezialisierungen gleich, daher den echten lokalisierten Namen vom Blizzard-
+		-- Reiterknopf PlayerTalentFrameTab{tab} holen; groupIdx nur fuer die Punkte.
+		local tRealName
+		local tTabBtn = _G["PlayerTalentFrameTab"..tab]
+		if tTabBtn and tTabBtn.GetText then tRealName = tTabBtn:GetText() end
+		if not tRealName or tRealName == "" or tostring(tRealName):match("^%d+$") then
+			local okName, n2 = pcall(_G.GetTalentTabInfo, tab)
+			if okName and type(n2) == "string" and not n2:match("^%d+$") then tRealName = n2 end
+		end
+		if tRealName and tRealName ~= "" and not tostring(tRealName):match("^%d+$") then tabName = tRealName end
 		if ok2 and tabName then
-			local tTabLabel = L["Tab"] .. " " .. tabName .. " (" .. (points or 0) .. ")"
+			local tTabLabel = L["Tab"] .. " " .. tostring(tabName) .. " (" .. (points or 0) .. ")"
 			table.insert(aParent, tTabLabel)
 			local tTabEntry = {
 				frameName = "",
@@ -3149,6 +3195,53 @@ local tTradeSkillTypeColor = {
 	["subheader"] = { r = 1.00, g = 0.82, b = 0},
 	[L["nodifficulty"]] = { r = 0.96, g = 0.96, b = 0.96},
 }
+-- [Filter] Zustand des Ressourcen-Filters pro Charakter und Beruf (Standard Aus).
+function SkuCore:GetResourceFilterState(aProf)
+	local t = SkuSettings and SkuSettings:Sub("SkuCore", nil, "char")
+	if not t then return false end
+	t.resourceFilter = t.resourceFilter or {}
+	return t.resourceFilter[aProf] == true
+end
+function SkuCore:SetResourceFilterState(aProf, aVal)
+	local t = SkuSettings and SkuSettings:Sub("SkuCore", nil, "char")
+	if not t then return end
+	t.resourceFilter = t.resourceFilter or {}
+	t.resourceFilter[aProf] = aVal and true or false
+end
+
+-- [Filter] Fuegt oben im Berufefenster den Umschalter "Filter: Ressourcen vorhanden" ein.
+-- Enter schaltet Ein/Aus und sagt den neuen Zustand. Standard Aus, gemerkt pro Beruf und
+-- Charakter. TradeSkill nutzt Blizzards Makeable-Filter; Craft/Verzauberkunst filtert der
+-- Builder selbst ueber numAvailable. Tierausbildung bekommt keinen Filter.
+function SkuCore:AddResourceFilterToggle(aParentChilds, aProf, aApi)
+	if not aParentChilds then return end
+	local tState = SkuCore:GetResourceFilterState(aProf)
+	local tBase = L["Filter Ressourcen vorhanden"]
+	local tLabel = tBase..": "..(tState and L["On"] or L["Off"])
+	table.insert(aParentChilds, tLabel)
+	aParentChilds[tLabel] = {
+		frameName = "",
+		RoC = "Child",
+		type = "Button",
+		obj = _G["UIParent"],
+		textFirstLine = tLabel,
+		textFull = "",
+		childs = {},
+		directAction = true,
+		func = function()
+			local tNew = not SkuCore:GetResourceFilterState(aProf)
+			SkuCore:SetResourceFilterState(aProf, tNew)
+			if aApi == "trade" and _G.TradeSkillOnlyShowMakeable then
+				pcall(_G.TradeSkillOnlyShowMakeable, tNew)
+				SkuCore.resFilterApplied = SkuCore.resFilterApplied or {}
+				SkuCore.resFilterApplied["ts:"..aProf] = tNew
+			end
+			pcall(function() SkuOptions.Voice:OutputStringBTtts(tBase..": "..(tNew and L["On"] or L["Off"]), false, true, 0.2, true) end)
+			if _G.C_Timer then _G.C_Timer.After(0.15, function() pcall(function() SkuCore:CheckFrames() end) end) end
+		end,
+	}
+end
+
 function SkuCore:Build_TradeSkillFrame(aParentChilds)
 
 	local tFrameName = "TradeSkillFrame"
@@ -3163,6 +3256,17 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 		textFull = "",
 		childs = {},
 	}
+
+	-- [Filter] Gespeicherten Zustand beim Oeffnen anwenden (schleifensicher ueber
+	-- resFilterApplied) und den Umschalter ganz oben einhaengen.
+	local tProf = (_G["TradeSkillFrameTitleText"] and _G["TradeSkillFrameTitleText"]:GetText()) or "TradeSkill"
+	SkuCore.resFilterApplied = SkuCore.resFilterApplied or {}
+	local tWant = SkuCore:GetResourceFilterState(tProf)
+	if _G.TradeSkillOnlyShowMakeable and SkuCore.resFilterApplied["ts:"..tProf] ~= tWant then
+		pcall(_G.TradeSkillOnlyShowMakeable, tWant)
+		SkuCore.resFilterApplied["ts:"..tProf] = tWant
+	end
+	SkuCore:AddResourceFilterToggle(aParentChilds, tProf, "trade")
 
 
 
@@ -3236,8 +3340,11 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 					}   
 				end
 
-				if tDifficulty ~= "subheader" and tDifficulty ~= "header" then
+				if aParentChilds[tFriendlyName] and tDifficulty ~= "subheader" and tDifficulty ~= "header" then
 					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..(tDifficulty or "")..")"
+					-- [Rezept-Tooltip] echten Rezept-Index (GetID der sichtbaren Listenzeile)
+					-- merken, damit Shift Runter Materialien und Ergebnis per API lesen kann.
+					aParentChilds[tFriendlyName].skuRecipeInfo = { api = "trade", index = _G[tFrameName]:GetID() }
 				end
 			end
 		end
@@ -3386,6 +3493,26 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 		childs = {},
 	}
 
+	-- [Fix 42.06] Verzauberkunst bekommt den Umschalter, Tierausbildung nicht. ALLES
+	-- pcall-geschuetzt, damit ein unerwartetes API-Verhalten auf diesem Backport (z.B.
+	-- GetCraftSkillLine) das Craft-Fenster-Menue niemals crasht.
+	local tCraftProf = "Craft"
+	local tIsBeast = false
+	pcall(function()
+		if _G.GetCraftSkillLine then
+			local okS, v = pcall(_G.GetCraftSkillLine)
+			if okS and type(v) == "string" and v ~= "" then tCraftProf = v end
+		end
+		if tCraftProf == "Craft" and _G["CraftFrameTitleText"] and _G["CraftFrameTitleText"].GetText then
+			local t = _G["CraftFrameTitleText"]:GetText()
+			if t and t ~= "" then tCraftProf = t end
+		end
+		tIsBeast = (_G["CraftFramePointsText"] and _G["CraftFramePointsText"]:IsVisible() == true) and true or false
+	end)
+	if not tIsBeast then
+		pcall(function() SkuCore:AddResourceFilterToggle(aParentChilds, tCraftProf, "craft") end)
+	end
+
 	if _G["CraftFramePointsText"] and _G["CraftFramePointsText"]:IsVisible() == true then
 		local tFrameName = "CraftFramePointsText"
 		local tFriendlyName = L["Verfügbare punkte: "]
@@ -3427,7 +3554,16 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 	for x = 1, 8 do
 		local tFrameName = "Craft"..x
 		if _G[tFrameName] then
-			if _G[tFrameName.."Text"]:GetText() then
+			-- [Filter] Bei aktivem Filter nicht-herstellbare Verzauberungen ueberspringen
+			-- (numAvailable == 0); Header/Kategorien bleiben. Nur ausserhalb Tierausbildung.
+			local tFilterSkip = false
+			if (not tIsBeast) and SkuCore:GetResourceFilterState(tCraftProf) then
+				local okc, _, _, cType, cAvail = pcall(_G.GetCraftInfo, _G[tFrameName]:GetID())
+				if okc and cType ~= "header" and cType ~= "subheader" and (cAvail == nil or cAvail == 0) then
+					tFilterSkip = true
+				end
+			end
+			if (not tFilterSkip) and _G[tFrameName.."Text"]:GetText() then
 				local tKnown = ""
 				local tDifficulty = ""
 				local r, g, b, a = _G[tFrameName].text:GetTextColor()
@@ -3469,7 +3605,12 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..L["category"]..")"
 				else
 					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..(tDifficulty or "")..")"
-				end            
+					-- [Rezept-Tooltip] echten Craft-Index (GetID der sichtbaren Zeile) merken,
+					-- damit Shift Runter Materialien und Ergebnis per API lesen kann.
+					if aParentChilds[tFriendlyName] then
+						aParentChilds[tFriendlyName].skuRecipeInfo = { api = "craft", index = _G[tFrameName]:GetID() }
+					end
+				end
 			end
 		end
 	end

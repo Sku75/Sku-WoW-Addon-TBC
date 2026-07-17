@@ -2771,9 +2771,10 @@ function Aq:MonitorMenuBuilder()
 				end
 			end
 
-			-- "Tier Hunger ansagen" (Notice on pet starving), relocated from
-			-- Einstellungen -> Sonstiges. Same profile-scoped
-			-- SkuSettings:Sub("SkuCore").classes.hunter.petHappyness -> saved value intact.
+		end
+			-- [Fix Nr4] "Tier Hunger ansagen" eine Ebene hoeher: jetzt Geschwister von
+			-- "Gesundheit" unter Monitor -> Gesundheit und Status -> Tier
+			-- (vorher faelschlich unter Tier -> Gesundheit). self ist hier der Tier-Knoten.
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Notice on pet starving"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
@@ -2796,7 +2797,6 @@ function Aq:MonitorMenuBuilder()
 				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
 				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
 			end
-		end
 	end
 
 	--party

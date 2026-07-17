@@ -3444,6 +3444,26 @@ function SkuCore:IterateChildren(t, tab)
 		if t:GetName() == "StaticPopup1" then
 			--dprint(tab.."   ", t:GetName(), t.NeedButton, t.NeedButton:GetObjectType())
 			dtc = { StaticPopup1:GetButton1(), StaticPopup1:GetButton2(), StaticPopup1:GetButton3(), StaticPopup1:GetButton4() }
+			-- [Fix Nr16] Goldkosten aus dem MoneyFrame des Bestaetigungsdialogs vorlesen
+			-- (Talentpunkte zuruecksetzen, duale Talentspez kaufen, Begleiter-Ausbildung mit
+			-- Gold). Der Standardleser liest nur die Knoepfe, nie den Preis. Als erster
+			-- Kind-Eintrag oben eingehaengt.
+			local tMF = _G["StaticPopup1MoneyFrame"]
+			local tCost = tMF and tMF.staticMoney
+			if tMF and tMF:IsShown() and type(tCost) == "number" and tCost > 0 then
+				local tCoin = (SkuGetCoinText and SkuGetCoinText(tCost, false, true)) or tostring(tCost)
+				local tCostName = "SkuPopupCost"
+				table.insert(tResults, tCostName)
+				tResults[tCostName] = {
+					frameName = tCostName,
+					RoC = "Child",
+					type = "FontString",
+					obj = tMF,
+					textFirstLine = L["Cost"]..": "..tCoin,
+					textFull = "",
+					childs = {},
+				}
+			end
 		end
 		
 		local tEmptyCounter = 1

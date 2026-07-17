@@ -35,8 +35,16 @@ local function tDeepCopy(aValue)
 	return SkuUtil.TableCopy(aValue, true)
 end
 
+-- [Fix Nr5] Sets accountweit: Speicher von char auf global umgestellt, damit
+-- angelegte/empfangene Sets auf allen Charakteren des Accounts verfuegbar sind.
+-- (Die Auren selbst bleiben charbezogen; ein Set ist nur ein Schnappschuss.)
 local function tEnsure(aKey)
-	local p = SkuOptions and SkuOptions.db and SkuOptions.db.char and SkuSettings:Sub("SkuAuras", nil, "char")
+	if not (SkuOptions and SkuOptions.db) then return nil end
+	-- Scope "global" direkt ueber Sub aufloesen. KEIN Vorab-Guard auf
+	-- SkuOptions.db.global: dessen Scope-Tabelle kann je nach AceDB erst beim
+	-- Zugriff entstehen; ein falsy Vorab-Guard haette das Set-Menue auf einem
+	-- zweiten Charakter still leer gelassen (Sub legt die Tabelle sonst an).
+	local p = SkuSettings:Sub("SkuAuras", nil, "global")
 	if not p then return nil end
 	p[aKey] = p[aKey] or {}
 	return p[aKey]
@@ -79,6 +87,37 @@ end
 function SkuAuras:SetsDelete(aName)
 	local sets = tEnsureSets(); if not sets then return end
 	sets[aName] = nil
+end
+
+-- [Fix Nr21] Set umbenennen (mit Doubletten-Pruefung des neuen Namens).
+function SkuAuras:SetsRename(aOld, aNew)
+	local sets = tEnsureSets(); if not sets then return end
+	local set = sets[aOld]; if not set then return end
+	aNew = strtrim(tostring(aNew or ""))
+	if aNew == "" or aNew == aOld then return end
+	local tFinal = tUniqueName(sets, aNew)
+	sets[tFinal] = set
+	sets[aOld] = nil
+	return tFinal
+end
+
+-- [Fix Nr21] Set aktivieren: ersetzt die aktuellen Auren durch die des Sets.
+-- Bewusst destruktiv (aktivieren = umschalten), daher im Menue mit Rueckfrage.
+function SkuAuras:SetsActivate(aName)
+	local sets = tEnsureSets(); local set = sets and sets[aName]
+	if not set then return end
+	local tSub = SkuSettings:Sub("SkuAuras", nil, "char")
+	if not tSub then return end
+	local tNew, tCount = {}, 0
+	for auraName, auraTable in pairs(set.auraData or {}) do
+		local tCopy = tDeepCopy(auraTable)
+		tCopy.enabled = true
+		tNew[auraName] = tCopy
+		tCount = tCount + 1
+	end
+	tSub.Auras = tNew
+	pcall(function() SkuAuras:UpdateAttributesListWithCurrentAuras() end)
+	tSay(string.format(L["Set aktiviert, %s Auren"], tCount))
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -179,6 +218,36 @@ function SkuAuras:BuildSetsMenu(aParent)
 			tEntry.BuildChildren = function(self)
 				local tShare = SkuOptions:InjectMenuItems(self, {L["An Gruppe teilen"]}, SkuGenericMenuItem)
 				tShare.OnAction = function() pcall(function() SkuAuras:ShareSet(tName) end) end
+
+				-- [Fix Nr21] Set umbenennen
+				local tRename = SkuOptions:InjectMenuItems(self, {L["Set umbenennen"]}, SkuGenericMenuItem)
+				tRename.OnAction = function()
+					pcall(function()
+						SkuOptions.Voice:OutputStringBTtts(L["Neuen Namen eingeben und Enter, oder Escape zum Abbrechen"], false, true, 0.2)
+						SkuOptions:EditBoxShow(tName, function()
+							local tNew = strtrim(SkuOptionsEditBoxEditBox:GetText() or "")
+							if tNew == "" then tSay(L["Abgebrochen"]); return end
+							local tFinal = SkuAuras:SetsRename(tName, tNew)
+							if tFinal then tSay(L["Set umbenannt"]) end
+							C_Timer.After(0.3, function()
+								pcall(function()
+									local p = SkuOptions.currentMenuPosition
+									while p and p.parent and p.name ~= L["Sets (teilen)"] do p = p.parent end
+									if p and p.OnSelect then p:OnSelect(); SkuOptions:VocalizeCurrentMenuName() end
+								end)
+							end)
+						end)
+					end)
+				end
+
+				-- [Fix Nr21] Set aktivieren (ersetzt aktuelle Auren) mit Rueckfrage
+				local tAct = SkuOptions:InjectMenuItems(self, {L["Set aktivieren"]}, SkuGenericMenuItem)
+				tAct.dynamic = true
+				tAct.BuildChildren = function(self)
+					local tYes = SkuOptions:InjectMenuItems(self, {L["Wirklich aktivieren? Ersetzt aktuelle Auren"]}, SkuGenericMenuItem)
+					tYes.OnAction = function() pcall(function() SkuAuras:SetsActivate(tName) end) end
+				end
+
 				local tDel = SkuOptions:InjectMenuItems(self, {L["Set loeschen"]}, SkuGenericMenuItem)
 				tDel.dynamic = true
 				tDel.BuildChildren = function(self)

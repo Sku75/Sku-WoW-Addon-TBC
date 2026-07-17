@@ -1548,6 +1548,64 @@ end
 -- W7: top-level "Addons" menu — addon integrations that used to sit directly under
 -- "Core". Each child reuses its existing builder (called with the entry as `self`,
 -- as the old Core specs did). Module refs resolve at open time.
+-- [8/15] Fernbedienung der Questie-Chatmitteilungen aus dem Addons-Menue.
+-- Setzt die Werte direkt in Questie.db.profile (Questie persistiert selbst).
+-- self ist der Menue-Eintrag (wie bei DamageMeterMenuBuilder).
+function SkuCore:QuestieMenuBuilder()
+	if not (_G.Questie and _G.Questie.db and _G.Questie.db.profile) then
+		SkuOptions:InjectMenuItems(self, {L["Questie not installed"]}, SkuGenericMenuItem)
+		return
+	end
+	local P = _G.Questie.db.profile
+
+	-- Ein/Aus-Umschalter fuer ein boolsches Questie-Profilfeld.
+	local function tBoolToggle(aLabel, aKey)
+		local tNode = SkuOptions:InjectMenuItems(self, {aLabel}, SkuGenericMenuItem)
+		tNode.dynamic = true
+		tNode.isSelect = true
+		tNode.GetCurrentValue = function(s, aValue, aName)
+			if P[aKey] == true then return L["On"] else return L["Off"] end
+		end
+		tNode.OnAction = function(s, aValue, aName)
+			if aName == L["Off"] then P[aKey] = false elseif aName == L["On"] then P[aKey] = true end
+		end
+		tNode.BuildChildren = function(s)
+			SkuOptions:InjectMenuItems(s, {L["Off"]}, SkuGenericMenuItem)
+			SkuOptions:InjectMenuItems(s, {L["On"]}, SkuGenericMenuItem)
+		end
+	end
+
+	-- Master: Chatmitteilungen-Kanal (Aus / Gruppe / Schlachtzug / Beides)
+	local cOff, cParty, cRaid, cBoth = L["Off"], L["Questie announce party"], L["Questie announce raid"], L["Questie announce both"]
+	local tChan = SkuOptions:InjectMenuItems(self, {L["Questie chat announcements"]}, SkuGenericMenuItem)
+	tChan.dynamic = true
+	tChan.isSelect = true
+	tChan.GetCurrentValue = function(s, aValue, aName)
+		local v = P.questAnnounceChannel
+		if v == "party" then return cParty elseif v == "raid" then return cRaid
+		elseif v == "both" then return cBoth else return cOff end
+	end
+	tChan.OnAction = function(s, aValue, aName)
+		if aName == cOff then P.questAnnounceChannel = "disabled"
+		elseif aName == cParty then P.questAnnounceChannel = "party"
+		elseif aName == cRaid then P.questAnnounceChannel = "raid"
+		elseif aName == cBoth then P.questAnnounceChannel = "both" end
+	end
+	tChan.BuildChildren = function(s)
+		SkuOptions:InjectMenuItems(s, {cOff}, SkuGenericMenuItem)
+		SkuOptions:InjectMenuItems(s, {cParty}, SkuGenericMenuItem)
+		SkuOptions:InjectMenuItems(s, {cRaid}, SkuGenericMenuItem)
+		SkuOptions:InjectMenuItems(s, {cBoth}, SkuGenericMenuItem)
+	end
+
+	-- Einzel-Optionen (was im Chat geteilt wird)
+	tBoolToggle(L["Announce quest accepted"], "questAnnounceAccepted")
+	tBoolToggle(L["Announce quest abandoned"], "questAnnounceAbandoned")
+	tBoolToggle(L["Announce quest progress"], "questAnnounceObjectives")
+	tBoolToggle(L["Announce quest completed"], "questAnnounceCompleted")
+	tBoolToggle(L["Announce quest items"], "questAnnounceItems")
+end
+
 function SkuCore:AddonsMenuBuilder(aParentEntry)
 	local tSpecs = {}
 	if SkuCore.AtlasLootIntegration and SkuCore.AtlasLootIntegration.alIntegrationMenuBuilder then
@@ -1557,6 +1615,10 @@ function SkuCore:AddonsMenuBuilder(aParentEntry)
 	if SkuCore.DamageMeter and SkuCore.DamageMeter.DamageMeterMenuBuilder then
 		tSpecs[#tSpecs+1] = { kind = "list", label = L["Damage Meter"], sorting = true,
 			build = SkuCore.DamageMeter.DamageMeterMenuBuilder }
+	end
+	if _G.Questie and _G.Questie.db then
+		tSpecs[#tSpecs+1] = { kind = "list", label = "Questie", sorting = true,
+			build = SkuCore.QuestieMenuBuilder }
 	end
 	-- Other addons' AceConfig settings (Questie, ECS, ...) rendered generically;
 	-- logic in SkuCore/addonOptions.lua. The Escape menu's "AddOns" button routes
@@ -1611,7 +1673,16 @@ function SkuCore.MailBuildComposeChildren(aLetterEntry)
 	tItemsEntry.dynamic = true
 	local lItemsEntry = tItemsEntry
 	tItemsEntry.BuildChildren = function(self)
-		for bag = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
+		-- [Fix Nr24] Schluesselbund (Keyring) mit einbeziehen, damit ein nicht
+		-- seelengebundener Silberdietrich per Post verschickt werden kann. Die
+		-- bestehende IsItemSoulbound-Pruefung (unten) filtert seelengebundene
+		-- Schluessel weiterhin aus.
+		local tContainers = {}
+		-- [Fix Nr24] Zuerst die Taschen (0..4), Schluesselbund ganz ans Ende, damit
+		-- Schluessel-Items nicht auf Position 1 stehen.
+		for b = BACKPACK_CONTAINER, NUM_BAG_SLOTS do tContainers[#tContainers+1] = b end
+		if KEYRING_CONTAINER then tContainers[#tContainers+1] = KEYRING_CONTAINER end
+		for _, bag in ipairs(tContainers) do
 			for slot = 1, GetContainerNumSlots(bag) do
 				local tLocked = tLetter.TmpItemsLock and tLetter.TmpItemsLock[bag.."-"..slot]
 				if not tLocked then
