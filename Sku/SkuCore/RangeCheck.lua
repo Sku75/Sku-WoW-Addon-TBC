@@ -40,6 +40,13 @@ RangeCheck.RangeCheckValues = {
 ---------------------------------------------------------------------------------------------------------------------------------------
 function RangeCheck:RangeCheckOnInitialize()
    SkuOptions.RangeCheck.RegisterCallback(self, SkuOptions.RangeCheck.CHECKERS_CHANGED, "CHECKERS_CHANGED")
+   -- Diagnostic: /skurangeprobe dumps item-cache warm-up progress + the live
+   -- checker lists (with sources) to SkuDebugLog, and speaks a one-line summary.
+   -- Run it repeatedly after a cold start to watch the client cache the probe
+   -- items. Enable the log first with `/skudebug log on`.
+   if SkuOptions and SkuOptions.RegisterChatCommand then
+      SkuOptions:RegisterChatCommand("skurangeprobe", function() RangeCheck:SkuRangeProbe() end)
+   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -255,4 +262,64 @@ function RangeCheck:DoRangeCheck(aForceFlag)
       end
    end
 
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Diagnostic probe (/skurangeprobe). Writes a detailed snapshot to SkuDebugLog
+-- (enable with `/skudebug log on`) and speaks a one-line summary. Purpose: after
+-- a cold start, tell apart WHY the bands are sparse:
+--   * item cache counts low + growing  -> the CLIENT is still fetching item data
+--     from the server (the real wall: Anniversary keeps no on-disk item cache and
+--     throttles item queries); pre-warm can only feed the queue, not beat the cap.
+--   * item cache counts HIGH but checker lists sparse -> the LIBRARY hasn't
+--     re-inited to pick the cached items up; the forced init(true) below fixes
+--     that in-place and its before/after dump proves it.
+function RangeCheck:SkuRangeProbe()
+   local rc = SkuOptions and SkuOptions.RangeCheck
+   if not rc then
+      return
+   end
+
+   local p = rc.SkuProbeItemCache and rc:SkuProbeItemCache()
+   if p then
+      dprint("rangeProbe items cached: friend "..p.friendCached.."/"..p.friendTotal
+         .." ("..p.friendRangesCached.."/"..p.friendRangesTotal.." ranges); harm "
+         ..p.harmCached.."/"..p.harmTotal.." ("..p.harmRangesCached.."/"..p.harmRangesTotal.." ranges)")
+   end
+
+   local function tDumpList(aName, aList)
+      if type(aList) ~= "table" then
+         dprint("rangeProbe "..aName..": nil")
+         return
+      end
+      local tParts = {}
+      for i = 1, #aList do
+         tParts[#tParts + 1] = tostring(aList[i].range).."="..tostring(aList[i].info)
+      end
+      dprint("rangeProbe "..aName.." ("..#aList.."): "..table.concat(tParts, ", "))
+   end
+
+   tDumpList("harmRC (before)", rc.harmRC)
+   tDumpList("friendRC (before)", rc.friendRC)
+   tDumpList("miscRC", rc.miscRC)
+
+   -- Force the library to rebuild from currently-cached items, then re-dump. If
+   -- the "after" lists are richer than "before", the client HAD cached items the
+   -- library simply hadn't re-read -> we should trigger this on our retries.
+   if rc.init then
+      local ok = pcall(function() rc:init(true) end)
+      dprint("rangeProbe forced init(true): "..(ok and "ok" or "ERROR"))
+      tDumpList("harmRC (after init)", rc.harmRC)
+      tDumpList("friendRC (after init)", rc.friendRC)
+   end
+
+   if p then
+      SkuOptions.Voice:OutputString(
+         Sku.deEn(
+            "Reichweiten-Probe: Freund "..p.friendCached.." von "..p.friendTotal
+               ..", Feind "..p.harmCached.." von "..p.harmTotal.." Items im Cache",
+            "Range probe: friend "..p.friendCached.." of "..p.friendTotal
+               ..", enemy "..p.harmCached.." of "..p.harmTotal.." items cached"),
+         true, true, 0.2)
+   end
 end

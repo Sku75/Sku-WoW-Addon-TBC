@@ -4317,6 +4317,41 @@ function lib:GetMiscCheckers(inCombat)
   return rcIterator(inCombat and self.miscRCInCombat or self.miscRC)
 end
 
+--[[ Sku local patch: diagnostic accessor for the item-cache warm-up. Returns how
+  many of the (private) FriendItems / HarmItems probe ids currently have their
+  data cached on the client, vs the totals. Lets /skurangeprobe (SkuCore) tell
+  apart "client still hasn't cached the items" from "library hasn't re-inited to
+  pick them up". Also returns how many DISTINCT ranges are represented by the
+  cached items (an upper bound on the item-derived bands that could show). ]]
+function lib:SkuProbeItemCache()
+  local function tally(itemList)
+    local total, cached = 0, 0
+    local rangesSeen, rangesCached = {}, {}
+    if type(itemList) == "table" then
+      for range, items in pairs(itemList) do
+        rangesSeen[range] = true
+        for i = 1, #items do
+          total = total + 1
+          if C_Item and C_Item.GetItemInfo(items[i]) then
+            cached = cached + 1
+            rangesCached[range] = true
+          end
+        end
+      end
+    end
+    local nRangesSeen, nRangesCached = 0, 0
+    for _ in pairs(rangesSeen) do nRangesSeen = nRangesSeen + 1 end
+    for _ in pairs(rangesCached) do nRangesCached = nRangesCached + 1 end
+    return cached, total, nRangesCached, nRangesSeen
+  end
+  local fc, ft, frc, frt = tally(FriendItems)
+  local hc, ht, hrc, hrt = tally(HarmItems)
+  return {
+    friendCached = fc, friendTotal = ft, friendRangesCached = frc, friendRangesTotal = frt,
+    harmCached = hc, harmTotal = ht, harmRangesCached = hrc, harmRangesTotal = hrt,
+  }
+end
+
 --- Return a checker suitable for out-of-range checking on friendly units, that is, a checker whose range is equal or larger than the requested range.
 -- @param range the range to check for.
 -- @param inCombat if true, only checkers that can be used in combat ar returned
