@@ -255,8 +255,12 @@ function Build-SkuZip($ver) {
     if ($DryRun) { Dry "build $out (bumps Sku.toc Title/Version to $ver)"; return $out }
     Info "Building Sku-$ver.zip (bumps Sku.toc)..."
     New-Item -ItemType Directory -Force $Dist | Out-Null
-    & py -3 $ZipHelper --version $ver --sku-dir $SkuDir --out $out
-    if ($LASTEXITCODE -ne 0) { throw "Sku zip build failed." }
+    # Capture py's stdout into a variable (do NOT let it fall through to the
+    # pipeline, or it would be returned alongside $out and passed to gh as a bogus
+    # file arg). We only return the path.
+    $pyout = & py -3 $ZipHelper --version $ver --sku-dir $SkuDir --out $out 2>&1
+    if ($LASTEXITCODE -ne 0) { throw "Sku zip build failed: $pyout" }
+    Info ("  " + [string]($pyout | Select-Object -Last 1))
     if (-not (Test-Path $out)) { throw "Sku zip missing: $out" }
     return $out
 }
@@ -278,9 +282,9 @@ function Do-MainRelease($ver) {
     Sync-PatchNotesToDocs      # mirror the hand-written notes onto the website
 
     Info "Committing + pushing the release commit..."
-    Exec "git add version files + notes" { git -C $RepoRoot add Sku/Sku.toc "Sku/Patch Notes Sku EN.txt" "Sku/Patch Notes Sku DE.txt" installer/SkuInstaller/Config.cs docs/index.html docs/Patch-Notes-English.txt docs/Patch-Notes-Deutsch.txt }
-    Exec "git commit -m 'release: v$ver'" { git -C $RepoRoot commit -m "release: v$ver" }
-    Exec "git push" { git -C $RepoRoot push }
+    # Commit-Push is a no-op when nothing changed, so re-running after a partial
+    # failure (commit already made) skips straight to creating the release.
+    Commit-Push @('Sku/Sku.toc', 'Sku/Patch Notes Sku EN.txt', 'Sku/Patch Notes Sku DE.txt', 'installer/SkuInstaller/Config.cs', 'docs/index.html', 'docs/Patch-Notes-English.txt', 'docs/Patch-Notes-Deutsch.txt') "release: v$ver"
 
     if ($Notes) { $notesArg = $Notes } else { $notesArg = "Sku TBC v$ver. See the patch notes on the download page." }
     if ($Prerelease) { $latestArg = '--prerelease' } else { $latestArg = '--latest' }
