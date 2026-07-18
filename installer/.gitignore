@@ -4,3 +4,8 @@ bin/
 obj/
 dist/
 *.user
+
+# Release secrets (Discord webhook URLs). The real file is NEVER tracked — a
+# webhook URL is a password. The *.example.txt template IS tracked as docs.
+.secrets/*
+!.secrets/*.example.txt

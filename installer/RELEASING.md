@@ -1,0 +1,75 @@
+# Sku release tool
+
+**Version 1.0**
+
+## What this is
+
+One script that publishes a new Sku release from start to finish: it builds
+everything, uploads it to GitHub, keeps the download page's links current, and
+announces the update on Discord.
+
+In most projects you can just "publish a new release, attach the files, done."
+Sku needs a few extra steps because of how it's built: the addon is about
+150 MB of audio and map data that only lives on this PC, there are companion
+tools that update on their own rhythm, and everything has to stay usable with a
+screen reader. The script folds all of that into a single command so you don't
+have to remember the pieces.
+
+## What it delivers
+
+Run one command:
+
+    installer\release.ps1 -Version 42.07
+
+and you get:
+
+- a freshly rebuilt installer program,
+- the full Sku addon packaged as `Sku-42.07.zip`,
+- a new GitHub release marked **Latest**, carrying both the addon and the installer,
+- the download page's links updated to the new version,
+- an announcement posted to both Discord channels (the same message, English + German).
+
+## The moving parts
+
+- **release.ps1** — the conductor; it runs everything below.
+- **tools\build_sku_zip.py** — packs the addon folder into the release zip.
+- **the installer project** — rebuilt into the `SkuInstaller.exe` that ships with each release.
+- **.secrets\discord-webhooks.txt** — your two Discord channel links, kept private and never uploaded.
+- **the download page** (`docs\index.html`) — its links are refreshed automatically.
+
+## What it needs to run
+
+- **Run it on this PC.** The full addon data only lives here, so the zip can
+  only be built locally (a cloud server doesn't have the files).
+- **GitHub CLI signed in** (`gh`), so it can publish.
+- **The build tools installed**: `dotnet`, and `py -3` (Python) for the zip.
+- **Your Discord links** in `.secrets\discord-webhooks.txt` — copy the
+  `.example` file next to it and paste your two webhook URLs in. If the file is
+  missing, the release still happens; it just skips the announcement.
+
+## Good to know
+
+- **Preview first.** Add `-DryRun` to any command and it tells you every step it
+  *would* take, changing nothing. Use it whenever you're unsure.
+- **No stale versions, no rate limits.** The installer finds the newest version
+  by itself and never uses GitHub's throttled API, so it can't get stuck on an
+  old version or hit a download limit.
+- **Links stay current on their own.** The installer and login-tool downloads
+  use permanent "always latest" links; the Sku and SkuMapper links are refreshed
+  by the script each release.
+- **The companion tools update separately** (they change rarely):
+  - login tool: `installer\release.ps1 -PublishLoginTool -LoginToolVersion 2.1`
+  - SkuMapper:  `installer\release.ps1 -PublishSkuMapper -SkuMapperVersion 4.9`
+- **One-time setup**, run once each: `-BackfillLatestAssets` (makes the "always
+  latest" installer link work on the current release), and
+  `-PublishLoginTool -LoginToolVersion 2.0` (creates the login tool's permanent link).
+
+## Quick command list
+
+- New Sku release: `-Version 42.07`
+- Preview anything safely: add `-DryRun`
+- Stay silent (skip Discord): add `-SkipDiscord`
+- Publish without the Latest badge: add `-Prerelease`
+- Login-tool update: `-PublishLoginTool -LoginToolVersion 2.1`
+- SkuMapper update: `-PublishSkuMapper -SkuMapperVersion 4.9`
+- One-time fixups: `-BackfillLatestAssets`

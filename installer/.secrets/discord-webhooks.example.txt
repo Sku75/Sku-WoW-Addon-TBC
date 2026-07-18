@@ -1,0 +1,17 @@
+# Sku release Discord webhooks — one webhook URL per line.
+#
+# COPY this file to  discord-webhooks.txt  (same folder) and put your REAL
+# webhook URLs in that copy. discord-webhooks.txt is gitignored and must NEVER
+# be committed: a webhook URL is a secret — anyone who has it can post messages
+# into your channel, no login needed.
+#
+# Where to get a URL in Discord:
+#   Server Settings -> Integrations -> Webhooks -> New Webhook (or an existing
+#   one) -> pick the target channel -> Copy Webhook URL.
+# Add one line per channel you want the release message posted to. The release
+# script posts the SAME message to every URL listed here.
+#
+# Lines starting with '#' are ignored; blank lines are ignored.
+
+https://discord.com/api/webhooks/000000000000000000/replace-with-your-english-server-webhook-token
+https://discord.com/api/webhooks/000000000000000000/replace-with-your-german-server-webhook-token

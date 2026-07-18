@@ -24,9 +24,10 @@ namespace SkuInstaller
     ///
     /// Everything is best-effort: failures are logged + announced but never abort
     /// the surrounding Sku install. Idempotent — skips a re-download when the
-    /// installed release (version marker) already matches <see cref="Config.LoginToolTag"/>,
+    /// installed version marker already matches <see cref="Config.LoginToolVersion"/>,
     /// unless <paramref name="force"/> is set; older installs (or pre-marker ones)
-    /// are upgraded in place, preserving the user's data\settings.ini.
+    /// are upgraded in place, preserving the user's data\settings.ini. The download
+    /// itself always comes from the rolling <see cref="Config.LoginToolTag"/>.
     /// </summary>
     internal static class LoginToolInstaller
     {
@@ -37,9 +38,11 @@ namespace SkuInstaller
         private static readonly string[] SkipNames = { ".claude", "log.txt" };
 
         /// <summary>
-        /// Marker file in the tool folder recording which release tag is deployed,
-        /// so a re-run can tell "current" from "needs upgrade". Installs made by
-        /// older installers have no marker and therefore upgrade.
+        /// Marker file in the tool folder recording which tool VERSION is deployed
+        /// (see <see cref="Config.LoginToolVersion"/>), so a re-run can tell
+        /// "current" from "needs upgrade". Installs made by older installers hold a
+        /// release tag instead (e.g. "v42.04") or no marker at all; either way it
+        /// won't match the current version string, so they upgrade once.
         /// </summary>
         private const string VersionMarkerFile = "installed-release.txt";
 
@@ -66,8 +69,8 @@ namespace SkuInstaller
             catch { return false; }
         }
 
-        /// <summary>Release tag recorded by the last install, or null (pre-marker install).</summary>
-        private static string InstalledTag(string toolDir)
+        /// <summary>Version/marker recorded by the last install, or null (pre-marker install).</summary>
+        private static string InstalledVersion(string toolDir)
         {
             try
             {
@@ -89,8 +92,8 @@ namespace SkuInstaller
                 string startScript = Path.Combine(toolDir, "START.ahk");
                 if (File.Exists(startScript) && !force)
                 {
-                    string installed = InstalledTag(toolDir);
-                    if (string.Equals(installed, Config.LoginToolTag, StringComparison.OrdinalIgnoreCase))
+                    string installed = InstalledVersion(toolDir);
+                    if (string.Equals(installed, Config.LoginToolVersion, StringComparison.OrdinalIgnoreCase))
                     {
                         announce(Loc.Get("lt.present"));
                         Logger.Info($"WoW Login Tool {installed} already present at {toolDir}; skipping (use force to reinstall).");
@@ -100,7 +103,7 @@ namespace SkuInstaller
                     // Older deployment (pre-marker installs count as oldest): fall
                     // through to a full reinstall. That also refreshes the Interface
                     // textures, which the new data.ini colour tables depend on.
-                    Logger.Info($"WoW Login Tool at {toolDir} is {(installed ?? "an older release (no version marker)")}; upgrading to {Config.LoginToolTag}.");
+                    Logger.Info($"WoW Login Tool at {toolDir} is {(installed ?? "an older release (no version marker)")}; upgrading to {Config.LoginToolVersion}.");
                 }
 
                 Directory.CreateDirectory(TempRoot);
@@ -160,9 +163,9 @@ namespace SkuInstaller
                     SafeDeleteDir(staging);
                 }
 
-                // 6. Record which release is now deployed (drives the skip/upgrade
-                //    decision on the next run).
-                try { File.WriteAllText(Path.Combine(toolDir, VersionMarkerFile), Config.LoginToolTag); }
+                // 6. Record which tool version is now deployed (drives the
+                //    skip/upgrade decision on the next run).
+                try { File.WriteAllText(Path.Combine(toolDir, VersionMarkerFile), Config.LoginToolVersion); }
                 catch (Exception ex) { Logger.Warning($"Login Tool: could not write version marker: {ex.Message}"); }
 
                 // 7. AutoHotkey runtimes + launcher shortcut.

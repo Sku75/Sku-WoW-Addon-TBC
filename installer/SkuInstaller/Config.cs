@@ -113,9 +113,16 @@ namespace SkuInstaller
         // accessible) an audio menu. It is NOT a WoW addon: it installs as its own
         // program folder next to the game, plus login-screen fiducial textures
         // copied into the client's Interface folder and a readable-font override.
-        // Pinned to the release that carries the zip; bump if a newer one ships
-        // (LoginToolInstaller upgrades in place via its version marker).
-        public const string LoginToolTag = "v42.04";
+        //
+        // The tool ships on a PERMANENT "rolling" release tag: each new build
+        // re-uploads WoW-Login-Tool.zip to the same 'login-tool' tag, so the
+        // download URL never changes and never goes stale (installer/release.ps1
+        // -PublishLoginTool). Because that tag is constant, upgrade detection can't
+        // key off it — LoginToolVersion is the freshness signal instead: bump it
+        // whenever a newer tool build is published, and LoginToolInstaller upgrades
+        // in place any user whose recorded marker predates it.
+        public const string LoginToolTag = "login-tool";
+        public const string LoginToolVersion = "2.0";
         public const string LoginToolAsset = "WoW-Login-Tool.zip";
         public const string LoginToolFolderName = "WoW Login Tool";
 
