@@ -266,7 +266,16 @@ here so a future session doesn't re-derive the analysis from scratch.
   R.O.I.D.S.* at 100yd). On a **cold** game start the item data isn't cached, so
   the library requests it from the server ONE ITEM AT A TIME on a 0.5s loop with a
   10s per-item timeout — which is why bands can take many minutes to fully appear
-  after a fresh launch (a plain `/reload` is fast: item cache stays warm). Two
+  after a fresh launch (a plain `/reload` is fast: item cache stays warm). ROOT
+  CAUSE of why this is far worse than historically (was ~1min, now 10-20min): the
+  Anniversary client does NOT persist item data to disk. `_anniversary_\Cache\WDB\`
+  has creature/gameobject/quest/npc/pagetext caches but NO `itemcache.wdb`
+  (verified 2026-07-18); older TBC/Classic clients kept it, so items were warm from
+  disk every launch and the serial crawl was near-instant. The modern engine
+  removed on-disk item caching, so every fresh launch is a truly cold item cache
+  and the library's always-slow serial fetch shows its full cost. NOT a Sku/library
+  regression — the disk cache used to hide it; the pre-warm below is the correct
+  compensation (do NOT revert it thinking it's unnecessary). Two
   side effects the maintainer dislikes: bands are class-asymmetric (e.g. 25 on
   hostile but not friendly, melee/2 on one side only, because they come from the
   per-class spell lists) and the long warm-up.
