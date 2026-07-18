@@ -4348,16 +4348,23 @@ function lib:SkuProbeItemCache()
         end
       end
     end
-    local nRangesSeen, nRangesCached = 0, 0
-    for _ in pairs(rangesSeen) do nRangesSeen = nRangesSeen + 1 end
-    for _ in pairs(rangesCached) do nRangesCached = nRangesCached + 1 end
-    return cached, total, nRangesCached, nRangesSeen
+    -- Sorted list of ranges that DO have a cached item, and those that have NONE
+    -- (so we can see exactly where the achievable bands top out on this client).
+    local cachedList, uncachedList = {}, {}
+    for r in pairs(rangesSeen) do
+      if rangesCached[r] then cachedList[#cachedList + 1] = r else uncachedList[#uncachedList + 1] = r end
+    end
+    table.sort(cachedList)
+    table.sort(uncachedList)
+    return cached, total, #cachedList, (#cachedList + #uncachedList), cachedList, uncachedList
   end
-  local fc, ft, frc, frt = tally(FriendItems)
-  local hc, ht, hrc, hrt = tally(HarmItems)
+  local fc, ft, frc, frt, fcl, ful = tally(FriendItems)
+  local hc, ht, hrc, hrt, hcl, hul = tally(HarmItems)
   return {
     friendCached = fc, friendTotal = ft, friendRangesCached = frc, friendRangesTotal = frt,
     harmCached = hc, harmTotal = ht, harmRangesCached = hrc, harmRangesTotal = hrt,
+    friendCachedRanges = fcl, friendUncachedRanges = ful,
+    harmCachedRanges = hcl, harmUncachedRanges = hul,
   }
 end
 

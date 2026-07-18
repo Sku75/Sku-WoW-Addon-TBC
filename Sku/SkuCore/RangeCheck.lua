@@ -296,6 +296,26 @@ function RangeCheck:SkuRangeProbe()
       dprint("rangeProbe items cached: friend "..p.friendCached.."/"..p.friendTotal
          .." ("..p.friendRangesCached.."/"..p.friendRangesTotal.." ranges); harm "
          ..p.harmCached.."/"..p.harmTotal.." ("..p.harmRangesCached.."/"..p.harmRangesTotal.." ranges)")
+      local function tJoin(t) return (type(t) == "table" and #t > 0) and table.concat(t, ",") or "-" end
+      dprint("rangeProbe friend ranges  CACHED: "..tJoin(p.friendCachedRanges).."  |  MISSING: "..tJoin(p.friendUncachedRanges))
+      dprint("rangeProbe harm   ranges  CACHED: "..tJoin(p.harmCachedRanges).."  |  MISSING: "..tJoin(p.harmUncachedRanges))
+   end
+
+   -- Directly probe specific high-range TBC item ids: is 60/80/100 reachable, and
+   -- specifically do the range-100 elixirs resolve? If these stay uncached forever
+   -- the item doesn't exist on this client (real ceiling); if they resolve on a
+   -- later probe run, our burst was dropping them (need to batch/retry the pre-warm).
+   local tCheck = {
+      {32825, "Soul Cannon (harm 60)"},
+      {35278, "Reinforced Net (80, WotLK)"},
+      {41058, "Hyldnir Harpoon (100, WotLK)"},
+      {23722, "Permanent R.O.I.D.S. (100)"},
+      {23715, "Permanent Lung Juice (100)"},
+      {23718, "Permanent Ground Scorpok (100)"},
+   }
+   for _, e in ipairs(tCheck) do
+      local nm = C_Item and C_Item.GetItemInfo(e[1])
+      dprint("rangeProbe item "..e[1].." "..e[2]..": "..(nm and ("CACHED ("..tostring(nm)..")") or "not cached"))
    end
 
    local function tDumpList(aName, aList)
