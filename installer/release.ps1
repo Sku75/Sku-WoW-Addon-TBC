@@ -144,6 +144,20 @@ function Set-DocsSkuMapperVersion($ver) {
     Write-Text $DocsHtml $html
 }
 
+# Patch notes live in Sku\ (ship in the zip) AND docs\ (serve the website); they
+# drift unless re-copied. The addon-side notes are hand-written before a release;
+# this mirrors them into docs\ so the site shows the same text.
+function Sync-PatchNotesToDocs {
+    if ($DryRun) { Dry "copy patch notes Sku\ -> docs\ (EN + DE)"; return }
+    $pairs = @(
+        @{ src = (Join-Path $SkuDir 'Patch Notes Sku EN.txt'); dst = (Join-Path $RepoRoot 'docs\Patch-Notes-English.txt') },
+        @{ src = (Join-Path $SkuDir 'Patch Notes Sku DE.txt'); dst = (Join-Path $RepoRoot 'docs\Patch-Notes-Deutsch.txt') }
+    )
+    foreach ($p in $pairs) {
+        if (Test-Path $p.src) { Copy-Item $p.src $p.dst -Force; Info "  synced $(Split-Path $p.dst -Leaf)" }
+    }
+}
+
 function Set-FallbackVersion($ver) {
     if ($DryRun) { Dry "set Config.FallbackMainVersion -> $ver"; return }
     $cs = Read-Text $ConfigCs
@@ -249,9 +263,10 @@ function Do-MainRelease($ver) {
     Set-FallbackVersion $ver
     Set-DocsSkuLink $ver
     Set-DocsInstallerLatest    # idempotent: keeps installer link on latest/download
+    Sync-PatchNotesToDocs      # mirror the hand-written notes onto the website
 
     Info "Committing + pushing the release commit..."
-    Exec "git add Sku/Sku.toc installer/SkuInstaller/Config.cs docs/index.html" { git -C $RepoRoot add Sku/Sku.toc installer/SkuInstaller/Config.cs docs/index.html }
+    Exec "git add version files + notes" { git -C $RepoRoot add Sku/Sku.toc "Sku/Patch Notes Sku EN.txt" "Sku/Patch Notes Sku DE.txt" installer/SkuInstaller/Config.cs docs/index.html docs/Patch-Notes-English.txt docs/Patch-Notes-Deutsch.txt }
     Exec "git commit -m 'release: v$ver'" { git -C $RepoRoot commit -m "release: v$ver" }
     Exec "git push" { git -C $RepoRoot push }
 
