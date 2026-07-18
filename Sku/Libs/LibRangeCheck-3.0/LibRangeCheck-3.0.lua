@@ -40,7 +40,16 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0"
-local MINOR_VERSION = 35
+-- Sku TEST override: bumped from the real upstream 35 to 99 so OUR patched copy
+-- (parallel item pre-warm + SkuProbeItemCache) WINS the LibStub race over
+-- LootReserve's forked minor 50 on a Sku user's client. This lets us test whether
+-- the pre-warm actually fixes the cold-start when it's the LIVE library. Only
+-- ships inside Sku, so it can only affect a machine that has Sku installed (unlike
+-- a shared-lib distribution). Our copy keeps the getRange/GetFriend/Harm/Misc
+-- public API + lowercase getRange alias, so co-loaded consumers (LootReserve,
+-- WeakAuras) keep working. REVERT to 35 (or drop the whole embedded-lib patch and
+-- go Sku-side) once we know whether the pre-warm helps.
+local MINOR_VERSION = 99
 
 ---@class lib
 local lib, oldminor = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
