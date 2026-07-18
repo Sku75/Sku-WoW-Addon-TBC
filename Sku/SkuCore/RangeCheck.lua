@@ -277,10 +277,21 @@ end
 function RangeCheck:SkuRangeProbe()
    local rc = SkuOptions and SkuOptions.RangeCheck
    if not rc then
+      if SkuOptions and SkuOptions.Voice then
+         SkuOptions.Voice:OutputString(Sku.deEn("Reichweiten-Probe: keine Bibliothek", "Range probe: no library"), true, true, 0.2)
+      end
       return
    end
 
-   local p = rc.SkuProbeItemCache and rc:SkuProbeItemCache()
+   -- Is the LIVE LibRangeCheck the copy WE patched? LibStub keeps only the
+   -- highest MINOR_VERSION across all addons, and other addons (LootReserve
+   -- ships minor 50, WeakAuras 34) can win the race over our embedded copy -> in
+   -- that case our pre-warm + SkuProbeItemCache are NOT present on the running
+   -- lib, so nothing we did to our file matters. This is the first thing to know.
+   local tOurPatchLive = (rc.SkuProbeItemCache ~= nil)
+   dprint("rangeProbe: our-patched-lib-live = "..tostring(tOurPatchLive))
+
+   local p = tOurPatchLive and rc:SkuProbeItemCache() or nil
    if p then
       dprint("rangeProbe items cached: friend "..p.friendCached.."/"..p.friendTotal
          .." ("..p.friendRangesCached.."/"..p.friendRangesTotal.." ranges); harm "
@@ -290,36 +301,38 @@ function RangeCheck:SkuRangeProbe()
    local function tDumpList(aName, aList)
       if type(aList) ~= "table" then
          dprint("rangeProbe "..aName..": nil")
-         return
+         return 0
       end
       local tParts = {}
       for i = 1, #aList do
          tParts[#tParts + 1] = tostring(aList[i].range).."="..tostring(aList[i].info)
       end
       dprint("rangeProbe "..aName.." ("..#aList.."): "..table.concat(tParts, ", "))
+      return #aList
    end
 
-   tDumpList("harmRC (before)", rc.harmRC)
-   tDumpList("friendRC (before)", rc.friendRC)
+   local tNh = tDumpList("harmRC (before)", rc.harmRC)
+   local tNf = tDumpList("friendRC (before)", rc.friendRC)
    tDumpList("miscRC", rc.miscRC)
 
-   -- Force the library to rebuild from currently-cached items, then re-dump. If
-   -- the "after" lists are richer than "before", the client HAD cached items the
-   -- library simply hadn't re-read -> we should trigger this on our retries.
-   if rc.init then
+   -- Force the LIVE library (whatever copy it is) to rebuild from currently-cached
+   -- items via its public init(), then re-dump. Richer "after" than "before"
+   -- means the client HAD cached items the lib just hadn't re-read.
+   if type(rc.init) == "function" then
       local ok = pcall(function() rc:init(true) end)
       dprint("rangeProbe forced init(true): "..(ok and "ok" or "ERROR"))
-      tDumpList("harmRC (after init)", rc.harmRC)
-      tDumpList("friendRC (after init)", rc.friendRC)
+      tNh = tDumpList("harmRC (after)", rc.harmRC) or tNh
+      tNf = tDumpList("friendRC (after)", rc.friendRC) or tNf
    end
 
+   -- Speak a summary that works regardless of which lib copy is live.
+   local tMsg
    if p then
-      SkuOptions.Voice:OutputString(
-         Sku.deEn(
-            "Reichweiten-Probe: Freund "..p.friendCached.." von "..p.friendTotal
-               ..", Feind "..p.harmCached.." von "..p.harmTotal.." Items im Cache",
-            "Range probe: friend "..p.friendCached.." of "..p.friendTotal
-               ..", enemy "..p.harmCached.." of "..p.harmTotal.." items cached"),
-         true, true, 0.2)
+      tMsg = Sku.deEn("Freund "..p.friendCached.." von "..p.friendTotal..", Feind "..p.harmCached.." von "..p.harmTotal.." Items im Cache",
+                      "friend "..p.friendCached.." of "..p.friendTotal..", enemy "..p.harmCached.." of "..p.harmTotal.." items cached")
+   else
+      tMsg = Sku.deEn("FREMDE Bibliothek aktiv, Feind "..tNh..", Freund "..tNf.." Baender",
+                      "FOREIGN library active, enemy "..tNh..", friend "..tNf.." bands")
    end
+   SkuOptions.Voice:OutputString(Sku.deEn("Reichweiten-Probe: ", "Range probe: ")..tMsg, true, true, 0.2)
 end
