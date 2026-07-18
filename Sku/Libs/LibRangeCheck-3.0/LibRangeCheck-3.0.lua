@@ -4991,6 +4991,49 @@ function lib:activate()
 
   initItemRequests()
 
+  --[[ Sku local patch (2026-07-18): parallel item pre-warm --------------------
+    Stock LibRangeCheck fetches probe-item data ONE item at a time in
+    processItemRequests (it fires a request and `return`s until the server's
+    GET_ITEM_INFO_RECEIVED reply, then does the next). On a cold client item
+    cache that makes the distance bands take MANY MINUTES to fill in after a
+    fresh login. Sku announces target distance right after login, so we can't
+    wait: fire a load request for EVERY probe item up front, in parallel, so the
+    client caches them in a burst. The stock serial loop then finds each item
+    already cached (GetItemInfo returns immediately, no per-item wait) and
+    resolves the whole list in a tick or two.
+
+    Correctness is unchanged: the library's own IsItemDataCached()/GetItemInfo()
+    gate still decides which items it trusts as yardsticks; we only make the data
+    arrive sooner. Footprint: this uses the item-cache subsystem (built for bulk
+    -- bag/tooltip/AH-scan addons request far more), which shares NO throttle
+    with the Auction House query cooldown (CanSendAuctionQuery/QueryAuctionItems)
+    -- so it does not touch AH scanning. If the library is ever re-updated from
+    upstream, re-apply this block.
+  ------------------------------------------------------------------------------]]
+  do
+    local function skuPrewarmItems(itemList)
+      if type(itemList) ~= "table" then
+        return
+      end
+      for _, items in pairs(itemList) do
+        for i = 1, #items do
+          local id = items[i]
+          if C_Item and C_Item.RequestLoadItemData then
+            C_Item.RequestLoadItemData(id)
+          elseif Item and Item.CreateFromItemID then
+            local it = Item:CreateFromItemID(id)
+            if it and not it:IsItemEmpty() then
+              it:ContinueOnItemLoad(function() end)
+            end
+          end
+        end
+      end
+    end
+    skuPrewarmItems(FriendItems)
+    skuPrewarmItems(HarmItems)
+  end
+  -- end Sku local patch --------------------------------------------------------
+
   self.frame:SetScript("OnEvent", function(_, ...)
     self:OnEvent(...)
   end)
