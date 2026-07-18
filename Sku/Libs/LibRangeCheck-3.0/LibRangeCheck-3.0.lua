@@ -5054,28 +5054,35 @@ function lib:activate()
     -- so it does not touch AH scanning. If the library is ever re-updated from
     upstream, re-apply this block.
   ------------------------------------------------------------------------------]]
-  do
+  -- pcall-wrapped: a bad item-API call must NEVER abort activate() (that would
+  -- skip the OnUpdate/OnEvent setup + scheduleInit below and half-break the lib).
+  -- Use the by-ID loader: C_Item.RequestLoadItemData expects an itemLocation, the
+  -- by-ID variant is RequestLoadItemDataByID; fall back to the ItemMixin (which
+  -- the lib already uses) if it's absent on this client.
+  pcall(function()
+    local function skuLoad(id)
+      if C_Item and C_Item.RequestLoadItemDataByID then
+        C_Item.RequestLoadItemDataByID(id)
+      elseif Item and Item.CreateFromItemID then
+        local it = Item:CreateFromItemID(id)
+        if it and not it:IsItemEmpty() then
+          it:ContinueOnItemLoad(function() end)
+        end
+      end
+    end
     local function skuPrewarmItems(itemList)
       if type(itemList) ~= "table" then
         return
       end
       for _, items in pairs(itemList) do
         for i = 1, #items do
-          local id = items[i]
-          if C_Item and C_Item.RequestLoadItemData then
-            C_Item.RequestLoadItemData(id)
-          elseif Item and Item.CreateFromItemID then
-            local it = Item:CreateFromItemID(id)
-            if it and not it:IsItemEmpty() then
-              it:ContinueOnItemLoad(function() end)
-            end
-          end
+          skuLoad(items[i])
         end
       end
     end
     skuPrewarmItems(FriendItems)
     skuPrewarmItems(HarmItems)
-  end
+  end)
   -- end Sku local patch --------------------------------------------------------
 
   self.frame:SetScript("OnEvent", function(_, ...)
