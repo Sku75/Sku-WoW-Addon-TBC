@@ -257,3 +257,51 @@ here so a future session doesn't re-derive the analysis from scratch.
   Alternative to re-check briefly at the same time: SAPIence
   (github.com/LeonarddeR/SAPIence, LGPL, Rust, same mechanism) — as of
   2026-07-05 zero releases/binaries, not a candidate yet.
+- **Range-check cold-start is slow; DBM-style fixed item set is the alternative.**
+  Ask: "check the range-check monitor". Background: the target-distance
+  announcements (`SkuCore/RangeCheck.lua` + `SkuCore/Options.lua`
+  RangecheckMenuBuilder) are driven by **LibRangeCheck-3.0**, which derives its
+  distance bands from the player's class SPELLS (≤40yd in TBC) plus a large ITEM
+  probe list (bands 45/50/60/70/80/90/100 come from items like *Permanent
+  R.O.I.D.S.* at 100yd). On a **cold** game start the item data isn't cached, so
+  the library requests it from the server ONE ITEM AT A TIME on a 0.5s loop with a
+  10s per-item timeout — which is why bands can take many minutes to fully appear
+  after a fresh launch (a plain `/reload` is fast: item cache stays warm). Two
+  side effects the maintainer dislikes: bands are class-asymmetric (e.g. 25 on
+  hostile but not friendly, melee/2 on one side only, because they come from the
+  per-class spell lists) and the long warm-up.
+  - **Done 2026-07-18:** config self-deletion fixed and menu now populates from
+    the live library (commit `36712a6`); embedded lib updated v31 -> v35 (current
+    WeakAuras upstream). NOTE: v35 does **NOT** speed up the cold start —
+    `processItemRequests` is byte-identical to v31; the update's real TBC win is
+    that `LEARNED_SPELL_IN_TAB` now fires (bands refresh as you learn spells while
+    leveling) via the `C_EventUtils.IsEventValid` guard. So after the fix: spell
+    bands are ~instant, config persists, only the exotic item bands still trickle
+    in on a cold start.
+  - **The real speed/consistency fix (undecided, maintainer wants max
+    granularity):** replace the spell+item-probe model with a DBM-style FIXED set
+    — DBM (`DBM-Core/DBM-RangeCheck.lua`) does NOT use LibRangeCheck; it hard-codes
+    ONE reliable item per band (8=Voodoo Charm, 13=Sparrowhawk Net, 18=Silk
+    Bandage, 23=Mistletoe, 28=Egan's Blaster, 33=Scroll of Stamina, 43=Vial of the
+    Sunwell/`UnitInRange`, 48/60/80/100) and calls `IsItemInRange(id, unit)`
+    directly — instant, no caching, SAME bands on every character, symmetric.
+    Maintainer's refinement: don't stop at DBM's ~11 coarse bands — curate ONE
+    always-cacheable item for EACH distinct range that exists (roughly 2..100 in
+    whatever steps real items allow; it can't be literally every integer — a band
+    only exists where a usable item's range property lands). Trade-off vs today:
+    fixed & consistent & instant, but you lose the per-class spell-range precision
+    (which for a "how far is my target" cue isn't needed). Keep `numbers/<n>.mp3`
+    output as-is. Prudent path: build it behind a toggle alongside the current
+    path so it can be A/B'd on one cold start before ripping anything out.
+  - **Middle-ground option:** keep LibRangeCheck but PRE-WARM the item cache at
+    load (batch `C_Item.RequestLoadItemData` / `Item:...:ContinueOnItemLoad` for
+    the probe items so the library's serial loop finds them already cached). Needs
+    the lib's private item list exposed (small lib patch) — collapses the crawl to
+    a couple of frames without changing the band model.
+  - **Misc/"unknown" (corpses) granularity — answer: NOT improvable.** Misc units
+    (corpses, neutral non-help/non-harm) only ever get bands 8 and 28 because the
+    ONLY distance probes that work on a unit you can neither help nor harm are
+    `CheckInteractDistance` (Duel≈8-10, Follow≈28) — item/spell range checks return
+    nil on such units, and Classic has no position/distance API for arbitrary
+    corpses. So even a fixed-item rewrite can't make corpse distance granular; ~2-3
+    interact values (add Trade≈11 at most) is the client-imposed ceiling.
