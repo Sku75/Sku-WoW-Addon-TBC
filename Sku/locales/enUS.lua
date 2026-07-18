@@ -2523,7 +2523,7 @@ L["Taste zuweisen"]  = "Bind key" --
 L["Scan Tasten"]  = "Scan keys" --
 L["Audio Menü Schnellzugriff"]  = "Audio menu quick access" --
 L["Schnellwegpunkte"]  = "Quick waypoints" --
-L["Fokus Tasten"]  = "Focus keys" --
+L["Fokus Tasten"]  = "Sku Focus keys" --
 L["Ziel Markierungen"]  = "Target markers" --
 L["Zu Einheit und Drehen"]  = "Turn to unit and turning" --
 L["Kampfmenü Steuerung"]  = "Combat menu controls" --
@@ -2931,12 +2931,14 @@ L["Source"] = "Source"
 L["current filter"] = "current filter"
 L["Delete this filter"] = "Delete this filter"
 for x = 1, 8 do
-	L["SKU_KEY_FOCUSGET"..x] = "Target focus "..x
-	L["SKU_KEY_FOCUSSET"..x] = "Set focus "..x.." to the name of your current target"
+	L["SKU_KEY_FOCUSGET"..x] = "Target Sku focus "..x
+	L["SKU_KEY_FOCUSSET"..x] = "Set Sku focus "..x.." to the name of your current target"
 end
-L["focus"] = "focus"
+L["focus"] = "Sku Focus "
 L[" set to nothing"] = " set to nothing"
 L[" set to "] = " set to "
+L["Game focus set to "] = "Focus set to "
+L["Game focus cleared"] = "Focus cleared"
 L["not available in combat"] = "not available in combat"
 L["Dropdown Menu"] = "Dropdown Menu"
 

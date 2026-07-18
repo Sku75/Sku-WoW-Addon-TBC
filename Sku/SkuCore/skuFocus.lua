@@ -75,7 +75,14 @@ local function setupHelper()
    tFrame:SetSize(80, 22)
    tFrame:SetText("SkuCoreSkuFocusControl")
    tFrame:SetPoint("TOP", _G["SkuCoreControl"], "BOTTOM", 0, 0)
-   tFrame:RegisterForClicks("AnyUp", "AnyDown")
+   -- Fire the SET action ONCE per keypress. A keybind press delivers both a
+   -- key-down and a key-up event; registering for both edges (the old
+   -- "AnyUp","AnyDown") made OnClick run twice, so SetFocusUnitName -> print ran
+   -- twice and the "focus set" line was spoken twice. This control frame is
+   -- insecure and only reads the target/stores a macro attribute, so a single
+   -- down edge is all we need. (The secure focus GET buttons below keep their own
+   -- click registration untouched.)
+   tFrame:RegisterForClicks("AnyDown")
    tFrame:SetScript("OnClick", function(self, aKey, aB)
       for x = 1, 8 do
          if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_FOCUSSET"..x) then
@@ -123,6 +130,30 @@ local function setupHelper()
    end
 end
 
+-- Announce native (game) focus changes by voice, so Blizzard's own focus system
+-- gives the same audible feedback the Sku focus slots do. PLAYER_FOCUS_CHANGED
+-- fires once whenever the game focus is set, changed, or cleared (via the game's
+-- "Set Focus" keybind, /focus, the unit dropdown, etc.). Setting a focus speaks
+-- the unit's name; clearing it speaks a "cleared" line. Registered/unregistered
+-- with the module (below) so toggling the Fokus feature off silences it too.
+-- Spoken via OutputStringBTtts with engine=2 (the 8th arg), which forces the
+-- Blizzard-TTS path: C_VoiceChat.SpeakText with the user's global WowTtsVoice
+-- (their real SAPI/NVDA voice) -- NOT Sku's own concatenative audio-file voice.
+-- This matches how other one-line Sku voice announcements are made (e.g. SkuMob
+-- unit-death / SkuQuest messages all pass engine=2). Passing engine truthy is what
+-- bypasses the delegation in SkuVoice:OutputStringBTtts that would otherwise fall
+-- back to the Sku audio voice when the global allChatViaBlizzardTts flag is off.
+local function announceGameFocus()
+   if UnitExists("focus") then
+      local tName = UnitName("focus")
+      if tName and tName ~= "" then
+         SkuOptions.Voice:OutputStringBTtts(L["Game focus set to "]..tName, true, true, 0.2, nil, nil, nil, 2)
+      end
+   else
+      SkuOptions.Voice:OutputStringBTtts(L["Game focus cleared"], true, true, 0.2, nil, nil, nil, 2)
+   end
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Arm the feature. Called automatically by AceAddon when the module is enabled
 -- (at SkuCore enable, and again whenever the user toggles it back on). This is the
@@ -137,6 +168,9 @@ function SkuFocus:OnEnable()
       SkuDispatcher:RegisterEventCallback("PLAYER_LEAVE_COMBAT", setupHelper)
    end
 
+   -- Voice announcements for the native focus (independent of the secure setup
+   -- above, so it also works while the combat-deferred setupHelper is pending).
+   SkuDispatcher:RegisterEventCallback("PLAYER_FOCUS_CHANGED", announceGameFocus)
 end
 
 -- Disarm the feature: clear the override bindings on the control frame and the focus
@@ -145,6 +179,7 @@ end
 -- their override bindings makes the focus keybinds inert.)
 function SkuFocus:OnDisable()
    SkuDispatcher:UnregisterEventCallback("PLAYER_LEAVE_COMBAT", setupHelper)
+   SkuDispatcher:UnregisterEventCallback("PLAYER_FOCUS_CHANGED", announceGameFocus)
    if not InCombatLockdown() then
       if _G["SkuCoreSkuFocusControl"] then
          ClearOverrideBindings(_G["SkuCoreSkuFocusControl"])
