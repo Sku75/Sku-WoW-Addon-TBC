@@ -432,6 +432,48 @@ local tOorIntervalTime = -2
 -- file upvalue (NOT reset in PLAYER_REGEN_ENABLED) so the final "0" after combat
 -- is still announced once threatTable is cleared.
 local tRelativeLastAnnounced = 0
+
+-- Crowd-control tracking (INVESTIGATION / diagnostic instrumentation, 2026-07-18).
+-- Goal: know when a tracked enemy is under a CC that pulls it OUT of active combat
+-- (polymorph/banish/sap/shackle/hibernate/trap/repentance/sleep/blind), because
+-- such a mob goes quiet, gets dropped by the 6s stale-sweep, then re-added when the
+-- CC breaks -- the "counts down and up again on sheeped/banished targets" the user
+-- reported. Keyed by spellId, so it is LOCALE-PROOF (this is a German client) and
+-- INDEPENDENT of the recent retail-nameplate change: it reads only the combat log,
+-- never a nameplate or aura unit-token. tCcState lives decoupled from the
+-- threatTable lifecycle (a CC applied a moment before the coalesced add-flush
+-- creates the entry would otherwise be lost) and is fed in the combat-log handler,
+-- consulted by the recount detail log, cleared on aura-remove / death / combat end.
+-- Declared HERE (above the recount closure at aqCombatCreateQueueControlFrame) so
+-- every reader binds it as an upvalue. NOT yet wired to announcements -- that
+-- follows once a live capture confirms detection. Extend tCcSpells after the
+-- in-game aura probe (see the CC investigation notes).
+local tCcAuraEvents = {
+   SPELL_AURA_APPLIED = true, SPELL_AURA_REFRESH = true,
+   SPELL_AURA_REMOVED = true, SPELL_AURA_BROKEN = true, SPELL_AURA_BROKEN_SPELL = true,
+}
+local tCcSpells = {
+   -- Polymorph (sheep) + TBC variants
+   [118] = "sheep", [12824] = "sheep", [12825] = "sheep", [12826] = "sheep",
+   [28271] = "sheep", [28272] = "sheep",
+   -- Banish
+   [710] = "banish", [18647] = "banish",
+   -- Sap
+   [6770] = "sap", [2070] = "sap", [11297] = "sap",
+   -- Shackle Undead
+   [9484] = "shackle", [9485] = "shackle", [10955] = "shackle",
+   -- Hibernate
+   [2637] = "hibernate", [18657] = "hibernate", [18658] = "hibernate",
+   -- Freezing Trap effect
+   [3355] = "trap", [14308] = "trap", [14309] = "trap",
+   -- Repentance
+   [20066] = "repentance",
+   -- Wyvern Sting (sleep)
+   [19386] = "sleep", [24132] = "sleep", [24133] = "sleep", [27068] = "sleep",
+   -- Blind
+   [2094] = "blind",
+}
+local tCcState = {}              -- [creatureGUID] = {key = "sheep", t = <precise sec>}
 local function tCombatInCounts(value, creatureGUID, tPlayerGUID, tAllPartyRaidUnits)
    -- [W6-C #20] shared "does this in-combat creature count?" classifier, extracted
    -- from the two identical value==4/3/2 cascades (relativeNumberUnitsInCombat and
@@ -770,7 +812,37 @@ local function aqCombatCreateControlFrame()
                SkuCore.inOutCombatQueue.current = tCount
 
                if tCount ~= tRelativeLastAnnounced then
-                  dprint("aqCombat enemies-in-combat recount:", tCount, "prev", tRelativeLastAnnounced, "mode", tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value)
+                  local tMode = tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value
+                  dprint("aqCombat enemies-in-combat recount:", tCount, "prev", tRelativeLastAnnounced, "mode", tMode)
+                  -- Per-mob breakdown at the exact tick the number changes: WHY each
+                  -- live entry is/isn't counted (c=Y/N), whether it passed the elite
+                  -- gate, how long since it was last touched (idle -> stale-sweep
+                  -- candidate at 6s) and any crowd-control state. A count DROP on a
+                  -- still-alive mob showing "cc=sheep" or a large idle is the
+                  -- CC/stale-sweep down-then-up behaviour, not a real combat leave.
+                  if Sku.debug and (Sku.debug.log or Sku.debug.print) then
+                     local tNow2 = GetTimePreciseSec()
+                     local tParts, tShown, tCcCount = {}, 0, 0
+                     for tGuid, tEntry in pairs(SkuCore.threatTable) do
+                        if type(tEntry) == "table" then
+                           local tCc = tCcState[tGuid] and tCcState[tGuid].key
+                           if tCc then tCcCount = tCcCount + 1 end
+                           if tShown < 15 then
+                              tShown = tShown + 1
+                              local tElite = aqCombatCheckElite(tGuid)
+                              local tCounts = tElite and tCombatInCounts(tMode, tGuid, tPlayerGUID, tAllPartyRaidUnits)
+                              local tIdle = tEntry.lastUpdate and (tNow2 - tEntry.lastUpdate) or -1
+                              tParts[#tParts + 1] = string.format("[%s c=%s%s%s idle%.1f]",
+                                 tostring(tEntry.name or tGuid:sub(-6)),
+                                 tCounts and "Y" or "N",
+                                 tElite and "" or " noElite",
+                                 tCc and (" cc=" .. tCc) or "",
+                                 tIdle)
+                           end
+                        end
+                     end
+                     dprint("aqCombat recount detail: ccInSet=" .. tCcCount, table.concat(tParts, " "))
+                  end
                   tRelativeLastAnnounced = tCount
                   local tSetting = tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat
                   SkuCoreAqCombatOutput(tSetting.voiceOutput, {number1 = tCount,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
@@ -846,6 +918,7 @@ function aqCombat:aqCombat_CREATURE_REMOVED_FROM_COMBAT(aCreatureGuid, aCreature
    end
    SkuCore.inOutCombatQueue.combatOut[aCreatureGuid] = true
    SkuCore.threatTable[aCreatureGuid] = false
+   tCcState[aCreatureGuid] = nil
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1294,6 +1367,24 @@ local tGUIDCache = {creatures = {}, nonCreatures = {}}
 function aqCombat:aqCombat_COMBAT_LOG_EVENT_UNFILTERED()
    local arg1, event, arg3, sourceGUID, sourceName, arg6, arg7, targetGUID, targetName = CombatLogGetCurrentEventInfo()
 
+   -- CC state maintenance (see tCcSpells). Runs regardless of the party-source gate
+   -- below, since CC can come from the player, a pet, or any group member.
+   if targetGUID and tCcAuraEvents[event] then
+      local tSpellId = select(12, CombatLogGetCurrentEventInfo())
+      local tCc = tSpellId and tCcSpells[tSpellId]
+      if tCc then
+         if event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REFRESH" then
+            if not (tCcState[targetGUID] and tCcState[targetGUID].key == tCc) then
+               dprint("aqCombat cc-applied:", targetName or "?", tCc, "spell", tSpellId)
+            end
+            tCcState[targetGUID] = {key = tCc, t = GetTimePreciseSec()}
+         elseif tCcState[targetGUID] then
+            dprint("aqCombat cc-removed:", targetName or "?", tCcState[targetGUID].key, "via", event)
+            tCcState[targetGUID] = nil
+         end
+      end
+   end
+
    if sourceGUID and targetGUID then
       if aqCombat:aqCombatIsPartyOrRaidMember(nil, sourceGUID) then
          if not tGUIDCache.nonCreatures[targetGUID] then
@@ -1501,6 +1592,12 @@ function aqCombat:aqCombat_PLAYER_REGEN_ENABLED()
       combatIn = {},
 		combatOut = {},
    }
+
+   -- Combat over: drop all tracked crowd-control state so it can't leak into the
+   -- next fight (tCcState is decoupled from threatTable, cleared here + on death).
+   for tGuid in pairs(tCcState) do
+      tCcState[tGuid] = nil
+   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
