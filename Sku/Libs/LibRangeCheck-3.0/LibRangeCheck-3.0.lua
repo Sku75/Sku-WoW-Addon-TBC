@@ -2074,6 +2074,14 @@ else
       202020, -- Chasing Storm
       210223, -- Unstable Element
       222976, -- Flame-Tempered Harpoon
+      -- Sku: TBC-valid 100yd probes. v35's TBC [100] listed only WotLK+ items (none
+      -- exist on 2.5.6 -> no 100 band), while these DM-tribute "permanent" elixirs
+      -- ARE cached on TBC. createCheckerList skips the uncached items above and uses one.
+      23722,  -- Permanent R.O.I.D.S.
+      23715,  -- Permanent Lung Juice Cocktail
+      23718,  -- Permanent Ground Scorpok Assay
+      23719,  -- Permanent Cerebral Cortex Compound
+      23721,  -- Permanent Gizzard Gum
     },
     [120] = {
       160988, -- Goblin Incendiary Rocket Launcher
@@ -3718,6 +3726,13 @@ else
       161422, -- Magister Umbric's Void Shard
       163604, -- Net-o-Matic 5000
       222976, -- Flame-Tempered Harpoon
+      -- Sku: TBC-valid 100yd probes (see FriendItems[100]); the WotLK+ items above
+      -- don't exist on 2.5.6, these DM-tribute permanent elixirs are cached on TBC.
+      23722,  -- Permanent R.O.I.D.S.
+      23715,  -- Permanent Lung Juice Cocktail
+      23718,  -- Permanent Ground Scorpok Assay
+      23719,  -- Permanent Cerebral Cortex Compound
+      23721,  -- Permanent Gizzard Gum
     },
     [120] = {
       160988, -- Goblin Incendiary Rocket Launcher
