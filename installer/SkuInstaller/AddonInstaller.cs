@@ -121,7 +121,28 @@ namespace SkuInstaller
 
             string installedTag = _manifest.GetTag(spec.FolderName);
             if (installedTag != null)
+            {
+                // Primary (Sku): compare by version ORDER, not tag inequality, so we
+                // only ever move forward. The effective "latest" can fall BACK to the
+                // build-time pin when the live /releases/latest redirect can't be
+                // resolved (offline, a 15s timeout on a slow link, or a misplaced
+                // "Latest" badge). A direction-agnostic tag-equality test would then
+                // plan a DOWNGRADE for a user already on a newer release; ordering
+                // makes that a no-op instead. Equal or newer installed -> skip.
+                if (spec.IsPrimary)
+                {
+                    string have = installedTag.TrimStart('v', 'V');
+                    string want = VersionFromTagOrAsset(resolved);
+                    if (CompareVersions(have, want) < 0)
+                        return true;                   // genuinely older -> update
+                    Logger.Info($"{spec.FolderName}: installed {installedTag} >= latest {resolved.Tag}; skipping (no downgrade).");
+                    return false;
+                }
+
+                // Companions/language packs are pinned to a fixed tag; any change to
+                // that pin is a deliberate re-point, so tag inequality is correct.
                 return !string.Equals(installedTag, resolved.Tag, StringComparison.OrdinalIgnoreCase);
+            }
 
             // Pre-existing install, no manifest record yet (first run of this updater).
             if (spec.IsPrimary)

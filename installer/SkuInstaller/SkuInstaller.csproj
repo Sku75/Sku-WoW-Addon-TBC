@@ -10,8 +10,10 @@
     <AssemblyName>SkuInstaller</AssemblyName>
     <RootNamespace>SkuInstaller</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <!-- Single source of truth for the installer's own version. -->
-    <Version>0.1.0</Version>
+    <!-- Single source of truth for the installer's own version. Surfaced in the
+         window title (MainForm.InstallerVersion) so it's announced by the screen
+         reader; trailing zero components are dropped, so 3.0.0 shows as "v3". -->
+    <Version>3.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

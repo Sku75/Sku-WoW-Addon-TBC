@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -241,10 +242,26 @@ namespace SkuInstaller
             return l;
         }
 
+        /// <summary>
+        /// The installer's own version for the title bar, from the assembly version
+        /// (set once in the csproj &lt;Version&gt;). Trailing zero components are
+        /// dropped, so 3.0.0.0 reads as "v3" and 3.1.0.0 as "v3.1".
+        /// </summary>
+        private static string InstallerVersion()
+        {
+            var v = Assembly.GetExecutingAssembly().GetName().Version ?? new Version(0, 0);
+            int[] comps = { v.Major, Math.Max(0, v.Minor), Math.Max(0, v.Build), Math.Max(0, v.Revision) };
+            int last = comps.Length - 1;
+            while (last > 0 && comps[last] == 0) last--;
+            var parts = new string[last + 1];
+            for (int i = 0; i <= last; i++) parts[i] = comps[i].ToString();
+            return "v" + string.Join(".", parts);
+        }
+
         /// <summary>(Re)applies all visible text from <see cref="Loc"/>.</summary>
         private void ApplyTexts()
         {
-            Text = Loc.Get("app.title");
+            Text = Loc.Get("app.title") + " " + InstallerVersion();
 
             _flavorLabel.Text = Loc.Get("ui.gameVersion");
             _addonsLabel.Text = Loc.Get("ui.addonsLabel");
