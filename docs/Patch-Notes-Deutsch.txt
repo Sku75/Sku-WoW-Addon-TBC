@@ -4,6 +4,68 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v42.07
+
+    AddOn-Einstellungen: Einstellungen anderer Addons lesen und aendern
+        Einfach: Ein neuer Punkt "AddOn-Einstellungen" im Addons-Menue (und ueber den
+            Knopf "AddOns" im Escape-Spielmenue) macht die Einstellungen anderer
+            Addons mit dem Screenreader lesbar und aenderbar - Questie, Deadly Boss
+            Mods, AtlasLoot, Extended Character Stats und weitere. Ihre Optionen
+            erscheinen als normale Sku-Menues: Ein/Aus-Schalter, Auswahllisten,
+            Schieberegler und Textfelder. Laesst sich im Features-Menue abschalten.
+        Technisch: SkuCore/addonOptions.lua liest die AceConfig-Optionstabelle eines
+            beliebigen Addons ueber die prozessweite AceConfigRegistry
+            (IterateOptionsTables / GetOptionsTable) mit AceConfig-Vererbungssemantik
+            und stellt sie mit denselben Menueformen wie gameOptions.lua dar.
+            Kuratierte oberste Liste; Konfig-Addons, die nur bei Bedarf laden, werden
+            beim Oeffnen geladen. Fuer Deadly Boss Mods eigene Adapter: Optionen je
+            Boss-Mod aus DBM.Mods sowie die Kernoptionen ueber einen
+            DBM-GUI-Widget-Durchlauf.
+
+    Entfernungspruefung: Baender bleiben erhalten und sind schnell verfuegbar
+        Einfach: Bei den Entfernungsansagen (den "Entfernung"-Pruefungen) gab es einen
+            Fehler, durch den eingestellte Entfernungsbaender sich selbst abschalten
+            konnten und die Liste leer erscheinen konnte. Behoben: eingestellte
+            Baender bleiben erhalten, die Liste fuellt sich zuverlaessig, und neu
+            verfuegbare Baender werden angesagt. Nach einem frischen Login sind die
+            Baender ausserdem deutlich schneller bereit, und das 100-Yard-Band
+            funktioniert auf TBC wieder. Hinweis: Sie hoeren jetzt deutlich mehr
+            Entfernungsansagen als gewohnt, weil jedes verfuegbar werdende Band
+            angesagt wird - unerwuenschte koennen Sie unter Monitor -> Entfernung
+            abschalten.
+        Technisch: RangeCheck entfernt gespeicherte Baender nicht mehr anhand
+            voruebergehender LibRangeCheck-Verfuegbarkeit; das Menue fuellt sich
+            synchron beim Aktivieren mit zeitlich gestaffelten stillen Wiederholungen
+            und aktualisiert aus der laufenden Bibliothek. LibRangeCheck-3.0 wurde von
+            v31 auf v35 aktualisiert (Zauber-Baender aktualisieren sich beim Leveln
+            via LEARNED_SPELL_IN_TAB). Ein paralleles Vorwaermen der Item-Daten beim
+            Aktivieren fuellt Item-Baender im Schwung statt seriell. Fuenf permanente
+            DM-Elixiere wurden in die TBC-100er-Tabellen ergaenzt, damit sich das
+            100-Band bildet. Ein Kampf-Schutz ueberspringt nicht angreifbare Ziele,
+            deren Interaktionsdistanz-Pruefer im Kampf falsche Werte liefern.
+
+    Fokus: Aenderungen des Spiel-Fokus werden vorgelesen
+        Einfach: Das Festlegen oder Entfernen des Spiel-Fokus wird jetzt per Stimme
+            angesagt ("Fokus festgelegt auf <Name>" / "Fokus entfernt"). Die acht
+            Sku-Fokus-Tastenbelegungen und ihre Menuegruppe heissen jetzt "Sku Fokus",
+            damit sie klar vom Spiel-eigenen Fokus zu unterscheiden sind. Das
+            Festlegen eines Sku-Fokus sagt die Bestaetigung nicht mehr doppelt.
+        Technisch: PLAYER_FOCUS_CHANGED laeuft ueber die Blizzard-TTS (Engine 2,
+            globale Stimme des Nutzers) und ist mit dem SkuFocus-Modulschalter
+            registriert. Die "Set"-Taste reagiert nur noch auf AnyDown (vorher
+            AnyUp+AnyDown, wodurch sie auf beiden Tastenflanken ausloeste).
+
+    Menue: ueberfluessiger Ton beim Oeffnen/Schliessen entfernt
+        Einfach: Beim Oeffnen oder Schliessen des Menues wurde manchmal ein
+            zusaetzlicher "Aus"-Ton aus einer internen Aufraeumung abgespielt. Jetzt
+            ertoent nur noch das Menue-Wisch-Geraeusch; alle anderen Aktionen behalten
+            ihren gewohnten Ton.
+        Technisch: SkuTTS:Hide bekam einen Still-Schalter, den der Menue-Auf/Zu-
+            Umschalter nutzt, um den sound-off2-Ping aus dem defensiven Ausblenden
+            eines uebrig gebliebenen Lese-Frames zu unterdruecken.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.06
 
     Verzauberkunst: Absturz beim Oeffnen des Fensters behoben
