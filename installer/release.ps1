@@ -53,7 +53,13 @@ param(
     [switch]$DryRun
 )
 
-$ErrorActionPreference = 'Stop'
+# NOT 'Stop': native tools (git, gh, dotnet) write normal progress/status to
+# stderr - e.g. `gh release view` prints "release not found" to stderr to say a
+# release doesn't exist yet, and `git push` prints its summary there too. Under
+# 'Stop' PowerShell 5.1 turns any such stderr line into a fatal error. We instead
+# check $LASTEXITCODE after every native call (see Exec) and `throw` explicitly,
+# and add -ErrorAction Stop to the cmdlets that must hard-fail.
+$ErrorActionPreference = 'Continue'
 try { [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12 } catch {}
 
 # --- Paths and constants ----------------------------------------------------
@@ -154,7 +160,7 @@ function Sync-PatchNotesToDocs {
         @{ src = (Join-Path $SkuDir 'Patch Notes Sku DE.txt'); dst = (Join-Path $RepoRoot 'docs\Patch-Notes-Deutsch.txt') }
     )
     foreach ($p in $pairs) {
-        if (Test-Path $p.src) { Copy-Item $p.src $p.dst -Force; Info "  synced $(Split-Path $p.dst -Leaf)" }
+        if (Test-Path $p.src) { Copy-Item $p.src $p.dst -Force -ErrorAction Stop; Info "  synced $(Split-Path $p.dst -Leaf)" }
     }
 }
 
@@ -206,7 +212,13 @@ function Announce-Discord($title, $body, $url) {
         if ($DryRun) { Dry "POST Discord embed to $masked"; continue }
         Info "  Announcing to $masked"
         $bytes = [System.Text.Encoding]::UTF8.GetBytes($payload)
-        Invoke-RestMethod -Uri $wh -Method Post -ContentType 'application/json; charset=utf-8' -Body $bytes | Out-Null
+        # A webhook failure must NOT undo an already-published release - warn, keep going.
+        try {
+            Invoke-RestMethod -Uri $wh -Method Post -ContentType 'application/json; charset=utf-8' -Body $bytes -ErrorAction Stop | Out-Null
+            Info "  posted."
+        } catch {
+            Write-Warning "  Discord POST to $masked failed: $($_.Exception.Message)"
+        }
     }
 }
 
@@ -234,7 +246,7 @@ function Build-InstallerExe {
     if ($LASTEXITCODE -ne 0) { throw "Installer build failed." }
     if (-not (Test-Path $ExeBuilt)) { throw "Built exe missing: $ExeBuilt" }
     New-Item -ItemType Directory -Force $Dist | Out-Null
-    Copy-Item $ExeBuilt $ExeDist -Force
+    Copy-Item $ExeBuilt $ExeDist -Force -ErrorAction Stop
     Info "  -> $ExeDist"
 }
 
