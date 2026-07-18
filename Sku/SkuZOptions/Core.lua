@@ -1674,7 +1674,14 @@ function SkuOptions:CreateMainFrame()
 			end
 			if SkuOptions.TTS:IsVisible() then
 				--SkuOptions.TTS:Output("", -1)
-				SkuOptions.TTS:Hide()
+				-- Silence the reading-frame close ping when this is the menu open/close
+				-- toggle: opening/closing the Sku menu should play only the menu swoosh,
+				-- not the shared sound-off2 ("follow/off") ping leaking in from this
+				-- defensive hide of a leftover reading frame. Covers the manual hotkey
+				-- and the programmatic reopen (a == nil, treated as open-menu at the
+				-- SKU_KEY_OPENMENU branch below). Every other hotkey keeps the audible
+				-- dismiss feedback (arg resolves to a strict true/false).
+				SkuOptions.TTS:Hide(SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_OPENMENU") or a == nil)
 			end
 		end
 		if a == "SHIFT-UP" then

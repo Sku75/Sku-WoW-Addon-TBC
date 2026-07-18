@@ -236,6 +236,19 @@ function dprint(...)
 	end
 end
 
+-- [SOUND-PROBE] TEMPORARY diagnostic: log every PlaySound(kitId) call with a
+-- short caller stack, so we can confirm whether the built-in menu open/close
+-- swoosh (SoundKit 88 / 89) is actually fired on open -- and whether it still
+-- produces audio in the current client. Gated behind the Sku.debug.log flag via
+-- dprint. Blizzard also calls PlaySound a lot, so clear the ring and do one open
+-- for a clean capture. Remove this block (grep SOUND-PROBE) when done.
+if not Sku._soundProbeHooked and type(hooksecurefunc) == "function" then
+	Sku._soundProbeHooked = true
+	hooksecurefunc("PlaySound", function(aKit)
+		dprint("[SOUND-PROBE] PlaySound", tostring(aKit), debugstack(2, 2, 0))
+	end)
+end
+
 -- Write a one-off marker line into the ring with full date+time. Called when
 -- logging is turned on, so a persisted-but-uncleared buffer shows an
 -- unmistakable "this run starts here" divider — the ring is NOT cleared on

@@ -912,6 +912,14 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		tIsSound = true
 	end
 
+	-- [SOUND-PROBE] TEMPORARY diagnostic: log every sound-* asset played (e.g.
+	-- sound-off2, sound-on3_1) with a short caller stack, so we can see exactly
+	-- which feature fires the "follow/off" ping on menu open. Gated behind the
+	-- Sku.debug.log flag (dprint). Remove this block (grep SOUND-PROBE) when done.
+	if tIsSound and dprint then
+		dprint("[SOUND-PROBE] sound", aString, debugstack(2, 3, 0))
+	end
+
 	if not tIsSound then
 		if SkuVoice:CheckIgnore(aString) then
 			aIgnoreLinks = true

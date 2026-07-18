@@ -430,12 +430,20 @@ function SkuTTS:Output(text, duration)
 	end
 	
 end
-function SkuTTS:Hide()
+function SkuTTS:Hide(aSilent)
 	--print("SkuTTS:Hide")
 	--SkuTTS.MainFrame.FS:SetText("")
 	if SkuTTS.MainFrame:IsVisible() == true then
 		SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
-		SkuOptions.Voice:OutputString("sound-off2", true, true, 0.2)
+		-- aSilent: hide the reading frame WITHOUT the shared sound-off2 ("follow/
+		-- off") ping. Used when the hide is only a side effect of opening/closing
+		-- the Sku menu -- there the menu's own open/close swoosh is the intended
+		-- feedback and this leftover reading-frame ping just doubles up (it is the
+		-- same asset as autofollow-end). A normal, direct dismiss (a nav key while
+		-- the reading frame is up) passes nothing and still pings as before.
+		if aSilent ~= true then
+			SkuOptions.Voice:OutputString("sound-off2", true, true, 0.2)
+		end
 	end
 	SkuTTS.MainFrame:Hide()
 	SkuTTS.AutoReadMode = nil
