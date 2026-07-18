@@ -44,29 +44,59 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function RangeCheck:CHECKERS_CHANGED()
-   RangeCheck:RangeCheckUpdateRanges()
+   -- A genuine checker change may be a NEW band appearing -> allow the announce.
+   RangeCheck:RangeCheckUpdateRanges(true)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function RangeCheck:RangeCheckOnEnable()
+   -- Populate the availability snapshot from the CURRENT library state right now,
+   -- instead of waiting for a CHECKERS_CHANGED that may already have fired before
+   -- we registered our callback. On a /reload or a quiet login the library can
+   -- reach its final checker set and never fire again, which previously left the
+   -- "Entfernung" config menu permanently empty (snapshot never filled). Re-run
+   -- on a few short delays too, to catch async item caching
+   -- (GET_ITEM_INFO_RECEIVED) settling in over the first several seconds. All
+   -- these passes are SILENT (no "Neue Reichweite" spam); only real
+   -- CHECKERS_CHANGED events announce.
+   RangeCheck:RangeCheckUpdateRanges(false)
+   for _, tDelay in ipairs({1, 3, 6, 10}) do
+      C_Timer.After(tDelay, function()
+         if RangeCheck:IsEnabled() then
+            RangeCheck:RangeCheckUpdateRanges(false)
+         end
+      end)
+   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local tDefBands = {5, 8, 10, 15, 20, 25, 30, 35, 40, 45, 60}
+local function tMakeDefaultBands()
+   local t = {}
+   for _, d in ipairs(tDefBands) do
+      t[d] = {["sound"] = L["vocalized"]}
+   end
+   return t
+end
+
 local tFirstRangeUpdateSilent = true
-function RangeCheck:RangeCheckUpdateRanges()
-   if SkuOptions.RangeCheck.frame:IsVisible() == true then
-      C_Timer.After(0.1, function() RangeCheck:RangeCheckUpdateRanges() end)
+function RangeCheck:RangeCheckUpdateRanges(aAnnounce)
+   -- NOTE: no more `frame:IsVisible()` deferral. That guard watched the LIBRARY's
+   -- internal update frame (shown on every player UNIT_AURA and while items
+   -- cache), so a checker change arriving while it was visible got deferred and
+   -- the retry chain could keep missing -> menu stuck empty. Reading the current
+   -- checker lists (GetFriend/Harm/MiscCheckers) is safe at any time, so we just
+   -- populate synchronously.
+   local tRC = SkuSettings:Sub("SkuCore", nil, "char")
+   if not tRC then
       return
    end
-   if not SkuSettings:Sub("SkuCore", nil, "char").RangeChecks then
-      local tDefBands = {5, 8, 10, 15, 20, 25, 30, 35, 40, 45, 60}
-      local function tMakeDefaultBands()
-         local t = {}
-         for _, d in ipairs(tDefBands) do
-            t[d] = {["sound"] = L["vocalized"]}
-         end
-         return t
-      end
-      SkuSettings:Sub("SkuCore", nil, "char").RangeChecks = {
+
+   -- Seed defaults when the config is missing OR structurally empty. The old
+   -- guard was `if not RangeChecks`, but a profile reset (SkuZOptions/Options.lua)
+   -- leaves empty {} sub-tables, which is truthy -> the user then got NO defaults.
+   -- `next()` treats that empty shell as "needs seeding".
+   if not tRC.RangeChecks or not next(tRC.RangeChecks) then
+      tRC.RangeChecks = {
          ["Misc"] = {
             [8] = {["sound"] = L["vocalized"]},
             [28] = {["sound"] = L["vocalized"]},
@@ -75,43 +105,68 @@ function RangeCheck:RangeCheckUpdateRanges()
          ["Hostile"] = tMakeDefaultBands(),
       }
    end
+   -- Guard against a partially-populated table (e.g. only one category present).
+   tRC.RangeChecks.Friendly = tRC.RangeChecks.Friendly or {}
+   tRC.RangeChecks.Hostile = tRC.RangeChecks.Hostile or {}
+   tRC.RangeChecks.Misc = tRC.RangeChecks.Misc or {}
 
-   if tFirstRangeUpdateSilent then
-      tFirstRangeUpdateSilent = nil
-   else
-      SkuOptions.Voice:OutputString(L["Neue Reichweite verfügbar"], true, true, 0.2)
-   end
-
-   RangeCheck.RangeCheckValues.Ranges.Friendly = {}
-   --query available ranges
+   -- Rebuild the AVAILABILITY snapshot from scratch for EVERY category. The old
+   -- code only wiped Friendly before repopulating; Hostile/Misc were never reset,
+   -- so they accumulated a monotonic session-union (a band seen available once
+   -- stayed "available" forever). That asymmetry is why the (former) prune hit
+   -- Friendly hard but almost never touched Hostile/Misc. This snapshot now
+   -- reflects the present, and drives the config menu only (see Options.lua
+   -- RangecheckMenuBuilder) -- nothing here reads it back to gate playback.
+   local tRanges = RangeCheck.RangeCheckValues.Ranges
+   tRanges.Friendly = {}
+   tRanges.Hostile = {}
+   tRanges.Misc = {}
    for i, v in SkuOptions.RangeCheck:GetFriendCheckers() do
-      RangeCheck.RangeCheckValues.Ranges.Friendly[i] = v
+      tRanges.Friendly[i] = v
    end
-   --remove configured checks that a not longer available
-   for i, v in pairs(SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Friendly) do
-      if not RangeCheck.RangeCheckValues.Ranges.Friendly[i] then
-         SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Friendly[i] = nil
-      end
-   end
-
    for i, v in SkuOptions.RangeCheck:GetHarmCheckers() do
-      RangeCheck.RangeCheckValues.Ranges.Hostile[i] = v
+      tRanges.Hostile[i] = v
    end
-   for i, v in pairs(SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Hostile) do
-      if not RangeCheck.RangeCheckValues.Ranges.Hostile[i] then
-         SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Hostile[i] = nil
-      end
-   end
-
    for i, v in SkuOptions.RangeCheck:GetMiscCheckers() do
-      RangeCheck.RangeCheckValues.Ranges.Misc[i] = v
+      tRanges.Misc[i] = v
    end
-   for i, v in pairs(SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Misc) do
-      if not RangeCheck.RangeCheckValues.Ranges.Misc[i] then
-         SkuSettings:Sub("SkuCore", nil, "char").RangeChecks.Misc[i] = nil
-      end
-   end   
 
+   -- IMPORTANT: we deliberately DO NOT prune char.RangeChecks against the
+   -- availability snapshot any more. LibRangeCheck bands go transiently
+   -- unavailable all the time -- items are still caching for a few seconds after
+   -- login (async GET_ITEM_INFO_RECEIVED), after a respec, or simply when a
+   -- given item isn't carried. The old prune deleted the user's saved sound for
+   -- such a band PERMANENTLY, and nothing ever re-added it, so ranges
+   -- "deactivated themselves". DoRangeCheck already no-ops for a band while
+   -- GetRange doesn't return its distance, so keeping stale config costs nothing.
+
+   -- Auto-enable newly AVAILABLE bands the user has never configured, so
+   -- leveling / gearing into a new range announces by default instead of coming
+   -- back silent. An explicit mute is stored as an error_silent sound entry
+   -- (RangeCheckSounds), i.e. it HAS a config entry, so it is NOT overwritten
+   -- here -- only genuinely-absent (never-touched) bands get seeded.
+   local function tSeedNewBands(aCategory)
+      for i in pairs(tRanges[aCategory]) do
+         if tRC.RangeChecks[aCategory][i] == nil then
+            tRC.RangeChecks[aCategory][i] = {["sound"] = L["vocalized"]}
+         end
+      end
+   end
+   tSeedNewBands("Friendly")
+   tSeedNewBands("Hostile")
+   tSeedNewBands("Misc")
+
+   -- Announce "new range available" ONLY for a genuine CHECKERS_CHANGED event
+   -- (aAnnounce), and never on the very first pass of the session (that one is
+   -- just the initial fill). The silent enable-time / menu-open / retry passes
+   -- pass aAnnounce = false, so they never speak.
+   if aAnnounce then
+      if tFirstRangeUpdateSilent then
+         tFirstRangeUpdateSilent = nil
+      else
+         SkuOptions.Voice:OutputString(L["Neue Reichweite verfügbar"], true, true, 0.2)
+      end
+   end
 end
    
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -142,6 +197,16 @@ function RangeCheck:DoRangeCheck(aForceFlag)
    end
 
    if not SkuSettings:Sub("SkuCore", nil, "char") then
+      return
+   end
+
+   -- WowVision-style guard (core/windows/range.lua): the interact-distance
+   -- checkers (Duel = 8yd / Follow = 28yd) that back friendly & neutral range
+   -- readings are BLOCKED by Blizzard in combat (InCombatLockdownRestriction in
+   -- LibRangeCheck), so GetRange returns unreliable bands for non-attackable
+   -- targets while in combat. Skip them rather than announce a wrong distance.
+   -- Hostile targets are unaffected (harm bands are spell-based, valid in combat).
+   if InCombatLockdown() and UnitExists("target") and not UnitCanAttack("player", "target") then
       return
    end
 

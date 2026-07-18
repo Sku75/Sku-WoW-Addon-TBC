@@ -1482,8 +1482,14 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function RangecheckMenuBuilder(aParent, aType)
+	-- Refresh the availability snapshot straight from the live LibRangeCheck state
+	-- right before we render, so the list is never stale/empty just because a
+	-- CHECKERS_CHANGED callback was missed at load. Silent (no announce).
+	if SkuCore.RangeCheck and SkuCore.RangeCheck.RangeCheckUpdateRanges then
+		SkuCore.RangeCheck:RangeCheckUpdateRanges(false)
+	end
 	local tEntriesFound = false
-	for i = 1, 100 do 
+	for i = 1, 100 do
 		if SkuCore.RangeCheck.RangeCheckValues.Ranges[aType][i] then
 			local tIsConfiguredWith = ";"..L["silent"]
 			if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[aType][i] then
