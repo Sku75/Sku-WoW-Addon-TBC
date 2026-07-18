@@ -278,7 +278,18 @@ here so a future session doesn't re-derive the analysis from scratch.
     leveling) via the `C_EventUtils.IsEventValid` guard. So after the fix: spell
     bands are ~instant, config persists, only the exotic item bands still trickle
     in on a cold start.
-  - **The real speed/consistency fix (undecided, maintainer wants max
+  - **Cold-start speed FIXED 2026-07-18 (commit `37e3431`, pending in-game
+    verify):** parallel item pre-warm — a Sku-local patch in LibRangeCheck
+    `activate()` fires `C_Item.RequestLoadItemData` (fallback ItemMixin
+    `ContinueOnItemLoad`) for every FriendItems/HarmItems probe id up front, so
+    the client caches them in a burst and the stock serial loop then finds each
+    already cached and resolves in a tick or two instead of minutes. Correctness
+    unchanged; shares no throttle with the AH query cooldown. Marked in-source as
+    a local patch — RE-APPLY if the lib is re-updated from upstream. If a cold
+    start is still slow after this, the remaining suspects are dead/silent probe
+    items that lead a band's list (10s timeout each) — next lever is skipping
+    those ids or lowering `ItemRequestTimeout`.
+  - **The DBM-style fixed-set rewrite (still undecided, maintainer wants max
     granularity):** replace the spell+item-probe model with a DBM-style FIXED set
     — DBM (`DBM-Core/DBM-RangeCheck.lua`) does NOT use LibRangeCheck; it hard-codes
     ONE reliable item per band (8=Voodoo Charm, 13=Sparrowhawk Net, 18=Silk
@@ -293,11 +304,9 @@ here so a future session doesn't re-derive the analysis from scratch.
     (which for a "how far is my target" cue isn't needed). Keep `numbers/<n>.mp3`
     output as-is. Prudent path: build it behind a toggle alongside the current
     path so it can be A/B'd on one cold start before ripping anything out.
-  - **Middle-ground option:** keep LibRangeCheck but PRE-WARM the item cache at
-    load (batch `C_Item.RequestLoadItemData` / `Item:...:ContinueOnItemLoad` for
-    the probe items so the library's serial loop finds them already cached). Needs
-    the lib's private item list exposed (small lib patch) — collapses the crawl to
-    a couple of frames without changing the band model.
+    (NOTE: the pre-warm above already removes the cold-start pain without this
+    rewrite, so the DBM-style set is now only about band CONSISTENCY across
+    characters + symmetry, not speed.)
   - **Misc/"unknown" (corpses) granularity — answer: NOT improvable.** Misc units
     (corpses, neutral non-help/non-harm) only ever get bands 8 and 28 because the
     ONLY distance probes that work on a unit you can neither help nor harm are
