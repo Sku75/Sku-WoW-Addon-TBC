@@ -6458,6 +6458,95 @@ local function SkuOptionsEditBoxOkScript(...)
 	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v42.08] Zeichenweises Vorlesen der Texteingabe (aus Naxedims SkuMailboxReplacement
+-- uebernommen, nativ integriert). Ohne dies tippt der SR-Nutzer "blind" in jede
+-- Sku-EditBox und hoert erst beim Bestaetigen den Endwert. Jetzt hoerbar:
+--   * jedes getippte / geloeschte Zeichen (OnChar / Ruecktaste),
+--   * Zeichen bzw. ganzes Wort unter dem Cursor bei Pfeil Links/Rechts (Strg = Wort),
+--   * der ganze Text bei Pfeil Hoch/Runter,
+--   * "Abgebrochen" bei Escape.
+-- Regulaere Menue-Navigation liegt auf UMSCHALT-Pfeilen, die schlichten Pfeile sind
+-- frei -> in der fokussierten EditBox bewegen sie den Textcursor ohne Konflikt.
+-- UTF-8-sicher (Umlaute/Akzente). Engine 2 (Blizzard-TTS), da Freitext, den die
+-- Sku-Audiodatenbank nicht kennt; nicht in die Queue (interrupt) fuer Sofort-Feedback.
+local tStrLenUtf8 = _G.strlenutf8 or string.len
+local tStrSubUtf8 = _G.strsubutf8 or string.sub
+
+-- aQueue=true: an die Queue ANHAENGEN (aOverwrite=false), damit schnelles Tippen JEDES
+-- Zeichen der Reihe nach spricht. Mit aOverwrite=true haengte OutputStringBTtts pro
+-- Aufruf ein "queuereset" ein und leerte die Queue -> auf langsameren Stimmen wurde nur
+-- das zuletzt getippte Zeichen gesprochen. Ohne aQueue (Pfeil-/Wort-/Zeilen-Lesen):
+-- neueste Position gewinnt (ueberschreiben), damit schnelles Pfeilen nicht nachhinkt.
+local function tSpeakInput(aText, aQueue)
+	if aQueue then
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, false, false, 0.05, nil, nil, nil, 2) end)
+	else
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, true, false, 0.05, nil, nil, nil, 2) end)
+	end
+end
+
+local function tReadCursorCharacter(aEb)
+	local tText = aEb:GetText() or ""
+	local tPos = aEb:GetCursorPosition()
+	local tLen = tStrLenUtf8(tText)
+	if tPos >= tLen then
+		tSpeakInput(Sku.deEn("Zeilenende", "End of line"))
+	else
+		local tChar = tStrSubUtf8(tText, tPos + 1, tPos + 1)
+		tSpeakInput(tChar == " " and Sku.deEn("Leerzeichen", "Space") or tChar)
+	end
+end
+
+local function tReadCursorWord(aEb)
+	local tText = aEb:GetText() or ""
+	local tPos = aEb:GetCursorPosition()
+	local tLen = tStrLenUtf8(tText)
+	if tLen == 0 then tSpeakInput(Sku.deEn("Leer", "Empty")) return end
+	local tChars = {}
+	for i = 1, tLen do tChars[i] = tStrSubUtf8(tText, i, i) end
+	local tIndex = tPos
+	if tIndex >= tLen then tIndex = tLen - 1 end
+	if tIndex < 0 then tIndex = 0 end
+	while tIndex >= 0 and tChars[tIndex + 1] == " " do tIndex = tIndex - 1 end
+	if tIndex < 0 then tSpeakInput(Sku.deEn("Leer", "Empty")) return end
+	local tStart = tIndex
+	while tStart > 0 and tChars[tStart] ~= " " do tStart = tStart - 1 end
+	tStart = tStart + 1
+	local tEnd = tIndex
+	while tEnd < tLen - 1 and tChars[tEnd + 2] ~= " " do tEnd = tEnd + 1 end
+	tEnd = tEnd + 1
+	local tWord = ""
+	for i = tStart, tEnd do tWord = tWord .. tChars[i] end
+	if tWord ~= "" then tSpeakInput(tWord) end
+end
+
+-- OnKeyDown-Handler der geteilten EditBox: liest Ruecktaste/Pfeile/Escape vor. Wird
+-- in EditBoxShow bei jedem Aufruf per SetScript gesetzt (ersetzt zugleich einen
+-- etwaigen fremden Handler). Schlichte Pfeile (ohne Umschalt) sind nicht an die
+-- Menue-Navigation gebunden -> sie bewegen hier ungestoert den Textcursor.
+local function tEditBoxOnKeyDownRead(self, aKey)
+	if aKey == "BACKSPACE" then
+		local tText = self:GetText() or ""
+		local tPos = self:GetCursorPosition()
+		if tPos > 0 then
+			local tChar = tStrSubUtf8(tText, tPos, tPos)
+			tSpeakInput(tChar == " " and Sku.deEn("Leerzeichen", "Space") or tChar, true)
+		end
+	elseif aKey == "LEFT" or aKey == "RIGHT" then
+		C_Timer.After(0.01, function()
+			if IsControlKeyDown() then tReadCursorWord(self) else tReadCursorCharacter(self) end
+		end)
+	elseif aKey == "UP" or aKey == "DOWN" then
+		C_Timer.After(0.01, function()
+			local tText = self:GetText() or ""
+			tSpeakInput(tText == "" and Sku.deEn("Leer", "Empty") or tText)
+		end)
+	elseif aKey == "ESCAPE" then
+		tSpeakInput(Sku.deEn("Abgebrochen", "Cancelled"))
+	end
+end
+
 ---@param aText string
 ---@param aOkScript function
 function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
@@ -6514,6 +6603,15 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 			self:HighlightText()
 		end)
 
+		-- [v42.08] Getippte Zeichen vorlesen. OnChar wird nirgends genullt, daher genuegt
+		-- ein einmaliger Post-Hook hier. Das Vorlesen bei Ruecktaste/Pfeilen/Escape
+		-- laeuft ueber OnKeyDown -- das wird in EditBoxShow bei JEDEM Aufruf neu gesetzt
+		-- (SetScript weiter unten, tEditBoxOnKeyDownRead), weil dort ein etwaiger fremder
+		-- OnKeyDown-Handler geraeumt wird; ein HookScript hier wuerde davon mitgeloescht.
+		eb:HookScript("OnChar", function(self, aChar)
+			tSpeakInput(aChar == " " and Sku.deEn("Leerzeichen", "Space") or aChar, true)
+		end)
+
 		sf:SetScrollChild(eb)
 
 		local rb = CreateFrame("Button", "SkuOptionsEditBoxResizeButton", SkuOptionsEditBox)
@@ -6552,7 +6650,10 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 	-- der GETEILTEN EditBox hinterlassen haben koennte. Sonst kann ein solcher
 	-- Handler (mit veralteten Closures) in eine spaetere, ganz andere Eingabe
 	-- hineinfunken. ENTER/OK laufen ueber die einmalig gesetzten Hook-Skripte.
-	SkuOptionsEditBoxEditBox:SetScript("OnKeyDown", nil)
+	-- [v42.08] Statt auf nil setzen wir hier bei jedem Aufruf den Vorlese-Handler:
+	-- er raeumt einen fremden Handler genauso weg UND liefert das Tastatur-Feedback
+	-- (Ruecktaste/Pfeile/Escape). OnChar-Vorlesen laeuft ueber den einmaligen Hook oben.
+	SkuOptionsEditBoxEditBox:SetScript("OnKeyDown", tEditBoxOnKeyDownRead)
 
 	SkuOptionsEditBoxEditBox:Hide()
 	SkuOptionsEditBoxEditBox:SetText("")
