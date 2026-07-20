@@ -114,8 +114,29 @@ end
 -- `(GetLocale() == "deDE") and <de> or <en>` label ternaries (mostly the module
 -- display-name getters). Defined on Sku (created in Core.lua, loaded before
 -- SkuUtil) so every module's registration callback can reach it.
-function Sku.deEn(aDe, aEn)
-	return (GetLocale and GetLocale() == "deDE") and aDe or aEn
+--
+-- [v42.08] French-extensible without breaking the 180+ existing two-arg calls:
+-- the optional third arg aFr is used ONLY on a frFR client AND only when it is
+-- actually supplied. Every current call passes just (aDe, aEn), so aFr is nil
+-- and a French client keeps falling back to English exactly as before. New
+-- call sites that want French pass the third string; nothing else changes.
+function Sku.deEn(aDe, aEn, aFr)
+	local tLoc = GetLocale and GetLocale()
+	if tLoc == "deDE" then return aDe end
+	if tLoc == "frFR" and aFr ~= nil then return aFr end
+	return aEn
+end
+
+-- [v42.08] Locale-keyed label helper for call sites with more than two
+-- languages: pass a table like {deDE = "...", enUS = "...", frFR = "..."} and
+-- get back the entry for the current client, falling back to enUS then deDE if
+-- the client's locale (or a requested one) is missing. Prefer this over nesting
+-- Sku.deEn when a string genuinely needs three or more variants; enUS should
+-- always be present as the safety fallback. Inert for de/en users.
+function Sku.locStr(aStrings)
+	if type(aStrings) ~= "table" then return aStrings end
+	local tLoc = (GetLocale and GetLocale()) or "enUS"
+	return aStrings[tLoc] or aStrings.enUS or aStrings.deDE
 end
 
 -- Format a past server-time epoch as a spoken "N seconds/minutes/hours/days" age.
