@@ -27,6 +27,7 @@ SkuCore:RegisterToggleableModule("Mail", function()
 end)
 
 local gLastError = ""
+local gLastErrorTime = 0
 
 -- The UIErrorsFrame hook is installed once and never removed (hooksecurefunc
 -- hooks are permanent); it is a no-op while the feature is disabled.
@@ -41,12 +42,14 @@ function Mail:OnEnable()
 	Mail:RegisterEvent("MAIL_INBOX_UPDATE", "MAIL_INBOX_UPDATE")
 	Mail:RegisterEvent("MAIL_CLOSED", "MAIL_CLOSED")
 	Mail:RegisterEvent("MAIL_SEND_SUCCESS", "MAIL_SEND_SUCCESS")
+	Mail:RegisterEvent("MAIL_FAILED", "MAIL_FAILED")
 
    if not gMailHookInstalled then
       gMailHookInstalled = true
       hooksecurefunc(UIErrorsFrame, "AddMessage", function(self, text, r, g, b, messageGroup, holdTime)
          if not Mail:IsEnabled() then return end
          gLastError = text
+         gLastErrorTime = (_G.GetTime and GetTime()) or 0
       end)
    end
 end
@@ -90,6 +93,48 @@ end
 function Mail:MAIL_SEND_SUCCESS(...)
    --dprint("MAIL_SEND_SUCCESS", ...)
    SkuOptions.Voice:OutputStringBTtts(L["Sent"], false, true, 0.2)
+   -- [v42.08] Erst bei tatsaechlichem Erfolg den Entwurf leeren (frueher wurde er
+   -- optimistisch direkt nach SendMail geleert -> bei Fehlschlag verloren). Danach
+   -- zurueck auf den Brief-Eintrag; die Kinder werden beim naechsten Abstieg mit
+   -- frischen, leeren Beschriftungen neu gebaut.
+   local tLetter = Mail.gPendingCompose
+   Mail.gPendingCompose = nil
+   if tLetter then
+      tLetter.TmpTo = nil
+      tLetter.TmpSubject = nil
+      tLetter.TmpBody = nil
+      tLetter.TmpMoneyCfg = nil
+      tLetter.TmpItemsLock = nil
+      if _G.C_Timer and _G.C_Timer.After then
+         C_Timer.After(0.3, function()
+            if SkuOptions then
+               SkuOptions.currentMenuPosition = tLetter
+               if SkuOptions.VocalizeCurrentMenuName then
+                  pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
+               end
+            end
+         end)
+      end
+   end
+end
+
+------------------------------------------------------------------------------------------------------------
+-- [v42.08] Senden fehlgeschlagen (Empfaenger unbekannt, Postfach voll, ignoriert...).
+-- Der Grund kommt als roter UI-Fehler (UIErrorsFrame) und liegt dann in gLastError.
+-- Wir sagen eine klare Fehlermeldung an -- samt Grund, WENN der zuletzt gesehene
+-- UI-Fehler frisch ist (< 2 s, also zu diesem Sendeversuch gehoert) -- und lassen
+-- den Entwurf stehen (nicht wie bei Erfolg geleert), damit der Nutzer nur den Namen
+-- korrigieren und erneut senden kann.
+function Mail:MAIL_FAILED(...)
+   local tMsg = Sku.deEn("Senden fehlgeschlagen", "Send failed")
+   if type(gLastError) == "string" and gLastError ~= ""
+      and _G.GetTime and (GetTime() - gLastErrorTime) < 2 then
+      tMsg = tMsg..": "..gLastError
+   end
+   SkuOptions.Voice:OutputStringBTtts(tMsg, false, true, 0.2)
+   -- Entwurf bleibt erhalten; nur die Merker fuer den naechsten Versuch loeschen.
+   gLastError = ""
+   Mail.gPendingCompose = nil
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

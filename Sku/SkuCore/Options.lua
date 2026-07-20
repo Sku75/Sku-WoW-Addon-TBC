@@ -1698,10 +1698,32 @@ function SkuCore.MailBuildComposeChildren(aLetterEntry)
 						local tItemEntry = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, SkuGenericMenuItem)
 						local lBag, lSlot = bag, slot
 						tItemEntry.OnAction = function()
-							if not tLetter.TmpItemsLock then tLetter.TmpItemsLock = {} end
-							tLetter.TmpItemsLock[lBag.."-"..lSlot] = true
+							-- [v42.08] Zuverlaessiges Anhaengen (Naxedim-Muster): einen freien
+							-- Anhang-Slot suchen, das Item vom Cursor per ClickSendMailItemButton in
+							-- GENAU diesen Slot legen und DANACH mit GetSendMailItem verifizieren.
+							-- Der alte Pfad (SendMailAttachmentButton_OnDropAny) ist auf TBC
+							-- Anniversary praktisch ein No-op: das Item blieb am Cursor haengen und
+							-- der Slot wurde trotzdem (faelschlich) aus der Liste ausgeblendet.
+							local tMax = ATTACHMENTS_MAX_SEND or 12
+							local tFree
+							for i = 1, tMax do
+								if not GetSendMailItem(i) then tFree = i break end
+							end
+							if not tFree then
+								pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Alle Anhang-Plaetze belegt", "All attachment slots are full"), false, true, 0.2) end)
+								return
+							end
+							ClearCursor()
 							pcall(PickupContainerItem, lBag, lSlot)
-							pcall(SendMailAttachmentButton_OnDropAny)
+							pcall(ClickSendMailItemButton, tFree)
+							if GetSendMailItem(tFree) then
+								-- Erfolg: den Slot erst JETZT aus der Liste ausblenden.
+								if not tLetter.TmpItemsLock then tLetter.TmpItemsLock = {} end
+								tLetter.TmpItemsLock[lBag.."-"..lSlot] = true
+							else
+								-- Fehlgeschlagen: Item NICHT am Cursor haengen lassen.
+								ClearCursor()
+							end
 							local function tForce()
 								if not SkuOptions then return end
 								SkuOptions.currentMenuPosition = lItemsEntry
@@ -1782,27 +1804,15 @@ function SkuCore.MailBuildComposeChildren(aLetterEntry)
 			SkuOptions.Voice:OutputStringBTtts(L["No topic"], false, true, 0.2)
 			return
 		end
+		-- [v42.08] Den aktiven Entwurf fuer die Ergebnis-Handler merken (mail.lua):
+		-- MAIL_SEND_SUCCESS leert die Zwischenwerte und sagt "Gesendet" an;
+		-- MAIL_FAILED (z. B. Empfaenger unbekannt, Postfach voll) meldet den
+		-- Fehlschlag und LAESST den Entwurf stehen -- so muss der Nutzer nach einem
+		-- Tippfehler nur den Namen korrigieren und erneut senden. Frueher wurde der
+		-- Entwurf optimistisch direkt nach SendMail geleert und war bei jedem
+		-- Fehlschlag verloren; ausserdem blieb ein Fehlschlag voellig stumm.
+		SkuCore.Mail.gPendingCompose = tLetter
 		SendMail(tLetter.TmpTo, tLetter.TmpSubject, tLetter.TmpBody or " ")
-		-- Zwischenwerte zuruecksetzen; Anhaenge/Geld liegen bereits am offenen Brief
-		-- und werden von Blizzard nach MAIL_SEND_SUCCESS geleert.
-		tLetter.TmpTo = nil
-		tLetter.TmpSubject = nil
-		tLetter.TmpBody = nil
-		tLetter.TmpMoneyCfg = nil
-		tLetter.TmpItemsLock = nil
-		-- Fokus zurueck auf den Brief-Eintrag (Kinder werden beim naechsten Abstieg
-		-- mit frischen, leeren Beschriftungen neu gebaut). MAIL_SEND_SUCCESS sagt
-		-- "Gesendet" an.
-		if _G.C_Timer and _G.C_Timer.After then
-			C_Timer.After(0.3, function()
-				if SkuOptions then
-					SkuOptions.currentMenuPosition = tLetter
-					if SkuOptions.VocalizeCurrentMenuName then
-						pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
-					end
-				end
-			end)
-		end
 	end
 end
 

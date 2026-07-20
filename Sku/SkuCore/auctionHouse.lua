@@ -180,7 +180,7 @@ SkuCore.QuerySinglePage = nil
 -- stattdessen in FULLSCAN_CHUNK-Blöcken pro Frame, vom OnUpdate-Ticker getrieben.
 -- nil, wenn gerade kein Komplettscan verarbeitet wird.
 SkuCore.FullScanIngest = nil
-local FULLSCAN_CHUNK = 250
+local FULLSCAN_CHUNK = 400
 SkuCore.QueryBuyData = nil
 SkuCore.QueryBuyType = nil
 SkuCore.QueryBuyAmount = nil
