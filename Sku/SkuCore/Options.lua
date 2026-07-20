@@ -1746,6 +1746,54 @@ function SkuCore.MailBuildComposeChildren(aLetterEntry)
 		end
 	end
 
+	-- 4b. [v42.08] Angehaengte Gegenstaende sichten / einzeln zuruecknehmen. Sku bot
+	-- bisher keine Moeglichkeit, bereits angehaengte Objekte zu pruefen oder wieder
+	-- abzunehmen. ENTER auf einem Eintrag gibt das Objekt in die Taschen zurueck.
+	local tAttachedEntry = SkuOptions:InjectMenuItems(tLetter, {Sku.deEn("Angehaengte Gegenstaende", "Attached items")}, SkuGenericMenuItem)
+	tAttachedEntry.dynamic = true
+	tAttachedEntry.BuildChildren = function(self)
+		local tMax = ATTACHMENTS_MAX_SEND or 12
+		local tAny = false
+		for i = 1, tMax do
+			local tName, _, _, tCount = GetSendMailItem(i)
+			if tName then
+				tAny = true
+				local tSlot = i
+				local tCountSuffix = (tCount and tCount > 1) and (" ("..tCount..")") or ""
+				local tItemEntry = SkuOptions:InjectMenuItems(self, {tName..tCountSuffix}, SkuGenericMenuItem)
+				tItemEntry.OnAction = function()
+					-- Anhang zuruecknehmen (rechte-Maustaste-Aequivalent): Objekt geht in
+					-- die Taschen. Cursor vorher/nachher leeren, damit nichts haengen bleibt.
+					ClearCursor()
+					pcall(ClickSendMailItemButton, tSlot, true)
+					ClearCursor()
+					-- Angehaengte Objekte liegen physisch NICHT mehr in den Taschen; das
+					-- zurueckgegebene erscheint dort wieder. Alle Ausblend-Marker loeschen,
+					-- damit die Anhang-Liste (Abschnitt 4) frisch aus den Taschen neu baut.
+					tLetter.TmpItemsLock = nil
+					pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Anhang entfernt", "Attachment removed"), false, true, 0.2) end)
+					local function tForce()
+						if not SkuOptions then return end
+						SkuOptions.currentMenuPosition = tAttachedEntry
+						if SkuOptions.ClearFilter then pcall(SkuOptions.ClearFilter, SkuOptions) end
+					end
+					if _G.C_Timer and _G.C_Timer.After then
+						_G.C_Timer.After(0.02, tForce)
+						_G.C_Timer.After(0.20, function()
+							tForce()
+							if SkuOptions.VocalizeCurrentMenuName then
+								pcall(function() SkuOptions:VocalizeCurrentMenuName() end)
+							end
+						end)
+					end
+				end
+			end
+		end
+		if not tAny then
+			SkuOptions:InjectMenuItems(self, {Sku.deEn("Keine Anhaenge", "No attachments")}, SkuGenericMenuItem)
+		end
+	end
+
 	-- 5. Gold anhaengen: Gold/Silber/Kupfer-Muenzmenue (wie Auktionshaus).
 	local tGoldEntry = SkuOptions:InjectMenuItems(tLetter, {L["MAIL_AttachGold"]}, SkuGenericMenuItem)
 	tGoldEntry.dynamic = true
@@ -1770,6 +1818,7 @@ function SkuCore.MailBuildComposeChildren(aLetterEntry)
 		-- einem Wert setzt ihn und bleibt im Muenzmenue. GetCurrentValue positioniert
 		-- den Cursor auf den aktuellen Wert.
 		local function tAddCoin(aKey, aLabel, aMax)
+			local tInputLabel = Sku.deEn("Betrag eingeben", "Enter amount")
 			local tNode = SkuOptions:InjectMenuItems(self, {aLabel..": "..(tCfg[aKey] or 0)}, SkuGenericMenuItem)
 			tNode.dynamic = true
 			tNode.sorting = true
@@ -1777,12 +1826,31 @@ function SkuCore.MailBuildComposeChildren(aLetterEntry)
 			tNode.noStepUpAfterSelect = true
 			tNode.GetCurrentValue = function(s) return tostring(tCfg[aKey] or 0) end
 			tNode.OnAction = function(s, aValue, aName)
+				-- [v42.08] Erster Listeneintrag = Freitext-Eingabe: erlaubt Betraege ueber
+				-- die Listengrenze hinaus (z. B. mehr als 999 Gold). Die vertraute
+				-- 0..N-Werteliste bleibt daneben erhalten -- beide Wege aktiv.
+				if aName == tInputLabel then
+					PlaySound(88)
+					pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Enter text and press ENTER key"], false, true, 0.2) end)
+					SkuOptions:EditBoxShow(tostring(tCfg[aKey] or 0), function()
+						PlaySound(89)
+						local tNum = math.floor(tonumber(SkuOptionsEditBoxEditBox:GetText() or "") or 0)
+						if tNum < 0 then tNum = 0 end
+						tCfg[aKey] = tNum
+						s.name = aLabel..": "..tNum
+						tApplyMoney()
+						if SkuOptions then SkuOptions.currentMenuPosition = s end
+						pcall(function() SkuOptions.Voice:OutputStringBTtts(tNum.." "..aLabel, true, true, 0.2, nil, nil, nil, 2) end)
+					end)
+					return
+				end
 				tCfg[aKey] = tParseNum(aValue, aName) or 0
 				s.name = aLabel..": "..tCfg[aKey]
 				tApplyMoney()
 				pcall(function() SkuOptions.Voice:OutputStringBTtts(tCfg[aKey].." "..aLabel, true, true, 0.2, nil, nil, nil, 2) end)
 			end
 			tNode.BuildChildren = function(s)
+				SkuOptions:InjectMenuItems(s, {tInputLabel}, SkuGenericMenuItem)
 				for x = 0, aMax do
 					SkuOptions:InjectMenuItems(s, {tostring(x)}, SkuGenericMenuItem)
 				end
