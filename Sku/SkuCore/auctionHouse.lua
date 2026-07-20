@@ -450,6 +450,8 @@ function AuctionHouse:AUCTION_HOUSE_SHOW()
    SkuCore.AuctionHouseOpen = true
    C_Timer.After(0.3, function()
       SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Auktionshaus"])
+      -- Menue existiert jetzt: Close-Cleanup-Hook einmalig anhaengen (siehe SECTION 3).
+      pcall(function() AuctionHouse:AuctionEnsureStuckBindingHook() end)
    end)
 end
 
@@ -474,6 +476,9 @@ function AuctionHouse:AUCTION_HOUSE_CLOSED()
       SkuCore.StratBuy = nil
    end
    SkuCore.StratBuyConfig = {}
+   -- [v42.08] Haengende Enter/Escape-Bindings des Kauf-Binders freigeben (mehrfach,
+   -- gegen spaetes Re-Arm). No-op solange das Menue noch offen ist.
+   pcall(function() AuctionHouse:AuctionScheduleStuckClears() end)
 end
 
 -- ===========================================================================
@@ -1000,6 +1005,61 @@ end)
 
 local function _ASBClearBindings()
    pcall(ClearOverrideBindings, _ASBBinder)
+end
+
+-- [v42.08] Aggressives Freigeben haengengebliebener Enter/Escape-Bindings nach dem
+-- Schliessen (Naxedim-Muster). Beobachteter Bug (nur mit Escape geschlossen): nach dem
+-- AH funktionieren die PFEILE wieder, aber ENTER/ESCAPE loesen weiter Sku-Sounds aus,
+-- der Screenreader bleibt stumm und der Chat laesst sich nicht oeffnen -- genau die
+-- Tasten, die der Kauf-Binder (SkuAuctionSecureBinder) belegt (ENTER/NUMPADENTER/ESCAPE).
+-- Der Binder ist ein EIGENSTAENDIGER Frame, NICHT an die Menue-Sichtbarkeit gekoppelt --
+-- deshalb werden die Pfeile frei, Enter/Escape aber nicht. Fix: sobald das Sku-Menue
+-- schliesst, den Binder in mehreren Durchgaengen leeren (gegen spaetes Re-Arm durch
+-- Timer). Sicher: bei GESCHLOSSENEM Menue ist kein Kauf aktiv (der laeuft nur bei
+-- offenem Menue), der Kaufpfad re-armt beim naechsten Kauf ohnehin neu.
+local function _ASBClearStuckBindings()
+   if InCombatLockdown and InCombatLockdown() then return end
+   local tMain = _G["OnSkuOptionsMain"]
+   if tMain and tMain.IsShown and tMain:IsShown() then return end -- Menue echt offen: nichts anfassen
+   -- Alle Frames leeren, die Enter/Escape haengen lassen koennen: der Kauf-Binder UND
+   -- die Menue-Buttons. Der ESCAPE-Override sitzt auf OnSkuOptionsMainOption1 (Sku selbst
+   -- und der Kauf-Restore, Zeile ~1026 setzen ihn), ENTER auf SecureOnSkuOptionsMainOption1
+   -- -- der Binder allein zu leeren reichte nicht (Escape spielte weiter den Klick-Sound
+   -- statt das Spielmenue zu oeffnen). Bei GESCHLOSSENEM Menue werden diese Bindings nicht
+   -- gebraucht; beim Wiederoeffnen re-armt Skus OnShow der Secure-Buttons sie neu.
+   for _, tName in ipairs({"SkuAuctionSecureBinder", "OnSkuOptionsMainOption1", "SecureOnSkuOptionsMainOption1"}) do
+      local tF = _G[tName]
+      if tF then pcall(ClearOverrideBindings, tF) end
+   end
+end
+
+local function _ASBScheduleStuckClears()
+   _ASBClearStuckBindings()
+   if _G.C_Timer and _G.C_Timer.After then
+      C_Timer.After(0.10, _ASBClearStuckBindings)
+      C_Timer.After(0.35, _ASBClearStuckBindings)
+      C_Timer.After(1.00, _ASBClearStuckBindings)
+   end
+end
+
+-- Einmalig einen Post-Hook auf OnHide des Menue-Hauptframes legen (existiert erst, wenn
+-- das Menue schon einmal offen war -> beim AH-Oeffnen aufgerufen). Bei jedem Schliessen
+-- werden dann etwaige haengende Kauf-Bindings freigegeben.
+local _ASBCloseHookInstalled = false
+function AuctionHouse:AuctionEnsureStuckBindingHook()
+   if _ASBCloseHookInstalled then return end
+   local tMain = _G["OnSkuOptionsMain"]
+   if not (tMain and tMain.HookScript) then return end
+   _ASBCloseHookInstalled = true
+   tMain:HookScript("OnHide", function()
+      _ASBScheduleStuckClears()
+   end)
+end
+
+-- Von AUCTION_HOUSE_CLOSED aufrufbarer Direkt-Durchgang (Netz fuer den Fall, dass die
+-- AH-Schliessung nicht ueber ein Menue-OnHide laeuft). No-op solange das Menue offen ist.
+function AuctionHouse:AuctionScheduleStuckClears()
+   _ASBScheduleStuckClears()
 end
 
 -- Sku steuert seine Menü-Tasten selbst über Override-Bindings: Enter →
@@ -2162,7 +2222,28 @@ function AuctionHouse:AuctionHouseMenuBuilder()
          tItemEntry.sorting = true
          tItemEntry.isSelect = true
          tItemEntry.noStepUpAfterSelect = true
+         local tStratItemInput = Sku.deEn("Namen eingeben", "Enter name")
          tItemEntry.OnAction = function(self, aValue, aName)
+            -- [v42.08] Sprachneutrale Freitext-Eingabe als ERSTER Eintrag: der Nutzer
+            -- tippt den Item-Namen in SEINER Client-Sprache, der direkt fuer die AH-Suche
+            -- verwendet wird. Wichtig fuer Clients ohne Sku-Namenstabelle -- z. B. frFR
+            -- faellt sonst auf englische Namen zurueck, die auf einem franzoesischen Realm
+            -- nichts finden. Die Namensliste bleibt daneben als Auswahl erhalten.
+            if aName == tStratItemInput then
+               PlaySound(88)
+               pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Enter text and press ENTER key"], false, true, 0.2) end)
+               SkuOptions:EditBoxShow(tostring(cfg.itemName or ""), function()
+                  PlaySound(89)
+                  local tTyped = strtrim(SkuOptionsEditBoxEditBox:GetText() or "")
+                  if tTyped ~= "" then
+                     cfg.itemName = tTyped
+                     self.name = L["STRAT_ItemName"]..": "..cfg.itemName
+                     if SkuOptions then SkuOptions.currentMenuPosition = self end
+                     pcall(function() SkuOptions.Voice:OutputStringBTtts(L["STRAT_ItemSet"]..": "..cfg.itemName, true, true, 0.2, nil, nil, nil, 2) end)
+                  end
+               end)
+               return
+            end
             local tName = aName
             if not tName or tName == "" then tName = aValue and aValue.name end
             if tName then
@@ -2172,8 +2253,14 @@ function AuctionHouse:AuctionHouseMenuBuilder()
             end
          end
          tItemEntry.BuildChildren = function(self)
-            for itemId, itemName in pairs(SkuDB.itemLookup[Sku.Loc]) do
-               SkuOptions:InjectMenuItems(self, {itemName}, SkuGenericMenuItem)
+            SkuOptions:InjectMenuItems(self, {tStratItemInput}, SkuGenericMenuItem)
+            -- Sprachneutraler Fallback: fehlt die Tabelle fuer die Client-Locale, enUS
+            -- nehmen (statt pairs(nil) -> Fehler). Der Freitext oben deckt jede Sprache ab.
+            local tLookup = SkuDB.itemLookup[Sku.Loc] or SkuDB.itemLookup["enUS"]
+            if tLookup then
+               for itemId, itemName in pairs(tLookup) do
+                  SkuOptions:InjectMenuItems(self, {itemName}, SkuGenericMenuItem)
+               end
             end
          end
          local function tStratParseNum(aValue, aName)
