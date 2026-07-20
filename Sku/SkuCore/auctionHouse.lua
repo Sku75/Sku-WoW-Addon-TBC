@@ -1439,6 +1439,67 @@ local function Median(t)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [v42.08] Drittanbieter-Tooltip-Erfassung. Sku baut seinen Item-Tooltip aus dem
+-- PRIVATEN SkuScanningTooltip -- da haengen fremde Addons (Pawn, TSM, DisenchantBuddy,
+-- Kochbuecher...) NICHTS an, weil sie den ECHTEN GameTooltip haken (OnTooltipSetItem).
+-- Wir bespielen daher zusaetzlich einmal den echten GameTooltip unsichtbar, lesen seine
+-- Zeilen und haengen die, die NICHT schon im Basis-Tooltip stehen, als EIGENE Sektion
+-- ans Ende. So bekommt Sku jede Addon-Tooltip-Erweiterung generisch geschenkt, ohne
+-- pro Addon Code, und die eigene Reihenfolge/Gruppierung bleibt voellig unangetastet.
+-- WICHTIG (Naxedim-Hinweis): NICHT den SkuScanningTooltip auf UIParent umhaengen -- das
+-- braeche spaetere Taschen-Reads. Wir fassen nur den GameTooltip an.
+local function tAhNormalizeTtLine(aText)
+   if type(aText) ~= "string" then return "" end
+   aText = string.gsub(aText, "|c%x%x%x%x%x%x%x%x", "")
+   aText = string.gsub(aText, "|r", "")
+   aText = string.gsub(aText, "|T.-|t", "")
+   aText = string.gsub(aText, "^%s+", "")
+   aText = string.gsub(aText, "%s+$", "")
+   return aText
+end
+
+local function tAhCollectTtLeftLines(aName, aTooltip)
+   local tOut = {}
+   local tNum = 0
+   pcall(function() tNum = aTooltip:NumLines() or 0 end)
+   for i = 1, tNum do
+      local tFs = _G[aName.."TextLeft"..i]
+      local tTx = tFs and tFs.GetText and tFs:GetText()
+      tOut[i] = tTx or ""
+   end
+   return tOut
+end
+
+-- Haengt (falls vorhanden) die Addon-Zusatzzeilen als letzte Sektion an aSections an.
+-- aBaseSet = normalisierte Menge der Basiszeilen (aus SkuScanningTooltip), gegen die
+-- gefiltert wird, damit nur echte Fremd-Addon-Zeilen uebrig bleiben.
+local function tAhAppendAddonTooltipSection(aSections, aLink, aItemID, aBaseSet)
+   pcall(function()
+      local tGt = _G["GameTooltip"]
+      if not tGt then return end
+      tGt:SetOwner(UIParent, "ANCHOR_NONE")
+      tGt:ClearLines()
+      if aLink then
+         tGt:SetHyperlink(aLink)
+      elseif aItemID then
+         tGt:SetItemByID(aItemID)
+      else
+         return
+      end
+      local tExtra = {}
+      for _, tLine in ipairs(tAhCollectTtLeftLines("GameTooltip", tGt)) do
+         local tNrm = tAhNormalizeTtLine(tLine)
+         if tNrm ~= "" and not aBaseSet[tNrm] then
+            tExtra[#tExtra + 1] = SkuUtil:Unescape(tNrm)
+         end
+      end
+      tGt:Hide()
+      if #tExtra > 0 then
+         aSections[#aSections + 1] = Sku.deEn("Addon-Infos", "Add-on info").."\r\n"..table.concat(tExtra, "\r\n")
+      end
+   end)
+end
+
 function AuctionHouse:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPriceData, aAddHistoryPriceData)
    --print("AuctionBuildItemTooltip",aItemData, aIndex, aAddCurrentPriceData, aAddHistoryPriceData)   
    local tTextFirstLine, tTextFull = "", ""
@@ -1457,11 +1518,24 @@ function AuctionHouse:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPric
       end
    end
 
+   -- [v42.08] Basiszeilen erfassen SOLANGE der SkuScanningTooltip noch DIESES Item
+   -- haelt (InsertComparisnSections weiter unten bespielt ihn mit Ausruestungs-
+   -- vergleichen neu). Gegen diese Menge filtern wir spaeter die GameTooltip-Zeilen,
+   -- damit nur echte Fremd-Addon-Zeilen als Zusatz-Sektion uebrig bleiben.
+   local tBaseTtSet = {}
+   for _, tLine in ipairs(tAhCollectTtLeftLines("SkuScanningTooltip", _G["SkuScanningTooltip"])) do
+      local tNrm = tAhNormalizeTtLine(tLine)
+      if tNrm ~= "" then tBaseTtSet[tNrm] = true end
+   end
+
    local tPriceHistoryData, tBestBuyoutPriceCopper = AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(aItemData[17])
 
    table.insert(tPriceHistoryData, 1, tTextFull)
 
    SkuCore:InsertComparisnSections(aItemData[17] or aItemData[21], tPriceHistoryData)
+
+   -- Fremd-Addon-Zeilen (Pawn/TSM/Disenchant/Kochbuch...) als letzte Sektion anhaengen.
+   tAhAppendAddonTooltipSection(tPriceHistoryData, aItemData[21], aItemData[17], tBaseTtSet)
 
    return tTextFirstLine, tPriceHistoryData
 end
