@@ -75,6 +75,16 @@ Changes in Sku v42.08
             Sku.LocsPartly so Sku.LocP stays frFR on a French client, with an enUS safety
             fallback.
 
+    Navigation: a flightmaster flight cancels an active route
+        Simple: When you take a flight from a flightmaster while a route is being followed,
+            the route is now cancelled automatically - it makes no sense to keep it while the
+            taxi flies you elsewhere. Flying yourself on a mount or riding a flying vehicle
+            does not cancel the route.
+        Technical: The taxi-started branch (PLAYER_CONTROL_LOST followed by
+            PLAYER_MOUNT_DISPLAY_CHANGED) now calls SkuNav:CancelNavigationSilent, gated on
+            UnitOnTaxi("player") so it fires only for flightmaster flights - self-flying never
+            fires PLAYER_CONTROL_LOST, and in a flying vehicle UnitOnTaxi stays false.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.07

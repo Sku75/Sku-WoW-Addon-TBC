@@ -2089,6 +2089,14 @@ function SkuCore:PLAYER_MOUNT_DISPLAY_CHANGED(...)--taxi
 		PLAYER_CONTROL_LOST_flag = 0
 		SkuOptions.Voice:OutputString(L["taxi;started"], true, true, nil, true)
 		SkuQuest:UpdateZoneAvailableQuestList(true)
+		-- A flightmaster flight makes any active route navigation pointless, so
+		-- auto-cancel it. Gate on UnitOnTaxi so this fires ONLY for flightmaster
+		-- taxi flights, never for self-flying (which keeps player control and
+		-- never fires PLAYER_CONTROL_LOST) nor flying vehicles (player controls
+		-- the vehicle; UnitOnTaxi stays false there).
+		if UnitOnTaxi("player") == true and SkuNav and SkuNav.CancelNavigationSilent then
+			SkuNav:CancelNavigationSilent()
+		end
 	end
 	if PLAYER_CONTROL_GAINED_flag == 1 then
 		PLAYER_CONTROL_GAINED_flag = 0

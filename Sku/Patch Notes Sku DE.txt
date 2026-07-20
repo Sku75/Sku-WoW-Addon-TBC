@@ -77,6 +77,16 @@ Aenderungen in Sku v42.08
         Technisch: frFR-Ressourcennamen wurden zu SkuCore.RessourceTypes ergaenzt und frFR zu
             Sku.LocsPartly, damit Sku.LocP auf einem frFR-Client frFR bleibt, mit enUS-Fallback.
 
+    Navigation: ein Flugmeister-Flug bricht eine aktive Route ab
+        Einfach: Wenn du bei einem Flugmeister einen Flug nimmst, waehrend gerade eine Route
+            verfolgt wird, wird die Route jetzt automatisch abgebrochen - sie beizubehalten
+            ergibt keinen Sinn, waehrend der Taxiflug dich woandershin bringt. Selbst auf
+            einem Reittier zu fliegen oder ein Flugfahrzeug zu steuern bricht die Route nicht ab.
+        Technisch: Der Taxi-Start-Zweig (PLAYER_CONTROL_LOST gefolgt von
+            PLAYER_MOUNT_DISPLAY_CHANGED) ruft jetzt SkuNav:CancelNavigationSilent auf, abgesichert
+            mit UnitOnTaxi("player"), damit es nur bei Flugmeister-Fluegen ausloest - Selbstfliegen
+            loest nie PLAYER_CONTROL_LOST aus, und in einem Flugfahrzeug bleibt UnitOnTaxi false.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.07
