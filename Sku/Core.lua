@@ -28,7 +28,10 @@ Sku.L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
 Sku.Loc = Sku.L["locale"]
 Sku.Locs = {"enUS", "deDE",}
 
-Sku.LocsPartly = {["deDE"] = true, ["enUS"] = true, ["zhCN"] = true, ["ruRU"] = true,}
+-- [v42.08] frFR aufgenommen: der Minimap-/Boden-Ressourcenscanner hat jetzt native
+-- franzoesische Knotennamen (SkuCore/minimapScanner.lua), daher darf Sku.LocP auf einem
+-- frFR-Client "frFR" bleiben (statt auf enUS zurueckzufallen), damit die frFR-Namen greifen.
+Sku.LocsPartly = {["deDE"] = true, ["enUS"] = true, ["zhCN"] = true, ["ruRU"] = true, ["frFR"] = true,}
 Sku.LocP = GetLocale()
 if not Sku.LocsPartly[GetLocale()] then
 	Sku.LocP = "enUS"

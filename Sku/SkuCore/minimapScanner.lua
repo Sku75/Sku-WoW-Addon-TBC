@@ -134,6 +134,81 @@ SkuCore.RessourceTypes = {
    },
 }
 
+-- [v42.08] Franzoesische Ressourcennamen nativ ergaenzen (portiert aus Naxedims
+-- SkuMinimapScannerFR). Damit erkennt der Scanner die Knoten auf einem frFR-Client am
+-- (franzoesischen) Spiel-Tooltip. "frFR" steht jetzt in Sku.LocsPartly (Core.lua), also
+-- ist Sku.LocP auf einem frFR-Client "frFR" und genau diese Namen greifen -- auch in
+-- gameWorldObjects (Boden-Objekte). Auf deDE/enUS/... ohne Wirkung (nur ein Extra-Key).
+do
+   local tRessourceNamesFR = {
+      chests = {
+         [1] = "Coffre endommagé", [2] = "Coffre cabossé", [3] = "Grand coffre abîmé",
+         [4] = "Grand coffre ferré", [5] = "Grand coffre en mithril ferré",
+         [6] = "Grand coffre solide", [7] = "Coffre verrouillé", [8] = "Coffre primitif",
+         [9] = "Coffre rouillé", [10] = "Coffre solide", [11] = "Coffre englouti",
+         [12] = "Coffre en lambeaux", [13] = "Coffre usé",
+         [14] = "Coffre en adamantite ferré", [15] = "Coffre en gangrefer",
+      },
+      mining = {
+         [1] = "Filon de cuivre", [2] = "Filon d'étain", [3] = "Filon d'argent",
+         [4] = "Filon d'argent couvert de limon", [5] = "Gisement de fer",
+         [6] = "Filon d'or", [7] = "Filon d'or couvert de limon",
+         [8] = "Gisement de mithril", [9] = "Gisement de mithril couvert de vase",
+         [10] = "Gisement de vrai-argent", [11] = "Gisement de vrai-argent couvert de vase",
+         [12] = "Petit filon de thorium", [13] = "Filon de thorium couvert de limon",
+         [14] = "Riche filon de thorium", [15] = "Riche filon de thorium couvert de limon",
+         [16] = "Gisement de sombrefer", [17] = "Gisement de gangrefer",
+         [18] = "Gisement d'adamantite", [19] = "Riche gisement d'adamantite",
+         [20] = "Filon de khorium", [21] = "Gisement de cobalt",
+         [22] = "Riche gisement de cobalt", [23] = "Gisement de saronite",
+         [24] = "Riche gisement de saronite", [25] = "Gisement de saronite pure",
+         [26] = "Filon de titane", [27] = "Gisement d'adamantite pure",
+      },
+      gasCollector = {
+         [1] = "Vortex arcanique", [2] = "Brume gangrénée", [3] = "Gaz des marais",
+         [4] = "Nuage venteux", [5] = "Nuage de vapeur", [6] = "Nuage de cendres",
+         [7] = "Nuage arctique",
+      },
+      herbs = {
+         [1] = "Pacifique", [2] = "Feuillargent", [3] = "Terrestrine", [4] = "Mage royal",
+         [5] = "Eglantine", [6] = "Etouffante", [7] = "Doulourante", [8] = "Aciérite sauvage",
+         [9] = "Tombeline", [10] = "Sang-royal", [11] = "Viétérule", [12] = "Pâlerette",
+         [13] = "Dorépine", [14] = "Moustache de Khadgar", [15] = "Hivernale",
+         [16] = "Fleur de feu", [17] = "Lotus pourpre", [18] = "Larme d'Arthas",
+         [19] = "Soleillette", [20] = "Aveuglette", [21] = "Champignon fantôme",
+         [22] = "Sang de Grom", [23] = "Sansam doré", [24] = "Feuille de rêve",
+         [25] = "Sauge-argent de montagne", [26] = "Peste fleurie", [27] = "Cap glacé",
+         [28] = "Lotus noir", [29] = "Gangreherbe", [30] = "Gloire des rêves",
+         [31] = "Cône de terre", [32] = "Voile-de-raz", [33] = "Lichen ancien",
+         [34] = "Pétale-de-néant", [35] = "Vigne cauchemar", [36] = "Chardon de mana",
+         [37] = "Gangrelotus", [38] = "Trèfle doré", [39] = "Lys tigré",
+         [40] = "Langue de serpent", [41] = "Rose de Talandra", [42] = "Fleur-de-liche",
+         [43] = "Glacépine", [44] = "Lotus givré", [45] = "Chardon sanglant",
+      },
+   }
+   for tCat, tNames in pairs(tRessourceNamesFR) do
+      local tTarget = SkuCore.RessourceTypes[tCat]
+      if tTarget then
+         for i, tName in pairs(tNames) do
+            if tTarget[i] then tTarget[i].frFR = tName end
+         end
+      end
+   end
+   -- Sicherheitsnetz: JEDER Eintrag der gescannten Kategorien braucht einen frFR-Wert,
+   -- sonst wuerde string.gmatch(nil, ...) den frFR-Scan abstuerzen lassen. Fehlt einer
+   -- (kuenftig neuer Knoten ohne FR-Name), auf enUS/deDE zurueckfallen.
+   for _, tCat in ipairs({"chests", "mining", "gasCollector", "herbs"}) do
+      local tTarget = SkuCore.RessourceTypes[tCat]
+      if tTarget then
+         for i = 1, #tTarget do
+            if tTarget[i] and not tTarget[i].frFR then
+               tTarget[i].frFR = tTarget[i].enUS or tTarget[i].deDE
+            end
+         end
+      end
+   end
+end
+
 
 
 local tMinimapYardsMod = 3.125
