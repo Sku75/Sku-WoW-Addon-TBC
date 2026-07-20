@@ -380,6 +380,105 @@ local function OpenAllBagsHelper()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [v42.08] Helfer + Logik fuer die Gildenbank-Geld-Sektion (portiert aus Naxedims
+-- SkuMoneyReplacement, nativ). Skus Build_GuildBankFrame liess das Geld als TODO
+-- (--gold/--available/--witdraw/--deposit). Diese Eintraege sind rohe Gossip-Eintraege
+-- im Stil des restlichen Builders: 'func' ohne 'click' wird vom Menue als OnAction
+-- ausgefuehrt (SkuZOptions/Core.lua:5661), Eintraege mit 'childs' werden Untermenues.
+local function tGbNewEntry(aName)
+	return { frameName = "", RoC = "Child", type = "Button", obj = nil,
+		textFirstLine = aName, textFull = "", noMenuNumbers = true, childs = {}, }
+end
+
+-- Info-Eintrag: bei Navigation wird textFirstLine gelesen (Schnappschuss); ENTER liest
+-- ueber func den frischen Wert nach (Totale aendern sich nach Ein-/Auszahlung).
+local function tGbAddInfo(aChilds, aName, aLiveFunc)
+	local tEntry = tGbNewEntry(aName)
+	if type(aLiveFunc) == "function" then
+		tEntry.func = function()
+			local ok, tText = pcall(aLiveFunc)
+			pcall(function() SkuOptions.Voice:OutputStringBTtts(ok and tText or aName, false, true, 0.2, nil, nil, nil, 1) end)
+		end
+	end
+	table.insert(aChilds, aName); aChilds[aName] = tEntry
+	return tEntry
+end
+
+local function tGbAddAction(aChilds, aName, aFunc)
+	local tEntry = tGbNewEntry(aName)
+	tEntry.func = function(...)
+		local ok, err = pcall(aFunc, ...)
+		if not ok then dprint("gbankMoney", "action error", tostring(err)) end
+	end
+	table.insert(aChilds, aName); aChilds[aName] = tEntry
+	return tEntry
+end
+
+local function tGbAddSubMenu(aChilds, aName)
+	local tEntry = tGbNewEntry(aName)
+	table.insert(aChilds, aName); aChilds[aName] = tEntry
+	return tEntry.childs
+end
+
+-- Heute noch abhebbarer Betrag (Gildenbank-Tageslimit; -1 = unbegrenzt).
+local function tGbWithdrawRemainingText()
+	local tRemaining = (GetGuildBankWithdrawMoney and GetGuildBankWithdrawMoney()) or 0
+	if tRemaining < 0 then return Sku.deEn("unbegrenzt", "unlimited") end
+	local tBank = (GetGuildBankMoney and GetGuildBankMoney()) or 0
+	if tRemaining > tBank then tRemaining = tBank end
+	return SkuGetCoinText(tRemaining, true, true)
+end
+
+-- Ein-/Auszahlung mit Vorab-Pruefung (genug Gold / genug in der Bank / Tageslimit) und
+-- Vorher/Nachher-Ansage (der Server antwortet mit leichter Verzoegerung).
+local function tRunGuildBankMoney(aCopper, aIsDeposit)
+	if not aCopper or aCopper <= 0 then
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Betrag ist null", "Amount is zero"), false, true, 0.2) end)
+		return
+	end
+	if aIsDeposit then
+		if aCopper > GetMoney() then
+			pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Nicht genug Gold dabei", "Not enough money on you"), false, true, 0.2) end)
+			return
+		end
+	else
+		local tBank = (GetGuildBankMoney and GetGuildBankMoney()) or 0
+		if aCopper > tBank then
+			pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Nicht genug in der Gildenbank", "Not enough in the guild bank"), false, true, 0.2) end)
+			return
+		end
+		local tRemaining = (GetGuildBankWithdrawMoney and GetGuildBankWithdrawMoney()) or 0
+		if tRemaining >= 0 and aCopper > tRemaining then
+			pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Abhebe-Limit erreicht", "Withdraw limit reached"), false, true, 0.2) end)
+			return
+		end
+	end
+	local tBefore = GetMoney()
+	if aIsDeposit then pcall(DepositGuildBankMoney, aCopper) else pcall(WithdrawGuildBankMoney, aCopper) end
+	C_Timer.After(0.6, function()
+		local tAfter = GetMoney()
+		local tOk = (aIsDeposit and (tAfter < tBefore)) or ((not aIsDeposit) and (tAfter > tBefore))
+		if tOk then
+			local tMsg = (aIsDeposit and Sku.deEn("Eingezahlt: ", "Deposited: ") or Sku.deEn("Abgehoben: ", "Withdrawn: "))..SkuGetCoinText(aCopper, true, true)
+			pcall(function() SkuOptions.Voice:OutputStringBTtts(tMsg, false, true, 0.2, nil, nil, nil, 1) end)
+		else
+			pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Aktion fehlgeschlagen", "Action failed"), false, true, 0.2) end)
+		end
+	end)
+end
+
+-- Fragt einen Gold-Betrag per Editbox ab und fuehrt die Ein-/Auszahlung aus.
+local function tGbPromptAndRun(aIsDeposit)
+	PlaySound(88)
+	pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Betrag in Gold eingeben", "Enter amount in gold"), false, true, 0.2) end)
+	SkuOptions:EditBoxShow("", function()
+		PlaySound(89)
+		local tG = math.floor(tonumber(SkuOptionsEditBoxEditBox:GetText() or "") or 0)
+		if tG < 0 then tG = 0 end
+		tRunGuildBankMoney(tG * 10000, aIsDeposit)
+	end)
+end
+
 function SkuCore:Build_GuildBankFrame(aParentChilds)
 
 	OpenAllBagsHelper()
@@ -559,10 +658,26 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 			func = _G["GuildBankFrameTab1"]:GetScript("OnClick"),
 		}   		
 	end
---gold
-	--available
-	--witdraw
-	--deposit
+	-- [v42.08] Gildenbank-Geld (vormals TODO): Lesen (in der Bank / heute noch abhebbar /
+	-- dein Gold) + Ein-/Auszahlen in Gold. Rohe Gossip-Eintraege im Builder-Stil.
+	do
+		local tMoneyChilds = tGbAddSubMenu(aParentChilds, Sku.deEn("Gildenbank-Geld", "Guild bank money"))
+
+		local tInBankLabel = Sku.deEn("In der Gildenbank", "In the guild bank")
+		tGbAddInfo(tMoneyChilds, tInBankLabel..": "..SkuGetCoinText((GetGuildBankMoney and GetGuildBankMoney()) or 0, true, true),
+			function() return tInBankLabel..": "..SkuGetCoinText((GetGuildBankMoney and GetGuildBankMoney()) or 0, true, true) end)
+
+		local tRemLabel = Sku.deEn("Heute noch abhebbar", "Withdrawable today")
+		tGbAddInfo(tMoneyChilds, tRemLabel..": "..tGbWithdrawRemainingText(),
+			function() return tRemLabel..": "..tGbWithdrawRemainingText() end)
+
+		local tYourLabel = Sku.deEn("Dein Gold", "Your money")
+		tGbAddInfo(tMoneyChilds, tYourLabel..": "..SkuGetCoinText(GetMoney(), true, true),
+			function() return tYourLabel..": "..SkuGetCoinText(GetMoney(), true, true) end)
+
+		tGbAddAction(tMoneyChilds, Sku.deEn("Gold einzahlen", "Deposit gold"), function() tGbPromptAndRun(true) end)
+		tGbAddAction(tMoneyChilds, Sku.deEn("Gold abheben", "Withdraw gold"), function() tGbPromptAndRun(false) end)
+	end
 
 
 

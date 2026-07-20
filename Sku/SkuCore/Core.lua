@@ -541,6 +541,7 @@ function SkuCore:OnInitialize()
 	SkuDispatcher:RegisterEventCallback("TRADE_SHOW", SkuCore.TRADE_SHOW)
 	SkuDispatcher:RegisterEventCallback("TRADE_CLOSED", SkuCore.TRADE_CLOSED)
 	SkuDispatcher:RegisterEventCallback("TRADE_ACCEPT_UPDATE", SkuCore.TRADE_ACCEPT_UPDATE)
+	SkuDispatcher:RegisterEventCallback("TRADE_MONEY_CHANGED", SkuCore.TRADE_MONEY_CHANGED)
 	SkuDispatcher:RegisterEventCallback("PET_STABLE_SHOW", SkuCore.PET_STABLE_SHOW)
 	SkuDispatcher:RegisterEventCallback("PET_STABLE_CLOSED", SkuCore.PET_STABLE_CLOSED)
 	SkuDispatcher:RegisterEventCallback("PET_STABLE_UPDATE", SkuCore.PET_STABLE_UPDATE)
@@ -2928,6 +2929,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:TRADE_SHOW(self, event, ...)
 	dprint("TRADE_SHOW", self, event, ...)
+	-- [v42.08] Handelsgeld-Ansage: letzte Werte zuruecksetzen, damit ein neuer Handel
+	-- nicht mit veralteten Vergleichswerten startet.
+	SkuCore._tLastTargetTradeMoney = 0
+	SkuCore._tLastOwnTradeMoney = 0
 	if _G["ContainerFrame1"] and _G["ContainerFrame1"]:IsVisible() ~= true then
 		_G["MainMenuBarBackpackButton"]:Click()
 	end
@@ -2935,7 +2940,41 @@ function SkuCore:TRADE_SHOW(self, event, ...)
 end---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:TRADE_CLOSED(self, event, ...)
 	dprint("TRADE_CLOSED", self, event, ...)
+	SkuCore._tLastTargetTradeMoney = 0
+	SkuCore._tLastOwnTradeMoney = 0
 	SkuCore:CheckFrames()
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v42.08] Live-Ansage des Handelsgeldes (portiert aus Naxedims SkuMoneyReplacement).
+-- Ein Blindnutzer sah bisher nicht, wenn der Partner Gold in den Handel legt/aendert/
+-- entfernt -- Sku hat das Handelsgeld nie vorgelesen. TRADE_MONEY_CHANGED feuert bei
+-- jeder Aenderung auf BEIDEN Seiten; wir pruefen eigenes und Partner-Angebot getrennt
+-- (kein PLAYER_TRADE_MONEY noetig, das es auf TBC nicht zuverlaessig gibt) und sagen nur
+-- echte Aenderungen an. Nur Lesen (GetPlayer/GetTargetTradeMoney) ist erlaubt -- Gold in
+-- einen Handel LEGEN ist Addons komplett verboten (Blizzard-Gold-Scam-Schutz).
+function SkuCore:TRADE_MONEY_CHANGED(self, event, ...)
+	-- Eigenes Angebot (vom Nutzer ins Blizzard-Feld getippt).
+	local tOwn = (GetPlayerTradeMoney and GetPlayerTradeMoney()) or 0
+	if tOwn ~= (SkuCore._tLastOwnTradeMoney or 0) then
+		SkuCore._tLastOwnTradeMoney = tOwn
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Du bietest ", "You offer ")..SkuGetCoinText(tOwn, true, true), false, true, 0.2, nil, nil, nil, 1) end)
+	end
+	-- Angebot des Handelspartners.
+	local tTarget = (GetTargetTradeMoney and GetTargetTradeMoney()) or 0
+	if tTarget ~= (SkuCore._tLastTargetTradeMoney or 0) then
+		SkuCore._tLastTargetTradeMoney = tTarget
+		local tPartner
+		if _G["TradeFrameRecipientNameText"] and _G["TradeFrameRecipientNameText"].GetText then
+			tPartner = _G["TradeFrameRecipientNameText"]:GetText()
+		end
+		if not tPartner or tPartner == "" then tPartner = UnitName("NPC") end
+		tPartner = tPartner or Sku.deEn("Der Partner", "The partner")
+		if tTarget > 0 then
+			pcall(function() SkuOptions.Voice:OutputStringBTtts(tPartner.." "..Sku.deEn("bietet ", "offers ")..SkuGetCoinText(tTarget, true, true), false, true, 0.2, nil, nil, nil, 1) end)
+		else
+			pcall(function() SkuOptions.Voice:OutputStringBTtts(tPartner.." "..Sku.deEn("nimmt das Gold zurueck", "removed the money"), false, true, 0.2, nil, nil, nil, 1) end)
+		end
+	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:TRADE_ACCEPT_UPDATE(self, event, playerAccepted, targetAccepted)
