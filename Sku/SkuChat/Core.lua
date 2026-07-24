@@ -3306,11 +3306,13 @@ function SkuChat:JoinOrLeaveSkuChatChannel()
 	if SkuSettings:Sub("SkuChat").joinSkuChannel == true then
 		if id == 0 then
 			JoinPermanentChannel("SkuChat", nil, FCF_GetCurrentChatFrame():GetID())
-			if Sku.isTBC then
-				ChatFrame1:AddChannel("SkuChat")
-			else
-				ChatFrame_AddChannel(ChatFrame1, "SkuChat")
-			end
+			-- ChatFrameMixin:AddChannel on every client. The old non-TBC branch called
+			-- a global ChatFrame_AddChannel that does not exist in the Anniversary
+			-- interface code at all, so it was a nil call on Era. Confirmed in-game:
+			-- ChatFrame_AddChannel -> nil, ChatFrame1.AddChannel -> function.
+			-- (Latent: the `id == 0` gate above means it only fires for someone not
+			-- yet in the SkuChat channel — i.e. every fresh Era install.)
+			ChatFrame1:AddChannel("SkuChat")
 		end
 	else
 		if id ~= 0 then
