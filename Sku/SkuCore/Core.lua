@@ -4153,20 +4153,19 @@ function SkuCore:SetBinding(aKey, aCommand)
 	
 	SkuCore:DeleteBinding(aCommand)
 
-	if Sku.isTBC then
-		local tOk = SetBinding(aKey, aCommand)
-		dprint("SkuCore:SetBinding TBC branch", "aKey=", aKey, "aCommand=", aCommand, "ok=", tOk)
-		if tKey2 then
-			local tOk = SetBinding(tKey2, aCommand)
-			dprint("SkuCore:SetBinding TBC branch key2", "tKey2=", tKey2, "ok=", tOk)
-		end
-	else
-		local tOk = SetBinding(aKey, aCommand, 1)
-		dprint("SkuCore:SetBinding Era branch (3-arg)", "aKey=", aKey, "aCommand=", aCommand, "ok=", tOk)
-		if tKey2 then
-			local tOk = SetBinding(tKey2, aCommand, 1)
-			dprint("SkuCore:SetBinding Era branch key2 (3-arg)", "tKey2=", tKey2, "ok=", tOk)
-		end
+	-- 2-arg SetBinding on every client. The old non-TBC branch passed a third
+	-- `bindingMode` argument (1 = ACCOUNT_BINDINGS); Classic Era 1.15 rejects that
+	-- form — SetBinding returns false and nothing is bound, while the 1-arg unbind
+	-- form still works (hence "unbinding works, binding doesn't"). Sku.isTBC is
+	-- true for every client >= 20505, so that branch only ever ran on Era.
+	-- Verified in-game on Era 1.15.8:
+	--   SetBinding("F9","ACTIONBUTTON1")     -> true, key bound
+	--   SetBinding("F10","ACTIONBUTTON2", 1) -> false, nothing bound
+	local tOk = SetBinding(aKey, aCommand)
+	dprint("SkuCore:SetBinding", "aKey=", aKey, "aCommand=", aCommand, "ok=", tOk)
+	if tKey2 then
+		local tOk2 = SetBinding(tKey2, aCommand)
+		dprint("SkuCore:SetBinding key2", "tKey2=", tKey2, "ok=", tOk2)
 	end
 	SkuCore:SaveBindings()
 end
@@ -4186,21 +4185,13 @@ function SkuCore:SetBinding2(aKey, aCommand)
 
 	SkuCore:DeleteBinding(aCommand)
 
-	if Sku.isTBC then
-		if tKey1 then
-			local tOk = SetBinding(tKey1, aCommand)
-			dprint("SkuCore:SetBinding2 TBC branch key1", "tKey1=", tKey1, "ok=", tOk)
-		end
-		local tOk = SetBinding(aKey, aCommand)
-		dprint("SkuCore:SetBinding2 TBC branch", "aKey=", aKey, "aCommand=", aCommand, "ok=", tOk)
-	else
-		if tKey1 then
-			local tOk = SetBinding(tKey1, aCommand, 1)
-			dprint("SkuCore:SetBinding2 Era branch key1 (3-arg)", "tKey1=", tKey1, "ok=", tOk)
-		end
-		local tOk = SetBinding(aKey, aCommand, 1)
-		dprint("SkuCore:SetBinding2 Era branch (3-arg)", "aKey=", aKey, "aCommand=", aCommand, "ok=", tOk)
+	-- 2-arg form on every client — see SkuCore:SetBinding above.
+	if tKey1 then
+		local tOk1 = SetBinding(tKey1, aCommand)
+		dprint("SkuCore:SetBinding2 key1", "tKey1=", tKey1, "ok=", tOk1)
 	end
+	local tOk = SetBinding(aKey, aCommand)
+	dprint("SkuCore:SetBinding2", "aKey=", aKey, "aCommand=", aCommand, "ok=", tOk)
 	SkuCore:SaveBindings()
 end
 
@@ -4221,11 +4212,8 @@ function SkuCore:DeleteBinding2(aCommand)
 	SkuCore:DeleteBinding(aCommand)
 
 	if tKey1 then
-		if Sku.isTBC then
-			SetBinding(tKey1, aCommand)
-		else
-			SetBinding(tKey1, aCommand, 1)
-		end
+		-- 2-arg form on every client — see SkuCore:SetBinding above.
+		SetBinding(tKey1, aCommand)
 	end
 	SkuCore:SaveBindings()
 end
@@ -4249,26 +4237,19 @@ function SkuCore:ResetBindings(aToWowDefaults)
 					--if tKey2 then SetBinding(tKey2) end
 				end
 
+				-- 2-arg form on every client — see SkuCore:SetBinding above.
 				if vcom.key1 then
 					if vcom.index == -1 then
 						SetBinding(vcom.key1)
 					else
-						if Sku.isTBC then
-							SetBinding(vcom.key1, icom)
-						else
-							SetBinding(vcom.key1, icom, 1)
-						end
+						SetBinding(vcom.key1, icom)
 					end
 				end
 				if vcom.key2 then
 					if vcom.index == -1 then
 						SetBinding(vcom.key2)
 					else
-						if Sku.isTBC then
-							SetBinding(vcom.key2, icom)
-						else
-							SetBinding(vcom.key2, icom, 1)
-						end
+						SetBinding(vcom.key2, icom)
 					end
 				end
 			end
