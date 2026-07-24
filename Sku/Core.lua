@@ -940,6 +940,106 @@ SlashCmdList["SKUFOLLOWPROBE"] = function()
 	tSkuFollowProbeStart()
 end
 
+--------------------------------------------------------------------------------
+-- /skucollisionprobe (/scp [seconds]) — TEMP diagnostic for a planned
+-- DUNGEON-CAPABLE self-collision ("walked into a wall") feature. Fall detection
+-- works in instances because IsFalling() is a physics STATE, not a coordinate;
+-- the open question here is whether GetUnitSpeed("player") gives an equally
+-- coordinate-free "am I actually moving" signal -- i.e. does currentSpeed
+-- collapse to ~0 while a forward/strafe/autorun key is still held against a
+-- wall, or does it keep reporting the intended run speed? Sku already tracks the
+-- INTENT (SkuCoreMovement.Flags.MoveForward/MoveBackward/StrafeLeft/StrafeRight/
+-- AutoRun, from the MoveForwardStart-style hooks); this samples that intent
+-- against GetUnitSpeed + IsFalling at the collision-loop cadence (0.15s) so we
+-- can see the mismatch. UnitPosition delta is logged too as an OUTDOOR
+-- cross-check (it goes nil in instances -- that dead column is exactly the point
+-- GetUnitSpeed has to cover). All samples go to the SkuDebugLog ring via dprint;
+-- read them back from ...\SavedVariables\Sku.lua after a /reload. Default 8s,
+-- optional arg clamps to 3..30s. Delete once validated.
+--
+-- How to read it: walk straight into a wall for a few seconds, then run freely
+-- for a few more, /reload, and compare. If the WALL segment shows currentSpeed
+-- (and ratio) near 0 while intent stays "true", the feature is just a rewire of
+-- the existing coord-based self-collision block onto GetUnitSpeed for instances.
+--------------------------------------------------------------------------------
+-- Translational movement intent only (deliberately NOT pure turning: turning in
+-- place is not a collision and Flags.IsTurningOrAutorunningOrStrafing conflates
+-- it). Returns a bool + a compact "which keys" string for the log.
+local function tSkuCollisionProbeIntent()
+	local f = SkuCoreMovement and SkuCoreMovement.Flags or {}
+	local tSet = {}
+	if f.MoveForward == true then tSet[#tSet + 1] = "F" end
+	if f.MoveBackward == true then tSet[#tSet + 1] = "B" end
+	if f.StrafeLeft == true then tSet[#tSet + 1] = "L" end
+	if f.StrafeRight == true then tSet[#tSet + 1] = "R" end
+	if f.AutoRun == true then tSet[#tSet + 1] = "A" end
+	return #tSet > 0, (#tSet > 0 and table.concat(tSet, "") or "-")
+end
+
+local tSkuCollisionProbeFrame
+local function tSkuCollisionProbeStart(aSeconds)
+	if Sku and Sku.debug then Sku.debug.log = true end   -- ensure samples persist to the ring
+
+	local tDuration = tonumber(aSeconds) or 8
+	if tDuration < 3 then tDuration = 3 elseif tDuration > 30 then tDuration = 30 end
+
+	local _, tInstType = IsInInstance()
+	local cur, run = GetUnitSpeed("player")
+	local pa, pb = tSkuFollowProbePos("player")   -- reuse the follow probe's UnitPosition helper
+
+	dprint("=== SkuCollisionProbe START ===")
+	dprint("instance", tostring(tInstType), "duration", tDuration,
+		"swimming", tostring(IsSwimming()), "falling", tostring(IsFalling()),
+		"onTaxi", tostring(UnitOnTaxi and UnitOnTaxi("player")),
+		"UnitPosition", (pa and "live" or "dead"))
+	dprint("speed@start current", tostring(cur), "run", tostring(run))
+
+	if SkuOptions and SkuOptions.Voice then
+		SkuOptions.Voice:OutputString("Kollisionsprobe. "..tDuration.." Sekunden. Jetzt gegen eine Wand laufen.", true, true, 0.2)
+	end
+
+	-- Sampler at the collision-loop cadence. Logs, each tick: current/run speed,
+	-- their ratio (the "fraction of max speed actually achieved" -- ~1 free, ~0
+	-- head-on wall, mid = sliding), IsFalling, the intent keys, and the outdoor
+	-- UnitPosition delta as a truth check on GetUnitSpeed.
+	tSkuCollisionProbeFrame = tSkuCollisionProbeFrame or CreateFrame("Frame")
+	local tElapsed, tAcc, tN = 0, 0, 0
+	local tLpa, tLpb = pa, pb
+	tSkuCollisionProbeFrame:SetScript("OnUpdate", function(self, time)
+		tElapsed = tElapsed + time
+		tAcc = tAcc + time
+		if tAcc < 0.15 then return end
+		tAcc = 0
+		tN = tN + 1
+		local ccur, crun = GetUnitSpeed("player")
+		local tRatio = (crun and crun > 0) and (ccur / crun) or nil
+		local tIntent, tKeys = tSkuCollisionProbeIntent()
+		local cpa, cpb = tSkuFollowProbePos("player")
+		local myDelta = (cpa and tLpa) and math.sqrt((cpa - tLpa)^2 + (cpb - tLpb)^2) or nil
+		dprint("sample", tN,
+			"cur", ccur and tostring(math.floor(ccur * 100) / 100) or "-",
+			"run", crun and tostring(math.floor(crun * 100) / 100) or "-",
+			"ratio", tRatio and tostring(math.floor(tRatio * 100) / 100) or "-",
+			"intent", tostring(tIntent), "keys", tKeys,
+			"falling", tostring(IsFalling()),
+			"posDelta", myDelta and tostring(math.floor(myDelta * 1000) / 1000) or "-")
+		tLpa, tLpb = cpa or tLpa, cpb or tLpb
+		if tElapsed >= tDuration then
+			self:SetScript("OnUpdate", nil)
+			dprint("=== SkuCollisionProbe END, samples="..tN.." ===")
+			if SkuOptions and SkuOptions.Voice then
+				SkuOptions.Voice:OutputString("Kollisionsprobe fertig, "..tN.." Samples", true, true, 0.2)
+			end
+		end
+	end)
+end
+
+SLASH_SKUCOLLISIONPROBE1 = "/skucollisionprobe"
+SLASH_SKUCOLLISIONPROBE2 = "/scp"
+SlashCmdList["SKUCOLLISIONPROBE"] = function(aMsg)
+	tSkuCollisionProbeStart(aMsg)
+end
+
 -- Load-time milestone capture. The single debugprofilestart() at the top of
 -- this file anchors the session clock, so Sku:MetricPoint() records seconds
 -- since core load. We stamp the two key startup events and auto-persist the
