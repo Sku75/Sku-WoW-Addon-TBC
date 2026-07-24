@@ -1102,12 +1102,20 @@ function SkuChat:MenuBuilder(aParentEntry)
 
 
 	-- W7: the chat "Optionen" entry is now the chat settings directly (chatSettings
-	-- rendered with its original keyPrefix so saved values are preserved). The other
-	-- SkuChat options (TTS voice/speed/volume, join channel, ...) moved to
-	-- Einstellungen -> Sprachausgabe (see SkuCore:MenuBuilder).
+	-- rendered with its original keyPrefix so saved values are preserved). The TTS
+	-- options (voice/speed/volume, ...) moved to Einstellungen -> Sprachausgabe
+	-- (see SkuCore:MenuBuilder).
+	--
+	-- joinSkuChannel moved BACK here: it is a chat-channel setting, not a speech
+	-- setting, and under Sprachausgabe it was unfindable — that menu shares its
+	-- label with the Audio -> Sprachausgabe shortcut, which renders only the three
+	-- TTS sliders, so the entry read as non-existent. Rendered with keyPrefix ""
+	-- because it lives at the top level of the SkuChat sub, not under chatSettings
+	-- (same prefix Sprachausgabe used -> saved value preserved).
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Options"], sorting = true,
 		build = function(self)
 			SkuOptions:IterateOptionsArgs(SkuChat.options.args.chatSettings.args, self, SkuSettings:Sub("SkuChat"), "SkuChat", "chatSettings.")
+			SkuOptions:IterateOptionsArgs({ joinSkuChannel = SkuChat.options.args.joinSkuChannel }, self, SkuSettings:Sub("SkuChat"), "SkuChat", "")
 		end }
 
 	SkuMenu:Build(aParentEntry, tSpecs)

@@ -2999,13 +2999,17 @@ function SkuCore:MenuBuilder(aParentEntry)
 			build = function(self)
 				-- The non-chat-settings SkuChat options, moved out of the chat menu's
 				-- "Optionen" (keyPrefix "" preserved -> saved values intact).
+				-- joinSkuChannel deliberately NOT here: it is a chat-channel setting,
+				-- and this menu shares its label with the Audio -> Sprachausgabe
+				-- shortcut (which shows only the TTS sliders), so it was effectively
+				-- unfindable. Back under SkuChat -> Optionen; same keyPrefix "" there,
+				-- so the saved value carries over untouched.
 				if SkuChat and SkuChat.options and SkuChat.options.args then
 					local a = SkuChat.options.args
 					local tArgs = {
 						WowTtsVoice           = a.WowTtsVoice,
 						WowTtsSpeed           = a.WowTtsSpeed,
 						WowTtsVolume          = a.WowTtsVolume,
-						joinSkuChannel        = a.joinSkuChannel,
 						neverResetQueues      = a.neverResetQueues,
 						allChatViaBlizzardTts = a.allChatViaBlizzardTts,
 						doNotReadoutEmojis    = a.doNotReadoutEmojis,
