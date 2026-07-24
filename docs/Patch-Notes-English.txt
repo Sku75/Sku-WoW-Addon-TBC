@@ -4,6 +4,89 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.08
+
+    With thanks to Naxedim
+        Almost every improvement in this version was inspired by the companion add-ons
+        Naxedim built and shared at https://naxedim.github.io/sku-addons/ -
+        SkuMoneyReplacement, SkuMailboxReplacement, SkuAuctionHouseReplacement and
+        SkuMinimapScannerFR. They have been ported natively into Sku here, using Sku's own
+        menu system. Full credit for the ideas and the working solutions goes to Naxedim.
+
+    Mail: attachments, sending and large amounts
+        Simple: Attaching an item to a letter is now reliable - the item really lands on the
+            mail and never gets stuck on your cursor. A new "Attached items" entry lets you
+            review what is attached and press Enter to send an item back to your bags. When a
+            mail cannot be sent (for example an unknown recipient) you now hear "Send failed"
+            with the reason, and your recipient, subject and text are kept so you can just fix
+            the name and send again. You can now also attach more than 999 gold: each coin
+            list has a new "Enter amount" entry at the top where you type any value.
+        Technical: The attach path uses an explicit free send-slot plus GetSendMailItem
+            verification with ClearCursor on failure (the old OnDropAny path is a no-op on
+            Anniversary). MAIL_FAILED is now handled (announce + keep draft); the draft is
+            cleared only on MAIL_SEND_SUCCESS. Coin lists gained an EditBox entry; the
+            attachment-review submenu lists GetSendMailItem and un-attaches via
+            ClickSendMailItemButton.
+
+    Text fields: every character is spoken as you type and edit
+        Simple: When you type into any Sku text field (mail, auction search, amounts,
+            equipment-set names and so on) you now hear each character as you type it and each
+            one you delete. The arrow keys read the character at the cursor (Ctrl + arrow
+            reads the whole word), Up/Down read the whole text, and Escape says "Cancelled".
+        Technical: SkuOptions:EditBoxShow gained OnChar/OnKeyDown reading (UTF-8 safe). Typed
+            characters queue so fast typing on slow voices speaks every character; cursor reads
+            use overwrite. Plain arrows are free (menu navigation is on Shift-arrows), so no
+            binding suspension is needed.
+
+    Auction house: add-on tooltip info, no more stuck keys, item names in any language
+        Simple: Item tooltips in the auction house now also show information added by other
+            add-ons (like Pawn upgrade scores) as an extra "Add-on info" section at the end,
+            without changing Sku's own tooltip. Closing the auction house no longer leaves
+            Enter and Escape stuck (Escape opens the game menu again as it should). In the
+            strategy-buy item picker you can now type the item name in your own language.
+        Technical: AuctionBuildItemTooltip drives the real GameTooltip once (invisibly) to
+            capture third-party OnTooltipSetItem lines and appends the non-base lines as a
+            section (SkuScanningTooltip is not re-owned). On menu close, override bindings on
+            the buy binder and both menu buttons are cleared in several passes, guarded to
+            menu-closed / out-of-combat. Strategy-buy gained a free-text item entry (Sku only
+            ships German/English name tables). Full-scan ingest raised 250 -> 400 rows/frame.
+
+    Guild bank: read and move gold
+        Simple: The guild bank menu has a new "Guild bank money" entry: read how much gold is
+            in the bank, how much you can still withdraw today, and how much you carry, and
+            deposit or withdraw gold by typing an amount. Deposits and withdrawals are checked
+            first (enough gold, daily limit) and confirmed by voice.
+        Technical: Build_GuildBankFrame's money TODO is filled with raw gossip entries;
+            deposit/withdraw run GetGuildBankWithdrawMoney-limited checks and announce the
+            before/after money difference.
+
+    Trade: the trade window money is read out
+        Simple: When you trade, Sku now tells you when the other player puts gold into the
+            trade, changes it or takes it back, and reads your own offer as you set it.
+            (Adding gold to a trade from an add-on is blocked by Blizzard, so this is the
+            reading side only.)
+        Technical: TRADE_MONEY_CHANGED is handled via the dispatcher; own and partner money
+            are compared against last-known values and announced with the partner name.
+
+    Resource scanner: native French node names
+        Simple: The minimap and ground resource scanner now knows the French names of ore
+            veins, herbs, gas clouds and chests, so it works natively on a French game client.
+        Technical: frFR resource names were added to SkuCore.RessourceTypes, and frFR to
+            Sku.LocsPartly so Sku.LocP stays frFR on a French client, with an enUS safety
+            fallback.
+
+    Navigation: a flightmaster flight cancels an active route
+        Simple: When you take a flight from a flightmaster while a route is being followed,
+            the route is now cancelled automatically - it makes no sense to keep it while the
+            taxi flies you elsewhere. Flying yourself on a mount or riding a flying vehicle
+            does not cancel the route.
+        Technical: The taxi-started branch (PLAYER_CONTROL_LOST followed by
+            PLAYER_MOUNT_DISPLAY_CHANGED) now calls SkuNav:CancelNavigationSilent, gated on
+            UnitOnTaxi("player") so it fires only for flightmaster flights - self-flying never
+            fires PLAYER_CONTROL_LOST, and in a flying vehicle UnitOnTaxi stays false.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.07
 
     AddOn settings: read and change other addons' options
