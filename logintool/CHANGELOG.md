@@ -10,6 +10,22 @@
 > laufenden Client getestet.** Charakterauswahl, Erstellen und Löschen sind
 > getestet und laufen.
 
+## 2.1 (2026-07-24)
+
+Classic Era support, verified live on the 1.15.9 (interface 11509) Era client:
+
+- Realm-list reader: `BuildRealmMenu` scraped realm names from a fixed region
+  whose left edge was x=0.28 of the window. The Era realm dialog (2880x1800)
+  renders the name column at nx ~0.23-0.28, so only the one realm that reached
+  0.28 was read and every other realm — including the player's own — was clipped,
+  making server change unusable. Widened the name-column left edge to 0.18 (the
+  Type column stays out, its center is ~0.49+); the full realm list is now read
+  on both the Era and TBC layouts.
+- Escape passthrough: in login mode Escape was swallowed unless renaming or
+  deleting a character, so it never reached the game. It now forwards to the game
+  when not in a name-entry/delete flow, so Escape backs out of the realm dialog
+  and character creation again.
+
 ## V2 (unreleased — OCR rework)
 
 Full rework, developed in [Sku75/Sku-WoW-Addon-TBC](https://github.com/Sku75/Sku-WoW-Addon-TBC)

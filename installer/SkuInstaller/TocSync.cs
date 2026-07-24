@@ -13,9 +13,11 @@ namespace SkuInstaller
     /// an addon whose TOC still advertises the old number is flagged out of date
     /// and can stop loading. So on every run we rewrite the line to the current
     /// client number(s) — even for companions that were NOT re-downloaded this run.
-    /// This is the belt to <see cref="GameSettings"/>' "Load out of date AddOns"
-    /// suspenders: either one alone usually keeps Sku loading, both together are
-    /// robust across a major client bump.
+    /// This is what actually keeps addons loading across a client bump on the
+    /// Anniversary-family clients (TBC + Classic Era): they gate on the EXACT build
+    /// number, so the TOC must list it. "Load out of date AddOns"
+    /// (<see cref="GameSettings"/> / checkAddonVersion 0) is NOT a substitute — a
+    /// near number (e.g. 11508 on an 11509 client) is silently refused regardless.
     /// </summary>
     public static class TocSync
     {

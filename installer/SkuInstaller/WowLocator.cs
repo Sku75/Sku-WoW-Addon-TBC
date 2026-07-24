@@ -21,8 +21,13 @@ namespace SkuInstaller
     /// file-driven: under each WoW base dir, each "_*_" folder is a flavor; its
     /// .flavor.info names the product (wow_anniversary, wow_classic_era, …) and a
     /// WowClassic.exe / Wow.exe confirms it's a real client. Sku is installed into
-    /// the chosen flavor's Interface\AddOns. The same Sku build is used for
-    /// Anniversary and Classic Era (loaded out-of-date via checkAddonVersion 0).
+    /// the chosen flavor's Interface\AddOns. The same Sku build serves both
+    /// Anniversary and Classic Era; what makes it load on each is TocSync writing
+    /// that flavor's EXACT interface build into every TOC (see InterfaceVersionList).
+    /// These Anniversary-family clients gate on the exact build number — a near
+    /// number is silently refused, and "Load out of date AddOns" (checkAddonVersion
+    /// 0) does NOT cover a mismatched interface. Learned on Classic Era 11509 when
+    /// companions tagged 11508 silently failed to load.
     /// </summary>
     public static class WowLocator
     {

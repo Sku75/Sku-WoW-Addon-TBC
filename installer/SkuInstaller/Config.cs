@@ -122,7 +122,7 @@ namespace SkuInstaller
         // whenever a newer tool build is published, and LoginToolInstaller upgrades
         // in place any user whose recorded marker predates it.
         public const string LoginToolTag = "login-tool";
-        public const string LoginToolVersion = "2.0";
+        public const string LoginToolVersion = "2.1";
         public const string LoginToolAsset = "WoW-Login-Tool.zip";
         public const string LoginToolFolderName = "WoW Login Tool";
 
