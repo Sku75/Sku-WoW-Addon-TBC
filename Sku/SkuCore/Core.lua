@@ -4155,13 +4155,17 @@ function SkuCore:SetBinding(aKey, aCommand)
 
 	if Sku.isTBC then
 		local tOk = SetBinding(aKey, aCommand)
+		dprint("SkuCore:SetBinding TBC branch", "aKey=", aKey, "aCommand=", aCommand, "ok=", tOk)
 		if tKey2 then
 			local tOk = SetBinding(tKey2, aCommand)
+			dprint("SkuCore:SetBinding TBC branch key2", "tKey2=", tKey2, "ok=", tOk)
 		end
 	else
 		local tOk = SetBinding(aKey, aCommand, 1)
+		dprint("SkuCore:SetBinding Era branch (3-arg)", "aKey=", aKey, "aCommand=", aCommand, "ok=", tOk)
 		if tKey2 then
 			local tOk = SetBinding(tKey2, aCommand, 1)
+			dprint("SkuCore:SetBinding Era branch key2 (3-arg)", "tKey2=", tKey2, "ok=", tOk)
 		end
 	end
 	SkuCore:SaveBindings()
@@ -4185,13 +4189,17 @@ function SkuCore:SetBinding2(aKey, aCommand)
 	if Sku.isTBC then
 		if tKey1 then
 			local tOk = SetBinding(tKey1, aCommand)
+			dprint("SkuCore:SetBinding2 TBC branch key1", "tKey1=", tKey1, "ok=", tOk)
 		end
 		local tOk = SetBinding(aKey, aCommand)
+		dprint("SkuCore:SetBinding2 TBC branch", "aKey=", aKey, "aCommand=", aCommand, "ok=", tOk)
 	else
 		if tKey1 then
 			local tOk = SetBinding(tKey1, aCommand, 1)
+			dprint("SkuCore:SetBinding2 Era branch key1 (3-arg)", "tKey1=", tKey1, "ok=", tOk)
 		end
 		local tOk = SetBinding(aKey, aCommand, 1)
+		dprint("SkuCore:SetBinding2 Era branch (3-arg)", "aKey=", aKey, "aCommand=", aCommand, "ok=", tOk)
 	end
 	SkuCore:SaveBindings()
 end

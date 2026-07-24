@@ -363,12 +363,14 @@ local tStandardChars = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "
 local tStandardNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"}
 
 local function tInstallCaptureBindings(f)
+	local tArmed = 0
 	SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindControlFrame", "ESCAPE")
 	for i, v in pairs(_G) do
 		if string.find(i, "KEY_") == 1 then
 			if not string.find(i, "ESC") then
 				for x = 1, #tModifierKeys do
 					SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindControlFrame", tModifierKeys[x]..string.sub(i, 5))
+					tArmed = tArmed + 1
 				end
 			end
 		end
@@ -376,13 +378,16 @@ local function tInstallCaptureBindings(f)
 	for x = 1, #tStandardChars do
 		for y = 1, #tModifierKeys do
 			SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardChars[x])
+			tArmed = tArmed + 1
 		end
 	end
 	for x = 1, #tStandardNumbers do
 		for y = 1, #tModifierKeys do
 			SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardNumbers[x])
+			tArmed = tArmed + 1
 		end
 	end
+	dprint("SkuKeyBind capture bindings armed", "count=", tArmed, "hasSetOverride=", SetOverrideBindingClick ~= nil)
 end
 
 local function tIsBlockedKey(aKey)
@@ -416,6 +421,7 @@ end
 
 -- Faengt den naechsten Tastendruck ab und speichert ihn als Taste 1 oder Taste 2.
 local function tStartCapture(aMenuTarget, aBindingConst, aSecondary)
+	dprint("SkuKeyBind capture start", "const=", aBindingConst, "secondary=", aSecondary)
 	SkuOptions.bindingMode = true
 	C_Timer.After(0.001, function()
 		SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2, true, nil, nil, 2)
@@ -428,15 +434,21 @@ local function tStartCapture(aMenuTarget, aBindingConst, aSecondary)
 		f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
 		f:SetPoint("CENTER")
 		f:SetScript("OnClick", function(self, aKey, aB)
+			dprint("SkuKeyBind OnClick", "aKey=", aKey, "aB=", aB, "const=", self.bindingConst, "secondary=", aSecondary)
 			if aKey ~= "ESCAPE" then
-				if not self.bindingConst or not self.menuTarget then return end
+				if not self.bindingConst or not self.menuTarget then
+					dprint("SkuKeyBind OnClick abort: no bindingConst/menuTarget")
+					return
+				end
 				if tIsBlockedKey(aKey) then
+					dprint("SkuKeyBind OnClick blocked key", aKey)
 					SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
 					self.prevKey = nil
 					return
 				end
 				local tCommand = SkuCore:CheckBound(aKey)
 				local bindingConst = SkuOptions:SkuKeyBindsCheckBound(aKey)
+				dprint("SkuKeyBind OnClick conflict check", "blizzCmd=", tCommand, "skuConst=", bindingConst, "prevKey=", self.prevKey)
 				if tCommand or bindingConst then
 					if not self.prevKey or self.prevKey ~= aKey then
 						self.prevKey = aKey
@@ -456,11 +468,14 @@ local function tStartCapture(aMenuTarget, aBindingConst, aSecondary)
 						SkuCore:SaveBindings()
 					end
 				end
+				local tWriteOk
 				if aSecondary == true then
-					SkuOptions:SkuKeyBindsSetBinding2(self.bindingConst, aKey)
+					tWriteOk = SkuOptions:SkuKeyBindsSetBinding2(self.bindingConst, aKey)
 				else
-					SkuOptions:SkuKeyBindsSetBinding(self.bindingConst, aKey)
+					tWriteOk = SkuOptions:SkuKeyBindsSetBinding(self.bindingConst, aKey)
 				end
+				dprint("SkuKeyBind store write", "const=", self.bindingConst, "aKey=", aKey, "writeOk=", tWriteOk,
+					"nowKey=", SkuOptions:SkuKeyBindsGetBinding(self.bindingConst), "nowKey2=", SkuOptions:SkuKeyBindsGetBinding2(self.bindingConst))
 				if tCommand or bindingConst then
 					_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
 				else
@@ -471,6 +486,7 @@ local function tStartCapture(aMenuTarget, aBindingConst, aSecondary)
 				local tShow = (aSecondary == true) and (SkuOptions:SkuKeyBindsGetBinding2(self.bindingConst)) or (SkuOptions:SkuKeyBindsGetBinding(self.bindingConst))
 				SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..tFriendlyKey(tShow or ""), true, true, 0.2, true, nil, nil, 2)
 			elseif aKey == "ESCAPE" then
+				dprint("SkuKeyBind OnClick cancel (ESCAPE)")
 				self.prevKey = nil
 				SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2, true, nil, nil, 2)
 			end

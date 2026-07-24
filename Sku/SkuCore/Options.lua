@@ -730,8 +730,12 @@ local function tRebindCaptureCommand(self, aSecondary)
 			f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
 			f:SetPoint("CENTER")
 			f:SetScript("OnClick", function(self, aKey, aB)
+				dprint("CmdBind OnClick", "aKey=", aKey, "aB=", aB, "command=", self.command, "index=", self.index, "category=", self.category, "secondary=", aSecondary)
 				if aKey ~= "ESCAPE" then
-					if not self.command or not self.category or not self.menuTarget or not self.index then return end
+					if not self.command or not self.category or not self.menuTarget or not self.index then
+						dprint("CmdBind abort: missing command/category/menuTarget/index", self.command, self.category, self.index)
+						return
+					end
 					for z = 1, #tBlockedKeysParts do
 						if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then 
 							SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
@@ -772,8 +776,11 @@ local function tRebindCaptureCommand(self, aSecondary)
 					end
 
 					if aSecondary then SkuCore:SetBinding2(aKey, self.command) else SkuCore:SetBinding(aKey, self.command) end
-					
+
+					dprint("CmdBind after SetBinding", "command=", self.command, "aKey=", aKey,
+						"GetBindingKey=", GetBindingKey(self.command), "bindingSet=", GetCurrentBindingSet())
 					local tCommand, tCategory, tKey1, tKey2 = GetBinding(self.index, GetCurrentBindingSet())
+					dprint("CmdBind readback", "idx=", self.index, "gotCommand=", tCommand, "tKey1=", tKey1, "tKey2=", tKey2, "matchesTarget=", tCommand == self.command)
 					local aFriendlyKey1, tFriendlyKey2 = tKey1 or L["nichts"], tKey2 or L["nichts"]
 					for kLocKey, vLocKey in pairs(SkuCore.Keys.LocNames) do
 						aFriendlyKey1 = gsub(aFriendlyKey1, kLocKey, vLocKey)
