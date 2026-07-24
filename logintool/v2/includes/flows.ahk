@@ -1254,7 +1254,11 @@ BuildRealmMenu(menuItem) {
 
     ; Rows between the column header strip and the tab strip.
     rows := []
-    for line in OcrLinesInRegion(s, 0.28, 0.23, 0.45, 0.79)
+    ; Name column left edge: the Era realm dialog (2880x1800) puts realm names at
+    ; nx ~0.23-0.28, so a 0.28 lower bound clipped everything but the single realm
+    ; that reached 0.28. Widened to 0.18 to capture the full name column on both the
+    ; Era and TBC layouts (the Type column stays out, its center is ~0.49+).
+    for line in OcrLinesInRegion(s, 0.18, 0.23, 0.45, 0.79)
         rows.Push(line)
     for row in rows {
         ; Same-row companions (type, load) right of the name.

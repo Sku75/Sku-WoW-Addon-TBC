@@ -55,6 +55,12 @@ Escape:: {
         CancelCharacterName()
     } else if gDeleteCharacterNameFlag {
         CancelDelete()
+    } else {
+        ; Not in a name-entry/delete flow: Escape is not a menu action, so it
+        ; must reach the GAME (close the realm dialog, back out of character
+        ; creation, log out from char-select). Previously it was swallowed here,
+        ; leaving the user unable to Escape out of any screen while the tool ran.
+        Send("{Escape}")
     }
 }
 
