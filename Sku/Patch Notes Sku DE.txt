@@ -4,6 +4,45 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v42.09
+
+    Classic Era: Spiel-Tastenbelegungen lassen sich wieder setzen
+        Einfach: Auf dem Classic-Era-Client liess sich eine Spiel-Tastenbelegung zwar
+            loeschen, aber nie eine neue vergeben - das Menue meldete die Taste danach
+            einfach als "nichts". Das Belegen funktioniert jetzt genauso wie auf dem
+            Anniversary-Client, fuer die erste wie fuer die zweite Taste eines Befehls.
+        Technisch: Die Binding-Hilfsfunktionen in SkuCore riefen im Nicht-TBC-Zweig
+            SetBinding(key, command, 1) auf. Das dritte Argument bindingMode wird von Era
+            1.15 abgelehnt, der Aufruf lieferte false und belegte nichts, waehrend die
+            einargumentige Loesch-Form weiter funktionierte - daher "Loeschen geht,
+            Belegen nicht". Sku.isTBC ist fuer jeden Client ab Interface 20505 wahr, dieser
+            Zweig wurde also ausschliesslich auf Era erreicht. Alle fuenf Aufrufstellen
+            (SetBinding, SetBinding2, DeleteBinding2 und beide Tasten in ResetBindings)
+            nutzen jetzt die zweiargumentige Form, die auf beiden Clients korrekt ist.
+
+    Classic Era: Beitritt zum Sku-Chat-Kanal schlaegt nicht mehr fehl
+        Einfach: "Sku Chat Channel beitreten" funktionierte auf Classic Era nicht richtig -
+            der Kanal wurde dem Chatfenster nie hinzugefuegt. Der Beitritt klappt jetzt.
+        Technisch: SkuChat:JoinOrLeaveSkuChatChannel verzweigte ueber Sku.isTBC und rief ein
+            globales ChatFrame_AddChannel auf, das es im Anniversary-Interface-Code gar
+            nicht gibt. Die echte API ist ChatFrameMixin:AddChannel, die auf jeder Variante
+            inklusive Era geladen wird - der Zweig entfaellt.
+
+    "Sku Chat Channel beitreten" ist wieder auffindbar
+        Einfach: Die Einstellung war nach Einstellungen -> Sprachausgabe verschoben worden,
+            direkt neben die Sprachausgabe-Optionen. Weil ein zweites Menue gleichen Namens
+            (unter Audio) nur die drei TTS-Regler zeigt, wirkte die Einstellung, als gaebe
+            es sie gar nicht. Sie steht wieder dort, wo sie hingehoert: unter Sku Chat ->
+            Optionen.
+        Technisch: Gerendert mit keyPrefix "" - demselben Praefix, den das
+            Sprachausgabe-Menue verwendet hat - damit gespeicherte Werte unveraendert
+            uebernommen werden. Die uebrigen verschobenen SkuChat-Optionen (TTS-Stimme,
+            -Tempo und -Lautstaerke, Audiowarteschlangen niemals zuruecksetzen, alle
+            Sprachausgabe ueber Blizzard-TTS, Emojis nicht vorlesen) bleiben unter
+            Sprachausgabe.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.08
 
     Mit Dank an Naxedim
