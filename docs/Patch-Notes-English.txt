@@ -4,6 +4,41 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.09
+
+    Classic Era: game key bindings can now be set again
+        Simple: On the Classic Era client it was possible to clear a game key binding, but
+            never to assign a new one - the menu simply reported the key as "nothing"
+            afterwards. Assigning keys now works exactly as it does on the Anniversary
+            client, for both the first and the second key of a command.
+        Technical: SkuCore's binding helpers called SetBinding(key, command, 1) on the
+            non-TBC branch. The third bindingMode argument is rejected by Era 1.15, so the
+            call returned false and bound nothing, while the one-argument unbind form kept
+            working - hence "unbinding works, binding does not". Sku.isTBC is true for every
+            client from interface 20505 upwards, so that branch was only ever reached on Era.
+            All five call sites (SetBinding, SetBinding2, DeleteBinding2 and both keys in
+            ResetBindings) now use the two-argument form, which is correct on both clients.
+
+    Classic Era: joining the Sku chat channel no longer fails
+        Simple: Turning on "Join Sku Chat Channel" on Classic Era did not work properly -
+            the channel was never added to your chat window. It now joins correctly.
+        Technical: SkuChat:JoinOrLeaveSkuChatChannel branched on Sku.isTBC and called a
+            global ChatFrame_AddChannel, which does not exist in the Anniversary interface
+            code at all. The real API is ChatFrameMixin:AddChannel, which loads on every
+            flavour including Era, so the branch was removed.
+
+    "Join Sku Chat Channel" is findable again
+        Simple: The setting had been moved to Settings -> Speech output, where it sat next
+            to the text-to-speech options. Because a second menu of the same name (under
+            Audio) shows only the three TTS sliders, the setting appeared to be missing
+            entirely. It is back where it belongs, under Sku Chat -> Options.
+        Technical: Rendered with keyPrefix "" - the same prefix the speech-output menu
+            used - so existing saved values carry over untouched. The remaining relocated
+            SkuChat options (TTS voice, speed and volume, never reset queues, all voice
+            output via Blizzard TTS, do not read out emojis) stay under Speech output.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.08
 
     With thanks to Naxedim
