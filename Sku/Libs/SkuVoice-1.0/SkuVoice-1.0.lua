@@ -350,7 +350,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function SplitStringBTTS(aString)
 	--dprint("split:", aString, SkuAudioFileIndex[aString])
-	if SkuAudioFileIndex[aString] then
+	if SkuAudioFileIndex and SkuAudioFileIndex[aString] then
 		return aString
 	end
 	if aString == nil then
@@ -408,7 +408,7 @@ end
 
 local function SplitString(aString)
 	--dprint("split:", aString, SkuAudioFileIndex[aString])
-	if SkuAudioFileIndex[aString] then
+	if SkuAudioFileIndex and SkuAudioFileIndex[aString] then
 		return aString
 	end
 	if aString == nil then
