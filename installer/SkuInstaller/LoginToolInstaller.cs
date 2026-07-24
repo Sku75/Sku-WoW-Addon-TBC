@@ -10,17 +10,16 @@ namespace SkuInstaller
     /// <summary>
     /// Installs the WoW Login Tool (see <see cref="Config.LoginToolTag"/>). Unlike a
     /// WoW addon, the tool has several moving parts:
-    ///   1. its program folder (v1 START.ahk + v2\ driver + helper\SkuLoginSense.exe
-    ///      + data\*), placed next to the game as &lt;WoW base&gt;\WoW Login Tool;
+    ///   1. its program folder (v2\ driver + helper\SkuLoginSense.exe + data\*),
+    ///      placed next to the game as &lt;WoW base&gt;\WoW Login Tool;
     ///   2. a set of login-screen textures that MUST be copied into the client's
     ///      Interface folder — the tool recognises the login/character screens by
     ///      the exact colours of these textures, and data.ini's colour tables match
     ///      THIS texture generation (old textures + new data.ini misclassify);
     ///   3. a readable-font override copied into &lt;flavor&gt;\Fonts;
-    ///   4. portable AutoHotkey runtimes (v1.1 and v2, embedded in the installer) —
-    ///      a .ahk needs AHK just to launch, so the tool cannot bootstrap this
-    ///      itself. The launcher shortcut points the v2 runtime at v2\START.ahk
-    ///      when the zip ships it, else the v1 runtime at START.ahk.
+    ///   4. a portable AutoHotkey v2 runtime (embedded in the installer) — a .ahk
+    ///      needs AHK just to launch, so the tool cannot bootstrap this itself. The
+    ///      launcher shortcut points that runtime at v2\START.ahk.
     ///
     /// Everything is best-effort: failures are logged + announced but never abort
     /// the surrounding Sku install. Idempotent — skips a re-download when the
@@ -62,10 +61,10 @@ namespace SkuInstaller
             return Path.Combine(parent, Config.LoginToolFolderName);
         }
 
-        /// <summary>True if the tool is deployed (START.ahk present in its folder).</summary>
+        /// <summary>True if the tool is deployed (v2\START.ahk present in its folder).</summary>
         internal static bool IsInstalled(string addonsFolder)
         {
-            try { return File.Exists(Path.Combine(ResolveToolDir(addonsFolder), "START.ahk")); }
+            try { return File.Exists(Path.Combine(ResolveToolDir(addonsFolder), "v2", "START.ahk")); }
             catch { return false; }
         }
 
@@ -89,7 +88,7 @@ namespace SkuInstaller
                 string interfaceDir = Directory.GetParent(addonsFolder)?.FullName;   // …\Interface
                 string toolDir = ResolveToolDir(addonsFolder);
 
-                string startScript = Path.Combine(toolDir, "START.ahk");
+                string startScript = Path.Combine(toolDir, "v2", "START.ahk");
                 if (File.Exists(startScript) && !force)
                 {
                     string installed = InstalledVersion(toolDir);
@@ -218,34 +217,48 @@ namespace SkuInstaller
         }
 
         /// <summary>
-        /// Drops the portable AutoHotkey runtimes next to START.ahk and
-        /// (re)creates the launcher shortcut. The v2 driver (v2\START.ahk,
-        /// present in reworked zips) is preferred; old zips fall back to the
-        /// v1 script + v1 runtime.
+        /// Drops the portable AutoHotkey v2 runtime next to the tool and
+        /// (re)creates the launcher shortcut pointing it at v2\START.ahk. Also
+        /// removes the retired v1 script + runtime from installs upgraded in place.
         /// </summary>
         private static void EnsureRuntimeAndShortcut(string toolDir, Action<string> announce)
         {
-            string ahkV1Exe = Path.Combine(toolDir, "AutoHotkey.exe");
             string ahkV2Exe = Path.Combine(toolDir, "AutoHotkeyV2.exe");
 
             announce(Loc.Get("lt.ahk"));
-            ExtractEmbedded("AutoHotkeyU64.exe", ahkV1Exe);
             ExtractEmbedded("AutoHotkey64_v2.exe", ahkV2Exe);
             ExtractEmbedded("AutoHotkey-license.txt", Path.Combine(toolDir, "AutoHotkey-license.txt"));
 
-            bool hasV2 = File.Exists(Path.Combine(toolDir, "v2", "START.ahk")) && File.Exists(ahkV2Exe);
-            string target = hasV2 ? ahkV2Exe : ahkV1Exe;
-            string arguments = hasV2 ? "\"v2\\START.ahk\"" : "\"START.ahk\"";
+            RemoveLegacyV1(toolDir);
 
             announce(Loc.Get("lt.shortcut"));
             Shortcut.CreateLauncher(
                 lnkName: Config.LoginToolFolderName + ".lnk",
-                target: target,
-                arguments: arguments,
+                target: ahkV2Exe,
+                arguments: "\"v2\\START.ahk\"",
                 workingDir: toolDir,
                 description: "WoW Login Tool — audio menu for the WoW login and character screens",
                 desktop: true,
                 startMenu: true);
+        }
+
+        /// <summary>
+        /// Best-effort removal of the retired v1 tool (top-level START.ahk, the
+        /// data\includes\ scripts, and the AutoHotkey v1.1 runtime) so an install
+        /// upgraded in place from an older zip does not keep dead files around.
+        /// The v1 tool shared data\* with v2, so only these v1-only paths are
+        /// removed — data\, v2\, helper\ and the textures stay.
+        /// </summary>
+        private static void RemoveLegacyV1(string toolDir)
+        {
+            try
+            {
+                TryDelete(Path.Combine(toolDir, "START.ahk"));
+                TryDelete(Path.Combine(toolDir, "AutoHotkey.exe"));   // v1.1 runtime
+                string v1Includes = Path.Combine(toolDir, "data", "includes");
+                if (Directory.Exists(v1Includes)) SafeDeleteDir(v1Includes);
+            }
+            catch (Exception ex) { Logger.Warning($"Login Tool: v1 cleanup skipped: {ex.Message}"); }
         }
 
         /// <summary>Locate the "WoW Login Tool" folder inside the extracted staging dir.</summary>
@@ -327,7 +340,7 @@ namespace SkuInstaller
             }
             catch (IOException ex)
             {
-                // e.g. AutoHotkey.exe locked because the tool is currently running.
+                // e.g. AutoHotkeyV2.exe locked because the tool is currently running.
                 Logger.Warning($"Login Tool: could not write {destPath}: {ex.Message}");
             }
         }

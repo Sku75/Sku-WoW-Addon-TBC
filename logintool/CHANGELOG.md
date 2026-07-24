@@ -10,6 +10,17 @@
 > laufenden Client getestet.** Charakterauswahl, Erstellen und Löschen sind
 > getestet und laufen.
 
+## 2.2 (2026-07-24)
+
+- Retired the legacy v1 (pixel-only) tool. The v2 OCR driver is now the only
+  tool: `START.ahk` and `data\includes\` were removed, and the installer no
+  longer ships or extracts the AutoHotkey v1.1 runtime — the launcher shortcut
+  always targets `v2\START.ahk`. v2 keeps sharing `data\` (settings.ini,
+  data.ini, localization, soundfiles), so nothing else changes. Installs
+  upgraded in place have the stale v1 files removed automatically. Every machine
+  that can run current WoW already has the Windows OCR + window-capture APIs v2
+  needs, so the fallback served no reachable machine.
+
 ## 2.1 (2026-07-24)
 
 Classic Era support, verified live on the 1.15.9 (interface 11509) Era client:

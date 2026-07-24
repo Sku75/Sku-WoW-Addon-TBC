@@ -99,7 +99,7 @@ namespace SkuInstaller
         /// <summary>
         /// Creates a general-purpose .lnk (with optional arguments/working dir) on
         /// the desktop and/or in the Start menu. Used for the WoW Login Tool
-        /// launcher (target = AutoHotkey.exe, arguments = START.ahk). Each failure
+        /// launcher (target = AutoHotkeyV2.exe, arguments = v2\START.ahk). Each failure
         /// is logged but non-fatal.
         /// </summary>
         public static void CreateLauncher(string lnkName, string target, string arguments,

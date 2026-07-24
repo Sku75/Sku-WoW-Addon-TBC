@@ -1,23 +1,19 @@
 WoW Login Tool
 
 VERSION 2 (OCR rework):
-This release contains two generations of the tool:
-- v2 (recommended, folder "v2"): senses the game by capturing the game
-  window and reading the text on it with the Windows OCR (both are built
-  into Windows 10/11). It announces your REAL character names ("Xynayya,
-  Stufe 36 Priesterin, Sturmwind"), reads the live realm list for all
-  regions and languages, and reads error/confirmation popups out loud
-  verbatim. Selection happens by clicking the recognized text directly -
-  the old slow arrow-down scanning is gone.
-- v1 (legacy, START.ahk in this folder): the previous pixel-only tool,
-  kept as a fallback.
+The tool senses the game by capturing the game window and reading the text on
+it with the Windows OCR (both are built into Windows 10/11). It announces your
+REAL character names ("Xynayya, Stufe 36 Priesterin, Sturmwind"), reads the
+live realm list for all regions and languages, and reads error/confirmation
+popups out loud verbatim. Selection happens by clicking the recognized text
+directly - the old slow arrow-down scanning is gone.
 The tool never reads or writes the game's memory and never injects into
 the game process. It looks at the screen and presses keys/clicks - the
 same things a sighted player does.
 
-Primary tested game version: WoW Classic Anniversary (Burning Crusade).
-Cataclysm/Era/Retail remain selectable as an untested baseline - testers
-and contributors welcome.
+Primary tested game versions: WoW Classic Anniversary (Burning Crusade) and
+Classic Era (1.15.x). Cataclysm/Retail remain selectable as an untested
+baseline - testers and contributors welcome.
 
 IMPORTANT:
 Carefully follow the instructions below to set up the tool, otherwise it won't work.
@@ -31,10 +27,9 @@ AutoHotkey runtimes, and a "WoW Login Tool" shortcut on the desktop and in
 the Start menu. If you used it, you are done - skip to "Using the tool".
 
 # Setting up the tool (manual)
-1. AutoHotkey: v2 of the tool needs AutoHotkey v2, the legacy v1 tool needs
-   AutoHotkey v1.1. Download from https://www.autohotkey.com/ (skip this
-   step if the Sku installer put AutoHotkeyV2.exe/AutoHotkey.exe into the
-   tool folder already).
+1. AutoHotkey: the tool needs AutoHotkey v2. Download from
+   https://www.autohotkey.com/ (skip this step if the Sku installer put
+   AutoHotkeyV2.exe into the tool folder already).
 2. Open the "CopyTheContentOfThisFolderToInterface" folder in the WoW Login Tool folder you've downloaded. There should be 5 folders in this folder ("BUTTONS", "DialogFrame", etc.).
 3. Copy all 5 folders.
 4. Browse to the WoW game files. Depending on your setup, this could be "C:\Program Files (x86)\World of Warcraft".
@@ -49,8 +44,7 @@ the Start menu. If you used it, you are done - skip to "Using the tool".
    the script fonts\install_wow_fonts.ps1 from the tool folder, passing your
    client folder if it is not the Anniversary default. This makes the game's
    text much easier for the OCR (and for low-vision players) to read.
-9. Run the tool: for v2 run "v2\START.ahk" (with AutoHotkey v2); for the
-   legacy tool run "START.ahk" (with AutoHotkey v1).
+9. Run the tool: run "v2\START.ahk" (with AutoHotkey v2).
 10. There will be a setup on the first start. Choose the correct settings and follow the instructions.
 11. You're done.
 
@@ -61,7 +55,7 @@ When you start the tool, it will be in Pause mode, waiting in the background and
 When it detects the World of Warcraft game window, i.e. when you start the game or tab into the game that's already running, it becomes active and initialises.
 The tool will automatically switch modes depending on whether you are in the login screen or the game world. 
 In Login mode, you can use an audio menu to select characters and enter the game world, create new characters, change servers, or delete characters.
-In Play mode, you can use NUMPAD 7 to left-click at your feet in the game world, or NUMPAD 8 to right-click. (This feature isn't enabled for Retail.)
+In Play mode, you can use NUMPAD 7 to right-click at your feet in the game world, or NUMPAD 8 to left-click. (This feature isn't enabled for Retail.)
 
 # Common problems when the tool doesn't work
 Most issues are caused by screen overlays that prevent the WoW Login Tool from recognising the WoW game screen.
@@ -79,16 +73,43 @@ Use the up and down arrow keys to navigate to the previous or next item in the a
 Use the Enter key to choose a menu item.
 To exit the tool, press alt + escape.
 Each time you tab out of the game (Pause mode) and back in (Login mode), the tool needs to initialise. This is by design. Just wait for the audio menu to come up.
-v2 announces your characters by their real name, level, class and zone, read
-live from the screen. (The legacy v1 tool refers to characters by numbers
-only: Character 1, 2, etc.)
+The tool announces your characters by their real name, level, class and zone,
+read live from the screen.
 
 # Keys
-Arrow keys: navigate in the audio menu
+The audio-menu keys (arrows, Page up/down, Enter) only do something in Login
+mode (and during the first-start setup). In Play mode they pass straight through
+to the game.
+
+Arrow keys: navigate in the audio menu (left/right open a submenu, up/down move
+   to the previous/next item)
 Page up and down: navigate ten entries up or down in the audio menu
-Enter: execute current audio menu item
-Alt + escape: terminate the tool
-Alt + f1: switch mode
+Enter: execute the current audio menu item (or confirm a character name / a
+   delete when you are in one of those prompts)
+Escape: cancel a name-entry or delete prompt; otherwise it is passed to the game
+   (so you can close a game dialog, back out of character creation, or log out
+   from the character screen)
+Alt + F1: abort whatever the tool is doing right now and switch mode
+   (Login <-> Play). This is a momentary toggle, not a lasting hold - see
+   "Pausing or stopping the tool" below.
+Alt + Escape: terminate the tool completely
+Ctrl + Alt + F2: take a full-screen screenshot to the Windows clipboard
+Numpad 7: (Play mode, not Retail) right-click at your feet in the game world
+Numpad 8: (Play mode, not Retail) left-click at your feet in the game world
+
+# Pausing or stopping the tool
+The tool watches the screen about once a second and switches modes on its own:
+when it sees a login or character screen it goes into Login mode, and when it
+sees the game world it goes into Play mode. Because of this, Alt + F1 does NOT
+hold the tool off while you stay on the login/character screen - within a second
+or two it detects that screen again and switches itself back to Login mode.
+
+To keep the tool from acting:
+- Press Alt + Escape to quit it completely. This is the reliable "off".
+- Or Alt-Tab away from WoW. While WoW is not the focused window the tool sits in
+  Pause mode and does nothing until you tab back in.
+Use one of these (not Alt + F1) when you want to pick a realm or move around the
+character screen by hand without the tool taking over.
 
 # Updating the tool
 Go to https://duugu.github.io/Sku and check the Updates section of this page to see if there is an update available. Download the update and follow the steps in "Setting up the tool" above.

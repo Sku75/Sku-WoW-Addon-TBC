@@ -8,16 +8,13 @@
 ; - Character/realm/popup content is read LIVE via OCR: real character names,
 ;   real realm lists, popup text spoken verbatim. Selection clicks the OCR
 ;   line's own bounding rect - no more 50x arrow-down scanning.
-; - Keybind semantics identical to v1: arrows/PgUp/PgDn/Enter/Esc drive the
-;   spoken menu, Alt+F1 toggles pause/login mode, Alt+Esc exits,
-;   Ctrl+Alt+F2 sends PrintScreen.
+; - Keybinds: arrows/PgUp/PgDn/Enter/Esc drive the spoken menu, Alt+F1 toggles
+;   pause/login mode, Alt+Esc exits, Ctrl+Alt+F2 sends PrintScreen.
 ;
 ; - The character list is counted with the arrow keys before the main menu is
 ;   shown (flows.ahk), the way v1 did it: a realm holds up to 50 characters
 ;   while only nine slots are visible, so OCR of the visible section alone
 ;   would silently drop everything below the fold.
-;
-; The v1 tool (../START.ahk) stays intact as a fallback.
 
 #Requires AutoHotkey v2.0
 #SingleInstance Force

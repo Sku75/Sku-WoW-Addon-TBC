@@ -1,15 +1,18 @@
 # Builds WoW-Login-Tool.zip from logintool/ for a GitHub release.
 #
 # Zip layout (root folder "WoW Login Tool", which LoginToolInstaller expects):
-#   START.ahk + data\            legacy v1 tool (settings.ini shipped EMPTY -
-#                                the r1.16 zip shipped a pre-filled one, which
-#                                skipped the first-start setup: packaging bug)
-#   v2\                          the reworked AHK v2 driver
+#   v2\                          the AHK v2 driver (the tool)
+#   data\                        shared runtime data (settings.ini shipped EMPTY
+#                                so the first-start setup runs; data.ini + the
+#                                .ini lists + localization + soundfiles)
 #   helper\SkuLoginSense.exe     sensing helper (built fresh, net48, no deps)
 #   fonts\                       Atkinson Hyperlegible + OFL license + manual
 #                                install script (installer does it in C#)
 #   CopyTheContentOfThisFolderToInterface\   redesigned fiducial textures
 #   readme.txt, CHANGELOG.md, LICENSE.txt
+#
+# The legacy v1 tool (START.ahk + data\includes\) was retired; it is no longer
+# in the repo, so the recursive data\ copy below carries no includes\.
 #
 # Excluded: dev tooling (tools\, fontprobe\, helper sources), screenshots,
 # translations.xlsx, git files, logs, test artifacts.
@@ -33,14 +36,15 @@ $staging = Join-Path $env:TEMP ("logintool_zip_" + [guid]::NewGuid().ToString("N
 $toolRoot = Join-Path $staging "WoW Login Tool"
 New-Item -ItemType Directory -Force $toolRoot | Out-Null
 
-Copy-Item (Join-Path $root "START.ahk") $toolRoot
 Copy-Item (Join-Path $root "readme.txt") $toolRoot
 Copy-Item (Join-Path $root "CHANGELOG.md") $toolRoot
 Copy-Item (Join-Path $root "LICENSE.txt") $toolRoot
 
 # data\ minus dev-only content; settings.ini replaced by an empty file so the
-# first-start setup runs.
+# first-start setup runs. (data\includes\ was the retired v1 script and no
+# longer exists; guard-remove it in case an old tree is ever staged.)
 Copy-Item (Join-Path $root "data") (Join-Path $toolRoot "data") -Recurse
+Remove-Item -Recurse -Force (Join-Path $toolRoot "data\includes") -ErrorAction SilentlyContinue
 Remove-Item -Recurse -Force (Join-Path $toolRoot "data\screenshots") -ErrorAction SilentlyContinue
 Remove-Item -Force (Join-Path $toolRoot "data\localization\translations.xlsx") -ErrorAction SilentlyContinue
 Set-Content -Path (Join-Path $toolRoot "data\settings.ini") -Value "" -NoNewline
