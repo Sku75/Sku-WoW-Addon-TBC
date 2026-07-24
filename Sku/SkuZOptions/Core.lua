@@ -5388,7 +5388,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 							if aGossipListTable[index].bag ~= nil and aGossipListTable[index].slot ~= nil then
 								-- Bag/bank socket (container-API migration): SocketContainerItem(bag,
 								-- slot) directly, no rendered frame. Mirrors the old macrotext path.
-								if _G.SocketContainerItem then
+								if _G.SocketContainerItem and not Sku.isEra then
 									local tNewSubMenuEntrySocket = SkuOptions:InjectMenuItems(self, {L["Sockeln"]}, SkuGenericMenuItem)
 									local lBagS, lSlotS = aGossipListTable[index].bag, aGossipListTable[index].slot
 									tNewSubMenuEntrySocket.OnAction = function()
@@ -5408,7 +5408,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									-- Sockeln (Bag-Item) — exakt wie in der WotLK-Vorlage:
 									-- nur ein macrotext, der SocketContainerItem aufruft und
 									-- danach das Sku-Menü neu aufbaut. Kein eigener Step-Back.
-									if _G.SocketContainerItem then
+									if _G.SocketContainerItem and not Sku.isEra then
 										local tNewSubMenuEntrySocket = SkuOptions:InjectMenuItems(self, {L["Sockeln"]}, SkuGenericMenuItem)
 										-- Bag-Item-Sockeln: bewährter Macrotext-Pfad von
 										-- gestern (direkter SocketContainerItem-Aufruf,
@@ -5446,7 +5446,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 											-- Sockeln (Equipment-Slot) — Vorlage-Stil:
 											-- macrotext ruft SocketInventoryItem(slotIdx) auf
 											-- und baut das Sku-Menü neu auf.
-											if _G.SocketInventoryItem then
+											if _G.SocketInventoryItem and not Sku.isEra then
 												local tNewSubMenuEntrySocket = SkuOptions:InjectMenuItems(self, {L["Sockeln"]}, SkuGenericMenuItem)
 												-- Equipment-Slot-Sockeln: bewährter Macrotext von
 												-- gestern (direkter SocketInventoryItem-Aufruf,

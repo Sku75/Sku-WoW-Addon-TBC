@@ -43,9 +43,14 @@ SkuCore.Socketing = Socketing   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
-SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return Sku.deEn("Sockeln", "Socketing")
-end)
+-- Gem sockets are TBC content only; on Classic Era no item ever has a socket, so
+-- don't surface a dead toggle there. The module object above still exists (harmless
+-- no-op without a socketing frame) — we just skip registering the on/off entry.
+if not Sku.isEra then
+   SkuCore:RegisterToggleableModule(MODULE_PART, function()
+      return Sku.deEn("Sockeln", "Socketing")
+   end)
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Helpers

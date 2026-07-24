@@ -967,10 +967,12 @@ local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarNam
 			end
 		elseif aActionType == "equipmentset" then
 			--aId = string<setName>
-			for x = 0, C_EquipmentSet.GetNumEquipmentSets() do
-				local name, iconFileID, setID, isEquipped, numItems, numEquipped, numInInventory, numLost, numIgnored = C_EquipmentSet.GetEquipmentSetInfo(x)
-				if name and name == aId then
-					rName = name
+			if C_EquipmentSet then
+				for x = 0, C_EquipmentSet.GetNumEquipmentSets() do
+					local name, iconFileID, setID, isEquipped, numItems, numEquipped, numInInventory, numLost, numIgnored = C_EquipmentSet.GetEquipmentSetInfo(x)
+					if name and name == aId then
+						rName = name
+					end
 				end
 			end
 		end

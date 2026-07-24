@@ -112,6 +112,13 @@ if Sku.toc >= 20505 then
 	Sku.isTBC = true
 end
 
+-- Classic Era (1.15.x) detection — the central flag for the unified Era/TBC build.
+-- Era's interface is 11xxx and WOW_PROJECT_ID == WOW_PROJECT_CLASSIC; TBC Anniversary
+-- is 20xxx / WOW_PROJECT_BURNING_CRUSADE_CLASSIC. Use the project constant as the
+-- primary signal with a numeric fallback so gating is correct even if the constant
+-- is ever absent. Gate any TBC-content-only feature (e.g. gem socketing) on this.
+Sku.isEra = ((WOW_PROJECT_ID ~= nil and WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) or (Sku.toc > 0 and Sku.toc < 20000)) and true or false
+
 if Sku.toc > 11403 then
 	PickupContainerItem = C_Container.PickupContainerItem
 	GetContainerNumSlots = C_Container.GetContainerNumSlots
