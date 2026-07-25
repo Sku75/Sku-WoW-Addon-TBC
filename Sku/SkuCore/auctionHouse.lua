@@ -89,6 +89,105 @@ local function CombineCoin(aGold, aSilver, aCopper)
    return (aGold or 0) * 10000 + (aSilver or 0) * 100 + (aCopper or 0)
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Container-API-Helfer für den Verkaufs-Pfad.
+--
+-- WARUM: Das Einstellen einer Auktion hat das Item früher über den
+-- ContainerFrame[N]Item[M]-Button in den Verkaufsslot gezogen
+-- (frame:GetScript("OnDragStart")). Dieser Button existiert nur, wenn die
+-- Tasche in DIESER Sitzung schon einmal offen war, und seine Bag-Zuordnung
+-- (ContainerFrame[N] <-> Taschen-ID) wird erst beim Öffnen gesetzt — die
+-- Annahme N = bag + 1 stimmt nur, wenn alle Taschen der Reihe nach geöffnet
+-- wurden. Ergebnis: der Verkaufsslot blieb leer, die Auktion wurde still nicht
+-- eingestellt ("Nicht verkaufbar"), bis der Nutzer einmal die Taschen öffnete.
+-- Genau wie beim Taschen-Sortieren (LocalMenu) und beim Sockeln laufen Lesen
+-- und Aufnehmen daher jetzt direkt über die Container-API — die Taschen müssen
+-- nie geöffnet sein.
+--
+-- Alle Helfer decken beide API-Formen ab: die neue C_Container-Tabelle und die
+-- klassischen globalen Mehrfach-Rückgaben.
+---------------------------------------------------------------------------------------------------------------------------------------
+local function _ASBagNumSlots(aBag)
+   if _G.C_Container and _G.C_Container.GetContainerNumSlots then
+      local tOk, tNum = pcall(_G.C_Container.GetContainerNumSlots, aBag)
+      if tOk and tNum then return tNum end
+   end
+   if _G.GetContainerNumSlots then
+      local tOk, tNum = pcall(_G.GetContainerNumSlots, aBag)
+      if tOk and tNum then return tNum end
+   end
+   return 0
+end
+
+-- Liefert itemID, stackCount, isLocked eines Taschenplatzes (nil = leer).
+local function _ASBagSlotInfo(aBag, aSlot)
+   if _G.C_Container and _G.C_Container.GetContainerItemInfo then
+      local tOk, tInfo = pcall(_G.C_Container.GetContainerItemInfo, aBag, aSlot)
+      if tOk then
+         if tInfo == nil then return nil end
+         if type(tInfo) == "table" and tInfo.itemID then
+            return tInfo.itemID, tInfo.stackCount, tInfo.isLocked
+         end
+      end
+   end
+   if _G.GetContainerItemInfo then
+      local tOk, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 = pcall(_G.GetContainerItemInfo, aBag, aSlot)
+      if tOk then
+         if type(a1) == "table" then
+            return a1.itemID, a1.stackCount, a1.isLocked
+         end
+         -- klassisch: icon, itemCount, locked, quality, readable, lootable, link, filtered, noValue, itemID
+         return a10, a2, a3
+      end
+   end
+   return nil
+end
+
+-- Sucht ZUM ZEITPUNKT DES EINSTELLENS einen Taschenplatz mit dieser Item-ID.
+-- Bevorzugt einen nicht gesperrten Stapel, der die gewünschte Menge deckt;
+-- sonst irgendeinen passenden Platz. Der beim Menüaufbau gemerkte Platz wird
+-- zuerst geprüft (billig und stabil), ist aber nur ein Hinweis — Items können
+-- zwischen Menüaufbau und Klick verschoben worden sein.
+local function _ASFindBagSlot(aItemId, aAmount, aHintBag, aHintSlot)
+   if not aItemId then return nil end
+   local tWant = tonumber(aAmount) or 1
+   -- Seelengebundene Kopien derselben Item-ID überspringen — sie landen nie im
+   -- Verkaufsslot und würden das Einstellen still scheitern lassen.
+   local function tSellable(aBag, aSlot)
+      if not (_G.C_Item and _G.C_Item.IsBound and _G.ItemLocation) then return true end
+      local tOk, tBound = pcall(_G.C_Item.IsBound, _G.ItemLocation:CreateFromBagAndSlot(aBag, aSlot))
+      if not tOk then return true end
+      return tBound ~= true
+   end
+   if aHintBag and aHintSlot then
+      local tId, tCount, tLocked = _ASBagSlotInfo(aHintBag, aHintSlot)
+      if tId == aItemId and not tLocked and (tCount or 1) >= tWant and tSellable(aHintBag, aHintSlot) then
+         return aHintBag, aHintSlot
+      end
+   end
+   local tAnyBag, tAnySlot
+   for tBag = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
+      for tSlot = 1, _ASBagNumSlots(tBag) do
+         local tId, tCount, tLocked = _ASBagSlotInfo(tBag, tSlot)
+         if tId == aItemId and not tLocked and tSellable(tBag, tSlot) then
+            if (tCount or 1) >= tWant then return tBag, tSlot end
+            if not tAnyBag then tAnyBag, tAnySlot = tBag, tSlot end
+         end
+      end
+   end
+   return tAnyBag, tAnySlot
+end
+
+local function _ASPickupBagItem(aBag, aSlot)
+   if _G.PickupContainerItem then
+      return (pcall(_G.PickupContainerItem, aBag, aSlot))
+   end
+   if _G.C_Container and _G.C_Container.PickupContainerItem then
+      return (pcall(_G.C_Container.PickupContainerItem, aBag, aSlot))
+   end
+   return false
+end
+
 local tFilterInventoryTypeToGetItemInventoryTypeByID = {
 	[1] = 1,
 	[2] = 2,
@@ -2531,7 +2630,12 @@ OnEnterAllFlag = nil
                         local aGossipItemTable = {
                            textFull = select(2, AuctionHouse:AuctionBuildItemTooltip({[17] = itemID}, nil, true, true)),
                            itemId = itemID,
-                           containerFrameName = "ContainerFrame"..(bag + 1).."Item"..(GetContainerNumSlots(bag) - slot + 1),
+                           -- Nur ein HINWEIS für die Suche beim Einstellen (der
+                           -- Platz kann sich bis dahin geändert haben). Früher
+                           -- stand hier der ContainerFrame-Button-Name — der
+                           -- existiert erst nach dem Öffnen der Tasche.
+                           bag = bag,
+                           slot = slot,
                         }
                         
                         tNewMenuSubSubEntry.textFull = aGossipItemTable.textFull
@@ -2561,7 +2665,7 @@ OnEnterAllFlag = nil
 
                            _ASLog("post requested", {
                               itemId = aGossipItemTable.itemId,
-                              containerFrame = aGossipItemTable.containerFrameName,
+                              hintBag = aGossipItemTable.bag, hintSlot = aGossipItemTable.slot,
                               amount = tAmount, numAuctions = tNumAuctions,
                               buyout = tCopperBuyout, startBid = tCopperStartBid,
                               durationLabel = aName, duration = tDuration,
@@ -2583,13 +2687,21 @@ OnEnterAllFlag = nil
                            _G["AuctionFrameTab3"]:GetScript("OnClick")(_G["AuctionFrameTab3"], "LeftButton")
                            _G["AuctionsItemButton"]:GetScript("OnDragStart")(_G["AuctionsItemButton"], "LeftButton")
                            ClearCursor()
-                           local tContainerFrame = _G[aGossipItemTable.containerFrameName]
-                           if tContainerFrame then
-                              tContainerFrame:GetScript("OnDragStart")(tContainerFrame, "LeftButton")
+                           -- Item über die Container-API in den Verkaufsslot legen.
+                           -- Kein ContainerFrame-Button mehr: der existiert nur nach
+                           -- einmaligem Öffnen der Tasche und war die Ursache dafür,
+                           -- dass das Einstellen "erst nach Taschen öffnen" ging.
+                           local tPostBag, tPostSlot = _ASFindBagSlot(aGossipItemTable.itemId, tAmount, aGossipItemTable.bag, aGossipItemTable.slot)
+                           if tPostBag then
+                              _ASPickupBagItem(tPostBag, tPostSlot)
+                              ClickAuctionSellItemButton()
                            else
-                              _ASLog("post: container frame missing", { containerFrame = aGossipItemTable.containerFrameName })
+                              _ASLog("post: item not found in bags", {
+                                 itemId = aGossipItemTable.itemId,
+                                 hintBag = aGossipItemTable.bag, hintSlot = aGossipItemTable.slot,
+                                 amount = tAmount,
+                              })
                            end
-                           ClickAuctionSellItemButton()
 
                            -- Prüfen, ob nach dem Drag/Klick tatsächlich ein Item im
                            -- Verkaufsslot liegt. Ist der Slot leer, tut PostAuction
@@ -2601,6 +2713,7 @@ OnEnterAllFlag = nil
                               tStagedDeposit = select(1, CalculateAuctionDeposit and CalculateAuctionDeposit(tDuration) or nil)
                            end)
                            _ASLog("post staging", {
+                              bag = tPostBag, slot = tPostSlot,
                               stagedName = tStagedName, stagedCount = tStagedCount,
                               deposit = tStagedDeposit, money = GetMoney and GetMoney() or nil,
                               canSendQuery = (CanSendAuctionQuery and (CanSendAuctionQuery())) and true or false,
@@ -2610,8 +2723,12 @@ OnEnterAllFlag = nil
                               -- Kein Item im Slot -> PostAuction würde fehlschlagen.
                               -- Nicht fälschlich "erstellt" ansagen.
                               _ASLog("post aborted: sell slot empty after staging", {
-                                 containerFrame = aGossipItemTable.containerFrameName,
+                                 itemId = aGossipItemTable.itemId,
+                                 bag = tPostBag, slot = tPostSlot,
                               })
+                              -- Falls das Item noch am Cursor hängt (Klick auf den
+                              -- Verkaufsslot fehlgeschlagen): zurück in die Tasche.
+                              ClearCursor()
                               pcall(function() SkuOptions.Voice:OutputStringBTtts(L["Nicht verkaufbar"], false, true, 0.1, nil, nil, nil, 1) end)
                               GetOwnerAuctionItems()
                               C_Timer.After(0.01, function()
@@ -2727,10 +2844,10 @@ function AuctionHouse:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
       local tCfg = tItemEntry.priceCfg
       if not tCfg then
          tCfg = { gold = 0, silver = 0, copper = 0 }
+         -- itemId kommt aus dem Container-Scan und ist maßgeblich. (Früher wurde
+         -- er hier aus dem ContainerFrame-Button (.info.id) nachgeschärft — das
+         -- lieferte ohne geöffnete Tasche gar nichts.)
          local tItemId = aGossipItemTable.itemId
-         if _G[aGossipItemTable.containerFrameName] and _G[aGossipItemTable.containerFrameName].info then
-            tItemId = _G[aGossipItemTable.containerFrameName].info.id or tItemId
-         end
          if tItemId then
             local tBest = select(2, AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(tItemId))
             if tBest and tBest > 0 then
