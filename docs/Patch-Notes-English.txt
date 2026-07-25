@@ -4,6 +4,145 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.10
+
+    Navigation: waypoints work again in areas without a map of their own
+        Simple: In the Deeprun Tram, Shift+F9 and Shift+F10 reported no waypoints at all,
+            even though the area is fully mapped and linked. The same family of causes hit
+            places on the edge of instances - the Uldaman entrance, the Karazhan forecourt
+            and similar spots in caves and tunnels: there too both lists simply came up
+            empty, without any error. That is fixed; the waypoint list and route guidance
+            work in those places again.
+            Please note: in such spots the list can also contain waypoints of the area
+            above or beside you. If you are standing in a cave underneath another zone,
+            check before selecting whether the waypoint really belongs to your
+            surroundings - otherwise the guidance runs into the ceiling.
+            Inside the instances themselves (Uldaman, Karazhan) there are still no
+            waypoints. Nothing is mapped in there, and that stays as it is.
+        Technical: Two separate causes, both in SkuNav/Geo.lua. First, areaId 2257 (Deeprun
+            Tram) has no ExternalMapID row, so GetUiMapIdFromAreaId returns nil for it and
+            the strict name-plus-uiMap loop in GetCurrentAreaId can never match such areas.
+            Up to v41 that loop compared against a never-declared global and matched them by
+            accident; once the variable was declared properly, GetCurrentAreaId returned nil
+            there, and with a nil continent both ListWaypoints2 and
+            GetAllLinkedWPsInRangeToCoords bail out silently. The name match is now redone
+            deliberately as a second pass, restricted to areas without a uiMap - precisely
+            the set the strict loop could never have matched, so no normal zone can be
+            reinterpreted by it.
+            Second, in caves, tunnels and in front of instance doors the client often
+            returns the continent uiMap (1415/1414). The recovery for that in
+            GetBestMapForUnit matched the SUBZONE name against InternalAreaTable - but all
+            285 instance rows are commented out there, so a subzone name like "Uldaman"
+            matches nothing, the continent id survives, GetAreaIdFromUiMapId turns it into
+            AreaId -1, and GetCurrentAreaId has nothing left to try (there is no row named
+            "Eastern Kingdoms"). There is now a fallback to GetRealZoneText, the zone name,
+            which always has a row; it only runs when the existing paths produced nothing
+            usable.
+            Also, /skuzoneprobe (/szp) now reports both area resolvers side by side, the
+            cache split by waypoint type, the size of the per-continent bucket and what the
+            two quick lists return on the spot. A bug in it was fixed on the way: the probe
+            read WaypointCache as a global although it is a file-local of SkuNav/Core.lua,
+            so the "survived in cache" number was always 0 and falsely reported that
+            everything had been pruned.
+
+    Combat: counting the enemies in combat is much steadier and more accurate
+        Simple: The enemy-count announcement kept going up and down although nothing about
+            the situation had changed - a boss fight against three enemies produced
+            fourteen announcements in barely a minute, most of them wrong. Four causes are
+            fixed:
+            First, an enemy that did nothing for six seconds - during a fear, in a cast
+            phase, while nobody happened to be attacking it - was dropped from the count
+            and added again on its next swing. Sku now recognises from many more signs that
+            an enemy is still in the fight. Enemies that really do leash or vanish still
+            drop out of the number as before.
+            Second, after a kill you correctly heard "0", then wrongly "1" a moment later,
+            then "0" again. Dead enemies can no longer come back.
+            Third, the number fell to 0 in the middle of a fight and climbed back up when
+            you personally were briefly out of combat - because a fear ran you off, or your
+            last attacker died. In the group modes ("enemies attacking the party or you")
+            it now depends on whether anyone in the group is still fighting.
+            Fourth, friendly NPCs were counted as enemies as soon as a group member healed
+            or buffed them - escort NPCs in instances, for instance. They no longer count.
+        Technical: All in SkuCore/aqCombat.lua. (1) lastUpdate is now refreshed by any
+            combat-log line naming a tracked enemy as source OR destination, and in addition
+            by mere presence in a polled unit slot - the latter only while
+            UnitAffectingCombat is true for that slot. That condition is what preserves the
+            purpose of the 6-second sweep: a leashing enemy stays visible for a while but
+            loses its combat flag, so it is not refreshed and still drops out. (2) A death
+            is recorded in tDeadGuids, the entry is removed from the tPendingAdds coalescing
+            window, and aqCombat_CREATURE_ADDED_TO_COMBAT refuses dead GUIDs - previously
+            "false or {}" turned the death marker back into a live entry. The mark is only
+            lifted if a unit token reports the enemy alive again. (3) PLAYER_REGEN_ENABLED
+            (= "YOU left combat") wiped the whole threatTable; in modes 2 and 3 that is now
+            deferred while any group member is UnitAffectingCombat, with a 2-second
+            re-check. Mode 4 ("attacking you") still cleans up immediately. (4) Hostility is
+            decided from the combat-log reaction flags (COMBATLOG_OBJECT_REACTION_*) and
+            from UnitReaction <= 4, asked once per enemy and never re-judged - deliberately
+            NOT via UnitCanAttack, because encounters flag bosses non-attackable or immune
+            mid-fight and they would drop out of the count exactly then.
+
+    Auction house: auctions can be posted again without opening your bags first
+        Simple: Posting an auction sometimes did nothing at all - the sell slot stayed
+            empty and the auction silently never went up. It worked for anyone who had
+            visited a mailbox, a vendor or the bank beforehand, because those windows open
+            every bag automatically. That is why the fault looked random and only hit some
+            sessions. Posting no longer needs your bags to have been opened.
+            While at it, the item is now looked up in your bags at the moment you post: if
+            the stack has moved since the menu was built, the right item still goes up.
+            Locked and soulbound copies of the same item ID are skipped instead of letting
+            the post fail silently.
+        Technical: SkuCore/auctionHouse.lua. The post path dragged the item into the slot
+            through the bag FRAME's script:
+            _G["ContainerFrame(bag+1)Item(numSlots-slot+1)"]:GetScript("OnDragStart").
+            Those buttons only exist once a bag has actually been rendered, and the
+            ContainerFrame[N] <-> bag ID mapping is assigned at OPEN time - the hardcoded
+            N = bag + 1 only holds when every bag was opened in order. Without that the drag
+            grabbed nothing and PostAuction silently no-op'd. This was a regression of the
+            2026-06-25 fix: the v42 sell rework restored "the original v41.06 post path" and
+            brought the frame drag back with it.
+            Reading and picking up now go through the container API - the same route bag
+            sorting and socketing already take: new _ASBagNumSlots, _ASBagSlotInfo,
+            _ASFindBagSlot and _ASPickupBagItem helpers, each dual-path over C_Container and
+            the classic globals. Bag and slot are resolved fresh by itemId on click (the
+            slot noted at menu build is only a hint now and gets re-verified), then
+            PickupContainerItem followed by ClickAuctionSellItemButton; ClearCursor in the
+            abort branch so failed staging cannot leave the item on the cursor. The
+            _G[containerFrameName].info.id refinement in the price preset is gone too: it
+            returned nothing without rendered bags, and the itemId from the container scan
+            is authoritative anyway.
+
+    Auction house: the lowest price is no longer reported as 0 copper by mistake
+        Simple: For some items Sku announced a lowest buyout of "0 copper" even though
+            several auctions with perfectly ordinary prices were up - searching for the
+            same item by hand found the correct prices straight away. From the same cause
+            the announced average was too low, the number of data points too high, and the
+            price suggested when selling could sit at 0. For other items you got the
+            opposite, "no buyout data available", although buyouts existed. Both are fixed.
+            Current price data is correct again after your next full scan; stored history
+            heals per item as each is scanned again, and until then old zero prices are
+            treated as "no data" rather than read out.
+        Technical: SkuCore/auctionHouse.lua. Two faults working together. First, in
+            AuctionBuildPriceData every auction row always contributed TWO data points, a
+            bid price and a buyout price. Auctions without a buyout (buyoutPrice == 0, the
+            normal case in the TBC auction house) were written into the buyout list as a
+            plain 0. Second, the condition in AuctionUpdateAuctionDBHistory - "not tLow or
+            (tPrice > 0 and tPrice < tLow)" - bound the tPrice > 0 guard to the SECOND
+            branch only. So the first price the loop saw took the low whatever its value,
+            including 0; after that no price was ever smaller than 0, so the low stayed 0.
+            That is why it only struck sometimes - namely when the first auction of that
+            item in the scan happened to have no buyout. The zeros also dragged the median
+            down, and if more than half the auctions had no buyout the median became 0, at
+            which point the outlier filter tPrice < median * 10 rejected every real price as
+            well - that was the "no data despite existing buyouts" case.
+            Now only real prices > 0 become data points at all (an auction without a buyout
+            simply yields no buyout data point), tPrice > 0 gates both branches, and a
+            median <= 0 bypasses the outlier filter instead of discarding everything. When
+            reading in AuctionHouseGetAuctionPriceHistoryData a stored low <= 0 counts as
+            "no data" - needed because already saved AuctionDBHistory can still hold zero
+            lows from the old calculation until that item is scanned again.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.09
 
     Classic Era: game key bindings can now be set again
