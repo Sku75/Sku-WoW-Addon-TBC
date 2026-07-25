@@ -96,7 +96,11 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_COMBATMENU_END"] = {key = "END", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_COMBATMENU_BACK"] = {key = "BACKSPACE", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_COMBATMENU_CLOSE"] = {key = "ESCAPE", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_COMBATMENU_USE"] = {key = "ENTER", object = "SkuOptions", func = "CreateMainFrame",},
+   -- SKU_KEY_COMBATMENU_USE (was ENTER) is RETIRED. It bound the left-click key to the
+   -- secure in-combat use button, so ENTER and SKU_KEY_MENURIGHTCLICK (CTRL-ENTER) both
+   -- fired the same armed action and the left/right split collapsed in combat. The two
+   -- menu click keys now cover combat as well (SkuCore/combatMenuKeys.lua). A stale entry
+   -- in an existing profile is inert: every binder iterates skuDefaultKeyBindings.
 
    ["SKU_KEY_STOPROUTEORWAYPOINT"] = {key = "", object = "SkuNav", func = "CreateSkuNavMain",},
 

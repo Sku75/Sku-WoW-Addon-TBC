@@ -2665,7 +2665,11 @@ function SkuCore:MenuBuilder(aParentEntry)
 				"SKU_KEY_TURNTOUNIT5", "SKU_KEY_TURNTOUNIT6", "SKU_KEY_TURNTOUNITTURN180", "SKU_KEY_TURNTOBEACON", }, },
 			{ label = L["Kampfmenü Steuerung"], members = {
 				"SKU_KEY_COMBATMENU_UP", "SKU_KEY_COMBATMENU_DOWN", "SKU_KEY_COMBATMENU_LEFT", "SKU_KEY_COMBATMENU_RIGHT",
-				"SKU_KEY_COMBATMENU_HOME", "SKU_KEY_COMBATMENU_END", "SKU_KEY_COMBATMENU_BACK", "SKU_KEY_COMBATMENU_USE",
+				-- SKU_KEY_COMBATMENU_USE is retired: it defaulted to ENTER and bound the
+				-- LEFT click key to the secure use button, colliding with
+				-- SKU_KEY_MENURIGHTCLICK ("Menü Klick Tasten" below). Both click keys are
+				-- configured there now and apply in and out of combat alike.
+				"SKU_KEY_COMBATMENU_HOME", "SKU_KEY_COMBATMENU_END", "SKU_KEY_COMBATMENU_BACK",
 				"SKU_KEY_COMBATMENU_CLOSE", }, },
 			{ label = L["Menü Klick Tasten"], members = {
 				"SKU_KEY_MENULEFTCLICK", "SKU_KEY_MENURIGHTCLICK", }, },

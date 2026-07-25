@@ -47,9 +47,11 @@ end
 -- changes behaviour, only which key triggers it. ESCAPE (default) closes the combat menu;
 -- while bound (whole combat) it loses its normal game function -- an accepted cost of the
 -- dedicated-combat-keys model.
--- The USE action (default ENTER) is intentionally NOT in this list -- it's bound to the secure
--- USE button instead (fires the armed /use), with a PostClick that also routes ENTER to the
--- menu handler so it still activates non-bag menu items in combat. See CombatMenuKeysBindNow.
+-- The two CLICK keys are intentionally NOT in this list -- they are bound separately in
+-- CombatMenuKeysBindNow, and to different targets: the left key (SKU_KEY_MENULEFTCLICK) is
+-- routed here as the logical action "ENTER" (its actions are insecure), the right key
+-- (SKU_KEY_MENURIGHTCLICK) goes straight to the secure USE button, which fires the armed
+-- /use. The old SKU_KEY_COMBATMENU_USE bind that put BOTH on the use button is retired.
 local NAV_BINDS = {
    { const = "SKU_KEY_COMBATMENU_UP",    action = "UP" },
    { const = "SKU_KEY_COMBATMENU_DOWN",  action = "DOWN" },
@@ -144,10 +146,13 @@ local function tEnsureKeyFrame()
          pcall(SkuCaptureSellState)
          if SkuLogCombat then SkuLogCombat("mirror", "post-use capture -> tBagPostAction=" .. ((Sku and Sku.tBagPostAction) and 1 or 0)) end
       end
-      -- ENTER fires the armed /use above (secure). Route it to the insecure menu ONLY when
-      -- NOTHING was armed (macro empty) -- so ENTER still activates a plain, non-actionable
-      -- menu item in combat. When a macro DID fire (bag/equipment /use, trade accept), the
-      -- secure action already IS the activation; routing ENTER too would re-run the item's
+      -- The right-click key fires the armed /use above (secure). Route it to the insecure
+      -- menu ONLY when NOTHING was armed (macro empty) -- so it still performs a real RIGHT
+      -- click on a plain, non-actionable menu entry in combat. It routes as "RCLICK", not
+      -- "ENTER": routing it as ENTER used to make the right key do a LEFT click on every
+      -- unarmed entry (the left key is separate now and never reaches this button). When a
+      -- macro DID fire (bag/equipment /use, trade accept), the
+      -- secure action already IS the activation; routing the key on too would re-run the item's
       -- insecure click action (OnLeftAction/refresh chains), which rebuilds and moves the
       -- VISIBLE cursor -- desyncing it from the secure mirror (the mirror only moves on nav
       -- keys, never on ENTER). It also avoided a redundant second action. The bag
@@ -157,7 +162,7 @@ local function tEnsureKeyFrame()
       if tCombatMenuActive() and tMacro == "" then
          local tOpt = _G["OnSkuOptionsMainOption1"]
          if tOpt and tOpt:GetScript("OnClick") then
-            pcall(tOpt:GetScript("OnClick"), tOpt, "ENTER")
+            pcall(tOpt:GetScript("OnClick"), tOpt, "RCLICK")
          end
       end
    end)
@@ -219,6 +224,16 @@ local function tEnsureKeyFrame()
       end
       -- DOWN from the anchor just arms trade + moves down normally (no special route).
       self:SetAttribute("kroute", c .. "|" .. routeKey)
+
+      if key == "ENTER" or key == "RCLICK" then
+         -- Click keys are ROUTE-ONLY: they act on the focused entry, they never move the
+         -- cursor, so they must not touch mirror state. Without this an ENTER at the
+         -- bags-entry anchor would fall into the anchor block's catch-all "leave" branch
+         -- below and silently clear manchor. (RCLICK normally goes straight to
+         -- SkuCombatUse and never gets here -- covered in case it is rebound.)
+         self:SetAttribute("mlog", "click key " .. key .. " (route only)")
+         return
+      end
 
       if key == "SYNC" then
          -- B (open-bags key): cold-sync to the bag view level; insecure side opens the bags.
@@ -580,19 +595,32 @@ function SkuCore:CombatMenuKeysBindNow()
       if k1 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, k1, "SkuCombatMenuKey", b.action) end
       if k2 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, k2, "SkuCombatMenuKey", b.action) end
    end
-   -- USE hotkey (default ENTER) -> fires the armed "/use <bag> <slot>" DIRECTLY on the secure
-   -- button (the snippet only arms the macro; a hardware key bound straight to the
-   -- SecureActionButton is what actually fires a protected action in combat). Its PostClick
-   -- also routes ENTER to the menu handler, so it still activates non-bag items. The user
-   -- navigates to the item and presses this key (items are leaves now -- the old
-   -- Links/Rechtsklick sub-level is gone). Configurable via SKU_KEY_COMBATMENU_USE.
-   local tUse1, tUse2 = tKeyBindKeys("SKU_KEY_COMBATMENU_USE")
-   if tUse1 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, tUse1, "SkuCombatUse") end
-   if tUse2 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, tUse2, "SkuCombatUse") end
-   -- Seamless with the out-of-combat click rework: the menu RIGHT-CLICK key
-   -- (SKU_KEY_MENURIGHTCLICK, default CTRL-ENTER) fires the same armed use button in
-   -- combat -- in-combat "use" IS the right-click semantic (out of combat that key
-   -- runs "/use <bag> <slot>" / "/click ... RightButton" via SecureOnSkuOptionsMainOption2).
+   -- CLICK KEYS -- the same two the menu uses out of combat, kept SEMANTICALLY SPLIT here.
+   -- Before, the separate SKU_KEY_COMBATMENU_USE bind (which defaulted to ENTER, the left
+   -- key) AND SKU_KEY_MENURIGHTCLICK were BOTH bound to SkuCombatUse, so the two keys were
+   -- interchangeable: on anything the mirror had armed, ENTER did the right-click /use; on
+   -- everything else, CTRL-ENTER fell through the use button's PostClick and did a LEFT
+   -- click. Which action you got depended on the armed state, not on the key you pressed.
+   --
+   --   * LEFT (SKU_KEY_MENULEFTCLICK, default ENTER) -> routed like a nav key through
+   --     SkuCombatMenuKey, ending in the menu dispatcher's ENTER branch. NO secure button
+   --     is involved and none needs re-arming mid-combat, because every left action Sku
+   --     performs is insecure: bag/bank items run OnLeftAction -> PickupContainerItem
+   --     (pick up / move / drop into an empty slot -- not a protected function, the
+   --     original combat-bags stage was built on exactly that), plain menu entries run
+   --     OnSelect. So moving items between slots keeps working in combat.
+   --   * RIGHT (SKU_KEY_MENURIGHTCLICK, default CTRL-ENTER) -> the secure SkuCombatUse
+   --     button, firing whatever the snippet armed ("/use <bag> <slot>", "/use <slotID>",
+   --     trade accept). USING an item is hardware-gated, so it must stay a real
+   --     key->secure-button event, and only the secure snippet may re-arm it in combat.
+   --     This matches out of combat, where the same key drives
+   --     SecureOnSkuOptionsMainOption2's rightMacrotext.
+   -- Left key via SkuKeyBindsGetKeys so combat inherits the same ENTER fallback the menu
+   -- uses out of combat (SkuKeyBinds.lua ~252): a cleared left key must never leave the
+   -- menu without an activate key.
+   for _, tKey in ipairs(SkuOptions:SkuKeyBindsGetKeys("SKU_KEY_MENULEFTCLICK", "ENTER")) do
+      pcall(SetOverrideBindingClick, tKeyOwner, true, tKey, "SkuCombatMenuKey", "ENTER")
+   end
    local tRc1, tRc2 = tKeyBindKeys("SKU_KEY_MENURIGHTCLICK")
    if tRc1 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, tRc1, "SkuCombatUse") end
    if tRc2 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, tRc2, "SkuCombatUse") end
