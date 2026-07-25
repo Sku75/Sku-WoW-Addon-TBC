@@ -63,6 +63,27 @@ local NAV_BINDS = {
    { const = "SKU_KEY_COMBATMENU_CLOSE", action = "ESCAPE" },
 }
 
+-- READING keys (tooltip / reading-frame line navigation). Not user-configurable -- they are
+-- hardcoded SHIFT-UP/-DOWN + CTRL-SHIFT-UP/-DOWN out of combat too, so they route straight
+-- through as their own logical action.
+--
+-- WHY they must be bound here: out of combat these four are BASE-bound to OnSkuOptionsMain,
+-- the OVERVIEW reader (SkuZOptions/Core.lua ~2333, set once at load and never cleared), and
+-- are only re-pointed at the menu window by OnSkuOptionsMainOption1's OnShow (~3136). In
+-- combat that OnShow never runs (the protected parent can't Show), SetOverrideBindingClick is
+-- combat-locked, and the capture frame deliberately stands down whenever we bind here -- so
+-- the keys fell through to the base binding and read the OVERVIEW PAGE instead of the focused
+-- entry's tooltip, even with the combat menu open. The kroute handler below picks the target
+-- exactly the way the two bindings do out of combat: menu open -> the menu window (tooltip),
+-- menu closed -> OnSkuOptionsMain (overview), so in-combat overview reading is unchanged.
+--
+-- The reading-frame LINK keys (SHIFT-LEFT/-RIGHT/-ENTER/-BACKSPACE) and SHIFT-PAGEDOWN are
+-- NOT here: those are already base-bound straight to OnSkuOptionsMainOption1 (Core.lua
+-- ~2337-2351), so they never had the wrong-target problem.
+local READ_BINDS = { "SHIFT-UP", "SHIFT-DOWN", "CTRL-SHIFT-UP", "CTRL-SHIFT-DOWN" }
+local tIsReadKey = {}
+for _, k in ipairs(READ_BINDS) do tIsReadKey[k] = true end
+
 -- Read a keybind's assigned key(s) from the SkuKeyBinds store (same store SkuKeyBinds.lua and
 -- the trade-accept binder read). Returns "", "" when unset so callers can skip empty binds.
 local function tKeyBindKeys(aConst)
@@ -232,6 +253,17 @@ local function tEnsureKeyFrame()
          -- below and silently clear manchor. (RCLICK normally goes straight to
          -- SkuCombatUse and never gets here -- covered in case it is rebound.)
          self:SetAttribute("mlog", "click key " .. key .. " (route only)")
+         return
+      end
+
+      if key == "SHIFT-UP" or key == "SHIFT-DOWN" or key == "CTRL-SHIFT-UP" or key == "CTRL-SHIFT-DOWN" then
+         -- Reading keys are ROUTE-ONLY, same contract as the click keys above: they speak the
+         -- focused entry's tooltip (or navigate the reading frame), they never move the menu
+         -- cursor, so they must not touch mirror state. Without this a SHIFT-UP at the
+         -- bags-entry anchor would fall into the anchor block's catch-all "leave" branch below
+         -- and silently clear manchor, and one inside the bags would be a no-op that still
+         -- burned a keypress through the state machine.
+         self:SetAttribute("mlog", "read key " .. key .. " (route only)")
          return
       end
 
@@ -534,6 +566,22 @@ local function tEnsureKeyFrame()
             if SkuLogCombat then SkuLogCombat("secureKeys", "ANCHOR -> Local root (bags-entry anchor)") end
             return
          end
+         if tIsReadKey[key] then
+            -- Tooltip / reading-frame keys: pick the SAME target the two out-of-combat
+            -- bindings pick. Menu open -> the menu window, whose SHIFT-UP branch reads
+            -- currentMenuPosition.textFull (the focused entry's tooltip). Menu closed ->
+            -- OnSkuOptionsMain, whose branch reads UpdateOverviewText (the overview page) --
+            -- that is what these keys did in combat before this route existed, and it stays
+            -- reachable. Deliberately BEFORE the tCombatMenuActive gate below: reading the
+            -- overview must keep working in combat with no menu open. Both handlers are
+            -- insecure and combat-safe (the overview branch returns before any combat guard).
+            local tTarget = tCombatMenuActive() and _G["OnSkuOptionsMainOption1"] or _G["OnSkuOptionsMain"]
+            if tTarget and tTarget:GetScript("OnClick") then
+               pcall(tTarget:GetScript("OnClick"), tTarget, key)
+            end
+            if SkuLogCombat then SkuLogCombat("secureKeys", "read " .. key .. " -> " .. (tCombatMenuActive() and "menu tooltip" or "overview")) end
+            return
+         end
          if not tCombatMenuActive() then return end        -- no menu logically open -> ignore
          if key == "ESCAPE" then
             SkuOptions.combatMenuActive = false             -- logical close (visual hidden in combat)
@@ -620,6 +668,13 @@ function SkuCore:CombatMenuKeysBindNow()
    -- menu without an activate key.
    for _, tKey in ipairs(SkuOptions:SkuKeyBindsGetKeys("SKU_KEY_MENULEFTCLICK", "ENTER")) do
       pcall(SetOverrideBindingClick, tKeyOwner, true, tKey, "SkuCombatMenuKey", "ENTER")
+   end
+   -- READ KEYS -- see READ_BINDS above. Fixed physical keys (same as out of combat), each
+   -- bound as its own logical action so the snippet's route-only guard and the kroute handler
+   -- both see the unchanged key name. Without these the tooltip keys fell through to the
+   -- OnSkuOptionsMain base binding and read the overview page with the menu open.
+   for _, tKey in ipairs(READ_BINDS) do
+      pcall(SetOverrideBindingClick, tKeyOwner, true, tKey, "SkuCombatMenuKey", tKey)
    end
    local tRc1, tRc2 = tKeyBindKeys("SKU_KEY_MENURIGHTCLICK")
    if tRc1 ~= "" then pcall(SetOverrideBindingClick, tKeyOwner, true, tRc1, "SkuCombatUse") end
