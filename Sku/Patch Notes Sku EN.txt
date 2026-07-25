@@ -4,6 +4,49 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.10
+
+    Navigation: waypoints work again in areas without a map of their own
+        Simple: In the Deeprun Tram, Shift+F9 and Shift+F10 reported no waypoints at all,
+            even though the area is fully mapped and linked. The same family of causes hit
+            places on the edge of instances - the Uldaman entrance, the Karazhan forecourt
+            and similar spots in caves and tunnels: there too both lists simply came up
+            empty, without any error. That is fixed; the waypoint list and route guidance
+            work in those places again.
+            Please note: in such spots the list can also contain waypoints of the area
+            above or beside you. If you are standing in a cave underneath another zone,
+            check before selecting whether the waypoint really belongs to your
+            surroundings - otherwise the guidance runs into the ceiling.
+            Inside the instances themselves (Uldaman, Karazhan) there are still no
+            waypoints. Nothing is mapped in there, and that stays as it is.
+        Technical: Two separate causes, both in SkuNav/Geo.lua. First, areaId 2257 (Deeprun
+            Tram) has no ExternalMapID row, so GetUiMapIdFromAreaId returns nil for it and
+            the strict name-plus-uiMap loop in GetCurrentAreaId can never match such areas.
+            Up to v41 that loop compared against a never-declared global and matched them by
+            accident; once the variable was declared properly, GetCurrentAreaId returned nil
+            there, and with a nil continent both ListWaypoints2 and
+            GetAllLinkedWPsInRangeToCoords bail out silently. The name match is now redone
+            deliberately as a second pass, restricted to areas without a uiMap - precisely
+            the set the strict loop could never have matched, so no normal zone can be
+            reinterpreted by it.
+            Second, in caves, tunnels and in front of instance doors the client often
+            returns the continent uiMap (1415/1414). The recovery for that in
+            GetBestMapForUnit matched the SUBZONE name against InternalAreaTable - but all
+            285 instance rows are commented out there, so a subzone name like "Uldaman"
+            matches nothing, the continent id survives, GetAreaIdFromUiMapId turns it into
+            AreaId -1, and GetCurrentAreaId has nothing left to try (there is no row named
+            "Eastern Kingdoms"). There is now a fallback to GetRealZoneText, the zone name,
+            which always has a row; it only runs when the existing paths produced nothing
+            usable.
+            Also, /skuzoneprobe (/szp) now reports both area resolvers side by side, the
+            cache split by waypoint type, the size of the per-continent bucket and what the
+            two quick lists return on the spot. A bug in it was fixed on the way: the probe
+            read WaypointCache as a global although it is a file-local of SkuNav/Core.lua,
+            so the "survived in cache" number was always 0 and falsely reported that
+            everything had been pruned.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.09
 
     Classic Era: game key bindings can now be set again

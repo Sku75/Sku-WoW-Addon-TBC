@@ -4,6 +4,50 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v42.10
+
+    Navigation: Wegpunkte in Gebieten ohne eigene Karte funktionieren wieder
+        Einfach: In der Tiefenbahn meldeten Shift+F9 und Shift+F10 keine Wegpunkte, obwohl
+            das Gebiet vollstaendig kartiert und verknuepft ist. Dieselbe Ursachenfamilie
+            traf Orte am Rand von Instanzen - den Eingangsbereich von Uldaman, den Vorplatz
+            von Karazhan und aehnliche Stellen in Hoehlen und Tunneln: auch dort blieben
+            beide Listen einfach leer, ohne Fehlermeldung. Das ist behoben, Wegpunktliste
+            und Routenfuehrung arbeiten an diesen Orten wieder.
+            Zu beachten: an solchen Stellen kann die Liste auch Wegpunkte des Gebiets
+            enthalten, das ueber oder neben dir liegt. Wenn du in einer Hoehle unter einem
+            anderen Gebiet stehst, pruefe vor dem Auswaehlen kurz, ob der Wegpunkt wirklich
+            zu deiner Umgebung gehoert - sonst laeuft die Fuehrung gegen die Decke.
+            In den Instanzen selbst (Uldaman innen, Karazhan innen) gibt es weiterhin keine
+            Wegpunkte. Dort ist nichts kartiert, und das bleibt auch so.
+        Technisch: Zwei getrennte Ursachen, beide in SkuNav/Geo.lua. Erstens hat areaId 2257
+            (Die Tiefenbahn) keine ExternalMapID-Zeile, GetUiMapIdFromAreaId liefert dafuer
+            also nil, und die strenge Namens-plus-uiMap-Schleife in GetCurrentAreaId kann
+            solche Gebiete nie treffen. Bis v41 verglich diese Schleife gegen eine nie
+            deklarierte globale Variable und traf genau sie zufaellig; seit der Deklaration
+            lieferte GetCurrentAreaId dort nil, und mit nil als Kontinent brechen
+            ListWaypoints2 und GetAllLinkedWPsInRangeToCoords wortlos ab. Der Namensabgleich
+            wird jetzt bewusst als zweiter Durchgang wiederholt, beschraenkt auf Gebiete
+            ohne uiMap - genau die Menge, die die strenge Schleife ohnehin nie treffen
+            konnte, weshalb kein normales Gebiet anders ausgewertet werden kann.
+            Zweitens gibt der Client in Hoehlen, Tunneln und vor Instanztueren oft die
+            Kontinent-uiMap (1415/1414) zurueck. Die Rettung dafuer in GetBestMapForUnit
+            glich den Namen der UNTERzone gegen InternalAreaTable ab - dort sind aber alle
+            285 Instanzzeilen auskommentiert, ein Unterzonenname wie "Uldaman" trifft also
+            nichts, die Kontinent-ID ueberlebt, GetAreaIdFromUiMapId macht daraus AreaId -1,
+            und GetCurrentAreaId bleibt ohne Ausweg (eine Zeile namens "Oestliche
+            Koenigreiche" gibt es nicht). Es gibt jetzt einen Rueckfall auf GetRealZoneText,
+            den Zonennamen, der immer eine Zeile hat; er greift nur, wenn die bisherigen
+            Wege nichts Brauchbares geliefert haben.
+            Ausserdem meldet /skuzoneprobe (/szp) jetzt beide Gebiets-Aufloeser
+            nebeneinander, die Cache-Aufteilung nach Wegpunkttyp, die Groesse des
+            Kontinent-Eimers und was die beiden Schnelllisten an Ort und Stelle
+            zurueckgeben. Ein Fehler darin ist mitbehoben: die Sonde las WaypointCache als
+            globale Tabelle, obwohl sie eine Dateilokale von SkuNav/Core.lua ist - die Zahl
+            "im Cache ueberlebt" war deshalb immer 0 und meldete faelschlich, alles sei
+            weggeraeumt worden.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.09
 
     Classic Era: Spiel-Tastenbelegungen lassen sich wieder setzen

@@ -42,6 +42,32 @@ function SkuNav:GetBestMapForUnit(aUnitId)
 		end
 	end
 
+	-- [absent subzones] Everything above keys off the SUBZONE name
+	-- (GetMinimapZoneText). All 285 instance rows are commented out of
+	-- InternalAreaTable, so a subzone named after its instance - "Uldaman" at the
+	-- dig site, and the like - matches nothing up there and we hand back the
+	-- CONTINENT uiMap unchanged. GetAreaIdFromUiMapId turns 1415/1414 into
+	-- AreaId -1, which no waypoint can ever match, and GetCurrentAreaId then has
+	-- nothing left to try either (there is no InternalAreaTable row named
+	-- "Östliche Königreiche"/"Kalimdor" for its last fallback) -> both nav quick
+	-- lists come up empty while standing OUTDOORS in a perfectly mapped zone.
+	-- The ZONE name always has a row, so fall back to it. Runs only when the
+	-- normal paths produced nothing usable, so it cannot change a working lookup.
+	if tPlayerUIMap == nil or tPlayerUIMap == 1415 or tPlayerUIMap == 1414 then
+		local tZoneText = GetRealZoneText()
+		if tZoneText and tZoneText ~= "" then
+			for i, v in pairs(SkuDB.InternalAreaTable) do
+				if v.AreaName_lang[Sku.Loc] == tZoneText then
+					local tZoneUiMap = SkuNav:GetUiMapIdFromAreaId(i)
+					if tZoneUiMap then
+						tPlayerUIMap = tZoneUiMap
+						break
+					end
+				end
+			end
+		end
+	end
+
 	if tPlayerUIMap == 126 then
 		tPlayerUIMap = 125
 	end
