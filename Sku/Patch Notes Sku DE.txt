@@ -46,6 +46,45 @@ Aenderungen in Sku v42.10
             "im Cache ueberlebt" war deshalb immer 0 und meldete faelschlich, alles sei
             weggeraeumt worden.
 
+    Kampf: Die Zaehlung der Gegner im Kampf ist deutlich ruhiger und genauer
+        Einfach: Die Ansage der Gegnerzahl sprang staendig hoch und runter, obwohl sich an
+            der Lage nichts geaendert hatte - in einem Bosskampf mit drei Gegnern kamen so
+            in gut einer Minute vierzehn Ansagen zusammen, von denen die meisten falsch
+            waren. Vier Ursachen sind behoben:
+            Erstens wurde ein Gegner, der sechs Sekunden lang nichts tat - waehrend einer
+            Furcht, in einer Zauberphase, wenn ihn gerade niemand angriff -, aus der
+            Zaehlung geworfen und beim naechsten Schlag wieder aufgenommen. Sku erkennt
+            jetzt an viel mehr Anzeichen, dass ein Gegner noch mitkaempft. Gegner, die
+            wirklich zurueckkehren oder verschwinden, verschwinden weiterhin aus der Zahl.
+            Zweitens hoertest du nach einem Kill richtig "0", kurz darauf faelschlich "1"
+            und dann wieder "0". Tote Gegner koennen nicht mehr zurueckkommen.
+            Drittens fiel die Zahl mitten im Kampf auf 0 und kletterte danach wieder hoch,
+            wenn du selbst kurz aus dem Kampf warst - etwa weil du gefuerchtet weggelaufen
+            bist oder dein letzter Angreifer starb. In den Gruppen-Modi ("Gegner, die die
+            Gruppe oder dich angreifen") zaehlt jetzt, ob noch jemand in der Gruppe kaempft.
+            Viertens wurden freundliche NPCs mitgezaehlt, sobald ein Gruppenmitglied sie
+            geheilt oder gestaerkt hat - etwa Begleit-NPCs in Instanzen. Sie zaehlen nicht
+            mehr mit.
+        Technisch: Alles in SkuCore/aqCombat.lua. (1) lastUpdate wird jetzt von jeder
+            Kampflog-Zeile aufgefrischt, die einen erfassten Gegner als Quelle ODER Ziel
+            nennt, und zusaetzlich von blosser Sichtbarkeit in einem abgefragten Unit-Slot -
+            letzteres nur, solange UnitAffectingCombat fuer den Slot wahr ist. Genau diese
+            Bedingung erhaelt den Zweck der 6-Sekunden-Bereinigung: ein zurueckkehrender
+            Gegner bleibt zwar sichtbar, verliert aber die Kampfmarkierung, wird also nicht
+            aufgefrischt und faellt weiterhin heraus. (2) Ein Todesfall wird in tDeadGuids
+            vermerkt, der Eintrag aus dem Sammelfenster tPendingAdds entfernt, und
+            aqCombat_CREATURE_ADDED_TO_COMBAT weist tote GUIDs ab - vorher machte
+            "false or {}" aus der Totenmarkierung wieder einen lebenden Eintrag. Aufgehoben
+            wird die Markierung nur, wenn ein Unit-Token den Gegner wieder als lebend meldet.
+            (3) PLAYER_REGEN_ENABLED (= "DU hast den Kampf verlassen") leerte die ganze
+            threatTable; in den Modi 2 und 3 wird das jetzt aufgeschoben, solange ein
+            Gruppenmitglied noch UnitAffectingCombat ist, mit einer 2-Sekunden-Nachfrage.
+            Modus 4 ("greifen dich an") raeumt weiterhin sofort auf. (4) Die Feindlichkeit
+            wird aus den Reaktions-Flags der Kampflog-Zeile (COMBATLOG_OBJECT_REACTION_*)
+            und aus UnitReaction <= 4 bestimmt, einmal pro Gegner und danach nie neu -
+            bewusst NICHT ueber UnitCanAttack, denn Bosse werden mitten im Kampf
+            unangreifbar oder immun gesetzt und wuerden genau dann aus der Zahl fallen.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.09

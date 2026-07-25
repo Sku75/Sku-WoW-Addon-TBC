@@ -45,6 +45,42 @@ Changes in Sku v42.10
             so the "survived in cache" number was always 0 and falsely reported that
             everything had been pruned.
 
+    Combat: counting the enemies in combat is much steadier and more accurate
+        Simple: The enemy-count announcement kept going up and down although nothing about
+            the situation had changed - a boss fight against three enemies produced
+            fourteen announcements in barely a minute, most of them wrong. Four causes are
+            fixed:
+            First, an enemy that did nothing for six seconds - during a fear, in a cast
+            phase, while nobody happened to be attacking it - was dropped from the count
+            and added again on its next swing. Sku now recognises from many more signs that
+            an enemy is still in the fight. Enemies that really do leash or vanish still
+            drop out of the number as before.
+            Second, after a kill you correctly heard "0", then wrongly "1" a moment later,
+            then "0" again. Dead enemies can no longer come back.
+            Third, the number fell to 0 in the middle of a fight and climbed back up when
+            you personally were briefly out of combat - because a fear ran you off, or your
+            last attacker died. In the group modes ("enemies attacking the party or you")
+            it now depends on whether anyone in the group is still fighting.
+            Fourth, friendly NPCs were counted as enemies as soon as a group member healed
+            or buffed them - escort NPCs in instances, for instance. They no longer count.
+        Technical: All in SkuCore/aqCombat.lua. (1) lastUpdate is now refreshed by any
+            combat-log line naming a tracked enemy as source OR destination, and in addition
+            by mere presence in a polled unit slot - the latter only while
+            UnitAffectingCombat is true for that slot. That condition is what preserves the
+            purpose of the 6-second sweep: a leashing enemy stays visible for a while but
+            loses its combat flag, so it is not refreshed and still drops out. (2) A death
+            is recorded in tDeadGuids, the entry is removed from the tPendingAdds coalescing
+            window, and aqCombat_CREATURE_ADDED_TO_COMBAT refuses dead GUIDs - previously
+            "false or {}" turned the death marker back into a live entry. The mark is only
+            lifted if a unit token reports the enemy alive again. (3) PLAYER_REGEN_ENABLED
+            (= "YOU left combat") wiped the whole threatTable; in modes 2 and 3 that is now
+            deferred while any group member is UnitAffectingCombat, with a 2-second
+            re-check. Mode 4 ("attacking you") still cleans up immediately. (4) Hostility is
+            decided from the combat-log reaction flags (COMBATLOG_OBJECT_REACTION_*) and
+            from UnitReaction <= 4, asked once per enemy and never re-judged - deliberately
+            NOT via UnitCanAttack, because encounters flag bosses non-attackable or immune
+            mid-fight and they would drop out of the count exactly then.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.09

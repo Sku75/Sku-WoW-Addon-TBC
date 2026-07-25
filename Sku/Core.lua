@@ -178,9 +178,32 @@ end
 -- Sku 42 default: log ON (capture breadcrumbs to the SkuDebugLog ring every
 -- session, so traces are available after a /reload without re-enabling), print
 -- OFF (no chat echo / no TTS spam). Override per session via /skudebug.
-Sku.debug = { print = false, log = true }
+-- Sku.debug.verbose gates a THIRD, opt-in channel (dprintv) for high-frequency
+-- breadcrumbs that are useful only while chasing one specific bug and otherwise
+-- flood the ring -- e.g. one line per PLAYER_STARTED_MOVING. Those used to eat
+-- ~50% of the buffer, which cut a capture down to a few minutes of history.
+-- Default OFF, so the ring now holds mostly signal.
+Sku.debug = { print = false, log = true, verbose = false }
 
-local DEBUGLOG_MAX = 2000  -- cap on persisted lines (ring buffer)
+-- Cap on persisted lines (ring buffer).
+--
+-- Sizing note (weak PCs are the target): an entry is stored as ONE plain string
+-- ("seq|hh:mm:ss|msg", see tDebugLogAppend) instead of the old 3-field table.
+-- A Lua table with three hash slots costs roughly 200-250 bytes of overhead per
+-- line; a string costs ~24 bytes plus its characters. In the SavedVariables file
+-- the old form wrote five lines per entry (~120 bytes of syntax), the new one
+-- writes a single quoted line (~25 bytes). So the compact form is about 4-5x
+-- cheaper in memory, in file size, and -- the part that matters on a slow
+-- machine -- in the Lua parse WoW does for Sku.lua at every login.
+-- 12000 compact lines land near 1 MB of RAM and ~1 MB of file, i.e. roughly 2-3x
+-- the cost of the old 2000-line table ring while holding 6x the history (~45-60
+-- minutes of normal play once the verbose channel is off, against ~4 minutes
+-- before). Raise it per session with "/skudebug size <n>" for a long capture; the
+-- value persists in SkuDebugLog.max.
+local DEBUGLOG_MAX_DEFAULT = 12000
+local DEBUGLOG_MAX_LIMIT = 40000
+local DEBUGLOG_TRIM_SLACK = 1024   -- amortise the O(n) rebuild over this many overflows
+local DEBUGLOG_FORMAT = 2          -- 1 = {seq=,t=,msg=} tables, 2 = "seq|t|msg" strings
 
 -- Render one dprint argument into a readable string. Tables are shallow-
 -- serialised one level deep (k=v, ...) so the log stays informative without
@@ -209,9 +232,25 @@ local function tDebugArg(aVal)
 	return "{" .. table.concat(tParts, ", ") .. "}"
 end
 
+-- Current ring cap: the persisted override if sane, else the default.
+local function tDebugLogMax()
+	local tMax = (type(SkuDebugLog) == "table") and tonumber(SkuDebugLog.max) or nil
+	if not tMax then return DEBUGLOG_MAX_DEFAULT end
+	if tMax < 500 then return 500 end
+	if tMax > DEBUGLOG_MAX_LIMIT then return DEBUGLOG_MAX_LIMIT end
+	return math.floor(tMax)
+end
+
 local function tDebugLogAppend(...)
 	if type(SkuDebugLog) ~= "table" then SkuDebugLog = {} end
 	local tLog = SkuDebugLog
+	-- A ring written by an older Sku holds tables, not strings. Mixing the two
+	-- would break every reader, and that history is from a previous build anyway,
+	-- so convert by dropping it once and stamping the format.
+	if tLog.format ~= DEBUGLOG_FORMAT then
+		tLog.format = DEBUGLOG_FORMAT
+		tLog.lines = {}
+	end
 	tLog.lines = tLog.lines or {}
 	tLog.seq   = (tLog.seq or 0) + 1
 	local tN = select("#", ...)
@@ -219,17 +258,19 @@ local function tDebugLogAppend(...)
 	for i = 1, tN do
 		tParts[i] = tDebugArg((select(i, ...)))
 	end
-	tLog.lines[#tLog.lines + 1] = {
-		seq = tLog.seq,
-		t   = date("%H:%M:%S"),
-		msg = table.concat(tParts, "  "),
-	}
-	-- Amortised trim: rebuild keeping the newest DEBUGLOG_MAX only every ~256
-	-- overflows, so a chatty scan loop never pays an O(n) table.remove per line.
-	if #tLog.lines > DEBUGLOG_MAX + 256 then
-		local tKeep, tStart = {}, #tLog.lines - DEBUGLOG_MAX + 1
-		for i = tStart, #tLog.lines do
-			tKeep[#tKeep + 1] = tLog.lines[i]
+	-- Compact single-string entry: "seq|hh:mm:ss|msg". Cheaper to allocate, to
+	-- serialise and to parse back than the former per-line table (see the sizing
+	-- note at DEBUGLOG_MAX_DEFAULT). Readers split on the first two "|".
+	local tLines = tLog.lines
+	tLines[#tLines + 1] = tLog.seq .. "|" .. date("%H:%M:%S") .. "|" .. table.concat(tParts, "  ")
+	-- Amortised trim: rebuild keeping the newest tDebugLogMax() only every
+	-- DEBUGLOG_TRIM_SLACK overflows, so a chatty scan loop never pays an O(n)
+	-- table.remove per line.
+	local tMax = tDebugLogMax()
+	if #tLines > tMax + DEBUGLOG_TRIM_SLACK then
+		local tKeep, tStart = {}, #tLines - tMax + 1
+		for i = tStart, #tLines do
+			tKeep[#tKeep + 1] = tLines[i]
 		end
 		tLog.lines = tKeep
 	end
@@ -244,6 +285,15 @@ function dprint(...)
 	if d.log then
 		tDebugLogAppend(...)
 	end
+end
+
+-- Verbose dprint: same output, but additionally gated behind Sku.debug.verbose.
+-- Use it for per-frame / per-event breadcrumbs that would otherwise dominate the
+-- ring; enable with "/skudebug verbose on" while chasing that specific area.
+function dprintv(...)
+	local d = Sku.debug
+	if not d or not d.verbose then return end
+	dprint(...)
 end
 
 -- [SOUND-PROBE] TEMPORARY diagnostic: log every PlaySound(kitId) call with a
@@ -303,6 +353,14 @@ SlashCmdList["SKUDEBUG"] = function(aMsg)
 	elseif aMsg == "log off" then d.log = false
 	elseif aMsg == "on" then d.print, d.log = true, true
 	elseif aMsg == "off" then d.print, d.log = false, false
+	elseif aMsg == "verbose on" then d.verbose = true
+	elseif aMsg == "verbose off" then d.verbose = false
+	elseif aMsg:match("^size%s+%d+$") then
+		if type(SkuDebugLog) ~= "table" then SkuDebugLog = {} end
+		local tWant = tonumber(aMsg:match("(%d+)"))
+		SkuDebugLog.max = math.max(500, math.min(DEBUGLOG_MAX_LIMIT, tWant))
+		print(string.format("|cff80c0ffSkuDebug|r: ring size = %d lines (persisted).", SkuDebugLog.max))
+		return
 	elseif aMsg == "clear" then
 		if type(SkuDebugLog) == "table" then SkuDebugLog.lines = {} ; SkuDebugLog.seq = 0 end
 		print("|cff80c0ffSkuDebug|r: log cleared.")
@@ -313,14 +371,22 @@ SlashCmdList["SKUDEBUG"] = function(aMsg)
 		if #tLines == 0 then print("|cff80c0ffSkuDebug|r: log empty.") return end
 		for i = tStart, #tLines do
 			local e = tLines[i]
-			print(string.format("#%s [%s] %s", tostring(e.seq), e.t or "?", e.msg or ""))
+			if type(e) == "table" then   -- legacy format 1 entry
+				print(string.format("#%s [%s] %s", tostring(e.seq), e.t or "?", e.msg or ""))
+			else
+				local tSeq, tT, tMsg = tostring(e):match("^(%d+)|([^|]*)|(.*)$")
+				print(string.format("#%s [%s] %s", tSeq or "?", tT or "?", tMsg or tostring(e)))
+			end
 		end
 		return
 	elseif aMsg ~= "" then
-		print("|cff80c0ffSkuDebug|r: usage: /skudebug on|off|print on|print off|log on|log off|clear|show")
+		print("|cff80c0ffSkuDebug|r: usage: /skudebug on|off|print on|print off|log on|log off|verbose on|verbose off|size <n>|clear|show")
 	end
 	if d.log and not tWasLog then Sku:DebugLogMark("log enabled") end
-	print(string.format("|cff80c0ffSkuDebug|r: print=%s log=%s", tostring(d.print), tostring(d.log)))
+	print(string.format("|cff80c0ffSkuDebug|r: print=%s log=%s verbose=%s ring=%d/%d",
+		tostring(d.print), tostring(d.log), tostring(d.verbose),
+		(type(SkuDebugLog) == "table" and type(SkuDebugLog.lines) == "table") and #SkuDebugLog.lines or 0,
+		tDebugLogMax()))
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

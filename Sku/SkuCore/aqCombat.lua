@@ -474,6 +474,77 @@ local tCcSpells = {
    [2094] = "blind",
 }
 local tCcState = {}              -- [creatureGUID] = {key = "sheep", t = <precise sec>}
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Coalesced combat-log add path (state). Declared HERE, above every function that
+-- touches it (the death handler must be able to drop a pending add, and
+-- aqCombat_CREATURE_ADDED_TO_COMBAT sits earlier in the file than the flush), so
+-- all of them bind the same upvalues. The flush itself is further down.
+local tPendingAdds = {}          -- [creatureGUID] = {name=, partyGuid=, partyName=, friendly=}
+local tPendingAddScheduled = false
+
+-- Enemies that DIED during the current fight. threatTable marks both a death and
+-- a stale-sweep drop with the same value (false), but the two must behave
+-- differently on re-add: a stale-swept mob is alive and quiet, so it may come
+-- back; a dead one may not. Without this set a combat-log event recorded in the
+-- 0.3s window around the killing blow flushes AFTER the death and revives the
+-- corpse -- the "0, then 1, then 0 again" flicker. Cleared when the group's fight
+-- ends, and lifted per-GUID if the mob is later seen alive on a unit token (the
+-- rare in-fight resurrect), so this can never permanently hide a live enemy.
+local tDeadGuids = {}            -- [creatureGUID] = true (died this fight)
+
+-- Enemies with positive evidence of hostility, so the check below is asked ONCE
+-- per mob and never re-evaluated. Encounters routinely flag a boss or add as
+-- immune / non-attackable mid-fight while it is still very much part of the
+-- fight; anything derived from "can I attack it right now" (UnitCanAttack) would
+-- drop it from the count exactly then. Reaction does not change under immunity,
+-- and once a mob is admitted as hostile it stays admitted.
+local tKnownHostile = {}         -- [creatureGUID] = true
+
+local tReactionFriendlyFlag = COMBATLOG_OBJECT_REACTION_FRIENDLY or 0x00000010
+local tReactionNeutralFlag = COMBATLOG_OBJECT_REACTION_NEUTRAL or 0x00000020
+local tReactionHostileFlag = COMBATLOG_OBJECT_REACTION_HOSTILE or 0x00000040
+local tBand = bit and bit.band
+
+-- Hostility from the combat-log unit flags of the event that mentioned the mob.
+-- Returns true (hostile or neutral -> counts), false (friendly -> does not), or
+-- nil (unknown -> caller stays permissive: over-counting once beats losing a boss
+-- from the count). Works without any unit token, so it also covers mobs that have
+-- no nameplate and are targeted by nobody.
+local function tFlagsSayHostile(aFlags)
+   if not aFlags or not tBand then return nil end
+   if tBand(aFlags, tReactionHostileFlag) ~= 0 then return true end
+   if tBand(aFlags, tReactionNeutralFlag) ~= 0 then return true end
+   if tBand(aFlags, tReactionFriendlyFlag) ~= 0 then return false end
+   return nil
+end
+
+-- Same question for a resolvable unit token. UnitReaction is 1..4 for
+-- hated/hostile/unfriendly/neutral and 5+ for friendly and better; it is NOT
+-- affected by immunity or by the non-attackable flag, which is exactly why it is
+-- used here instead of UnitCanAttack. nil (unknown) again means "stay permissive".
+local function tUnitSaysHostile(aUnitId)
+   if not aUnitId then return nil end
+   local tReaction = UnitReaction("player", aUnitId)
+   if not tReaction then return nil end
+   return tReaction <= 4
+end
+
+-- Final admission verdict for a creature: known-hostile wins, then the live
+-- token, then the combat-log flags, and unknown counts as hostile.
+local function tShouldAdmitAsEnemy(aCreatureGUID, aUnitId, aFlagVerdict)
+   if tKnownHostile[aCreatureGUID] then return true end
+   local tVerdict = tUnitSaysHostile(aUnitId)
+   if tVerdict == nil then tVerdict = aFlagVerdict end
+   if tVerdict == false then return false end
+   -- Remember only a DEFINITE yes. An unknown verdict still admits (permissive),
+   -- but stays open to a clear friendly answer from a later, better-informed event.
+   if tVerdict == true then
+      tKnownHostile[aCreatureGUID] = true
+   end
+   return true
+end
+
 local function tCombatInCounts(value, creatureGUID, tPlayerGUID, tAllPartyRaidUnits)
    -- [W6-C #20] shared "does this in-combat creature count?" classifier, extracted
    -- from the two identical value==4/3/2 cascades (relativeNumberUnitsInCombat and
@@ -573,8 +644,27 @@ local function aqCombatCreateControlFrame()
             local tTargetUnitIdToTest = tUnitsToTestOnGameRaidTargets[i]
             local tCreatureGUID = UnitGUID(tTargetUnitIdToTest)
             if tCreatureGUID then
+               -- LIVENESS: a tracked mob that is visible in one of the polled unit
+               -- slots (nameplate, someone's target, ...) AND still carries the
+               -- in-combat flag is demonstrably still in the fight, whether or not
+               -- it produced a combat-log line or a threat reading this second.
+               -- Previously lastUpdate was only refreshed deep inside the "has a
+               -- threat status" branch below, so a boss that stood there doing
+               -- nothing for six seconds -- during a fear, a cast phase, a CC --
+               -- was stale-swept out of the count and re-added on its next swing.
+               -- The UnitAffectingCombat condition is what keeps the sweep's real
+               -- job intact: an evading / leashing mob is still visible for a while
+               -- but drops out of combat, so it is NOT refreshed and the 6s sweep
+               -- removes it exactly as before.
+               local tTracked = SkuCore.threatTable[tCreatureGUID]
+               if type(tTracked) == "table"
+                  and UnitIsDeadOrGhost(tTargetUnitIdToTest) ~= true
+                  and UnitAffectingCombat(tTargetUnitIdToTest)
+               then
+                  tTracked.lastUpdate = GetTimePreciseSec()
+               end
                if aqCombatCheckElite(tCreatureGUID, tTargetUnitIdToTest) == true then
-                  if tCreatureGUID and SkuCore.threatTable[tCreatureGUID] ~= false then
+                  if tCreatureGUID and SkuCore.threatTable[tCreatureGUID] ~= false and not tDeadGuids[tCreatureGUID] then
                      local t = aqCombat:aqCombatIsPartyOrRaidMember(tTargetUnitIdToTest)
                      if t == nil then
                         -- is mob
@@ -583,7 +673,11 @@ local function aqCombatCreateControlFrame()
                            local isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation(tPartyUnitToTest, tTargetUnitIdToTest)
                            if status then
                               local tPartyGuid = UnitGUID(tPartyUnitToTest)
-                              if UnitIsDeadOrGhost(tPartyUnitToTest) ~= true then
+                              -- Hostility is asked at the admission point only, so
+                              -- the verdict (and the tKnownHostile bookkeeping) is
+                              -- not paid for every unit slot polled every tick.
+                              if UnitIsDeadOrGhost(tPartyUnitToTest) ~= true
+                                 and tShouldAdmitAsEnemy(tCreatureGUID, tTargetUnitIdToTest, nil) then
                                  aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tTargetUnitIdToTest, UnitName(tTargetUnitIdToTest), UnitGUID(tPartyUnitToTest), tPartyUnitToTest, UnitName(tPartyUnitToTest))
 
                                  local tPlayerGUID = UnitGUID("player")
@@ -607,15 +701,20 @@ local function aqCombatCreateControlFrame()
                                     end
                                  end
 
-                                 SkuCore.threatTable[tCreatureGUID].name = UnitName(tTargetUnitIdToTest) 
-                                 SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec() 
+                                 -- The add above can legitimately refuse (mob died
+                                 -- this fight), leaving a `false` entry -- so never
+                                 -- index it blind.
+                                 if type(SkuCore.threatTable[tCreatureGUID]) == "table" then
+                                 SkuCore.threatTable[tCreatureGUID].name = UnitName(tTargetUnitIdToTest)
+                                 SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec()
                                  SkuCore.threatTable[tCreatureGUID][tPartyGuid] = SkuCore.threatTable[tCreatureGUID][tPartyGuid] or {}
                                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].lastUpdate = GetTimePreciseSec()
                                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].isTanking = isTanking
                                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].status = status
                                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].scaledPercentage = scaledPercentage
                                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].rawPercentage = rawPercentage
-                                 SkuCore.threatTable[tCreatureGUID][tPartyGuid].threatValue = threatValue                
+                                 SkuCore.threatTable[tCreatureGUID][tPartyGuid].threatValue = threatValue
+                                 end
                               end
                            end
                         end
@@ -759,7 +858,8 @@ local function aqCombatCreateControlFrame()
                -- wrongly lower the count if a boss/add merely changed appearance
                -- or briefly lost its nameplate while still alive. If one shows up
                -- right before a count drop on such a boss, the sweep is the cause.
-               dprint("aqCombat stale-sweep drop:", tEntry.name or "?", "idle", string.format("%.1f", tNow - tLast).."s")
+               dprint("aqCombat stale-sweep drop:", (tEntry.name or "?").."#"..tGuid:sub(-6), "idle", string.format("%.1f", tNow - tLast).."s",
+                  "onUnitSlot", aqCombat:aqCombatCreatureGuidToUnitId(tGuid) or "no")
                -- Already queued for removal? Skip to avoid double-decrement.
                if not SkuCore.inOutCombatQueue.combatOut[tGuid] then
                   SkuCore.inOutCombatQueue.combatOut[tGuid] = true
@@ -832,8 +932,12 @@ local function aqCombatCreateControlFrame()
                               local tElite = aqCombatCheckElite(tGuid)
                               local tCounts = tElite and tCombatInCounts(tMode, tGuid, tPlayerGUID, tAllPartyRaidUnits)
                               local tIdle = tEntry.lastUpdate and (tNow2 - tEntry.lastUpdate) or -1
-                              tParts[#tParts + 1] = string.format("[%s c=%s%s%s idle%.1f]",
-                                 tostring(tEntry.name or tGuid:sub(-6)),
+                              -- Name + GUID tail: several entries can share a name
+                              -- (boss images, identical adds), and without the tail
+                              -- a genuine double-count is indistinguishable from two
+                              -- real mobs in this line.
+                              tParts[#tParts + 1] = string.format("[%s#%s c=%s%s%s idle%.1f]",
+                                 tostring(tEntry.name or "?"), tGuid:sub(-6),
                                  tCounts and "Y" or "N",
                                  tElite and "" or " noElite",
                                  tCc and (" cc=" .. tCc) or "",
@@ -924,6 +1028,14 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(aCreatureGuid, aCreatureUnitId, aCreatureName, aPartyGuid, aPartyUnitId, aPartyName)
    if SkuCore.threatTable[aCreatureGuid] then
+      return
+   end
+   -- Central resurrection guard. A dead mob is stored as `false`, which is falsy,
+   -- so the line below ("false or {}") used to hand it a fresh, alive entry. Every
+   -- add path funnels through here, so refusing dead GUIDs once covers the
+   -- combat-log flush, the threat scan and any future caller. Callers must not
+   -- assume the entry exists after this returns (see the type() guards).
+   if tDeadGuids[aCreatureGuid] then
       return
    end
    SkuCore.threatTable[aCreatureGuid] = SkuCore.threatTable[aCreatureGuid] or {}
@@ -1267,8 +1379,8 @@ end
 -- is scheduled per burst. Same ~0.5s settle delay (so a fresh mob's unit token
 -- has time to exist before we resolve it), but the whole burst is applied
 -- atomically, so a multi-pull is announced as one number by the next recount.
-local tPendingAdds = {}          -- [creatureGUID] = {name=, partyGuid=, partyName=}
-local tPendingAddScheduled = false
+-- (tPendingAdds / tPendingAddScheduled are declared near the top of the file so
+-- the earlier add + death handlers can see them.)
 -- Coalescing window: how long the shared flush waits after the first pending add
 -- before applying the whole burst. Smaller = the first number is announced sooner,
 -- but a pull whose mobs engage over a longer span may split into two
@@ -1279,7 +1391,7 @@ local tFlushWindow = 0.3
 
 local function tFlushPendingAdds()
    tPendingAddScheduled = false
-   local tBatch, tAdded, tGuidAdd, tKept = 0, 0, 0, 0
+   local tBatch, tAdded, tGuidAdd, tKept, tDeadSkip, tFriendSkip = 0, 0, 0, 0, 0, 0
    for tCreatureGUID, tInfo in pairs(tPendingAdds) do
       tPendingAdds[tCreatureGUID] = nil
       tBatch = tBatch + 1
@@ -1288,28 +1400,50 @@ local function tFlushPendingAdds()
       local tPartyUnitId = aqCombat:aqCombatCreatureGuidToUnitId(tInfo.partyGuid)
          or aqCombat:aqCombatIsPartyOrRaidMember(nil, tInfo.partyGuid)
 
-      if tMobUnitId and tPartyUnitId and UnitIsDeadOrGhost(tMobUnitId) ~= true then
+      -- Died this fight? Then this is a leftover event from the window around the
+      -- killing blow and must not revive the corpse. Sole exception, and it needs
+      -- hard proof: a unit token that says the mob is alive again (in-fight
+      -- resurrect / same-GUID revive), in which case the death mark is lifted.
+      local tIsDead = tDeadGuids[tCreatureGUID]
+      if tIsDead and tMobUnitId and UnitIsDeadOrGhost(tMobUnitId) == false then
+         tDeadGuids[tCreatureGUID] = nil
+         tIsDead = false
+      end
+
+      -- Hostility: ask once, on admission only. An entry already in the table is
+      -- never re-judged here, so an encounter turning a mob immune or
+      -- non-attackable mid-fight cannot drop it out of the count.
+      local tAlreadyTracked = (type(SkuCore.threatTable[tCreatureGUID]) == "table")
+      local tHostile = tAlreadyTracked or tShouldAdmitAsEnemy(tCreatureGUID, tMobUnitId, tInfo.hostile)
+
+      if tIsDead then
+         tDeadSkip = tDeadSkip + 1
+      elseif not tHostile then
+         tFriendSkip = tFriendSkip + 1
+      elseif tMobUnitId and tPartyUnitId and UnitIsDeadOrGhost(tMobUnitId) ~= true then
          -- Resolved & alive: full token-based add. Also seeds this party member's
          -- threat sub-entry so mode 4 / threat warnings have data to work with.
          aqCombat:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tMobUnitId, tInfo.name, tInfo.partyGuid, tPartyUnitId, tInfo.partyName)
 
-         SkuCore.threatTable[tCreatureGUID].name = tInfo.name
-         SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec()
+         if type(SkuCore.threatTable[tCreatureGUID]) == "table" then
+            SkuCore.threatTable[tCreatureGUID].name = tInfo.name
+            SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec()
 
-         if SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid] == nil then
-            SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid] = {
-               isTanking = nil,
-               wasTanking = nil,
-               status = nil,
-               scaledPercentage = nil,
-               rawPercentage = nil,
-               threatValue = nil,
-            }
+            if SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid] == nil then
+               SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid] = {
+                  isTanking = nil,
+                  wasTanking = nil,
+                  status = nil,
+                  scaledPercentage = nil,
+                  rawPercentage = nil,
+                  threatValue = nil,
+               }
+            end
+
+            SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid].lastUpdate = GetTimePreciseSec()
+            SkuCore.aqCombatCheckThreat = true
+            tAdded = tAdded + 1
          end
-
-         SkuCore.threatTable[tCreatureGUID][tInfo.partyGuid].lastUpdate = GetTimePreciseSec()
-         SkuCore.aqCombatCheckThreat = true
-         tAdded = tAdded + 1
       elseif tPartyUnitId and not tMobUnitId then
          -- Admit-by-GUID (this also subsumes the old keep-alive refresh). We can't
          -- resolve the MOB to a live unit token this window -- e.g. a boss just
@@ -1339,11 +1473,12 @@ local function tFlushPendingAdds()
       end
    end
    if tBatch > 0 then
-      dprint("aqCombat add-flush: window", tFlushWindow, "batch", tBatch, "resolved+added", tAdded, "guid-added", tGuidAdd, "kept-alive", tKept)
+      dprint("aqCombat add-flush: window", tFlushWindow, "batch", tBatch, "resolved+added", tAdded, "guid-added", tGuidAdd,
+         "kept-alive", tKept, "dead-skip", tDeadSkip, "friendly-skip", tFriendSkip)
    end
 end
 
-local function tAddHelper(event, tCreatureGUID, tMobName, tPartyGuid, tPartyname)
+local function tAddHelper(event, tCreatureGUID, tMobName, tPartyGuid, tPartyname, aHostile)
    if
       sfind(event, "_DAMAGE") or
       sfind(event, "_MISSED") or
@@ -1354,8 +1489,10 @@ local function tAddHelper(event, tCreatureGUID, tMobName, tPartyGuid, tPartyname
    then
       -- Record the pending add (last party attacker in the window wins; the
       -- periodic control-frame threat scan fills in the other party members'
-      -- threat entries anyway) and arm one shared flush for the burst.
-      tPendingAdds[tCreatureGUID] = {name = tMobName, partyGuid = tPartyGuid, partyName = tPartyname}
+      -- threat entries anyway) and arm one shared flush for the burst. aHostile
+      -- carries the reaction read off this very event's unit flags, which is the
+      -- only hostility evidence available for a mob with no unit token.
+      tPendingAdds[tCreatureGUID] = {name = tMobName, partyGuid = tPartyGuid, partyName = tPartyname, hostile = aHostile}
       if not tPendingAddScheduled then
          tPendingAddScheduled = true
          C_Timer.After(tFlushWindow, tFlushPendingAdds)
@@ -1365,7 +1502,26 @@ end
 
 local tGUIDCache = {creatures = {}, nonCreatures = {}}
 function aqCombat:aqCombat_COMBAT_LOG_EVENT_UNFILTERED()
-   local arg1, event, arg3, sourceGUID, sourceName, arg6, arg7, targetGUID, targetName = CombatLogGetCurrentEventInfo()
+   local arg1, event, arg3, sourceGUID, sourceName, tSourceFlags, arg7, targetGUID, targetName, tDestFlags = CombatLogGetCurrentEventInfo()
+
+   -- LIVENESS: any combat-log line that so much as mentions a tracked enemy proves
+   -- it is still in the fight -- as attacker, as victim, hitting a non-party
+   -- friendly NPC, taking a DoT tick. The add path below only ever looks at
+   -- events between the party and a mob, and only at a subset of event types, so
+   -- plenty of proof-of-life used to go unused and the 6s stale sweep dropped
+   -- mobs that were plainly still fighting. Two hash lookups per event; the
+   -- type() check keeps dead/swept entries (false) untouched, so this can never
+   -- resurrect anything.
+   local tLiveTable = SkuCore.threatTable
+   if tLiveTable then
+      local tSrcEntry = sourceGUID and tLiveTable[sourceGUID]
+      local tDstEntry = targetGUID and tLiveTable[targetGUID]
+      if type(tSrcEntry) == "table" or type(tDstEntry) == "table" then
+         local tSeenAt = GetTimePreciseSec()
+         if type(tSrcEntry) == "table" then tSrcEntry.lastUpdate = tSeenAt end
+         if type(tDstEntry) == "table" then tDstEntry.lastUpdate = tSeenAt end
+      end
+   end
 
    -- CC state maintenance (see tCcSpells). Runs regardless of the party-source gate
    -- below, since CC can come from the player, a pet, or any group member.
@@ -1395,7 +1551,11 @@ function aqCombat:aqCombat_COMBAT_LOG_EVENT_UNFILTERED()
             end
          end
          if tGUIDCache.creatures[targetGUID] then
-            tAddHelper(event, targetGUID, targetName, sourceGUID, sourceName)
+            -- Party member acted on a creature. The creature's own reaction flags
+            -- decide whether it is an enemy at all: a heal, a buff or a stray AoE
+            -- on a friendly escort NPC (Millhouse Manastorm and friends) hits this
+            -- same path and used to add that NPC to the enemy count.
+            tAddHelper(event, targetGUID, targetName, sourceGUID, sourceName, tFlagsSayHostile(tDestFlags))
          end
       elseif aqCombat:aqCombatIsPartyOrRaidMember(nil, targetGUID) then
          if not tGUIDCache.creatures[sourceGUID] then
@@ -1407,7 +1567,7 @@ function aqCombat:aqCombat_COMBAT_LOG_EVENT_UNFILTERED()
          end
 
          if tGUIDCache.creatures[sourceGUID] then
-            tAddHelper(event, sourceGUID, sourceName, targetGUID, targetName)
+            tAddHelper(event, sourceGUID, sourceName, targetGUID, targetName, tFlagsSayHostile(tSourceFlags))
          end
       end
    end
@@ -1527,6 +1687,12 @@ function aqCombat:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
    if tCurrentSettings.combat.enabled == true then
       if aqCombat:aqCombatIsPartyOrRaidMember(nil, aUnitGUID) == nil then
          if sfind(aUnitGUID, "Creature-") then
+            -- Mark the death BEFORE the removal, and drop any add for this mob that
+            -- is still sitting in the coalescing window: combat-log lines from the
+            -- moment of the killing blow flush up to tFlushWindow seconds later and
+            -- would otherwise re-add the corpse right after the count reached 0.
+            tDeadGuids[aUnitGUID] = true
+            tPendingAdds[aUnitGUID] = nil
             aqCombat:aqCombat_CREATURE_REMOVED_FROM_COMBAT(aUnitGUID, nil, aUnitName)
          end
       else
@@ -1568,7 +1734,43 @@ function aqCombat:aqCombat_PLAYER_REGEN_DISABLED()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Is anyone in the group (or their pet) still fighting? PLAYER_REGEN_ENABLED is
+-- named after health/mana regeneration resuming, but it simply means "YOU left
+-- combat" -- your personal combat flag expiring a few seconds after the last blow
+-- traded. Being feared away from the pack, or having your last attacker die while
+-- the group fights on, fires it mid-fight.
+local function tGroupStillInCombat()
+   for i = 1, #tAllPartyRaidUnits do
+      local tUnit = tAllPartyRaidUnits[i]
+      if UnitExists(tUnit) and UnitAffectingCombat(tUnit) then
+         return true
+      end
+   end
+   return false
+end
+
+-- PLAYER_REGEN_ENABLED does not repeat, so when the wipe is deferred a light poll
+-- takes over until the group's fight really ends.
+local tRegenRecheck
+local tRegenRecheckScheduled = false
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function aqCombat:aqCombat_PLAYER_REGEN_ENABLED()
+   -- Modes 2 and 3 count enemies fighting the PARTY, explicitly independent of the
+   -- player's own combat state, so YOUR combat ending is not the fight ending:
+   -- wiping the table here announced a false 0 and then climbed back up as the
+   -- same mobs were rediscovered. Hold the reset until nobody in the group is in
+   -- combat any more. Mode 4 ("attacking you") keeps the immediate reset -- with
+   -- you out of combat, nothing is attacking you, and 0 is the right answer.
+   local tMode = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value
+   if (tMode == 2 or tMode == 3) and tGroupStillInCombat() then
+      if not tRegenRecheckScheduled then
+         tRegenRecheckScheduled = true
+         C_Timer.After(2, tRegenRecheck)
+      end
+      return
+   end
+
    SkuCore.partyDeadCountCounter = 0
    SkuCore.aqCombatCheckThreat = nil
    aqCombat:aqCombatClearSkuRaidTargets()
@@ -1598,6 +1800,33 @@ function aqCombat:aqCombat_PLAYER_REGEN_ENABLED()
    for tGuid in pairs(tCcState) do
       tCcState[tGuid] = nil
    end
+
+   -- Fight over: this fight's deaths and hostility verdicts stop applying. A GUID
+   -- is unique per spawn, so nothing here needs to survive into the next pull.
+   for tGuid in pairs(tDeadGuids) do
+      tDeadGuids[tGuid] = nil
+   end
+   for tGuid in pairs(tKnownHostile) do
+      tKnownHostile[tGuid] = nil
+   end
+end
+
+-- Deferred end-of-combat cleanup (see aqCombat_PLAYER_REGEN_ENABLED). Re-arms
+-- itself every 2s while the group is still fighting; if the player is back in
+-- combat the poll simply stops, because the next real PLAYER_REGEN_ENABLED will
+-- take over.
+tRegenRecheck = function()
+   tRegenRecheckScheduled = false
+   if UnitAffectingCombat("player") then
+      return
+   end
+   if tGroupStillInCombat() then
+      tRegenRecheckScheduled = true
+      C_Timer.After(2, tRegenRecheck)
+      return
+   end
+   dprint("aqCombat deferred combat-end cleanup: group left combat")
+   aqCombat:aqCombat_PLAYER_REGEN_ENABLED()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

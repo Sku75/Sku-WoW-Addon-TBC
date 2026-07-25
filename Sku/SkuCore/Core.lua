@@ -583,7 +583,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_STARTED_MOVING()
-   dprint("PLAYER_STARTED_MOVING", "AutoRun", SkuCoreMovement.Flags.AutoRun)
+   -- Verbose channel only: this fires on every single movement start and used to
+   -- be ~half of the whole SkuDebugLog ring, which shrank a capture to a few
+   -- minutes. Turn it back on with "/skudebug verbose on" when debugging movement.
+   dprintv("PLAYER_STARTED_MOVING", "AutoRun", SkuCoreMovement.Flags.AutoRun)
    if SkuCore.GameWorldObjects.gameWorldObjectsScanFrame then
       SkuCore.GameWorldObjects:GameWorldObjectsRestoreView()
    end
