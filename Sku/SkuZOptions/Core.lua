@@ -2200,7 +2200,22 @@ function SkuOptions:CreateMainFrame()
 				SkuCore.Debug("", L["Menu;closed"], true)
 
 			else
-				self:Show()
+				-- OnSkuOptionsMain parents the secure SecureOnSkuOptionsMainOption1/2
+				-- buttons (~3243/3293) and is therefore effectively PROTECTED: Show() is
+				-- BLOCKED in combat. The call is a silent no-op that only raises
+				-- ADDON_ACTION_BLOCKED -- which BugGrabber/BugSack surface as a Lua error
+				-- popup, repeatedly (the frame never becomes visible, so IsMenuOpen()
+				-- stays false and every re-entry retries it; a bag opened in combat
+				-- auto-descends through SlashFunc ~301 and hit this on every rescan).
+				-- The in-combat menu is headless by design (SkuMenuCapture + TTS, enabled
+				-- by both entry paths: SlashFunc ~289 and the OpenMenu key ~1886), so
+				-- skipping the Show costs nothing -- only the never-appearing visual.
+				-- Hide() is NOT affected (no blocked Hide in the whole error history) and
+				-- stays unguarded, both here (~2138) and in the combat-start handoff
+				-- (SkuCore/Core.lua ~2862), whose OnHide side effects are relied upon.
+				if not InCombatLockdown() then
+					self:Show()
+				end
 				SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
 				-- No open-click here: the nav frame's OnShow (PlaySound(88)) is the
 				-- single canonical open sound, symmetric with OnHide's PlaySound(89)
