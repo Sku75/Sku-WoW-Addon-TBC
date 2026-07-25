@@ -81,6 +81,66 @@ Changes in Sku v42.10
             NOT via UnitCanAttack, because encounters flag bosses non-attackable or immune
             mid-fight and they would drop out of the count exactly then.
 
+    Auction house: auctions can be posted again without opening your bags first
+        Simple: Posting an auction sometimes did nothing at all - the sell slot stayed
+            empty and the auction silently never went up. It worked for anyone who had
+            visited a mailbox, a vendor or the bank beforehand, because those windows open
+            every bag automatically. That is why the fault looked random and only hit some
+            sessions. Posting no longer needs your bags to have been opened.
+            While at it, the item is now looked up in your bags at the moment you post: if
+            the stack has moved since the menu was built, the right item still goes up.
+            Locked and soulbound copies of the same item ID are skipped instead of letting
+            the post fail silently.
+        Technical: SkuCore/auctionHouse.lua. The post path dragged the item into the slot
+            through the bag FRAME's script:
+            _G["ContainerFrame(bag+1)Item(numSlots-slot+1)"]:GetScript("OnDragStart").
+            Those buttons only exist once a bag has actually been rendered, and the
+            ContainerFrame[N] <-> bag ID mapping is assigned at OPEN time - the hardcoded
+            N = bag + 1 only holds when every bag was opened in order. Without that the drag
+            grabbed nothing and PostAuction silently no-op'd. This was a regression of the
+            2026-06-25 fix: the v42 sell rework restored "the original v41.06 post path" and
+            brought the frame drag back with it.
+            Reading and picking up now go through the container API - the same route bag
+            sorting and socketing already take: new _ASBagNumSlots, _ASBagSlotInfo,
+            _ASFindBagSlot and _ASPickupBagItem helpers, each dual-path over C_Container and
+            the classic globals. Bag and slot are resolved fresh by itemId on click (the
+            slot noted at menu build is only a hint now and gets re-verified), then
+            PickupContainerItem followed by ClickAuctionSellItemButton; ClearCursor in the
+            abort branch so failed staging cannot leave the item on the cursor. The
+            _G[containerFrameName].info.id refinement in the price preset is gone too: it
+            returned nothing without rendered bags, and the itemId from the container scan
+            is authoritative anyway.
+
+    Auction house: the lowest price is no longer reported as 0 copper by mistake
+        Simple: For some items Sku announced a lowest buyout of "0 copper" even though
+            several auctions with perfectly ordinary prices were up - searching for the
+            same item by hand found the correct prices straight away. From the same cause
+            the announced average was too low, the number of data points too high, and the
+            price suggested when selling could sit at 0. For other items you got the
+            opposite, "no buyout data available", although buyouts existed. Both are fixed.
+            Current price data is correct again after your next full scan; stored history
+            heals per item as each is scanned again, and until then old zero prices are
+            treated as "no data" rather than read out.
+        Technical: SkuCore/auctionHouse.lua. Two faults working together. First, in
+            AuctionBuildPriceData every auction row always contributed TWO data points, a
+            bid price and a buyout price. Auctions without a buyout (buyoutPrice == 0, the
+            normal case in the TBC auction house) were written into the buyout list as a
+            plain 0. Second, the condition in AuctionUpdateAuctionDBHistory - "not tLow or
+            (tPrice > 0 and tPrice < tLow)" - bound the tPrice > 0 guard to the SECOND
+            branch only. So the first price the loop saw took the low whatever its value,
+            including 0; after that no price was ever smaller than 0, so the low stayed 0.
+            That is why it only struck sometimes - namely when the first auction of that
+            item in the scan happened to have no buyout. The zeros also dragged the median
+            down, and if more than half the auctions had no buyout the median became 0, at
+            which point the outlier filter tPrice < median * 10 rejected every real price as
+            well - that was the "no data despite existing buyouts" case.
+            Now only real prices > 0 become data points at all (an auction without a buyout
+            simply yields no buyout data point), tPrice > 0 gates both branches, and a
+            median <= 0 bypasses the outlier filter instead of discarding everything. When
+            reading in AuctionHouseGetAuctionPriceHistoryData a stored low <= 0 counts as
+            "no data" - needed because already saved AuctionDBHistory can still hold zero
+            lows from the old calculation until that item is scanned again.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.09

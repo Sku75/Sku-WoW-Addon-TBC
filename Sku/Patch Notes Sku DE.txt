@@ -85,6 +85,72 @@ Aenderungen in Sku v42.10
             bewusst NICHT ueber UnitCanAttack, denn Bosse werden mitten im Kampf
             unangreifbar oder immun gesetzt und wuerden genau dann aus der Zahl fallen.
 
+    Auktionshaus: Auktionen lassen sich wieder einstellen, ohne vorher die Taschen zu oeffnen
+        Einfach: Beim Einstellen einer Auktion passierte manchmal schlicht nichts - der
+            Verkaufsslot blieb leer und die Auktion ging still nicht raus. Wer vorher am
+            Briefkasten, beim Haendler oder an der Bank war, bei dem ging es, denn diese
+            Fenster oeffnen alle Taschen automatisch. Deshalb wirkte der Fehler zufaellig
+            und traf nur manche Sitzungen. Das Einstellen braucht die Taschen jetzt nie
+            mehr geoeffnet.
+            Nebenbei wird das Item im Moment des Einstellens frisch in den Taschen gesucht:
+            hat sich der Stapel seit dem Aufbau des Menues verschoben, wird trotzdem das
+            richtige Item eingestellt. Gerade gesperrte und seelengebundene Kopien derselben
+            Item-ID werden uebersprungen, statt das Einstellen still scheitern zu lassen.
+        Technisch: SkuCore/auctionHouse.lua. Der Verkaufspfad zog das Item ueber das Skript
+            des Taschen-FENSTERS in den Slot:
+            _G["ContainerFrame(bag+1)Item(numSlots-slot+1)"]:GetScript("OnDragStart").
+            Diese Buttons entstehen erst, wenn eine Tasche wirklich einmal dargestellt
+            wurde, und die Zuordnung ContainerFrame[N] <-> Taschen-ID wird beim OEFFNEN
+            vergeben - die feste Annahme N = bag + 1 stimmt nur, wenn alle Taschen der
+            Reihe nach geoeffnet wurden. Ohne das griff der Zug ins Leere und PostAuction
+            lief ohne Wirkung durch. Das war ein Rueckfall in den Stand vor dem 25.06.2026:
+            die v42-Ueberarbeitung des Verkaufens hat den "originalen v41.06-Pfad"
+            wiederhergestellt und den Fensterzug damit zurueckgeholt.
+            Gelesen und aufgenommen wird jetzt ueber die Container-API - denselben Weg, den
+            Taschensortierung und Sockeln schon nehmen: neue Helfer _ASBagNumSlots,
+            _ASBagSlotInfo, _ASFindBagSlot und _ASPickupBagItem, jeweils zweigleisig ueber
+            C_Container und die klassischen Globalen. Tasche und Platz werden beim Klick neu
+            ueber die Item-ID aufgeloest (der beim Menueaufbau gemerkte Platz ist nur noch
+            ein Hinweis und wird nachgeprueft), dann PickupContainerItem gefolgt von
+            ClickAuctionSellItemButton; im Abbruchzweig raeumt ClearCursor auf, damit ein
+            fehlgeschlagenes Aufnehmen das Item nicht am Cursor liegen laesst. Auch die
+            Verfeinerung ueber _G[containerFrameName].info.id in der Preisvorgabe entfaellt:
+            sie lieferte ohne dargestellte Taschen nichts, und die Item-ID aus dem
+            Container-Durchlauf ist ohnehin die verlaessliche Quelle.
+
+    Auktionshaus: Der niedrigste Preis wird nicht mehr faelschlich als 0 Kupfer gemeldet
+        Einfach: Bei manchen Items nannte Sku als niedrigsten Sofortkaufpreis "0 Kupfer",
+            obwohl mehrere Auktionen mit ganz gewoehnlichen Preisen im Haus lagen - eine
+            Suche von Hand nach demselben Item fand die richtigen Preise sofort. Aus
+            derselben Ursache war der angesagte Durchschnitt zu niedrig, die Zahl der
+            Datenpunkte zu hoch, und der beim Verkaufen vorgeschlagene Preis konnte auf 0
+            stehen. Bei anderen Items hiess es umgekehrt "Keine Sofortkaufdaten vorhanden",
+            obwohl es Sofortkaeufe gab. Beides ist behoben. Die aktuellen Preisdaten sind
+            nach dem naechsten vollstaendigen Scan wieder richtig; gespeicherte historische
+            Daten heilen pro Item, sobald es erneut gescannt wurde, und bis dahin werden
+            alte Null-Preise als "keine Daten" behandelt statt vorgelesen.
+        Technisch: SkuCore/auctionHouse.lua. Zwei Fehler, die zusammenwirkten. Erstens
+            steuerte in AuctionBuildPriceData jede Auktionszeile immer ZWEI Datenpunkte bei,
+            einen Gebots- und einen Sofortkaufpreis. Auktionen ohne Sofortkauf
+            (buyoutPrice == 0, im TBC-Auktionshaus der Normalfall) wurden dabei als glatte 0
+            in die Sofortkaufliste geschrieben. Zweitens band die Bedingung in
+            AuctionUpdateAuctionDBHistory - "not tLow or (tPrice > 0 and tPrice < tLow)" -
+            den Schutz tPrice > 0 nur an den ZWEITEN Zweig. Der zuerst gesehene Preis
+            besetzte das Minimum also unabhaengig von seinem Wert, auch mit 0; danach war
+            kein Preis mehr kleiner als 0, das Minimum blieb also 0. Deshalb schlug es nur
+            manchmal zu - naemlich wenn die erste Auktion dieses Items im Scan keinen
+            Sofortkauf hatte. Die Nullen zogen ausserdem den Median nach unten, und lag mehr
+            als die Haelfte der Auktionen ohne Sofortkauf, wurde der Median 0, worauf der
+            Ausreisserfilter tPrice < Median * 10 samt aller echten Preise alles verwarf -
+            das war der Fall "keine Daten trotz vorhandener Sofortkaeufe".
+            Jetzt werden nur echte Preise > 0 ueberhaupt zu Datenpunkten (eine Auktion ohne
+            Sofortkauf liefert schlicht keinen Sofortkauf-Datenpunkt), tPrice > 0 gilt fuer
+            beide Zweige, und ein Median <= 0 umgeht den Ausreisserfilter, statt alles
+            wegzufiltern. Beim Auslesen in AuctionHouseGetAuctionPriceHistoryData gilt ein
+            gespeichertes Minimum <= 0 als "keine Daten" - noetig, weil in bereits
+            gespeicherter AuctionDBHistory noch Null-Minima aus der alten Rechnung stehen
+            koennen, bis das Item wieder gescannt wird.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.09

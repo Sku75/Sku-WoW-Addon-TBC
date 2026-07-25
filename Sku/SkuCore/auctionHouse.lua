@@ -4377,7 +4377,7 @@ function AuctionHouse:AuctionBuildPriceData(aSourceDB)
          if tItemId then
             local tCount = tData[tAIDIndex["count"]]
             if tCount and tCount > 0 then
-               local tMinBid = 0
+               local tMinBid
                -- Nil-Schutz: minBid/buyoutPrice können vom Server fehlen
                -- (Anniversary-Eigenheit). Ohne Guard bräche der > 0-Vergleich
                -- ("compare nil with number") den ganzen Preis-/History-Aufbau ab.
@@ -4386,19 +4386,31 @@ function AuctionHouse:AuctionBuildPriceData(aSourceDB)
                   tMinBid = mfloor(tRawMinBid / tCount)
                   if tMinBid == 0 then tMinBid = 1 end
                end
-               local tBuyoutPrice = 0
+               local tBuyoutPrice
                local tRawBuyout = tData[tAIDIndex["buyoutPrice"]]
                if tRawBuyout and tRawBuyout > 0 then
                   tBuyoutPrice = mfloor(tRawBuyout / tCount)
                   if tBuyoutPrice == 0 then tBuyoutPrice = 1 end
                end
-               local tBucket = tPriceData[tItemId]
-               if not tBucket then
-                  tBucket = { [1] = {}, [2] = {} }
-                  tPriceData[tItemId] = tBucket
+               -- WICHTIG: Auktionen OHNE Sofortkauf (buyoutPrice == 0, im TBC-AH
+               -- der Normalfall) liefern KEINEN Sofortkauf-Datenpunkt. Früher
+               -- wurde hier eine 0 in den Bucket geschrieben; diese Null-Preise
+               -- haben Median/Durchschnitt nach unten gezogen und konnten als
+               -- "Niedrigster" (bzw. als Verkaufs-Vorschlagspreis) mit 0 Kupfer
+               -- herausfallen. Nur echte Preise (> 0) sind Datenpunkte.
+               if tMinBid or tBuyoutPrice then
+                  local tBucket = tPriceData[tItemId]
+                  if not tBucket then
+                     tBucket = { [1] = {}, [2] = {} }
+                     tPriceData[tItemId] = tBucket
+                  end
+                  if tMinBid then
+                     tBucket[1][#tBucket[1] + 1] = tMinBid
+                  end
+                  if tBuyoutPrice then
+                     tBucket[2][#tBucket[2] + 1] = tBuyoutPrice
+                  end
                end
-               tBucket[1][#tBucket[1] + 1] = tMinBid
-               tBucket[2][#tBucket[2] + 1] = tBuyoutPrice
             end
          end
       end
@@ -4456,12 +4468,20 @@ function AuctionHouse:AuctionUpdateAuctionDBHistory(aSourceDB, aTargetTable, aPr
             tBidNewPoints = #tData[1]
          end
          for _, tPrice in pairs(tData[1]) do
-            if tPrice < tBidNewMedian * 10 then
-               if not tBidNewLow or (tPrice > 0 and tPrice < tBidNewLow) then
-                  tBidNewLow = tPrice
-               end
-               if not tBidNewHigh or tPrice > tBidNewHigh then
-                  tBidNewHigh = tPrice
+            -- Ausreißer-Deckel nach oben; bei (theoretisch) Median <= 0 nicht
+            -- alles wegfiltern, sonst gäbe es gar kein Low/High mehr.
+            if tBidNewMedian <= 0 or tPrice < tBidNewMedian * 10 then
+               -- tPrice > 0 muss für BEIDE Zweige gelten. Vorher band das
+               -- "and" nur an den zweiten Zweig, sodass der erste gesehene
+               -- Preis das Low auch mit 0 belegen konnte — und danach kein
+               -- Preis mehr kleiner als 0 war, das Low also 0 blieb.
+               if tPrice > 0 then
+                  if not tBidNewLow or tPrice < tBidNewLow then
+                     tBidNewLow = tPrice
+                  end
+                  if not tBidNewHigh or tPrice > tBidNewHigh then
+                     tBidNewHigh = tPrice
+                  end
                end
             end
          end
@@ -4475,12 +4495,14 @@ function AuctionHouse:AuctionUpdateAuctionDBHistory(aSourceDB, aTargetTable, aPr
             tBuyNewPoints = #tData[2]
          end
          for _, tPrice in pairs(tData[2]) do
-            if tPrice < tBuyNewMedian * 10 then
-               if not tBuyNewLow or (tPrice > 0 and tPrice < tBuyNewLow) then
-                  tBuyNewLow = tPrice
-               end
-               if not tBuyNewHigh or tPrice > tBuyNewHigh then
-                  tBuyNewHigh = tPrice
+            if tBuyNewMedian <= 0 or tPrice < tBuyNewMedian * 10 then
+               if tPrice > 0 then
+                  if not tBuyNewLow or tPrice < tBuyNewLow then
+                     tBuyNewLow = tPrice
+                  end
+                  if not tBuyNewHigh or tPrice > tBuyNewHigh then
+                     tBuyNewHigh = tPrice
+                  end
                end
             end
          end
@@ -4513,6 +4535,11 @@ function AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPr
 
    local tFullTextSections = {}
    local tSuggestedSellPrice
+   -- Ein Low von <= 0 ist kein gültiger Preis. Frisch berechnete Daten liefern
+   -- das nicht mehr, in bereits gespeicherter AuctionDBHistory können aber noch
+   -- Null-Lows aus der alten Berechnung stehen, bis das Item erneut gescannt
+   -- wird. Alle vier Blöcke unten behandeln sie darum als "keine Daten", statt
+   -- "0 Kupfer" vorzulesen bzw. als Verkaufspreis vorzuschlagen.
    -- (Früher stand hier eine lokale Calculate()-Funktion, die aus einer Roh-
    -- Preisliste Anzahl/Niedrig/Hoch/Durchschnitt berechnete. Sie ist entfallen:
    -- die Preisdaten liegen jetzt als vorgerechnete [1..4]-Tupel vor und werden
@@ -4538,7 +4565,7 @@ function AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPr
       --local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aCurrentPriceDataDB[aItemID][2])
       local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = aCurrentPriceDataDB[aItemID][2][4], nil, aCurrentPriceDataDB[aItemID][2][1], aCurrentPriceDataDB[aItemID][2][3], aCurrentPriceDataDB[aItemID][2][2]
 
-      if not tBidSeenAmount or not tBidLow then
+      if not tBidSeenAmount or not tBidLow or tBidLow <= 0 then
          tText = tText..L["\r\nKeine Sofortkaufdaten vorhanden"]
       else         
          tText = tText..L["\r\nSofortkaufdaten: \r\nDatenpunkte "]..(tBidSeenAmount)..L["\r\nNiedrigster "]..SkuGetCoinText(tBidLow, true, true)..L["\r\nHöchster "]..SkuGetCoinText(tBidHigh, true, true)..L["\r\nDurchschnitt "]..SkuGetCoinText(tBidAverage, true, true)
@@ -4547,7 +4574,7 @@ function AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPr
 
       --local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aCurrentPriceDataDB[aItemID][1])
       local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = aCurrentPriceDataDB[aItemID][1][4], nil, aCurrentPriceDataDB[aItemID][1][1], aCurrentPriceDataDB[aItemID][1][3], aCurrentPriceDataDB[aItemID][1][2]
-      if not tBidSeenAmount or not tBidLow then
+      if not tBidSeenAmount or not tBidLow or tBidLow <= 0 then
          tText = tText..L["\r\nKeine Gebotsdaten vorhanden"]
       else         
          tText = tText..L["\r\nGebotsdaten: \r\nDatenpunkte "]..(tBidSeenAmount)..L["\r\nNiedrigstes "]..SkuGetCoinText(tBidLow, true, true)..L["\r\nHöchstes "]..SkuGetCoinText(tBidHigh, true, true)..L["\r\nDurchschnitt "]..SkuGetCoinText(tBidAverage, true, true)
@@ -4565,7 +4592,7 @@ function AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPr
       --local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aHistoryPriceDataDB[aItemID][2])
       local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = aHistoryPriceDataDB[aItemID][2][4], nil, aHistoryPriceDataDB[aItemID][2][1], aHistoryPriceDataDB[aItemID][2][3], aHistoryPriceDataDB[aItemID][2][2]
 
-      if not tBidSeenAmount or not tBidLow then
+      if not tBidSeenAmount or not tBidLow or tBidLow <= 0 then
          tText = tText..L["\r\nKeine Sofortkaufdaten vorhanden"]
       else         
          tText = tText..L["\r\nSofortkaufdaten: \r\nDatenpunkte "]..(tBidSeenAmount)..L["\r\nNiedrigster "]..SkuGetCoinText(tBidLow, true, true)..L["\r\nHöchster "]..SkuGetCoinText(tBidHigh, true, true)..L["\r\nDurchschnitt "]..SkuGetCoinText(tBidAverage, true, true)
@@ -4576,7 +4603,7 @@ function AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPr
 
       --local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aHistoryPriceDataDB[aItemID][1])
       local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = aHistoryPriceDataDB[aItemID][1][4], nil, aHistoryPriceDataDB[aItemID][1][1], aHistoryPriceDataDB[aItemID][1][3], aHistoryPriceDataDB[aItemID][1][2]
-      if not tBidSeenAmount or not tBidLow then
+      if not tBidSeenAmount or not tBidLow or tBidLow <= 0 then
          tText = tText..L["\r\nKeine Gebotsdaten vorhanden"]
       else         
          tText = tText..L["\r\nGebotsdaten: \r\nDatenpunkte "]..(tBidSeenAmount)..L["\r\nNiedrigstes "]..SkuGetCoinText(tBidLow, true, true)..L["\r\nHöchstes "]..SkuGetCoinText(tBidHigh, true, true)..L["\r\nDurchschnitt "]..SkuGetCoinText(tBidAverage, true, true)
