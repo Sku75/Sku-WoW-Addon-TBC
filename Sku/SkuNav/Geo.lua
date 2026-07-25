@@ -210,6 +210,27 @@ function SkuNav:GetCurrentAreaId(aUnitId)
 		end
 	end
 	if not tAreaId then
+		-- [uiMap-less areas] A handful of areas have no SkuDB.ExternalMapID row
+		-- pointing at them (2257 Die Tiefenbahn, 3917 Auchindoun, ...), so
+		-- GetUiMapIdFromAreaId returns nil for them and the strict loop above can
+		-- NEVER match: nil ~= tPlayerUIMap. Before the tPlayerUIMap declaration
+		-- above, the comparison ran against a nil global and matched exactly those
+		-- areas by accident - which is what made the Deeprun Tram work up to v41
+		-- and what broke here. Redo the name match deliberately, restricted to
+		-- areas the strict loop could not have matched anyway (no uiMap), so no
+		-- normal zone can be reinterpreted by this pass.
+		-- Symptom when this is missing: GetCurrentAreaId nil -> the continent it
+		-- feeds is nil -> ListWaypoints2 (Core.lua) and
+		-- GetAllLinkedWPsInRangeToCoords both bail out -> Shift-F9 / Shift-F10
+		-- report no waypoints although the zone is fully mapped and linked.
+		for i, v in pairs(SkuDB.InternalAreaTable) do
+			if (v.AreaName_lang[Sku.Loc] == tMinimapZoneText) and (SkuNav:GetUiMapIdFromAreaId(i) == nil) then
+				tAreaId = i
+				break
+			end
+		end
+	end
+	if not tAreaId then
 		local tExtMapId
 		if aUnitId then
 			tExtMapId = SkuDB.ExternalMapID[SkuNav:GetBestMapForUnit(aUnitId)]
@@ -352,11 +373,34 @@ SlashCmdList["SKUZONEPROBE"] = function()
 		p("client areaID: (none reported at this position)")
 	end
 
-	-- 3) what Sku resolves for the same spot
+	-- 3) what Sku resolves for the same spot. TWO resolvers are reported because
+	-- the two quick lists use DIFFERENT ones and they can disagree:
+	--   GetCurrentAreaId       -> gates the ROUTE list (Shift-F10) and, via the
+	--                             continent it yields, ListWaypoints2 as well
+	--   GetAreaIdFromUiMapId   -> picks the area the nearby-waypoint list
+	--                             (Shift-F9) filters on
+	-- An area with no ExternalMapID -> AreaId row (e.g. Deeprun Tram 2257) has NO
+	-- uiMap, which makes GetCurrentAreaId fail while GetAreaIdFromUiMapId still
+	-- answers - exactly the split that empties both lists silently.
 	local tSkuAreaId = SkuNav:GetCurrentAreaId()
 	local tSkuName = tSkuAreaId and select(2, SkuNav:GetAreaData(tSkuAreaId))
 	local tSkuUiMap = tSkuAreaId and SkuNav:GetUiMapIdFromAreaId(tSkuAreaId)
-	p("Sku areaId:", tSkuAreaId, tSkuName, "-> uiMap", tSkuUiMap)
+	p("Sku areaId (GetCurrentAreaId):", tSkuAreaId, tSkuName, "-> uiMap", tSkuUiMap)
+
+	local tListAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
+	local tListName = tListAreaId and select(2, SkuNav:GetAreaData(tListAreaId))
+	p("list areaId (GetAreaIdFromUiMapId):", tListAreaId, tListName,
+		"-> uiMap", tListAreaId and SkuNav:GetUiMapIdFromAreaId(tListAreaId))
+	p("Sku GetBestMapForUnit:", SkuNav:GetBestMapForUnit("player"), "| UnitPosition", UnitPosition("player"))
+	if not tSkuAreaId and tListAreaId then
+		p("BROKEN: GetCurrentAreaId returned nil while the area resolves to", tListAreaId,
+			"- every continent-gated nav lookup (ListWaypoints2, GetAllLinkedWPsInRangeToCoords) bails out here")
+	end
+	local tProbeAreaId = tSkuAreaId or tListAreaId
+	if tProbeAreaId and not SkuNav:GetUiMapIdFromAreaId(tProbeAreaId) then
+		p("ROOT CAUSE CANDIDATE: areaId", tProbeAreaId, "has NO uiMap (no SkuDB.ExternalMapID row with AreaId =",
+			tProbeAreaId, ") - creature/object waypoints here are skipped at cache build and GetCurrentAreaId cannot match")
+	end
 
 	-- 4) the real test: how many route waypoints exist for this area, both as
 	-- LOADED (SessionRouteData = raw base data) and as SURVIVED (WaypointCache,
@@ -373,11 +417,18 @@ SlashCmdList["SKUZONEPROBE"] = function()
 		end
 		return n
 	end
-	local function tCached(aId)
+	-- [fix] WaypointCache & friends are FILE-LOCALS of SkuNav/Core.lua, so the
+	-- global this used to read was always nil and "survived in cache" always
+	-- printed 0 - a false "everything was pruned" signal. Go through the dev
+	-- accessor, which hands out the live locals.
+	local tCaches = SkuNav.DevGetWaypointCacheTables and SkuNav:DevGetWaypointCacheTables() or {}
+	local tWpCache = tCaches.WaypointCache
+	local tPerCont = tCaches.WaypointCacheLookupPerContintent
+	local function tCached(aId, aTypeId)
 		local n = 0
-		if aId and type(WaypointCache) == "table" then
-			for _, v in pairs(WaypointCache) do
-				if type(v) == "table" and v.areaId == aId and v.typeId == 1 then n = n + 1 end
+		if aId and type(tWpCache) == "table" then
+			for _, v in pairs(tWpCache) do
+				if type(v) == "table" and v.areaId == aId and v.typeId == (aTypeId or 1) then n = n + 1 end
 			end
 		end
 		return n
@@ -387,9 +438,57 @@ SlashCmdList["SKUZONEPROBE"] = function()
 	local tParentName = tParentId and select(2, SkuNav:GetAreaData(tParentId))
 	p("parent zone areaId", tParentId, tParentName, ": loaded", tLoaded(tParentId), "-> survived in cache", tCached(tParentId))
 
+	-- 4b) the area the LISTS actually filter on, with the per-type split. Custom
+	-- (typeId 1) come from the route data, creature/object (2/3) from the DB
+	-- passes that SKIP areas without a uiMap - a 0/0 there next to a non-zero
+	-- custom count is that skip, not missing data.
+	if tProbeAreaId then
+		p("probe areaId", tProbeAreaId, "cache split: custom", tCached(tProbeAreaId, 1),
+			"| creature", tCached(tProbeAreaId, 2), "| object", tCached(tProbeAreaId, 3),
+			"| loaded from route data", tLoaded(tProbeAreaId))
+		local tCont = select(3, SkuNav:GetAreaData(tProbeAreaId))
+		local tBucket = 0
+		if tCont and type(tPerCont) == "table" and type(tPerCont[tCont]) == "table" then
+			for _ in pairs(tPerCont[tCont]) do tBucket = tBucket + 1 end
+		end
+		p("continent", tCont, ": waypoints in the per-continent bucket", tBucket,
+			(tCont and type(tPerCont) == "table" and tPerCont[tCont]) and "" or "(NO BUCKET - continent-gated lookups return nothing)")
+	end
+
+	-- 4c) simulate what the two quick lists would return HERE, so an empty list
+	-- can be told apart from a list that was never built.
+	do
+		local tOk, tList = pcall(SkuNav.ListWaypoints2, SkuNav, true, nil, tProbeAreaId, nil, nil, true)
+		if not tOk then
+			p("Shift-F9 source ListWaypoints2: ERROR", tList)
+		elseif type(tList) ~= "table" then
+			p("Shift-F9 source ListWaypoints2: returned NIL (bailed on missing continent / continent bucket)")
+		else
+			local tAuto, tNamed = 0, 0
+			local tAutoPrefix = L["auto"].." "
+			for _, tName in pairs(tList) do
+				if string.sub(tName, 1, string.len(tAutoPrefix)) == tAutoPrefix then tAuto = tAuto + 1 else tNamed = tNamed + 1 end
+			end
+			p("Shift-F9 source ListWaypoints2:", #tList, "waypoints ->", tNamed, "named (listed) +", tAuto, "auto (hidden by the list)")
+		end
+		local tPx, tPy = UnitPosition("player")
+		local tOk2, tEntries = pcall(SkuNav.GetAllLinkedWPsInRangeToCoords, SkuNav, tPx, tPy, SkuNav.MaxMetaEntryRange)
+		if not tOk2 then
+			p("Shift-F10 source GetAllLinkedWPsInRangeToCoords: ERROR", tEntries)
+		else
+			local tN = 0
+			for _ in pairs(tEntries or {}) do tN = tN + 1 end
+			p("Shift-F10 source GetAllLinkedWPsInRangeToCoords:", tN, "linked entry points in range", SkuNav.MaxMetaEntryRange)
+		end
+	end
+
 	-- 5) mismatch flags
 	if tSkuUiMap ~= tUiMap then
 		p("MISMATCH: Sku maps its areaId to uiMap", tSkuUiMap, "but the client is on", tUiMap)
+	elseif tSkuUiMap == nil then
+		-- both nil is "agreement" only in the trivial sense - say so, it means the
+		-- client has no uiMap here and Sku is running on the pseudo-id path
+		p("uiMap: both nil (client reports no uiMap here; Sku runs on the GetBestMapForUnit pseudo-id)")
 	else
 		p("uiMap OK (Sku agrees with the client)")
 	end
