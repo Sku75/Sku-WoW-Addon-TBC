@@ -2013,6 +2013,9 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 						local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav.Geo:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
 						local tX, tY = worldPosition:GetXY()
 						local tDistance, _  = SkuNav.Geo:Distance(tPlayX, tPlayY, tX, tY)
+						-- UnitPosition("player") is nil in instances/raids/BGs, so Distance()
+						-- returns nil there; keep listing the quest, sorted to the end.
+						tDistance = tDistance or 99999
 						tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = {tDistance, tX, tY, i}
 						tIdTable[tDistance..L[";Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
 					end
@@ -2029,6 +2032,9 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 						local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav.Geo:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
 						local tX, tY = worldPosition:GetXY()
 						local tDistance, _  = SkuNav.Geo:Distance(tPlayX, tPlayY, tX, tY)
+						-- UnitPosition("player") is nil in instances/raids/BGs, so Distance()
+						-- returns nil there; keep listing the quest, sorted to the end.
+						tDistance = tDistance or 99999
 						tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = {tDistance, tX, tY, i}
 						tIdTable[tDistance..L[";Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
 					end
