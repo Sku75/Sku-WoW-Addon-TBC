@@ -2243,17 +2243,31 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local unfollowOnCastWasOnFollowUnitName = nil
 function SkuCore:UnfollowOnCast()
-	--[[
+	-- Reactivation test 2026-07-26: body was shipped commented-out since upstream
+	-- v41.06 (reason unrecorded). Open question this test answers: does this client
+	-- execute FollowUnit() from a server-event context (no hardware event), or is it
+	-- silently gated like some AH actions? Proof channel: AUTOFOLLOW_END must fire
+	-- (clears SkuStatus.followUnitName, voiced as "Autofolgen ende").
+	-- Read via: py -3 dev/rework-docs/_dbgtail.py 200 followcast
 	if SkuSettings:Sub("SkuCore").endFollowOnCast == true and SkuStatus.followUnitName ~= "" then
 		unfollowOnCastWasOnFollowUnitName = SkuStatus.followUnitName
+		dprint("followcast unfollow call, was following:", unfollowOnCastWasOnFollowUnitName)
 		FollowUnit("player")
+		if _G.C_Timer and _G.C_Timer.After then
+			_G.C_Timer.After(0.5, function()
+				dprint("followcast unfollow check: followUnitName now:", tostring(SkuStatus.followUnitName), "(empty = call executed, unchanged = gated)")
+			end)
+		end
 	end
-	]]
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:FollowOnCast()
-	--[[
+	-- Reactivation test, second half: re-follow after the cast ends. Success is
+	-- voiced natively as "Autofolgen beginn" (AUTOFOLLOW_BEGIN); on a fast
+	-- unfollow/refollow the END announcement is suppressed by design, so a working
+	-- feature sounds like a single "beginn" after each cast while following.
 	if SkuSettings:Sub("SkuCore").endFollowOnCast == true and unfollowOnCastWasOnFollowUnitName then
+		dprint("followcast refollow call, target:", unfollowOnCastWasOnFollowUnitName)
 		if UnitName("TARGET") == unfollowOnCastWasOnFollowUnitName then
 			FollowUnit("TARGET")
 		end
@@ -2262,7 +2276,7 @@ function SkuCore:FollowOnCast()
 			if tUnitName == unfollowOnCastWasOnFollowUnitName then
 				FollowUnit("RAID"..x)
 			end
-		end			
+		end
 		for x = 1, 5 do
 			local tUnitName = UnitName("PARTY"..x)
 			if tUnitName == unfollowOnCastWasOnFollowUnitName then
@@ -2271,7 +2285,6 @@ function SkuCore:FollowOnCast()
 		end
 		unfollowOnCastWasOnFollowUnitName = nil
 	end
-	]]
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UNIT_SPELLCAST_START(aEvent, aUnitTarget, aCastGUID, aSpellID)
@@ -2287,7 +2300,7 @@ function SkuCore:UNIT_SPELLCAST_START(aEvent, aUnitTarget, aCastGUID, aSpellID)
 	end
 end
 function SkuCore:UNIT_SPELLCAST_CHANNEL_START(aEvent, unitTarget, castGUID, spellID)
-	if aUnitTarget == "player" then
+	if unitTarget == "player" then
 		SkuCore:UnfollowOnCast()
 	end
 	if SkuStatus.casting == 0 then
@@ -2304,7 +2317,7 @@ function SkuCore:UNIT_SPELLCAST_STOP(aEvent, aUnitTarget, aCastGUID, aSpellID)
 
 end
 function SkuCore:UNIT_SPELLCAST_CHANNEL_STOP(aEvent, unitTarget, castGUID, spellID)
-	if aUnitTarget == "player" then
+	if unitTarget == "player" then
 		SkuCore:FollowOnCast()
 	end
 	SkuStatus.casting = 0

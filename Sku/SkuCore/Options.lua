@@ -182,6 +182,7 @@ SkuCore.options = {
 				return SkuSettings:Sub("SkuCore").autoFollow
 			end
 		},
+		]]
 		endFollowOnCast = {
 			name = L["Folgen beim Zaubern temporär beenden"],
 			desc = "",
@@ -193,7 +194,6 @@ SkuCore.options = {
 				return SkuSettings:Sub("SkuCore").endFollowOnCast
 			end
 		},
-		]]
 		interactMove = {
 			name = L["Bei Interagieren zum Ziel laufen"],
 			desc = "",
