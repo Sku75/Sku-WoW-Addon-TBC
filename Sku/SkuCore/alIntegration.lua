@@ -1800,6 +1800,20 @@ end
 --      zeigt — d.h. nach jedem „Neu belegen" wird diese Methode erneut
 --      aufgerufen, sodass die neue Taste sofort aktiv ist.
 function AtlasLootIntegration:AtlasLootApplyKeyBinding()
+   -- Override-Bindings sind im Kampf geschützt; der pcall unten verhindert das
+   -- ADDON_ACTION_BLOCKED-Event nicht (kein Lua-Fehler). Im Kampf daher gar
+   -- nicht erst versuchen, sondern nach Kampfende einmal nachholen.
+   if InCombatLockdown() then
+      if not self.tKeyBindRetryFrame then
+         self.tKeyBindRetryFrame = CreateFrame("Frame")
+         self.tKeyBindRetryFrame:SetScript("OnEvent", function(f)
+            f:UnregisterEvent("PLAYER_REGEN_ENABLED")
+            AtlasLootIntegration:AtlasLootApplyKeyBinding()
+         end)
+      end
+      self.tKeyBindRetryFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+      return
+   end
    if not _G["SkuAtlasLootShortcutButton"] then
       local f = CreateFrame("Button", "SkuAtlasLootShortcutButton", UIParent)
       f:SetSize(1, 1)
