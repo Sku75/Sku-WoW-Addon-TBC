@@ -1051,7 +1051,8 @@ function aqCombat:aqCombatOnInitialize()
    SkuDispatcher:RegisterEventCallback("COMBAT_LOG_EVENT_UNFILTERED", aqCombat.aqCombat_COMBAT_LOG_EVENT_UNFILTERED)
    SkuDispatcher:RegisterEventCallback("SKU_UNIT_DIED", aqCombat.aqCombat_SKU_UNIT_DIED)
    SkuDispatcher:RegisterEventCallback("SKU_SPELL_CAST_START", aqCombat.aqCombat_SKU_SPELL_CAST_START)
-   
+   SkuDispatcher:RegisterEventCallback("SKU_SPELL_INTERRUPT", aqCombat.aqCombat_SKU_SPELL_INTERRUPT)
+
    SkuDispatcher:RegisterEventCallback("RAID_TARGET_UPDATE", aqCombat.aqCombatCheckGameRaidTargets)
 	SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_DISABLED", aqCombat.aqCombat_PLAYER_REGEN_DISABLED)
 	SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", aqCombat.aqCombat_PLAYER_REGEN_ENABLED)
@@ -1186,6 +1187,17 @@ function aqCombat:aqCombatOnLogin()
             --minimumCastDuration
             SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.minimumCastDuration = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.minimumCastDuration or 0
 
+            --only announce interruptible casts
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.onlyInterruptibleCasts == nil then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.onlyInterruptibleCasts = false
+            end
+
+            --announce interrupts by you/party/raid (default ON; nil-fill also
+            --switches it on once for existing profiles that predate the setting)
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.outputInterrupts == nil then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.outputInterrupts = true
+            end
+
          
          --deaths
             --ignore dead units not in combat
@@ -1294,6 +1306,7 @@ function aqCombat:OnDisable()
    SkuDispatcher:UnregisterEventCallback("COMBAT_LOG_EVENT_UNFILTERED", aqCombat.aqCombat_COMBAT_LOG_EVENT_UNFILTERED)
    SkuDispatcher:UnregisterEventCallback("SKU_UNIT_DIED", aqCombat.aqCombat_SKU_UNIT_DIED)
    SkuDispatcher:UnregisterEventCallback("SKU_SPELL_CAST_START", aqCombat.aqCombat_SKU_SPELL_CAST_START)
+   SkuDispatcher:UnregisterEventCallback("SKU_SPELL_INTERRUPT", aqCombat.aqCombat_SKU_SPELL_INTERRUPT)
    SkuDispatcher:UnregisterEventCallback("RAID_TARGET_UPDATE", aqCombat.aqCombatCheckGameRaidTargets)
    SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_DISABLED", aqCombat.aqCombat_PLAYER_REGEN_DISABLED)
    SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", aqCombat.aqCombat_PLAYER_REGEN_ENABLED)
@@ -1574,6 +1587,22 @@ function aqCombat:aqCombat_COMBAT_LOG_EVENT_UNFILTERED()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- The notInterruptible API flag is dead data on this client (always nil, verified
+-- 2026-07-26), so interruptibility comes from SkuDB.uninterruptibleCasts:
+-- spellID, localized spell name (multi-rank spells), or npcID..spellName.
+local function aqCombatCastIsUninterruptible(aSpellId, aSpellName, aSourceGUID)
+   local tDb = SkuDB.uninterruptibleCasts
+   if not tDb then return false end
+   if aSpellId and tDb.spells[aSpellId] then return true end
+   if aSpellName and tDb.spells[aSpellName] then return true end
+   if aSourceGUID and aSpellName then
+      local tNpcId = select(6, strsplit("-", aSourceGUID))
+      if tNpcId and tDb.npcSpells[tNpcId..aSpellName] then return true end
+   end
+   return false
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function aqCombat:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
    --[[
 	sourceGUID = 4,
@@ -1589,6 +1618,12 @@ function aqCombat:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
    ]]
 
    local tCurrentSettings = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet]
+
+   if tCurrentSettings.combat.hostile.onlyInterruptibleCasts == true then
+      if aqCombatCastIsUninterruptible(aEventData[12], aEventData[13], aEventData[4]) then
+         return
+      end
+   end
 
    if tCurrentSettings.combat.enabled == true then
       if aqCombatCheckElite(aEventData[4]) == true then
@@ -1641,6 +1676,24 @@ function aqCombat:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
             end
          end
       end
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- SPELL_INTERRUPT: source = who interrupted, dest = whose cast broke. Affiliation
+-- flags instead of GUID lists so pet interrupts (felhunter Spell Lock etc.) count
+-- for their owner side: MINE covers you incl. your pet, PARTY/RAID the group.
+local tInterruptGroupMask = bit.bor(COMBATLOG_OBJECT_AFFILIATION_PARTY, COMBATLOG_OBJECT_AFFILIATION_RAID)
+function aqCombat:aqCombat_SKU_SPELL_INTERRUPT(aEvent, aEventData)
+   local tCurrentSettings = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet]
+   if tCurrentSettings.combat.enabled ~= true then return end
+   if tCurrentSettings.combat.hostile.outputInterrupts ~= true then return end
+   local tSourceFlags = aEventData[6]
+   if not tSourceFlags then return end
+   if bit.band(tSourceFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) > 0 then
+      SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Du hast unterbrochen", "You interrupted"), false, true, 0.2, true)
+   elseif bit.band(tSourceFlags, tInterruptGroupMask) > 0 then
+      SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Zauber unterbrochen", "Spell interrupted"), false, true, 0.2, true)
    end
 end
 
@@ -2404,7 +2457,55 @@ function aqCombat:aqCombatMenuBuilder()
                SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
             end
          end
-      end         
+
+         ---
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Nur unterbrechbare Zauber ansagen"]}, SkuGenericMenuItem)
+         tNewMenuEntry.dynamic = true
+         tNewMenuEntry.sorting = true
+         tNewMenuEntry.isSelect = true
+         tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.onlyInterruptibleCasts == true then
+               return L["On"]
+            else
+               return L["Off"]
+            end
+         end
+         tNewMenuEntry.OnAction = function(self, aValue, aName)
+            if aName == L["Off"] then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.onlyInterruptibleCasts = false
+            elseif aName == L["On"] then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.onlyInterruptibleCasts = true
+            end
+         end
+         tNewMenuEntry.BuildChildren = function(self)
+            SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+            SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
+         end
+
+         ---
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unterbrechungen ansagen"]}, SkuGenericMenuItem)
+         tNewMenuEntry.dynamic = true
+         tNewMenuEntry.sorting = true
+         tNewMenuEntry.isSelect = true
+         tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputInterrupts == true then
+               return L["On"]
+            else
+               return L["Off"]
+            end
+         end
+         tNewMenuEntry.OnAction = function(self, aValue, aName)
+            if aName == L["Off"] then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputInterrupts = false
+            elseif aName == L["On"] then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputInterrupts = true
+            end
+         end
+         tNewMenuEntry.BuildChildren = function(self)
+            SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+            SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
+         end
+      end
 
       ----
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Deaths"]}, SkuGenericMenuItem)

@@ -81,6 +81,7 @@ SkuCore\companionPacks.lua
 
 _psC_preSkuDB.lua
 SkuDB\Core.lua
+SkuDB\uninterruptibleCasts.lua
 SkuDB\assets\maps.lua
 SkuDB\assets\default_waypoints.lua
 SkuDB\assets\quests.lua

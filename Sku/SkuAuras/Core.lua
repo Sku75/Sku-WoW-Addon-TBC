@@ -889,6 +889,10 @@ function SkuAuras:COMBAT_LOG_EVENT_UNFILTERED(aEventName, aCustomEventData)
 		SkuDispatcher:TriggerSkuEvent("SKU_SPELL_CAST_START", tEventData)
 	end
 
+	if tEventData[CleuBase.subevent] == "SPELL_INTERRUPT" then
+		SkuDispatcher:TriggerSkuEvent("SKU_SPELL_INTERRUPT", tEventData)
+	end
+
 
 	if tEventData[CleuBase.subevent] == "SPELL_CAST_SUCCESS" then
 		C_Timer.After(0.1, function()
