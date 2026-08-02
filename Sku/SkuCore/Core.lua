@@ -1354,6 +1354,19 @@ function SkuCore:OnEnable()
 				else
 					if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
 						_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
+					else
+						-- Menu is already open: the reopen above can never fire (it is
+						-- gated on IsMenuOpen()==false), so armed flags would linger
+						-- forever and ghost-reopen the menu right after the next real
+						-- close. Disarm them; if the visible menu is key-dead (its
+						-- OnShow deferred, menuNavKeysBound false) re-run the nav
+						-- frame's OnShow to rebind -- idempotent when already bound.
+						SkuCore.openMenuAfterCombat = false
+						SkuCore.openMenuAfterMoving = false
+						local tOpt = _G["OnSkuOptionsMainOption1"]
+						if tOpt and tOpt:IsVisible() == true and SkuOptions.menuNavKeysBound ~= true and tOpt:GetScript("OnShow") then
+							tOpt:GetScript("OnShow")(tOpt)
+						end
 					end
 				end
 			end

@@ -1526,7 +1526,20 @@ function SkuOptions:CreateMainFrame()
 			SkuOptions.Voice:StopOutputEmptyQueue(true, true)
 		end
 
-		if SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true then
+		-- Close-toggle exemption: the OPENMENU key while the menu is visible (or a
+		-- programmatic nil key) is a CLOSE request -- that is what
+		-- SkuOptions:CloseMenu() sends here. The moving defers below exist for
+		-- OPENING only. Deferring a close silently kept the menu open with ALL its
+		-- override bindings armed (ENTER/arrows/letters stayed captured after e.g. a
+		-- waypoint "Auswählen" racing a just-pressed movement key: the dispatcher's
+		-- moving gate reads the CACHED SkuCore.isMoving, this gate reads the LIVE
+		-- movement flags, so the action ran but the close aborted), and the reopen
+		-- ticker (SkuCore/Core.lua ~1349) cannot repair that state because it only
+		-- fires while the menu is closed. Closing is always safe while moving --
+		-- Hide and ClearOverrideBindings are unprotected out of combat.
+		local tIsCloseToggle = self:IsVisible() == true and (a == nil or SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_OPENMENU"))
+
+		if tIsCloseToggle ~= true and (SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true) then
 			SkuCore:SetOpenMenuAfterMoving(true)
 			return
 		end
@@ -1872,7 +1885,10 @@ function SkuOptions:CreateMainFrame()
 			--SkuCore:SetOpenMenuAfterCombat(true)
 			return
 		end
-		if SkuState:IsMoving() == true then
+		-- Same close-toggle exemption as above: never defer a CLOSE on the cached
+		-- moving flag either. Falling through also reaches the flag resets below, so
+		-- a successful close disarms any pending deferred reopen.
+		if tIsCloseToggle ~= true and SkuState:IsMoving() == true then
 			--dprint("SkuCore.isMoving", SkuCore.isMoving)
 			SkuCore:SetOpenMenuAfterMoving(true)
 			return
@@ -2584,7 +2600,10 @@ function SkuOptions:CreateMenuFrame()
 				return
 			end
 		end
-		if SkuState:IsMoving() == true then
+		-- ESCAPE is a close request: never defer it while moving (mirrors the
+		-- close-toggle exemption in the OnSkuOptionsMain toggle handler). A deferred
+		-- ESCAPE left the menu open with all its key bindings still armed.
+		if SkuState:IsMoving() == true and aKey ~= "ESCAPE" then
 			SkuCore:SetOpenMenuAfterMoving(true)
 			return
 		end
@@ -3166,6 +3185,10 @@ function SkuOptions:CreateMenuFrame()
 			SkuOptions.MenuAccessKeysNumbers[SkuOptions.MenuAccessKeysNumbers[x]] = SkuOptions.MenuAccessKeysNumbers[x]
 		end
 		SkuOptions:StartStopBackgroundSound(true)
+		-- Nav keys are now fully bound. The reopen ticker's self-heal
+		-- (SkuCore/Core.lua ~1349) reads this to decide whether a visible menu is
+		-- key-dead (deferred OnShow) and needs this handler re-run.
+		SkuOptions.menuNavKeysBound = true
 
 		--[[
 		SkuOptions:ShowVisualMenu()
@@ -3194,6 +3217,7 @@ function SkuOptions:CreateMenuFrame()
 
 		ClearOverrideBindings(self)
 		ClearOverrideBindings(UIParent)
+		SkuOptions.menuNavKeysBound = false
 		if SkuOptions.tSuppressMenuCloseSound then
 			SkuOptions.tSuppressMenuCloseSound = nil   -- combat handoff: not a real close, no ping
 		else
