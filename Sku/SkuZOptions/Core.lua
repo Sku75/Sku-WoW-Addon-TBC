@@ -3256,6 +3256,15 @@ function SkuOptions:CreateMenuFrame()
 			--_G["TaxiFrame"]:Hide()
 		end
 		if _G["StaticPopup1"]:IsVisible() == true then
+			-- Some dialogs ANSWER themselves on hide: PARTY_INVITE's OnHide calls
+			-- DeclineGroup() unless inviteAccepted is set, and OnHide fires on a plain
+			-- :Hide() too -- so closing the Sku menu used to silently decline group
+			-- invites. Neutralise those before hiding; the prompt is then re-offered
+			-- under Local -> Ausstehend (SkuCore/pendingPrompts.lua). No-op for the
+			-- dialogs that hide harmlessly.
+			if SkuCore.NeutralizePopupHide then
+				SkuCore:NeutralizePopupHide(_G["StaticPopup1"])
+			end
 			_G["StaticPopup1"]:Hide()
 		end
 		if _G["GossipFrame"]:IsVisible() == true then

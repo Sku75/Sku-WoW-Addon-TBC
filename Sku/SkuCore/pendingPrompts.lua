@@ -15,8 +15,10 @@ local L = Sku.L
 -- place Blizzard re-shows DEATH/CONFIRM_SUMMON). The summon itself is still perfectly
 -- valid the whole time.
 --
--- Note StaticPopup1:Hide() is SAFE for the state: a raw :Hide() only reaches
--- StaticPopup_OnHide, never OnCancel, so nothing is declined/released by hiding.
+-- A raw :Hide() never reaches OnCancel, so for most of these nothing is
+-- declined/released by hiding -- the state simply becomes invisible. The ONE exception
+-- is PARTY_INVITE, whose OnHide answers the prompt itself; see the group-invite section
+-- below and SkuCore:NeutralizePopupHide.
 --
 -- SOLUTION. Keep hiding the frame (unchanged), and re-offer the prompt from the
 -- STATE instead. Each descriptor below answers "is this still live?" via a query API
@@ -40,6 +42,11 @@ local L = Sku.L
 -- menu -- which is the only moment it can be seen. While a prompt's popup is visible
 -- the normal frame path already drives the menu.
 ---------------------------------------------------------------------------------------------------------------------------------------
+
+-- Blizzard's StaticPopupTimeoutSec (Blizzard_StaticPopup/StaticPopup.lua) -- the group
+-- invite dialog's own timeout, used as our fallback deadline when the dialog is not
+-- around to read a live .timeleft from. Must be an upvalue of the event handler below.
+local tInviteTimeout = 60
 
 local function tSeconds(aValue)
 	local n = tonumber(aValue)
@@ -91,13 +98,91 @@ SkuCore.pendingReadyCheckInitiator = nil
 local tReadyCheckFrame = CreateFrame("Frame")
 tReadyCheckFrame:RegisterEvent("READY_CHECK")
 tReadyCheckFrame:RegisterEvent("READY_CHECK_FINISHED")
-tReadyCheckFrame:SetScript("OnEvent", function(self, aEvent, aInitiator)
+tReadyCheckFrame:RegisterEvent("PARTY_INVITE_REQUEST")
+tReadyCheckFrame:RegisterEvent("PARTY_INVITE_CANCEL")
+tReadyCheckFrame:SetScript("OnEvent", function(self, aEvent, ...)
 	if aEvent == "READY_CHECK" then
-		SkuCore.pendingReadyCheckInitiator = aInitiator
-	else
+		SkuCore.pendingReadyCheckInitiator = (...)
+	elseif aEvent == "READY_CHECK_FINISHED" then
 		SkuCore.pendingReadyCheckInitiator = nil
+	elseif aEvent == "PARTY_INVITE_REQUEST" then
+		-- args: name, tank, healer, damage, isXRealm, allowMultipleRoles, inviterGuid
+		local tName = (...)
+		SkuCore.pendingGroupInvite = { name = tName, expiresAt = GetTime() + tInviteTimeout }
+		SkuCore.EnsureInviteHideHooks()
+	elseif aEvent == "PARTY_INVITE_CANCEL" then
+		SkuCore.pendingGroupInvite = nil
 	end
 end)
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Group invite: the ONE prompt whose state a plain :Hide() destroys.
+--
+-- StaticPopupDialogs["PARTY_INVITE"].OnHide calls DeclineGroup() unless
+-- dialog.inviteAccepted is set, and OnHide DOES fire on a raw frame:Hide() (XML
+-- <OnHide method="OnHide"/> -> GameDialogMixin:OnHide -> StaticPopup_OnHide ->
+-- dialogInfo.OnHide). So the Sku menu's OnHide (StaticPopup1:Hide()) was silently
+-- DECLINING group invites every time the menu closed for any reason -- while for a
+-- sighted player Escape does nothing at all to that dialog (SetupLockOnDeclineButtonAndEscape
+-- sets hideOnEscape = false), so their invite just sits there.
+--
+-- Fix: set inviteAccepted before we hide, so Blizzard's OnHide skips the decline. The
+-- invite stays live server-side and is re-offered from the cache below. This is a plain
+-- field on an insecure frame -- no taint. OnShow resets inviteAccepted to nil, so a
+-- later genuine show is unaffected.
+--
+-- There is no "is an invite pending" query API on this client, so the cache is our own:
+-- seeded from PARTY_INVITE_REQUEST, dropped on PARTY_INVITE_CANCEL, on any NON-neutralised
+-- hide of the dialog (= the user really answered it, or it timed out), and by its own
+-- deadline. If the deadline is ever wrong, AcceptGroup() simply fails harmlessly.
+---------------------------------------------------------------------------------------------------------------------------------------
+SkuCore.pendingGroupInvite = nil
+
+local tInviteHooksSet = false
+
+-- Called before Sku hides a StaticPopup, so the hide does not answer the prompt for the
+-- user. Keyed by dialog so more destructive-OnHide dialogs can be added later (see the
+-- audit in the commit: LEVEL_GRANT_PROPOSED and the EQUIP_BIND family are the others,
+-- but EQUIP_BIND has no skip-flag and needs a different fix).
+local tNeutralizers = {
+	["PARTY_INVITE"] = function(aDialog)
+		aDialog.inviteAccepted = 1          -- makes Blizzard's OnHide skip DeclineGroup()
+		aDialog.skuPendingNeutralized = true -- tells our own hide hook this was not an answer
+		-- Refine the deadline from the dialog's live countdown when we have it.
+		if type(aDialog.timeleft) == "number" and aDialog.timeleft > 0 and SkuCore.pendingGroupInvite then
+			SkuCore.pendingGroupInvite.expiresAt = GetTime() + aDialog.timeleft
+		end
+	end,
+}
+
+-- PUBLIC: call immediately before hiding a StaticPopup frame. No-op for every dialog
+-- that hides harmlessly (death, summon, resurrect, ...).
+function SkuCore:NeutralizePopupHide(aFrame)
+	if not aFrame or not aFrame.which then return end
+	local tFunc = tNeutralizers[tostring(aFrame.which)]
+	if tFunc then pcall(tFunc, aFrame) end
+end
+
+-- Drop the cache when the dialog is hidden by anything OTHER than our neutralised hide
+-- (accept, decline, timeout, PARTY_INVITE_CANCEL) -- in those cases the invite is really
+-- resolved and must not linger in the menu.
+function SkuCore.EnsureInviteHideHooks()
+	if tInviteHooksSet then return end
+	for i = 1, 4 do
+		local p = _G["StaticPopup" .. i]
+		if p and p.HookScript then
+			p:HookScript("OnHide", function(self)
+				if tostring(self.which or "") ~= "PARTY_INVITE" then return end
+				if self.skuPendingNeutralized then
+					self.skuPendingNeutralized = nil
+				else
+					SkuCore.pendingGroupInvite = nil
+				end
+			end)
+		end
+	end
+	tInviteHooksSet = true
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Descriptors. `active` = still live per the game's own state; `popups` = dialog keys
@@ -136,6 +221,51 @@ SkuCore.pendingPrompts = {
 			  func = function() pcall(function() C_SummonInfo.ConfirmSummon() end) end },
 			{ label = function() return _G.CANCEL or Sku.deEn("Ablehnen", "Decline") end,
 			  func = function() pcall(function() C_SummonInfo.CancelSummon() end) end },
+		},
+	},
+
+	--------------------------------------------------------------------------------
+	-- Group invite. Backed by our own cache (no query API) and only survivable because
+	-- SkuCore:NeutralizePopupHide suppressed the DeclineGroup() in Blizzard's OnHide.
+	--------------------------------------------------------------------------------
+	{
+		id = "groupinvite",
+		popups = { "PARTY_INVITE" },
+		active = function()
+			local t = SkuCore.pendingGroupInvite
+			if type(t) ~= "table" or not t.name then return false end
+			if GetTime() >= (t.expiresAt or 0) then
+				SkuCore.pendingGroupInvite = nil
+				return false
+			end
+			return true
+		end,
+		label = function()
+			local t = SkuCore.pendingGroupInvite or {}
+			local tText = Sku.deEn("Gruppeneinladung", "Group invite")
+			if t.name and t.name ~= "" then
+				tText = tText .. " " .. Sku.deEn("von", "from") .. " " .. t.name
+			end
+			return tText .. tTimeLeftSuffix((t.expiresAt or 0) - GetTime())
+		end,
+		showDialog = function()
+			local t = SkuCore.pendingGroupInvite
+			if not t or not t.name then return end
+			-- Same text Blizzard builds in TBC/UIParent.lua for PARTY_INVITE_REQUEST.
+			local tText = string.format(_G.INVITATION or "%s", t.name)
+			pcall(StaticPopup_Show, "PARTY_INVITE", tText)
+		end,
+		actions = {
+			{ label = function() return _G.ACCEPT or Sku.deEn("Annehmen", "Accept") end,
+			  func = function()
+					tCall("AcceptGroup")
+					SkuCore.pendingGroupInvite = nil
+				end },
+			{ label = function() return _G.DECLINE or Sku.deEn("Ablehnen", "Decline") end,
+			  func = function()
+					tCall("DeclineGroup")
+					SkuCore.pendingGroupInvite = nil
+				end },
 		},
 	},
 
