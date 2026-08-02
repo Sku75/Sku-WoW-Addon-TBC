@@ -436,16 +436,28 @@ SkuGenericMenuItem = {
 				-- parser. Every other focused entry restores the key(s) to the normal
 				-- secure menu button. The key is configurable (SKU_KEY_MENULEFTCLICK,
 				-- default/fallback ENTER); the virtual click button stays "ENTER".
-				local tLeftKeys = SkuOptions:SkuKeyBindsGetKeys("SKU_KEY_MENULEFTCLICK", "ENTER")
-				if self.directClickButton and _G[self.directClickButton] then
-					for _, tKey in ipairs(tLeftKeys) do
-						pcall(SetOverrideBindingClick, _G["SecureOnSkuOptionsMainOption1"], true,
-							tKey, self.directClickButton, "LeftButton")
-					end
-				else
-					for _, tKey in ipairs(tLeftKeys) do
-						pcall(SetOverrideBindingClick, _G["SecureOnSkuOptionsMainOption1"], true,
-							tKey, "SecureOnSkuOptionsMainOption1", "ENTER")
+				--
+				-- ZOMBIE-BINDING GUARD: only (re)arm the click-key bindings while the
+				-- secure button is SHOWN (= menu visually open). OnEnter also runs
+				-- AFTER a select-action that just CLOSED the menu (OnPostSelect
+				-- re-focuses the selectTarget below, ~631) and from async re-pins;
+				-- SetOverrideBindingClick on the then-HIDDEN button resurrected the
+				-- ENTER binding right after OnHide had cleared it -- Enter kept
+				-- clicking the invisible menu (and never reached chat) until the
+				-- next full open/close cycle. While hidden, the button's own
+				-- OnShow/OnHide exclusively own these bindings.
+				if _G["SecureOnSkuOptionsMainOption1"]:IsShown() then
+					local tLeftKeys = SkuOptions:SkuKeyBindsGetKeys("SKU_KEY_MENULEFTCLICK", "ENTER")
+					if self.directClickButton and _G[self.directClickButton] then
+						for _, tKey in ipairs(tLeftKeys) do
+							pcall(SetOverrideBindingClick, _G["SecureOnSkuOptionsMainOption1"], true,
+								tKey, self.directClickButton, "LeftButton")
+						end
+					else
+						for _, tKey in ipairs(tLeftKeys) do
+							pcall(SetOverrideBindingClick, _G["SecureOnSkuOptionsMainOption1"], true,
+								tKey, "SecureOnSkuOptionsMainOption1", "ENTER")
+						end
 					end
 				end
 			end
@@ -628,6 +640,15 @@ SkuGenericMenuItem = {
 			end			
 		end
 
+		-- If the action above CLOSED the menu (e.g. waypoint "Auswählen" ->
+		-- SkuOptions:CloseMenu()), stop here: re-focusing a node now would speak a
+		-- stale entry and (pre-guard) re-armed the secure click bindings on the
+		-- hidden menu -- the zombie-ENTER bug. The headless combat menu is not
+		-- visually open but IS logically open (combatMenuActive), so keep firing
+		-- OnEnter there -- it carries the in-combat announcements.
+		if SkuOptions:IsMenuOpen() ~= true and SkuOptions.combatMenuActive ~= true then
+			return
+		end
 		if SkuOptions.currentMenuPosition.OnEnter then
 			SkuOptions.currentMenuPosition:OnEnter(aEnterFlag)
 		end
