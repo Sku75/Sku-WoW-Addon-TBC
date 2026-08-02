@@ -169,6 +169,13 @@ SkuCoreMovement = {
 			-- autorun does not gate the menu. See the StartAutoRun/StopAutoRun
 			-- hooks and PLAYER_STOPPED_MOVING below.
 			["AutoRun"] = false,
+			-- Engine ground truth "movement in progress", from PLAYER_STARTED_MOVING/
+			-- PLAYER_STOPPED_MOVING. Unlike the key-intent flags above this also covers
+			-- engine-driven walks with no key held -- most importantly the native
+			-- "Interact With Target" (G) auto-walk. STOPPED does NOT fire while pushing
+			-- against an obstacle (see the stale-AutoRun note at PLAYER_STOPPED_MOVING),
+			-- so this stays true while wedged -- exactly what the collision warning needs.
+			["EngineMoving"] = false,
 			},
 		["LastPosition"] = {
 			["x"] = 0,
@@ -583,6 +590,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_STARTED_MOVING()
+   SkuCoreMovement.Flags.EngineMoving = true
    -- Verbose channel only: this fires on every single movement start and used to
    -- be ~half of the whole SkuDebugLog ring, which shrank a capture to a few
    -- minutes. Turn it back on with "/skudebug verbose on" when debugging movement.
@@ -600,6 +608,7 @@ end
 -- so clear the AutoRun flag here as a self-healing safety net regardless of how
 -- autorun ended.
 function SkuCore:PLAYER_STOPPED_MOVING()
+   SkuCoreMovement.Flags.EngineMoving = false
    if SkuCoreMovement.Flags.AutoRun == true then
       SkuCoreMovement.Flags.AutoRun = false
       dprint("PLAYER_STOPPED_MOVING -> cleared stale AutoRun=false")
@@ -1519,7 +1528,22 @@ function SkuCore:OnEnable()
 						local _, worldPosition = C_Map.GetWorldPosFromMapPos(WorldMapFrame:GetMapID(), C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player"))
 						local tNewX, tNewY = worldPosition:GetXY()
 
-						if SkuCoreMovement.Flags.MoveForward == true or SkuCoreMovement.Flags.StrafeLeft == true or SkuCoreMovement.Flags.StrafeRight == true or SkuCoreMovement.Flags.MoveBackward == true or SkuCoreMovement.Flags.AutoRun == true then
+						-- Walk-to-interact arming: the native "Interact With Target" key (G,
+						-- INTERACTTARGET) auto-walks the character via the engine's own movement
+						-- controller -- no movement key is held, so none of the intent flags
+						-- below are set and getting wedged on the way to the target used to stay
+						-- silent. EngineMoving (PLAYER_STARTED_MOVING/PLAYER_STOPPED_MOVING)
+						-- keeps reporting true while pushing against an obstacle, so it arms the
+						-- warning for any engine-driven walk. Excluded: pure turning (turning in
+						-- place is not a collision -- and the flag conflates strafing, which the
+						-- intent flags already cover), falling (a straight-down fall has no
+						-- horizontal displacement and would false-beep), and autofollow (that
+						-- case belongs to the follow-collision block below).
+						local tEngineWalkArm = SkuCoreMovement.Flags.EngineMoving == true
+							and SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing ~= true
+							and IsFalling() ~= true
+							and (not SkuStatus or SkuStatus.follow == 0)
+						if SkuCoreMovement.Flags.MoveForward == true or SkuCoreMovement.Flags.StrafeLeft == true or SkuCoreMovement.Flags.StrafeRight == true or SkuCoreMovement.Flags.MoveBackward == true or SkuCoreMovement.Flags.AutoRun == true or tEngineWalkArm == true then
 							local _, tDistance = SkuCore:Distance(tNewX, tNewY, SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y)
 							local currentSpeed, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed("player")
 							local tMod = currentSpeed / 7
