@@ -390,13 +390,18 @@ function SkuCore:AnyWindowContributorVisible()
 end
 
 -- True when the "Local" menu should be present at root: any tracked interact frame
--- OR any window contributor is currently visible.
+-- OR any window contributor is currently visible, OR a prompt is still pending.
+-- The pending case (SkuCore/pendingPrompts.lua) is what makes an Escape-dismissed
+-- summon / death / resurrect reachable again: its dialog is gone, so no frame test can
+-- see it, but the server-side state is still live. Lazily guarded -- pendingPrompts.lua
+-- loads after this file.
 function SkuCore:HasLocalContent()
 	for x = 1, #SkuCore.interactFramesList do
 		local f = _G[SkuCore.interactFramesList[x]]
 		if f and f.IsVisible and f:IsVisible() then return true end
 	end
-	return SkuCore:AnyWindowContributorVisible()
+	if SkuCore.AnyWindowContributorVisible and SkuCore:AnyWindowContributorVisible() then return true end
+	return SkuCore.HasPendingPrompts ~= nil and SkuCore:HasPendingPrompts() == true
 end
 
 -- Splice the single "Local" root entry in/out to match HasLocalContent(). The root
@@ -3926,11 +3931,24 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 		-- W7: keep the menu alive while a window contributor (mail/AH/social) is open,
 		-- even though those frames are not in interactFramesList. Generalises the old
 		-- AuctionFrame-only special-case to every contributor.
-		if #tOpenFrames > 0 or SkuCore:AnyWindowContributorVisible() then
+		--
+		-- Pending prompts (SkuCore/pendingPrompts.lua) also count here, but ONLY to keep
+		-- the menu alive -- never to open it. This branch does double duty: its else-side
+		-- calls CloseMenu, and its body force-opens/auto-descends via SlashFunc. A pending
+		-- prompt must feed the first and not the second, otherwise a reachable-forever
+		-- prompt would yank the menu open again on every bag update or menu action (there
+		-- are ~35 CheckFrames call sites). tPendingOnly below gates the navigation off.
+		local tHasPending = (SkuCore.HasPendingPrompts ~= nil and SkuCore:HasPendingPrompts() == true)
+		local tPendingOnly = tHasPending
+			and #tOpenFrames == 0
+			and SkuCore:AnyWindowContributorVisible() ~= true
+		if #tOpenFrames > 0 or SkuCore:AnyWindowContributorVisible() or tHasPending then
 			-- Mark the combat capture as WINDOW-backed, so the else-branch below knows to
 			-- release it when the window later closes -- vs a bare Shift-F1/handoff menu
 			-- (no window), which must NOT be released just because no window is open.
-			if InCombatLockdown() then SkuOptions.combatMenuHasWindow = true end
+			-- A pending prompt is not a window: it must not flip this, or answering the
+			-- prompt would hand the keyboard back from a menu the user opened by hand.
+			if InCombatLockdown() and tPendingOnly ~= true then SkuOptions.combatMenuHasWindow = true end
 			local tGossipList = {}
 			for x = 1, #tOpenFrames do
 				--dprint(x, tOpenFrames[x])
@@ -3984,7 +4002,10 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 			end
 
 			local tFlag = false
-			if tBread and aForceLocalRoot ~= true and tFlag == false then
+			-- tPendingOnly: nothing is actually on screen, we are only here to keep a
+			-- pending prompt reachable -> never navigate/open the menu (see above).
+			-- An explicit aForceLocalRoot is a deliberate caller request and still wins.
+			if tBread and aForceLocalRoot ~= true and tFlag == false and tPendingOnly ~= true then
 				SkuOptions:SlashFunc(L["short"]..","..L["Local"])
 				for i, v in pairs(friendlyFrameNames) do
 					if v == tFirstFrame then
@@ -4015,7 +4036,7 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 				end
 			end
 			
-			if tFlag == false or  aForceLocalRoot == true then
+			if (tFlag == false and tPendingOnly ~= true) or  aForceLocalRoot == true then
 				-- Auto-descend one level into the open window so the user lands
 				-- directly on its content (dialogue line, quest text, bag list,
 				-- mail, role/ready check, ...) instead of on the bare window
@@ -4353,8 +4374,11 @@ function SkuCore:ScheduleMenuFlashRecheck()
 		end
 		if SkuCore.gameMenuActive == true then return end
 		if SkuOptions:IsMenuOpen() ~= true then return end
+		-- Pending prompts keep the menu alive here too: without this, browsing
+		-- Local -> Ausstehend with nothing else open would be closed 0.3s after opening.
 		if tAnyOpen ~= true
 			and SkuCore:AnyWindowContributorVisible() ~= true
+			and not (SkuCore.HasPendingPrompts ~= nil and SkuCore:HasPendingPrompts() == true)
 			and not (QuestLogFrame and QuestLogFrame:IsVisible() == true)
 			and not (MailFrame and MailFrame:IsShown() == true) then
 			SkuCore.GossipList = {}

@@ -5749,6 +5749,20 @@ function SkuOptions:MenuBuilderLocal(aParentEntry, aEntryDataTable, aOnActionFun
 		end
 	end
 
+	-- Pending prompts (SkuCore/pendingPrompts.lua): summon / death / resurrect / ready
+	-- check that are STILL live server-side but whose Blizzard dialog is gone -- typically
+	-- because this menu's own OnHide ran StaticPopup1:Hide() when the user pressed Escape.
+	-- Rendered here so they stay reachable under Local; deliberately NOT counted as an
+	-- open window in CheckFrames, so they never force the menu open (see SkuCore/Core.lua).
+	if SkuCore.HasPendingPrompts and SkuCore:HasPendingPrompts() == true then
+		tHasContributor = true
+		SkuMenu:BuildNode(aParentEntry, {
+			kind = "submenu",
+			label = Sku.deEn("Ausstehend", "Pending"),
+			build = function(self) SkuCore.PendingPromptsMenuBuilder(self) end,
+		})
+	end
+
 	if #SkuCore.GossipList < 1 and not tHasContributor then
 		table.insert(SkuCore.GossipList, L["Empty"])
 		SkuCore.GossipList[L["Empty"]] ={

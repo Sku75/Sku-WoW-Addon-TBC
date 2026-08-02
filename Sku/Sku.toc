@@ -52,6 +52,7 @@ SkuCore\data.lua
 SkuCore\gameWorldObjects.lua
 SkuCore\minimapScanner.lua
 SkuCore\LocalMenu.lua
+SkuCore\pendingPrompts.lua
 SkuCore\JunkAndRepair.lua
 SkuCore\UIErrors.lua
 SkuCore\RangeCheck.lua
