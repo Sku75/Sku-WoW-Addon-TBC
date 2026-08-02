@@ -1192,10 +1192,17 @@ function aqCombat:aqCombatOnLogin()
                SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.onlyInterruptibleCasts = false
             end
 
-            --announce interrupts by you/party/raid (default ON; nil-fill also
-            --switches it on once for existing profiles that predate the setting)
-            if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.outputInterrupts == nil then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.outputInterrupts = true
+            --announce interrupts by you/party/raid, split the same way the cast
+            --announcements are: one switch for your current target, one for every
+            --enemy. Both default ON, which reproduces the old single-flag
+            --behaviour (announce every interrupt); the old flag is carried over
+            --once so profiles that had it switched off stay silent.
+            local tOldOutputInterrupts = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.outputInterrupts
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.yourTargetInterrupts == nil then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.yourTargetInterrupts = tOldOutputInterrupts ~= false
+            end
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.allEnemiesInterrupts == nil then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.allEnemiesInterrupts = tOldOutputInterrupts ~= false
             end
 
          
@@ -1687,12 +1694,26 @@ local tInterruptGroupMask = bit.bor(COMBATLOG_OBJECT_AFFILIATION_PARTY, COMBATLO
 function aqCombat:aqCombat_SKU_SPELL_INTERRUPT(aEvent, aEventData)
    local tCurrentSettings = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet]
    if tCurrentSettings.combat.enabled ~= true then return end
-   if tCurrentSettings.combat.hostile.outputInterrupts ~= true then return end
+
+   local tAllEnemies = tCurrentSettings.combat.hostile.allEnemiesInterrupts == true
+   local tYourTarget = tCurrentSettings.combat.hostile.yourTargetInterrupts == true
+   if tAllEnemies == false and tYourTarget == false then return end
+
    local tSourceFlags = aEventData[6]
    if not tSourceFlags then return end
-   if bit.band(tSourceFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) > 0 then
-      SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Du hast unterbrochen", "You interrupted"), false, true, 0.2, true)
-   elseif bit.band(tSourceFlags, tInterruptGroupMask) > 0 then
+   local tByYou = bit.band(tSourceFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) > 0
+   if tByYou == false and bit.band(tSourceFlags, tInterruptGroupMask) == 0 then return end
+
+   --with the global switch off, only the unit whose cast broke being your
+   --current target gets announced (destGUID = who was interrupted)
+   if tAllEnemies == false then
+      local tDestGUID = aEventData[8]
+      if not tDestGUID or tDestGUID ~= UnitGUID("target") then return end
+   end
+
+   if tByYou == true then
+      SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Du hast den Zauber unterbrochen", "You spell canceled"), false, true, 0.2, true)
+   else
       SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Zauber unterbrochen", "Spell interrupted"), false, true, 0.2, true)
    end
 end
@@ -2483,12 +2504,12 @@ function aqCombat:aqCombatMenuBuilder()
          end
 
          ---
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unterbrechungen ansagen"]}, SkuGenericMenuItem)
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unterbrechungen bei deinem Ziel ansagen"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
          tNewMenuEntry.sorting = true
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputInterrupts == true then
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetInterrupts == true then
                return L["On"]
             else
                return L["Off"]
@@ -2496,9 +2517,33 @@ function aqCombat:aqCombatMenuBuilder()
          end
          tNewMenuEntry.OnAction = function(self, aValue, aName)
             if aName == L["Off"] then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputInterrupts = false
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetInterrupts = false
             elseif aName == L["On"] then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.outputInterrupts = true
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.yourTargetInterrupts = true
+            end
+         end
+         tNewMenuEntry.BuildChildren = function(self)
+            SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+            SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
+         end
+
+         ---
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unterbrechungen bei allen Gegnern ansagen"]}, SkuGenericMenuItem)
+         tNewMenuEntry.dynamic = true
+         tNewMenuEntry.sorting = true
+         tNewMenuEntry.isSelect = true
+         tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesInterrupts == true then
+               return L["On"]
+            else
+               return L["Off"]
+            end
+         end
+         tNewMenuEntry.OnAction = function(self, aValue, aName)
+            if aName == L["Off"] then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesInterrupts = false
+            elseif aName == L["On"] then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].combat.hostile.allEnemiesInterrupts = true
             end
          end
          tNewMenuEntry.BuildChildren = function(self)
