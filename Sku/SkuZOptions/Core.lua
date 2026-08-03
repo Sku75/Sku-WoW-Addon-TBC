@@ -1264,10 +1264,19 @@ function SkuOptions:UpdateSoftTargetLockRule()
 	if (SkuSettings:Sub("SkuOptions").softTargeting.matchLocked or 0) ~= 2 then
 		return
 	end
-	local tAttackable = UnitExists("target") == true
-		and UnitCanAttack("player", "target") == true
-		and UnitIsDead("target") ~= true
-	tSetSoftTargetCVar("SoftTargetWithLocked", tAttackable and 0 or 2)
+	-- 0 is the RESTING state, including with no target at all. The CVar only takes
+	-- effect "while player has a locked target", so writing 0 while nothing is
+	-- targeted suppresses nothing -- and it pre-arms the case the CVars cannot
+	-- handle otherwise: something jumps you while you have no target, you tab to it
+	-- mid-fight, and the write that would have suppressed soft targeting is blocked.
+	-- With 0 already resting there, the client suppresses the moment you tab.
+	-- Relax to 2 only for the one state that genuinely needs soft targeting WITH a
+	-- target locked: a target you cannot attack -- a corpse you are looting, an NPC
+	-- you are talking to, or a player you are following (the follow case needs the
+	-- hard target and must keep soft targeting alive while walking).
+	local tNonAttackableTarget = UnitExists("target") == true
+		and (UnitCanAttack("player", "target") ~= true or UnitIsDead("target") == true)
+	tSetSoftTargetCVar("SoftTargetWithLocked", tNonAttackableTarget and 2 or 0)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

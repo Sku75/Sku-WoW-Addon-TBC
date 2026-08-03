@@ -131,15 +131,27 @@ workstreams (noted) — fold them in there when that workstream runs.
   `SoftTargetInteract` at 0, the second never captured the CVar values at all. Read
   `GetCVar` at the moment of any future test.)
   Fix: option 1 → `WithLocked 0` / `MatchLocked 1`, option 0 → `WithLocked 2` /
-  `MatchLocked 0`, and option 2 flips `WithLocked` between 0 and 2 from
+  `MatchLocked 0`, and option 2 drives `WithLocked` from
   `SkuOptions:UpdateSoftTargetLockRule()`, called only on `PLAYER_TARGET_CHANGED` —
   one write per target change, no ticker. The 4 Hz poll and `interactTempDisabled`
   are gone. Writes are verified by read-back and replayed at `PLAYER_REGEN_ENABLED`
   if the client refused them in combat.
-  - Known edge: killing your target leaves `WithLocked` at 0 until you next change
-    target, so soft targeting stays suppressed for that moment. The interact key
-    still acts on the corpse you have targeted, so looting works; revisit only if
-    it annoys in practice.
+  - **0 is the resting state, 2 the exception.** Since the CVar only acts "while
+    player has a locked target", writing 0 with NO target suppresses nothing — and
+    it pre-arms the case CVars otherwise cannot reach: something jumps you while you
+    have no target, you tab to it mid-fight, and the suppressing write is blocked.
+    Resting at 0 means the client suppresses the moment you tab. So 2 is written
+    only for a NON-attackable locked target (corpse being looted, NPC being talked
+    to, player being followed — the follow case needs a hard target and must keep
+    soft targeting alive). ★UNVERIFIED premise: that `WithLocked 0` with no target
+    really is inert. Test before trusting it — reading semantics off the help text
+    already produced the wrong answer once (value 1).
+  - Remaining hole: entering combat while holding a non-attackable target leaves
+    `WithLocked` at 2 frozen for that fight. Needs an in-combat write, so unfixable
+    from an addon.
+  - Static option 1 is the fully combat-proof alternative (never written, so never
+    blocked), rejected as a default because it kills soft targeting while following
+    a player or standing on a corpse.
 - **AddOn settings menu — shipped, could be improved.** Addons →
   "AddOn-Einstellungen" (SkuCore/addonOptions.lua) renders other addons'
   AceConfig settings (Questie, ECS, AtlasLoot via load entry) plus a DBM
