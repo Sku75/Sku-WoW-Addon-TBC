@@ -78,6 +78,7 @@ SkuCore\equipmentSets.lua
 SkuCore\combatMenuKeys.lua
 SkuCore\updateCheck.lua
 SkuCore\companionPacks.lua
+SkuCore\taxi.lua
 
 
 _psC_preSkuDB.lua

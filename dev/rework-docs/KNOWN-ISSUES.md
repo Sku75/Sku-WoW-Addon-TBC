@@ -45,6 +45,25 @@ investigated.
     the "source OR dest names a tracked GUID refreshes lastUpdate" rule from
     `5dec1f8` has no dead check.
   - Status: open.
+- **AH multi-buy reports "interner Auktionsfehler" instead of the real reason.**
+  - Symptom: buying several stacks in a row (multi-buy) sometimes announces a
+    generic internal auction error, where the actual cause is a normal,
+    explainable condition (auction already gone / outbid / bought by someone
+    else / not enough money). The user gets no actionable information.
+  - Repro: multi-buy a popular commodity where stacks get sniped between the
+    scan and the buy; listen to the failure announcement.
+  - Suspected area: `SkuCore/auctionHouse.lua` — the buy result/error path.
+    Likely we fall through to a catch-all message instead of mapping the
+    Blizzard error events (`UI_ERROR_MESSAGE` / `AUCTION_HOUSE_*` failure
+    events, `ERR_AUCTION_*` globals) to a specific spoken reason.
+  - Status: open.
+- **"Zurückkaufen" (buy-back) menu is broken.**
+  - Symptom: the vendor buy-back menu does not work (items not listed /
+    selection does nothing — exact failure to be captured).
+  - Repro: sell an item to a vendor, open the buy-back menu, try to buy it back.
+  - Suspected area: vendor/merchant menu code (buy-back list build + action).
+  - Status: open — needs a `/wdsku` capture plus a `SkuDebugLog` trace at the
+    vendor to pin down whether the list build or the action path fails.
 - **Some default keybinds are not bound for a brand-new user.**
   - Symptom: on a fresh install (no saved bindings) some keys Sku is supposed to
     bind by default come up unbound.
@@ -172,6 +191,158 @@ workstreams (noted) — fold them in there when that workstream runs.
   defaults for the chat settings (which channels are read, voices, etc.).
   Part of / overlaps the general "rework the default settings" entry above —
   fold in when that runs, but chat is called out as a priority.
+- **PLANNED: Own sound for the LAST waypoint of a route + its own option.**
+  Give the final waypoint of a route a distinct sound so the user hears
+  "this is the end of the route" instead of just another waypoint beacon. Add a
+  third, individually configurable sound setting next to the existing big-beacon
+  and small-beacon sound options (same option shape/placement, so it is set the
+  same way). Area: `SkuNav/` (route/waypoint beacon selection) plus the beacon
+  sound options in `SkuNav/Options.lua`.
+- **WORKING 2026-08-04 (announcements + early landing both confirmed in-game):
+  let blind players cancel a flight when the cancel button appears.**
+  On a taxi route WoW can offer a "cancel flight" action; today that is a purely
+  visual button, so it is unusable. Wanted: an announcement when cancelling
+  becomes possible (i.e. when passing a flight master mid-route), plus a Sku
+  keybind that triggers the cancel. Area: taxi/flight handling (new), keybind in
+  `SkuZOptions/SkuKeyBinds.lua`.
+  - API investigated 2026-08-03 against the live 2.5.6 client — all pieces
+    exist: `TaxiRequestEarlyLanding()` is exported by `WowClassic.exe`, as are
+    `IsPossessBarVisible()`, `GetPossessInfo()`, `UPDATE_POSSESS_BAR` and
+    `CanExitVehicle()`.
+  - The visual button is the **possess bar's cancel slot**: `PossessActionBar`
+    (`Blizzard_ActionBar/Shared/PossessActionBar.lua`, in the TBC TOC) shows
+    when `IsPossessBarVisible()` is true; slot `POSSESS_CANCEL_SLOT = 2` (global
+    frame name `PossessButton2`) calls `TaxiRequestEarlyLanding()` on click when
+    `UnitOnTaxi("player")`. The retail-style `MainMenuBarVehicleLeaveButton`
+    (`VehicleLeaveButton.lua`, also in the TBC TOC) has the same taxi branch and
+    is gated on `CanExitVehicle()` — whichever of the two the client actually
+    shows, both funnel into the same API call.
+  - **State gate — flightmaster taxi ONLY, never a vehicle.** `UnitOnTaxi("player")`
+    is exactly that discriminator, and it is the same test Blizzard's own code
+    uses to pick the taxi branch over `VehicleExit()`: on a flightmaster flight
+    it is true; self-flying and flying vehicles keep player control and leave it
+    false. Sku already relies on this narrowing in
+    `SkuCore/Core.lua:2166` (auto-cancel route navigation on taxi start), and
+    already announces `taxi;started` / `taxi;ended` from
+    `PLAYER_CONTROL_LOST` + `PLAYER_MOUNT_DISPLAY_CHANGED` — so the flight state
+    is tracked already; only the cancel offer is missing. The keybind handler
+    must re-check `UnitOnTaxi("player")` at press time and do nothing otherwise
+    (never fall through to `VehicleExit()`).
+  - Detection signal for the announcement: `UPDATE_POSSESS_BAR` (that is the
+    only event driving `PossessActionBar:Update()`), then check
+    `UnitOnTaxi("player") and IsPossessBarVisible()` and that
+    `select(3, GetPossessInfo(2))` (enabled) is truthy. `TAXI_NODE_STATUS_CHANGED`
+    also exists in the client and may fire alongside — cheap to log both.
+  - Action path: call `TaxiRequestEarlyLanding()` from the keybind's handler.
+    Not a known protected function, and a keybind handler is a hardware event
+    anyway. If it turns out to be taint-blocked, the escape hatch is the
+    existing `directClickButton` mechanism (`SkuZOptions/templates.lua:428`)
+    bound to `PossessButton2`.
+  - Open question: after a successful request the button disables itself
+    (Blizzard's own click handler does that locally); confirm what the client
+    sends back so the announcement can say "landing requested" and not re-offer.
+  - **★FIRST LIVE FLIGHTS 2026-08-03 — three findings and one blocker.**
+    1. *There is no "offer appears" moment.* `CanExitVehicle()` is true from
+       takeoff to landing (it means "you are on a taxi"), and the possess bar
+       never appeared at all (`possessBarVisible=false`, `GetPossessInfo(2)`
+       enabled `nil` for whole flights). The v1 design watched for an edge that
+       does not exist — that is why it announced at arbitrary moments.
+    2. *"Nearest flight point" was the wrong question.* It picked Brackenwall,
+       a **Horde** node 1455 yards away, for an Alliance player who cannot land
+       there: `C_TaxiMap.GetTaxiNodesForMap` returns all ~40 continent nodes
+       regardless of faction or discovery.
+    3. *The route is knowable.* `hooksecurefunc("TakeTaxiNode")` fires while the
+       taxi map is still open, i.e. while `GetNumRoutes` / `TaxiGetNodeSlot` /
+       `TaxiNodeName` still work — so the ordered stop list can be captured at
+       takeoff. Every stop on it is by definition usable by that character,
+       which makes the faction filter moot and turns "where would I land" from
+       a geometry guess into the next unpassed stop.
+    4. **★RESOLVED 2026-08-03 by the third flight — we were reading the wrong
+       signal, the feature is real.** `TAXI_CANCEL` is `"Flug unterbrechen"` on
+       this client (so the early-landing UI *did* ship for TBC), and
+       `PossessButton2:IsShown()` was **true** at a moment when
+       `IsPossessBarVisible()` returned **false**. The API predicate and the
+       frame disagree; the frame is what a sighted player sees and clicks, so
+       the frame wins. Sighted players on this realm confirm they get the button
+       and can request the landing. v3 keys off `PossessButton2:IsVisible()` /
+       `MainMenuBarVehicleLeaveButton:IsVisible()` (IsVisible, not IsShown — a
+       shown button under a hidden bar is not clickable) and logs the whole
+       signal set on every CHANGE while airborne, so the next flight shows
+       exactly when the offer opens and which event coincided with it.
+       Superseded hypothesis, kept so it is not re-derived:
+       `TaxiRequestEarlyLanding()` was called four times across two flights. It
+       exists and is **not** taint-protected (calls ran clean; `SkuErrorLog` has
+       no `addon_action_blocked` anywhere near them) — and the flight continued
+       every time, across zone borders, to the original destination. Working
+       hypothesis was "the client exports the function but the server ignores
+       it". Much likelier reading now: the requests were sent at arbitrary
+       moments, outside the window in which the offer is actually up, and were
+       dropped for that reason. `UI_ERROR_MESSAGE` is captured while airborne in
+       case the server does answer a refusal.
+  - Shipped as `SkuCore/taxi.lua` (module `SkuCore.Taxi`, toggleable as
+    "Taxiflug"), keybind `SKU_KEY_TAXICANCEL` (default `CTRL-SHIFT-E`, in the
+    "Navigation und Wegpunkte" keybind group), dispatched from the
+    `SkuCoreControlOption1` OnClick in `SkuCore/Core.lua` like every other Sku
+    action key. Deliberately loud logging under the `taxi:` prefix — every raw
+    event, all three availability inputs, and the node resolution with
+    runner-ups. Read one real flight with
+    `py -3 dev/rework-docs/_dbgtail.py 400 taxi:` and then cut this down.
+    `/skutaxi` dumps the same state on demand.
+  - v2 (2026-08-03, also UNTESTED): route capture via the `TakeTaxiNode` hook,
+    announcement is now "Nächster Landepunkt &lt;X&gt;" once per hop as the route
+    cursor advances (250 yd pass radius — the taxi flies directly over its nodes,
+    a takeoff point logs distance 0), faction + `isUndiscovered` filtering on the
+    no-route fallback, and the re-arm bug fixed (v1 froze the announced node for
+    the rest of the flight after one request, so every later key press reported a
+    stale target).
+  - **CONFIRMED WORKING 2026-08-04.** Announcements are right and a keypress
+    landed the player at the announced flight point instead of carrying on one
+    stop further. `TAXI_CANCEL_DESCRIPTION` on this client is "Lässt Euch am
+    nächsten Flugpunkt landen" — the request always lands you at the NEXT node,
+    which is exactly what the route cursor names. The real affordance is
+    `MainMenuBarVehicleLeaveButton` (`leaveVisible=true`); `PossessButton2` has
+    its shown flag set but is never actually visible, so the `IsVisible()` choice
+    was load-bearing. That button is visible for the whole flight, so there is
+    still no offer *window* — the announcement is driven by the target changing.
+  - Three flaws the confirming flight exposed, all fixed (untested):
+    1. **The captured route was being thrown away microseconds after capture.**
+       Takeoff order is `TakeTaxiNode` (route captured) →
+       `PLAYER_CONTROL_LOST` (**`UnitOnTaxi` still false**) →
+       `PLAYER_MOUNT_DISPLAY_CHANGED` (true). The middle event took the "off
+       taxi" branch and ran the teardown, so every flight silently fell back to
+       nearest-node guessing (`route nil`, `via nearest`, `index nil/nil` in the
+       log) even though the capture itself worked perfectly. `StopWatch` now
+       only drops the route if it was genuinely watching a flight.
+    2. **The fallback named the takeoff node** (Gadgetzan at 2 yards) — "you
+       could land where you are leaving". The origin node is now noted on the
+       first scan (within 150 yd) and excluded.
+    3. **Final-leg noise:** on the last hop, "early landing at X" means "you
+       could arrive", and on a direct flight that would fire for every taxi ever
+       taken. Suppressed; the keybind still reports it on demand.
+  - **One announcement was not enough (fixed 2026-08-04, untested).** With the
+    route finally surviving, the first route-mode flight named Thalanaar exactly
+    once — at takeoff, **4115 yards out**. Correct and useless: by the time the
+    player was actually near it, i.e. the moment you decide whether to get off,
+    nothing was said, and the final-leg rule then silenced the rest of the
+    flight. What had felt right in the accidental fallback runs was purely
+    proximity-driven (it spoke at 783 yd; the request two seconds later worked).
+    So there are now TWO announcements per leg, answering different questions:
+    "Nächster Flugpunkt X" when the target changes (takeoff / after each hop,
+    any distance, route mode only) and "Vorzeitige Landung möglich bei X" at
+    `APPROACH_DIST` = 800 yd, ~25 seconds of lead. The fallback stays silent
+    until the proximity one, since a nearest-node guess means nothing at range.
+  - Watch on the next flight: the route stop names come from `TaxiNodeName` while
+    the positions come from `C_TaxiMap` — if those two ever spell a node
+    differently the cursor would never advance and the first stop would be
+    announced forever. There is an exact-then-normalized match with a one-shot
+    log line for each path (`stop name matched exactly` vs `matched only after
+    normalizing`), so one flight says which is in play.
+- **PLANNED: Different sounds for menu-opening and tooltip-reading.** Both
+  currently reuse the follow/unfollow sound, which is confusing — the same cue
+  means two unrelated things. Pick distinct sounds for (a) menu opening and
+  (b) tooltip reading. Area: the shared sound-id constants used by the menu /
+  tooltip paths (see the shared-sound-assets notes: menu open = 88, close = 89,
+  nav click = 811).
 - **PLANNED: Escape-menu entries act on RIGHT arrow, not Enter.** The entries
   of the escape (game) menu should react to arrow RIGHT instead of Enter, so
   they behave like the rest of the Sku menu tree. Area: the game-menu mirror

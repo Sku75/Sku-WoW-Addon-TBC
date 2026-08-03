@@ -1754,6 +1754,12 @@ function SkuCore:OnEnable()
 			if SkuCore.VisualAids and SkuCore.VisualAids.VisualAidsMouseFinderFlash then SkuCore.VisualAids:VisualAidsMouseFinderFlash() end
 		end
 
+		-- Early landing on a flightmaster taxi flight. The handler re-checks
+		-- UnitOnTaxi itself, so this never touches a vehicle. See SkuCore/taxi.lua.
+		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_TAXICANCEL") then
+			if SkuCore.Taxi and SkuCore.Taxi.RequestEarlyLanding then SkuCore.Taxi:RequestEarlyLanding() end
+		end
+
 		
 		if SkuOptions:SkuKeyBindsMatchKey(aKey, "SKU_KEY_SCANCONTINUE") then
 			dprint("SKU_KEY_SCANCONTINUE", L["SKU_KEY_SCANCONTINUE"])
@@ -1901,6 +1907,15 @@ function SkuCore:OnEnable()
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANWIDE"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANWIDE"].key)
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANNARROW"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANNARROW"].key)
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key)
+		-- Taxi early landing: guarded because this binding is new (a profile saved
+		-- before it existed has no entry until SkuKeyBindsUpdate fills the defaults in).
+		if SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TAXICANCEL"] and SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TAXICANCEL"].key ~= "" then
+			SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TAXICANCEL"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TAXICANCEL"].key)
+			local tTaxiKey2 = SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TAXICANCEL"].key2
+			if tTaxiKey2 and tTaxiKey2 ~= "" then
+				SetOverrideBindingClick(tFrame, true, tTaxiKey2, "SkuCoreControlOption1", tTaxiKey2)
+			end
+		end
 		for x = 1, 6 do
 			SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key)
 		end

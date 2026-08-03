@@ -12,6 +12,8 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_MOUSEFINDER"] = {key = "", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_MMSCANWIDE"] = {key = "CTRL-SHIFT-F", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_MMSCANNARROW"] = {key = "CTRL-SHIFT-R", object = "SkuCoreControlOption1", script = "OnHide",},
+   -- Request an early landing on a flightmaster taxi flight (SkuCore/taxi.lua).
+   ["SKU_KEY_TAXICANCEL"] = {key = "CTRL-SHIFT-E", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_STARTRRFOLLOW"] = {key = "CTRL-SHIFT-Z", object = "SkuNav", func = "CreateSkuNavMain",},
    ["SKU_KEY_MOVETONEXTWP"] = {key = "CTRL-SHIFT-W", object = "SkuNav", func = "CreateSkuNavMain",},
    ["SKU_KEY_MOVETOPREVWP"] = {key = "CTRL-SHIFT-S", object = "SkuNav", func = "CreateSkuNavMain",},
