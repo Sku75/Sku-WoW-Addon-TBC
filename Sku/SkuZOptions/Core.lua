@@ -1212,37 +1212,105 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Idempotenter CVar-Schreiber: schreibt (und loggt) nur bei echter Aenderung
--- gegenueber dem zuletzt angewandten Wert. UpdateSoftTargetingSettings wird vom
--- 0,25-s-Ticker in SkuMob 4x/s mit "all" aufgerufen, um SoftTargetInteract an
--- den aktuellen Zielzustand (interactTempDisabled) anzugleichen; ohne Cache
--- schrieb es dabei ~9 CVars pro Tick neu und flutete das Log. Jetzt No-Op,
--- solange sich nichts aendert; bei Aenderung genau eine "from->to"-Zeile.
+-- gegenueber dem zuletzt angewandten Wert -- ohne Cache schrieb ein Aufruf ~9 CVars
+-- neu und flutete das Log. Jetzt No-Op, solange sich nichts aendert; bei Aenderung
+-- genau eine "from->to"-Zeile. [42.11] Der 0,25-s-Ticker in SkuMob, der das 4x/s
+-- ausloeste, ist weg (die Option laeuft jetzt clientseitig ueber die CVars).
 local tSoftTargetCVarCache = {}
+
+-- Values come back from GetCVar as strings and the client may normalise them
+-- (an integer written to a float CVar reads back as "15.000000"), so compare
+-- numerically whenever both sides look like numbers.
+local function tCVarEquals(aA, aB)
+	if aA == aB then return true end
+	local tA, tB = tonumber(aA), tonumber(aB)
+	return tA ~= nil and tA == tB
+end
+
 local function tSetSoftTargetCVar(aName, aValue)
 	aValue = tostring(aValue)
 	if tSoftTargetCVarCache[aName] == aValue then return end
 	local tOld = tSoftTargetCVarCache[aName]
-	SetCVar(aName, aValue)
-	tSoftTargetCVarCache[aName] = aValue
-	dprint("softTarget", aName, { from = tOld, to = aValue })
+	-- [42.11] Verify instead of assume. A CVar the client refuses to write does
+	-- NOT raise a Lua error, it simply does not take -- so read it back and only
+	-- remember the value as applied when it really landed. A refused write drops out
+	-- of the cache and re-arms the post-combat replay, and it is what proved the
+	-- CVars are protected in combat ("softTarget refused ... {want=3, got=0}").
+	pcall(SetCVar, aName, aValue)
+	local tNow = GetCVar(aName)
+	if tCVarEquals(tNow, aValue) then
+		tSoftTargetCVarCache[aName] = aValue
+		dprint("softTarget", aName, { from = tOld, to = aValue })
+	else
+		tSoftTargetCVarCache[aName] = nil
+		SkuOptions.tSoftTargetDeferred = SkuOptions.tSoftTargetDeferred or "all"
+		dprint("softTarget refused", aName, { want = aValue, got = tNow })
+	end
 end
 
+-- [42.11] Tested in-game 2026-08-03, out of combat, corpse + live mob in range,
+-- interact key pressed with the mob hard-targeted: SoftTargetWithLocked 0 acts on
+-- the mob and ignores the corpse; 1 and 2 both loot the corpse. So only 0
+-- suppresses soft targeting while a hard target is locked, and the CVar has NO
+-- "only when the locked target is attackable" mode -- 1 is not the middle value it
+-- looked like.
+--
+-- That is all option 1 needs. Option 2 ("no ATTACKABLE hard target locked") is the
+-- same rule applied conditionally, so it flips the CVar between 0 and 2 as the
+-- target changes: one write when you change target, no polling. A corpse or a
+-- friendly NPC is not attackable, so targeting one restores soft targeting and you
+-- can still soft-target objects around it.
+function SkuOptions:UpdateSoftTargetLockRule()
+	if (SkuSettings:Sub("SkuOptions").softTargeting.matchLocked or 0) ~= 2 then
+		return
+	end
+	local tAttackable = UnitExists("target") == true
+		and UnitCanAttack("player", "target") == true
+		and UnitIsDead("target") ~= true
+	tSetSoftTargetCVar("SoftTargetWithLocked", tAttackable and 0 or 2)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:UpdateSoftTargetingSettings(aKey)
-	-- [41.05] SoftTarget-CVars sind im Kampf von Blizzard gesperrt. Schreibzugriffe im
-	-- Kampf erzeugen sonst ADDON_ACTION_BLOCKED und werden ohnehin ignoriert. Daher im
-	-- Kampf ueberspringen (Werte sind eingefroren) und nach Kampfende einmal nachholen.
+	-- [42.11] The SoftTarget CVars ARE protected in combat, confirmed: an in-combat
+	-- write logs "softTarget refused SoftTargetInteract {want=3, got=0}" and raises
+	-- ADDON_ACTION_BLOCKED on SetCVar(). (A /run probe appeared to succeed only
+	-- because the CVar already held the value being written, so the read-back
+	-- matched.) Nothing here needs to write during a fight any more -- the whole
+	-- "hard target beats soft target" behaviour is expressed by the CVars below and
+	-- enforced by the client -- so defer in combat and replay once it ends, which
+	-- keeps the blocked-action noise out of the error log.
 	if InCombatLockdown() then
 		SkuOptions.tSoftTargetDeferred = aKey or "all"
 		return
 	end
 	SkuOptions.tSoftTargetDeferred = nil
 	tSetSoftTargetCVar("SoftTargetForce", SkuSettings:Sub("SkuOptions").softTargeting.force)
-	-- [41.05] Bugfix "Hardtarget vor Softtarget": beide Zweige setzten frueher
-	-- SoftTargetMatchLocked = 0, die Option hatte also nie Wirkung. Jetzt bei
-	-- aktiviertem matchLocked = 1 (Softtarget folgt dem Hardtarget -> Hardtarget zaehlt).
-	if SkuSettings:Sub("SkuOptions").softTargeting.matchLocked > 0 then
+
+	-- [42.11] "Hardtarget vor Softtarget" is now enforced by the client instead of
+	-- emulated in Lua. The option (SofttargetingMatchLockedValues) means:
+	--   0 = soft targeting always allowed
+	--   1 = no soft targeting while ANY hard target is locked
+	--   2 = no soft targeting while an ATTACKABLE hard target is locked
+	-- Two hidden-but-live CVars cover this on 2.5.6 (help text from the client
+	-- binary; neither is exposed in Blizzard's own settings UI):
+	--   SoftTargetWithLocked  "Allows soft target selection while player has a
+	--                          locked target. 2 = always do soft targeting"
+	--   SoftTargetMatchLocked "Match appropriate soft target to locked target.
+	--                          1 = hard locked target only, 2 = for targets you attack"
+	-- History: BOTH branches of the old if/else wrote SoftTargetMatchLocked = 0
+	-- (identical dead code in v32.31 and v41.04), so this option never reached the
+	-- client at all; 41.05 made it write 1 but collapsed option 2 into option 1, and
+	-- SoftTargetWithLocked was never written by any Sku version.
+	local tMatchLocked = SkuSettings:Sub("SkuOptions").softTargeting.matchLocked or 0
+	if tMatchLocked == 1 then
+		tSetSoftTargetCVar("SoftTargetWithLocked", 0)
 		tSetSoftTargetCVar("SoftTargetMatchLocked", 1)
+	elseif tMatchLocked == 2 then
+		SkuOptions:UpdateSoftTargetLockRule()
+		tSetSoftTargetCVar("SoftTargetMatchLocked", 2)
 	else
+		tSetSoftTargetCVar("SoftTargetWithLocked", 2)
 		tSetSoftTargetCVar("SoftTargetMatchLocked", 0)
 	end
 
@@ -1281,7 +1349,7 @@ function SkuOptions:UpdateSoftTargetingSettings(aKey)
 	end
 
 	if aKey == "SKU_KEY_ENABLESOFTTARGETINGINTERACT" or aKey == "all" then
-		if SkuSettings:Sub("SkuOptions").softTargeting.interact.enabled == true and not SkuMob.interactTempDisabled then
+		if SkuSettings:Sub("SkuOptions").softTargeting.interact.enabled == true then
 			tSetSoftTargetCVar("SoftTargetInteract", 3)
 		else
 			tSetSoftTargetCVar("SoftTargetInteract", 0)
@@ -1298,7 +1366,7 @@ function SkuOptions:UpdateSoftTargetingSettings(aKey)
 	end
 end
 
--- [41.05] Nach Kampfende die im Kampf uebersprungenen SoftTarget-CVars einmal nachziehen.
+-- [42.11] Combat end: replay anything the client refused mid-fight, exactly once.
 local tSoftTargetRegenFrame = CreateFrame("Frame")
 tSoftTargetRegenFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 tSoftTargetRegenFrame:SetScript("OnEvent", function()
@@ -4135,7 +4203,6 @@ function SkuOptions:PLAYER_ENTERING_WORLD(...)
 			SkuOptions.db.global["SkuAuras"] = {}
 		end
 
-		SkuMob.interactTempDisabled = nil
 		SkuMob:PLAYER_TARGET_CHANGED()
 		SkuOptions:UpdateSoftTargetingSettings("all")
 

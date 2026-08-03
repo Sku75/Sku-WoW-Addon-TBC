@@ -128,22 +128,7 @@ function SkuMob:OnEnable()
 	SkuMob.controlFrame = f
 	f:SetScript("OnUpdate", function(self, time)
 		ttime = ttime + time 
-		if ttime > 0.25 then 
-			if SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled == true then
-				if UnitExists("target") == true then
-					if SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 1 or (SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 2 and UnitCanAttack("player", "target") == true) then
-						SkuMob.interactTempDisabled = true
-						SkuOptions:UpdateSoftTargetingSettings("all")
-					else
-						SkuMob.interactTempDisabled = nil
-						SkuOptions:UpdateSoftTargetingSettings("all")
-					end
-				else
-					SkuMob.interactTempDisabled = nil
-					SkuOptions:UpdateSoftTargetingSettings("all")
-				end
-			end
-
+		if ttime > 0.25 then
 			SkuMob:OutputTargetHealth()
 			
 			ttime = 0 
@@ -343,21 +328,11 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		if aUnitId == "target" then
 			SkuCore.RangeCheck:DoRangeCheck(true, nil, "target")
 
-			if SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled == true then
-				if UnitExists("target") == true then
-
-					if SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 1 or (SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 2 and UnitCanAttack("player", "target") == true) then
-						SkuMob.interactTempDisabled = true
-						SkuOptions:UpdateSoftTargetingSettings("all")
-					else
-						SkuMob.interactTempDisabled = nil
-						SkuOptions:UpdateSoftTargetingSettings("all")
-					end
-				else
-					SkuMob.interactTempDisabled = nil
-					SkuOptions:UpdateSoftTargetingSettings("all")
-				end
-			end
+			-- [42.11] Option "no interact soft targeting while an ATTACKABLE hard
+			-- target is locked" is a property of WHAT is targeted, so the rule is
+			-- re-evaluated here and nowhere else -- no ticker, no polling. No-op
+			-- unless the wanted CVar value actually changed.
+			SkuOptions:UpdateSoftTargetLockRule()
 		end
 
 		if not UnitExists(aUnitId) and aUnitId ~= "softinteract" then
