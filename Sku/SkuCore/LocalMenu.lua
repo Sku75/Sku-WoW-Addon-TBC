@@ -1166,7 +1166,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 
 			local tFriendlyName = L["Bag"] .. bagId .. "-" .. slotId
 			local tItemId = GetContainerItemID(bagId, slotId)
-			local _, tCount = GetContainerItemInfo(bagId, slotId)
+			local _, tCount, tLocked = GetContainerItemInfo(bagId, slotId)
 			local isEmpty = (tItemId == nil)
 
 			local bagItemButton = {
@@ -1226,6 +1226,18 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 			bagItemButton.textFirstLine = (#tBagResultsByBag[bagId].childs + 1) .. " " .. bagItemButton.textFirstLine
 			if not isEmpty and tCount and tCount > 1 then
 				bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. tCount
+			end
+
+			-- An item put into the OPEN trade window does NOT leave the bag: the client
+			-- only flags the slot locked (Blizzard's own ContainerFrame reacts to
+			-- ITEM_LOCK_CHANGED by merely desaturating the icon; the item is removed for
+			-- real only when the trade COMPLETES). So the entry legitimately stays in this
+			-- list -- which read as "the right-click did nothing". Mark it instead. Gated
+			-- on the trade frame being open so the transient lock during an ordinary item
+			-- move never adds noise. The marker goes LAST: the "all items" copy strips the
+			-- leading number by the first space, and that list sorts on textFirstLine.
+			if not isEmpty and tLocked == true and _G["TradeFrame"] and _G["TradeFrame"]:IsVisible() == true then
+				bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. L["TRADE_InTradeMarker"]
 			end
 
 			tBagResultsByBag[bagId].childs[#tBagResultsByBag[bagId].childs + 1] = bagItemButton

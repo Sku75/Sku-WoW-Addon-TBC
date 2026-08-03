@@ -554,6 +554,13 @@ function SkuCore:OnInitialize()
 	SkuDispatcher:RegisterEventCallback("TRADE_CLOSED", SkuCore.TRADE_CLOSED)
 	SkuDispatcher:RegisterEventCallback("TRADE_ACCEPT_UPDATE", SkuCore.TRADE_ACCEPT_UPDATE)
 	SkuDispatcher:RegisterEventCallback("TRADE_MONEY_CHANGED", SkuCore.TRADE_MONEY_CHANGED)
+	-- The trade-slot counterpart of BAG_UPDATE: fires the moment an item lands in or
+	-- leaves one of OUR six trade slots (plus the enchant slot 7). Never registered
+	-- before, which is why a right-click into the trade window was completely silent.
+	SkuDispatcher:RegisterEventCallback("TRADE_PLAYER_ITEM_CHANGED", SkuCore.TRADE_PLAYER_ITEM_CHANGED)
+	-- Same for the partner's six slots: their offer is the half a blind player cannot
+	-- see at all, and it also keeps "Gegenstaende des Partners" in the menu current.
+	SkuDispatcher:RegisterEventCallback("TRADE_TARGET_ITEM_CHANGED", SkuCore.TRADE_TARGET_ITEM_CHANGED)
 	SkuDispatcher:RegisterEventCallback("PET_STABLE_SHOW", SkuCore.PET_STABLE_SHOW)
 	SkuDispatcher:RegisterEventCallback("PET_STABLE_CLOSED", SkuCore.PET_STABLE_CLOSED)
 	SkuDispatcher:RegisterEventCallback("PET_STABLE_UPDATE", SkuCore.PET_STABLE_UPDATE)
@@ -2099,9 +2106,26 @@ function SkuCore:BAG_UPDATE_DELAYED(...)
 	-- SkuCore:BAG_UPDATE so it is a no-op outside a bag-action window (normal
 	-- looting / merchant / flight-master interactions are untouched). BAG_UPDATE
 	-- is already coalesced here, so call the confirm directly (no extra debounce).
-	if not (Sku and Sku.tBagPostAction) then return end
-	if SkuBagConfirmRefresh then
-		pcall(SkuBagConfirmRefresh)
+	if Sku and Sku.tBagPostAction then
+		if SkuBagConfirmRefresh then
+			pcall(SkuBagConfirmRefresh)
+		end
+		return
+	end
+	-- Second, narrower gate: the post-trade settle window armed by SkuCore:TRADE_CLOSED.
+	-- A finished trade mutates the bags long after any per-item action window has
+	-- expired, and no cursor is anchored on the traded item -- so this drives the
+	-- SILENT re-sync (rebuild + re-pin by identity, no announce) instead of the
+	-- speaking confirm. Left open for the whole window: a trade settles in more than
+	-- one burst (items given away, items received) and the refresh is idempotent.
+	if Sku and Sku.tBagSettleWindow then
+		if GetTime() > Sku.tBagSettleWindow then
+			Sku.tBagSettleWindow = nil
+			return
+		end
+		if SkuBagIdleRefresh then
+			pcall(SkuBagIdleRefresh)
+		end
 	end
 end
 function SkuCore:PLAYER_EQUIPMENT_CHANGED(...)
@@ -2999,6 +3023,8 @@ function SkuCore:TRADE_SHOW(self, event, ...)
 	-- nicht mit veralteten Vergleichswerten startet.
 	SkuCore._tLastTargetTradeMoney = 0
 	SkuCore._tLastOwnTradeMoney = 0
+	SkuCore._tTradeSlotState = {}
+	SkuCore._tTradeTargetSlotState = {}
 	if _G["ContainerFrame1"] and _G["ContainerFrame1"]:IsVisible() ~= true then
 		_G["MainMenuBarBackpackButton"]:Click()
 	end
@@ -3008,7 +3034,145 @@ function SkuCore:TRADE_CLOSED(self, event, ...)
 	dprint("TRADE_CLOSED", self, event, ...)
 	SkuCore._tLastTargetTradeMoney = 0
 	SkuCore._tLastOwnTradeMoney = 0
+	SkuCore._tTradeSlotState = {}
+	SkuCore._tTradeTargetSlotState = {}
 	SkuCore:CheckFrames()
+	-- A COMPLETED trade is the only moment the traded-away items really leave the
+	-- bags -- and that BAG_UPDATE races the CheckFrames above (which snapshots the
+	-- bags 0.01s after this event). Lose the race and the bag list keeps offering
+	-- items the player no longer owns until some unrelated action rebuilds it: the
+	-- "sometimes it disappears, sometimes it doesn't" symptom. The gated bag
+	-- handlers can't help here — Sku.tBagPostAction was armed at the right-click,
+	-- 2.5s earlier at best, and has long expired. So arm a short SETTLE window and
+	-- let the authoritative BAG_UPDATE_DELAYED drive a silent re-sync, exactly like
+	-- the disenchant fix does for cast-time bag changes.
+	if Sku then Sku.tBagSettleWindow = GetTime() + 3.0 end
+	-- Fallback for the reverse race (bag update dispatched BEFORE this event, so no
+	-- further BAG_UPDATE_DELAYED follows): one silent confirm against settled bags.
+	-- SkuBagIdleRefresh is a no-op unless the cursor is inside the Local menu.
+	if _G.C_Timer and _G.C_Timer.After then
+		_G.C_Timer.After(1.0, function()
+			if _G.SkuBagIdleRefresh then pcall(_G.SkuBagIdleRefresh) end
+		end)
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Name of the trade partner, one source of truth for every trade announce.
+function SkuCore:TradePartnerName()
+	local tPartner
+	if _G["TradeFrameRecipientNameText"] and _G["TradeFrameRecipientNameText"].GetText then
+		tPartner = _G["TradeFrameRecipientNameText"]:GetText()
+	end
+	if not tPartner or tPartner == "" then tPartner = UnitName("NPC") end
+	return tPartner or Sku.deEn("Der Partner", "The partner")
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Keep the OPEN trade window's menu content live. Build_TradeFrame renders both item
+-- lists from GetTradePlayer/TargetItemInfo at build time, and nothing rebuilt it while
+-- the window stayed open -- so "Deine Gegenstaende" / "Gegenstaende des Partners" kept
+-- showing the state from whenever the menu was last built, and the manual
+-- "Aktualisieren" entry was the only way out. Every trade-slot change now drives this.
+--
+-- Debounced (a partner dropping several items fires one event each) and QUIET:
+-- CheckFrames' aQuiet suppresses the re-anchor announce, so the only thing spoken is
+-- the per-slot announce from the caller. Routed through SkuBagIdleRefresh because that
+-- is the same quiet rebuild PLUS a re-pin by bag/slot identity -- needed here as well,
+-- since the very same rebuild refreshes the "im Handel" markers in the bag list.
+function SkuCore:TradeMenuRefresh()
+	if not (_G.C_Timer and _G.C_Timer.NewTimer) then return end
+	if SkuCore._tTradeMenuRefreshTimer then
+		SkuCore._tTradeMenuRefreshTimer:Cancel()
+	end
+	SkuCore._tTradeMenuRefreshTimer = _G.C_Timer.NewTimer(0.2, function()
+		SkuCore._tTradeMenuRefreshTimer = nil
+		if _G.SkuBagIdleRefresh then pcall(_G.SkuBagIdleRefresh) end
+	end)
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Own trade offer, per slot. Putting an item into the trade window changes NOTHING
+-- the bag list can show by itself (the slot is only locked, see Build_BagsFrame), and
+-- Sku spoke nothing at all -- the right-click was silent, so it read as a no-op. This
+-- announces the real slot change and re-syncs the bag list so the "im Handel" marker
+-- appears/disappears with it. Deduped per slot against the last announced item+count,
+-- because the client also fires this while a trade is merely being (re)drawn.
+function SkuCore:TRADE_PLAYER_ITEM_CHANGED(self, event, aSlot)
+	local tSlot = tonumber(aSlot)
+	if not tSlot then return end
+	-- Only while the trade window is actually up. When a trade ends the client can
+	-- still emit per-slot changes, and a volley of "trade slot 1 cleared" after the
+	-- trade is over would be pure noise -- TRADE_CLOSED owns that side (bag re-sync).
+	if not (_G["TradeFrame"] and _G["TradeFrame"]:IsVisible() == true) then return end
+	SkuCore._tTradeSlotState = SkuCore._tTradeSlotState or {}
+	local tName, _, tCount = GetTradePlayerItemInfo(tSlot)
+	local tKey = tName and (tName .. "|" .. tostring(tCount or 1)) or ""
+	if tKey == (SkuCore._tTradeSlotState[tSlot] or "") then return end
+	SkuCore._tTradeSlotState[tSlot] = tKey
+	dprint("trade slot", tSlot, tKey)
+
+	local tText
+	if tName then
+		local tDisplay = tName
+		if tCount and tCount > 1 then
+			tDisplay = tDisplay .. " x" .. tCount
+		end
+		if tSlot == 7 then
+			tText = tDisplay .. " " .. L["TRADE_InEnchantSlot"]
+		else
+			tText = tDisplay .. " " .. L["TRADE_InSlot"] .. " " .. tSlot
+		end
+	else
+		if tSlot == 7 then
+			tText = L["TRADE_EnchantEmpty"]
+		else
+			tText = L["TRADE_SlotPrefix"] .. " " .. tSlot .. " " .. L["TRADE_SlotCleared"]
+		end
+	end
+	pcall(function() SkuOptions.Voice:OutputStringBTtts(tText, false, true, 0.2, nil, nil, nil, 1) end)
+
+	-- Rebuild "Deine Gegenstaende" AND the bag list: the lock flag is set by the server
+	-- a moment AFTER the right-click, so the CheckFrames the right-click macro fires
+	-- immediately still sees the item unlocked and misses the "im Handel" marker.
+	SkuCore:TradeMenuRefresh()
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+-- The PARTNER's side of the offer -- the half a blind player has no other way to
+-- follow. Registered for the first time here; before this the partner could add or
+-- pull items and nothing was spoken, while "Gegenstaende des Partners" kept showing
+-- whatever was there when the menu was last built. Same dedupe/visibility rules as the
+-- player side, in its own state table so the two never mask each other.
+function SkuCore:TRADE_TARGET_ITEM_CHANGED(self, event, aSlot)
+	local tSlot = tonumber(aSlot)
+	if not tSlot then return end
+	if not (_G["TradeFrame"] and _G["TradeFrame"]:IsVisible() == true) then return end
+	SkuCore._tTradeTargetSlotState = SkuCore._tTradeTargetSlotState or {}
+	local tName, _, tCount = GetTradeTargetItemInfo(tSlot)
+	local tKey = tName and (tName .. "|" .. tostring(tCount or 1)) or ""
+	if tKey == (SkuCore._tTradeTargetSlotState[tSlot] or "") then return end
+	SkuCore._tTradeTargetSlotState[tSlot] = tKey
+	dprint("trade slot partner", tSlot, tKey)
+
+	local tPartner = SkuCore:TradePartnerName()
+	local tText
+	if tName then
+		local tDisplay = tName
+		if tCount and tCount > 1 then
+			tDisplay = tDisplay .. " x" .. tCount
+		end
+		if tSlot == 7 then
+			tText = tPartner .. " " .. L["TRADE_PartnerPuts"] .. " " .. tDisplay .. " " .. L["TRADE_InEnchantSlot"]
+		else
+			tText = tPartner .. " " .. L["TRADE_PartnerPuts"] .. " " .. tDisplay .. " " .. L["TRADE_InSlot"] .. " " .. tSlot
+		end
+	else
+		if tSlot == 7 then
+			tText = tPartner .. ": " .. L["TRADE_EnchantEmpty"]
+		else
+			tText = tPartner .. " " .. L["TRADE_PartnerClears"] .. " " .. L["TRADE_SlotPrefix"] .. " " .. tSlot
+		end
+	end
+	pcall(function() SkuOptions.Voice:OutputStringBTtts(tText, false, true, 0.2, nil, nil, nil, 1) end)
+
+	SkuCore:TradeMenuRefresh()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- [v42.08] Live-Ansage des Handelsgeldes (portiert aus Naxedims SkuMoneyReplacement).
@@ -3029,12 +3193,7 @@ function SkuCore:TRADE_MONEY_CHANGED(self, event, ...)
 	local tTarget = (GetTargetTradeMoney and GetTargetTradeMoney()) or 0
 	if tTarget ~= (SkuCore._tLastTargetTradeMoney or 0) then
 		SkuCore._tLastTargetTradeMoney = tTarget
-		local tPartner
-		if _G["TradeFrameRecipientNameText"] and _G["TradeFrameRecipientNameText"].GetText then
-			tPartner = _G["TradeFrameRecipientNameText"]:GetText()
-		end
-		if not tPartner or tPartner == "" then tPartner = UnitName("NPC") end
-		tPartner = tPartner or Sku.deEn("Der Partner", "The partner")
+		local tPartner = SkuCore:TradePartnerName()
 		if tTarget > 0 then
 			pcall(function() SkuOptions.Voice:OutputStringBTtts(tPartner.." "..Sku.deEn("bietet ", "offers ")..SkuGetCoinText(tTarget, true, true), false, true, 0.2, nil, nil, nil, 1) end)
 		else
