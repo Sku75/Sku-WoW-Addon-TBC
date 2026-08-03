@@ -125,6 +125,11 @@ function Set-DocsSkuLink($ver) {
     $html = Read-Text $DocsHtml
     $html = [regex]::Replace($html, 'releases/download/v\d+\.\d+/Sku-\d+\.\d+\.zip', "releases/download/v$ver/Sku-$ver.zip")
     $html = [regex]::Replace($html, 'Download Sku v\d+\.\d+', "Download Sku v$ver")
+    # The section HEADING carries the version too. Screen-reader users navigate by
+    # heading, so a stale number here reads as "the site still offers the old Sku"
+    # even though the link below it is current (it drifted 42.06 -> 42.10 before
+    # this line existed). Keep it in sync with the link.
+    $html = [regex]::Replace($html, 'Sku \(Main Addon\) - Version \d+\.\d+', "Sku (Main Addon) - Version $ver")
     Write-Text $DocsHtml $html
 }
 function Set-DocsInstallerLatest {
