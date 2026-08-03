@@ -30,13 +30,20 @@ investigated.
   - Repro: TBD (enter/query arena context).
   - Suspected area: arena data/query code (to be located).
   - Status: open.
-- **Focus-key inconsistencies vs WoW's Focus** ("Inkonsistenzen mit WoWs Focus
-  und der Sku-Implementation für Fokus-Tasten").
-  - Symptom: Sku's focus-key implementation behaves inconsistently with WoW's
-    native focus (focus target) system.
-  - Repro: TBD (set/clear focus via WoW vs via Sku focus keys, compare).
-  - Suspected area: `SkuCore/skuFocus.lua` and how it relates to WoW's focus.
-    Good candidate to reconcile during W4 (state ownership / one writer).
+- **Dead enemies with a lingering debuff on you keep reviving in the
+  enemies-in-combat count.**
+  - Symptom: after a mob dies, the enemies-in-combat counter keeps counting it
+    (it "revives itself") for as long as a debuff that mob applied is still
+    ticking on the player; the count settles only when the debuff expires.
+  - Repro: pull a caster/DoT mob (bleed, poison, curse), kill it while the
+    debuff still has several seconds left, listen to the count.
+  - Suspected area: `SkuCore/aqCombat.lua`. The death mark (`tDeadGuids`,
+    added in `5dec1f8`) refuses dead GUIDs at the central add point, but a DoT
+    keeps producing combat-log lines that name the dead mob as source — so
+    either an admit path bypasses the mark, or the periodic tick refreshes
+    `lastUpdate` and keeps the entry alive past the stale sweep. Best guess:
+    the "source OR dest names a tracked GUID refreshes lastUpdate" rule from
+    `5dec1f8` has no dead check.
   - Status: open.
 - **Some default keybinds are not bound for a brand-new user.**
   - Symptom: on a fresh install (no saved bindings) some keys Sku is supposed to
@@ -46,19 +53,6 @@ investigated.
   - Suspected area: default-binding application in SkuZOptions/SkuKeyBinds.lua
     (`skuDefaultKeyBindings` + the first-login apply pass).
   - Status: open.
-- **Aura rename re-pins two levels up (onto "Auren verwalten") instead of the aura.**
-  - Symptom: after changing an aura's name, the cursor lands two levels up on
-    "Auren verwalten" rather than back on the renamed aura. Every other rename/set
-    of this kind re-pins correctly.
-  - Repro: Auren -> aura list -> an aura -> rename it -> cursor lands on
-    "Auren verwalten", not the aura.
-  - Suspected area: SkuAuras/Options aura-rename OnAction re-descend — re-pinning
-    to the list parent instead of the aura node (wrong FindAncestorById target /
-    an extra step-up). NOTE: v42.04 flattened the Auras menu (commit `cf22823` —
-    intermediate level removed, SlashFunc anchor paths dropped the `aurenList`
-    segment), so the old ",SkuAuras,aurenList,aurenVerwalten," path in earlier
-    notes is stale — RE-TEST after the flatten before debugging.
-  - Status: open (re-test after the 42.04 aura menu flatten).
 
 ## Feature requests / wishlist
 
@@ -101,23 +95,51 @@ workstreams (noted) — fold them in there when that workstream runs.
   a macro / in combat).
 - **Monitor performance pass.** Check and improve the performance of the monitors
   (health / power / etc.). NOTE: the **combat** monitor's enemies-in-combat
-  counter is DONE (2026-07-09, commits `5fbfa22`/`f35638c`/`40eed35`); health/power
-  and the rest remain.
+  counter is DONE (2026-07-09, commits `5fbfa22`/`f35638c`/`40eed35`, steadied
+  again in `5dec1f8`); health/power and the rest remain.
 - **Monitor + aura reaction-time & precision pass.** Measure reaction time and
   precision of the monitors and auras; improve where possible. NOTE: the **combat**
-  monitor's enemies-in-combat reactivity/precision is DONE (2026-07-09; swarm case
-  pending raid re-test — see "Pending in-game validation"); health/power/aura remain.
+  monitor's enemies-in-combat reactivity/precision is DONE (2026-07-09 / `5dec1f8`),
+  apart from the lingering-debuff revive bug under "Open issues";
+  health/power/aura remain.
 - **Discovery mode.** New mode — scope/behaviour TBD with the maintainer.
-- **Dungeon browser — real implementation.** Replace the current parked/partial
-  dungeon browser with a full implementation (the B8 rework noted during W6).
 - **Guild window.** Make the guild window accessible (candidate for the
   make-a-Blizzard-window-accessible recipe already used for Game Options).
 - **Stuck-detection experiments for dungeons.** Ideas to test — fall detection and
   similar systems — to give the player more "am I stuck / where am I" information
   in dungeons.
-- **Soft-target vs hard-target setting — improve / maybe fix.** Revisit the
-  soft-target vs hard-target targeting setting: improve its behaviour, and fix it
-  if the latest client changed how soft targeting works. Scope TBD.
+- **Soft-target vs hard-target setting — FIXED 2026-08-03, UNTESTED.** Root cause
+  was never a client change: all 32 `SoftTarget*` CVars still exist in 2.5.6
+  (verified by scanning `WowClassic.exe`). The option "Do interact soft targeting
+  if" simply never reached the client — both branches of the old if/else wrote
+  `SoftTargetMatchLocked = 0` (identical dead code in v32.31 and v41.04); 41.05
+  made it write 1 but collapsed option 2 into option 1; and `SoftTargetWithLocked`
+  ("Allows soft target selection while player has a locked target") was never
+  written by any Sku version. The 41.05 "CVars are locked in combat" assumption is
+  correct — the CVars ARE protected in combat (in-combat writes log
+  `softTarget refused` and raise ADDON_ACTION_BLOCKED on `SetCVar()`; a `/run`
+  probe only appeared to succeed because the CVar already held the written value).
+  That means the Lua emulation could never work: the 4 Hz `SkuMob` poll that
+  flipped `SoftTargetInteract` was blocked in exactly the fights it existed for.
+  `SoftTargetWithLocked` semantics, measured 2026-08-03 (out of combat, corpse +
+  live mob in range, interact key pressed with the mob hard-targeted): **0** acts on
+  the mob and ignores the corpse; **1 and 2 both loot the corpse**. So only 0
+  suppresses soft targeting while a hard target is locked, and the CVar has NO
+  "only when attackable" mode — 1 is not the middle value the 1-is-strict /
+  2-is-broad pattern of `MatchLocked` suggests. (Two earlier tests appeared to show
+  otherwise and were both confounded: the first still had the old Lua path freezing
+  `SoftTargetInteract` at 0, the second never captured the CVar values at all. Read
+  `GetCVar` at the moment of any future test.)
+  Fix: option 1 → `WithLocked 0` / `MatchLocked 1`, option 0 → `WithLocked 2` /
+  `MatchLocked 0`, and option 2 flips `WithLocked` between 0 and 2 from
+  `SkuOptions:UpdateSoftTargetLockRule()`, called only on `PLAYER_TARGET_CHANGED` —
+  one write per target change, no ticker. The 4 Hz poll and `interactTempDisabled`
+  are gone. Writes are verified by read-back and replayed at `PLAYER_REGEN_ENABLED`
+  if the client refused them in combat.
+  - Known edge: killing your target leaves `WithLocked` at 0 until you next change
+    target, so soft targeting stays suppressed for that moment. The interact key
+    still acts on the corpse you have targeted, so looting works; revisit only if
+    it annoys in practice.
 - **AddOn settings menu — shipped, could be improved.** Addons →
   "AddOn-Einstellungen" (SkuCore/addonOptions.lua) renders other addons'
   AceConfig settings (Questie, ECS, AtlasLoot via load entry) plus a DBM
@@ -142,32 +164,6 @@ workstreams (noted) — fold them in there when that workstream runs.
   of the escape (game) menu should react to arrow RIGHT instead of Enter, so
   they behave like the rest of the Sku menu tree. Area: the game-menu mirror
   (gameOptions/LocalMenu path).
-
-## Pending in-game validation (raid)
-
-- **Enemies-in-combat swarm count (admit-by-GUID) — awaiting raid re-test.**
-  - Status: committed, works in code, UNVALIDATED in a real raid. No raid access
-    until ~2026-07-16 — re-check after that.
-  - Context: the combat-monitor "enemies in combat" counter was rewritten and is
-    confirmed working for normal groups (up to ~9) — correctness (no false zero),
-    efficiency (single coalesced add flush, no per-event timer storm) and
-    reactivity (eager count-on-engagement, 0.3s window) are DONE and validated in
-    live fights up to ~9 mobs. The one open piece is a large SIMULTANEOUS add
-    swarm: a boss summoning ~12 at once only reached ~4–9 and oscillated up/down,
-    because admission was gated on unit-token resolution and ~half the adds had no
-    nameplate/target. Fix (admit-by-GUID) admits a combat-log-engaged creature by
-    its GUID even without a token; mode 3 only, mode 4 unaffected.
-  - Re-check (capture protocol): `/skudebug clear` → `/skudebug log on` → fight a
-    summoning boss → `/reload`. Expect by ear: count climbs to ~the true number
-    quickly and holds, clean countdown, no up-down-up churn. In the log, `add-flush`
-    shows `guid-added` climbing and `batch` ≈ counted total, with near-zero
-    `stale-sweep drop` during the fight. WATCH FOR the tradeoff: the count reading
-    too high, or holding a number for a few seconds after the pack is dead (the
-    looser "counts what it can't see" — the 6s stale sweep should clean it; confirm
-    it settles).
-  - Area: `SkuCore/aqCombat.lua` (`tFlushPendingAdds` admit-by-GUID branch;
-    recount; `tCombatInCounts` mode-3 eager path). Levers: `tFlushWindow` (0.3s),
-    `tStaleThreshold` (6s).
 
 ## Possible changes (undecided)
 
@@ -214,16 +210,6 @@ here so a future session doesn't re-derive the analysis from scratch.
   numpad digits to select members by slot; in a **raid** (two-digit entry via
   `SkuSecureTargetingToggleHandler`) confirm the correct unit is targeted. Area
   `SkuCore/DialTargeting.lua`; revert candidate = `d5a4eb9` alone if it misbehaves.
-- **TTS queue cancels/drops under a burst of many messages.** PARTIALLY FIXED
-  (commit `e6a9868`, 2026-07-10). The "skips newly incoming items" half was a
-  wedged dedup guard (`mSkuVoiceQueueBTTS_Speaking`): a FAILED utterance (some
-  voices / the NVDA-SAPI bridge) never drained the guard, so later identical
-  lines were dropped forever. Now handles `VOICE_CHAT_TTS_PLAYBACK_FAILED` and
-  self-expires stuck entries (12s TTL). Confirmed fixed in-game. The REMAINING
-  half — stale lines still speaking after an overwrite/reset — is inherent to
-  feeding many items into Blizzard's engine at once + Blizzard's broken
-  `StopSpeakingText()`, and needs the one-at-a-time change tracked under
-  "Possible changes (undecided)" below. Area: `SkuVoice-1.0.lua` BTTS queue.
 - **Syntherceptor (jcsteh) as future replacement for the bundled NVDA-SAPI voice.**
   Ask: "check the Syntherceptor monitor". SAPI5 voice DLL that forwards speech
   to NVDA (github.com/jcsteh/syntherceptor, installer at
@@ -257,69 +243,3 @@ here so a future session doesn't re-derive the analysis from scratch.
   Alternative to re-check briefly at the same time: SAPIence
   (github.com/LeonarddeR/SAPIence, LGPL, Rust, same mechanism) — as of
   2026-07-05 zero releases/binaries, not a candidate yet.
-- **Range-check cold-start is slow; DBM-style fixed item set is the alternative.**
-  Ask: "check the range-check monitor". Background: the target-distance
-  announcements (`SkuCore/RangeCheck.lua` + `SkuCore/Options.lua`
-  RangecheckMenuBuilder) are driven by **LibRangeCheck-3.0**, which derives its
-  distance bands from the player's class SPELLS (≤40yd in TBC) plus a large ITEM
-  probe list (bands 45/50/60/70/80/90/100 come from items like *Permanent
-  R.O.I.D.S.* at 100yd). On a **cold** game start the item data isn't cached, so
-  the library requests it from the server ONE ITEM AT A TIME on a 0.5s loop with a
-  10s per-item timeout — which is why bands can take many minutes to fully appear
-  after a fresh launch (a plain `/reload` is fast: item cache stays warm). ROOT
-  CAUSE of why this is far worse than historically (was ~1min, now 10-20min): the
-  Anniversary client does NOT persist item data to disk. `_anniversary_\Cache\WDB\`
-  has creature/gameobject/quest/npc/pagetext caches but NO `itemcache.wdb`
-  (verified 2026-07-18); older TBC/Classic clients kept it, so items were warm from
-  disk every launch and the serial crawl was near-instant. The modern engine
-  removed on-disk item caching, so every fresh launch is a truly cold item cache
-  and the library's always-slow serial fetch shows its full cost. NOT a Sku/library
-  regression — the disk cache used to hide it; the pre-warm below is the correct
-  compensation (do NOT revert it thinking it's unnecessary). Two
-  side effects the maintainer dislikes: bands are class-asymmetric (e.g. 25 on
-  hostile but not friendly, melee/2 on one side only, because they come from the
-  per-class spell lists) and the long warm-up.
-  - **Done 2026-07-18:** config self-deletion fixed and menu now populates from
-    the live library (commit `36712a6`); embedded lib updated v31 -> v35 (current
-    WeakAuras upstream). NOTE: v35 does **NOT** speed up the cold start —
-    `processItemRequests` is byte-identical to v31; the update's real TBC win is
-    that `LEARNED_SPELL_IN_TAB` now fires (bands refresh as you learn spells while
-    leveling) via the `C_EventUtils.IsEventValid` guard. So after the fix: spell
-    bands are ~instant, config persists, only the exotic item bands still trickle
-    in on a cold start.
-  - **Cold-start speed FIXED 2026-07-18 (commit `37e3431`, pending in-game
-    verify):** parallel item pre-warm — a Sku-local patch in LibRangeCheck
-    `activate()` fires `C_Item.RequestLoadItemData` (fallback ItemMixin
-    `ContinueOnItemLoad`) for every FriendItems/HarmItems probe id up front, so
-    the client caches them in a burst and the stock serial loop then finds each
-    already cached and resolves in a tick or two instead of minutes. Correctness
-    unchanged; shares no throttle with the AH query cooldown. Marked in-source as
-    a local patch — RE-APPLY if the lib is re-updated from upstream. If a cold
-    start is still slow after this, the remaining suspects are dead/silent probe
-    items that lead a band's list (10s timeout each) — next lever is skipping
-    those ids or lowering `ItemRequestTimeout`.
-  - **The DBM-style fixed-set rewrite (still undecided, maintainer wants max
-    granularity):** replace the spell+item-probe model with a DBM-style FIXED set
-    — DBM (`DBM-Core/DBM-RangeCheck.lua`) does NOT use LibRangeCheck; it hard-codes
-    ONE reliable item per band (8=Voodoo Charm, 13=Sparrowhawk Net, 18=Silk
-    Bandage, 23=Mistletoe, 28=Egan's Blaster, 33=Scroll of Stamina, 43=Vial of the
-    Sunwell/`UnitInRange`, 48/60/80/100) and calls `IsItemInRange(id, unit)`
-    directly — instant, no caching, SAME bands on every character, symmetric.
-    Maintainer's refinement: don't stop at DBM's ~11 coarse bands — curate ONE
-    always-cacheable item for EACH distinct range that exists (roughly 2..100 in
-    whatever steps real items allow; it can't be literally every integer — a band
-    only exists where a usable item's range property lands). Trade-off vs today:
-    fixed & consistent & instant, but you lose the per-class spell-range precision
-    (which for a "how far is my target" cue isn't needed). Keep `numbers/<n>.mp3`
-    output as-is. Prudent path: build it behind a toggle alongside the current
-    path so it can be A/B'd on one cold start before ripping anything out.
-    (NOTE: the pre-warm above already removes the cold-start pain without this
-    rewrite, so the DBM-style set is now only about band CONSISTENCY across
-    characters + symmetry, not speed.)
-  - **Misc/"unknown" (corpses) granularity — answer: NOT improvable.** Misc units
-    (corpses, neutral non-help/non-harm) only ever get bands 8 and 28 because the
-    ONLY distance probes that work on a unit you can neither help nor harm are
-    `CheckInteractDistance` (Duel≈8-10, Follow≈28) — item/spell range checks return
-    nil on such units, and Classic has no position/distance API for arbitrary
-    corpses. So even a fixed-item rewrite can't make corpse distance granular; ~2-3
-    interact values (add Trade≈11 at most) is the client-imposed ceiling.
