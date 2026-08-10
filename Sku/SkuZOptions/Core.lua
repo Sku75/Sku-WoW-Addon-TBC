@@ -3337,7 +3337,7 @@ function SkuOptions:CreateMenuFrame()
 			-- DeclineGroup() unless inviteAccepted is set, and OnHide fires on a plain
 			-- :Hide() too -- so closing the Sku menu used to silently decline group
 			-- invites. Neutralise those before hiding; the prompt is then re-offered
-			-- under Local -> Ausstehend (SkuCore/pendingPrompts.lua). No-op for the
+			-- as a flat entry under Local (SkuCore/pendingPrompts.lua). No-op for the
 			-- dialogs that hide harmlessly.
 			if SkuCore.NeutralizePopupHide then
 				SkuCore:NeutralizePopupHide(_G["StaticPopup1"])
@@ -5837,15 +5837,13 @@ function SkuOptions:MenuBuilderLocal(aParentEntry, aEntryDataTable, aOnActionFun
 	-- Pending prompts (SkuCore/pendingPrompts.lua): summon / death / resurrect / ready
 	-- check that are STILL live server-side but whose Blizzard dialog is gone -- typically
 	-- because this menu's own OnHide ran StaticPopup1:Hide() when the user pressed Escape.
-	-- Rendered here so they stay reachable under Local; deliberately NOT counted as an
-	-- open window in CheckFrames, so they never force the menu open (see SkuCore/Core.lua).
+	-- Each is ONE flat node directly under Local, named after the prompt; RIGHT/ENTER
+	-- re-shows the real window (no "Ausstehend" wrapper, no duplicated action leaves).
+	-- Deliberately NOT counted as an open window in CheckFrames, so they never force the
+	-- menu open (see SkuCore/Core.lua).
 	if SkuCore.HasPendingPrompts and SkuCore:HasPendingPrompts() == true then
 		tHasContributor = true
-		SkuMenu:BuildNode(aParentEntry, {
-			kind = "submenu",
-			label = Sku.deEn("Ausstehend", "Pending"),
-			build = function(self) SkuCore.PendingPromptsMenuBuilder(self) end,
-		})
+		SkuCore.PendingPromptsMenuBuilder(aParentEntry)
 	end
 
 	if #SkuCore.GossipList < 1 and not tHasContributor then

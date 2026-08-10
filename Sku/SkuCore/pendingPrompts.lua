@@ -22,8 +22,13 @@ local L = Sku.L
 --
 -- SOLUTION. Keep hiding the frame (unchanged), and re-offer the prompt from the
 -- STATE instead. Each descriptor below answers "is this still live?" via a query API
--- and acts via the matching action API -- no frame needed. The node is rendered as a
--- child of Local by SkuOptions:MenuBuilderLocal.
+-- and can put Blizzard's own dialog back on screen (showDialog) -- no frame needed
+-- to KNOW about the prompt. The prompt is rendered as ONE flat node directly under
+-- Local by SkuOptions:MenuBuilderLocal: the entry carries the prompt's name and
+-- RIGHT/ENTER re-shows the real window, whose buttons then arrive via the normal
+-- frame-scrape path. (An earlier version nested Accept/Decline action leaves under
+-- an "Ausstehend" submenu; that duplicated the window's own buttons two levels deep
+-- and was dropped as too much navigation overhead.)
 --
 -- THE IMPORTANT INVARIANT: pending prompts are PASSIVE. In SkuCore:CheckFrames the
 -- same "is anything open" predicate does two jobs -- it keeps an open menu alive
@@ -187,11 +192,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Descriptors. `active` = still live per the game's own state; `popups` = dialog keys
 -- that render the same thing (suppress while any is visible); `label` = the spoken
--- headline; `actions` = the leaf children (label + func).
---
--- Every descriptor also gets a "show dialog again" leaf appended (see the builder):
--- StaticPopup_Show / the frame's own Show is what Blizzard itself calls, so it is the
--- guaranteed-working escape hatch if a direct action API ever refuses.
+-- headline; `showDialog` = put Blizzard's own dialog back on screen. StaticPopup_Show /
+-- the frame's own Show is what Blizzard itself calls, so it is the guaranteed-working
+-- path -- and the re-shown window then offers ALL its real buttons (accept/decline,
+-- release, soulstone, ...) through the normal frame-scrape menu.
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuCore.pendingPrompts = {
 	--------------------------------------------------------------------------------
@@ -216,12 +220,6 @@ SkuCore.pendingPrompts = {
 			return tText .. tTimeLeftSuffix(tLeft)
 		end,
 		showDialog = function() pcall(StaticPopup_Show, "CONFIRM_SUMMON") end,
-		actions = {
-			{ label = function() return _G.ACCEPT or Sku.deEn("Annehmen", "Accept") end,
-			  func = function() pcall(function() C_SummonInfo.ConfirmSummon() end) end },
-			{ label = function() return _G.CANCEL or Sku.deEn("Ablehnen", "Decline") end,
-			  func = function() pcall(function() C_SummonInfo.CancelSummon() end) end },
-		},
 	},
 
 	--------------------------------------------------------------------------------
@@ -255,18 +253,9 @@ SkuCore.pendingPrompts = {
 			local tText = string.format(_G.INVITATION or "%s", t.name)
 			pcall(StaticPopup_Show, "PARTY_INVITE", tText)
 		end,
-		actions = {
-			{ label = function() return _G.ACCEPT or Sku.deEn("Annehmen", "Accept") end,
-			  func = function()
-					tCall("AcceptGroup")
-					SkuCore.pendingGroupInvite = nil
-				end },
-			{ label = function() return _G.DECLINE or Sku.deEn("Ablehnen", "Decline") end,
-			  func = function()
-					tCall("DeclineGroup")
-					SkuCore.pendingGroupInvite = nil
-				end },
-		},
+		-- No cache clearing needed here: answering via the re-shown dialog's own
+		-- buttons hides it NON-neutralised, and the OnHide hook above drops
+		-- SkuCore.pendingGroupInvite then.
 	},
 
 	--------------------------------------------------------------------------------
@@ -300,12 +289,6 @@ SkuCore.pendingPrompts = {
 				pcall(StaticPopup_Show, "RESURRECT_NO_TIMER", tOfferer)
 			end
 		end,
-		actions = {
-			{ label = function() return _G.ACCEPT or Sku.deEn("Annehmen", "Accept") end,
-			  func = function() tCall("AcceptResurrect") end },
-			{ label = function() return _G.DECLINE or Sku.deEn("Ablehnen", "Decline") end,
-			  func = function() tCall("DeclineResurrect") end },
-		},
 	},
 
 	--------------------------------------------------------------------------------
@@ -333,35 +316,10 @@ SkuCore.pendingPrompts = {
 			end
 			return tText
 		end,
+		-- Release / self-res options (soulstone, ankh, ...) all live as buttons ON the
+		-- re-shown DEATH dialog (Blizzard's GameDialogDefsUtil wires them), so the
+		-- frame-scrape menu offers them once the window is back -- no duplicated leaves.
 		showDialog = function() pcall(StaticPopup_Show, "DEATH") end,
-		actions = {
-			{ label = function() return _G.DEATH_RELEASE or Sku.deEn("Geist freigeben", "Release spirit") end,
-			  func = function() tCall("RepopMe") end },
-		},
-		-- Self-res options (soulstone, ankh, ...) are dynamic, so they are appended at
-		-- build time rather than declared. The old HasSoulstone/UseSoulstone globals are
-		-- gone on this client; the live path is C_DeathInfo.GetSelfResurrectOptions ->
-		-- UseSelfResurrectOption(optionType, id), exactly as Blizzard's own
-		-- GameDialogDefsUtil.OnResurrectButtonClick does it.
-		extraActions = function()
-			local tOut = {}
-			if not (C_DeathInfo and C_DeathInfo.GetSelfResurrectOptions and C_DeathInfo.UseSelfResurrectOption) then
-				return tOut
-			end
-			local ok, tOptions = pcall(C_DeathInfo.GetSelfResurrectOptions)
-			if not ok or type(tOptions) ~= "table" then return tOut end
-			for _, tOption in ipairs(tOptions) do
-				if type(tOption) == "table" and tOption.canUse and tOption.optionType and tOption.id then
-					local tName = tOption.name or _G.USE_SOULSTONE or Sku.deEn("Selbst wiederbeleben", "Self resurrect")
-					local tType, tId = tOption.optionType, tOption.id
-					tOut[#tOut + 1] = {
-						label = function() return tName end,
-						func = function() pcall(function() C_DeathInfo.UseSelfResurrectOption(tType, tId) end) end,
-					}
-				end
-			end
-			return tOut
-		end,
 	},
 
 	--------------------------------------------------------------------------------
@@ -388,16 +346,12 @@ SkuCore.pendingPrompts = {
 			if tWho and tWho ~= "" then tText = tText .. " " .. Sku.deEn("von", "from") .. " " .. tWho end
 			return tText .. tTimeLeftSuffix(tLeft)
 		end,
+		-- ReadyCheckFrame is in interactFramesList, so its Show drives the menu into
+		-- the window exactly like the StaticPopup prompts.
 		showDialog = function()
 			local f = _G["ReadyCheckFrame"]
 			if f and f.Show then pcall(function() f:Show() end) end
 		end,
-		actions = {
-			{ label = function() return _G.READY or Sku.deEn("Bereit", "Ready") end,
-			  func = function() tCall("ConfirmReadyCheck", 1) end },
-			{ label = function() return _G.NOT_READY or Sku.deEn("Nicht bereit", "Not ready") end,
-			  func = function() tCall("ConfirmReadyCheck") end },
-		},
 	},
 }
 
@@ -425,62 +379,35 @@ function SkuCore:HasPendingPrompts()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- Menu. One submenu per live prompt (headline = label()), its actions as leaves.
--- Called from SkuOptions:MenuBuilderLocal as the "Ausstehend" contributor's build.
+-- Menu. ONE flat node per live prompt, built directly under Local by
+-- SkuOptions:MenuBuilderLocal. The entry is just the prompt's name (label());
+-- RIGHT or ENTER puts Blizzard's own dialog back on screen. Its Show fires the
+-- interactFramesList hook -> CheckFrames (deferred 0.1s in GENERIC_OnOpen) -> the
+-- menu auto-descends into the reopened window, which offers all its real buttons
+-- through the normal frame-scrape path -- that force-open is exactly what the user
+-- asked for here.
+--
+-- Node mechanics: `dynamic = true` is ONLY there to make the key handler route
+-- RIGHT into OnSelect at all (it gates RIGHT on children/dynamic); the OnSelect
+-- override then bypasses the whole generic descend/action machinery -- it shows
+-- the dialog and leaves the cursor in place, and the deferred CheckFrames
+-- re-anchors into the window a moment later. No children are ever built.
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore.PendingPromptsMenuBuilder(aParentEntry)
 	local tList = SkuCore:PendingPromptList()
 	for _, tPrompt in ipairs(tList) do
-		local tLabel
 		local ok, tRes = pcall(tPrompt.label)
-		tLabel = (ok and tRes) or tPrompt.id
+		local tLabel = (ok and tRes) or tPrompt.id
 
-		SkuMenu:BuildNode(aParentEntry, {
-			kind = "submenu",
+		local tEntry = SkuMenu:BuildNode(aParentEntry, {
+			kind = "action",
 			label = tLabel,
-			build = function(self)
-				local tActions = {}
-				for _, tAction in ipairs(tPrompt.actions or {}) do
-					tActions[#tActions + 1] = tAction
-				end
-				if tPrompt.extraActions then
-					local ok2, tExtra = pcall(tPrompt.extraActions)
-					if ok2 and type(tExtra) == "table" then
-						for _, tAction in ipairs(tExtra) do
-							tActions[#tActions + 1] = tAction
-						end
-					end
-				end
-
-				for _, tAction in ipairs(tActions) do
-					local okL, tActionLabel = pcall(tAction.label)
-					SkuMenu:BuildNode(self, {
-						kind = "action",
-						label = (okL and tActionLabel) or "?",
-						dynamic = false,
-						onAction = function()
-							pcall(tAction.func)
-							-- The prompt is answered: refresh Local so the entry drops out.
-							if C_Timer and C_Timer.After then
-								C_Timer.After(0.2, function() pcall(function() SkuCore:CheckFrames() end) end)
-							end
-						end,
-					})
-				end
-
-				-- Escape hatch: put Blizzard's own dialog back on screen. Its Show fires
-				-- the interactFramesList hook -> CheckFrames -> the menu lands on
-				-- "Popup 1", which is what the user just asked for, so the force-open is
-				-- wanted here.
-				if tPrompt.showDialog then
-					SkuMenu:BuildNode(self, {
-						kind = "action",
-						label = Sku.deEn("Fenster erneut anzeigen", "Show dialog again"),
-						dynamic = false,
-						onAction = function() pcall(tPrompt.showDialog) end,
-					})
-				end
-			end,
+			dynamic = true,
 		})
+		if tEntry then
+			tEntry.OnSelect = function(self, aEnterFlag)
+				if tPrompt.showDialog then pcall(tPrompt.showDialog) end
+			end
+		end
 	end
 end

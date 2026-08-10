@@ -4549,7 +4549,7 @@ function SkuCore:ScheduleMenuFlashRecheck()
 		if SkuCore.gameMenuActive == true then return end
 		if SkuOptions:IsMenuOpen() ~= true then return end
 		-- Pending prompts keep the menu alive here too: without this, browsing
-		-- Local -> Ausstehend with nothing else open would be closed 0.3s after opening.
+		-- a pending entry under Local with nothing else open would be closed 0.3s after opening.
 		if tAnyOpen ~= true
 			and SkuCore:AnyWindowContributorVisible() ~= true
 			and not (SkuCore.HasPendingPrompts ~= nil and SkuCore:HasPendingPrompts() == true)
