@@ -405,8 +405,70 @@ local function SkuDBEnsureActiveLocaleTables()
 	SkuDB.NpcData.Names[tLoc] = SkuDB.NpcData.Names[tLoc] or {}
 end
 
+-- [v42.09 i18n] Apply the /skudebug locale override. Runs at PLAYER_LOGIN, i.e.
+-- after SavedVariables are loaded (they are NOT available at file scope) and
+-- before the gate reads Sku.Loc. See the command in Core.lua for the scope
+-- limits - this moves the DATA locale only, never AceLocale's UI strings.
+local function SkuDBApplyLocaleOverride()
+	local tWant = (type(SkuDebugLog) == "table") and SkuDebugLog.localeOverride
+	if type(tWant) ~= "string" or tWant == Sku.Loc then return end
+	local tOk = false
+	for i = 1, #Sku.Locs do
+		if Sku.Locs[i] == tWant then tOk = true end
+	end
+	if not tOk then return end
+	local tFrom = Sku.Loc
+	Sku.Loc = tWant
+	Sku.LocAudio = (tWant == "deDE") and "deDE" or "enUS"
+	dprint("SkuDB locale override:", tFrom, "->", tWant)
+	print("|cffffc040Sku|r Debug-Datenlocale: " .. tostring(tFrom) .. " -> " .. tostring(tWant))
+end
+
+-- [v42.09 i18n] Fill gaps in the active locale's name tables from enUS.
+--
+-- An imported locale is never 100% complete - Questie has no French name for
+-- ~2700 of the ids Sku knows (934 WotLK objects, 595 base and 1159 WotLK
+-- items). Without this those ids resolve to nil and the consumer falls back to
+-- objectDataTBC[id][1], i.e. the raw GERMAN name. A French player would much
+-- rather hear the English one.
+--
+-- Done as a build step rather than an __index metatable on purpose: pairs()
+-- does not traverse __index, and several consumers ENUMERATE these tables
+-- (the AH item menu, gameWorldObjects, SkuCore/Core.lua:2507) instead of
+-- indexing them. A metatable would silently fix the lookups and leave the menus
+-- short. Cost is ~2700 table slots holding shared string references.
+--
+-- deDE and enUS are deliberately EXCLUDED. The German build is now proven
+-- byte-identical to the ungated one (/skudbcheck allloc vs gated, 37/37 PASS),
+-- and backfilling would change it: German gaps would start returning English
+-- names instead of falling through to objectDataTBC. Keep that identity until
+-- it is revisited deliberately.
+local function SkuDBBackfillRoots()
+	return {
+		{"objectLookup", SkuDB.objectLookup},
+		{"itemLookup", SkuDB.itemLookup},
+		{"questLookup", SkuDB.questLookup},
+		{"NpcData.Names", SkuDB.NpcData and SkuDB.NpcData.Names},
+	}
+end
+
+local function SkuDBBackfillOne(aRoot, aLoc)
+	if type(aRoot) ~= "table" then return 0 end
+	local tInto, tFrom = aRoot[aLoc], aRoot.enUS
+	if type(tInto) ~= "table" or type(tFrom) ~= "table" then return 0 end
+	local tN = 0
+	for k, v in pairs(tFrom) do
+		if tInto[k] == nil then
+			tInto[k] = v
+			tN = tN + 1
+		end
+	end
+	return tN
+end
+
 local function SkuDBMasterSequence()
 	local tT0 = debugprofilestop()
+	pcall(SkuDBApplyLocaleOverride)
 	pcall(SkuDBEnsureActiveLocaleTables)
 	for _, tFam in ipairs(FAMILY_ORDER) do
 		local tKey = "skudb." .. tFam
@@ -447,6 +509,28 @@ local function SkuDBMasterSequence()
 	-- normally already fired in-loop the moment their families completed; each
 	-- lives in its owning module now (SkuQuest / SkuAuras / SkuNav).
 	SkuDBRunReadySteps()
+
+	-- [v42.09 i18n] Backfill the active locale from enUS once every family is
+	-- merged. One pcall'ed sub-step per table with a yield between: Lua 5.1
+	-- cannot yield across a pcall boundary, and each table is a bounded pass
+	-- over at most ~37k enUS rows.
+	if Sku.Loc ~= "enUS" and Sku.Loc ~= "deDE" then
+		local tFilled = 0
+		for _, tEntry in ipairs(SkuDBBackfillRoots()) do
+			local tOk, tN = pcall(SkuDBBackfillOne, tEntry[2], Sku.Loc)
+			if tOk then
+				tFilled = tFilled + (tN or 0)
+			else
+				dprint("SkuDB backfill failed for", tEntry[1], tN)
+			end
+			SkuDBMaybeYield()
+		end
+		SkuDB.chunkLoad.backfilled = tFilled
+		dprint("SkuDB backfill:", Sku.Loc, "gaps filled from enUS =", tFilled)
+		if Sku.MetricPoint then
+			Sku:MetricPoint(string.format("skudb backfill %s from enUS = %d entries", tostring(Sku.Loc), tFilled))
+		end
+	end
 
 	-- global readiness: everything incl. merges is in place
 	local tAllReady = true
@@ -526,8 +610,23 @@ SkuDBStreamFrame:SetScript("OnUpdate", function()
 	end
 end)
 
+-- [v42.09 i18n] ADDON_LOADED as well as PLAYER_LOGIN: the locale override has to
+-- be in place before the DEFERRED ROUTE BUILD, which reads Sku:LocaleIsWanted to
+-- decide which name fields to materialise. A load capture puts that build at
+-- ~1.87 s and PLAYER_LOGIN at ~2.01 s, so applying the override at login only
+-- would leave route names parsed for the wrong locale set. ADDON_LOADED is the
+-- earliest point where SavedVariables exist (they are not available at file
+-- scope), so it is where this belongs.
+SkuDBStreamFrame:RegisterEvent("ADDON_LOADED")
 SkuDBStreamFrame:RegisterEvent("PLAYER_LOGIN")
-SkuDBStreamFrame:SetScript("OnEvent", function()
+SkuDBStreamFrame:SetScript("OnEvent", function(self, aEvent, aArg1)
+	if aEvent == "ADDON_LOADED" then
+		if aArg1 == "Sku" then
+			pcall(SkuDBApplyLocaleOverride)
+			SkuDBStreamFrame:UnregisterEvent("ADDON_LOADED")
+		end
+		return
+	end
 	if SkuDBStreamCo then return end -- already running (idempotent)
 	SkuDBStreamCo = coroutine.create(SkuDBMasterSequence)
 	SkuDBStreamFrame:Show()

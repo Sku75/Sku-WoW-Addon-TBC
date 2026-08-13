@@ -420,6 +420,45 @@ SlashCmdList["SKUDEBUG"] = function(aMsg)
 		SkuDebugLog.max = math.max(500, math.min(DEBUGLOG_MAX_LIMIT, tWant))
 		print(string.format("|cff80c0ffSkuDebug|r: ring size = %d lines (persisted).", SkuDebugLog.max))
 		return
+	elseif aMsg:match("^locale") then
+		-- [v42.09 i18n] DEBUG data-locale override, for testing the SkuDB locale
+		-- gate without installing another game client. Persisted and applied at
+		-- PLAYER_LOGIN, before the chunk build reads it.
+		--
+		-- SCOPE - this moves the DATA locale only:
+		--   * Sku.Loc and Sku.LocAudio, so every [Sku.Loc] table lookup and the
+		--     chunk gate follow the override. That is the part worth testing.
+		--   * AceLocale is bound to the real GetLocale(), so UI STRINGS stay in
+		--     the client's language. A German client set to enUS speaks German
+		--     text over English data. That mismatch is expected, not a bug.
+		--   * File-scope `Sku.Loc == "deDE"` checks (SkuAuras/defaultAuras.lua,
+		--     SkuCore/data.lua) have already run by then and are unaffected.
+		-- Not a shipping feature - a bench tool for the DB layer.
+		local tArg = aMsg:match("^locale%s+(%S+)$")
+		if type(SkuDebugLog) ~= "table" then SkuDebugLog = {} end
+		if tArg == "off" or tArg == "none" then
+			SkuDebugLog.localeOverride = nil
+			print("|cff80c0ffSkuDebug|r: locale override cleared - /reload to apply.")
+		elseif tArg then
+			local tCanon
+			for i = 1, #Sku.Locs do
+				if string.lower(Sku.Locs[i]) == tArg then tCanon = Sku.Locs[i] end
+			end
+			if not tCanon then
+				print("|cff80c0ffSkuDebug|r: unknown locale '"..tArg.."'. Known: "
+					..table.concat(Sku.Locs, ", ").." (or off)")
+				return
+			end
+			SkuDebugLog.localeOverride = tCanon
+			print("|cff80c0ffSkuDebug|r: data locale forced to "..tCanon
+				.." - /reload to apply. UI text stays "..tostring(Sku.Loc)..".")
+		else
+			print("|cff80c0ffSkuDebug|r: locale override = "
+				..tostring(SkuDebugLog.localeOverride or "off")
+				.."; active data locale = "..tostring(Sku.Loc)
+				..". Usage: /skudebug locale <"..table.concat(Sku.Locs, "|").."|off>")
+		end
+		return
 	elseif aMsg == "clear" then
 		if type(SkuDebugLog) == "table" then SkuDebugLog.lines = {} ; SkuDebugLog.seq = 0 end
 		print("|cff80c0ffSkuDebug|r: log cleared.")
@@ -439,7 +478,7 @@ SlashCmdList["SKUDEBUG"] = function(aMsg)
 		end
 		return
 	elseif aMsg ~= "" then
-		print("|cff80c0ffSkuDebug|r: usage: /skudebug on|off|print on|print off|log on|log off|verbose on|verbose off|size <n>|clear|show")
+		print("|cff80c0ffSkuDebug|r: usage: /skudebug on|off|print on|print off|log on|log off|verbose on|verbose off|size <n>|locale <loc>|clear|show")
 	end
 	if d.log and not tWasLog then Sku:DebugLogMark("log enabled") end
 	print(string.format("|cff80c0ffSkuDebug|r: print=%s log=%s verbose=%s ring=%d/%d",
