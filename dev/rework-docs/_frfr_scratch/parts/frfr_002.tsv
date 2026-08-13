@@ -1,0 +1,245 @@
+500	Tout réduire
+501	deux-points
+502	fin du combat
+503	notification de combat
+504	début du combat
+505	Combat
+506	Menu Sku en combat
+507	virgule
+508	virgule
+509	commentaire
+510	Communication
+511	Compagnons
+512	Terminer l'enregistrement
+513	Terminer
+514	Terminé
+515	Terminée : dans le journal de quêtes
+516	Êtes-vous sûr ?
+517	Confirmé
+518	Contacts
+519	Conteneur
+520	Sacs
+521	Contenu
+522	Continuer
+523	Sortie continue toutes les x secondes
+524	Début de la sortie continue à
+525	La sortie continue démarre après (secondes)
+526	Sortie continue
+527	Volume continu
+528	Contrôle
+529	Détermine si un son est joué à la fin d'un message de chat.
+530	convertir d'étape liée en étape réelle
+531	temps de recharge
+532	Temps de recharge
+533	Cuivre
+534	Cuivre
+535	copier toutes les lignes de chat
+536	copier cette ligne de chat
+537	Copier les données des étapes de ce tutoriel vers toutes les étapes qui y sont liées, ce qui en fait des étapes réelles indépendantes. Puis supprimer ce tutoriel
+538	Copier le texte de la macro
+539	copier le nom de l'expéditeur
+540	Copiez le texte avec Contrôle plus C puis appuyez sur Échap
+541	Copier les données de cette étape vers toutes les étapes qui y sont liées, ce qui en fait des étapes réelles indépendantes. Puis supprimer cette étape
+542	Copier aussi
+543	cadavre pillable
+544	cadavre non pillable
+545	cadavre dépeçable
+546	Compter les morts
+547	Artisanat
+548	bois
+549	Créer un groupe
+550	Insérer une nouvelle étape
+551	Créer
+552	Créer une macro
+553	Créateur
+554	n'importe quelle créature
+555	créature ciblée
+556	Dégâts critiques :
+557	Coups critiques :
+558	Coup critique max :
+559	Coup critique min :
+560	Critique
+561	croix
+562	étourdi
+563	Monnaie
+564	en cours (dans votre journal, prête à être rendue)
+565	Case de banque actuelle
+566	Combat actuel
+567	Cible de focalisation actuelle
+568	gemme actuelle :
+569	Distance sur la carte actuelle
+570	Carte actuelle
+571	Cible actuelle
+572	actuel
+573	Coordonnées actuelles 4 mètres
+574	Coordonnées actuelles 10 mètres
+575	Coordonnées actuelles 20 mètres
+576	Coordonnées actuelles 4 mètres
+577	incantation en cours modifiée
+578	ID de votre cible actuelle
+579	objet actuellement équipé
+580	malédiction
+582	Curseur
+583	curseur;activé
+584	curseur modifié
+585	Personnalisé
+587	Montant des dégâts
+588	Compteur de dégâts
+589	Dégâts subis
+590	Dégâts totaux
+591	Dégâts
+592	DPS
+593	Navigateur de donjons Sku :
+594	Sku DB :
+595	Fermer
+596	Tout désélectionner
+597	C_LFGList.CreateListing non disponible
+598	DoEnroll appelé
+599	S'inscrire
+600	Échec de l'inscription :
+601	Inscription lancée pour %d donjons
+602	Héroïque :
+603	Donjons héroïques
+604	Inviter dans le groupe
+605	 invité.
+606	Navigateur de donjons
+607	Niveau
+608	 (niveau inconnu)
+609	Non
+610	Aucun donjon ne correspond à votre niveau
+611	Aucun donjon sélectionné
+612	Aucun autre joueur n'est inscrit actuellement
+613	Actualiser la liste
+614	Actualisé. %d joueurs trouvés
+615	Actualisé. Aucun joueur trouvé
+616	Actualisé. 1 joueur trouvé
+617	RemoveListing non disponible
+618	Rôle
+619	 actif
+620	Dégâts
+621	Soigneur
+622	Tank
+623	Recherche en cours, aucun joueur trouvé pour l'instant
+624	 sélectionné
+625	 (Vous)
+626	Statut : inscrit en tant que
+627	aucun rôle sélectionné
+628	Statut : non inscrit
+629	Retirer l'inscription
+630	Inscription retirée
+631	Chuchoter au joueur
+632	Oui
+633	chasseur de démons
+634	Démonologie
+636	puis utiliser l'action 1
+637	puis utiliser l'action 1, puis l'action 5
+638	alors
+639	alors;
+640	L'Œil d'Achérus est sous votre contrôle.
+641	L'événement qui déclenche l'aura
+642	Données
+643	Durée en jours :
+644	mort
+645	Désactiver
+646	désactivé
+647	Désactivé
+648	Chevalier de la mort
+649	Chevalier de la mort
+651	Morts
+652	Durée restante des debuffs de la cible
+653	Liste des debuffs de la cible (L)
+654	types de debuff
+655	debuff
+656	Debuffs
+657	Options de débogage
+658	Refusé
+659	Tram des Profondeurs
+660	Microsoft Desktop par défaut - Anglais
+661	Son de bip par défaut
+662	son de nouvelle ligne de chat par défaut
+663	Onglet par défaut
+664	Points de passage par défaut
+665	Par défaut
+666	votre cible actuelle. exemple : un debuff a expiré sur votre cible actuelle
+667	votre compagnon
+668	Vos points de combo sur la cible actuelle déclenchant l'aura
+669	votre focalisation. exemple : un buff lancé sur votre cible de focalisation
+670	Votre santé en pourcentage
+671	Votre niveau de santé en pourcentage pour déclencher l'aura.
+672	Votre niveau de ressource en pourcentage pour déclencher l'aura (votre ressource principale comme mana, énergie, rage, etc.).
+673	votre cible
+674	Vos points de combo sur la cible actuelle
+675	Votre santé lors de l'événement déclencheur
+676	Votre ressource (mana, rage, énergie) lors de l'événement déclencheur
+677	Délai avant le déclenchement de la sortie (millisecondes)
+678	Délai sur plaque trouvée
+679	Supprimer tous les tutoriels personnalisés
+680	Supprimer toutes les étapes liées à une étape de ce tutoriel. Puis supprimer ce tutoriel
+681	Supprimer toutes les étapes liées à cette étape. Puis supprimer cette étape
+682	supprimer l'historique du chat à la connexion
+683	Supprimer l'onglet
+684	supprimer les onglets de chuchotement sans activité après
+685	Supprimer
+686	Supprimer
+687	Supprimé
+688	Retirer de la liste
+690	Démonologie
+691	Le type de l'aura (buff ou debuff) qui déclenche l'aura Sku
+692	Le temps de recharge d'un objet a démarré
+693	Le temps de recharge d'un objet est terminé
+694	Le temps de recharge d'un sort a démarré
+695	Le temps de recharge d'un sort est terminé
+696	L'objet n'a pas été trouvé.
+697	Le nom de l'objet qui déclenche l'aura
+698	La classe qui déclenche l'aura
+699	Le nom de l'événement déclencheur
+700	Le nom de l'objet qui a déclenché l'aura
+701	Le nom du sort qui a déclenché l'aura
+702	Rivière Colère-du-Sud
+703	Le type de l'événement d'échec
+704	Le nom du sort qui déclenche l'aura
+705	Familier actuel
+706	décroissant
+707	Description et récompenses
+708	description
+709	Description :
+710	Tout désélectionner
+711	Destination :
+712	Destruction feu
+713	Destruction
+714	Détails
+715	Direction et distance détaillées
+716	Extension Details non installée
+717	Volet Détails
+718	Détails
+719	Ciblage au cadran
+720	Dialogue
+721	Volume des dialogues
+722	Dialogue
+723	losange
+724	Le nombre de cumuls d'une aura (buff ou debuff) qui déclenche l'aura Sku
+725	Le nombre d'unités restantes sur l'objet qui a déclenché l'événement
+726	Le nombre de l'objet qui a déclenché l'aura
+727	Les sorties sont audio et seront effectuées avant toute autre sortie. L'aura n'est déclenchée qu'une seule fois. La prochaine activation de l'aura aura lieu lorsque l'aura aura été fausse au moins une fois.
+728	Les sorties sont audio
+729	Les sorties sont audio. L'aura n'est déclenchée qu'une seule fois. La prochaine activation de l'aura aura lieu lorsque l'aura aura été fausse au moins une fois.
+730	L'aura n'est déclenchée qu'une seule fois. La prochaine activation de l'aura aura lieu lorsque l'aura aura été fausse au moins une fois.
+731	Les sorties sont du texte dans le chat
+732	La sortie est du texte. L'aura n'est déclenchée qu'une seule fois. La prochaine activation de l'aura aura lieu lorsque l'aura aura été fausse au moins une fois.
+733	L'unité de la cible de votre cible
+734	L'ID d'unité de la source lors de l'événement déclencheur
+735	L'ID d'unité de la cible lors de l'événement déclencheur
+736	L'ID de l'objet qui déclenche l'aura
+737	Les Cavernes des Lamentations
+738	La classe de l'unité lors de l'événement déclencheur
+739	La liste des buffs sur la cible
+740	La liste des debuffs sur la cible
+741	L'unité source pour laquelle l'aura sera déclenchée
+742	Le nombre de cumuls de l'aura
+743	La quantité restante d'un objet qui a déclenché l'aura
+744	L'ID du sort qui déclenche l'aura
+745	L'unité cible pour laquelle l'aura doit être déclenchée
+746	Difficulté
+747	Difficulté :
+748	Direction
+749	Hache-Tripes
