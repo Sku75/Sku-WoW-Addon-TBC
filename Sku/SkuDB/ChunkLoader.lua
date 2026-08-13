@@ -132,6 +132,35 @@ local function SkuDBFail(aFamily, aMsg)
 	SkuDBSpeak("Sku Datenbank Fehler, Datensatz " .. aFamily)
 end
 
+-- [v42.09 i18n] Trailing locale of a chunk path, e.g.
+-- "SkuDB.WotLK.NpcData.Names.deDE" -> "deDE". nil for locale-neutral tables
+-- (NpcData.Data, questDataTBC, SpellDataTBC, ...), which are always built.
+local function SkuDBLocaleOfPath(aPath)
+	local tLast = string.match(aPath, "([^%.]+)$")
+	for i = 1, #Sku.Locs do
+		if Sku.Locs[i] == tLast then return tLast end
+	end
+	return nil
+end
+
+-- [v42.09 i18n] Should this chunk be built on this client?
+--
+-- Before the gate, EVERY registered chunk was built regardless of client
+-- language, so a German client also materialised the full enUS name tables and
+-- an English client the full deDE ones. The rule is now "active locale + enUS"
+-- (see Sku:LocaleIsWanted), with one structural exception:
+--
+--   objectLookup.deDE is always kept. The base objects file ships deDE chunks
+--   only, and SkuDB.objectLookup.enUS is CONSTRUCTED further down from the
+--   merged deDE KEY SET. Dropping deDE there would leave an English client with
+--   no object names at all. The other three families ship both locales
+--   directly and have no such coupling.
+local function SkuDBChunkWanted(aPath, aLoc)
+	if not aLoc then return true end
+	if aLoc == "deDE" and string.find(aPath, "objectLookup", 1, true) then return true end
+	return Sku:LocaleIsWanted(aLoc)
+end
+
 local function SkuDBResolvePath(aPath)
 	local t = _G
 	for tSeg in string.gmatch(aPath, "[^%.]+") do
@@ -148,6 +177,15 @@ local function SkuDBBuildFamilyChunks(aFamily)
 	if not tList then return true end -- pristine-format files on disk: nothing registered
 	for i = 1, #tList do
 		local tPath, tBody = tList[i][1], tList[i][2]
+		local tChunkLoc = SkuDBLocaleOfPath(tPath)
+		if not SkuDBChunkWanted(tPath, tChunkLoc) then
+			-- Skipped, but still drop the source string so the chunk text is
+			-- collectable at the GC that ends the stream - the whole point is
+			-- to not pay for a locale this client never reads.
+			SkuDB.chunkLoad.skipped = (SkuDB.chunkLoad.skipped or 0) + 1
+			tList[i] = nil
+			SkuDBMaybeYield()
+		else
 		local tTarget = SkuDBResolvePath(tPath)
 		if type(tTarget) ~= "table" then
 			SkuDBFail(aFamily, tPath .. ": target table missing")
@@ -167,6 +205,7 @@ local function SkuDBBuildFamilyChunks(aFamily)
 		SkuDB.chunkLoad.chunks = SkuDB.chunkLoad.chunks + 1
 		tList[i] = nil -- free the chunk source string
 		SkuDBMaybeYield()
+		end
 	end
 	return true
 end
@@ -186,6 +225,25 @@ local function SkuDBMergeAbsent(aInto, aFrom)
 	end
 end
 
+-- [v42.09 i18n] Merge a LOCALIZED table family (questLookup, itemLookup,
+-- objectLookup, NpcData.Names) across every locale this client keeps resident.
+--
+-- This replaces four hardcoded `.deDE` merge calls. Those were wrong in both
+-- directions once more than one language is real: they merged the WotLK/SoD
+-- German names even on a client that never reads German, and they would have
+-- left a French client with base-TBC names but NO WotLK names, silently, since
+-- nothing ever merged the frFR sub-table.
+local function SkuDBMergeLocales(aInto, aFrom)
+	if type(aInto) ~= "table" or type(aFrom) ~= "table" then return end
+	for i = 1, #Sku.Locs do
+		local tLoc = Sku.Locs[i]
+		if Sku:LocaleIsWanted(tLoc)
+			and type(aInto[tLoc]) == "table" and type(aFrom[tLoc]) == "table" then
+			SkuDBMergeAbsent(aInto[tLoc], aFrom[tLoc])
+		end
+	end
+end
+
 -- Per-family work as a LIST of atomic sub-steps (fixes first, then the
 -- merges - the same calls in the same relative order SkuQuest:PLAYER_LOGIN
 -- made; SoD merges stay behind Sku.IsEraSoD exactly as before). Each
@@ -198,11 +256,11 @@ local SkuDBFamilySteps = {
 			SkuDB:SoDFixQuestDB(SkuDB.SoD)
 		end,
 		function() SkuDBMergeAbsent(SkuDB.questDataTBC, SkuDB.WotLK.questDataTBC) end,
-		function() SkuDBMergeAbsent(SkuDB.questLookup.deDE, SkuDB.WotLK.questLookup.deDE) end,
+		function() SkuDBMergeLocales(SkuDB.questLookup, SkuDB.WotLK.questLookup) end,
 		function()
 			if Sku.IsEraSoD == true then
 				SkuDBMergeAbsent(SkuDB.questDataTBC, SkuDB.SoD.questDataTBC)
-				SkuDBMergeAbsent(SkuDB.questLookup.deDE, SkuDB.SoD.questLookup.deDE)
+				SkuDBMergeLocales(SkuDB.questLookup, SkuDB.SoD.questLookup)
 			end
 		end,
 	},
@@ -213,11 +271,11 @@ local SkuDBFamilySteps = {
 			SkuDB:SoDFixCreaturesDB(SkuDB.SoD)
 		end,
 		function() SkuDBMergeAbsent(SkuDB.NpcData.Data, SkuDB.WotLK.NpcData.Data) end,
-		function() SkuDBMergeAbsent(SkuDB.NpcData.Names.deDE, SkuDB.WotLK.NpcData.Names.deDE) end,
+		function() SkuDBMergeLocales(SkuDB.NpcData.Names, SkuDB.WotLK.NpcData.Names) end,
 		function()
 			if Sku.IsEraSoD == true then
 				SkuDBMergeAbsent(SkuDB.NpcData.Data, SkuDB.SoD.NpcData.Data)
-				SkuDBMergeAbsent(SkuDB.NpcData.Names.deDE, SkuDB.SoD.NpcData.Names.deDE)
+				SkuDBMergeLocales(SkuDB.NpcData.Names, SkuDB.SoD.NpcData.Names)
 			end
 		end,
 	},
@@ -230,18 +288,35 @@ local SkuDBFamilySteps = {
 		function() SkuDBMergeAbsent(SkuDB.objectDataTBC, SkuDB.WotLK.objectDataTBC) end,
 		function() SkuDBMergeAbsent(SkuDB.objectLookup.deDE, SkuDB.WotLK.objectLookup.deDE) end,
 		function()
-			-- objectLookup.enUS is CREATED here from the merged deDE key set
-			-- (verbatim behavior of the old merge)
-			SkuDB.objectLookup.enUS = {}
-			for i, v in pairs(SkuDB.objectLookup.deDE) do
-				SkuDB.objectLookup.enUS[i] = SkuDB.WotLK.objectLookup.enUS[i]
+			-- [v42.09 i18n] The base objects file ships deDE chunks ONLY, so every
+			-- other locale's base table is DERIVED: walk the merged deDE key set
+			-- and take each id's name from that locale's WotLK table. This is the
+			-- old enUS-only construction, generalised to whichever locales this
+			-- client keeps resident (that is why objectLookup.deDE is exempt from
+			-- the locale gate - it is the key set, not just a language).
+			--
+			-- Guarded on emptiness so it stays a FALLBACK: if a locale ships real
+			-- base object chunks of its own - as the generated frFR set does -
+			-- that data wins and nothing is derived over the top of it.
+			for i = 1, #Sku.Locs do
+				local tLoc = Sku.Locs[i]
+				if tLoc ~= "deDE" and Sku:LocaleIsWanted(tLoc) then
+					local tFrom = SkuDB.WotLK.objectLookup and SkuDB.WotLK.objectLookup[tLoc]
+					local tInto = SkuDB.objectLookup[tLoc]
+					if type(tFrom) == "table" and (type(tInto) ~= "table" or next(tInto) == nil) then
+						local tNew = {}
+						for tId in pairs(SkuDB.objectLookup.deDE) do
+							tNew[tId] = tFrom[tId]
+						end
+						SkuDB.objectLookup[tLoc] = tNew
+					end
+				end
 			end
 		end,
 		function()
 			if Sku.IsEraSoD == true then
 				SkuDBMergeAbsent(SkuDB.objectDataTBC, SkuDB.SoD.objectDataTBC)
-				SkuDBMergeAbsent(SkuDB.objectLookup.deDE, SkuDB.SoD.objectLookup.deDE)
-				SkuDBMergeAbsent(SkuDB.objectLookup.enUS, SkuDB.SoD.objectLookup.enUS)
+				SkuDBMergeLocales(SkuDB.objectLookup, SkuDB.SoD.objectLookup)
 			end
 		end,
 	},
@@ -252,11 +327,11 @@ local SkuDBFamilySteps = {
 			SkuDB:SoDFixItemDB(SkuDB.SoD)
 		end,
 		function() SkuDBMergeAbsent(SkuDB.itemDataTBC, SkuDB.WotLK.itemDataTBC) end,
-		function() SkuDBMergeAbsent(SkuDB.itemLookup.deDE, SkuDB.WotLK.itemLookup.deDE) end,
+		function() SkuDBMergeLocales(SkuDB.itemLookup, SkuDB.WotLK.itemLookup) end,
 		function()
 			if Sku.IsEraSoD == true then
 				SkuDBMergeAbsent(SkuDB.itemDataTBC, SkuDB.SoD.itemDataTBC)
-				SkuDBMergeAbsent(SkuDB.itemLookup.deDE, SkuDB.SoD.itemLookup.deDE)
+				SkuDBMergeLocales(SkuDB.itemLookup, SkuDB.SoD.itemLookup)
 			end
 		end,
 	},
@@ -304,8 +379,35 @@ local function SkuDBRunReadySteps()
 	end
 end
 
+-- [v42.09 i18n] Nil-safety net for the ACTIVE locale.
+--
+-- Roughly 150 call sites index these tables as [Sku.Loc] with no nil check -
+-- SkuDB.objectLookup[Sku.Loc][id], SkuDB.NpcData.Names[Sku.Loc][id] and so on.
+-- Every locale that ships name data declares its own sub-table, but a client
+-- language with no data yet (frFR until the generated set lands) would have
+-- none, and the first lookup would hard error instead of simply finding no
+-- name. Empty tables degrade to "name not found", which every consumer already
+-- handles via its `or objectDataTBC[id][1]` style fallbacks.
+--
+-- Runs at PLAYER_LOGIN, i.e. after every asset file has declared its tables, so
+-- it can only ever ADD a missing locale - it never clobbers shipped data.
+local function SkuDBEnsureActiveLocaleTables()
+	local tLoc = Sku.Loc
+	if not tLoc then return end
+	SkuDB.objectLookup = SkuDB.objectLookup or {}
+	SkuDB.itemLookup = SkuDB.itemLookup or {}
+	SkuDB.questLookup = SkuDB.questLookup or {}
+	SkuDB.NpcData = SkuDB.NpcData or {}
+	SkuDB.NpcData.Names = SkuDB.NpcData.Names or {}
+	SkuDB.objectLookup[tLoc] = SkuDB.objectLookup[tLoc] or {}
+	SkuDB.itemLookup[tLoc] = SkuDB.itemLookup[tLoc] or {}
+	SkuDB.questLookup[tLoc] = SkuDB.questLookup[tLoc] or {}
+	SkuDB.NpcData.Names[tLoc] = SkuDB.NpcData.Names[tLoc] or {}
+end
+
 local function SkuDBMasterSequence()
 	local tT0 = debugprofilestop()
+	pcall(SkuDBEnsureActiveLocaleTables)
 	for _, tFam in ipairs(FAMILY_ORDER) do
 		local tKey = "skudb." .. tFam
 		if not Sku.DeferredData.ready[tKey] and not Sku.DeferredData.failed[tKey] then

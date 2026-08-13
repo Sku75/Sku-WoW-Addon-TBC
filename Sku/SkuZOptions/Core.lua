@@ -383,7 +383,28 @@ function SkuOptions:SlashFunc(input, aSilent)
 			--SkuNav:CreateWaypointCache()
 			SkuNav:PLAYER_ENTERING_WORLD()
 
+		elseif fields[1] == "alllocales" then
+			-- [v42.09 i18n] Authoring escape hatch for the SkuDB locale gate.
+			-- The gate normally builds only "active locale + enUS", but the
+			-- /sku translate pipeline needs deDE AND enUS resident at once
+			-- whatever the client language. Persisted in the authoring
+			-- SavedVariable and read at PLAYER_LOGIN, so it needs a /reload.
+			SkuTranslatedData = SkuTranslatedData or {}
+			SkuTranslatedData.loadAllLocales = not (SkuTranslatedData.loadAllLocales == true)
+			local tState = SkuTranslatedData.loadAllLocales and "an" or "aus"
+			print("|cff00ff00Sku|r alllocales "..tState.." - /reload nötig")
+			SkuOptions.Voice:OutputStringBTtts("Alle Sprachdaten "..tState..", neu laden nötig", false, true, 0.2)
+
 		elseif fields[1] == "translate" then
+			-- [v42.09 i18n] Refuse to run half-blind: with the locale gate on and
+			-- alllocales off, one side of every deDE->enUS pair is an empty table,
+			-- so the pipeline would "translate" everything to nothing and quietly
+			-- overwrite good names.
+			if not (SkuTranslatedData and SkuTranslatedData.loadAllLocales == true) then
+				print("|cffff4040Sku|r /sku translate braucht alle Sprachdaten: erst /sku alllocales, dann /reload.")
+				SkuOptions.Voice:OutputStringBTtts("Erst alle Sprachdaten aktivieren und neu laden", false, true, 0.2)
+				return
+			end
 			if SkuTranslatedData then
 				SkuTranslatedData.untranslatedTerms = {}
 			end

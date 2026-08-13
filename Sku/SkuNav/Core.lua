@@ -3426,13 +3426,43 @@ function SkuNav:LoadDefaultMapData(aForce)
 			local tData = SkuDB.routedata["global"].WaypointsNew[x]
 			SkuDB.routedata["global"].Waypoints[x] = tData
 			if SkuDB.routedata["global"].Waypoints[x][1] ~= false then
-				local en, de = string.match(SkuDB.routedata["global"].Waypoints[x].names, "(.+)§(.+)")
-				if not en or not de then
-					en, de = "", ""
+				-- [v42.09 i18n] Positional split of the packed name string against
+				-- Sku.Locs. This REPLACES the old `string.match(names, "(.+)§(.+)")`,
+				-- which was not just two-locale-only but actively wrong for a third
+				-- field: `.+` is greedy, so "a§b§c" parsed as en="a§b", de="c".
+				--
+				-- Fields are matched to Sku.Locs by position. A file with fewer
+				-- fields than locales (= every route file shipped so far, which
+				-- carries only enUS§deDE) is valid: the trailing locales simply
+				-- have no field and fall back to enUS, so a French client reads
+				-- English route names instead of blank ones until French name data
+				-- exists. Only locales this client keeps resident are materialised.
+				local tPacked = SkuDB.routedata["global"].Waypoints[x].names
+				local tFields = {}
+				if type(tPacked) == "string" then
+					local tPos = 1
+					while true do
+						local tS, tE = string.find(tPacked, "§", tPos, true)
+						if not tS then
+							tFields[#tFields + 1] = string.sub(tPacked, tPos)
+							break
+						end
+						tFields[#tFields + 1] = string.sub(tPacked, tPos, tS - 1)
+						tPos = tE + 1
+					end
 				end
-				SkuDB.routedata["global"].Waypoints[x].names = {}
-				SkuDB.routedata["global"].Waypoints[x].names["enUS"] = en
-				SkuDB.routedata["global"].Waypoints[x].names["deDE"] = de
+				local tNames = {}
+				for i = 1, #Sku.Locs do
+					local tLoc = Sku.Locs[i]
+					if Sku:LocaleIsWanted(tLoc) then
+						local tField = tFields[i]
+						if tField == nil or tField == "" then
+							tField = tFields[1] or ""
+						end
+						tNames[tLoc] = tField
+					end
+				end
+				SkuDB.routedata["global"].Waypoints[x].names = tNames
 			end
 		end
 		SkuDB.routedata["global"].WaypointsNew = nil

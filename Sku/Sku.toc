@@ -119,7 +119,20 @@ SkuDB\assets\SoD\items.lua
 SkuDB\assets\SoD\items_fixes.lua
 SkuDB\assets\SoD\objects.lua
 SkuDB\assets\SoD\objects_fixes.lua
-SkuDB\assets\SoD\spells.lua
+
+# [v42.09 i18n] French game names, generated from Questie's shipped frFR
+# lookups by dev/rework-docs/_gen_frfr_names.py. These only REGISTER chunks;
+# ChunkLoader's locale gate skips building them on a non-frFR client, so
+# German and English users pay nothing beyond the file parse.
+SkuDB\assets\frFR\quests_frFR.lua
+SkuDB\assets\frFR\creatures_frFR.lua
+SkuDB\assets\frFR\items_frFR.lua
+SkuDB\assets\frFR\objects_frFR.lua
+SkuDB\assets\WotLK\frFR\quests_frFR.lua
+SkuDB\assets\WotLK\frFR\creatures_frFR.lua
+SkuDB\assets\WotLK\frFR\items_frFR.lua
+SkuDB\assets\WotLK\frFR\objects_frFR.lua
+
 SkuDB\ChunkLoader.lua
 _psF_postSkuDB.lua
 

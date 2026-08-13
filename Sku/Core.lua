@@ -26,7 +26,64 @@ Sku = {}
 Sku.ns = ns
 Sku.L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
 Sku.Loc = Sku.L["locale"]
-Sku.Locs = {"enUS", "deDE",}
+
+-- [v42.09 i18n] Sku.Locs is the ORDERED list of data locales. The order is
+-- load-bearing in exactly one place: the packed route-name strings in the
+-- routedata files are positional, "<enUS>§<deDE>" today and "<enUS>§<deDE>§<frFR>"
+-- once French name data exists (SkuNav:LoadDefaultMapData splits them against
+-- this list). Never reorder the first two entries; append new locales at the
+-- end. Data files with FEWER §-fields than this list stay valid - the split
+-- simply leaves the trailing locales empty, which is exactly the current
+-- two-field state of every shipped route file.
+Sku.Locs = {"enUS", "deDE", "frFR",}
+
+-- [v42.09 i18n] Audio locale, deliberately SEPARATE from Sku.Loc.
+--
+-- The pre-recorded clips under SkuAudioData/assets/audio/ exist for deDE and
+-- enUS only (~35 genuinely spoken tokens - the eight compass directions plus
+-- the movement/status states; everything else in that index is a
+-- locale-neutral sound-effect name). Those play on a dedicated low-latency
+-- channel, which is the whole point of pre-rendering them, so a locale without
+-- its own clips must fall back to the ENGLISH audio rather than to TTS.
+--
+-- Consequence for translators: the handful of L[] keys whose value is looked up
+-- in the integrated audio index must keep their ENGLISH value in every locale
+-- file that has no audio pack. See Sku.AudioLiteralKeys below - that list is
+-- the contract, do not "fix" those entries into French.
+Sku.LocAudio = (Sku.Loc == "deDE") and "deDE" or "enUS"
+
+-- NOTE for translators: there is deliberately no "do not translate" key list
+-- here. The integrated-audio lookups are driven by HARDCODED identifiers, not
+-- by L[] values - callers pass literals like "male-Drinnen", "male-Fallen",
+-- "male-Tot" straight to SkuVoice:OutputString / GetAudiodata (SkuCore/Core.lua
+-- 268, 1315, 1414, 1422, 1430). Those strings never pass through the locale
+-- table, so no translation can break them. The enUS index uses the same tokens
+-- lowercased ("male-drinnen"), which is why they are identifiers and not speech.
+-- Sku.LocAudio above is therefore the ONLY thing French needs here.
+
+-- [v42.09 i18n] Which data locales this client keeps RESIDENT.
+--
+-- Before this, ChunkLoader built every registered chunk regardless of the
+-- client language, so a German client also built the full enUS name tables and
+-- vice versa. The rule now is "active locale + enUS":
+--   * the active locale, because objectLookup/itemLookup/questLookup/NpcData
+--     are read as [Sku.Loc] at runtime in ~150 places;
+--   * enUS unconditionally, because it is the hard fallback that several live
+--     paths rely on (auctionHouse.lua itemLookup fallback, SkuDB.Wiki, and
+--     Sku.locStr's fallback chain), and because it is the pivot the /sku
+--     translate authoring pipeline translates FROM.
+-- An English client therefore stops paying for the German tables entirely.
+--
+-- ESCAPE HATCH: the /sku translate authoring pipeline needs deDE AND enUS
+-- resident at once no matter which client it runs on. SkuTranslatedData is
+-- already the authoring SavedVariable, so the flag lives there and is honoured
+-- at BUILD time (PLAYER_LOGIN), by which point SavedVariables have loaded.
+-- Toggle with /sku alllocales, then /reload.
+function Sku:LocaleIsWanted(aLoc)
+	if not aLoc then return true end
+	if SkuTranslatedData and SkuTranslatedData.loadAllLocales == true then return true end
+	return aLoc == Sku.Loc or aLoc == "enUS" or aLoc == Sku.LocAudio
+end
 
 -- [v42.08] frFR aufgenommen: der Minimap-/Boden-Ressourcenscanner hat jetzt native
 -- franzoesische Knotennamen (SkuCore/minimapScanner.lua), daher darf Sku.LocP auf einem
@@ -93,7 +150,9 @@ function Sku:VoicePackAudioDir()
 end
 
 function Sku:IntegratedAudioDir()
-	return [[Interface\AddOns\Sku\SkuAudioData\assets\audio\]]..Sku.Loc..[[\]]
+	-- [v42.09 i18n] Sku.LocAudio, not Sku.Loc: clips exist for deDE and enUS
+	-- only, so any other client language reads the English folder.
+	return [[Interface\AddOns\Sku\SkuAudioData\assets\audio\]]..Sku.LocAudio..[[\]]
 end
 
 function Sku:AudioFile(aFileName)

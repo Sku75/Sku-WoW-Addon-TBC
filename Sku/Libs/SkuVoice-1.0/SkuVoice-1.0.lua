@@ -1219,10 +1219,32 @@ function SkuVoice:GetAudiodata(aString)
 	tPath = nil
 	tLen = nil
 	
-	if SkuAudioFileIndexIntegrated[Sku.Loc][aString] ~= nil then
-		tFile = SkuAudioFileIndexIntegrated[Sku.Loc][aString]
-		tPath = Sku:IntegratedAudioDir()
-		tLen = SkuAudioDataLenIndexIntegrated[Sku.Loc][SkuAudioFileIndexIntegrated[Sku.Loc][aString]]
+	-- [v42.09 i18n] Two fixes here, both pre-existing bugs exposed by adding a
+	-- third client language:
+	--
+	-- 1. Sku.LocAudio instead of Sku.Loc, and an existence guard. The
+	--    integrated index only has deDE and enUS sub-tables, so on any other
+	--    client locale the old `SkuAudioFileIndexIntegrated[Sku.Loc][aString]`
+	--    indexed a nil table and threw.
+	-- 2. Case-insensitive retry. The enUS index stores these identifiers
+	--    lowercased ("male-drinnen") while callers pass them capitalised
+	--    ("male-Drinnen"). SkuVoice:OutputString happens to retry lowercased,
+	--    but direct GetAudiodata callers do not - which is why
+	--    SkuCore's tPlayZoneAudio inside/outside announcement has been silently
+	--    dead on English clients. Retrying here fixes every direct caller at once.
+	local tIndex = SkuAudioFileIndexIntegrated and SkuAudioFileIndexIntegrated[Sku.LocAudio]
+	local tLenIndex = SkuAudioDataLenIndexIntegrated and SkuAudioDataLenIndexIntegrated[Sku.LocAudio]
+	if tIndex and aString ~= nil then
+		local tKey = aString
+		if tIndex[tKey] == nil then
+			local tLower = string.lower(tostring(aString))
+			if tIndex[tLower] ~= nil then tKey = tLower end
+		end
+		if tIndex[tKey] ~= nil then
+			tFile = tIndex[tKey]
+			tPath = Sku:IntegratedAudioDir()
+			tLen = tLenIndex and tLenIndex[tIndex[tKey]]
+		end
 	end
 
 	if tFile == nil then
