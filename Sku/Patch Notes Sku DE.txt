@@ -4,6 +4,359 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v42.11
+
+    Taxi: Sku nennt den naechsten Flugpunkt und laesst dich dort landen
+        Einfach: Auf einem Flug beim Flugmeister sagt Sku jetzt an, welcher Flugpunkt als
+            naechstes kommt, und du kannst dort aussteigen, statt bis zum eigentlichen Ziel
+            weiterzufliegen. Die Taste dafuer ist ab Werk Strg-Umschalt-E; sie steht wie
+            jede andere Sku-Taste unter "Navigation und Wegpunkte" zum Umbelegen bereit.
+            Es gibt zwei Ansagen je Teilstrecke, weil sie verschiedene Fragen beantworten:
+            den naechsten Halt beim Abflug und nach jedem Zwischenstopp, und "vorzeitige
+            Landung moeglich" rund 800 Meter davor. Vor dem letzten Halt bleibt Sku still -
+            dort vorzeitig zu landen waere schlicht Ankommen. Abschalten laesst sich das
+            Ganze unter "Taxiflug". Nur Flugmeister-Taxis, niemals Fahrzeuge.
+        Technisch: Neues Modul SkuCore/taxi.lua. Die Route wird mitgeschrieben, nicht
+            geraten: hooksecurefunc auf TakeTaxiNode greift, solange die Taxikarte noch
+            offen ist - das einzige Zeitfenster, in dem GetNumRoutes, TaxiGetNodeSlot und
+            TaxiNodeName ueberhaupt noch antworten. Damit ist die Haltestellenliste exakt,
+            und jeder Halt darauf ist fuer diesen Charakter auch wirklich anfliegbar. Ein
+            Naeherungszeiger schiebt sie weiter, waehrend das Taxi ueber die Knoten fliegt;
+            die Suche nach dem naechstgelegenen Knoten bleibt nur als gekennzeichneter
+            Rueckfall fuer einen /reload mitten im Flug, gefiltert nach Fraktion und
+            Entdeckungsstand. Drei Eigenheiten des Clients stehen im Dateikopf, damit sie
+            nicht neu erarbeitet werden muessen: die Anforderung landet immer am NAECHSTEN
+            Flugpunkt (so steht es auch in TAXI_CANCEL_DESCRIPTION), weshalb der
+            Routenzeiger die richtige Antwort ist; IsPossessBarVisible meldet false,
+            waehrend PossessButton2 sichtbar ist - verlaesslich ist allein
+            MainMenuBarVehicleLeaveButton, gelesen mit IsVisible, und der steht den ganzen
+            Flug ueber; PLAYER_CONTROL_LOST feuert, waehrend UnitOnTaxi noch false ist,
+            weshalb jedes daran haengende Aufraeumen frisch erfasste Daten geloescht haette.
+            Jeder Einstiegspunkt prueft UnitOnTaxi erneut - dieselbe Weiche, mit der
+            Blizzard TaxiRequestEarlyLanding von VehicleExit trennt. Diagnose: "taxi:"-Zeilen
+            im SkuDebugLog und /skutaxi.
+
+    Gruppeneinladungen werden nicht mehr stillschweigend abgelehnt
+        Einfach: Das Schliessen des Sku-Menues - aus welchem Grund auch immer: Escape aus
+            den Taschen, ein anderes Fenster, ein Wechsel in den Kampf - hat eine offene
+            Gruppeneinladung abgelehnt, und der Einladende bekam eine Absage zu sehen. Fuer
+            einen sehenden Spieler passiert an dieser Stelle gar nichts, der Dialog steht
+            einfach seine 60 Sekunden lang da. Das war also ein Verlust, den es nur mit Sku
+            gab. Die Einladung wird beim Schliessen jetzt nicht mehr beantwortet; sie
+            verschwindet nur vom Bildschirm und ist unter "Local" wieder erreichbar.
+        Technisch: StaticPopupDialogs["PARTY_INVITE"].OnHide ruft DeclineGroup auf, sofern
+            dialog.inviteAccepted nicht gesetzt ist - und OnHide feuert auch bei einem
+            schlichten frame:Hide() (XML-OnHide -> GameDialogMixin:OnHide ->
+            StaticPopup_OnHide -> dialogInfo.OnHide). Das OnHide des Sku-Menues ruft genau
+            dieses StaticPopup1:Hide(). Neu ist SkuCore:NeutralizePopupHide(frame), direkt
+            davor aufgerufen: fuer PARTY_INVITE setzt es inviteAccepted, so dass Blizzards
+            OnHide das Ablehnen ueberspringt, und markiert den Frame, damit der eigene Hook
+            ein neutralisiertes Verstecken von einer echten Antwort unterscheiden kann -
+            schlichte Felder auf einem unsicheren Frame, kein Taint; OnShow setzt
+            inviteAccepted zurueck, ein spaeteres echtes Anzeigen bleibt also unberuehrt.
+            Eine Abfrage-API fuer offene Einladungen gibt es auf diesem Client nicht, der
+            Merker ist also unserer: gesetzt bei PARTY_INVITE_REQUEST, verworfen bei
+            PARTY_INVITE_CANCEL, bei jedem nicht neutralisierten Verstecken (echtes
+            Annehmen, Ablehnen, Zeitablauf) und durch die eigene Frist. Fuer das Protokoll
+            wurden alle Dialoge mit zerstoerendem OnHide geprueft: PARTY_INVITE (hier
+            behoben), LEVEL_GRANT_PROPOSED (DeclineLevelGrant), EQUIP_BIND und Verwandte
+            (CancelPendingEquip - ohne Ueberspring-Flag, braucht eine andere Loesung) und
+            QUIT (CancelLogout, harmlos).
+
+    Ausstehende Aufforderungen bleiben im Local-Menue erreichbar
+        Einfach: Wenn du mit Escape aus dem Sku-Menue gehst, verschwindet ein offener
+            Dialog vom Bildschirm - eine Beschwoerung, die Frage nach dem Geist, eine
+            Wiederbelebung, eine Bereitschaftspruefung. Bisher war er damit bis zum
+            naechsten /reload weg, obwohl er auf dem Server die ganze Zeit gueltig blieb.
+            Solche Aufforderungen stehen jetzt als eigener Punkt direkt unter "Local", nach
+            der Aufforderung benannt; RECHTS oder EINGABE zeigt das echte Fenster wieder an,
+            und Sku steigt hinein, so dass du die gewohnten Schaltflaechen bedienst.
+        Technisch: Neues Modul SkuCore/pendingPrompts.lua. Die Aufforderungen werden aus dem
+            ZUSTAND wiederhergestellt, nicht aus dem Frame: Beschwoerung ueber C_SummonInfo,
+            Wiederbelebung ueber ResurrectGetOfferer, Geist-Freigabe ueber
+            GetReleaseTimeRemaining plus die Selbstwiederbelebungs-Optionen aus C_DeathInfo,
+            Bereitschaftspruefung ueber GetReadyCheckTimeLeft/Status. Ein rohes :Hide()
+            erreicht nur StaticPopup_OnHide und nie OnCancel, es wurde also nie etwas
+            abgelehnt oder freigegeben - nur PLAYER_ENTERING_WORLD zeigt DEATH und
+            CONFIRM_SUMMON von sich aus wieder an, daher "weg bis zum /reload". Solange der
+            zugehoerige Dialog auf dem Bildschirm steht, wird der Punkt unterdrueckt, es
+            gibt ihn also nie doppelt neben dem Popup-Eintrag. Wichtig ist, dass diese
+            Punkte PASSIV sind: das "ist ueberhaupt etwas offen"-Kriterium in CheckFrames
+            haelt einerseits ein offenes Menue am Leben und reisst andererseits ueber
+            SlashFunc das Menue auf. Ausstehende Aufforderungen speisen nur das Erste
+            (tPendingOnly), sonst wuerde eine dauerhaft erreichbare Aufforderung bei jedem
+            Taschen-Update das Menue aufziehen; aus demselben Grund bleiben sie aus
+            combatMenuHasWindow heraus. Zuerst gab es eine verschachtelte Form mit eigenen
+            Aktionspunkten - funktionsfaehig, aber zu viel Navigation. Jetzt ist es ein
+            einziger flacher Punkt je Aufforderung: kind="action" mit dynamic=true, damit
+            RECHTS ueberhaupt auf OnSelect geht, plus eine OnSelect-Umleitung, die die
+            uebliche Abstiegsmechanik umgeht; die echten Schaltflaechen kommen ueber das
+            normale Auslesen des wieder angezeigten Fensters.
+
+    Handel: was im Handelsfenster liegt, wird jetzt live angesagt
+        Einfach: Einen Gegenstand per Rechtsklick in das Handelsfenster zu legen war voellig
+            still, und sein Eintrag im Taschenmenue blieb unveraendert stehen. Jetzt sagt Sku
+            "<Gegenstand> in Handelsplatz N" beziehungsweise "Handelsplatz N geleert", und
+            das auch fuer die Seite deines Handelspartners, die vorher weder sicht- noch
+            hoerbar war. Die Listen "Deine Gegenstaende" und "Gegenstaende des Partners"
+            aktualisieren sich von selbst, der Punkt "Aktualisieren" wird dafuer nicht mehr
+            gebraucht. Solange ein Gegenstand im Handel liegt, traegt sein Taschen-Eintrag
+            den Zusatz "im Handel". Und nach einem abgeschlossenen Handel verschwindet der
+            weggegebene Gegenstand jetzt zuverlaessig aus der Taschenliste statt nur manchmal.
+        Technisch: Die vorhandene Verkaufs- und Bank-Mechanik konnte hier nicht greifen:
+            einen Gegenstand ins Handelsfenster zu legen entfernt ihn nicht aus der Tasche.
+            Der Client setzt lediglich isLocked auf den Platz (Blizzards eigenes
+            ContainerFrame reagiert auf ITEM_LOCK_CHANGED nur mit einem blassen Symbol), es
+            feuert also kein BAG_UPDATE, auf das die bestehenden Handler haetten reagieren
+            koennen. Aus den Taschen verschwinden die Gegenstaende erst, wenn der Handel
+            ABGESCHLOSSEN ist - und dieses BAG_UPDATE liefert sich ein Rennen mit dem
+            CheckFrames aus TRADE_CLOSED, waehrend Sku.tBagPostAction schon 2,5 Sekunden
+            nach dem Rechtsklick abgelaufen war. Dieses verlorene Rennen war das "manchmal
+            bleibt es stehen". Neu ist Sku.tBagSettleWindow, ein zweites, engeres Fenster in
+            SkuCore:BAG_UPDATE_DELAYED, von TRADE_CLOSED fuer 3 Sekunden scharfgestellt, das
+            den STILLEN SkuBagIdleRefresh ausloest - nicht die sprechende Bestaetigung, denn
+            am getauschten Gegenstand haengt kein Cursor -, plus 1 Sekunde Rueckfall fuer das
+            umgekehrte Rennen. TRADE_PLAYER_ITEM_CHANGED und TRADE_TARGET_ITEM_CHANGED
+            werden erstmals registriert, pro Platz nach Gegenstand und Anzahl entdoppelt und
+            auf TradeFrame:IsVisible begrenzt, damit die Salven am Handelsende still bleiben.
+            Beide teilen sich SkuCore:TradeMenuRefresh, einen entprellten stillen Neuaufbau.
+            Der Zusatz "im Handel" haengt hinten an, weil die "alle Gegenstaende"-Kopie die
+            fuehrende Nummer am ersten Leerzeichen abschneidet und nach textFirstLine
+            sortiert. SkuCore:TradePartnerName ist jetzt die einzige Quelle fuer den
+            Partnernamen, auch fuer die bestehende Goldansage.
+
+    Kampf: Sku sagt an, wenn ein Zauber unterbrochen wurde
+        Einfach: Unter Feindlich -> Zauber gibt es "Unterbrechungen ansagen" jetzt getrennt
+            fuer dein aktuelles Ziel und fuer alle Gegner - genau wie die Zauberansagen
+            selbst. So kannst du Unterbrechungen auf deinem eigenen Ziel hoeren, ohne jede
+            Unterbrechung im ganzen Schlachtzug mitzubekommen. Unterbrichst du selbst oder
+            dein Begleiter, heisst es "Du hast den Zauber unterbrochen" mit dem Zaubernamen;
+            unterbricht jemand aus deiner Gruppe, heisst es "Zauber unterbrochen". Die
+            Ansage ist ab Werk an; wer sie schon einmal ausgeschaltet hatte, bleibt still.
+        Technisch: SPELL_INTERRUPT aus dem Kampflog ueber das neue Dispatcher-Ereignis
+            SKU_SPELL_INTERRUPT. Der frueher einzelne Schalter outputInterrupts ist durch
+            yourTargetInterrupts und allEnemiesInterrupts ersetzt, beide werden aus dem alten
+            Wert vorbelegt. Steht der globale Schalter aus, wird nur angesagt, wenn die
+            destGUID des unterbrochenen Zaubers dein aktuelles Ziel ist; stehen beide an,
+            gibt es trotzdem nur eine Ansage. Als "du" gilt die Quellzugehoerigkeit MINE, was
+            den eigenen Begleiter einschliesst (Teufelsjaeger-Zauberblockade und Aehnliches).
+
+    Kampf: Zauberansagen lassen sich auf unterbrechbare Zauber beschraenken
+        Einfach: Neue Einstellung "Nur unterbrechbare Zauber ansagen" (ab Werk aus) unter
+            Feindlich -> Zauber. Ist sie an, meldet Sku Zauber nicht mehr, gegen die ein
+            Unterbrechen ohnehin nichts ausrichtet.
+        Technisch: Der Rueckgabewert notInterruptible von UnitCastingInfo und
+            UnitChannelInfo ist auf dem Anniversary-Client 2.5.6 tote Datenlage - er kam bei
+            jedem Zauber als nil zurueck, waehrend Rueckgabe 9 die richtige spellId
+            lieferte; Blizzards eigene Zauberleiste setzt das Flag fuer BC und aelter fest
+            auf false. Die Unterbrechbarkeit stammt daher aus einer statischen Liste, neu
+            unter SkuDB/uninterruptibleCasts.lua, uebernommen aus ClassicCastbars
+            (MIT-Lizenz). Sie deckt die alte Welt ab; fuer eigene TBC-Funde stehen leere
+            SkuTbcAdditions-Tabellen zum Nachtragen bereit. Abgeglichen wird ueber spellID,
+            lokalisierten Namen oder npcID plus Name.
+
+    Weiches Zielen: "wenn kein hartes Ziel gewaehlt ist" wirkt jetzt wirklich
+        Einfach: Die Einstellung, ob weiches Zielen fuer das Interagieren verwendet werden
+            soll, hat nie etwas bewirkt. Der Interagieren-Taste war es egal, ob du ein Ziel
+            hart angewaehlt hattest - eine Leiche oder ein Stuhl daneben hat den Tastendruck
+            trotzdem abgefangen. Das ist behoben, und zwar im Client statt in einer
+            Nachbildung.
+            Zu beachten: Diese Client-Einstellungen sind im Kampf gesperrt. Sku haelt sie
+            deshalb im Ruhezustand so, dass die Unterdrueckung schon steht, wenn dich etwas
+            anspringt und du erst im Kampf anvisierst. Zwei Ecken bleiben: Toetest du dein
+            Ziel, bleibt der Zustand bis zum naechsten Zielwechsel bestehen - in diesem
+            Moment sind Objekte in der Naehe nicht ansprechbar (die anvisierte Leiche selbst
+            pluenderst du normal). Und geraetst du mit einem nicht angreifbaren Ziel in den
+            Kampf, bleibt es fuer diesen Kampf beim weichen Zielen. Das braucht einen
+            Schreibzugriff im Kampf und ist aus einem Addon heraus nicht zu schliessen.
+        Technisch: Alle 32 SoftTarget-CVars sind in 2.5.6 weiterhin registriert (in
+            WowClassic.exe nachgeschlagen) - am Client liegt es also nicht. Beide Zweige des
+            alten if/else schrieben SoftTargetMatchLocked = 0, identisch toter Code in
+            v32.31 wie in v41.04; die Einstellung verliess Lua nie. 41.05 schrieb dann 1,
+            legte aber Option 2 mit Option 1 zusammen, und SoftTargetWithLocked - die CVar,
+            die das tatsaechlich steuert - hat nie eine Sku-Version geschrieben. Gemessen auf
+            2.5.6.68575, ausserhalb des Kampfes, Leiche und lebender Gegner in Reichweite,
+            Interagieren-Taste bei hart angewaehltem Gegner: WithLocked 0 wirkt auf den
+            Gegner und ignoriert die Leiche, 1 und 2 pluendern beide die Leiche. Nur 0
+            unterdrueckt weiches Zielen bei gewaehltem Ziel, und einen "nur wenn
+            angreifbar"-Zwischenwert gibt es nicht. Die Option bildet das jetzt direkt ab:
+            0 (immer) -> WithLocked 2, MatchLocked 0; 1 (wenn kein hartes Ziel) ->
+            WithLocked 0, MatchLocked 1; 2 (kein angreifbares Ziel) -> MatchLocked 2, und
+            WithLocked wird bei PLAYER_TARGET_CHANGED zwischen 0 und 2 umgelegt. Der
+            Ruhezustand ist 0, weil WithLocked ohnehin nur wirkt, solange ein Ziel gewaehlt
+            ist - dort zu ruhen kostet nichts und deckt den Fall ab, den die CVars sonst nie
+            erreichen. 2 wird nur noch fuer den einen Zustand geschrieben, der weiches Zielen
+            MIT gewaehltem Ziel wirklich braucht: ein Ziel, das du nicht angreifen kannst -
+            eine Leiche beim Pluendern, ein NPC im Gespraech, ein Spieler, dem du folgst.
+            Entfernt: der SkuMob-Ticker, der SoftTargetInteract viermal pro Sekunde neu
+            schrieb, sein Duplikat in PLAYER_TARGET_CHANGED und der Schattenzustand
+            interactTempDisabled - diese Nachbildung konnte gar nicht funktionieren, weil die
+            CVars im Kampf geschuetzt sind. tSetSoftTargetCVar liest jeden Schreibvorgang
+            jetzt zurueck (numerischer Vergleich, damit ein normalisiertes "15.000000" kein
+            Fehlalarm ist) und stellt bei Ablehnung die Wiederholung auf
+            PLAYER_REGEN_ENABLED scharf, statt sich einen Wert zu merken, der nie ankam. Ein
+            Schreibversuch im Kampf protokolliert "softTarget refused ... {want=3, got=0}"
+            und loest ADDON_ACTION_BLOCKED aus.
+
+    Menue: die Eingabetaste wirkte nach dem Schliessen ins unsichtbare Menue weiter
+        Einfach: Nach dem Auswaehlen eines Wegpunkts - und in aehnlichen Faellen - schloss
+            sich das Menue korrekt, aber jede weitere Eingabetaste klickte noch im
+            unsichtbaren Menue weiter: Es ertoente das Navigationsgeraeusch, die Auswahl
+            wurde erneut ausgefuehrt ("neue Navigation"), und das Chatfenster liess sich mit
+            der Eingabetaste nicht mehr oeffnen. Ausserdem konnte das Menue beim Schliessen
+            haengenbleiben, wenn im selben Moment eine Bewegungstaste gedrueckt wurde: Der
+            Wegpunkt wurde gesetzt, das Menue blieb aber offen und blockierte die Tasten.
+            Beides ist behoben.
+        Technisch: Zwei getrennte Ursachen. Erstens laeuft OnPostSelect nach der Aktion
+            weiter, die das Menue geschlossen hat: Es richtete currentMenuPosition wieder auf
+            das selectTarget aus - und ueberschrieb damit die Wurzel-Ruecksetzung des
+            Schliessens - und feuerte dessen OnEnter; das allgemeine OnEnter legte die
+            SKU_KEY_MENULEFTCLICK-Override-Bindings auf dem sicheren Button bedingungslos neu
+            auf. Override-Bindings auf einem VERSTECKTEN Frame sind voll aktiv, die
+            Eingabetaste wurde also unmittelbar nach dem Aufraeumen im OnHide wiederbelebt.
+            Jetzt legt das allgemeine OnEnter die Klick-Tasten nur auf, solange der sichere
+            Button sichtbar ist, und OnPostSelect bricht vor dem abschliessenden Neu-Fokus
+            ab, wenn das Menue nicht mehr offen ist (das kopflose Kampfmenue ist ueber
+            combatMenuActive ausgenommen). Zweitens laeuft CloseMenu ueber denselben
+            Umschalt-Handler wie das Oeffnen, dessen zwei Bewegungs-Sperren das Schliessen
+            stillschweigend abbrachen - die eine liest die LIVE-Bewegungsflags, die andere
+            das zwischengespeicherte SkuCore.isMoving, weshalb der eine Weg durchkam und der
+            andere abbrach. Schliess-Anforderungen umgehen diese Sperren jetzt; Hide und
+            ClearOverrideBindings sind waehrend der Bewegung unbedenklich, und ein
+            erfolgreiches Schliessen erreicht wieder die openMenuAfter-Ruecksetzungen.
+            Zusaetzlich entschaerft der Wiederoeffnen-Ticker Flags, die ohnehin nicht mehr
+            feuern koennen, und stellt die Navigationstasten nur dann neu her, wenn das Menue
+            sichtbar offen, aber tastentot ist (neu: SkuOptions.menuNavKeysBound).
+
+    Kollisionswarnung auch beim automatischen Hinlaufen zum Ziel
+        Einfach: Die Warnung, dass du gegen etwas laeufst, kam nur, wenn du selbst eine
+            Bewegungstaste gedrueckt hieltest. Beim "Mit Ziel interagieren" der
+            Spielsteuerung laeuft die Spielengine dich hin, ohne dass eine Taste gehalten
+            wird - dort konntest du unbemerkt an einem Hindernis haengenbleiben. Diese Laeufe
+            sind jetzt mit abgedeckt.
+        Technisch: Neues EngineMoving-Flag aus PLAYER_STARTED_MOVING und
+            PLAYER_STOPPED_MOVING, das die koordinatenbasierte Warnung auch fuer
+            engine-getriebene Laeufe scharfstellt. PLAYER_STOPPED_MOVING feuert nicht,
+            waehrend man gegen eine Wand drueckt - genau der Fall, den die Warnung braucht
+            (nachgewiesen ueber das Aufraeumen des stehengebliebenen AutoRun-Flags). Reines
+            Drehen, Fallen und Autofolgen sind ausgenommen; fuer das Folgen gibt es die
+            eigene Folge-Kollisionswarnung.
+
+    Weniger Fehler in Instanzen und Schlachtzuegen
+        Einfach: Zwei Fehlerquellen, die in Instanzen laufend Lua-Fehler erzeugt haben, sind
+            behoben - spuerbar an ausbleibenden Fehlermeldungen und ruhigeren Bosskaempfen.
+        Technisch: Erstens liefert UnitPosition("player") in Instanzen, Schlachtzuegen und
+            Schlachtfeldern nil, weshalb SkuNav:Distance nil zurueckgab und
+            GetUnsortedAvailableQuestsTable bei jedem QUEST_LOG_UPDATE beim Verketten
+            abstuerzte (24-mal in einer einzigen Schlachtzugssitzung). Es gilt jetzt die
+            bestehende 99999-Meter-Konvention: Die Quest bleibt gelistet und sortiert
+            zuletzt. Zweitens sind ClearOverrideBindings und SetOverrideBindingClick im Kampf
+            geschuetzt, und das umgebende pcall unterdrueckt das ADDON_ACTION_BLOCKED-Ereignis
+            nicht (84-mal in einem einzigen Kampf, dazu BugGrabber-Warnungen wegen
+            Ausfuehrungslimits). Das Setzen der AtlasLoot-Tastenbelegung wird im Kampf jetzt
+            uebersprungen und einmalig ueber PLAYER_REGEN_ENABLED nachgeholt.
+
+    "Folgen beim Zaubern temporaer beenden" ist zu Testzwecken wieder aktiv
+        Einfach: Diese Einstellung stand im Menue, ihre Funktion war aber seit dem
+            Upstream-Stand v41.06 abgeschaltet. Sie ist wieder eingeschaltet, ab Werk aus,
+            damit sich klaeren laesst, ob dieser Client das automatische Wiederaufnehmen des
+            Folgens ueberhaupt zulaesst. Wer sie einschaltet, sollte damit rechnen, dass das
+            Folgen nach einem Zauber nicht von selbst zurueckkommt.
+        Technisch: Die Ruempfe von UnfollowOnCast und FollowOnCast waren auskommentiert, der
+            Grund ist nicht ueberliefert. Sie beantworten jetzt eine Frage: Fuehrt dieser
+            Client FollowUnit aus einem Server-Ereignis heraus aus, also ohne
+            Hardware-Ereignis, oder wird das still unterbunden? Beweiskanal sind die
+            Sprachausgaben zu AUTOFOLLOW_END/BEGIN und "followcast"-Zeilen im SkuDebugLog
+            samt einer Zustandspruefung 0,5 Sekunden nach dem Aufruf. Nebenbei behoben: In
+            den Handlern fuer CHANNEL_START/STOP passten unitTarget und aUnitTarget nicht
+            zusammen, weshalb Beenden und Wiederaufnehmen bei Kanalzaubern nie ausgeloest
+            wurden.
+
+    Franzoesisch: Grundlage fuer eine franzoesische Sku-Version
+        Einfach: Sku bekommt Franzoesisch. Fertig ist es noch nicht: Rund 43 Prozent der
+            Menue- und Ansagetexte sind uebersetzt, alles Uebrige faellt automatisch auf
+            Englisch zurueck, so dass nie eine Luecke oder ein leerer Eintrag entsteht. Die
+            SPIELnamen - Kreaturen, Quests, Gegenstaende, Objekte - sind vollstaendig aus
+            Questie uebernommen, also Blizzards eigene franzoesische Zeichenketten und nicht
+            maschinell uebersetzt; sie stimmen mit dem ueberein, was ein franzoesischer
+            Client anzeigt, was fuer die Suche nach Routen- und Wegpunktnamen entscheidend
+            ist. Zonennamen kommen direkt vom Client. Sprachausgabe gibt es weiterhin nur auf
+            Deutsch und Englisch; jede andere Clientsprache benutzt die englischen
+            Audiodateien.
+            Fuer deutsche und englische Spieler aendert sich am Text nichts, wohl aber am
+            Speicherbedarf: Sku baut jetzt nur noch die Namenstabellen der eigenen Sprache
+            auf, plus Englisch als Rueckfall, statt wie bisher immer alle.
+        Technisch: Sku.Locs ist jetzt eine GEORDNETE Liste von drei Sprachen, und die
+            gepackten Routennamen in SkuNav:LoadDefaultMapData werden positionsweise dagegen
+            aufgeteilt statt ueber ein string.match mit dem Muster "(.+)" links und rechts
+            vom Trennzeichen. Dieser alte Ausdruck war nicht nur zweisprachig gedacht:
+            ".+" ist gierig, bei drei Feldern "a", "b", "c" waeren die ersten beiden als ein
+            einziges englisches Feld angekommen und nur das letzte als deutsches. Dateien
+            mit weniger Feldern als Sprachen bleiben
+            gueltig und fallen auf enUS zurueck. Sku.LocAudio trennt die AUDIO-Sprache von
+            der Datensprache; dabei sind zwei alte Fehler mit aufgefallen und behoben:
+            SkuAudioFileIndexIntegrated[Sku.Loc] war ungeschuetzt und lief bei jeder
+            Clientsprache ohne eigene Untertabelle in einen nil-Zugriff, und GetAudiodata
+            hatte keinen Gross-/Kleinschreibungs-Rueckfall, waehrend der enUS-Index seine
+            Bezeichner kleingeschrieben ablegt und die Aufrufer sie gross uebergeben - das
+            ist der Grund, warum die Drinnen/Draussen-Ansage auf englischen Clients bisher
+            still war. Der ChunkLoader hat jetzt eine Sprachschranke: Er baute bisher JEDEN
+            registrierten Chunk unabhaengig von der Clientsprache, ein deutscher Client
+            materialisierte also auch die vollstaendigen englischen Namenstabellen und
+            umgekehrt. Die Regel ist nun "aktive Sprache plus enUS", mit objectLookup.deDE
+            als struktureller Ausnahme, weil das englische objectLookup aus dessen
+            Schluesselmenge ABGELEITET wird - eine naive Schranke haette englische Clients
+            ganz ohne Objektnamen zurueckgelassen. Die vier fest verdrahteten .deDE-Merges
+            sind zu SkuDBMergeLocales geworden, was einen latenten Fehler mit erledigt: Ein
+            franzoesischer Client haette Basis-TBC-Namen bekommen, aber stillschweigend keine
+            WotLK-Namen. Nach dem Zusammenfuehren werden Luecken der aktiven Sprache aus enUS
+            aufgefuellt (Questie kennt fuer rund 2700 Sku-IDs keinen franzoesischen Namen);
+            bewusst als Build-Schritt und nicht als __index-Metatabelle, weil pairs() ein
+            __index nicht durchlaeuft und mehrere Verbraucher diese Tabellen AUFZAEHLEN statt
+            zu indizieren - eine Metatabelle haette die Nachschlagevorgaenge repariert und die
+            Menues still verkuerzt. deDE und enUS sind vom Auffuellen ausgenommen, damit der
+            deutsche Aufbau byteweise identisch bleibt (nachgewiesen, 37 von 37 Datensaetzen).
+            Die Sprachdatei selbst ist Sku/locales/frFR.lua, erzeugt aus Teil-Dateien: Nicht
+            uebersetzte Eintraege behalten ihren englischen Wert, die Tabelle ist also immer
+            vollstaendig und gueltiges Lua, und AceLocale liefert fuer de/en ohnehin nil
+            zurueck - die Datei kostet dort nur einen Parse. Fuehrende und abschliessende
+            Leerzeichen sind in dieser Tabelle bedeutungstragend, ueberleben aber keine
+            TSV-Runde: Sie werden beim Zusammenbauen aus dem englischen Original neu
+            angesetzt, und die Pruefung kontrolliert am FERTIGEN String Platzhalterzahl,
+            Randleerzeichen und Semikolonzahl. Zum Testen ohne zweiten Client gibt es
+            /skudebug locale <loc|off>, das die DATEN-Sprache erzwingt und dauerhaft merkt;
+            es greift auf ADDON_LOADED, nicht auf PLAYER_LOGIN, weil der verzoegerte
+            Routenaufbau (Messung: 1,87 s gegen 2,01 s bis PLAYER_LOGIN) bereits entscheidet,
+            welche Namensfelder ueberhaupt aufgebaut werden. Drei harte Fehler auf einem
+            erzwungen franzoesischen Client sind behoben: maps.lua ist eine einfache, nicht
+            gechunkte Tabelle und trug AreaName_lang/Name_lang nur fuer deDE und enUS - die
+            fehlende Sprache wird jetzt einmalig auf ADDON_LOADED aus C_Map gefuellt
+            (GetAreaInfo und GetMapInfo; 2819 Eintraege, davon 1672 vom Client), also mit den
+            echten Blizzard-Namen und ohne eigene Zonennamensdaten; SkuDB.SpellDataTBC legt
+            seine Sprachen INNERHALB jedes Eintrags ab, weshalb sie nie lokalisiert wurden
+            und elf Fundstellen auf frFR abstuerzten - die aktive Sprache zeigt dort jetzt
+            als Referenz auf die englische Untertabelle (kein Kopieren, keine zusaetzlichen
+            Zeichenketten), was fuer diese ueberwiegend als Aura-Schluessel genutzten Namen
+            genuegt; SkuDB.objectResourceNames ist nach Objektnamen je Sprache verschluesselt
+            und wurde beim Aufbau des Wegpunkt-Caches ungeschuetzt gelesen - hier waere ein
+            englischer Rueckfall falsch gewesen (er haette nie gepasst und jedes Erz und Kraut
+            still zu einem gewoehnlichen Wegpunkt gemacht), die Menge wird deshalb ueber die
+            Objekt-IDs abgeleitet.
+
+    Downloadseite: die Ueberschrift nannte eine veraltete Version
+        Einfach: Auf der Downloadseite stand in der Ueberschrift zum Haupt-Addon noch
+            "Version 42.06", waehrend der Link darunter korrekt auf 42.10 zeigte. Da man mit
+            dem Screenreader ueber Ueberschriften navigiert, war das Erste, was in diesem
+            Abschnitt angesagt wurde, die falsche Version - es klang, als liefere die Seite
+            ein veraltetes Sku aus. Ueberschrift und Link stimmen jetzt ueberein.
+        Technisch: release.ps1 hat bei jedem Release href und Linktext neu geschrieben, aber
+            nie die Ueberschrift; sie stand seit 42.06 (17.07.2026) ueber vier Releases
+            hinweg still. Die Ueberschrift ist jetzt Teil von Set-DocsSkuLink und kann nicht
+            mehr auseinanderlaufen. Die verlinkte Zip war die ganze Zeit korrekt (geprueft:
+            Sku-42.10.zip enthaelt "## Version: 42.10").
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.10
 
     Navigation: Wegpunkte in Gebieten ohne eigene Karte funktionieren wieder
