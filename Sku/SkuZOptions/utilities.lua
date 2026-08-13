@@ -661,8 +661,25 @@ function SkuTranslateStringDeToEn(aString)
 			local tstrlower = slower(str)
 			local tFound = false
 
+			-- [v42.09 i18n] French overrides win when the pipeline is targeting
+			-- frFR, otherwise the original German->English table applies. The
+			-- French table is generated (routeOverrides_frFR.lua) and covers only
+			-- the entries we could either IMPORT from a real frFR client capture
+			-- (place names) or genuinely translate (route instructions); the rest
+			-- are absent on purpose and fall through to the English value below,
+			-- because a guessed French place name would corrupt route output.
+			local tOverrides = tAdditionalTranslations
+			if Sku.Loc == "frFR" and SkuOptions.RouteOverridesFrFR then
+				for i, v in pairs(SkuOptions.RouteOverridesFrFR) do
+					if slower(i) == tstrlower then
+						tTarget = v
+						tFound = true
+						break
+					end
+				end
+			end
 			if tFound == false then
-				for i, v in pairs(tAdditionalTranslations) do
+				for i, v in pairs(tOverrides) do
 					if slower(i) == tstrlower then
 						tTarget = v
 						tFound = true

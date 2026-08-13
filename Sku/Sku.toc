@@ -164,6 +164,8 @@ SkuAuras\data.lua
 SkuAuras\Options.lua
 SkuAuras\sharing.lua
 
+# [v42.09 i18n] French route overrides, consumed by utilities.lua's translator.
+SkuZOptions\routeOverrides_frFR.lua
 SkuZOptions\utilities.lua
 SkuZOptions\Core.lua
 SkuZOptions\data.lua
