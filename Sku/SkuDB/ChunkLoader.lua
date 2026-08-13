@@ -424,6 +424,65 @@ local function SkuDBApplyLocaleOverride()
 	print("|cffffc040Sku|r Debug-Datenlocale: " .. tostring(tFrom) .. " -> " .. tostring(tWant))
 end
 
+-- [v42.09 i18n] Localized MAP names for the active locale.
+--
+-- maps.lua is a plain table, not chunked, so the locale gate never touched it -
+-- and it carries AreaName_lang / Name_lang for deDE and enUS ONLY. 25 sites
+-- index those as [Sku.Loc] with no guard, so a French client hard-errored on
+-- the first zone lookup: SkuQuest/Options.lua:754 "attempt to concatenate
+-- field '?' (a nil value)". (The AceLocale "Missing entry for 'ToDebugString'"
+-- logged alongside it was the error handler probing L, not a second defect.)
+--
+-- Rather than guard 25 call sites, fill the missing locale once, from C_Map.
+-- That returns the CLIENT's own localized names, so a French player gets real
+-- Blizzard French zone names - the same standard as the imported Questie game
+-- names - and no zone-name data has to ship at all. enUS is the fallback
+-- whenever the API returns nothing, so the value is never nil again.
+--
+-- No-op for deDE and enUS, which already have their entries, so the proven
+-- German build is untouched.
+local function SkuDBEnsureLocalizedMapNames()
+	local tLoc = Sku.Loc
+	if not tLoc or tLoc == "deDE" or tLoc == "enUS" then return 0 end
+	local tGetArea = C_Map and C_Map.GetAreaInfo
+	local tGetMap = C_Map and C_Map.GetMapInfo
+	local tFromApi = 0
+	local tTotal = 0
+
+	local function tFill(aTable, aField, aApi)
+		if type(aTable) ~= "table" then return end
+		for tId, tEntry in pairs(aTable) do
+			local tNames = (type(tEntry) == "table") and tEntry[aField]
+			if type(tNames) == "table" and tNames[tLoc] == nil then
+				local tName
+				if aApi and type(tId) == "number" then
+					local tOk, tRes = pcall(aApi, tId)
+					if tOk then
+						if type(tRes) == "string" then
+							tName = tRes
+						elseif type(tRes) == "table" and type(tRes.name) == "string" then
+							tName = tRes.name
+						end
+					end
+					if tName == "" then tName = nil end
+					if tName then tFromApi = tFromApi + 1 end
+				end
+				tNames[tLoc] = tName or tNames.enUS or tNames.deDE or tostring(tId)
+				tTotal = tTotal + 1
+			end
+		end
+	end
+
+	tFill(SkuDB.InternalAreaTable, "AreaName_lang", tGetArea)
+	tFill(SkuDB.ExternalMapID, "Name_lang", tGetMap)
+	tFill(SkuDB.ContinentIds, "Name_lang", nil)
+
+	SkuDB.chunkLoad.mapNames = tTotal
+	SkuDB.chunkLoad.mapNamesFromApi = tFromApi
+	dprint("SkuDB map names for", tLoc, "filled =", tTotal, "of which from C_Map =", tFromApi)
+	return tTotal
+end
+
 -- [v42.09 i18n] Fill gaps in the active locale's name tables from enUS.
 --
 -- An imported locale is never 100% complete - Questie has no French name for
@@ -623,6 +682,9 @@ SkuDBStreamFrame:SetScript("OnEvent", function(self, aEvent, aArg1)
 	if aEvent == "ADDON_LOADED" then
 		if aArg1 == "Sku" then
 			pcall(SkuDBApplyLocaleOverride)
+			-- Must run here, not at PLAYER_LOGIN: Geo/SkuNav read AreaName_lang
+			-- during the deferred route build, which precedes login.
+			pcall(SkuDBEnsureLocalizedMapNames)
 			SkuDBStreamFrame:UnregisterEvent("ADDON_LOADED")
 		end
 		return
