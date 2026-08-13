@@ -18,6 +18,9 @@ Libs\LibGearScore-1.0\LibGearScore.lua
 
 locales\enUS.lua
 locales\deDE.lua
+# [v42.09 i18n] Inert on a non-frFR client: AceLocale's NewLocale returns nil
+# unless GetLocale() matches, so the file costs a parse and nothing else.
+locales\frFR.lua
 
 _psA_start.lua
 routedata_global_wotlk.lua

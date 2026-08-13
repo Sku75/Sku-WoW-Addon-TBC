@@ -1,0 +1,218 @@
+0	%s sur %s pages analysées
+2	 pour 1 objet
+3	 (Redirigé depuis
+4	 Enchères créées
+5	 Enchères
+6	 Prêt
+7	 enchérir ? Entrée Oui, Échap Non
+8	 à 0
+9	 jours
+10	 Vous êtes le meilleur enchérisseur
+11	 Invité
+12	 Objets fixes
+13	 pour
+14	 Objets au choix
+15	 jaune
+16	 a demandé une invitation. Invitez avec /sku invite.
+17	 une glace
+18	 invalide. annulé.
+19	 acheter ? Entrée Oui, Échap Non.
+20	Entrée pour acheter, Échap pour annuler
+21	Entrée pour enchérir, Échap pour annuler
+22	 niveau
+23	 fois
+24	 Minutes
+25	  achat seul
+27	 Pour cent (
+28	 pour cent
+29	 Rouge
+30	 Secondes
+31	 objets
+32	 objets pour
+33	 objets
+34	 Heures
+35	 jours
+36	 Touche 1 :
+37	 Touche 2 :
+39	 de
+40	 de
+44	Moins
+45	Dièse
+46	(%SKU_KEY_TUTORIALSTEPFORWARD%), pour passer à l'étape suivante dès que vous avez terminé l'étape en cours. Cela ne fonctionne que si vous avez entendu le son de réussite.
+47	(%SKU_KEY_TUTORIALSTEPREPEAT%), pour réentendre les instructions de l'étape en cours.
+48	(Quotidien)
+49	(Échoué)
+50	(Terminé)
+52	)r\nbonus de repos :
+53	, niveau d'objet moyen
+54	Virgule
+58	. Appuyez à nouveau sur la touche pour confirmer la nouvelle assignation. L'action actuellement assignée sera supprimée !
+59	Point
+60	Barre oblique
+61	 : tourner vers
+62	 : incliner vers
+63	 : avancer depuis
+64	;point d'exclamation;
+65	;arrière;guillemet;
+66	;accent circonflexe;
+67	;degré;
+68	;deux-points;
+69	;point d'interrogation;
+70	;égal;
+71	;parenthèse;
+72	 Mètre
+73	;pour cent;
+74	;point;
+75	;barre oblique;
+76	;angle;parenthèse;
+77	;tilde;
+78	;et;
+79	r\nValeur sélectionnée :
+80	r\nMoyenne
+81	r\nObjets fixesr\n
+82	r\nDonnées d'enchère : r\nPoints de données
+83	r\nObjets au choixr\n
+84	r\nPlus haut
+85	r\nPlus haut
+86	r\nAucune donnée d'enchère disponible
+87	r\nAucune donnée d'achat disponible
+88	r\nPlus bas
+89	r\nPlus bas
+90	r\nButin :
+91	r\nDonnées d'achat : r\nPoints de données
+92	r\nVu pour la dernière fois à
+93	Circonflexe
+95	Plus petit
+96	Plus grand
+100	1 mètre
+102	10 degrés 10 mètres
+103	10 joueurs
+104	15 degrés devant
+105	100 degrés, 5 à 45 mètres, 22 secondes
+106	180 degrés devant
+107	100 devant
+109	2 mètres
+111	20 degrés 20 mètres
+112	20 degrés 30 mètres
+113	25 joueurs
+114	3 mètres
+116	360 10 précis
+117	360 10 rapide
+118	360 10 très rapide
+119	360 30 précis
+120	360 30 rapide
+121	360 degrés, 0 à 10 mètres, 15 secondes
+122	360 degrés 0-10 mètres 2 secondes
+123	360 degrés, 0 à 10 mètres, 10 secondes
+124	360 degrés, 3 à 30 mètres, 15 secondes
+125	360 degrés, 3 à 30 mètres, 28 secondes
+126	360 degrés de haut en bas 3-10 mètres 15 secondes
+127	360+180 3-10 rapide
+129	40 degrés 40 mètres
+130	5 joueurs héroïque
+131	5 joueurs normal
+137	Un tic de sort de dégâts sur la durée a infligé des dégâts
+138	Un tic de sort de soin sur la durée a été appliqué
+141	Annuler
+142	Livraison
+143	annulé Aucune enchère
+144	Confirmation expirée, achat annulé
+145	Enchère absente de cette position, achat annulé
+146	Enchère épuisée
+147	Le serveur n'a pas confirmé l'achat, veuillez réessayer
+148	Liste en cours de chargement, appuyez sur Entrée pour acheter dans un instant
+149	Analyse pas encore possible, veuillez patienter un instant
+150	Terminé
+151	Refuser
+152	Dégâts absorbés :
+153	Coups absorbés :
+154	Absorbé
+155	Désélectionner
+157	Accepter
+158	Quête acceptée
+159	Précision un mètre
+160	Précision trois mètres
+161	Hauts faits
+162	Attention : début d'une tâche spéciale. Suivez les instructions à la lettre !
+163	Barres d'action
+164	Suit un point de passage ou un itinéraire, ou enregistre
+165	groupe de talents actif modifié
+166	activités
+167	Activité
+168	Activité :
+169	Ajouter toutes les étapes comme étapes liées
+170	Ajouter Mort à 0 pour cent
+171	ajouter un ami
+172	ajouter les numéros de ligne
+173	Ajouter le lien au chat
+174	Publier dans le chat
+175	publié dans le chat
+176	Remarque : quête absente du journal, le lien peut ne pas être cliquable pour le destinataire
+177	Ajouter une nouvelle entrée
+178	ajouter un objet
+179	ajouter l'expéditeur à la liste d'amis
+180	Ajouter un son à 100 pour cent
+181	déplacer l'horodatage en fin de ligne
+182	ajouter les horodatages
+183	Ajouter aux favoris
+184	ajouter à la liste d'ignorés
+185	ajouter/modifier un commentaire (IMPORTANT : terminez la saisie du commentaire avec Échap, pas avec Entrée !)
+186	ajouté
+187	Extensions
+188	Affliction
+189	après cette étape
+190	Vous aurez ensuite maîtrisé les bases et pourrez revenir à votre premier personnage pour y jouer sans assistance, ou continuer à jouer avec le second personnage.
+191	agressif
+193	Action de l'aura
+194	L'action n'existe plus
+196	Activer
+197	activé
+198	Activé
+199	Mis à jour
+200	Carte actuelle par distance avec auto
+201	Carte actuelle par distance
+202	Données de prix récentes (pour un objet)
+203	Quêtes actuelles
+204	Objet actuel :
+205	Zone Aldor atteinte
+206	Zone Aldor quittée
+207	Tout par ordre alphabétique
+208	Tous les ennemis
+209	Tous les articles
+210	Tous les combats
+211	tous les sacs
+212	Tous les PNJ de la zone
+213	Tous les PNJ
+214	tous ouverts
+215	Tous requis
+216	Toute la synthèse vocale via la synthèse Blizzard
+217	Tout
+218	Tout (
+219	Tout sur le continent actuel
+220	Exporter toutes les auras
+221	Toutes les auras supprimées
+222	Supprimer toutes les auras
+223	Supprimer tous les itinéraires et points de passage
+224	Toutes les assignations de touches ont été réinitialisées.
+225	Tout
+226	Tout
+227	Tout supprimer
+228	Tout réparé
+229	Tout réinitialiser
+230	Général
+231	Zone Alliance atteinte
+232	Zone Alliance quittée
+235	existe déjà
+236	Butin : butin de groupe
+238	Suivez toujours les instructions à la lettre. Ne faites jamais autre chose que ce que les instructions du tutoriel demandent, tant que vous souhaitez suivre le tutoriel. Il s'interrompra si vous faites autre chose. Passez toujours à l'étape suivante lorsque vous avez terminé une étape.
+239	Toujours
+240	et
+241	Autre continent
+242	Modifier
+243	Début de quête
+244	Annoncer les morts
+245	Annoncer les ennemis entrant en combat
+246	Annoncer les ennemis entrant en combat ou le quittant
+247	Annoncer les ennemis quittant le combat
+248	Annoncer les joueurs alliés et hostiles
+249	N'annoncer que les nombres pour les notifications d'entrée ou de sortie de combat

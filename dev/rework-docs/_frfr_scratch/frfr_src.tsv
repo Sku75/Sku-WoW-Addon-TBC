@@ -1,0 +1,3318 @@
+0	%s von %s Seiten durchsucht	%s of %s pages scanned
+1	 (	 (
+2	 (for 1 item)	 for 1 item
+3	 (Redirected from 	 (Redirected from 
+4	 Auktionen erstellt	 Auctions created
+5	 Auktionen	 Auctions
+6	 bereit	 Ready
+7	 bieten? Eingabe Ja, Escape Nein	 place bid? Enter Yes, Escape No
+8	 bis 0	 to 0
+9	 days	 days
+10	 Du bist Höchstbieter	 You are the highest bidder
+11	 eingeladen	 Invited
+12	 feste Gegenstände	 Fixed items
+13	 für 	 for 
+14	 Gegenstände zur Auswahl	 Items to choose from
+15	 gelb 	 yellow 
+16	 hat eine Einladung angefordert. Mit /sku invite einladen.	 has requested an invitation. Invite with /sku invite.
+17	 ice cream	 some ice cream
+18	 invalid. canceled.	 invalid. canceled.
+19	 kaufen? Eingabe Ja, Escape Nein.	 buy? Enter Yes, Escape No.
+20	Eingabe zum Kaufen, Escape zum Abbrechen	Enter to buy, Escape to cancel
+21	Eingabe zum Bieten, Escape zum Abbrechen	Enter to bid, Escape to cancel
+22	 Level 	 level 
+23	 mal 	 times 
+24	 Minuten	 Minutes
+25	 Nur Kauf 	  only Buy 
+26	 ok 	 ok 
+27	 Prozent (	 Percent (
+28	 Prozent	 percent
+29	 rot 	 Red 
+30	 Sekunden	 Seconds
+31	 stück wirklich 	 items 
+32	 stück wirklich für 	 items for 
+33	 stück	 items
+34	 Stunden	 Hours
+35	 Tage	 days
+36	 Taste 1: 	 Key 1: 
+37	 Taste 2: 	 Key 2: 
+38	 Uhr	
+39	 von  	 from 
+40	 von 	 of 
+41	 Zone 	 Zone 
+42		
+43	'	Apostrophe
+44	-	Minus
+45	#	Hash
+46	(%SKU_KEY_TUTORIALSTEPFORWARD%), to proceed to the next step as soon as you have completed the current step. This only works if you have heard the success sound.	(%SKU_KEY_TUTORIALSTEPFORWARD%), to proceed to the next step as soon as you have completed the current step. This only works if you have heard the success sound.
+47	(%SKU_KEY_TUTORIALSTEPREPEAT%), to hear the instructions from the current step again.	(%SKU_KEY_TUTORIALSTEPREPEAT%), to hear the instructions from the current step again.
+48	(Daily) 	(Daily) 
+49	(Fehlgeschlagen) 	(Failed) 
+50	(Fertig) 	(Completed) 
+51	)	)
+52	)r
+Ruhebonus: 	)r
+rest bonus: 
+53	, average item level 	, average item level 
+54	,	Comma
+55	,SkuAuras,Auren,Auren verwalten,	,Auras,Auras,Manage auras,
+56	,SkuAuras,Auren,Auren verwalten,	,Auras,Auras,Manage auras,
+57	,SkuCore,Auktionshaus	,Core,Auction house
+58	. Press the key again to confirm new binding. The current bound action will be unbound!	. Press the key again to confirm new binding. The current bound action will be unbound!
+59	.	Period
+60	/	Slash
+61	: drehen auf 	: turn to 
+62	: neigen auf 	: pitch to 
+63	: vorwärts von 	: forward from 
+64	;ausrufungszeichen;	;exclamation mark;
+65	;back;quote;	;back;quote;
+66	;caret;	;caret;
+67	;degree;	;degree;
+68	;doppelpunkt;	;colon;
+69	;fragezeichen;	;question mark;
+70	;gleich;	;equal;
+71	;klammer;	;parenthesis;
+72	;Meter	 Meter
+73	;prozent;	;percent;
+74	;punkt;	;period;
+75	;slash;	;slash;
+76	;spitze;klammer;	;angle;parenthesis;
+77	;tilde;	;tilde;
+78	;und;	;and;
+79	r
+Auswählter Wert: 	r
+Selected value: 
+80	r
+Durchschnitt 	r
+Average 
+81	r
+Feste Gegenständer
+	r
+Fixed itemsr
+
+82	r
+Gebotsdaten: r
+Datenpunkte 	r
+Bid data: r
+Data points 
+83	r
+Gegenstände zur Auswahlr
+	r
+Items to choose fromr
+
+84	r
+Höchster 	r
+Highest 
+85	r
+Höchstes 	r
+Highest 
+86	r
+Keine Gebotsdaten vorhanden	r
+No bid data available
+87	r
+Keine Sofortkaufdaten vorhanden	r
+No buy data available
+88	r
+Niedrigster 	r
+Lowest 
+89	r
+Niedrigstes 	r
+Lowest 
+90	r
+Plündern: 	r
+Looting: 
+91	r
+Sofortkaufdaten: r
+Datenpunkte 	r
+Buy data: r
+Data points 
+92	r
+Zuletzt vor 	r
+Last seen at 
+93	^	Circumflex
+94	+	Plus
+95	<	Smaller
+96	>	Bigger
+97	0	0
+98	0.1s	0.1s
+99	0.5s	0.5s
+100	1 Meter	1 meter
+101	1	1
+102	10 Grad 10 Meter	10 degrees 10 meters
+103	10 Player	10 Player
+104	15 degrees in front	15 degrees in front
+105	180 degrees 5-35 meters 10 seconds	100 degrees, 5 to 45 meters, 22 seconds
+106	180 degrees in front	180 degrees in front
+107	180 front	100 front
+108	1s	1s
+109	2 Meter	2 Meter
+110	2	2
+111	20 Grad 20 Meter	20 degrees 20 meters
+112	20 Grad 30 Meter	20 degrees 30 meters
+113	25 Player	25 Player
+114	3 Meter	3 meters
+115	3	3
+116	360 10 accurate	360 10 accurate
+117	360 10 fast	360 10 fast
+118	360 10 very fast	360 10 very fast
+119	360 30 accurate	360 30 accurate
+120	360 30 fast	360 30 fast
+121	360 degrees 0-10 meters 10 seconds	360 degrees, 0 to 10 meters, 15 seconds
+122	360 degrees 0-10 meters 2 second	360 degrees 0-10 meters 2 seconds
+123	360 degrees 0-10 meters 4 seconds	360 degrees, 0 to 10 meters, 10 seconds
+124	360 degrees 3-30 meters 10 seconds	360 degrees, 3 to 30 meters, 15 seconds
+125	360 degrees 3-30 meters 20 seconds	360 degrees, 3 to 30 meters, 28 seconds
+126	360 degrees from top to bottom 3-10 meters 15 seconds	360 degrees from top to bottom 3-10 meters 15 seconds
+127	360+180 3-10 fast	360+180 3-10 fast
+128	4	4
+129	40 Grad 40 Meter	40 degrees 40 meters
+130	5 Player heroic	5 Player heroic
+131	5 Player normal	5 Player normal
+132	5	5
+133	6	6
+134	7	7
+135	8	8
+136	9	9
+137	A dot spell tick has caused damage	A dot spell tick has caused damage
+138	A hot spell tick has caused damage	A hot spell tick has caused damage
+139	A	A
+140	ä	ä
+141	Abbrechen	Cancel
+142	Abgabe	Delivery
+143	abgebrochen Nicht geboten	canceled No bid
+144	Bestätigung veraltet, Kauf abgebrochen	Confirmation expired, purchase canceled
+145	Auktion nicht mehr an dieser Stelle, Kauf abgebrochen	Auction no longer at this position, purchase canceled
+146	Auktion vergriffen	Auction sold out
+147	Server hat den Kauf nicht bestätigt, bitte erneut versuchen	Server did not confirm the purchase, please try again
+148	Liste lädt noch, bitte gleich erneut Eingabe zum Kaufen	List still loading, press Enter to buy again in a moment
+149	Scan noch nicht möglich, bitte kurz warten	Scan not possible yet, please wait a moment
+150	Abgeschlossen	Completed
+151	Ablehnen	Reject
+152	Absorbed Damage: 	Absorbed Damage: 
+153	Absorbed hits: 	Absorbed hits: 
+154	Absorbiert	Absorbed
+155	Abwählen	Deselect
+156	Accent	accent
+157	Accept	Accept
+158	Accepted Quest	Accepted Quest
+159	Accuracy one meter	Accuracy one meter
+160	Accuracy three meters	Accuracy three meters
+161	Achievements	Achievements
+162	Achtung: Start einer spezialaufgabe. Halte dich exakt an die Anweisungen! 	Attention: Start of a special task. Follow the instructions exactly! 
+163	Action bars	Action bars
+164	Active waypoint or route or recording	Following Waypoint or route or is recording
+165	ACTIVE_TALENT_GROUP_CHANGED	active talent group changed
+166	activities	activities
+167	Activity	Activity
+168	Activity: 	Activity: 
+169	Add all steps as linked steps	Add all steps as linked steps
+170	Add Dead on 0 percent	Add Dead on 0 percent
+171	add friend	add friend
+172	add line numbers	add line numbers
+173	Add Link to chat	Add Link to chat
+174	An Chat schicken	Post to chat
+175	in den Chat eingefügt	posted to chat
+176	Hinweis: Quest nicht im Log, Link evtl. nicht klickbar	Note: quest not in log, link may not be clickable for the recipient
+177	Add new entry	Add new entry
+178	add object	add object
+179	add sender to friend list	add sender to friend list
+180	Add sound on 100 percent	Add sound on 100 percent
+181	add timestamp to line end	move timestamp to line end
+182	add timestamps	add timestamps
+183	Add to favorites	Add to favorites
+184	add to ignore list	add to ignore list
+185	add/edit comment	add/edit comment (IMPORTANT: Complete the comment input with Escape, not with Enter!)
+186	added	added
+187	Addons	Addons
+188	Affliction	Affliction
+189	after this step	after this step
+190	Afterwards you have mastered the basics and can return to your first character and play it without assistance, or you can continue playing with the second character.	Afterwards you have mastered the basics and can return to your first character and play it without assistance, or you can continue playing with the second character.
+191	aggressive	aggressive
+192	Air	Air
+193	Aktion für Aura	Action of aura
+194	Aktion nicht mehr vorhanden	Action no longer exists
+195	aktion	action
+196	Aktivieren	Enable
+197	aktiviert	activated
+198	Aktivierte	Enabled
+199	Aktualisiert	Updated
+200	Aktuelle Karte Entfernung mit Auto	Current map by distance with auto
+201	Aktuelle Karte Entfernung	Current map by distance
+202	Aktuelle Preisdaten (für ein Stück)	Recent price data (for one item)
+203	Aktuelle Quests	Current Quests
+204	Aktuelles Element: 	Current item: 
+205	Aldor zone entered	Entered Aldor Zone
+206	Aldor zone left	Left Aldor Zone
+207	All alphabetically	All alphabetically
+208	All enemies	All enemies
+209	All entries	All articles
+210	All fights	All fights
+211	all items	all bags
+212	All NPCs in zone	All NPCs in zone
+213	All NPCs	All NPCs
+214	All opened	all opened
+215	All Required	All Required
+216	All voice output via blizzard tts	All voice output via blizzard tts
+217	All	All
+218	Alle (	All (
+219	Alle aktueller Kontinent	All on current continent
+220	Alle Auren exportieren	Export all auras
+221	Alle auren gelöscht	All auras deleted
+222	Alle Auren löschen	Delete all auras
+223	Alle Routen und Wegpunkte löschen	Delete all routes and waypoints
+224	Alle Tasten Belegungen wurden auf die Standardeinstellungen zurückgesetzt.	All key bind have been restored to default settings.
+225	Alle	All
+226	alle	All
+227	Alles gelöscht	Delete all
+228	Alles repariert	Everything repaired
+229	Alles zurücksetzen	Reset all
+230	Allgemeines	General
+231	Alliance zone entered	Entered Alliance Zone
+232	Alliance zone left	Left Alliance Zone
+233	Alliance	Alliance
+234	Allianz	Alliance
+235	already exists	already existing
+236	Als Gruppe	Loot: Group Loot
+237	Alt	Alt
+238	Always follow the instructions exactly. Never do anything other than the tutorial instructions are requesting, as long as you want to play the tutorial. It will break if you're doing anything else. Always proceed to the next step when you have completed a step.	Always follow the instructions exactly. Never do anything other than the tutorial instructions are requesting, as long as you want to play the tutorial. It will break if you're doing anything else. Always proceed to the next step when you have completed a step.
+239	Always	Always
+240	and	and
+241	Anderer Kontinent	Other continent
+242	Ändern	Modify
+243	Annahme	Quest start
+244	Announce deaths	Announce deaths
+245	Announce enemies entering combat	Announce enemies entering combat
+246	Announce enemies entering or leaving combat	Announce enemies entering or leaving combat
+247	Announce enemies leaving combat	Announce enemies leaving combat
+248	Announce friendly and hostile players	Announce friendly and hostile players
+249	Announce only numbers for entering or leaving combat notifications	Announce only numbers for entering or leaving combat notifications
+250	Announce out of range	Announce out of range
+251	Announce player controled units with generic descriptions	Announce player controled units with generic descriptions
+252	Announce relative number of enemies in combat	Announce relative number of enemies in combat
+253	Announce zone names	Announce zone names
+254	Any	any
+255	Anzahl Auktionen	Number of auctions
+256	anzahl	count
+257	anzeigen	show
+258	Apostrophe	apostrophe
+259	Application Viewer	Application Viewer
+260	Apply settings	Apply settings
+261	Arc	Radius
+262	Arcane	Arcane
+263	Arkan	Arcane
+264	Arms	Arms
+265	Arrived at Point A	arrived at Point A
+266	Arrived at Point B	arrived at Point B
+267	Arrived at target	arrived at destination
+268	Arrived;at;waypoint	arrived;at;Waypoint
+269	ascending	ascending
+270	Assassination	Assassination
+271	Assign nothing	Assign no action
+272	Atlas Loot	Atlas Loot
+273	AtlasLoot addon missing	AtlasLoot addon missing
+274	Attached	Attached
+275	Attachments	Attachments
+276	Attention, important before you get into action: If you are new to the game, you can get help with your first steps with the F1 key. If you do not know how to play the game, press F1 now to start a tutorial. Don't do other stuff first. The tutorial might fail if you do things on your own. So, if you would like assistance, press the F1 key now.	Attention, important before you get into action: If you are new to the game, you can get help with your first steps with the F1 key. If you do not know how to play the game, press F1 now to start a tutorial. Don't do other stuff first. The tutorial might fail if you do things on your own. So, if you would like assistance, press the F1 key now.
+277	Attribut für Bedingung	Attribute of condition
+278	Attributes	Features
+279	Attributes	Values
+280	Auction house	Auction house
+281	AUCTION_BIDDER_LIST_UPDATE	list of auctions you have bid on updated
+282	AUCTION_ITEM_LIST_UPDATE	List of available auctions updated
+283	AUCTION_OWNED_LIST_UPDATE	List of auctions you have created updated
+284	AuctionFrame	Auction house
+285	auctions by item	auctions by item
+286	auctions by seach string	auctions by search string
+287	auctions from full scan	auctions from full scan
+288	audio ausgabe einmal sofort	audio output single immediately
+289	audio ausgabe einmal	audio output single
+290	audio ausgabe	audio output
+291	Audio Dauer Pause	TTS speed
+292	Audio Menü visuell	Visual Audio menu
+293	Audio notification on chat message	Audio notification on chat message
+294	Audio notification on the end of chat messages	Audio notification on the end of chat messages
+295	audio und chat ausgabe	Output audio and chat single
+296	Audio	Audio
+297	Blizzard TTS	Blizzard TTS
+298	Sku TTS	Sku TTS
+299	Audio-Kanäle	Audio channels
+300	Audio-Kanäle,	Audio channels,
+301	Audio-Settings	Audio-Settings
+302	Aufzeichnung beendet	Recording completed
+303	Aufzeichnung läuft	Recording in progress
+304	Auktion erstellt	Auction created
+305	Auktion gewonnen: 	Auction won: 
+306	Auktionen	Auctions
+307	Auktionshaus	Auction house
+308	Aura Aktion: 	Aura action: 
+309	Aura Ausgaben:r
+	Aura outputs:r
+
+310	Aura Bedingungen:r
+	Aura conditions:r
+
+311	Aura daten defekt	Aura data corrupted
+312	Aura Elementer
+	Aura itemsr
+
+313	aura erhalten	aura gained
+314	Aura erstellt	Aura created
+315	Aura exportiert	Auras exported
+316	Aura importieren	Import auras
+317	Aura importiert	Auras imported
+318	Aura importiert:	Auras imported:
+319	Aura nicht erstellt	Aura not created
+320	Aura Set importieren	Import Aura Set
+321	Aura Sets verwalten	Manage aura sets
+322	aura stacks	aura stacks
+323	aura stapel	aura stack
+324	Aura Typ	Aura type
+325	Aura Typ: 	Aura type: 
+326	aura verloren	aura lost
+327	Aura version zu alt	Aura version too old
+328	Aura	Aura
+329	Aura, die in der Buff liste des Ziels gesucht oder ausgeschlossen wurde	aura to be included or excluded in the target's buff list
+330	Aura, die in der Debuff liste des Ziels gesucht oder ausgeschlossen wurde	aura to be included or excluded in the target's debuff list
+331	aura;sound	aura;sound
+332	Auren verwalten	Manage auras
+333	Auren	Auras
+334	Aus 	Off 
+335	Aus	Off
+336	Ausgabe von Aura	Output of Aura
+337	Ausgaben	Outputs
+338	Ausgewählt: 	Selected: 
+339	Ausgewichen	Dodged
+340	Auswählen	Select
+341	Auto announce global direction	Auto announce global direction
+342	Auto follow	Auto following
+343	auto play Settings	auto read
+344	Auto repair at vendors	Auto repair at vendors
+345	Auto sell junk at vendors	Auto sell junk at vendors
+346	Auto set hard target to soft target for	Auto set hard target to soft target for
+347	Auto set private Sku raid targets on in combat targets without a raid target	Auto set private Sku raid targets on in combat targets without a raid target
+348	Auto sound on Tom Tom arrow	Auto signal for Tom Tom arrow
+349	Auto switching to next similar waypoint	Next similar waypoint settings
+350	Auto	Auto
+351	auto	auto
+352	AUTOFOLLOW_BEGIN	autofollow begin
+353	AUTOFOLLOW_END	autofollow end
+354	available (can be accepted)	available (can be accepted)
+355	Available Quest	Available Quest
+356	Available	Available
+357	Avoid incoming Scarlet Crusade arrows and Javelins by moving out of their line of fire!	Avoid incoming Scarlet Crusade arrows and Javelins by moving out of their line of fire!
+358	B	B
+359	Back Button	Back
+360	Back	Back
+361	backslash	backslash
+362	Bad Target	Target invalid
+363	Badge	Badge
+364	Bag 1	Bag 1
+365	Bag 2	Bag 2
+366	Bag 3	Bag 3
+367	Bag 4	Bag 4
+368	Bag 5	Bag 5
+369	Bag 6	Bag 6
+370	Bag	Bag
+371	BAG_UPDATE	bag update
+372	Bagnon Bank	Bagnon Bank
+373	Bagnon Guild	Bagnon Guild
+374	Bagnon Taschen	Bagnon bags
+375	Bags	Bag slots
+376	Bag-slot	Bag slot
+377	Balance	Balance
+378	Bank	Bank
+379	BankFrame	Bank
+380	Bär	Feral (Tank)
+381	Barber Shop	Barber Shop
+382	Battle Net whisper	Battle Net whisper
+383	beacon sound	beacon sound
+384	beacon type	beacon type
+385	Beacon Volume	Beacon volume
+386	beacon volume	beacon volume
+387	Bearbeiten	Edit
+388	Beast mastery	Beast mastery
+389	Bedarf bevor Gier	Loot: Need Before Greed
+390	Bedingung hinzufügen	Add condition
+391	Bedingungen	Conditions
+392	Beginn des Dann Teils der Aura	Start of the 'then' part of the aura
+393	Bei Interagieren zum Ziel laufen	Move to target when interacting
+394	bekannt	known
+395	Belegung gelöscht	Binding deleted
+396	Belegung löschen	Delete binding
+397	Sekundäre Taste neu belegen	Bind secondary key
+398	Sekundäre Belegung löschen	Delete secondary binding
+399	Sekundäre Belegung gelöscht	Secondary binding deleted
+400	Belohnungen:r
+	Rewards:r
+
+401	Belohnungenr
+	Rewardsr
+
+402	Benny Hill	Benny Hill
+403	bereit	ready
+404	Bereits höheres Gebot vorhanden	Higher bid exists
+405	Bereitschaft check	ready check
+406	beschwören	summon
+407	Best In Slot	Best In Slot
+408	Bieten	Bid
+409	Bind key	Key binding
+410	Binding canceled	Binding canceled
+411	BIS info	BIS info
+412	Bisherige Aura Elementer
+	Current aura itemsr
+
+413	Blacklisted	Blacklisted
+414	Blocked Damage: 	Blocked Damage: 
+415	Blocked hits: 	Blocked hits: 
+416	Blood dps	Blood dps
+417	Blood Elf	Blood Elf
+418	Blood tank	Blood tank
+419	Blood	Blood
+420	Blue	Blue
+421	Blutelf	Blood Elf
+422	Bobber	bobber
+423	BOE	BOE
+424	BOP	BOP
+425	BOQ	BOQ
+426	Bottom Multi Bar Left	bottomleft action bar
+427	Bottom Multi Bar Right	bottomright action bar
+428	BOU	BOU
+429	brang	brang
+430	brass 1	Brass 1
+431	brass 2	Brass 2
+432	brass 3	Brass 3
+433	brass 4	Brass 4
+434	brass 5	Brass 5
+435	Breaks: If you can't finish the tutorial because you don't have enough time or unexpected events such disconnects are disrupting the tutorial, you may resume the tutorial once you are back. Open this help with (F1). Go to the bottom. There, you will be offered to continue the tutorial.	Breaks: If you can't finish the tutorial because you don't have enough time or unexpected events such disconnects are disrupting the tutorial, you may resume the tutorial once you are back. Open this help with (F1). Go to the bottom. There, you will be offered to continue the tutorial.
+436	bring	bring
+437	Browse	Browse
+438	buff list target remaining duration	buff list target remaining duration
+439	Buff Liste Ziel (L)	buff list target (L)
+440	Buff oder Debuff erhalten oder erneuert	buff or debuff gained or renewed
+441	Buff oder Debuff verloren	buff or debuff lost
+442	buff	buff
+443	buff/debuff	buff/debuff
+444	Buffs	Buffs
+445	Bullet lists as numbers	Bullet lists as numbers
+446	Busy	Busy
+447	Button	Button
+448	Buy 	Buy 
+449	By distance	By distance
+450	By name	By name
+451	C	C
+452	C	C
+453	Calendar	Calendar
+454	CALENDAR_FILTER_ALL_HOLIDAYS	Yearly holidays
+455	Cancel Button	Cancel
+456	CANCEL_LOOT_ROLL	cancel loot roll
+457	CASH ON DELIVERY	CASH ON DELIVERY
+458	cast	cast
+459	Casting	Casting
+460	Category	Category
+461	category	category
+462	Caution: Cash on delivery	Warning: Cash on delivery
+463	Change Role	Change Role
+464	channel	channel
+465	Channels	Channels
+466	Character	Char
+467	CHARACTER_POINTS_CHANGED	talent points changed
+468	CharacterFrame	Character
+469	chat ausgabe einmal	chat output once
+470	chat ausgabe	chat output
+471	Chat notification on enabling/disabling soft targeting categories	Chat notification on enabling/disabling soft targeting categories
+472	chat notification	chat notification
+473	Chat settings	Chat settings
+474	Chat von kreaturen automatisch lesen	Automatically read chat from creatures
+475	CHAT_MSG_CHANNEL	chat msg channel
+476	CHAT_MSG_CHANNEL_NOTICE	chat msg channel notice
+477	CHAT_MSG_LOOT	chat msg loot items
+478	CHAT_MSG_MONEY	chat msg loot money
+479	CHAT_MSG_SAY	chat msg say
+480	CHAT_MSG_WHISPER	chat msg whisper
+481	CHAT_MSG_WHISPER_INFORM	chat msg whisper inform
+482	checked	checked
+483	Chest	Chest
+484	Chormusik 1	Choral music 1
+485	Chormusik 2	Choral music 2
+486	Chormusik 3	Choral music 3
+487	Chormusik 4	Choral music 4
+488	Circle	circle
+489	Class Trainer	Trainer
+490	Classes	Classes
+491	ClassTrainerFrame	Class Trainer
+492	Clear data	Clear data
+493	Clear history	Clear tab history
+494	Clear list	Clear list
+495	Clear visited	Clear visited
+496	Clear	Clear
+497	Clock	 
+498	Close	Close
+499	Closest route	Close route
+500	Collapse all	Collapse all
+501	colon	colon
+502	Combat end	combat end
+503	combat notification	combat notification
+504	Combat start	combat start
+505	Combat	Combat
+506	Sku menu in combat	Sku menu in combat
+507	Comma	comma
+508	comma	comma
+509	comment	comment
+510	Communication	Communication
+511	Companions	Companions
+512	Complete recording	Complete recording
+513	Complete	Complete
+514	Completed	Completed
+515	Completed: In log	Completed: In quest log
+516	ConfirmationMessage	Are you sure?
+517	Confirmed	Confirmed
+518	Contacts	Contacts
+519	Container	Container
+520	ContainerFrame1	Bags
+521	Content 	Content 
+522	Continue	Continue
+523	Continuous output every seconds	Continuous output every seconds
+524	Continuous output start at	Continuous output start at
+525	Continuous output starts after seconds	Continuous output starts after (seconds)
+526	Continuous output	Continuous output
+527	Continuous volume	Continuous volume
+528	Control	Control
+529	Controls whether a sound is played at the end of a chat message.	Controls whether a sound is played at the end of a chat message.
+530	convert from linked to real	convert from linked step to real step
+531	cooldown	cooldown
+532	Cooldowns	Cooldowns
+533	Copper	Copper
+534	Copper	Copper
+535	copy all chat lines	copy all chat lines
+536	copy chat line	copy this chat line
+537	Copy data from steps in this tutorial to all steps that are linking to the steps in this tutorial, making them unlinked real steps. Then delete this tutorial	Copy data from steps in this tutorial to all steps that are linking to the steps in this tutorial, making them unlinked real steps. Then delete this tutorial
+538	Copy macro text	Copy macro text
+539	copy sender name	copy sender name
+540	Copy text with control plus C and press escape	Copy text with control plus C and press escape
+541	Copy this step data to all steps that are linking to this step, making them unlinked real steps. Then delete this step	Copy this step data to all steps that are linking to this step, making them unlinked real steps. Then delete this step
+542	Copy too	Copy too
+543	CorpseLootable	corpse lootable
+544	CorpseNotLootable	corpse not lootable
+545	CorpseSkinnable	corpse skinnable
+546	Count deaths up	Count deaths up
+547	Crafting	Crafting
+548	creaking	wood
+549	Create Group	Create Group
+550	Create new step	Insert new step
+551	Create	Create
+552	CreateMacro	Create macro
+553	Creator	Creator
+554	CreatureAny	any creature
+555	CreaturePlayerTarget	target creature
+556	Critical Damage: 	Critical Damage: 
+557	Critical hits: 	Critical hits: 
+558	Critical Max hit: 	Critical Max hit: 
+559	Critical Min hit: 	Critical Min hit: 
+560	Critical	Critical
+561	Cross	cross
+562	Crowd Controlled	stunned
+563	Currency	Currency
+564	current (in your log, ready to hand in)	current (in your log, ready to hand in)
+565	current Bank box	Current Bank box
+566	Current fight	Current fight
+567	Current focus target	Current focus target
+568	current gem:	current gem:
+569	Current map distance	Current map distance
+570	Current map	Current map
+571	Current target	Current target
+572	current	current
+573	CURRENT_COORDINATES	Current coordinates 4 meters
+574	CURRENT_COORDINATES_10	Current coordinates 10 meters
+575	CURRENT_COORDINATES_20	Current coordinates 20 meters
+576	CURRENT_COORDINATES_4	Current coordinates 4 meters
+577	CURRENT_SPELL_CAST_CHANGED	current spell cast changed
+578	CURRENT_TARGET	ID of your current target
+579	currently equipped	currently equipped item
+580	curse	curse
+581	curse_short	c
+582	Cursor	Cursor 
+583	cursor;on	cursor;on
+584	CURSOR_CHANGED	cursor changed
+585	Custom	Custom
+586	D	D
+587	Damage amount	Damage amount
+588	Damage Meter	Damage Meter
+589	Damage taken	Damage taken
+590	Damage total	Damage total
+591	DAMAGER	Damage
+592	Damagers	Damagers
+593	DB_ChatPrefix	Sku Dungeon Browser:
+594	DB_ChatPrefixShort	Sku DB:
+595	DB_Close	Close
+596	DB_DeselectAll	Deselect all
+597	DB_CreateListingUnavailable	C_LFGList.CreateListing not available
+598	DB_DoEnrollCalled	DoEnroll called
+599	DB_Enroll	List yourself
+600	DB_EnrollFailed	Listing failed: 
+601	DB_EnrollStarted	Listing started for %d dungeons
+602	DB_HeroicPrefix	Heroic: 
+603	DB_HeroicSection	Heroic Dungeons
+604	DB_InviteToGroup	Invite to group
+605	DB_Invited	 invited.
+606	DB_Label	Dungeon Browser
+607	DB_Level	Level 
+608	DB_LevelUnknown	 (level unknown)
+609	DB_No	No
+610	DB_NoDungeonsForLevel	No matching dungeons for your level
+611	DB_NoDungeonsSelected	No dungeons selected
+612	DB_NoOtherPlayers	Currently no other players are listed
+613	DB_RefreshList	Refresh list
+614	DB_RefreshedN	Refreshed. %d players found
+615	DB_RefreshedNone	Refreshed. No players found
+616	DB_RefreshedOne	Refreshed. 1 player found
+617	DB_RemoveListingUnavailable	RemoveListing not available
+618	DB_Role	Role
+619	DB_RoleActive	 active
+620	DB_Role_Damager	Damage
+621	DB_Role_Healer	Healer
+622	DB_Role_Tank	Tank
+623	DB_SearchInProgress	Search in progress, no players found yet
+624	DB_Selected	 selected
+625	DB_SelfMarker	 (You)
+626	DB_StatusListedAs	Status: listed as 
+627	DB_StatusNoRole	no role selected
+628	DB_StatusNotListed	Status: Not listed
+629	DB_Unenroll	Remove listing
+630	DB_Unenrolled	Listing removed
+631	DB_WhisperPlayer	Whisper player
+632	DB_Yes	Yes
+633	dämonenjäger	demon hunter
+634	Dämonologie	Demonology
+635	dang	dang
+636	dann aktion 1 verwenden	then use action 1
+637	dann aktion 1 verwenden, und dann aktion 5 verwenden	then use action 1, and then action 5
+638	dann	then
+639	dann;	then;
+640	Das Auge von Acherus unterliegt Eurer Kontrolle.	The Eye of Acherus is in your control.
+641	Das Ereignis, das die Aura auslösen soll	The event to trigger the aura
+642	Daten	Data
+643	Days duration: 	Days duration: 
+644	dead	dead
+645	Deaktivieren	Disable
+646	deaktiviert	deactivated
+647	Deaktivierte	Deactivated
+648	Death knight	Death Knight
+649	Death Knight	Death Knight
+650	DEATHKNIGHT	DEATHKNIGHT
+651	Deaths	Deaths
+652	Debuff list target remaining duration	Debuff list target remaining duration
+653	Debuff Liste Ziel (L)	Debuff list target (L)
+654	debuff types	debuff types
+655	debuff	debuff
+656	Debuffs	Debuffs
+657	Debug Optionen	Debug options
+658	Declined	Declined
+659	Deeprun Tram	Deeprun Tram
+660	def Microsoft Hedda Desktop - German	default Microsoft Desktop - English
+661	Default beep sound	Default beep sound
+662	default new Chat Line sound	default new Chat Line sound
+663	Default Tab	Default Tab
+664	Default Waypoints	Default waypoints
+665	Default	Default
+666	dein aktuelles Ziel. Beispiel: Ein Debuff, der auf deinem aktuelle Ziel ausgelaufen ist	your current target. example: a debuff expired on your current target
+667	dein begleiter	your companion
+668	Dein combopunkte auf das aktuelle ziel, die die Aura auslösen sollen	Your combo points on the current target triggering the aura
+669	dein fokus. Beispiel: Ein Buff, der auf deinen focus gezaubert wurde	your focus. example: a buff cast on your focus target
+670	Dein Gesundheit in Prozent	Your health in percent
+671	Dein gesundheits Level in Prozent, das die Aura auslösen soll	Your health level in percent to trigger the aura.
+672	Dein Ressourcen Level in Prozent, das die Aura auslösen soll (deine Primärressource wie Mana, Energie, Wut etc.	Your resource level in percent to trigger the aura (your primary resource like mana, energy, rage, etc.).
+673	dein ziel	your target
+674	Deine combopunkte auf dein aktuelles ziel	Your combo points on the current target
+675	Deine Gesundheits Menge für das ausgelöste Ereignis	Your health on the triggered event
+676	Deine Ressourcen Menge (Mana, Wut, Energie) für das ausgelöste Ereignis	Your resource (mana, rage, energy) on the triggered event
+677	Delay before output trigger (milliseconds)	Delay before output trigger (milliseconds)
+678	Delay on found plate	Delay on found plate
+679	Delete all custom tutorials	Delete all custom tutorials
+680	Delete all steps that are linking a step in this tutorial. Then delete this tutorial	Delete all steps that are linking a step in this tutorial. Then delete this tutorial
+681	Delete all steps that are linking this step. Then delete this step	Delete all steps that are linking this step. Then delete this step
+682	delete chat history on login	delete chat history on login
+683	Delete tab	Delete tab
+684	delete whisper tabs without activity after	delete whisper tabs without activity after
+685	Delete	Delete
+686	Delete	Delete
+687	Deleted	Deleted
+688	Delist	Delist
+689	DEMONHUNTER	DEMONHUNTER
+690	Demonology	Demonology
+691	Der Aura-Typ (Buff oder Debuff), der die Aura auslösen soll	The type of the aura (buff or debuff) to trigger the sku aura
+692	Der Cooldown eines Gegenstands hat begonnen	The cooldown of an item has started
+693	Der Cooldown eines Gegenstands ist beendet	The cooldown of an item has ended
+694	Der Cooldown eines Zaubers hat begonnen	The cooldown of a spell has started
+695	Der Cooldown eines Zaubers ist beendet	The cooldown of a spell has ended
+696	Der Gegenstand wurde nicht gefunden.	The item was not found.
+697	Der Gegenstandsname, der die Aura auslösen soll	The item name to trigger the aura
+698	Der Klasse, die die Aura auslösen soll	The class that triggers the aura
+699	Der Name des auslösenden Ereignisses der Aura	The name of the triggering event
+700	Der Name des Gegenstands, der die Aura ausgelöst hat	The name of the item that triggered the aura
+701	Der Name des Zaubers, der die Aura ausgelöst hat	The name of the spell that triggered the aura
+702	Der Südstrom	Southfury River
+703	Der Typ des Verfehlen Ereignisses	The type of the miss event
+704	Der Zauber-name, der die Aura auslösen soll	The spell name to trigger the aura
+705	Derzeitiger Begleiter	Current pet
+706	descending	descending
+707	Description and Rewards	Description and Rewards
+708	description	description
+709	Description: 	Description: 
+710	Deselect all	Deselect all
+711	Destination: 	Destination: 
+712	Destruction fire	Destruction fire
+713	Destruction	Destruction
+714	Detail	Details
+715	Detailed direction and distance	Detailed direction and distance
+716	Details addon not installed	Details addon not installed
+717	Details panel	Details pane
+718	Details	Details
+719	Dial Targeting	Dial Targeting
+720	Dialog 	Dialog 
+721	Dialog Lautstärke	Dialog volume
+722	Dialog	Dialogue
+723	Diamond	diamond
+724	Die Anzahl der Stacks einer Aura (Buff oder Debuff), bei der die Aura auslösen soll	The number of stacks of an aura (buff or debuff) to trigger the sku aura
+725	Die Anzahl der verbleibenden Gegenstände in deinen Taschen, vom Typ des Gegenstands, der das Ereignis ausgelöst hat	The number of items remaining on item that triggered the event
+726	Die Anzahl in deiner Tasche des Gegenstands, der die Aura ausgelöst hat	The count the item that triggered the aura
+727	Die Ausgaben werden als Audio ausgegeben und dabei vor allen anderen Ausgaben platziert. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.	The outputs are audio and will be done before any other outputs. The aura is triggered only once. The next activation of the aura will be when the aura was not true for at least one time.
+728	Die Ausgaben werden als Audio ausgegeben	Output are audio
+729	Die Ausgaben werden als Audio ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.	The outputs are audio. The aura is triggered only once. The next activation of the aura will be when the aura was not true for at least one time.
+730	Die Ausgaben werden als Audio und chat ausgegeben	The aura is triggered only once. The next activation of the aura will be when the aura was not true for at least one time.
+731	Die Ausgaben werden als Text im Chat ausgegeben	Outputs are text in chat
+732	Die Ausgaben werden als Text im Chat ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.	The output is text. The aura is triggered only once. The next activation of the aura will be when the aura was not true for at least one time.
+733	Die Einheit des Ziels deines Ziels	The unit of the target of your target
+734	Die Einheiten ID der Quelle für das ausgelöste Ereignis	The unit ID of the source on the triggered event
+735	Die Einheiten ID des Ziels für das ausgelöste Ereignis	The unit ID of the target on the triggered event
+736	Die Gegenstands-ID, die die Aura auslösen soll	The item ID to trigger the aura
+737	Die Höhlen des Wehklagens	The Wailing Caverns
+738	Die Klasse der Einheit für das ausgelöste Ereignis	The class of the unit on the triggered event
+739	Die Liste der Buffs des Ziels	The list of buffs on the target
+740	Die Liste der Debuffs  des Ziels	The list of debuffs on the target
+741	Die Quell Einheit, bei der die Aura ausgelöst werden soll	The source unit that the aura will be triggered for
+742	Die Stapel Anzahl der Aura	The stack count of the aura
+743	Die verbleibende Menge eines Gegenstands in deinen Taschen, bei der die auslösen soll	The remaining amount of an item that triggered the aura
+744	Die Zauber-ID, die die Aura auslösen soll	The spell ID to trigger the aura
+745	Die Ziel-Einheit, bei der die Aura ausgelöst werden soll	The target unit that the aura should be triggered for
+746	Difficulty	Difficulty
+747	Difficulty: 	Difficulty: 
+748	Dir	Direction
+749	Dire Maul	Dire Maul
+750	disable seen quest notifications forever	disable seen quest notifications forever
+751	disabled	Disabled
+752	Discipline	Discipline
+753	disease	disease
+754	disease_short	p
+755	Distance to party member	Distance to party member
+756	distance to quest giver for disabling quest notification	distance to quest giver for disabling quest notification
+757	Distance to your current target	Distance to your current target
+758	Disziplin	Discipline
+759	Do interact soft targeting if	Do interact soft targeting if
+760	Do not add seen links in history	Do not add seen links in history
+761	do not hide tooltip	do not hide game tooltip
+762	Do not read out emojis	Do not read out emojis
+763	Do range check on target change	Output range on target change
+764	Do soft targeting	Do soft targeting if
+765	Don't announce waypoint switching	No voice outputs for waypoints
+766	Don't skip current outputs	Don't skip current outputs
+767	Don't vocalize reaction and level for players in combat	Don't vocalize the reaction (friendly or hostile) and the level for players while in combat
+768	dot tick	dot tick
+769	DOWN	DOWN
+770	Down	Down
+771	DPS	DPS
+772	Draenei	Draenei
+773	drmm	drmm
+774	Dropdown List 1	Dropdown list 1
+775	Dropdown List 2	Dropdown list 2
+776	DropDownList1	Dropdown List
+777	Dropped by	Dropped by
+778	Droprate	Droprate
+779	Druid	Druid
+780	DRUID	DRUID
+781	druide	druid
+782	Druide	druid
+783	DSP Effects	DSP Effects
+784	Du legst als nächstes die Aktion fest, die bei der Auslösung der Aura passieren soll	Now your setting up the action that should happen when the aura is triggered
+785	du selbst	you
+786	du selbst. Beispiel: Ein Buff, der auf dich gezaubert wurde	yourself. Example: A buff that was cast on you
+787	Dungeon and raid settings	Dungeon and raid settings
+788	Duplizieren	Duplicate
+789	Dupliziert	Duplicated
+790	Dwarf	Dwarf
+791	E	E
+792	Earth	Earth
+793	east	east
+794	easy	green
+795	edit note	edit note
+796	Edit	Edit
+797	Eigene combopunkte	Your combo points
+798	Eigene Gesundheit	Own health
+799	Eigene Ressource	Own resource
+800	eigene Gesundheit	Own health
+801	eigene gesundheit	Own health
+802	eigene Ressource	Own resource
+803	Ein 	On 
+804	ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist	any party member. example: a buff that has expired on a party member
+805	Ein Ereignis im Zusammenhang mit einem Buff oder Debuff löst die Aura aus	An event related to a buff or debuff triggers the aura
+806	Ein Ereignis im Zusammenhang mit einem Gegenstand löst die Aura aus	An event related to an item triggers the aura
+807	Ein Ereignis im Zusammenhang mit einem Zauber löst die Aura aus	An event related to a spell triggers the aura
+808	Ein Ereignis im Zusammenhang mit einer Einheit (Spieler, NPC, Mob) löst die Aura aus	An event related to a unit (player, NPC, creature) triggers the aura
+809	Ein Fernkampfangriff hat einen Extraangriff ausgelöst	A ranged attack has caused an extra attack
+810	Ein Fernkampfangriff hat Schaden verursacht	A ranged attack caused damage
+811	Ein Fernkampfangriff hat verfehlt	A ranged attack missed
+812	Ein Gegenstand wurde verwendet	An item was used
+813	Ein Nahkampfangriff hat eine Ressource (Wut, Energie, Kombopunkt) gewährt	A melee attack granted a resource (rage, energy, combo point)
+814	Ein Nahkampfangriff hat einen Extrangriff gewährt	A melee attack has granted an extra attack
+815	Ein Nahkampfangriff hat Schaden verursacht	A melee attack caused damage
+816	Ein Nahkampfangriff hat verfehlt	A melee attack missed
+817	Ein Zauber hat eine Ressource (Mana) gewährt	A spell granted a resource (mana)
+818	Ein Zauber hat einen Extraangriff gewährt	A spell has granted an extra attack
+819	Ein Zauber hat etwas wiederbelebt	A spell has resurrected something
+820	Ein Zauber hat Heilung verursacht	A spell caused healing
+821	Ein Zauber hat Schaden verfehlt	A spell missed
+822	Ein Zauber hat Schaden verursacht	A spell has caused damage
+823	Ein Zauber ist fehlgeschlagen	A spell failed
+824	Ein Zauber wurde begonnen	A spell cast was started
+825	Ein Zauber wurde erfolgreich gezaubert	A spell was successfully cast
+826	Ein Zauber wurde unterbrochen	A spell was interrupted
+827	Ein	On
+828	eine beliebige Einheit. Beispiel: Irgendein Mob stirbt	any unit. Example: Any creature dies
+829	Eine Einheit (Spieler, NPC, Mob etc.) ist gestorben	A unit (player, NPC, creature, etc.) has died
+830	Eine Einheit hat das Ziel gewechselt. Quell Einheit ID ist die Einheit, die das Ziel gewechselt hat. Ziel Einheit ID ist das neue Ziel von Quell einheit.	A unit has changed target. Source unit ID is the unit that changed the target. Target unit ID is the new target of source unit.
+831	Eine Taste wurde gedrückt	A key was pressed
+832	einheit tot	unit dead
+833	einheit zerstört	unit destroyed
+834	Einheit	Unit
+835	Einheiten Route folgen gestartet	Following Unit route started
+836	Einheiten Route	Unit Route
+837	Einheiten;Route;	Unit;Route;
+838	Elemental	Elemental
+839	Elementar	Elemental
+840	Elite	Elite
+841	Emoji	Emoji
+842	Berufe	Professions
+843	Keine Berufe erlernt	No professions learned
+844	Öffnen	Open
+845	Verlernen	Unlearn
+846	Empty	Empty
+847	empty	empty
+848	Empty;list	list;empty
+849	Wegpunkte werden noch geladen	waypoints still loading
+850	enable Beacons	enable Beacons
+851	Enable in dungeons/raids only	Enable in dungeons/raids only
+852	Enabled	Activated
+853	Enables / disables audio on new chat line	Enables / disables audio on new chat line
+854	Enables / disables audio on new line	Audio notification on new chat message
+855	Enables / disables the addon	Enables/disables the addon
+856	Enchants	Enchants
+857	Encounters	Encounters
+858	End text	End text
+859	End	End
+860	End	End
+861	End: 	End: 
+862	Enemies attacking party or you	Enemies attacking party or you
+863	Enemies attacking you	Enemies attacking you
+864	Enemies	Enemies
+865	ENERGY	Energy
+866	Engrave	Engrave
+867	Engraving	Engraving
+868	Enhanced settings	Enhanced settings
+869	Enhancement	Enhancement
+870	Enlist	Enlist
+871	Enlisted	enlisted
+872	Enter filter term and press enter	Enter filter term and press enter
+873	Enter name and press ENTER key	Enter name and press ENTER key
+874	Enter new name	Enter new name now
+875	enter profile name now	enter profile name now
+876	enter search string now	enter search string now
+877	enter search string	enter search string
+878	Enter search term and complete with enter or press escape to clear the search term	Enter filter term and complete with enter or press escape to clear the filter term
+879	Enter step name	Enter step name now
+880	Enter text and press ENTER key	Enter text and press Enter.
+881	Enter text	Enter text
+882	Enter tutorial name	Enter tutorial name now
+883	enter x value	enter x value
+884	enter y value	enter y value
+885	ENTER	Enter
+886	ENTER_TEXT	Open text input
+887	EnterMacroBody	Enter macro commands
+888	EnterMacroName	Enter macro name
+889	Entfernung	Distance
+890	enthält nicht	contains not
+891	enthält	contains
+892	Entries	Entries
+893	Entry Creation	Entry Creation
+894	Entry point: 	Entry point;
+895	Entry	Entry
+896	Entspannungsmusik	Music for relaxation
+897	Episch	Epic
+898	Equiment	Equipment
+899	Equip	Equip
+900	Equipment manager	Equipment manager
+901	Equipment sets	Equipment sets
+902	EQ_MenuTip	Save and recall equipment sets.
+903	Equipment	Equipment
+904	Equipped	Equipped
+905	ereignis	event
+906	erhalten	gained
+907	Error feedback	Error Feedback
+908	Error in route;follow stopped	Error in route;following canceled
+909	Error or too far away (maximum 50 meters)	error or too far away (maximum 50 meters)
+910	Error	Error
+911	Error. Name already exists. Rename the existing tutorial and try again.	Error. Name already exists. Rename the existing tutorial and try again.
+912	Error: Data language is not current language	Error: Data language is not current language
+913	Error: No data	Error: No data
+914	Error: No target or target has no not valid creature id	Error: No target or target has no not valid creature id
+915	Error: unknown event type	Error: unknown event type
+916	error;sound	Error;Sound
+917	erstellen	create
+918	Erstellen: 12 Stunden	Create: 12 hours
+919	Erstellen: 24 Stunden	Create: 24 hours
+920	Erstellen: 48 Stunden	Create: 48 hours
+921	Erstellt	Created
+922	Es liegt bereits ein höheres Gebot für diesen Gegenstand vor.	There already is a hight bid for this item.
+923	ESCAPE	ESCAPE
+924	Etwas wurde duch einen Zauber beschworen (z. B. Leerwandler beim Hexer	Something was summoned by a spell (e.g. warlock void walker)
+925	Etwas wurde durch einen Zauber hergestellt (z. B. Berufe-Skill)	Something was created by a spell (e.g. profession skill)
+926	Etwas wurde zerstört (z. B. ein Totem)	Something was destroyed (e.g. a totem)
+927	Event id: 	Event id: 
+928	Event output filters	Event output limitation
+929	Event output on	Event output on
+930	Event Steps	Event Steps
+931	Event type: 	Event type: 
+932	Event volume	Event volume
+933	Event with new step	Event with new output step
+934	Event	Event
+935	Events	Events
+936	Every event	Every event
+937	exclamation;point	exclamation mark
+938	Existing	Existing
+939	Export all custom Sku newbie tutorials	Export all custom Sku newbie tutorials
+940	Export as text	Export as text
+941	Export this tutorial as text	Export this tutorial as text
+942	Export this tutorial	Export this tutorial
+943	Export	Export
+944	Exportieren	Export
+945	F	F
+946	F1	F1
+947	F10	F10
+948	F11	F11
+949	F12	F12
+950	F2	F2
+951	F3	F3
+952	F4	F4
+953	F5	F5
+954	F6	F6
+955	F7	F7
+956	F8	F8
+957	F9	F9
+958	Face	Face
+959	Facial Hair	Gender/race specific
+960	Factor in incoming heals	Factor in incoming heals
+961	fail. no activity selected	failed. no activity selected
+962	fail. no category selected	failed. no category selected
+963	fail. no comment for category custom entered	failed. no comment for category custom entered
+964	failure	Error
+965	Fall detection settings	Fall detection settings
+966	falsch	false
+967	FALSE	False
+968	Favorites	Favorites
+969	Feet	Feet
+970	Fehlende Audio Wörter kopieren	Show missing words with missing audio
+971	fehler anzeigen default	show error default
+972	Fehler anzeigen	Show last error
+973	fehler Nicht geboten	error No bid
+974	Fehlgeschlagen	Failed
+975	Feindlich	Hostile
+976	feindlicher spieler	unfriendly player
+977	Female	Female
+978	Fenster verschieben	Move Frame
+979	Feral dps	Feral dps
+980	Feral tank	Feral tank
+981	fernkampf ressource	ranged resource
+982	fernkampf schaden	ranged damage
+983	fernkampf verfehlt	ranged attack missed
+984	fernkampf zusatz angriff	ranged extra attack
+985	Fertig. Alle geboten	Done. All bids
+986	Fertig. Alle gekauft	Done. All bought
+987	Fertigkeiten:r
+	Skills:r
+
+988	Feuer	Fire
+989	Fight	Fight
+990	film	film
+991	Filter - noun	Filter
+992	Filter applied	Filter applied
+993	Filter removed	Filter removed
+994	Filter und Sortierung	Filter and sort
+995	Filter	Filter
+996	Filters	Filters
+997	Find Group	Find Group
+998	Finger	Finger
+999	Fire FFB	Fire FFB
+1000	Fire	Fire
+1001	First a few infos: If you are following the tutorial, you should strictly follow the instructions from the tutorial. Listen carefully to what you are supposed to do, and then do exactly that. Don't do anything else while the tutorial is running. Do not deviate from the tutorial. Otherwise the tutorial will not work anymore!	First a few infos: If you are following the tutorial, you should strictly follow the instructions from the tutorial. Listen carefully to what you are supposed to do, and then do exactly that. Don't do anything else while the tutorial is running. Do not deviate from the tutorial. Otherwise the tutorial will not work anymore!
+1002	First Aid	First Aid
+1003	First pos	First pos
+1004	Fishing Bobber	Fishing Bobber
+1005	fishing reel	fishing reel
+1006	Fishing	Fishing
+1007	fixed	fixed
+1008	Flight zone entered	Entered flight zone
+1009	Flight zone left	Left flight zone
+1010	Flüster Chat automatisch lesen	Automatically read whisper chat
+1011	FOCUS	Focus
+1012	Fokus setzen	Set Focus
+1013	fokus	focus
+1014	Folgen beim Zaubern temporär beenden	Temporarily stop following upon casting
+1015	Nur unterbrechbare Zauber ansagen	Only announce interruptible casts
+1016	Unterbrechungen bei deinem Ziel ansagen	Announce interrupts on your target
+1017	Unterbrechungen bei allen Gegnern ansagen	Announce interrupts on all enemies
+1018	Following metaroute	Following metaroute
+1019	following stopped	current following stopped
+1020	Navigation abgebrochen	Navigation canceled
+1021	for tutorial creators	for tutorial creators
+1022	For you as (%race%) (%class%) there is a tutorial. Use down arrow to learn how to start it.	For you as (%race%) (%class%) there is a tutorial. Use down arrow to learn how to start it.
+1023	Format	Layout
+1024	Fortschritt:r
+	Progress:r
+
+1025	Fortschrittr
+	Progressr
+
+1026	found	found
+1027	Freie Taschenplätze: 	Empty bag slots: 
+1028	fremder begleiter	other companion
+1029	Freund hinzufügen	Add Friend
+1030	Freundlich	Friendly
+1031	freundlicher spieler	friendly player
+1032	Friend List	Friends List
+1033	FRIENDLIST_UPDATE	friendlist update
+1034	Friendly	Friendly
+1035	Friends	Friends
+1036	Friends	Friends
+1037	FriendsFrame	Friends
+1038	Frost (tank)	Frost (tank)
+1039	Frost (tank)	Frost
+1040	Frost	Frost
+1041	Full scan completed	Auction house full scan completed
+1042	full scan not ready yet	full scan not ready yet
+1043	Full scan started	Auction scan started, please wait
+1044	full scan	full scan
+1045	Funktion erst nach Abschluss von Routen Umwandlung verfügbar	Feature only available after route conversion
+1046	Für Auto Verkaufen markieren	Select for scrap auto sale
+1047	Furor	Fury
+1048	Fury	Fury
+1049	G	G
+1050	G	G
+1051	Game Menu	Game menu
+1052	GAME_EVENT	Game event
+1053	GameMenuFrame	Game Menu
+1054	Gas	Gas
+1055	gear	gear
+1056	Gearscore: 	Gearscore: 
+1057	Geblockt	Blocked
+1058	Gebot 	 Bid 
+1059	Gebot 	Bid 
+1060	Gebot akzeptiert	Bid accepted
+1061	Gebot akzeptiert.	Bid accepted.
+1062	Gebote	Bids
+1063	Gebotspreis für 1 Gegenstand aufsteigend	bid price for 1 item ascending
+1064	Gebotspreis für Auktionsmenge aufsteigend	Bid price for auction quantity ascending
+1065	Gebrechen	Affliction
+1066	gegenstand anzahl	item count
+1067	gegenstand cooldown ende	item cooldown end
+1068	gegenstand cooldown start	item cooldown start
+1069	gegenstand name	item name
+1070	gegenstand nr	item ID
+1071	gegenstand verwenden	use item
+1072	gegenstand	item
+1073	Geld: 	Money: 
+1074	gelöscht	deleted
+1075	GEN	GEN
+1076	Gender	Gender
+1077	General	General
+1078	Gesamt 	Overall 
+1079	Gesamt Lautstärke	Overall volume
+1080	Gesamt	Overall
+1081	Gesprochen	Spoken
+1082	Gesundheit änderung	health updated
+1083	Gesundheit hat sich verändert	Health has been updated
+1084	Gesundheit und Status	Health and status
+1085	gesundheit	health
+1086	Gesundheit: 	Health: 
+1087	Gewähltes Attribut enthält den gewählten Wert	Selected attribute contains the selected value
+1088	Gewähltes Attribut enthält nicht den gewählten Wert	Selected attribute does not contain the selected value
+1089	Gewähltes Attribut entspricht dem gewählten Wert	Attribute matches the value
+1090	Gewähltes Attribut entspricht nicht dem gewählten Wert	Selected attribute does not match the value
+1091	Gewähltes Attribut ist größer als der gewählte Wert	Selected attribute is greater than the selected value
+1092	Gewähltes Attribut ist kleiner als der gewählte Wert	Selected attribute is smaller than the selected value
+1093	Gewitter	Thunderstorm
+1094	Gilde:r
+	Guild:r
+
+1095	Gilden Chat automatisch lesen	Automatically read guild chat
+1096	Glancing Damage: 	Glancing Damage: 
+1097	Glancing hits: 	Glancing hits: 
+1098	glass 1	Glass 1
+1099	glass 2	Glass 2
+1100	glass 3	Glass 3
+1101	glass 4	Glass 4
+1102	glass 5	Glass 5
+1103	gleich	equal
+1104	gleichbleibend langsam, lauter je näher	constant slow, louder the closer
+1105	gleichbleibend schnell, lauter je näher	constant fast, louder the closer
+1106	Gleichgewicht	Balance
+1107	Global	Global
+1108	GLYPH_ADDED	glyph added
+1109	GLYPH_REMOVED	glyph removed
+1110	GLYPH_UPDATED	glyph updated
+1111	Gnom	Gnome
+1112	Gnome	Gnome
+1113	go to first line on tab switch	go to first line on tab switch
+1114	go to linked	go to linked source step
+1115	Goblin	Goblin
+1116	Gold	Gold
+1117	Gold	Gold
+1118	Gossip	Dialog
+1119	GOSSIP_SHOW	gossip show
+1120	GossipFrame	Gossip
+1121	GR	GR
+1122	Greed rolled	rolled greed
+1123	Greed	Greed
+1124	Green	Green
+1125	Greeting	Greeting
+1126	Grey	Grey
+1127	größer	greater
+1128	GROUP_JOINED	group joined
+1129	GROUP_ROSTER_UPDATE	group roster update
+1130	groupfinder-icon-emptyslot	Empty
+1131	Gruppe	Group
+1132	Gruppen Chat automatisch lesen	Automatically read group chat
+1133	Gruppenmitglied 0 (du).	party member 0 (you).
+1134	gruppenmitglied 0	partymember 0
+1135	gruppenmitglied 1	partymember 1
+1136	Gruppenmitglied 1.	partymember 1.
+1137	gruppenmitglied 2	partymember 2
+1138	Gruppenmitglied 2.	partymember 2.
+1139	gruppenmitglied 3	partymember 3
+1140	Gruppenmitglied 3.	partymember 3.
+1141	gruppenmitglied 4	partymember 4
+1142	Gruppenmitglied 4.	partymember 4.
+1143	gruppenmitglieder ohne dich	party members exluding yourself
+1144	gruppenmitglieder	party members
+1145	Guild announcement	Guild announcement
+1146	Guild Bank	Bank Guild
+1147	Guild event	Guild event
+1148	Guild	Guild
+1149	GuildBankFrame	Guild Bank
+1150	GuildRecruitment	GuildRecruitment
+1151	H	H
+1152	Hair Color	Hair Color
+1153	Hair Style	Hair Style
+1154	Händlerpreis	Vendor price
+1155	Hands	Hands
+1156	HAPPINESS	Happiness
+1157	Happy	Happy
+1158	Hard target locked	Hard target locked
+1159	Have materials	Have materials
+1160	Head	Head
+1161	HEALER	Healer
+1162	Healers	Healers
+1163	Healing amount	Healing amount
+1164	Health Chord Style	Health Chord Style
+1165	Health Pitch style	Health Pitch style
+1166	Health	Health
+1167	Health/Resource update	Health/Resource update
+1168	Heilig	Holy
+1169	Heirlooms	Heirlooms
+1170	Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 2 keyboard shortcuts in tutorials like this one:	Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 3 keyboard shortcuts in tutorials like this one: 
+1171	Hello, %name%. This tutorial will guide you step by step through the game and the Sku addon. In each step you will first hear some information or instructions. While these are played, the tutorial will lock the keyboard.	Hello, %name%. This tutorial will guide you step by step through the game and the Sku addon. In each step you will first hear some information or instructions. While these are played, the tutorial will lock the keyboard.
+1172	herbalism	herbalism
+1173	Herbs	herbs
+1174	Heroic	Heroic
+1175	heroic	heroic
+1176	hexer	sorcerer
+1177	Hexer	Warlock
+1178	hidden	hidden
+1179	Hide	Hide
+1180	High	High
+1181	Hintergrund Audio	Background;sound
+1182	Historische Preisdaten (für ein Stück)	Historical price data (for one item)
+1183	History	Recent
+1184	Hoch blättern	Scroll up
+1185	Höhle der Nebel	Höhle der Nebel
+1186	Holiday event	Holiday event
+1187	Holy	Holy
+1188	Honor	Honor
+1189	HonorFrame	Honor
+1190	Horde zone entered	Entered Horde Zone
+1191	Horde zone left	Left Horde Zone
+1192	Horde	Horde
+1193	Hostile	Hostile
+1194	hot tick	hot tick
+1195	How much of the healing amount was overhealing	How much of the healing amount was overhealing
+1196	Human	Human
+1197	Hunter	Hunter
+1198	HUNTER	HUNTER
+1199	I	I
+1200	IC	Combat
+1201	If a spell is usable (range, cooldown, stance, etc.)	If a spell is usable (range, cooldown, stance, etc.)
+1202	If cast target is any party member	If cast target is any party member
+1203	If cast target is you	If cast target is you
+1204	If no hard target locked	No hard target locked
+1205	If target of target isn't you	If target of target isn't you
+1206	If unit was attacking any party member	If unit was attacking any party member
+1207	If unit was attacking you	If unit was attacking you
+1208	If unit was targeting any party member	If enemy was targeting any party member
+1209	If unit was targeting you	If enemy was targeting you
+1210	If you would like to be supported by a tutorial, you can logout now by typing /logout and pressing enter.	If you would like to be supported by a tutorial, you can logout now by typing /logout and pressing enter.
+1211	if	if
+1212	Ignore dead party pets	Ignore dead party pets
+1213	ignore dead units not in combat	ignore dead enemies not in combat
+1214	Ignore jumps	Ignore jumping
+1215	Ignore List	Ignore List
+1216	ignore non-elite	ignore non-elite
+1217	Ignore quests x levels below your level	Ignore quests more than x levels below your level
+1218	ignore sender	ignore sender
+1219	ignored debuffs	Ignored debuffs
+1220	ignored	ignored
+1221	Ihr habt eine Auktion gewonnen für: 	You won an auction for
+1222	Ihr habt nicht genug Geld.	Insufficient money
+1223	Ihr wurdet bei 	You have been outbid on 
+1224	iLvlAvg	Average item level
+1225	Im Kampf	In combat
+1226	Immun	Immune
+1227	Import erfolgreich	Import successful
+1228	Import fehlgeschlagen. Daten fehlerhaft.	Import failed. Incorrect data.
+1229	Import fehlgeschlagen. Falsche Version.	Import failed. Wrong version.
+1230	Import single tutorial	Import single tutorial
+1231	Import Sku newbie tutorials	Import Sku newbie tutorials
+1232	Import	Import
+1233	Important! Before you start playing: You may want to check out the help for newbies. If you don't know how to play the game, press F1 right now, to get more information, before you do anything else. So, if you do need help, press F1 now.	Important! Before you start playing: You may want to check out the help for newbies. If you don't know how to play the game, press F1 right now, to get more information, before you do anything else. So, if you do need help, press F1 now.
+1234	Important: For this quest, first go to Sku Discord and read the post about the quest "An End To All Things..." that is pinned in the General channel	Important: For this quest, first go to Sku Discord and read the post about the quest "An End To All Things..." that is pinned in the General channel
+1235	Impossible. Menu is not open.	Not possible. Menu is not open
+1236	in AtlasLoot favorites for	in AtlasLoot favorites for
+1237	In Combat	In combat
+1238	in distance	in distance
+1239	in range	in range
+1240	In this help section you will find basic information on how to use the tutorial. Press the Down or Up key to hear all information.	In this help section you will find basic information on how to use the tutorial. Press the Down or Up key to hear all information or close this help with the Escape key
+1241	In this help you will find information about our tutorials for newbies. Press down arrow or up arrow to listen to the info, or press Escape to close this help. Press F1 to open the help again.	In this help you will find information about our tutorials for newbies. Press down arrow or up arrow to listen to the info, or press Escape to close this help. Press F1 to open the help again.
+1242	in tutorial	in tutorial
+1243	Inactive	Silent
+1244	Include corpses and skinable units	Output corpses and skinable units
+1245	Include non-objects	Output non-objects
+1246	Include passive units	Output passive units
+1247	Include pets	Output pets
+1248	Include players	Output players
+1249	Include self	Include self
+1250	INCORRECT CREATURE ID	INCORRECT CREATURE ID
+1251	INFO_STEP	Info step
+1252	input comment text and complete with escape	input comment text and complete with escape
+1253	input number and complete with enter	input number and complete with enter
+1254	input text and complete with enter	input text and complete with enter
+1255	input text and complete with escape	input text and complete with escape
+1256	Insert after	Insert after
+1257	Insert linked step	Insert linked step
+1258	Insert new Step	Insert new Step
+1259	Insert	Insert
+1260	Inspect	View
+1261	INSPECT_READY	inspect ready
+1262	InspectFrame	Inspect
+1263	Inter	Interrupted
+1264	Interact	Interact
+1265	Interrupted	Interrupted
+1266	invalid routes including their waypoints were deleted	invalid routes including their waypoints have been deleted
+1267	invite sender	invite sender
+1268	Invite status: 	Invite status: 
+1269	invite	invite
+1270	friend not playing wow	Friend is not playing WoW right now
+1271	Invited by: 	Invited by: 
+1272	Invited	Invited
+1273	Invitees: 	Invitees: 
+1274	is creature ID	creature ID
+1275	is Delisted	is Delisted
+1276	is link	is link
+1277	is no player with	is no player with
+1278	Is querying...	Is querying...
+1279	Is Sku newbie tutorial	Is Sku newbie tutorial
+1280	is string	string
+1281	Item Level	Item level
+1282	Item level	Item level
+1283	item level	Item level
+1284	item settings	item settings
+1285	Item Text	Item Text
+1286	Items	Items
+1287	Items	Items
+1288	MAIL_AttachItems	Attach items
+1289	MAIL_AttachGold	Attach gold
+1290	MAIL_StartSending	Start sending
+1291	MAIL_EnterRecipientTab	Enter name and press Tab to continue
+1292	MAIL_EnterSubjectTab	Enter subject and press Tab to continue
+1293	MAIL_EnterTextEnter	Enter text and press Enter to send
+1294	MAIL_Sent	Mail sent
+1295	PETBAR_Autocast	Autocast
+1296	INVTYPE_OTHER	Other
+1297	ROLE_Tank	Tank
+1298	ROLE_Healer	Healer
+1299	ROLE_Damage	Damage
+1300	MOB_SetFocus	Set Focus
+1301	MOB_SetFocusTip	Sets focus on the target.
+1302	MOB_Interact	Interact
+1303	MOB_InteractTip	Interacts with the target.
+1304	J	J
+1305	jäger	hunter
+1306	Jäger	hunter
+1307	Jeder gegen jeden	Loot: Free for All
+1308	Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken	Copy export data with Control plus C and press Escape
+1309	Jetzt kommentar eingeben und mit ENTER abschließen oder mit ESC abbrechen	Enter the comment and press ENTER or ESC to cancel
+1310	Jetzt wort liste mit Steuerung plus C kopieren und Escape drücken	Copy word list with Control plus C and press Escape
+1311	K	K
+1312	Kampf	Combat
+1313	KATEGORIE	CATEGORY
+1314	Katze	Feral (Damage)
+1315	Kauf 	 Buy 
+1316	Kaufen	Buy
+1317	Kaufpreis für 1 Gegenstand aufsteigend	Buy price for 1 item ascending
+1318	Kaufpreis für Auktionsmenge aufsteigend	Buy price for auction quantity ascending
+1319	Kein Gold	No gold
+1320	kein name	no name
+1321	Keine aktuellen Preisdaten vorhanden	No recent price data available
+1322	Keine Bewertung für angelegter Gegenstand möglich	No rating possible for equiped item
+1323	Keine Bewertung für neuen Gegenstand möglich	No rating possible for new item
+1324	Keine Bewertung möglich	No rating possible
+1325	Keine historischen Preisdaten vorhanden	No historical price data available
+1326	Keine Informationen vorhanden	No information available
+1327	Keine passenden Auktionen verfügbar	No matching auctions available
+1328	Keine Veränderung	No change
+1329	Keine weiteren passenden Auktionen verfügbar	No more matching auctions available
+1330	Keine	None
+1331	Keiner vorhanden	None available
+1332	Key bind	Key bind
+1333	Key Sound	Key Sound
+1334	Key	Key
+1335	Key;not;assigned	key;not;binded
+1336	KEY_PRESS	Key press
+1337	keyring	keyring
+1338	Kiss	Kiss
+1339	klasse	class
+1340	kleiner	smaller
+1341	Klick bei Beacons	Beacons with clicks
+1342	Klick	Click
+1343	Komma	comma
+1344	KommaNumbers	point
+1345	Kommentar leer	Comment empty
+1346	Kommentar zugewiesen	comment added
+1347	Kommentar zuweisen	Add comment
+1348	Kopie;	Copy;
+1349	Kopieren von	Copy from
+1350	krieger	warrior
+1351	Krieger	warrior
+1352	L	L
+1353	Large	Large
+1354	last online	last online
+1355	Last pos	Last pos
+1356	Laughing	Laughing
+1357	Layer	Layer
+1358	layerFirstLetter	L
+1359	layers	layers
+1360	LD	LD
+1361	leader	leader
+1362	LEARNED_SPELL_IN_TAB	learned spell in tab
+1363	lebt	alive
+1364	leer	empty
+1365	Left click	Left click
+1366	Left Multi Bar	right actionbar
+1367	LEFT	LEFT
+1368	Legs	Legs
+1369	letzte	Recent
+1370	Level 	Level 
+1371	Level absteigend	Level descending
+1372	Level aufsteigend	Level ascending
+1373	Level Max	Level Max
+1374	Level Minimum	Level Min
+1375	Level	Level
+1376	level	Level
+1377	Level: 	Level: 
+1378	LFD list Frame	premade groups
+1379	LFD Queue Frame	LFD Queue
+1380	LFG	LFG
+1381	LFG_LIST_SEARCH_RESULT_UPDATED	lfg list search result updated
+1382	LFG_LIST_SEARCH_RESULTS_RECEIVED	lfg list search results received
+1383	Link History	Link History
+1384	Link history	Link origin
+1385	Link indicator in tooltips	Link indicator in tooltips
+1386	Link source	Link source
+1387	link	link
+1388	linked	linked
+1389	Linking to this step	Linking to this step
+1390	linking	linking
+1391	Links exportiert:	Links exported:
+1392	Links importiert:	Links imported:
+1393	Links	Links
+1394	Links:	Links:
+1395	List links in tooltips	List links in tooltips
+1396	List self	List self
+1397	Lists	Lists
+1398	local Bags	Bags
+1399	Local	Local
+1400	LocalDefense	LocalDefense
+1401	locale	enUS
+1402	Lock keyboard if tutorial is playing	Lock keyboard if tutorial is playing
+1403	LOCKED	LOCKED
+1404	Log out: If you would like to exit the game, do not use Alt + (F4). For the game to save settings you need to log out from the game. To do this type slash logout and press Enter. The wait until you hear the background audio changing. That can take up to 20 seconds. Then close the game using Alt + (F4).	Log out: If you would like to exit the game, do not use Alt + (F4). For the game to save settings you need to log out from the game. To do this type slash logout and press Enter. The wait until you hear the background audio changing. That can take up to 20 seconds. Then close the game using Alt + (F4).
+1405	Lokal aktiv	Local active
+1406	long	long
+1407	Looking for group	Looking for group
+1408	LookingForGroup	LookingForGroup
+1409	Loot history	Loot history
+1410	Loot roll	Roll
+1411	Loot	Loot
+1412	LOOT_SLOT_CHANGED	loot slot changed
+1413	LOS	LoS
+1414	Löschen beendet	Deleting completed
+1415	Löschen beginnt	Deletion starts
+1416	Löschen	Delete
+1417	Low	Low
+1418	M	M
+1419	Macro	Macro
+1420	MacroBody	Macro body
+1421	MacroCreated	Macro created
+1422	MacroName	Macro name
+1423	Macros	Macros
+1424	MacroScope	Macro scope
+1425	MacroScopeChar	Character
+1426	MacroScopeGlobal	Global
+1427	MAGE	MAGE
+1428	Mage	Mage
+1429	magic	magic
+1430	magic_short	m
+1431	Magie	Mage
+1432	magier	mage
+1433	Magier	mage
+1434	Mail	Mail
+1435	MAIL_CLOSED	mail closed
+1436	MAIL_FAILED	mail failed
+1437	MAIL_INBOX_UPDATE	mail inbox update
+1438	MAIL_SEND_INFO_UPDATE	mail send info update
+1439	MAIL_SEND_SUCCESS	mail send success
+1440	MAIL_SHOW	mail show
+1441	MAIL_SUCCESS	mail success
+1442	Mailboxes	Mailboxes
+1443	Main Action Bar	action bar
+1444	Main Hand	Main Hand
+1445	Main Tank	Main Tank
+1446	Main Tanks	Main Tanks
+1447	Major	Major
+1448	Male	Male
+1449	MANA	Mana
+1450	Manually	Manually
+1451	Maraudon	Maraudon
+1452	Markierung für Auto Verkaufen entfernen	Deselect for scrap auto sale
+1453	Marksmanship	Marksmanship
+1454	max notification range	max notification range
+1455	Maximum distance for destinations in routes list	Maximum distance for destinations in routes list
+1456	medium	yellow
+1457	Melee combat	Melee combat
+1458	Members	Members
+1459	Mensch	Human
+1460	Menu empty	Menu empty
+1461	menu entry not available at the moment	menu entry not available at the moment
+1462	Menu;closed	Menu;closed
+1463	Menu;open	menu;open
+1464	MENU_ITEM	Menu item
+1465	Menünummern ansagen	Speak menu numbers
+1466	Merchant	Merchant
+1467	MERCHANT_CLOSED	merchant closed
+1468	MERCHANT_SHOW	merchant show
+1469	MerchantFrame	Merchant
+1470	Metaroute folgen gestartet	Following metaroute started
+1471	Meter	Meter
+1472	Meter	Meters
+1473	meters	meters
+1474	Meucheln	Assassination
+1475	Minimum cast time	Minimum cast time
+1476	minimum percent difference since previous event	minimum percent health difference since previous event
+1477	minimum percent difference since previous output	minimum percent health difference since previous output
+1478	minimum steps difference since previous event	minimum pitch steps difference since previous event
+1479	minimum steps difference since previous output	minimum pitch steps difference since previous output
+1480	mining nodes	mining nodes
+1481	mining	mining
+1482	Minor	Minor
+1483	minus 	minus 
+1484	Minus	minus
+1485	minute	minute
+1486	MIRROR_TIMER_PAUSE	mirror timer pause
+1487	MIRROR_TIMER_START	mirror timer start
+1488	MIRROR_TIMER_STOP	mirror timer stop
+1489	missing	missing
+1490	MissingMacroBody	Macro body missing
+1491	MissingMacroName	Missing macro name
+1492	Mitglieder	Members
+1493	MOB_AddFriend	Add friend
+1494	MOB_AddFriendTip	Adds the target to your friend list.
+1495	MOB_Duel	Duel
+1496	MOB_DuelTip	Challenges the target to a duel.
+1497	MOB_Follow	Follow
+1498	MOB_FollowTip	Starts following the target automatically.
+1499	MOB_FriendAdded	 added as friend
+1500	MOB_GroupLeft	Left group
+1501	MOB_IgnoreToggled	 toggled on ignore list
+1502	MOB_Inspect	Inspect
+1503	MOB_InspectTip	Opens the target's equipment overview.
+1504	MOB_InstancesReset	Instances reset
+1505	MOB_Invited	 invited
+1506	MOB_InviteToGroup	Invite to group
+1507	MOB_InviteToGroupTip	Invites the target to your group or raid.
+1508	MOB_LeaveGroup	Leave group
+1509	MOB_LeaveGroupTip	Leaves the current group or raid.
+1510	MOB_LootFFA	Free for all
+1511	MOB_LootGroup	Group loot
+1512	MOB_LootMaster	Master looter
+1513	MOB_LootMethod	Loot method
+1514	MOB_LootMethodSet	Loot method: 
+1515	MOB_LootNBG	Need before greed
+1516	MOB_LootRoundRobin	Round robin
+1517	MOB_MarkerCircle	Circle (orange)
+1518	MOB_MarkerCross	Cross (red)
+1519	MOB_MarkerDiamond	Diamond (purple)
+1520	MOB_MarkerMoon	Moon (white)
+1521	MOB_MarkerRemove	Remove marker
+1522	MOB_MarkerSkull	Skull (white)
+1523	MOB_MarkerSquare	Square (blue)
+1524	MOB_MarkerStar	Star (yellow)
+1525	MOB_MarkerTriangle	Triangle (green)
+1526	MOB_NoActions	No actions available
+1527	MOB_PetAggressive	Aggressive
+1528	MOB_PetAttack	Pet attack
+1529	MOB_PetAttackTip	Pet attacks the current target.
+1530	MOB_PetDefensive	Defensive
+1531	MOB_PetDismiss	Dismiss
+1532	MOB_PetDismissed	Pet dismissed
+1533	MOB_PetDismissTip	Sends the pet away (it can be called back at any time).
+1534	MOB_PetMode	Pet mode
+1535	MOB_PetPassive	Passive
+1536	MOB_PetRecall	Recall pet
+1537	MOB_PetRecallTip	Pet follows you again.
+1538	MOB_PetRelease	Permanently release pet
+1539	MOB_PetReleased	Pet permanently released
+1540	MOB_PetReleaseTip	WARNING: PERMANENTLY releases the pet. Hunters will need to tame it again!
+1541	MOB_PetRename	Rename
+1542	MOB_PetRenamed	Pet renamed to: 
+1543	MOB_PetRenamePrompt	Enter new name and confirm with Enter
+1544	MOB_PetRenameTip	Opens an input field to give the pet a new name.
+1545	MOB_PetSetAggressive	Pet set to aggressive
+1546	MOB_PetSetDefensive	Pet set to defensive
+1547	MOB_PetSetPassive	Pet set to passive
+1548	MOB_PromoteLeader	Promote to leader
+1549	MOB_PromoteLeaderTip	Makes the target the group leader.
+1550	MOB_Removed	 removed
+1551	MOB_RemoveFromGroup	Remove from group
+1552	MOB_RemoveFromGroupTip	Kicks the target from the group or raid.
+1553	MOB_ReportBadName	Bad name
+1554	MOB_ReportCheating	Cheating
+1555	MOB_ReportHarassment	Harassment
+1556	MOB_ReportLanguage	Language
+1557	MOB_ReportPlayer	Report player
+1558	MOB_ReportSent	Report sent: 
+1559	MOB_ReportSexual	Sexual
+1560	MOB_ReportSpam	Spam
+1561	MOB_ReportTooltip	Sends a report to Blizzard with the reason: 
+1562	MOB_ResetInstances	Reset instances
+1563	MOB_ResetInstancesTip	Resets all active instances. Does not work while you are inside an instance or as a non-leader.
+1564	MOB_SetMarker	Set marker
+1565	MOB_ToggleIgnore	Ignore / Unignore
+1566	MOB_ToggleIgnoreTip	Toggles the target on the ignore list.
+1567	MOB_Trade	Trade
+1568	MOB_TradeTip	Opens the trade window with the target.
+1569	MOB_Whisper	Whisper
+1570	MOB_WhisperTip	Opens the chat editor with '/w <Name> '.
+1571	Moderator status: 	Moderator status: 
+1572	Moderator	Moderator
+1573	MODIFIER_KEY_DOWN	Modifier key down
+1574	Module enabled	Module enabled
+1575	mönch	monk
+1576	Money	Money
+1577	Monitor	Monitor
+1578	MONK	MONK
+1579	Moon	moon
+1580	Mounts	Mounts
+1581	Move Step	Move
+1582	Move	Moving
+1583	Moving	Not while moving
+1584	Musik 	Music 
+1585	Musik Lautstärke	Music volume
+1586	Musik	Music
+1587	Mute in Combat	Mute Names in Combat
+1588	Muted	Muted
+1589	N	N
+1590	NA	NA
+1591	Nach Name	By name
+1592	Nachrichtentypen	Message Types
+1593	Nachtelf	Night Elf
+1594	Nachts im Wald	Night in the woods
+1595	nah 	near 
+1596	nah	near 
+1597	Nahe Routen	Close routes
+1598	nahkampf ressource	melee resource
+1599	nahkampf schaden	melee damage
+1600	nahkampf verfehlt	melee missed
+1601	nahkampf zusatz angriff	melee extra attack
+1602	name already exists	name already exists
+1603	name already taken	name already taken
+1604	name eingeben und Enter drücken	enter name and press enter
+1605	Name output via Blizzard TTS	Name output via Blizzard TTS
+1606	name schon vorhanden	name already exists
+1607	name	name
+1608	narrow beacon sound set	Sound for small beacons
+1609	Neck	Neck
+1610	Need rolled	rolled need
+1611	Need	Need
+1612	Neu belegen	Bind new key
+1613	Neue Auktion	New auction
+1614	Neue aura	New aura
+1615	Neue Reichweite verfügbar	New range available
+1616	Never reset audio queues	Never reset audio queues
+1617	Never	Never
+1618	New calendar event	New calendar event
+1619	New entry	New entry
+1620	New event	New event
+1621	New events	New events
+1622	New follow unit	New follow target: 
+1623	New key	Binded to
+1624	New letter	New letter
+1625	new Player Friendly	new Player Friendly
+1626	New set	New set
+1627	New Tab	New Tab
+1628	New	New
+1629	NewMacro	create new macro
+1630	Next	Next
+1631	Next_generic	next
+1632	nicht erstellt	not created
+1633	nicht festgelegt	not specified
+1634	Nicht genug Geld	Insufficient money
+1635	Nicht genug Gold zum Reparieren	Insufficient gold for repairing
+1636	Nicht möglich, volle Abfrage läuft	Not possible, full query running
+1637	nicht sichtbar	not visible
+1638	nicht umbenannt	not renamed
+1639	Nicht verkaufbar	Can not be sold
+1640	Nichts	Nothing
+1641	nichts	Nothing
+1642	Night Elf	Night Elf
+1643	No action	No action
+1644	No attackable hard target locked	No attackable hard target locked
+1645	No class info	No class info
+1646	No data	No data
+1647	no data	No data
+1648	no description available	no description available
+1649	No key bind for	No key bind for
+1650	No level info	No level info
+1651	No LoS	No line of sight
+1652	No one in range	No one in range
+1653	No output	No output
+1654	No Recipient	Recipient missing
+1655	No ressource	Resource missing
+1656	No results	No results
+1657	No role	No role
+1658	No soft targeting if	No soft targeting if
+1659	No sound	No sound
+1660	No target	No target
+1661	No timestamp	No timestamps
+1662	No topic	No subject
+1663	No topic	Subject missing
+1664	No	No
+1665	noch nicht implementiert	not implemented yet
+1666	nodifficulty	unknown
+1667	None	None
+1668	none	none
+1669	Normal Damage: 	Normal Damage: 
+1670	Normal hits: 	Normal hits: 
+1671	Normal Max hit: 	Normal Max hit: 
+1672	Normal Min hit: 	Normal Min hit: 
+1673	north	north
+1674	north-east	north;east
+1675	north-west	north;west
+1676	not checked	not checked
+1677	Not completed	Not completed
+1678	not created	not created
+1679	Not Facing	wrong direction
+1680	not ignored	not ignored
+1681	Not implemented yet	Not implemented yet
+1682	Not in raid	Not in raid
+1683	Not longer available. Refresh list.	Not longer available. Refresh list.
+1684	not possible, scan in progess	not possible, scan in progess
+1685	Not recording	No recording in progress
+1686	Not Signed up	Not Signed up
+1687	note	note
+1688	Note: 	Note: 
+1689	Nothing selected	Nothing selected
+1690	nothing	nothing
+1691	Nothing	nothing
+1692	Notice on pet starving	Announce animal starvatoin
+1693	Notification volume	Sounds volume
+1694	notification	note
+1695	Notify on new holiday events	Notify on new holiday events
+1696	Notify on new player and guild events	Notify on new player and guild events
+1697	notify On Ressources	notify On Ressources
+1698	Notiz eingeben und Enter drücken	add note and press enter
+1699	Now press %SKU_KEY_TUTORIALSTEPFORWARD% to start with the first step. To hear this info again, and take note of the shortcuts, press (%SKU_KEY_TUTORIALSTEPREPEAT%).	Now press %SKU_KEY_TUTORIALSTEPFORWARD% to start with the first step. To hear this info again, and take note of the shortcuts, press (%SKU_KEY_TUTORIALSTEPREPEAT%).
+1700	NPC names	NPC names
+1701	Nr: 	Number: 
+1702	numberDeciamalCharacter	.
+1703	NUMPAD0	NUMPAD0
+1704	NUMPAD1	NUMPAD 1
+1705	NUMPAD2	NUMPAD 2
+1706	NUMPAD3	NUMPAD 3
+1707	NUMPAD4	NUMPAD 4
+1708	NUMPAD5	NUMPAD 5
+1709	NUMPAD6	NUMPAD 6
+1710	NUMPAD7	NUMPAD 7
+1711	NUMPAD8	NUMPAD 8
+1712	NUMPAD9	NUMPAD 9
+1713	NUMPADDECIMAL	NUMPAD DECIMAL
+1714	NUMPADDIVIDE	NUMPAD DIVIDE
+1715	NUMPADMULTIPLY	NUMPAD MULTIPLY
+1716	Nur benutzbare	Useable only
+1717	Nur die tasten für vorwärts, links drehen und rechts drehen verwenden! auf keinen fall andere bewegungstasten verwenden!	Only use the keys for forward, turn left and turn right! do not use any other movement keys!
+1718	Nur Gebot 	 only Bid 
+1719	O	O
+1720	ö	ö
+1721	Ob das Event im Kampf auftritt	Whether the event occurs in combat
+1722	Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist	Whether the source unit on the aura is attackable
+1723	Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist	Whether the target unit on the aura is attackable
+1724	Ob ein Zauber gerade auf CD ist	Whether a spell is currently on CD
+1725	Ob ein Zauber gerade nicht auf CD ist	Whether a spell is currently not on CD
+1726	Object Busy	Object busy
+1727	Object name missing	Object name missing
+1728	OBJECT	OBJECT
+1729	ObjectAny	any object
+1730	ObjectCurrentQuest	quest object
+1731	ObjectHerb	herb
+1732	Objectives	Targets
+1733	Objects and lootable/skinnable and units	Objects and lootable/skinnable and units
+1734	Objects and lootable/skinnable	Objects and lootable/skinnable
+1735	Objects and non-objects	Objects and non-objects
+1736	Objects	Objects
+1737	ObjectUsable	usable object
+1738	ObjectVein	vein
+1739	Oder Rückschritt zum löschen	Or backspace to delete
+1740	oder;	or;
+1741	Off hand	Off hand
+1742	Off Tank	Off Tank
+1743	Off Tanks	Off Tanks
+1744	Off	Off
+1745	Offline Datenbank aktualisieren	Update offline database
+1746	Offline Datenbank	Offline database
+1747	offline	offline
+1748	Oh nein hilfe! Ich bin ein Trottel und will doch nicht zurücksetzen	Oh no! I am a fool and don't want to reset!
+1749	On first and second key	On first and second key
+1750	On first key	On first key
+1751	On second key	On second key
+1752	On	On
+1753	Filter Ressourcen vorhanden	Filter: materials available
+1754	Questie not installed	Questie not installed
+1755	Questie chat announcements	Chat announcements
+1756	Questie announce party	Group
+1757	Questie announce raid	Raid
+1758	Questie announce both	Both
+1759	Announce quest accepted	Announce quest accepted
+1760	Announce quest abandoned	Announce quest abandoned
+1761	Announce quest progress	Announce quest progress
+1762	Announce quest completed	Announce quest completed
+1763	Announce quest items	Announce quest items
+1764	Cost	Cost
+1765	One	One
+1766	online	online
+1767	Only custom waypoints can be deleted	Only custom waypoints can be deleted
+1768	Only directly in front	5 degrees in front
+1769	Only global link list in last line	Only global link list in last line
+1770	Only in combat	Only in combat
+1771	only one beacon ping	only one beacon ping
+1772	Only raid icon for targets with icon	Announce only marker for marked targets
+1773	Only unit numbers	Only unit numbers
+1774	Onyxias Lair	Onyxias Lair
+1775	Open all	Open all
+1776	Operator für Bedingung	Operator of condition
+1777	optimal	orange
+1778	Option	Option
+1779	Options	Options
+1780	Orange	Orange
+1781	Orc	Orc
+1782	Ork	Orc
+1783	Other	Other
+1784	other	Other
+1785	Out of range at	Out of range at
+1786	out of range cast	Not in cast range
+1787	out of range melee	Not in melee range
+1788	out of range	Not in range
+1789	Out	Out
+1790	Output all enemies casting	Output all enemies casting
+1791	Output dead units	Output dead enemies
+1792	output Distance to next waypoint	output Distance to next waypoint
+1793	Output name for	Output name for
+1794	Output sound for	Output sound for
+1795	Output style	Output style
+1796	Output target of target on target change	Output target of target on target change
+1797	Output unit name	Output unit name
+1798	Output your target casting	Output your target casting
+1799	Overhealing amount	Overhealing amount
+1800	Overhealing percentage	Overhealing percentage
+1801	overrides enabled	overrides enabled
+1802	Overrides subgroup selection	Overrides subgroup selection
+1803	Overview page 	Overview page 
+1804	Overview page sections	Overview page sections
+1805	Overview pages	Overview pages
+1806	P	P
+1807	paladin	paladin
+1808	Paladin	paladin
+1809	PALADIN	PALADIN
+1810	Panel	Sub pane
+1811	PANEL_CLOSED	Panel closed
+1812	PANEL_OPEN	Panel open
+1813	Parent quest	Pre-Quest
+1814	Pariert	Parried
+1815	Party and Raid	Party and Raid
+1816	Party health monitor enabled	Party health monitor enabled
+1817	party member	party member
+1818	Party	Party
+1819	Pass rolled	rolled Fitted
+1820	Pass	Matched
+1821	passive	passive
+1822	im kampf	in combat
+1823	Visuelle Hilfen	Visual aids
+1824	Lesebalken	Reading bar
+1825	Plaketten-Farben	Nameplate colors
+1826	Maus-Finder	Mouse finder
+1827	Anzahl der Gegner ansagen	Announce number of enemies
+1828	nur Elitegegner	elite enemies only
+1829	alle Gegner	all enemies
+1830	ausgeschaltet	off
+1831	Warnton wenn Folgen abbricht	Warning tone when following breaks
+1832	ein	on
+1833	Gegnerstatus Kampf	Enemy combat status
+1834	Beep	Beep
+1835	Ansage	Announce
+1836	Lesebalken anzeigen	Show reading bar
+1837	Schriftgroesse	Font size
+1838	winzig	tiny
+1839	klein	small
+1840	mittel	medium
+1841	gross	large
+1842	sehr gross	very large
+1843	riesig	huge
+1844	Position	Position
+1845	oben	top
+1846	unten	bottom
+1847	Deckkraft	Opacity
+1848	40 Prozent	40 percent
+1849	55 Prozent	55 percent
+1850	70 Prozent	70 percent
+1851	85 Prozent	85 percent
+1852	100 Prozent	100 percent
+1853	Plaketten einfaerben	Color nameplates
+1854	Modus	Mode
+1855	nur Ziel	target only
+1856	alle Plaketten	all nameplates
+1857	Farbe Feind	Color enemy
+1858	Farbe Neutral	Color neutral
+1859	Farbe Freund	Color friend
+1860	rot	red
+1861	gelb	yellow
+1862	gruen	green
+1863	tuerkis	cyan
+1864	blau	blue
+1865	weiss	white
+1866	Groesse	Size
+1867	dezent	subtle
+1868	kraeftig	strong
+1869	Maus-Finder aktiv	Mouse finder active
+1870	Form	Shape
+1871	Pulsring / Punkt	Pulse ring / dot
+1872	Kompass (Striche)	Compass (lines)
+1873	Achtung: Farben sind reine Anzeige. Wenn du bei freigegebener Kamera Plaketten ausblendest, koennen Ziel- und Entfernungsansagen ungenauer werden oder fehlen.	Note: colors are display only. If you hide nameplates while the camera is released, target and distance announcements may become less accurate or missing.
+1874	Sets (teilen)	Set management
+1875	Set umbenennen	Rename set
+1876	Set aktivieren	Activate set
+1877	Wirklich aktivieren? Ersetzt aktuelle Auren	Really activate? Replaces current auras. Enter confirms, Escape cancels.
+1878	Neuen Namen eingeben und Enter, oder Escape zum Abbrechen	Enter new name and Enter, or Escape to cancel
+1879	Set umbenannt	Set renamed
+1880	Set aktiviert, %s Auren	Set activated, %s auras
+1881	Set aus aktuellen Auren anlegen	Create new set from current auras
+1882	An Gruppe teilen	Share with group
+1883	Set loeschen	Delete set
+1884	Wirklich loeschen?	Really delete?
+1885	Empfangene Sets	Received sets
+1886	Annehmen	Accept
+1887	Verwerfen	Discard
+1888	keine empfangenen Sets	no received sets
+1889	Paste data to import now	Insert data to import now
+1890	Paste or edit text	Paste or edit text now
+1891	Percent delay for next output in queue	Percent delay for next output in queue
+1892	percent	percent
+1893	Percentage of your target's primary resource, for example mana or rage	Percentage of your target's primary resource, for example mana or rage
+1894	period	period
+1895	Persönliche Beute	Loot: Individual Loot
+1896	Pet Action Bar	Pet action bar
+1897	Pet happiness	Happiness
+1898	Pet Stable	Stable master
+1899	Pet	Pet
+1900	Pets	Pets
+1901	PetStableFrame	Pet Stable
+1902	Phase	Phase
+1903	Ping	Ping
+1904	Play first time user intro	Play first time user intro
+1905	Play NPC greetings	Play NPC greetings
+1906	Player event	Player event
+1907	Player health monitor disabled	Player health monitor disabled
+1908	Player health monitor enabled	Player health monitor enabled
+1909	Player Talents	Player Talents
+1910	player	player
+1911	PLAYER_CLASS	Player class
+1912	PLAYER_CONTROL_GAINED	player control gained
+1913	PLAYER_CONTROL_LOST	player control lost
+1914	PLAYER_DEAD	player dead
+1915	PLAYER_ENTERING_WORLD	player entering world
+1916	PLAYER_EQUIPMENT_CHANGED	player equipment changed
+1917	PLAYER_FACTION	Player Faction
+1918	PLAYER_MONEY	player gains or loses money
+1919	PLAYER_MOUNT_DISPLAY_CHANGED	player mount display changed
+1920	PLAYER_POSITION	Player Position
+1921	PLAYER_RACE	Player race
+1922	PLAYER_REGEN_DISABLED	combat start
+1923	PLAYER_REGEN_ENABLED	combat end
+1924	PLAYER_SKILL	Player skill
+1925	PLAYER_SOFT_ENEMY_CHANGED	player soft enemy target changed
+1926	PLAYER_SOFT_FRIEND_CHANGED	player soft friend target changed
+1927	PLAYER_SOFT_INTERACT_CHANGED	player soft interact target changed
+1928	PLAYER_STARTED_MOVING	player started moving
+1929	PLAYER_TALENT_UPDATE	player talent update
+1930	PLAYER_TARGET_CHANGED	player target changed
+1931	PLAYER_UNGHOST	player unghost
+1932	PLAYER_UPDATE_RESTING	player update resting
+1933	PlayerTalentFrame	Player Talent
+1934	Plündermeister	Loot: Master Looter
+1935	plus 	plus 
+1936	plus	plus
+1937	plus	plus
+1938	Plus	plus
+1939	Point B	Point B
+1940	poison	poison
+1941	poison_short	p
+1942	Popup 1	Popup 1
+1943	Popup 2	Popup 2
+1944	Popup 3	Popup 3
+1945	Positional Low Pass Filter	Positional Low Pass Filter
+1946	Post: 	Mail: 
+1947	Power Type	Power Type
+1948	Power	Power
+1949	Pre Quest	Pre Quest
+1950	Pre Quests	Pre Quests
+1951	Press control c to copy the macro text, then press escape	Press control c to copy the macro text, then press escape
+1952	Press ENTER now, to start your tutorial.	Press ENTER now, to start your tutorial.
+1953	Press ENTER, to continue your tutorial.	Press ENTER, to continue your tutorial.
+1954	Press new key or Escape to cancel	Press new key now or Escape to cancel
+1955	press the Enter key now	press the Enter key now
+1956	Press	Press
+1957	Previous	Back
+1958	previous_generic	previous
+1959	PRIEST	PRIEST
+1960	priester	priest
+1961	Priester	priest
+1962	Prio output	Prio output
+1963	Prio	prio
+1964	Private	Private
+1965	Profil gewechselt	Profile changed
+1966	Profil kopiert	Profile copied
+1967	Profil zurückgesetzt	Profile reseted
+1968	Profil	Profile
+1969	Progress	Progress
+1970	Progress	Progress
+1971	Protection	Protection
+1972	Purple	Purple
+1973	purr drop	purr drop
+1974	PvP	PvP
+1975	Q	Q
+1976	Qualität	Quality
+1977	Quell Einheit angreifbar	Source unit attackable
+1978	quell einheit	source unit
+1979	Quelle (L)	Source (L)
+1980	Querying data...	Querying data...
+1981	Quest available	Quest available
+1982	Quest for hand-in	Quest for hand-in
+1983	Quest ID	Quest ID
+1984	Quest Items	Quest Items
+1985	quest notifications	quest notifications
+1986	Quest	Quest
+1987	quest;abgebrochen	quest;canceled
+1988	Quest;aktive	quest;active
+1989	Quest;available	quest;available
+1990	Quest;geöffnet	Quest;opened
+1991	Quest;geschlossen	Quest;closed
+1992	quest;geteilt	quest;shared
+1993	quest;nicht;teilbar	quest;not;shareable
+1994	QUEST_ACCEPTED	quest accepted
+1995	QUEST_LOG_UPDATE	quest log update
+1996	QUEST_REMOVED	quest removed
+1997	QUEST_TURNED_IN	quest turned in
+1998	Questdatenbank	Quest database
+1999	QuestFrame	Quest
+2000	question;mark	question mark
+2001	QuestLogFrame	Quest Log
+2002	Quests group	Quest Group
+2003	Quests	Quests
+2004	Questtext:r
+	Quest description:r
+
+2005	Questtextr
+	Quest description:r
+
+2006	Questziel	quest target
+2007	Quick waypoint 4 set to corpse	Quick waypoint 4 set to corpse
+2008	quick waypoint	quick waypoint
+2009	Quick waypoint	quick waypoint
+2010	R	R
+2011	Race	Race
+2012	Races	Races
+2013	RAGE	Rage
+2014	Raid Chat automatisch lesen	Automatically read raid chat
+2015	Raid health monitor enabled	Raid health monitor enabled
+2016	Raid lockout	Raid lockout
+2017	raid member	raid member
+2018	Raid reset	Raid reset
+2019	Raid Warnung automatisch lesen	Automatically read raid warning chat
+2020	Raid	Raid
+2021	Raid	Raid
+2022	Range for counting a waypoint as reached and switching to next waypoint	Range for counting a waypoint as reached and switching to next waypoint
+2023	Range for group members in range checks	Range for group members in range checks
+2024	Range for near route starts	Range for near route starts
+2025	Range	Range
+2026	Ranged	Ranged
+2027	ranges still loading	ranges still loading
+2028	Rare Elite	Rare Elite
+2029	Rare	Rare
+2030	ratchet	ratchet
+2031	Read all tooltips	Read all tooltips
+2032	read only	read only
+2033	Ready in	Ready in
+2034	Reagent bank	Reagent bank
+2035	Reagiert, wenn der Aura-Typ ein Buff ist	Triggers if the aura type is a buff
+2036	Reagiert, wenn der Aura-Typ ein Debuff ist	Triggers if the aura type is a debuff
+2037	Reagiert, wenn die Zieleinheit die Klasse Dämonenjäger hat	Triggers if the target unit is a demon hunter
+2038	Reagiert, wenn die Zieleinheit die Klasse Druide hat	Triggers if the target unit is a druid
+2039	Reagiert, wenn die Zieleinheit die Klasse Hexer hat	Triggers if the target unit is a warlock
+2040	Reagiert, wenn die Zieleinheit die Klasse Jäger hat	Triggers if the target unit is a hunter
+2041	Reagiert, wenn die Zieleinheit die Klasse Krieger hat	Triggers if the target unit is a warrior
+2042	Reagiert, wenn die Zieleinheit die Klasse Magier hat	Triggers if the target unit is a mage
+2043	Reagiert, wenn die Zieleinheit die Klasse Mönch hat	Triggers if the target unit is a monk
+2044	Reagiert, wenn die Zieleinheit die Klasse Paladin hat	Triggers if the target unit is a paladin
+2045	Reagiert, wenn die Zieleinheit die Klasse Priester hat	Triggers if the target unit is a priest
+2046	Reagiert, wenn die Zieleinheit die Klasse Schamane hat	Triggers if the target unit is a shaman
+2047	Reagiert, wenn die Zieleinheit die Klasse Schurke hat	Triggers if the target unit is a rogue
+2048	Reagiert, wenn die Zieleinheit die Klasse Todesritter hat	Triggers if the target unit is a death knight
+2049	Recent	Recent
+2050	Recepient missing	Recipient missing
+2051	Recepient	Recipient
+2052	record;corrupted;route;deleted	record;corriupted;route;deleted
+2053	Recording ends at B	Recording runs until B
+2054	Recording ends until manually ended	Recording runs until end
+2055	Recording in progress	Recording in progress
+2056	Recording starts at A	Recording starts at A
+2057	recording;completed;route;created	recording finished;route;created
+2058	recording;starts	recording;starts
+2059	Red	Red
+2060	Reflektiert	Reflected
+2061	Refresh list	Refresh list
+2062	Reihum	Loot: Round Robin
+2063	Relic	Relic
+2064	Remove empty bag slots (collapse)	Move all items to the top of the bag (collapse)
+2065	Remove Entry	Remove Entry
+2066	Remove from favorites	Remove from favorites
+2067	remove from ignore list	remove from ignore list
+2068	remove object	remove object
+2069	remove	remove
+2070	Rename	Rename
+2071	Renamed	Renamed
+2072	Reparatur status: 	Item status: 
+2073	Repeat raid target markers on units	Repeat target markers on units
+2074	Repeating interval (0 is once)	Repeating interval (0 is once)
+2075	Replaying the step instructions: You can listen to the instructions of the current tutorial step again at any time. To do this, press the shortcut %SKU_KEY_TUTORIALSTEPREPEAT%.	Replaying the step instructions: You can listen to the instructions of the current tutorial step again at any time. To do this, press the shortcut %SKU_KEY_TUTORIALSTEPREPEAT%.
+2076	Reply	Reply
+2077	Reports	Reports
+2078	Reputation	Reputation
+2079	required Honor Level	required Honor Level
+2080	required Item Level	required Item Level
+2081	Res	Resource
+2082	Resistance	Resistances
+2083	Resistances	Resistances
+2084	Resisted Damage: 	Resisted Damage: 
+2085	Resisted hits: 	Resisted hits: 
+2086	Resolve menu entry	Resolve menu entry
+2087	Ressource hat sich verändert (Mana, Energie, Wut etc.	Resource has been updated (mana, energy, rage, etc.).
+2088	Ressource Scanning	resource scanning
+2089	ressource	resource
+2090	Ressourcen änderung	Resource updated
+2091	Restoration	Restoration
+2092	Results	Results
+2093	Retribution	Retribution
+2094	Reverb	Reverb
+2095	Reward description	Reward description
+2096	Reward Gold	Reward Gold
+2097	Reward Items	Reward Items
+2098	Reward XP	Reward XP
+2099	Rewards	Rewards
+2100	Rewards	Rewards
+2101	Right click	Right click
+2102	Right Multi Bar	right actionbar 2
+2103	RIGHT	RIGHT
+2104	Rogue	Rogue
+2105	ROGUE	ROGUE
+2106	Role assignment	Role assignment
+2107	Role for this set	Role for this set
+2108	Role Poll	Role Poll
+2109	role selection	role selection
+2110	Roles	Roles
+2111	Roll on	roll on
+2112	Route folgen beendet	following route finished
+2113	Route folgen läuft	Route following in progress
+2114	Route folgen	Follow route
+2115	Route	Route
+2116	Routen Umwandlung 	Routes conversion 
+2117	Routen Umwandlung abgeschlossen	Routes conversion completed
+2118	Routen Umwandlung auf neue Version gestartet	Routes conversion to new version started
+2119	Ruf:r
+	Reputation:r
+
+2120	Ruhestein: 	Hearthstone: 
+2121	Runes	Runes
+2122	RUNIC_POWER	Runic Power
+2123	Runter blättern	Scroll down
+2124	S	S
+2125	S	S
+2126	Sad	Sad
+2127	scan accuracy	scan accuracy
+2128	Scan noch nicht möglich	Scan not yet possible
+2129	Scan settings	Scan settings
+2130	scanning background sound	scan;Background;sound
+2131	Shaman	Shaman
+2132	schamane	shaman
+2133	Schamane	shaman
+2134	Schatten	Shadow
+2135	Schlachtzugszielsymbol	Raid Target Icon
+2136	Schließen	Close
+2137	Schmiedevaters Grabmal	Forgewright's Tomb
+2138	schneller in blickrichtung, lauter je näher	faster in the direction of view, louder the closer
+2139	schneller je näher, lauter je näher	faster the closer, louder the closer
+2140	schneller je näher, lauter je näher; lauter in blickrichtung	faster the closer, louder the closer; louder in the direction of view
+2141	Schnellwahl 1	Quick select 1
+2142	Schnellwahl 2	Quick select 2
+2143	Schnellwahl 3	Quick select 3
+2144	Schnellwahl 4	Quick select 4
+2145	Schnellwahl	Quick select
+2146	schritt 	step 
+2147	Schrott verkauft	Scrap sold
+2148	Schuke	Rogue
+2149	schurke	rogue
+2150	Schurke	rogue
+2151	Schutz	Protection
+2152	Schwarzfelsspitze	Blackrock Spire
+2153	Scourge	Scourge
+2154	Scroll down	Scroll down
+2155	Scroll up	Scroll up
+2156	Scyer zone entered	Entered Scyer Zone
+2157	Scyer zone left	Left Scyer Zone
+2158	Sealed lips	Sealed lips
+2159	Search Panel	Search Panel
+2160	Search	Search
+2161	searching for 	searching for 
+2162	sehr langsam, schneller je näher, lauter je näher; lauter in blickrichtung	very slow, faster the closer, louder the closer; louder in the direction of view
+2163	sehr langsam, schneller je näher, lauter je näher; nur in blickrichtung	very slow, faster the closer, louder the closer; only in direction of view
+2164	selbst	yourself
+2165	Select category	Select category
+2166	Select to disable	Select to disable
+2167	Select to enable	Select to enable
+2168	Select	Select
+2169	selected	selected
+2170	Selected	Selection
+2171	Send failed	Sending failed
+2172	send item link to channel	send item link to channel
+2173	Send Mail	Outbox
+2174	send to channel	send message to channel
+2175	Send	Send
+2176	Sender	From
+2177	Sent	Sent
+2178	set all message types and channels to inactive	set all message types and channels to silent
+2179	set all message types and channels to text	set all message types and channels to text
+2180	Set all to auto	Set all to auto
+2181	Set angewendet	Set applied
+2182	Set hinzugefügt	Set added
+2183	Set name to auto generated	Auto generate aura name
+2184	Set on completion	Set on exit
+2185	Set Quick Waypoint to coordinates	Set Quick Waypoint to coordinates
+2186	Set unit for out of range	Set unit for out of range
+2187	Set	Set
+2188	Setting	Setting
+2189	Shadow	Shadow
+2190	SHAMAN	SHAMAN
+2191	Shamane	Shaman
+2192	Share quest	Share quest
+2193	shhhup	shhhup
+2194	Shift	Shift
+2195	short	short
+2196	Shortcut	Quick selection
+2197	shorten Channel Names	shorten channel names
+2198	Shoulder	Shoulder
+2199	Show as link source	Show as link source
+2200	show colors for difficulty	show colors for difficulty
+2201	Show extra minimap	Show extra minimap
+2202	Show for	Show for
+2203	Show global direction in waypoint lists	Show global direction in waypoint lists
+2204	Show herbs and mining node waypoints	Show herb and mining node waypoints
+2205	Show in users tutorials list	Show in users tutorials list
+2206	show item quality	show item quality
+2207	Show routes on minimap	Show routes on minimap
+2208	show Whispers In New Tab	show Whispers In new tab
+2209	Show your class only	Show your class only
+2210	Show	Show
+2211	Shown days for multi day events	Shown days for multi day events
+2212	shutter	shutter
+2213	sichtbar	visible
+2214	Sign up	Sign up
+2215	Signed up	Signed up
+2216	Silber	Silver
+2217	Silent on 100 and 0 percent	Continous Silent on 100 and 0 percent
+2218	Silent on all at 100 percent	Continous Silent on all at 100 percent
+2219	silent	mute
+2220	Silver	Silver
+2221	Silver	Silver
+2222	Single key action in raids up to 10 players	Single key action in raids up to 10 players
+2223	Size	Size
+2224	Skeptical	Skeptical
+2225	Skill	Skill
+2226	SkillFrame	Player Skills
+2227	Skills	Skills
+2228	Skin Color	Skin Color
+2229	Skinnable	Skinnable
+2230	Sku CALENDAR ERROR	Sku CALENDAR ERROR
+2231	Sku Chat Channel beitreten	Join Sku Chat Channel
+2232	Sku Head	Sku
+2233	Sku Kanal	Sku Channel
+2234	Sku quest comments:	Sku quest comments:
+2235	Sku Tastenbelegung	sku Key binds
+2236	Sku	Sku
+2237	SKU_CLOSEROUTE_STARTED	Sku: Close route started
+2238	SKU_KEY_ADDLARGEWP	create large waypoint
+2239	SKU_KEY_ADDSMALLWP	create small waypoint
+2240	SKU_KEY_CHAT_LINEMENU	Chat line menu
+2241	SKU_KEY_CHAT_LINENEXT	Chat next line
+2242	SKU_KEY_CHAT_LINEPREV	Chat previous line
+2243	SKU_KEY_CHAT_TABNEXT	Chat next tab
+2244	SKU_KEY_CHAT_TABPREV	Chat previous tab
+2245	SKU_KEY_CHATOPEN	open chat
+2246	SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT	Combat monitor; output current number of enemies in combat
+2247	SKU_KEY_COMBATMONSETFOLLOWTARGET	Combat monitor; set current target as follow target
+2248	SKU_KEY_NEXTCOMBATENEMY	next enemy in combat
+2249	SKU_KEY_TRADEACCEPT	accept trade
+2250	SKU_KEY_COMBATMENU_UP	Combat menu; up
+2251	SKU_KEY_COMBATMENU_DOWN	Combat menu; down
+2252	SKU_KEY_COMBATMENU_LEFT	Combat menu; left
+2253	SKU_KEY_COMBATMENU_RIGHT	Combat menu; right
+2254	SKU_KEY_COMBATMENU_HOME	Combat menu; to start (Home)
+2255	SKU_KEY_COMBATMENU_END	Combat menu; to end (End)
+2256	SKU_KEY_COMBATMENU_BACK	Combat menu; back (Backspace)
+2257	SKU_KEY_COMBATMENU_CLOSE	Combat menu; close (Escape)
+2258	SKU_KEY_COMBATMENU_USE	Combat menu; use/select (Enter)
+2259	SKU_KEY_MENULEFTCLICK	Menu; left click/activate (Enter)
+2260	SKU_KEY_MENURIGHTCLICK	Menu; right click (Control+Enter)
+2261	Menü Klick Tasten	Menu click keys
+2262	SKU_KEY_DEBUGMODE	debug mode
+2263	SKU_KEY_DEBUGMODE	debug output
+2264	SKU_KEY_DOMONITORPARTYHEALTH2CONTI	Trigger monitor party continous output
+2265	SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR	Toggle player, party, raid health monitor
+2266	SKU_KEY_ENABLESOFTTARGETINGENEMY	Enable / disable enemy soft targeting
+2267	SKU_KEY_ENABLESOFTTARGETINGFRIENDLY	Enable / disable friend soft targeting
+2268	SKU_KEY_ENABLESOFTTARGETINGINTERACT	Enable / disable objects soft targeting
+2269	SKU_KEY_GROUPMEMBERSRANGECHECK	Do group members in range check
+2270	SKU_KEY_MENUQUICK1	audio menu quick access 1
+2271	SKU_KEY_MENUQUICK10	audio menu quick access 10
+2272	SKU_KEY_MENUQUICK10SET	set audio menu quick access 10
+2273	SKU_KEY_MENUQUICK1SET	set audio menu quick access 1
+2274	SKU_KEY_MENUQUICK2	audio menu quick access 2
+2275	SKU_KEY_MENUQUICK2SET	set audio menu quick access 2
+2276	SKU_KEY_MENUQUICK3	audio menu quick access 3
+2277	SKU_KEY_MENUQUICK3SET	set audio menu quick access 3
+2278	SKU_KEY_MENUQUICK4	audio menu quick access 4
+2279	SKU_KEY_MENUQUICK4SET	set audio menu quick access 4
+2280	SKU_KEY_MENUQUICK5	audio menu quick access 5
+2281	SKU_KEY_MENUQUICK5SET	set audio menu quick access 5
+2282	SKU_KEY_MENUQUICK6	audio menu quick access 6
+2283	SKU_KEY_MENUQUICK6SET	set audio menu quick access 6
+2284	SKU_KEY_MENUQUICK7	audio menu quick access 7
+2285	SKU_KEY_MENUQUICK7SET	set audio menu quick access 7
+2286	SKU_KEY_MENUQUICK8	audio menu quick access 8
+2287	SKU_KEY_MENUQUICK8SET	set audio menu quick access 8
+2288	SKU_KEY_MENUQUICK9	audio menu quick access 9
+2289	SKU_KEY_MENUQUICK9SET	set audio menu quick access 9
+2290	SKU_KEY_MMSCANNARROW	resource scan narrow
+2291	SKU_KEY_TAXICANCEL	request early landing
+2292	SKU_KEY_MMSCANWIDE	resource scan wide
+2293	SKU_KEY_MOVETONEXTWP	next route waypoint
+2294	SKU_KEY_MOVETOPREVWP	previous route waypoint
+2295	SKU_KEY_NOTIFYONRESOURCES	toggle notify on resources
+2296	SKU_KEY_OPENDUNGEONBROWSER	open dungeon browser
+2297	SKU_KEY_OPENMENU	open audio menu
+2298	SKU_KEY_OPENATLASLOOT	open atlas loot
+2299	SKU_KEY_OUTPUTHARDTARGET	Output current hard target
+2300	SKU_KEY_OUTPUTSOFTTARGET	Output current soft target
+2301	SKU_KEY_PANICMODE	panic mode
+2302	SKU_KEY_MOUSEFINDER	find mouse
+2303	SKU_KEY_QUESTABANDON	abandon quest
+2304	SKU_KEY_QUESTSHARE	show tooltip for current loot item
+2305	SKU_KEY_QUICKWP1	select quick waypoint 1
+2306	SKU_KEY_QUICKWP1SET	set quick waypoint 1
+2307	SKU_KEY_QUICKWP2	select quick waypoint 2
+2308	SKU_KEY_QUICKWP2SET	set quick waypoint 2
+2309	SKU_KEY_QUICKWP3	select quick waypoint 3
+2310	SKU_KEY_QUICKWP3SET	set quick waypoint 3
+2311	SKU_KEY_QUICKWP4	select quick waypoint 4
+2312	SKU_KEY_QUICKWP4SET	set quick waypoint 4
+2313	SKU_KEY_ROLLGREED	roll greed
+2314	SKU_KEY_ROLLINFO	roll info
+2315	SKU_KEY_ROLLNEED	roll need
+2316	SKU_KEY_ROLLPASS	roll pass
+2317	SKU_KEY_SCAN1	Scan 1
+2318	SKU_KEY_SCAN2	Scan 2
+2319	SKU_KEY_SCAN3	Scan 3
+2320	SKU_KEY_SCAN4	Scan 4
+2321	SKU_KEY_SCAN5	Scan 5
+2322	SKU_KEY_SCAN6	Scan 6
+2323	SKU_KEY_SCAN7	Scan 7
+2324	SKU_KEY_SCAN8	Scan 8
+2325	SKU_KEY_SCANCONTINUE	Scan continue
+2326	SKU_KEY_SELECTNEXTBASEWAYPOINT	Select closest unvisited waypoint of same type
+2327	SKU_KEY_SKUMARKERCLEARALL	Clear all Sku target markers
+2328	SKU_KEY_SKUMARKERSET1WHITE	Set Sku target marker 1 White
+2329	SKU_KEY_SKUMARKERSET2RED	Set Sku target marker 2 Red
+2330	SKU_KEY_SKUMARKERSET3BLUE	Set Sku target marker 3 Blue
+2331	SKU_KEY_SKUMARKERSET4GREEN	Set Sku target marker 4 Green
+2332	SKU_KEY_SKUMARKERSET5PURPLE	Set Sku target marker 5 Purple
+2333	SKU_KEY_SKUMARKERSET6YELLOW	Set Sku target marker 6 Yellow
+2334	SKU_KEY_SKUMARKERSET7ORANGE	Set Sku target marker 7 Orange
+2335	SKU_KEY_SKUMARKERSET8GREY	Set Sku target marker 8 Grey
+2336	SKU_KEY_SKUMMOPEN	open sku mini map
+2337	SKU_KEY_SKURTMMDISPLAY	show routes on mini map
+2338	SKU_KEY_STARTRRFOLLOW	reverse route
+2339	SKU_KEY_STOPROUTEORWAYPOINT	stop following route or waypoint
+2340	SKU_KEY_STOPTTSOUTPUT	stop audio output
+2341	SKU_KEY_TARGETDISTANCE	announce distance to target
+2342	SKU_KEY_TOGGLEMMSIZE	enlarge minimap
+2343	SKU_KEY_TOGGLEREACHRANGE	toggle waypoint reach range
+2344	SKU_KEY_TURNTOBEACON	turn towards current beacon
+2345	SKU_KEY_TURNTOUNIT1	Turn to unit 1
+2346	SKU_KEY_TURNTOUNIT2	Turn to unit 2
+2347	SKU_KEY_TURNTOUNIT3	Turn to unit 3
+2348	SKU_KEY_TURNTOUNIT4	Turn to unit 4
+2349	SKU_KEY_TURNTOUNIT5	Turn to unit 5
+2350	SKU_KEY_TURNTOUNIT6	Turn to unit 6
+2351	SKU_KEY_TURNTOUNITTARGET	Turn to target
+2352	SKU_KEY_TURNTOUNITTURN180	Turn 180 degrees
+2353	SKU_KEY_TUTORIALSTEPBACK	Switch to previous tutorial step
+2354	SKU_KEY_TUTORIALSTEPFORWARD	Switch to next tutorial step
+2355	SKU_KEY_TUTORIALSTEPREPEAT	Repeat output for current tutorial step
+2356	SKU_MENU_CLOSED	sku menu closed
+2357	SKU_MENU_OPEN	sku menu open
+2358	SKU_NAVIGATION_STOPPED	Sku: Navigation stopped
+2359	SKU_QUICKWAYPOINT_UPDATED	Sku: Quick waypoint updated
+2360	SKU_ROUTE_STARTED	Sku: Route started
+2361	SKU_UNITROUTE_STARTED	Sku: Unit route started
+2362	SKU_WAYPOINT_STARTED	Sku: Waypoint started
+2363	SkuAdventureGuideMenuEntry	Tutorials and Wiki
+2364	SkuAurasMenuEntry	Auras
+2365	SkuChat audio off	SkuOptions Audio off
+2366	SkuChat audio on	SkuOptions Audio on
+2367	SkuChat automatisch lesen	Automatically read SkuChat channel
+2368	SkuChat off	SkuOptions off
+2369	SkuChat on	SkuOptions on
+2370	SkuChatMenuEntry	Chat
+2371	SkuCore,Aktionsleisten	Core,Action bars
+2372	SkuCoreMenuEntry	Core
+2373	Skull	skull
+2374	SkuMobMenuEntry	Mob
+2375	SkuNav,Alles abwählen	Navigation,Deselect all
+2376	SkuNav,Route,Route folgen,Ziele Entfernung	Navigation,Route,Follow route,Destinations by distance
+2377	SkuNav,Wegpunkt,Auswählen,Aktuelle Karte Entfernung	Navigation,Waypoint,Select,Current map by distance
+2378	SkuNavMenuEntry	Navigation
+2379	SkuOptionsMenuEntry	Options
+2380	SkuQuest	SkuQuest
+2381	SkuQuest,Questdatenbank,Alle	Quest,Quest database,All
+2382	SkuQuestMenuEntry	Quest
+2383	slash	slash
+2384	Slow Reggae	Slow reggae
+2385	Small	Small
+2386	Smile	Smile
+2387	Social	Social
+2388	socket	socket
+2389	Socketing	Socketing
+2390	Sofortkauf Preis pro Stack	Buy price per stack
+2391	Soft targeting	Soft targeting
+2392	solo	solo
+2393	Sort items by name	Sort items by name
+2394	Sort items by quality	Sort items by quality
+2395	Sortierung	Sorting
+2396	Sorting and cleanup all bags	Sort and cleanup all open bags
+2397	Sorting and cleanup	Sort and cleanup
+2398	Soulbound	Soulbound
+2399	Sound bei Fehler	Audio on error
+2400	sound channel	Sound channel
+2401	Sound if target is in combat	Sound if target is in combat
+2402	Sound on empty enemy soft target	Sound on empty enemy soft target
+2403	Sound on empty friendly soft target	Sound on empty friendly soft target
+2404	Sound on empty interact soft target	Sound on empty interact soft target
+2405	sound on enemy soft target	sound on enemy soft target
+2406	Sound on fail	Sound on fail
+2407	sound on friendly soft target	sound on friendly soft target
+2408	sound on interact soft target	sound on interact soft target
+2409	Sound on new link in history	Sound on new link in history
+2410	Sound on success	Sound on success
+2411	Sound output	Sound output
+2412	Sound Settings	Sound Settings
+2413	Sound When Game Is In Background	Sound When Game Is In Background
+2414	sound	sound
+2415	sound;	sound;
+2416	Soundeffekte 	Sound effects 
+2417	Soundeffekte Lautstärke	Sound effects volume
+2418	Soundeffekte	Sound effects
+2419	south	south
+2420	south-east	south;east
+2421	south-west	south;west
+2422	SPACE	SPACE
+2423	sparks	sparks
+2424	Spec	Spec
+2425	Specific dungeon selection	Specific dungeon selection
+2426	specific	specific
+2427	Speed (higher is faster)	Speed (higher is faster)
+2428	Speed	Speed
+2429	Spell details for 	Spell details for 
+2430	Spell usable	Spell usable (L)
+2431	Spell: 	Spell: 
+2432	Spellbook	Spellbook
+2433	SPELLS_CHANGED	spells changed
+2434	Spent for	Spent for
+2435	spezialaufgabe abgebrochen	special task completed or canceled
+2436	spezialaufgabe abgeschlossen	special task completed
+2437	Spiel Tastenbelegung	Game Key binds
+2438	Spieler melden wegen:	Report Player For:
+2439	spinning	spinning
+2440	split	split
+2441	spoing	spoing
+2442	Square	square
+2443	ß	ß
+2444	Stack Größe	Stack size
+2445	Stall 1 	Stable 1 
+2446	Stall 1	Stable 1
+2447	Stall 2 	Stable 2 
+2448	Stall 2	Stable 2
+2449	Stall 3 	Stable 3 
+2450	Stall 3	Stable 3
+2451	Stall 4 	Stable 4 
+2452	Stall 4	Stable 4
+2453	Stance Action Bar	Special Action bar
+2454	Stance Action Bar	Stance Action Bar
+2455	Standard profil Allgemein	Standard profile General
+2456	Standard profil Caster	Standard profile Caster
+2457	Standard profil Heiler	Standard profile Healer
+2458	Standard profil Nahkämpfer	Standard profile Melee
+2459	Standby	Standby
+2460	Star	star
+2461	Start and end	Start and end
+2462	Start from this step	Start from this step
+2463	start full scan	start full scan
+2464	Start Group	Start Group
+2465	Start in Zone	Starts in zone
+2466	Start only	Start only
+2467	Start or end day: 	Start or end: 
+2468	Start over	Start over
+2469	Start route to waypoint	Start route to waypoint
+2470	Start text	Start text
+2471	Start	Start
+2472	Start	Start
+2473	Start: 	Start: 
+2474	START_LOOT_ROLL	start loot roll
+2475	Starting the newbie tutorial: Unfortunately at the moment there is no first steps tutorial for you as a 	Starting the newbie tutorial: Unfortunately at the moment there is no first steps tutorial for you as a 
+2476	Starting your newbie tutorial: There is a first steps tutorial specifically for your as a 	Starting your newbie tutorial: There is a first steps tutorial specifically for your as a 
+2477	StaticPopup1	Popup
+2478	Statistics	Statistics
+2479	Stats	Stats
+2480	Step settings	Step settings
+2481	Step	Step
+2482	Steps	Steps
+2483	still	still
+2484	Stonewrought-Pass	Stonewrought-Pass
+2485	Stop current tutorial	Stop current tutorial
+2486	Straight face	Straight face
+2487	Stun	Stunned
+2488	Sub panel	Sub pane
+2489	Sub panel	Sub section
+2490	Subgroup	Subgroup
+2491	Subgroups selection	Subgroups selection
+2492	Subtlety	Subtlety
+2493	Summary	Summary
+2494	Survival	Survival
+2495	swoosh	swoosh
+2496	Synth	Synth
+2497	T	T
+2498	Tab	Tab
+2499	TAB	TAB
+2500	Tabs	Tabs
+2501	Täglich	Daily
+2502	Take all	Take all
+2503	Take gold	Take gold
+2504	Talent Sets	Select Talent Set to show
+2505	Talents	Talents
+2506	TANK	Tank
+2507	Tanking	Tanking
+2508	Tanks	Tanks
+2509	target distance	target distance
+2510	Target menu	Target menu
+2511	Target	Target
+2512	TARGET_UNIT_NAME	Target unit name
+2513	Targets you attack	Targets you attack
+2514	Taste gedrückt	Key pressed
+2515	Taste zuweisen	Bind key
+2516	Scan Tasten	Scan keys
+2517	Audio Menü Schnellzugriff	Audio menu quick access
+2518	Schnellwegpunkte	Quick waypoints
+2519	Fokus Tasten	Sku Focus keys
+2520	Ziel Markierungen	Target markers
+2521	Zu Einheit und Drehen	Turn to unit and turning
+2522	Kampfmenü Steuerung	Combat menu controls
+2523	Ziel und Soft Targeting	Target and soft targeting
+2524	Navigation und Wegpunkte	Navigation and waypoints
+2525	Monitor und Kampf	Monitor and combat
+2526	Würfeln	Rolling
+2527	Taste	key
+2528	Taure	Tauren
+2529	Tauren	Tauren
+2530	Täuschung	Subtlety
+2531	Taxi	Flight master
+2532	taxi;ended	flight;ended
+2533	taxi;started	flight;started
+2534	TaxiFrame	Taxi
+2535	Teilbar	Shareable
+2536	Tentative	Tentative
+2537	Text	Text
+2538	Text	Text
+2539	That's it for now. Now start the tutorial content by pressing %SKU_KEY_TUTORIALSTEPFORWARD%.	That's it for now. Now start the tutorial content by pressing %SKU_KEY_TUTORIALSTEPFORWARD%.
+2540	The amount of damage from a spell, melee, or ranged attack	The amount of damage from a spell, melee, or ranged attack
+2541	The amount of healing	The amount of healing
+2542	The amount of overhealing	The amount of overhealing
+2543	The basics: When following the tutorial, you should strictly follow the instructions in the tutorial. Listen closely to what you are supposed to do, and then do exactly that. Do not do anything else while the tutorial is in progress. You can of course do other things in between. But then you may find it difficult to get back to the point you need to go to for the next step of the tutorial. So, unless you already know your way around, you should only do the tutorial steps and not do anything else.	The basics: When following the tutorial, you should strictly follow the instructions in the tutorial. Listen closely to what you are supposed to do, and then do exactly that. Do not do anything else while the tutorial is in progress. You can of course do other things in between. But then you may find it difficult to get back to the point you need to go to for the next step of the tutorial. So, unless you already know your way around, you should only do the tutorial steps and not do anything else.
+2544	The player character's active pet	The player character's active pet
+2545	The remaining duration of the buff from the buff list target (L) condition	The remaining duration of the buff from the condition Buff list target (L)
+2546	The remaining duration of the buff from the your buff list (L) condition	The remaining duration of the buff from the condition Your buff list (L)
+2547	The remaining duration of the debuff from the debuff list target (L) condition	The remaining duration of the debuff from the condition Debuff list target (L)
+2548	The remaining duration of the debuff from the your debuff list (L) condition	The remaining duration of the debuff from the condition Your debuff list (L)
+2549	The Temple Of Atal'Hakkar	The Temple Of Atal'Hakkar
+2550	The tutorial will take about 2 hours. You can log out at any time and continue the tutorial later via this help. Just press F1 again after logging in.	The tutorial will take about 2 hours. You can log out at any time and continue the tutorial later via this help. Just press F1 again after logging in.
+2551	The updated health or resource percentage from a health update or resource update event	The updated health or resource percentage from a health update or resource update event
+2552	Theat warning repeating interval (0 is once)	Theat warning repeating interval (0 is once)
+2553	Then you can create a second character using one of the mentioned race and class combinations. With the second character you can play the tutorial. That takes about 2 hours.	Then you can create a second character using one of the mentioned race and class combinations. With the second character you can play the tutorial. That takes about 2 hours.
+2554	Then you will take action and carry out the instructions of that step. Once you have completed them, you will hear a success sound. Then you can proceed to the next tutorial step.	Then you will take action and carry out the instructions of that step. Once you have completed them, you will hear a success sound. Then you can proceed to the next tutorial step.
+2555	then	then
+2556	This was the last tutorial step. The tutorial is completed.	This was the last tutorial step. The tutorial is completed.
+2557	Threat warning if you are first place (tanking) and second place threat percentage is higher than	Threat warning if you are first place (tanking) and second place threat percentage is higher than
+2558	Threat warning if you are not first place (not tanking) and your threat percentage is higher than	Threat warning if you are not first place (not tanking) and your threat percentage is higher than
+2559	Threat	Threat
+2560	Tier XP: 	XP: 
+2561	Tierherrschaft	Beast Mastery
+2562	Timbermaw Hold	Timbermaw Hold
+2563	Titel: 	Title: 
+2564	Title	Title
+2565	Title: 	Title: 
+2566	to 	to 
+2567	to continue with the next tutorial step	to continue with the next tutorial step
+2568	To continue your newbie tutorial from step	To continue your newbie tutorial from step
+2569	to move to the next step of the tutorial if you have completed the current step.	to move to the next step of the tutorial if you have completed the current step
+2570	to play the instructions of the current step again.	to play the instructions of the current step again.
+2571	To start this tutorial now, please press the ENTER key.	To start this tutorial now, please press the ENTER key now.
+2572	to	after
+2573	todesritter	death knight
+2574	Ton für Klick bei Beacons	Sound for beacons with clicks
+2575	Tongue sticking out	Tongue sticking out
+2576	Topic missing	Subject missing
+2577	Topic	Subject
+2578	tot	dead
+2579	tot	dead
+2580	Total Damage: 	Total Damage: 
+2581	Total hits: 	Total hits: 
+2582	Totem Bar	Totem Bar
+2583	Totem Set	Totem Set
+2584	Toys	Toys
+2585	Track whether waypoints were visited	Track whether waypoints were visited
+2586	Trade skill	Profession
+2587	Trade	Trade
+2588	TRADE	TRADE
+2589	Trade	Trade
+2590	TRADE_CLOSED	trade closed
+2591	TRADE_SHOW	trade show
+2592	TRADE_YourItems	Your items
+2593	TRADE_PartnerItems	Partner items
+2594	TRADE_YourGold	Your gold
+2595	TRADE_PartnerGold	Partner gold
+2596	TRADE_Refresh	Refresh
+2597	TRADE_Accept	Accept trade
+2598	TRADE_AcceptAgain	Trade changed, confirm again
+2599	TRADE_EmptySlot	Empty slot
+2600	TRADE_NoGold	No gold
+2601	TRADE_Accepted	Trade accepted
+2602	TRADE_EnchantSlot	Will not be traded (Enchant)
+2603	TRADE_EnchantEmpty	Enchant slot empty
+2604	TRADE_InSlot	in trade slot
+2605	TRADE_InEnchantSlot	in the enchant slot
+2606	TRADE_SlotPrefix	Trade slot
+2607	TRADE_SlotCleared	cleared
+2608	TRADE_InTradeMarker	in trade
+2609	TRADE_PartnerPuts	puts
+2610	TRADE_PartnerClears	clears
+2611	TRADE_EnchantClick	Left click to place
+2612	TradeFrame	Trade
+2613	TradeSkillFrame	Crafting
+2614	training points	training points
+2615	Training	Training
+2616	Treffsicherheit	Marksmanship
+2617	Triangle	triangle
+2618	triff zu	is true
+2619	Trifft nicht zu	is not true
+2620	Trigger	Trigger
+2621	Triggers	Triggers
+2622	Trinket	Trinket
+2623	trivial	grey
+2624	Troll	Troll
+2625	TRUE	True
+2626	tsching	ching
+2627	TTS alternative voice	TTS alternative voice
+2628	TTS pause tags	TTS pause tags
+2629	TTS speed	TTS speed
+2630	TTS voice	TTS voice
+2631	TTS volume	TTS volume
+2632	TTS_STRING	TTS string
+2633	Turn to unit	Turn to unit
+2634	Tutorial duration: The tutorial can last several hours. However, it usually takes about an hour to complete. But that will depend on your pace. It is better to spend some more time learning how the game and the addon are working. After that, you have to deal with everthing without the tutorial supporting you. You can always create a new character to play the tutorial again.	Tutorial duration: The tutorial can last several hours. However, it usually takes about an hour to complete. But that will depend on your pace. It is better to spend some more time learning how the game and the addon are working. After that, you have to deal with everthing without the tutorial supporting you. You can always create a new character to play the tutorial again.
+2635	Tutorial Editor	Tutorial Editor
+2636	Tutorial flow: The tutorial consists of many individual steps. In each step you will first hear an information text. It explains what you have to do next. When you have performed that activity, you will hear a success sound. Then you can proceed to the next step. To proceed to the next step, press the shortcut %SKU_KEY_TUTORIALSTEPFORWARD%. The tutorial will not continue until you have completed the current step (success sound) and pressed %SKU_KEY_TUTORIALSTEPFORWARD%.	Tutorial flow: The tutorial consists of many individual steps. In each step you will first hear an information text. It explains what you have to do next. When you have performed that activity, you will hear a success sound. Then you can proceed to the next step. To proceed to the next step, press the shortcut %SKU_KEY_TUTORIALSTEPFORWARD%. The tutorial will not continue until you have completed the current step and pressed %SKU_KEY_TUTORIALSTEPFORWARD%.
+2637	Tutorial help	Tutorial help
+2638	Tutorial helper macro	Tutorial helper macro
+2639	Tutorial imported	Tutorial imported
+2640	Tutorial list	Tutorial list
+2641	Tutorial step completed	The sound means the current tutorial step is completed.
+2642	Tutorial	Tutorial
+2643	Tutorials imported	Tutorials imported
+2644	Tutorials	Tutorials
+2645	type	type
+2646	Type: 	Type: 
+2647	typing	typing
+2648	U	U
+2649	ü	ü
+2650	Überleben	Survival
+2651	Übernehmen hinzufügen	Apply add
+2652	Übernehmen überschreiben	Apply overwrite
+2653	Uhr	
+2654	UI_ERROR_MESSAGE	ui error message
+2655	UI_INFO_MESSAGE	ui info message
+2656	ui-lfg-roleicon-dps-micro	DPS
+2657	ui-lfg-roleicon-generic-micro	No role
+2658	ui-lfg-roleicon-healer-micro	Healer
+2659	ui-lfg-roleicon-tank-micro	Tank
+2660	Umbenannt	Renamed
+2661	Umbenennen	Rename
+2662	Umgebung 	Environment 
+2663	Umgebung Lautstärke	Environment volume
+2664	Umgebung	Environment
+2665	Umgelenkt	Deflected
+2666	unbekannt	unknown
+2667	Unbekannt	unknown
+2668	Unbekannter Fehler	Unknown error
+2669	uncertain	uncertain
+2670	uncertainFirstLetter	U
+2671	und;	and;
+2672	Undead	Undead
+2673	Unfortunately there is no tutorial for you as (%race%) (%class%) yet. The Sku addon contains tutorials for (Human) Warriors, Paladins, Rogues, Priests, Mages, and Warlocks, and for (Night Elf) Hunters, and Druids.	Unfortunately there is no tutorial for you as (%race%) (%class%) yet. The Sku addon contains tutorials for (Human) Warriors, Paladins, Rogues, Priests, Mages, and Warlocks, and for (Night Elf) Hunters, and Druids.
+2674	ungebunden	not bound
+2675	ungleich	not equal
+2676	Ungültig. Andere Taste drücken.	Invalid. Press another key.
+2677	Unhappy	Unhappy
+2678	Unholy	Unholy
+2679	Unit number first	Unit number first
+2680	Unit selection	Unit selection
+2681	UNIT_AURA	unit aura (buff/debuff) gained or lost
+2682	UNIT_EXITED_VEHICLE	unit exited vehicle
+2683	UNIT_HAPPINESS	unit happiness
+2684	UNIT_HEALTH	unit health
+2685	UNIT_INVENTORY_CHANGED	unit inventory changed
+2686	UNIT_OTHER_PARTY_CHANGED	unit other party changed
+2687	UNIT_POWER_FREQUENT	unit power frequent
+2688	UNIT_POWER_UPDATE	unit power update
+2689	UNIT_QUEST_LOG_CHANGED	unit quest log changed
+2690	UNIT_SPELLCAST_CHANNEL_START	unit spellcast channel start
+2691	UNIT_SPELLCAST_CHANNEL_STOP	unit spellcast channel stop
+2692	UNIT_SPELLCAST_CHANNEL_UPDATE	unit spellcast channel update
+2693	UNIT_SPELLCAST_DELAYED	unit spellcast delayed
+2694	UNIT_SPELLCAST_FAILED	unit spellcast failed
+2695	UNIT_SPELLCAST_FAILED_QUIET	unit spellcast failed quiet
+2696	UNIT_SPELLCAST_INTERRUPTED	unit spellcast interrupted
+2697	UNIT_SPELLCAST_START	Spellcast start
+2698	UNIT_SPELLCAST_START	unit spellcast start
+2699	UNIT_SPELLCAST_STOP	unit spellcast stop
+2700	UNIT_SPELLCAST_SUCCEEDED	unit spellcast succeeded
+2701	Units in combat	Units in combat
+2702	Unknown error. Tutorial data corrupt?	Unknown error. Tutorial data corrupt?
+2703	unknown name	unknown name
+2704	Unknown	Unknown
+2705	unknown	unknown
+2706	Unlimited	Unlimited
+2707	Unspent pet talent points	Unspent talent points
+2708	Unspent pet training points	Unspent training points
+2709	Untermenüs ansagen	Announce submenus
+2710	Untoter	Undead
+2711	UP	UP
+2712	Up	Up
+2713	Update rate (performance)	Update rate (performance)
+2714	Update	Update
+2715	UPDATE_FACTION	reputation updated
+2716	UPDATE_MOUSEOVER_UNIT	update mouseover unit
+2717	UPDATE_STEALTH	update stealth
+2718	updated	updated
+2719	updated;to	newly;binded;to
+2720	Use Blizzard TTS for audio menu	Use Blizzard TTS for audio menu
+2721	V	V
+2722	Vehicle Action Bar	Vehicle Action Bar
+2723	Vehicle HP 	Vehicle HP 
+2724	Vehicle Mana 	Vehicle Mana 
+2725	Verfehlen Typ	Miss Type
+2726	Verfehlt	Missed
+2727	Verfügbare punkte: 	Available points: 
+2728	Vergeltung	Retribution
+2729	Verkäufe	Sales
+2730	Verkaufen	Sell
+2731	verloren	lost
+2732	Vermieden	Mitigated
+2733	Verstärkung	Enhancement
+2734	Verwalten	Manage
+2735	verwenden	use
+2736	VIEWING_DIRECTION	Viewing direction
+2737	visited automatically expires after	visited automatically expires after
+2738	visited	Visited
+2739	vocalized	Spoken
+2740	Vögel	Birds
+2741	Voice chat	Voice chat
+2742	Voice output	Voice output
+2743	Voice volume	Voice volume
+2744	Voice	Voice
+2745	Volume	Volume
+2746	W	W
+2747	Waffen	Arms
+2748	wahr	true
+2749	Waist	Waist
+2750	wait for player activating next step	wait for player activating next step
+2751	WAIT_FOR_MENU_SELECT	Wait for menu item selection
+2752	Walgesang	Whales
+2753	WARLOCK	WARLOCK
+2754	Warlock	Warlock
+2755	Warning if your target is switching from you	Warning if your target is switching from you
+2756	Warning if your target is switching to you	Warning if your target is switching to you
+2757	Warning! That key is already bound to	Warning! That key is already bound to
+2758	Warning	Attention
+2759	Warning: This quest is blacklisted	Warning! This quest is blacklisted:
+2760	Warning: this will replace all existing custom newbie tutorials!)	Warning: this will replace all existing custom newbie tutorials!)
+2761	Warning: You have not completed the current step yet. If you jump to the next step anyway, the tutorial might not work anymore. If you really want to jump to the next step, press %SKU_KEY_TUTORIALSTEPFORWARD% again. Otherwise press %SKU_KEY_TUTORIALSTEPREPEAT% to hear the instructions of the current step again.	Warning: You have not completed the current step yet. If you jump to the next step anyway, the tutorial might not work anymore. If you really want to jump to the next step, press %SKU_KEY_TUTORIALSTEPFORWARD% again. Otherwise press %SKU_KEY_TUTORIALSTEPREPEAT% to hear the instructions of the current step again.
+2762	WARRIOR	WARRIOR
+2763	Warrior	Warrior
+2764	keine	none
+2765	Warten	Wait
+2766	Water	Water
+2767	waterdrop 1	Drop 1
+2768	waterdrop 2	Drop 2
+2769	waterdrop 3	Drop 3
+2770	waterdrop 4	Drop 4
+2771	waterdrop 5	Drop 5
+2772	Waypoint A missing	Point A missing
+2773	Waypoint B missing	Point B is missing
+2774	Waypoint information	Waypoint info
+2775	Waypoint reached at	arrived at Waypoint at
+2776	Waypoint	Waypoint
+2777	WD	WD
+2778	We are working on more tutorials. Feel free to ask in our Discord for help or more tutorials.	We are working on more tutorials. Feel free to ask in our Discord for help or more tutorials.
+2779	Weapon 1h	Weapon 1h
+2780	Weapon 2h	Weapon 2h
+2781	Weapon	Weapon
+2782	Wegpunkt abgewählt	Waypoint deselected
+2783	Wegpunkt erstellt	Waypoint created
+2784	Wegpunkt folgen läuft	Waypoint following in progress
+2785	Wegpunkt gelöscht	Waypoint deleted
+2786	Wegpunkt nicht ausgewählt	Waypoint not selected
+2787	Wegpunkt umbenannt	Waypoint renamed
+2788	Wegpunkt	Waypoint
+2789	Wegpunkte exportiert:	Waypoints exported:
+2790	Wegpunkte ignoriert:	Waypoints ignored:
+2791	Wegpunkte importiert:	Waypoints imported:
+2792	weit	far
+2793	Weiteren Platz kaufen	Buy another slot
+2794	Welche Taste das Ereignis ausgelöst hat	The key to trigger the event
+2795	Wenn die Bedingungen dieser Aura nicht zutreffen	If the conditions of this aura do not apply
+2796	Wenn die Bedingungen dieser Aura zutreffen	If the conditions of this aura apply
+2797	Wenn nicht	If not
+2798	Wenn	If
+2799	Wer das hört ist doof betreten	You should not hear this entered
+2800	Wer das hört ist doof verlassen	You should not hear this leave
+2801	wert buff liste ziel	value buff list target
+2802	wert debuff liste ziel	value debuff list target
+2803	Wert für Bedingung	Value of condition
+2804	Wertung:	Rating:
+2805	west	west
+2806	Whenever the tutorial speaks, all keys are locked. Wait until the tutorial has finished speaking. Then the keys are available again.	Whenever the tutorial speaks, all keys are locked. Wait until the tutorial has finished speaking. Then the keys are available again.
+2807	Whether the damage or heal was critical	Whether the damage or heal was critical
+2808	Whether you can attack your target	Whether you can attack your target
+2809	whisper sender	whisper sender
+2810	whisper	whisper
+2811	White	White
+2812	Who	Who
+2813	wide beacon sound set	Sound for large beacons
+2814	Widerstanden	Resisted
+2815	wiederbeleben	resurrect
+2816	Wiederherstellung	Restoration
+2817	Wiki	Wiki
+2818	Wildtierausbildung	Pet training
+2819	Wink	Wink
+2820	Winkel für Klick bei Beacons	Angle for beacons with clicks
+2821	wipe	wipe
+2822	Wird in route verwendet;Erst die Route löschen	Used in route;Delete route first
+2823	Wirklich duplizieren?	Really duplicate?
+2824	Wirklich zurücksetzen? (keine weitere Warnung)	Really reset? (no more warning)
+2825	word	word
+2826	world boss	World Boss
+2827	World boundary entered	Entered world perimeter
+2828	World boundary left	Left world perimeter
+2829	WorldDefense	WorldDefense
+2830	WoW Token (China Only)	WoW Token (China Only)
+2831	WP created	WP set
+2832	Wrist	Wrist
+2833	X	X
+2834	XP: 	XP: 
+2835	Y	Y
+2836	Yellow	Yellow
+2837	Yes	Yes
+2838	You first need to set up that key bind in Core > Sku key binds to use this tutorial.	You first need to set up that key bind in (Core), (Sku key binds) to use this tutorial.
+2839	You receive loot:	You receive loot:
+2840	You will need the following two shortcut keys, that you should write down now:	You will need the following two shortcut keys, that you should write down now:
+2841	You won't hear this tip anymore from now on.	You won't hear this info anymore from now on.
+2842	Your buff list (L)	Your buff list (L)
+2843	Your buff list remaining duration	Your buff list remaining duration
+2844	Your debuff list (L)	Your debuff list (L)
+2845	Your debuff list remaining duration	Your debuff list remaining duration
+2846	Your group	Your group
+2847	Your list of buffs	Your list of buffs
+2848	Your list of dbuffs	Your list of dbuffs
+2849	Your pet	Your pet
+2850	your role	your role
+2851	Your target is attackable	Your target is attackable
+2852	Your target's health percentage	Your target's health percentage
+2853	Your target's health	Your target's health
+2854	Your target's resource	Your target's resource
+2855	Z	Z
+2856	zauber auf cd (L)	spell on cd (L)
+2857	zauber beschwören	summon spell
+2858	zauber cooldown ende	spell cooldown end
+2859	zauber cooldown start	spell cooldown start
+2860	zauber erfolgreich	spell successful
+2861	zauber erstellen	create spell
+2862	zauber fehlgeschlagen	spell failed
+2863	zauber heilung	spell healing
+2864	zauber name	spell name
+2865	zauber nicht auf cd (L)	spell not on cd (L)
+2866	zauber nr	Spell ID
+2867	zauber ressource	spell resource
+2868	zauber schaden	spell damage
+2869	zauber start	spell start
+2870	zauber unterbrochen	spell interrupted
+2871	zauber verfehlt	spell missed
+2872	zauber wiederbeleben	resurrect spell
+2873	zauber zusatz angriff	spell extra attack
+2874	Zauber	Spell
+2875	Zeit: 	Time: 
+2876	Zerstören	Destroy
+2877	zerstört	destroyed
+2878	Zerstörung	Destruction
+2879	ziel (L)	target (L)
+2880	ziel änderung	target change
+2881	Ziel änderung	target change
+2882	ziel deines deines fokus	target of your focus
+2883	ziel deines fokus	target of your focus
+2884	ziel deines ziels (L)	target of your target (L)
+2885	ziel deines ziels	target of your target
+2886	Ziel deines ziels	target of your target
+2887	ziel deines Ziels	target of your target
+2888	Ziel Einheit angreifbar	Target unit attackable
+2889	ziel einheit	target unit
+2890	ziel von Gruppenmitglied 0 (du).	target of party member 0 (you).
+2891	ziel von gruppenmitglied 0	target of party member 0
+2892	ziel von gruppenmitglied 1	target of party member 1
+2893	ziel von Gruppenmitglied 1.	target of party member 1.
+2894	ziel von gruppenmitglied 2	target of party member 2
+2895	ziel von Gruppenmitglied 2.	target of party member 2.
+2896	ziel von gruppenmitglied 3	target of party member 3
+2897	ziel von Gruppenmitglied 3.	target of party member 3.
+2898	ziel von gruppenmitglied 4	target of party member 4
+2899	ziel von Gruppenmitglied 4.	target of party member 4.
+2900	Ziel	Quest target
+2901	Ziele Entfernung	Destinations by distance
+2902	Ziele:r
+	Goals:r
+
+2903	Zieler
+	Goalsr
+
+2904	Zone Music No Delay	Zone Music No Delay
+2905	Zone	Zone
+2906	Zone: 	Zone: 
+2907	Zone: Unknown	Zone: unknown
+2908	Zone: unkown	Zone: Unknown
+2909	ZONE_CHANGED	outdoors subzone entered
+2910	ZONE_CHANGED_INDOORS	indoors subzone entered
+2911	ZONE_CHANGED_NEW_AREA	new zone entered
+2912	Zonen names	Zones names
+2913	Zones	Zones
+2914	Zurück Metaroute folgen gestartet	Reversal Metaroute started
+2915	Zurücksetzen	Reset
+2916	Zwerg	Dwarf
+2917	SKU_KEY_TARGETHEALTH	Output target health
+2918	warlock	warlock
+2919	Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 3 keyboard shortcuts in tutorials like this one:	Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 3 keyboard shortcuts in tutorials like this one:
+2920	Gebot  	Bid  
+2921	Fliegen beendet	Flying stopped
+2922	Combat Log	Combat Log
+2923	Audio Log	Audio Log
+2924	custom	custom
+2925	Add new filter	Add new filter
+2926	Events	Events
+2927	Damage Split	Damage Split
+2928	Loyalty	Loyalty
+2929	Destination	Destination
+2930	Source	Source
+2931	current filter	current filter
+2932	Delete this filter	Delete this filter
+2933	focus	Sku Focus 
+2934	 set to nothing	 set to nothing
+2935	 set to 	 set to 
+2936	Game focus set to 	Focus set to 
+2937	Game focus cleared	Focus cleared
+2938	not available in combat	not available in combat
+2939	Dropdown Menu	Dropdown Menu
+2940	Gruppensuche	Group Finder
+2941	Eigene Gruppe erstellen	Create own group
+2942	Nach Gruppen suchen	Search for groups
+2943	Eigene Einträge und Bewerbungen	My listings and applications
+2944	Titel eingeben und veröffentlichen	Enter title and publish
+2945	Titel eingeben und Enter drücken	Enter title and press Enter
+2946	Rolle für diese Gruppe	Role for this group
+2947	Standardrolle	Default role
+2948	Automatisch akzeptieren	Auto accept
+2949	Private Gruppe	Private group
+2950	Tank	Tank
+2951	Heiler	Healer
+2952	Schaden	Damage
+2953	aktuell	current
+2954	an	on
+2955	aus	off
+2956	bewerben	apply
+2957	bewerben mit Rolle	apply with other role
+2958	Anführer	Leader
+2959	Bewerbung	Application
+2960	Bewerbung gesendet	Application sent
+2961	Bewerbung zurückgezogen	Application withdrawn
+2962	zurückziehen	withdraw
+2963	Aktive Listung	Active listing
+2964	Keine aktive Listung	No active listing
+2965	Listung entfernt	Listing removed
+2966	Gruppe erstellt	Group created
+2967	Standardrollen	Default roles
+2968	Rollen für Bewerbung	Roles for application
+2969	keine Rolle gewählt	no role selected
+2970	Nur passendes Level	Matching level only
+2971	SkuLfgMenuEntry	Group Finder
+2972	Spezialisierung	Specialization
+2973	Diese Spezialisierung aktivieren	Activate this specialization
+2974	Spezialisierung wird gewechselt	Switching specialization
+2975	aktiv	active
+2976	Sockeln	Socket
+2977	löschen	delete
+2978	AL_Wishlist	Wishlist
+2979	AL_WishlistByDungeon	By dungeon
+2980	AL_WishlistBySlot	By slot
+2981	AL_WishlistNoDungeonHits	No matches in your wishlist
+2982	AL_WishlistAddToFavorites	add to wishlist
+2983	AL_WishlistRemoveFromFavorites	remove from wishlist
+2984	AL_WishlistItemAdded	Added to wishlist
+2985	AL_WishlistItemRemoved	Removed from wishlist
+2986	AH_CategoriesLoading	Categories loading
+2987	AL_Instances	Instances
+2988	AL_Raids	Raids
+2989	AL_WorldBosses	World Bosses
+2990	AL_DifficultyFallback	Difficulty
+2991	Normal	Normal
+2992	EQ_Prefix	Sku Equipment Sets:
+2993	EQ_NameEmpty	Name must not be empty
+2994	EQ_SetAlreadyExists	Set already exists: 
+2995	EQ_NoEquipmentWorn	No equipment worn
+2996	EQ_SavedWith	 saved with 
+2997	EQ_Parts	 pieces
+2998	EQ_SetNotFound	Set not found
+2999	EQ_SetNotFoundColon	Set not found: 
+3000	EQ_NewNameEmpty	New name must not be empty
+3001	EQ_AlreadyExists	 already exists
+3002	EQ_RenamedTo	 renamed to 
+3003	EQ_Deleted	 deleted
+3004	EQ_NotInCombat	Not possible in combat
+3005	EQ_NothingToChange	: nothing to change
+3006	EQ_PiecesEquipped	 pieces equipped
+3007	EQ_BelongsToSet	Belongs to set: 
+3008	EQ_NamePrompt	Name for the equipment set:
+3009	EQ_Cancelled	Cancelled
+3010	EQ_HintOkEsc	Enter = OK   |   Escape = Cancel
+3011	EQ_EnterNameHint	Enter name. Enter confirms, Escape cancels.
+3012	EQ_CreateNew	create new equipment set
+3013	EQ_CreateNewTip	Saves currently worn equipment as a new set.
+3014	EQ_ActionsFor	Actions for equipment set 
+3015	EQ_Equip	Equip
+3016	EQ_EquipTip	Equips the set.
+3017	EQ_Overwrite	Overwrite
+3018	EQ_OverwriteTip	Overwrites the set with currently worn equipment. Confirmation required.
+3019	EQ_OverwriteConfirmPre	Do you really want to overwrite the set 
+3020	EQ_OverwriteConfirmPost	 with currently worn equipment? Enter to confirm, Escape to cancel.
+3021	EQ_OverwrittenWith	 overwritten with 
+3022	EQ_Rename	Rename
+3023	EQ_RenameTip	Renames the set.
+3024	EQ_Delete	Delete
+3025	EQ_DeleteTip	Deletes the set. Confirmation required.
+3026	EQ_DeleteConfirmPre	Do you really want to delete the set 
+3027	EQ_DeleteConfirmPost	? Enter to confirm, Escape to cancel.
+3028	EQ_CreateMacro	Create macro
+3029	EQ_CreateMacroTip	Creates a character macro to equip this set.
+3030	EQ_MacroCreated	Macro created: 
+3031	EQ_MacroUpdated	Macro updated: 
+3032	EQ_MacroLimitReached	Macro limit reached. Delete an existing macro first.
+3033	ERRLOG_Active	active. /skulog for overview.
+3034	ERRLOG_ShowHelp	  /skulog show   - last 10 errors
+3035	ERRLOG_ClearHelp	  /skulog clear  - clear log
+3036	ERRLOG_ExportHelp	  /skulog export - large text window for copying
+3037	ERRLOG_AllHelp	  /skulog all    - log all errors (not just Sku)
+3038	ERRLOG_SkuOnlyHelp	  /skulog skuonly- Sku-related errors only
+3039	ERRLOG_OffHelp	  /skulog off    - disable logging
+3040	ERRLOG_OnHelp	  /skulog on     - enable logging
+3041	ERRLOG_NoEntries	no entries.
+3042	ERRLOG_WindowOpened	Window opened. Ctrl+C to copy.
+3043	ERRLOG_Cleared	cleared.
+3044	ERRLOG_LogAll	now logging ALL errors.
+3045	ERRLOG_LogSkuOnly	logging Sku-related errors only.
+3046	ERRLOG_Disabled	disabled.
+3047	ERRLOG_Enabled	enabled.
+3048	ERRLOG_Unknown	unknown. /skulog
+3049	MOB_PetReleaseWarning	WARNING: The pet will be PERMANENTLY released! This cannot be undone. Enter to confirm, Escape to cancel.
+3050	MOB_PetRenameConfirm	Confirm rename: 
+3051	MOB_PetRenameSaved	Name saved. Go back and choose Confirm rename.
+3052	ACC_MenuTitle	Quick menu
+3053	ACC_Placeholder1	Placeholder volume
+3054	ACC_Placeholder2	Placeholder speech
+3055	ACC_VolumesTitle	Volume
+3056	ACC_SpeechTitle	Speech output
+3057	ACC_OtherTitle	Other
+3058	AURA_WeMH	Your weapon enchant main hand
+3059	AURA_WeMHTip	The weapon enchant on your main hand (poison, oil, sharpening stone, shaman imbue, etc.)
+3060	AURA_WeOH	Your weapon enchant off hand
+3061	AURA_WeOHTip	The weapon enchant on your off hand
+3062	AURA_WeMHDur	Your weapon enchant main hand remaining duration
+3063	AURA_WeMHDurTip	The remaining duration of the main hand weapon enchant in seconds
+3064	AURA_WeOHDur	Your weapon enchant off hand remaining duration
+3065	AURA_WeOHDurTip	The remaining duration of the off hand weapon enchant in seconds
+3066	AURA_OutWeMH	Weapon enchant main hand (name)
+3067	AURA_OutWeMHTip	Speaks the name of the weapon enchant currently on your main hand
+3068	AURA_OutWeOH	Weapon enchant off hand (name)
+3069	AURA_OutWeOHTip	Speaks the name of the weapon enchant currently on your off hand
+3070	CAM_MenuTitle	Camera
+3071	CAM_SkuDefault	Sku standard
+3072	CAM_StatusLocked	currently active
+3073	CAM_StatusFree	not active
+3074	CAM_SkuDefaultOn	Sku standard activated.
+3075	CAM_SkuDefaultOff	Sku standard deactivated. Camera functions unlocked.
+3076	CAM_ResetConfirm	Reset camera to Sku standard?
+3077	CAM_PleaseRestart	Sku standard restored. Please restart the game.
+3078	CAM_UnlockConfirm	Unlock camera?
+3079	CAM_LockPending	Really reset to Sku standard? Enter to confirm, Escape to cancel.
+3080	CAM_UIOn	Interface shown
+3081	CAM_UIOff	Interface hidden
+3082	CAM_SkuLocked	Function locked by Sku standard. Please unlock first.
+3083	CAM_Locked	locked
+3084	CAM_ActivateSku	Restore Sku standard, after confirming with Enter quit the game with Alt F4 and restart
+3085	CAM_FreeMenu	Unlock video menu
+3086	CAM_AltF4Reminder	Press Alt F4 to close the game.
+3087	CAM_Active	(active)
+3088	CAM_Distance	Camera distance
+3089	CAM_DistClose	Close
+3090	CAM_DistNormal	Normal
+3091	CAM_DistMedium	Medium
+3092	CAM_DistFar	Far
+3093	CAM_DistVeryFar	Very far
+3094	CAM_DistMax	Maximum
+3095	CAM_DistSet	Camera distance set to
+3096	CAM_Height	Camera height
+3097	CAM_HeightBehind	Behind character, flat
+3098	CAM_HeightNormal	Normal, slightly elevated
+3099	CAM_HeightHigh	Elevated
+3100	CAM_HeightBird	Bird eye view
+3101	CAM_HeightSet	Camera height set to
+3102	CAM_HeightHint	Note: Only works when camera tracking style is not set to Always.
+3103	CAM_Pitch	Camera pitch speed
+3104	CAM_PitchSlow	Slow
+3105	CAM_PitchNormal	Normal
+3106	CAM_PitchFast	Fast
+3107	CAM_PitchVeryFast	Very fast
+3108	CAM_PitchSet	Pitch speed set to
+3109	CAM_FollowChar	Camera tracking style
+3110	CAM_FollowSmart	Smart
+3111	CAM_FollowMoving	Only when moving
+3112	CAM_FollowAlways	Always - Sku standard, required for waypoint navigation
+3113	CAM_FollowNever	Never
+3114	CAM_FollowSet	Camera tracking set to
+3115	CAM_UIToggle	Show or hide interface
+3116	CAM_UIShown	Interface shown
+3117	CAM_UIHidden	Interface hidden
+3118	CAM_More	More camera functions
+3119	CAM_Transition	Camera transition
+3120	CAM_TransInstant	Instant
+3121	CAM_TransSmooth	Smooth
+3122	CAM_TransSet	Camera transition set to
+3123	CAM_OverShoulder	Over shoulder view
+3124	CAM_OverShoulderOn	Over shoulder view enabled
+3125	CAM_OverShoulderOff	Over shoulder view disabled
+3126	CAM_Nameplates	Nameplates
+3127	CAM_NPEnemy	Enemy nameplates
+3128	CAM_NPFriendly	Friendly nameplates
+3129	CAM_NPAll	All nameplates
+3130	CAM_NPOn	Nameplates enabled
+3131	CAM_NPOff	Nameplates disabled
+3132	on	on
+3133	off	off
+3134	STRAT_Title	Strategy buy single items
+3135	STRAT_ItemName	Item
+3136	STRAT_NotSet	not set
+3137	STRAT_EnterItem	Enter item name
+3138	STRAT_ItemSet	Item set
+3139	STRAT_MaxGold	Maximum price gold
+3140	STRAT_MaxSilver	Maximum price silver
+3141	STRAT_MaxCopper	Maximum price copper
+3142	STRAT_Amount	Quantity
+3143	STRAT_Pieces	pieces
+3144	STRAT_Times	times
+3145	STRAT_For	for maximum
+3146	STRAT_PerPiece	per piece
+3147	STRAT_Start	Start buying
+3148	STRAT_NoItem	No item specified.
+3149	STRAT_NoPrice	No price specified.
+3150	STRAT_Starting	Strategy buy started
+3151	STRAT_Searching	Searching auction house...
+3152	STRAT_SearchTimeout	Search timed out, server not responding.
+3153	STRAT_SearchError	Search error, strategy buy cancelled.
+3154	STRAT_AHClosed	Auction house closed, strategy buy cancelled.
+3155	STRAT_Found	Found
+3156	STRAT_EnterBuy	Enter to buy, Escape to cancel.
+3157	STRAT_NoMoney	Not enough gold. Strategy buy cancelled.
+3158	STRAT_BuyOK	Purchase successful.
+3159	STRAT_BuyFail	Purchase failed, attempt
+3160	STRAT_AuctionGone	Auction no longer available, searching again.
+3161	STRAT_Done	Strategy buy complete
+3162	STRAT_MaxFails	Maximum attempts reached. Strategy buy cancelled.
+3163	STRAT_NoneFound	No matching auction found.
+3164	STRAT_Retrying	Retrying, failed attempt
+3165	STRAT_Cancelled	Strategy buy cancelled.
+3166	STRAT_PleaseWait	Please wait...
+3167	STRAT_PressEnter	Press Enter now for
+3168	STRAT_Total	Total cost
+3169	STRAT_TryNext	Trying next offer.
+3170	STRAT_ScanBusy	Scan already running, waiting...
+3171	AURA_WeaponEnchantRemoved	Weapon enchant expired
+3172	AURA_WeaponEnchantRemovedShort	Enchant gone
+3173	AURA_WeaponEnchantRemovedTip	A temporary weapon enchant (poison, sharpening stone, wizard oil) has expired
+3174	Keine Edelsteine im Inventar gefunden	No gems found in inventory
+3175	%s in Sockel %d gesetzt	%s placed in socket %d
+3176	Setzt %s in Sockel %d. Die Aenderung wird erst nach Anwenden bestaetigt.	Places %s in socket %d. The change will only be applied after clicking Apply.
+3177	Rot	Red
+3178	Gelb	Yellow
+3179	Blau	Blue
+3180	Meta	Meta
+3181	Prismatisch	Prismatic
+3182	neu: %s	new: %s
+3183	Sockel %d, %s: %s	Socket %d, %s: %s
+3184	Edelstein einsetzen	Insert gem
+3185	Sockel-API nicht verfuegbar	Socket API not available
+3186	Kein Item zum Sockeln im Sockel-Fenster	No item to socket in the socketing window
+3187	%d Sockel verfuegbar	%d sockets available
+3188	Waehle pro Sockel einen Edelstein und bestaetige danach mit Anwenden.	Select a gem for each socket and confirm with Apply.
+3189	Anwenden	Apply
+3190	Sockelung bestaetigt	Socketing confirmed
+3191	Setzt alle gewaehlten Edelsteine endgueltig ein. Achtung: Edelsteine werden dadurch verbraucht.	Places all selected gems permanently. Warning: gems will be consumed.
+3192	Sockeln abgebrochen	Socketing cancelled
+3193	Schliesst das Sockel-Fenster ohne zu speichern.	Closes the socketing window without saving.
+3194	No free bag space	No free bag space
+3195	Off Hand	Off Hand
+3196	Atlas Loot addon missing	Atlas Loot addon missing
+3197	Folgen beendet	Follow stopped
+3198	Aktivität #	Activity #
+3199	 Stufe 	 level 
+3200	Ressourcen-Scan gestartet (	Resource scan started (
+3201	 Einheiten)	 units)
+3202	Ressourcen-Scan: Nichts gefunden	Resource scan: nothing found
+3203	Nichts gefunden	Nothing found
+3204	Bankfächer	Bank tabs
+3205	Sku-Audiomenü	Sku audio menu
+3206	Erlernte Berufe öffnen oder verlernen.	Open or unlearn your professions.
+3207	Öffnet das Beruf-Fenster für 	Opens the profession window for 
+3208	Verlernt 	Unlearns 
+3209	. Eine Bestätigungs-Abfrage erscheint.	. A confirmation prompt will appear.
+3210	 wirklich verlernen? Eingabe Ja, Escape Nein.	 really unlearn? Enter yes, Escape no.
+3211	 verlernt	 unlearned
+3212	Abgebrochen, 	Cancelled, 
+3213	 nicht verlernt	 not unlearned
+3214	Teilen nicht moeglich, Kommunikationsbibliothek fehlt	Sharing not possible, communication library missing
+3215	Du bist in keiner Gruppe	You are not in a group
+3216	Set konnte nicht vorbereitet werden	The set could not be prepared
+3217	Aurenset %s geteilt	Aura set %s shared
+3218	Aurenset %s von %s empfangen. Unter Auren, Sets, Empfangene Sets annehmen.	Aura set %s received from %s. Accept it under Auras, Sets, Received sets.
+3219	Achtung, Set ist fuer eine andere Sprache. Auren koennten nicht ausloesen.	Warning, the set is for a different language. Auras might not trigger.
+3220	Aurenset uebernommen, %s Auren	Aura set accepted, %s auras
+3221	Empfangenes Set verworfen	Received set discarded
+3222	Namen eingeben und Enter, oder Escape zum Abbrechen	Type a name and press Enter, or Escape to cancel
+3223	Abgebrochen	Cancelled
+3224	Set angelegt	Set created
+3225	Set geloescht	Set deleted
+3226	unbekannt	unknown
+3227	Keine Audiogeräte gefunden.	No audio devices found.
+3228	Ungültige Nummer. Gültig: 0 bis %s. Benutze /skuaudio list.	Invalid number. Valid: 0 to %s. Use /skuaudio list.
+3229	Konnte CVar nicht setzen.	Could not set the CVar.
+3230	Gerät gewechselt auf Nummer %s: %s	Device switched to number %s: %s
+3231	%s Audiogeräte verfügbar. Aktuell Nummer %s.	%s audio devices available. Current number %s.
+3232	 (aktiv)	 (active)
+3233	Nummer %s: %s	Number %s: %s
+3234	Zum Wechseln: /skuaudio set <Nummer>  oder  /skuaudio find headset	To switch: /skuaudio set <number>  or  /skuaudio find headset
+3235	Aktuelles Ausgabegerät: Nummer %s: %s	Current output device: number %s: %s
+3236	Suchbegriff fehlt. Beispiel: /skuaudio find headset	Search term missing. Example: /skuaudio find headset
+3237	Kein Gerät enthält '%s'. /skuaudio list für alle Namen.	No device name contains '%s'. /skuaudio list for all names.
+3238	%s Treffer — bitte genauer:	%s matches — please be more specific:
+3239	Befehle: list, current, set N, find <text>, restart	Commands: list, current, set N, find <text>, restart
+3240	Bitte eine Zahl angeben. Beispiel: /skuaudio set 2	Please give a number. Example: /skuaudio set 2
+3241	Soundsystem neu gestartet.	Sound system restarted.
+3242	Funktion nicht verfügbar.	Function not available.
+3243	Unbekannt. Verfügbar: list, current, set N, find <text>, restart	Unknown. Available: list, current, set N, find <text>, restart
+3244	 teilt Aurenset 	 shares aura set 
+3245	Teilen abgeschlossen	Sharing complete
+3246	Gruppenmitglieder	Group members
+3247	show group members quests	show group members quests
+3248	Keine Questie-Daten empfangen	No Questie data received
+3249	Unbekannte Zone	Unknown zone
