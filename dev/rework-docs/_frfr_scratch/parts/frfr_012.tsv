@@ -1,0 +1,125 @@
+2000	point d'interrogation
+2001	Journal de quêtes
+2002	Groupe de quêtes
+2003	Quêtes
+2004	Description de la quête :r\n
+2005	Description de la quête :r\n
+2006	objectif de quête
+2007	Point de passage rapide 4 placé sur le cadavre
+2008	point de passage rapide
+2009	point de passage rapide
+2011	Race
+2012	Races
+2013	Rage
+2014	Lire automatiquement le chat de raid
+2015	Moniteur de santé du raid activé
+2016	Verrouillage de raid
+2017	membre du raid
+2018	Réinitialisation du raid
+2019	Lire automatiquement les avertissements de raid
+2020	Raid
+2021	Raid
+2022	Portée pour considérer un point de passage comme atteint et passer au suivant
+2023	Portée pour les membres du groupe dans les vérifications de portée
+2024	Portée pour les débuts d'itinéraire proches
+2025	Portée
+2026	À distance
+2027	portées en cours de chargement
+2028	Élite rare
+2029	Rare
+2031	Lire toutes les infobulles
+2032	lecture seule
+2033	Prêt dans
+2034	Banque de composants
+2035	Se déclenche si le type d'aura est un buff
+2036	Se déclenche si le type d'aura est un debuff
+2037	Se déclenche si l'unité cible est un chasseur de démons
+2038	Se déclenche si l'unité cible est un druide
+2039	Se déclenche si l'unité cible est un démoniste
+2040	Se déclenche si l'unité cible est un chasseur
+2041	Se déclenche si l'unité cible est un guerrier
+2042	Se déclenche si l'unité cible est un mage
+2043	Se déclenche si l'unité cible est un moine
+2044	Se déclenche si l'unité cible est un paladin
+2045	Se déclenche si l'unité cible est un prêtre
+2046	Se déclenche si l'unité cible est un chaman
+2047	Se déclenche si l'unité cible est un voleur
+2048	Se déclenche si l'unité cible est un chevalier de la mort
+2049	Récent
+2050	Destinataire manquant
+2051	Destinataire
+2052	enregistrement;corrompu;itinéraire;supprimé
+2053	L'enregistrement continue jusqu'à B
+2054	L'enregistrement continue jusqu'à la fin
+2055	Enregistrement en cours
+2056	L'enregistrement démarre au point A
+2057	enregistrement terminé;itinéraire;créé
+2058	enregistrement;démarre
+2059	Rouge
+2060	Renvoyé
+2061	Actualiser la liste
+2062	Butin : tour de rôle
+2063	Relique
+2064	Déplacer tous les objets en haut du sac (compacter)
+2065	Supprimer l'entrée
+2066	Retirer des favoris
+2067	retirer de la liste d'ignorés
+2068	retirer l'objet
+2069	retirer
+2070	Renommer
+2071	Renommé
+2072	Statut de l'objet :
+2073	Répéter les symboles de cible sur les unités
+2074	Intervalle de répétition (0 = une fois)
+2075	Réécouter les instructions de l'étape : vous pouvez réécouter à tout moment les instructions de l'étape en cours du tutoriel. Pour cela, appuyez sur le raccourci %SKU_KEY_TUTORIALSTEPREPEAT%.
+2076	Répondre
+2077	Rapports
+2078	Réputation
+2079	Niveau d'honneur requis
+2080	Niveau d'objet requis
+2081	Ressource
+2082	Résistances
+2083	Résistances
+2084	Dégâts résistés :
+2085	Coups résistés :
+2086	Résoudre l'entrée de menu
+2087	La ressource a été mise à jour (mana, énergie, rage, etc.).
+2088	analyse des ressources
+2089	ressource
+2090	Ressource mise à jour
+2091	Restauration
+2092	Résultats
+2093	Vindicte
+2094	Réverbération
+2095	Description de la récompense
+2096	Or de récompense
+2097	Objets de récompense
+2098	XP de récompense
+2099	Récompenses
+2100	Récompenses
+2101	Clic droit
+2102	barre d'action droite 2
+2103	DROITE
+2104	Voleur
+2106	Attribution des rôles
+2107	Rôle pour cet ensemble
+2108	Sondage de rôle
+2109	sélection du rôle
+2110	Rôles
+2111	lancer sur
+2112	suivi de l'itinéraire terminé
+2113	Suivi d'itinéraire en cours
+2114	Suivre l'itinéraire
+2115	Itinéraire
+2116	Conversion des itinéraires
+2117	Conversion des itinéraires terminée
+2118	Conversion des itinéraires vers la nouvelle version démarrée
+2119	Réputation :r\n
+2120	Pierre de foyer :
+2121	Runes
+2122	Puissance runique
+2123	Faire défiler vers le bas
+2126	Triste
+2127	précision de l'analyse
+2128	Analyse pas encore possible
+2129	Réglages de l'analyse
