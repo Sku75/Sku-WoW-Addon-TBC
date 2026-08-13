@@ -1,4 +1,4 @@
----@diagnostic disable: undefined-field, undefined-doc-name, undefined-doc-param
+﻿---@diagnostic disable: undefined-field, undefined-doc-name, undefined-doc-param
 
 
 local oIsInventorySlotEngravable = C_Engraving.IsInventorySlotEngravable
@@ -459,6 +459,48 @@ SlashCmdList["SKUDEBUG"] = function(aMsg)
 				..". Usage: /skudebug locale <"..table.concat(Sku.Locs, "|").."|off>")
 		end
 		return
+	elseif aMsg == "dumpmapnames" then
+		-- [v42.09 i18n] Capture the CLIENT's own localized zone / map names so the
+		-- OFFLINE route-name generator can use them. The runtime C_Map fill in
+		-- ChunkLoader solves display, but the third §-field of the route names is
+		-- built by a Python script that cannot call the game API - it needs this
+		-- data as a file.
+		--
+		-- Deliberately keyed on GetLocale(), NOT Sku.Loc: the point is to record
+		-- what the real client speaks, so this must be run on a genuine client of
+		-- that language. Running it under /skudebug locale would just record the
+		-- host client's language under the wrong name.
+		if type(SkuDebugLog) ~= "table" then SkuDebugLog = {} end
+		local tOut = {locale = GetLocale(), areas = {}, maps = {}}
+		local tGetArea = C_Map and C_Map.GetAreaInfo
+		local tGetMap = C_Map and C_Map.GetMapInfo
+		local tA, tM = 0, 0
+		if SkuDB and type(SkuDB.InternalAreaTable) == "table" and tGetArea then
+			for tId in pairs(SkuDB.InternalAreaTable) do
+				if type(tId) == "number" then
+					local tOk, tRes = pcall(tGetArea, tId)
+					if tOk and type(tRes) == "string" and tRes ~= "" then
+						tOut.areas[tId] = tRes
+						tA = tA + 1
+					end
+				end
+			end
+		end
+		if SkuDB and type(SkuDB.ExternalMapID) == "table" and tGetMap then
+			for tId in pairs(SkuDB.ExternalMapID) do
+				if type(tId) == "number" then
+					local tOk, tRes = pcall(tGetMap, tId)
+					if tOk and type(tRes) == "table" and type(tRes.name) == "string" and tRes.name ~= "" then
+						tOut.maps[tId] = tRes.name
+						tM = tM + 1
+					end
+				end
+			end
+		end
+		SkuDebugLog.mapNameDump = tOut
+		print(string.format("|cff80c0ffSkuDebug|r: map-name dump for %s - %d areas, %d maps. /reload to persist.",
+			tostring(tOut.locale), tA, tM))
+		return
 	elseif aMsg == "clear" then
 		if type(SkuDebugLog) == "table" then SkuDebugLog.lines = {} ; SkuDebugLog.seq = 0 end
 		print("|cff80c0ffSkuDebug|r: log cleared.")
@@ -478,7 +520,7 @@ SlashCmdList["SKUDEBUG"] = function(aMsg)
 		end
 		return
 	elseif aMsg ~= "" then
-		print("|cff80c0ffSkuDebug|r: usage: /skudebug on|off|print on|print off|log on|log off|verbose on|verbose off|size <n>|locale <loc>|clear|show")
+		print("|cff80c0ffSkuDebug|r: usage: /skudebug on|off|print on|print off|log on|log off|verbose on|verbose off|size <n>|locale <loc>|dumpmapnames|clear|show")
 	end
 	if d.log and not tWasLog then Sku:DebugLogMark("log enabled") end
 	print(string.format("|cff80c0ffSkuDebug|r: print=%s log=%s verbose=%s ring=%d/%d",
