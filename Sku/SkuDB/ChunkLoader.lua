@@ -1,4 +1,4 @@
--- [DB rework stage 3] Streamed chunk loader + master init sequence for the
+﻿-- [DB rework stage 3] Streamed chunk loader + master init sequence for the
 -- converted SkuDB data files (DB-RESTRUCTURE-PLAN.md, stage 3, risks A7-A10).
 --
 -- Stage 2 built the chunks EAGERLY at file load. Stage 3 moves the whole
@@ -248,6 +248,17 @@ end
 -- merges - the same calls in the same relative order SkuQuest:PLAYER_LOGIN
 -- made; SoD merges stay behind Sku.IsEraSoD exactly as before). Each
 -- sub-step is pcall'ed by the master, which yields between them.
+-- [v42.09 i18n] FORWARD DECLARATIONS - required, not stylistic.
+--
+-- SkuDBFamilySteps below closes over these two. A `local function` defined
+-- further down the file is NOT in scope when these closures are created, so the
+-- names would resolve as GLOBALS and the calls would hit nil. That is exactly
+-- what happened on the first attempt:
+--   ChunkLoader.lua:325: attempt to call a nil value  (objects)
+--   ChunkLoader.lua:351: attempt to call a nil value  (spells)
+-- which failed both families outright. Declare here, assign below.
+local SkuDBAliasSpellLocale, SkuDBBuildResourceNames
+
 local SkuDBFamilySteps = {
 	quests = {
 		function()
@@ -503,7 +514,7 @@ end
 -- spell names would need ~30k GetSpellInfo calls on the loading screen, which
 -- is not worth it: unlike zone names these are mostly aura-matching keys, where
 -- the English name works.
-local function SkuDBAliasSpellLocale()
+SkuDBAliasSpellLocale = function()
 	local tLoc = Sku.Loc
 	if not tLoc or tLoc == "deDE" or tLoc == "enUS" then return 0 end
 	if type(SkuDB.SpellDataTBC) ~= "table" then return 0 end
@@ -528,7 +539,7 @@ end
 -- id mapping is exact - an alias to enUS would never match the French object
 -- names the lookup is tested against, silently turning every ore and herb into
 -- a normal waypoint.
-local function SkuDBBuildResourceNames()
+SkuDBBuildResourceNames = function()
 	local tLoc = Sku.Loc
 	if not tLoc or tLoc == "deDE" or tLoc == "enUS" then return 0 end
 	local tRoot = SkuDB.objectResourceNames
