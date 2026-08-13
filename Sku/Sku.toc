@@ -135,6 +135,9 @@ SkuDB\assets\WotLK\frFR\quests_frFR.lua
 SkuDB\assets\WotLK\frFR\creatures_frFR.lua
 SkuDB\assets\WotLK\frFR\items_frFR.lua
 SkuDB\assets\WotLK\frFR\objects_frFR.lua
+# French SPELL names, captured from a real frFR client via /skudebug dumpspells.
+# Chunk path is SkuDB.spellNames.frFR so the locale gate skips it elsewhere.
+SkuDB\assets\frFR\spellnames_frFR.lua
 
 SkuDB\ChunkLoader.lua
 _psF_postSkuDB.lua

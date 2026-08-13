@@ -49,7 +49,10 @@ local FAMILY_ORDER = {"creatures", "objects", "quests", "items", "spells"}
 local function SkuDBFamilyOfPath(aPath)
 	if string.find(aPath, ".NpcData.", 1, true) then return "creatures" end
 	if string.find(aPath, ".itemLookup", 1, true) or string.find(aPath, ".itemDataTBC", 1, true) then return "items" end
-	if string.find(aPath, ".SpellDataTBC", 1, true) then return "spells" end
+	-- [v42.09 i18n] .spellNames = the per-locale name overrides captured from a
+	-- real client (SkuDB.spellNames.frFR). Same family as the spell data so it is
+	-- built before SkuDBAliasSpellLocale, which consumes it.
+	if string.find(aPath, ".SpellDataTBC", 1, true) or string.find(aPath, ".spellNames", 1, true) then return "spells" end
 	if string.find(aPath, ".questLookup", 1, true) or string.find(aPath, ".questDataTBC", 1, true) then return "quests" end
 	if string.find(aPath, ".objectDataTBC", 1, true) or string.find(aPath, ".objectLookup", 1, true) then return "objects" end
 	return nil
@@ -538,15 +541,38 @@ SkuDBAliasSpellLocale = function()
 	local tLoc = Sku.Loc
 	if not tLoc or tLoc == "deDE" or tLoc == "enUS" then return 0 end
 	if type(SkuDB.SpellDataTBC) ~= "table" then return 0 end
-	local tN = 0
-	for _, tEntry in pairs(SkuDB.SpellDataTBC) do
+	-- [v42.09 i18n] Real names first, English only as the tail.
+	--
+	-- SkuDB.frFRSpellNames is captured from a genuine frFR client via
+	-- /skudebug dumpspells (26,333 of 49,019 ids resolve; the rest are dead or
+	-- unused spells GetSpellInfo returns nothing for). This is not cosmetic:
+	-- aura matching compares against live combat-log names, which are localized,
+	-- so an English name here means the aura silently never fires.
+	--
+	-- Only slot 1 (name_lang) is replaced. The description slots stay English -
+	-- GetSpellInfo does not give us those, and no consumer matches on them.
+	local tNames = SkuDB.spellNames and SkuDB.spellNames[tLoc]
+	local tReal, tFallback = 0, 0
+	for tId, tEntry in pairs(SkuDB.SpellDataTBC) do
 		if type(tEntry) == "table" and tEntry[tLoc] == nil then
-			tEntry[tLoc] = tEntry.enUS or tEntry.deDE
-			tN = tN + 1
+			local tName = tNames and tNames[tId]
+			local tBase = tEntry.enUS or tEntry.deDE
+			if tName and type(tBase) == "table" then
+				local tCopy = {}
+				for k, v in pairs(tBase) do tCopy[k] = v end
+				tCopy[1] = tName
+				tEntry[tLoc] = tCopy
+				tReal = tReal + 1
+			else
+				tEntry[tLoc] = tBase
+				tFallback = tFallback + 1
+			end
 		end
 	end
-	SkuDB.chunkLoad.spellAlias = tN
-	return tN
+	SkuDB.chunkLoad.spellAlias = tReal + tFallback
+	SkuDB.chunkLoad.spellReal = tReal
+	dprint("SkuDB spell names for", tLoc, "real =", tReal, "english fallback =", tFallback)
+	return tReal + tFallback
 end
 
 -- [v42.09 i18n] objectResourceNames is keyed by object NAME, per locale, and is
