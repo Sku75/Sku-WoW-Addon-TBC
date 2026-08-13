@@ -940,7 +940,27 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		end
 
 
-		if not (string.find(aString, "sound%-") or string.find(aString, "male%-") or string.find(aString, "brian%-") or string.find(aString, "emma%-")) and ChatTts().allChatViaBlizzardTts == true then
+		-- [v42.09 i18n] Second trigger for this existing delegation: a client with
+		-- NO voice pack for its language. Without it the audio path can only ever
+		-- reach the "sound-audiofehltbeep" fallback for anything that is not an
+		-- identifier, so a French user would hear a beep for every mob, zone and
+		-- item name. Routing the whole string to TTS gives them the real French
+		-- text instead.
+		--
+		-- Gated per CLIENT (is a pack installed), never per STRING. A per-string
+		-- test would switch queues line by line: the audio and TTS queues are
+		-- independent and cannot be coordinated, so target announcements would
+		-- start colliding with chat for German and English users. As written,
+		-- anyone with a matching pack keeps today's behaviour exactly, beeps
+		-- included - those stay a useful "recording missing from the pack" signal
+		-- and are still counted in SkuOptions.db.realm.missingAudio.
+		--
+		-- Note this is deliberately Sku.AudiodataPath (chosen by Sku.Loc), NOT
+		-- Sku.LocAudio: a voice pack is keyed by words in its OWN language, so an
+		-- English pack on a French client would match nothing AND suppress this
+		-- fallback. Sku.LocAudio stays confined to the integrated index, which is
+		-- keyed by identifiers ("male-Nord") rather than words.
+		if not (string.find(aString, "sound%-") or string.find(aString, "male%-") or string.find(aString, "brian%-") or string.find(aString, "emma%-")) and (ChatTts().allChatViaBlizzardTts == true or Sku.AudiodataPath == "") then
 			SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks) -- for strings with lookup in string index
 			return
 		end
