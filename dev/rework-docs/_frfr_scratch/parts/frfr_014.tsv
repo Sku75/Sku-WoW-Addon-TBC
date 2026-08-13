@@ -1,0 +1,123 @@
+2250	Menu de combat; haut
+2251	Menu de combat; bas
+2252	Menu de combat; gauche
+2253	Menu de combat; droite
+2254	Menu de combat; au début (Origine)
+2255	Menu de combat; à la fin (Fin)
+2256	Menu de combat; retour (Retour arrière)
+2257	Menu de combat; fermer (Échap)
+2258	Menu de combat; utiliser/sélectionner (Entrée)
+2259	Menu; clic gauche/activer (Entrée)
+2260	Menu; clic droit (Contrôle+Entrée)
+2261	Touches de clic du menu
+2262	mode débogage
+2263	sortie de débogage
+2264	Déclencher la sortie continue du moniteur de groupe
+2265	Basculer le moniteur de santé joueur, groupe, raid
+2266	Activer / désactiver le ciblage souple ennemi
+2267	Activer / désactiver le ciblage souple allié
+2268	Activer / désactiver le ciblage souple des objets
+2269	Effectuer la vérification de portée des membres du groupe
+2270	accès rapide au menu audio 1
+2271	accès rapide au menu audio 10
+2272	définir l'accès rapide au menu audio 10
+2273	définir l'accès rapide au menu audio 1
+2274	accès rapide au menu audio 2
+2275	définir l'accès rapide au menu audio 2
+2276	accès rapide au menu audio 3
+2277	définir l'accès rapide au menu audio 3
+2278	accès rapide au menu audio 4
+2279	définir l'accès rapide au menu audio 4
+2280	accès rapide au menu audio 5
+2281	définir l'accès rapide au menu audio 5
+2282	accès rapide au menu audio 6
+2283	définir l'accès rapide au menu audio 6
+2284	accès rapide au menu audio 7
+2285	définir l'accès rapide au menu audio 7
+2286	accès rapide au menu audio 8
+2287	définir l'accès rapide au menu audio 8
+2288	accès rapide au menu audio 9
+2289	définir l'accès rapide au menu audio 9
+2290	analyse des ressources étroite
+2291	demander un atterrissage anticipé
+2292	analyse des ressources large
+2293	point de passage suivant de l'itinéraire
+2294	point de passage précédent de l'itinéraire
+2295	basculer la notification des ressources
+2296	ouvrir le navigateur de donjons
+2297	ouvrir le menu audio
+2298	ouvrir AtlasLoot
+2299	Annoncer la cible fixe actuelle
+2300	Annoncer la cible souple actuelle
+2301	mode panique
+2302	trouver la souris
+2303	abandonner la quête
+2304	afficher l'infobulle de l'objet de butin actuel
+2305	sélectionner le point de passage rapide 1
+2306	définir le point de passage rapide 1
+2307	sélectionner le point de passage rapide 2
+2308	définir le point de passage rapide 2
+2309	sélectionner le point de passage rapide 3
+2310	définir le point de passage rapide 3
+2311	sélectionner le point de passage rapide 4
+2312	définir le point de passage rapide 4
+2313	lancer cupidité
+2314	info du jet
+2315	lancer besoin
+2316	passer le jet
+2317	Analyse 1
+2318	Analyse 2
+2319	Analyse 3
+2320	Analyse 4
+2321	Analyse 5
+2322	Analyse 6
+2323	Analyse 7
+2324	Analyse 8
+2325	Continuer l'analyse
+2326	Sélectionner le point de passage non visité le plus proche du même type
+2327	Effacer tous les symboles de cible Sku
+2328	Définir le symbole de cible Sku 1 Blanc
+2329	Définir le symbole de cible Sku 2 Rouge
+2330	Définir le symbole de cible Sku 3 Bleu
+2331	Définir le symbole de cible Sku 4 Vert
+2332	Définir le symbole de cible Sku 5 Violet
+2333	Définir le symbole de cible Sku 6 Jaune
+2334	Définir le symbole de cible Sku 7 Orange
+2335	Définir le symbole de cible Sku 8 Gris
+2336	ouvrir la minicarte Sku
+2337	afficher les itinéraires sur la minicarte
+2338	inverser l'itinéraire
+2339	arrêter de suivre l'itinéraire ou le point de passage
+2340	arrêter la sortie audio
+2341	annoncer la distance à la cible
+2342	agrandir la minicarte
+2343	basculer la portée d'atteinte des points de passage
+2344	se tourner vers la balise actuelle
+2345	Se tourner vers l'unité 1
+2346	Se tourner vers l'unité 2
+2347	Se tourner vers l'unité 3
+2348	Se tourner vers l'unité 4
+2349	Se tourner vers l'unité 5
+2350	Se tourner vers l'unité 6
+2351	Se tourner vers la cible
+2352	Se tourner à 180 degrés
+2353	Passer à l'étape précédente du tutoriel
+2354	Passer à l'étape suivante du tutoriel
+2355	Répéter l'annonce de l'étape actuelle du tutoriel
+2356	menu Sku fermé
+2357	menu Sku ouvert
+2358	Sku : navigation arrêtée
+2359	Sku : point de passage rapide mis à jour
+2360	Sku : itinéraire démarré
+2361	Sku : itinéraire d'unité démarré
+2362	Sku : point de passage démarré
+2363	Tutoriels et Wiki
+2364	Auras
+2365	Audio SkuOptions désactivé
+2366	Audio SkuOptions activé
+2367	Lire automatiquement le canal SkuChat
+2368	SkuOptions désactivé
+2369	SkuOptions activé
+2370	Chat
+2373	crâne
+2374	Créature
