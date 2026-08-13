@@ -26,7 +26,7 @@ SkuCore.MinimapScanner = MinimapScanner   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("MinimapScanner", function()
-   return Sku.deEn("Minikarten-Scanner", "Minimap scanner")
+   return Sku.deEn("Minikarten-Scanner", "Minimap scanner", "Scanner de minicarte")
 end)
 
 SkuCore.RessourceTypes = {

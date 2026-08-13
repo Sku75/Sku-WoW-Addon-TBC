@@ -200,7 +200,7 @@ SkuCore.options = {
 			type = "toggle",
 		},
 		followCollision = {
-			name = Sku.deEn("Kollisionswarnung beim Folgen", "Follow collision warning"),
+			name = Sku.deEn("Kollisionswarnung beim Folgen", "Follow collision warning", "Avertissement de collision au suivi"),
 			desc = "",
 			type = "toggle",
 		},
@@ -1639,7 +1639,7 @@ function SkuCore:AddonsMenuBuilder(aParentEntry)
 	-- logic in SkuCore/addonOptions.lua. The Escape menu's "AddOns" button routes
 	-- here too (gameOptions.lua GameMenuBuilder).
 	if SkuCore.AddonOptions and SkuCore.AddonOptions.AddonOptionsMenuBuilder then
-		tSpecs[#tSpecs+1] = { kind = "list", label = Sku.deEn("AddOn-Einstellungen", "AddOn settings"), sorting = false,
+		tSpecs[#tSpecs+1] = { kind = "list", label = Sku.deEn("AddOn-Einstellungen", "AddOn settings", "Réglages des extensions"), sorting = false,
 			build = function(entry) SkuCore.AddonOptions:AddonOptionsMenuBuilder(entry) end }
 	end
 	SkuMenu:Build(aParentEntry, tSpecs)
@@ -1719,7 +1719,7 @@ function SkuCore.MailBuildComposeChildren(aLetterEntry)
 								if not GetSendMailItem(i) then tFree = i break end
 							end
 							if not tFree then
-								pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Alle Anhang-Plaetze belegt", "All attachment slots are full"), false, true, 0.2) end)
+								pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Alle Anhang-Plaetze belegt", "All attachment slots are full", "Tous les emplacements de pièce jointe sont pleins"), false, true, 0.2) end)
 								return
 							end
 							ClearCursor()
@@ -1758,7 +1758,7 @@ function SkuCore.MailBuildComposeChildren(aLetterEntry)
 	-- 4b. [v42.08] Angehaengte Gegenstaende sichten / einzeln zuruecknehmen. Sku bot
 	-- bisher keine Moeglichkeit, bereits angehaengte Objekte zu pruefen oder wieder
 	-- abzunehmen. ENTER auf einem Eintrag gibt das Objekt in die Taschen zurueck.
-	local tAttachedEntry = SkuOptions:InjectMenuItems(tLetter, {Sku.deEn("Angehaengte Gegenstaende", "Attached items")}, SkuGenericMenuItem)
+	local tAttachedEntry = SkuOptions:InjectMenuItems(tLetter, {Sku.deEn("Angehaengte Gegenstaende", "Attached items", "Objets joints")}, SkuGenericMenuItem)
 	tAttachedEntry.dynamic = true
 	tAttachedEntry.BuildChildren = function(self)
 		local tMax = ATTACHMENTS_MAX_SEND or 12
@@ -1780,7 +1780,7 @@ function SkuCore.MailBuildComposeChildren(aLetterEntry)
 					-- zurueckgegebene erscheint dort wieder. Alle Ausblend-Marker loeschen,
 					-- damit die Anhang-Liste (Abschnitt 4) frisch aus den Taschen neu baut.
 					tLetter.TmpItemsLock = nil
-					pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Anhang entfernt", "Attachment removed"), false, true, 0.2) end)
+					pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Anhang entfernt", "Attachment removed", "Pièce jointe retirée"), false, true, 0.2) end)
 					local function tForce()
 						if not SkuOptions then return end
 						SkuOptions.currentMenuPosition = tAttachedEntry
@@ -1799,7 +1799,7 @@ function SkuCore.MailBuildComposeChildren(aLetterEntry)
 			end
 		end
 		if not tAny then
-			SkuOptions:InjectMenuItems(self, {Sku.deEn("Keine Anhaenge", "No attachments")}, SkuGenericMenuItem)
+			SkuOptions:InjectMenuItems(self, {Sku.deEn("Keine Anhaenge", "No attachments", "Aucune pièce jointe")}, SkuGenericMenuItem)
 		end
 	end
 
@@ -1827,7 +1827,7 @@ function SkuCore.MailBuildComposeChildren(aLetterEntry)
 		-- einem Wert setzt ihn und bleibt im Muenzmenue. GetCurrentValue positioniert
 		-- den Cursor auf den aktuellen Wert.
 		local function tAddCoin(aKey, aLabel, aMax)
-			local tInputLabel = Sku.deEn("Betrag eingeben", "Enter amount")
+			local tInputLabel = Sku.deEn("Betrag eingeben", "Enter amount", "Saisir le montant")
 			local tNode = SkuOptions:InjectMenuItems(self, {aLabel..": "..(tCfg[aKey] or 0)}, SkuGenericMenuItem)
 			tNode.dynamic = true
 			tNode.sorting = true
@@ -3048,7 +3048,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	-- so it lands ahead of the categories (which get appended after it). See the
 	-- SkuCore:SettingsSearch* helpers above. On the scratch tree used by the search
 	-- walk this same entry is added and skipped via its isSettingsSearch flag.
-	local tSearchLabel = Sku.deEn("Einstellungen durchsuchen", "Search settings")
+	local tSearchLabel = Sku.deEn("Einstellungen durchsuchen", "Search settings", "Rechercher dans les réglages")
 	local tSearchEntry = SkuOptions:InjectMenuItems(aParentEntry, {tSearchLabel}, SkuGenericMenuItem)
 	tSearchEntry.isSettingsSearch = true
 	tSearchEntry.searchNavRoot = aParentEntry

@@ -6648,10 +6648,10 @@ local function tReadCursorCharacter(aEb)
 	local tPos = aEb:GetCursorPosition()
 	local tLen = tStrLenUtf8(tText)
 	if tPos >= tLen then
-		tSpeakInput(Sku.deEn("Zeilenende", "End of line"))
+		tSpeakInput(Sku.deEn("Zeilenende", "End of line", "Fin de ligne"))
 	else
 		local tChar = tStrSubUtf8(tText, tPos + 1, tPos + 1)
-		tSpeakInput(tChar == " " and Sku.deEn("Leerzeichen", "Space") or tChar)
+		tSpeakInput(tChar == " " and Sku.deEn("Leerzeichen", "Space", "Espace") or tChar)
 	end
 end
 
@@ -6659,14 +6659,14 @@ local function tReadCursorWord(aEb)
 	local tText = aEb:GetText() or ""
 	local tPos = aEb:GetCursorPosition()
 	local tLen = tStrLenUtf8(tText)
-	if tLen == 0 then tSpeakInput(Sku.deEn("Leer", "Empty")) return end
+	if tLen == 0 then tSpeakInput(Sku.deEn("Leer", "Empty", "Vide")) return end
 	local tChars = {}
 	for i = 1, tLen do tChars[i] = tStrSubUtf8(tText, i, i) end
 	local tIndex = tPos
 	if tIndex >= tLen then tIndex = tLen - 1 end
 	if tIndex < 0 then tIndex = 0 end
 	while tIndex >= 0 and tChars[tIndex + 1] == " " do tIndex = tIndex - 1 end
-	if tIndex < 0 then tSpeakInput(Sku.deEn("Leer", "Empty")) return end
+	if tIndex < 0 then tSpeakInput(Sku.deEn("Leer", "Empty", "Vide")) return end
 	local tStart = tIndex
 	while tStart > 0 and tChars[tStart] ~= " " do tStart = tStart - 1 end
 	tStart = tStart + 1
@@ -6688,7 +6688,7 @@ local function tEditBoxOnKeyDownRead(self, aKey)
 		local tPos = self:GetCursorPosition()
 		if tPos > 0 then
 			local tChar = tStrSubUtf8(tText, tPos, tPos)
-			tSpeakInput(tChar == " " and Sku.deEn("Leerzeichen", "Space") or tChar, true)
+			tSpeakInput(tChar == " " and Sku.deEn("Leerzeichen", "Space", "Espace") or tChar, true)
 		end
 	elseif aKey == "LEFT" or aKey == "RIGHT" then
 		C_Timer.After(0.01, function()
@@ -6697,10 +6697,10 @@ local function tEditBoxOnKeyDownRead(self, aKey)
 	elseif aKey == "UP" or aKey == "DOWN" then
 		C_Timer.After(0.01, function()
 			local tText = self:GetText() or ""
-			tSpeakInput(tText == "" and Sku.deEn("Leer", "Empty") or tText)
+			tSpeakInput(tText == "" and Sku.deEn("Leer", "Empty", "Vide") or tText)
 		end)
 	elseif aKey == "ESCAPE" then
-		tSpeakInput(Sku.deEn("Abgebrochen", "Cancelled"))
+		tSpeakInput(Sku.deEn("Abgebrochen", "Cancelled", "Annulé"))
 	end
 end
 
@@ -6766,7 +6766,7 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 		-- (SetScript weiter unten, tEditBoxOnKeyDownRead), weil dort ein etwaiger fremder
 		-- OnKeyDown-Handler geraeumt wird; ein HookScript hier wuerde davon mitgeloescht.
 		eb:HookScript("OnChar", function(self, aChar)
-			tSpeakInput(aChar == " " and Sku.deEn("Leerzeichen", "Space") or aChar, true)
+			tSpeakInput(aChar == " " and Sku.deEn("Leerzeichen", "Space", "Espace") or aChar, true)
 		end)
 
 		sf:SetScrollChild(eb)

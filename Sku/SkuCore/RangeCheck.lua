@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "RangeCheck"
 local L = Sku.L
 local _G = _G
@@ -26,7 +26,7 @@ SkuCore.RangeCheck = RangeCheck   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return Sku.deEn("Reichweitenprüfung", "Range check")
+   return Sku.deEn("Reichweitenprüfung", "Range check", "Vérification de portée")
 end)
 
 RangeCheck.RangeCheckValues = {
@@ -278,7 +278,7 @@ function RangeCheck:SkuRangeProbe()
    local rc = SkuOptions and SkuOptions.RangeCheck
    if not rc then
       if SkuOptions and SkuOptions.Voice then
-         SkuOptions.Voice:OutputString(Sku.deEn("Reichweiten-Probe: keine Bibliothek", "Range probe: no library"), true, true, 0.2)
+         SkuOptions.Voice:OutputString(Sku.deEn("Reichweiten-Probe: keine Bibliothek", "Range probe: no library", "Sonde de portée : aucune bibliothèque"), true, true, 0.2)
       end
       return
    end
@@ -354,5 +354,5 @@ function RangeCheck:SkuRangeProbe()
       tMsg = Sku.deEn("FREMDE Bibliothek aktiv, Feind "..tNh..", Freund "..tNf.." Baender",
                       "FOREIGN library active, enemy "..tNh..", friend "..tNf.." bands")
    end
-   SkuOptions.Voice:OutputString(Sku.deEn("Reichweiten-Probe: ", "Range probe: ")..tMsg, true, true, 0.2)
+   SkuOptions.Voice:OutputString(Sku.deEn("Reichweiten-Probe: ", "Range probe: ", "Sonde de portée : ")..tMsg, true, true, 0.2)
 end

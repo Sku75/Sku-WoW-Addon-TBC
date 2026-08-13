@@ -28,7 +28,7 @@ SkuCore.GameWorldObjects = GameWorldObjects   -- published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("GameWorldObjects", function()
-   return Sku.deEn("Spielweltobjekte", "World objects")
+   return Sku.deEn("Spielweltobjekte", "World objects", "Objets du monde")
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------------

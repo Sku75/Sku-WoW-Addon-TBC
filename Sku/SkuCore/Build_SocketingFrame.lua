@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 -- Sku Item Socketing accessibility module
 --
 -- Wraps the visible ItemSocketingFrame in a Sku-navigable menu. The
@@ -48,7 +48,7 @@ SkuCore.Socketing = Socketing   -- keep the published handle
 -- no-op without a socketing frame) — we just skip registering the on/off entry.
 if not Sku.isEra then
    SkuCore:RegisterToggleableModule(MODULE_PART, function()
-      return Sku.deEn("Sockeln", "Socketing")
+      return Sku.deEn("Sockeln", "Socketing", "Sertissage")
    end)
 end
 

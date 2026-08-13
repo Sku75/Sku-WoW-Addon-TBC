@@ -1,4 +1,4 @@
----@diagnostic disable: undefined-doc-name
+﻿---@diagnostic disable: undefined-doc-name
 
 local MODULE_NAME = "SkuCore"
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
@@ -23,7 +23,7 @@ SkuCore.Mail = Mail   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("Mail", function()
-	return Sku.deEn("Post", "Mail")
+	return Sku.deEn("Post", "Mail", "Courrier")
 end)
 
 local gLastError = ""
@@ -126,7 +126,7 @@ end
 -- den Entwurf stehen (nicht wie bei Erfolg geleert), damit der Nutzer nur den Namen
 -- korrigieren und erneut senden kann.
 function Mail:MAIL_FAILED(...)
-   local tMsg = Sku.deEn("Senden fehlgeschlagen", "Send failed")
+   local tMsg = Sku.deEn("Senden fehlgeschlagen", "Send failed", "Échec de l'envoi")
    if type(gLastError) == "string" and gLastError ~= ""
       and _G.GetTime and (GetTime() - gLastErrorTime) < 2 then
       tMsg = tMsg..": "..gLastError

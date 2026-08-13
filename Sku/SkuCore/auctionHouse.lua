@@ -74,7 +74,7 @@ SkuCore.AuctionHouse = AuctionHouse   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return Sku.deEn("Auktionshaus", "Auction house")
+   return Sku.deEn("Auktionshaus", "Auction house", "Hôtel des ventes")
 end)
 
 local mfloor = math.floor
@@ -1654,7 +1654,7 @@ local function tAhAppendAddonTooltipSection(aSections, aLink, aItemID, aBaseSet)
       end
       tGt:Hide()
       if #tExtra > 0 then
-         aSections[#aSections + 1] = Sku.deEn("Addon-Infos", "Add-on info").."\r\n"..table.concat(tExtra, "\r\n")
+         aSections[#aSections + 1] = Sku.deEn("Addon-Infos", "Add-on info", "Infos de l'extension").."\r\n"..table.concat(tExtra, "\r\n")
       end
    end)
 end
@@ -2321,7 +2321,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
          tItemEntry.sorting = true
          tItemEntry.isSelect = true
          tItemEntry.noStepUpAfterSelect = true
-         local tStratItemInput = Sku.deEn("Namen eingeben", "Enter name")
+         local tStratItemInput = Sku.deEn("Namen eingeben", "Enter name", "Saisir le nom")
          tItemEntry.OnAction = function(self, aValue, aName)
             -- [v42.08] Sprachneutrale Freitext-Eingabe als ERSTER Eintrag: der Nutzer
             -- tippt den Item-Namen in SEINER Client-Sprache, der direkt fuer die AH-Suche

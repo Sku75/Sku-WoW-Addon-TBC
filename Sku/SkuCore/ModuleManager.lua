@@ -1,4 +1,4 @@
-local L = Sku.L
+﻿local L = Sku.L
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
@@ -159,7 +159,7 @@ end
 -- builder be referenced by id) but it is no longer appended to the root layout.
 if SkuMenu then
 	SkuMenu:RegisterModule("Features", {
-		label = function() return Sku.deEn("Funktionen an/aus", "Features on/off") end,
+		label = function() return Sku.deEn("Funktionen an/aus", "Features on/off", "Fonctions activées/désactivées") end,
 		build = function(entry) SkuCore:FeaturesMenuBuilder(entry) end,
 	})
 end

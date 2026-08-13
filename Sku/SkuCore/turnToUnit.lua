@@ -24,7 +24,7 @@ SkuCore.TurnToUnit = TurnToUnit   -- keep the published handle (also the state t
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return Sku.deEn("Zu Einheit drehen", "Turn to unit")
+   return Sku.deEn("Zu Einheit drehen", "Turn to unit", "Se tourner vers l'unité")
 end)
 
 -- W4 Phase E (namespace extraction): the feature's own state and methods now live

@@ -1,4 +1,4 @@
-local MODULE_NAME, MODULE_PART = "SkuCore", "Macro"
+﻿local MODULE_NAME, MODULE_PART = "SkuCore", "Macro"
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 local L = Sku.L
 
@@ -14,7 +14,7 @@ SkuCore.Macro = Macro   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-    return Sku.deEn("Makros", "Macros")
+    return Sku.deEn("Makros", "Macros", "Macros")
 end)
 
 -- No lifecycle to arm/disarm: this is a pure menu-builder feature.

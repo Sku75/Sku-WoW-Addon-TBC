@@ -304,14 +304,14 @@ SkuMenu:RegisterModule("SkuChat",  { label = function() return L()["SkuChatMenuE
 SkuMenu:RegisterModule("SkuQuest", { label = function() return L()["SkuQuestMenuEntry"] end, build = function(entry) SkuQuest:MenuBuilder(entry) end })
 -- W7: "Core" grab-bag is gone; SkuCore:MenuBuilder now builds the aggregated
 -- "Einstellungen" (Settings) tree.
-SkuMenu:RegisterModule("Einstellungen", { label = function() return Sku.deEn("Einstellungen", "Settings") end, build = function(entry) SkuCore:MenuBuilder(entry)  end })
+SkuMenu:RegisterModule("Einstellungen", { label = function() return Sku.deEn("Einstellungen", "Settings", "Réglages") end, build = function(entry) SkuCore:MenuBuilder(entry)  end })
 SkuMenu:RegisterModule("SkuAuras", { label = function() return L()["SkuAurasMenuEntry"] end, build = function(entry) SkuAuras:MenuBuilder(entry) end })
 
 -- Game Options: Blizzard's built-in game options (modern Settings system, else
 -- only reachable via the Escape menu) made accessible through Sku's menu. Logic
 -- in SkuCore/gameOptions.lua. Title is locale-computed at open time, as before.
 SkuMenu:RegisterModule("GameOptions", {
-	label = function() return Sku.deEn("Spieloptionen", "Game Options") end,
+	label = function() return Sku.deEn("Spieloptionen", "Game Options", "Options du jeu") end,
 	build = function(entry)
 		if SkuCore and SkuCore.GameOptions and SkuCore.GameOptions.GameOptionsMenuBuilder then
 			SkuCore.GameOptions:GameOptionsMenuBuilder(entry)
@@ -345,7 +345,7 @@ SkuMenu:RegisterModule("Addons", {
 -- with the ORIGINAL db/keyPrefix (aIncludeHidden=true, since it is flagged
 -- forAudioMenu=false) so saved values are preserved.
 SkuMenu:RegisterModule("Werkzeuge", {
-	label = function() return Sku.deEn("Werkzeuge", "Tools") end,
+	label = function() return Sku.deEn("Werkzeuge", "Tools", "Outils") end,
 	build = function(entry)
 		if SkuCore and SkuCore.DialTargeting and SkuCore.DialTargeting.DialTargetingMenuBuilder then
 			local tDial = SkuOptions:InjectMenuItems(entry, {L()["Dial Targeting"]}, SkuGenericMenuItem)
@@ -363,7 +363,7 @@ SkuMenu:RegisterModule("Werkzeuge", {
 -- routed to Einstellungen and Makros to the Sku macro menu. SkuCore:GameMenuShowHandler
 -- navigates here when the Blizzard GameMenuFrame is invoked.
 SkuMenu:RegisterModule("GameMenu", {
-	label = function() return Sku.deEn("Spielmenü", "Game menu") end,
+	label = function() return Sku.deEn("Spielmenü", "Game menu", "Menu du jeu") end,
 	build = function(entry) if SkuCore and SkuCore.GameOptions and SkuCore.GameOptions.GameMenuBuilder then SkuCore.GameOptions:GameMenuBuilder(entry) end end,
 })
 

@@ -1,4 +1,4 @@
--- =====================================================================
+﻿-- =====================================================================
 -- Sku Audio Device Switcher
 -- ---------------------------------------------------------------------
 -- The audio device picker in the WoW options panel is not accessible
@@ -37,7 +37,7 @@ SkuCore.AudioDevice = AudioDevice   -- keep a published handle (harmless if unus
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return Sku.deEn("Audiogerät", "Audio device")
+   return Sku.deEn("Audiogerät", "Audio device", "Périphérique audio")
 end)
 
 local function tSay(aText)

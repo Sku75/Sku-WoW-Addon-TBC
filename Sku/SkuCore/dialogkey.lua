@@ -1,4 +1,4 @@
-local MODULE_PART = "DialogKey"
+﻿local MODULE_PART = "DialogKey"
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
@@ -18,7 +18,7 @@ SkuCore.DialogKey = DialogKey   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-	return Sku.deEn("Dialogtaste", "Dialog key")
+	return Sku.deEn("Dialogtaste", "Dialog key", "Touche de dialogue")
 end)
 
 -- Feature-private state: the hidden OnKeyDown driver frame, reused across

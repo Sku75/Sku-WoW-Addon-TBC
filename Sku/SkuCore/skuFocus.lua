@@ -1,4 +1,4 @@
-local MODULE_NAME, MODULE_PART = "SkuCore", "SkuFocus"
+﻿local MODULE_NAME, MODULE_PART = "SkuCore", "SkuFocus"
 local L = Sku.L
 local _G = _G
 
@@ -22,7 +22,7 @@ SkuCore.SkuFocus = SkuFocus   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return Sku.deEn("Fokus", "Focus")
+   return Sku.deEn("Fokus", "Focus", "Focalisation")
 end)
 
 

@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 -- SkuCore visualAids.lua  [41.05]
 -- Visuelle Hilfen fuer sehbehinderte Spieler. Alle Funktionen sind opt-in und
 -- standardmaessig AUS; im Aus-Zustand wird kein aktiver Codepfad betreten.
@@ -36,7 +36,7 @@ SkuCore.VisualAids = VisualAids   -- published handle (harmless; entry points us
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-	return Sku.deEn("Visuelle Hilfen", "Visual aids")
+	return Sku.deEn("Visuelle Hilfen", "Visual aids", "Aides visuelles")
 end)
 
 -- Lazy-sichere Default-Struktur. Auch NEUE Profile starten mit allem AUS, ohne

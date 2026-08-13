@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 -- SkuCore/taxi.lua - flightmaster taxi flights: track the route, announce the
 -- next flight point you could land at, and request an early landing from a Sku
 -- keybind.
@@ -58,7 +58,7 @@ local Taxi = SkuCore:NewModule("Taxi", "AceEvent-3.0")
 SkuCore.Taxi = Taxi   -- published handle
 
 SkuCore:RegisterToggleableModule("Taxi", function()
-   return Sku.deEn("Taxiflug", "Taxi flight")
+   return Sku.deEn("Taxiflug", "Taxi flight", "Vol en taxi")
 end)
 
 -- How close we must come to a route stop to count it as passed. The taxi flies
@@ -500,7 +500,7 @@ function Taxi:Evaluate(aSource)
       if tVia == "route" and not tNear then
          dprint("taxi: ANNOUNCE next stop", tostring(tTarget), "dist", tostring(tDist and floor(tDist)),
             "source", tostring(aSource), "index", tostring(gStopIndex) .. "/" .. tostring(gRoute and #gRoute))
-         tSpeak(Sku.deEn("Naechster Flugpunkt ", "Next flight point ") .. tTarget)
+         tSpeak(Sku.deEn("Naechster Flugpunkt ", "Next flight point ", "Prochain point de vol ") .. tTarget)
       elseif tVia == "nearest" then
          dprintv("taxi: fallback target changed (silent until near)", tostring(tTarget),
             "dist", tostring(tDist and floor(tDist)))
@@ -512,7 +512,7 @@ function Taxi:Evaluate(aSource)
       dprint("taxi: ANNOUNCE landing possible", tostring(tTarget), "dist", tostring(tDist and floor(tDist)),
          "via", tostring(tVia), "source", tostring(aSource),
          "index", tostring(gStopIndex) .. "/" .. tostring(gRoute and #gRoute))
-      tSpeak(Sku.deEn("Vorzeitige Landung moeglich bei ", "Early landing available at ") .. tTarget)
+      tSpeak(Sku.deEn("Vorzeitige Landung moeglich bei ", "Early landing available at ", "Atterrissage anticipé possible à ") .. tTarget)
    end
 end
 
@@ -526,7 +526,7 @@ function Taxi:RequestEarlyLanding()
 
    if not tOnTaxi() then
       dprint("taxi: key pressed but not on a flightmaster taxi - ignored")
-      tSpeak(Sku.deEn("Kein Taxiflug", "Not on a taxi flight"))
+      tSpeak(Sku.deEn("Kein Taxiflug", "Not on a taxi flight", "Pas en vol taxi"))
       return
    end
 
@@ -543,7 +543,7 @@ function Taxi:RequestEarlyLanding()
 
    if not _G.TaxiRequestEarlyLanding then
       dprint("taxi: TaxiRequestEarlyLanding missing on this client")
-      tSpeak(Sku.deEn("Nicht verfuegbar", "Not available"))
+      tSpeak(Sku.deEn("Nicht verfuegbar", "Not available", "Non disponible"))
       return
    end
 
@@ -551,7 +551,7 @@ function Taxi:RequestEarlyLanding()
    -- server with a request it already has.
    if gRequestedFor and gRequestedFor == tTarget then
       dprint("taxi: repeat request for the same stop - not resent")
-      tSpeak(Sku.deEn("Landung bereits angefordert bei ", "Landing already requested at ") .. tTarget)
+      tSpeak(Sku.deEn("Landung bereits angefordert bei ", "Landing already requested at ", "Atterrissage déjà demandé à ") .. tTarget)
       return
    end
 
@@ -559,15 +559,15 @@ function Taxi:RequestEarlyLanding()
    dprint("taxi: TaxiRequestEarlyLanding called", "ok", tostring(tOk), "err", tostring(tErr),
       "target", tostring(tTarget))
    if not tOk then
-      tSpeak(Sku.deEn("Anforderung fehlgeschlagen", "Request failed"))
+      tSpeak(Sku.deEn("Anforderung fehlgeschlagen", "Request failed", "Échec de la demande"))
       return
    end
 
    gRequestedFor = tTarget
    if tTarget then
-      tSpeak(Sku.deEn("Landung angefordert bei ", "Landing requested at ") .. tTarget)
+      tSpeak(Sku.deEn("Landung angefordert bei ", "Landing requested at ", "Atterrissage demandé à ") .. tTarget)
    else
-      tSpeak(Sku.deEn("Landung angefordert", "Landing requested"))
+      tSpeak(Sku.deEn("Landung angefordert", "Landing requested", "Atterrissage demandé"))
    end
 end
 

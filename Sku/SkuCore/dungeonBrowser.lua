@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 -- Sku Dungeon Browser  (rework: widget-faithful mirror of LFGParentFrame)
 --
 -- Mirrors Blizzard's Group-Finder window (LFGParentFrame) through Sku's
@@ -42,7 +42,7 @@ local DungeonBrowser = SkuCore:NewModule("DungeonBrowser")
 SkuCore.DungeonBrowser = DungeonBrowser   -- published handle (keybind + hooks use it)
 
 SkuCore:RegisterToggleableModule("DungeonBrowser", function()
-   return Sku.deEn("Dungeonbrowser", "Dungeon browser")
+   return Sku.deEn("Dungeonbrowser", "Dungeon browser", "Navigateur de donjons")
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------------

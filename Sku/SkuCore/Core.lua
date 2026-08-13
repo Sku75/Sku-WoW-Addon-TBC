@@ -440,7 +440,7 @@ function SkuCore:UpdateGameMenuRootEntry()
 	end
 	if SkuCore.gameMenuActive == true then
 		if not tExisting then
-			local tLabel = Sku.deEn("Spielmenü", "Game menu")
+			local tLabel = Sku.deEn("Spielmenü", "Game menu", "Menu du jeu")
 			local tEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {tLabel}, SkuGenericMenuItem)
 			tEntry.dynamic = true
 			tEntry.isGameMenuRoot = true
@@ -3079,7 +3079,7 @@ function SkuCore:TradePartnerName()
 		tPartner = _G["TradeFrameRecipientNameText"]:GetText()
 	end
 	if not tPartner or tPartner == "" then tPartner = UnitName("NPC") end
-	return tPartner or Sku.deEn("Der Partner", "The partner")
+	return tPartner or Sku.deEn("Der Partner", "The partner", "Le partenaire")
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Keep the OPEN trade window's menu content live. Build_TradeFrame renders both item
@@ -3202,7 +3202,7 @@ function SkuCore:TRADE_MONEY_CHANGED(self, event, ...)
 	local tOwn = (GetPlayerTradeMoney and GetPlayerTradeMoney()) or 0
 	if tOwn ~= (SkuCore._tLastOwnTradeMoney or 0) then
 		SkuCore._tLastOwnTradeMoney = tOwn
-		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Du bietest ", "You offer ")..SkuGetCoinText(tOwn, true, true), false, true, 0.2, nil, nil, nil, 1) end)
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Du bietest ", "You offer ", "Vous offrez ")..SkuGetCoinText(tOwn, true, true), false, true, 0.2, nil, nil, nil, 1) end)
 	end
 	-- Angebot des Handelspartners.
 	local tTarget = (GetTargetTradeMoney and GetTargetTradeMoney()) or 0
@@ -3210,9 +3210,9 @@ function SkuCore:TRADE_MONEY_CHANGED(self, event, ...)
 		SkuCore._tLastTargetTradeMoney = tTarget
 		local tPartner = SkuCore:TradePartnerName()
 		if tTarget > 0 then
-			pcall(function() SkuOptions.Voice:OutputStringBTtts(tPartner.." "..Sku.deEn("bietet ", "offers ")..SkuGetCoinText(tTarget, true, true), false, true, 0.2, nil, nil, nil, 1) end)
+			pcall(function() SkuOptions.Voice:OutputStringBTtts(tPartner.." "..Sku.deEn("bietet ", "offers ", "offre ")..SkuGetCoinText(tTarget, true, true), false, true, 0.2, nil, nil, nil, 1) end)
 		else
-			pcall(function() SkuOptions.Voice:OutputStringBTtts(tPartner.." "..Sku.deEn("nimmt das Gold zurueck", "removed the money"), false, true, 0.2, nil, nil, nil, 1) end)
+			pcall(function() SkuOptions.Voice:OutputStringBTtts(tPartner.." "..Sku.deEn("nimmt das Gold zurueck", "removed the money", "a repris l'argent"), false, true, 0.2, nil, nil, nil, 1) end)
 		end
 	end
 end

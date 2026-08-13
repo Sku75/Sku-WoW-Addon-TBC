@@ -37,7 +37,7 @@ SkuCore.Aq = Aq   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("Aq", function()
-	return Sku.deEn("Lebens- & Energiemonitor", "Health & power monitor")
+	return Sku.deEn("Lebens- & Energiemonitor", "Health & power monitor", "Moniteur de vie & de ressource")
 end)
 
 -- Frame handle for the AqCreateControlFrame OnUpdate driver, so OnDisable can stop it.
@@ -4229,7 +4229,7 @@ function Aq:MonitorMenuBuilder()
 	-- Ziel Optionen (SkuMob's target options): relocated here from Einstellungen -> Kampf.
 	-- Same args/db -> saved values preserved.
 	if SkuMob and SkuMob.options and SkuMob.options.args then
-		local tTargetOpts = SkuOptions:InjectMenuItems(self, {Sku.deEn("Ziel Optionen", "Target options")}, SkuGenericMenuItem)
+		local tTargetOpts = SkuOptions:InjectMenuItems(self, {Sku.deEn("Ziel Optionen", "Target options", "Options de cible")}, SkuGenericMenuItem)
 		tTargetOpts.dynamic = true
 		tTargetOpts.sorting = true
 		tTargetOpts.BuildChildren = function(self)
@@ -4243,7 +4243,7 @@ function Aq:MonitorMenuBuilder()
 	-- (SkuNav) via IterateOptionsArgs -> saved values unchanged. The narrow/wide sound
 	-- set nodes keep their inline OnAction (they play a sample beacon).
 	if SkuNav and SkuNav.options and SkuNav.options.args then
-		local tBeacon = SkuOptions:InjectMenuItems(self, {Sku.deEn("Beacon", "Beacon")}, SkuGenericMenuItem)
+		local tBeacon = SkuOptions:InjectMenuItems(self, {Sku.deEn("Beacon", "Beacon", "Balise")}, SkuGenericMenuItem)
 		tBeacon.dynamic = true
 		tBeacon.sorting = true
 		tBeacon.BuildChildren = function(self)

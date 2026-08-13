@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_PART = "UIErrors"
 local L = Sku.L
 
@@ -27,7 +27,7 @@ SkuCore.UIErrors = UIErrors   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return Sku.deEn("Oberflächenfehler", "UI errors")
+   return Sku.deEn("Oberflächenfehler", "UI errors", "Erreurs d'interface")
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -277,10 +277,10 @@ local UIERR_CATEGORIES = {
 -- speaker/language sets for the voice hints (folder naming differs per set on disk)
 local function UIErr_VoiceHintSets()
    return {
-      {label = "Marlene ("..Sku.deEn("Deutsch", "German")..")",   folder = "marlene_deDE"},
-      {label = "Hans ("..Sku.deEn("Deutsch", "German")..")",      folder = "hans_de-de"},
-      {label = "Marlene ("..Sku.deEn("Englisch", "English")..")", folder = "marlene_enUS"},
-      {label = "Hans ("..Sku.deEn("Englisch", "English")..")",    folder = "hans_en-us"},
+      {label = "Marlene ("..Sku.deEn("Deutsch", "German", "Allemand")..")",   folder = "marlene_deDE"},
+      {label = "Hans ("..Sku.deEn("Deutsch", "German", "Allemand")..")",      folder = "hans_de-de"},
+      {label = "Marlene ("..Sku.deEn("Englisch", "English", "Anglais")..")", folder = "marlene_enUS"},
+      {label = "Hans ("..Sku.deEn("Englisch", "English", "Anglais")..")",    folder = "hans_en-us"},
    }
 end
 
@@ -308,10 +308,10 @@ end
 -- human-readable state suffix appended to a category's node label
 local function UIErr_StateSuffix(aVal)
    if aVal == nil or aVal == UIERR_SILENT then
-      return Sku.deEn("Stumm", "Silence")
+      return Sku.deEn("Stumm", "Silence", "Silence")
    end
    if aVal == "voice" then
-      return "TTS: "..Sku.deEn("Standardstimme", "Default voice")
+      return "TTS: "..Sku.deEn("Standardstimme", "Default voice", "Voix par défaut")
    end
    if type(aVal) == "string" then
       local tIdx = aVal:match("^voice#(%d+)$")
@@ -322,14 +322,14 @@ local function UIErr_StateSuffix(aVal)
       if aVal:find("marlene_", 1, true) or aVal:find("hans_", 1, true) then
          for _, tSet in ipairs(UIErr_VoiceHintSets()) do
             if aVal:find(tSet.folder, 1, true) then
-               return Sku.deEn("Sprachhinweis", "Voice hint")..": "..tSet.label
+               return Sku.deEn("Sprachhinweis", "Voice hint", "Indice vocal")..": "..tSet.label
             end
          end
-         return Sku.deEn("Sprachhinweis", "Voice hint")
+         return Sku.deEn("Sprachhinweis", "Voice hint", "Indice vocal")
       end
       for _, tSnd in ipairs(UIErr_SoundHints()) do
          if aVal == tSnd.file then
-            return Sku.deEn("Tonhinweis", "Sound hint")..": "..tSnd.label
+            return Sku.deEn("Tonhinweis", "Sound hint", "Indice sonore")..": "..tSnd.label
          end
       end
    end
@@ -374,7 +374,7 @@ local function UIErr_BuildCategoryNode(aParent, aCat)
       -- 2) Sprachhinweis (voice hint) -> speaker/language sets (only if a clip exists)
       if aCat.clip then
          local tVh = SkuOptions:InjectMenuItems(self,
-            {Sku.deEn("Sprachhinweis", "Voice hint")}, SkuGenericMenuItem)
+            {Sku.deEn("Sprachhinweis", "Voice hint", "Indice vocal")}, SkuGenericMenuItem)
          tVh.dynamic = true
          tVh.sorting = false
          tVh.BuildChildren = function(self)
@@ -389,7 +389,7 @@ local function UIErr_BuildCategoryNode(aParent, aCat)
 
       -- 3) Tonhinweis (sound hint) -> the abstract beeps
       local tSh = SkuOptions:InjectMenuItems(self,
-         {Sku.deEn("Tonhinweis", "Sound hint")}, SkuGenericMenuItem)
+         {Sku.deEn("Tonhinweis", "Sound hint", "Indice sonore")}, SkuGenericMenuItem)
       tSh.dynamic = true
       tSh.sorting = false
       tSh.BuildChildren = function(self)
@@ -402,7 +402,7 @@ local function UIErr_BuildCategoryNode(aParent, aCat)
 
       -- 4) Stumm (silence) — a leaf
       local tSil = SkuOptions:InjectMenuItems(self,
-         {Sku.deEn("Stumm", "Silence")}, SkuGenericMenuItem)
+         {Sku.deEn("Stumm", "Silence", "Silence")}, SkuGenericMenuItem)
       tSil.OnAction = function() UIErr_Write(aCat.key, UIERR_SILENT) Refresh() end
    end
 

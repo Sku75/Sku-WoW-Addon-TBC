@@ -23,7 +23,7 @@ SkuCore.Friends = Friends   -- keep a published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("Friends", function()
-   return Sku.deEn("Freunde", "Friends")
+   return Sku.deEn("Freunde", "Friends", "Amis")
 end)
 
 -- Track whether the FriendsFrame "Show" hook has been installed (a hooksecurefunc
@@ -429,12 +429,12 @@ end
 local gWhoSortKeys = {"name", "level", "class", "race", "zone", "guild"}
 
 local function tWhoSortLabel(aKey)
-   if aKey == "name" then return Sku.deEn("Name", "name")
-   elseif aKey == "level" then return Sku.deEn("Stufe", "level")
-   elseif aKey == "class" then return Sku.deEn("Klasse", "class")
-   elseif aKey == "race" then return Sku.deEn("Rasse", "race")
-   elseif aKey == "zone" then return Sku.deEn("Zone", "zone")
-   elseif aKey == "guild" then return Sku.deEn("Gilde", "guild") end
+   if aKey == "name" then return Sku.deEn("Name", "name", "nom")
+   elseif aKey == "level" then return Sku.deEn("Stufe", "level", "niveau")
+   elseif aKey == "class" then return Sku.deEn("Klasse", "class", "classe")
+   elseif aKey == "race" then return Sku.deEn("Rasse", "race", "race")
+   elseif aKey == "zone" then return Sku.deEn("Zone", "zone", "zone")
+   elseif aKey == "guild" then return Sku.deEn("Gilde", "guild", "guilde") end
    return aKey
 end
 
@@ -470,17 +470,17 @@ end
 -- One who result -> label "name - level N class" + a details/actions submenu.
 local function tAddWhoResult(aParent, aInfo)
    local tName = aInfo.fullName
-   local tLabel = tName.." - "..Sku.deEn("Stufe ", "level ")..(aInfo.level or "?").." "..(aInfo.classStr or "")
+   local tLabel = tName.." - "..Sku.deEn("Stufe ", "level ", "niveau ")..(aInfo.level or "?").." "..(aInfo.classStr or "")
    local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {tLabel}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
 
    local tText = tName.."\r\n"
-   tText = tText..Sku.deEn("Stufe ", "level ")..(aInfo.level or "?").."\r\n"
+   tText = tText..Sku.deEn("Stufe ", "level ", "niveau ")..(aInfo.level or "?").."\r\n"
    if aInfo.raceStr and aInfo.raceStr ~= "" then tText = tText..aInfo.raceStr.."\r\n" end
    if aInfo.classStr and aInfo.classStr ~= "" then tText = tText..aInfo.classStr.."\r\n" end
    if aInfo.area and aInfo.area ~= "" then tText = tText..aInfo.area.."\r\n" end
    if aInfo.fullGuildName and aInfo.fullGuildName ~= "" then
-      tText = tText..Sku.deEn("Gilde", "guild")..": "..aInfo.fullGuildName.."\r\n"
+      tText = tText..Sku.deEn("Gilde", "guild", "guilde")..": "..aInfo.fullGuildName.."\r\n"
    end
    tNewMenuEntry.textFull = tText
 
@@ -489,7 +489,7 @@ local function tAddWhoResult(aParent, aInfo)
       tAdd.isSelect = true
       tAdd.OnAction = function(self)
          C_FriendList.AddFriend(tName)
-         pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Freund hinzugefügt", "friend added"), true, true, 0.1, nil, nil, nil, 1) end)
+         pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Freund hinzugefügt", "friend added", "ami ajouté"), true, true, 0.1, nil, nil, nil, 1) end)
       end
 
       local tInv = SkuOptions:InjectMenuItems(self, {L["invite"]}, SkuGenericMenuItem)
@@ -512,12 +512,12 @@ end
 local function tGuildLastOnline(aIndex)
    if not GetGuildRosterLastOnline then return nil end
    local year, month, day, hour = GetGuildRosterLastOnline(aIndex)
-   if year and year > 0 then return year..Sku.deEn(" Jahre", " years")
-   elseif month and month > 0 then return month..Sku.deEn(" Monate", " months")
-   elseif day and day > 0 then return day..Sku.deEn(" Tage", " days")
-   elseif hour and hour > 0 then return hour..Sku.deEn(" Stunden", " hours")
+   if year and year > 0 then return year..Sku.deEn(" Jahre", " years", " ans")
+   elseif month and month > 0 then return month..Sku.deEn(" Monate", " months", " mois")
+   elseif day and day > 0 then return day..Sku.deEn(" Tage", " days", " jours")
+   elseif hour and hour > 0 then return hour..Sku.deEn(" Stunden", " hours", " heures")
    end
-   return Sku.deEn("weniger als 1 Stunde", "less than an hour")
+   return Sku.deEn("weniger als 1 Stunde", "less than an hour", "moins d'une heure")
 end
 
 -- One guild member (filtered by aOnline) -> label + details/actions submenu.
@@ -535,7 +535,7 @@ local function tAddGuildMember(aParent, aIndex, aOnline)
 
    local tLabel
    if online then
-      tLabel = tDisplay.." - "..Sku.deEn("Stufe ", "level ")..(level or "?").." "..(class or "")..tStatus
+      tLabel = tDisplay.." - "..Sku.deEn("Stufe ", "level ", "niveau ")..(level or "?").." "..(class or "")..tStatus
    else
       tLabel = tDisplay.." - offline"
    end
@@ -544,9 +544,9 @@ local function tAddGuildMember(aParent, aIndex, aOnline)
 
    local tText = tDisplay.."\r\n"
    if tStatus ~= "" then tText = tText..(tStatus:gsub("^%s*", "")).."\r\n" end
-   tText = tText..Sku.deEn("Stufe ", "level ")..(level or "?").."\r\n"
+   tText = tText..Sku.deEn("Stufe ", "level ", "niveau ")..(level or "?").."\r\n"
    if class and class ~= "" then tText = tText..class.."\r\n" end
-   if rank and rank ~= "" then tText = tText..Sku.deEn("Rang", "rank")..": "..rank.."\r\n" end
+   if rank and rank ~= "" then tText = tText..Sku.deEn("Rang", "rank", "rang")..": "..rank.."\r\n" end
    if online then
       if zone and zone ~= "" then tText = tText..zone.."\r\n" end
    else
@@ -555,7 +555,7 @@ local function tAddGuildMember(aParent, aIndex, aOnline)
    end
    if note and note ~= "" then tText = tText..L["note"]..": "..note.."\r\n" end
    if officernote and officernote ~= "" and C_GuildInfo and C_GuildInfo.CanViewOfficerNote and C_GuildInfo.CanViewOfficerNote() then
-      tText = tText..Sku.deEn("Offiziersnotiz", "officer note")..": "..officernote.."\r\n"
+      tText = tText..Sku.deEn("Offiziersnotiz", "officer note", "note d'officier")..": "..officernote.."\r\n"
    end
    tNewMenuEntry.textFull = tText
 
@@ -588,7 +588,7 @@ local function tAddGuildMember(aParent, aIndex, aOnline)
                end)
             end, nil)
             C_Timer.After(0.1, function()
-               SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Notiz eingeben und Enter drücken", "enter note and press Enter"), true, true, 0.1, nil, nil, nil, 1)
+               SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Notiz eingeben und Enter drücken", "enter note and press Enter", "saisissez la note et appuyez sur Entrée"), true, true, 0.1, nil, nil, nil, 1)
             end)
          end
       end
@@ -598,17 +598,17 @@ local function tAddGuildMember(aParent, aIndex, aOnline)
       -- globals; if a future build gates these as hardware-only, move them to a
       -- .macrotext node (see MAKE-WINDOW-ACCESSIBLE.md §2).
       if _G.CanGuildPromote and CanGuildPromote() and _G.GuildPromote then
-         local tPromote = SkuOptions:InjectMenuItems(self, {Sku.deEn("befördern", "promote")}, SkuGenericMenuItem)
+         local tPromote = SkuOptions:InjectMenuItems(self, {Sku.deEn("befördern", "promote", "promouvoir")}, SkuGenericMenuItem)
          tPromote.isSelect = true
          tPromote.OnAction = function(self) GuildPromote(name) end
       end
       if _G.CanGuildDemote and CanGuildDemote() and _G.GuildDemote then
-         local tDemote = SkuOptions:InjectMenuItems(self, {Sku.deEn("degradieren", "demote")}, SkuGenericMenuItem)
+         local tDemote = SkuOptions:InjectMenuItems(self, {Sku.deEn("degradieren", "demote", "rétrograder")}, SkuGenericMenuItem)
          tDemote.isSelect = true
          tDemote.OnAction = function(self) GuildDemote(name) end
       end
       if _G.CanGuildRemove and CanGuildRemove() and _G.GuildUninvite then
-         local tKick = SkuOptions:InjectMenuItems(self, {Sku.deEn("aus Gilde entfernen", "remove from guild")}, SkuGenericMenuItem)
+         local tKick = SkuOptions:InjectMenuItems(self, {Sku.deEn("aus Gilde entfernen", "remove from guild", "retirer de la guilde")}, SkuGenericMenuItem)
          tKick.isSelect = true
          tKick.OnAction = function(self)
             GuildUninvite(name)
@@ -672,7 +672,7 @@ function Friends:FriendsMenuBuilder()
       tNewMenuEntryIgnore.sorting = true
       tNewMenuEntryIgnore.id = "ignoreList"  -- stable nav anchor for post-remove re-pin
       tNewMenuEntryIgnore.BuildChildren = function(self)
-         local tAdd = SkuOptions:InjectMenuItems(self, {Sku.deEn("ignorieren hinzufügen", "add ignore")}, SkuGenericMenuItem)
+         local tAdd = SkuOptions:InjectMenuItems(self, {Sku.deEn("ignorieren hinzufügen", "add ignore", "ajouter aux ignorés")}, SkuGenericMenuItem)
          tAdd.isSelect = true
          tAdd.OnAction = function(self)
             SkuOptions:EditBoxShow("", function(self)
@@ -685,12 +685,12 @@ function Friends:FriendsMenuBuilder()
                   SkuOptions:VocalizeCurrentMenuName()
                end)
             end)
-            SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Name eingeben und Enter drücken", "enter name and press Enter"), true, true, 0.2, nil, nil, nil, 2)
+            SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Name eingeben und Enter drücken", "enter name and press Enter", "saisissez le nom et appuyez sur Entrée"), true, true, 0.2, nil, nil, nil, 2)
          end
 
          local tNumIgnores = C_FriendList.GetNumIgnores() or 0
          if tNumIgnores == 0 then
-            SkuOptions:InjectMenuItems(self, {Sku.deEn("keine ignorierten Spieler", "no ignored players")}, SkuGenericMenuItem)
+            SkuOptions:InjectMenuItems(self, {Sku.deEn("keine ignorierten Spieler", "no ignored players", "aucun joueur ignoré")}, SkuGenericMenuItem)
          else
             for x = 1, tNumIgnores do
                tAddIgnoreEntry(self, x)
@@ -716,7 +716,7 @@ function Friends:FriendsMenuBuilder()
       -- Search box. The server query supports the full /who filter syntax the
       -- user types (name, z-"zone", g-"guild", r-"race", c-"class", "N-M" level
       -- range), so one text field covers everything the real panel's filters do.
-      local tSearch = SkuOptions:InjectMenuItems(self, {Sku.deEn("Suche", "search")}, SkuGenericMenuItem)
+      local tSearch = SkuOptions:InjectMenuItems(self, {Sku.deEn("Suche", "search", "recherche")}, SkuGenericMenuItem)
       tSearch.isSelect = true
       tSearch.noStepUpAfterSelect = true   -- stay on the search field after searching
       tSearch.id = "whoSearch"             -- so the async re-pin lands back here
@@ -735,11 +735,11 @@ function Friends:FriendsMenuBuilder()
                end)
             end
          end)
-         SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Suchbegriff eingeben und Enter drücken", "enter a query and press Enter"), true, true, 0.2, nil, nil, nil, 2)
+         SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Suchbegriff eingeben und Enter drücken", "enter a query and press Enter", "saisissez une requête et appuyez sur Entrée"), true, true, 0.2, nil, nil, nil, 2)
       end
 
       -- Sort selector (dropdown): reorders the result list below.
-      local tSort = SkuOptions:InjectMenuItems(self, {Sku.deEn("Sortierung", "sort")}, SkuGenericMenuItem)
+      local tSort = SkuOptions:InjectMenuItems(self, {Sku.deEn("Sortierung", "sort", "tri")}, SkuGenericMenuItem)
       tSort.dynamic = true
       tSort.isSelect = true
       tSort.noStepUpAfterSelect = true
@@ -762,9 +762,9 @@ function Friends:FriendsMenuBuilder()
       -- Result count summary + the results themselves.
       local tRes = tCollectWhoResults()
       local _, tTotal = C_FriendList.GetNumWhoResults()
-      local tCountLabel = (#tRes).." "..Sku.deEn("Ergebnisse", "results")
+      local tCountLabel = (#tRes).." "..Sku.deEn("Ergebnisse", "results", "résultats")
       if tTotal and tTotal > #tRes then
-         tCountLabel = tCountLabel.." ("..Sku.deEn("von ", "of ")..tTotal..")"
+         tCountLabel = tCountLabel.." ("..Sku.deEn("von ", "of ", "sur ")..tTotal..")"
       end
       SkuOptions:InjectMenuItems(self, {tCountLabel}, SkuGenericMenuItem)
 
@@ -783,42 +783,42 @@ function Friends:FriendsMenuBuilder()
    end
    tNewMenuEntry.BuildChildren = function(self)
       if not IsInGuild() then
-         SkuOptions:InjectMenuItems(self, {Sku.deEn("keine Gilde", "not in a guild")}, SkuGenericMenuItem)
+         SkuOptions:InjectMenuItems(self, {Sku.deEn("keine Gilde", "not in a guild", "sans guilde")}, SkuGenericMenuItem)
          return
       end
 
       -- Guild info blob (name, rank, counts, MOTD, info text) — read on demand.
       local guildName, guildRankName = GetGuildInfo("player")
       local total, online = GetNumGuildMembers()
-      local tInfo = SkuOptions:InjectMenuItems(self, {Sku.deEn("Gildeninfo", "guild info")}, SkuGenericMenuItem)
+      local tInfo = SkuOptions:InjectMenuItems(self, {Sku.deEn("Gildeninfo", "guild info", "infos de guilde")}, SkuGenericMenuItem)
       local tInfoText = (guildName or "").."\r\n"
       if guildRankName and guildRankName ~= "" then
-         tInfoText = tInfoText..Sku.deEn("Rang", "rank")..": "..guildRankName.."\r\n"
+         tInfoText = tInfoText..Sku.deEn("Rang", "rank", "rang")..": "..guildRankName.."\r\n"
       end
-      tInfoText = tInfoText..(online or 0).." "..Sku.deEn("online", "online").." / "..(total or 0).." "..Sku.deEn("gesamt", "total").."\r\n"
+      tInfoText = tInfoText..(online or 0).." "..Sku.deEn("online", "online", "en ligne").." / "..(total or 0).." "..Sku.deEn("gesamt", "total", "total").."\r\n"
       local motd = GetGuildRosterMOTD and GetGuildRosterMOTD()
       if motd and motd ~= "" then tInfoText = tInfoText.."MOTD: "..motd.."\r\n" end
       local itext = GetGuildInfoText and GetGuildInfoText()
-      if itext and itext ~= "" then tInfoText = tInfoText..Sku.deEn("Info", "info")..": "..itext.."\r\n" end
+      if itext and itext ~= "" then tInfoText = tInfoText..Sku.deEn("Info", "info", "infos")..": "..itext.."\r\n" end
       tInfo.textFull = tInfoText
 
       -- Show-offline dropdown (default off; roster rebuilds on next descent).
-      local tOffline = SkuOptions:InjectMenuItems(self, {Sku.deEn("offline anzeigen", "show offline")}, SkuGenericMenuItem)
+      local tOffline = SkuOptions:InjectMenuItems(self, {Sku.deEn("offline anzeigen", "show offline", "afficher les hors ligne")}, SkuGenericMenuItem)
       tOffline.dynamic = true
       tOffline.isSelect = true
       tOffline.noStepUpAfterSelect = true
-      tOffline.GetCurrentValue = function(self) return Friends.gShowOffline and Sku.deEn("an", "on") or Sku.deEn("aus", "off") end
+      tOffline.GetCurrentValue = function(self) return Friends.gShowOffline and Sku.deEn("an", "on", "activé") or Sku.deEn("aus", "off", "désactivé") end
       tOffline.OnAction = function(self, aValue, aSelName)
-         Friends.gShowOffline = (aSelName == Sku.deEn("an", "on"))
+         Friends.gShowOffline = (aSelName == Sku.deEn("an", "on", "activé"))
       end
       tOffline.BuildChildren = function(self)
-         SkuOptions:InjectMenuItems(self, {Sku.deEn("an", "on")}, SkuGenericMenuItem)
-         SkuOptions:InjectMenuItems(self, {Sku.deEn("aus", "off")}, SkuGenericMenuItem)
+         SkuOptions:InjectMenuItems(self, {Sku.deEn("an", "on", "activé")}, SkuGenericMenuItem)
+         SkuOptions:InjectMenuItems(self, {Sku.deEn("aus", "off", "désactivé")}, SkuGenericMenuItem)
       end
 
       -- Member roster (online first, offline behind the toggle). Sorted +
       -- type-ahead so a big guild is jump-navigable by name.
-      local tRoster = SkuOptions:InjectMenuItems(self, {Sku.deEn("Mitglieder", "members")}, SkuGenericMenuItem)
+      local tRoster = SkuOptions:InjectMenuItems(self, {Sku.deEn("Mitglieder", "members", "membres")}, SkuGenericMenuItem)
       tRoster.dynamic = true
       tRoster.sorting = true
       tRoster.id = "guildList"

@@ -1,4 +1,4 @@
-local _G = _G
+﻿local _G = _G
 local L = Sku.L
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -214,9 +214,9 @@ SkuCore.pendingPrompts = {
 			pcall(function() tWho = C_SummonInfo.GetSummonConfirmSummoner() end)
 			pcall(function() tWhere = C_SummonInfo.GetSummonConfirmAreaName() end)
 			pcall(function() tLeft = C_SummonInfo.GetSummonConfirmTimeLeft() end)
-			local tText = Sku.deEn("Beschwörung", "Summon")
-			if tWho and tWho ~= "" then tText = tText .. " " .. Sku.deEn("von", "from") .. " " .. tWho end
-			if tWhere and tWhere ~= "" then tText = tText .. " " .. Sku.deEn("nach", "to") .. " " .. tWhere end
+			local tText = Sku.deEn("Beschwörung", "Summon", "Invocation")
+			if tWho and tWho ~= "" then tText = tText .. " " .. Sku.deEn("von", "from", "de") .. " " .. tWho end
+			if tWhere and tWhere ~= "" then tText = tText .. " " .. Sku.deEn("nach", "to", "vers") .. " " .. tWhere end
 			return tText .. tTimeLeftSuffix(tLeft)
 		end,
 		showDialog = function() pcall(StaticPopup_Show, "CONFIRM_SUMMON") end,
@@ -240,9 +240,9 @@ SkuCore.pendingPrompts = {
 		end,
 		label = function()
 			local t = SkuCore.pendingGroupInvite or {}
-			local tText = Sku.deEn("Gruppeneinladung", "Group invite")
+			local tText = Sku.deEn("Gruppeneinladung", "Group invite", "Invitation de groupe")
 			if t.name and t.name ~= "" then
-				tText = tText .. " " .. Sku.deEn("von", "from") .. " " .. t.name
+				tText = tText .. " " .. Sku.deEn("von", "from", "de") .. " " .. t.name
 			end
 			return tText .. tTimeLeftSuffix((t.expiresAt or 0) - GetTime())
 		end,
@@ -271,9 +271,9 @@ SkuCore.pendingPrompts = {
 		end,
 		label = function()
 			local tOfferer = tCall("ResurrectGetOfferer")
-			local tText = Sku.deEn("Wiederbelebung", "Resurrection")
+			local tText = Sku.deEn("Wiederbelebung", "Resurrection", "Résurrection")
 			if tOfferer and tOfferer ~= "" then
-				tText = tText .. " " .. Sku.deEn("von", "from") .. " " .. tOfferer
+				tText = tText .. " " .. Sku.deEn("von", "from", "de") .. " " .. tOfferer
 			end
 			return tText
 		end,
@@ -310,7 +310,7 @@ SkuCore.pendingPrompts = {
 		end,
 		label = function()
 			local tLeft = tCall("GetReleaseTimeRemaining")
-			local tText = Sku.deEn("Tod", "Death")
+			local tText = Sku.deEn("Tod", "Death", "Mort")
 			if type(tLeft) == "number" and tLeft > 0 then
 				tText = tText .. tTimeLeftSuffix(tLeft)
 			end
@@ -342,8 +342,8 @@ SkuCore.pendingPrompts = {
 		label = function()
 			local tWho = SkuCore.pendingReadyCheckInitiator
 			local tLeft = tCall("GetReadyCheckTimeLeft")
-			local tText = L["Bereitschaft check"] or Sku.deEn("Bereitschaftscheck", "Ready check")
-			if tWho and tWho ~= "" then tText = tText .. " " .. Sku.deEn("von", "from") .. " " .. tWho end
+			local tText = L["Bereitschaft check"] or Sku.deEn("Bereitschaftscheck", "Ready check", "Vérification de préparation")
+			if tWho and tWho ~= "" then tText = tText .. " " .. Sku.deEn("von", "from", "de") .. " " .. tWho end
 			return tText .. tTimeLeftSuffix(tLeft)
 		end,
 		-- ReadyCheckFrame is in interactFramesList, so its Show drives the menu into

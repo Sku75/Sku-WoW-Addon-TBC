@@ -978,7 +978,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 		-- Top-level node renamed to "Direct waypoint" (was "Auswählen"). Only the
 		-- DISPLAY label changes here; the L["Auswählen"] key is still used for the
 		-- per-waypoint "select" sub-option and the aName check in WaypointSelectOnAction.
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {Sku.deEn("Direkter Wegpunkt", "Direct waypoint")}, SkuGenericMenuItem)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {Sku.deEn("Direkter Wegpunkt", "Direct waypoint", "Point de passage direct")}, SkuGenericMenuItem)
 		tNewMenuEntry.id = "navDirectWaypoint"   -- stable target for the Shift-F9 LEFT redirect
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.isSelect = true

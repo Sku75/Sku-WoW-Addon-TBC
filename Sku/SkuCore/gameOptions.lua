@@ -41,7 +41,7 @@ SkuCore.GameOptions = GameOptions   -- keep a published handle (harmless)
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule("GameOptions", function()
-   return Sku.deEn("Spieloptionen", "Game options")
+   return Sku.deEn("Spieloptionen", "Game options", "Options du jeu")
 end)
 
 -- Locale: tiny self-contained table (no global locale-file edits needed;
@@ -451,7 +451,7 @@ function GameOptions:GameMenuBuilder(aParentEntry)
       elseif IsAddonsButton(label) then
          -- "AddOns" -> Sku's AddOn settings (generic AceConfig renderer).
          SkuMenu:BuildNode(aParentEntry, { kind = "action", label = label, dynamic = false,
-            onAction = function() tNavTo("short,Addons," .. Sku.deEn("AddOn-Einstellungen", "AddOn settings")) end })
+            onAction = function() tNavTo("short,Addons," .. Sku.deEn("AddOn-Einstellungen", "AddOn settings", "Réglages des extensions")) end })
       else
          -- Sku's menu keys arrive via hardware-event override bindings, so :Click()
          -- counts as a hardware event (protected Logout/Quit are allowed).

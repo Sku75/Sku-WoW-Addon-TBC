@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "aq"
 local L = Sku.L
 local _G = _G
@@ -24,7 +24,7 @@ DamageMeter.damageMeter = {}
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule("DamageMeter", function()
-	return Sku.deEn("Schadensmesser", "Damage meter")
+	return Sku.deEn("Schadensmesser", "Damage meter", "Compteur de dégâts")
 end)
 
 ---------------------------------------------------------------------------------------------------------------------------------------

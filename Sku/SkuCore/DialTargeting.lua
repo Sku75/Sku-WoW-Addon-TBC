@@ -30,7 +30,7 @@ SkuCore.DialTargeting = DialTargeting   -- keep the published handle
 
 -- Make this feature user-toggleable (Features menu + persisted on/off).
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return Sku.deEn("Zielwahl per Tastenfeld", "Dial targeting")
+   return Sku.deEn("Zielwahl per Tastenfeld", "Dial targeting", "Ciblage au cadran")
 end)
 
 

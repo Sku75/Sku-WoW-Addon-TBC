@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 -- SkuCore.EquipmentSets
 -- Speichert vom Spieler benannte Ausrüstungssets und legt sie auf einen
 -- Klick wieder an. Tooltips von Items werden um eine Zeile "Gehört zu
@@ -27,7 +27,7 @@ local M = SkuCore.EquipmentSets
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule("EquipmentSets", function()
-   return Sku.deEn("Ausrüstungssets", "Equipment sets")
+   return Sku.deEn("Ausrüstungssets", "Equipment sets", "Ensembles d'équipement")
 end)
 
 -- Slot-Reihenfolge fürs Anlegen. INVSLOT 4 (Hemd) und 19 (Tabard) sind

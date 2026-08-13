@@ -1,4 +1,4 @@
--- =====================================================================
+﻿-- =====================================================================
 -- Sku AddOn Options  ("AddOn-Einstellungen")
 -- ---------------------------------------------------------------------
 -- Renders OTHER addons' AceConfig options tables (Questie, Extended
@@ -26,7 +26,7 @@ SkuCore.AddonOptions = AddonOptions
 
 -- User-toggleable (Features menu + persisted on/off), like GameOptions.
 SkuCore:RegisterToggleableModule("AddonOptions", function()
-   return Sku.deEn("AddOn-Einstellungen", "AddOn settings")
+   return Sku.deEn("AddOn-Einstellungen", "AddOn settings", "Réglages des extensions")
 end)
 
 -- uiName handed to the registry; must look like "Name-1.0".

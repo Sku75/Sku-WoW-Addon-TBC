@@ -34,7 +34,7 @@ SkuCore.aqCombat = aqCombat   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-   return Sku.deEn("Kampf-Monitor", "Combat monitor")
+   return Sku.deEn("Kampf-Monitor", "Combat monitor", "Moniteur de combat")
 end)
 
 local aqCombatVoices = {
@@ -1712,9 +1712,9 @@ function aqCombat:aqCombat_SKU_SPELL_INTERRUPT(aEvent, aEventData)
    end
 
    if tByYou == true then
-      SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Du hast den Zauber unterbrochen", "You spell canceled"), false, true, 0.2, true)
+      SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Du hast den Zauber unterbrochen", "You spell canceled", "Vous avez interrompu le sort"), false, true, 0.2, true)
    else
-      SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Zauber unterbrochen", "Spell interrupted"), false, true, 0.2, true)
+      SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Zauber unterbrochen", "Spell interrupted", "Sort interrompu"), false, true, 0.2, true)
    end
 end
 

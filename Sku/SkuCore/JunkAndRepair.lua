@@ -1,4 +1,4 @@
-local MODULE_PART = "JunkAndRepair"
+﻿local MODULE_PART = "JunkAndRepair"
 local L = Sku.L
 local _G = _G
 
@@ -22,7 +22,7 @@ SkuCore.JunkAndRepair = JunkAndRepair   -- keep the published handle
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule(MODULE_PART, function()
-	return Sku.deEn("Schrott verkaufen & reparieren", "Sell junk & repair")
+	return Sku.deEn("Schrott verkaufen & reparieren", "Sell junk & repair", "Vendre la camelote & réparer")
 end)
 
 -- Feature-private state (module upvalues, shared by OnEnable/OnDisable and the
