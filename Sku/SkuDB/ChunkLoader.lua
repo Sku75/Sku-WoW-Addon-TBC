@@ -496,6 +496,26 @@ local function SkuDBEnsureLocalizedMapNames()
 	tFill(SkuDB.ExternalMapID, "Name_lang", tGetMap)
 	tFill(SkuDB.ContinentIds, "Name_lang", nil)
 
+	-- [v42.09 i18n] The five continents have no area id for C_Map to resolve, so
+	-- the fill above can only fall back to English for them. They are the most
+	-- frequently spoken names in the whole map set ("other continent" route
+	-- announcements), so hand them over properly.
+	local tContinents = {
+		frFR = {
+			[0] = "Royaumes de l'Est", [1] = "Kalimdor", [530] = "Outreterre",
+			[571] = "Norfendre", [609] = "Royaumes de l'Est",
+		},
+	}
+	local tCont = tContinents[tLoc]
+	if tCont and type(SkuDB.ContinentIds) == "table" then
+		for tId, tName in pairs(tCont) do
+			local tEntry = SkuDB.ContinentIds[tId]
+			if type(tEntry) == "table" and type(tEntry.Name_lang) == "table" then
+				tEntry.Name_lang[tLoc] = tName
+			end
+		end
+	end
+
 	SkuDB.chunkLoad.mapNames = tTotal
 	SkuDB.chunkLoad.mapNamesFromApi = tFromApi
 	dprint("SkuDB map names for", tLoc, "filled =", tTotal, "of which from C_Map =", tFromApi)

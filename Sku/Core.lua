@@ -501,6 +501,60 @@ SlashCmdList["SKUDEBUG"] = function(aMsg)
 		print(string.format("|cff80c0ffSkuDebug|r: map-name dump for %s - %d areas, %d maps. /reload to persist.",
 			tostring(tOut.locale), tA, tM))
 		return
+	elseif aMsg == "dumpspells" then
+		-- [v42.09 i18n] Capture localized SPELL names from the running client.
+		--
+		-- Sku's spell table came from a Spell.dbc extraction (the spellKeys are
+		-- raw DBC column names), which is why it only exists for deDE and enUS -
+		-- producing a third one that way needs a client install of that language
+		-- plus extraction tooling. GetSpellInfo gives the same strings for free,
+		-- as long as it runs ON a client of the wanted language.
+		--
+		-- This matters beyond display: aura matching compares against live
+		-- combat-log names, which are localized. A French user picking the
+		-- English "Fireball" out of the aura menu would never match "Boule de
+		-- feu", and the aura would silently never fire.
+		--
+		-- SLICED over frames on purpose: ~49k GetSpellInfo calls in one go risks
+		-- the "script ran too long" watchdog, which this codebase has already hit
+		-- doing a full SpellDataTBC walk (SkuAuras/Core.lua:301).
+		if type(SkuDB) ~= "table" or type(SkuDB.SpellDataTBC) ~= "table" then
+			print("|cff80c0ffSkuDebug|r: SpellDataTBC not built yet - wait for login to finish.")
+			return
+		end
+		if type(SkuDebugLog) ~= "table" then SkuDebugLog = {} end
+		local tIds = {}
+		for tId in pairs(SkuDB.SpellDataTBC) do
+			if type(tId) == "number" then tIds[#tIds + 1] = tId end
+		end
+		table.sort(tIds)
+		local tOut = {locale = GetLocale(), names = {}}
+		local tPos, tFound = 1, 0
+		local tFrame = CreateFrame("Frame")
+		tFrame:SetScript("OnUpdate", function()
+			local tStart = debugprofilestop()
+			while tPos <= #tIds do
+				local tId = tIds[tPos]
+				local tOk, tName = pcall(GetSpellInfo, tId)
+				if tOk and type(tName) == "string" and tName ~= "" then
+					tOut.names[tId] = tName
+					tFound = tFound + 1
+				end
+				tPos = tPos + 1
+				if debugprofilestop() - tStart > 40 then return end
+			end
+			tFrame:SetScript("OnUpdate", nil)
+			tFrame:Hide()
+			SkuDebugLog.spellNameDump = tOut
+			print(string.format("|cff80c0ffSkuDebug|r: spell dump for %s - %d of %d resolved. /reload to persist.",
+				tostring(tOut.locale), tFound, #tIds))
+			if SkuOptions and SkuOptions.Voice then
+				pcall(function() SkuOptions.Voice:OutputStringBTtts("Zauber Namen fertig", false, true, 0.2) end)
+			end
+		end)
+		print(string.format("|cff80c0ffSkuDebug|r: dumping %d spell names for %s, running in background...",
+			#tIds, tostring(GetLocale())))
+		return
 	elseif aMsg == "clear" then
 		if type(SkuDebugLog) == "table" then SkuDebugLog.lines = {} ; SkuDebugLog.seq = 0 end
 		print("|cff80c0ffSkuDebug|r: log cleared.")
@@ -520,7 +574,7 @@ SlashCmdList["SKUDEBUG"] = function(aMsg)
 		end
 		return
 	elseif aMsg ~= "" then
-		print("|cff80c0ffSkuDebug|r: usage: /skudebug on|off|print on|print off|log on|log off|verbose on|verbose off|size <n>|locale <loc>|dumpmapnames|clear|show")
+		print("|cff80c0ffSkuDebug|r: usage: /skudebug on|off|print on|print off|log on|log off|verbose on|verbose off|size <n>|locale <loc>|dumpmapnames|dumpspells|clear|show")
 	end
 	if d.log and not tWasLog then Sku:DebugLogMark("log enabled") end
 	print(string.format("|cff80c0ffSkuDebug|r: print=%s log=%s verbose=%s ring=%d/%d",
