@@ -1,4 +1,4 @@
----@diagnostic disable: undefined-field, undefined-doc-name
+﻿---@diagnostic disable: undefined-field, undefined-doc-name
 ---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME = "SkuNav"
 local L = Sku.L
@@ -181,7 +181,7 @@ local function DrawWaypoints(aFrame)
 		tWP = SkuNav:GetWaypointData2(v)
 		if tWP then
 			if tWP.worldX and tWP.worldY then
-				tWP.comments = tWP.comments or {["deDE"] = {},["enUS"] = {},}
+				tWP.comments = tWP.comments or {["deDE"] = {},["enUS"] = {},[Sku.Loc] = {},}  -- [v42.09 i18n] Sku.Loc too: this literal only covered de/en, and the very next lines index comments[Sku.Loc]
 				local tFinalX, tFinalY = WorldPointToMinimapPoint(tWP.worldX, tWP.worldY)
 				if tWP.typeId == 1 or tWP.typeId == 4 then
 					--red
@@ -469,7 +469,7 @@ function SkuNavDrawWaypointsMM(aFrame)
 		--print(i, v)
 		tWP = SkuNav:GetWaypointData2(v)
 		if tWP then
-			tWP.comments = tWP.comments or {["deDE"] = {},["enUS"] = {},}
+			tWP.comments = tWP.comments or {["deDE"] = {},["enUS"] = {},[Sku.Loc] = {},}  -- [v42.09 i18n] Sku.Loc too: this literal only covered de/en, and the very next lines index comments[Sku.Loc]
 			local tShow = false
 			if _G["SkuNavMMMainFrameShowFilter"].selected == true then
 				if SkuQuest.QuestWpCache[v] or tWP.typeId == 1 then

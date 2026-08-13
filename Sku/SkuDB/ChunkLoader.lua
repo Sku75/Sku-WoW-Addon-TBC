@@ -319,6 +319,10 @@ local SkuDBFamilySteps = {
 				SkuDBMergeLocales(SkuDB.objectLookup, SkuDB.SoD.objectLookup)
 			end
 		end,
+		-- Must stay LAST in this family and inside it: the waypoint-cache build
+		-- step fires as soon as creatures+objects are ready and reads
+		-- objectResourceNames[Sku.Loc] unguarded.
+		function() SkuDBBuildResourceNames() end,
 	},
 	items = {
 		function()
@@ -341,6 +345,10 @@ local SkuDBFamilySteps = {
 				SkuDBMergeAbsent(SkuDB.SpellDataTBC, SkuDB.SoD.SpellDataTBC)
 			end
 		end,
+		-- Before SkuAuras:BuildAttributeValueLists, which runs as a registered
+		-- build step once items+spells are ready and indexes
+		-- SkuDB.SpellDataTBC[id][Sku.Loc] unguarded.
+		function() SkuDBAliasSpellLocale() end,
 	},
 }
 
@@ -481,6 +489,68 @@ local function SkuDBEnsureLocalizedMapNames()
 	SkuDB.chunkLoad.mapNamesFromApi = tFromApi
 	dprint("SkuDB map names for", tLoc, "filled =", tTotal, "of which from C_Map =", tFromApi)
 	return tTotal
+end
+
+-- [v42.09 i18n] SpellDataTBC nests its locales INSIDE each entry
+-- (entry.deDE / entry.enUS) rather than as sibling tables, so neither the chunk
+-- gate nor the enUS backfill reaches it. Eleven sites do
+-- SkuDB.SpellDataTBC[id][Sku.Loc][...] unguarded, which is what threw
+-- "SkuAuras/Core.lua:315: attempt to index field '?' (a nil value)" on frFR and
+-- failed the whole 'spells' family.
+--
+-- Point the active locale at the English sub-table - a REFERENCE, not a copy,
+-- so it costs one table slot per spell and no strings. Client-accurate French
+-- spell names would need ~30k GetSpellInfo calls on the loading screen, which
+-- is not worth it: unlike zone names these are mostly aura-matching keys, where
+-- the English name works.
+local function SkuDBAliasSpellLocale()
+	local tLoc = Sku.Loc
+	if not tLoc or tLoc == "deDE" or tLoc == "enUS" then return 0 end
+	if type(SkuDB.SpellDataTBC) ~= "table" then return 0 end
+	local tN = 0
+	for _, tEntry in pairs(SkuDB.SpellDataTBC) do
+		if type(tEntry) == "table" and tEntry[tLoc] == nil then
+			tEntry[tLoc] = tEntry.enUS or tEntry.deDE
+			tN = tN + 1
+		end
+	end
+	SkuDB.chunkLoad.spellAlias = tN
+	return tN
+end
+
+-- [v42.09 i18n] objectResourceNames is keyed by object NAME, per locale, and is
+-- read unguarded at SkuNav/Core.lua:694 during the waypoint-cache build - so on
+-- frFR it was the next nil-index waiting to happen after the spell one.
+--
+-- Derive the set properly instead of aliasing: walk the object ids, and if an
+-- id's ENGLISH name is in the English resource set, register that id's
+-- ACTIVE-LOCALE name. That produces a genuinely correct French set, because the
+-- id mapping is exact - an alias to enUS would never match the French object
+-- names the lookup is tested against, silently turning every ore and herb into
+-- a normal waypoint.
+local function SkuDBBuildResourceNames()
+	local tLoc = Sku.Loc
+	if not tLoc or tLoc == "deDE" or tLoc == "enUS" then return 0 end
+	local tRoot = SkuDB.objectResourceNames
+	if type(tRoot) ~= "table" or type(tRoot.enUS) ~= "table" then return 0 end
+	if type(tRoot[tLoc]) == "table" and next(tRoot[tLoc]) ~= nil then return 0 end
+	local tEn = SkuDB.objectLookup and SkuDB.objectLookup.enUS
+	local tLoc2 = SkuDB.objectLookup and SkuDB.objectLookup[tLoc]
+	local tOut = {}
+	local tN = 0
+	if type(tEn) == "table" and type(tLoc2) == "table" then
+		for tId, tEnName in pairs(tEn) do
+			local tVal = tRoot.enUS[tEnName]
+			if tVal ~= nil and tLoc2[tId] then
+				tOut[tLoc2[tId]] = tVal
+				tN = tN + 1
+			end
+		end
+	end
+	tRoot[tLoc] = tOut
+	SkuDB.chunkLoad.resourceNames = tN
+	dprint("SkuDB objectResourceNames for", tLoc, "=", tN)
+	return tN
 end
 
 -- [v42.09 i18n] Fill gaps in the active locale's name tables from enUS.
