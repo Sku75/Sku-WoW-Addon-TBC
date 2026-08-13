@@ -75,6 +75,30 @@ SkuNav.NPCRolesToRecognize = {
 		[UNIT_NPC_FLAG_AUCTIONEER] =  "Auctioneer",
 		[UNIT_NPC_FLAG_STABLEMASTER] = "Stable Master",
 	},
+	-- [v42.09 i18n] French role names. Without this entry
+	-- SkuNav/Core.lua:3892 does pairs(NPCRolesToRecognize["frFR"]) on a nil
+	-- table and throws for every NPC whose roles are announced. The existing
+	-- tHasNoLocalizedData guard does not cover it: that only forces enUS when
+	-- the NPC was NOT found in the localized name table, and with French names
+	-- now present NPCs ARE found, so the locale stays frFR.
+	["frFR"] = {
+		[UNIT_NPC_FLAG_QUESTGIVER] = "Donneur de quête",
+		[UNIT_NPC_FLAG_TRAINER] =  "Maître",
+		[UNIT_NPC_FLAG_TRAINER_CLASS] = "Maître de classe",
+		[UNIT_NPC_FLAG_TRAINER_PROFESSION] = "Maître de métier",
+		[UNIT_NPC_FLAG_VENDOR] = "Marchand",
+		[UNIT_NPC_FLAG_VENDOR_AMMO] = "Munitions",
+		[UNIT_NPC_FLAG_VENDOR_FOOD] = "Nourriture",
+		[UNIT_NPC_FLAG_VENDOR_POISON] =  "Poison",
+		[UNIT_NPC_FLAG_VENDOR_REAGENT] =  "Composants",
+		[UNIT_NPC_FLAG_REPAIR] =  "Réparation",
+		[UNIT_NPC_FLAG_FLIGHTMASTER] = "Maître de vol",
+		[UNIT_NPC_FLAG_SPIRITHEALER] =  "Guérisseur des esprits",
+		[UNIT_NPC_FLAG_INNKEEPER] = "Aubergiste",
+		[UNIT_NPC_FLAG_BANKER] =  "Banquier",
+		[UNIT_NPC_FLAG_AUCTIONEER] =  "Commissaire-priseur",
+		[UNIT_NPC_FLAG_STABLEMASTER] = "Maître des écuries",
+	},
 }
 
 SkuNav.routeRecordingIntWpMethods = {

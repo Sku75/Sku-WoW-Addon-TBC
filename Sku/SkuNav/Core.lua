@@ -3888,6 +3888,11 @@ function SkuNav:GetNpcRoles(aNpcName, aNpcId, aLocale)
 	if tHasNoLocalizedData then
 		tTempLocale = "enUS"
 	end
+	-- [v42.09 i18n] Belt and braces for any locale that has game-name data but
+	-- no hand-written role names: without this the pairs() below runs on nil.
+	if not SkuNav.NPCRolesToRecognize[tTempLocale] then
+		tTempLocale = "enUS"
+	end
 
 	for i, v in pairs(SkuNav.NPCRolesToRecognize[tTempLocale]) do
 		if SkuDB.NpcData.Data[aNpcId] then

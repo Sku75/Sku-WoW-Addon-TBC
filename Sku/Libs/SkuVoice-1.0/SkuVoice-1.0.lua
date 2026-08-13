@@ -60,6 +60,9 @@ local SapiLangIds = {
 	["deDE"] = 407,
 	["enUS"] = 409,
 	["enAU"] = 409,
+	["frFR"] = 1036, -- [v42.09 i18n] only read by the commented-out SSML wrapper
+	                 -- below, but it is indexed as SapiLangIds[Sku.Loc], so it
+	                 -- would nil out the moment that code is revived.
 	}
 
 ---------------------------------------------------------------------------------------------------------
