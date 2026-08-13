@@ -1,7 +1,7 @@
 ﻿## Interface: 20506, 11508, 11509
-## Title: Sku v42.10
+## Title: Sku v42.11
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData, SkuErrorLog, SkuDebugLog
-## Version: 42.10
+## Version: 42.11
 
 SkuPerfFileStamp.lua
 
@@ -164,10 +164,13 @@ SkuAuras\data.lua
 SkuAuras\Options.lua
 SkuAuras\sharing.lua
 
-# [v42.09 i18n] French route overrides, consumed by utilities.lua's translator.
-SkuZOptions\routeOverrides_frFR.lua
 SkuZOptions\utilities.lua
 SkuZOptions\Core.lua
+# [v42.09 i18n] French route overrides, consumed by utilities.lua's translator
+# (at call time, so this may load after it). Loads AFTER Core.lua on purpose:
+# it is data, not the module, and must never be the file that creates the
+# SkuOptions global.
+SkuZOptions\routeOverrides_frFR.lua
 SkuZOptions\data.lua
 SkuZOptions\templates.lua
 SkuZOptions\Options.lua

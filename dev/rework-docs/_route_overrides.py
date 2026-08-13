@@ -163,7 +163,12 @@ def cmd_apply(hits_tsv, prose_tsv, out_lua):
         "-- dumpmapnames), not invented. Route instructions are translated. Entries",
         "-- that are neither keep their English value: a guessed French place name",
         "-- would corrupt route output, which is worse than leaving it English.",
-        "SkuOptions = SkuOptions or {}",
+        "-- The guard MUST create SkuOptions the same way every other SkuZOptions",
+        "-- file does. A bare `SkuOptions or {}` here made this file (TOC-loaded",
+        "-- before SkuZOptions\\Core.lua) win the `or`, so Core.lua's NewAddon never",
+        "-- ran, SkuOptions was never an AceAddon, OnInitialize never fired and",
+        "-- SkuOptions.db stayed nil for the whole session.",
+        "SkuOptions = SkuOptions or LibStub(\"AceAddon-3.0\"):NewAddon(\"SkuOptions\", \"AceConsole-3.0\", \"AceEvent-3.0\")",
         "SkuOptions.RouteOverridesFrFR = {",
     ]
     n_place = n_prose = n_keep = 0
