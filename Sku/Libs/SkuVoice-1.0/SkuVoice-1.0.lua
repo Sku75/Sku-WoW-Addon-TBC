@@ -685,7 +685,17 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		aIgnoreLinks = true
 	end
 
-	if SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu ~= true and not engine and ChatTts().allChatViaBlizzardTts ~= true then
+	-- [v42.09 i18n] `and Sku.AudiodataPath ~= ""` is REQUIRED here, not optional.
+	--
+	-- These two functions delegate to each other, and the pair is only safe
+	-- because the conditions are exact negations: OutputString hands over when
+	-- allChatViaBlizzardTts is true, and this branch hands back when it is not.
+	-- Adding the no-voice-pack trigger to OutputString alone broke that symmetry
+	-- and produced infinite mutual recursion - 177 stack overflows in a single
+	-- session on a client with no pack (SkuChat/Core.lua:3039). The audio path
+	-- cannot be the fallback for a client that has no audio to play.
+	if SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu ~= true and not engine
+		and ChatTts().allChatViaBlizzardTts ~= true and Sku.AudiodataPath ~= "" then
 		SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
 		return
 	end
