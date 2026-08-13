@@ -123,13 +123,15 @@ function Set-DocsSkuLink($ver) {
     if ($DryRun) { Dry "docs: Sku download link -> v$ver"; return }
     if (-not (Test-Path $DocsHtml)) { return }
     $html = Read-Text $DocsHtml
-    $html = [regex]::Replace($html, 'releases/download/v\d+\.\d+/Sku-\d+\.\d+\.zip', "releases/download/v$ver/Sku-$ver.zip")
-    $html = [regex]::Replace($html, 'Download Sku v\d+\.\d+', "Download Sku v$ver")
+    # \d+(\.\d+)+ rather than \d+\.\d+ so a three-component version already in
+    # the page (42.11.1) is still found and replaced on the next release.
+    $html = [regex]::Replace($html, 'releases/download/v\d+(\.\d+)+/Sku-\d+(\.\d+)+\.zip', "releases/download/v$ver/Sku-$ver.zip")
+    $html = [regex]::Replace($html, 'Download Sku v\d+(\.\d+)+', "Download Sku v$ver")
     # The section HEADING carries the version too. Screen-reader users navigate by
     # heading, so a stale number here reads as "the site still offers the old Sku"
     # even though the link below it is current (it drifted 42.06 -> 42.10 before
     # this line existed). Keep it in sync with the link.
-    $html = [regex]::Replace($html, 'Sku \(Main Addon\) - Version \d+\.\d+', "Sku (Main Addon) - Version $ver")
+    $html = [regex]::Replace($html, 'Sku \(Main Addon\) - Version \d+(\.\d+)+', "Sku (Main Addon) - Version $ver")
     Write-Text $DocsHtml $html
 }
 function Set-DocsInstallerLatest {
@@ -272,7 +274,12 @@ function Build-SkuZip($ver) {
 
 # --- Mode: main release -----------------------------------------------------
 function Do-MainRelease($ver) {
-    if ($ver -notmatch '^\d+\.\d+$') { throw "Version must look like 42.07 (got '$ver')." }
+    # Two or three components. The installer compares them as INTEGERS
+    # (AddonInstaller.CompareVersions), so a new number must be numerically
+    # greater than the last release or existing users are never offered it:
+    # after 42.11 that means 42.12 or 42.11.1, never 42.2 or 42.1.1. Do not
+    # zero-pad (42.7, not 42.07).
+    if ($ver -notmatch '^\d+\.\d+(\.\d+)?$') { throw "Version must look like 42.11 or 42.11.1 (got '$ver'). No zero padding, and it must sort ABOVE the previous release." }
     $tag = "v$ver"
     Info "=== Sku release $tag ==="
 

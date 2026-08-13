@@ -172,6 +172,19 @@ namespace SkuInstaller
         /// Compares dotted numeric versions ("41.06" vs "41.06.05"). Missing
         /// components count as 0. Returns -1/0/1. A null/empty installed version
         /// is treated as oldest so we err toward offering the update.
+        ///
+        /// Each component is compared as an INTEGER, not as a decimal fraction.
+        /// That is the intended rule, but it constrains how releases may be
+        /// numbered, because "is there an update" is decided here:
+        ///   42.11 > 42.10 > 42.9     (correct: 11 > 10 > 9)
+        ///   42.2  < 42.10            (2 &lt; 10 - NOT "forty-two point two")
+        ///   42.1.1 &lt; 42.11          (1 &lt; 11)
+        /// So a new release must be numerically greater than the one before it
+        /// component by component; anything else silently reads as a DOWNGRADE
+        /// and is never offered to users already on the older number. After
+        /// 42.11 the safe successors are 42.12 or 42.11.1, not 42.2 or 42.1.1.
+        /// Do not zero-pad new numbers (42.7, not 42.07) - padding only ever
+        /// looked ordered because 42.01..42.09 are single digits anyway.
         /// </summary>
         internal static int CompareVersions(string a, string b)
         {
@@ -191,9 +204,17 @@ namespace SkuInstaller
             if (string.IsNullOrWhiteSpace(v)) return new[] { 0 };
             var nums = new System.Collections.Generic.List<int>();
             foreach (var part in v.Trim().TrimStart('v', 'V').Split('.', '-', '_'))
-                if (int.TryParse(new string(System.Linq.Enumerable.ToArray(
-                        System.Linq.Enumerable.TakeWhile(part, char.IsDigit))), out int p))
-                    nums.Add(p);
+            {
+                // A component we cannot read counts as 0 instead of vanishing.
+                // Dropping it would SHIFT every later component one place left,
+                // so "42.x.3" compared as 42.3 rather than 42.0.3. TryParse
+                // leaves p at 0 on failure, which is exactly what we want; a
+                // trailing non-numeric part ("42.11-beta") adds a 0 that
+                // compares equal to the missing component it replaces.
+                int.TryParse(new string(System.Linq.Enumerable.ToArray(
+                        System.Linq.Enumerable.TakeWhile(part, char.IsDigit))), out int p);
+                nums.Add(p);
+            }
             if (nums.Count == 0) nums.Add(0);
             return nums.ToArray();
         }
