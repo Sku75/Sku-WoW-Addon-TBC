@@ -122,6 +122,7 @@ SkuDB\assets\SoD\items.lua
 SkuDB\assets\SoD\items_fixes.lua
 SkuDB\assets\SoD\objects.lua
 SkuDB\assets\SoD\objects_fixes.lua
+SkuDB\assets\SoD\spells.lua
 
 # [v42.09 i18n] French game names, generated from Questie's shipped frFR
 # lookups by dev/rework-docs/_gen_frfr_names.py. These only REGISTER chunks;

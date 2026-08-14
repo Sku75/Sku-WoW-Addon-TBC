@@ -220,7 +220,18 @@ end
 -- 2026-07-06 when a merge first exceeded the frame budget mid-pcall. The
 -- coroutine now yields only BETWEEN the pcall'ed sub-steps; one merge is a
 -- bounded ~10-80 ms slice.
+--
+-- Nil-tolerant on purpose (2026-08-14): a source table that never got declared
+-- because its asset file dropped out of the TOC used to raise "bad argument #1
+-- to 'pairs'" here, which FAILS the whole family - the opposite of the graceful
+-- degradation promised at the top of this file. That is not hypothetical: the
+-- v42.09 i18n commit deleted SkuDB\assets\SoD\spells.lua from the TOC while
+-- pasting in the frFR block, so SkuDB.SoD.SpellDataTBC was nil and every login
+-- on an SoD realm lost the entire 'spells' family (and with it the SkuAuras
+-- value lists, which are gated on it). Skipping an absent source loses exactly
+-- the rows that file would have added; killing the family loses everything.
 local function SkuDBMergeAbsent(aInto, aFrom)
+	if type(aInto) ~= "table" or type(aFrom) ~= "table" then return end
 	for i, v in pairs(aFrom) do
 		if not aInto[i] then
 			aInto[i] = v
