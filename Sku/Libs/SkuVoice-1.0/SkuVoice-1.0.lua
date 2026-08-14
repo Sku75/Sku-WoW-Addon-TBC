@@ -1242,6 +1242,36 @@ end
 -- [W6-B #20] dead SkuVoice:StopAllOutputs removed (was entirely inside a
 -- --[[ ]] block, never defined, referenced an undefined tValue, called nowhere).
 ---------------------------------------------------------------------------------------------------------
+-- [v42.11] Two small read/trim helpers on the Blizzard-TTS queue, for the LIVE
+-- typing echo (SkuOptions:EditBoxShow). That echo appends ONE utterance per typed
+-- character (append, not overwrite -- otherwise fast typing loses characters), and
+-- a voice that needs ~0.4 s per character cannot keep up with 4-5 keystrokes per
+-- second. Without a cap the backlog grew unbounded and kept reading the typed text
+-- back minutes after the edit box was gone ("it repeats the letters I entered a
+-- while after the mail was sent").
+--
+-- TrimBttsQueue only drops entries that are still WAITING in Sku's own queue --
+-- nothing that was already handed to C_VoiceChat.SpeakText -- so it never cuts a
+-- word in half. It therefore also ignores `neverResetQueues`: that setting is about
+-- not interrupting speech in progress (StopSpeakingText), which this does not do.
+function SkuVoice:GetBttsQueueDepth()
+	return #mSkuVoiceQueueBTTS
+end
+
+---@param aKeep number|nil how many of the NEWEST pending entries to keep (default 0)
+function SkuVoice:TrimBttsQueue(aKeep)
+	aKeep = aKeep or 0
+	local tDrop = #mSkuVoiceQueueBTTS - aKeep
+	for _ = 1, tDrop do
+		local tValue = mSkuVoiceQueueBTTS[1]
+		if tValue then
+			mSkuVoiceQueueBTTS_Voice[tValue] = nil
+		end
+		table.remove(mSkuVoiceQueueBTTS, 1)
+	end
+end
+
+---------------------------------------------------------------------------------------------------------
 function SkuVoice:Release()
 
 end

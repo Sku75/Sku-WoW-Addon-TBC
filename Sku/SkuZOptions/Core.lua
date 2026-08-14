@@ -6635,11 +6635,41 @@ local tStrSubUtf8 = _G.strsubutf8 or string.sub
 -- Aufruf ein "queuereset" ein und leerte die Queue -> auf langsameren Stimmen wurde nur
 -- das zuletzt getippte Zeichen gesprochen. Ohne aQueue (Pfeil-/Wort-/Zeilen-Lesen):
 -- neueste Position gewinnt (ueberschreiben), damit schnelles Pfeilen nicht nachhinkt.
+--
+-- [v42.11] Rueckstau-Deckel. Anhaengen ohne Grenze war der Fehler: wer schneller
+-- tippt als die Stimme spricht (4-5 Anschlaege/s gegen ~0.4 s je Zeichen), baut eine
+-- Warteschlange auf, die NICHT mit dem Schliessen des Eingabefelds endet -- Sku las
+-- die getippten Zeichen noch Minuten spaeter vor ("wiederholt nach dem Absenden eines
+-- Briefes die eingegebenen Buchstaben"). Steht mehr als tMaxCharBacklog Ungesprochenes
+-- an, werfen wir den WARTENDEN Rest weg und sprechen das neue Zeichen sofort: die
+-- Ausgabe folgt damit dem Tippen, statt hinterherzulaufen (genau das Verhalten, das
+-- ein Screenreader beim Tippen zeigt). Verworfen wird nur, was Sku noch gar nicht an
+-- die TTS uebergeben hat -- nie ein laufendes Wort.
+local tMaxCharBacklog = 3
 local function tSpeakInput(aText, aQueue)
 	if aQueue then
+		if SkuOptions.Voice.GetBttsQueueDepth then
+			pcall(function()
+				if SkuOptions.Voice:GetBttsQueueDepth() > tMaxCharBacklog then
+					SkuOptions.Voice:TrimBttsQueue(0)
+				end
+			end)
+		end
 		pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, false, false, 0.05, nil, nil, nil, 2) end)
 	else
 		pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, true, false, 0.05, nil, nil, nil, 2) end)
+	end
+end
+
+-- [v42.11] Den noch nicht gesprochenen Tipp-Rueckstau wegwerfen. Wird beim
+-- Bestaetigen einer Eingabe aufgerufen, BEVOR der OK-Callback seine eigene Ansage
+-- absetzt -- sonst stuende die Bestaetigung ("Empfaenger: Bob") hinter womoeglich
+-- hunderten Einzelzeichen und kaeme erst Minuten spaeter. Abbrechen mit ESCAPE
+-- braucht das nicht: die "Abgebrochen"-Ansage laeuft ueber den ueberschreibenden
+-- Pfad (aQueue=nil) und leert die Queue dabei ohnehin.
+local function tDropInputBacklog()
+	if SkuOptions.Voice.TrimBttsQueue then
+		pcall(function() SkuOptions.Voice:TrimBttsQueue(0) end)
 	end
 end
 
@@ -6791,8 +6821,20 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 			eb:SetWidth(sf:GetWidth())
 		end)
 
-		SkuOptionsEditBoxEditBox:HookScript("OnEnterPressed", function(...) SkuOptionsEditBoxOkScript(...) SkuOptionsEditBox:Hide() end)
-		SkuOptionsEditBoxButton:HookScript("OnClick", function(...) SkuOptionsEditBoxOkScript(...) SkuOptionsEditBox:Hide() end)
+		-- [v42.11] tDropInputBacklog() zuerst: der Tipp-Rueckstau darf die Ansage des
+		-- OK-Callbacks nicht ausbremsen (siehe dort).
+		SkuOptionsEditBoxEditBox:HookScript("OnEnterPressed", function(...) tDropInputBacklog() SkuOptionsEditBoxOkScript(...) SkuOptionsEditBox:Hide() end)
+		SkuOptionsEditBoxButton:HookScript("OnClick", function(...) tDropInputBacklog() SkuOptionsEditBoxOkScript(...) SkuOptionsEditBox:Hide() end)
+
+		-- [v42.11] Tastaturfokus beim Schliessen freigeben -- auf JEDEM Weg (ENTER,
+		-- OK, ESCAPE, fremdes :Hide()). Das Feld ist ein Enkel von f; wird nur der
+		-- Grossvater versteckt, bleibt der Fokus an der EditBox haengen, und die
+		-- Tastatur laege weiter in einem unsichtbaren Eingabefeld.
+		f:SetScript("OnHide", function()
+			if SkuOptionsEditBoxEditBox then
+				SkuOptionsEditBoxEditBox:ClearFocus()
+			end
+		end)
 
 		f:Show()
 	end
@@ -7035,15 +7077,26 @@ function SkuOptions:EditBoxPasteShow(aText, aOkScript)
 
 		editbox:SetScript("OnEscapePressed", function() _G["SkuOptionsEditBoxPaste"]:Hide() end)
 
+		-- [v42.11] Beide Skripte gehoeren HIERHER, in den Einmal-Zweig:
+		-- * OnEnterPressed lag frueher unten im Pro-Aufruf-Teil, wurde also bei JEDEM
+		--   EditBoxPasteShow ein weiteres Mal per HookScript angehaengt (HookScript
+		--   ersetzt nicht, es kettet). Beim n-ten Oeffnen lief der OK-Callback n-mal
+		--   -- ein n-facher Import derselben Daten.
+		-- * OnHide gibt den Tastaturfokus frei (SetAutoFocus(true) holt ihn beim
+		--   Anzeigen; clearBuffer raeumt ihn nur auf dem Einfuege-Pfad weg).
+		f.EB:HookScript("OnEnterPressed", function(...) SkuOptionsEditBoxOkScript(...) _G["SkuOptionsEditBoxPaste"]:Hide() end)
+		f:SetScript("OnHide", function()
+			if f.EB then
+				f.EB:ClearFocus()
+			end
+		end)
 	end
-	
+
 	if aOkScript then
 		SkuOptionsEditBoxOkScript = aOkScript
 	end
 
 	_G["SkuOptionsEditBoxPaste"].SkuOptionsTextBuffer = {}
-
-	_G["SkuOptionsEditBoxPaste"].EB:HookScript("OnEnterPressed", function(...) SkuOptionsEditBoxOkScript(...) _G["SkuOptionsEditBoxPaste"]:Hide() end)
 
 	--_G["SkuOptionsEditBoxPaste"].EB:SetText("")
 	_G["SkuOptionsEditBoxPaste"]:Show()

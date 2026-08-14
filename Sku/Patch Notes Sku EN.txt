@@ -246,10 +246,61 @@ Changes in Sku v42.11
             aUnitTarget did not match up, so the unfollow and refollow never fired for
             channelled spells.
 
-    French: the foundation for a French Sku
-        Simple: Sku is getting French. It is not finished: around 43 percent of the menu and
-            announcement texts are translated, and everything else falls back to English
-            automatically, so there is never a gap or an empty entry. The GAME names -
+    Mail: after sending a letter Sku read the typed text back later
+        Simple: A while after a letter had been sent, Sku started repeating the characters
+            that had been typed - sometimes long after the mailbox was closed. Two
+            independent bugs were behind it. First, once you had opened a mailbox it counted
+            as open internally until the next /reload, so every piece of mail arriving later
+            rebuilt the menu and announced the current entry again - wherever in the menu you
+            happened to be. If you were standing on a letter field, that entry was the text
+            you had just typed. Second, the per-character readout while typing appended every
+            character to the end of the speech queue: if you type faster than the voice
+            speaks, that builds a backlog, and closing the input field did not end it - it
+            simply kept playing.
+            Now the readout follows your typing: if it falls too far behind, what has not
+            been spoken yet is dropped instead of trailing along. "Sent" and a field
+            confirmation come immediately, no longer behind everything you typed. And an
+            inbox update only has an effect while the mailbox is genuinely open and you are
+            inside the Mail branch of the menu. Two small things in the same place: the paste
+            field ran its OK action n times on the nth open, and both Sku input fields now
+            reliably release the keyboard when they close.
+        Technical: MailboxOpenFlag was set in MAIL_SHOW but never cleared anywhere;
+            MAIL_CLOSED now clears it. MAIL_INBOX_UPDATE does not only arrive at an open
+            mailbox - the server also sends it when mail arrives later - and it ran
+            unchecked into the generic OnUpdate (SkuZOptions/templates.lua). That is not a
+            quiet refresh: it discards the current level's children, rebuilds them and calls
+            VocalizeCurrentMenuName. On top of the flag we now check MailFrame:IsVisible()
+            and walk the parent chain up to the Local contributor node L["Mail"] - only
+            there is a rebuild a refresh rather than an intrusion. The forced SlashFunc call
+            without a menu position survives only for the genuine open-mailbox case; a
+            background event must never force the menu open.
+            The typing readout from v42.08 appends rather than overwrites on purpose,
+            otherwise fast typing swallows characters - but it had no ceiling. At roughly
+            0.4s per character against four to five keystrokes per second the queue grows
+            without bound, and the dequeue pushes a backlog into C_VoiceChat.SpeakText at
+            about 100 entries per second, where Sku can no longer catch up with it. Hence
+            two new methods in SkuVoice-1.0, GetBttsQueueDepth and TrimBttsQueue(aKeep):
+            only what is still WAITING in Sku's own queue is dropped, never anything already
+            handed over - which is why it cannot cut a word in half, and why it is legitimate
+            even with "never reset the queues", a setting that is about cutting off speech in
+            progress. The cap is three waiting characters. The backlog is dropped before the
+            OK callback runs, and both MAIL_SEND_SUCCESS and the field confirmation in
+            MailEditor now speak overwriting instead of appending. EditBoxPasteShow attached
+            its OnEnterPressed via HookScript on EVERY call - HookScript does not replace, it
+            chains - so the OK callback ran n times on the nth open; it now lives in the
+            create-once branch. Both input fields call ClearFocus when they hide, because the
+            field is a grandchild of the hidden frame and the keyboard focus would otherwise
+            stay on an invisible edit box.
+
+    French: Sku is now available in French
+        Simple: Sku can now be used in French - tested on a French client. Around 95 percent
+            of the menu and announcement texts are translated (3063 of 3220 entries), and
+            everything else falls back to English automatically, so there is never a gap or
+            an empty entry. Two things that were still missing have been added: the route and
+            waypoint names of the translation pipeline have their own French table with 153
+            entries, whose place names are imported from a real French client capture rather
+            than guessed, and all 158 places where text is held bilingually in the code now
+            carry a French version as well. The GAME names -
             creatures, quests, items, objects - are imported wholesale from Questie, so they
             are Blizzard's own French strings rather than machine translations and match what
             a French client displays, which is what keeps route and waypoint names
@@ -308,6 +359,11 @@ Changes in Sku v42.11
             build - an English fallback would have been wrong there (it would never match and
             would silently turn every ore and herb into an ordinary waypoint), so the set is
             derived through the object ids instead.
+            The whole French branch has since been played through on a French client and
+            works: menus, names and routes come up in French, and where no translation exists
+            the English fallback steps in without a gap. The route table
+            routeOverrides_frFR.lua and the third argument on every Sku.deEn site are part of
+            that. Since zhCN and ruRU run with Sku.Loc = enUS, the same pass covers them too.
 
     Download page: the heading named a stale version
         Simple: On the download page the main addon's heading still read "Version 42.06"

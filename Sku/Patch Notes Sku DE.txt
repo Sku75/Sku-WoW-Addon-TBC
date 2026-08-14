@@ -272,10 +272,66 @@ Aenderungen in Sku v42.11
             zusammen, weshalb Beenden und Wiederaufnehmen bei Kanalzaubern nie ausgeloest
             wurden.
 
-    Franzoesisch: Grundlage fuer eine franzoesische Sku-Version
-        Einfach: Sku bekommt Franzoesisch. Fertig ist es noch nicht: Rund 43 Prozent der
-            Menue- und Ansagetexte sind uebersetzt, alles Uebrige faellt automatisch auf
-            Englisch zurueck, so dass nie eine Luecke oder ein leerer Eintrag entsteht. Die
+    Post: Sku las nach dem Absenden eines Briefes das Getippte noch einmal vor
+        Einfach: Eine Weile nachdem ein Brief abgeschickt war, fing Sku an, die
+            eingegebenen Buchstaben zu wiederholen - teilweise lange nachdem der Briefkasten
+            schon geschlossen war. Dahinter steckten zwei voneinander unabhaengige Fehler.
+            Erstens galt der Briefkasten intern bis zum naechsten /reload als offen, sobald
+            man ihn einmal geoeffnet hatte; jede spaeter eintreffende Post baute daraufhin
+            das Menue neu auf und sagte den aktuellen Eintrag erneut an - egal, wo im Menue
+            man gerade war. Stand man dabei auf einem Brieffeld, war dieser Eintrag der
+            gerade eingegebene Text. Zweitens haengte das zeichenweise Vorlesen beim Tippen
+            jedes Zeichen hinten an die Sprachschlange an: Wer schneller tippt, als die
+            Stimme spricht, baute damit einen Rueckstau auf, den das Schliessen des
+            Eingabefelds nicht beendete - er wurde einfach weiter abgearbeitet.
+            Jetzt folgt die Ansage dem Tippen: Faellt sie zu weit zurueck, wird das noch
+            nicht Gesprochene verworfen, statt hinterherzulaufen. "Gesendet" und die
+            Bestaetigung eines Feldes kommen sofort, nicht mehr hinter allem Getippten. Und
+            eine Posteingangs-Aktualisierung wirkt nur noch, solange der Briefkasten
+            wirklich offen ist und man sich im Post-Zweig des Menues befindet. Zwei
+            Kleinigkeiten am selben Ort: Das Einfuegefeld fuehrte seine OK-Aktion beim
+            n-ten Oeffnen n-mal aus, und beide Sku-Eingabefelder geben beim Schliessen jetzt
+            zuverlaessig die Tastatur wieder frei.
+        Technisch: MailboxOpenFlag wurde in MAIL_SHOW gesetzt, aber nirgends
+            zurueckgesetzt; MAIL_CLOSED loescht es jetzt. MAIL_INBOX_UPDATE kommt nicht nur
+            am geoeffneten Briefkasten - der Server schickt es auch, wenn spaeter Post
+            eintrifft - und lief ungebremst in den generischen OnUpdate
+            (SkuZOptions/templates.lua). Der ist kein stiller Refresh: Er verwirft die
+            Kinder der aktuellen Ebene, baut sie neu auf und ruft VocalizeCurrentMenuName.
+            Zusaetzlich zur Flagge pruefen wir jetzt MailFrame:IsVisible() und laufen die
+            Elternkette bis zum Local-Beitragsknoten L["Mail"] hoch - nur dort ist ein
+            Neuaufbau ein Refresh und kein Fremdeingriff. Der SlashFunc-Zwangsaufruf ohne
+            Menue-Position bleibt allein fuer den echten Fall am offenen Briefkasten; ein
+            Hintergrundereignis darf das Menue nie aufzwingen.
+            Das Tipp-Vorlesen aus v42.08 haengt bewusst an, statt zu ueberschreiben, sonst
+            verschluckt schnelles Tippen Zeichen - aber es hatte keine Obergrenze. Bei rund
+            0,4 Sekunden je Zeichen gegen vier bis fuenf Anschlaege pro Sekunde waechst die
+            Schlange unbegrenzt, und die Abarbeitung schiebt einen Rueckstau mit etwa 100
+            Eintraegen je Sekunde in C_VoiceChat.SpeakText, wo Sku ihn nicht mehr einholt.
+            Neu in SkuVoice-1.0 sind deshalb GetBttsQueueDepth und TrimBttsQueue(aKeep):
+            Verworfen wird ausschliesslich, was noch in Skus eigener Schlange WARTET, nie
+            etwas bereits Uebergebenes - deshalb kann dabei kein Wort zerschnitten werden,
+            und deshalb ist das auch mit "Warteschlangen nie zuruecksetzen" zulaessig, denn
+            diese Einstellung meint das Abwuergen laufender Sprache. Der Deckel liegt bei
+            drei wartenden Zeichen. Vor dem OK-Rueckruf wird der Rueckstau verworfen, und
+            MAIL_SEND_SUCCESS wie die Feldbestaetigung in MailEditor sprechen jetzt
+            ueberschreibend statt anhaengend. EditBoxPasteShow haengte sein OnEnterPressed
+            bei JEDEM Aufruf per HookScript an - HookScript ersetzt nicht, es kettet -,
+            weshalb der OK-Rueckruf beim n-ten Oeffnen n-mal lief; er steht jetzt im
+            Einmal-Zweig. Beide Eingabefelder rufen beim Ausblenden ClearFocus, da das Feld
+            ein Enkel des versteckten Rahmens ist und der Tastaturfokus sonst an einem
+            unsichtbaren Eingabefeld haengen bleibt.
+
+    Franzoesisch: Sku gibt es jetzt auf Franzoesisch
+        Einfach: Sku laesst sich jetzt auf Franzoesisch benutzen - getestet auf einem
+            franzoesischen Client. Rund 95 Prozent der Menue- und Ansagetexte sind uebersetzt (3063 von 3220
+            Eintraegen), alles Uebrige faellt automatisch auf Englisch zurueck, so dass nie
+            eine Luecke oder ein leerer Eintrag entsteht. Dazu kommen zwei Dinge, die frueher
+            noch fehlten: Die Routen- und Wegpunktnamen der Uebersetzungsstrecke haben eine
+            eigene franzoesische Tabelle mit 153 Eintraegen, deren Ortsnamen aus einer echten
+            Aufnahme eines franzoesischen Clients importiert und nicht geraten sind, und alle
+            158 zweisprachig im Code stehenden Texte fuehren jetzt auch eine franzoesische
+            Fassung. Die
             SPIELnamen - Kreaturen, Quests, Gegenstaende, Objekte - sind vollstaendig aus
             Questie uebernommen, also Blizzards eigene franzoesische Zeichenketten und nicht
             maschinell uebersetzt; sie stimmen mit dem ueberein, was ein franzoesischer
@@ -342,6 +398,12 @@ Aenderungen in Sku v42.11
             englischer Rueckfall falsch gewesen (er haette nie gepasst und jedes Erz und Kraut
             still zu einem gewoehnlichen Wegpunkt gemacht), die Menge wird deshalb ueber die
             Objekt-IDs abgeleitet.
+            Der gesamte franzoesische Zweig ist inzwischen auf einem franzoesischen Client
+            durchgespielt worden und laeuft: Menues, Namen und Routen erscheinen
+            franzoesisch, und wo keine Uebersetzung vorliegt, greift der englische Rueckfall
+            ohne Luecke. Die Routentabelle routeOverrides_frFR.lua und das dritte Argument
+            an allen Sku.deEn-Stellen sind Teil davon. Da zhCN und ruRU auf Sku.Loc = enUS
+            laufen, deckt derselbe Durchlauf sie mit ab.
 
     Downloadseite: die Ueberschrift nannte eine veraltete Version
         Einfach: Auf der Downloadseite stand in der Ueberschrift zum Haupt-Addon noch

@@ -62,6 +62,25 @@ end
 
 ------------------------------------------------------------------------------------------------------------
 local MailboxOpenFlag = false
+
+-- [v42.11] Steht der Nutzer gerade IM Post-Menue? Der Post-Zweig haengt als
+-- Local-Fensterbeitrag (SkuCore.localWindowContributors, Knotenname = L["Mail"])
+-- unter "Lokal"; wir laufen die Elternkette hoch und suchen genau diesen Knoten.
+-- Nur dort darf ein Posteingangs-Update das Menue neu aufbauen -- der generische
+-- OnUpdate (SkuZOptions/templates.lua) verwirft die Kinder der aktuellen Ebene,
+-- baut sie neu UND spricht den aktuellen Eintrag erneut aus. Auf einem fremden
+-- Zweig ist das kein Refresh, sondern ein Fremdeingriff mit Sprachausgabe.
+local function tCursorIsInMailMenu()
+   local tNode = SkuOptions and SkuOptions.currentMenuPosition
+   while tNode do
+      if tNode.name == L["Mail"] then
+         return true
+      end
+      tNode = tNode.parent
+   end
+   return false
+end
+
 function Mail:MAIL_SHOW(...)
    --print("MAIL_SHOW", ...)
    SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Mail"])
@@ -70,20 +89,42 @@ function Mail:MAIL_SHOW(...)
 end
 
 ------------------------------------------------------------------------------------------------------------
+-- [v42.11] MAIL_INBOX_UPDATE kommt NICHT nur am geoeffneten Briefkasten: der Server
+-- schickt es auch, wenn spaeter neue Post eintrifft oder der Posteingang sonstwie
+-- aktualisiert wird. Frueher lief das ungebremst in den generischen OnUpdate --
+-- und weil MailboxOpenFlag nirgends zurueckgesetzt wurde (MAIL_CLOSED hat es nie
+-- geloescht), galt "Briefkasten offen" ab dem ersten Besuch bis zum /reload. Ergebnis:
+-- irgendwann NACH dem Absenden eines Briefes baute Sku das Menue an beliebiger
+-- Stelle neu auf und las den aktuellen Eintrag erneut vor -- bei einem Brieffeld
+-- also den gerade eingegebenen Text. Ohne Menue-Position wurde sogar zwangsweise
+-- das Post-Menue aufgerissen (Invariante: ein Hintergrund-Ereignis darf das Menue
+-- nie aufzwingen).
+-- Jetzt: nur waehrend der Briefkasten wirklich sichtbar ist UND der Cursor im
+-- Post-Zweig steht. Sonst passiert nichts -- der Zweig ist dynamisch und baut sich
+-- beim naechsten Abstieg ohnehin frisch auf.
 function Mail:MAIL_INBOX_UPDATE(...)
    --print("MAIL_INBOX_UPDATE", ...)
-   if MailboxOpenFlag == true then
-      if SkuOptions.currentMenuPosition then
+   if MailboxOpenFlag ~= true then
+      return
+   end
+   if not (_G.MailFrame and MailFrame:IsVisible()) then
+      return
+   end
+   if SkuOptions.currentMenuPosition then
+      if tCursorIsInMailMenu() then
          SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
-      else
-         SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Mail"])
       end
+   else
+      SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Mail"])
    end
 end
 
 ------------------------------------------------------------------------------------------------------------
 function Mail:MAIL_CLOSED(...)
    --dprint("MAIL_CLOSED", ...)
+   -- [v42.11] Briefkasten wieder als geschlossen merken -- fehlte, siehe
+   -- MAIL_INBOX_UPDATE.
+   MailboxOpenFlag = false
    if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
       _G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
    end
@@ -92,7 +133,11 @@ end
 ------------------------------------------------------------------------------------------------------------
 function Mail:MAIL_SEND_SUCCESS(...)
    --dprint("MAIL_SEND_SUCCESS", ...)
-   SkuOptions.Voice:OutputStringBTtts(L["Sent"], false, true, 0.2)
+   -- [v42.11] Ueberschreibend (frueher: anhaengend). "Gesendet" ist die Quittung auf
+   -- eine gerade ausgeloeste Aktion und muss SOFORT kommen; angehaengt stand sie
+   -- hinter allem, was noch in der Queue lag -- nach einem laengeren Brieftext waren
+   -- das womoeglich hunderte Einzelzeichen aus dem Tipp-Vorlesen.
+   SkuOptions.Voice:OutputStringBTtts(L["Sent"], true, true, 0.2)
    -- [v42.08] Erst bei tatsaechlichem Erfolg den Entwurf leeren (frueher wurde er
    -- optimistisch direkt nach SendMail geleert -> bei Fehlschlag verloren). Danach
    -- zurueck auf den Brief-Eintrag; die Kinder werden beim naechsten Abstieg mit
@@ -182,11 +227,14 @@ function Mail:MailEditor(aTargetValue, aLabelPrefix)
 				if aLabelPrefix and tFieldEntry then
 					-- engine 2 = Blizzard TTS, immer: der Wert ist Freitext (Spielername,
 					-- Betreff, Brieftext), den die Sku-Audiodatenbank nicht kennt.
-					SkuOptions.Voice:OutputStringBTtts(tFieldEntry.name, false, true, 0.2, nil, nil, nil, 2)
+					-- [v42.11] Ueberschreibend: die Bestaetigung des Feldes ist das, was der
+					-- Nutzer JETZT hoeren will -- nicht erst hinter dem zeichenweisen
+					-- Vorlesen des gerade Getippten.
+					SkuOptions.Voice:OutputStringBTtts(tFieldEntry.name, true, true, 0.2, nil, nil, nil, 2)
 				end
 			end)
 		elseif aLabelPrefix and tFieldEntry then
-			SkuOptions.Voice:OutputStringBTtts(tFieldEntry.name, false, true, 0.2, nil, nil, nil, 2)
+			SkuOptions.Voice:OutputStringBTtts(tFieldEntry.name, true, true, 0.2, nil, nil, nil, 2)
 		end
 	end)
 end
