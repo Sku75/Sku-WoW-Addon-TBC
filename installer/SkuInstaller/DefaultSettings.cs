@@ -6,12 +6,13 @@ namespace SkuInstaller
     /// <summary>
     /// ===========================================================================
     /// PARKED FOR FUTURE USE — NOT CURRENTLY INVOKED.
-    /// We decided (for now) NOT to enforce any specific Sku addon settings. The
-    /// single call site in MainForm.RunInstall is commented out, so nothing in
-    /// this class runs. It compiles but is inert and harmless. Kept in place so
-    /// the hook is ready if a future iteration wants to seed Sku defaults — at
-    /// which point: re-enable the call, flip <see cref="Enabled"/>, and implement
-    /// the chosen mechanism below. (Game-client CVar blockers are a SEPARATE,
+    /// We decided (for now) NOT to enforce any specific Sku addon settings.
+    /// Nothing calls into this class, so nothing in it runs. It compiles but is
+    /// inert and harmless. Kept in place so the hook is ready if a future
+    /// iteration wants to seed Sku defaults — at which point: call
+    /// <see cref="ApplyIfEnabled"/> from InstallRunner.Execute (per target, after
+    /// the addons are in place), flip <see cref="Enabled"/>, and implement the
+    /// chosen mechanism below. (Game-client CVar blockers are a SEPARATE,
     /// active concern handled by GameSettings.cs — do not put them here.)
     /// ===========================================================================
     ///

@@ -234,7 +234,9 @@ namespace SkuInstaller
         /// false if skipped as already-current. <paramref name="force"/> reinstalls
         /// even if the tag matches.
         /// </summary>
-        public async Task<bool> InstallAddonAsync(AddonSpec spec, AssetRef resolved, bool force)
+        public async Task<bool> InstallAddonAsync(AddonSpec spec, AssetRef resolved, bool force,
+                                                  System.Threading.CancellationToken cancel =
+                                                      default(System.Threading.CancellationToken))
         {
             if (resolved == null)
             {
@@ -294,7 +296,13 @@ namespace SkuInstaller
                     string mb = total > 0 ? $"{mbDone} / {total / 1048576} MB" : $"{mbDone} MB";
                     _report(new InstallProgress { Addon = spec.DisplayName, Phase = "download",
                         Percent = pct, Message = Loc.Format("ai.downloading", spec.DisplayName, mb) });
-                });
+                }, cancel);
+
+                // Past this point the work is local and short (extract, copy), so
+                // there is no further cancellation check: interrupting a folder
+                // copy halfway is how you get an addon that looks installed and
+                // isn't. The download is the long part and it is cancellable.
+                cancel.ThrowIfCancellationRequested();
 
                 // 2. Extract to a temp staging dir.
                 _report(new InstallProgress { Addon = spec.DisplayName, Phase = "extract",

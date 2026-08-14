@@ -1,70 +1,78 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 
 namespace SkuInstaller
 {
-    /// <summary>What the user picked in the pre-flight <see cref="UpdatePromptForm"/>.</summary>
+    /// <summary>What the user picked on the opening screen.</summary>
     public enum UpdateChoice
     {
         /// <summary>Closed / cancelled — do nothing.</summary>
         Close,
-        /// <summary>One-click update: open the main form and run the update immediately.</summary>
+        /// <summary>Update (or install) everything we detected, no further questions.</summary>
         UpdateNow,
-        /// <summary>Open the full installer form with all options.</summary>
-        FullInstaller,
+        /// <summary>Walk the wizard and choose clients and components.</summary>
+        Customize,
     }
 
     /// <summary>
-    /// Pre-flight dialog shown BEFORE the main installer form when an existing Sku
-    /// install is detected (modeled on the Accessible Arena installer's update
-    /// prompt). It lets a returning user update with one click instead of walking
-    /// the full form, or Browse to a different AddOns folder if auto-detection
-    /// picked the wrong one / missed it. "Full installer" opens the classic form.
+    /// The opening screen: what is installed where, and what happens next.
     ///
-    /// The real work still happens in <see cref="MainForm"/>: "Update now" opens it
-    /// in auto-update mode, which re-runs the normal plan — that already skips
-    /// up-to-date addons and, crucially, re-syncs every addon's TOC "## Interface:"
-    /// line to the newest installed client, so a pure "client got patched" run just
-    /// bumps the addons onto the current client with no download.
+    /// Three things changed from the old version.
     ///
-    /// Accessibility: WinForms Labels aren't auto-announced on a custom Form, so we
-    /// mirror the heading+body into Form.AccessibleDescription and onto the default
-    /// button, and refresh both whenever the target folder changes.
+    /// Browse is gone from the front row. It used to sit as button two of four,
+    /// looking like a peer of "Update now", so the first thing a returning user
+    /// met was a decision about folder paths. It now appears ONLY when no
+    /// installation was found — the one case where the user really does have to
+    /// point us at something — and then it is the primary button.
+    ///
+    /// "Full installer…" is gone too. Nothing explained how it differed from
+    /// "Update now". It is now "Change what gets installed…", and the body text
+    /// spells out what each button will do before the user commits.
+    ///
+    /// And the screen reports EVERY client, not one. A user with Anniversary and
+    /// Classic Era used to be told about whichever the detector happened to sort
+    /// first, with no hint the other existed.
     /// </summary>
     public class UpdatePromptForm : Form
     {
         public UpdateChoice Choice { get; private set; } = UpdateChoice.Close;
 
-        /// <summary>The AddOns folder the user ended up targeting (may change via Browse).</summary>
-        public string ChosenAddonsFolder { get; private set; }
-
-        private string _installed;
-        private string _latest;
-        private bool _updateAvailable;
+        private readonly List<InstallTarget> _targets;
 
         private Label _titleLabel;
         private Label _infoLabel;
-        private Button _updateButton;
+        private Button _primaryButton;
         private Button _browseButton;
-        private Button _fullButton;
+        private Button _customizeButton;
         private Button _closeButton;
 
-        public UpdatePromptForm(string addonsFolder, string installed, string latest, bool updateAvailable)
+        public UpdatePromptForm(List<InstallTarget> targets)
         {
-            ChosenAddonsFolder = addonsFolder;
-            _installed = installed;
-            _latest = latest;
-            _updateAvailable = updateAvailable;
-
+            _targets = targets;
             BuildUi();
             RefreshTexts();
         }
 
+        /// <summary>Clients we found on disk (Sku installed or not).</summary>
+        private List<InstallTarget> Found => _targets.FindAll(t => t.ClientFound);
+
+        /// <summary>Clients that already have Sku.</summary>
+        private List<InstallTarget> WithSku => _targets.FindAll(t => t.HasSku);
+
+        /// <summary>
+        /// What "Update now" acts on: the clients that already have Sku, or — on a
+        /// machine where Sku is new — every client we found.
+        /// </summary>
+        public List<InstallTarget> OneClickTargets =>
+            WithSku.Count > 0 ? WithSku : Found;
+
         private void BuildUi()
         {
-            Text = Loc.Get("update.title");
-            Size = new Size(520, 250);
+            Text = Loc.Get("app.title") + " " + WizardForm.InstallerVersion();
+            ClientSize = new Size(600, 420);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
@@ -73,97 +81,127 @@ namespace SkuInstaller
 
             _titleLabel = new Label
             {
-                Font = new Font("Segoe UI", 13f, FontStyle.Bold),
-                Location = new Point(18, 18),
-                Size = new Size(468, 30),
+                Font = new Font("Segoe UI", 13.5f, FontStyle.Bold),
+                Location = new Point(20, 18),
+                Size = new Size(560, 30),
             };
 
             _infoLabel = new Label
             {
-                Location = new Point(18, 56),
-                Size = new Size(468, 96),
+                Location = new Point(20, 54),
+                Size = new Size(560, 200),
             };
 
-            // Four buttons across the bottom: Update now / Browse / Full installer / Close.
-            int y = 168, w = 112, gap = 8, x = 18;
-            _updateButton = new Button { Location = new Point(x, y), Size = new Size(w, 34) };
-            _updateButton.Click += (s, e) => { Choice = UpdateChoice.UpdateNow; Close(); };
-            x += w + gap;
+            // Stacked full-width, not a row. The choices carry real sentences now
+            // ("Sku neu oder für weitere Spielversionen installieren") which no
+            // sensible row of buttons could fit, and one-per-line is the order a
+            // screen reader walks them in anyway.
+            int y = 264, w = 560, h = 38, gap = 8, x = 20;
 
-            _browseButton = new Button { Location = new Point(x, y), Size = new Size(w, 34) };
+            _primaryButton = new Button { Location = new Point(x, y), Size = new Size(w, h) };
+            _primaryButton.Click += (s, e) => { Choice = UpdateChoice.UpdateNow; Close(); };
+
+            // Occupies the same slot as the primary button; only one is ever shown.
+            _browseButton = new Button { Location = new Point(x, y), Size = new Size(w, h), Visible = false };
             _browseButton.Click += OnBrowse;
-            x += w + gap;
+            y += h + gap;
 
-            _fullButton = new Button { Location = new Point(x, y), Size = new Size(w, 34) };
-            _fullButton.Click += (s, e) => { Choice = UpdateChoice.FullInstaller; Close(); };
-            x += w + gap;
+            _customizeButton = new Button { Location = new Point(x, y), Size = new Size(w, h) };
+            _customizeButton.Click += (s, e) => { Choice = UpdateChoice.Customize; Close(); };
+            y += h + gap;
 
-            _closeButton = new Button { Location = new Point(x, y), Size = new Size(w, 34) };
+            _closeButton = new Button { Location = new Point(x, y), Size = new Size(w, h) };
             _closeButton.Click += (s, e) => { Choice = UpdateChoice.Close; Close(); };
 
             Controls.AddRange(new Control[]
             {
-                _titleLabel, _infoLabel, _updateButton, _browseButton, _fullButton, _closeButton,
+                _titleLabel, _infoLabel, _primaryButton, _browseButton, _customizeButton, _closeButton,
             });
 
-            AcceptButton = _updateButton;
             CancelButton = _closeButton;
-            ActiveControl = _updateButton;
         }
 
-        /// <summary>(Re)applies all visible text and accessibility from the current state.</summary>
+        /// <summary>
+        /// Announce the whole screen on arrival. This is the first thing the user
+        /// hears from the installer, and it has to say where they are, what was
+        /// found, and what the buttons will do — without them having to go and
+        /// read a label to find out.
+        /// </summary>
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            ScreenReaderAnnouncer.Announce(this, $"{_titleLabel.Text}. {_infoLabel.Text}");
+        }
+
         private void RefreshTexts()
         {
-            bool exists = Program.SkuInstalled(ChosenAddonsFolder);
+            bool anySku = WithSku.Count > 0;
+            bool anyClient = Found.Count > 0;
+            bool anyUpdate = _targets.Exists(t => t.UpdateAvailable);
 
-            _titleLabel.Text = !exists
-                ? Loc.Get("update.heading.notFound")
-                : (_updateAvailable ? Loc.Get("update.heading.available")
-                                    : Loc.Get("update.heading.current"));
-
-            string installedLine = string.IsNullOrEmpty(_installed)
-                ? Loc.Get("update.installedUnknown")
-                : Loc.Format("update.installed", _installed);
-
-            string body;
-            if (!exists)
-            {
-                body = Loc.Get("update.browseHint");
-            }
-            else if (_updateAvailable)
-            {
-                body = installedLine + Environment.NewLine
-                     + Loc.Format("update.latest", _latest) + Environment.NewLine
-                     + Loc.Format("update.folder", ChosenAddonsFolder);
-            }
+            if (!anyClient)
+                _titleLabel.Text = Loc.Get("update.heading.noClient");
+            else if (!anySku)
+                _titleLabel.Text = Loc.Get("update.heading.notInstalled");
+            else if (anyUpdate)
+                _titleLabel.Text = Loc.Get("update.heading.available");
             else
-            {
-                body = installedLine + Environment.NewLine
-                     + Loc.Get("update.current") + Environment.NewLine
-                     + Loc.Format("update.folder", ChosenAddonsFolder);
-            }
-            _infoLabel.Text = body;
+                _titleLabel.Text = Loc.Get("update.heading.current");
 
-            _updateButton.Text = Loc.Get("update.updateBtn");
+            _infoLabel.Text = ComposeBody(anyClient, anySku);
+
+            // The primary action is Browse only when there is nothing to act on.
+            _browseButton.Visible = !anyClient;
+            _primaryButton.Visible = anyClient;
+
             _browseButton.Text = Loc.Get("update.browseBtn");
-            _fullButton.Text = Loc.Get("update.fullBtn");
-            _closeButton.Text = Loc.Get("update.closeBtn");
+            _primaryButton.Text = anySku ? Loc.Get("update.updateBtn") : Loc.Get("update.installBtn");
+            _customizeButton.Text = Loc.Get("update.customizeBtn");
+            _closeButton.Text = Loc.Get("nav.close");
 
-            // Can only update in place if we actually found Sku in the target folder.
-            _updateButton.Enabled = exists;
+            _browseButton.AccessibleName = Loc.Get("update.browseAcc");
+            _primaryButton.AccessibleName = anySku
+                ? Loc.Get("update.updateAcc") : Loc.Get("update.installAcc");
+            _customizeButton.AccessibleName = Loc.Get("update.customizeAcc");
+            _closeButton.AccessibleName = Loc.Get("update.closeAcc");
 
-            _updateButton.AccessibleName = Loc.Get("update.updateBtn");
-            _browseButton.AccessibleName = Loc.Get("update.browseBtn");
-            _fullButton.AccessibleName = Loc.Get("update.fullBtn");
-            _closeButton.AccessibleName = Loc.Get("update.closeBtn");
-
-            string announce = $"{_titleLabel.Text}. {body}";
+            string announce = $"{_titleLabel.Text}. {_infoLabel.Text}";
             AccessibleDescription = announce;
-            _updateButton.AccessibleDescription = announce;
-            // When Update is disabled, focus lands elsewhere — mirror onto Browse too.
+            _primaryButton.AccessibleDescription = announce;
             _browseButton.AccessibleDescription = announce;
 
-            ActiveControl = exists ? _updateButton : _browseButton;
+            AcceptButton = anyClient ? _primaryButton : _browseButton;
+            ActiveControl = anyClient ? _primaryButton : _browseButton;
+        }
+
+        /// <summary>
+        /// One line per detected client, then a plain statement of what each
+        /// button does. The button explanations are in the body on purpose: a
+        /// button label has room for two words, and "what will this actually do to
+        /// my install" is the question the reports said people could not answer.
+        /// </summary>
+        private string ComposeBody(bool anyClient, bool anySku)
+        {
+            var sb = new StringBuilder();
+
+            if (!anyClient)
+            {
+                sb.AppendLine(Loc.Get("update.noClientBody"));
+                return sb.ToString();
+            }
+
+            foreach (var t in Found)
+                sb.AppendLine($"{t.DisplayName}: {t.StatusLine()}");
+
+            sb.AppendLine();
+
+            string names = string.Join(", ", OneClickTargets.ConvertAll(t => t.DisplayName));
+            sb.AppendLine(anySku
+                ? Loc.Format("update.explainUpdate", names)
+                : Loc.Format("update.explainInstall", names));
+            sb.AppendLine(Loc.Get("update.explainCustomize"));
+
+            return sb.ToString();
         }
 
         private void OnBrowse(object sender, EventArgs e)
@@ -178,17 +216,28 @@ namespace SkuInstaller
                     return;
 
                 string resolved = WowLocator.ResolveUserPickedFolder(dlg.SelectedPath);
-                if (resolved == null || !Program.SkuInstalled(resolved))
+                if (resolved == null)
                 {
-                    MessageBox.Show(this, Loc.Get("update.notFoundText"),
-                        Loc.Get("update.notFoundTitle"),
+                    MessageBox.Show(this, Loc.Get("dlg.notRecognized.text"),
+                        Loc.Get("dlg.notRecognized.title"),
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                ChosenAddonsFolder = resolved;
-                Program.InspectInstall(resolved, out _installed, out _latest, out _updateAvailable);
+                // File the folder under the client it actually belongs to, so the
+                // rest of the wizard treats it as that client rather than as a
+                // nameless path. If the flavor can't be read, it goes to the
+                // primary target (Anniversary).
+                string product = WowLocator.ProductForAddOnsFolder(resolved);
+                var target = _targets.Find(t => t.Product == product) ?? _targets[0];
+
+                target.AddOnsPath = resolved;
+                target.AutoDetected = false;
+                target.RefreshInstalledVersion();
+
                 RefreshTexts();
+                ScreenReaderAnnouncer.Announce(this,
+                    Loc.Format("folders.picked", target.DisplayName, resolved, target.StatusLine()));
             }
         }
     }

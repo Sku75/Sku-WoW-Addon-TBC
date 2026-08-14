@@ -347,7 +347,7 @@ Sku/SkuCore/updateCheck.lua  ← in-game "newer version" nudge over SkuChat
 
 ```powershell
 cd installer\SkuInstaller
-dotnet build                 # Debug → bin\Debug\net472\SkuInstaller.exe
+dotnet build                 # Debug → bin\Debug\net48\SkuInstaller.exe
 dotnet build -c Release      # Release
 ```
 

@@ -1,15 +1,33 @@
 <#
 release.ps1 - one-command Sku release pipeline.
 
+  TWO INDEPENDENT VERSION LINES. The Sku addon is 42.x; the installer has its
+  own 4.x line (installer\SkuInstaller\SkuInstaller.csproj <Version>). Most Sku
+  releases ship an unchanged installer, and an installer fix often needs no new
+  addon. This script keeps both straight:
+    - every main release rebuilds the exe and attaches it, changed or not, so
+      the newest installer is always on the newest release;
+    - the website link is a rolling releases/latest/download URL that never goes
+      stale, and the version shown beside it is read from the BUILT EXE;
+    - -PublishInstaller ships a new exe on its own, no Sku release needed.
+
   MAIN RELEASE (the usual case):
-    installer\release.ps1 -Version 42.07
+    installer\release.ps1 -Version 42.12
       1. Rebuild the installer exe.
-      2. Build Sku-42.07.zip (bumps Sku\Sku.toc Title/Version in place).
-      3. Bump Config.FallbackMainVersion and the docs download links.
+      2. Build Sku-42.12.zip (bumps Sku\Sku.toc Title/Version in place).
+      3. Bump Config.FallbackMainVersion and the docs download links, and sync
+         the installer version shown on the download page.
       4. Commit those edits and push main.
-      5. Create GitHub release v42.07 (Latest badge) carrying BOTH
-         Sku-42.07.zip and SkuInstaller.exe.
+      5. Create GitHub release v42.12 (Latest badge) carrying BOTH
+         Sku-42.12.zip and SkuInstaller.exe, noting the installer version.
       6. Announce to both Discord channels (identical bilingual message).
+
+  INSTALLER ONLY (no new Sku version - bump <Version> in the csproj first):
+    installer\release.ps1 -PublishInstaller
+      Rebuilds the exe, replaces the asset on whichever release currently holds
+      the Latest badge (so releases/latest/download serves it), updates the
+      version on the download page, commits and pushes.
+      -BackfillLatestAssets is the old name for this and still works.
 
   LOGIN TOOL (rare - a permanent "rolling" tag so BOTH the website link and the
   installer's download URL never go stale; re-uploads the asset to the same tag.
@@ -20,11 +38,6 @@ release.ps1 - one-command Sku release pipeline.
   SKUMAPPER (rare - a plain WoW addon, so handled like the Sku addon: a
   versioned release, and the script points the docs link at that version):
     installer\release.ps1 -PublishSkuMapper -SkuMapperVersion 4.9    (tag "skumapper-4.9")
-
-  ONE-TIME BACKFILL (make the new latest/download links resolve on the current
-  release, and migrate the docs links). Run once; every future main release
-  keeps latest/download valid on its own:
-    installer\release.ps1 -BackfillLatestAssets
 
   FLAGS usable with any mode:
     -DryRun       print every action WITHOUT performing it (no build, no file
@@ -46,6 +59,7 @@ param(
     [string]$LoginToolVersion,
     [switch]$PublishSkuMapper,
     [string]$SkuMapperVersion,
+    [switch]$PublishInstaller,
     [switch]$BackfillLatestAssets,
     [switch]$Prerelease,
     [switch]$SkipDiscord,
@@ -73,7 +87,7 @@ $SkuDir      = Join-Path $RepoRoot 'Sku'
 $DocsHtml    = Join-Path $RepoRoot 'docs\index.html'
 $ConfigCs    = Join-Path $PSScriptRoot 'SkuInstaller\Config.cs'
 $Csproj      = Join-Path $PSScriptRoot 'SkuInstaller\SkuInstaller.csproj'
-$ExeBuilt    = Join-Path $PSScriptRoot 'SkuInstaller\bin\Release\net472\SkuInstaller.exe'
+$ExeBuilt    = Join-Path $PSScriptRoot 'SkuInstaller\bin\Release\net48\SkuInstaller.exe'
 $Dist        = Join-Path $PSScriptRoot 'dist'
 $ExeDist     = Join-Path $Dist 'SkuInstaller.exe'
 $ZipHelper   = Join-Path $PSScriptRoot 'tools\build_sku_zip.py'
@@ -141,6 +155,36 @@ function Set-DocsInstallerLatest {
     $html = [regex]::Replace($html, 'releases/download/v\d+\.\d+/SkuInstaller\.exe', 'releases/latest/download/SkuInstaller.exe')
     Write-Text $DocsHtml $html
 }
+
+# The installer's version, read from the BUILT EXE rather than the csproj text.
+# The exe is what actually gets uploaded, so it is the only honest source: if a
+# build ever went stale, trusting the csproj would put a number on the website
+# that no downloadable file carries. Trailing zero components are dropped but
+# never below major.minor, matching WizardForm.InstallerVersion so the website
+# and the window title always agree.
+function Get-InstallerVersion {
+    if (-not (Test-Path $ExeDist)) { return $null }
+    $fv = (Get-Item $ExeDist).VersionInfo.FileVersion    # e.g. "4.0.0.0"
+    if (-not $fv) { return $null }
+    $parts = @($fv.Split('.'))
+    $last = $parts.Count - 1
+    while ($last -gt 1 -and $parts[$last] -eq '0') { $last-- }
+    return ($parts[0..$last] -join '.')
+}
+
+# Keep the version shown next to the installer download in step with the exe we
+# are about to publish. The link itself is a rolling releases/latest/download
+# URL and never needs touching - this is purely so the page can TELL the user
+# which build that URL will hand them.
+function Set-DocsInstallerVersion {
+    $ver = Get-InstallerVersion
+    if ($DryRun) { Dry "docs: installer version heading -> (from built exe)"; return }
+    if (-not $ver) { Write-Warning "  Could not read the installer version from $ExeDist; docs heading left as-is."; return }
+    if (-not (Test-Path $DocsHtml)) { return }
+    $html = Read-Text $DocsHtml
+    $new = [regex]::Replace($html, 'Sku Installer - Version [\d.]+', "Sku Installer - Version $ver")
+    if ($new -eq $html) { Note "  docs installer version already $ver." } else { Write-Text $DocsHtml $new; Info "  docs installer version -> $ver" }
+}
 function Set-DocsLoginToolRolling {
     if ($DryRun) { Dry "docs: login tool link -> releases/download/$LoginToolTag/WoW-Login-Tool.zip"; return }
     if (-not (Test-Path $DocsHtml)) { return }
@@ -169,6 +213,49 @@ function Sync-PatchNotesToDocs {
     foreach ($p in $pairs) {
         if (Test-Path $p.src) { Copy-Item $p.src $p.dst -Force -ErrorAction Stop; Info "  synced $(Split-Path $p.dst -Leaf)" }
     }
+}
+
+# Compare two dotted versions the way the INSTALLER does: component by
+# component, as INTEGERS (AddonInstaller.CompareVersions). Missing components
+# count as 0, so 42.11 and 42.11.0 are equal. Returns 1 / 0 / -1.
+function Compare-SkuVersion($a, $b) {
+    $pa = @($a.Split('.') | ForEach-Object { [int]$_ })
+    $pb = @($b.Split('.') | ForEach-Object { [int]$_ })
+    $n = [Math]::Max($pa.Count, $pb.Count)
+    for ($i = 0; $i -lt $n; $i++) {
+        if ($i -lt $pa.Count) { $x = $pa[$i] } else { $x = 0 }
+        if ($i -lt $pb.Count) { $y = $pb[$i] } else { $y = 0 }
+        if ($x -gt $y) { return 1 }
+        if ($x -lt $y) { return -1 }
+    }
+    return 0
+}
+
+# Refuse a version that would be read as a DOWNGRADE. The format check alone is
+# not enough: 42.2 looks perfectly well formed and is numerically BELOW 42.10,
+# so shipping it would leave every existing user silently never offered the
+# update - a failure with no error message anywhere, on the users' machines
+# rather than ours. Checked against whatever currently holds the Latest badge.
+function Assert-VersionSortsAbovePrevious($ver) {
+    $prevTag = & gh release view --repo $Slug --json tagName --jq '.tagName' 2>$null
+    if ($LASTEXITCODE -ne 0 -or -not $prevTag) {
+        Write-Warning "  Could not resolve the current Latest release; skipping the ordering check."
+        $global:LASTEXITCODE = 0
+        return
+    }
+    if ($prevTag -notmatch '^v(\d+(\.\d+)+)$') {
+        Note "  Latest release '$prevTag' is not a vNN.NN tag; skipping the ordering check."
+        return
+    }
+    $prev = $Matches[1]
+    if ((Compare-SkuVersion $ver $prev) -le 0) {
+        throw ("Version $ver does NOT sort above the current release $prev. " +
+               "The installer compares each dotted component as an INTEGER, so existing users " +
+               "would read $ver as a downgrade and never be offered it. " +
+               "After $prev use the next whole number (e.g. " + $prev.Split('.')[0] + "." +
+               ([int]$prev.Split('.')[1] + 1) + ") or add a third component ($prev.1).")
+    }
+    Info "  Version check: $ver sorts above the current release $prev."
 }
 
 function Set-FallbackVersion($ver) {
@@ -283,6 +370,7 @@ function Do-MainRelease($ver) {
     $tag = "v$ver"
     Info "=== Sku release $tag ==="
 
+    Assert-VersionSortsAbovePrevious $ver
     Require-Clean-Repo
     Build-InstallerExe
     $zip = Build-SkuZip $ver
@@ -291,14 +379,22 @@ function Do-MainRelease($ver) {
     Set-FallbackVersion $ver
     Set-DocsSkuLink $ver
     Set-DocsInstallerLatest    # idempotent: keeps installer link on latest/download
+    Set-DocsInstallerVersion   # show WHICH installer that rolling link serves
     Sync-PatchNotesToDocs      # mirror the hand-written notes onto the website
+
+    $insVer = Get-InstallerVersion
+    if ($insVer) { Info "  Installer version going out with this release: $insVer" }
 
     Info "Committing + pushing the release commit..."
     # Commit-Push is a no-op when nothing changed, so re-running after a partial
     # failure (commit already made) skips straight to creating the release.
     Commit-Push @('Sku/Sku.toc', 'Sku/Patch Notes Sku EN.txt', 'Sku/Patch Notes Sku DE.txt', 'installer/SkuInstaller/Config.cs', 'docs/index.html', 'docs/Patch-Notes-English.txt', 'docs/Patch-Notes-Deutsch.txt') "release: v$ver"
 
+    # Record the installer version in the release notes. The exe is attached to
+    # every addon release whether or not it changed, so without this there is no
+    # way to tell from the release page which installer build a given tag carries.
     if ($Notes) { $notesArg = $Notes } else { $notesArg = "Sku TBC v$ver. See the patch notes on the download page." }
+    if ($insVer) { $notesArg = "$notesArg`n`nIncluded Sku Installer: $insVer" }
     if ($Prerelease) { $latestArg = '--prerelease' } else { $latestArg = '--latest' }
     Info "Creating GitHub release $tag with Sku-$ver.zip + SkuInstaller.exe..."
     Exec "gh release create $tag (zip + exe) $latestArg --target main" {
@@ -358,23 +454,41 @@ function Do-PublishSkuMapper($ver) {
     Info "  SkuMapper $ver published. Docs link now uses releases/download/$tag/SkuMapper-$ver.zip"
 }
 
-# --- Mode: one-time backfill so latest/download resolves NOW -----------------
-function Do-Backfill {
-    Info "=== Backfill: attach the current installer exe to the Latest release + migrate docs ==="
+# --- Mode: ship a new installer WITHOUT a new Sku release --------------------
+# The two version lines are independent: most Sku releases ship an unchanged
+# installer, and an installer fix often needs no new addon at all. This is that
+# second case. It rebuilds the exe, replaces the asset on whichever release
+# currently holds the Latest badge (so releases/latest/download keeps serving the
+# newest build), updates the version shown on the website, and commits.
+#
+# -BackfillLatestAssets is the original name and still works; it did exactly
+# this, just described as a one-time migration.
+function Do-PublishInstaller {
+    Info "=== Publish installer: rebuild, attach to the Latest release, update docs ==="
     Build-InstallerExe
+    $insVer = Get-InstallerVersion
+    if ($insVer) { Info "  Installer version: $insVer" }
+
     if ($DryRun) {
         Dry "gh release view (resolve Latest tag) + upload SkuInstaller.exe --clobber"
         Set-DocsInstallerLatest
+        Set-DocsInstallerVersion
+        Dry "git add docs/index.html; git commit; git push"
         return
     }
+
     $latestTag = & gh release view --repo $Slug --json tagName --jq '.tagName'
     if ($LASTEXITCODE -ne 0 -or -not $latestTag) { throw "Could not resolve the Latest release tag." }
     Info "  Latest release is $latestTag"
     Exec "upload SkuInstaller.exe to $latestTag --clobber" { gh release upload $latestTag $ExeDist --repo $Slug --clobber }
+
     Set-DocsInstallerLatest
-    Info "  Docs installer link now uses releases/latest/download/SkuInstaller.exe"
+    Set-DocsInstallerVersion
+    if ($insVer) { $msg = "installer: publish v$insVer on $latestTag" } else { $msg = "installer: publish on $latestTag" }
+    Commit-Push @('docs/index.html', 'installer/SkuInstaller/SkuInstaller.csproj') $msg
+
+    Info "  Done. releases/latest/download/SkuInstaller.exe now serves $insVer (from $latestTag)."
     Note "  (Login tool + SkuMapper docs links migrate when you run -PublishLoginTool / -PublishSkuMapper.)"
-    Note "  Review docs/index.html, then commit + push so Pages redeploys."
 }
 
 # --- Dispatch ---------------------------------------------------------------
@@ -382,13 +496,13 @@ if ($DryRun) { Write-Host "DRY RUN - no outward-facing action will be performed.
 
 if ($PublishLoginTool)         { Do-PublishLoginTool }
 elseif ($PublishSkuMapper)     { Do-PublishSkuMapper $SkuMapperVersion }
-elseif ($BackfillLatestAssets) { Do-Backfill }
+elseif ($PublishInstaller -or $BackfillLatestAssets) { Do-PublishInstaller }
 elseif ($Version)              { Do-MainRelease $Version }
 else {
     Write-Host "Nothing to do. Pick a mode:" -ForegroundColor Yellow
-    Write-Host "  -Version 42.07            main release"
+    Write-Host "  -Version 42.12            main Sku release (also rebuilds + attaches the installer)"
+    Write-Host "  -PublishInstaller         new installer only, no new Sku version"
     Write-Host "  -PublishLoginTool         refresh the login tool rolling release"
     Write-Host "  -PublishSkuMapper -SkuMapperVersion 4.9"
-    Write-Host "  -BackfillLatestAssets     one-time: fix latest/download on the current release"
     Write-Host "  add -DryRun to preview any of them."
 }

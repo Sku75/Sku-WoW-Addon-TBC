@@ -144,9 +144,21 @@ namespace SkuInstaller
         /// (bytesSoFar, totalBytesOrMinus1). totalBytes is -1 when the server
         /// doesn't send Content-Length.
         /// </summary>
-        public async Task DownloadFileAsync(string url, string destPath, Action<long, long> progress = null)
+        /// <summary>
+        /// Streams a release asset to disk, reporting (bytesDone, bytesTotal).
+        ///
+        /// <paramref name="cancel"/> is honoured per 64 KB chunk, which is what
+        /// makes the Cancel button on the progress window mean something: the main
+        /// addon is a 157 MB download, and a cancel that only took effect once it
+        /// had finished would be indistinguishable from one that did nothing.
+        /// Cancelling throws <see cref="OperationCanceledException"/>; the caller
+        /// is responsible for clearing up the partial file.
+        /// </summary>
+        public async Task DownloadFileAsync(string url, string destPath,
+                                            Action<long, long> progress = null,
+                                            CancellationToken cancel = default(CancellationToken))
         {
-            using (var resp = await _http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
+            using (var resp = await _http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancel))
             {
                 resp.EnsureSuccessStatusCode();
                 long total = resp.Content.Headers.ContentLength ?? -1L;
@@ -157,9 +169,10 @@ namespace SkuInstaller
                     var buf = new byte[1 << 16];
                     long done = 0;
                     int read;
-                    while ((read = await src.ReadAsync(buf, 0, buf.Length)) > 0)
+                    while ((read = await src.ReadAsync(buf, 0, buf.Length, cancel)) > 0)
                     {
-                        await dst.WriteAsync(buf, 0, read);
+                        cancel.ThrowIfCancellationRequested();
+                        await dst.WriteAsync(buf, 0, read, cancel);
                         done += read;
                         progress?.Invoke(done, total);
                     }

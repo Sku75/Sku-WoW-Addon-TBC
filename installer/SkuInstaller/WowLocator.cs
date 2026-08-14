@@ -31,6 +31,56 @@ namespace SkuInstaller
     /// </summary>
     public static class WowLocator
     {
+        /// <summary>
+        /// The clients this Sku build supports, in the order the wizard offers
+        /// them. Anniversary is the primary target; the same Sku build serves
+        /// Classic Era (what makes it load there is TocSync writing that client's
+        /// exact interface build — see the class remarks).
+        ///
+        /// This is deliberately the SUPPORTED list, not the detected list: the
+        /// version-selection page shows every entry so a user whose client sits
+        /// somewhere we don't probe can still tick it and browse to it. Detection
+        /// then fills in the folder for the ones we did find.
+        /// </summary>
+        public static readonly string[] SupportedProducts =
+        {
+            Config.AnniversaryFlavor,   // wow_anniversary
+            "wow_classic_era",
+        };
+
+        /// <summary>
+        /// Very short tag for a client, used to prefix progress rows so a
+        /// multi-client run can be told apart at a glance ("TBC:", "Era:").
+        ///
+        /// Deliberately two or three characters. These prefix every line of the
+        /// event log, and anything longer pushes the actual message off to the
+        /// right and makes the log tiring to read back.
+        /// </summary>
+        public static string ShortLabel(string product)
+        {
+            switch (product)
+            {
+                case "wow_anniversary": return "TBC";
+                case "wow_classic_era": return "Era";
+                case "wow_classic":     return "Classic";
+                case "wow_sod":         return "SoD";
+                default:                return product;
+            }
+        }
+
+        /// <summary>Friendly name for a flavor token, with no folder suffix.</summary>
+        public static string ProductLabel(string product)
+        {
+            switch (product)
+            {
+                case "wow_anniversary": return "Anniversary (TBC)";
+                case "wow_classic_era": return "Classic Era";
+                case "wow_classic":     return "Classic";
+                case "wow_sod":         return "Season of Discovery";
+                default:                return product;
+            }
+        }
+
         /// <summary>Candidate WoW base directories to probe (before asking the user).</summary>
         private static string[] CandidateBaseDirs()
         {
@@ -128,6 +178,27 @@ namespace SkuInstaller
             return found;
         }
 
+        /// <summary>
+        /// Which client an Interface\AddOns folder belongs to, e.g.
+        /// wow_classic_era, or null if it can't be told. An AddOns path is
+        /// &lt;base&gt;\&lt;flavor&gt;\Interface\AddOns, so the flavor folder is two
+        /// levels up and its .flavor.info names the product.
+        ///
+        /// Used when the user browses to a folder by hand: it lets the wizard file
+        /// their choice under the right client instead of guessing.
+        /// </summary>
+        public static string ProductForAddOnsFolder(string addonsFolder)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(addonsFolder)) return null;
+                var iface = Directory.GetParent(addonsFolder.TrimEnd('\\'));
+                var flavorDir = iface?.Parent;
+                return flavorDir != null ? ReadFlavorProduct(flavorDir.FullName) : null;
+            }
+            catch { return null; }
+        }
+
         private static string ReadFlavorProduct(string flavorDir)
         {
             try
@@ -143,17 +214,7 @@ namespace SkuInstaller
 
         private static string FriendlyFlavorName(string product, string flavorDir)
         {
-            string folder = Path.GetFileName(flavorDir);
-            string label;
-            switch (product)
-            {
-                case "wow_anniversary":  label = "Anniversary (TBC)"; break;
-                case "wow_classic_era":  label = "Classic Era"; break;
-                case "wow_classic":      label = "Classic"; break;
-                case "wow_sod":          label = "Season of Discovery"; break;
-                default:                 label = product; break;
-            }
-            return $"{label}  —  {folder}";
+            return $"{ProductLabel(product)}  —  {Path.GetFileName(flavorDir)}";
         }
 
         /// <summary>

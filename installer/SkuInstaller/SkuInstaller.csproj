@@ -1,19 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <!-- Matches the Accessible Arena installer: .NET Framework 4.7.2 WinForms.
-       WinForms native controls are read correctly by NVDA/JAWS out of the box. -->
+  <!-- .NET Framework 4.8 WinForms. Native WinForms controls are read correctly
+       by NVDA/JAWS out of the box.
+
+       Was net472 until the wizard rework. Bumped to net48 because
+       ScreenReaderAnnouncer needs System.Windows.Forms.Automation
+       (AutomationNotificationKind / AutomationNotificationProcessing), which the
+       net472 reference assemblies do not expose — without it the installer
+       cannot speak its own progress, which is the entire point of the rework.
+       4.8 ships in Windows 10 1903+ and every Windows 11, and the KOTOR
+       accessibility installer already targets it for the same user base. -->
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>latest</LangVersion>
     <AssemblyName>SkuInstaller</AssemblyName>
     <RootNamespace>SkuInstaller</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <!-- Single source of truth for the installer's own version. Surfaced in the
-         window title (MainForm.InstallerVersion) so it's announced by the screen
-         reader; trailing zero components are dropped, so 3.0.0 shows as "v3". -->
-    <Version>3.0.2</Version>
+         window title (WizardForm.InstallerVersion) so it's announced by the
+         screen reader, and written onto the download page by release.ps1.
+
+         This is the INSTALLER's version and is deliberately independent of the
+         Sku addon version: an addon release usually ships the same installer,
+         and an installer fix can ship without a new addon. release.ps1 keeps
+         both straight - it rebuilds and attaches the exe to every addon release,
+         and -PublishInstaller ships a new exe on its own.
+
+         4.0 = the guided-wizard rework: spoken progress (UIA), one run across
+         several WoW clients, per-client folder confirmation, self-updating
+         progress rows, a real Cancel button. -->
+    <Version>4.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Principal;
 using System.Windows.Forms;
@@ -32,84 +33,187 @@ namespace SkuInstaller
 
             // Discover the newest main-addon release from the github.com "latest"
             // redirect so this exe keeps finding releases published after it was
-            // built. Must run before the pre-flight prompt / MainForm — both read
-            // Config.MainVersion. On failure the build-time pin stays in effect.
+            // built. Must run before anything reads Config.MainVersion — which the
+            // opening screen does, to say whether an update exists. On failure the
+            // build-time pin stays in effect.
             GitHubClient.ResolveAndAdoptLatestMainVersion();
 
-            // Pre-flight: if Sku is already installed, show a small "update or
-            // reinstall" prompt (like the Accessible Arena installer) so a returning
-            // user can update with one click instead of walking the whole form. A
-            // fresh machine (no Sku found) drops straight into the full installer,
-            // which has its own Browse for a custom location.
-            string addonsFolder = pathArg ?? AutoDetectAddonsFolder();
-            if (SkuInstalled(addonsFolder))
-            {
-                InspectInstall(addonsFolder, out string installed, out string latest, out bool updateAvailable);
-                Logger.Info($"Existing Sku detected in '{addonsFolder}': installed={installed ?? "?"}, latest={latest}, updateAvailable={updateAvailable}");
+            var targets = InstallTarget.BuildAll();
+            ApplyPathArgument(targets, pathArg);
 
-                var prompt = new UpdatePromptForm(addonsFolder, installed, latest, updateAvailable);
+            foreach (var t in targets)
+                Logger.Info($"Target {t.Product}: path={t.AddOnsPath ?? "(none)"}, " +
+                            $"installed={t.InstalledVersion ?? "(none)"}, latest={Config.MainVersion}");
+
+            // Loop, so that Back on the wizard's first page returns to the opening
+            // screen instead of dropping the user out of the installer. "Back that
+            // quits" is exactly the kind of dead end this rework is removing.
+            while (true)
+            {
+                var prompt = new UpdatePromptForm(targets);
                 Application.Run(prompt);
 
-                switch (prompt.Choice)
+                if (prompt.Choice == UpdateChoice.UpdateNow)
                 {
-                    case UpdateChoice.UpdateNow:
-                        Logger.Info("User chose one-click update.");
-                        Application.Run(new MainForm(prompt.ChosenAddonsFolder, autoUpdate: true));
+                    RunOneClick(prompt.OneClickTargets);
+                    return;
+                }
+
+                if (prompt.Choice == UpdateChoice.Customize)
+                {
+                    if (RunWizard(targets)) return;
+                    continue;   // Back from the first wizard page — reopen the start
+                }
+
+                Logger.Info("User closed the opening screen without acting.");
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Honours an AddOns path passed on the command line by filing it under
+        /// the client it belongs to, so the rest of the wizard treats it as that
+        /// client rather than as an anonymous folder.
+        /// </summary>
+        private static void ApplyPathArgument(List<InstallTarget> targets, string pathArg)
+        {
+            if (string.IsNullOrEmpty(pathArg)) return;
+
+            string resolved = WowLocator.ResolveUserPickedFolder(pathArg);
+            if (resolved == null)
+            {
+                Logger.Warning($"Ignoring unrecognised path argument: {pathArg}");
+                return;
+            }
+
+            string product = WowLocator.ProductForAddOnsFolder(resolved);
+            var target = targets.Find(t => t.Product == product) ?? targets[0];
+            target.AddOnsPath = resolved;
+            target.AutoDetected = false;
+            target.RefreshInstalledVersion();
+            Logger.Info($"Path argument applied to {target.Product}: {resolved}");
+        }
+
+        /// <summary>
+        /// "Update now": no further questions. Everything defaults, except the
+        /// voice pack, which follows whatever is already installed rather than
+        /// silently reverting the user to the language default.
+        /// </summary>
+        private static void RunOneClick(List<InstallTarget> selected)
+        {
+            if (selected == null || selected.Count == 0)
+            {
+                Logger.Warning("One-click update requested with no usable target.");
+                return;
+            }
+
+            Logger.Info("User chose the one-click update.");
+            var options = new InstallOptions
+            {
+                LanguagePackIndex = DetectInstalledLanguagePack(selected),
+            };
+            Application.Run(new ProgressForm(selected, options));
+        }
+
+        /// <summary>
+        /// The full wizard: which clients, where they live, what to include, then
+        /// the run. Written as a step loop rather than nested calls so Back works
+        /// at every stage — the old installer had no way back from anywhere.
+        ///
+        /// Returns true when the installer is finished with the user (they ran the
+        /// install, or cancelled outright), false when they pressed Back off the
+        /// first page and should land on the opening screen again.
+        /// </summary>
+        private static bool RunWizard(List<InstallTarget> targets)
+        {
+            Logger.Info("User chose to change what gets installed.");
+
+            List<InstallTarget> selected = null;
+            var options = new InstallOptions();
+            int step = 0;
+
+            while (true)
+            {
+                switch (step)
+                {
+                    case 0:
+                    {
+                        var form = new VersionSelectForm(targets);
+                        Application.Run(form);
+                        if (form.Result == WizardResult.Back) return false;  // back to the start
+                        if (form.Result != WizardResult.Next) return true;   // cancelled
+                        selected = form.Selected;
+                        step = 1;
                         break;
-                    case UpdateChoice.FullInstaller:
-                        Logger.Info("User chose the full installer.");
-                        Application.Run(new MainForm(prompt.ChosenAddonsFolder ?? pathArg));
+                    }
+
+                    case 1:
+                    {
+                        // Always shown, listing exactly the clients that were
+                        // ticked. It used to be skipped for a single, correctly
+                        // detected client — which meant deselecting a version made
+                        // the whole page vanish and left the user with no way to
+                        // see, let alone correct, where the install was going.
+                        var form = new FolderConfirmForm(selected);
+                        Application.Run(form);
+                        if (form.Result == WizardResult.Back) { step = 0; break; }
+                        if (form.Result != WizardResult.Next) return true;
+                        step = 2;
                         break;
+                    }
+
+                    case 2:
+                    {
+                        if (options.LanguagePackIndex < 0)
+                            options.LanguagePackIndex = DetectInstalledLanguagePack(selected);
+
+                        var form = new ComponentsForm(options);
+                        Application.Run(form);
+                        if (form.Result == WizardResult.Back) { step = 1; break; }
+                        if (form.Result != WizardResult.Next) return true;
+                        options = form.Options;
+                        step = 3;
+                        break;
+                    }
+
                     default:
-                        Logger.Info("User closed the update prompt without acting.");
-                        break;
+                        Application.Run(new ProgressForm(selected, options));
+                        return true;
                 }
             }
-            else
+        }
+
+        /// <summary>
+        /// The language pack already present in one of the selected clients, so an
+        /// update refreshes what the user has instead of switching them to the
+        /// installer-language default. Falls back to that default when none is
+        /// installed.
+        /// </summary>
+        private static int DetectInstalledLanguagePack(List<InstallTarget> selected)
+        {
+            foreach (var target in selected)
             {
-                Application.Run(new MainForm(pathArg));
+                if (string.IsNullOrEmpty(target.AddOnsPath)) continue;
+                for (int i = 0; i < Config.LanguagePacks.Count; i++)
+                {
+                    string folder = Path.Combine(target.AddOnsPath, Config.LanguagePacks[i].FolderName);
+                    if (Directory.Exists(folder)) return i;
+                }
             }
+
+            string want = Loc.Current == Lang.De ? "SkuAudioData_fast_de" : "SkuAudioData_en";
+            int idx = Config.LanguagePacks.FindIndex(p => p.FolderName == want);
+            return idx >= 0 ? idx : 0;
         }
 
         /// <summary>The primary managed addon (the main Sku addon).</summary>
         internal static AddonSpec PrimarySpec() =>
             Config.CoreAddons.Find(s => s.IsPrimary) ?? Config.CoreAddons[0];
 
-        /// <summary>
-        /// The AddOns folder we'd install into by default: the first detected
-        /// Sku-supported client (Anniversary is sorted first), or null if none.
-        /// </summary>
-        internal static string AutoDetectAddonsFolder()
-        {
-            var flavors = WowLocator.DetectFlavors();
-            return flavors.Count > 0 ? flavors[0].AddOnsPath : null;
-        }
-
         /// <summary>True if the main Sku addon folder exists under this AddOns folder.</summary>
         internal static bool SkuInstalled(string addonsFolder) =>
             !string.IsNullOrEmpty(addonsFolder) &&
             Directory.Exists(Path.Combine(addonsFolder, PrimarySpec().FolderName));
-
-        /// <summary>
-        /// Reports the installed Sku version, the latest available, and whether an
-        /// update exists. Installed version comes from the install manifest tag if
-        /// present, else the addon's TOC "## Version" line; either may be null
-        /// (unknown) — treated as oldest, so we err toward offering the update.
-        /// </summary>
-        internal static void InspectInstall(string addonsFolder,
-            out string installed, out string latest, out bool updateAvailable)
-        {
-            var primary = PrimarySpec();
-            latest = Config.MainVersion;
-
-            var manifest = InstallManifest.Load(addonsFolder);
-            string tag = manifest.GetTag(primary.FolderName);
-            installed = !string.IsNullOrEmpty(tag)
-                ? tag.TrimStart('v', 'V')
-                : WowLocator.ReadTocVersion(addonsFolder, primary.FolderName);
-
-            updateAvailable = AddonInstaller.CompareVersions(installed, latest) < 0;
-        }
 
         private static bool IsAdmin()
         {
