@@ -4992,12 +4992,20 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 			if aGossipListTable[index].liveName then
 				local tLiveFn = aGossipListTable[index].liveName
 				tNewMenuEntry.RefreshLiveName = function(self)
-					local ok, val = pcall(tLiveFn)
+					-- A live getter may return a SECOND value: the entry's full
+					-- text (tooltip/description). Refresh it alongside the name
+					-- so the description the user reads with the full-text key is
+					-- as current as the value they just heard -- otherwise it
+					-- would keep serving whatever was true at menu-build time.
+					local ok, val, full = pcall(tLiveFn)
 					if ok and type(val) == "string" and val ~= "" then
 						if val ~= self.name then
 							dprint("live name", self.name, "->", val)
 						end
 						self.name = val
+					end
+					if ok and type(full) == "string" and full ~= "" then
+						self.textFull = full
 					end
 				end
 			end

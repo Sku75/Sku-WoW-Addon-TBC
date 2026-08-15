@@ -2262,6 +2262,56 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 		}   
 		local tParentStats = aParentChilds[tFriendlyName].childs
 
+		-- [v42.13] Read the tooltip Blizzard would show for a paperdoll stat
+		-- frame and return it as ONE plain string.
+		--
+		-- Why not GetButtonTooltipLines: that helper pipes the scan through
+		-- SkuCore:ItemName_helper, whose SECOND return (the "long form") is
+		-- deliberately EMPTY whenever the text fits on one line -- which is most
+		-- of a stat tooltip's headline. We want every line verbatim here.
+		--
+		-- Why NumLines/GameTooltipTextLeft|Right instead of :GetRegions(): the
+		-- stat tooltips are full of AddDoubleLine (spell school breakdowns,
+		-- weapon speed/damage/dps). GetRegions() hands back the left column and
+		-- the right column as two separate runs, which would read as "Holy Fire
+		-- Nature ... 120 118 118". Walking the named line font strings keeps
+		-- each pair together.
+		local function tReadStatFrameTooltip(aFrame)
+			if not aFrame then return "" end
+			GameTooltip:ClearLines()
+			local tOnEnter = aFrame:GetScript("OnEnter")
+			if tOnEnter then
+				if not pcall(tOnEnter, aFrame) then
+					GameTooltip:ClearLines()
+				end
+			end
+
+			local tLines = {}
+			for i = 1, GameTooltip:NumLines() do
+				local tLeft = _G["GameTooltipTextLeft"..i]
+				local tRight = _G["GameTooltipTextRight"..i]
+				local tLeftText = tLeft and tLeft:GetText()
+				local tRightText = tRight and tRight:IsShown() and tRight:GetText()
+				if tLeftText and tLeftText ~= "" and tRightText and tRightText ~= "" then
+					tLines[#tLines + 1] = tLeftText..": "..tRightText
+				elseif tLeftText and tLeftText ~= "" then
+					tLines[#tLines + 1] = tLeftText
+				elseif tRightText and tRightText ~= "" then
+					tLines[#tLines + 1] = tRightText
+				end
+			end
+
+			GameTooltip:SetOwner(UIParent, "Center")
+			GameTooltip:Hide()
+			local tOnLeave = aFrame:GetScript("OnLeave")
+			if tOnLeave then
+				pcall(tOnLeave, aFrame)
+			end
+
+			if #tLines == 0 then return "" end
+			return SkuUtil:Unescape(table.concat(tLines, "\r\n"))
+		end
+
 		if not Sku.isTBC then
 			local tStatFrames = {
 				"CharacterStatFrame1",
@@ -2278,21 +2328,27 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				"CharacterRangedDamageFrame",
 			}
 
-			for i, v in pairs(tStatFrames) do
+			for i, v in ipairs(tStatFrames) do
 				local tFrameName = v
-				local tFriendlyName = SkuUtil:Unescape(_G[v.."Label"]:GetText().." ".._G[v.."StatText"]:GetText())
-				table.insert(tParentStats, tFriendlyName)
-				tParentStats[tFriendlyName] = {
-					frameName = tFrameName,
-					RoC = "Child",
-					type = "Button",
-					obj = _G[tFrameName],
-					textFirstLine = tFriendlyName,
-					textFull = "",
-					childs = {},
-					--click = true,
-				}
-
+				local tFrame = _G[tFrameName]
+				local tLabel, tValue = _G[v.."Label"], _G[v.."StatText"]
+				if tFrame and tLabel and tValue then
+					local tFriendlyName = SkuUtil:Unescape((tLabel:GetText() or "").." "..(tValue:GetText() or ""))
+					-- [v42.13] Each Era stat has its OWN frame, already carrying the
+					-- tooltip Blizzard last wrote, so there is no shared state to
+					-- reset -- just read it.
+					table.insert(tParentStats, tFriendlyName)
+					tParentStats[tFriendlyName] = {
+						frameName = tFrameName,
+						RoC = "Child",
+						type = "Button",
+						obj = _G[tFrameName],
+						textFirstLine = tFriendlyName,
+						textFull = tReadStatFrameTooltip(tFrame),
+						childs = {},
+						--click = true,
+					}
+				end
 			end
 		else
 			local tUpdateCode = {
@@ -2337,6 +2393,35 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				},
 			}
 			
+			-- [v42.13] TBC drives all 29 stats through ONE shared widget
+			-- (PlayerStatFrameLeft1), and the Blizzard setters leave their state
+			-- ON that widget: .tooltip/.tooltip2 for the generic
+			-- PaperDollStatTooltip, plus .bonusDamage/.spellCrit/.damage/... for
+			-- the four stats that install their own OnEnter handler. No setter
+			-- clears what the previous one left, and four of them overwrite
+			-- OnEnter without ever putting it back -- Blizzard's own
+			-- UpdatePaperdollStats re-points OnEnter at PaperDollStatTooltip
+			-- before every group for exactly that reason (PaperDollFrame.lua,
+			-- "reset any OnEnter scripts that may have been changed").
+			--
+			-- Sku never did that reset, so a tooltip read here would have handed
+			-- stat N-1's text to stat N. That is why the read was commented out
+			-- and every TBC stat leaf shipped with an empty textFull: the whole
+			-- Stats branch (Zauberschaden, Zaubertrefferwertung, Ausdauer, ...)
+			-- had a name but no readable description, while Resistances -- which
+			-- have one dedicated frame each -- did.
+			local function tPrepStatFrame()
+				local tFrame = PlayerStatFrameLeft1
+				if not tFrame then return nil end
+				tFrame:SetScript("OnEnter", PaperDollStatTooltip)
+				tFrame.tooltip, tFrame.tooltip2 = nil, nil
+				tFrame.bonusDamage, tFrame.minModifier = nil, nil
+				tFrame.spellCrit, tFrame.minCrit = nil, nil
+				tFrame.damage, tFrame.dps, tFrame.attackSpeed = nil, nil, nil
+				tFrame.offhandDamage, tFrame.offhandDps, tFrame.offhandAttackSpeed = nil, nil, nil
+				return tFrame
+			end
+
 			for i, v in pairs(tUpdateCode) do
 				local tFrameName = i
 				local tFriendlyName = i
@@ -2353,27 +2438,32 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				}
 
 				local tParentStatsValues = tParentStats[tFriendlyName].childs
-				for i1, v1 in pairs(v) do
-					loadstring(v1)()
+				-- ipairs, not pairs: within a group the setters are ORDER
+				-- dependent (PaperDollFrame_SetRangedAttackSpeed reads the
+				-- PaperDollFrame.noRanged flag that SetRangedDamage sets).
+				for i1, v1 in ipairs(v) do
+					-- Option 2 (live values): precompile this stat's PaperDoll
+					-- setter once, then re-run it on demand to read the current
+					-- value when the user lands on the entry. Same Blizzard
+					-- setter the build used, re-read off the shared stat frame.
+					-- Second return = the stat's tooltip, so the description the
+					-- user reads is as current as the value they hear.
+					local tStatFn = loadstring(v1)
+					local tLiveName = function()
+						if not tStatFn then return nil end
+						local tFrame = tPrepStatFrame()
+						if not tFrame then return nil end
+						if not pcall(tStatFn) then return nil end
+						local tLabel = PlayerStatFrameLeft1Label:GetText()
+						if not tLabel or tLabel == "" then return nil end
+						local tName = SkuUtil:Unescape(tLabel.." "..(PlayerStatFrameLeft1StatText:GetText() or ""))
+						return tName, tReadStatFrameTooltip(tFrame)
+					end
 
-					if PlayerStatFrameLeft1Label:GetText() and PlayerStatFrameLeft1Label:GetText() ~= "" then
+					local tFriendlyName, tFullText = tLiveName()
+					dprint("charstats", tostring(i), tostring(tFriendlyName), "tooltip chars", tostring(tFullText and #tFullText or 0))
+					if tFriendlyName then
 						local tFrameName = v
-						local tFriendlyName = SkuUtil:Unescape(PlayerStatFrameLeft1Label:GetText().." "..PlayerStatFrameLeft1StatText:GetText())
-						--local tName, tFullText = GetButtonTooltipLines(PlayerStatFrameLeft1, GameTooltip)
-
-						-- Option 2 (live values): precompile this stat's PaperDoll
-						-- setter once, then re-run it on demand to read the current
-						-- value when the user lands on the entry. Same Blizzard
-						-- setter the build used, re-read off the shared stat frame.
-						local tStatFn = loadstring(v1)
-						local tLiveName = function()
-							if not tStatFn then return nil end
-							tStatFn()
-							if PlayerStatFrameLeft1Label:GetText() and PlayerStatFrameLeft1Label:GetText() ~= "" then
-								return SkuUtil:Unescape(PlayerStatFrameLeft1Label:GetText().." "..PlayerStatFrameLeft1StatText:GetText())
-							end
-							return nil
-						end
 
 						table.insert(tParentStatsValues, tFriendlyName)
 						tParentStatsValues[tFriendlyName] = {
@@ -2382,13 +2472,23 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 							type = "Button",
 							obj = _G[tFrameName],
 							textFirstLine = tFriendlyName,
-							textFull = "",--tFullText,
+							textFull = tFullText or "",
 							childs = {},
 							liveName = tLiveName,
 							--click = true,
 						}
 					end
 				end
+			end
+
+			-- Hand the shared widget back in the state Blizzard expects, so a
+			-- real mouse hover on the paperdoll does not inherit the last stat
+			-- we probed.
+			if PlayerStatFrameLeft1 then
+				PlayerStatFrameLeft1:SetScript("OnEnter", PaperDollStatTooltip)
+			end
+			if PaperDollFrame_UpdateStats then
+				pcall(PaperDollFrame_UpdateStats)
 			end
 
 		end
