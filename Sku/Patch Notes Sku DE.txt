@@ -330,6 +330,47 @@ Aenderungen in Sku v42.11
             ein Enkel des versteckten Rahmens ist und der Tastaturfokus sonst an einem
             unsichtbaren Eingabefeld haengen bleibt.
 
+    Gegenstandslevel: bei jedem Gegenstand kam dieselbe Zahl
+        Einfach: Das Gegenstandslevel in den Gegenstandsbeschreibungen war falsch, solange
+            es das gibt. Es gehoerte gar nicht zu dem Gegenstand, den du gerade gelesen
+            hast, sondern zu irgendeinem, der irgendwann vorher in Sku nachgeschlagen wurde
+            - meist Stunden frueher -, und dabei blieb es die ganze Sitzung lang. Deshalb
+            kam bei jedem Gegenstand dieselbe Zahl, und deshalb war es so oft eine 1: ein
+            Schluessel oder ein Questgegenstand, also genau das, was frueh nachgeschlagen
+            wird und tatsaechlich Gegenstandslevel 1 hat. Ein /reload half nicht, denn die
+            falsche Zahl war kein veralteter Wert, der sich auffrischen laesst - es wurde
+            schlicht der falsche Gegenstand gefragt. Derselbe falsche Gegenstand bestimmte
+            auch die Qualitaet, die an Gegenstandsnamen angehaengt wird. Beides stimmt jetzt.
+            Angesagt wird das Gegenstandslevel ausserdem nur noch bei Ausruestung, die du
+            wirklich anlegen kannst: Schluessel, Questgegenstaende, Reagenzien und
+            Verbrauchbares haben grundsaetzlich Gegenstandslevel 1, die Zeile sagte darueber
+            also nichts aus und faellt weg. Auch dort, wo sie nie hingehoerte, ist sie
+            verschwunden - etwa in Buff-Beschreibungen und bei den Widerstaenden im
+            Charakterfenster.
+        Technisch: Das GetItem() eines Tooltips ist ein haftender Zwischenspeicher und keine
+            Auskunft darueber, was der Rahmen gerade anzeigt: ClearLines() setzt es nicht
+            zurueck, und ein SetX(), das nichts fuellt, ebenso wenig - ein nicht
+            zwischengespeicherter Gegenstand, Bankbehaelter -1, oder jeder Zauber-, Aura-
+            und Wertetooltip, hinter dem gar kein Gegenstand steht. SkuScanningTooltip wird
+            einmal bei PLAYER_LOGIN erzeugt und nie neu vergeben, sein GetItem() antwortet
+            also weiter mit dem letzten Gegenstand, der jemals darueber aufgeloest wurde.
+            Dazu kam, dass TooltipLines_helper den Link aus SkuScanningTooltip las,
+            gleichgueltig wessen Regionen ihm uebergeben worden waren - und die meisten
+            Aufrufer uebergeben die des GameTooltip. Zwei kleinere Fehler kamen hinzu: der
+            zweite Rueckgabewert von GetSpell(), der kein Link ist, wurde nach ItemLink
+            geschrieben und an GetDetailedItemLevelInfo gereicht; und ein nicht
+            zwischengespeicherter Gegenstand liefert einen LEEREN Link, der in Lua wahr ist
+            und die Pruefung "if ItemLink then" damit ungehindert passierte. Die Aufloesung
+            liegt jetzt in SkuUtil - TooltipFirstLine, TooltipItemLink, ItemQualityString,
+            ItemLevel - und traut GetItem() nur dann, wenn der gemeldete Name zur tatsaechlich
+            angezeigten ersten Tooltipzeile passt; das ist der einzige verlaessliche
+            Anhaltspunkt. Die drei doppelten Bloecke in LocalMenu und utilities gehen darin
+            auf; tScanTooltipRegions ermittelt Link, Qualitaet und Gegenstandslevel selbst
+            und gibt den geprueften Link zurueck, damit nachgelagerte Aufrufer genau den
+            bekommen, den der Text beschreibt. Die Ausruestungspruefung liest equipLoc aus
+            GetItemInfo und faellt auf C_Item.GetItemInventoryTypeByID zurueck, solange der
+            Gegenstandsspeicher noch kalt ist.
+
     Franzoesisch: Sku gibt es jetzt auf Franzoesisch
         Einfach: Sku laesst sich jetzt auf Franzoesisch benutzen - getestet auf einem
             franzoesischen Client. Rund 95 Prozent der Menue- und Ansagetexte sind uebersetzt (3063 von 3220

@@ -299,6 +299,40 @@ Changes in Sku v42.11
             field is a grandchild of the hidden frame and the keyboard focus would otherwise
             stay on an invisible edit box.
 
+    Item level: every item was announced with the same number
+        Simple: The item level in item descriptions was wrong for as long as it has
+            existed. It did not belong to the item you were reading at all - it belonged to
+            whatever item had last been looked up somewhere in Sku, usually hours earlier,
+            and it stayed that way for the whole session. That is why it read the same
+            number on every item, and why it was so often a 1: a key or a quest item, the
+            kind of thing that gets looked up early and really is item level 1. A /reload
+            did not help, because the wrong number was not stale data that gets refreshed -
+            it was simply the wrong item being asked. The same wrong item also decided the
+            quality that is appended to item names. Both are correct now. Item level is also
+            only announced for gear you can actually wear: keys, quest items, reagents and
+            consumables are all item level 1 by definition, so that line said nothing about
+            them and is gone. It has also disappeared from places it never belonged, such as
+            buff descriptions and the resistances on the character screen.
+        Technical: A tooltip's GetItem() is a sticky cache, not a description of what the
+            frame renders: ClearLines() does not reset it, and neither does a SetX() that
+            fails to populate - an uncached item, bank container -1, or any spell, aura or
+            stat tooltip that has no item at all. SkuScanningTooltip is created once at
+            PLAYER_LOGIN and never re-owned, so its GetItem() keeps answering with the last
+            item that ever resolved through it. On top of that, TooltipLines_helper read the
+            link from SkuScanningTooltip no matter whose regions it had been handed, and most
+            callers hand it GameTooltip's. Two smaller faults compounded it: GetSpell()'s
+            second return, which is not a link, was assigned into ItemLink and passed to
+            GetDetailedItemLevelInfo; and an uncached item yields an EMPTY link, which is
+            truthy in Lua and sailed straight through the "if ItemLink then" guard. Resolution
+            now lives in SkuUtil - TooltipFirstLine, TooltipItemLink, ItemQualityString,
+            ItemLevel - and trusts GetItem() only when the name it reports matches the
+            tooltip's rendered first line, which is the one piece of ground truth available.
+            The three duplicated blocks in LocalMenu and utilities collapse into it;
+            tScanTooltipRegions resolves link, quality and item level itself and returns the
+            validated link, so callers downstream get the one the text describes. The
+            equippable gate reads equipLoc from GetItemInfo and falls back to
+            C_Item.GetItemInventoryTypeByID while the item cache is still cold.
+
     French: Sku is now available in French
         Simple: Sku can now be used in French - tested on a French client. Around 95 percent
             of the menu and announcement texts are translated (3063 of 3220 entries), and

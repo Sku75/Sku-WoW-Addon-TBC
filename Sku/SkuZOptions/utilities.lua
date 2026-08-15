@@ -115,31 +115,17 @@ end
 --different helpers
 ---------------------------------------------------------------------------------------------------------------------------------------
 function TooltipLines_helper(...)
-   local tQualityString = nil
-
-	local itemName, ItemLink
-	itemName, ItemLink = _G["SkuScanningTooltip"]:GetItem()
-
-	local tEffectiveILvl
-
-	if not ItemLink then
-		itemName, ItemLink = _G["GameTooltip"]:GetItem()
-	end
-
-	if ItemLink then
-      for x = 0, #ITEM_QUALITY_COLORS do
-         local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
-         if tItemCol == "ffa334ee" then 
-            tItemCol = "ffa335ee"
-         end
-         if string.find(ItemLink, tItemCol) then
-            if _G["ITEM_QUALITY"..x.."_DESC"] then
-               tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
-            end
-         end
-      end
-		tEffectiveILvl = GetDetailedItemLevelInfo(ItemLink)
-   end
+	-- [v42.11] This helper is called with the REGIONS of many different tooltips
+	-- (SkuScanningTooltip here, GameTooltip in SkuZOptions/Core, SkuQuest, ...),
+	-- but it used to read the item link from _G["SkuScanningTooltip"] no matter
+	-- which tooltip's regions it had been handed -- so the item level and quality
+	-- belonged to a different item than the text being read out. Resolve the link
+	-- against the rendered first line instead, and only from a tooltip whose
+	-- GetItem() actually matches it. See SkuUtil:TooltipItemLink.
+	local tFirstLine = SkuUtil:TooltipFirstLine(...)
+	local ItemLink = SkuUtil:TooltipItemLink(tFirstLine, _G["SkuScanningTooltip"], _G["GameTooltip"])
+	local tQualityString = SkuUtil:ItemQualityString(ItemLink)
+	local tEffectiveILvl = SkuUtil:ItemLevel(ItemLink)
 
 	local tCounter = 1
 	local tHasTextFlag = false

@@ -63,7 +63,15 @@ local function ItemName_helper(aText)
 end
 
 
-local function tScanTooltipRegions(aTooltipObj, aQualityString, aEffectiveILvl)
+-- [v42.11] Quality and item level are resolved HERE from the tooltip we are
+-- actually scanning, instead of being computed by each caller from a
+-- possibly-stale :GetItem(). See the block comment on SkuUtil:TooltipItemLink.
+local function tScanTooltipRegions(aTooltipObj)
+	local tFirstLine = SkuUtil:TooltipFirstLine(aTooltipObj:GetRegions())
+	local tItemLink = SkuUtil:TooltipItemLink(tFirstLine, aTooltipObj)
+	local aQualityString = SkuUtil:ItemQualityString(tItemLink)
+	local aEffectiveILvl = SkuUtil:ItemLevel(tItemLink)
+
 	local tTooltipText = ""
 	local tLineCounter = 1
 	for i = 1, select("#", aTooltipObj:GetRegions()) do
@@ -83,7 +91,9 @@ local function tScanTooltipRegions(aTooltipObj, aQualityString, aEffectiveILvl)
 			end
 		end
 	end
-	return tTooltipText
+	-- Second return: the VALIDATED link, so callers that need it (GetButtonTooltipLines
+	-- hands it on to the merchant/bank menus) get the same one the text describes.
+	return tTooltipText, tItemLink
 end
 
 local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
@@ -101,30 +111,12 @@ local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
 		end
 	end
 
-	local tQualityString = nil
-	local itemName, ItemLink = tTooltipObj:GetItem()
-	local tEffectiveILvl
-
-	if not itemName then
-		itemName, ItemLink = tTooltipObj:GetSpell()
-	end
-
-	if ItemLink then
-		for x = 0, #ITEM_QUALITY_COLORS do
-			local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
-			if tItemCol == "ffa334ee" then 
-				tItemCol = "ffa335ee"
-			end
-			if string.find(ItemLink, tItemCol) then
-				if _G["ITEM_QUALITY"..x.."_DESC"] then
-					tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
-				end
-			end
-		end
-		tEffectiveILvl = GetDetailedItemLevelInfo(ItemLink)
-	end
-
-	local tTooltipText = tScanTooltipRegions(tTooltipObj, tQualityString, tEffectiveILvl)
+	-- [v42.11] The GetSpell() fallback that used to sit here assigned a spell id
+	-- (GetSpell's second return is not a link) into ItemLink and then handed it to
+	-- GetDetailedItemLevelInfo -- an item-level lookup on a spell. It could never
+	-- produce anything useful, so it is gone; tScanTooltipRegions now resolves the
+	-- link itself, and returns no item level at all for a spell tooltip.
+	local tTooltipText, ItemLink = tScanTooltipRegions(tTooltipObj)
 
 	if not aTooltipObject then
 		tTooltipObj:SetOwner(UIParent, "Center")
@@ -197,26 +189,7 @@ local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
 		if button:GetScript("OnEnter") then
 			button:GetScript("OnEnter")(button)
 
-			local tQualityString = nil
-			local itemName, ItemLink = GameTooltip:GetItem()
-			local tEffectiveILvl
-
-			if ItemLink then
-				for x = 0, #ITEM_QUALITY_COLORS do
-					local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
-					if tItemCol == "ffa334ee" then 
-						tItemCol = "ffa335ee"
-					end
-					if string.find(ItemLink, tItemCol) then
-						if _G["ITEM_QUALITY"..x.."_DESC"] then
-							tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
-						end
-					end
-				end
-				tEffectiveILvl = GetDetailedItemLevelInfo(ItemLink)
-			end
-
-			local tTooltipText = tScanTooltipRegions(GameTooltip, tQualityString, tEffectiveILvl)
+			local tTooltipText = tScanTooltipRegions(GameTooltip)
 			getItemTooltipTextHelper(function(tooltip)
 				if itemId then
 					tooltip:SetItemByID(itemId)

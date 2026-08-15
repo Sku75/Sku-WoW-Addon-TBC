@@ -139,6 +139,112 @@ function Sku.locStr(aStrings)
 	return aStrings[tLoc] or aStrings.enUS or aStrings.deDE
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Tooltip item resolution (item level + quality)
+--
+-- [v42.11] Why this exists instead of a bare GetDetailedItemLevelInfo(tt:GetItem()):
+-- a tooltip's :GetItem() is a STICKY cache, not a description of what the frame
+-- currently renders. It is not reset by ClearLines(), and it is not reset by a
+-- SetX() that fails to populate (uncached item, bank container -1, or any
+-- spell/aura/quest/stat tooltip that has no item at all). SkuScanningTooltip is
+-- created once at PLAYER_LOGIN and lives for the whole session, so its GetItem()
+-- keeps returning the last item that ever resolved through it.
+--
+-- The old code fed that straight into GetDetailedItemLevelInfo, so every item
+-- announced the item level of some unrelated leftover -- in practice ONE constant
+-- number for the entire session (confirmed in game 2026-08-15: a session-old key
+-- item, item level 1, was reported for every single item), and the same stale
+-- link also drove the quality suffix. It leaked into non-item tooltips too, since
+-- buff, resistance and trainer scans go through the same helper.
+--
+-- Ground truth is the tooltip's rendered first line. GetItem() is trusted only
+-- when the name it reports is what the tooltip actually shows right now.
+---------------------------------------------------------------------------------------------------------------------------------------
+
+-- First non-empty FontString text of a tooltip's regions (its rendered line 1).
+-- Takes the regions as varargs so callers that already hold them (the generic
+-- TooltipLines_helper) do not have to re-fetch, and so it works for any tooltip.
+function SkuUtil:TooltipFirstLine(...)
+	for i = 1, select("#", ...) do
+		local region = select(i, ...)
+		if region and region.GetObjectType and region:GetObjectType() == "FontString" then
+			local text = region.GetText and region:GetText()
+			if text and text ~= "" then
+				return text
+			end
+		end
+	end
+end
+
+-- Resolve the item link that genuinely belongs to the tooltip content described
+-- by aFirstLineText. Pass the candidate tooltip objects in preference order.
+-- Returns nil when no candidate matches, which is the correct answer for every
+-- non-item tooltip and for a stale GetItem().
+function SkuUtil:TooltipItemLink(aFirstLineText, ...)
+	if type(aFirstLineText) ~= "string" or aFirstLineText == "" then return nil end
+	local tFirstLine = self:Unescape(aFirstLineText)
+
+	for i = 1, select("#", ...) do
+		local tTooltip = select(i, ...)
+		if tTooltip and tTooltip.GetItem then
+			local tItemName, tItemLink = tTooltip:GetItem()
+			-- An uncached item yields an EMPTY link, and "" is truthy in Lua --
+			-- the original `if ItemLink then` guard let that through.
+			if type(tItemLink) == "string" and tItemLink ~= ""
+				and type(tItemName) == "string" and tItemName ~= ""
+				and string.find(tItemLink, "|Hitem:", 1, true)
+				-- plain find: item names contain pattern magic (parentheses, dashes)
+				and string.find(tFirstLine, tItemName, 1, true)
+			then
+				return tItemLink
+			end
+		end
+	end
+end
+
+-- Quality description ("Selten", "Episch", ...) for a validated item link, or nil.
+-- Derived from the link's colour code, as the original inline copies did.
+function SkuUtil:ItemQualityString(aItemLink)
+	if not aItemLink or not ITEM_QUALITY_COLORS then return nil end
+	for x = 0, #ITEM_QUALITY_COLORS do
+		local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
+		if tItemCol == "ffa334ee" then
+			tItemCol = "ffa335ee"
+		end
+		if string.find(aItemLink, tItemCol, 1, true) then
+			if _G["ITEM_QUALITY"..x.."_DESC"] then
+				return _G["ITEM_QUALITY"..x.."_DESC"]
+			end
+		end
+	end
+end
+
+-- Item level for a validated item link, or nil when there is nothing worth saying.
+-- Equippable gear only: TBC tooltips never show an item level in the first place,
+-- and every key, quest item, reagent and consumable is item level 1 -- announcing
+-- that on a bag full of junk is noise, not information. (Drop the equip-slot gate
+-- below to go back to announcing it for everything.)
+function SkuUtil:ItemLevel(aItemLink)
+	if not aItemLink or not GetDetailedItemLevelInfo then return nil end
+
+	local tEquipLoc = select(9, GetItemInfo(aItemLink))
+	if tEquipLoc == nil then
+		-- Not in the item cache yet (typical right after a login/reload). Fall
+		-- back to the static inventory type so fresh sessions are not silent.
+		local tInvType = _G.C_Item and _G.C_Item.GetItemInventoryTypeByID
+			and _G.C_Item.GetItemInventoryTypeByID(aItemLink)
+		-- 0 = IndexNonEquipType, 18 = IndexBagType (same two exclusions as above).
+		local tBagType = (_G.Enum and _G.Enum.InventoryType and _G.Enum.InventoryType.IndexBagType) or 18
+		if not tInvType or tInvType == 0 or tInvType == tBagType then return nil end
+	elseif tEquipLoc == "" or tEquipLoc == "INVTYPE_BAG" then
+		return nil
+	end
+
+	local tILvl = GetDetailedItemLevelInfo(aItemLink)
+	if type(tILvl) ~= "number" or tILvl < 1 then return nil end
+	return tILvl
+end
+
 -- Format a past server-time epoch as a spoken "N seconds/minutes/hours/days" age.
 function SkuEpochValueHelper(aValue)
 	local L = Sku.L
