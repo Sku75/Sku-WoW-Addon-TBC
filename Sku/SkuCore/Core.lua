@@ -561,6 +561,12 @@ function SkuCore:OnInitialize()
 	-- Same for the partner's six slots: their offer is the half a blind player cannot
 	-- see at all, and it also keeps "Gegenstaende des Partners" in the menu current.
 	SkuDispatcher:RegisterEventCallback("TRADE_TARGET_ITEM_CHANGED", SkuCore.TRADE_TARGET_ITEM_CHANGED)
+	-- Blizzards Sicherheits-Bestaetigung beim Handel (siehe SECURE_TRANSFER_CONFIRM_TRADE_ACCEPT).
+	-- Einzeln in pcall: AceEvent bricht bei einem Event ab, das der laufende Client nicht kennt,
+	-- und das SecureTransfer-System gibt es nicht auf jedem Client dieser Codebasis (Era/TBC).
+	pcall(function() SkuDispatcher:RegisterEventCallback("SECURE_TRANSFER_CONFIRM_TRADE_ACCEPT", SkuCore.SECURE_TRANSFER_CONFIRM_TRADE_ACCEPT) end)
+	pcall(function() SkuDispatcher:RegisterEventCallback("SECURE_TRANSFER_CANCEL", SkuCore.SECURE_TRANSFER_CANCEL) end)
+	pcall(function() SkuDispatcher:RegisterEventCallback("TRADE_UPDATE_WARNINGS", SkuCore.TRADE_UPDATE_WARNINGS) end)
 	SkuDispatcher:RegisterEventCallback("PET_STABLE_SHOW", SkuCore.PET_STABLE_SHOW)
 	SkuDispatcher:RegisterEventCallback("PET_STABLE_CLOSED", SkuCore.PET_STABLE_CLOSED)
 	SkuDispatcher:RegisterEventCallback("PET_STABLE_UPDATE", SkuCore.PET_STABLE_UPDATE)
@@ -3040,6 +3046,7 @@ function SkuCore:TRADE_SHOW(self, event, ...)
 	SkuCore._tLastOwnTradeMoney = 0
 	SkuCore._tTradeSlotState = {}
 	SkuCore._tTradeTargetSlotState = {}
+	SkuCore:ResetTradeAcceptState()
 	if _G["ContainerFrame1"] and _G["ContainerFrame1"]:IsVisible() ~= true then
 		_G["MainMenuBarBackpackButton"]:Click()
 	end
@@ -3051,6 +3058,7 @@ function SkuCore:TRADE_CLOSED(self, event, ...)
 	SkuCore._tLastOwnTradeMoney = 0
 	SkuCore._tTradeSlotState = {}
 	SkuCore._tTradeTargetSlotState = {}
+	SkuCore:ResetTradeAcceptState()
 	SkuCore:CheckFrames()
 	-- A COMPLETED trade is the only moment the traded-away items really leave the
 	-- bags -- and that BAG_UPDATE races the CheckFrames above (which snapshots the
@@ -3070,6 +3078,17 @@ function SkuCore:TRADE_CLOSED(self, event, ...)
 			if _G.SkuBagIdleRefresh then pcall(_G.SkuBagIdleRefresh) end
 		end)
 	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Ein Handel beginnt und endet ohne Restzustand: Bestaetigungsflags, die Vorwarnung wegen
+-- eines geaenderten Angebots und eine offene Sicherheitsabfrage duerfen nie in den naechsten
+-- Handel gelangen -- sonst haengt "Sicherheitsabfrage bestaetigen" im Menue eines Handels,
+-- der sie gar nicht verlangt.
+function SkuCore:ResetTradeAcceptState()
+	SkuCore._tLastPlayerAccepted = 0
+	SkuCore._tLastTargetAccepted = 0
+	SkuCore._tSecureTradePending = false
+	SkuCore._tTradeOfferWarned = false
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Name of the trade partner, one source of truth for every trade announce.
@@ -3110,7 +3129,13 @@ end
 -- announces the real slot change and re-syncs the bag list so the "im Handel" marker
 -- appears/disappears with it. Deduped per slot against the last announced item+count,
 -- because the client also fires this while a trade is merely being (re)drawn.
-function SkuCore:TRADE_PLAYER_ITEM_CHANGED(self, event, aSlot)
+--
+-- Signature note: SkuDispatcher invokes a callback as f(SkuDispatcher, eventName, payload...),
+-- so a colon-declared handler must read (aEvent, arg1, ...) -- see SkuCore:UNIT_SPELLCAST_START.
+-- The three trade handlers below used to declare (self, event, aSlot), which shifted every
+-- payload one slot to the left: aSlot was ALWAYS nil, so this handler returned on its very
+-- first line and neither the per-slot announce nor the "im Handel" refresh ever ran.
+function SkuCore:TRADE_PLAYER_ITEM_CHANGED(aEvent, aSlot)
 	local tSlot = tonumber(aSlot)
 	if not tSlot then return end
 	-- Only while the trade window is actually up. When a trade ends the client can
@@ -3155,7 +3180,7 @@ end
 -- pull items and nothing was spoken, while "Gegenstaende des Partners" kept showing
 -- whatever was there when the menu was last built. Same dedupe/visibility rules as the
 -- player side, in its own state table so the two never mask each other.
-function SkuCore:TRADE_TARGET_ITEM_CHANGED(self, event, aSlot)
+function SkuCore:TRADE_TARGET_ITEM_CHANGED(aEvent, aSlot)
 	local tSlot = tonumber(aSlot)
 	if not tSlot then return end
 	if not (_G["TradeFrame"] and _G["TradeFrame"]:IsVisible() == true) then return end
@@ -3217,20 +3242,137 @@ function SkuCore:TRADE_MONEY_CHANGED(self, event, ...)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:TRADE_ACCEPT_UPDATE(self, event, playerAccepted, targetAccepted)
-	dprint("TRADE_ACCEPT_UPDATE", self, event, playerAccepted, targetAccepted)
-	-- Wenn der Spieler bereits bestätigt hatte aber der Partner Items geändert hat,
-	-- wird die Bestätigung zurückgezogen → TTS-Ansage + Menu-Refresh
-	if _G["TradeFrame"] and _G["TradeFrame"]:IsVisible() then
-		if playerAccepted == 0 then
-			pcall(function()
-				SkuOptions.Voice:OutputStringBTtts(Sku.L["TRADE_AcceptAgain"], true, true, 0.2, nil, nil, nil, 2)
-			end)
+-- Beide Seiten des Bestaetigungsstatus. Die alte Signatur (self, event, playerAccepted,
+-- targetAccepted) las wegen des Dispatcher-Versatzes in "playerAccepted" in Wahrheit den
+-- targetAccepted-Wert -- "Handel geaendert, erneut bestaetigen" kam also zum falschen
+-- Zeitpunkt (naemlich sobald der PARTNER nicht bestaetigt hatte). Jetzt korrekt, dedupliziert
+-- pro Seite, und die Seite des Partners wird ueberhaupt zum ersten Mal angesagt: dass das
+-- Gegenueber bestaetigt hat, war fuer einen blinden Spieler bisher nicht wahrnehmbar.
+function SkuCore:TRADE_ACCEPT_UPDATE(aEvent, aPlayerAccepted, aTargetAccepted)
+	dprint("TRADE_ACCEPT_UPDATE", aPlayerAccepted, aTargetAccepted)
+	-- Bewusst OHNE Sichtbarkeitspruefung: wenn die eigene Bestaetigung den Handel sofort
+	-- abschliesst (der Partner hatte schon bestaetigt), kann TRADE_CLOSED das Fenster
+	-- bereits verborgen haben. Ein frueher Ausstieg wuerde genau die eine Ansage
+	-- verschlucken, auf die der Nutzer wartet.
+	local tPlayer = tonumber(aPlayerAccepted) or 0
+	local tTarget = tonumber(aTargetAccepted) or 0
+	local tSay = function(aText, aPrio)
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, true, true, 0.2, nil, nil, nil, aPrio or 2) end)
+	end
+
+	-- Eigene Seite.
+	if tPlayer ~= SkuCore._tLastPlayerAccepted then
+		if tPlayer == 1 then
+			-- ERST hier steht fest, dass der Handel wirklich bestaetigt ist. Die Ansage
+			-- sass frueher direkt hinter dem Klick auf "Handeln" und log daher immer dann,
+			-- wenn der Klick ins Leere ging (deaktivierter Knopf, Sicherheitsabfrage).
+			SkuCore._tSecureTradePending = false
+			tSay(Sku.L["TRADE_Accepted"])
+		elseif SkuCore._tLastPlayerAccepted == 1 then
+			-- Bestaetigung wurde zurueckgezogen, weil sich das Angebot geaendert hat.
+			tSay(Sku.L["TRADE_AcceptAgain"])
 		end
+		SkuCore._tLastPlayerAccepted = tPlayer
+	end
+
+	-- Seite des Partners.
+	if tTarget ~= SkuCore._tLastTargetAccepted then
+		local tPartner = SkuCore:TradePartnerName()
+		if tTarget == 1 then
+			tSay(tPartner .. " " .. Sku.L["TRADE_PartnerAccepted"], 1)
+		elseif SkuCore._tLastTargetAccepted == 1 then
+			tSay(tPartner .. " " .. Sku.L["TRADE_PartnerUnaccepted"], 1)
+		end
+		SkuCore._tLastTargetAccepted = tTarget
+	end
+
+	if _G["TradeFrame"] and _G["TradeFrame"]:IsVisible() then
 		C_Timer.After(0.3, function()
 			pcall(function() SkuCore:CheckFrames() end)
 		end)
 	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Blizzards Sicherheits-Bestaetigung (Blizzard_SecureTransferUI).
+--
+-- Symptom: Handel hin, Gegenangebot her, eigenes Angebot nochmal geaendert -- und ab da tut
+-- "Handeln" scheinbar nichts mehr. Grund: sobald das Angebot nach einer Bestaetigung noch
+-- einmal wechselt, beantwortet der Server AcceptTrade() nicht mehr mit einem Handel, sondern
+-- mit SECURE_TRANSFER_CONFIRM_TRADE_ACCEPT. Blizzard blendet dann ein ZWEITES Fenster ein
+-- (SecureTransferDialog) mit einem eigenen Akzeptieren-Knopf -- genau der "andere Knopf" aus
+-- der Nutzermeldung. Der Trade-Knopf im Handelsfenster bleibt sichtbar und wirkungslos.
+--
+-- Dieses Fenster liegt in <ScopedModifier forbidden="true">, und Blizzard_EnvironmentCleanup
+-- loescht C_SecureTransfer komplett aus der Addon-Umgebung (Zeile 6) -- der Anti-Scam-Schutz
+-- ist ausdruecklich so gebaut, dass ein Addon ihn nicht wegklicken kann. Sku kann den Zustand
+-- also nur ERKENNEN und ansagen; der Klickversuch unten laeuft trotzdem (pcall gekapselt),
+-- damit ein Client ohne diese Sperre einfach funktioniert und die Sperre sonst im Log steht.
+function SkuCore:SECURE_TRANSFER_CONFIRM_TRADE_ACCEPT(aEvent, ...)
+	dprint("SECURE_TRANSFER_CONFIRM_TRADE_ACCEPT")
+	SkuCore._tSecureTradePending = true
+	pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.L["TRADE_SecureConfirmNeeded"], true, true, 0.2, nil, nil, nil, 2) end)
+	-- Der Akzeptieren-Knopf des Dialogs ist die ersten 3 Sekunden absichtlich gesperrt und
+	-- zaehlt sichtbar herunter (SecureTransferDialog_TimerOnAccept). Ein Bestaetigungsversuch
+	-- davor verpufft, deshalb wird der Ablauf des Countdowns eigens angesagt.
+	if _G.C_Timer then
+		_G.C_Timer.After(3.2, function()
+			if SkuCore._tSecureTradePending == true then
+				pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.L["TRADE_SecureConfirmReady"], true, true, 0.2, nil, nil, nil, 2) end)
+			end
+		end)
+	end
+	-- Das Handelsmenue neu bauen, damit der Eintrag "Sicherheitsabfrage bestaetigen"
+	-- erscheint (Build_TradeFrame haengt ihn an _tSecureTradePending auf).
+	SkuCore:TradeMenuRefresh()
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:SECURE_TRANSFER_CANCEL(aEvent, ...)
+	dprint("SECURE_TRANSFER_CANCEL")
+	SkuCore._tSecureTradePending = false
+	SkuCore:TradeMenuRefresh()
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Vorwarnung. C_TradeInfo.ShouldShowTradeOfferWarning() ist -- anders als die gleichnamige
+-- Funktion in C_SecureTransfer -- NICHT eingeschraenkt und meldet schon vor dem Klick, dass
+-- der Partner sein Angebot nachtraeglich geaendert hat. Genau diese Lage fuehrt beim
+-- Bestaetigen in die Sicherheitsabfrage, die Sku nicht bedienen kann. Deshalb hier ansagen,
+-- solange der Nutzer noch abbrechen und den Handel sauber neu aufsetzen kann.
+function SkuCore:TRADE_UPDATE_WARNINGS(aEvent, ...)
+	if not (_G["TradeFrame"] and _G["TradeFrame"]:IsVisible()) then return end
+	local tOk, tWarn = pcall(function()
+		return _G.C_TradeInfo and _G.C_TradeInfo.ShouldShowTradeOfferWarning and _G.C_TradeInfo.ShouldShowTradeOfferWarning()
+	end)
+	tWarn = (tOk and tWarn) and true or false
+	if tWarn == SkuCore._tTradeOfferWarned then return end
+	SkuCore._tTradeOfferWarned = tWarn
+	if tWarn then
+		local tPartner = SkuCore:TradePartnerName()
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(tPartner .. " " .. Sku.L["TRADE_OfferChangedWarning"], true, true, 0.2, nil, nil, nil, 2) end)
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Bestaetigungsversuch fuer die Sicherheitsabfrage. Wird vom Menueeintrag und vom
+-- "Handeln"-Eintrag aufgerufen, solange _tSecureTradePending steht.
+-- Der Klick ist in pcall gekapselt, weil schon das LESEN eines Feldes eines verbotenen
+-- Frames einen Lua-Fehler wirft (kein "Aktion blockiert"-Popup, das gibt es nur bei
+-- geschuetzten FUNKTIONEN). Ob er gewirkt hat, kann Sku am Dialog selbst nicht ablesen --
+-- die Wahrheit kommt ueber TRADE_ACCEPT_UPDATE/TRADE_CLOSED, die _tSecureTradePending
+-- zuruecksetzen. Steht die Flagge nach einer Sekunde noch, war der Klick wirkungslos.
+function SkuCore:SecureTradeConfirm()
+	local tDialog = _G["SecureTransferDialog"]
+	local tOk, tErr = false, nil
+	if tDialog then
+		tOk, tErr = pcall(function() tDialog.Button1:Click() end)
+	end
+	dprint("SecureTradeConfirm click", tostring(tOk), tostring(tErr))
+	if _G.C_Timer then
+		_G.C_Timer.After(1.0, function()
+			if SkuCore._tSecureTradePending == true then
+				pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.L["TRADE_SecureConfirmBlocked"], true, true, 0.2, nil, nil, nil, 2) end)
+			end
+		end)
+	end
+	return tOk
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

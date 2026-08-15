@@ -3285,9 +3285,60 @@ function SkuCore:Build_TradeFrame(aParentChilds)
 		end,
 	}
 
+	-- Menue neu aufbauen und den Cursor per Name wieder auf denselben Eintrag setzen.
+	-- Zweimal gebraucht (Handeln + Sicherheitsabfrage), deshalb einmal hier.
+	local tRebuildAndRepin = function(aName)
+		C_Timer.After(0.5, function()
+			pcall(function() SkuCore:CheckFrames() end)
+			C_Timer.After(0.35, function()
+				pcall(function()
+					if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.children then
+						for _, child in ipairs(SkuOptions.currentMenuPosition.children) do
+							if child.name == aName then
+								SkuOptions.currentMenuPosition = child
+								break
+							end
+						end
+					end
+					SkuOptions:VocalizeCurrentMenuName()
+				end)
+			end)
+		end)
+	end
+
+	-- Sicherheitsabfrage (Blizzards SecureTransferDialog). Nur vorhanden, solange der Server
+	-- sie tatsaechlich verlangt -- siehe SkuCore:SECURE_TRANSFER_CONFIRM_TRADE_ACCEPT. Steht
+	-- direkt VOR "Handeln", weil der Nutzer in genau dem Moment dort steht: der Handel wurde
+	-- gerade bestaetigt und ist stattdessen in dieser zweiten Abfrage gelandet.
+	if SkuCore._tSecureTradePending == true then
+		local tSecureName = L["TRADE_SecureConfirmNode"]
+		table.insert(aParentChilds, tSecureName)
+		aParentChilds[tSecureName] = {
+			frameName = "TradeSecureConfirm",
+			RoC = "Child",
+			type = "Button",
+			obj = _G["TradeFrame"],
+			textFirstLine = tSecureName,
+			textFull = L["TRADE_SecureConfirmBlocked"],
+			childs = {},
+			func = function()
+				SkuCore:SecureTradeConfirm()
+				tRebuildAndRepin(L["TRADE_SecureConfirmNode"])
+			end,
+		}
+	end
+
 	-- Handeln-Button (AcceptTrade)
 	if _G["TradeFrameTradeButton"] and _G["TradeFrameTradeButton"]:IsVisible() then
 		local tAcceptName = L["TRADE_Accept"]
+		-- Zusatzinfo auf dem Eintrag selbst: eine offene Sicherheitsabfrage bzw. ein nach
+		-- einer Bestaetigung geaendertes Angebot sind der Grund, wenn "Handeln" nichts tut.
+		local tAcceptDetail = ""
+		if SkuCore._tSecureTradePending == true then
+			tAcceptDetail = L["TRADE_SecureConfirmNeeded"]
+		elseif SkuCore._tTradeOfferWarned == true then
+			tAcceptDetail = L["TRADE_OfferChangedWarning"]
+		end
 		table.insert(aParentChilds, tAcceptName)
 		aParentChilds[tAcceptName] = {
 			frameName = "TradeFrameTradeButton",
@@ -3295,27 +3346,31 @@ function SkuCore:Build_TradeFrame(aParentChilds)
 			type = "Button",
 			obj = _G["TradeFrameTradeButton"],
 			textFirstLine = tAcceptName,
-			textFull = "",
+			textFull = tAcceptDetail,
 			childs = {},
 			func = function()
+				-- Haengt eine Sicherheitsabfrage, ist NICHT der Handelsknopf der richtige
+				-- Knopf -- der bleibt sichtbar und wirkungslos. Enter auf "Handeln" bedient
+				-- dann das, was tatsaechlich auf eine Antwort wartet; sonst muesste der
+				-- Nutzer erst raten, dass es einen zweiten Eintrag gibt.
+				if SkuCore._tSecureTradePending == true then
+					SkuCore:SecureTradeConfirm()
+					tRebuildAndRepin(L["TRADE_Accept"])
+					return
+				end
+				-- Deaktiviert ist der Knopf, solange die eigene Bestaetigung schon steht
+				-- (TradeFrame_SetAcceptState) oder das eingetippte Gold das eigene Vermoegen
+				-- uebersteigt. Ein Klick darauf ist folgenlos, also sagen statt schweigen.
+				if _G["TradeFrameTradeButton"].IsEnabled and _G["TradeFrameTradeButton"]:IsEnabled() ~= true then
+					pcall(function() SkuOptions.Voice:OutputStringBTtts(L["TRADE_AcceptDisabled"], true, true, 0.2, nil, nil, nil, 2) end)
+					return
+				end
 				_G["TradeFrameTradeButton"]:Click()
-				pcall(function() SkuOptions.Voice:OutputStringBTtts(L["TRADE_Accepted"], true, true, 0.2, nil, nil, nil, 2) end)
-				C_Timer.After(0.5, function()
-					pcall(function() SkuCore:CheckFrames() end)
-					C_Timer.After(0.35, function()
-						pcall(function()
-							if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.children then
-								for _, child in ipairs(SkuOptions.currentMenuPosition.children) do
-									if child.name == L["TRADE_Accept"] then
-										SkuOptions.currentMenuPosition = child
-										break
-									end
-								end
-							end
-							SkuOptions:VocalizeCurrentMenuName()
-						end)
-					end)
-				end)
+				-- Kein "Handel bestaetigt" mehr an dieser Stelle: der Klick ist nur eine
+				-- Anfrage. Bestaetigt wird ueber TRADE_ACCEPT_UPDATE (playerAccepted == 1)
+				-- angesagt, abgelehnt ueber die Sicherheitsabfrage.
+				pcall(function() SkuOptions.Voice:OutputStringBTtts(L["TRADE_WaitingConfirm"], true, true, 0.2, nil, nil, nil, 2) end)
+				tRebuildAndRepin(L["TRADE_Accept"])
 			end,
 		}
 	end
