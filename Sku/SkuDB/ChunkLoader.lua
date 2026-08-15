@@ -422,11 +422,33 @@ end
 -- name. Empty tables degrade to "name not found", which every consumer already
 -- handles via its `or objectDataTBC[id][1]` style fallbacks.
 --
--- Runs at PLAYER_LOGIN, i.e. after every asset file has declared its tables, so
--- it can only ever ADD a missing locale - it never clobbers shipped data.
+-- Runs at ADDON_LOADED and again at the head of the master sequence (it is
+-- idempotent). ADDON_LOADED matters: PLAYER_LOGIN only CREATES the stream
+-- coroutine, whose first slice does not run until the next OnUpdate, so a
+-- module touching [Sku.Loc] in its own PLAYER_LOGIN handler would still have
+-- seen nil for one frame. Both points are after every asset file has declared
+-- its tables, so this can only ever ADD a missing locale - it never clobbers
+-- shipped data.
+--
+-- [v42.12] The `if not tLoc then return end` this used to open with was the one
+-- hole in the net: with an unusable Sku.Loc it created NOTHING and said
+-- nothing, and ~150 unguarded [Sku.Loc] sites then failed with an opaque "bad
+-- argument #1 to 'pairs' (table expected, got nil)" far from the cause. That is
+-- the exact error class PR #2 was chasing. Fail loudly instead, and still build
+-- the net for whatever string Sku.Loc holds.
 local function SkuDBEnsureActiveLocaleTables()
 	local tLoc = Sku.Loc
-	if not tLoc then return end
+	local tKnown = false
+	for i = 1, #Sku.Locs do
+		if Sku.Locs[i] == tLoc then tKnown = true break end
+	end
+	if not tKnown then
+		local tMsg = "SkuDB: Sku.Loc = " .. tostring(tLoc) .. " is not a known data locale ("
+			.. table.concat(Sku.Locs, ", ") .. "). Check L[\"locale\"] in the active locale file."
+		dprint(tMsg)
+		if SkuErrorLog and SkuErrorLog.Log then pcall(function() SkuErrorLog:Log("skudbLocale", tMsg) end) end
+		if type(tLoc) ~= "string" then return end
+	end
 	SkuDB.objectLookup = SkuDB.objectLookup or {}
 	SkuDB.itemLookup = SkuDB.itemLookup or {}
 	SkuDB.questLookup = SkuDB.questLookup or {}
@@ -820,6 +842,11 @@ SkuDBStreamFrame:SetScript("OnEvent", function(self, aEvent, aArg1)
 	if aEvent == "ADDON_LOADED" then
 		if aArg1 == "Sku" then
 			pcall(SkuDBApplyLocaleOverride)
+			-- [v42.12] Before PLAYER_LOGIN, not inside the stream coroutine: the
+			-- coroutine's first slice is a frame later, which left a one-frame
+			-- window where [Sku.Loc] was still nil for anything running in the
+			-- login frame itself.
+			pcall(SkuDBEnsureActiveLocaleTables)
 			-- Must run here, not at PLAYER_LOGIN: Geo/SkuNav read AreaName_lang
 			-- during the deferred route build, which precedes login.
 			pcall(SkuDBEnsureLocalizedMapNames)
