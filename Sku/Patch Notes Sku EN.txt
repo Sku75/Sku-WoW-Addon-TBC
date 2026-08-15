@@ -462,6 +462,12 @@ Changes in Sku v42.11
             message once per tab that has the type enabled, a message type with a tab of its
             own has to be muted in every other tab or it gets read out twice.
 
+    Auction house: buying several of the same item works again
+        Simple: Buying more than one auction of the same item bought the first one and then
+            stopped with "internal auction error"; the second purchase was never offered
+            again. Both are fixed - the follow-up purchases run through, and the server's
+            spurious error message is no longer read out while a search is running.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.10

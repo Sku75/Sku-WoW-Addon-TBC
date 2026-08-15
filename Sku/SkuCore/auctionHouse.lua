@@ -284,6 +284,9 @@ SkuCore.QueryBuyData = nil
 SkuCore.QueryBuyType = nil
 SkuCore.QueryBuyAmount = nil
 SkuCore.QueryBuyBought = nil
+-- Die Suchparameter der ERSTEN Kauf-Query ({text=, filterData=}). Der Weiterkauf
+-- (Stück 2..n) muss GENAU so abfragen wie Stück 1 — siehe _ABReQueryBuy.
+SkuCore.QueryBuyQuery = nil
 
  QueryResultsDB = {}
  FullScanResultsDB = {}
@@ -609,6 +612,11 @@ SkuCore.AuctionBuy = SkuCore.AuctionBuy or {
 -- ist geschützt, ein Timer-Gebot ist nicht möglich.
 local AB_BUY_MAX_FAILS = 3
 
+-- Weiterkauf-Query: so lange (Sekunden) auf ein offenes AH-Abfragefenster
+-- (CanSendAuctionQuery) warten, bevor die Query notfalls trotzdem rausgeht.
+-- Direkt nach einem Gebot ist der Throttle regelmäßig für ~1 s zu.
+local AB_REQUERY_MAX_WAIT = 5
+
 local function _ABLog(action, payload)
    dprint("auction.buy", action, payload or {})
 end
@@ -735,6 +743,7 @@ local function _ABClearBuyState()
    SkuCore.QueryBuyType   = nil
    SkuCore.QueryBuyAmount = nil
    SkuCore.QueryBuyBought = nil
+   SkuCore.QueryBuyQuery  = nil
    SkuCore.AuctionBuy.failCount = 0
    SkuCore.QueryBuyEmptyWaits = 0
    AuctionHouse:AuctionHouseResetQuery()
@@ -923,19 +932,61 @@ end
 -- Denselben Kauf erneut abfragen (Weiterkauf nach Erfolg bzw. Retry nach No-Op).
 -- Setzt QueryBuyData voraus (beide Aufrufer prüfen das). Leer-Event-Zähler je
 -- neuer Query frisch starten; die ersten Events einer Query können leer sein.
-local function _ABReQueryBuy()
+--
+-- (1) EXAKT so abfragen wie die ERSTE Kauf-Query. Die Kauf-/Bieten-Aktion legt
+-- ihre Parameter in SkuCore.QueryBuyQuery ab (Item-NAME + dieselbe filterData,
+-- exactMatch=true). Früher schickte der Weiterkauf stattdessen den ursprünglichen
+-- SUCHTEXT (QueryBuyData.query[1]) — aber weiter mit exactMatch=true. Bei einer
+-- Teilwort-Suche ("elixier der dr", die Browse-Suche selbst läuft mit
+-- exactMatch=FALSE) trifft das serverseitig NICHTS: Antwort mit 0 Zeilen, der
+-- Weiterkauf blieb nach dem ersten Stapel stehen ("Kauf 1 von 2", nie ein
+-- zweiter Prompt), und die Ticker-Retries fragten dieselbe leere Query erneut ab.
+-- (query[9] als filterData war zudem falsch: bei Vollscan-Einträgen zeigt .query
+-- auf den Item-Datensatz, dessen Feld 9 das Mindestgebot-Inkrement ist.)
+--
+-- (2) Erst absetzen, wenn der AH-Throttle offen ist (CanSendAuctionQuery).
+-- Direkt nach dem Gebot ist er zu — die Query verpuffte dann nicht nur, der
+-- Server antwortete auch mit ERR_AUCTION_DATABASE_ERROR ("Interner
+-- Auktionsfehler"), was Sku als Server-Meldung vorlas.
+local function _ABReQueryBuy(aWaited)
+   if not SkuCore.QueryBuyData then return end
+
+   local tCanSend = true
+   pcall(function() tCanSend = (CanSendAuctionQuery() == true) end)
+   if not tCanSend then
+      local tNext = (aWaited or 0) + 0.25
+      if tNext <= AB_REQUERY_MAX_WAIT then
+         _ABTrack(C_Timer.NewTimer(0.25, function() _ABReQueryBuy(tNext) end))
+         return
+      end
+      -- Throttle bleibt zu: trotzdem absetzen (altes Verhalten) statt den
+      -- Weiterkauf still hängen zu lassen.
+      _ABLog("requery: throttle still closed, sending anyway", { waited = aWaited })
+   end
+
+   local tQ = SkuCore.QueryBuyQuery
+   local tText = tQ and tQ.text
+   local tFilterData = tQ and tQ.filterData
+   if not tText then
+      -- Fallback, falls die Kauf-Aktion die Parameter nicht hinterlegt hat:
+      -- der Item-Name aus dem Ergebnis-Datensatz ist dasselbe, was die erste
+      -- Kauf-Query benutzt (tData[1]).
+      tText = SkuCore.QueryBuyData[1]
+   end
+   _ABLog("requery buy", { text = tText, waited = aWaited })
+
    SkuCore.QueryBuyEmptyWaits = 0
    AuctionHouse:AuctionHouseStartQuery(
       nil,
       "AUCTION_ITEM_LIST_UPDATE",
-      SkuCore.QueryBuyData.query[1],
+      tText,
       SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
       SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax,
       0,
       SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable,
       SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.MinQuality,
       false, true,
-      SkuCore.QueryBuyData.query[9],
+      tFilterData,
       function() end
    )
 end
@@ -2992,6 +3043,9 @@ local function _AuctionAttachBuyBidChildren(aEntry, aData, aFullScanKaufen)
                   SkuCore.QueryBuyAmount = x
                   SkuCore.QueryBuyBought = 0
                   SkuCore.QueryBuyType = 1
+                  -- Parameter für den Weiterkauf (Gebot 2..n) merken: er MUSS
+                  -- identisch abfragen, sonst findet er die Auktion nicht mehr.
+                  SkuCore.QueryBuyQuery = { text = tData[1], filterData = tData.query.filterData }
                   AuctionHouse:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
                      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
                      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax, 0,
@@ -3024,6 +3078,9 @@ local function _AuctionAttachBuyBidChildren(aEntry, aData, aFullScanKaufen)
                   SkuCore.QueryBuyAmount = x
                   SkuCore.QueryBuyBought = 0
                   SkuCore.QueryBuyType = 2
+                  -- Parameter für den Weiterkauf (Stück 2..n) merken: er MUSS
+                  -- identisch abfragen, sonst findet er die Auktion nicht mehr.
+                  SkuCore.QueryBuyQuery = { text = tData[1], filterData = tFilterData }
                   AuctionHouse:AuctionHouseStartQuery(nil, "AUCTION_ITEM_LIST_UPDATE", tData[1],
                      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMin,
                      SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.LevelMax, 0,
@@ -3776,6 +3833,10 @@ function AuctionHouse:AuctionHouseStartQuery(aContinue, aType, aFilterText, aFil
    -- soll der gesamte Scan-Status sauber zurückgesetzt werden, statt
    -- in einem Halbzustand zu hängen (QueryRunning=true ohne dass je
    -- ein Antwort-Event käme).
+   -- Zeitstempel der letzten abgesetzten Auktions-Query. UIErrors nutzt ihn, um
+   -- das spontane ERR_AUCTION_DATABASE_ERROR ("Interner Auktionsfehler") des
+   -- TBC-Servers NUR im Umfeld einer laufenden Abfrage stumm zu schalten.
+   SkuCore.AuctionQuerySentAt = GetTime()
    local tQOk, tQErr = pcall(QueryAuctionItems,
       SkuCore.QueryData[tQAIindex.text],
       SkuCore.QueryData[tQAIindex.minLevel],

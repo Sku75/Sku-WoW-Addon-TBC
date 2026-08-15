@@ -62,6 +62,9 @@ end
 local tPrevError
 local tPrevErrorLimit = 1
 local tPrevErrorTime = time()
+-- Fenster (Sekunden) nach einer abgesetzten Auktions-Query, in dem das spontane
+-- "Interner Auktionsfehler" des Servers als Rauschen gilt und nicht angesagt wird.
+local UIERR_AUCTION_NOISE_WINDOW = 5
 function UIErrors:UIErrorEventHandler(aEvent, tMessage, tMessage1)
    if not UIErrors:IsEnabled() then return end
       --https://wowwiki-archive.fandom.com/wiki/WoW_Constants/Errors#ERR_SPELL
@@ -71,6 +74,25 @@ function UIErrors:UIErrorEventHandler(aEvent, tMessage, tMessage1)
 
    if tonumber(tMessage) and tMessage1 then
       tMessage = tMessage1
+   end
+
+   -- Rauschfilter: ERR_AUCTION_DATABASE_ERROR ("Interner Auktionsfehler") wirft
+   -- der TBC-Server beim Abfragen des Auktionshauses laufend SPONTAN — auch wenn
+   -- alles einwandfrei durchläuft (Liste kommt an, Kauf wird mit "Gebot
+   -- akzeptiert" bestätigt, im Log nachgewiesen). Vorgelesen klingt das nach
+   -- einem Fehlschlag, obwohl nichts kaputt ist; Auktions-Addons ignorieren die
+   -- Meldung bewusst. Darum still, solange eine Sku-Auktionsabfrage im Gange ist
+   -- (Zeitstempel setzt auctionHouse.lua direkt an QueryAuctionItems). AUSSERHALB
+   -- dieses Fensters bleibt sie hörbar — dort kann sie auf ein echtes Problem
+   -- hinweisen.
+   if type(ERR_AUCTION_DATABASE_ERROR) == "string" and tMessage == ERR_AUCTION_DATABASE_ERROR
+      and SkuCore.AuctionQuerySentAt
+      and (GetTime() - SkuCore.AuctionQuerySentAt) < UIERR_AUCTION_NOISE_WINDOW then
+      dprint("auction.noise", "suppressed", {
+         msg = tMessage,
+         sinceQuery = GetTime() - SkuCore.AuctionQuerySentAt,
+      })
+      return
    end
 
    --ERR_BAG_FULL  That bag is full.

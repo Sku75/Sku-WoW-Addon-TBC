@@ -515,6 +515,13 @@ Aenderungen in Sku v42.11
             eigener Registerkarte in allen anderen stumm sein, sonst wird er doppelt
             vorgelesen.
 
+    Auktionshaus: Mehrfachkauf desselben Gegenstands geht wieder
+        Einfach: Wer mehrere Auktionen desselben Gegenstands kaufte, bekam den ersten
+            Stapel und danach "Interner Auktionsfehler"; der zweite Kauf wurde nie mehr
+            angeboten. Beides ist behoben - die Folgekaeufe laufen durch, und die
+            grundlose Fehlermeldung des Servers wird waehrend einer Suche nicht mehr
+            vorgelesen.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.10
