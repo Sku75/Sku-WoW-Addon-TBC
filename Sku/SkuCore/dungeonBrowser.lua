@@ -51,7 +51,7 @@ end)
 local deEn = Sku.deEn
 local L = {
    label          = deEn("Dungeonbrowser", "Dungeon browser"),
-   short          = (Sku.L and Sku.L["short"]) or "sku",
+   short          = Sku.MENU_ROOT,
    chatPrefix     = deEn("Dungeonbrowser: ", "Dungeon browser: "),
    -- top level
    tabCreate      = deEn("Eintrag erstellen", "Create entry"),

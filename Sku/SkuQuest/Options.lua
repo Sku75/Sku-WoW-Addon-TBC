@@ -1755,7 +1755,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 						tNewMenuSubEntry1.dynamic = true
 						tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
 							C_Timer.NewTimer(0.1, function()
-								SkuOptions:SlashFunc("short,"..L["Local"]..","..L["SkuQuest,Questdatenbank,Alle"]..","..self.name)
+								SkuOptions:SlashFunc(Sku.MENU_ROOT..","..L["Local"]..","..L["SkuQuest,Questdatenbank,Alle"]..","..self.name)
 								SkuOptions.Voice:OutputStringBTtts(self.name, true, true, 0.3, true)
 							end)
 						end

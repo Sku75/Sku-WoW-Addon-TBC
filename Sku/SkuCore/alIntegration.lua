@@ -1787,7 +1787,7 @@ function AtlasLootIntegration:AtlasLootShortcut()
    -- W7: Atlas Loot now lives under the top-level "Addons" menu, not "Core".
    local tAddons = "Addons"
    local tAL   = (L and L["Atlas Loot"]) or "Atlas Loot"
-   local tBase = L["short"] .. "," .. string.lower(tAddons) .. "," .. string.lower(tAL)
+   local tBase = Sku.MENU_ROOT .. "," .. string.lower(tAddons) .. "," .. string.lower(tAL)
    tSetShortcutContext(nil)
    SkuOptions:SlashFunc(tBase)
 end

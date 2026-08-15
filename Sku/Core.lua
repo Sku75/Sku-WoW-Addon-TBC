@@ -95,6 +95,28 @@ if not Sku.LocsPartly[GetLocale()] then
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [v42.12] The SlashFunc menu-root token - a PROTOCOL constant, never speech.
+--
+-- SkuOptions:SlashFunc(path) takes a comma-separated menu path whose FIRST
+-- field selects the handler; SkuZOptions/Core.lua compares it, ~25 sites build
+-- paths with it. It used to be read from L["short"], which put an internal
+-- string constant in the translation table next to real UI text - and the key
+-- is shared with a genuinely user-facing label (the "long"/"short" monitoring
+-- output style in SkuCore/aq.lua), so a translator seeing "short" quite
+-- reasonably translates the visible meaning.
+--
+-- That is exactly what happened on frFR (L["short"] = "court", PR #2): six
+-- sites hardcode the literal "short," rather than the locale key, so
+-- ToggleQuestLogHook built "short,Local,Quete" while the comparison checked
+-- "court". No match, no error - the Quest Log key L was silently dead.
+--
+-- Splitting the two meanings removes the class of bug: this constant is what
+-- the code speaks to itself, L["short"] stays free to be real translatable
+-- text. The comparison still ACCEPTS the localized form as well, so a user who
+-- learned to type the translated path keeps working.
+Sku.MENU_ROOT = "short"
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- W5: Sprachpaket-Erkennung. Statt fest verdrahteter Ordnernamen je Locale werden
 -- die installierten SkuAudioData*-Addons aufgezählt und das zur Client-Sprache
 -- passende gewählt. Neue Pakete deklarieren sich per TOC-Metadaten

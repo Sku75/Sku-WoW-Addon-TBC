@@ -437,7 +437,7 @@ end
 function GameOptions:GameMenuBuilder(aParentEntry)
    if not GameOptions:IsEnabled() then return end
    local buttons = CollectGameMenuButtons()
-   local tEinst = "short," .. (_DE and "Einstellungen" or "Settings")
+   local tEinst = Sku.MENU_ROOT.."," .. (_DE and "Einstellungen" or "Settings")
    for _, btn in ipairs(buttons) do
       local label = tostring(tCall(btn, "GetText"))
       if IsSettingsButton(label) then
@@ -447,11 +447,11 @@ function GameOptions:GameMenuBuilder(aParentEntry)
       elseif IsMacroButton(label) then
          -- "Makros" -> Sku's macro menu.
          SkuMenu:BuildNode(aParentEntry, { kind = "action", label = label, dynamic = false,
-            onAction = function() tNavTo("short," .. ((Sku and Sku.L and Sku.L["Macros"]) or "Macros")) end })
+            onAction = function() tNavTo(Sku.MENU_ROOT.."," .. ((Sku and Sku.L and Sku.L["Macros"]) or "Macros")) end })
       elseif IsAddonsButton(label) then
          -- "AddOns" -> Sku's AddOn settings (generic AceConfig renderer).
          SkuMenu:BuildNode(aParentEntry, { kind = "action", label = label, dynamic = false,
-            onAction = function() tNavTo("short,Addons," .. Sku.deEn("AddOn-Einstellungen", "AddOn settings", "Réglages des extensions")) end })
+            onAction = function() tNavTo(Sku.MENU_ROOT..",Addons," .. Sku.deEn("AddOn-Einstellungen", "AddOn settings", "Réglages des extensions")) end })
       else
          -- Sku's menu keys arrive via hardware-event override bindings, so :Click()
          -- counts as a hardware event (protected Logout/Quit are allowed).

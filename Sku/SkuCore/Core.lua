@@ -487,7 +487,7 @@ end
 -- entry is removed again when the Sku menu closes (OnHide clears the flag).
 function SkuCore:ActionBarsShowHandler()
 	SkuCore.actionBarsMenuActive = true
-	pcall(function() SkuOptions:SlashFunc(Sku.L["short"] .. "," .. Sku.L["Action bars"]) end)
+	pcall(function() SkuOptions:SlashFunc(Sku.MENU_ROOT .. "," .. Sku.L["Action bars"]) end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -4361,12 +4361,12 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 			-- pending prompt reachable -> never navigate/open the menu (see above).
 			-- An explicit aForceLocalRoot is a deliberate caller request and still wins.
 			if tBread and aForceLocalRoot ~= true and tFlag == false and tPendingOnly ~= true then
-				SkuOptions:SlashFunc(L["short"]..","..L["Local"])
+				SkuOptions:SlashFunc(Sku.MENU_ROOT..","..L["Local"])
 				for i, v in pairs(friendlyFrameNames) do
 					if v == tFirstFrame then
 						if _G[i] then
 							if _G[i]:IsVisible() then
-								SkuOptions:SlashFunc(L["short"]..","..tBread)
+								SkuOptions:SlashFunc(Sku.MENU_ROOT..","..tBread)
 								if tIndex then
 									for x = 1, tIndex - 1 do
 										SkuOptions.currentMenuPosition:OnNext()
@@ -4441,7 +4441,7 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 						local c = tContributors[1]
 						local tLabel = type(c.label) == "function" and c.label() or c.label
 						if tLabel then
-							tDescendPath = L["short"]..","..L["Local"]..","..tLabel
+							tDescendPath = Sku.MENU_ROOT..","..L["Local"]..","..tLabel
 						end
 					elseif #tContributors == 0 and #tOpenFrames == 1 then
 						-- Rule 2: a single interact frame.
@@ -4451,7 +4451,7 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 							and tPrimaryEntry.childs and #tPrimaryEntry.childs > 0
 							and tPrimaryEntry.textFirstLine
 							and not string.find(tPrimaryFrame, "StaticPopup") then
-							tDescendPath = L["short"]..","..L["Local"]..","..tPrimaryEntry.textFirstLine
+							tDescendPath = Sku.MENU_ROOT..","..L["Local"]..","..tPrimaryEntry.textFirstLine
 						end
 					end
 				end
@@ -4460,23 +4460,23 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose, aQuiet)
 					SkuOptions:SlashFunc(tDescendPath)
 				else
 					-- Rule 3 (and the forced-Local-root case): stay on Local.
-					SkuOptions:SlashFunc(L["short"]..","..L["Local"])
+					SkuOptions:SlashFunc(Sku.MENU_ROOT..","..L["Local"])
 				end
 			end
 
 			for q = 1, #tOpenFrames do
 				if tOpenFrames[q] == "StaticPopup1" and aForceLocalRoot ~= true then
-					SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Popup 1"])
+					SkuOptions:SlashFunc(Sku.MENU_ROOT..","..L["Local"]..","..L["Popup 1"])
 				end
 			end
 			for q = 1, #tOpenFrames do
 				if tOpenFrames[q] == "StaticPopup2" and aForceLocalRoot ~= true then
-					SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Popup 2"])
+					SkuOptions:SlashFunc(Sku.MENU_ROOT..","..L["Local"]..","..L["Popup 2"])
 				end
 			end
 			for q = 1, #tOpenFrames do
 				if tOpenFrames[q] == "StaticPopup3" and aForceLocalRoot ~= true then
-					SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Popup 3"])
+					SkuOptions:SlashFunc(Sku.MENU_ROOT..","..L["Local"]..","..L["Popup 3"])
 				end
 			end
 
@@ -4764,7 +4764,7 @@ function SkuCore:GameMenuShowHandler()
 	-- routes to Einstellungen and Makros to the Sku macro menu). Label must match the
 	-- "GameMenu" registry entry in SkuZOptions/SkuMenu.lua.
 	local tDe = (GetLocale and GetLocale() == "deDE")
-	local tPath = "short," .. (tDe and "Spielmenü" or "Game menu")
+	local tPath = Sku.MENU_ROOT.."," .. (tDe and "Spielmenü" or "Game menu")
 	-- W7: open a Spielmenü session so UpdateGameMenuRootEntry splices the (otherwise
 	-- hidden) entry into the root; cleared again when the Sku menu closes (OnHide).
 	SkuCore.gameMenuActive = true

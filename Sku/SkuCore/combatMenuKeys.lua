@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------------------------------------------
+﻿---------------------------------------------------------------------------------------------------------------------------------------
 -- SkuCore.combatMenuKeys  --  Path A, Stage 1: drive the Sku menu IN COMBAT via secure
 -- override bindings bound at combat start, REPLACING the EnableKeyboard capture frame for
 -- the nav keys.
@@ -544,7 +544,7 @@ local function tEnsureKeyFrame()
                   -- secure walker was seeded at cstart (that same first node) in the CSYNC
                   -- snippet, so both sides are in lockstep. (No forced jump into Equipment.)
                   pcall(function()
-                     SkuOptions:SlashFunc(tL("short") .. "," .. tL("Local") .. "," .. tL("Character"))
+                     SkuOptions:SlashFunc(Sku.MENU_ROOT .. "," .. tL("Local") .. "," .. tL("Character"))
                   end)
                   local tOpt = _G["OnSkuOptionsMainOption1"]
                   if tOpt and tOpt:GetScript("OnClick") then
@@ -562,7 +562,7 @@ local function tEnsureKeyFrame()
             SkuOptions.combatMenuActive = true
             if Sku then Sku.combatCharForceOpen = false end   -- leaving the char mirror -> drop the phantom char window
             tResetMenuToRoot()
-            pcall(function() SkuOptions:SlashFunc(tL("short") .. "," .. tL("Local")) end)
+            pcall(function() SkuOptions:SlashFunc(Sku.MENU_ROOT .. "," .. tL("Local")) end)
             if SkuLogCombat then SkuLogCombat("secureKeys", "ANCHOR -> Local root (bags-entry anchor)") end
             return
          end

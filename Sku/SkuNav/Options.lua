@@ -929,13 +929,13 @@ end
 -- its stable id -- SlashFunc handles opening the menu and the combat/moving defer.
 function SkuNav:OpenWaypointsQuick()
 	SkuNav.navQuickMenuActive = "waypoints"
-	pcall(function() SkuOptions:SlashFunc(Sku.L["short"] .. ",navWaypointsQuick") end)
+	pcall(function() SkuOptions:SlashFunc(Sku.MENU_ROOT .. ",navWaypointsQuick") end)
 end
 
 -- Shift-F10: open the "nearby route destinations" list directly.
 function SkuNav:OpenRouteDestinationsQuick()
 	SkuNav.navQuickMenuActive = "routes"
-	pcall(function() SkuOptions:SlashFunc(Sku.L["short"] .. ",navRouteDestinationsQuick") end)
+	pcall(function() SkuOptions:SlashFunc(Sku.MENU_ROOT .. ",navRouteDestinationsQuick") end)
 end
 
 -- LEFT-arrow (OnBack) redirects for the two quick lists: instead of stepping back
@@ -948,13 +948,13 @@ end
 function SkuNav.QuickBackToDirectWaypointMenu(self)
 	if self and self.OnLeave then pcall(function() self:OnLeave() end) end
 	SkuNav.navQuickMenuActive = nil
-	pcall(function() SkuOptions:SlashFunc(Sku.L["short"] .. ",SkuNav,navDirectWaypoint") end)
+	pcall(function() SkuOptions:SlashFunc(Sku.MENU_ROOT .. ",SkuNav,navDirectWaypoint") end)
 end
 
 function SkuNav.QuickBackToNavMenu(self)
 	if self and self.OnLeave then pcall(function() self:OnLeave() end) end
 	SkuNav.navQuickMenuActive = nil
-	pcall(function() SkuOptions:SlashFunc(Sku.L["short"] .. ",SkuNav") end)
+	pcall(function() SkuOptions:SlashFunc(Sku.MENU_ROOT .. ",SkuNav") end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

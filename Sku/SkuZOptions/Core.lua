@@ -262,7 +262,7 @@ function SkuOptions:SlashFunc(input, aSilent)
 		end
 
 
-		if fields[1] == L["short"] then
+		if fields[1] == Sku.MENU_ROOT or fields[1] == L["short"] then
 			if SkuState:IsInCombat() == true then
 				-- Self-deactivation: historically Sku deferred EVERY menu open/descend
 				-- until combat ended (openMenuAfterCombat), which is why a window opened
@@ -2349,7 +2349,7 @@ function SkuOptions:CreateMainFrame()
 		for q = 1, 10 do
 			if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_MENUQUICK"..q) then
 				if SkuSettings:Sub("SkuOptions").allModules["MenuQuickSelect"..q] and SkuSettings:Sub("SkuOptions").allModules["MenuQuickSelect"..q] ~= "" then
-					SkuOptions:SlashFunc(L["short"]..","..SkuSettings:Sub("SkuOptions").allModules["MenuQuickSelect"..q])
+					SkuOptions:SlashFunc(Sku.MENU_ROOT..","..SkuSettings:Sub("SkuOptions").allModules["MenuQuickSelect"..q])
 				end
 			end
 

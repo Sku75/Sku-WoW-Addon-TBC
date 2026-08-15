@@ -581,7 +581,7 @@ function SkuAuras:UpdateAura(aAuraNameToUpdate, aNewType, aEnabled, aNewAttribut
 		SkuOptions.Voice:OutputStringBTtts(L["Aktualisiert"], true, true, 0.3, true)		
 
 		C_Timer.After(0.01, function()
-			SkuOptions:SlashFunc(L["short"]..",SkuAuras,aurenVerwalten,"..SkuOptions.currentMenuPosition.parent.parent.parent.name..","..tAuraName)
+			SkuOptions:SlashFunc(Sku.MENU_ROOT..",SkuAuras,aurenVerwalten,"..SkuOptions.currentMenuPosition.parent.parent.parent.name..","..tAuraName)
 			SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
 			SkuOptions:VocalizeCurrentMenuName()
 		end)
@@ -782,7 +782,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 			SkuOptions.Voice:OutputStringBTtts(L["Dupliziert"], true, true, 0.3, true)		
 
 			C_Timer.After(0.01, function()
-				SkuOptions:SlashFunc(L["short"]..",SkuAuras,aurenVerwalten,"..self.parent.parent.name..","..tTestNewName)
+				SkuOptions:SlashFunc(Sku.MENU_ROOT..",SkuAuras,aurenVerwalten,"..self.parent.parent.name..","..tTestNewName)
 				SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
 				SkuOptions:VocalizeCurrentMenuName()
 			end)

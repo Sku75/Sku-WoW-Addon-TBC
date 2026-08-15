@@ -749,7 +749,7 @@ function SkuQuest:ToggleQuestLogHook(...)
 	if ( QuestLogFrame:IsVisible() ) then
 		--SkuOptions.TTS:Output("", 10000)--HideUIPanel(QuestLogFrame)
 		C_Timer.NewTimer(0.1, function()
-			SkuOptions:SlashFunc("short,"..L["Local"]..","..L["SkuQuestMenuEntry"])
+			SkuOptions:SlashFunc(Sku.MENU_ROOT..","..L["Local"]..","..L["SkuQuestMenuEntry"])
 			--SkuOptions.Voice:OutputStringBTtts(self.name, true, true, 0.3, true)
 			pcall(function() if SkuCore and SkuCore.ScheduleMenuFlashRecheck then SkuCore:ScheduleMenuFlashRecheck() end end)
 		end)

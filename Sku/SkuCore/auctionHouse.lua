@@ -551,7 +551,7 @@ function AuctionHouse:AUCTION_HOUSE_SHOW()
 
    SkuCore.AuctionHouseOpen = true
    C_Timer.After(0.3, function()
-      SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Auktionshaus"])
+      SkuOptions:SlashFunc(Sku.MENU_ROOT..","..L["Local"]..","..L["Auktionshaus"])
       -- Menue existiert jetzt: Close-Cleanup-Hook einmalig anhaengen (siehe SECTION 3).
       pcall(function() AuctionHouse:AuctionEnsureStuckBindingHook() end)
    end)
