@@ -1422,7 +1422,6 @@ L["Lists"] = "Listes"
 L["local Bags"] = "Sacs"
 L["Local"] = "Local"
 L["LocalDefense"] = "LocalDefense"
-L["locale"] = "enUS"
 L["Lock keyboard if tutorial is playing"] = "Verrouiller le clavier pendant la lecture du tutoriel"
 L["LOCKED"] = "VERROUILLÉ"
 L["Log out: If you would like to exit the game, do not use Alt + (F4). For the game to save settings you need to log out from the game. To do this type slash logout and press Enter. The wait until you hear the background audio changing. That can take up to 20 seconds. Then close the game using Alt + (F4)."] = "Déconnexion : si vous souhaitez quitter le jeu, n'utilisez pas Alt + (F4). Pour que le jeu enregistre les réglages, vous devez vous déconnecter depuis le jeu. Pour cela, tapez slash logout et appuyez sur Entrée. Attendez ensuite d'entendre le son d'ambiance changer. Cela peut prendre jusqu'à 20 secondes. Fermez alors le jeu avec Alt + (F4)."
@@ -3282,4 +3281,9 @@ L["Gruppenmitglieder"] = "Membres du groupe"
 L["show group members quests"] = "afficher les quêtes des membres du groupe"
 L["Keine Questie-Daten empfangen"] = "Aucune donnée Questie reçue"
 L["Unbekannte Zone"] = "Zone inconnue"
+
+-- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
+-- and selects which SkuDB name tables the whole client uses. It must stay the
+-- locale CODE. Never let a regeneration re-import it from enUS - check with
+-- py -3 dev/rework-docs/_locale_dupes.py, which fails on a duplicate here.
 L["locale"] = "frFR"
