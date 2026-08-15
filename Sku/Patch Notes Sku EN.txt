@@ -440,6 +440,28 @@ Changes in Sku v42.11
             skipping ahead with MoveToWp and the reverse-route start, which all set the
             metapath state before calling SelectWP.
 
+    Better defaults for new players
+        Simple: Setting Sku up fresh now starts from a usable configuration instead of
+            leaving you to find the important bits first. A few keys come pre-assigned, the
+            chat is split up sensibly, and some announcements are on from the start -
+            broadly the way experienced players set it up anyway. Every one of these
+            defaults still sits in its usual place in the menu and can be changed as
+            always. Existing profiles and characters are untouched: a default only applies
+            where nothing was ever saved. To pick up the new keys, use Sku key bindings ->
+            reset everything - note that this really does reset ALL keys, including the ones
+            you assigned yourself.
+        Technical: Pure default changes in SkuZOptions/SkuKeyBinds.lua
+            (skuDefaultKeyBindings), SkuChat/Core.lua and Options.lua (ChatFrameDefaultTabs
+            plus the default tab set), SkuCore/Options.lua (SkuCore.defaults) and
+            SkuCore/aqCombat.lua (aqCombatOnLogin). Stored values survive, because every
+            site only writes on nil and AceDB fills defaults into gaps only. Two real
+            behaviour changes come with it: the binder in SkuNav:CreateSkuNavMain only ever
+            applied .key, so a SECOND key assigned by the user did nothing at all for every
+            navigation action (SkuKeyBindsMatchKey had understood it all along) - it now
+            goes through SkuKeyBindsGetKeys and binds both. And because SkuChat emits a
+            message once per tab that has the type enabled, a message type with a tab of its
+            own has to be muted in every other tab or it gets read out twice.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.10

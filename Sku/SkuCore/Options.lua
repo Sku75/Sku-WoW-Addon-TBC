@@ -565,6 +565,9 @@ SkuCore.defaults = {
 	--endFollowOnCast = false,
 	interactMove = true,
 	followCollision = true,
+	-- "Warnton wenn Folgen abbricht" (Barrierefreiheit, Sonstiges) is ON by default:
+	-- losing autofollow without noticing is one of the classic ways to get lost.
+	followBreakWarn = true,
 	turnToUnit = {
 		speed = 6,
 		soundOnSuccess = "sound-waterdrop5",
@@ -682,6 +685,7 @@ SkuSettings:Register("SkuCore", {
 	["playNPCGreetings"]                          = { scope = "profile", default = false, type = "boolean" },
 	["doNotHideTooltip"]                          = { scope = "profile", default = false, type = "boolean" },
 	["followCollision"]                           = { scope = "profile", default = true, type = "boolean" },
+	["followBreakWarn"]                           = { scope = "profile", default = true, type = "boolean" },
 	["classes.hunter.petHappyness"]               = { scope = "profile", default = true, type = "boolean" },
 	["itemSettings.ShowItemQality"]               = { scope = "profile", default = true, type = "boolean" },
 	["itemSettings.autoSellJunk"]                 = { scope = "profile", default = true, type = "boolean" },

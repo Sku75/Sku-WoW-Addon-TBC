@@ -379,7 +379,10 @@ SkuChat.options = {
 SkuChat.defaults = {
 	chatSettings = {
 		shortenChannelNames = false,
-		openWhispersInNewTab = true,
+		-- OFF by default: whispers now land in the dedicated "Whisper" tab that
+		-- SkuChat creates for a fresh profile (SkuChat/Core.lua), so the old
+		-- one-throwaway-tab-per-conversation behaviour is no longer the default.
+		openWhispersInNewTab = false,
 		deleteWhisperTabsAfter = 3,
 		addLineNumbers = true,
 		timeStamp = 6,
@@ -412,7 +415,7 @@ SkuSettings:Register("SkuChat", {
 	["chatSettings.timeStampAtLineEnd"]   = { scope = "profile", default = true,  type = "boolean" },
 	["chatSettings.firstLineOnTabSwitch"] = { scope = "profile", default = true,  type = "boolean" },
 	["chatSettings.deleteHistoryOnLogin"] = { scope = "profile", default = false, type = "boolean" },
-	["chatSettings.openWhispersInNewTab"] = { scope = "profile", default = true,  type = "boolean" },
+	["chatSettings.openWhispersInNewTab"] = { scope = "profile", default = false, type = "boolean" },
 	["chatSettings.deleteWhisperTabsAfter"] = { scope = "profile", default = 3,   type = "number"  },
 	["chatSettings.audioOnNewMessage"]    = { scope = "profile", default = false, type = "boolean" },
 	["chatSettings.audioOnMessageEnd"]    = { scope = "profile", default = false, type = "boolean" },

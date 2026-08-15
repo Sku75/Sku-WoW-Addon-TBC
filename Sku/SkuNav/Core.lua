@@ -2698,26 +2698,37 @@ function SkuNav:CreateSkuNavMain()
 	end)
 	tFrame:Hide()
 	
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SELECTNEXTBASEWAYPOINT"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SELECTNEXTBASEWAYPOINT"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOBEACON"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOBEACON"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STARTRRFOLLOW"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STARTRRFOLLOW"].key)
-	--SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMMOPEN"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMMOPEN"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TOGGLEREACHRANGE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TOGGLEREACHRANGE"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MOVETONEXTWP"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MOVETONEXTWP"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MOVETOPREVWP"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MOVETOPREVWP"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ADDLARGEWP"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ADDLARGEWP"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ADDSMALLWP"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ADDSMALLWP"].key)
-	--SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKURTMMDISPLAY"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKURTMMDISPLAY"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TOGGLEMMSIZE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TOGGLEMMSIZE"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP1"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP1"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP1SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP1SET"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP2"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP2"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP2SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP2SET"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP3"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP3"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP3SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP3SET"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4SET"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STOPROUTEORWAYPOINT"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STOPROUTEORWAYPOINT"].key)
+	-- Bind the primary key AND the optional second key (key2) of every SkuNav binding.
+	-- The OnClick dispatcher above matches with SkuKeyBindsMatchKey, which has always
+	-- understood key2 -- only this binder was primary-key-only, so a configured second
+	-- key silently did nothing. SkuKeyBindsGetKeys skips empty slots, so an unbound
+	-- action no longer calls SetOverrideBindingClick with "".
+	local function tBindNavKey(aBindingConst)
+		for _, tKey in ipairs(SkuOptions:SkuKeyBindsGetKeys(aBindingConst)) do
+			SetOverrideBindingClick(tFrame, true, tKey, tFrame:GetName(), tKey)
+		end
+	end
+
+	tBindNavKey("SKU_KEY_SELECTNEXTBASEWAYPOINT")
+	tBindNavKey("SKU_KEY_TURNTOBEACON")
+	tBindNavKey("SKU_KEY_STARTRRFOLLOW")
+	--tBindNavKey("SKU_KEY_SKUMMOPEN")
+	tBindNavKey("SKU_KEY_TOGGLEREACHRANGE")
+	tBindNavKey("SKU_KEY_MOVETONEXTWP")
+	tBindNavKey("SKU_KEY_MOVETOPREVWP")
+	tBindNavKey("SKU_KEY_ADDLARGEWP")
+	tBindNavKey("SKU_KEY_ADDSMALLWP")
+	--tBindNavKey("SKU_KEY_SKURTMMDISPLAY")
+	tBindNavKey("SKU_KEY_TOGGLEMMSIZE")
+	tBindNavKey("SKU_KEY_QUICKWP1")
+	tBindNavKey("SKU_KEY_QUICKWP1SET")
+	tBindNavKey("SKU_KEY_QUICKWP2")
+	tBindNavKey("SKU_KEY_QUICKWP2SET")
+	tBindNavKey("SKU_KEY_QUICKWP3")
+	tBindNavKey("SKU_KEY_QUICKWP3SET")
+	tBindNavKey("SKU_KEY_QUICKWP4")
+	tBindNavKey("SKU_KEY_QUICKWP4SET")
+	tBindNavKey("SKU_KEY_STOPROUTEORWAYPOINT")
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------

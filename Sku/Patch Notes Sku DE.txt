@@ -490,6 +490,31 @@ Aenderungen in Sku v42.11
             Vorwaertsspringen per MoveToWp und der Start einer Rueckwaertsroute abgedeckt,
             die alle den Metapfad-Zustand vor dem SelectWP-Aufruf setzen.
 
+    Bessere Vorgaben fuer neue Spieler
+        Einfach: Wer Sku neu einrichtet, faengt jetzt mit einer brauchbaren
+            Grundeinstellung an, statt sich das Wichtigste erst zusammensuchen zu muessen.
+            Ein paar Tasten sind ab Werk belegt, der Chat ist sinnvoll aufgeteilt und
+            einzelne Ansagen sind von Anfang an eingeschaltet - im Wesentlichen so, wie
+            erfahrene Spieler es sich sowieso einstellen. Jede dieser Vorgaben steht
+            weiterhin an ihrem gewohnten Platz im Menue und laesst sich wie immer aendern.
+            An bestehenden Profilen und Charakteren aendert sich dabei nichts: eine Vorgabe
+            greift nur dort, wo noch nie etwas gespeichert wurde. Die neuen Tasten holt man
+            sich unter Sku Tastenbelegung -> Alles zuruecksetzen; das setzt allerdings
+            wirklich ALLE Tasten zurueck, auch die selbst belegten.
+        Technisch: Reine Vorgabenaenderungen in SkuZOptions/SkuKeyBinds.lua
+            (skuDefaultKeyBindings), SkuChat/Core.lua und Options.lua (ChatFrameDefaultTabs
+            plus die Standard-Registerkarten), SkuCore/Options.lua (SkuCore.defaults) und
+            SkuCore/aqCombat.lua (aqCombatOnLogin). Bestehende Werte bleiben unberuehrt,
+            weil jede Stelle nur bei nil schreibt bzw. AceDB Vorgaben nur in Luecken fuellt.
+            Zwei echte Verhaltensaenderungen haengen daran: der Binder in
+            SkuNav:CreateSkuNavMain hat immer nur .key gesetzt, eine vom Benutzer
+            vergebene ZWEITE Taste blieb fuer alle Navigationsaktionen also wirkungslos
+            (SkuKeyBindsMatchKey kannte sie laengst) - er laeuft jetzt ueber
+            SkuKeyBindsGetKeys und belegt beide. Und weil SkuChat eine Nachricht je
+            Registerkarte ausgibt, die den Typ aktiviert hat, muss ein Nachrichtentyp mit
+            eigener Registerkarte in allen anderen stumm sein, sonst wird er doppelt
+            vorgelesen.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.10

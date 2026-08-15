@@ -455,13 +455,15 @@ SkuChat.ChatFrameDefaultTabs = {
 				type = "OFFICER",
 				default = play,
 			},
+			-- Whispers moved to the dedicated L["ChatTabWhisper"] tab below; muted here
+			-- so a whisper is announced once, not once per tab that carries the type.
 			[6] = {
 				type = "WHISPER",
-				default = play,
+				default = false,
 			},
 			[7] = {
 				type = "BN_WHISPER",
-				default = play,
+				default = false,
 			},
 			[8] = {
 				type = "PARTY",
@@ -798,6 +800,205 @@ SkuChat.ChatFrameDefaultTabs = {
 			},		
 		},
 		
+		COMBAT = {
+			[1] = {
+				type = "COMBAT_XP_GAIN",
+				default = false,
+			},
+			[2] = {
+				type = "COMBAT_HONOR_GAIN",
+				default = false,
+			},
+			[3] = {
+				type = "COMBAT_FACTION_CHANGE",
+				default = false,
+			},
+			[5] = {
+				type = "COMBAT_MISC_INFO",
+				default = false,
+			},
+		},
+	},
+	-- Dedicated whisper tab (default tab #4 for a fresh profile). ONLY player
+	-- whispers and Battle.net whispers are audible here, every other message type
+	-- and every channel is muted, so a whisper is unmistakable. Whispers are muted
+	-- in the Communication tab in return -- two tabs carrying the same type would
+	-- make SkuChat speak every whisper twice (one AddMessage per tab frame).
+	-- Monster/boss whispers stay in Communication; they are not player whispers.
+	[L["ChatTabWhisper"]] = {
+		PLAYER_MESSAGES = {
+			[1] = {
+				type = "SAY",
+				default = false,
+			},
+			[2] = {
+				type = "EMOTE",
+				default = false,
+			},
+			[3] = {
+				type = "YELL",
+				default = false,
+			},
+			[4] = {
+				text = GUILD_CHAT,
+				type = "GUILD",
+				default = false,
+			},
+			[5] = {
+				text = OFFICER_CHAT,
+				type = "OFFICER",
+				default = false,
+			},
+			[6] = {
+				type = "WHISPER",
+				default = play,
+			},
+			[7] = {
+				type = "BN_WHISPER",
+				default = play,
+			},
+			[8] = {
+				type = "PARTY",
+				default = false,
+			},
+			[9] = {
+				type = "PARTY_LEADER",
+				default = false,
+			},
+			[10] = {
+				type = "RAID",
+				default = false,
+			},
+			[11] = {
+				type = "RAID_LEADER",
+				default = false,
+			},
+			[12] = {
+				type = "RAID_WARNING",
+				default = false,
+			},
+			[13] = {
+				type = "INSTANCE_CHAT",
+				default = false,
+			},
+			[14] = {
+				type = "INSTANCE_CHAT_LEADER",
+				default = false,
+			},
+		},
+
+		CREATURE_MESSAGES = {
+			[1] = {
+				text = SAY;
+				type = "MONSTER_SAY",
+				default = false,
+			},
+			[2] = {
+				text = EMOTE;
+				type = "MONSTER_EMOTE",
+				default = false,
+			},
+			[3] = {
+				text = YELL;
+				type = "MONSTER_YELL",
+				default = false,
+			},
+			[4] = {
+				text = WHISPER;
+				type = "MONSTER_WHISPER",
+				default = false,
+			},
+			[5] = {
+				type = "MONSTER_BOSS_EMOTE",
+				default = false,
+			},
+			[6] = {
+				type = "MONSTER_BOSS_WHISPER",
+				default = false,
+			}
+		},
+
+		OTHER = {
+			[1] = {
+				text = SKILLUPS,
+				type = "SKILL",
+				default = false,
+				},
+			[2] = {
+				text = ITEM_LOOT,
+				type = "LOOT",
+				default = false,
+				},
+			[3] = {
+				text = MONEY_LOOT,
+				type = "MONEY",
+				default = false,
+				},
+			[4] = {
+				type = "TRADESKILLS",
+				default = false,
+				},
+			[5] = {
+				type = "OPENING",
+				default = false,
+				},
+			[6] = {
+				type = "PET_INFO",
+				default = false,
+				},
+		},
+
+		PVP = {
+			[1] = {
+				text = BG_SYSTEM_HORDE,
+				type = "BG_HORDE",
+				default = false,
+			},
+			[2] = {
+				text = BG_SYSTEM_ALLIANCE,
+				type = "BG_ALLIANCE",
+				default = false,
+			},
+			[3] = {
+				text = BG_SYSTEM_NEUTRAL,
+				type = "BG_NEUTRAL",
+				default = false,
+			},
+		},
+
+		SYSTEM = {
+			[1] = {
+				text = SYSTEM_MESSAGES,
+				type = "SYSTEM",
+				default = false,
+			},
+			[2] = {
+				type = "ERRORS",
+				default = false,
+			},
+			[3] = {
+				type = "IGNORED",
+				default = false,
+			},
+			[4] = {
+				type = "CHANNEL",
+				default = false,
+			},
+			[5] = {
+				type = "TARGETICONS",
+				default = false,
+			},
+			[6] = {
+				type = "BN_INLINE_TOAST_ALERT",
+				default = false,
+			},
+			[7] = {
+				text = L["Addons"],
+				type = "ADDON",
+				default = false,
+			},
+		},
+
 		COMBAT = {
 			[1] = {
 				type = "COMBAT_XP_GAIN",
@@ -3647,6 +3848,16 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 		SkuChat:NewTab(L["Default"])
 		SkuChat:NewTab(L["Communication"])
 		SkuChat:NewTab(L["Other"])
+		-- Dedicated whisper tab: NewTab/ResetTab pick the message types up from
+		-- SkuChat.ChatFrameDefaultTabs[L["ChatTabWhisper"]] (whispers + Battle.net
+		-- whispers audible, everything else muted). It gets its OWN new-message
+		-- sound instead of the shared "sound-newChatLine" so an incoming whisper is
+		-- recognisable by ear alone; changeable per tab under
+		-- "Audio notification on chat message".
+		local tWhisperTabIndex = SkuChat:NewTab(L["ChatTabWhisper"])
+		if tWhisperTabIndex and SkuSettings:Sub("SkuChat").tabs[tWhisperTabIndex] then
+			SkuSettings:Sub("SkuChat").tabs[tWhisperTabIndex].audioOnNewMessage = "sound-notification3"
+		end
 	end
 
 	--init filters

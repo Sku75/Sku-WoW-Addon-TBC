@@ -66,7 +66,10 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_SCAN7"] = {key = "CTRL-SHIFT-P", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_SCAN8"] = {key = "CTRL-SHIFT-I", object = "SkuCoreControlOption1", script = "OnHide",},
 
-   ["SKU_KEY_TURNTOBEACON"] = {key = "I", object = "SkuNav", func = "CreateSkuNavMain",},
+   -- "Zum aktuellen Beacon drehen": I stays the primary key, T is added as the second
+   -- binding (t = turn/drehen) so both work out of the box. SkuNav's binder below
+   -- applies key AND key2.
+   ["SKU_KEY_TURNTOBEACON"] = {key = "I", key2 = "T", object = "SkuNav", func = "CreateSkuNavMain",},
 
    ["SKU_KEY_OPENDUNGEONBROWSER"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
 
@@ -164,9 +167,21 @@ SkuOptions.skuDefaultKeyBindings = {
 
    
 }
+-- Default keys for the first five Sku focus slots (numeric keypad). The bare key
+-- CALLS the focus (FOCUSGET), CTRL + the same key SETS/captures it (FOCUSSET), so a
+-- new player has a usable focus block without configuring anything. Slots 6-8 stay
+-- unbound on purpose. Note skuFocus.lua only applies .key for these, so no key2 here.
+local tFocusDefaultKeys = {
+   [1] = "NUMPADPLUS",
+   [2] = "NUMPAD6",
+   [3] = "NUMPAD9",
+   [4] = "NUMPADMINUS",
+   [5] = "NUMPADMULTIPLY",
+}
 for x = 1, 8 do
-   SkuOptions.skuDefaultKeyBindings["SKU_KEY_FOCUSGET"..x] = {key = "", object = "SkuCoreSkuFocusControl", script = "OnHide",}
-   SkuOptions.skuDefaultKeyBindings["SKU_KEY_FOCUSSET"..x] = {key = "", object = "SkuCoreSkuFocusControl", script = "OnHide",}
+   local tKey = tFocusDefaultKeys[x]
+   SkuOptions.skuDefaultKeyBindings["SKU_KEY_FOCUSGET"..x] = {key = tKey or "", object = "SkuCoreSkuFocusControl", script = "OnHide",}
+   SkuOptions.skuDefaultKeyBindings["SKU_KEY_FOCUSSET"..x] = {key = tKey and ("CTRL-"..tKey) or "", object = "SkuCoreSkuFocusControl", script = "OnHide",}
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

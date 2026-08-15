@@ -1085,8 +1085,13 @@ function aqCombat:aqCombatOnLogin()
    for x = 1, 2 do
       SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat or {}
 
+      -- ON for a fresh character: this is the master switch of the combat monitor and
+      -- without it "Anzahl der Gegner ansagen" (below, default "alle Gegner") could
+      -- never speak. Every other combat sub-option still defaults to off/0/value 1,
+      -- so turning the master on does not by itself add threat/death/cast spam.
+      -- Existing characters already have a stored value and keep it.
       if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.enabled == nil then
-         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.enabled = false
+         SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.enabled = true
       end
 
       if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.updateRate == nil then
@@ -1119,8 +1124,12 @@ function aqCombat:aqCombatOnLogin()
          end
 
          --ignoreNonElite
+            -- false = count ALL enemies, not just elites -- this is the "alle Gegner"
+            -- half of the "Anzahl der Gegner ansagen" default (see relativeNumber-
+            -- UnitsInCombat below). Elite-only would stay silent through almost all of
+            -- levelling, and it also skips the per-GUID classification lookups.
             if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.ignoreNonElite == nil then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.ignoreNonElite = true
+               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.ignoreNonElite = false
             end
 
          --threat
@@ -1243,9 +1252,13 @@ function aqCombat:aqCombatOnLogin()
             end
 
             --Announce relative number of enemies in combat
-            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.relativeNumberUnitsInCombat = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.relativeNumberUnitsInCombat or 
+            -- value 3 = "enemies attacking you or your group" = the "ein" state of the
+            -- "Anzahl der Gegner ansagen" menu entry, which is ON for a fresh character
+            -- (value 1 would be off). Together with ignoreNonElite = false above this
+            -- is the "alle Gegner" preset.
+            SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.relativeNumberUnitsInCombat = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.relativeNumberUnitsInCombat or
             {
-               value = 1,
+               value = 3,
                sound = "vocalized",
             }
             SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.relativeNumberUnitsInCombat.voiceOutput = "${sound};${number1}"

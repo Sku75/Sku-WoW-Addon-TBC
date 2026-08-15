@@ -482,6 +482,7 @@ L["chat ausgabe"] = "chat ausgabe"
 L["Chat notification on enabling/disabling soft targeting categories"] = "Chat Benachrichtigung bei soft targeting kategorien aktivieren/deaktivieren"
 L["chat notification"] = "Chat Benachrichtigung"
 L["Chat settings"] = "Chat Einstellungen"
+L["ChatTabWhisper"] = "Flüstern" --name of the default chat tab that only carries whispers
 L["Chat von kreaturen automatisch lesen"] = "Chat von kreaturen automatisch lesen"
 L["CHAT_MSG_CHANNEL"] = "Chatnachricht kanal"
 L["CHAT_MSG_CHANNEL_NOTICE"] = "Chatnachricht kanal Benachrichtigung"
