@@ -466,6 +466,30 @@ Aenderungen in Sku v42.11
             mehr auseinanderlaufen. Die verlinkte Zip war die ganze Zeit korrekt (geprueft:
             Sku-42.10.zip enthaelt "## Version: 42.10").
 
+    Beacons: ein eigener Ton fuer den letzten Wegpunkt einer Route
+        Einfach: Neben den Toenen fuer kleine und grosse Beacons gibt es jetzt einen
+            dritten: den Ton fuer den letzten Beacon einer Route. Er erklingt nur beim
+            letzten Wegpunkt einer Metaroute, so dass hoerbar ist, ob der Punkt, auf den du
+            zulaeufst, das Ziel ist oder nur eine weitere Etappe. Die Einstellung steht
+            unter Monitor -> Beacon direkt unter den Toenen fuer kleine und grosse Beacons
+            und ist ab Werk Beacon 3. Beim Verfolgen eines einzelnen Wegpunkts aendert sich
+            nichts - dort gilt weiterhin der kleine oder grosse Ton je nach Groesse des
+            Wegpunkts.
+        Technisch: Neue Profil-Einstellung SkuNav beaconSoundSetLast (Vorgabe "Beacon 3"),
+            im SkuNav-Schema deklariert und in die ausdrueckliche Knotenliste des
+            Beacon-Untermenues in SkuCore/aq.lua aufgenommen - diese Liste ist nicht die
+            gesamte args-Tabelle, ein neuer Optionsknoten muss also auch dort stehen, sonst
+            taucht er im Menue nie auf. GetBeaconSoundSetName nimmt ein zweites Argument
+            und liefert damit den Ton fuer den letzten Beacon; das Verhalten fuer
+            schmal/breit und die einarmigen Aufrufer (Panikbeacon, TomTom-Hook) bleiben
+            unberuehrt. Das neue SkuNav:IsLastMetaRouteWp vergleicht den NAMEN des
+            Wegpunkts mit dem letzten Eintrag von
+            metapathFollowingMetapaths[target].pathWps, statt metapathFollowingCurrentWp
+            zu lesen: SelectWP laeuft, bevor dieser Index weitergesetzt wird - eine
+            Indexpruefung waere um eins daneben. Ueber den Namen sind auch das
+            Vorwaertsspringen per MoveToWp und der Start einer Rueckwaertsroute abgedeckt,
+            die alle den Metapfad-Zustand vor dem SelectWP-Aufruf setzen.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.10

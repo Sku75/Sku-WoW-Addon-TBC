@@ -4238,10 +4238,12 @@ function Aq:MonitorMenuBuilder()
 	end
 
 	-- Beacon: the navigation beacon audio settings (volume, click-on-beacon toggle/
-	-- angle/sound, narrow/wide beacon sound sets), relocated here from the Nav menu's
+	-- angle/sound, narrow/wide/last beacon sound sets), relocated here from the Nav menu's
 	-- "Optionen" (Nutzerwunsch: beacon audio belongs with the Monitor). Same args/db
-	-- (SkuNav) via IterateOptionsArgs -> saved values unchanged. The narrow/wide sound
-	-- set nodes keep their inline OnAction (they play a sample beacon).
+	-- (SkuNav) via IterateOptionsArgs -> saved values unchanged. The sound set nodes
+	-- keep their inline OnAction (they play a sample beacon).
+	-- NOTE: this is an explicit whitelist, not the whole args table -- a new node in
+	-- SkuNav.options.args must be added HERE too or it never shows up in the menu.
 	if SkuNav and SkuNav.options and SkuNav.options.args then
 		local tBeacon = SkuOptions:InjectMenuItems(self, {Sku.deEn("Beacon", "Beacon", "Balise")}, SkuGenericMenuItem)
 		tBeacon.dynamic = true
@@ -4252,6 +4254,7 @@ function Aq:MonitorMenuBuilder()
 				beaconVolume         = a.beaconVolume,
 				beaconSoundSetNarrow = a.beaconSoundSetNarrow,
 				beaconSoundSetWide   = a.beaconSoundSetWide,
+				beaconSoundSetLast   = a.beaconSoundSetLast,
 				clickClackEnabled    = a.clickClackEnabled,
 				clickClackRange      = a.clickClackRange,
 				clickClackSoundset   = a.clickClackSoundset,

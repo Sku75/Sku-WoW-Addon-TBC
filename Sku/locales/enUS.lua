@@ -1361,6 +1361,7 @@ L["krieger"]  = "warrior" --
 L["Krieger"]  = "warrior" --
 L["L"] = "L"
 L["Large"]  = "Large" --
+L["last beacon sound set"] = "Sound for the last beacon of a route"
 L["last online"] = "last online"
 L["Last pos"] = "Last pos"
 L["Laughing"] = "Laughing"

@@ -127,6 +127,29 @@ SkuNav.options = {
 				return SkuSettings:Sub("SkuNav").beaconSoundSetWide
 			end
 		},
+		beaconSoundSetLast = {
+			order = 4.5,
+			name = L["last beacon sound set"],
+			desc = "",
+			type = "select",
+			values = SkuNav.BeaconSoundSetNames,
+			OnAction = function(self, info, val)
+				local tPlayerPosX, tPlayerPosY = UnitPosition("player")
+				if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", "sampleBeacon", SkuNav.BeaconSoundSetNames[val], tPlayerPosX + 10, tPlayerPosY, -3, 0, SkuSettings:Sub("SkuNav").beaconVolume, SkuSettings:Sub("SkuNav").clickClackRange, nil, nil, nil, nil, SkuSettings:Sub("SkuNav").clickClackSoundset) then
+					return
+				end
+				SkuOptions.BeaconLib:StartBeacon("SkuOptions", "sampleBeacon")
+				C_Timer.After(1, function()
+					SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", "sampleBeacon")
+				end)
+			end,
+			set = function(info,val)
+				SkuSettings:Sub("SkuNav").beaconSoundSetLast = SkuNav.BeaconSoundSetNames[val]
+			end,
+			get = function(info)
+				return SkuSettings:Sub("SkuNav").beaconSoundSetLast
+			end
+		},
 		clickClackEnabled = {
 			order = 5,
 			name = L["Klick bei Beacons"],
@@ -291,6 +314,7 @@ SkuNav.defaults = {
 	beaconVolume = 35,
 	beaconSoundSetNarrow = "Beacon 2",
 	beaconSoundSetWide = "Beacon 4",
+	beaconSoundSetLast = "Beacon 3",
 	vocalizeFullDirectionDistance = true,
 	vocalizeZoneNames = true,
 	showRoutesOnMinimap = false,
@@ -317,7 +341,7 @@ SkuNav.defaults = {
 -- Settings schema for SkuNav (Sku 42 rework, W2 M-C1 / W1 Phase C). Single
 -- source of truth (scope/default/type) for the menu's schema-managed get/set.
 -- All keys profile scope (the menu's options.args only touch SkuSettings:Sub(
--- "SkuNav") -- profile). Kept nodes (beaconSoundSetNarrow/Wide transform the
+-- "SkuNav") -- profile). Kept nodes (beaconSoundSetNarrow/Wide/Last transform the
 -- value + play a sample beacon; showGatherWaypoints rebuilds the waypoint cache)
 -- still carry inline get/set, but are declared here too for completeness.
 -- Select value tables are keyed by the stored value: StandardWpReachedRanges,
@@ -327,6 +351,7 @@ SkuSettings:Register("SkuNav", {
 	["beaconVolume"]                       = { scope = "profile", default = 35,         type = "number"  },
 	["beaconSoundSetNarrow"]               = { scope = "profile", default = "Beacon 2", type = "string"  },
 	["beaconSoundSetWide"]                 = { scope = "profile", default = "Beacon 4", type = "string"  },
+	["beaconSoundSetLast"]                 = { scope = "profile", default = "Beacon 3", type = "string"  },
 	["clickClackEnabled"]                  = { scope = "profile", default = true,       type = "boolean" },
 	["clickClackRange"]                    = { scope = "profile", default = 5,          type = "number"  },
 	["clickClackSoundset"]                 = { scope = "profile", default = "click",    type = "string"  },

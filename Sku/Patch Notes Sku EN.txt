@@ -418,6 +418,28 @@ Changes in Sku v42.11
             was correct the whole time (verified: Sku-42.10.zip contains "## Version:
             42.10").
 
+    Beacons: a separate sound for the last waypoint of a route
+        Simple: There is now a third beacon sound next to the ones for small and large
+            beacons: the sound for the last beacon of a route. It plays for the final
+            waypoint of a meta route only, so you can hear whether the point you are
+            walking towards is the destination or just another leg. The setting sits under
+            Monitor -> Beacon, directly below the small and large beacon sounds, and it
+            defaults to Beacon 3. Following a single waypoint is unchanged - that still
+            uses the small or large sound according to the waypoint's size.
+        Technical: New profile setting SkuNav beaconSoundSetLast (default "Beacon 3"),
+            declared in the SkuNav schema and added to the Beacon submenu's explicit node
+            whitelist in SkuCore/aq.lua - that list is not the whole args table, so a new
+            option node has to be named there as well or it never appears in the menu.
+            GetBeaconSoundSetName takes a second argument and returns the last-beacon set
+            when it is true, leaving the narrow/wide behaviour and the one-argument callers
+            (the panic beacon, the TomTom hook) untouched. The new SkuNav:IsLastMetaRouteWp
+            compares the waypoint NAME against the last entry of
+            metapathFollowingMetapaths[target].pathWps rather than reading
+            metapathFollowingCurrentWp, because SelectWP runs before that index is
+            advanced - an index test would be off by one. Going by name also covers
+            skipping ahead with MoveToWp and the reverse-route start, which all set the
+            metapath state before calling SelectWP.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.10

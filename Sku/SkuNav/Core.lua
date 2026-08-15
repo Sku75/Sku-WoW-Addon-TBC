@@ -3087,7 +3087,7 @@ function SkuNav:SelectWP(aWpName, aNoVoice)
 
 	SkuSettings:Sub("SkuNav").selectedWaypoint = aWpName
 
-	local tBeaconType = SkuNav:GetBeaconSoundSetName(SkuNav:GetWaypointData2(SkuSettings:Sub("SkuNav").selectedWaypoint).size)
+	local tBeaconType = SkuNav:GetBeaconSoundSetName(SkuNav:GetWaypointData2(SkuSettings:Sub("SkuNav").selectedWaypoint).size, SkuNav:IsLastMetaRouteWp(aWpName))
 	local tCCType = SkuSettings:Sub("SkuNav").clickClackSoundset
 	if SkuSettings:Sub("SkuNav").clickClackEnabled ~= true then
 		tCCType = nil
@@ -3579,6 +3579,7 @@ function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 
 		SkuNav.options.args.beaconSoundSetNarrow.values = SkuNav.BeaconSoundSetNames
 		SkuNav.options.args.beaconSoundSetWide.values = SkuNav.BeaconSoundSetNames
+		SkuNav.options.args.beaconSoundSetLast.values = SkuNav.BeaconSoundSetNames
 	end)
 
 	-- populate clickclack sound set names
@@ -4012,18 +4013,53 @@ function SkuNav:DeleteWaypoint(aWpName, aIsTempWaypoint)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
-function SkuNav:GetBeaconSoundSetName(size)
+-- Returns true when aWpName is the FINAL waypoint of the meta route currently
+-- being followed. Compares against the last entry of pathWps rather than the
+-- index, because SelectWP runs BEFORE metapathFollowingCurrentWp is advanced.
+function SkuNav:IsLastMetaRouteWp(aWpName)
+	if not aWpName or aWpName == "" then
+		return false
+	end
+	if SkuSettings:Sub("SkuNav").metapathFollowing ~= true then
+		return false
+	end
+	local tTarget = SkuSettings:Sub("SkuNav").metapathFollowingTarget
+	if not tTarget then
+		return false
+	end
+	local tMetapaths = SkuSettings:Sub("SkuNav").metapathFollowingMetapaths
+	if not tMetapaths or not tMetapaths[tTarget] or not tMetapaths[tTarget].pathWps then
+		return false
+	end
+	local tWps = tMetapaths[tTarget].pathWps
+	if #tWps < 1 then
+		return false
+	end
+	return tWps[#tWps] == aWpName
+end
+
+------------------------------------------------------------------------------------------------------------------------
+---@param size number waypoint size (5 == wide)
+---@param aIsLast boolean true for the final waypoint of a meta route
+function SkuNav:GetBeaconSoundSetName(size, aIsLast)
 	local beacontype = "narrow"
-	if size == 5 then
+	if aIsLast == true then
+		beacontype = "last"
+	elseif size == 5 then
 		beacontype = "wide"
 	end
 	local name = ""
 	if beacontype == "narrow" then
 		name = SkuNav.BeaconSoundSetNames[SkuSettings:Sub("SkuNav").beaconSoundSetNarrow]
-	else
+	elseif beacontype == "wide" then
 		name = SkuNav.BeaconSoundSetNames[SkuSettings:Sub("SkuNav").beaconSoundSetWide]
+	else
+		name = SkuNav.BeaconSoundSetNames[SkuSettings:Sub("SkuNav").beaconSoundSetLast]
 	end
 	if name == nil then
+		if beacontype == "last" then
+			return "Beacon 3"
+		end
 		if size == 5 then
 			return "Beacon 4"
 		end
