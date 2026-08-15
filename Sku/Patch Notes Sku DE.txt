@@ -4,6 +4,89 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v42.13
+
+    Im Charakterfenster werden die Beschreibungen der Werte wieder vorgelesen
+        Einfach: Unter "Eigenschaften" hatte jeder Wert - Zauberschaden,
+            Zaubertrefferwertung, Ausdauer, Waffengeschwindigkeit und alle uebrigen - nur
+            seinen Namen und seine Zahl. Die Beschreibung, die das Spiel dazu anzeigt, war
+            leer: was der Wert bewirkt, die Aufschluesselung nach Zauberschulen, Haupt- und
+            Nebenhand. Die Taste fuer den vollstaendigen Text sagte an diesen Eintraegen
+            nichts. Nur die Widerstaende und die Ausruestung hatten eine Beschreibung.
+            Jetzt hat jeder Wert seine, und sie wird bei jedem Anlaufen frisch gelesen, ist
+            also auch nach einem Buff oder einem Ausruestungswechsel aktuell.
+        Technisch: Der Tooltip-Abruf war an dieser Stelle auskommentiert, und jeder Eintrag
+            wurde mit leerem textFull gebaut - unveraendert schon in v41.06, das ist also
+            kein Rueckschritt aus dem Umbau, sondern hat nie funktioniert. Zwei Gruende,
+            warum er so auch nicht funktionieren konnte: GetButtonTooltipLines wurde mit
+            GameTooltip als zweitem Argument aufgerufen, was genau den Schritt
+            ueberspringt, der den Tooltip erst fuellt; und ohne dieses Argument haette der
+            Helfer trotzdem abgebrochen, weil er ein OnEnter nur fuer Objekte ausloest, die
+            eine .type-Markierung tragen - die haben die Werte-Frames nicht, und genau
+            deshalb setzt die Widerstands-Schleife sie vor ihrem Abruf. Dazu kam ein
+            dritter Grund, an dem eine naive Reparatur falsch geworden waere: TBC schickt
+            alle 29 Werte durch EIN gemeinsames Widget (PlayerStatFrameLeft1), und die
+            Blizzard-Setter lassen ihren Zustand darauf liegen - .tooltip/.tooltip2 sowie
+            .bonusDamage/.spellCrit/.damage fuer die vier Werte, die ein eigenes OnEnter
+            setzen. Keiner raeumt hinter dem vorherigen auf, vier tauschen OnEnter aus und
+            nie zurueck; Blizzards eigenes UpdatePaperdollStats macht vor jeder Gruppe
+            genau deshalb einen Reset. Ohne den haette Wert N die Beschreibung von Wert N-1
+            vorgelesen. Der Abruf setzt das Widget jetzt vor jedem Setter zurueck und liest
+            den Tooltip ueber NumLines/GameTooltipTextLeft|Right statt ueber GetRegions -
+            letzteres liefert linke und rechte Spalte als zwei getrennte Bloecke, die
+            Aufschluesselung nach Zauberschulen waere also als sechs Schulnamen gefolgt von
+            sechs Zahlen vorgelesen worden. Der Live-Getter, der den Wert bei jedem
+            Anlaufen neu bestimmt, gibt die Beschreibung jetzt als zweiten Rueckgabewert
+            mit; danach wird das Widget ueber PaperDollFrame_UpdateStats in den Zustand
+            zurueckversetzt, den Blizzard erwartet.
+
+    Sku ist nicht mehr darauf angewiesen, dass interne Kennwoerter unuebersetzt bleiben
+        Einfach: Auf einem franzoesischen Client tat die Taste fuer das Quest-Log gar
+            nichts - kein Fokus, kein Ton, keine Fehlermeldung. Schuld war ein einziges
+            uebersetztes Wort in der franzoesischen Sprachdatei. Manche Eintraege dort sind
+            naemlich keine Beschriftung, sondern ein internes Kennwort, mit dem Sku seine
+            eigenen Menuepfade bildet und wiedererkennt; wird so eines uebersetzt, findet
+            das Addon seinen eigenen Pfad nicht mehr. Das ist behoben, und zwar so, dass es
+            sich nicht wiederholen kann: das Kennwort ist gar kein uebersetzbarer Text
+            mehr. Wer sich einen franzoesischen Pfad angewoehnt hat, kommt damit weiterhin
+            ans Ziel. Ein zweiter Fund derselben Art haette jeden franzoesischen Client
+            beim naechsten Sortieren der Sprachdatei lautlos auf englische Namen fuer
+            Gegner, Objekte und Quests umgestellt - auch das ist beseitigt.
+        Technisch: Gefunden, auf die Ursache zurueckverfolgt und behoben hat das ZenqFR
+            (Games-Access) auf einem echten franzoesischen Client, als PR #2 in diesem
+            Repo. Die weiteren Aenderungen bauen darauf auf. L["short"] trug zwei
+            unabhaengige Bedeutungen: an rund 25 Stellen war es das erste Feld eines
+            SkuOptions:SlashFunc-Pfads, also ein Protokoll-Kennwort, das der Code gegen
+            sich selbst vergleicht, an genau einer Stelle (SkuCore/aq.lua) echter
+            Anzeigetext. Ein Uebersetzer sieht immer nur die zweite Bedeutung. Beide sind
+            jetzt getrennt: Sku.MENU_ROOT ist das Kennwort und wird von allen 23
+            pfadbildenden Stellen benutzt, dazu von den sechs, die das Literal "short,"
+            fest verdrahtet hatten - eine davon war die Quest-Log-Taste. Der Vergleich
+            akzeptiert weiterhin auch L["short"], damit gelernte lokalisierte Pfade
+            weiterlaufen. Nebenbei behoben: der Ersatzwert in SkuCore/dungeonBrowser.lua
+            war "sku" und damit ueberhaupt kein gueltiges Kennwort. Zweitens definierte
+            frFR.lua L["locale"] doppelt - "enUS" im sortierten Rumpf und "frFR" am Ende
+            angehaengt. Richtig aufgeloest wurde das nur durch AceLocales Reihenfolge: eine
+            Nicht-Standardsprache wird ueber einen Proxy registriert, der bedingungslos
+            rawsetzt, also gewinnt die LETZTE Zuweisung. Aus diesem Schluessel liest Sku
+            Sku.Loc, und daran haengt, welche SkuDB-Namenstabellen der gesamte Client
+            benutzt: ein Neuerzeugen oder Sortieren der Datei haette jeden franzoesischen
+            Client stumm auf englische DATEN umgestellt - kein Fehler, keine Logzeile, nur
+            ueberall die falschen Namen. Die verlierende Zeile ist geloescht, die
+            ueberlebende dokumentiert, und dev/rework-docs/_locale_dupes.py meldet ab jetzt
+            doppelte Schluessel je Sprachdatei. Der Linter macht nebenbei sichtbar, dass
+            enUS als AceLocale-Standardsprache umgekehrt ERSTE-gewinnt: derselbe doppelte
+            Schluessel kann pro Sprache auf verschiedene Eintraege zeigen. 64 solcher
+            Konflikte gibt es heute, fast alles alter Uebersetzungsstaub; sie sind bewusst
+            stehen geblieben und jetzt wenigstens sichtbar. Drittens haelt
+            SkuDBEnsureActiveLocaleTables sein Versprechen nun auch wirklich - es laeuft
+            zusaetzlich bei ADDON_LOADED (vorher erst einen OnUpdate nach PLAYER_LOGIN,
+            wer also in seinem eigenen PLAYER_LOGIN-Handler auf [Sku.Loc] zugriff, sah fuer
+            einen Moment nil) und steigt bei unbrauchbarem Sku.Loc nicht mehr wortlos aus,
+            sondern prueft, meldet den wahrscheinlichen Verursacher ins Log und baut die
+            Tabellen trotzdem.
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.12
 
     Die Sprache verstummt nicht mehr, wenn du schnell durch eine Liste gehst

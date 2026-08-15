@@ -4,6 +4,82 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.13
+
+    The character sheet reads out the description of every stat again
+        Simple: Under "Stats" each value - spell damage, spell hit rating, stamina, weapon
+            speed and all the others - had only its name and its number. The description
+            the game shows next to it was empty: what the stat does, the breakdown per
+            spell school, main hand and off hand. The full-text key said nothing on those
+            entries. Only the resistances and your equipment had a description. Now every
+            stat has one, and it is read fresh each time you land on the entry, so it is
+            current after a buff or a gear change too.
+        Technical: The tooltip read was commented out at that spot and every entry was
+            built with an empty textFull - unchanged all the way back to v41.06, so this is
+            not something the rework broke, it never worked. Two reasons it could not have
+            worked as written: GetButtonTooltipLines was called with GameTooltip as its
+            second argument, which skips exactly the step that fills the tooltip in the
+            first place; and without that argument the helper would still have bailed,
+            because it only fires an OnEnter for objects carrying a .type marker - the stat
+            frames do not have one, which is precisely why the resistance loop sets it
+            before its own read. On top of that came a third reason, the one that would
+            have made a naive fix wrong: TBC drives all 29 stats through ONE shared widget
+            (PlayerStatFrameLeft1), and the Blizzard setters leave their state on it -
+            .tooltip/.tooltip2 plus .bonusDamage/.spellCrit/.damage for the four stats that
+            install their own OnEnter. None of them clears what the previous one left, four
+            of them swap OnEnter out and never back; Blizzard's own UpdatePaperdollStats
+            re-points it before every group for exactly that reason. Without the same
+            reset, stat N would have read out stat N-1's description. The read now resets
+            the widget before each setter and walks the tooltip via
+            NumLines/GameTooltipTextLeft|Right rather than GetRegions - the latter hands
+            back the left and the right column as two separate runs, so the spell school
+            breakdown would have been read as six school names followed by six numbers. The
+            live getter that re-reads the value on every landing now returns the description
+            as a second value alongside it, and afterwards the widget is handed back to the
+            state Blizzard expects via PaperDollFrame_UpdateStats.
+
+    Sku no longer depends on internal tokens being left untranslated
+        Simple: On a French client the Quest Log key did nothing at all - no focus, no
+            sound, no error. A single translated word in the French locale file was to
+            blame. Some entries in there are not a label but an internal token that Sku
+            uses to build and recognise its own menu paths; translate one and the addon can
+            no longer find its own path. That is fixed, and fixed in a way that cannot
+            recur: the token is not translatable text any more. If you have got used to
+            typing a French path it still gets you there. A second find of the same kind
+            would have silently switched every French client over to English names for
+            mobs, objects and quests the next time the locale file was sorted - that is
+            gone too.
+        Technical: Found, root-caused and fixed by ZenqFR (Games-Access) on a live French
+            client, as PR #2 in this repo. The follow-up changes build on that. L["short"]
+            carried two unrelated meanings: in about 25 places it was the first field of a
+            SkuOptions:SlashFunc path, i.e. a protocol token the code compares against
+            itself, and in exactly one place (SkuCore/aq.lua) it is genuine user-facing
+            text. A translator only ever sees the second meaning. The two are now split:
+            Sku.MENU_ROOT is the token and is used by all 23 path-building sites plus the
+            six that hardcoded the literal "short," - one of which was the Quest Log key.
+            The comparison still accepts L["short"] as well, so a localized path anyone has
+            learned keeps working. Fixed in passing: the fallback in
+            SkuCore/dungeonBrowser.lua was "sku", not a valid token at all. Second,
+            frFR.lua defined L["locale"] twice - "enUS" in the sorted body and "frFR"
+            appended at the end. It resolved correctly only by AceLocale's ordering: a
+            non-default locale is registered through a proxy that rawsets unconditionally,
+            so the LAST assignment wins. Sku.Loc is read straight from that key, and it
+            selects which SkuDB name tables the entire client uses - regenerating or
+            sorting the file would have flipped every French client to English DATA
+            silently: no error, no log line, just the wrong names everywhere. The losing
+            line is deleted, the surviving one documented, and
+            dev/rework-docs/_locale_dupes.py now reports duplicate keys per locale file. The
+            lint also makes visible that enUS, as the AceLocale default locale, is
+            FIRST-wins instead: the same duplicated key can resolve to different entries per
+            language. 64 such conflicts exist today, nearly all old translator noise; they
+            were deliberately left alone and are at least visible now. Third,
+            SkuDBEnsureActiveLocaleTables actually keeps its promise now - it also runs at
+            ADDON_LOADED (previously only one OnUpdate after PLAYER_LOGIN, so anything
+            touching [Sku.Loc] in its own PLAYER_LOGIN handler saw nil for a moment) and no
+            longer returns silently on an unusable Sku.Loc: it validates, logs the likely
+            culprit, and builds the tables regardless.
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.12
 
     Speech no longer goes silent when you move through a list quickly
