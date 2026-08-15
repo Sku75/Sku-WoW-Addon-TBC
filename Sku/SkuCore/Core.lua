@@ -1168,6 +1168,18 @@ function SkuCore:OnEnable()
 	SkuCore:ApplyModuleEnabledStates()
 	-- RangeCheck now arms via its own module OnEnable (W4 Rework A).
 
+	-- "Handel annehmen" (SKU_KEY_TRADEACCEPT, Standard CTRL-T) HIER scharfschalten.
+	-- Der Eintrag in skuDefaultKeyBindings zeigt auf SkuCore:UpdateTradeAcceptBinding,
+	-- aber SkuOptions:SkuKeyBindsUpdate fuehrt diesen Dispatch nur OHNE aInitializeFlag
+	-- aus -- und der Login-Aufruf (SkuZOptions/Core.lua, OnInitialize) uebergibt true.
+	-- Die Bindung wurde damit nie gesetzt: kein SkuCombatTradeAccept-Button, kein
+	-- Override, die Taste war schlicht tot, bis der Nutzer sie einmal neu belegte oder
+	-- das Profil wechselte. Die beiden anderen Bindungen desselben Dispatch-Typs
+	-- (AtlasLoot, Naechster Gegner) armen genau deshalb ebenfalls aus ihrem OnEnable.
+	pcall(function()
+		if SkuCore.UpdateTradeAcceptBinding then SkuCore:UpdateTradeAcceptBinding() end
+	end)
+
 	--fake ctrl shift tab for untargetable units in starting areas	
 	local tFrame = CreateFrame("Button", "SkuCoreSecureTabButton", _G["UIParent"], "SecureActionButtonTemplate")
 	tFrame:SetSize(1, 1)

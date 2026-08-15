@@ -809,8 +809,22 @@ end
 -- as SKU_KEY_TRADEACCEPT -> SkuCore:UpdateTradeAcceptBinding). This is the position-independent
 -- accept; the menu-driven HOME/ENTER accept lives in the mirror snippet above.
 ---------------------------------------------------------------------------------------------------------------------------------------
+local tTradeAcceptRegenFrame
 function SkuCore:UpdateTradeAcceptBinding()
-   if InCombatLockdown() then return end     -- secure-button setup + bindings are combat-protected
+   if InCombatLockdown() then
+      -- Secure-button setup and override bindings are combat-protected. Bailing out
+      -- silently used to LOSE the binding for the rest of the session; catch up at the
+      -- end of combat instead (same pattern as AtlasLootIntegration:AtlasLootApplyKeyBinding).
+      if not tTradeAcceptRegenFrame then
+         tTradeAcceptRegenFrame = CreateFrame("Frame")
+         tTradeAcceptRegenFrame:SetScript("OnEvent", function(f)
+            f:UnregisterEvent("PLAYER_REGEN_ENABLED")
+            pcall(function() SkuCore:UpdateTradeAcceptBinding() end)
+         end)
+      end
+      tTradeAcceptRegenFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+      return
+   end
    local btn = _G["SkuCombatTradeAccept"]
    if not btn then
       btn = CreateFrame("Button", "SkuCombatTradeAccept", UIParent, "SecureActionButtonTemplate")
@@ -820,8 +834,38 @@ function SkuCore:UpdateTradeAcceptBinding()
       btn:SetAttribute("type", "macro")
       btn:SetAttribute("macrotext", "/click TradeFrameTradeButton")
       btn:Show()
+      -- The macro is fire-and-forget: it clicks a button that may be absent, disabled or
+      -- superseded by Blizzard's security prompt, and in all three cases NOTHING happens
+      -- and nothing is spoken -- indistinguishable from an unbound key. PostClick is
+      -- insecure and runs right after, so this is where the key gets a voice.
       btn:SetScript("PostClick", function()
-         if SkuLogCombat then SkuLogCombat("tradeAccept", "/click TradeFrameTradeButton combat=" .. (tInCombat() and 1 or 0)) end
+         local tTradeFrame = _G["TradeFrame"]
+         local tOpen = (tTradeFrame and tTradeFrame:IsVisible() == true) and true or false
+         local tTradeButton = _G["TradeFrameTradeButton"]
+         local tEnabled = (tTradeButton and tTradeButton.IsEnabled and tTradeButton:IsEnabled() == true) and true or false
+         local tSecure = (SkuCore._tSecureTradePending == true) and true or false
+         if SkuLogCombat then
+            SkuLogCombat("tradeAccept", "key open=" .. (tOpen and 1 or 0) .. " enabled=" .. (tEnabled and 1 or 0)
+               .. " secure=" .. (tSecure and 1 or 0) .. " combat=" .. (tInCombat() and 1 or 0))
+         end
+         local tSay = function(aText)
+            pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, true, true, 0.2, nil, nil, nil, 2) end)
+         end
+         if not tOpen then
+            tSay(tL("TRADE_NoTradeOpen"))
+            return
+         end
+         if tSecure then
+            -- Der Handelsknopf ist hier der falsche Knopf; die Antwort will Blizzards
+            -- Sicherheitsdialog. Siehe SkuCore:SECURE_TRANSFER_CONFIRM_TRADE_ACCEPT.
+            pcall(function() SkuCore:SecureTradeConfirm() end)
+            return
+         end
+         if not tEnabled then
+            tSay(tL("TRADE_AcceptDisabled"))
+            return
+         end
+         tSay(tL("TRADE_WaitingConfirm"))
       end)
    end
    local owner = _G["SkuCombatTradeAcceptOwner"] or CreateFrame("Frame", "SkuCombatTradeAcceptOwner", UIParent)

@@ -1,4 +1,4 @@
---[[
+﻿--[[
 Instructions for translators:
 	- don't omit leading or trailing spaces
 	- don't omit semicolons
@@ -2625,6 +2625,7 @@ L["TRADE_EnchantClick"] = "Linksklick zum Platzieren"
 L["TRADE_PartnerAccepted"] = "hat den Handel bestätigt"
 L["TRADE_PartnerUnaccepted"] = "hat die Bestätigung zurückgezogen"
 L["TRADE_WaitingConfirm"] = "Handel wird bestätigt"
+L["TRADE_NoTradeOpen"] = "Kein Handelsfenster offen"
 L["TRADE_AcceptDisabled"] = "Handeln ist gerade nicht möglich"
 L["TRADE_OfferChangedWarning"] = "hat das Angebot nachträglich geändert. Beim Bestätigen kommt eine Sicherheitsabfrage, die Sku nicht bedienen kann"
 L["TRADE_SecureConfirmNeeded"] = "Sicherheitsabfrage von Blizzard. Der Handel wartet auf eine zusätzliche Bestätigung"

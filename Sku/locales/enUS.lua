@@ -1,4 +1,4 @@
---[[
+﻿--[[
 Instructions for translators:
 	- don't omit leading or trailing spaces
 	- don't omit semicolons
@@ -2623,6 +2623,7 @@ L["TRADE_EnchantClick"] = "Left click to place"
 L["TRADE_PartnerAccepted"] = "has accepted the trade"
 L["TRADE_PartnerUnaccepted"] = "has withdrawn the acceptance"
 L["TRADE_WaitingConfirm"] = "Confirming trade"
+L["TRADE_NoTradeOpen"] = "No trade window open"
 L["TRADE_AcceptDisabled"] = "Trade is not possible right now"
 L["TRADE_OfferChangedWarning"] = "changed the offer afterwards. Accepting now brings up a security prompt Sku cannot operate"
 L["TRADE_SecureConfirmNeeded"] = "Blizzard security prompt. The trade is waiting for an extra confirmation"
