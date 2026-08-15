@@ -245,7 +245,16 @@ function SkuTTS:GetLinksTableFromString(aString, aCurrentLinkText, aDontSearchFo
 			end
 		end
 	else
-		if not aDontSearchForLinks then
+		-- [v42.12] Bail out before the normalisation work, not after it. The free
+		-- text search needs the wiki index (SkuDB.Wiki[...].lookupLen, built by
+		-- SkuAdventureGuide); when that is absent the guard further down made the
+		-- whole branch a no-op -- but only AFTER lowercasing the line and running
+		-- ~19 string.gsub passes over it, each allocating a new string. This
+		-- function is called from SkuVoice:OutputStringBTtts for every single
+		-- spoken line (and there the return value is discarded outright), so that
+		-- was pure waste on every menu step, target change and chat message.
+		local tLookupLen = SkuDB and SkuDB.Wiki and SkuDB.Wiki[Sku.Loc] and SkuDB.Wiki[Sku.Loc].lookupLen
+		if not aDontSearchForLinks and tLookupLen then
 			--just a usual tooltip page; find links in free text
 			local tStringLower = slower(aString)
 			tStringLower = " "..tStringLower.." "

@@ -157,11 +157,30 @@ function SkuVoice:Create()
 	end)
 	local fTime = 0
 	local fTimeBTTS = 0
-	local tLastWait = -1
+	-- [v42.12] Wall-clock pacing instead of a per-frame countdown.
+	--
+	-- tNextSpeakAt is the GetTime() before which no new utterance may be handed to
+	-- C_VoiceChat.SpeakText. The old code kept a `tLastWait` countdown and
+	-- subtracted ONE frame's delta per pump run -- but the pump body only runs
+	-- when fTimeBTTS > 0.01, so above ~100 fps it subtracted a fraction of the
+	-- time that had really elapsed and the intended 0.1 s hold stretched to
+	-- 0.2-0.3 s of real time. Since a queuereset deletes whatever line is still
+	-- waiting, a longer hold means MORE lost announcements: the bug got worse the
+	-- higher your framerate. A deadline is framerate-independent and identical to
+	-- the old behaviour at 60 fps.
+	local tNextSpeakAt = 0
+	-- GetTime() of the last StopSpeakingText issued by this pump (the queuereset
+	-- branch below). Only used to suppress redundant back-to-back stops.
+	local tLastStopAt = 0
 	f:SetScript("OnUpdate", function(self, time)
 
 		fTimeBTTS = fTimeBTTS + time
-		if fTimeBTTS > 0.01 then
+		if fTimeBTTS > 0.01 and #mSkuVoiceQueueBTTS == 0 and #mSkuVoiceQueueBTTS_Speaking == 0 then
+			-- Idle: nothing queued and nothing in flight. Skip the TTL sweep, the
+			-- queuereset scan and the dequeue entirely -- that is the overwhelmingly
+			-- common case and it otherwise ran ~100 times a second for nothing.
+			fTimeBTTS = 0
+		elseif fTimeBTTS > 0.01 then
 			fTimeBTTS = 0
 			-- Self-heal: drop any speaking entry whose FINISHED/FAILED never
 			-- arrived (dropped by some voices / the bridge). Without this a wedged
@@ -195,21 +214,47 @@ function SkuVoice:Create()
 			-- or the "currently speaking" dedup set climbs, the dequeue is stalling
 			-- (FINISHED not clearing / lower-layer not draining).
 			if dprint and (#mSkuVoiceQueueBTTS > 4 or #mSkuVoiceQueueBTTS_Speaking > 3) then
-				dprint("BTTS DEPTH", "queue="..#mSkuVoiceQueueBTTS, "speaking="..#mSkuVoiceQueueBTTS_Speaking, "wait="..tostring(tLastWait))
+				dprint("BTTS DEPTH", "queue="..#mSkuVoiceQueueBTTS, "speaking="..#mSkuVoiceQueueBTTS_Speaking, "wait="..tostring(tNextSpeakAt - tNow))
 			end
 			if #mSkuVoiceQueueBTTS > 0 then
-				--print("           ", tLastWait, mSkuVoiceQueueBTTS[1])
 				local tValue = mSkuVoiceQueueBTTS[1]
 				if tValue == "queuereset" then
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						if ChatTts().neverResetQueues ~= true then
-							if dprint then dprint("BTTS queuereset -> StopSpeakingText") end
-							C_VoiceChat.StopSpeakingText()
+							-- [v42.12] Suppress a provably redundant stop.
+							--
+							-- StopSpeakingText is only meaningful while Sku believes an
+							-- utterance is in flight (mSkuVoiceQueueBTTS_Speaking non-empty).
+							-- During an announce flood -- fast menu/soft-target scrolling, a
+							-- mail or chat burst -- resets arrive faster than lines are
+							-- spoken, so this branch used to fire 15-20 stops per second with
+							-- nothing playing. The client processes StopSpeakingText
+							-- asynchronously, so a trailing one lands on the NEXT utterance
+							-- and cancels it before playback starts: 14 of 580 SpeakText calls
+							-- in a captured session never produced a PLAYBACK_STARTED, all
+							-- clustered inside those floods. That is how the LAST line of a
+							-- fast scroll went missing and left the user in silence until
+							-- some other UI action produced a fresh announcement.
+							--
+							-- The skip is deliberately narrow: only when Sku has nothing
+							-- flagged as speaking AND a stop was already issued within the
+							-- last 0.15 s. With a real SAPI voice the speaking flag stays set
+							-- for the whole utterance, so a cancel that actually has something
+							-- to cancel is NEVER skipped -- combat cancellation semantics are
+							-- unchanged. An isolated announce also still stops exactly as
+							-- before; only the redundant repeats inside a burst are dropped.
+							if #mSkuVoiceQueueBTTS_Speaking > 0 or (tNow - tLastStopAt) > 0.15 then
+								if dprint then dprint("BTTS queuereset -> StopSpeakingText") end
+								C_VoiceChat.StopSpeakingText()
+								tLastStopAt = tNow
+							elseif dprint then
+								dprint("BTTS queuereset -> stop suppressed (nothing in flight)")
+							end
 						end
 						mSkuVoiceQueueBTTS_Speaking = {}
-						tLastWait = 0.10
+						tNextSpeakAt = tNow + 0.10
 				else
-					if #mSkuVoiceQueueBTTS > 1 or tLastWait <= 0 then
+					if #mSkuVoiceQueueBTTS > 1 or tNow >= tNextSpeakAt then
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						local tIsAlreadySpeakingThat
 						for z = 1, #mSkuVoiceQueueBTTS_Speaking do
@@ -246,19 +291,18 @@ function SkuVoice:Create()
 							if dprint then dprint("BTTS DEDUP-SKIP", "speaking="..#mSkuVoiceQueueBTTS_Speaking, "text=["..tostring(tValue).."]") end
 						end
 						mSkuVoiceQueueBTTS_Voice[tValue] = nil
-						--print("tLastWait = 0")
-						tLastWait = 0.1
-					else
-						--print("tLastWait = 0.06")
-						tLastWait = tLastWait - time
-
+						tNextSpeakAt = tNow + 0.1
 					end
 				end
 			end
 		end
 
 		fTime = fTime + time
-		if fTime > 0.1 then
+		if fTime > 0.1 and #mSkuVoiceQueue == 0 then
+			-- [v42.12] Idle: the audio-file queue is empty, so all five passes below
+			-- plus the pairs() tombstone sweep are no-ops. Skip them.
+			fTime = 0
+		elseif fTime > 0.1 then
 			fTime = 0
 			--play everything that is not flagged for queuing (wait == true)
 			for i = 1, table.getn(mSkuVoiceQueue) do
@@ -925,13 +969,10 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		tIsSound = true
 	end
 
-	-- [SOUND-PROBE] TEMPORARY diagnostic: log every sound-* asset played (e.g.
-	-- sound-off2, sound-on3_1) with a short caller stack, so we can see exactly
-	-- which feature fires the "follow/off" ping on menu open. Gated behind the
-	-- Sku.debug.log flag (dprint). Remove this block (grep SOUND-PROBE) when done.
-	if tIsSound and dprint then
-		dprint("[SOUND-PROBE] sound", aString, debugstack(2, 3, 0))
-	end
+	-- [SOUND-PROBE] removed (v42.12). Same reason as the PlaySound probe in
+	-- Sku/Core.lua: the guard tested `dprint` (always defined), not the log flag,
+	-- and debugstack(2, 3, 0) was evaluated before dprint could bail -- so every
+	-- ping, beacon and nav click paid a full stack walk even with logging off.
 
 	if not tIsSound then
 		if SkuVoice:CheckIgnore(aString) then
