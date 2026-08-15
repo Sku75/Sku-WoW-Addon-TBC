@@ -2522,7 +2522,7 @@ function SkuCore:CheckInteractObjectShow()
 			return
 		end
 
-		for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
+		for i, v in pairs(SkuDB.objectLookup[Sku.Loc] or SkuDB.objectLookup["enUS"] or {}) do
 			if v == tFirstLine then
 				--SkuCore.CheckInteractObjectShowIsShown = true
 				--print("show", tFirstLine)

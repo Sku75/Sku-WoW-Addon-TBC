@@ -15,7 +15,11 @@ if not SkuVoice then return end -- No upgrade needed
 local mChatTtsProvider
 local mChatTtsDefaults = { WowTtsVoice = 1, WowTtsSpeed = 3, WowTtsVolume = 50, neverResetQueues = false, allChatViaBlizzardTts = false }
 local function ChatTts()
-	return (mChatTtsProvider and mChatTtsProvider()) or mChatTtsDefaults
+	local tParams = mChatTtsProvider and mChatTtsProvider()
+	if type(tParams) ~= "table" then
+		return mChatTtsDefaults
+	end
+	return tParams
 end
 function SkuVoice:SetChatTtsProvider(aFn)
 	mChatTtsProvider = aFn

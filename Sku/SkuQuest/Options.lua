@@ -699,7 +699,7 @@ function SkuQuest:GetQuestDataStringFromDB(aQuestID, aZoneID)
 	if aQuestID then
 		local i = aQuestID
 
-		table.insert(tSections, SkuDB.questLookup[Sku.Loc][i][1]) --de name
+		table.insert(tSections, (SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[i][1]) --de name
 
 		if aQuestID and SkuDB.questDataTBC[aQuestID] then
 			if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys.skuData] then
@@ -758,8 +758,8 @@ function SkuQuest:GetQuestDataStringFromDB(aQuestID, aZoneID)
 
 		table.insert(tSections, L["Level"]..": "..SkuDB.questDataTBC[i][SkuDB.questKeys["questLevel"]].." ("..SkuDB.questDataTBC[i][SkuDB.questKeys["requiredLevel"]]..")")
 
-		if SkuDB.questLookup[Sku.Loc][i][3] then
-			table.insert(tSections, L["Objectives"].."\r\n"..(SkuDB.questLookup[Sku.Loc][i][3][1] or ""))
+		if (SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[i][3] then
+			table.insert(tSections, L["Objectives"].."\r\n"..((SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[i][3][1] or ""))
 		else
 			table.insert(tSections, L["Objectives"].."\r\n")
 		end
@@ -816,31 +816,31 @@ function SkuQuest:GetQuestDataStringFromDB(aQuestID, aZoneID)
 		if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]] then -- table: {quest(int)} - all to be completed before next in series
 			local preQuestGroup = ""
 			for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]]) do
-				preQuestGroup = preQuestGroup.."\r\n"..iR.." "..SkuDB.questLookup[Sku.Loc][vR][1]
+				preQuestGroup = preQuestGroup.."\r\n"..iR.." "..(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[vR][1]
 			end
 			table.insert(tSections, L["Pre Quests"]..": "..preQuestGroup)
 		end
 		if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]] then -- table: {quest(int)} - one to be completed before next in series
 			local preQuestSingle = ""
 			for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]]) do
-				preQuestSingle = preQuestSingle.."\r\n"..iR.." "..SkuDB.questLookup[Sku.Loc][vR][1]
+				preQuestSingle = preQuestSingle.."\r\n"..iR.." "..(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[vR][1]
 			end
 			table.insert(tSections, L["Pre Quest"]..": "..preQuestSingle)
 		end
 		if SkuDB.questDataTBC[i][SkuDB.questKeys["inGroupWith"]] then -- table: {quest(int)} - to be completed additional to this before next in series
 			local inGroupWith = ""
 			for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["inGroupWith"]]) do
-				inGroupWith = inGroupWith.."\r\n"..iR.." "..SkuDB.questLookup[Sku.Loc][vR][1]
+				inGroupWith = inGroupWith.."\r\n"..iR.." "..(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[vR][1]
 			end
 			table.insert(tSections, L["Quests group"]..": "..inGroupWith)
 		end
 
 		if SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]] then -- table: {quest(int)} - to be completed additional to this before next in series
 			if SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]] then
-				if SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]] then
-					if SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1] then
+				if (SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]] then
+					if (SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1] then
 						local parentQuest = ""
-						parentQuest = parentQuest.."\r\n"..SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]].." "..SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1]
+						parentQuest = parentQuest.."\r\n"..SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]].." "..(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1]
 						table.insert(tSections, L["Parent quest"]..": "..parentQuest)
 					end
 				end
@@ -1505,8 +1505,8 @@ function SkuQuest:GetTriggerEndWps(aQuestId)
 		for zone, data in pairs(SkuDB.questDataTBC[aQuestId][SkuDB.questKeys["triggerEnd"]][2]) do
 			local _, taName = SkuNav.Geo:GetAreaData(zone)
 			if taName then
-				if SkuDB.questLookup[Sku.Loc][aQuestId] then
-					tWaypoints[#tWaypoints + 1] = SkuDB.questLookup[Sku.Loc][aQuestId][1]..";"..taName..";"..L["Questziel"]..";"..data[1][1]..";"..data[1][2]
+				if (SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[aQuestId] then
+					tWaypoints[#tWaypoints + 1] = (SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[aQuestId][1]..";"..taName..";"..L["Questziel"]..";"..data[1][1]..";"..data[1][2]
 				end
 			end
 		end
@@ -1549,9 +1549,9 @@ local function tGetQuestTitleAndLevel(aQuestID)
 		end
 	end
 	-- Fallback 2: SkuDB.questLookup — Sku's eigene Quest-Daten.
-	if SkuDB and SkuDB.questLookup and SkuDB.questLookup[Sku.Loc]
-		and SkuDB.questLookup[Sku.Loc][aQuestID] then
-		local row = SkuDB.questLookup[Sku.Loc][aQuestID]
+	if SkuDB and SkuDB.questLookup and (SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})
+		and (SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[aQuestID] then
+		local row = (SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[aQuestID]
 		return row[1], (row[2] and tonumber(row[2])) or -1
 	end
 	return nil, nil
@@ -1751,7 +1751,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 				end
 				tNewMenuSubEntry.BuildChildren = function(self)
 					for i, v in pairs(tPreQuestTable) do
-						local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.questLookup[Sku.Loc][v][1]}, SkuGenericMenuItem)
+						local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[v][1]}, SkuGenericMenuItem)
 						tNewMenuSubEntry1.dynamic = true
 						tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
 							C_Timer.NewTimer(0.1, function()
@@ -1807,7 +1807,7 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 			tCurrentQuestLogQuestsTable[questID] = true
 		end
 	end
-	for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
+	for i, v in pairs((SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})) do
 		if SkuDB.questDataTBC[i] then
 			local tZoneId
 			if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures
@@ -2016,8 +2016,8 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 						-- UnitPosition("player") is nil in instances/raids/BGs, so Distance()
 						-- returns nil there; keep listing the quest, sorted to the end.
 						tDistance = tDistance or 99999
-						tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = {tDistance, tX, tY, i}
-						tIdTable[tDistance..L[";Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
+						tUnSortedTable[(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[i][1]] = {tDistance, tX, tY, i}
+						tIdTable[tDistance..L[";Meter"].."#"..(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[i][1]] = i
 					end
 				end
 			end
@@ -2035,19 +2035,19 @@ function SkuQuest:GetUnsortedAvailableQuestsTable()
 						-- UnitPosition("player") is nil in instances/raids/BGs, so Distance()
 						-- returns nil there; keep listing the quest, sorted to the end.
 						tDistance = tDistance or 99999
-						tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = {tDistance, tX, tY, i}
-						tIdTable[tDistance..L[";Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
+						tUnSortedTable[(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[i][1]] = {tDistance, tX, tY, i}
+						tIdTable[tDistance..L[";Meter"].."#"..(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[i][1]] = i
 					end
 				end
 			end
 		else
-			--tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = 99999
-			tIdTable["99999;"..L["Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
+			--tUnSortedTable[(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[i][1]] = 99999
+			tIdTable["99999;"..L["Meter"].."#"..(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[i][1]] = i
 		end
 
-		if not tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] then
-			--tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = 99999
-			tIdTable["99999;"..L["Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
+		if not tUnSortedTable[(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[i][1]] then
+			--tUnSortedTable[(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[i][1]] = 99999
+			tIdTable["99999;"..L["Meter"].."#"..(SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[i][1]] = i
 		end
 	end
 
@@ -2212,7 +2212,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 							local tZoneId = SkuQuest:GetQuestStartZoneId(tQuestId)
 							local tZoneEntry = tZoneId and SkuDB.InternalAreaTable[tZoneId]
 							local tZoneName = (tZoneEntry and tZoneEntry.AreaName_lang and tZoneEntry.AreaName_lang[Sku.Loc]) or L["Unbekannte Zone"]
-							local tLookup = SkuDB.questLookup[Sku.Loc][tQuestId]
+							local tLookup = (SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[tQuestId]
 							local tText, tIsComplete = SkuQuest:GetGroupQuestProgressText(tQuestId, tObjectives)
 							local tLabel = tLookup and tLookup[1] or ("Quest "..tQuestId)
 							if tIsComplete then
@@ -2262,7 +2262,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 							if aQuest.text ~= "" then
 								tSections[#tSections+1] = aQuest.text
 							end
-							if SkuDB.questLookup[Sku.Loc][aQuest.questId] then
+							if (SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})[aQuest.questId] then
 								local tDbSections = SkuQuest:GetQuestDataStringFromDB(aQuest.questId, aQuest.zoneId)
 								if type(tDbSections) == "table" then
 									for _, tSection in ipairs(tDbSections) do
@@ -2358,7 +2358,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		end
 		tNewMenuSubEntry.BuildChildren = function(self)
 			local tNameCache = {}
-			for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
+			for i, v in pairs((SkuDB.questLookup[Sku.Loc] or SkuDB.questLookup["enUS"] or {})) do
 				if SkuDB.questDataTBC[i] then
 					local tZoneId
 					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures
