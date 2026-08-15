@@ -4,6 +4,48 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.12
+
+    Speech no longer goes silent when you move through a list quickly
+        Simple: Scrolling fast through a menu, a list of nearby objects or your bags could
+            stop the speech entirely - only the click and beacon sounds were left - until
+            you waited a few seconds or moved to a different part of the interface. Every
+            entry you passed was swallowed, and often the one you finally stopped on as
+            well. Now every entry you move over is handed to the voice, and the entry you
+            stop on is spoken. Nothing was changed about which announcement wins: a new one
+            still replaces the one before it, so scrolling fast still reads only what you
+            land on, and cancelling speech in combat is unchanged.
+        Technical: The Blizzard-TTS pump paced itself with a countdown that subtracted a
+            single frame delta per run, but its body only runs every 0.01 s - so above
+            roughly 100 fps it subtracted far less than the time that had really passed and
+            the intended 0.1 s hold before the next utterance stretched to 0.2-0.3 s real.
+            Since a queue reset deletes whatever line is still waiting, a longer hold meant
+            more lost announcements: the bug got worse the higher the framerate. The hold is
+            now a GetTime deadline, identical at 60 fps and correct above it. Measured on a
+            capture at 6-7 keypresses per second: before, 7 resets produced 2 spoken lines;
+            after, 7 resets produce 7. A second guard suppresses a StopSpeakingText when
+            nothing is in flight and one was already sent within 0.15 s - the client
+            processes stops asynchronously, so a trailing one could cancel the next
+            utterance before it started. That guard never fires while navigating now; it
+            remains for event-driven bursts (mail, chat) which produced 17 stops in one
+            second with no speech at all.
+
+    Less work per spoken line
+        Simple: Sku does noticeably less work for every line it speaks and every sound it
+            plays, which shows up as smoother scrolling.
+        Technical: Two temporary [SOUND-PROBE] diagnostics were removed. Both passed
+            debugstack(...) as an argument to dprint, and dprint only tests the debug flag
+            inside itself - so a full stack walk ran for every sound even with logging off,
+            and the one in Sku/Core.lua hooked the global PlaySound, so Blizzard's own calls
+            paid it too. They accounted for a quarter of all captured log lines. The queue
+            pump now skips its sweeps entirely while both queues are empty instead of
+            running them about a hundred times a second, and the wiki link search bails out
+            before normalising the string rather than after: it is called for every spoken
+            line from OutputStringBTtts, where its result is discarded anyway, and without a
+            wiki index it was running about 19 string.gsub passes to reach a guard that did
+            nothing.
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.11
 
     Taxi: Sku names the next flight point and can land you there

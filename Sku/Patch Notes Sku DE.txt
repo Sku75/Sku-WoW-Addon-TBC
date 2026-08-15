@@ -4,6 +4,54 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v42.12
+
+    Die Sprache verstummt nicht mehr, wenn du schnell durch eine Liste gehst
+        Einfach: Schnelles Blaettern durch ein Menue, durch die Liste der Objekte in der
+            Naehe oder durch die Taschen konnte die Sprachausgabe ganz zum Schweigen
+            bringen - uebrig blieben nur die Klick- und Bakengeraeusche - bis du ein paar
+            Sekunden gewartet oder einen anderen Teil der Oberflaeche angesteuert hast.
+            Jeder Eintrag, an dem du vorbeigelaufen bist, wurde verschluckt, oft auch der,
+            auf dem du stehen geblieben bist. Jetzt geht jeder Eintrag, ueber den du
+            laeufst, an die Stimme, und der Eintrag, auf dem du stehen bleibst, wird
+            gesprochen. An der Frage, welche Ansage gewinnt, wurde nichts geaendert: eine
+            neue ersetzt weiterhin die vorherige, schnelles Blaettern liest also nach wie
+            vor nur das vor, wo du landest, und das Abbrechen der Sprache im Kampf bleibt
+            unveraendert.
+        Technisch: Die Blizzard-TTS-Pumpe hat sich mit einem Countdown getaktet, der je
+            Durchlauf nur die Dauer EINES Bildes abgezogen hat - ihr Rumpf laeuft aber nur
+            alle 0,01 s. Oberhalb von rund 100 fps zog sie damit deutlich weniger ab als
+            tatsaechlich vergangen war, und die beabsichtigte Pause von 0,1 s vor der
+            naechsten Ausgabe wurde real zu 0,2-0,3 s. Da ein Queue-Reset die noch wartende
+            Zeile loescht, bedeutet eine laengere Pause mehr verlorene Ansagen: der Fehler
+            wurde schlimmer, je hoeher die Bildrate war. Die Pause ist jetzt eine
+            GetTime-Frist - bei 60 fps identisch, darueber korrekt. Gemessen an einer
+            Aufzeichnung mit 6-7 Tastendruecken pro Sekunde: vorher ergaben 7 Resets 2
+            gesprochene Zeilen, nachher ergeben 7 Resets 7. Eine zweite Absicherung
+            unterdrueckt ein StopSpeakingText, wenn nichts unterwegs ist und innerhalb der
+            letzten 0,15 s bereits eines gesendet wurde - der Client verarbeitet Stopps
+            asynchron, ein nachlaufender konnte die naechste Ausgabe abbrechen, bevor sie
+            begonnen hatte. Beim Navigieren greift diese Absicherung jetzt nicht mehr; sie
+            bleibt fuer ereignisgetriebene Schuebe (Post, Chat), die in einer Sekunde 17
+            Stopps und gar keine Sprache erzeugt haben.
+
+    Weniger Arbeit je gesprochener Zeile
+        Einfach: Sku leistet fuer jede gesprochene Zeile und jeden abgespielten Ton spuerbar
+            weniger Arbeit, was sich als fluessigeres Blaettern bemerkbar macht.
+        Technisch: Zwei voruebergehende [SOUND-PROBE]-Diagnosen wurden entfernt. Beide haben
+            debugstack(...) als Argument an dprint uebergeben, und dprint prueft das
+            Debug-Flag erst in sich selbst - ein vollstaendiger Stack-Walk lief also bei
+            jedem Ton, auch bei ausgeschaltetem Log, und die Variante in Sku/Core.lua hing
+            am globalen PlaySound, sodass auch Blizzards eigene Aufrufe dafuer bezahlt
+            haben. Sie machten ein Viertel aller aufgezeichneten Log-Zeilen aus. Die
+            Queue-Pumpe ueberspringt ihre Durchlaeufe jetzt vollstaendig, solange beide
+            Warteschlangen leer sind, statt sie rund hundertmal pro Sekunde auszufuehren,
+            und die Wiki-Linksuche steigt vor dem Normalisieren der Zeichenkette aus statt
+            danach: sie wird aus OutputStringBTtts fuer jede gesprochene Zeile aufgerufen,
+            ihr Ergebnis wird dort ohnehin verworfen, und ohne Wiki-Index liefen rund 19
+            string.gsub-Durchgaenge, nur um eine Abfrage zu erreichen, die nichts tat.
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.11
 
     Taxi: Sku nennt den naechsten Flugpunkt und laesst dich dort landen
