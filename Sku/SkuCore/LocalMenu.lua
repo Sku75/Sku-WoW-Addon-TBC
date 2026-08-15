@@ -3361,8 +3361,11 @@ function SkuCore:Build_TradeFrame(aParentChilds)
 				-- Deaktiviert ist der Knopf, solange die eigene Bestaetigung schon steht
 				-- (TradeFrame_SetAcceptState) oder das eingetippte Gold das eigene Vermoegen
 				-- uebersteigt. Ein Klick darauf ist folgenlos, also sagen statt schweigen.
-				if _G["TradeFrameTradeButton"].IsEnabled and _G["TradeFrameTradeButton"]:IsEnabled() ~= true then
-					pcall(function() SkuOptions.Voice:OutputStringBTtts(L["TRADE_AcceptDisabled"], true, true, 0.2, nil, nil, nil, 2) end)
+				-- Der Grund kommt aus SkuCore:TradeAcceptBlockedReason, damit Menue und
+				-- SKU_KEY_TRADEACCEPT dieselbe Auskunft geben.
+				local tReason = SkuCore:TradeAcceptBlockedReason()
+				if tReason then
+					pcall(function() SkuOptions.Voice:OutputStringBTtts(tReason, true, true, 0.2, nil, nil, nil, 2) end)
 					return
 				end
 				_G["TradeFrameTradeButton"]:Click()

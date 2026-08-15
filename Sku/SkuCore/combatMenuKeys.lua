@@ -840,20 +840,21 @@ function SkuCore:UpdateTradeAcceptBinding()
       -- insecure and runs right after, so this is where the key gets a voice.
       btn:SetScript("PostClick", function()
          local tTradeFrame = _G["TradeFrame"]
-         local tOpen = (tTradeFrame and tTradeFrame:IsVisible() == true) and true or false
          local tTradeButton = _G["TradeFrameTradeButton"]
-         local tEnabled = (tTradeButton and tTradeButton.IsEnabled and tTradeButton:IsEnabled() == true) and true or false
          local tSecure = (SkuCore._tSecureTradePending == true) and true or false
          if SkuLogCombat then
-            SkuLogCombat("tradeAccept", "key open=" .. (tOpen and 1 or 0) .. " enabled=" .. (tEnabled and 1 or 0)
+            -- IsEnabled() ROH mitloggen (der Rueckgabewert kann true/false ODER 1/nil
+            -- sein) und dazu den zuletzt gemeldeten Bestaetigungsstand beider Seiten:
+            -- damit ist im Nachhinein unterscheidbar, ob der Knopf WIRKLICH gesperrt war
+            -- (eigene Bestaetigung steht schon / Gold zu hoch) oder ob Sku nur falsch
+            -- gemessen hat. "geht gerade nicht" ohne diesen Kontext war nicht deutbar.
+            SkuLogCombat("tradeAccept", "key open=" .. ((tTradeFrame and tTradeFrame:IsVisible()) and 1 or 0)
+               .. " enabledRaw=" .. tostring(tTradeButton and tTradeButton.IsEnabled and tTradeButton:IsEnabled())
+               .. " pAcc=" .. tostring(SkuCore._tLastPlayerAccepted) .. " tAcc=" .. tostring(SkuCore._tLastTargetAccepted)
                .. " secure=" .. (tSecure and 1 or 0) .. " combat=" .. (tInCombat() and 1 or 0))
          end
          local tSay = function(aText)
             pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, true, true, 0.2, nil, nil, nil, 2) end)
-         end
-         if not tOpen then
-            tSay(tL("TRADE_NoTradeOpen"))
-            return
          end
          if tSecure then
             -- Der Handelsknopf ist hier der falsche Knopf; die Antwort will Blizzards
@@ -861,8 +862,9 @@ function SkuCore:UpdateTradeAcceptBinding()
             pcall(function() SkuCore:SecureTradeConfirm() end)
             return
          end
-         if not tEnabled then
-            tSay(tL("TRADE_AcceptDisabled"))
+         local tReason = SkuCore:TradeAcceptBlockedReason()
+         if tReason then
+            tSay(tReason)
             return
          end
          tSay(tL("TRADE_WaitingConfirm"))

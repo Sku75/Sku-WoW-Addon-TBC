@@ -3370,6 +3370,33 @@ end
 -- geschuetzten FUNKTIONEN). Ob er gewirkt hat, kann Sku am Dialog selbst nicht ablesen --
 -- die Wahrheit kommt ueber TRADE_ACCEPT_UPDATE/TRADE_CLOSED, die _tSecureTradePending
 -- zuruecksetzen. Steht die Flagge nach einer Sekunde noch, war der Klick wirkungslos.
+-- Warum ein Druck auf "Handeln" gerade folgenlos bleibt -- oder nil, wenn er durchgeht.
+-- Zwei Aufrufer (Menueeintrag und SKU_KEY_TRADEACCEPT), damit beide dasselbe sagen.
+-- Die Sicherheitsabfrage pruefen die Aufrufer VORHER, die gehoert nicht hierher.
+--
+-- Nur der Wahrheitswert von IsEnabled() wird geprueft, nie "== true": Blizzards eigener
+-- Code macht das an JEDER Stelle so, weil der Rueckgabewert je nach Client-Generation
+-- 1/nil statt true/false sein kann. (Sku vergleicht anderswo auf == true und die Menues
+-- dort funktionieren, hier ist die tolerante Form aber die richtige.)
+function SkuCore:TradeAcceptBlockedReason()
+	local tFrame = _G["TradeFrame"]
+	if not (tFrame and tFrame:IsVisible()) then
+		return Sku.L["TRADE_NoTradeOpen"]
+	end
+	local tButton = _G["TradeFrameTradeButton"]
+	if tButton and tButton.IsEnabled and not tButton:IsEnabled() then
+		-- Haeufigster Grund ist die EIGENE, bereits erteilte Bestaetigung:
+		-- TradeFrame_SetAcceptState deaktiviert den Knopf dann. Das ist keine
+		-- Stoerung, sondern "warten auf den Partner" -- und genau das gehoert gesagt,
+		-- nicht ein pauschales "geht gerade nicht".
+		if SkuCore._tLastPlayerAccepted == 1 then
+			return Sku.L["TRADE_AlreadyAccepted"] .. " " .. SkuCore:TradePartnerName()
+		end
+		return Sku.L["TRADE_AcceptDisabled"]
+	end
+	return nil
+end
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:SecureTradeConfirm()
 	local tDialog = _G["SecureTransferDialog"]
 	local tOk, tErr = false, nil
