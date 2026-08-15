@@ -91,9 +91,11 @@ Changes in Sku v42.11
             "trade slot N cleared", including for your trade partner's side, which was
             previously neither visible nor audible. The lists "Your items" and "Partner's
             items" refresh by themselves; the "Refresh" entry is no longer needed for that.
-            While an item sits in the trade, its bag entry carries an "in trade" suffix. And
-            after a completed trade the item you gave away now reliably disappears from the
-            bag list instead of only sometimes.
+            While an item sits in the trade, its bag entry carries an "in trade" prefix,
+            spoken before the item name, and the moment the marker appears on the entry you
+            are standing on Sku speaks just "in trade" - it does not read the whole item
+            name at you again. And after a completed trade the item you gave away now
+            reliably disappears from the bag list instead of only sometimes.
         Technical: The existing sell/bank machinery could not apply here: putting an item
             into the trade window does not remove it from the bag. The client only sets
             isLocked on the slot (Blizzard's own ContainerFrame reacts to ITEM_LOCK_CHANGED
@@ -109,8 +111,13 @@ Changes in Sku v42.11
             TRADE_TARGET_ITEM_CHANGED are registered for the first time, deduped per slot by
             item and count and gated on TradeFrame:IsVisible so the volleys at trade end stay
             quiet. Both share SkuCore:TradeMenuRefresh, a debounced quiet rebuild. The "in
-            trade" marker goes last because the "all items" copy strips the leading number at
-            the first space and sorts on textFirstLine. SkuCore:TradePartnerName is now the
+            trade" marker is a prefix: in a bag list it follows the position number, in the
+            "all items" list it is prepended after the sort (like the "new" prefix), so the
+            transient marker never moves an item out of its alphabetical place. The announce
+            hangs off the silent re-pin in SkuBagIdleRefresh, which compares the marker on
+            the focused entry before and after the rebuild and speaks only when it appeared -
+            self-deduping, since the follow-up refreshes see it on both sides.
+            SkuCore:TradePartnerName is now the
             single source for the partner name, including for the existing trade-money
             announcement.
 

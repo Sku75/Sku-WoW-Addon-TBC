@@ -100,9 +100,12 @@ Aenderungen in Sku v42.11
             das auch fuer die Seite deines Handelspartners, die vorher weder sicht- noch
             hoerbar war. Die Listen "Deine Gegenstaende" und "Gegenstaende des Partners"
             aktualisieren sich von selbst, der Punkt "Aktualisieren" wird dafuer nicht mehr
-            gebraucht. Solange ein Gegenstand im Handel liegt, traegt sein Taschen-Eintrag
-            den Zusatz "im Handel". Und nach einem abgeschlossenen Handel verschwindet der
-            weggegebene Gegenstand jetzt zuverlaessig aus der Taschenliste statt nur manchmal.
+            gebraucht. Solange ein Gegenstand im Handel liegt, steht "im Handel" VOR seinem
+            Taschen-Eintrag, wird also vor dem Gegenstandsnamen gesprochen; und sobald der
+            Zusatz an dem Eintrag auftaucht, auf dem du gerade stehst, sagt Sku nur "im
+            Handel" - der ganze Gegenstandsname wird dir nicht noch einmal vorgelesen. Und
+            nach einem abgeschlossenen Handel verschwindet der weggegebene Gegenstand jetzt
+            zuverlaessig aus der Taschenliste statt nur manchmal.
         Technisch: Die vorhandene Verkaufs- und Bank-Mechanik konnte hier nicht greifen:
             einen Gegenstand ins Handelsfenster zu legen entfernt ihn nicht aus der Tasche.
             Der Client setzt lediglich isLocked auf den Platz (Blizzards eigenes
@@ -120,9 +123,14 @@ Aenderungen in Sku v42.11
             werden erstmals registriert, pro Platz nach Gegenstand und Anzahl entdoppelt und
             auf TradeFrame:IsVisible begrenzt, damit die Salven am Handelsende still bleiben.
             Beide teilen sich SkuCore:TradeMenuRefresh, einen entprellten stillen Neuaufbau.
-            Der Zusatz "im Handel" haengt hinten an, weil die "alle Gegenstaende"-Kopie die
-            fuehrende Nummer am ersten Leerzeichen abschneidet und nach textFirstLine
-            sortiert. SkuCore:TradePartnerName ist jetzt die einzige Quelle fuer den
+            Der Zusatz "im Handel" steht vorn: in einer Taschenliste direkt hinter der
+            Positionsnummer, in "alle Gegenstaende" erst NACH dem Sortieren davorgesetzt
+            (wie der "neu"-Zusatz), damit der voruebergehende Zusatz keinen Gegenstand aus
+            seiner alphabetischen Position schiebt. Die Ansage haengt am stillen Neu-Anheften
+            in SkuBagIdleRefresh: es vergleicht den Zusatz am fokussierten Eintrag vor und
+            nach dem Neuaufbau und spricht nur, wenn er neu dazugekommen ist - das entdoppelt
+            sich von selbst, weil die nachfolgenden Refreshes ihn auf beiden Seiten sehen.
+            SkuCore:TradePartnerName ist jetzt die einzige Quelle fuer den
             Partnernamen, auch fuer die bestehende Goldansage.
 
     Kampf: Sku sagt an, wenn ein Zauber unterbrochen wurde

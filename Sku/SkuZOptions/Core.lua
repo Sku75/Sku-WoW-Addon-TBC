@@ -4867,6 +4867,16 @@ function SkuBagConfirmRefresh()
 	end)
 end
 
+-- Does a bag entry's display name carry the "in trade" marker? It sits at the very
+-- front in the "all items" list and right after the position number in a bag list, so a
+-- plain substring test covers both (see SkuCore/LocalMenu.lua, Build_BagsFrame).
+local function tHasTradeMarker(aName)
+	if type(aName) ~= "string" then return false end
+	local tMarker = L["TRADE_InTradeMarker"]
+	if type(tMarker) ~= "string" or tMarker == "" then return false end
+	return string.find(aName, tMarker, 1, true) ~= nil
+end
+
 -- Silent idle re-sync of the bag list (no pending per-item action). Used after
 -- an external change that Sku triggered outside the action path — currently
 -- auto-sell-junk (SkuCore/JunkAndRepair.lua). Only acts when the cursor is on a
@@ -4897,6 +4907,12 @@ function SkuBagIdleRefresh()
 	local sel
 	if cur.bagSlot or cur.itemId then
 		sel = { bagSlot = cur.bagSlot, itemId = cur.itemId }
+		-- Did this entry already carry the "in trade" marker? Putting the focused item
+		-- into the open trade window changes nothing else about the entry, and the
+		-- re-pin below is silent -- so the state change would pass unheard until the
+		-- user navigates away and back. Announce just the marker when it APPEARS (never
+		-- the whole item name again -- the user just acted on that item).
+		sel.hadTradeMarker = tHasTradeMarker(cur.name)
 		local path, n = {}, cur.parent
 		while n and n.name do
 			table.insert(path, 1, n.name)
@@ -4921,6 +4937,12 @@ function SkuBagIdleRefresh()
 			SkuOptions.currentMenuPosition = tTarget
 			if tTarget.OnEnter then pcall(function() tTarget:OnEnter() end) end
 			dprint("bag idle refresh", "re-pin ->", tostring(tTarget.name))
+			if sel.hadTradeMarker == false and tHasTradeMarker(tTarget.name) == true then
+				dprint("bag idle refresh", "trade marker appeared ->", tostring(tTarget.name))
+				pcall(function()
+					SkuOptions.Voice:OutputStringBTtts(L["TRADE_InTradeMarker"], false, true, 0.2, nil, nil, nil, 1)
+				end)
+			end
 		end)
 	end
 end

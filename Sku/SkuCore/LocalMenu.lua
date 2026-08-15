@@ -1222,23 +1222,29 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				end
 			end
 
-			-- position number prefix within the bag
-			bagItemButton.textFirstLine = (#tBagResultsByBag[bagId].childs + 1) .. " " .. bagItemButton.textFirstLine
-			if not isEmpty and tCount and tCount > 1 then
-				bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. tCount
-			end
-
 			-- An item put into the OPEN trade window does NOT leave the bag: the client
 			-- only flags the slot locked (Blizzard's own ContainerFrame reacts to
 			-- ITEM_LOCK_CHANGED by merely desaturating the icon; the item is removed for
 			-- real only when the trade COMPLETES). So the entry legitimately stays in this
 			-- list -- which read as "the right-click did nothing". Mark it instead. Gated
 			-- on the trade frame being open so the transient lock during an ordinary item
-			-- move never adds noise. The marker goes LAST: the "all items" copy strips the
-			-- leading number by the first space, and that list sorts on textFirstLine.
-			if not isEmpty and tLocked == true and _G["TradeFrame"] and _G["TradeFrame"]:IsVisible() == true then
-				bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. L["TRADE_InTradeMarker"]
+			-- move never adds noise.
+			local tInTrade = (not isEmpty) and tLocked == true and _G["TradeFrame"] and _G["TradeFrame"]:IsVisible() == true
+			bagItemButton.inTrade = tInTrade or nil
+
+			if not isEmpty and tCount and tCount > 1 then
+				bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. tCount
 			end
+			-- Plain name (no position number, no trade marker): what the flat "all items"
+			-- copy shows and sorts on -- keeping the marker out of the sort key, the same
+			-- way the "new" prefix is added only after the sort.
+			local tPlainFirstLine = bagItemButton.textFirstLine
+
+			-- position number prefix within the bag, then the trade marker: it reads as a
+			-- PREFIX so the state is spoken before the item name, not tacked on at the end.
+			bagItemButton.textFirstLine = (#tBagResultsByBag[bagId].childs + 1) .. " "
+				.. (tInTrade and (L["TRADE_InTradeMarker"] .. " ") or "")
+				.. tPlainFirstLine
 
 			tBagResultsByBag[bagId].childs[#tBagResultsByBag[bagId].childs + 1] = bagItemButton
 			-- non-empty items in the real bags also go into the flat "all items" list
@@ -1247,7 +1253,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				for k, v in pairs(bagItemButton) do
 					copy[k] = v
 				end
-				copy.textFirstLine = string.sub(copy.textFirstLine, string.find(copy.textFirstLine, " ") + 1)
+				copy.textFirstLine = tPlainFirstLine
 				-- bagSlot stays the precise identity for cursor restore / duplicate stacks
 				table.insert(allBagResults, copy)
 				allBagResults[copy] = copy
@@ -1303,12 +1309,19 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 		end
 	end
 
-	-- prepend "new" to all new items
+	-- prepend "new" to all new items, then the trade marker so it ends up first in the
+	-- spoken line here too. Both run AFTER the sort, so neither transient prefix moves
+	-- the item out of its alphabetical place. (allBagResults holds every entry twice --
+	-- once in the array part, once keyed by itself -- hence the already-prefixed guards.)
 	for _, itemButton in pairs(allBagResults) do
 		if itemButton.isNewItem then
 			if not string.find(itemButton.textFirstLine, "^"..L["New"]) then
 				itemButton.textFirstLine = L["New"] .. " " .. itemButton.textFirstLine
 			end
+		end
+		if itemButton.inTrade and not itemButton.inTradeMarked then
+			itemButton.inTradeMarked = true
+			itemButton.textFirstLine = L["TRADE_InTradeMarker"] .. " " .. itemButton.textFirstLine
 		end
 	end
 	-- all items menu item
