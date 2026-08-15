@@ -4,6 +4,472 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.11
+
+    Taxi: Sku names the next flight point and can land you there
+        Simple: On a flightmaster taxi Sku now announces which flight point is coming up
+            next, and you can get off there instead of riding all the way to the
+            destination. The key for that is CTRL-SHIFT-E by default; like every other Sku
+            key it is rebindable, listed under "Navigation and waypoints". There are two
+            announcements per leg because they answer different questions: the next stop at
+            takeoff and after each hop, and "early landing possible" about 800 yards before
+            it. Before the final stop Sku stays quiet - landing early there is simply
+            arriving. The whole thing can be switched off under "Taxi flight". Flightmaster
+            taxis only, never vehicles.
+        Technical: New module SkuCore/taxi.lua. The route is captured, not guessed:
+            hooksecurefunc on TakeTaxiNode fires while the taxi map is still open, the one
+            window in which GetNumRoutes, TaxiGetNodeSlot and TaxiNodeName still answer at
+            all. That makes the stop list exact, and every stop on it is genuinely reachable
+            by this character. A proximity cursor advances it as the taxi flies over each
+            node; the nearest-node search survives only as a labelled fallback for a /reload
+            mid-flight, filtered by faction and discovery. Three client facts are recorded in
+            the file header so they do not have to be derived again: the request always
+            lands you at the NEXT flight point (as TAXI_CANCEL_DESCRIPTION says too), which
+            is why the route cursor is the correct answer; IsPossessBarVisible reports false
+            while PossessButton2 is shown - the reliable affordance is
+            MainMenuBarVehicleLeaveButton, read with IsVisible, and it is up for the whole
+            flight; and PLAYER_CONTROL_LOST fires while UnitOnTaxi is still false, so any
+            teardown wired to it would wipe freshly captured state. Every entry point
+            re-checks UnitOnTaxi - the same test Blizzard uses to pick
+            TaxiRequestEarlyLanding over VehicleExit. Diagnostics: "taxi:" lines in
+            SkuDebugLog and /skutaxi.
+
+    Group invites are no longer declined silently
+        Simple: Closing the Sku menu - for any reason at all: Escape out of the bags,
+            opening another window, a handover into combat - declined a pending group
+            invite, and the person inviting you saw a decline. For a sighted player nothing
+            at all happens at that point; the dialog simply sits there for its 60 seconds.
+            So this was a loss that only Sku users had. The invite is no longer answered
+            when the menu closes; it just leaves the screen and is reachable again under
+            "Local".
+        Technical: StaticPopupDialogs["PARTY_INVITE"].OnHide calls DeclineGroup unless
+            dialog.inviteAccepted is set - and OnHide does fire on a plain frame:Hide()
+            (XML OnHide -> GameDialogMixin:OnHide -> StaticPopup_OnHide ->
+            dialogInfo.OnHide). The Sku menu's OnHide runs exactly that StaticPopup1:Hide().
+            New is SkuCore:NeutralizePopupHide(frame), called immediately before it: for
+            PARTY_INVITE it sets inviteAccepted so Blizzard's OnHide skips the decline, and
+            marks the frame so our own hide hook can tell a neutralised hide from a real
+            answer - plain fields on an insecure frame, no taint; OnShow resets
+            inviteAccepted, so a later genuine show is unaffected. There is no "invite
+            pending" query API on this client, so the cache is ours: seeded from
+            PARTY_INVITE_REQUEST, dropped on PARTY_INVITE_CANCEL, on any non-neutralised
+            hide of the dialog (a real accept, decline or timeout) and by its own deadline.
+            For the record, every dialog with a destructive OnHide was audited:
+            PARTY_INVITE (fixed here), LEVEL_GRANT_PROPOSED (DeclineLevelGrant), EQUIP_BIND
+            and relatives (CancelPendingEquip - no skip flag, needs a different fix) and
+            QUIT (CancelLogout, benign).
+
+    Pending prompts stay reachable in the Local menu
+        Simple: When you leave the Sku menu with Escape, an open dialog disappears from the
+            screen - a summon, the release-spirit prompt, a resurrect offer, a ready check.
+            Until now it was gone until the next /reload, even though it stayed valid on the
+            server the whole time. Such prompts now appear as their own entry directly under
+            "Local", named after the prompt; RIGHT or ENTER shows the real window again, and
+            Sku descends into it so you operate the usual buttons.
+        Technical: New module SkuCore/pendingPrompts.lua. The prompts are re-offered from
+            STATE, not from the frame: summon via C_SummonInfo, resurrect via
+            ResurrectGetOfferer, death release via GetReleaseTimeRemaining plus the self-res
+            options from C_DeathInfo, ready check via GetReadyCheckTimeLeft/Status. A raw
+            :Hide() only reaches StaticPopup_OnHide and never OnCancel, so nothing was ever
+            declined or released - PLAYER_ENTERING_WORLD is the only place Blizzard re-shows
+            DEATH and CONFIRM_SUMMON, hence "gone until /reload". While its own dialog is on
+            screen the entry is suppressed, so it never doubles up with the popup-scrape
+            node. Importantly these entries are PASSIVE: the "is anything open" predicate in
+            CheckFrames does double duty - it keeps an open menu alive and it force-opens the
+            menu via SlashFunc. Pending prompts feed only the first (tPendingOnly), otherwise
+            a permanently reachable prompt would yank the menu open on every bag update; the
+            same reasoning keeps them out of combatMenuHasWindow. The first form was nested,
+            with its own action leaves - functional, but too much navigation. It is now a
+            single flat node per prompt: kind="action" with dynamic=true, only so the key
+            handler routes RIGHT into OnSelect at all, plus an OnSelect override that
+            bypasses the generic descend machinery; the real buttons arrive through the
+            normal scrape of the re-shown window.
+
+    Trade: what is in the trade window is now announced live
+        Simple: Right-clicking an item into the trade window was completely silent, and its
+            entry in the bag menu stayed unchanged. Sku now says "<item> in trade slot N" or
+            "trade slot N cleared", including for your trade partner's side, which was
+            previously neither visible nor audible. The lists "Your items" and "Partner's
+            items" refresh by themselves; the "Refresh" entry is no longer needed for that.
+            While an item sits in the trade, its bag entry carries an "in trade" prefix,
+            spoken before the item name, and the moment the marker appears on the entry you
+            are standing on Sku speaks just "in trade" - it does not read the whole item
+            name at you again. And after a completed trade the item you gave away now
+            reliably disappears from the bag list instead of only sometimes.
+        Technical: The existing sell/bank machinery could not apply here: putting an item
+            into the trade window does not remove it from the bag. The client only sets
+            isLocked on the slot (Blizzard's own ContainerFrame reacts to ITEM_LOCK_CHANGED
+            by merely desaturating the icon), so no BAG_UPDATE fires and there was nothing
+            for the gated handlers to react to. Items leave the bags only when the trade
+            COMPLETES - and that BAG_UPDATE races the CheckFrames in TRADE_CLOSED, while
+            Sku.tBagPostAction had already expired 2.5s after the right-click. Losing that
+            race was the "sometimes it stays in the list" symptom. New is
+            Sku.tBagSettleWindow, a second, narrower gate in SkuCore:BAG_UPDATE_DELAYED,
+            armed for 3s by TRADE_CLOSED, driving the SILENT SkuBagIdleRefresh - not the
+            speaking confirm, since no cursor is anchored on the traded item - plus a 1s
+            fallback for the reverse race. TRADE_PLAYER_ITEM_CHANGED and
+            TRADE_TARGET_ITEM_CHANGED are registered for the first time, deduped per slot by
+            item and count and gated on TradeFrame:IsVisible so the volleys at trade end stay
+            quiet. Both share SkuCore:TradeMenuRefresh, a debounced quiet rebuild. The "in
+            trade" marker is a prefix: in a bag list it follows the position number, in the
+            "all items" list it is prepended after the sort (like the "new" prefix), so the
+            transient marker never moves an item out of its alphabetical place. The announce
+            hangs off the silent re-pin in SkuBagIdleRefresh, which compares the marker on
+            the focused entry before and after the rebuild and speaks only when it appeared -
+            self-deduping, since the follow-up refreshes see it on both sides.
+            SkuCore:TradePartnerName is now the
+            single source for the partner name, including for the existing trade-money
+            announcement.
+
+    Combat: Sku announces when a spell has been interrupted
+        Simple: Under Hostile -> Casting, "Announce interrupts" now exists separately for
+            your current target and for all enemies - exactly like the cast announcements
+            themselves. That lets you hear kicks on your own target without hearing every
+            kick in the raid. When you or your pet interrupt, you hear "You interrupted the
+            spell" with the spell name; when someone in your group interrupts, "spell
+            interrupted". The announcement is on by default; anyone who had switched it off
+            stays silent.
+        Technical: SPELL_INTERRUPT from the combat log via the new dispatcher event
+            SKU_SPELL_INTERRUPT. The former single outputInterrupts switch is replaced by
+            yourTargetInterrupts and allEnemiesInterrupts, both nil-filled from the old
+            value. With the global switch off, an interrupt is only announced when the
+            destGUID of the interrupted cast is your current target; with both on it still
+            announces once. "You" means a source affiliation of MINE, which covers your own
+            pet (felhunter Spell Lock and the like).
+
+    Combat: cast announcements can be limited to interruptible spells
+        Simple: New setting "Only announce interruptible spells" (off by default) under
+            Hostile -> Casting. With it on, Sku no longer reports casts that interrupting
+            would not affect anyway.
+        Technical: The notInterruptible return of UnitCastingInfo and UnitChannelInfo is
+            dead data on the Anniversary 2.5.6 client - it came back nil on every cast while
+            return 9 delivered the correct spellId; Blizzard's own castbar force-falses the
+            flag for BC and older. Interruptibility therefore comes from a static list, new
+            under SkuDB/uninterruptibleCasts.lua, imported from ClassicCastbars (MIT
+            licence). It covers the old world; empty SkuTbcAdditions merge tables are ready
+            for TBC findings of our own. Matching is by spellID, localized name, or npcID
+            plus name.
+
+    Soft targeting: "if no hard target is locked" now actually reaches the client
+        Simple: The setting controlling whether soft targeting is used for interacting never
+            did anything. The interact key did not care whether you had a target hard-locked
+            - a corpse or a chair next to it grabbed the keypress anyway. That is fixed, and
+            fixed in the client rather than in an emulation.
+            Please note: these client settings are locked during combat. Sku therefore keeps
+            them at rest in the state where the suppression is already in place if something
+            jumps you and you only target it once the fight is on. Two corners remain: if you
+            kill your target, the state persists until your next target change - during that
+            moment nearby objects are not addressable (the corpse you have targeted still
+            loots normally). And if you enter combat holding a non-attackable target, soft
+            targeting stays on for that fight. That would need a write during combat and
+            cannot be closed from an addon.
+        Technical: All 32 SoftTarget CVars are still registered in 2.5.6 (scanned in
+            WowClassic.exe) - so the client is not the reason. Both branches of the old
+            if/else wrote SoftTargetMatchLocked = 0, identically dead code in v32.31 and in
+            v41.04; the setting never left Lua. 41.05 then wrote 1, but collapsed option 2
+            into option 1, and SoftTargetWithLocked - the CVar that actually governs this -
+            was never written by any Sku version. Measured on 2.5.6.68575, out of combat,
+            corpse and live mob in range, interact key pressed with the mob hard-targeted:
+            WithLocked 0 acts on the mob and ignores the corpse, 1 and 2 both loot the
+            corpse. So only 0 suppresses soft targeting while a target is locked, and there
+            is no "only when attackable" middle value. The option now maps onto that
+            directly: 0 (always) -> WithLocked 2, MatchLocked 0; 1 (if no hard target) ->
+            WithLocked 0, MatchLocked 1; 2 (no attackable target) -> MatchLocked 2, with
+            WithLocked flipped between 0 and 2 on PLAYER_TARGET_CHANGED. The resting state is
+            0, because WithLocked only acts while a target is locked - resting there costs
+            nothing and covers the one case the CVars could otherwise never reach. 2 is now
+            written only for the one state that genuinely needs soft targeting WITH a target
+            locked: a target you cannot attack - a corpse you are looting, an NPC you are
+            talking to, a player you are following. Removed: the SkuMob ticker that rewrote
+            SoftTargetInteract four times a second, its duplicate in PLAYER_TARGET_CHANGED
+            and the interactTempDisabled shadow state - that emulation could not work at all,
+            because the CVars are protected in combat. tSetSoftTargetCVar now verifies every
+            write by reading the CVar back (numeric compare, so a normalised "15.000000" is
+            not a false failure) and re-arms the PLAYER_REGEN_ENABLED replay when one is
+            refused, instead of caching a value that never landed. An in-combat write logs
+            "softTarget refused ... {want=3, got=0}" and raises ADDON_ACTION_BLOCKED.
+
+    Menu: ENTER kept working into the invisible menu after it closed
+        Simple: After selecting a waypoint - and in similar cases - the menu closed
+            correctly, but every further press of ENTER still clicked around in the invisible
+            menu: the navigation sound played, the selection ran again ("new navigation"),
+            and ENTER no longer opened the chat window. On top of that the menu could get
+            stuck open if a movement key went down in the same instant: the waypoint was set,
+            but the menu stayed open and kept the keys captured. Both are fixed.
+        Technical: Two separate causes. First, OnPostSelect continues after the action that
+            closed the menu: it re-pointed currentMenuPosition at the selectTarget -
+            overwriting the close's root reset - and fired its OnEnter; the generic OnEnter
+            then unconditionally re-armed the SKU_KEY_MENULEFTCLICK override bindings on the
+            secure button. Override bindings on a HIDDEN frame are fully active, so ENTER was
+            resurrected right after OnHide had cleared it. Now the generic OnEnter only arms
+            the click keys while the secure button is shown, and OnPostSelect stops before
+            the trailing re-focus when the menu is no longer open (the headless combat menu
+            is exempt via combatMenuActive). Second, CloseMenu routes through the same toggle
+            handler as opening, whose two moving-defer gates silently aborted the close - one
+            reads the live movement flags, the other the cached SkuCore.isMoving, which is
+            why one path passed and the other aborted. Close requests now bypass those gates;
+            Hide and ClearOverrideBindings are safe while moving, and a successful close
+            reaches the openMenuAfter resets again. Belt and braces, the reopen ticker
+            disarms flags that can never fire anyway and re-runs the navigation setup only
+            when the menu is visibly open but key-dead (new: SkuOptions.menuNavKeysBound).
+
+    Collision warning during automatic walk-to-target
+        Simple: The warning that you are walking into something only armed while you held a
+            movement key yourself. With the game's own "Interact With Target", the engine
+            walks you there without any key being held - and there you could wedge on an
+            obstacle without noticing. Those walks are now covered too.
+        Technical: A new EngineMoving flag from PLAYER_STARTED_MOVING and
+            PLAYER_STOPPED_MOVING arms the coordinate-based warning for engine-driven walks
+            as well. PLAYER_STOPPED_MOVING does not fire while you push against a wall -
+            precisely the case the warning is for (proven by the stale-AutoRun clear). Pure
+            turning, falling and autofollow are excluded; follow has its own collision
+            warning.
+
+    Fewer errors in instances and raids
+        Simple: Two sources of errors that produced constant Lua errors inside instances are
+            fixed - noticeable as error messages that no longer appear and calmer boss
+            fights.
+        Technical: First, UnitPosition("player") returns nil inside instances, raids and
+            battlegrounds, so SkuNav:Distance returned nil and
+            GetUnsortedAvailableQuestsTable crashed on concatenation on every
+            QUEST_LOG_UPDATE (24 times in a single raid session). The existing 99999-metre
+            convention now applies: the quest stays listed and sorts last. Second,
+            ClearOverrideBindings and SetOverrideBindingClick are combat-protected, and the
+            surrounding pcall does not suppress the ADDON_ACTION_BLOCKED event (84 times in
+            one fight, plus BugGrabber execution-limit warnings). Applying the AtlasLoot key
+            binding is now skipped during combat and retried once via PLAYER_REGEN_ENABLED.
+
+    "Temporarily stop following while casting" is active again for a test
+        Simple: This setting was in the menu, but its function had been switched off since
+            the upstream v41.06 state. It is enabled again, off by default, so it can be
+            established whether this client permits resuming follow automatically at all. If
+            you switch it on, expect that following may not come back by itself after a cast.
+        Technical: The bodies of UnfollowOnCast and FollowOnCast were commented out, for a
+            reason that was never recorded. They now answer one question: does this client
+            execute FollowUnit from a server-event context, i.e. without a hardware event, or
+            is it silently gated? The proof channel is the AUTOFOLLOW_END/BEGIN voice output
+            and "followcast" lines in SkuDebugLog, including a state check 0.5s after the
+            call. Fixed along the way: in the CHANNEL_START/STOP handlers unitTarget and
+            aUnitTarget did not match up, so the unfollow and refollow never fired for
+            channelled spells.
+
+    Mail: after sending a letter Sku read the typed text back later
+        Simple: A while after a letter had been sent, Sku started repeating the characters
+            that had been typed - sometimes long after the mailbox was closed. Two
+            independent bugs were behind it. First, once you had opened a mailbox it counted
+            as open internally until the next /reload, so every piece of mail arriving later
+            rebuilt the menu and announced the current entry again - wherever in the menu you
+            happened to be. If you were standing on a letter field, that entry was the text
+            you had just typed. Second, the per-character readout while typing appended every
+            character to the end of the speech queue: if you type faster than the voice
+            speaks, that builds a backlog, and closing the input field did not end it - it
+            simply kept playing.
+            Now the readout follows your typing: if it falls too far behind, what has not
+            been spoken yet is dropped instead of trailing along. "Sent" and a field
+            confirmation come immediately, no longer behind everything you typed. And an
+            inbox update only has an effect while the mailbox is genuinely open and you are
+            inside the Mail branch of the menu. Two small things in the same place: the paste
+            field ran its OK action n times on the nth open, and both Sku input fields now
+            reliably release the keyboard when they close.
+        Technical: MailboxOpenFlag was set in MAIL_SHOW but never cleared anywhere;
+            MAIL_CLOSED now clears it. MAIL_INBOX_UPDATE does not only arrive at an open
+            mailbox - the server also sends it when mail arrives later - and it ran
+            unchecked into the generic OnUpdate (SkuZOptions/templates.lua). That is not a
+            quiet refresh: it discards the current level's children, rebuilds them and calls
+            VocalizeCurrentMenuName. On top of the flag we now check MailFrame:IsVisible()
+            and walk the parent chain up to the Local contributor node L["Mail"] - only
+            there is a rebuild a refresh rather than an intrusion. The forced SlashFunc call
+            without a menu position survives only for the genuine open-mailbox case; a
+            background event must never force the menu open.
+            The typing readout from v42.08 appends rather than overwrites on purpose,
+            otherwise fast typing swallows characters - but it had no ceiling. At roughly
+            0.4s per character against four to five keystrokes per second the queue grows
+            without bound, and the dequeue pushes a backlog into C_VoiceChat.SpeakText at
+            about 100 entries per second, where Sku can no longer catch up with it. Hence
+            two new methods in SkuVoice-1.0, GetBttsQueueDepth and TrimBttsQueue(aKeep):
+            only what is still WAITING in Sku's own queue is dropped, never anything already
+            handed over - which is why it cannot cut a word in half, and why it is legitimate
+            even with "never reset the queues", a setting that is about cutting off speech in
+            progress. The cap is three waiting characters. The backlog is dropped before the
+            OK callback runs, and both MAIL_SEND_SUCCESS and the field confirmation in
+            MailEditor now speak overwriting instead of appending. EditBoxPasteShow attached
+            its OnEnterPressed via HookScript on EVERY call - HookScript does not replace, it
+            chains - so the OK callback ran n times on the nth open; it now lives in the
+            create-once branch. Both input fields call ClearFocus when they hide, because the
+            field is a grandchild of the hidden frame and the keyboard focus would otherwise
+            stay on an invisible edit box.
+
+    Item level: every item was announced with the same number
+        Simple: The item level in item descriptions was wrong for as long as it has
+            existed. It did not belong to the item you were reading at all - it belonged to
+            whatever item had last been looked up somewhere in Sku, usually hours earlier,
+            and it stayed that way for the whole session. That is why it read the same
+            number on every item, and why it was so often a 1: a key or a quest item, the
+            kind of thing that gets looked up early and really is item level 1. A /reload
+            did not help, because the wrong number was not stale data that gets refreshed -
+            it was simply the wrong item being asked. The same wrong item also decided the
+            quality that is appended to item names. Both are correct now. Item level is also
+            only announced for gear you can actually wear: keys, quest items, reagents and
+            consumables are all item level 1 by definition, so that line said nothing about
+            them and is gone. It has also disappeared from places it never belonged, such as
+            buff descriptions and the resistances on the character screen.
+        Technical: A tooltip's GetItem() is a sticky cache, not a description of what the
+            frame renders: ClearLines() does not reset it, and neither does a SetX() that
+            fails to populate - an uncached item, bank container -1, or any spell, aura or
+            stat tooltip that has no item at all. SkuScanningTooltip is created once at
+            PLAYER_LOGIN and never re-owned, so its GetItem() keeps answering with the last
+            item that ever resolved through it. On top of that, TooltipLines_helper read the
+            link from SkuScanningTooltip no matter whose regions it had been handed, and most
+            callers hand it GameTooltip's. Two smaller faults compounded it: GetSpell()'s
+            second return, which is not a link, was assigned into ItemLink and passed to
+            GetDetailedItemLevelInfo; and an uncached item yields an EMPTY link, which is
+            truthy in Lua and sailed straight through the "if ItemLink then" guard. Resolution
+            now lives in SkuUtil - TooltipFirstLine, TooltipItemLink, ItemQualityString,
+            ItemLevel - and trusts GetItem() only when the name it reports matches the
+            tooltip's rendered first line, which is the one piece of ground truth available.
+            The three duplicated blocks in LocalMenu and utilities collapse into it;
+            tScanTooltipRegions resolves link, quality and item level itself and returns the
+            validated link, so callers downstream get the one the text describes. The
+            equippable gate reads equipLoc from GetItemInfo and falls back to
+            C_Item.GetItemInventoryTypeByID while the item cache is still cold.
+
+    French: Sku is now available in French
+        Simple: Sku can now be used in French - tested on a French client. Around 95 percent
+            of the menu and announcement texts are translated (3063 of 3220 entries), and
+            everything else falls back to English automatically, so there is never a gap or
+            an empty entry. Two things that were still missing have been added: the route and
+            waypoint names of the translation pipeline have their own French table with 153
+            entries, whose place names are imported from a real French client capture rather
+            than guessed, and all 158 places where text is held bilingually in the code now
+            carry a French version as well. The GAME names -
+            creatures, quests, items, objects - are imported wholesale from Questie, so they
+            are Blizzard's own French strings rather than machine translations and match what
+            a French client displays, which is what keeps route and waypoint names
+            searchable. Zone names come straight from the client. Voice output still exists
+            in German and English only; every other client language uses the English audio
+            files.
+            For German and English players nothing changes in the text - but memory use does:
+            Sku now builds only its own language's name tables, plus English as a fallback,
+            instead of always building all of them.
+        Technical: Sku.Locs is now an ORDERED three-locale list, and the packed route names
+            in SkuNav:LoadDefaultMapData are split positionally against it instead of by a
+            string.match with a greedy "(.+)" on either side of the separator. That old parse
+            was not merely two-locale-only: ".+" is greedy, so with three fields "a", "b" and
+            "c" the first two would have arrived as a single English field and only the last
+            as the German one. Files with fewer fields than locales stay valid and fall back
+            to enUS. Sku.LocAudio splits the AUDIO locale from the data locale, and two
+            pre-existing bugs surfaced and were fixed on the way:
+            SkuAudioFileIndexIntegrated[Sku.Loc] was unguarded and nil-indexed on any client
+            language without its own sub-table, and GetAudiodata had no case fallback while
+            the enUS index stores its identifiers lowercased and callers pass them
+            capitalised - which is why the inside/outside zone announcement has been
+            silently dead on English clients. ChunkLoader now has a locale gate: it
+            previously built EVERY registered chunk regardless of client language, so a
+            German client also materialised the full English name tables and vice versa. The
+            rule is now "active locale plus enUS", with objectLookup.deDE structurally exempt
+            because the English objectLookup is DERIVED from its key set - gating it naively
+            would have left English clients with no object names at all. The four hardcoded
+            .deDE merges became SkuDBMergeLocales, which fixes a latent bug along with it: a
+            French client would have got base TBC names but silently no WotLK names. After
+            merging, gaps in the active locale are filled from enUS (Questie has no French
+            name for around 2700 ids Sku knows); deliberately a build step rather than an
+            __index metatable, because pairs() does not traverse __index and several
+            consumers ENUMERATE these tables rather than index them - a metatable would have
+            fixed the lookups and quietly left the menus short. deDE and enUS are excluded
+            from the backfill so the German build stays byte-identical (verified, 37 of 37
+            datasets). The locale file itself is Sku/locales/frFR.lua, generated from part
+            files: untranslated entries keep their English value, so the table is always
+            complete and valid Lua, and AceLocale returns nil for de/en anyway - there the
+            file costs a parse and nothing else. Leading and trailing spaces are load-bearing
+            in that table but do not survive a TSV round-trip, so they are re-applied from
+            each English original during assembly, and the validator checks the FINAL string
+            for placeholder count, edge whitespace and semicolon count. For testing without a
+            second client there is /skudebug locale <loc|off>, which forces the DATA locale
+            and persists; it applies on ADDON_LOADED rather than PLAYER_LOGIN, because the
+            deferred route build (measured at 1.87s against 2.01s for PLAYER_LOGIN) already
+            decides which name fields get materialised. Three hard errors on a forced-French
+            client are fixed: maps.lua is a plain, unchunked table and carried
+            AreaName_lang/Name_lang for deDE and enUS only - the missing locale is now filled
+            once at ADDON_LOADED from C_Map (GetAreaInfo and GetMapInfo; 2819 entries, 1672
+            of them from the client), giving real Blizzard names with no zone-name data to
+            ship; SkuDB.SpellDataTBC nests its locales INSIDE each entry, so nothing ever
+            localized them and eleven sites threw on frFR - the active locale now points at
+            the English sub-table by reference (no copy, no extra strings), which is enough
+            for names used mostly as aura-matching keys; and SkuDB.objectResourceNames is
+            keyed by object name per locale and was read unguarded during the waypoint cache
+            build - an English fallback would have been wrong there (it would never match and
+            would silently turn every ore and herb into an ordinary waypoint), so the set is
+            derived through the object ids instead.
+            The whole French branch has since been played through on a French client and
+            works: menus, names and routes come up in French, and where no translation exists
+            the English fallback steps in without a gap. The route table
+            routeOverrides_frFR.lua and the third argument on every Sku.deEn site are part of
+            that. Since zhCN and ruRU run with Sku.Loc = enUS, the same pass covers them too.
+
+    Download page: the heading named a stale version
+        Simple: On the download page the main addon's heading still read "Version 42.06"
+            while the link underneath correctly pointed at 42.10. Since screen reader users
+            navigate by heading, the first thing announced in that section was the wrong
+            version - it read as if the page were serving an outdated Sku. Heading and link
+            now agree.
+        Technical: release.ps1 rewrote the href and the link text on every release but never
+            the heading, so it had been stuck since 42.06 (2026-07-17) across four releases.
+            The heading is now part of Set-DocsSkuLink and cannot drift again. The linked zip
+            was correct the whole time (verified: Sku-42.10.zip contains "## Version:
+            42.10").
+
+    Beacons: a separate sound for the last waypoint of a route
+        Simple: There is now a third beacon sound next to the ones for small and large
+            beacons: the sound for the last beacon of a route. It plays for the final
+            waypoint of a meta route only, so you can hear whether the point you are
+            walking towards is the destination or just another leg. The setting sits under
+            Monitor -> Beacon, directly below the small and large beacon sounds, and it
+            defaults to Beacon 3. Following a single waypoint is unchanged - that still
+            uses the small or large sound according to the waypoint's size.
+        Technical: New profile setting SkuNav beaconSoundSetLast (default "Beacon 3"),
+            declared in the SkuNav schema and added to the Beacon submenu's explicit node
+            whitelist in SkuCore/aq.lua - that list is not the whole args table, so a new
+            option node has to be named there as well or it never appears in the menu.
+            GetBeaconSoundSetName takes a second argument and returns the last-beacon set
+            when it is true, leaving the narrow/wide behaviour and the one-argument callers
+            (the panic beacon, the TomTom hook) untouched. The new SkuNav:IsLastMetaRouteWp
+            compares the waypoint NAME against the last entry of
+            metapathFollowingMetapaths[target].pathWps rather than reading
+            metapathFollowingCurrentWp, because SelectWP runs before that index is
+            advanced - an index test would be off by one. Going by name also covers
+            skipping ahead with MoveToWp and the reverse-route start, which all set the
+            metapath state before calling SelectWP.
+
+    Better defaults for new players
+        Simple: Setting Sku up fresh now starts from a usable configuration instead of
+            leaving you to find the important bits first. A few keys come pre-assigned, the
+            chat is split up sensibly, and some announcements are on from the start -
+            broadly the way experienced players set it up anyway. Every one of these
+            defaults still sits in its usual place in the menu and can be changed as
+            always. Existing profiles and characters are untouched: a default only applies
+            where nothing was ever saved. To pick up the new keys, use Sku key bindings ->
+            reset everything - note that this really does reset ALL keys, including the ones
+            you assigned yourself.
+        Technical: Pure default changes in SkuZOptions/SkuKeyBinds.lua
+            (skuDefaultKeyBindings), SkuChat/Core.lua and Options.lua (ChatFrameDefaultTabs
+            plus the default tab set), SkuCore/Options.lua (SkuCore.defaults) and
+            SkuCore/aqCombat.lua (aqCombatOnLogin). Stored values survive, because every
+            site only writes on nil and AceDB fills defaults into gaps only. Two real
+            behaviour changes come with it: the binder in SkuNav:CreateSkuNavMain only ever
+            applied .key, so a SECOND key assigned by the user did nothing at all for every
+            navigation action (SkuKeyBindsMatchKey had understood it all along) - it now
+            goes through SkuKeyBindsGetKeys and binds both. And because SkuChat emits a
+            message once per tab that has the type enabled, a message type with a tab of its
+            own has to be muted in every other tab or it gets read out twice.
+
+    Auction house: buying several of the same item works again
+        Simple: Buying more than one auction of the same item bought the first one and then
+            stopped with "internal auction error"; the second purchase was never offered
+            again. Both are fixed - the follow-up purchases run through, and the server's
+            spurious error message is no longer read out while a search is running.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.10
 
     Navigation: waypoints work again in areas without a map of their own
