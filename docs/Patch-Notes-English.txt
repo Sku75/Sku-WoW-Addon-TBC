@@ -4,6 +4,160 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.12
+
+    The character sheet reads out the description of every stat again
+        Simple: Under "Stats" each value - spell damage, spell hit rating, stamina, weapon
+            speed and all the others - had only its name and its number. The description
+            the game shows next to it was empty: what the stat does, the breakdown per
+            spell school, main hand and off hand. The full-text key said nothing on those
+            entries. Only the resistances and your equipment had a description. Now every
+            stat has one, and it is read fresh each time you land on the entry, so it is
+            current after a buff or a gear change too.
+        Technical: The tooltip read was commented out at that spot and every entry was
+            built with an empty textFull - unchanged all the way back to v41.06, so this is
+            not something the rework broke, it never worked. Two reasons it could not have
+            worked as written: GetButtonTooltipLines was called with GameTooltip as its
+            second argument, which skips exactly the step that fills the tooltip in the
+            first place; and without that argument the helper would still have bailed,
+            because it only fires an OnEnter for objects carrying a .type marker - the stat
+            frames do not have one, which is precisely why the resistance loop sets it
+            before its own read. On top of that came a third reason, the one that would
+            have made a naive fix wrong: TBC drives all 29 stats through ONE shared widget
+            (PlayerStatFrameLeft1), and the Blizzard setters leave their state on it -
+            .tooltip/.tooltip2 plus .bonusDamage/.spellCrit/.damage for the four stats that
+            install their own OnEnter. None of them clears what the previous one left, four
+            of them swap OnEnter out and never back; Blizzard's own UpdatePaperdollStats
+            re-points it before every group for exactly that reason. Without the same
+            reset, stat N would have read out stat N-1's description. The read now resets
+            the widget before each setter and walks the tooltip via
+            NumLines/GameTooltipTextLeft|Right rather than GetRegions - the latter hands
+            back the left and the right column as two separate runs, so the spell school
+            breakdown would have been read as six school names followed by six numbers. The
+            live getter that re-reads the value on every landing now returns the description
+            as a second value alongside it, and afterwards the widget is handed back to the
+            state Blizzard expects via PaperDollFrame_UpdateStats.
+
+    Sku no longer depends on internal tokens being left untranslated
+        Simple: On a French client the Quest Log key did nothing at all - no focus, no
+            sound, no error. A single translated word in the French locale file was to
+            blame. Some entries in there are not a label but an internal token that Sku
+            uses to build and recognise its own menu paths; translate one and the addon can
+            no longer find its own path. That is fixed, and fixed in a way that cannot
+            recur: the token is not translatable text any more. If you have got used to
+            typing a French path it still gets you there. A second find of the same kind
+            would have silently switched every French client over to English names for
+            mobs, objects and quests the next time the locale file was sorted - that is
+            gone too.
+        Technical: Found, root-caused and fixed by ZenqFR (Games-Access) on a live French
+            client, as PR #2 in this repo. The follow-up changes build on that. L["short"]
+            carried two unrelated meanings: in about 25 places it was the first field of a
+            SkuOptions:SlashFunc path, i.e. a protocol token the code compares against
+            itself, and in exactly one place (SkuCore/aq.lua) it is genuine user-facing
+            text. A translator only ever sees the second meaning. The two are now split:
+            Sku.MENU_ROOT is the token and is used by all 23 path-building sites plus the
+            six that hardcoded the literal "short," - one of which was the Quest Log key.
+            The comparison still accepts L["short"] as well, so a localized path anyone has
+            learned keeps working. Fixed in passing: the fallback in
+            SkuCore/dungeonBrowser.lua was "sku", not a valid token at all. Second,
+            frFR.lua defined L["locale"] twice - "enUS" in the sorted body and "frFR"
+            appended at the end. It resolved correctly only by AceLocale's ordering: a
+            non-default locale is registered through a proxy that rawsets unconditionally,
+            so the LAST assignment wins. Sku.Loc is read straight from that key, and it
+            selects which SkuDB name tables the entire client uses - regenerating or
+            sorting the file would have flipped every French client to English DATA
+            silently: no error, no log line, just the wrong names everywhere. The losing
+            line is deleted, the surviving one documented, and
+            dev/rework-docs/_locale_dupes.py now reports duplicate keys per locale file. The
+            lint also makes visible that enUS, as the AceLocale default locale, is
+            FIRST-wins instead: the same duplicated key can resolve to different entries per
+            language. 64 such conflicts exist today, nearly all old translator noise; they
+            were deliberately left alone and are at least visible now. Third,
+            SkuDBEnsureActiveLocaleTables actually keeps its promise now - it also runs at
+            ADDON_LOADED (previously only one OnUpdate after PLAYER_LOGIN, so anything
+            touching [Sku.Loc] in its own PLAYER_LOGIN handler saw nil for a moment) and no
+            longer returns silently on an unusable Sku.Loc: it validates, logs the likely
+            culprit, and builds the tables regardless.
+
+    Speech no longer goes silent when you move through a list quickly
+        Simple: Scrolling fast through a menu, a list of nearby objects or your bags could
+            stop the speech entirely - only the click and beacon sounds were left - until
+            you waited a few seconds or moved to a different part of the interface. Every
+            entry you passed was swallowed, and often the one you finally stopped on as
+            well. Now every entry you move over is handed to the voice, and the entry you
+            stop on is spoken. Nothing was changed about which announcement wins: a new one
+            still replaces the one before it, so scrolling fast still reads only what you
+            land on, and cancelling speech in combat is unchanged.
+        Technical: The Blizzard-TTS pump paced itself with a countdown that subtracted a
+            single frame delta per run, but its body only runs every 0.01 s - so above
+            roughly 100 fps it subtracted far less than the time that had really passed and
+            the intended 0.1 s hold before the next utterance stretched to 0.2-0.3 s real.
+            Since a queue reset deletes whatever line is still waiting, a longer hold meant
+            more lost announcements: the bug got worse the higher the framerate. The hold is
+            now a GetTime deadline, identical at 60 fps and correct above it. Measured on a
+            capture at 6-7 keypresses per second: before, 7 resets produced 2 spoken lines;
+            after, 7 resets produce 7. A second guard suppresses a StopSpeakingText when
+            nothing is in flight and one was already sent within 0.15 s - the client
+            processes stops asynchronously, so a trailing one could cancel the next
+            utterance before it started. That guard never fires while navigating now; it
+            remains for event-driven bursts (mail, chat) which produced 17 stops in one
+            second with no speech at all.
+
+    Less work per spoken line
+        Simple: Sku does noticeably less work for every line it speaks and every sound it
+            plays, which shows up as smoother scrolling.
+        Technical: Two temporary [SOUND-PROBE] diagnostics were removed. Both passed
+            debugstack(...) as an argument to dprint, and dprint only tests the debug flag
+            inside itself - so a full stack walk ran for every sound even with logging off,
+            and the one in Sku/Core.lua hooked the global PlaySound, so Blizzard's own calls
+            paid it too. They accounted for a quarter of all captured log lines. The queue
+            pump now skips its sweeps entirely while both queues are empty instead of
+            running them about a hundred times a second, and the wiki link search bails out
+            before normalising the string rather than after: it is called for every spoken
+            line from OutputStringBTtts, where its result is discarded anyway, and without a
+            wiki index it was running about 19 string.gsub passes to reach a guard that did
+            nothing.
+
+    The installer and the download page speak French now too
+        Simple: Sku itself has spoken French since v42.11, but everything around it did
+            not. The Sku Installer now runs in French - it takes its language from Windows
+            and you can change it at any time in the "Language of this installer" list -
+            and the download page has a French version, reachable from the language links
+            at the top of either page. These patch notes exist in French as well, starting
+            at v42.11. There is still no French voice pack: on a French client Sku speaks
+            through your screen reader, which is why the installer offers the English pack
+            there. The installer is version 4.1 with this.
+        Technical: A French table in the installer's Loc.cs (Lang.Fr, the same key set as
+            English and German, "fr" taken from the OS UI culture; the language combo is
+            built from ComponentsForm._langOrder so no index literal has to be kept in
+            step), docs/index-fr.html, and "Patch Notes Sku FR.txt" mirrored onto the
+            website by release.ps1. The docs rewrites in release.ps1 now run over a LIST of
+            pages and match on language-neutral fragments, so a translated page cannot keep
+            a stale version number - the same failure the v42.11 heading fix was about, one
+            page further; it also picked up the SkuMapper heading, which had been drifting
+            unnoticed. The Discord announcement is per channel now: a webhook line may name
+            the languages that channel wants, so a German-only server gets one German line
+            with German links rather than three languages it did not ask for.
+
+    Two menus that were nothing but a detour are gone
+        Simple: Under "Settings" there was a "Combat" entry holding exactly one item:
+            "Sku menu in combat". That item now sits directly in "Settings, General", and
+            the empty "Combat" level above it is gone. Same story in the main menu:
+            "Tools" only ever held "Dial Targeting" and "Soft Targeting"; both now live in
+            the "Quick menu", and "Tools" has left the main menu. Nothing about the
+            settings themselves changed, and every value you had saved is kept.
+        Technical: All three entries keep their existing builders, their db and their
+            keyPrefix - only where they are attached changed, so stored values are
+            untouched. "Werkzeuge" is removed as a SkuMenu module and from
+            SkuMenu:SetRootLayout (SkuZOptions/SkuMenu.lua); DialTargetingMenuBuilder and
+            the softTargeting group (still via IterateOptionsArgs with aIncludeHidden=true,
+            since it is flagged forAudioMenu=false) now hang in the Quick menu's
+            BuildChildren (SkuZOptions/Core.lua). The "Kampf" spec drops out of tSpecs in
+            SkuCore/Options.lua; CombatMenuOpenMenuBuilder is now called at the end of the
+            General builder, against the same combatMenuOpen setting. No SlashFunc path
+            pointed at either menu, so nothing else had to follow.
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.11
 
     Taxi: Sku names the next flight point and can land you there
