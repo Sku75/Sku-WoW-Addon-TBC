@@ -8,10 +8,24 @@
 # Where to get a URL in Discord:
 #   Server Settings -> Integrations -> Webhooks -> New Webhook (or an existing
 #   one) -> pick the target channel -> Copy Webhook URL.
-# Add one line per channel you want the release message posted to. The release
-# script posts the SAME message to every URL listed here.
+#
+# LANGUAGES. A line may say which languages that channel wants, so a
+# single-language server is not made to read three announcements:
+#
+#   de       = <url>     German only — one German line, German links
+#   en,fr    = <url>     English and French
+#   en,de,fr = <url>     all three
+#   all      = <url>     same as all three
+#   <url>                no prefix at all = all three (the old behaviour)
+#
+# The announcement is one line per language, and each line links the download
+# page and the patch notes IN THAT LANGUAGE. So a de-only channel gets a
+# one-line message pointing at the German patch notes, with nothing to skip.
 #
 # Lines starting with '#' are ignored; blank lines are ignored.
 
-https://discord.com/api/webhooks/000000000000000000/replace-with-your-english-server-webhook-token
-https://discord.com/api/webhooks/000000000000000000/replace-with-your-german-server-webhook-token
+# International server — everyone reads this one:
+en,de,fr = https://discord.com/api/webhooks/000000000000000000/replace-with-your-international-server-webhook-token
+
+# German-only server:
+de = https://discord.com/api/webhooks/000000000000000000/replace-with-your-german-server-webhook-token

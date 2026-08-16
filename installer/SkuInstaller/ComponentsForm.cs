@@ -30,6 +30,19 @@ namespace SkuInstaller
         private bool _suppressVoiceEvent;
         private bool _voicePackTouched;
 
+        // Combo order == this array, so adding a language is a one-line change
+        // and no index literal anywhere has to be kept in step. Each entry is
+        // named in its OWN language: someone looking for French is looking for
+        // "Français", not for whatever the current UI language calls it.
+        private static readonly Lang[] _langOrder = { Lang.En, Lang.De, Lang.Fr };
+
+        private static string LangDisplayName(Lang l)
+        {
+            if (l == Lang.De) return "Deutsch";
+            if (l == Lang.Fr) return "Français";
+            return "English";
+        }
+
         /// <summary>The chosen options. Valid once Result is Next.</summary>
         public InstallOptions Options { get; private set; } = new InstallOptions();
 
@@ -52,9 +65,9 @@ namespace SkuInstaller
                 Size = new Size(240, 24),
                 DropDownStyle = ComboBoxStyle.DropDownList,
             };
-            _installerLangCombo.Items.Add("English");
-            _installerLangCombo.Items.Add("Deutsch");
-            _installerLangCombo.SelectedIndex = Loc.Current == Lang.De ? 1 : 0;
+            foreach (var l in _langOrder)
+                _installerLangCombo.Items.Add(LangDisplayName(l));
+            _installerLangCombo.SelectedIndex = Math.Max(0, Array.IndexOf(_langOrder, Loc.Current));
             _installerLangCombo.SelectedIndexChanged += OnInstallerLanguageChanged;
             Controls.Add(_installerLangCombo);
             y += 38;
@@ -110,6 +123,11 @@ namespace SkuInstaller
         /// <summary>
         /// The voice pack to default to for the current installer language,
         /// resolved by folder name so it survives list reordering.
+        ///
+        /// There is no French recorded voice pack, so French falls to the English
+        /// one — harmless either way: on a frFR client Sku finds no matching
+        /// SkuAudioData (Core.lua matches packs by locale) and speaks through the
+        /// screen reader instead. Give this its own branch once a fr pack exists.
         /// </summary>
         private static int DefaultLanguagePackIndex()
         {
@@ -120,7 +138,8 @@ namespace SkuInstaller
 
         private void OnInstallerLanguageChanged(object sender, EventArgs e)
         {
-            Loc.Set(_installerLangCombo.SelectedIndex == 1 ? Lang.De : Lang.En);
+            int i = _installerLangCombo.SelectedIndex;
+            Loc.Set(i >= 0 && i < _langOrder.Length ? _langOrder[i] : Lang.En);
 
             if (!_voicePackTouched)
             {

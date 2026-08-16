@@ -3,13 +3,13 @@ using System.Globalization;
 
 namespace SkuInstaller
 {
-    public enum Lang { En, De }
+    public enum Lang { En, De, Fr }
 
     /// <summary>
-    /// Tiny English/German string table (Sku supports EN + DE, so the installer
-    /// does too). Auto-detects from the OS UI culture; the user can switch live
-    /// on the components page. Keys fall back to English, then to the key name,
-    /// so a missing translation never crashes.
+    /// Tiny English/German/French string table (Sku speaks EN + DE + FR, so the
+    /// installer does too). Auto-detects from the OS UI culture; the user can
+    /// switch live on the components page. Keys fall back to English, then to
+    /// the key name, so a missing translation never crashes.
     ///
     /// House rule for this table: a control's accessible text must never say LESS
     /// than what is printed next to it. The old table broke that — the SAPI voice
@@ -26,17 +26,29 @@ namespace SkuInstaller
         {
             try
             {
-                Current = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "de"
-                    ? Lang.De : Lang.En;
+                switch (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName)
+                {
+                    case "de": Current = Lang.De; break;
+                    case "fr": Current = Lang.Fr; break;
+                    default:   Current = Lang.En; break;
+                }
             }
             catch { Current = Lang.En; }
         }
 
         public static void Set(Lang l) => Current = l;
 
+        /// <summary>The table for a language, or English if it has none.</summary>
+        private static Dictionary<string, string> Table(Lang l)
+        {
+            if (l == Lang.De) return De;
+            if (l == Lang.Fr) return Fr;
+            return En;
+        }
+
         public static string Get(string key)
         {
-            var table = Current == Lang.De ? De : En;
+            var table = Table(Current);
             if (table.TryGetValue(key, out var s)) return s;
             return En.TryGetValue(key, out var e) ? e : key;
         }
@@ -412,6 +424,197 @@ namespace SkuInstaller
             ["sapi2sr.signFailed"]   = "NVDA-Stimme: Signierung nicht abgeschlossen (Code {0}); die Stimme bleibt evtl. stumm, bis das behoben ist.",
             ["sapi2sr.done"]         = "NVDA-Stimme: bereit. Starte WoW neu, um sie zu nutzen.",
             ["sapi2sr.failed"]       = "NVDA-Stimme-Installation fehlgeschlagen: {0}",
+        };
+
+        // ── French ───────────────────────────────────────────────────────────
+        // Same key set as En/De, same house rule: the accessible text must never
+        // say less than what is printed beside it. Note there is no French VOICE
+        // pack (Config.LanguagePacks has en/de only) — a French client finds no
+        // matching SkuAudioData and speaks through the screen reader / TTS
+        // instead, which is why the pack default for Fr is the English one.
+        private static readonly Dictionary<string, string> Fr = new Dictionary<string, string>
+        {
+            ["app.title"]            = "Sku Installer & Updater",
+
+            // ── navigation de l'assistant ────────────────────────────────────
+            ["nav.back"]             = "< &Retour",
+            ["nav.next"]             = "&Suivant >",
+            ["nav.install"]          = "&Installer",
+            ["nav.close"]            = "&Fermer",
+            ["cancel.title"]         = "Quitter l'installateur ?",
+            ["cancel.text"]          = "L'installation n'a pas encore été effectuée. Voulez-vous vraiment quitter ?",
+
+            // ── écran d'accueil (UpdatePromptForm) ───────────────────────────
+            ["update.heading.available"]   = "Une mise à jour de Sku est disponible",
+            ["update.heading.current"]     = "Sku est installé et à jour",
+            ["update.heading.notInstalled"]= "Sku n'est pas encore installé",
+            ["update.heading.noClient"]    = "Aucune installation de World of Warcraft trouvée",
+            ["update.noClientBody"]        = "L'installateur n'a pas trouvé World of Warcraft automatiquement. Utilisez « Parcourir » pour choisir votre dossier World of Warcraft, un dossier de version du jeu, ou son dossier Interface\\AddOns.",
+            ["update.explainUpdate"]       = "Mettre à jour maintenant : met Sku à jour dans {0} et conserve vos réglages actuels.",
+            ["update.explainInstall"]      = "Installer maintenant : installe Sku dans {0} avec la configuration recommandée.",
+            ["update.explainCustomize"]    = "Modifier ce qui sera installé : choisissez vous-même les versions du jeu, la langue de la voix et les composants facultatifs.",
+            ["update.updateBtn"]           = "&Mettre à jour maintenant",
+            ["update.installBtn"]          = "&Installer maintenant",
+            ["update.browseBtn"]           = "&Parcourir…",
+            ["update.customizeBtn"]        = "Installer Sku à &neuf, ou pour d'autres versions du jeu",
+            ["update.updateAcc"]           = "Mettre à jour maintenant, avec les réglages actuels",
+            ["update.installAcc"]          = "Installer maintenant, avec la configuration recommandée",
+            ["update.browseAcc"]           = "Rechercher votre dossier World of Warcraft",
+            ["update.customizeAcc"]        = "Installer Sku à neuf, ou pour d'autres versions du jeu — choisir soi-même les versions et les composants",
+            ["update.closeAcc"]            = "Fermer l'installateur sans rien modifier",
+
+            // ── fin de l'exécution (CompletionForm) ──────────────────────────
+            ["done.heading.ok"]        = "Terminé",
+            ["done.heading.failed"]    = "Terminé avec des problèmes",
+            ["done.heading.cancelled"] = "Annulé",
+            ["done.cancelledBody"]     = "L'installation a été annulée. Ce qui était déjà installé le reste ; le reste a été ignoré. Vous pouvez relancer l'installateur à tout moment.",
+            ["done.summaryAcc"]      = "Récapitulatif du résultat",
+            ["done.closeBtn"]        = "&Fermer l'installateur",
+            ["done.closeAcc"]        = "Fermer l'installateur",
+            ["done.logBtn"]          = "Afficher le &journal des événements",
+            ["done.logAcc"]          = "Afficher le journal des événements — chaque étape de cette exécution, ligne par ligne",
+            ["done.logHint"]         = "Journal des événements. Utilisez les flèches pour parcourir les étapes ; le bouton Fermer quitte l'installateur.",
+
+            // ── état par version du jeu (InstallTarget.StatusLine) ───────────
+            // L'état d'abord, les numéros de version ensuite — à l'écoute, c'est
+            // l'état que l'on attend.
+            ["target.notFound"]        = "Introuvable sur cet ordinateur — cochez-la quand même et indiquez le dossier à l'étape suivante.",
+            ["target.freshInstall"]    = "Nouvelle installation — Sku {0} sera installé ici.",
+            ["target.upToDate"]        = "À jour — Sku {0} est installé.",
+            ["target.updateAvailable"] = "Mise à jour disponible — Sku {0} est installé, {1} est disponible.",
+            ["target.versionUnknown"]  = "(version inconnue)",
+            ["target.devSymlink"]      = "Lien symbolique de développement — Sku {0}, géré en dehors de l'installateur et laissé intact.",
+
+            // ── choix des versions du jeu ────────────────────────────────────
+            ["versions.heading"]        = "Dans quelles versions du jeu faut-il installer Sku ?",
+            ["versions.body"]           = "Cochez chaque version de World of Warcraft à laquelle vous jouez — les deux peuvent être faites en une seule fois. L'étape suivante confirme où chacune se trouve.",
+            ["versions.needOne.title"]  = "Aucune sélection",
+            ["versions.needOne.text"]   = "Cochez au moins une version du jeu pour continuer, ou utilisez « Retour » pour quitter l'installateur.",
+
+            // ── dossiers par version ─────────────────────────────────────────
+            ["folders.heading"]         = "Où chaque version est-elle installée ?",
+            ["folders.body"]            = "Voici les dossiers dans lesquels Sku sera écrit. Si l'un est erroné ou manquant, utilisez le bouton « Parcourir » à côté.",
+            ["folders.notFound"]        = "(introuvable — utilisez « Parcourir »)",
+            ["folders.pathAcc"]         = "{0}, dossier AddOns : {1}",
+            ["folders.browseAcc"]       = "Rechercher le dossier de {0}",
+            ["folders.browseDesc"]      = "Sélectionnez le dossier World of Warcraft de {0}, son dossier de version du jeu, ou son dossier Interface\\AddOns.",
+            ["folders.picked"]          = "{0} défini sur {1}. {2}",
+            ["folders.missing.title"]   = "Dossier manquant",
+            ["folders.missing.text"]    = "Aucun dossier n'est défini pour : {0}.\n\nUtilisez « Parcourir » pour en choisir un, ou revenez en arrière et décochez cette version.",
+            ["folders.duplicate.title"] = "Deux fois le même dossier",
+            ["folders.duplicate.text"]  = "{0} et {1} pointent vers le même dossier, Sku y serait donc installé deux fois.\n\nCorrigez l'un des deux, ou revenez en arrière et décochez-en un.",
+
+            // ── composants ───────────────────────────────────────────────────
+            ["components.heading"]   = "Que faut-il installer ?",
+            ["components.body"]      = "Ces choix s'appliquent à toutes les versions du jeu sélectionnées. Les valeurs par défaut sont la configuration recommandée — en cas de doute, continuez simplement.",
+            ["ui.installerLanguage"] = "Langue de cet installateur :",
+            ["ui.voiceLanguage"]     = "Pack de voix :",
+            ["ui.browse"]            = "&Parcourir…",
+            ["acc.installerLanguage"]= "Langue de cet installateur",
+            ["acc.voiceLanguage"]    = "Pack de voix",
+            ["acc.status"]           = "État",
+            ["acc.progressLog"]      = "Historique de progression",
+
+            ["opt.shortcut.label"]   = "Créer un raccourci vers Sku Updater sur le bureau",
+            ["opt.shortcut.desc"]    = "Place un raccourci sur le bureau et dans le menu Démarrer, pour relancer cet updater plus tard sans le retélécharger.",
+            ["opt.sapi2sr.label"]    = "Activer NVDA comme voix dans WoW (recommandé)",
+            ["opt.sapi2sr.desc"]     = "Installe et signe la passerelle NVDA-SAPI afin que la parole du jeu passe par NVDA. Sans elle, Sku se rabat sur une voix Windows.",
+            ["opt.loginTool.label"]  = "Installer le WoW Login Tool (recommandé)",
+            ["opt.loginTool.desc"]   = "Un programme séparé qui donne un menu audio aux écrans de connexion, de serveur et de personnage. Ces écrans ne sont pas accessibles par eux-mêmes.",
+            ["opt.force.label"]      = "Tout réinstaller (réparation)",
+            ["opt.force.desc"]       = "Télécharge et remplace chaque addon même s'il est déjà à jour. À utiliser pour réparer une installation défectueuse — c'est nettement plus long.",
+
+            // ── progression ──────────────────────────────────────────────────
+            ["progress.heading"]          = "Installation de Sku",
+            ["progress.starting"]         = "Démarrage…",
+            ["progress.historyLabel"]     = "Progression (utilisez les flèches pour relire) :",
+            ["progress.finishedHeading"]  = "Terminé",
+            ["progress.cannotClose"]      = "L'installation est encore en cours. Utilisez le bouton « Annuler » pour l'arrêter proprement — fermer la fenêtre maintenant pourrait laisser un addon écrit à moitié.",
+            ["progress.cannotCloseTitle"] = "Installation en cours",
+            ["progress.cancelBtn"]        = "&Annuler l'installation",
+            ["progress.cancelAcc"]        = "Annuler l'installation après l'étape en cours",
+            ["progress.cancelConfirm.title"] = "Annuler l'installation ?",
+            ["progress.cancelConfirm.text"]  = "Arrêter l'installation ?\n\nLe téléchargement en cours est interrompu immédiatement. Une étape déjà en train d'être écrite sur le disque va jusqu'au bout, afin que rien ne reste installé à moitié. Tout ce qui n'a pas encore commencé est ignoré.\n\nLes addons déjà installés le restent. Vous pouvez relancer l'installateur à tout moment.",
+            ["progress.cancelling"]       = "Annulation — l'étape en cours se termine…",
+
+            // ── état / annonces ──────────────────────────────────────────────
+            ["status.checking"]        = "Recherche de mises à jour…",
+            ["status.checkingClient"]  = "Vérification de {0}…",
+            ["status.installingClient"]= "Installation dans {0}…",
+            ["status.installingAddon"] = "Installation de {0}…",
+            ["status.writingSettings"] = "Ajustement des réglages du jeu nécessaires…",
+            ["status.syncingToc"]      = "Adaptation des versions des addons à votre client de jeu (interface {0})…",
+            ["status.loginTool"]       = "Installation du WoW Login Tool pour {0}…",
+            ["status.sapi2sr"]         = "Installation de la passerelle vocale NVDA…",
+            ["status.clientOk"]        = "Réussi — {0} est terminé.",
+            ["status.clientFailed"]    = "Échec — {0} : {1}",
+            ["status.done"]            = "Terminé.",
+            ["status.cancelled"]       = "Annulé.",
+            ["status.failed"]          = "Échec : {0}",
+
+            // ── boîtes de dialogue ───────────────────────────────────────────
+            ["dlg.browse.desc"]        = "Sélectionnez votre dossier World of Warcraft, un dossier de version du jeu, ou le dossier Interface\\AddOns.",
+            ["dlg.notRecognized.text"] = "Ce dossier ne ressemble pas à une installation de World of Warcraft. Choisissez le dossier World of Warcraft, un dossier de version du jeu (par exemple _anniversary_ ou _classic_era_), ou son dossier Interface\\AddOns.",
+            ["dlg.notRecognized.title"]= "Dossier non reconnu",
+            ["dlg.closeGame.text"]     = "World of Warcraft doit être entièrement fermé pour cette mise à jour (elle installe un nouvel addon, modifie de gros fichiers son, ou corrige des réglages du jeu nécessaires).\n\nFermez complètement le jeu (jusqu'au bureau), puis choisissez « Réessayer ». Ou « Annuler » pour arrêter.",
+            ["dlg.closeGame.title"]    = "Veuillez fermer World of Warcraft",
+            ["dlg.done.title"]         = "Terminé",
+            ["dlg.error.text"]         = "Échec de l'installation : {0}",
+            ["dlg.error.logSuffix"]    = "\n\nUn journal a été enregistré dans : {0}",
+            ["dlg.error.title"]        = "Erreur",
+
+            // ── récapitulatif de fin ─────────────────────────────────────────
+            ["summary.headline.done"]     = "Installation de Sku terminée.",
+            ["summary.headline.upToDate"] = "Sku est déjà à jour.",
+            ["summary.updated"]           = "{0} installé ({1}).",
+            ["summary.addonsCurrent"]     = "Les addons étaient déjà à jour.",
+            ["summary.settings"]          = "Les réglages du jeu nécessaires ont été ajustés.",
+            ["summary.client"]            = "Les versions des addons ont été adaptées à votre client de jeu (interface {0}).",
+            ["summary.loginTool"]         = "Le WoW Login Tool est prêt — lancez-le depuis le raccourci « WoW Login Tool » sur votre bureau (également dans le menu Démarrer).",
+            ["summary.clientOk"]          = "Réussi — {0} :",
+            ["summary.clientFailed"]      = "Échec — {0} : {1}",
+            ["summary.unknownError"]      = "erreur inconnue",
+            ["summary.reload"]            = "Pour appliquer la mise à jour tout de suite, tapez /reload dans le jeu. Sinon, lancez-le simplement normalement.",
+            ["summary.battlenet"]         = "Lancez World of Warcraft depuis Battle.net pour utiliser la nouvelle version.",
+
+            // ── progression des addons (AddonInstaller) ──────────────────────
+            ["ai.notFound"]          = "{0} : introuvable sur GitHub, ignoré.",
+            ["ai.upToDate"]          = "{0} : à jour ({1}).",
+            ["ai.symlink"]           = "{0} : lien symbolique — laissé intact.",
+            ["ai.downloading"]       = "{0} : téléchargement de {1}",
+            ["ai.extracting"]        = "{0} : extraction…",
+            ["ai.installing"]        = "{0} : installation des fichiers…",
+            ["ai.locked"]            = "{0} : {1} fichier(s) étaient en cours d'utilisation — fermez le jeu et relancez l'updater.",
+            ["ai.installed"]         = "{0} : installé ({1}).",
+            ["toc.synced"]           = "{0} : version d'interface {1} -> {2} (correspond à votre client de jeu).",
+
+            // ── réglages du jeu (GameSettings) ───────────────────────────────
+            ["gs.setGlobal"]         = "Réglage du jeu : {0} = {1} (global).",
+            ["gs.setAccount"]        = "Réglage du jeu : {0} = {1} (compte).",
+            ["gs.deferred"]          = "Réglage du jeu : {0} sera défini après votre première connexion (pas encore de profil de compte).",
+            ["gs.noWtf"]             = "Réglages du jeu : pas de dossier WTF ici ; ignoré.",
+
+            // ── WoW Login Tool (LoginToolInstaller) ──────────────────────────
+            ["lt.downloading"]       = "WoW Login Tool : téléchargement de {0}",
+            ["lt.extracting"]        = "WoW Login Tool : extraction…",
+            ["lt.deploying"]         = "WoW Login Tool : copie des fichiers du programme…",
+            ["lt.textures"]          = "WoW Login Tool : installation des textures de l'écran de connexion…",
+            ["lt.fonts"]             = "WoW Login Tool : installation de la police plus lisible…",
+            ["lt.ahk"]               = "WoW Login Tool : ajout du moteur AutoHotkey…",
+            ["lt.shortcut"]          = "WoW Login Tool : création du raccourci de lancement…",
+            ["lt.present"]           = "WoW Login Tool : déjà installé, ignoré.",
+            ["lt.noInterface"]       = "WoW Login Tool : dossier Interface introuvable — les textures de l'écran de connexion n'ont PAS été installées.",
+            ["lt.done"]              = "WoW Login Tool : prêt. Lancez-le depuis le raccourci « WoW Login Tool » (bureau / menu Démarrer).",
+            ["lt.failed"]            = "Échec de l'installation du WoW Login Tool : {0}",
+
+            // ── passerelle vocale NVDA (SAPI2SR) ─────────────────────────────
+            ["sapi2sr.installing"]   = "Voix NVDA : installation de la passerelle SAPI2SR…",
+            ["sapi2sr.copied"]       = "Voix NVDA : {0} fichier(s) installé(s).",
+            ["sapi2sr.registering"]  = "Voix NVDA : enregistrement de la voix SAPI…",
+            ["sapi2sr.signing"]      = "Voix NVDA : signature pour que WoW la charge…",
+            ["sapi2sr.signFailed"]   = "Voix NVDA : la signature ne s'est pas terminée (code {0}) ; la voix peut rester muette jusqu'à réparation.",
+            ["sapi2sr.done"]         = "Voix NVDA : prête. Relancez WoW pour l'utiliser.",
+            ["sapi2sr.failed"]       = "Échec de l'installation de la voix NVDA : {0}",
         };
     }
 }

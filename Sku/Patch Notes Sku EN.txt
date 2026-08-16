@@ -4,7 +4,7 @@
 
 
 -------------------------------------------------------------------------------------------------------
-Changes in Sku v42.13
+Changes in Sku v42.12
 
     The character sheet reads out the description of every stat again
         Simple: Under "Stats" each value - spell damage, spell hit rating, stamina, weapon
@@ -79,9 +79,6 @@ Changes in Sku v42.13
             longer returns silently on an unusable Sku.Loc: it validates, logs the likely
             culprit, and builds the tables regardless.
 
--------------------------------------------------------------------------------------------------------
-Changes in Sku v42.12
-
     Speech no longer goes silent when you move through a list quickly
         Simple: Scrolling fast through a menu, a list of nearby objects or your bags could
             stop the speech entirely - only the click and beacon sounds were left - until
@@ -120,6 +117,27 @@ Changes in Sku v42.12
             line from OutputStringBTtts, where its result is discarded anyway, and without a
             wiki index it was running about 19 string.gsub passes to reach a guard that did
             nothing.
+
+    The installer and the download page speak French now too
+        Simple: Sku itself has spoken French since v42.11, but everything around it did
+            not. The Sku Installer now runs in French - it takes its language from Windows
+            and you can change it at any time in the "Language of this installer" list -
+            and the download page has a French version, reachable from the language links
+            at the top of either page. These patch notes exist in French as well, starting
+            at v42.11. There is still no French voice pack: on a French client Sku speaks
+            through your screen reader, which is why the installer offers the English pack
+            there.
+        Technical: A French table in the installer's Loc.cs (Lang.Fr, the same key set as
+            English and German, "fr" taken from the OS UI culture; the language combo is
+            built from ComponentsForm._langOrder so no index literal has to be kept in
+            step), docs/index-fr.html, and "Patch Notes Sku FR.txt" mirrored onto the
+            website by release.ps1. The docs rewrites in release.ps1 now run over a LIST of
+            pages and match on language-neutral fragments, so a translated page cannot keep
+            a stale version number - the same failure the v42.11 heading fix was about, one
+            page further; it also picked up the SkuMapper heading, which had been drifting
+            unnoticed. The Discord announcement is per channel now: a webhook line may name
+            the languages that channel wants, so a German-only server gets one German line
+            with German links rather than three languages it did not ask for.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.11

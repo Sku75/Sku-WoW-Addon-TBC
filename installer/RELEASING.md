@@ -26,8 +26,37 @@ and you get:
 - a freshly rebuilt installer program,
 - the full Sku addon packaged as `Sku-42.07.zip`,
 - a new GitHub release marked **Latest**, carrying both the addon and the installer,
-- the download page's links updated to the new version,
-- an announcement posted to both Discord channels (the same message, English + German).
+- the download pages' links updated to the new version (English and French),
+- the patch notes copied onto the website in all three languages,
+- an announcement posted to each Discord channel, in that channel's languages.
+
+## Discord: one message per channel, not one message for everyone
+
+`.secrets\discord-webhooks.txt` now says which languages each channel wants:
+
+    en,de,fr = https://...      the international Sku server
+    de       = https://...      the Flügel-an-Flügel server (German only)
+
+The announcement is **one line per language**, and each line links the download
+page and the patch notes *in that language*. So the German server gets a
+single German line with German links and nothing to skip past, while the
+international server gets three short lines. A bare URL with no `xx =` prefix
+still means all three, so an older secrets file keeps working.
+
+## Before you run it: the patch notes
+
+The notes are hand-written and live in `Sku\`. Write the new version's section
+in **all three** files before releasing — the script copies them to the website
+but never writes them:
+
+- `Sku\Patch Notes Sku EN.txt`
+- `Sku\Patch Notes Sku DE.txt`
+- `Sku\Patch Notes Sku FR.txt` — French, since Sku speaks French. This file
+  starts at v42.11 (the release French arrived in); older versions stay in the
+  English and German notes only, and that is stated at the top of the file.
+
+Same structure in each: a `Simple:` paragraph for players and a `Technical:`
+one for whoever maintains the code next.
 
 ## The moving parts
 
@@ -35,7 +64,11 @@ and you get:
 - **tools\build_sku_zip.py** — packs the addon folder into the release zip.
 - **the installer project** — rebuilt into the `SkuInstaller.exe` that ships with each release.
 - **.secrets\discord-webhooks.txt** — your two Discord channel links, kept private and never uploaded.
-- **the download page** (`docs\index.html`) — its links are refreshed automatically.
+- **the download pages** (`docs\index.html`, `docs\index-fr.html`) — their links
+  are refreshed automatically. Both are listed in `$DocsPages` in release.ps1; a
+  page that is not in that list silently keeps an old version number, which is
+  exactly the bug the v42.11 stale-heading fix was about. Add any new
+  translation of the page there.
 
 ## What it needs to run
 

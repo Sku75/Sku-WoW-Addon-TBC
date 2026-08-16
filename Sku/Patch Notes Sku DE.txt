@@ -4,7 +4,7 @@
 
 
 -------------------------------------------------------------------------------------------------------
-Aenderungen in Sku v42.13
+Aenderungen in Sku v42.12
 
     Im Charakterfenster werden die Beschreibungen der Werte wieder vorgelesen
         Einfach: Unter "Eigenschaften" hatte jeder Wert - Zauberschaden,
@@ -86,9 +86,6 @@ Aenderungen in Sku v42.13
             sondern prueft, meldet den wahrscheinlichen Verursacher ins Log und baut die
             Tabellen trotzdem.
 
--------------------------------------------------------------------------------------------------------
-Aenderungen in Sku v42.12
-
     Die Sprache verstummt nicht mehr, wenn du schnell durch eine Liste gehst
         Einfach: Schnelles Blaettern durch ein Menue, durch die Liste der Objekte in der
             Naehe oder durch die Taschen konnte die Sprachausgabe ganz zum Schweigen
@@ -133,6 +130,29 @@ Aenderungen in Sku v42.12
             danach: sie wird aus OutputStringBTtts fuer jede gesprochene Zeile aufgerufen,
             ihr Ergebnis wird dort ohnehin verworfen, und ohne Wiki-Index liefen rund 19
             string.gsub-Durchgaenge, nur um eine Abfrage zu erreichen, die nichts tat.
+
+    Der Installer und die Downloadseite sprechen jetzt auch Franzoesisch
+        Einfach: Sku selbst spricht seit v42.11 Franzoesisch, alles drumherum aber nicht.
+            Der Sku-Installer laeuft jetzt auf Franzoesisch - er nimmt seine Sprache von
+            Windows, und umstellen laesst er sich jederzeit in der Liste "Sprache dieses
+            Installers" - und die Downloadseite gibt es in einer franzoesischen Fassung,
+            erreichbar ueber die Sprachlinks oben auf beiden Seiten. Auch diese Patchnotes
+            gibt es auf Franzoesisch, beginnend mit v42.11. Ein franzoesisches Sprachpaket
+            gibt es weiterhin nicht: auf einem franzoesischen Client spricht Sku ueber den
+            Screenreader, weshalb der Installer dort das englische Paket anbietet.
+        Technisch: Eine franzoesische Tabelle in Loc.cs des Installers (Lang.Fr, derselbe
+            Schluesselsatz wie Englisch und Deutsch, "fr" aus der UI-Kultur des Systems;
+            die Sprachauswahl wird aus ComponentsForm._langOrder aufgebaut, sodass kein
+            Index-Literal mehr nachgezogen werden muss), docs/index-fr.html und
+            "Patch Notes Sku FR.txt", das release.ps1 auf die Webseite spiegelt. Die
+            Docs-Ersetzungen in release.ps1 laufen jetzt ueber eine LISTE von Seiten und
+            greifen auf sprachneutrale Fragmente, damit eine uebersetzte Seite keine
+            veraltete Versionsnummer behalten kann - genau der Fehler, um den es beim
+            Ueberschriften-Fix in v42.11 ging, eine Seite weiter; dabei faellt auch die
+            SkuMapper-Ueberschrift mit ab, die unbemerkt veraltet war. Die
+            Discord-Ankuendigung geht jetzt pro Kanal: eine Webhook-Zeile darf die Sprachen
+            dieses Kanals nennen, ein rein deutscher Server bekommt also eine deutsche
+            Zeile mit deutschen Links statt drei Sprachen, die er nicht wollte.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.11

@@ -2262,7 +2262,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 		}   
 		local tParentStats = aParentChilds[tFriendlyName].childs
 
-		-- [v42.13] Read the tooltip Blizzard would show for a paperdoll stat
+		-- [v42.12] Read the tooltip Blizzard would show for a paperdoll stat
 		-- frame and return it as ONE plain string.
 		--
 		-- Why not GetButtonTooltipLines: that helper pipes the scan through
@@ -2334,7 +2334,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				local tLabel, tValue = _G[v.."Label"], _G[v.."StatText"]
 				if tFrame and tLabel and tValue then
 					local tFriendlyName = SkuUtil:Unescape((tLabel:GetText() or "").." "..(tValue:GetText() or ""))
-					-- [v42.13] Each Era stat has its OWN frame, already carrying the
+					-- [v42.12] Each Era stat has its OWN frame, already carrying the
 					-- tooltip Blizzard last wrote, so there is no shared state to
 					-- reset -- just read it.
 					table.insert(tParentStats, tFriendlyName)
@@ -2393,7 +2393,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				},
 			}
 			
-			-- [v42.13] TBC drives all 29 stats through ONE shared widget
+			-- [v42.12] TBC drives all 29 stats through ONE shared widget
 			-- (PlayerStatFrameLeft1), and the Blizzard setters leave their state
 			-- ON that widget: .tooltip/.tooltip2 for the generic
 			-- PaperDollStatTooltip, plus .bonusDamage/.spellCrit/.damage/... for

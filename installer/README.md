@@ -93,7 +93,12 @@ Quick headless check of the discovery (no download):
 - `Sku-42.02.zip` (tag `v42.02`) — main addon. Drives the "is there an update".
 - `SkuBeaconSoundsets.zip` (tag `v41.02.05`, ~99 MB) — hard dependency.
 - Language pack — pick ONE: `SkuAudioData_en.zip`, `SkuAudioData.zip` (German),
-  `SkuAudioData_fast_de.zip` (tag `v41.02.05`).
+  `SkuAudioData_fast_de.zip` (tag `v41.02.05`). There is **no French voice
+  pack**: a frFR client matches none of these (Sku picks a pack by locale in
+  `Sku/Core.lua`) and speaks through the screen reader instead, so the French
+  installer UI defaults to the English pack. Give French its own branch in
+  `ComponentsForm.DefaultLanguagePackIndex` / `Program.DetectInstalledLanguagePack`
+  if a `SkuAudioData_fr` ever ships.
 - Optional: `SkuCustomBeaconsEssential.zip`, `SkuCustomBeaconsAdditional.zip`.
 - `WoW-Login-Tool.zip` (tag `v41.03`) — the maintainer already ships a tool for
   the Battle.net launch problem. **We should look at this before building our
@@ -342,6 +347,24 @@ Sku/SkuCore/updateCheck.lua  ← in-game "newer version" nudge over SkuChat
   default-focused button. The base does this in `MainForm`.
 - Progress is reported through a Label the screen reader can read on demand.
 - No mouse-only or sighted-only steps.
+
+## UI languages (`Loc.cs`)
+
+English, German and French — the languages Sku itself speaks. `Loc.Init()` picks
+one from the OS UI culture (`de` / `fr`, else English) and the user can switch
+live in the "Language of this installer" list on the components page.
+
+- All three tables carry the **same key set**; `Get` falls back to English and
+  then to the key name, so a missing entry never crashes. Keep the sets in step
+  when adding a key — an easy check is to extract every `["key"]` per table and
+  diff the three sets.
+- House rule for the table: a control's accessible text must never say LESS than
+  what is printed beside it. Options come as `opt.<x>.label` / `opt.<x>.desc`
+  pairs and the forms compose both into `AccessibleName`.
+- Adding a fourth language means: a value on the `Lang` enum, a case in
+  `Loc.Init`, a branch in `Loc.Table`, a full table, and one entry in
+  `ComponentsForm._langOrder` (the combo is built from that array, so no index
+  literal has to be kept in step).
 
 ## Build
 

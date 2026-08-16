@@ -20,7 +20,9 @@ release.ps1 - one-command Sku release pipeline.
       4. Commit those edits and push main.
       5. Create GitHub release v42.12 (Latest badge) carrying BOTH
          Sku-42.12.zip and SkuInstaller.exe, noting the installer version.
-      6. Announce to both Discord channels (identical bilingual message).
+      6. Announce to each Discord channel in the languages that channel asked
+         for (see the webhooks file below) - one line per language, each with
+         that language's own download and patch-notes links.
 
   INSTALLER ONLY (no new Sku version - bump <Version> in the csproj first):
     installer\release.ps1 -PublishInstaller
@@ -47,7 +49,10 @@ release.ps1 - one-command Sku release pipeline.
     -Notes "..."  release/announcement highlights (else a minimal default).
 
   Discord webhooks are read from installer\.secrets\discord-webhooks.txt
-  (gitignored - one URL per line, '#' comments allowed). See the .example file.
+  (gitignored - one URL per line, '#' comments allowed). A line may name that
+  channel's languages, e.g. "de = https://..." for a German-only server or
+  "en,de,fr = https://..." for an international one; a bare URL means all
+  three. See the .example file.
 
   ASCII-only on purpose: Windows PowerShell 5.1 reads a BOM-less .ps1 as ANSI,
   which would corrupt any non-ASCII byte. Keep it that way.
@@ -85,6 +90,13 @@ $SiteUrl  = 'https://sku75.github.io/Sku-WoW-Addon-TBC/'
 $RepoRoot    = Split-Path $PSScriptRoot -Parent
 $SkuDir      = Join-Path $RepoRoot 'Sku'
 $DocsHtml    = Join-Path $RepoRoot 'docs\index.html'
+$DocsHtmlFr  = Join-Path $RepoRoot 'docs\index-fr.html'
+# Every download page that carries version numbers. A page added here is kept in
+# step by all the Set-Docs* rewrites below; one that is NOT here silently rots,
+# which is the exact failure the v42.11 stale-heading fix was about. The
+# rewrites therefore match on language-NEUTRAL fragments ("Sku v42.11",
+# "SkuMapper 4.8", the URLs) so the same pass works on a translated page.
+$DocsPages   = @($DocsHtml, $DocsHtmlFr)
 $ConfigCs    = Join-Path $PSScriptRoot 'SkuInstaller\Config.cs'
 $Csproj      = Join-Path $PSScriptRoot 'SkuInstaller\SkuInstaller.csproj'
 $ExeBuilt    = Join-Path $PSScriptRoot 'SkuInstaller\bin\Release\net48\SkuInstaller.exe'
@@ -122,7 +134,7 @@ function Require-Clean-Repo {
     $status = git -C $RepoRoot status --porcelain
     # Ignore the version files we are about to touch ourselves.
     $dirty = $status | Where-Object {
-        $_ -and ($_ -notmatch 'Sku/Sku\.toc$') -and ($_ -notmatch 'Config\.cs$') -and ($_ -notmatch 'docs/index\.html$')
+        $_ -and ($_ -notmatch 'Sku/Sku\.toc$') -and ($_ -notmatch 'Config\.cs$') -and ($_ -notmatch 'docs/index(-fr)?\.html$')
     }
     if ($dirty) {
         Write-Warning "Working tree has other uncommitted changes:"
@@ -134,26 +146,33 @@ function Require-Clean-Repo {
 
 # --- Docs link rewrites (idempotent) ----------------------------------------
 function Set-DocsSkuLink($ver) {
-    if ($DryRun) { Dry "docs: Sku download link -> v$ver"; return }
-    if (-not (Test-Path $DocsHtml)) { return }
-    $html = Read-Text $DocsHtml
-    # \d+(\.\d+)+ rather than \d+\.\d+ so a three-component version already in
-    # the page (42.11.1) is still found and replaced on the next release.
-    $html = [regex]::Replace($html, 'releases/download/v\d+(\.\d+)+/Sku-\d+(\.\d+)+\.zip', "releases/download/v$ver/Sku-$ver.zip")
-    $html = [regex]::Replace($html, 'Download Sku v\d+(\.\d+)+', "Download Sku v$ver")
-    # The section HEADING carries the version too. Screen-reader users navigate by
-    # heading, so a stale number here reads as "the site still offers the old Sku"
-    # even though the link below it is current (it drifted 42.06 -> 42.10 before
-    # this line existed). Keep it in sync with the link.
-    $html = [regex]::Replace($html, 'Sku \(Main Addon\) - Version \d+(\.\d+)+', "Sku (Main Addon) - Version $ver")
-    Write-Text $DocsHtml $html
+    if ($DryRun) { Dry "docs: Sku download link -> v$ver (all pages)"; return }
+    foreach ($page in $DocsPages) {
+        if (-not (Test-Path $page)) { continue }
+        $html = Read-Text $page
+        # \d+(\.\d+)+ rather than \d+\.\d+ so a three-component version already in
+        # the page (42.11.1) is still found and replaced on the next release.
+        $html = [regex]::Replace($html, 'releases/download/v\d+(\.\d+)+/Sku-\d+(\.\d+)+\.zip', "releases/download/v$ver/Sku-$ver.zip")
+        # Just "Sku v42.11", not "Download Sku v42.11": the verb in front of it is
+        # translated ("Telecharger Sku v42.11") and must not be part of the match.
+        $html = [regex]::Replace($html, 'Sku v\d+(\.\d+)+', "Sku v$ver")
+        # The section HEADING carries the version too. Screen-reader users navigate by
+        # heading, so a stale number here reads as "the site still offers the old Sku"
+        # even though the link below it is current (it drifted 42.06 -> 42.10 before
+        # this line existed). Keep it in sync with the link. The parenthesised
+        # qualifier is translated, so match it loosely.
+        $html = [regex]::Replace($html, '(Sku \([^()]*\) - Version )\d+(\.\d+)+', '${1}' + $ver)
+        Write-Text $page $html
+    }
 }
 function Set-DocsInstallerLatest {
     if ($DryRun) { Dry "docs: installer link -> releases/latest/download/SkuInstaller.exe"; return }
-    if (-not (Test-Path $DocsHtml)) { return }
-    $html = Read-Text $DocsHtml
-    $html = [regex]::Replace($html, 'releases/download/v\d+\.\d+/SkuInstaller\.exe', 'releases/latest/download/SkuInstaller.exe')
-    Write-Text $DocsHtml $html
+    foreach ($page in $DocsPages) {
+        if (-not (Test-Path $page)) { continue }
+        $html = Read-Text $page
+        $html = [regex]::Replace($html, 'releases/download/v\d+\.\d+/SkuInstaller\.exe', 'releases/latest/download/SkuInstaller.exe')
+        Write-Text $page $html
+    }
 }
 
 # The installer's version, read from the BUILT EXE rather than the csproj text.
@@ -180,35 +199,49 @@ function Set-DocsInstallerVersion {
     $ver = Get-InstallerVersion
     if ($DryRun) { Dry "docs: installer version heading -> (from built exe)"; return }
     if (-not $ver) { Write-Warning "  Could not read the installer version from $ExeDist; docs heading left as-is."; return }
-    if (-not (Test-Path $DocsHtml)) { return }
-    $html = Read-Text $DocsHtml
-    $new = [regex]::Replace($html, 'Sku Installer - Version [\d.]+', "Sku Installer - Version $ver")
-    if ($new -eq $html) { Note "  docs installer version already $ver." } else { Write-Text $DocsHtml $new; Info "  docs installer version -> $ver" }
+    foreach ($page in $DocsPages) {
+        if (-not (Test-Path $page)) { continue }
+        $html = Read-Text $page
+        # "Sku Installer" is the product name and stays untranslated on every page.
+        $new = [regex]::Replace($html, 'Sku Installer - Version [\d.]+', "Sku Installer - Version $ver")
+        if ($new -ne $html) { Write-Text $page $new; Info "  $(Split-Path $page -Leaf) installer version -> $ver" }
+    }
 }
 function Set-DocsLoginToolRolling {
     if ($DryRun) { Dry "docs: login tool link -> releases/download/$LoginToolTag/WoW-Login-Tool.zip"; return }
-    if (-not (Test-Path $DocsHtml)) { return }
-    $html = Read-Text $DocsHtml
-    $html = [regex]::Replace($html, 'releases/download/[^/"]+/WoW-Login-Tool\.zip', "releases/download/$LoginToolTag/WoW-Login-Tool.zip")
-    Write-Text $DocsHtml $html
+    foreach ($page in $DocsPages) {
+        if (-not (Test-Path $page)) { continue }
+        $html = Read-Text $page
+        $html = [regex]::Replace($html, 'releases/download/[^/"]+/WoW-Login-Tool\.zip', "releases/download/$LoginToolTag/WoW-Login-Tool.zip")
+        Write-Text $page $html
+    }
 }
 function Set-DocsSkuMapperVersion($ver) {
     if ($DryRun) { Dry "docs: SkuMapper link -> releases/download/skumapper-$ver/SkuMapper-$ver.zip"; return }
-    if (-not (Test-Path $DocsHtml)) { return }
-    $html = Read-Text $DocsHtml
-    $html = [regex]::Replace($html, 'releases/download/skumapper[^/"]*/SkuMapper[^"]*\.zip', "releases/download/skumapper-$ver/SkuMapper-$ver.zip")
-    $html = [regex]::Replace($html, 'Download SkuMapper [\d.]+', "Download SkuMapper $ver")
-    Write-Text $DocsHtml $html
+    foreach ($page in $DocsPages) {
+        if (-not (Test-Path $page)) { continue }
+        $html = Read-Text $page
+        $html = [regex]::Replace($html, 'releases/download/skumapper[^/"]*/SkuMapper[^"]*\.zip', "releases/download/skumapper-$ver/SkuMapper-$ver.zip")
+        # "SkuMapper 4.8" with a space, not "Download SkuMapper 4.8": this also
+        # catches the HEADING (same stale-heading class of bug as Sku's own), and
+        # the verb in front of it is translated. The hyphen in the zip filename
+        # keeps the URL out of this match.
+        $html = [regex]::Replace($html, 'SkuMapper [\d.]+', "SkuMapper $ver")
+        Write-Text $page $html
+    }
 }
 
 # Patch notes live in Sku\ (ship in the zip) AND docs\ (serve the website); they
 # drift unless re-copied. The addon-side notes are hand-written before a release;
 # this mirrors them into docs\ so the site shows the same text.
 function Sync-PatchNotesToDocs {
-    if ($DryRun) { Dry "copy patch notes Sku\ -> docs\ (EN + DE)"; return }
+    if ($DryRun) { Dry "copy patch notes Sku\ -> docs\ (EN + DE + FR)"; return }
     $pairs = @(
         @{ src = (Join-Path $SkuDir 'Patch Notes Sku EN.txt'); dst = (Join-Path $RepoRoot 'docs\Patch-Notes-English.txt') },
-        @{ src = (Join-Path $SkuDir 'Patch Notes Sku DE.txt'); dst = (Join-Path $RepoRoot 'docs\Patch-Notes-Deutsch.txt') }
+        @{ src = (Join-Path $SkuDir 'Patch Notes Sku DE.txt'); dst = (Join-Path $RepoRoot 'docs\Patch-Notes-Deutsch.txt') },
+        # FR starts at v42.11, the release Sku began speaking French; older
+        # versions stay in the EN/DE notes only.
+        @{ src = (Join-Path $SkuDir 'Patch Notes Sku FR.txt'); dst = (Join-Path $RepoRoot 'docs\Patch-Notes-Francais.txt') }
     )
     foreach ($p in $pairs) {
         if (Test-Path $p.src) { Copy-Item $p.src $p.dst -Force -ErrorAction Stop; Info "  synced $(Split-Path $p.dst -Leaf)" }
@@ -286,29 +319,62 @@ function Commit-Push($paths, $message) {
 }
 
 # --- Discord ----------------------------------------------------------------
+# One webhook line -> { Url; Langs }. A line may name the languages that channel
+# wants, so a German-only server is not made to read three announcements:
+#
+#     de       = https://discord.com/api/webhooks/...      <- German only
+#     en,fr    = https://discord.com/api/webhooks/...
+#     https://discord.com/api/webhooks/...                 <- no prefix = all
+#
+# A bare URL keeps its old meaning (every language), so an untagged secrets file
+# from before this existed still works unchanged.
 function Read-Webhooks {
     if (-not (Test-Path $SecretsFile)) { return @() }
-    Get-Content $SecretsFile | ForEach-Object { $_.Trim() } | Where-Object { $_ -and (-not $_.StartsWith('#')) }
+    $out = @()
+    foreach ($raw in (Get-Content $SecretsFile)) {
+        $line = $raw.Trim()
+        if (-not $line -or $line.StartsWith('#')) { continue }
+        $langs = @('en', 'de', 'fr')
+        if ($line -match '^([A-Za-z, ]+?)\s*=\s*(https?://.+)$') {
+            $spec = $Matches[1].Trim().ToLower()
+            $url  = $Matches[2].Trim()
+            if ($spec -ne 'all') {
+                $langs = @($spec.Split(',') | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+                $bad = @($langs | Where-Object { $_ -notin @('en', 'de', 'fr') })
+                if ($bad) { throw "Unknown language '$($bad -join ', ')' in $SecretsFile. Use en, de, fr or all." }
+            }
+        } else {
+            $url = $line
+        }
+        $out += [pscustomobject]@{ Url = $url; Langs = $langs }
+    }
+    return $out
 }
 
-function Announce-Discord($title, $body, $url) {
+function Announce-Discord($ver, $url) {
     if ($SkipDiscord) { Note "  Discord: skipped (-SkipDiscord)."; return }
     $hooks = Read-Webhooks
     if (-not $hooks) { Write-Warning "  Discord: no webhooks in $SecretsFile; skipping announcement."; return }
 
-    $payload = @{
-        username = 'Sku Releases'
-        embeds   = @(@{ title = $title; description = $body; url = $url; color = 3066993 })
-    } | ConvertTo-Json -Depth 6
-
     foreach ($wh in $hooks) {
-        $masked = [regex]::Replace($wh, '(/webhooks/\d+/).*', '$1***')
-        if ($DryRun) { Dry "POST Discord embed to $masked"; continue }
-        Info "  Announcing to $masked"
+        $masked = [regex]::Replace($wh.Url, '(/webhooks/\d+/).*', '$1***')
+        $langs  = $wh.Langs
+        $payload = @{
+            username = 'Sku Releases'
+            embeds   = @(@{
+                title       = (Build-AnnouncementTitle $ver $langs)
+                description = (Build-AnnouncementBody $ver $langs)
+                url         = $url
+                color       = 3066993
+            })
+        } | ConvertTo-Json -Depth 6
+
+        if ($DryRun) { Dry "POST Discord embed to $masked [$($langs -join ',')]"; continue }
+        Info "  Announcing to $masked [$($langs -join ',')]"
         $bytes = [System.Text.Encoding]::UTF8.GetBytes($payload)
         # A webhook failure must NOT undo an already-published release - warn, keep going.
         try {
-            Invoke-RestMethod -Uri $wh -Method Post -ContentType 'application/json; charset=utf-8' -Body $bytes -ErrorAction Stop | Out-Null
+            Invoke-RestMethod -Uri $wh.Url -Method Post -ContentType 'application/json; charset=utf-8' -Body $bytes -ErrorAction Stop | Out-Null
             Info "  posted."
         } catch {
             Write-Warning "  Discord POST to $masked failed: $($_.Exception.Message)"
@@ -316,20 +382,62 @@ function Announce-Discord($title, $body, $url) {
     }
 }
 
-function Build-AnnouncementBody($ver) {
-    $extra = ''
-    if ($Notes) { $extra = "`n`n" + $Notes }
-    # $uu = 'u' with umlaut, injected by code point so this .ps1 stays ASCII
-    # (PS 5.1 would misread a raw non-ASCII byte) while the POSTed text is proper
-    # German. The JSON is UTF-8-encoded before sending, so it renders correctly.
-    $uu = [char]0x00FC
-    @"
-**English** - Sku for WoW TBC Anniversary has been updated to **v$ver**.
-Download or update with the Sku Installer: $SiteUrl
+# Accented letters are injected by code point so this .ps1 stays ASCII (PS 5.1
+# would misread a raw non-ASCII byte) while the POSTed text is proper German /
+# French. The JSON is UTF-8-encoded before sending, so it renders correctly.
+$Uml = @{
+    u = [char]0x00FC   # u umlaut
+    o = [char]0x00F6   # o umlaut
+    c = [char]0x00E7   # c cedilla
+    e = [char]0x00E9   # e acute
+    a = [char]0x00E0   # a grave
+}
 
-**Deutsch** - Sku f${uu}r WoW TBC Anniversary wurde auf **v$ver** aktualisiert.
-Herunterladen oder aktualisieren mit dem Sku-Installer: $SiteUrl$extra
-"@
+# The download page a given language should land on. German has no page of its
+# own yet, so it goes to the English one - change this the day docs\index-de.html
+# exists and the German announcement follows automatically.
+function Get-SiteUrlFor($lang) {
+    if ($lang -eq 'fr') { return $SiteUrl + 'index-fr.html' }
+    return $SiteUrl
+}
+function Get-NotesUrlFor($lang) {
+    if ($lang -eq 'de') { return $SiteUrl + 'Patch-Notes-Deutsch.txt' }
+    if ($lang -eq 'fr') { return $SiteUrl + 'Patch-Notes-Francais.txt' }
+    return $SiteUrl + 'Patch-Notes-English.txt'
+}
+
+# A channel that speaks one language gets its title in that language; a mixed
+# channel gets the English one.
+function Build-AnnouncementTitle($ver, $langs) {
+    if ($langs.Count -eq 1) {
+        if ($langs[0] -eq 'de') { return "Sku TBC v$ver ver$($Uml.o)ffentlicht" }
+        if ($langs[0] -eq 'fr') { return "Sku TBC v$ver est disponible" }
+    }
+    return "Sku TBC v$ver released"
+}
+
+# ONE line per language, each carrying that language's own links, so a reader
+# skips at most two lines that are not theirs - and a single-language channel
+# gets a single-line announcement with nothing to skip at all.
+function Build-AnnouncementBody($ver, $langs) {
+    $u = $Uml.u; $o = $Uml.o; $c = $Uml.c; $e = $Uml.e; $a = $Uml.a
+    $lines = @()
+    foreach ($lang in @('en', 'de', 'fr')) {
+        if ($langs -notcontains $lang) { continue }
+        # NOT $site/$notes: PowerShell variable names are case-INSENSITIVE, so a
+        # local $notes IS the script's -Notes parameter and the extra release
+        # text below would come out as a stray patch-notes URL instead.
+        $siteLink  = Get-SiteUrlFor  $lang
+        $notesLink = Get-NotesUrlFor $lang
+        switch ($lang) {
+            'en' { $lines += "**English** - Sku for WoW TBC Anniversary is now **v$ver**. [Download or update]($siteLink) - [Patch notes]($notesLink)" }
+            'de' { $lines += "**Deutsch** - Sku f${u}r WoW TBC Anniversary ist jetzt **v$ver**. [Herunterladen oder aktualisieren]($siteLink) - [Patchnotes]($notesLink)" }
+            'fr' { $lines += "**Fran${c}ais** - Sku pour WoW TBC Anniversary est maintenant en **v$ver**. [T${e}l${e}charger ou mettre ${a} jour]($siteLink) - [Notes de version]($notesLink)" }
+        }
+    }
+    $body = $lines -join "`n"
+    if ($Notes) { $body = $body + "`n`n" + $Notes }
+    return $body
 }
 
 # --- Build steps ------------------------------------------------------------
@@ -388,7 +496,7 @@ function Do-MainRelease($ver) {
     Info "Committing + pushing the release commit..."
     # Commit-Push is a no-op when nothing changed, so re-running after a partial
     # failure (commit already made) skips straight to creating the release.
-    Commit-Push @('Sku/Sku.toc', 'Sku/Patch Notes Sku EN.txt', 'Sku/Patch Notes Sku DE.txt', 'installer/SkuInstaller/Config.cs', 'docs/index.html', 'docs/Patch-Notes-English.txt', 'docs/Patch-Notes-Deutsch.txt') "release: v$ver"
+    Commit-Push @('Sku/Sku.toc', 'Sku/Patch Notes Sku EN.txt', 'Sku/Patch Notes Sku DE.txt', 'Sku/Patch Notes Sku FR.txt', 'installer/SkuInstaller/Config.cs', 'docs/index.html', 'docs/index-fr.html', 'docs/Patch-Notes-English.txt', 'docs/Patch-Notes-Deutsch.txt', 'docs/Patch-Notes-Francais.txt') "release: v$ver"
 
     # Record the installer version in the release notes. The exe is attached to
     # every addon release whether or not it changed, so without this there is no
@@ -401,7 +509,7 @@ function Do-MainRelease($ver) {
         gh release create $tag $zip $ExeDist --repo $Slug --title "Sku TBC $tag" --notes $notesArg --target main $latestArg
     }
 
-    Announce-Discord "Sku TBC $tag released" (Build-AnnouncementBody $ver) $SiteUrl
+    Announce-Discord $ver $SiteUrl
     Info "Done: $tag published."
 }
 
