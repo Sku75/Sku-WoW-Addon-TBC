@@ -3101,6 +3101,10 @@ function SkuCore:ResetTradeAcceptState()
 	SkuCore._tLastTargetAccepted = 0
 	SkuCore._tSecureTradePending = false
 	SkuCore._tTradeOfferWarned = false
+	-- Generationszaehler fuer die verzoegerten Ruecknahme-Ansagen (siehe
+	-- TRADE_ACCEPT_UPDATE). Jede Handelsgrenze -- oeffnen wie schliessen --
+	-- entwertet alles, was noch in der Warteschleife haengt.
+	SkuCore._tTradeGen = (SkuCore._tTradeGen or 0) + 1
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Name of the trade partner, one source of truth for every trade announce.
@@ -3268,8 +3272,77 @@ function SkuCore:TRADE_ACCEPT_UPDATE(aEvent, aPlayerAccepted, aTargetAccepted)
 	-- verschlucken, auf die der Nutzer wartet.
 	local tPlayer = tonumber(aPlayerAccepted) or 0
 	local tTarget = tonumber(aTargetAccepted) or 0
+	-- aOverwrite MUSS false bleiben. Mit true haengt OutputStringBTtts ein
+	-- "queuereset" in die BTTS-Queue, und das loescht ALLES, was davor
+	-- eingereiht wurde (SkuVoice-1.0.lua, Pump-Schleife). Handelsereignisse
+	-- kommen aber im Rudel -- Slotwechsel, beide Bestaetigungsflags, Gold, dazu
+	-- die Menueansage der gerade gedrueckten Taste -- und mit true frisst in so
+	-- einem Rudel jede Zeile ihre Vorgaengerin: im Mitschnitt eines
+	-- abgeschlossenen Handels ueberlebte von vier Ansagen genau eine, naemlich
+	-- die letzte. Ohne Reset reihen sie sich sauber hintereinander ein.
 	local tSay = function(aText, aPrio)
-		pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, true, true, 0.2, nil, nil, nil, aPrio or 2) end)
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, false, true, 0.2, nil, nil, nil, aPrio or 2) end)
+	end
+	-- Bestaetigungs-Ansagen einen Wimpernschlag verzoegert -- reine
+	-- Reihenfolgenfrage in der Sprachqueue, keine Zustandsvermutung.
+	--
+	-- Wer im Menue auf "Handeln" drueckt, loest die Server-Antwort aus, BEVOR das
+	-- Menue seine eigene Zeile fuer den Tastendruck einreiht. Deren "queuereset"
+	-- kommt also NACH "Handel bestaetigt" in die Queue und loescht sie damit --
+	-- im Mitschnitt genau so passiert. Wer den Handel per Menue bestaetigt, hoert
+	-- die Bestaetigung folglich nie. Eine kurze Verzoegerung stellt die Ansage
+	-- hinter die Menuezeile, wo sie den Reset ueberlebt. Bewusst OHNE
+	-- Generationspruefung: schliesst der Handel sofort danach, ist die
+	-- Bestaetigung erst recht die Zeile, die der Nutzer hoeren will.
+	local tSayAccept = function(aText, aPrio)
+		if not (_G.C_Timer and _G.C_Timer.After) then
+			tSay(aText, aPrio)
+			return
+		end
+		_G.C_Timer.After(0.35, function() tSay(aText, aPrio) end)
+	end
+	-- Ruecknahme-Ansagen NUR verzoegert.
+	--
+	-- Ein Handel wird nicht sauber beendet, sondern der Server raeumt beim
+	-- Abschluss erst die Bestaetigungsflags ab und schliesst dann das Fenster --
+	-- (1,1) -> (0,1) -> (0,0) -> TRADE_CLOSED, alles im selben Tick. Genau so
+	-- sieht aber auch ein echter Rueckzieher aus. Sofort angesagt bedeutet das:
+	-- jeder erfolgreiche Handel endet mit "hat die Bestaetigung zurueckgezogen",
+	-- obwohl er gerade geglueckt ist (aufgetreten beim Verzaubern im Handel: der
+	-- Verzauberer aendert mit dem Zauber den Gegenstand in Platz 7, der Handel
+	-- schliesst im selben Moment).
+	--
+	-- Die Trade-API kennt kein Ereignis fuer "abgeschlossen" gegen "abgebrochen"
+	-- (TRADE_CLOSED kommt ohne Nutzlast, ERR_TRADE_COMPLETE gibt es auf 2.5.6
+	-- nicht), also wird hier nichts geraten: die Ansage wartet kurz ab, und wenn
+	-- der Handel in der Zwischenzeit zu Ende ist, war es kein Rueckzieher und es
+	-- bleibt still. Nur wenn der Handel noch offen steht und die Seite immer noch
+	-- auf 0 haengt, ist der Rueckzieher echt und wird gesagt.
+	local tSayUnaccept = function(aText, aPrio, aCheck)
+		if not (_G.C_Timer and _G.C_Timer.After) then
+			tSay(aText, aPrio)
+			return
+		end
+		local tGen = SkuCore._tTradeGen
+		dprint("trade.unaccept defer", tGen, aText)
+		_G.C_Timer.After(0.5, function()
+			-- Handel inzwischen geschlossen oder neu geoeffnet -> entwertet.
+			if SkuCore._tTradeGen ~= tGen then
+				dprint("trade.unaccept drop", "gen", tGen, SkuCore._tTradeGen)
+				return
+			end
+			if not (_G["TradeFrame"] and _G["TradeFrame"]:IsVisible() == true) then
+				dprint("trade.unaccept drop", "frame gone")
+				return
+			end
+			-- Zwischenzeitlich wieder bestaetigt -> die Ansage waere veraltet.
+			if aCheck() ~= 0 then
+				dprint("trade.unaccept drop", "re-accepted")
+				return
+			end
+			dprint("trade.unaccept say", aText)
+			tSay(aText, aPrio)
+		end)
 	end
 
 	-- Eigene Seite.
@@ -3279,10 +3352,10 @@ function SkuCore:TRADE_ACCEPT_UPDATE(aEvent, aPlayerAccepted, aTargetAccepted)
 			-- sass frueher direkt hinter dem Klick auf "Handeln" und log daher immer dann,
 			-- wenn der Klick ins Leere ging (deaktivierter Knopf, Sicherheitsabfrage).
 			SkuCore._tSecureTradePending = false
-			tSay(Sku.L["TRADE_Accepted"])
+			tSayAccept(Sku.L["TRADE_Accepted"])
 		elseif SkuCore._tLastPlayerAccepted == 1 then
 			-- Bestaetigung wurde zurueckgezogen, weil sich das Angebot geaendert hat.
-			tSay(Sku.L["TRADE_AcceptAgain"])
+			tSayUnaccept(Sku.L["TRADE_AcceptAgain"], nil, function() return SkuCore._tLastPlayerAccepted end)
 		end
 		SkuCore._tLastPlayerAccepted = tPlayer
 	end
@@ -3291,9 +3364,9 @@ function SkuCore:TRADE_ACCEPT_UPDATE(aEvent, aPlayerAccepted, aTargetAccepted)
 	if tTarget ~= SkuCore._tLastTargetAccepted then
 		local tPartner = SkuCore:TradePartnerName()
 		if tTarget == 1 then
-			tSay(tPartner .. " " .. Sku.L["TRADE_PartnerAccepted"], 1)
+			tSayAccept(tPartner .. " " .. Sku.L["TRADE_PartnerAccepted"], 1)
 		elseif SkuCore._tLastTargetAccepted == 1 then
-			tSay(tPartner .. " " .. Sku.L["TRADE_PartnerUnaccepted"], 1)
+			tSayUnaccept(tPartner .. " " .. Sku.L["TRADE_PartnerUnaccepted"], 1, function() return SkuCore._tLastTargetAccepted end)
 		end
 		SkuCore._tLastTargetAccepted = tTarget
 	end
@@ -3322,14 +3395,14 @@ end
 function SkuCore:SECURE_TRANSFER_CONFIRM_TRADE_ACCEPT(aEvent, ...)
 	dprint("SECURE_TRANSFER_CONFIRM_TRADE_ACCEPT")
 	SkuCore._tSecureTradePending = true
-	pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.L["TRADE_SecureConfirmNeeded"], true, true, 0.2, nil, nil, nil, 2) end)
+	pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.L["TRADE_SecureConfirmNeeded"], false, true, 0.2, nil, nil, nil, 2) end)
 	-- Der Akzeptieren-Knopf des Dialogs ist die ersten 3 Sekunden absichtlich gesperrt und
 	-- zaehlt sichtbar herunter (SecureTransferDialog_TimerOnAccept). Ein Bestaetigungsversuch
 	-- davor verpufft, deshalb wird der Ablauf des Countdowns eigens angesagt.
 	if _G.C_Timer then
 		_G.C_Timer.After(3.2, function()
 			if SkuCore._tSecureTradePending == true then
-				pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.L["TRADE_SecureConfirmReady"], true, true, 0.2, nil, nil, nil, 2) end)
+				pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.L["TRADE_SecureConfirmReady"], false, true, 0.2, nil, nil, nil, 2) end)
 			end
 		end)
 	end
@@ -3359,7 +3432,7 @@ function SkuCore:TRADE_UPDATE_WARNINGS(aEvent, ...)
 	SkuCore._tTradeOfferWarned = tWarn
 	if tWarn then
 		local tPartner = SkuCore:TradePartnerName()
-		pcall(function() SkuOptions.Voice:OutputStringBTtts(tPartner .. " " .. Sku.L["TRADE_OfferChangedWarning"], true, true, 0.2, nil, nil, nil, 2) end)
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(tPartner .. " " .. Sku.L["TRADE_OfferChangedWarning"], false, true, 0.2, nil, nil, nil, 2) end)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3407,7 +3480,7 @@ function SkuCore:SecureTradeConfirm()
 	if _G.C_Timer then
 		_G.C_Timer.After(1.0, function()
 			if SkuCore._tSecureTradePending == true then
-				pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.L["TRADE_SecureConfirmBlocked"], true, true, 0.2, nil, nil, nil, 2) end)
+				pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.L["TRADE_SecureConfirmBlocked"], false, true, 0.2, nil, nil, nil, 2) end)
 			end
 		end)
 	end
