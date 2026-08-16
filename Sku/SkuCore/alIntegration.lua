@@ -30,6 +30,27 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 local AtlasLootIntegration = SkuCore:NewModule("AtlasLootIntegration", "AceEvent-3.0")
 SkuCore.AtlasLootIntegration = AtlasLootIntegration   -- keep the published handle
 
+-- [v42.14] "Is this id an item (as opposed to a spell)?", answered OFFLINE.
+--
+-- Every loot row here is a bare number that may be an item id or a spell id, and
+-- the routers below pick the builder from that. They used to ask
+-- C_Item.GetItemNameByID(id), which conflates "not an item" with "the server has
+-- not sent it yet": an uncached item failed the test, fell through to the spell
+-- branch, GetSpellInfo returned nil for it, and the row was silently dropped from
+-- the loot list -- no node, no gap, no marker, just a shorter list that reads as a
+-- complete one. Worst possible place for that filter, since an AtlasLoot table is
+-- overwhelmingly items the player has never looted, i.e. exactly the uncached
+-- ones; and it made the lists nondeterministic, with entry counts and index-jump
+-- numbers moving between visits as the cache filled.
+--
+-- GetItemInfoInstant reads the client's own item DB with no server round-trip, so
+-- it answers only the real question. (One site, the QueryAll router, had already
+-- been patched locally with an `or tSkuName ~= ""` SkuDB check -- same diagnosis,
+-- one site at a time. This replaces that too.)
+local function tIsItemId(aId)
+	return GetItemInfoInstant(aId) ~= nil
+end
+
 -- Make this feature user-toggleable (Features menu + persisted on/off). One line;
 -- the framework (SkuCore/ModuleManager.lua) handles the rest.
 SkuCore:RegisterToggleableModule("AtlasLootIntegration", function()
@@ -130,9 +151,15 @@ function AtlasLootIntegration:alItegrationLogin()
       SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x] = SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x] or {}
    end
 
+   -- [v42.14] Pre-warm the favourites' item data. This was a bare
+   -- C_Item.GetItemNameByID(...) whose return value was thrown away -- "poke the
+   -- client and hope", the same non-request the rest of this fix replaced. Ask
+   -- properly, so the favourites list is named on first open rather than on the
+   -- second.
    for y = 1, #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites do
       for x = 1, #SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[y] do
-         C_Item.GetItemNameByID(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[y][x])
+         local tFavItemId = GetItemInfoInstant(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[y][x])
+         if tFavItemId then SkuCore:RequestItemData(tFavItemId) end
       end
    end
 
@@ -506,12 +533,31 @@ function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, 
 
    elseif aType == "item" then
       local itemID, itemType, itemSubType, itemEquipLoc, icon, classID, subclassID = GetItemInfoInstant(aId)
-      if not C_Item.GetItemNameByID(aId) then
+      -- [v42.14] The guard here used to be "not C_Item.GetItemNameByID(aId) -> return",
+      -- which SKIPPED THE ENTRY ENTIRELY for any item the client had not cached yet --
+      -- no node, no gap, no marker, just a shorter loot list that reads as a complete
+      -- one. Backwards for this feature in particular: an AtlasLoot table is almost
+      -- entirely items the player has never looted or inspected, i.e. exactly the ones
+      -- that are uncached, so the filter ate the content the menu exists to show. It
+      -- was nondeterministic too -- browse the same boss twice and the entry count and
+      -- the index-jump numbers moved as the cache filled in.
+      --
+      -- The guard is legitimate in intent (keep junk ids out of the menu), it just
+      -- asked a question that conflates "is this a real item" with "has the server
+      -- sent it yet". GetItemInfoInstant answers only the first, offline from the
+      -- client's own item DB -- and it was already being called on the line above with
+      -- its results thrown away. So filter on that, and name the entry without the
+      -- server: see SkuCore:ResolveItemName.
+      if not itemID then
          return
       end
-      --print("7)", "        ", "item", SkuUtil:Unescape(C_Item.GetItemNameByID(aId)))
-      --print(itemID, itemType, itemSubType, itemEquipLoc, icon, classID, subclassID)
-      local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuUtil:Unescape(C_Item.GetItemNameByID(aId))}, SkuGenericMenuItem)
+      -- Node NAME is the menu identity, so it has to be stable: "Gegenstand <id>"
+      -- deliberately, NOT the "(laedt)" label, because a name that changes once the
+      -- data lands would move the entry out from under the cursor. The loading marker
+      -- belongs in the spoken text, which OnEnter below rewrites live anyway.
+      local tItemName = SkuCore:ResolveItemName(aId) or (Sku.deEn("Gegenstand", "item", "objet").." "..tostring(aId))
+      SkuCore:RequestItemData(aId)
+      local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuUtil:Unescape(tItemName)}, SkuGenericMenuItem)
       tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
          -- [v42.14] Was: a throwaway getItemComparisnSections(aId) call whose only job
          -- was "warm the cache", followed by a re-read on a fixed 0.1 s timer -- a
@@ -545,18 +591,23 @@ function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, 
                end
             end
 
-            local tTextFirstLine, tTextFull = "", ""
+            -- [v42.14] Seeded with the entry's own stable name rather than "": now that
+            -- uncached items reach this code at all, a tooltip that yields nothing must
+            -- leave the entry readable instead of silencing it.
+            local tTextFirstLine, tTextFull = tItemName, ""
             _G["SkuScanningTooltip"]:ClearLines()
             _G["SkuScanningTooltip"]:SetItemByID(aId)
-            if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-               if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-                  local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-                  tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
-               end
+            local tScannedText = TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions())
+            if SkuUtil:IsRetrievingItemInfo(tScannedText) then
+               -- Data still not here despite ContinueOnItemData having fired: say so,
+               -- keeping the name, and never hand the placeholder on as the name itself.
+               tTextFirstLine = SkuCore:PendingItemLabel(aId)
+            elseif tScannedText ~= "asd" and tScannedText ~= "" then
+               tTextFirstLine, tTextFull = SkuCore:ItemName_helper(SkuUtil:Unescape(tScannedText))
             end
 
             table.insert(tSections, 1, tTextFull)
-            
+
 
             SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, tSections
           end)
@@ -860,7 +911,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                      if type(row[2]) == "number" then
                         if AtlasLoot.Data.ItemSet.GetSetName(row[2]) then
                            AtlasLootIntegration:alIntegrationItemMenuBuilder(aSelf, "set", row[2])
-                        elseif (C_Item.GetItemNameByID(row[2])) and AtlasLoot.Data.Profession.IsProfessionSpell(row[2]) ~= true then
+                        elseif tIsItemId(row[2]) and AtlasLoot.Data.Profession.IsProfessionSpell(row[2]) ~= true then
                            AtlasLootIntegration:alIntegrationItemMenuBuilder(aSelf, "item", row[2], entry.npcID, entry.contentInteralName, entry.bossIndex, nil, entry.difficultyIndex)
                         else
                            local tName = GetSpellInfo(row[2])
@@ -1056,7 +1107,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                                                          --print("7)", "        ", "set", items[itemIndex][2], AtlasLoot.Data.ItemSet.GetSetName(items[itemIndex][2]))
                                                          AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "set", items[itemIndex][2])
 
-                                                      elseif (C_Item.GetItemNameByID(items[itemIndex][2])) and AtlasLoot.Data.Profession.IsProfessionSpell(items[itemIndex][2]) ~= true then
+                                                      elseif tIsItemId(items[itemIndex][2]) and AtlasLoot.Data.Profession.IsProfessionSpell(items[itemIndex][2]) ~= true then
                                                       --elseif C_Item.GetItemNameByID(items[itemIndex][2]) then
                                                             --print("7)", "        ", "item", SkuUtil:Unescape(items[itemIndex][1]), SkuUtil:Unescape(items[itemIndex][2]), SkuUtil:Unescape(C_Item.GetItemNameByID(items[itemIndex][2])), tSkuName)
 
@@ -1174,7 +1225,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                                                    if type(items[itemIndex][2]) == "number" then
                                                       if AtlasLoot.Data.ItemSet.GetSetName(items[itemIndex][2]) then
                                                          AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "set", items[itemIndex][2])
-                                                      elseif (C_Item.GetItemNameByID(items[itemIndex][2])) and AtlasLoot.Data.Profession.IsProfessionSpell(items[itemIndex][2]) ~= true then
+                                                      elseif tIsItemId(items[itemIndex][2]) and AtlasLoot.Data.Profession.IsProfessionSpell(items[itemIndex][2]) ~= true then
                                                          AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", items[itemIndex][2], tabVal.npcID, contentInteralName, bossIndex, nil, difficultyIndex)
                                                       else
                                                          local tName = GetSpellInfo(items[itemIndex][2])
@@ -1375,14 +1426,17 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                                  end
                               end
 
-                              local tTextFirstLine, tTextFull = "", ""
+                              -- [v42.14] Same as the item entry above: seed with the name
+                              -- the node already carries so a failed read cannot silence
+                              -- it, and never let the placeholder become the name.
+                              local tTextFirstLine, tTextFull = SkuOptions.currentMenuPosition.textFirstLine, ""
                               _G["SkuScanningTooltip"]:ClearLines()
                               _G["SkuScanningTooltip"]:SetItemByID(aId)
-                              if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-                                 if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-                                    local tText = SkuUtil:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-                                    tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
-                                 end
+                              local tScannedText = TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions())
+                              if SkuUtil:IsRetrievingItemInfo(tScannedText) then
+                                 tTextFirstLine = SkuCore:PendingItemLabel(aId)
+                              elseif tScannedText ~= "asd" and tScannedText ~= "" then
+                                 tTextFirstLine, tTextFull = SkuCore:ItemName_helper(SkuUtil:Unescape(tScannedText))
                               end
 
                               table.insert(tSections, 1, tTextFull)
@@ -1489,7 +1543,12 @@ local function addToItemsRepos(aItemId, aNpcID, aContentInteralName, aBossIndex,
       tItemDropTable[aItemId][#tItemDropTable[aItemId] + 1] = tSourceText
    end
 
-   local tName = C_Item.GetItemNameByID(aItemId)
+   -- [v42.14] tItemNameTable backs the "find item by name" keybind. Keyed on
+   -- C_Item.GetItemNameByID it silently omitted every item the client had not
+   -- cached -- so the search could not find exactly the items the user is most
+   -- likely to be hunting for. ResolveItemName answers from Sku's own shipped
+   -- item table when the client cannot.
+   local tName = SkuCore:ResolveItemName(aItemId)
    if tName and tName  ~= "" then
       tItemNameTable[tName] = {itemID = aItemId, npcId = aNpcID, internalName = aContentInteralName, bossIndex = aBossIndex, ttype = nil, difficultyIndex = aDifficultyIndex}
    end
@@ -1720,11 +1779,9 @@ function AtlasLootIntegration:alIntegrationQueryAll()
                                        
 
                                     if items[itemIndex] and items[itemIndex][2] and type(items[itemIndex][2]) == "number" then
-                                       local tSkuName = ""
-                                       if SkuDB.itemDataTBC[items[itemIndex][2]] then
-                                          tSkuName = SkuDB.itemDataTBC[items[itemIndex][2]][1]
-                                       end
-                                       
+                                       -- [v42.14] The tSkuName SkuDB lookup that used to sit here existed only
+                                       -- to widen this router's `C_Item.GetItemNameByID(...)` gate past the item
+                                       -- cache. tIsItemId does that properly and for every router, so it is gone.
                                        if AtlasLoot.Data.ItemSet.GetSetName(items[itemIndex][2]) then
                                           --print("7)", "         ", "set", items[itemIndex][2], AtlasLoot.Data.ItemSet.GetSetName(items[itemIndex][2]))
                                           for i, v in pairs(AtlasLoot.Data.ItemSet.GetSetItems(items[itemIndex][2])) do
@@ -1732,7 +1789,7 @@ function AtlasLootIntegration:alIntegrationQueryAll()
 
 
                                           end
-                                       elseif (C_Item.GetItemNameByID(items[itemIndex][2]) or tSkuName ~= "") and AtlasLoot.Data.Profession.IsProfessionSpell(items[itemIndex][2]) ~= true then
+                                       elseif tIsItemId(items[itemIndex][2]) and AtlasLoot.Data.Profession.IsProfessionSpell(items[itemIndex][2]) ~= true then
                                           --if tprint == true then
                                              --print("7)", "        ", "item", SkuUtil:Unescape(items[itemIndex][1]), SkuUtil:Unescape(items[itemIndex][2]), SkuUtil:Unescape(C_Item.GetItemNameByID(items[itemIndex][2])), tSkuName)
                                           --end
