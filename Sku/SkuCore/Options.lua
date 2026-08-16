@@ -571,9 +571,11 @@ SkuCore.defaults = {
 	--endFollowOnCast = false,
 	interactMove = true,
 	followCollision = true,
-	-- "Warnton wenn Folgen abbricht" (Barrierefreiheit, Sonstiges) is ON by default:
-	-- losing autofollow without noticing is one of the classic ways to get lost.
-	followBreakWarn = true,
+	-- "Warnton wenn Folgen abbricht" (Barrierefreiheit, Sonstiges) is OFF by default:
+	-- AUTOFOLLOW_END already plays "sound-off2" (SkuCore:AUTOFOLLOW_END), so the
+	-- spoken "Folgen beendet" on top of it is redundant chatter for most players.
+	-- Opt-in for anyone who wants the explicit wording instead of just the bling.
+	followBreakWarn = false,
 	turnToUnit = {
 		speed = 6,
 		soundOnSuccess = "sound-waterdrop5",
@@ -691,7 +693,7 @@ SkuSettings:Register("SkuCore", {
 	["playNPCGreetings"]                          = { scope = "profile", default = false, type = "boolean" },
 	["doNotHideTooltip"]                          = { scope = "profile", default = false, type = "boolean" },
 	["followCollision"]                           = { scope = "profile", default = true, type = "boolean" },
-	["followBreakWarn"]                           = { scope = "profile", default = true, type = "boolean" },
+	["followBreakWarn"]                           = { scope = "profile", default = false, type = "boolean" },
 	["classes.hunter.petHappyness"]               = { scope = "profile", default = true, type = "boolean" },
 	["itemSettings.ShowItemQality"]               = { scope = "profile", default = true, type = "boolean" },
 	["itemSettings.autoSellJunk"]                 = { scope = "profile", default = true, type = "boolean" },
