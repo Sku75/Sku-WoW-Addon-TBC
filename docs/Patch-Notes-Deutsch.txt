@@ -6,6 +6,46 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
 
+    Leistungsverbesserungen und Korrekturen beim Laden der Zauberdatenbank
+        Einfach: Beim Anmelden meldeten einige Spieler einen gesprochenen "Sku Datenbank
+            Fehler, Datensatz spells". Gemeldet wurde das von Era-Spielern, der
+            gemeinsame Nenner ist aber die Rechenleistung und nicht der Client: auf einem
+            schnellen Rechner passierte es nie, auf einem schwaecheren jedes Mal, und auf
+            TBC waere es genauso moeglich gewesen. Die Datenbank selbst war
+            dabei nie kaputt: Gescheitert ist nur die daraus abgeleitete Auswahlliste fuer
+            die Auren, die in EINEM Durchgang ueber rund 90.000 Eintraege aufgebaut wurde.
+            Auf einem langsameren Rechner brach der Client diesen Durchgang mit "script ran
+            too long" ab - und weil die Liste beim Aufbau direkt beschrieben wurde, blieb sie
+            danach halb gefuellt: In den Aura-Einstellungen fehlte ein Teil der Zauber, und
+            Auren, die auf einen fehlenden Eintrag zeigten, sagten nichts mehr an oder
+            liessen das Menue mit einem Fehler stehen. Der Aufbau laeuft jetzt in kleinen
+            Haeppchen ueber mehrere Bilder verteilt, genau wie der uebrige Datenbankaufbau
+            nach dem Anmelden, und wird erst ganz am Ende in einem Stueck uebernommen. Bricht
+            er trotzdem einmal ab, bleiben die bisherigen Listen unveraendert stehen statt
+            halb gefuellt, es wird kein Datenbankfehler mehr gesprochen, und der Rest der
+            Zauberdaten gilt weiterhin als in Ordnung. Zusaetzlich wird die Liste nur noch
+            einmal pro Sitzung gebaut statt bei jedem Ladebildschirm neu.
+        Technisch: SkuAuras:BuildAttributeValueLists laeuft ueber itemLookup UND SpellDataTBC
+            und legt pro Zeile eine Tabelle und ein bis zwei zusammengesetzte Zeichenketten
+            an. Der Aufruf hing bisher an zwei Stellen, beide synchron: am Build-Step
+            "auraValueLists" (nach items+spells) und an PLAYER_ENTERING_WORLD. Die Funktion
+            nimmt jetzt einen optionalen Yield-Callback, den sie alle 1000 Zeilen abfragt,
+            baut in lokale Tabellen und veroeffentlicht diese am Ende mit je einer Zuweisung
+            (atomar - ein Abbruch aendert gar nichts mehr). Gefahren wird sie von einer
+            eigenen Coroutine mit OnUpdate-Pumpe, die sich das gemeinsame Frame-Budget nach
+            dem Anmelden teilt (Sku:BuildFrameBudgetMs, registriert als Build-Worker
+            "skuAuraLists") - drei laufende Worker kosten weiterhin zusammen 150 ms pro Bild.
+            Der Build-Step startet nur noch diesen Treiber und ruft ctx.fail nicht mehr auf:
+            Ein Fehler der abgeleiteten Liste hatte zuvor die ganze Datenfamilie "spells" als
+            gescheitert markiert und die Fehleransage ausgeloest, obwohl die Zauberdaten
+            vollstaendig waren. Fehler landen jetzt in SkuErrorLog ("skuAuraLists") und im
+            Debug-Log. PLAYER_ENTERING_WORLD startet denselben Treiber, der nach einem
+            erfolgreichen Aufbau ein No-Op ist - der bisherige komplette Neuaufbau bei jedem
+            Zonenwechsel und jedem Instanzbetritt entfaellt damit. Ausserdem ueberspringt der
+            Aufbau eine Zauberzeile ohne Namen fuer die aktive Sprache, statt an ihr
+            auszusteigen, und die drei ungeschuetzten friendlyName-Zugriffe im Aura-Menue
+            fallen auf den Rohschluessel zurueck.
+
     Ein Gegner, der euch vor seinem Tod vergiftet hat, wird nicht mehr weitergezaehlt
         Einfach: Die Ansage der Gegnerzahl war seit v42.10 in normalen Kaempfen zuverlaessig,
             hatte aber einen Fall uebrig: Wenn ein Gegner euch kurz vor seinem Tod ein Gift

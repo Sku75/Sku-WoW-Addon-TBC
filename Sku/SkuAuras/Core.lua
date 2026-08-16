@@ -290,41 +290,75 @@ local TableCopy = SkuUtil.TableCopy
 -- never fire this session (plan risk A7). Called from PEW when the data is
 -- ready (normal /reload later in a session, profile switches), otherwise from
 -- the master init sequence (SkuDB/ChunkLoader.lua) once items+spells are up.
-function SkuAuras:BuildAttributeValueLists()
+--
+-- [v42.13] SLICED + ATOMIC. This is ~40k item rows plus ~49k spell rows, each
+-- allocating a table and one or two concatenated strings: on a slow machine
+-- that single pass exceeded the client's script watchdog and blew up with
+-- "SkuAuras/Core.lua:317: script ran too long". Reported from Era, but the
+-- correlation is CPU speed, not the client - TBC was only faster, never safe.
+-- Two consequences, both fixed here:
+--
+--   1. The pass now YIELDS. aYield is an optional callback (the frame-budget
+--      yield of the caller's coroutine, see StartAttributeValueListsBuild); it
+--      is polled every YIELD_EVERY rows, so the build spreads over frames
+--      instead of running as one multi-second script. Called without aYield the
+--      function still runs straight through (identical to the old behaviour).
+--   2. It builds into LOCAL tables and publishes them in one assignment at the
+--      end. Before, SkuAuras.values was wiped first and filled in place, so an
+--      abort ANYWHERE left a permanently half-populated value set: every aura
+--      referencing a spell past the abort point lost its friendlyName, which
+--      silences announcements (data.lua bails on a missing value) and errors
+--      the aura menu ("attempt to index field '?'"). Now an interrupted build
+--      changes nothing at all - the previous lists stay live.
+--
+-- Also nil-tolerant on the per-spell locale sub-table: one malformed row used
+-- to kill the whole build.
+local YIELD_EVERY = 1000
+
+function SkuAuras:BuildAttributeValueLists(aYield)
+	local tT0 = debugprofilestop()
+	local tRows = 0
+	local function tTick()
+		tRows = tRows + 1
+		if aYield and tRows % YIELD_EVERY == 0 then aYield() end
+	end
+
 	local seen = {}
-	SkuAuras.values = TableCopy(SkuAuras.valuesDefault, true, seen)
+	local tValues = TableCopy(SkuAuras.valuesDefault, true, seen)
 
-	SkuAuras.attributes.itemId.values = {}
-	SkuAuras.attributes.itemName.values = {}
+	local tItemIds, tItemNames = {}, {}
 	for itemId, itemName in pairs(SkuDB.itemLookup[Sku.Loc]) do
-		SkuAuras.attributes.itemId.values[#SkuAuras.attributes.itemId.values + 1] = "item:"..tostring(itemId)
-		SkuAuras.values["item:"..tostring(itemId)] = {friendlyName = itemId.." ("..itemName..")",}
+		tItemIds[#tItemIds + 1] = "item:"..tostring(itemId)
+		tValues["item:"..tostring(itemId)] = {friendlyName = itemId.." ("..itemName..")",}
 
-		if not SkuAuras.values["item:"..tostring(itemName)] then
-			SkuAuras.attributes.itemName.values[#SkuAuras.attributes.itemName.values + 1] = "item:"..tostring(itemName)
-			SkuAuras.values["item:"..tostring(itemName)] = {friendlyName = itemName,}
+		if not tValues["item:"..tostring(itemName)] then
+			tItemNames[#tItemNames + 1] = "item:"..tostring(itemName)
+			tValues["item:"..tostring(itemName)] = {friendlyName = itemName,}
 		end
+		tTick()
 	end
-	
-	SkuAuras.attributes.spellId.values = {}
-	SkuAuras.attributes.spellNameOnCd.values = {}
-	SkuAuras.attributes.spellName.values = {}
-	SkuAuras.attributes.buffListTarget.values = {}
-	SkuAuras.attributes.debuffListTarget.values = {}
+
+	local tSpellIds, tSpellNames, tSpellNamesOnCd = {}, {}, {}
+	local tBuffList, tDebuffList = {}, {}
 	for spellId, spellData in pairs(SkuDB.SpellDataTBC) do
-		local spellName = spellData[Sku.Loc][SkuDB.spellKeys["name_lang"]]
-		SkuAuras.attributes.spellId.values[#SkuAuras.attributes.spellId.values + 1] = "spell:"..tostring(spellId)
-		SkuAuras.values["spell:"..tostring(spellId)] = {friendlyName = spellId.." ("..spellName..")",}
-		if not SkuAuras.values["spell:"..tostring(spellName)] then
-			SkuAuras.attributes.spellNameOnCd.values[#SkuAuras.attributes.spellName.values + 1] = "spell:"..tostring(spellName)
-			SkuAuras.attributes.spellName.values[#SkuAuras.attributes.spellName.values + 1] = "spell:"..tostring(spellName)
-			SkuAuras.attributes.buffListTarget.values[#SkuAuras.attributes.buffListTarget.values + 1] = "spell:"..tostring(spellName)
-			SkuAuras.attributes.debuffListTarget.values[#SkuAuras.attributes.debuffListTarget.values + 1] = "spell:"..tostring(spellName)
-			SkuAuras.values["spell:"..tostring(spellName)] = {friendlyName = spellName,}
+		local tLocData = spellData and (spellData[Sku.Loc] or spellData.enUS or spellData.deDE)
+		local spellName = tLocData and tLocData[SkuDB.spellKeys["name_lang"]]
+		if spellName then
+			tSpellIds[#tSpellIds + 1] = "spell:"..tostring(spellId)
+			tValues["spell:"..tostring(spellId)] = {friendlyName = spellId.." ("..spellName..")",}
+			if not tValues["spell:"..tostring(spellName)] then
+				-- (the four lists are appended in lockstep, as before - the old
+				-- code indexed spellNameOnCd via #spellName + 1, which at this
+				-- point is the same slot)
+				tSpellNamesOnCd[#tSpellNamesOnCd + 1] = "spell:"..tostring(spellName)
+				tSpellNames[#tSpellNames + 1] = "spell:"..tostring(spellName)
+				tBuffList[#tBuffList + 1] = "spell:"..tostring(spellName)
+				tDebuffList[#tDebuffList + 1] = "spell:"..tostring(spellName)
+				tValues["spell:"..tostring(spellName)] = {friendlyName = spellName,}
+			end
 		end
+		tTick()
 	end
-	SkuAuras.attributes.buffListPlayer.values = SkuAuras.attributes.buffListTarget.values
-	SkuAuras.attributes.debuffListPlayer.values = SkuAuras.attributes.debuffListTarget.values
 	-- [41.03 Fix] Eigene Werteliste fuer die Waffenverzauberung-SET-Attribute, aufgebaut aus
 	-- der Enchant-DB ueber DENSELBEN Resolver wie die Live-Daten (SkuAuras:ResolveWeaponEnchantName).
 	-- Dadurch enthaelt die Auswahl GENAU die Namen, die live anliegen koennen -> "enthaelt /
@@ -333,22 +367,122 @@ function SkuAuras:BuildAttributeValueLists()
 	-- den nicht-passiven Eintrag, der nie matchte -> Aura feuerte EINMAL und nie wieder (kein
 	-- Re-Arm, weil Bedingung dauerhaft wahr). RUECKBAU: Block ersetzen durch
 	-- "= SkuAuras.attributes.buffListTarget.values" (beide Haende).
-	SkuAuras.attributes.weaponEnchantMainHand.values = {}
+	local tEnchantNames = {}
 	do
 		local tSeenEnchantNames = {}
 		for tEnchantId in pairs(SkuDB.WotLK.enchantIDs) do
 			local tName = SkuAuras:ResolveWeaponEnchantName(tEnchantId)
 			if tName and not tSeenEnchantNames[tName] then
 				tSeenEnchantNames[tName] = true
-				SkuAuras.attributes.weaponEnchantMainHand.values[#SkuAuras.attributes.weaponEnchantMainHand.values + 1] = "spell:"..tName
-				if not SkuAuras.values["spell:"..tName] then
-					SkuAuras.values["spell:"..tName] = {friendlyName = tName,}
+				tEnchantNames[#tEnchantNames + 1] = "spell:"..tName
+				if not tValues["spell:"..tName] then
+					tValues["spell:"..tName] = {friendlyName = tName,}
 				end
 			end
+			tTick()
 		end
 	end
-	SkuAuras.attributes.weaponEnchantOffHand.values = SkuAuras.attributes.weaponEnchantMainHand.values
+
+	-- [v42.13] Publish. One assignment per list, no yields past this point, so
+	-- consumers never see a half-built set (see the header comment).
+	SkuAuras.values = tValues
+	SkuAuras.attributes.itemId.values = tItemIds
+	SkuAuras.attributes.itemName.values = tItemNames
+	SkuAuras.attributes.spellId.values = tSpellIds
+	SkuAuras.attributes.spellName.values = tSpellNames
+	SkuAuras.attributes.spellNameOnCd.values = tSpellNamesOnCd
+	SkuAuras.attributes.buffListTarget.values = tBuffList
+	SkuAuras.attributes.debuffListTarget.values = tDebuffList
+	SkuAuras.attributes.buffListPlayer.values = tBuffList
+	SkuAuras.attributes.debuffListPlayer.values = tDebuffList
+	SkuAuras.attributes.weaponEnchantMainHand.values = tEnchantNames
+	SkuAuras.attributes.weaponEnchantOffHand.values = tEnchantNames
+	SkuAuras.attributeValueListsBuilt = true
 	SkuAuras:InvalidateAuraListCache()
+
+	-- Evidence line for the log read-back: rows walked and list sizes, plus the
+	-- WALL-CLOCK span of the build (sliced, so it includes the frames it spent
+	-- suspended - not the CPU cost). "0 spell ids" here means the data was not
+	-- there after all.
+	local tMs = debugprofilestop() - tT0
+	dprint(string.format("SkuAuras value lists built: %d rows, %d items, %d spell ids, %d spell names, %d enchants, %.0f ms wall",
+		tRows, #tItemIds, #tSpellIds, #tSpellNames, #tEnchantNames, tMs))
+	if Sku.MetricPoint then
+		Sku:MetricPoint(string.format("SkuAuras value lists = %.0f ms wall, %d rows", tMs, tRows))
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v42.13] Background driver for BuildAttributeValueLists.
+--
+-- The list build used to run as ONE synchronous slice, from two places: the
+-- post-login build step (below) and PLAYER_ENTERING_WORLD. That is what tripped
+-- the client's "script ran too long" watchdog on slower machines. It now runs in
+-- its own coroutine, pumped on OnUpdate under the SHARED post-login frame budget
+-- (Sku:BuildFrameBudgetMs - the same arbiter the SkuDB chunk stream and the
+-- SkuNav waypoint cache use, so three live workers still cost 150 ms/frame in
+-- total, not 450). Registered as a build worker so the other two get their share
+-- back once this one is done.
+--
+-- Idempotent: a second call while a build runs, or after one completed, is a
+-- no-op. That also removes the old per-loading-screen rebuild - PEW fires on
+-- every zone-in and instance entry, and each one re-did the whole ~90k-row pass
+-- for data that cannot change within a session.
+local tListBuildFrame = CreateFrame("Frame")
+tListBuildFrame:Hide()
+local tListBuildCo = nil
+local tListBuildFrameStart = 0
+
+local function ListBuildBudgetMs()
+	if Sku.BuildFrameBudgetMs then return Sku:BuildFrameBudgetMs() end
+	return 150
+end
+
+local function ListBuildMaybeYield()
+	if debugprofilestop() - tListBuildFrameStart > ListBuildBudgetMs() then
+		coroutine.yield()
+	end
+end
+
+if Sku.RegisterBuildWorker then
+	Sku:RegisterBuildWorker("skuAuraLists", function()
+		return tListBuildCo ~= nil and coroutine.status(tListBuildCo) ~= "dead"
+	end)
+end
+
+tListBuildFrame:SetScript("OnUpdate", function(self)
+	if not tListBuildCo then self:Hide() return end
+	tListBuildFrameStart = debugprofilestop()
+	while debugprofilestop() - tListBuildFrameStart <= ListBuildBudgetMs() do
+		local tOk, tErr = coroutine.resume(tListBuildCo)
+		if not tOk then
+			tListBuildCo = nil
+			self:Hide()
+			-- NOT a SkuDB family failure: the DB itself is fine, only this
+			-- derived list is missing, and the previous lists are still live
+			-- (atomic publish). Log it, do not speak a database error and do
+			-- not mark 'spells' failed for every other consumer.
+			local tMsg = "SkuAuras value-list build failed: " .. tostring(tErr)
+			dprint(tMsg)
+			if SkuErrorLog and SkuErrorLog.Log then pcall(function() SkuErrorLog:Log("skuAuraLists", tMsg) end) end
+			if Sku.MetricPoint then Sku:MetricPoint(tMsg) end
+			return
+		end
+		if coroutine.status(tListBuildCo) == "dead" then
+			tListBuildCo = nil
+			self:Hide()
+			return
+		end
+	end
+end)
+
+function SkuAuras:StartAttributeValueListsBuild()
+	if SkuAuras.attributeValueListsBuilt or tListBuildCo then return end
+	if not (SkuDB and SkuDB.itemLookup and SkuDB.itemLookup[Sku.Loc] and SkuDB.SpellDataTBC) then return end
+	tListBuildCo = coroutine.create(function()
+		SkuAuras:BuildAttributeValueLists(ListBuildMaybeYield)
+	end)
+	tListBuildFrame:Show()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -361,8 +495,12 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 
 	-- [DB rework stage 3] gate on the streamed SkuDB init: too early = the
 	-- lists come out empty. The master sequence builds them on completion.
+	-- [v42.13] Start the SLICED build instead of running it inline: PEW fires on
+	-- every zone-in, and the inline pass was a multi-second script (watchdog).
+	-- The starter is a no-op once the lists exist, so a loading screen no longer
+	-- rebuilds unchangeable data.
 	if Sku:IsDataReady("skudb.items") and Sku:IsDataReady("skudb.spells") then
-		SkuAuras:BuildAttributeValueLists()
+		SkuAuras:StartAttributeValueListsBuild()
 	else
 		SkuAuras.attributeListsPending = true
 	end
@@ -1932,8 +2070,16 @@ end
 -- runs it the moment both families are ready. Self-guards on
 -- attributeListsPending (set by PLAYER_ENTERING_WORLD when the data was not yet
 -- ready at login): if PEW already built the lists this session, the flag is nil
--- and this is a no-op. Single pcall, no internal yield (BuildAttributeValueLists
--- is one bounded slice, as it was when it lived in the loader).
+-- and this is a no-op.
+--
+-- [v42.13] The step no longer BUILDS - it hands the work to the sliced
+-- background driver (StartAttributeValueListsBuild) and returns immediately.
+-- Running it inline meant one unyielded ~90k-row pass inside the master
+-- coroutine, which tripped the client watchdog on slow machines
+-- ("Core.lua:317: script ran too long") and then failed the whole 'spells'
+-- FAMILY through ctx.fail - a database-error announcement, plus half-built
+-- value lists, for what is only a derived convenience list. The driver owns its
+-- own error path now; the DB families are not touched by it.
 if Sku.RegisterBuildStep then
 	Sku:RegisterBuildStep({
 		name = "auraValueLists",
@@ -1941,8 +2087,7 @@ if Sku.RegisterBuildStep then
 		run = function(ctx)
 			if SkuAuras.attributeListsPending then
 				SkuAuras.attributeListsPending = nil
-				local tOk, tErr = pcall(function() SkuAuras:BuildAttributeValueLists() end)
-				if not tOk then ctx.fail("spells", "aura lists: " .. tostring(tErr)) end
+				SkuAuras:StartAttributeValueListsBuild()
 			end
 		end,
 	})

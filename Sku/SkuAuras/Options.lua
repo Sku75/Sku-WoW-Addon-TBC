@@ -426,6 +426,19 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local slower = string.lower
+-- [v42.13] Nil-tolerant friendlyName lookup, same idea as the tFn helper in
+-- BuildAuraName. SkuAuras.values is populated by the BACKGROUND list build
+-- (SkuAuras:StartAttributeValueListsBuild), so a menu opened in the first
+-- seconds of a session - or one referencing a key the current data set no longer
+-- knows - must degrade to the raw key instead of erroring out of the menu with
+-- "attempt to index field '?'".
+local function tFriendlyName(aTbl, aKey)
+	local e = aTbl and aTbl[aKey]
+	return (e and e.friendlyName) or tostring(aKey)
+end
+local function tValueName(aKey)
+	return tFriendlyName(SkuAuras.values, aKey)
+end
 function SkuAuras:NewAuraValueBuilder(self)
 	local tSelectTarget = nil
 	if self.isSelect then
@@ -455,7 +468,7 @@ function SkuAuras:NewAuraValueBuilder(self)
 					if SkuAuras.actions[SkuAuras.attributes[self.parent.internalName].values[b]] then
 						return slower(SkuAuras.actions[SkuAuras.attributes[self.parent.internalName].values[b]].friendlyName) > slower(SkuAuras.actions[SkuAuras.attributes[self.parent.internalName].values[a]].friendlyName)
 					else
-						return slower(SkuAuras.values[SkuAuras.attributes[self.parent.internalName].values[b]].friendlyName) > slower(SkuAuras.values[SkuAuras.attributes[self.parent.internalName].values[a]].friendlyName)
+						return slower(tValueName(SkuAuras.attributes[self.parent.internalName].values[b])) > slower(tValueName(SkuAuras.attributes[self.parent.internalName].values[a]))
 					end
 				end)
 			do
@@ -469,7 +482,7 @@ function SkuAuras:NewAuraValueBuilder(self)
 				if self.internalName == "then" then
 					tAttributeValueEntryName = SkuAuras.actions[v].friendlyName
 				else
-					tAttributeValueEntryName = SkuAuras.values[v].friendlyName
+					tAttributeValueEntryName = tValueName(v)
 				end
 				local tAttributeValueEntry = SkuOptions:InjectMenuItems(self, {tAttributeValueEntryName}, SkuGenericMenuItem)
 				tAttributeValueEntry.internalName = v
@@ -709,7 +722,9 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 				tNewMenuEntryCondVal.BuildChildren = SkuAuras:NewAuraAttributeBuilder(tNewMenuEntryCondVal)
 				for i, v in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.parent.parent.name].attributes) do
 					for x = 1, #v do
-						local tNewMenuEntryCondValCon = SkuOptions:InjectMenuItems(self, {SkuAuras.attributes[i].friendlyName..";"..SkuAuras.Operators[v[x][1]].friendlyName ..";"..SkuAuras.values[v[x][2]].friendlyName}, SkuGenericMenuItem)
+						-- [v42.13] nil-tolerant (see tFriendlyName): a stale key, or one
+						-- whose value list is still building, must not error the menu.
+						local tNewMenuEntryCondValCon = SkuOptions:InjectMenuItems(self, {tFriendlyName(SkuAuras.attributes, i)..";"..tFriendlyName(SkuAuras.Operators, v[x][1])..";"..tValueName(v[x][2])}, SkuGenericMenuItem)
 						tNewMenuEntryCondValCon.dynamic = true
 						tNewMenuEntryCondValCon.OnEnter = function(self, aValue, aName)
 							self.selectTarget.selectedCond = {[1] = i, [2] = v[x][1], [3] = v[x][2]}

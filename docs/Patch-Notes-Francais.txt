@@ -9,6 +9,46 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
 
+    Améliorations de performance et corrections lors du chargement de la base de sorts
+        Simple : À la connexion, certains joueurs entendaient « Sku erreur de base de données,
+            jeu de données spells ». Le problème a été signalé depuis Era, mais le facteur
+            commun est la puissance de la machine et non le client : sur une machine rapide
+            cela n'arrivait jamais, sur une machine plus faible à chaque fois, et TBC aurait
+            tout aussi bien pu être touché. La base elle-même n'a
+            jamais été endommagée : seule échouait la liste de sélection des auras qui en est
+            dérivée, construite en UNE seule passe sur environ 90 000 entrées. Sur une machine
+            lente, le client interrompait cette passe avec « script ran too long » - et comme
+            la liste était écrite au fur et à mesure, elle restait ensuite à moitié remplie :
+            une partie des sorts manquait dans les réglages d'auras, et les auras pointant sur
+            une entrée manquante n'annonçaient plus rien ou laissaient le menu sur une erreur.
+            La construction se fait maintenant par petites tranches réparties sur plusieurs
+            images, exactement comme le reste de la construction de la base après la
+            connexion, et n'est publiée d'un seul bloc qu'à la toute fin. Si elle est tout de
+            même interrompue, les listes précédentes restent intactes au lieu d'être à moitié
+            remplies, aucune erreur de base de données n'est prononcée, et le reste des
+            données de sorts reste considéré comme valide. De plus, la liste n'est construite
+            qu'une fois par session au lieu de l'être à chaque écran de chargement.
+        Technique : SkuAuras:BuildAttributeValueLists parcourt itemLookup ET SpellDataTBC et
+            alloue une table plus une ou deux chaînes concaténées par ligne. Elle était
+            appelée de façon synchrone depuis deux endroits : l'étape de construction
+            « auraValueLists » (après items+spells) et PLAYER_ENTERING_WORLD. La fonction
+            accepte désormais un callback de yield facultatif, consulté toutes les 1000
+            lignes, construit dans des tables locales et les publie à la fin par une
+            affectation chacune (atomique - une interruption ne change plus rien). Elle est
+            pilotée par sa propre coroutine avec une pompe OnUpdate qui partage le budget
+            d'images d'après-connexion (Sku:BuildFrameBudgetMs, enregistrée comme worker
+            « skuAuraLists ») : trois workers actifs coûtent toujours 150 ms par image au
+            total. L'étape de construction ne fait que démarrer ce pilote et n'appelle plus
+            ctx.fail : l'échec de la liste dérivée marquait auparavant toute la famille de
+            données « spells » comme échouée et déclenchait l'annonce d'erreur, alors que les
+            données de sorts étaient complètes. Les erreurs vont maintenant dans SkuErrorLog
+            (« skuAuraLists ») et dans le journal de débogage. PLAYER_ENTERING_WORLD démarre
+            le même pilote, qui ne fait rien une fois la construction réussie - la
+            reconstruction complète à chaque changement de zone et à chaque entrée en instance
+            disparaît donc. La construction ignore également une ligne de sort sans nom pour
+            la langue active au lieu de s'y arrêter, et les trois accès friendlyName non
+            protégés du menu des auras retombent sur la clé brute.
+
     Un ennemi qui vous a empoisonné avant de mourir n'est plus recompté
         Simple : L'annonce du nombre d'ennemis est fiable dans les combats ordinaires depuis
             la v42.10, mais il restait un cas : si un ennemi vous infligeait un poison - ou

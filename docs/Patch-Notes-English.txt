@@ -6,6 +6,41 @@
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13
 
+    Performance improvements and fixes when loading the spell database
+        Simple: At login some players got a spoken "Sku database error, data set spells".
+            It was reported from Era, but the common factor is processing power rather than
+            the client: on a fast machine it never happened, on a weaker one it happened
+            every time, and it could just as well have hit TBC. The database itself was
+            never broken: the only thing
+            that failed was the selection list for auras derived from it, which was built in
+            ONE pass over roughly 90,000 rows. On a slower machine the client aborted that
+            pass with "script ran too long" - and because the list was written in place while
+            it was built, it stayed half filled afterwards: part of the spells were missing
+            from the aura settings, and auras pointing at a missing entry either announced
+            nothing or left the menu standing on an error. The build now runs in small slices
+            spread over several frames, exactly like the rest of the post-login database
+            build, and is published in one piece only at the very end. If it does abort, the
+            previous lists stay as they were instead of half filled, no database error is
+            spoken, and the rest of the spell data still counts as sound. On top of that the
+            list is now built once per session instead of on every loading screen.
+        Technical: SkuAuras:BuildAttributeValueLists walks itemLookup AND SpellDataTBC and
+            allocates a table plus one or two concatenated strings per row. It used to be
+            called synchronously from two places: the "auraValueLists" build step (after
+            items+spells) and PLAYER_ENTERING_WORLD. The function now takes an optional yield
+            callback, polled every 1000 rows, builds into local tables and publishes them at
+            the end with one assignment each (atomic - an abort changes nothing at all). It
+            is driven by its own coroutine with an OnUpdate pump that shares the post-login
+            frame budget (Sku:BuildFrameBudgetMs, registered as build worker "skuAuraLists"),
+            so three live workers still cost 150 ms per frame in total. The build step only
+            starts that driver and no longer calls ctx.fail: a failure of the derived list
+            used to mark the whole 'spells' data family failed and trigger the error
+            announcement, although the spell data was complete. Failures now go to
+            SkuErrorLog ("skuAuraLists") and the debug log. PLAYER_ENTERING_WORLD starts the
+            same driver, which is a no-op once a build has succeeded - so the full rebuild on
+            every zone change and instance entry is gone. The build also skips a spell row
+            with no name for the active locale instead of dying on it, and the three
+            unguarded friendlyName lookups in the aura menu fall back to the raw key.
+
     An enemy that poisoned you before it died is no longer counted again
         Simple: The enemy count has been reliable in ordinary fights since v42.10, but one
             case was left: if an enemy hit you with a poison - or any other lingering effect
