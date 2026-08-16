@@ -2340,50 +2340,38 @@ function SkuCore:PLAYER_LOGIN(...)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local unfollowOnCastWasOnFollowUnitName = nil
+-- RESOLVED 2026-08-16 -- "unfollow while casting" is IMPOSSIBLE on this client.
+--
+-- History: the bodies below were shipped commented-out since upstream v41.06 with
+-- no recorded reason. The 2026-07-26 reactivation test re-enabled them to find out
+-- whether 2.5.6 executes FollowUnit() from a server-event context (no hardware
+-- event) or silently gates it. Verdict: GATED, and not silently -- it throws.
+--
+-- Evidence (BugGrabber + SkuDebugLog, session 1382):
+--   [ADDON_ACTION_BLOCKED] ... [C]: in function 'FollowUnit'
+--     Sku/SkuCore/Core.lua:2354: in function 'UnfollowOnCast'   <- from UNIT_SPELLCAST_START
+--   followcast unfollow call, was following: Hexbeth
+--   followcast unfollow check: followUnitName now: Hexbeth      <- unchanged => never ran
+-- AUTOFOLLOW_END never fired, so the call was blocked, not merely ineffective.
+-- FollowUnit is protected and needs a hardware event; UNIT_SPELLCAST_START /
+-- UNIT_SPELLCAST_CHANNEL_START are server events, so there is no path from "the
+-- player started casting" to "drop follow". Same reason the rest of this file only
+-- ever hooksecurefunc()s MoveForwardStart/TurnLeftStart/JumpOrAscendStart and never
+-- calls them. The only theoretical workaround -- routing the player's own cast
+-- keypress through a Sku-owned SecureActionButton macro -- would mean re-binding
+-- every offensive/healing spell through Sku, which is out of proportion.
+--
+-- Do NOT re-enable without a NEW hardware-event carrier. Re-running the same test
+-- will just re-throw a blocked-action error on every cast.
+--
+-- Second, independent bug found by the same test: the guard read
+-- `SkuStatus.followUnitName ~= ""`, but SkuZOptions/Core.lua:6536,6540 set that
+-- field to nil (not ""). nil ~= "" is true, so the block fired on EVERY cast, with
+-- or without a follow target -- hence the error even when not following.
 function SkuCore:UnfollowOnCast()
-	-- Reactivation test 2026-07-26: body was shipped commented-out since upstream
-	-- v41.06 (reason unrecorded). Open question this test answers: does this client
-	-- execute FollowUnit() from a server-event context (no hardware event), or is it
-	-- silently gated like some AH actions? Proof channel: AUTOFOLLOW_END must fire
-	-- (clears SkuStatus.followUnitName, voiced as "Autofolgen ende").
-	-- Read via: py -3 dev/rework-docs/_dbgtail.py 200 followcast
-	if SkuSettings:Sub("SkuCore").endFollowOnCast == true and SkuStatus.followUnitName ~= "" then
-		unfollowOnCastWasOnFollowUnitName = SkuStatus.followUnitName
-		dprint("followcast unfollow call, was following:", unfollowOnCastWasOnFollowUnitName)
-		FollowUnit("player")
-		if _G.C_Timer and _G.C_Timer.After then
-			_G.C_Timer.After(0.5, function()
-				dprint("followcast unfollow check: followUnitName now:", tostring(SkuStatus.followUnitName), "(empty = call executed, unchanged = gated)")
-			end)
-		end
-	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:FollowOnCast()
-	-- Reactivation test, second half: re-follow after the cast ends. Success is
-	-- voiced natively as "Autofolgen beginn" (AUTOFOLLOW_BEGIN); on a fast
-	-- unfollow/refollow the END announcement is suppressed by design, so a working
-	-- feature sounds like a single "beginn" after each cast while following.
-	if SkuSettings:Sub("SkuCore").endFollowOnCast == true and unfollowOnCastWasOnFollowUnitName then
-		dprint("followcast refollow call, target:", unfollowOnCastWasOnFollowUnitName)
-		if UnitName("TARGET") == unfollowOnCastWasOnFollowUnitName then
-			FollowUnit("TARGET")
-		end
-		for x = 1, 40 do
-			local tUnitName = UnitName("RAID"..x)
-			if tUnitName == unfollowOnCastWasOnFollowUnitName then
-				FollowUnit("RAID"..x)
-			end
-		end
-		for x = 1, 5 do
-			local tUnitName = UnitName("PARTY"..x)
-			if tUnitName == unfollowOnCastWasOnFollowUnitName then
-				FollowUnit("PARTY"..x)
-			end
-		end
-		unfollowOnCastWasOnFollowUnitName = nil
-	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UNIT_SPELLCAST_START(aEvent, aUnitTarget, aCastGUID, aSpellID)

@@ -183,6 +183,11 @@ SkuCore.options = {
 			end
 		},
 		]]
+		-- Removed 2026-08-16: the feature cannot work on 2.5.6 -- FollowUnit is
+		-- protected and blocked when called from UNIT_SPELLCAST_START. See the
+		-- verdict comment above SkuCore:UnfollowOnCast in SkuCore/Core.lua.
+		-- Offering a toggle that provably does nothing is worse than no toggle.
+		--[[
 		endFollowOnCast = {
 			name = L["Folgen beim Zaubern temporär beenden"],
 			desc = "",
@@ -194,6 +199,7 @@ SkuCore.options = {
 				return SkuSettings:Sub("SkuCore").endFollowOnCast
 			end
 		},
+		]]
 		interactMove = {
 			name = L["Bei Interagieren zum Ziel laufen"],
 			desc = "",
