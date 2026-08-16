@@ -98,6 +98,83 @@ Changes in Sku v42.13
             because a trade closing right afterwards is exactly when that confirmation
             matters most.
 
+    Enter applies a disenchant or an enchant to a bag item again, in both orders
+        Simple: Cast Disenchant (or take an enchant, an armor kit, a weapon oil) while you
+            are already standing on the target item in the bag list, then press Enter: until
+            now nothing at all happened, and only Ctrl+Enter worked. The other order was
+            fine - cast first, then walk to the item. Enter now applies in both orders. Left
+            click really is the game's own way to do this: in Blizzard's bag code a left
+            click on an item, while a spell is waiting for an item target, uses the item for
+            that spell. In v41 this worked through the old "left click" entry; the menu
+            rework in v42.00 lost it and v42.04 brought it back only for the cast-first
+            order.
+        Technical: The secure left-click button is staged when an entry is FOCUSED, and a
+            bag item's apply payload ("/use <bag> <slot>") is only staged while
+            SpellIsTargeting() is true at that moment. Cast afterwards and the button still
+            held the pre-targeting payload - for a bag item there is none at all - while the
+            targeting snapshot taken in PreClick additionally makes the insecure
+            PickupContainerItem fallback skip itself, so the key press did literally nothing.
+            The staging moved out of the generic OnEnter into SkuOptions:StageClickMacros
+            (both secure buttons) and is re-run from two places: CURRENT_SPELL_CAST_CHANGED,
+            whose handler was empty and whose dispatcher signature was one slot off, and the
+            left button's own PreClick, which runs before the secure handler reads the
+            attributes, so the swap still counts for that very key press. Re-staging touches
+            only entries that carry an apply payload, only while the menu is open, and only
+            out of combat.
+
+    Ctrl+Enter on a vendor item opened the dressing room instead of buying it
+        Simple: At a vendor, Ctrl+Enter (right click) on an item is supposed to buy one of
+            it. Instead the dressing room opened. Buying through the item's submenu always
+            worked and is unchanged; the key now buys as well, on the buyback tab too.
+        Technical: The right-click key carries CTRL by default, a "/click <frame>
+            RightButton" macro reads the LIVE keyboard, and every native item button's XML
+            routes ANY modified click to *_OnModifiedClick -> HandleModifiedItemClick ->
+            DressUpLink - the plain right-click branch is never reached. This is the same
+            trap that broke oils on equipped items back then, fixed there with "/use
+            <slot>". Vendor items now call Blizzard's unwrapped MerchantItemButton_OnClick
+            directly, which keeps the extended-cost and high-price confirmation dialogs.
+            Bags, bank and equipment slots were already immune because they go through
+            "/use" or the container API. Everywhere else that Sku clicks a native button
+            (loot, trade, mail, spellbook, guild bank) the right-click key has no separate
+            action to lose - there Ctrl+Enter does nothing or shows the dressing room, while
+            Enter does the real thing.
+
+    The left click may now be bound to a key with Shift, Control or Alt
+        Simple: The activate key can be rebound to a combination such as Ctrl+Enter and
+            still works. Before, such a key would have opened the dressing room on a vendor
+            item or on an equipped item instead of doing the thing, for the same reason the
+            vendor right click did.
+        Technical: Entries whose click would be swallowed by a modifier carry a second,
+            modifier-proof payload (plainMacrotext) that calls the action directly instead
+            of clicking the native button: vendor items via Blizzard's unwrapped
+            MerchantItemButton_OnClick, equipment slots via PickupInventoryItem, trade slots
+            via ClickTradeButton / ClickTargetTradeButton. It is staged only while a
+            modifier is physically held - the secure button's PreClick decides, since that
+            is the only moment the keyboard state can be read, and it runs before the secure
+            handler reads the attributes. With the default modifier-free Enter, staging is
+            unchanged down to the byte, so nothing can regress there. Bags, the bank, quest
+            rewards, the guild bank, popups and tabs needed no entry: they either go through
+            the container API or have no modified-click branch at all. Loot buttons, mail
+            attachments and spellbook buttons do carry that branch, but Sku never clicks
+            them - loot has its own handling, attachments go through TakeInboxItem and the
+            spellbook is not among the windows Sku opens. Should the spellbook ever be
+            added, it needs "/cast <name>" rather than this mechanism, because casting is a
+            protected function that no direct call may perform.
+
+    The menu's click keys could not be assigned at all
+        Simple: In the key bindings, "Menu; left click/activate" and "Menu; right click"
+            answered "Invalid. Press another key." to every Enter you pressed - with or
+            without a modifier - so neither could be set, not even back to its own default.
+            Both can be assigned now.
+        Technical: The reserved-key list is matched as a SUBSTRING, so "ENTER" also catches
+            NUMPADENTER and CTRL-ENTER. It exists to protect the menu's navigation keys -
+            but these two bindings live on exactly that family: Enter is the default of the
+            one, Ctrl+Enter of the other. They are now exempt from the block for Enter keys
+            only; arrows, backspace and tab stay blocked there as well, because they drive
+            navigation, which is not part of this binding. The in-combat menu keys already
+            had such an exemption. Applied in both places that capture a key: the key
+            binding menu and the single-entry helper.
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.12
 

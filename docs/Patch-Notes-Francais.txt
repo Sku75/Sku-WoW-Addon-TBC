@@ -111,6 +111,92 @@ Changements dans Sku v42.13
             volontairement sans contrôle de génération, car un échange qui se ferme juste
             après est précisément le cas où cette confirmation compte le plus.
 
+    Entrée désenchante ou enchante à nouveau un objet du sac, dans les deux ordres
+        Simple : Si vous lanciez Désenchantement (ou preniez un enchantement, une pièce
+            d'armure, une huile d'arme) alors que vous étiez déjà sur l'objet cible dans la
+            liste des sacs, puis appuyiez sur Entrée, il ne se passait rien du tout - seul
+            Ctrl+Entrée fonctionnait. L'ordre inverse marchait : lancer d'abord, puis
+            naviguer jusqu'à l'objet. Entrée applique maintenant dans les deux ordres. Le
+            clic gauche est bien la voie prévue par le jeu : dans le code des sacs de
+            Blizzard, un clic gauche sur un objet l'utilise pour le sort tant qu'un sort
+            attend une cible objet. En v41 cela passait par l'ancienne entrée « clic
+            gauche » ; la refonte du menu en v42.00 l'a perdue, et la v42.04 n'a rétabli
+            l'application que pour l'ordre « lancer d'abord ».
+        Technique : Le bouton sécurisé du clic gauche est garni au moment où une entrée est
+            FOCALISÉE, et la macro d'application d'un objet de sac (« /use sac
+            emplacement ») uniquement tant que SpellIsTargeting() est vrai à cet instant. Si
+            le sort est lancé après, le bouton gardait la garniture d'avant - pour un objet
+            de sac, donc aucune -, et l'instantané de ciblage pris dans PreClick fait en
+            outre renoncer le repli non sécurisé PickupContainerItem : l'appui de touche ne
+            faisait littéralement rien. La garniture a quitté le OnEnter générique pour
+            SkuOptions:StageClickMacros (les deux boutons sécurisés) et est réexécutée depuis
+            deux endroits : CURRENT_SPELL_CAST_CHANGED, dont le gestionnaire était vide et
+            dont la signature de répartiteur était décalée d'un cran, et le PreClick du
+            bouton gauche lui-même, qui s'exécute avant que le gestionnaire sécurisé ne lise
+            les attributs - l'échange compte donc encore pour cet appui précis. Seules les
+            entrées porteuses d'une macro d'application sont regarnies, uniquement menu
+            ouvert et hors combat.
+
+    Ctrl+Entrée sur un objet de marchand ouvrait la cabine d'essayage au lieu d'acheter
+        Simple : Chez un marchand, Ctrl+Entrée (clic droit) sur un objet doit en acheter
+            un. À la place, la cabine d'essayage s'ouvrait. L'achat par le sous-menu de
+            l'objet a toujours fonctionné et ne change pas ; la touche achète désormais
+            aussi, y compris dans l'onglet de rachat.
+        Technique : La touche du clic droit porte Ctrl par défaut, une macro « /click
+            <cadre> RightButton » lit l'état CLAVIER EN DIRECT, et le XML de chaque bouton
+            d'objet natif redirige TOUT clic modifié vers *_OnModifiedClick ->
+            HandleModifiedItemClick -> DressUpLink : la branche du clic droit simple n'est
+            jamais atteinte. C'est le même piège qui avait cassé les huiles sur les armes
+            équipées, résolu là par « /use <emplacement> ». Les objets de marchand appellent
+            maintenant directement le MerchantItemButton_OnClick non enveloppé de Blizzard,
+            ce qui conserve les confirmations de coût spécial et de prix élevé. Les sacs, la
+            banque et les emplacements d'équipement étaient déjà immunisés car ils passent
+            par « /use » ou l'API des conteneurs. Partout ailleurs où Sku clique un bouton
+            natif (butin, échange, courrier, grimoire, banque de guilde), la touche du clic
+            droit n'a pas d'action propre à perdre : Ctrl+Entrée n'y fait rien ou affiche la
+            cabine d'essayage, tandis qu'Entrée déclenche la vraie action.
+
+    Le clic gauche peut désormais être assigné à une touche avec Maj, Ctrl ou Alt
+        Simple : La touche d'activation peut être réassignée à une combinaison comme
+            Ctrl+Entrée et fonctionne quand même. Auparavant, une telle touche aurait
+            ouvert la cabine d'essayage chez un marchand ou sur un objet équipé au lieu
+            d'agir, pour la même raison que le clic droit chez le marchand.
+        Technique : Les entrées dont le clic serait avalé par un modificateur portent
+            maintenant une seconde charge, insensible aux modificateurs (plainMacrotext),
+            qui appelle l'action directement au lieu de cliquer le bouton natif : objets de
+            marchand via le MerchantItemButton_OnClick non enveloppé de Blizzard,
+            emplacements d'équipement via PickupInventoryItem, emplacements d'échange via
+            ClickTradeButton / ClickTargetTradeButton. Elle n'est mise en place que tant
+            qu'un modificateur est réellement enfoncé - la décision se prend dans le
+            PreClick du bouton sécurisé, seul moment où l'état du clavier est lisible, et
+            qui s'exécute avant la lecture des attributs. Avec la touche Entrée par défaut,
+            sans modificateur, la mise en place reste identique à l'octet près : aucune
+            régression possible de ce côté. Les sacs, la banque, les récompenses de quête,
+            la banque de guilde, les fenêtres de confirmation et les onglets n'avaient
+            besoin de rien : ils passent par l'API des conteneurs ou n'ont aucune branche
+            de clic modifié. Les boutons de butin, les pièces jointes du courrier et les
+            boutons du grimoire ont bien cette branche, mais Sku ne les clique jamais - le
+            butin a son propre traitement, les pièces jointes passent par TakeInboxItem, et
+            le grimoire ne fait pas partie des fenêtres ouvertes par Sku. S'il venait à
+            l'être, il lui faudrait « /cast <nom> » plutôt que ce mécanisme, car
+            l'incantation est une fonction protégée qu'aucun appel direct ne peut déclencher.
+
+    Les touches de clic du menu ne pouvaient pas être assignées du tout
+        Simple : Dans les raccourcis, « Menu ; clic gauche/activer » et « Menu ; clic
+            droit » répondaient « Invalide. Appuyez sur une autre touche. » à chaque
+            Entrée pressée - avec ou sans modificateur - et ne pouvaient donc pas être
+            réglées, pas même remises à leur propre valeur par défaut. Les deux sont
+            assignables désormais.
+        Technique : La liste des touches réservées est comparée en SOUS-CHAÎNE : « ENTER »
+            attrape donc aussi NUMPADENTER et CTRL-ENTER. Elle protège les touches de
+            navigation du menu - mais ces deux assignations vivent précisément sur cette
+            famille : Entrée est le défaut de l'une, Ctrl+Entrée celui de l'autre. Elles en
+            sont maintenant exemptées, uniquement pour les touches Entrée ; les flèches, le
+            retour arrière et la tabulation y restent bloqués, car ils pilotent la
+            navigation, qui ne fait pas partie de cette assignation. Les touches du menu de
+            combat disposaient déjà d'une telle exemption. Appliqué aux deux endroits qui
+            capturent une touche : le menu des raccourcis et l'assistant d'entrée unique.
+
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.12
 

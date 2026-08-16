@@ -107,6 +107,92 @@ Aenderungen in Sku v42.13
             Zustandsraten - und bewusst ohne Generationspruefung, denn ein unmittelbar danach
             schliessender Handel ist genau der Fall, in dem diese Bestaetigung zaehlt.
 
+    Enter entzaubert bzw. verzaubert einen Taschengegenstand wieder - in beiden Reihenfolgen
+        Einfach: Wer Entzaubern wirkt (oder eine Verzauberung, einen Ruestungsflicken, ein
+            Waffenoel aufnimmt), waehrend er in der Taschenliste bereits auf dem Zielobjekt
+            steht, und dann Enter drueckt, bei dem passierte bisher gar nichts - nur
+            Strg+Enter half. Die andere Reihenfolge ging: erst wirken, dann zum Gegenstand
+            navigieren. Enter wendet jetzt in beiden Reihenfolgen an. Der Linksklick ist
+            dafuer tatsaechlich der spieleigene Weg: im Taschen-Code von Blizzard benutzt ein
+            Linksklick auf einen Gegenstand diesen fuer den Zauber, solange ein Zauber auf
+            ein Gegenstandsziel wartet. In v41 lief das ueber den alten Eintrag
+            "Linksklick"; der Menue-Umbau in v42.00 hat ihn verloren, und v42.04 hat das
+            Anwenden nur fuer die Reihenfolge "erst wirken" zurueckgeholt.
+        Technisch: Der sichere Linksklick-Knopf wird beim FOKUSSIEREN eines Eintrags
+            bestueckt, und das Anwenden-Makro eines Taschengegenstands ("/use Tasche Slot")
+            nur, solange in diesem Moment SpellIsTargeting() wahr ist. Wird danach gewirkt,
+            trug der Knopf weiter die Bestueckung von vorher - bei einem Taschengegenstand
+            also gar keine -, und der in PreClick genommene Targeting-Schnappschuss laesst
+            zusaetzlich den insecure PickupContainerItem-Rueckfall aussetzen: der Tastendruck
+            tat buchstaeblich nichts. Die Bestueckung ist aus dem generischen OnEnter nach
+            SkuOptions:StageClickMacros gewandert (beide sicheren Knoepfe) und wird von zwei
+            Stellen erneut ausgefuehrt: CURRENT_SPELL_CAST_CHANGED, dessen Handler leer war
+            und dessen Dispatcher-Signatur um eine Stelle verschoben war, und dem PreClick
+            des Linksklick-Knopfes selbst, der laeuft, bevor der sichere Handler die
+            Attribute liest - der Tausch zaehlt also noch fuer genau diesen Tastendruck.
+            Neu bestueckt werden nur Eintraege mit Anwenden-Makro, nur bei offenem Menue und
+            nur ausserhalb des Kampfes.
+
+    Strg+Enter auf einem Haendlergegenstand oeffnete die Anprobe, statt zu kaufen
+        Einfach: Beim Haendler soll Strg+Enter (Rechtsklick) auf einem Gegenstand einen
+            davon kaufen. Stattdessen ging die Anprobe auf. Der Kauf ueber das Untermenue
+            des Gegenstands hat immer funktioniert und bleibt unveraendert; die Taste kauft
+            jetzt ebenfalls, im Rueckkauf-Reiter auch.
+        Technisch: Die Rechtsklick-Taste traegt standardmaessig STRG, ein Makro "/click
+            <Frame> RightButton" liest den LIVE-Tastaturzustand, und das XML jedes nativen
+            Gegenstandsknopfes leitet JEDEN modifizierten Klick auf *_OnModifiedClick ->
+            HandleModifiedItemClick -> DressUpLink um - der einfache Rechtsklick-Zweig wird
+            nie erreicht. Das ist dieselbe Falle, die seinerzeit die Oele auf angelegten
+            Waffen kaputtgemacht hat, dort mit "/use <Slot>" geloest. Haendlergegenstaende
+            rufen jetzt direkt Blizzards unverpacktes MerchantItemButton_OnClick auf, womit
+            die Abfragen fuer Sonderwaehrung und hohen Preis erhalten bleiben. Taschen, Bank
+            und Ausruestungsslots waren schon immun, weil sie ueber "/use" bzw. die
+            Container-API laufen. Ueberall sonst, wo Sku einen nativen Knopf klickt (Beute,
+            Handel, Post, Zauberbuch, Gildenbank), hat die Rechtsklick-Taste keine eigene
+            Aktion zu verlieren - dort passiert bei Strg+Enter nichts oder es kommt die
+            Anprobe, waehrend Enter die eigentliche Aktion ausloest.
+
+    Der Linksklick darf jetzt auf eine Taste mit Umschalt, Strg oder Alt gelegt werden
+        Einfach: Die Aktivieren-Taste laesst sich auf eine Kombination wie Strg+Enter
+            umbelegen und funktioniert trotzdem. Vorher haette so eine Taste beim Haendler
+            oder auf einem angelegten Gegenstand die Anprobe geoeffnet statt zu handeln -
+            aus demselben Grund wie beim Rechtsklick auf einen Haendlergegenstand.
+        Technisch: Eintraege, deren Klick von einem Modifikator verschluckt wuerde, tragen
+            jetzt eine zweite, modifikatorfeste Bestueckung (plainMacrotext), die die Aktion
+            direkt aufruft, statt den nativen Knopf zu klicken: Haendlergegenstaende ueber
+            Blizzards unverpacktes MerchantItemButton_OnClick, Ausruestungsslots ueber
+            PickupInventoryItem, Handelsplaetze ueber ClickTradeButton bzw.
+            ClickTargetTradeButton. Gestaged wird sie nur, solange ein Modifikator
+            tatsaechlich gedrueckt ist - entschieden im PreClick des sicheren Knopfes, weil
+            nur dort der Tastaturzustand lesbar ist und er noch vor dem Lesen der Attribute
+            laeuft. Mit dem modifikatorfreien Standard-Enter bleibt die Bestueckung
+            byte-gleich wie bisher, dort kann also nichts kaputtgehen. Taschen, Bank,
+            Questbelohnungen, Gildenbank, Popups und Reiter brauchten keinen Eintrag: sie
+            laufen entweder ueber die Container-API oder haben gar keinen
+            Modifikator-Zweig. Beute-Knoepfe, Postanhaenge und Zauberbuch-Knoepfe haben
+            diesen Zweig zwar, werden von Sku aber nie geklickt - Beute hat eine eigene
+            Behandlung, Anhaenge laufen ueber TakeInboxItem, und das Zauberbuch gehoert
+            nicht zu den Fenstern, die Sku oeffnet. Kaeme es dazu, braucht es dort
+            "/cast <Name>" statt dieses Verfahrens, denn Zaubern ist geschuetzt und kann
+            von keinem Direktaufruf ausgeloest werden.
+
+    Die Klick-Tasten des Menues liessen sich ueberhaupt nicht belegen
+        Einfach: In der Tastenbelegung antworteten "Menue; Linksklick/aktivieren" und
+            "Menue; Rechtsklick" auf jedes gedrueckte Enter mit "Ungueltig. Andere Taste
+            druecken." - mit und ohne Modifikator - und liessen sich damit gar nicht
+            setzen, nicht einmal auf ihren eigenen Standard zurueck. Beide sind jetzt
+            belegbar.
+        Technisch: Die Liste der gesperrten Tasten wird als TEILSTRING geprueft, "ENTER"
+            trifft also auch NUMPADENTER und CTRL-ENTER. Sie schuetzt die
+            Navigationstasten des Menues - genau auf dieser Familie leben aber diese
+            beiden Belegungen: Enter ist der Standard der einen, Strg+Enter der der
+            anderen. Sie sind jetzt von der Sperre ausgenommen, und zwar nur fuer
+            Enter-Tasten; Pfeile, Rueckschritt und Tabulator bleiben auch dort gesperrt,
+            weil sie die Navigation steuern, die nicht Teil dieser Belegung ist. Fuer die
+            Kampfmenue-Tasten gab es so eine Ausnahme bereits. Umgesetzt an beiden
+            Stellen, die eine Taste abfangen: im Tastenbelegungs-Menue und im
+            Einzeleintrag-Helfer.
+
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.12
 
