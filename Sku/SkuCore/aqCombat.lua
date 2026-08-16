@@ -491,7 +491,40 @@ local tPendingAddScheduled = false
 -- corpse -- the "0, then 1, then 0 again" flicker. Cleared when the group's fight
 -- ends, and lifted per-GUID if the mob is later seen alive on a unit token (the
 -- rare in-fight resurrect), so this can never permanently hide a live enemy.
-local tDeadGuids = {}            -- [creatureGUID] = true (died this fight)
+local tDeadGuids = {}            -- [creatureGUID] = GetTimePreciseSec() at death
+
+-- How long a death is remembered AFTER the fight ended. The mark used to be
+-- dropped wholesale in PLAYER_REGEN_ENABLED -- which is exactly the moment a solo
+-- kill takes you out of combat, i.e. the instant BEFORE the corpse's leftover
+-- effect ticks again. A poison (or any lingering periodic effect) the mob applied
+-- before dying keeps producing combat-log lines with the dead mob as source and
+-- you as target; the add path reads that as "an enemy is fighting us" and, with
+-- the death mark already gone, admitted the corpse by GUID. That is the reported
+-- "dies -> 0 -> back to 1 -> 0 again when the poison expires": the second 0 was
+-- just the 6s stale sweep after the last tick. Remembering the death for longer
+-- than any realistic lingering effect closes that window without touching the
+-- detection itself -- nothing new is counted, one thing that must not be counted
+-- stops being counted. A same-GUID mob that is genuinely alive again still gets
+-- its mark lifted on unit-token proof in tFlushPendingAdds.
+local tDeadMemory = 60
+
+-- Age out remembered deaths. Called only at the real end of a fight, so within a
+-- fight the mark still lives as long as it always did (no in-combat behaviour
+-- change at all); afterwards it survives long enough to outlast the corpse's DoT.
+local function tPruneDeadGuids()
+   local tNow = GetTimePreciseSec()
+   local tKept = 0
+   for tGuid, tDiedAt in pairs(tDeadGuids) do
+      if type(tDiedAt) ~= "number" or (tNow - tDiedAt) > tDeadMemory then
+         tDeadGuids[tGuid] = nil
+      else
+         tKept = tKept + 1
+      end
+   end
+   if tKept > 0 then
+      dprint("aqCombat dead-guid memory: kept", tKept, "recent death(s) past combat end")
+   end
+end
 
 -- Enemies with positive evidence of hostility, so the check below is asked ONCE
 -- per mob and never re-evaluated. Encounters routinely flag a boss or add as
@@ -1778,7 +1811,7 @@ function aqCombat:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
             -- is still sitting in the coalescing window: combat-log lines from the
             -- moment of the killing blow flush up to tFlushWindow seconds later and
             -- would otherwise re-add the corpse right after the count reached 0.
-            tDeadGuids[aUnitGUID] = true
+            tDeadGuids[aUnitGUID] = GetTimePreciseSec()
             tPendingAdds[aUnitGUID] = nil
             aqCombat:aqCombat_CREATURE_REMOVED_FROM_COMBAT(aUnitGUID, nil, aUnitName)
          end
@@ -1888,11 +1921,12 @@ function aqCombat:aqCombat_PLAYER_REGEN_ENABLED()
       tCcState[tGuid] = nil
    end
 
-   -- Fight over: this fight's deaths and hostility verdicts stop applying. A GUID
-   -- is unique per spawn, so nothing here needs to survive into the next pull.
-   for tGuid in pairs(tDeadGuids) do
-      tDeadGuids[tGuid] = nil
-   end
+   -- Fight over: this fight's hostility verdicts stop applying. Deaths, however,
+   -- must outlive the fight by tDeadMemory seconds -- a mob that poisoned you and
+   -- then died goes on generating combat-log lines while the DoT runs out, and
+   -- clearing its death mark here is what let the corpse climb back into the count
+   -- (see tDeadMemory). Only marks older than that window are dropped.
+   tPruneDeadGuids()
    for tGuid in pairs(tKnownHostile) do
       tKnownHostile[tGuid] = nil
    end
