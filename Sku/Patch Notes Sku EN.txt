@@ -126,7 +126,7 @@ Changes in Sku v42.12
             at the top of either page. These patch notes exist in French as well, starting
             at v42.11. There is still no French voice pack: on a French client Sku speaks
             through your screen reader, which is why the installer offers the English pack
-            there.
+            there. The installer is version 4.1 with this.
         Technical: A French table in the installer's Loc.cs (Lang.Fr, the same key set as
             English and German, "fr" taken from the OS UI culture; the language combo is
             built from ComponentsForm._langOrder so no index literal has to be kept in
@@ -138,6 +138,24 @@ Changes in Sku v42.12
             unnoticed. The Discord announcement is per channel now: a webhook line may name
             the languages that channel wants, so a German-only server gets one German line
             with German links rather than three languages it did not ask for.
+
+    Two menus that were nothing but a detour are gone
+        Simple: Under "Settings" there was a "Combat" entry holding exactly one item:
+            "Sku menu in combat". That item now sits directly in "Settings, General", and
+            the empty "Combat" level above it is gone. Same story in the main menu:
+            "Tools" only ever held "Dial Targeting" and "Soft Targeting"; both now live in
+            the "Quick menu", and "Tools" has left the main menu. Nothing about the
+            settings themselves changed, and every value you had saved is kept.
+        Technical: All three entries keep their existing builders, their db and their
+            keyPrefix - only where they are attached changed, so stored values are
+            untouched. "Werkzeuge" is removed as a SkuMenu module and from
+            SkuMenu:SetRootLayout (SkuZOptions/SkuMenu.lua); DialTargetingMenuBuilder and
+            the softTargeting group (still via IterateOptionsArgs with aIncludeHidden=true,
+            since it is flagged forAudioMenu=false) now hang in the Quick menu's
+            BuildChildren (SkuZOptions/Core.lua). The "Kampf" spec drops out of tSpecs in
+            SkuCore/Options.lua; CombatMenuOpenMenuBuilder is now called at the end of the
+            General builder, against the same combatMenuOpen setting. No SlashFunc path
+            pointed at either menu, so nothing else had to follow.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.11

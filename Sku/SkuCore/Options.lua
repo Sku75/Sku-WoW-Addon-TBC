@@ -2409,7 +2409,8 @@ end
 -- only their assignment heads; their build closures are unchanged.
 function SkuCore:MenuBuilder(aParentEntry)
 	--dprint("SkuCore:MenuBuilder", aParentEntry)
-	-- tKampf dropped: the Kampf submenu is gone (contents relocated to Monitor/Werkzeuge).
+	-- tKampf dropped: the Kampf submenu is gone (contents relocated to Monitor,
+	-- Schnellmenue and Allgemein).
 	local tKeybinds, tSonstiges, tScan = {}, {}, {}
 
 	-- Mail: now a Local window contributor (SkuCore.MailMenuBuilder) -- W7
@@ -2859,8 +2860,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 	-- Auktionshaus: now a Local window contributor (AuctionHouseMenuBuilder) -- W7
 	-- Monitor: promoted to a top-level entry (SkuMenu "Monitor") -- W7
 
-	-- DIAL-TARGETING (41.02.06e): relocated to the top-level "Werkzeuge" (Tools) menu
-	-- (SkuZOptions\SkuMenu.lua). Entfernbar: Block dort löschen + DialTargeting.lua + TOC + Core.lua Init
+	-- DIAL-TARGETING (41.02.06e): relocated to the Schnellmenue root entry
+	-- (SkuZOptions\Core.lua, [42.14]; formerly the "Werkzeuge" menu). Entfernbar: Block
+	-- dort löschen + DialTargeting.lua + TOC + Core.lua Init
 
 	-- Social: now a Local window contributor (FriendsMenuBuilder) -- W7
 	-- Damage Meter + Atlas Loot: moved into the top-level "Addons" menu
@@ -2900,7 +2902,15 @@ function SkuCore:MenuBuilder(aParentEntry)
 	local tSub = SkuSettings:Sub("SkuCore")
 	local tSpecs = {
 		{ kind = "submenu", label = tDeEn("Allgemein", "General"),
-			build = function(self) SkuOptions:MenuBuilder(self) end },
+			build = function(self)
+				SkuOptions:MenuBuilder(self)
+				-- [42.14] "Sku Menue im Kampf": the Kampf submenu held nothing else, so
+				-- the toggle moved up into Allgemein and Kampf is gone. Same builder and
+				-- same combatMenuOpen setting -> saved value intact.
+				if SkuCore.aqCombat and SkuCore.aqCombat.CombatMenuOpenMenuBuilder then
+					SkuCore.aqCombat.CombatMenuOpenMenuBuilder(self)
+				end
+			end },
 		{ kind = "submenu", label = tDeEn("Spieleinstellungen", "Game options"),
 			build = function(self) if SkuCore.GameOptions and SkuCore.GameOptions.GameOptionsMenuBuilder then SkuCore.GameOptions:GameOptionsMenuBuilder(self) end end },
 		-- W8: Audio bundles the sound-related SkuOptions nodes relocated out of
@@ -2943,16 +2953,10 @@ function SkuCore:MenuBuilder(aParentEntry)
 					pcall(function() SkuCore.VisualAids:VisualAidsBuildMenu(self) end)
 				end
 			end },
-		-- "Kampf" (Combat): the W7 contents stay relocated (Entfernung and Ziel
-		-- Optionen in the Monitor menu, Dial/Soft Targeting under Werkzeuge). The
-		-- submenu is back for the "Sku Menü im Kampf" toggle, moved here from the
-		-- Monitor -> Kampf menu (same combatMenuOpen setting -> saved value intact).
-		{ kind = "submenu", label = tDeEn("Kampf", "Combat"),
-			build = function(self)
-				if SkuCore.aqCombat and SkuCore.aqCombat.CombatMenuOpenMenuBuilder then
-					SkuCore.aqCombat.CombatMenuOpenMenuBuilder(self)
-				end
-			end },
+		-- [42.14] "Kampf" (Combat) is gone again: its contents stay relocated
+		-- (Entfernung and Ziel Optionen in the Monitor menu, Dial/Soft Targeting in the
+		-- Schnellmenue) and its last entry, the "Sku Menü im Kampf" toggle, moved up
+		-- into Allgemein above.
 		{ kind = "submenu", label = tDeEn("Scan", "Scan"),
 			build = function(self)
 				-- Scan-related settings relocated from the SkuCore "Options" group.

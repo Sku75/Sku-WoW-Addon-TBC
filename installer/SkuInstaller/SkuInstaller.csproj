@@ -30,8 +30,11 @@
 
          4.0 = the guided-wizard rework: spoken progress (UIA), one run across
          several WoW clients, per-client folder confirmation, self-updating
-         progress rows, a real Cancel button. -->
-    <Version>4.0</Version>
+         progress rows, a real Cancel button.
+         4.1 = French: Loc.Lang.Fr (same key set as en/de, picked from the OS UI
+         culture, switchable in the language list built from
+         ComponentsForm._langOrder). -->
+    <Version>4.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

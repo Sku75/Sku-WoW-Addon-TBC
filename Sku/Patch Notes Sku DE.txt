@@ -139,7 +139,8 @@ Aenderungen in Sku v42.12
             erreichbar ueber die Sprachlinks oben auf beiden Seiten. Auch diese Patchnotes
             gibt es auf Franzoesisch, beginnend mit v42.11. Ein franzoesisches Sprachpaket
             gibt es weiterhin nicht: auf einem franzoesischen Client spricht Sku ueber den
-            Screenreader, weshalb der Installer dort das englische Paket anbietet.
+            Screenreader, weshalb der Installer dort das englische Paket anbietet. Der
+            Installer traegt damit die Version 4.1.
         Technisch: Eine franzoesische Tabelle in Loc.cs des Installers (Lang.Fr, derselbe
             Schluesselsatz wie Englisch und Deutsch, "fr" aus der UI-Kultur des Systems;
             die Sprachauswahl wird aus ComponentsForm._langOrder aufgebaut, sodass kein
@@ -153,6 +154,26 @@ Aenderungen in Sku v42.12
             Discord-Ankuendigung geht jetzt pro Kanal: eine Webhook-Zeile darf die Sprachen
             dieses Kanals nennen, ein rein deutscher Server bekommt also eine deutsche
             Zeile mit deutschen Links statt drei Sprachen, die er nicht wollte.
+
+    Zwei Menues, die nur ein Zwischenschritt waren, sind weg
+        Einfach: Unter "Einstellungen" stand der Punkt "Kampf", und darin genau ein
+            Eintrag: "Sku Menue im Kampf". Dieser Eintrag steht jetzt direkt in
+            "Einstellungen, Allgemein", das leere "Kampf" darueber gibt es nicht mehr.
+            Dasselbe im Hauptmenue: "Werkzeuge" enthielt nur "Dial Targeting" und
+            "Soft Targeting"; beide stehen jetzt im "Schnellmenue", und "Werkzeuge" ist
+            aus dem Hauptmenue verschwunden. An den Einstellungen selbst aendert sich
+            nichts, alle bisher gespeicherten Werte bleiben erhalten.
+        Technisch: Die drei Eintraege behalten ihre bisherigen Builder, ihre db und ihr
+            keyPrefix, es aendert sich nur, wo sie eingehaengt werden - gespeicherte
+            Werte sind damit unberuehrt. "Werkzeuge" ist als SkuMenu-Modul und aus
+            SkuMenu:SetRootLayout entfernt (SkuZOptions/SkuMenu.lua); DialTargetingMenuBuilder
+            und die softTargeting-Gruppe (weiter ueber IterateOptionsArgs mit
+            aIncludeHidden=true, da forAudioMenu=false) haengen jetzt in den
+            BuildChildren des Schnellmenues (SkuZOptions/Core.lua). Die "Kampf"-Spezifikation
+            faellt aus tSpecs in SkuCore/Options.lua weg; CombatMenuOpenMenuBuilder wird
+            jetzt am Ende des Allgemein-Builders aufgerufen, mit derselben Einstellung
+            combatMenuOpen. Kein SlashFunc-Pfad zeigte auf eines der beiden Menues, es
+            musste also nichts weiter nachgezogen werden.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.11

@@ -2053,8 +2053,9 @@ end
 -- Combat menu accessibility toggle (open/read/navigate Sku menu, bags, character,
 -- quest log while in combat). Profile-scoped SkuSettings:Sub("SkuCore").combatMenuOpen
 -- (registered default ON). Same flag /skucombatmenu toggles.
--- Relocated from the Monitor -> Kampf menu to Einstellungen -> Kampf (built by
--- SkuCore:MenuBuilder in SkuCore/Options.lua); same setting -> saved value intact.
+-- [42.14] Relocated again, now to Einstellungen -> Allgemein (built by
+-- SkuCore:MenuBuilder in SkuCore/Options.lua) since the Kampf submenu that held it
+-- had no other entry; same setting -> saved value intact.
 function aqCombat.CombatMenuOpenMenuBuilder(aParentEntry)
    local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Sku menu in combat"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true

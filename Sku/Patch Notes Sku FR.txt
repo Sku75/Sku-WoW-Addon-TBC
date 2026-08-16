@@ -147,6 +147,7 @@ Changements dans Sku v42.12
             existent elles aussi en français, à partir de la v42.11. Il n'y a toujours pas
             de pack de voix français : sur un client français, Sku parle par votre lecteur
             d'écran, et c'est pourquoi l'installateur y propose le pack anglais.
+            L'installateur passe ainsi en version 4.1.
         Technique : Une table française dans le Loc.cs de l'installateur (Lang.Fr, le même
             jeu de clés que l'anglais et l'allemand, « fr » repris de la culture
             d'interface du système ; la liste des langues est construite à partir de
@@ -161,6 +162,27 @@ Changements dans Sku v42.12
             canal : une ligne de webhook peut nommer les langues de ce canal, un serveur
             uniquement germanophone reçoit donc une seule ligne allemande avec des liens
             allemands, au lieu de trois langues qu'il n'a pas demandées.
+
+    Deux menus qui n'étaient qu'un détour ont disparu
+        Simple : Sous « Réglages » se trouvait une entrée « Combat » qui ne contenait
+            qu'un seul élément : « Menu Sku en combat ». Cet élément se trouve désormais
+            directement dans « Réglages, Général », et le niveau « Combat » vide au-dessus
+            n'existe plus. Même chose dans le menu principal : « Outils » ne contenait que
+            « Dial Targeting » et « Soft Targeting » ; les deux sont maintenant dans le
+            « Menu rapide », et « Outils » a quitté le menu principal. Les réglages
+            eux-mêmes ne changent pas, et toutes les valeurs déjà enregistrées sont
+            conservées.
+        Technique : Les trois entrées gardent leurs builders, leur db et leur keyPrefix -
+            seul l'endroit où elles sont accrochées change, les valeurs enregistrées sont
+            donc intactes. « Werkzeuge » est retiré comme module SkuMenu et de
+            SkuMenu:SetRootLayout (SkuZOptions/SkuMenu.lua) ; DialTargetingMenuBuilder et
+            le groupe softTargeting (toujours via IterateOptionsArgs avec
+            aIncludeHidden=true, puisqu'il est marqué forAudioMenu=false) sont désormais
+            accrochés dans le BuildChildren du menu rapide (SkuZOptions/Core.lua). La
+            spécification « Kampf » sort de tSpecs dans SkuCore/Options.lua ;
+            CombatMenuOpenMenuBuilder est maintenant appelé à la fin du builder Général,
+            sur le même réglage combatMenuOpen. Aucun chemin SlashFunc ne pointait vers
+            l'un de ces deux menus, il n'y avait donc rien d'autre à suivre.
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.11
