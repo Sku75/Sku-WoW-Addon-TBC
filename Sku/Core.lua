@@ -133,7 +133,18 @@ do
 	local tGetMeta = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
 	local tLegacyPackLocales = {["SkuAudioData"] = "deDE", ["SkuAudioData_en"] = "enUS",}
 	local tSuffixLocales = {["de"] = "deDE", ["en"] = "enUS",}
-	local tWantedLoc = Sku.Loc
+	-- [i18n] Sku.LocAudio, not Sku.Loc -- same reason as Sku:IntegratedAudioDir()
+	-- below: there are no French clips, and there is no frFR voice pack either.
+	-- Since v42.11 ships a frFR locale, Sku.Loc == "frFR" on a French client, so
+	-- this loop asked for a pack that cannot exist and matched nothing: no
+	-- installed pack declares frFR (SkuAudioData_en declares enUS via
+	-- tLegacyPackLocales). Sku.AudiodataPath then stayed "", VoicePackAudioDir()
+	-- returned nil, and everything the pack serves went silent -- including the
+	-- 64 aura sound outputs, whose clips exist ONLY in the pack
+	-- (SkuAudioFileIndexIntegrated holds speech tokens, not sound effects), so
+	-- they have no TTS fallback to degrade to. Sku.LocAudio is already "enUS" on
+	-- every non-deDE client, so deDE and enUS behaviour is unchanged.
+	local tWantedLoc = Sku.LocAudio or Sku.Loc
 	if tWantedLoc == "enGB" or tWantedLoc == "enAU" then tWantedLoc = "enUS" end
 	local tBest, tBestScore, tBestHow = nil, 0, nil
 	for i = 1, tGetNum() do
