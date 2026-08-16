@@ -2572,6 +2572,124 @@ function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull, aItemId)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Stage a node's click payloads onto the two secure click buttons (left =
+-- SecureOnSkuOptionsMainOption1, right = ...Option2). Extracted from the generic
+-- OnEnter (templates.lua) so the SAME staging can be re-run later, without
+-- re-announcing the entry, when the state it depends on changes -- see
+-- SkuOptions:RestageClickMacrosForTargeting below.
+local function tAnyModifierDown()
+	if IsShiftKeyDown and IsShiftKeyDown() then return true end
+	if IsControlKeyDown and IsControlKeyDown() then return true end
+	if IsAltKeyDown and IsAltKeyDown() then return true end
+	return false
+end
+
+function SkuOptions:StageClickMacros(aNode)
+	if not aNode then return end
+	-- SetAttribute on a secure button is refused in combat; the generic OnEnter
+	-- gates on the same condition (the in-combat menu drives its own snippet).
+	if SkuState and SkuState:IsInCombat() == true then return end
+	if InCombatLockdown and InCombatLockdown() then return end
+
+	-- clickGate (bag-bar/bank-bag slots): stage the click macros only while
+	-- the gate is open (an item is on the cursor) — mirrors the old behavior
+	-- where the click submenu only existed then.
+	local tClickGateOk = (not aNode.clickGate) or (aNode.clickGate() == true)
+
+	if _G["SecureOnSkuOptionsMainOption1"] then
+		-- Apply-mode override: while a spell is awaiting an ITEM target
+		-- (disenchant, enchant, armor kit, weapon oil, sharpening stone), the
+		-- native left click applies it via the hardware-gated Use*Item path
+		-- (Blizzard's ContainerFrameItemButton_OnClick: SpellCanTargetItem ->
+		-- UseContainerItem). Nodes that carry `applyMacrotext` (bag items:
+		-- "/use <bag> <slot>", equip slots: "/use <slot>") stage that instead of
+		-- their normal left macro while targeting is live. "/use" is also
+		-- modifier-independent — a synthesized "/click ... LeftButton" reads the
+		-- LIVE keyboard state, so a rebound left key with CTRL/SHIFT would turn
+		-- into a modified click (dress-up/chat-link) and never apply (same trap
+		-- the right-click "/use <slot>" fix avoids).
+		local tMacrotext = aNode.macrotext
+		-- Modifier-proof variant. The normal left payload of a native Blizzard
+		-- button is "/click <frame> LeftButton", which reads the LIVE keyboard --
+		-- and those buttons' XML sends ANY modified click to their
+		-- OnModifiedClick branch (dressing room / chat link) instead of the real
+		-- action. So when the left-click key carries a modifier (someone rebound
+		-- it to CTRL-ENTER), the button must NOT be clicked at all: the node's
+		-- plainMacrotext calls the action directly instead. Only relevant while a
+		-- modifier is physically held, so the default modifier-free ENTER keeps
+		-- the proven "/click" path byte for byte. Re-evaluated in the secure
+		-- button's PreClick, which runs before the attributes are read.
+		if aNode.plainMacrotext and tAnyModifierDown() then
+			tMacrotext = aNode.plainMacrotext
+		end
+		-- The apply payload wins over both: "/use ..." is a slash command, it
+		-- never goes through a button OnClick and is modifier-proof already.
+		if aNode.applyMacrotext and SpellIsTargeting and SpellIsTargeting() then
+			tMacrotext = aNode.applyMacrotext
+		end
+		if tMacrotext and tClickGateOk then
+			--dprint("macrotext", tMacrotext)
+			_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","macro")
+			_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext", tMacrotext)
+			if aNode.secureMacro then
+				_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("typeENTER","macro")
+				_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotextENTER", tMacrotext)
+			end
+		else
+			_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","")
+			_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext","")
+		end
+		if not aNode.secureMacro then
+			_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("typeENTER","")
+			_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotextENTER","")
+		end
+	end
+
+	-- Right-click secure button: stage the focused node's rightMacrotext
+	-- (e.g. "/use <bag> <slot>" or "/click <frame> RightButton") so the
+	-- configurable right-click key fires it on the hardware event.
+	if _G["SecureOnSkuOptionsMainOption2"] then
+		if aNode.rightMacrotext and tClickGateOk then
+			_G["SecureOnSkuOptionsMainOption2"]:SetAttribute("type","macro")
+			_G["SecureOnSkuOptionsMainOption2"]:SetAttribute("macrotext", aNode.rightMacrotext)
+		else
+			_G["SecureOnSkuOptionsMainOption2"]:SetAttribute("type","")
+			_G["SecureOnSkuOptionsMainOption2"]:SetAttribute("macrotext","")
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Re-stage the FOCUSED node's click macros because the state the choice depends on
+-- may have changed since the entry was focused: whether a spell awaits an item
+-- target (applyMacrotext) and whether a modifier is physically held
+-- (plainMacrotext).
+-- Focus-time staging alone only covers "cast the skill, THEN walk to the item".
+-- The other order is just as natural — stand on the item in the bag list, cast
+-- Disenchant / use the armor kit, press Enter — and there the button still held
+-- the pre-targeting payload (for a bag item: none at all), so Enter did NOTHING:
+-- no apply, and the targeting PreClick snapshot (tPreEnterTargetingState)
+-- additionally suppresses the insecure PickupContainerItem fallback. The modifier
+-- state can likewise only be read at the keypress itself.
+-- Called from CURRENT_SPELL_CAST_CHANGED and, as the order-independent safety
+-- net, from the secure button's PreClick (which runs BEFORE the secure handler
+-- reads the attributes, so a swap there still takes effect for that very
+-- keypress).
+function SkuOptions:RestageClickMacros()
+	local tCur = SkuOptions.currentMenuPosition
+	-- Only nodes that HAVE a state-dependent payload can change; leave every
+	-- other entry's staging untouched.
+	if not tCur or not (tCur.applyMacrotext or tCur.plainMacrotext) then return end
+	-- Only while the menu is really open — the secure buttons are shown exactly
+	-- then, and their OnShow/OnHide own the bindings (zombie-binding guard).
+	if not (_G["SecureOnSkuOptionsMainOption1"] and _G["SecureOnSkuOptionsMainOption1"]:IsShown()) then return end
+	dprint("menu.restage", "targeting=" .. tostring(SpellIsTargeting and SpellIsTargeting()),
+		"mod=" .. tostring(tAnyModifierDown()), "node=" .. tostring(tCur.name),
+		"apply=" .. tostring(tCur.applyMacrotext), "plain=" .. tostring(tCur.plainMacrotext))
+	SkuOptions:StageClickMacros(tCur)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:CreateMenuFrame()
 	local OnSkuOptionsMainOption1LastInputTime = GetTime()
 	local OnSkuOptionsMainOption1LastInputTimeout = 0.5
@@ -3440,6 +3558,13 @@ function SkuOptions:CreateMenuFrame()
 			((SpellIsTargeting and SpellIsTargeting()) or (GetCursorInfo and GetCursorInfo())) and true or false
 		SkuOptions.tPreEnterTargetingState =
 			(SpellIsTargeting and SpellIsTargeting()) and true or false
+		-- Order-independent apply, and the modifier check for plainMacrotext:
+		-- PreClick runs BEFORE the secure handler reads the action attributes, so
+		-- re-staging here still takes effect for THIS keypress. Covers "focus the
+		-- item first, THEN cast the skill" (focus-time staging could not know a
+		-- spell would be awaiting an item) and "left-click key rebound to a
+		-- combination with a modifier" (only readable at the keypress).
+		SkuOptions:RestageClickMacros()
 	end)
 	tFrame:SetScript("PostClick", _G["OnSkuOptionsMainOption1"]:GetScript("OnClick"))
 
@@ -4960,6 +5085,63 @@ function SkuBagIdleRefresh()
 	end
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Modifier-proof LEFT-click payload for a native Blizzard button ("plainMacrotext",
+-- staged by SkuOptions:StageClickMacros only while a modifier is physically held).
+--
+-- Sku normally activates such a button with "/click <frame> LeftButton". That macro
+-- reads the LIVE keyboard, and the button's XML is
+--    if IsModifiedClick() then X_OnModifiedClick(self, button) else X_OnClick(...) end
+-- with the no-argument form meaning "ANY modifier held" -- so a left-click key that
+-- carries SHIFT/CTRL/ALT (someone rebinding it to CTRL-ENTER) would open the
+-- dressing room or insert a chat link instead of doing the thing. These payloads
+-- call the action directly and skip the button's OnClick wrapper entirely.
+--
+-- Only frames whose XML uses that ANY-modifier form need an entry, and only those
+-- Sku actually reaches through a native button. Cross-checked against
+-- SkuCore.interactFramesList: the merchant, the character sheet and the trade
+-- window qualify. Deliberately NOT here:
+--   * loot, open mail and the spellbook -- the modified-click guard is in their XML
+--     too, but Sku never clicks those buttons: loot has its own handling, mail
+--     attachments go through TakeInboxItem in SkuCore/Options.lua, and
+--     "SpellBookFrame" is commented out of interactFramesList. (If the spellbook is
+--     ever exposed, it needs "/cast <name>" rather than an entry here: casting is a
+--     PROTECTED api that no fallback call can perform.)
+--   * quest rewards (QuestInfo.xml checks IsModifiedClick("CHATLINK") specifically),
+--     the guild bank and the craft/create button (no check at all), static popups,
+--     tabs and panel buttons -- no guard, so any key works there already.
+--   * bags and bank slots -- they carry bag/slot and go through the container API,
+--     which no modifier can disturb.
+--
+-- Every call below is an UNPROTECTED api, so running it from a macro is fine.
+local function tPlainLeftClickMacro(aFrameName)
+	if type(aFrameName) ~= "string" or aFrameName == "" then return nil end
+
+	-- Vendor: Blizzard's own handler keeps the buyback tab and the extended-cost /
+	-- high-price confirmation dialogs.
+	if string.match(aFrameName, "^MerchantItem%d+ItemButton$") then
+		return "/run MerchantItemButton_OnClick(" .. aFrameName .. ", 'LeftButton')"
+	end
+
+	-- Trade slots. Sku's trade menu names the node after the PARENT frame
+	-- ("TradePlayerItem7"), the scanner would name it after the button
+	-- ("TradePlayerItem7ItemButton") -- both carry the slot number, and that number
+	-- is exactly what the XML passes on (the button reads its parent's id).
+	local tIdx = string.match(aFrameName, "^TradePlayerItem(%d+)ItemButton$")
+		or string.match(aFrameName, "^TradePlayerItem(%d+)$")
+	if tIdx then
+		return "/run ClickTradeButton(" .. tIdx .. ")"
+	end
+	tIdx = string.match(aFrameName, "^TradeRecipientItem(%d+)ItemButton$")
+		or string.match(aFrameName, "^TradeRecipientItem(%d+)$")
+	if tIdx then
+		return "/run ClickTargetTradeButton(" .. tIdx .. ")"
+	end
+
+	return nil
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
  
 	for x = 1, #aGossipListTable do
@@ -5154,6 +5336,11 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 						-- Button-OnClick komplett (dieselbe Loesung wie beim
 						-- Rechtsklick, s.u.).
 						tNewMenuEntry.applyMacrotext = "/use " .. tEqSlotID
+						-- Modifier-proof plain left click: PaperDollItemSlotButton_OnClick's
+						-- LeftButton branch is PickupInventoryItem (unequip to the cursor, or
+						-- place/swap what the cursor holds). With a modifier held the button's
+						-- XML would take the dress-up branch instead, so call the API directly.
+						tNewMenuEntry.plainMacrotext = "/run PickupInventoryItem(" .. tEqSlotID .. ")"
 						-- Fallback OnLeftAction falls macrotext nicht greift
 						local lSlotID = tEqSlotID
 						tNewMenuEntry.OnLeftAction = function()
@@ -5256,6 +5443,17 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 						end
 					elseif aGossipListTable[index].containerFrameName then
 						tNewMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
+						-- Modifier-proof variant for the native buttons that would otherwise
+						-- take their OnModifiedClick branch (vendor, loot, trade, open mail,
+						-- spellbook); nil for every other frame, which then keeps the "/click"
+						-- above under any key. The special cases below (loot roll, static
+						-- popup) overwrite the macro with calls that are modifier-proof
+						-- anyway, and their frame names match no pattern here.
+						tNewMenuEntry.plainMacrotext = tPlainLeftClickMacro(aGossipListTable[index].containerFrameName)
+						if tNewMenuEntry.plainMacrotext then
+							tNewMenuEntry.plainMacrotext = tNewMenuEntry.plainMacrotext
+								.. "\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
+						end
 						if aGossipListTable[index].obj and aGossipListTable[index].obj.GetParent then
 							if aGossipListTable[index].obj:GetParent() then
 								if aGossipListTable[index].obj:GetParent().rollID then
@@ -5516,6 +5714,39 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								"/script SkuCaptureSellState()\r\n"
 								.. "/use "..lBag.." "..lSlot.."\r\n"
 								.. "/script SkuCore:CheckFrames()"
+						end
+					elseif aGossipListTable[index].containerFrameName
+						and string.match(aGossipListTable[index].containerFrameName, "^MerchantItem%d+ItemButton$") then
+						-- Vendor item. Right click = BUY ONE (MerchantItemButton_OnClick's
+						-- RightButton branch; on the buyback tab it buys the item back).
+						-- It must NOT go through "/click <frame> RightButton": the
+						-- right-click key carries CTRL by default, a synthesized click reads
+						-- the LIVE keyboard, and EVERY native item button's XML routes ANY
+						-- modified click to *_OnModifiedClick -> HandleModifiedItemClick ->
+						-- DressUpLink. Ctrl+Enter therefore opened the dressing room instead
+						-- of buying (the same trap that broke the equipment slots, fixed
+						-- there with "/use <slot>"). Blizzard's UNWRAPPED handler is called
+						-- directly instead, which keeps the extended-cost / high-price
+						-- confirmation dialogs; BuyMerchantItem is not protected, the
+						-- "Kaufen" submenu calls it insecurely as well.
+						local lFrameName = aGossipListTable[index].containerFrameName
+						tNewMenuEntry.OnRightAction = function()
+							local tBtn = _G[lFrameName]
+							if tBtn then
+								if _G.MerchantItemButton_OnClick then
+									pcall(_G.MerchantItemButton_OnClick, tBtn, "RightButton")
+								elseif tBtn.GetID and _G.BuyMerchantItem then
+									pcall(_G.BuyMerchantItem, tBtn:GetID())
+								end
+							end
+							pcall(function() SkuCore:CheckFrames() end)
+							if _G.C_Timer and _G.C_Timer.After then
+								_G.C_Timer.After(0.35, function()
+									if SkuOptions.currentMenuPosition and SkuOptions.currentMenuPosition.OnUpdate then
+										pcall(function() SkuOptions.currentMenuPosition:OnUpdate() end)
+									end
+								end)
+							end
 						end
 					elseif aGossipListTable[index].containerFrameName then
 						tNewMenuEntry.rightMacrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"

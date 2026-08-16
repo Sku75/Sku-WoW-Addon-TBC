@@ -2462,7 +2462,22 @@ function SkuCore:UNIT_SPELLCAST_SUCCEEDED(aEvent, aUnitTarget, aCastGUID, aSpell
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:CURRENT_SPELL_CAST_CHANGED(aCancelledCast)
+-- Signature note: the dispatcher forwards (SkuDispatcher, event, arg1, ...), so a
+-- colon-declared handler must start at aEvent -- the old (aCancelledCast) form got
+-- the event NAME in that slot. See [[skudispatcher-callback-signature]].
+function SkuCore:CURRENT_SPELL_CAST_CHANGED(aEvent, aCancelledCast)
+	-- A spell that awaits an ITEM target (Disenchant, an enchant, an armor kit, a
+	-- weapon oil) just armed or was cancelled. The menu stages the secure
+	-- left-click payload when an entry is FOCUSED, so casting the skill while the
+	-- target item is already focused left the button holding the pre-targeting
+	-- payload -- for a bag item that is none at all, making Enter a no-op (the
+	-- targeting PreClick snapshot also suppresses the insecure pickup fallback).
+	-- Re-stage the focused entry now so Enter applies in BOTH orders, like
+	-- Blizzard's own left click does (ContainerFrameItemButton_OnClick:
+	-- SpellCanTargetItem -> UseContainerItem).
+	if SkuOptions and SkuOptions.RestageClickMacros then
+		pcall(function() SkuOptions:RestageClickMacros() end)
+	end
 	--[[
 	local nameCn, text, texture, startTime, endTime, isTradeSkill, spellID = ChannelInfo()
 	local namec, text, texture, startTime, endTime, isTradeSkill, castID, spellID = CastingInfo() -- bcc

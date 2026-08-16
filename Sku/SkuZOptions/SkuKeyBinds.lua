@@ -272,6 +272,9 @@ end
 -- skipped). aFallbackKey (optional) is returned as sole entry when the binding
 -- has no keys at all -- used for SKU_KEY_MENULEFTCLICK so the menu can never
 -- end up without an activate key.
+-- A key WITH a modifier is fine here: the menu's click payloads carry a
+-- modifier-proof variant (plainMacrotext, see SkuZOptions/Core.lua) for every
+-- native button whose OnClick would otherwise take its OnModifiedClick branch.
 function SkuOptions:SkuKeyBindsGetKeys(aBindingConst, aFallbackKey)
    local rKeys = {}
    local tStore = SkuSettings and SkuSettings:Sub("SkuOptions").SkuKeyBinds

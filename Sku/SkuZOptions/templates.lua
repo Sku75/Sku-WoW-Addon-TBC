@@ -387,44 +387,14 @@ SkuGenericMenuItem = {
 		end
 
 		if SkuState:IsInCombat() ~= true then
-			-- clickGate (bag-bar/bank-bag slots): stage the click macros only while
-			-- the gate is open (an item is on the cursor) — mirrors the old behavior
-			-- where the click submenu only existed then.
-			local tClickGateOk = (not self.clickGate) or (self.clickGate() == true)
+			-- Stage this node's secure click payloads (left + right button). The body
+			-- lives in SkuOptions:StageClickMacros (SkuZOptions/Core.lua) so the exact
+			-- same staging can be re-run WITHOUT re-announcing the entry when the
+			-- pending-spell state changes -- focus-time staging alone only covers
+			-- "targeting starts (craft button / using the kit), THEN the target item
+			-- is focused", not the equally natural reverse order.
+			SkuOptions:StageClickMacros(self)
 			if _G["SecureOnSkuOptionsMainOption1"] then
-				-- Apply-mode override: while a spell is awaiting an ITEM target
-				-- (enchant, armor kit, weapon oil, sharpening stone), the native
-				-- left click applies it via the hardware-gated Use*Item path.
-				-- Nodes that carry `applyMacrotext` (bag items: "/use <bag> <slot>",
-				-- equip slots: "/use <slot>") stage that instead of their normal
-				-- left macro while targeting is live. "/use" is also modifier-
-				-- independent — a synthesized "/click ... LeftButton" reads the
-				-- LIVE keyboard state, so a rebound left key with CTRL/SHIFT
-				-- would turn into a modified click (dress-up/chat-link) and never
-				-- apply (same trap the right-click "/use <slot>" fix avoids).
-				-- Focus-time staging covers the normal flow: targeting starts
-				-- (craft button / using the kit), THEN the target item is focused.
-				local tMacrotext = self.macrotext
-				if self.applyMacrotext and SpellIsTargeting and SpellIsTargeting() then
-					tMacrotext = self.applyMacrotext
-				end
-				if tMacrotext and tClickGateOk then
-					--dprint("macrotext", tMacrotext)
-					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","macro")
-					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext", tMacrotext)
-					if self.secureMacro then
-						_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("typeENTER","macro")
-						_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotextENTER", tMacrotext)
-					end
-				else
-					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","")
-					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext","")
-				end
-				if not self.secureMacro then
-					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("typeENTER","")
-					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotextENTER","")
-				end
-
 				-- directClickButton: for TAINT-protected buttons whose effect is a
 				-- protected/hardware-gated action (e.g. the enchant CraftCreateButton
 				-- -> DoCraft), the normal "/click <btn>" secure macro is routed through
@@ -461,18 +431,8 @@ SkuGenericMenuItem = {
 					end
 				end
 			end
-			-- Right-click secure button: stage the focused node's rightMacrotext
-			-- (e.g. "/use <bag> <slot>" or "/click <frame> RightButton") so the
-			-- configurable right-click key fires it on the hardware event.
-			if _G["SecureOnSkuOptionsMainOption2"] then
-				if self.rightMacrotext and tClickGateOk then
-					_G["SecureOnSkuOptionsMainOption2"]:SetAttribute("type","macro")
-					_G["SecureOnSkuOptionsMainOption2"]:SetAttribute("macrotext", self.rightMacrotext)
-				else
-					_G["SecureOnSkuOptionsMainOption2"]:SetAttribute("type","")
-					_G["SecureOnSkuOptionsMainOption2"]:SetAttribute("macrotext","")
-				end
-			end
+			-- (The right-click button's rightMacrotext staging moved into
+			-- SkuOptions:StageClickMacros above, together with the left one.)
 		end
 	end,
 	OnSelect = function(self, aEnterFlag)
