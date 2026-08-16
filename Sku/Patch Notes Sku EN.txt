@@ -6,6 +6,32 @@
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13
 
+    Flight announcements sometimes arrived minutes after landing
+        Simple: "Flight ended" (or "flight started") was occasionally spoken long after
+            the flight - typically the moment you next mounted or dismounted, sometimes
+            minutes later and nowhere near a flight point. The line now comes exactly
+            when the flight really starts or ends, and never otherwise.
+        Technical: The announcement hung on two flags that PLAYER_CONTROL_LOST and
+            PLAYER_CONTROL_GAINED set to 1 and that ONLY the next
+            PLAYER_MOUNT_DISPLAY_CHANGED ever cleared. If that event did not follow - or
+            arrived before the control event at a landing - the 1 simply waited, and the
+            next mount or dismount consumed it. PLAYER_CONTROL_GAINED also fires for
+            plenty of things that are not a landing (mind control ending, a cinematic, a
+            knockback, a vehicle), so the flag could be set with no flight involved at
+            all. The state is now DERIVED from UnitOnTaxi instead of latched: it speaks
+            only on a real false->true / true->false transition, every relevant event
+            re-runs the same idempotent check (control events also re-check after a short
+            delay, because the client flag lags the event), and a login or /reload adopts
+            the current state silently.
+        Technical, part two: The taxi module ("early landing available at X") could not
+            fail this way - that line sits behind UnitOnTaxi AND the visible cancel
+            button. Hardened anyway, since both are client state: regaining player control
+            now means "the flight is over, full stop" - the watch is torn down and no
+            event may re-arm it until a new flight is actually taken. On top of that, a
+            momentarily invisible cancel button (a zone hand-off mid-flight is enough) no
+            longer wipes the announcement latches, which could otherwise name the same
+            flight point a second time. "/skutaxi" reports the new state as "landed=".
+
     Group invite and summon: the decline button is back
         Simple: A group invitation or a summon ("port") offered only "Accept" in the
             menu - the button to decline it was missing, and it stayed missing for as

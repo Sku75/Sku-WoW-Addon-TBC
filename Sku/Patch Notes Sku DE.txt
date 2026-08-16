@@ -6,6 +6,35 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
 
+    Flugansagen kamen manchmal Minuten nach der Landung
+        Einfach: "Flug beendet" (oder "Flug gestartet") wurde gelegentlich lange nach dem
+            Flug gesprochen - typischerweise in dem Moment, in dem man das naechste Mal
+            auf- oder abgesessen ist, mitunter Minuten spaeter und ohne jeden Bezug zu
+            einem Flugpunkt. Die Ansage kommt jetzt genau dann, wenn der Flug wirklich
+            beginnt oder endet, und sonst nie.
+        Technisch: Die Ansage hing an zwei Merkern, die PLAYER_CONTROL_LOST bzw.
+            PLAYER_CONTROL_GAINED auf 1 setzten und die AUSSCHLIESSLICH das naechste
+            PLAYER_MOUNT_DISPLAY_CHANGED wieder abgeraeumt hat. Blieb dieses Ereignis aus
+            - oder kam es an der Landung vor dem Kontroll-Ereignis - dann wartete die 1
+            einfach weiter, und der naechste Reittier-Wechsel loeste sie aus.
+            PLAYER_CONTROL_GAINED feuert ausserdem fuer allerlei, was keine Landung ist
+            (Gedankenkontrolle endet, Zwischensequenz, Rueckstoss, Fahrzeug), sodass der
+            Merker auch voellig ohne Flug gesetzt werden konnte. Der Zustand wird jetzt
+            aus UnitOnTaxi ABGELEITET statt gemerkt: gesprochen wird nur bei einem echten
+            Wechsel falsch->wahr bzw. wahr->falsch, jedes beteiligte Ereignis fuehrt
+            denselben idempotenten Test aus (Kontroll-Ereignisse zusaetzlich zeitversetzt,
+            weil der Client-Merker dem Ereignis hinterherhinkt), und Login/Neuladen
+            uebernimmt den laufenden Zustand stumm.
+        Technisch, zweiter Teil: Im Taxi-Modul ("Vorzeitige Landung moeglich bei X")
+            konnte dieselbe Klasse Fehler nicht auftreten - die Ansage haengt hinter
+            UnitOnTaxi UND dem sichtbaren Abbruch-Knopf. Trotzdem abgesichert, weil beide
+            Merkmale Client-Zustand sind: Kontrolle zurueckerhalten heisst jetzt "Flug
+            vorbei, Punkt" - der Beobachter wird abgeraeumt und kein Ereignis darf ihn
+            wieder starten, bis wirklich ein neuer Flug angetreten wird. Zusaetzlich
+            loescht ein kurzzeitig unsichtbarer Abbruch-Knopf (z.B. bei einem Zonenwechsel
+            im Flug) nicht mehr die Ansage-Merker, was denselben Flugpunkt sonst ein
+            zweites Mal ansagen konnte. "/skutaxi" zeigt den neuen Zustand als "landed=".
+
     Gruppeneinladung und Beschwoerung: der Ablehnen-Knopf ist zurueck
         Einfach: Bei einer Gruppeneinladung oder einer Beschwoerung ("Port") bot das
             Menue nur noch "Annehmen" an - der Knopf zum Ablehnen fehlte, und er fehlte

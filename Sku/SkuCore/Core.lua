@@ -2176,41 +2176,80 @@ end
 --end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local PLAYER_CONTROL_LOST_flag = 0
-local PLAYER_MOUNT_DISPLAY_CHANGED_flag = 0
-local PLAYER_CONTROL_GAINED_flag = 0
-function SkuCore:PLAYER_CONTROL_LOST(...)--taxi
-	--dprint("PLAYER_CONTROL_LOST", ...)
-	PLAYER_CONTROL_LOST_flag = 1
-	PLAYER_CONTROL_GAINED_flag = 0
-end
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:PLAYER_MOUNT_DISPLAY_CHANGED(...)--taxi
-	--dprint("PLAYER_MOUNT_DISPLAY_CHANGED", ...)
-	if PLAYER_CONTROL_LOST_flag == 1 then
-		PLAYER_CONTROL_LOST_flag = 0
+-- Flight start / end announcement ("Flug gestartet" / "Flug beendet").
+--
+-- ★2026-08-16, THE STALE-LATCH BUG: the old form set PLAYER_CONTROL_LOST_flag /
+-- PLAYER_CONTROL_GAINED_flag to 1 and consumed them ONLY in the next
+-- PLAYER_MOUNT_DISPLAY_CHANGED. Nothing else ever cleared them, so a flag that
+-- no mount-display change followed simply waited - and PLAYER_CONTROL_GAINED
+-- fires for plenty of things that are not a landing (mind control ending, a
+-- cinematic, a knockback, a vehicle). The next time the player mounted or
+-- dismounted, minutes later and nowhere near a flight, the pending "1" was
+-- consumed and Sku said "Flug beendet" out of nowhere. Same trap on the other
+-- side for "Flug gestartet".
+--
+-- The state is now DERIVED from UnitOnTaxi instead of latched, so it cannot
+-- outlive the thing it describes: announce only on a real false->true /
+-- true->false transition of the flight itself. Every relevant event just
+-- re-runs the same idempotent check.
+--
+-- ★The events are edges, not truth. At takeoff the order is
+-- PLAYER_CONTROL_LOST (UnitOnTaxi STILL false) -> PLAYER_MOUNT_DISPLAY_CHANGED
+-- (now true) - documented at length in SkuCore/taxi.lua - and landing is the
+-- mirror image, with the flag lagging the control event. That is exactly why
+-- the old code hung its announcement off the mount event. So a control event
+-- checks now AND schedules two cheap re-checks; whichever one first sees the
+-- transition speaks, the others are no-ops.
+local gTaxiAnnouncedOn = false
+
+local function TaxiAnnounceEdge()
+	local tOn = UnitOnTaxi("player") == true
+	if tOn == gTaxiAnnouncedOn then return end
+	gTaxiAnnouncedOn = tOn
+	dprint("taxi: flight state transition", "onTaxi", tostring(tOn))
+	if tOn == true then
 		SkuOptions.Voice:OutputString(L["taxi;started"], true, true, nil, true)
 		SkuQuest:UpdateZoneAvailableQuestList(true)
 		-- A flightmaster flight makes any active route navigation pointless, so
-		-- auto-cancel it. Gate on UnitOnTaxi so this fires ONLY for flightmaster
-		-- taxi flights, never for self-flying (which keeps player control and
-		-- never fires PLAYER_CONTROL_LOST) nor flying vehicles (player controls
-		-- the vehicle; UnitOnTaxi stays false there).
-		if UnitOnTaxi("player") == true and SkuNav and SkuNav.CancelNavigationSilent then
+		-- auto-cancel it. Keying off UnitOnTaxi means this fires ONLY for
+		-- flightmaster taxi flights, never for self-flying (which keeps player
+		-- control) nor flying vehicles (player controls the vehicle; UnitOnTaxi
+		-- stays false there).
+		if SkuNav and SkuNav.CancelNavigationSilent then
 			SkuNav:CancelNavigationSilent()
 		end
-	end
-	if PLAYER_CONTROL_GAINED_flag == 1 then
-		PLAYER_CONTROL_GAINED_flag = 0
+	else
 		SkuOptions.Voice:OutputString(L["taxi;ended"], true, true, nil, true)
 		SkuQuest:UpdateZoneAvailableQuestList(true)
 	end
 end
+
+-- Adopt the current flight state WITHOUT announcing it. For a login or /reload
+-- that happens mid-flight: the player knows they are on a taxi, and a spurious
+-- "Flug gestartet" on the loading screen would be a lie about when it started.
+function SkuCore:TaxiAnnounceSyncSilent()
+	gTaxiAnnouncedOn = UnitOnTaxi("player") == true
+end
+
+local function TaxiAnnounceEdgeSoon()
+	TaxiAnnounceEdge()
+	C_Timer.After(0.5, TaxiAnnounceEdge)
+	C_Timer.After(2.0, TaxiAnnounceEdge)
+end
+
+function SkuCore:PLAYER_CONTROL_LOST(...)--taxi
+	--dprint("PLAYER_CONTROL_LOST", ...)
+	TaxiAnnounceEdgeSoon()
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:PLAYER_MOUNT_DISPLAY_CHANGED(...)--taxi
+	--dprint("PLAYER_MOUNT_DISPLAY_CHANGED", ...)
+	TaxiAnnounceEdge()
+end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_CONTROL_GAINED(...)--taxi
 	--dprint("PLAYER_CONTROL_GAINED", ...)
-	PLAYER_CONTROL_GAINED_flag = 1
-	PLAYER_CONTROL_LOST_flag = 0
+	TaxiAnnounceEdgeSoon()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2570,6 +2609,11 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	-- InCombatLockdown() here makes login-directly-into-combat detected, so the menu
 	-- defers cleanly instead.
 	SkuCore.inCombat = (InCombatLockdown() and true) or false
+
+	-- Same idea for the taxi flag: adopt whatever the flight state is right now
+	-- without speaking, so a login or /reload mid-flight neither claims the
+	-- flight just started nor leaves a stale "we are airborne" behind.
+	SkuCore:TaxiAnnounceSyncSilent()
 
 	-- Control-frame OnShow handlers stamp the deferred-menu-open flags
 	-- (openMenuAfterCombat/Moving) when they are created during login IF inCombat or

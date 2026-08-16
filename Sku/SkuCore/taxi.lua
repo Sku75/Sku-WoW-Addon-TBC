@@ -101,6 +101,21 @@ local gLastState = nil       -- last availability signature, for change-only log
 local gScanAt, gScanResult = 0, nil
 local gLoggedOnce = {}
 
+-- ★"The flight is over" as a fact WE own, not one we re-read from the client.
+--
+-- Everything here hangs off UnitOnTaxi, and UnitOnTaxi is a client flag - on
+-- exactly the client where IsPossessBarVisible() lies (see tReadOffer). If it
+-- ever lagged true after a landing, the ticker would keep polling on the ground,
+-- and in fallback mode the target is the NEAREST flight point, which changes as
+-- the player walks: every node coming inside APPROACH_DIST would announce "early
+-- landing possible" long after the flight ended. So regaining player control -
+-- which cannot happen in the middle of a flightmaster flight - latches this and
+-- nothing may speak or re-arm the watch until a new flight is actually taken.
+-- Deliberate trade: a spurious PLAYER_CONTROL_GAINED mid-flight (never observed;
+-- it would already break the watch today via OnFlightEdge) would silence the
+-- rest of that flight rather than risk speaking on the ground.
+local gLanded = false
+
 local function tLogOnce(aKey, ...)
    if gLoggedOnce[aKey] then return end
    gLoggedOnce[aKey] = true
@@ -136,6 +151,9 @@ end
 -- this character can actually use - which is exactly the filter v1 was missing.
 local function tCaptureRoute(aIndex)
    gRoute, gRouteDest, gStopIndex = nil, nil, nil
+   -- Taking a node IS the start of a new flight - the one unambiguous "we are
+   -- flying again" signal, and it precedes every event the client fires.
+   gLanded = false
 
    if not (aIndex and _G.GetNumRoutes and _G.TaxiGetNodeSlot and _G.TaxiNodeName) then
       dprint("taxi: route capture skipped - taxi API unavailable", "index", tostring(aIndex))
@@ -432,6 +450,13 @@ end
 function Taxi:Evaluate(aSource)
    if not Taxi:IsEnabled() then return end
 
+   -- The flight is over even if UnitOnTaxi has not caught up yet.
+   if gLanded == true then
+      if gTicker then dprint("taxi: evaluate after landing - watch dropped", "source", tostring(aSource)) end
+      Taxi:StopWatch()
+      return
+   end
+
    if not tOnTaxi() then
       if gTicker then dprint("taxi: flight ended, state reset", "source", tostring(aSource)) end
       Taxi:StopWatch()
@@ -447,11 +472,23 @@ function Taxi:Evaluate(aSource)
    local tScan = tScanNodes()
    tAdvanceRoute(tScan)
 
-   -- The offer went away: re-arm so the next one announces again.
+   -- The offer went away.
+   --
+   -- ★It must NOT re-arm the announcement latches. Those are keyed to the target
+   -- NAME, and a target that is still the same stop has already been announced -
+   -- so wiping them here bought nothing and cost a duplicate: the leave button
+   -- reads invisible for a moment (a zone hand-off mid-flight is enough), the
+   -- next 0.5s tick sees the same stop still inside APPROACH_DIST with a blank
+   -- gAnnouncedStop, and "Vorzeitige Landung moeglich bei X" is spoken a second
+   -- time for the node it just named. A genuinely new target still re-arms them
+   -- itself further down (tChanged), and a real flight end clears everything in
+   -- StopWatch. gRequestedFor is the exception and IS cleared: if the affordance
+   -- went away, whatever the server did with the last request is unknowable, so
+   -- a fresh keypress must be allowed to resend.
    if tAvailable ~= true then
       if gOfferOpen == true then
          dprint("taxi: offer closed", "source", tostring(aSource), "wasTarget", tostring(gAnnouncedStop))
-         gOfferOpen, gAnnouncedStop, gRequestedFor, gApproachAnnounced = false, nil, nil, false
+         gOfferOpen, gRequestedFor = false, nil
       end
       return
    end
@@ -574,6 +611,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function Taxi:StartWatch(aSource)
    if gTicker then return end
+   -- Single chokepoint for the landed latch: no event may re-arm the watch
+   -- between a landing and the next TakeTaxiNode / PLAYER_CONTROL_LOST.
+   if gLanded == true then return end
    dprint("taxi: watch started", "source", tostring(aSource),
       "route", tostring(gRoute and table.concat(gRoute, " > ")))
    gOfferOpen, gAnnouncedStop, gRequestedFor, gLastState, gApproachAnnounced = false, nil, nil, nil, false
@@ -632,7 +672,18 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function Taxi:OnFlightEdge(aEvent)
-   if tOnTaxi() then
+   -- Control lost = a flight is beginning (UnitOnTaxi is still false at this
+   -- point - see StopWatch); control gained = it is over, full stop.
+   if aEvent == "PLAYER_CONTROL_LOST" then
+      gLanded = false
+   elseif aEvent == "PLAYER_CONTROL_GAINED" then
+      if gTicker or gLanded ~= true then dprint("taxi: control regained -> flight over", tostring(aEvent)) end
+      gLanded = true
+      Taxi:StopWatch()
+      return
+   end
+
+   if tOnTaxi() and gLanded ~= true then
       dprint("taxi: flight edge -> on taxi", tostring(aEvent))
       Taxi:StartWatch(aEvent)
    else
@@ -708,7 +759,8 @@ function Taxi:SlashDump()
       tOut("  route: none captured (using nearest-usable fallback)")
    end
    tOut("  target=" .. tostring(tTarget) .. " dist=" .. tostring(tDist and floor(tDist)) .. " via=" .. tostring(tVia))
-   tOut("  requestedFor=" .. tostring(gRequestedFor) .. " watching=" .. tostring(gTicker ~= nil))
+   tOut("  requestedFor=" .. tostring(gRequestedFor) .. " watching=" .. tostring(gTicker ~= nil) ..
+      " landed=" .. tostring(gLanded))
    if tScan then
       local tShown = 0
       for _, tNode in ipairs(tScan.nodes) do

@@ -9,6 +9,35 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
 
+    Les annonces de vol arrivaient parfois plusieurs minutes après l'atterrissage
+        Simple : « Vol terminé » (ou « vol démarré ») était parfois prononcé longtemps
+            après le vol - typiquement au moment où l'on montait ou descendait de
+            monture, parfois plusieurs minutes plus tard et sans le moindre rapport avec
+            un point de vol. L'annonce arrive désormais exactement quand le vol commence
+            ou se termine réellement, et jamais autrement.
+        Technique : l'annonce reposait sur deux drapeaux que PLAYER_CONTROL_LOST et
+            PLAYER_CONTROL_GAINED mettaient à 1 et que SEUL le PLAYER_MOUNT_DISPLAY_CHANGED
+            suivant remettait à zéro. Si cet événement ne suivait pas - ou arrivait avant
+            l'événement de contrôle à l'atterrissage - le 1 attendait, tout simplement, et
+            la monture suivante le consommait. PLAYER_CONTROL_GAINED se déclenche en outre
+            pour quantité de choses qui ne sont pas un atterrissage (fin d'un contrôle
+            mental, cinématique, recul, véhicule) : le drapeau pouvait donc être posé sans
+            le moindre vol. L'état est maintenant DÉDUIT de UnitOnTaxi au lieu d'être
+            mémorisé : on ne parle que sur une vraie transition faux->vrai / vrai->faux,
+            chaque événement concerné rejoue le même test idempotent (les événements de
+            contrôle le rejouent aussi en différé, car le drapeau du client est en retard
+            sur l'événement), et une connexion ou un /reload adopte l'état courant en
+            silence.
+        Technique, deuxième partie : le module taxi (« atterrissage anticipé possible
+            à X ») ne pouvait pas échouer ainsi - cette phrase est gardée par UnitOnTaxi
+            ET par le bouton d'annulation visible. Renforcé tout de même, ces deux
+            éléments étant de l'état client : reprendre le contrôle signifie désormais
+            « le vol est terminé, point » - la surveillance est arrêtée et aucun événement
+            ne peut la relancer avant qu'un nouveau vol soit réellement pris. De plus, un
+            bouton d'annulation momentanément invisible (un changement de zone en vol
+            suffit) n'efface plus les verrous d'annonce, ce qui pouvait sinon nommer deux
+            fois le même point de vol. « /skutaxi » indique le nouvel état sous « landed= ».
+
     Invitation de groupe et invocation : le bouton Refuser est de retour
         Simple : lors d'une invitation de groupe ou d'une invocation (« port »), le menu
             ne proposait plus que « Accepter » - le bouton pour refuser manquait, et il
