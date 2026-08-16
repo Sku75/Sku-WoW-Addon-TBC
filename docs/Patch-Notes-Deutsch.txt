@@ -4,6 +4,70 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v42.13
+
+    Ein Gegner, der euch vor seinem Tod vergiftet hat, wird nicht mehr weitergezaehlt
+        Einfach: Die Ansage der Gegnerzahl war seit v42.10 in normalen Kaempfen zuverlaessig,
+            hatte aber einen Fall uebrig: Wenn ein Gegner euch kurz vor seinem Tod ein Gift
+            oder einen anderen anhaltenden Effekt verpasst hat, fiel die Zahl bei seinem Tod
+            korrekt, sprang kurz darauf wieder um eins hoch und fiel erst dann endgueltig,
+            wenn das Gift ablief - der Gegner war da laengst tot. Das ist behoben, ohne dass
+            an der Erkennung selbst etwas veraendert wurde: es wird nichts Neues gezaehlt,
+            eine Sache hoert nur auf, faelschlich mitgezaehlt zu werden.
+        Technisch: Ein gestorbener Gegner wird per GUID gemerkt, damit ihn eine nachlaufende
+            Kampf-Log-Zeile nicht wiederbeleben kann. Diese Markierung wurde bisher in
+            PLAYER_REGEN_ENABLED komplett geleert - also genau in dem Moment, in dem euch der
+            Tod des letzten Gegners aus dem Kampf nimmt, und damit unmittelbar bevor der
+            erste Gifttick eintrifft. Jeder Tick ist eine Kampf-Log-Zeile mit dem toten
+            Gegner als Quelle und euch als Ziel; die Aufnahme-Logik liest das als "ein Gegner
+            kaempft gegen uns" und nahm die Leiche ueber ihre GUID wieder auf. Die zweite
+            Null kam danach nur noch ueber den 6-Sekunden-Leerlauf-Sweep nach dem letzten
+            Tick zustande. Die Markierung traegt jetzt einen Zeitstempel und wird am
+            Kampfende nicht mehr pauschal geloescht, sondern nur noch, wenn sie aelter als 60
+            Sekunden ist. Innerhalb eines Kampfes aendert sich damit gar nichts - dort galt
+            die Markierung ohnehin bis zum Kampfende, weshalb der Fall "einer von zwei
+            Gegnern stirbt vergiftet, der zweite lebt weiter" schon vorher richtig gezaehlt
+            wurde. Es kommt kein neuer Zustand und keine neue Sonderregel dazu, nur eine
+            Lebensdauer fuer eine Markierung, die es schon gab. Die vorhandene Ausnahme
+            bleibt: taucht dieselbe GUID nachweislich lebend an einem Unit-Token auf, wird
+            die Markierung sofort aufgehoben, ein echter Gegner kann also nie dauerhaft aus
+            der Zaehlung verschwinden.
+
+    Ein erfolgreich abgeschlossener Handel wurde als zurueckgezogene Bestaetigung gemeldet
+        Einfach: Kam ein Handel wirklich zustande, endete er trotzdem mit "<Partner> hat die
+            Bestaetigung zurueckgezogen". Es war nichts schiefgegangen: der Server raeumt
+            beim Abschluss erst beide Bestaetigungshaken ab und schliesst danach das Fenster,
+            und dieses Abraeumen sah genauso aus wie ein echter Rueckzug. Die falsche Zeile
+            entfaellt jetzt. Eine "Handel abgeschlossen"-Ansage gibt es dafuer bewusst nicht:
+            der Client 2.5.6 liefert kein Signal, das Abschluss von Abbruch unterscheidet,
+            und eine geratene Meldung waere schlechter als keine.
+        Technisch: Mitgeschnitten fuer eine erfolgreiche Verzauberung im Handel, alles
+            innerhalb einer Sekunde: TRADE_ACCEPT_UPDATE(1,1) -> (0,1) -> (0,0) ->
+            TRADE_CLOSED. TRADE_ACCEPT_UPDATE las diese 1->0-Uebergaenge als echten Rueckzug.
+            Unterscheiden laesst sich das nicht: TRADE_CLOSED traegt keine Nutzdaten, und
+            ERR_TRADE_COMPLETE / ERR_TRADE_CANCELLED existieren auf 2.5.6 nicht (gegen die
+            mitgelieferte TradeInfoDocumentation.lua geprueft). Die beiden Rueckzugs-Ansagen
+            warten jetzt 0,5 s hinter einem Generationszaehler, den ResetTradeAcceptState()
+            an jeder Handelsgrenze hochzaehlt, und entfallen, wenn der Handel beendet ist,
+            das Fenster weg ist oder die Seite wieder auf bestaetigt steht.
+
+    "Handel bestaetigt" wurde jedes Mal verschluckt
+        Einfach: Wer den Handel aus dem Menue heraus bestaetigt hat, hat die eigene
+            Bestaetigung nie gehoert. Und von mehreren Handelsansagen kurz hintereinander
+            wurde ueberhaupt nur die letzte gesprochen - also ausgerechnet die falsche. Jetzt
+            kommen sie alle, in der richtigen Reihenfolge.
+        Technisch: OutputStringBTtts haengt mit aOverwrite=true einen "queuereset" an, und
+            die Pumpe loescht alles, was VOR diesem Marker in der Warteschlange steht - in
+            einem Schwung frass also jede Handelsansage ihre Vorgaengerin. Alle
+            Handelsansagen uebergeben jetzt false. Das allein rettet die eigene Bestaetigung
+            noch nicht: bestaetigt man aus dem Menue, steht die Serverantwort schon in der
+            Schlange, bevor das Menue seine eigene Zeile fuer den Tastendruck anhaengt, deren
+            Reset sie dann loescht. Die Bestaetigungsansagen laufen deshalb ueber tSayAccept
+            mit 0,35 s Verzoegerung hinter die Menuezeile. Reine Reihenfolge, kein
+            Zustandsraten - und bewusst ohne Generationspruefung, denn ein unmittelbar danach
+            schliessender Handel ist genau der Fall, in dem diese Bestaetigung zaehlt.
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.12
 
     Im Charakterfenster werden die Beschreibungen der Werte wieder vorgelesen

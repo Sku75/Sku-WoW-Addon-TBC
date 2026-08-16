@@ -4,6 +4,66 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.13
+
+    An enemy that poisoned you before it died is no longer counted again
+        Simple: The enemy count has been reliable in ordinary fights since v42.10, but one
+            case was left: if an enemy hit you with a poison - or any other lingering effect
+            - shortly before it died, the number dropped correctly when it died, climbed back
+            up by one a moment later, and only fell for good once the poison ran out, long
+            after the enemy was dead. That is fixed, and the detection itself was not touched
+            to do it: nothing new is counted, one thing simply stops being counted wrongly.
+        Technical: A dead enemy is remembered by GUID so a trailing combat-log line cannot
+            revive it. That mark used to be cleared wholesale in PLAYER_REGEN_ENABLED - which
+            is exactly the moment the last enemy's death takes you out of combat, and so the
+            instant before the first poison tick arrives. Every tick is a combat-log line
+            with the dead enemy as its source and you as its target; the add path reads that
+            as "an enemy is fighting us" and re-admitted the corpse by its GUID. The second
+            zero then only came from the 6 second idle sweep after the last tick. The mark
+            now carries a timestamp and is no longer dropped wholesale at the end of a fight,
+            only once it is older than 60 seconds. Nothing changes inside a fight - there the
+            mark already lived until combat ended, which is why "one of two enemies dies
+            poisoned while the second one fights on" was counted correctly before. No new
+            state and no new special case are added, only a lifetime for a mark that already
+            existed. The existing escape hatch stays: if the same GUID shows up demonstrably
+            alive on a unit token, the mark is lifted at once, so a real enemy can never
+            disappear from the count for good.
+
+    A trade that completed successfully was announced as a withdrawn confirmation
+        Simple: When a trade actually went through, it still ended on "<partner> withdrew
+            their confirmation". Nothing had gone wrong: on completion the server clears both
+            confirmation ticks first and only then closes the window, and that clearing looks
+            exactly like a real withdrawal. The false line is gone now. There is deliberately
+            no "trade complete" announcement in its place: client 2.5.6 offers no signal that
+            tells completion apart from cancellation, and a guessed message would be worse
+            than none.
+        Technical: Captured for a successful enchant inside a trade, all within one second:
+            TRADE_ACCEPT_UPDATE(1,1) -> (0,1) -> (0,0) -> TRADE_CLOSED. TRADE_ACCEPT_UPDATE
+            read those 1->0 transitions as a real withdrawal. There is no way to tell them
+            apart: TRADE_CLOSED carries no payload, and ERR_TRADE_COMPLETE /
+            ERR_TRADE_CANCELLED do not exist on 2.5.6 (checked against the shipped
+            TradeInfoDocumentation.lua). The two un-accept announcements now wait 0.5s behind
+            a generation counter that ResetTradeAcceptState() bumps at every trade boundary,
+            and are dropped if the trade has ended, the frame is gone, or that side is back
+            to accepted.
+
+    "Trade confirmed" was swallowed every single time
+        Simple: If you confirmed a trade from the menu, you never heard your own
+            confirmation. And out of several trade announcements in quick succession only the
+            last one was ever spoken - that is, the wrong one. They all come through now, in
+            the right order.
+        Technical: OutputStringBTtts with aOverwrite=true appends a "queuereset", and the
+            pump deletes everything queued BEFORE that marker, so in a burst each trade
+            announcement ate its predecessor. All trade announcements now pass false. That
+            alone does not save your own confirmation: when you accept from the menu, the
+            server reply is already queued before the menu appends its own line for the key
+            press, whose reset then deletes it. The accept announcements therefore go through
+            tSayAccept with a flat 0.35s delay that puts them behind the menu line. Queue
+            ordering only, no state inference - and deliberately without a generation check,
+            because a trade closing right afterwards is exactly when that confirmation
+            matters most.
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.12
 
     The character sheet reads out the description of every stat again

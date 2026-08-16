@@ -7,6 +7,71 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v42.13
+
+    Un ennemi qui vous a empoisonné avant de mourir n'est plus recompté
+        Simple : L'annonce du nombre d'ennemis est fiable dans les combats ordinaires depuis
+            la v42.10, mais il restait un cas : si un ennemi vous infligeait un poison - ou
+            tout autre effet persistant - juste avant de mourir, le nombre descendait
+            correctement à sa mort, remontait d'un cran un instant plus tard, et ne
+            redescendait définitivement qu'à l'expiration du poison, bien après la mort de
+            l'ennemi. C'est corrigé, et sans toucher à la détection elle-même : rien de
+            nouveau n'est compté, une seule chose cesse d'être comptée à tort.
+        Technique : Un ennemi mort est mémorisé par son GUID afin qu'une ligne de journal de
+            combat tardive ne puisse pas le ressusciter. Cette marque était jusqu'ici effacée
+            en bloc dans PLAYER_REGEN_ENABLED - c'est-à-dire exactement au moment où la mort
+            du dernier ennemi vous sort du combat, donc juste avant l'arrivée du premier tic
+            de poison. Chaque tic est une ligne de journal de combat avec l'ennemi mort comme
+            source et vous comme cible ; la logique d'ajout y lit « un ennemi nous combat »
+            et réadmettait le cadavre par son GUID. Le deuxième zéro ne venait plus alors que
+            du balayage d'inactivité de 6 secondes après le dernier tic. La marque porte
+            désormais un horodatage et n'est plus effacée en bloc à la fin du combat, mais
+            seulement lorsqu'elle a plus de 60 secondes. Rien ne change à l'intérieur d'un
+            combat - la marque y vivait de toute façon jusqu'à la fin du combat, et c'est
+            pourquoi le cas « l'un de deux ennemis meurt empoisonné pendant que le second
+            continue » était déjà compté correctement. Aucun nouvel état ni aucune nouvelle
+            règle particulière n'est ajouté, seulement une durée de vie pour une marque qui
+            existait déjà. La soupape existante demeure : si le même GUID réapparaît
+            manifestement vivant sur un jeton d'unité, la marque est levée immédiatement, un
+            vrai ennemi ne peut donc jamais disparaître durablement du décompte.
+
+    Un échange conclu avec succès était annoncé comme une confirmation retirée
+        Simple : Quand un échange aboutissait vraiment, il se terminait malgré tout sur
+            « <partenaire> a retiré sa confirmation ». Rien n'avait échoué : à la conclusion,
+            le serveur enlève d'abord les deux coches de confirmation et ne ferme la fenêtre
+            qu'ensuite, et cet effacement ressemble exactement à un vrai retrait. La fausse
+            ligne disparaît. Aucune annonce « échange terminé » ne la remplace, et c'est
+            délibéré : le client 2.5.6 ne fournit aucun signal distinguant la conclusion de
+            l'annulation, et un message deviné serait pire que pas de message du tout.
+        Technique : Capturé pour un enchantement réussi dans un échange, le tout en une
+            seconde : TRADE_ACCEPT_UPDATE(1,1) -> (0,1) -> (0,0) -> TRADE_CLOSED.
+            TRADE_ACCEPT_UPDATE lisait ces transitions 1->0 comme un vrai retrait. Impossible
+            de les distinguer : TRADE_CLOSED ne transporte aucune donnée, et
+            ERR_TRADE_COMPLETE / ERR_TRADE_CANCELLED n'existent pas sur 2.5.6 (vérifié contre
+            le TradeInfoDocumentation.lua livré avec le client). Les deux annonces de retrait
+            attendent maintenant 0,5 s derrière un compteur de génération que
+            ResetTradeAcceptState() incrémente à chaque frontière d'échange, et sont
+            abandonnées si l'échange est terminé, si la fenêtre a disparu ou si le côté
+            concerné est repassé à confirmé.
+
+    « Échange confirmé » était avalé à chaque fois
+        Simple : Si vous confirmiez l'échange depuis le menu, vous n'entendiez jamais votre
+            propre confirmation. Et sur plusieurs annonces d'échange rapprochées, seule la
+            dernière était prononcée - donc justement la mauvaise. Elles arrivent maintenant
+            toutes, dans le bon ordre.
+        Technique : OutputStringBTtts avec aOverwrite=true ajoute un « queuereset », et la
+            pompe supprime tout ce qui est en file AVANT ce marqueur ; dans une rafale,
+            chaque annonce d'échange dévorait donc la précédente. Toutes les annonces
+            d'échange passent désormais false. Cela ne sauve pas encore votre propre
+            confirmation : lorsque vous acceptez depuis le menu, la réponse du serveur est
+            déjà en file avant que le menu n'ajoute sa propre ligne pour l'appui de touche,
+            dont la réinitialisation la supprime alors. Les annonces de confirmation passent
+            donc par tSayAccept, avec un délai fixe de 0,35 s qui les place derrière la ligne
+            du menu. De l'ordonnancement de file uniquement, aucune déduction d'état - et
+            volontairement sans contrôle de génération, car un échange qui se ferme juste
+            après est précisément le cas où cette confirmation compte le plus.
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.12
 
     La feuille de personnage relit la description de chaque caractéristique
