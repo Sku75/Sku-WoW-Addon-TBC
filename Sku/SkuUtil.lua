@@ -248,7 +248,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- "Frage Gegenstandsinformationen ab" (RETRIEVING_ITEM_INFO)
 --
--- [v42.14] This is NOT an error message and NOT an item name: the client paints
+-- [v42.13] This is NOT an error message and NOT an item name: the client paints
 -- the RETRIEVING_ITEM_INFO global as tooltip line 1 while it waits for an item's
 -- data from the server, and a tooltip that pulls in further data (a recipe's
 -- result, set pieces, gems, a container's contents) shows it until ALL of that

@@ -30,7 +30,7 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 local AtlasLootIntegration = SkuCore:NewModule("AtlasLootIntegration", "AceEvent-3.0")
 SkuCore.AtlasLootIntegration = AtlasLootIntegration   -- keep the published handle
 
--- [v42.14] "Is this id an item (as opposed to a spell)?", answered OFFLINE.
+-- [v42.13] "Is this id an item (as opposed to a spell)?", answered OFFLINE.
 --
 -- Every loot row here is a bare number that may be an item id or a spell id, and
 -- the routers below pick the builder from that. They used to ask
@@ -151,7 +151,7 @@ function AtlasLootIntegration:alItegrationLogin()
       SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x] = SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x] or {}
    end
 
-   -- [v42.14] Pre-warm the favourites' item data. This was a bare
+   -- [v42.13] Pre-warm the favourites' item data. This was a bare
    -- C_Item.GetItemNameByID(...) whose return value was thrown away -- "poke the
    -- client and hope", the same non-request the rest of this fix replaced. Ask
    -- properly, so the favourites list is named on first open rather than on the
@@ -533,7 +533,7 @@ function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, 
 
    elseif aType == "item" then
       local itemID, itemType, itemSubType, itemEquipLoc, icon, classID, subclassID = GetItemInfoInstant(aId)
-      -- [v42.14] The guard here used to be "not C_Item.GetItemNameByID(aId) -> return",
+      -- [v42.13] The guard here used to be "not C_Item.GetItemNameByID(aId) -> return",
       -- which SKIPPED THE ENTRY ENTIRELY for any item the client had not cached yet --
       -- no node, no gap, no marker, just a shorter loot list that reads as a complete
       -- one. Backwards for this feature in particular: an AtlasLoot table is almost
@@ -559,7 +559,7 @@ function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, 
       SkuCore:RequestItemData(aId)
       local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuUtil:Unescape(tItemName)}, SkuGenericMenuItem)
       tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
-         -- [v42.14] Was: a throwaway getItemComparisnSections(aId) call whose only job
+         -- [v42.13] Was: a throwaway getItemComparisnSections(aId) call whose only job
          -- was "warm the cache", followed by a re-read on a fixed 0.1 s timer -- a
          -- private workaround for the item-load layer Sku did not have. It never warmed
          -- aId at all (that helper scans the EQUIPPED slots, the id it takes only picks
@@ -591,7 +591,7 @@ function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, 
                end
             end
 
-            -- [v42.14] Seeded with the entry's own stable name rather than "": now that
+            -- [v42.13] Seeded with the entry's own stable name rather than "": now that
             -- uncached items reach this code at all, a tooltip that yields nothing must
             -- leave the entry readable instead of silencing it.
             local tTextFirstLine, tTextFull = tItemName, ""
@@ -1394,7 +1394,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                               return
                            end
                            local aId = GetItemInfoInstant(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x][y])
-                           -- [v42.14] Same change as the item entry above: the warm-up
+                           -- [v42.13] Same change as the item entry above: the warm-up
                            -- call is gone (it never warmed aId) and the item data is now
                            -- waited for instead of raced. The 0.1 s timer stays because
                            -- the drop-table lazy load on the next line needs it.
@@ -1426,7 +1426,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                                  end
                               end
 
-                              -- [v42.14] Same as the item entry above: seed with the name
+                              -- [v42.13] Same as the item entry above: seed with the name
                               -- the node already carries so a failed read cannot silence
                               -- it, and never let the placeholder become the name.
                               local tTextFirstLine, tTextFull = SkuOptions.currentMenuPosition.textFirstLine, ""
@@ -1543,7 +1543,7 @@ local function addToItemsRepos(aItemId, aNpcID, aContentInteralName, aBossIndex,
       tItemDropTable[aItemId][#tItemDropTable[aItemId] + 1] = tSourceText
    end
 
-   -- [v42.14] tItemNameTable backs the "find item by name" keybind. Keyed on
+   -- [v42.13] tItemNameTable backs the "find item by name" keybind. Keyed on
    -- C_Item.GetItemNameByID it silently omitted every item the client had not
    -- cached -- so the search could not find exactly the items the user is most
    -- likely to be hunting for. ResolveItemName answers from Sku's own shipped
@@ -1779,7 +1779,7 @@ function AtlasLootIntegration:alIntegrationQueryAll()
                                        
 
                                     if items[itemIndex] and items[itemIndex][2] and type(items[itemIndex][2]) == "number" then
-                                       -- [v42.14] The tSkuName SkuDB lookup that used to sit here existed only
+                                       -- [v42.13] The tSkuName SkuDB lookup that used to sit here existed only
                                        -- to widen this router's `C_Item.GetItemNameByID(...)` gate past the item
                                        -- cache. tIsItemId does that properly and for every router, so it is gone.
                                        if AtlasLoot.Data.ItemSet.GetSetName(items[itemIndex][2]) then

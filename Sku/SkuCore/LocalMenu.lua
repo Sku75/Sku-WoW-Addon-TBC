@@ -66,7 +66,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Pending item data
 --
--- [v42.14] Everything in this file that names an item does it by pointing a
+-- [v42.13] Everything in this file that names an item does it by pointing a
 -- scanning tooltip at it and reading line 1. When the client has not got the
 -- item's data yet that line is RETRIEVING_ITEM_INFO ("Frage
 -- Gegenstandsinformationen ab"), and Sku used to bake THAT in as the name -- with
@@ -248,7 +248,7 @@ local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
 		end
 	end
 	
-	-- [v42.14] Same demotion as in the bag reader, for every window that names an
+	-- [v42.13] Same demotion as in the bag reader, for every window that names an
 	-- item by scanning a native button (merchant, quest rewards, guild bank, mail,
 	-- trainer, tradeskill). Here there is usually no item id to resolve a real name
 	-- from -- an uncached tooltip yields no link either -- so the best we can do is
@@ -291,7 +291,7 @@ local function getItemTooltipTextHelper(tooltipSetter)
 	tooltip:ClearLines()
 	tooltipSetter(tooltip)
 	local tEscapedText = TooltipLines_helper(tooltip:GetRegions())
-	-- [v42.14] "Frage Gegenstandsinformationen ab" is a state, not a name -- report
+	-- [v42.13] "Frage Gegenstandsinformationen ab" is a state, not a name -- report
 	-- it as one so the caller can name the item another way and ask for the data.
 	if SkuUtil:IsRetrievingItemInfo(tEscapedText) then
 		return nil, true
@@ -311,7 +311,7 @@ end
 -- client's item cache, so the bank became the place where "Frage
 -- Gegenstandsinformationen ab" turned up instead of a name.
 --
--- [v42.14] Bank slots are real INVENTORY slots (bank slot n = inventory slot
+-- [v42.13] Bank slots are real INVENTORY slots (bank slot n = inventory slot
 -- n + 39), so SetInventoryItem reads them from local data exactly the way
 -- SetBagItem reads a bag, no cache round-trip. That is what Blizzard's own
 -- BankFrameItemButton_OnEnter does. It is NOT a return to the rendered-widget
@@ -1331,7 +1331,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				-- Passing itemId would route to SetItemByID (generic) and lose that.
 				local tText, tPending = getItemTooltipTextFromBagItem(bagId, slotId)
 				if tPending then
-					-- [v42.14] The client has not sent this item's data yet. Name it from
+					-- [v42.13] The client has not sent this item's data yet. Name it from
 					-- what resolves offline, mark it as loading, and ASK for the data --
 					-- the GET_ITEM_INFO_RECEIVED driver re-reads the entry when it lands.
 					-- Never announce the placeholder itself: see SkuUtil:IsRetrievingItemInfo.
