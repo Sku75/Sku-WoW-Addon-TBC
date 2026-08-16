@@ -76,6 +76,29 @@ function RangeCheck:RangeCheckOnEnable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Is a stored per-band `sound` value the "speak the number" marker?
+--
+-- The marker written into the SAVED config is the LOCALIZED word (L["vocalized"]
+-- = "Gesprochen" / "Spoken" / "Parlé"), so its meaning changes the moment the
+-- client's Sku locale changes. A French client ran as "enUS" until v42.10 (no
+-- frFR locale existed) and saved "Spoken"; now that Sku.Loc is "frFR" the
+-- equality test against L["vocalized"] ("Parlé") fails for every band, so no
+-- distance is announced any more -- and the config menu, which falls through to
+-- RangeCheckSounds[value] (a table keyed by FILE PATHS), concatenates nil and
+-- throws. Accepting all three spellings keeps an existing config working across
+-- a locale switch in either direction; new entries still write L["vocalized"].
+local tSpokenValues = {
+   ["Gesprochen"] = true,   -- deDE
+   ["Spoken"] = true,       -- enUS/enGB/enAU
+   ["Parlé"] = true,        -- frFR
+}
+function RangeCheck:IsSpokenSound(aSound)
+   if aSound == nil then
+      return false
+   end
+   return aSound == L["vocalized"] or tSpokenValues[aSound] == true
+end
+
 local tDefBands = {5, 8, 10, 15, 20, 25, 30, 35, 40, 45, 60}
 local function tMakeDefaultBands()
    local t = {}
@@ -247,13 +270,16 @@ function RangeCheck:DoRangeCheck(aForceFlag)
       if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks then
          if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[tCheckType][tRangeCheckLastTargetminRange] then
             local tSoundChannel = SkuOptions.db.profile.SkuCore.UIErrors.ErrorSoundChannel or "Talking Head"
-            if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[tCheckType][tRangeCheckLastTargetminRange].sound == L["vocalized"] then
+            if RangeCheck:IsSpokenSound(SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[tCheckType][tRangeCheckLastTargetminRange].sound) then
                --PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_de-de\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
-               if Sku.Loc == "deDE" then
-                  PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
-               elseif Sku.Loc == "enUS" or Sku.Loc == "enGB"  or Sku.Loc == "enAU" then
-                  PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_en-us\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
-               end
+               -- Sku.LocAudio, not Sku.Loc: these number clips are recorded in deDE
+               -- and enUS only, and the old Sku.Loc chain listed exactly those two
+               -- locales -- so a frFR client matched NEITHER branch and got pure
+               -- silence, even with a freshly written "Parlé" config. Sku.LocAudio
+               -- is precisely the "which recorded language do I fall back to"
+               -- answer Sku already computes (deDE for deDE, enUS for the rest).
+               local tClipDir = (Sku.LocAudio == "deDE") and "hans_de-de" or "hans_en-us"
+               PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\"..tClipDir.."\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
             else
                PlaySoundFile(SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[tCheckType][tRangeCheckLastTargetminRange].sound, tSoundChannel)
             end

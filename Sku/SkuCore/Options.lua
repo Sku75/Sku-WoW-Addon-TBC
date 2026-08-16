@@ -1506,10 +1506,16 @@ local function RangecheckMenuBuilder(aParent, aType)
 		if SkuCore.RangeCheck.RangeCheckValues.Ranges[aType][i] then
 			local tIsConfiguredWith = ";"..L["silent"]
 			if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[aType][i] then
-				if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[aType][i].sound == L["vocalized"] then
+				-- Same locale-proof test as the playback path (see RangeCheck.lua):
+				-- a config saved under another Sku locale holds THAT locale's word
+				-- for "vocalized", which is not a RangeCheckSounds key -> the else
+				-- branch concatenated nil and threw, so the whole range menu was
+				-- unopenable. The `or L["silent"]` keeps any other unknown value
+				-- from erroring the menu as well.
+				if SkuCore.RangeCheck:IsSpokenSound(SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[aType][i].sound) then
 					tIsConfiguredWith = ";"..L["vocalized"]
 				else
-					tIsConfiguredWith = ";"..SkuCore.RangeCheckSounds[SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[aType][i].sound]
+					tIsConfiguredWith = ";"..(SkuCore.RangeCheckSounds[SkuSettings:Sub("SkuCore", nil, "char").RangeChecks[aType][i].sound] or L["silent"])
 				end
 			end
 			local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {i..tIsConfiguredWith}, SkuGenericMenuItem)
