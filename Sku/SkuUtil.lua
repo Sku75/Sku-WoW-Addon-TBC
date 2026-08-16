@@ -245,6 +245,33 @@ function SkuUtil:ItemLevel(aItemLink)
 	return tILvl
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- "Frage Gegenstandsinformationen ab" (RETRIEVING_ITEM_INFO)
+--
+-- [v42.14] This is NOT an error message and NOT an item name: the client paints
+-- the RETRIEVING_ITEM_INFO global as tooltip line 1 while it waits for an item's
+-- data from the server, and a tooltip that pulls in further data (a recipe's
+-- result, set pieces, gems, a container's contents) shows it until ALL of that
+-- has arrived -- which is why "complex" items hit it by far the most.
+--
+-- Sku used to hand the placeholder straight on as the item's NAME. That is the
+-- one thing it must never be: it is identical for every pending slot, so several
+-- pending items all read the same and cannot be told apart or aimed at; it
+-- becomes the key that "sort by name" and the type-ahead jump match on; it lands
+-- in the full description as well; and it is 33 characters spoken in full, per
+-- slot. The state itself IS worth announcing -- but as a short marker beside the
+-- real name (SkuCore:PendingItemLabel), never instead of it.
+--
+-- Accepts a whole scanned tooltip text or a single line; only line 1 counts.
+function SkuUtil:IsRetrievingItemInfo(aText)
+	if type(aText) ~= "string" or aText == "" then return false end
+	local tPlaceholder = _G.RETRIEVING_ITEM_INFO
+	if type(tPlaceholder) ~= "string" or tPlaceholder == "" then return false end
+	local tFirstLine = string.match(aText, "^(.-)\r?\n") or aText
+	return strtrim(tFirstLine) == tPlaceholder
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- Format a past server-time epoch as a spoken "N seconds/minutes/hours/days" age.
 function SkuEpochValueHelper(aValue)
 	local L = Sku.L

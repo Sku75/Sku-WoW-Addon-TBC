@@ -63,6 +63,128 @@ local function ItemName_helper(aText)
 end
 
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Pending item data
+--
+-- [v42.14] Everything in this file that names an item does it by pointing a
+-- scanning tooltip at it and reading line 1. When the client has not got the
+-- item's data yet that line is RETRIEVING_ITEM_INFO ("Frage
+-- Gegenstandsinformationen ab"), and Sku used to bake THAT in as the name -- with
+-- no way back, because nothing ever asked the client to load the item and nothing
+-- ever re-read the entry when the data arrived. So the name stayed stuck for the
+-- rest of the session, no matter how often the menu was rebuilt.
+--
+-- Three pieces fix that, and all three are needed:
+--   * ResolveItemName   -- a name we can produce WITHOUT the server, so a pending
+--                          entry still says what it is. SkuDB.itemLookup is Sku's
+--                          own shipped item-name table and knows most of TBC.
+--   * RequestItemData   -- actually ask the client to load it. Poking a tooltip
+--                          was never a request we owned or could follow up on.
+--   * the driver below  -- GET_ITEM_INFO_RECEIVED -> one coalesced quiet rebuild,
+--                          so the entry re-reads itself once the data lands.
+-- See SkuUtil:IsRetrievingItemInfo for why the placeholder must not be the name.
+---------------------------------------------------------------------------------------------------------------------------------------
+local tPendingItemIds = {}
+local tPendingRefreshQueued = false
+
+-- Item name that needs no server round-trip: the client cache first (it can hold
+-- the name while the rest of the tooltip is still pending), then Sku's own item
+-- table, then the link's own [brackets].
+function SkuCore:ResolveItemName(aItemId, aItemLink)
+	local tName
+	if aItemLink then tName = GetItemInfo(aItemLink) end
+	if not tName and aItemId then tName = GetItemInfo(aItemId) end
+	if not tName and aItemId and SkuDB and SkuDB.itemLookup and SkuDB.itemLookup[Sku.Loc] then
+		tName = SkuDB.itemLookup[Sku.Loc][aItemId]
+	end
+	if not tName and type(aItemLink) == "string" then
+		local tBracketed = string.match(aItemLink, "%[(.-)%]")
+		if tBracketed and tBracketed ~= "" then tName = tBracketed end
+	end
+	if type(tName) == "string" and tName ~= "" then
+		return SkuUtil:Unescape(tName)
+	end
+end
+
+-- What a still-loading entry reads as: the real name plus a short marker, so the
+-- "still fetching" state stays audible without costing the name or the ability to
+-- tell two pending slots apart. Only when nothing at all resolves does the marker
+-- stand alone -- and then it carries the item id, which is still unique per slot.
+function SkuCore:PendingItemLabel(aItemId, aItemLink)
+	local tMarker = Sku.deEn("lädt", "loading", "chargement")
+	local tName = SkuCore:ResolveItemName(aItemId, aItemLink)
+	if tName then
+		return tName.." ("..tMarker..")"
+	end
+	return tMarker..", "..Sku.deEn("Gegenstand", "item", "objet").." "..tostring(aItemId or "?")
+end
+
+-- Ask the client for an item's data and remember that a menu entry waits on it.
+function SkuCore:RequestItemData(aItemId)
+	if type(aItemId) ~= "number" then return end
+	tPendingItemIds[aItemId] = true
+	pcall(function() Item:CreateFromItemID(aItemId):ContinueOnItemLoad(function() end) end)
+end
+
+-- Run aCallback once aItemId's data is available -- immediately when it already
+-- is, since ContinueOnItemLoad fires straight away for a cached item. Replaces
+-- the hand-rolled "call it once to warm the cache, re-read on a 0.1 s timer"
+-- pattern, which raced the server instead of waiting for it.
+function SkuCore:ContinueOnItemData(aItemId, aCallback)
+	if type(aCallback) ~= "function" then return end
+	if type(aItemId) ~= "number" then aCallback() return end
+	local tOk = pcall(function() Item:CreateFromItemID(aItemId):ContinueOnItemLoad(aCallback) end)
+	-- Error path, not a second strategy: if the id is not a real item we still owe
+	-- the caller its one run, otherwise the menu entry would never be filled at all.
+	if not tOk then aCallback() end
+end
+
+-- One quiet rebuild per burst of arrivals. GET_ITEM_INFO_RECEIVED fires once per
+-- item, so a freshly opened bank full of uncached items would otherwise rebuild
+-- the menu 28 times in a row.
+local function tQueuePendingRefresh()
+	if tPendingRefreshQueued then return end
+	tPendingRefreshQueued = true
+	C_Timer.After(0.3, function()
+		tPendingRefreshQueued = false
+		if _G.SkuBagIdleRefresh then pcall(_G.SkuBagIdleRefresh) end
+	end)
+end
+
+-- Pre-warm a container's items. Without this the FIRST pass over a freshly opened
+-- bank is guaranteed to be placeholders, because nothing has ever asked the server
+-- for those items this session -- the bank is the one container whose contents the
+-- player has not necessarily touched since login.
+local function tPrewarmContainer(aBagId)
+	local tNumSlots = GetContainerNumSlots(aBagId) or 0
+	for tSlot = 1, tNumSlots do
+		local tItemId = GetContainerItemID(aBagId, tSlot)
+		if tItemId then SkuCore:RequestItemData(tItemId) end
+	end
+end
+
+local tItemDataDriver = CreateFrame("Frame")
+tItemDataDriver:SetScript("OnEvent", function(self, aEvent, arg1)
+	if aEvent == "GET_ITEM_INFO_RECEIVED" then
+		if arg1 and tPendingItemIds[arg1] then
+			tPendingItemIds[arg1] = nil
+			dprint("itemdata", "arrived", arg1)
+			tQueuePendingRefresh()
+		end
+	elseif aEvent == "BANKFRAME_OPENED" then
+		tPrewarmContainer(-1)
+		for tBagId = 5, 11 do tPrewarmContainer(tBagId) end
+		dprint("itemdata", "prewarm bank")
+	elseif aEvent == "PLAYERBANKSLOTS_CHANGED" then
+		local tItemId = arg1 and GetContainerItemID(-1, arg1)
+		if tItemId then SkuCore:RequestItemData(tItemId) end
+	end
+end)
+tItemDataDriver:RegisterEvent("GET_ITEM_INFO_RECEIVED")
+tItemDataDriver:RegisterEvent("BANKFRAME_OPENED")
+tItemDataDriver:RegisterEvent("PLAYERBANKSLOTS_CHANGED")
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- [v42.11] Quality and item level are resolved HERE from the tooltip we are
 -- actually scanning, instead of being computed by each caller from a
 -- possibly-stale :GetItem(). See the block comment on SkuUtil:TooltipItemLink.
@@ -126,6 +248,19 @@ local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
 		end
 	end
 	
+	-- [v42.14] Same demotion as in the bag reader, for every window that names an
+	-- item by scanning a native button (merchant, quest rewards, guild bank, mail,
+	-- trainer, tradeskill). Here there is usually no item id to resolve a real name
+	-- from -- an uncached tooltip yields no link either -- so the best we can do is
+	-- the short marker instead of the 33-character sentence, plus a load request so
+	-- the next quiet rebuild resolves it.
+	if SkuUtil:IsRetrievingItemInfo(tTooltipText) then
+		local tItemId = aButtonObj and (aButtonObj.itemId or (aButtonObj.info and aButtonObj.info.id))
+		if tItemId then SkuCore:RequestItemData(tItemId) end
+		local tPendingLabel = SkuCore:PendingItemLabel(tItemId, nil)
+		return tPendingLabel, tPendingLabel, nil
+	end
+
 	if tTooltipText ~= "asd" then
 		if tTooltipText ~= "" then
 			tTooltipText = SkuUtil:Unescape(tTooltipText)
@@ -150,38 +285,50 @@ end
 ---(Meant for defining other functions, not meant for direct use)
 ---@param tooltipSetter fun(tooltip: GameTooltip): void Define how the item tooltip should be set.
 ---@return string | nil Tooltip text
+---@return boolean | nil True when the client has not sent the item's data yet
 local function getItemTooltipTextHelper(tooltipSetter)
 	local tooltip = _G["SkuScanningTooltip"]
 	tooltip:ClearLines()
 	tooltipSetter(tooltip)
-	local getEscapedText = function() return TooltipLines_helper(tooltip:GetRegions()) end
-	if getEscapedText() ~= "asd" and getEscapedText() ~= "" then
-		return SkuUtil:Unescape(getEscapedText())
+	local tEscapedText = TooltipLines_helper(tooltip:GetRegions())
+	-- [v42.14] "Frage Gegenstandsinformationen ab" is a state, not a name -- report
+	-- it as one so the caller can name the item another way and ask for the data.
+	if SkuUtil:IsRetrievingItemInfo(tEscapedText) then
+		return nil, true
+	end
+	if tEscapedText ~= "asd" and tEscapedText ~= "" then
+		return SkuUtil:Unescape(tEscapedText)
 	end
 end
 
--- Point a scanning/GameTooltip at a container slot's item. SetBagItem populates
--- for the normal bags but returns NOTHING for the bank MAIN container (-1) in the
--- 2.5.6 client: that left every filled bank slot rendered as "Empty" even though
--- the item was there and interactable (the item id/link read fine via the
--- container API -- only the name lookup went through SetBagItem and came back
--- blank). Fall back to the item hyperlink (available from the container API for
--- every container incl. the bank / reagent bank) so the name/description always
--- resolves. No change for the normal bags: SetBagItem fills the tooltip, GetItem
--- is non-nil, and we skip the fallback.
+-- Point a scanning/GameTooltip at a container slot's item.
+--
+-- The bank MAIN container (-1) needs a different setter: SetBagItem(-1, slot)
+-- populates NOTHING on the 2.5.6 client, which is why every filled bank slot once
+-- rendered as "Empty" (fixed in 67f2132). That fix reached for
+-- SetHyperlink(GetContainerItemLink(...)) because it works for every container
+-- generically -- but a hyperlink is precisely the path that depends on the
+-- client's item cache, so the bank became the place where "Frage
+-- Gegenstandsinformationen ab" turned up instead of a name.
+--
+-- [v42.14] Bank slots are real INVENTORY slots (bank slot n = inventory slot
+-- n + 39), so SetInventoryItem reads them from local data exactly the way
+-- SetBagItem reads a bag, no cache round-trip. That is what Blizzard's own
+-- BankFrameItemButton_OnEnter does. It is NOT a return to the rendered-widget
+-- reading that 5ce5ce0 retired: no frame, no OnEnter, no force-open -- just a
+-- tooltip setter, the same class of call as SetBagItem. The bank node is only
+-- built while BankFrame is visible (see Build_BagsFrame), which is exactly when
+-- those inventory slots are valid.
+--
+-- Deliberately NO hyperlink fallback behind this: stacking a cache-dependent path
+-- behind a local one only hides whether the local one works. If SetInventoryItem
+-- ever comes up empty for the bank we want to see that and fix it, not mask it.
 local function tSetTooltipContainerItem(tooltip, bag, slot)
-	tooltip:SetBagItem(bag, slot)
-	-- Gate the fallback on the actual tooltip TEXT being empty (the same "asd"/""
-	-- probe used everywhere else), not on GetItem(), so a stale item from a prior
-	-- scan can never suppress the fallback.
-	local text = TooltipLines_helper(tooltip:GetRegions())
-	if text == "" or text == "asd" then
-		local link = GetContainerItemLink and GetContainerItemLink(bag, slot)
-		if link then
-			tooltip:ClearLines()
-			tooltip:SetHyperlink(link)
-		end
+	if bag == -1 then
+		tooltip:SetInventoryItem("player", BankButtonIDToInvSlotID(slot))
+		return
 	end
+	tooltip:SetBagItem(bag, slot)
 end
 
 local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
@@ -1182,8 +1329,17 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				-- actual item instance (full description, use-effects, charges, bound,
 				-- flavour), matching what the old rendered-button OnEnter tooltip gave.
 				-- Passing itemId would route to SetItemByID (generic) and lose that.
-				local tText = getItemTooltipTextFromBagItem(bagId, slotId)
-				if tText then
+				local tText, tPending = getItemTooltipTextFromBagItem(bagId, slotId)
+				if tPending then
+					-- [v42.14] The client has not sent this item's data yet. Name it from
+					-- what resolves offline, mark it as loading, and ASK for the data --
+					-- the GET_ITEM_INFO_RECEIVED driver re-reads the entry when it lands.
+					-- Never announce the placeholder itself: see SkuUtil:IsRetrievingItemInfo.
+					SkuCore:RequestItemData(tItemId)
+					isEmpty = false
+					bagItemButton.textFirstLine = SkuCore:PendingItemLabel(tItemId, GetContainerItemLink(bagId, slotId))
+					bagItemButton.textFull = { bagItemButton.textFirstLine }
+				elseif tText then
 					isEmpty = false
 					bagItemButton.textFirstLine = SkuCore:ItemName_helper(tText)
 					bagItemButton.textFull = SkuCore.AuctionHouse:AuctionHouseGetAuctionPriceHistoryData(tItemId)

@@ -513,8 +513,17 @@ function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, 
       --print(itemID, itemType, itemSubType, itemEquipLoc, icon, classID, subclassID)
       local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuUtil:Unescape(C_Item.GetItemNameByID(aId))}, SkuGenericMenuItem)
       tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
-         SkuCore:getItemComparisnSections(aId)
+         -- [v42.14] Was: a throwaway getItemComparisnSections(aId) call whose only job
+         -- was "warm the cache", followed by a re-read on a fixed 0.1 s timer -- a
+         -- private workaround for the item-load layer Sku did not have. It never warmed
+         -- aId at all (that helper scans the EQUIPPED slots, the id it takes only picks
+         -- WHICH slots to compare), and the timer raced the server instead of waiting
+         -- for it, so a slow item still read as "Frage Gegenstandsinformationen ab".
+         -- The 0.1 s stays for the drop-table lazy load; the ITEM data is now waited
+         -- for properly -- ContinueOnItemData fires at once when it is already cached.
+         SkuCore:RequestItemData(aId)
          C_Timer.After(0.1, function()
+          SkuCore:ContinueOnItemData(aId, function()
             local tSections = SkuCore:getItemComparisnSections(aId) or {}
             if tSections[1] then
                tSections[1] = L["currently equipped"].."\r\n"..tSections[1]
@@ -550,6 +559,7 @@ function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, 
             
 
             SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, tSections
+          end)
          end)
       end
       tNewSubMenuEntry.dynamic = true
@@ -1333,13 +1343,18 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                               return
                            end
                            local aId = GetItemInfoInstant(SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites[x][y])
-                           SkuCore:getItemComparisnSections(aId)
+                           -- [v42.14] Same change as the item entry above: the warm-up
+                           -- call is gone (it never warmed aId) and the item data is now
+                           -- waited for instead of raced. The 0.1 s timer stays because
+                           -- the drop-table lazy load on the next line needs it.
+                           SkuCore:RequestItemData(aId)
                            -- [41.03] Boss-/Quelle-Tooltip auch in "Nach Slot" sicherstellen:
                            -- tItemDropTable bei Bedarf befuellen (Lazy-Load via QueryAll),
                            -- damit "Dropped by ..." nicht fehlt, wenn man direkt hierher geht.
                            -- RUECKBAU: naechste Zeile entfernen.
                            AtlasLootIntegration:alItegrationGetItemDropTable(aId)
                            C_Timer.After(0.1, function()
+                            SkuCore:ContinueOnItemData(aId, function()
                               local tSections = SkuCore:getItemComparisnSections(aId) or {}
                               if tSections[1] then
                                  tSections[1] = L["currently equipped"].."\r\n"..tSections[1]
@@ -1373,6 +1388,7 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                               table.insert(tSections, 1, tTextFull)
 
                               SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, tSections
+                            end)
                            end)
                         end
                         tNewMenuEntry.BuildChildren = function(self)
