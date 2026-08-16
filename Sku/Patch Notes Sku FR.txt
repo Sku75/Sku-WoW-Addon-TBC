@@ -9,6 +9,25 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
 
+    Vol en taxi : la destination était annoncée comme point d'atterrissage anticipé
+        Simple : peu avant l'arrivée, Sku disait « atterrissage anticipé possible à X » -
+            et X était la destination vers laquelle on volait déjà. Y atterrir « par
+            anticipation », c'est simplement arriver : cette phrase disparaît.
+        Technique : l'exclusion du dernier point existait bien, mais le curseur d'itinéraire
+            lui glissait dessous au moment décisif. L'itinéraire est capté au décollage et
+            une escale est considérée comme franchie dès qu'elle est à moins de 250 yards.
+            Or le taxi entre droit dans son dernier point : celui-ci était donc « franchi »
+            lui aussi, le curseur dépassait la fin de l'itinéraire, l'escale suivante était
+            nulle, et la détermination de la cible retombait silencieusement sur la
+            solution de secours « point de vol le plus proche ». Cette solution ignore
+            l'itinéraire : la source passait de « route » à « nearest » - et c'est
+            précisément ce dont dépend la règle qui rend la dernière étape muette. La
+            destination était alors largement sous le seuil des 800 yards, d'où l'annonce.
+            Le curseur s'arrête désormais sur la destination au lieu de la dépasser : la
+            destination n'est pas une escale que l'on franchit, c'est là où le vol se
+            termine. La règle tient donc jusqu'à l'atterrissage, et le raccourci peut
+            toujours nommer la destination à la demande.
+
     Les annonces de vol arrivaient parfois plusieurs minutes après l'atterrissage
         Simple : « Vol terminé » (ou « vol démarré ») était parfois prononcé longtemps
             après le vol - typiquement au moment où l'on montait ou descendait de

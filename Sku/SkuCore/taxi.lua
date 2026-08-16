@@ -365,10 +365,27 @@ end
 -- next stop when the cursor moves - one announcement per hop, which is also what
 -- re-arms the request (the stale-target bug in v1 was gRequested freezing the
 -- announced node for the rest of the flight).
+--
+-- ★2026-08-16: the cursor must STOP at the destination instead of walking off
+-- the end of the route. The taxi flies right into its last node, so the old loop
+-- "passed" it too, gStopIndex became #gRoute+1, gRoute[gStopIndex] went nil, and
+-- tCurrentTarget quietly degraded to the nearest-node FALLBACK - which knows
+-- nothing about the route, so tVia flipped to "nearest" and the final-leg guard
+-- below (written as `tVia == "route" and gStopIndex >= #gRoute`) stopped
+-- applying. The destination was by then well inside APPROACH_DIST, so every
+-- flight ended with "Vorzeitige Landung moeglich bei <destination>" a few
+-- seconds before simply arriving there. The destination is not a stop you pass;
+-- it is where the flight ends. Holding the cursor on it keeps tVia == "route"
+-- through touchdown, so the guard holds and the keybind can still name it.
 local function tAdvanceRoute(aScan)
    if not (gRoute and gStopIndex) then return false end
    local tMoved = false
    while gRoute[gStopIndex] do
+      if gStopIndex >= #gRoute then
+         tLogOnce("destReached", "taxi: cursor is on the destination - not advancing past it",
+            tostring(gRoute[gStopIndex]))
+         break
+      end
       local tDist = tDistanceToStop(aScan, gRoute[gStopIndex])
       if tDist and tDist <= PASS_RADIUS then
          dprint("taxi: stop passed", gRoute[gStopIndex], "dist", tostring(floor(tDist)),

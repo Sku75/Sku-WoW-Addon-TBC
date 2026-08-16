@@ -6,6 +6,25 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
 
+    Taxiflug: das Reiseziel wurde als vorzeitiger Landepunkt angesagt
+        Einfach: Kurz vor der Ankunft sagte Sku "Vorzeitige Landung moeglich bei X" -
+            und X war das Ziel, das man ohnehin gerade anflog. Dort vorzeitig zu landen
+            heisst schlicht anzukommen; diese Ansage bleibt jetzt aus.
+        Technisch: Der Ausschluss des letzten Punktes gab es bereits, nur rutschte der
+            Routen-Zeiger im entscheidenden Moment darunter weg. Die Route wird beim
+            Start abgegriffen, und ein Zwischenstopp gilt als passiert, sobald er naeher
+            als 250 Yards ist. Das Taxi fliegt aber direkt in seinen letzten Punkt
+            hinein, also wurde auch dieser "passiert": der Zeiger lief hinter das
+            Routenende, der naechste Halt war nil, und die Zielbestimmung fiel still auf
+            die Notloesung "naechstgelegener Flugpunkt" zurueck. Die kennt die Route
+            nicht, damit wechselte die Quelle von "route" auf "nearest" - und genau
+            daran haengt die Bedingung, die den letzten Punkt stummschaltet. Das Ziel
+            war zu dem Zeitpunkt laengst innerhalb der 800-Yard-Schwelle, also kam die
+            Ansage. Der Zeiger bleibt jetzt auf dem Ziel stehen, statt darueber
+            hinauszulaufen: das Ziel ist kein Halt, den man passiert, sondern der Ort,
+            an dem der Flug endet. Damit greift die Stummschaltung bis zur Landung, und
+            die Taste kann das Ziel weiterhin benennen.
+
     Flugansagen kamen manchmal Minuten nach der Landung
         Einfach: "Flug beendet" (oder "Flug gestartet") wurde gelegentlich lange nach dem
             Flug gesprochen - typischerweise in dem Moment, in dem man das naechste Mal
