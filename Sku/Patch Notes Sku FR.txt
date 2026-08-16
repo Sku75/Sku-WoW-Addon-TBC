@@ -9,6 +9,27 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
 
+    Invitation de groupe et invocation : le bouton Refuser est de retour
+        Simple : lors d'une invitation de groupe ou d'une invocation (« port »), le menu
+            ne proposait plus que « Accepter » - le bouton pour refuser manquait, et il
+            manquait aussi longtemps que la fenêtre restait ouverte. Les deux boutons
+            figurent à nouveau dans la liste.
+        Technique : Blizzard verrouille le bouton Refuser sur précisément ces demandes
+            pendant un instant après l'apparition de la fenêtre
+            (SetupLockOnDeclineButtonAndEscape, la même fonction qui y désactive aussi
+            Échap), pour éviter un clic malencontreux en cas de spam d'invitations ou
+            d'invocations. Le lecteur de fenêtres générique de Sku ignore tout élément
+            grisé, et il analyse une fenêtre contextuelle exactement UNE fois, 0,1 s après
+            son affichage (GENERIC_OnOpen) - en plein dans cette période de verrouillage.
+            Le bouton Refuser disparaissait donc, et comme rien ne reconstruit le menu
+            tant que la fenêtre reste simplement affichée, il ne revenait jamais.
+            SkuCore:IterateChildren exempte désormais les boutons des dialogues
+            StaticPopup de la règle « ne jamais lister un élément désactivé » : atteindre
+            une entrée de menu et appuyer sur Entrée est un acte délibéré, pas un clic
+            malencontreux. Ces boutons conservent également leur gestionnaire OnClick même
+            lorsque l'élément désactivé ne signale aucune entrée de clic souris - sinon
+            l'entrée figurerait dans la liste mais resterait sans effet.
+
     Saisie dans les champs de texte : plus de lettres qui continuent après la fermeture
         Simple : en tapant dans un champ de saisie de Sku (écrire un courrier, un champ de
             recherche, l'hôtel des ventes), l'annonce des caractères prenait du retard, se

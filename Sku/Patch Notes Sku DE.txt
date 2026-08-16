@@ -6,6 +6,25 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
 
+    Gruppeneinladung und Beschwoerung: der Ablehnen-Knopf ist zurueck
+        Einfach: Bei einer Gruppeneinladung oder einer Beschwoerung ("Port") bot das
+            Menue nur noch "Annehmen" an - der Knopf zum Ablehnen fehlte, und er fehlte
+            so lange, wie der Dialog offen war. Beide Knoepfe stehen wieder in der Liste.
+        Technisch: Blizzard sperrt genau bei diesen Abfragen den Ablehnen-Knopf fuer
+            einen Moment nach dem Erscheinen des Dialogs (SetupLockOnDeclineButtonAndEscape,
+            dieselbe Hilfsfunktion, die dort auch Escape abschaltet) - als Schutz gegen
+            versehentliches Wegklicken bei Einladungs- und Beschwoerungsspam. Skus
+            generischer Fensterleser ueberspringt jedes ausgegraute Bedienelement, und er
+            liest ein Popup genau EINMAL aus, 0.1 s nach dem Anzeigen (GENERIC_OnOpen) -
+            mitten in dieser Sperrzeit. Der Ablehnen-Knopf fiel also heraus, und da nichts
+            das Menue neu aufbaut, solange der Dialog einfach nur dasteht, kam er nie
+            wieder. SkuCore:IterateChildren nimmt Knoepfe von StaticPopup-Dialogen jetzt
+            von der Regel "nie ein deaktiviertes Element auflisten" aus: einen Menuepunkt
+            anzusteuern und Enter zu druecken ist eine bewusste Handlung, kein Verklicken.
+            Diese Knoepfe behalten ausserdem ihren OnClick-Handler, auch wenn das
+            deaktivierte Element keine Mausklick-Eingabe meldet - sonst stuende der
+            Eintrag zwar in der Liste, waere aber wirkungslos.
+
     Tippen in Eingabefeldern: kein Nachplappern mehr nach dem Schliessen
         Einfach: Beim Tippen in ein Sku-Eingabefeld (Brief schreiben, Suchfeld,
             Auktionshaus) hinkte die Ansage der Zeichen dem Tippen hinterher, ueberschlug

@@ -3917,6 +3917,21 @@ function SkuCore:IterateChildren(t, tab)
 	local tResults = {}
 	local inventoryTooltipTextCache = {}
 
+	-- StaticPopup (party invite, summon, ...): Blizzard DISABLES the decline/cancel
+	-- button for a moment after the dialog appears -- misclick protection against
+	-- invite/summon spam (SetupLockOnDeclineButtonAndEscape, which also turns Escape
+	-- off for those dialogs). Our generic "never list a greyed-out widget" rule then
+	-- dropped that button from the scrape, and because the scrape runs ONCE (0.1s after
+	-- the dialog shows, GENERIC_OnOpen) and nothing rebuilds while the dialog just sits
+	-- there, the menu offered Accept only -- for good. A keyboard user pressing Enter on
+	-- a menu entry they navigated to is never a misclick, so popup buttons are listed
+	-- even while Blizzard has them locked. Same reason they keep their OnClick below.
+	local tIsStaticPopup = false
+	do
+		local tName = t.GetName and t:GetName()
+		if tName and string.find(tName, "^StaticPopup%d") then tIsStaticPopup = true end
+	end
+
 	if t.GetRegions then
 		local dtc = { t:GetRegions() }
 		for x = 1, #dtc do
@@ -3980,6 +3995,28 @@ function SkuCore:IterateChildren(t, tab)
 		if t:GetName() == "StaticPopup1" then
 			--dprint(tab.."   ", t:GetName(), t.NeedButton, t.NeedButton:GetObjectType())
 			dtc = { StaticPopup1:GetButton1(), StaticPopup1:GetButton2(), StaticPopup1:GetButton3(), StaticPopup1:GetButton4() }
+			-- Breadcrumb for "the popup does not offer button X": which of the four
+			-- buttons exists, is shown/visible/enabled, and what it says. This is how the
+			-- locked decline button above was found, and it is the first thing to read
+			-- for the next popup that reads short. dprint's ARGUMENTS are evaluated by
+			-- the caller even when the log is off, so gate the whole block, not just the
+			-- call.
+			if Sku.debug and (Sku.debug.log or Sku.debug.print) then
+				dprint("popup.scrape which=", tostring(t.which), "n=", #dtc)
+				for b = 1, 4 do
+					local tB = dtc[b]
+					if tB == nil then
+						dprint("popup.btn", b, "= nil")
+					else
+						dprint("popup.btn", b, tostring(tB:GetName()),
+							"shown=", tostring(tB:IsShown()),
+							"vis=", tostring(tB:IsVisible()),
+							"en=", tostring(tB.IsEnabled and tB:IsEnabled()),
+							"mouse=", tostring(tB.IsMouseClickEnabled and tB:IsMouseClickEnabled()),
+							"txt=", tostring(tB:GetText()))
+					end
+				end
+			end
 			-- [Fix Nr16] Goldkosten aus dem MoneyFrame des Bestaetigungsdialogs vorlesen
 			-- (Talentpunkte zuruecksetzen, duale Talentspez kaufen, Begleiter-Ausbildung mit
 			-- Gold). Der Standardleser liest nur die Knoepfe, nie den Preis. Als erster
@@ -4014,6 +4051,8 @@ function SkuCore:IterateChildren(t, tab)
 					if dtc[x]:IsVisible() == true then
 						local tEnabled = true
 						if dtc[x].IsEnabled then tEnabled = dtc[x]:IsEnabled() end
+						-- A briefly locked popup button is still offered (see tIsStaticPopup).
+						if tIsStaticPopup == true then tEnabled = true end
 						if tEnabled == true then
 							local fName = GetTableID(dtc[x])
 							--print(tab.."   ", fName, dtc[x]:GetObjectType())
@@ -4029,7 +4068,10 @@ function SkuCore:IterateChildren(t, tab)
 								itemId = dtc[x].itemId,
 								}
 							--get the onclick func if there is one
-							if tResults[fName].obj:IsMouseClickEnabled() == true then
+							-- tIsStaticPopup: a disabled button may report no mouse-click
+							-- input, which would leave the entry listed but dead. Its OnClick
+							-- (StaticPopup_OnClick -> OnAccept/OnCancel) works regardless.
+							if tResults[fName].obj:IsMouseClickEnabled() == true or tIsStaticPopup == true then
 								if tResults[fName].obj:GetObjectType() == "Button" then
 									tResults[fName].func = tResults[fName].obj:GetScript("OnClick")
 									--print(tab.."      ", "OnClick func found")

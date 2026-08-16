@@ -6,6 +6,23 @@
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13
 
+    Group invite and summon: the decline button is back
+        Simple: A group invitation or a summon ("port") offered only "Accept" in the
+            menu - the button to decline it was missing, and it stayed missing for as
+            long as the dialog was open. Both buttons are listed again.
+        Technical: Blizzard locks the decline button on exactly these prompts for a
+            moment after the dialog appears (SetupLockOnDeclineButtonAndEscape, the same
+            helper that turns Escape off for them) as mouse-misclick protection against
+            invite and summon spam. Sku's generic frame reader skips any greyed-out
+            widget, and it scrapes a popup exactly ONCE, 0.1 s after it shows
+            (GENERIC_OnOpen) - right inside that lock window. So the decline button was
+            dropped, and because nothing rebuilds the menu while the dialog just sits
+            there, it never came back. SkuCore:IterateChildren now exempts StaticPopup
+            buttons from the "never list a disabled widget" rule: navigating to a menu
+            entry and pressing Enter is a deliberate act, not a misclick. Those buttons
+            also keep their OnClick handler even when the disabled widget reports no
+            mouse-click input, so the entry cannot end up listed but dead.
+
     Typing in input fields: no more letters trailing after the field is gone
         Simple: While typing into a Sku input field (writing mail, a search box, the
             auction house) the spoken characters lagged behind the typing, tripped over
