@@ -271,6 +271,34 @@ Changes in Sku v42.13
             name is filled via ResolveItemName as well, and the GetItemNameByID call on the
             favourites at login, whose result was thrown away, is now a real load request.
 
+    The dungeon browser offered every dungeon instead of only the ones you can join
+        Simple: Under "Create entry" you got the complete list of the category's dungeons -
+            the same one at every level. A level twenty character was offered the heroic
+            Outland instances, a level seventy character was offered the Deadmines, and both
+            could be ticked and posted even though you cannot get in there at all. The
+            visible window never behaved that way: there the game narrows the list down to
+            what suits your own level, and that narrowing was missing on our side - we simply
+            read the unfiltered list. Sku now shows the same selection the window does. If
+            you do need the whole list anyway, for instance to offer yourself for a dungeon
+            far below your level, switch off the new "Only matching dungeons" entry; it sits
+            directly above the dungeon groups and, while on, says how many entries it is
+            currently hiding. Dungeons you have already ticked always stay visible even when
+            the narrowing would otherwise hide them - otherwise you would post something you
+            can no longer find in the menu.
+        Technical: tGetCategoryActivities called C_LFGList.GetAvailableActivities(categoryID)
+            without the filters argument and therefore got the entire category; the levels
+            from GetActivityInfoTable were only read for the label, never used to filter.
+            Filtering now happens in two AND-ed layers: once through the game's own set
+            (GetAvailableActivities(categoryID, nil, Enum.LFGListFilter.Recommended)) and once
+            locally against UnitLevel("player") using minLevelSuggestion/maxLevelSuggestion -
+            on 2.5.x those are the only fields carrying real levels. The game's set is only
+            trusted when it comes back non-empty AND as a true subset of the unfiltered list,
+            so a build with a different signature can never blank the menu; missing level data
+            lets an entry through. New: the dungeonBrowser.showAllActivities setting (char),
+            the SkuCoreDungeonToggleShowAll toggle (rebuilds the tab, since the set of children
+            changes), the counters in DungeonBrowser.tFilterStats, and an "activity filter"
+            dprint line carrying the individual counts of both layers.
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.12
 

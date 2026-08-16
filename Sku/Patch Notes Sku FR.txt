@@ -310,6 +310,37 @@ Changements dans Sku v42.13
             les favoris à la connexion, dont le résultat était jeté, est désormais une vraie
             demande de chargement.
 
+    Le navigateur de donjons proposait tous les donjons au lieu des seuls accessibles
+        Simple : sous « Créer une entrée » figurait la liste complète des donjons de la
+            catégorie - la même à tous les niveaux. Un personnage de niveau vingt se voyait
+            proposer les instances héroïques de l'Outreterre, un niveau soixante-dix les
+            Mines de Sombrefer, et les deux pouvaient être cochés et publiés alors qu'on ne
+            peut pas y entrer. La fenêtre visible n'a jamais fonctionné ainsi : le jeu y
+            restreint la liste à ce qui correspond à votre niveau, et c'est précisément cette
+            restriction qui manquait chez nous - nous lisions simplement la liste non filtrée.
+            Sku affiche désormais la même sélection que la fenêtre. Si vous avez malgré tout
+            besoin de la liste entière, par exemple pour vous proposer sur un donjon très
+            inférieur à votre niveau, désactivez la nouvelle entrée « Donjons adaptés
+            uniquement » ; elle se trouve juste au-dessus des groupes de donjons et indique,
+            lorsqu'elle est active, combien d'entrées elle masque. Les donjons déjà cochés
+            restent toujours visibles même si la restriction devait les masquer - sinon vous
+            publieriez quelque chose que vous ne retrouveriez plus dans le menu.
+        Technique : tGetCategoryActivities appelait
+            C_LFGList.GetAvailableActivities(categoryID) sans l'argument filters et obtenait
+            donc toute la catégorie ; les niveaux issus de GetActivityInfoTable n'étaient lus
+            que pour l'intitulé, jamais pour filtrer. Le filtrage se fait maintenant en deux
+            couches combinées par ET : d'une part via l'ensemble du jeu lui-même
+            (GetAvailableActivities(categoryID, nil, Enum.LFGListFilter.Recommended)), d'autre
+            part localement face à UnitLevel("player") au moyen de minLevelSuggestion/
+            maxLevelSuggestion - sur 2.5.x ce sont les seuls champs portant de vrais niveaux.
+            L'ensemble du jeu n'est retenu que s'il revient non vide ET comme un véritable
+            sous-ensemble de la liste non filtrée, afin qu'une signature divergente ne puisse
+            jamais vider le menu ; une donnée de niveau absente laisse passer l'entrée.
+            Nouveautés : le réglage dungeonBrowser.showAllActivities (char), la bascule
+            SkuCoreDungeonToggleShowAll (qui reconstruit l'onglet, la liste des enfants
+            changeant), les compteurs de DungeonBrowser.tFilterStats et une ligne dprint
+            « activity filter » portant les décomptes individuels des deux couches.
+
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.12
 

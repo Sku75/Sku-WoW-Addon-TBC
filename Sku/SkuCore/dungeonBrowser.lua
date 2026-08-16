@@ -70,6 +70,9 @@ local L = {
    sectionNormal  = deEn("Normale Dungeons", "Normal dungeons"),
    sectionHeroic  = deEn("Heroische Dungeons", "Heroic dungeons"),
    noDungeons     = deEn("Keine Dungeons verfügbar", "No dungeons available"),
+   noDungeonsLvl  = deEn("Keine Dungeons für deine Stufe", "No dungeons for your level", "Aucun donjon pour votre niveau"),
+   levelFilter    = deEn("Nur passende Dungeons", "Only matching dungeons", "Donjons adaptés uniquement"),
+   hiddenCount    = deEn(" ausgeblendet", " hidden", " masqués"),
    selMark        = deEn("gewählt", "selected"),
    deselectAll    = deEn("Alle abwählen", "Deselect all"),
    enroll         = deEn("Selbst anmelden", "Post entry"),
@@ -110,6 +113,9 @@ local CLASS_ROLES = {
 }
 local ROLE_NAMES = { TANK = L.roleTank, HEALER = L.roleHealer, DAMAGER = L.roleDamager }
 local LFG_CATEGORY_DUNGEON = 2
+
+-- Blizzard's own "level-appropriate" activity filter (Enum.LFGListFilter.Recommended).
+local LFG_FILTER_RECOMMENDED = (_G.Enum and _G.Enum.LFGListFilter and _G.Enum.LFGListFilter.Recommended) or 1
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Small safe helpers.
@@ -155,6 +161,7 @@ local function tDB()
    end
    d.roles = d.roles or { DAMAGER = true }
    if d.newPlayerFriendly == nil then d.newPlayerFriendly = false end
+   if d.showAllActivities == nil then d.showAllActivities = false end
    d.comment = d.comment or ""
    d.browseCategory = d.browseCategory or LFG_CATEGORY_DUNGEON
    d.listCategory = d.listCategory or LFG_CATEGORY_DUNGEON
@@ -203,17 +210,103 @@ local function tActivityInfo(activityID)
    return info
 end
 
--- All activities in a category, as the window lists them (flat, sorted).
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Level filtering.
+--
+-- The bug this fixes: GetAvailableActivities(categoryID) returns EVERY activity
+-- of the category at every level — the sighted window never shows that raw list,
+-- it narrows it first. We do the same, in two layers that are AND-ed:
+--   1. Ask the API for Blizzard's own "recommended" (= level-appropriate) subset
+--      by passing the filters argument. Only trusted when it comes back
+--      non-empty AND as a real subset of the unfiltered list, so a build whose
+--      GetAvailableActivities signature differs can never silently blank the menu.
+--   2. Gate against the player's level using the activity's own min/max
+--      suggestion — on 2.5.x those Suggestion fields are the only ones carrying
+--      real levels (plain minLevel/maxLevel come back 0). Missing data passes.
+-- An activity the player has already SELECTED is never hidden, so a selection can
+-- never go invisible while still being posted by "Selbst anmelden".
+---------------------------------------------------------------------------------------------------------------------------------------
+DungeonBrowser.tFilterStats = { total = 0, shown = 0, source = "none" }
+
+local function tRawActivityIDs(categoryID, filters)
+   if not (_G.C_LFGList and _G.C_LFGList.GetAvailableActivities) then return nil end
+   local ok, list
+   if filters then
+      -- (categoryID, groupID, filters) — the signature the listing frame uses.
+      ok, list = pcall(_G.C_LFGList.GetAvailableActivities, categoryID, nil, filters)
+   else
+      ok, list = pcall(_G.C_LFGList.GetAvailableActivities, categoryID)
+   end
+   if ok and type(list) == "table" then return list end
+   return nil
+end
+
+local function tLevelOk(info, lvl)
+   if not lvl or lvl <= 0 then return true end
+   if info.minLevel and lvl < info.minLevel then return false end
+   if info.maxLevel and lvl > info.maxLevel then return false end
+   return true
+end
+
+-- The activities of a category the player can actually sign up for (flat, sorted).
 local function tGetCategoryActivities(categoryID)
    tRequestActivities()
    local infos = {}
-   if not (_G.C_LFGList and _G.C_LFGList.GetAvailableActivities) then return infos end
-   local ok, list = pcall(_G.C_LFGList.GetAvailableActivities, categoryID)
-   if not ok or type(list) ~= "table" then return infos end
-   for _, id in ipairs(list) do
-      local info = tActivityInfo(id)
-      if info then infos[#infos + 1] = info end
+   local all = tRawActivityIDs(categoryID)
+   if type(all) ~= "table" then
+      DungeonBrowser.tFilterStats = { total = 0, shown = 0, source = "none" }
+      return infos
    end
+
+   local d = tDB()
+   local filterOn = not d.showAllActivities
+   local lvl = (_G.UnitLevel and _G.UnitLevel("player")) or 0
+
+   -- Layer 1: Blizzard's recommended subset, validated against the raw list.
+   local recSet, recCount = nil, -1
+   if filterOn then
+      local rec = tRawActivityIDs(categoryID, LFG_FILTER_RECOMMENDED)
+      if type(rec) == "table" then
+         recCount = #rec
+         if #rec > 0 and #rec < #all then
+            local inAll = {}
+            for _, id in ipairs(all) do inAll[id] = true end
+            local subset = true
+            for _, id in ipairs(rec) do
+               if not inAll[id] then subset = false; break end
+            end
+            if subset then
+               recSet = {}
+               for _, id in ipairs(rec) do recSet[id] = true end
+            end
+         end
+      end
+   end
+
+   local levelCount = 0
+   for _, id in ipairs(all) do
+      local info = tActivityInfo(id)
+      if info then
+         if tLevelOk(info, lvl) then levelCount = levelCount + 1 end
+         local keep = true
+         if filterOn and d.selection[id] ~= true then
+            keep = tLevelOk(info, lvl) and (recSet == nil or recSet[id] == true)
+         end
+         if keep then infos[#infos + 1] = info end
+      end
+   end
+
+   DungeonBrowser.tFilterStats = {
+      total  = #all,
+      shown  = #infos,
+      source = (not filterOn) and "off" or (recSet and "recommended+level" or "level"),
+   }
+   dprint("dungeonBrowser", "activity filter", {
+      category = categoryID, level = lvl, total = #all, shown = #infos,
+      recCount = recCount, levelCount = levelCount,
+      source = DungeonBrowser.tFilterStats.source,
+   })
+
    table.sort(infos, function(a, b)
       local am, bm = a.minLevel or 0, b.minLevel or 0
       if am ~= bm then return am < bm end
@@ -378,6 +471,9 @@ function DungeonBrowser:ToggleRole(role)
 end
 function DungeonBrowser:ToggleNPF()
    local d = tDB(); d.newPlayerFriendly = not d.newPlayerFriendly
+end
+function DungeonBrowser:ToggleShowAll()
+   local d = tDB(); d.showAllActivities = not d.showAllActivities
 end
 
 -- Create the listing from our own selection/roles/comment (HW context via macrotext).
@@ -560,6 +656,15 @@ local function tNavCreate()
    end)
 end
 
+-- Flipping the level filter changes WHICH children exist, so it cannot be a
+-- relabel-in-place like the other toggles — the create tab has to be rebuilt.
+function SkuCoreDungeonToggleShowAll()
+   DungeonBrowser:ToggleShowAll()
+   local on = not tDB().showAllActivities
+   tSay(L.levelFilter .. (on and L.active or ""), true)
+   tNavCreate()
+end
+
 local function tBuildCreateTab(aParent)
    DungeonBrowser.tDungeonEntries = {}
    DungeonBrowser.tRoleEntries = {}
@@ -651,10 +756,25 @@ local function tBuildCreateTab(aParent)
    end
 
    -- Aktivitäten der gewählten Kategorie, als Untermenüs pro Aktivitätsgruppe
-   -- (z. B. "Heroic Dungeons" / "Dungeons"), level-korrekt.
+   -- (z. B. "Heroic Dungeons" / "Dungeons"). Built BEFORE the filter toggle is
+   -- injected so the toggle can announce how many entries it is hiding.
    local groups = tGetActivityGroups(d.listCategory or LFG_CATEGORY_DUNGEON)
+   local stats = DungeonBrowser.tFilterStats or {}
+
+   -- Stufenfilter (an = nur was zur eigenen Stufe passt, wie im sichtbaren Fenster)
+   do
+      local on = not d.showAllActivities
+      local lbl = L.levelFilter .. (on and L.active or "")
+      local hidden = (stats.total or 0) - (stats.shown or 0)
+      if on and hidden > 0 then lbl = lbl .. ", " .. hidden .. L.hiddenCount end
+      local e = Inject(aParent, lbl)
+      e.macrotext = "/run SkuCoreDungeonToggleShowAll()"
+   end
+
    if #groups == 0 then
-      local tNone = Inject(aParent, L.noDungeons); tNone.dynamic = false
+      local tNone = Inject(aParent, (not d.showAllActivities and (stats.total or 0) > 0)
+                                    and L.noDungeonsLvl or L.noDungeons)
+      tNone.dynamic = false
    else
       for _, grp in ipairs(groups) do
          local gEntry = Inject(aParent, grp.name)
