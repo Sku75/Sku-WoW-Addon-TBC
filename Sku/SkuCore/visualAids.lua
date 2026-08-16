@@ -390,7 +390,18 @@ local function tInstallCaptureBindings(f)
 	dprint("SkuKeyBind capture bindings armed", "count=", tArmed, "hasSetOverride=", SetOverrideBindingClick ~= nil)
 end
 
-local function tIsBlockedKey(aKey)
+local function tIsBlockedKey(aKey, aBindingConst)
+	-- The menu's own click keys live ON the reserved ENTER family (ENTER is the
+	-- default of SKU_KEY_MENULEFTCLICK, CTRL-ENTER that of SKU_KEY_MENURIGHTCLICK),
+	-- and the list below matches "ENTER" as a SUBSTRING -- so without this those two
+	-- could not be assigned at all, not even back to their own default. Arrows,
+	-- backspace and tab stay blocked even for them: they drive menu NAVIGATION.
+	-- Same exemption as in SkuCore/Options.lua.
+	if aBindingConst
+		and (aBindingConst == "SKU_KEY_MENULEFTCLICK" or aBindingConst == "SKU_KEY_MENURIGHTCLICK")
+		and string.find(string.upper(aKey), "ENTER", 1, true) then
+		return false
+	end
 	for z = 1, #tBlockedKeysParts do
 		if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then
 			return true
@@ -440,7 +451,7 @@ local function tStartCapture(aMenuTarget, aBindingConst, aSecondary)
 					dprint("SkuKeyBind OnClick abort: no bindingConst/menuTarget")
 					return
 				end
-				if tIsBlockedKey(aKey) then
+				if tIsBlockedKey(aKey, self.bindingConst) then
 					dprint("SkuKeyBind OnClick blocked key", aKey)
 					SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
 					self.prevKey = nil

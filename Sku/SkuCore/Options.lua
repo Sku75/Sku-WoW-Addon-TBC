@@ -847,6 +847,19 @@ local function tRebindCaptureKeyBind(self, aSecondary)
 									-- them onto (possibly modified) arrows. Skip the block list for those
 									-- consts only; every other bind keeps the reserved-key protection.
 									local tAllowReserved = string.find(self.bindingConst, "SKU_KEY_COMBATMENU_", 1, true) ~= nil
+									-- The menu's own click keys LIVE on the reserved ENTER family: ENTER is
+									-- the default of SKU_KEY_MENULEFTCLICK, CTRL-ENTER that of
+									-- SKU_KEY_MENURIGHTCLICK. The block list matches "ENTER" as a SUBSTRING,
+									-- so it refused every one of them -- those two bindings could not be
+									-- assigned at all, not even back to their own default ("Ungueltig" on any
+									-- Enter, with or without a modifier). Allow the ENTER family for them.
+									-- Arrows, backspace and tab stay blocked even there: they drive menu
+									-- NAVIGATION, which is not part of this binding and would break silently.
+									if not tAllowReserved
+										and (self.bindingConst == "SKU_KEY_MENULEFTCLICK" or self.bindingConst == "SKU_KEY_MENURIGHTCLICK")
+										and string.find(string.upper(aKey), "ENTER", 1, true) then
+										tAllowReserved = true
+									end
 									if not tAllowReserved then
 										for z = 1, #tBlockedKeysParts do
 											if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then
