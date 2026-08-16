@@ -229,6 +229,80 @@ Aenderungen in Sku v42.13
             Ansage wie die neue Taste, weil ein eigener Aufruf mit aOverwrite die
             Warteschlange leert und sich selbst wieder verschluckt haette.
 
+    Gegenstaende in der Bank heissen wieder so, wie sie heissen
+        Einfach: In der Bank - und gelegentlich auch anderswo - stand bei manchen
+            Gegenstaenden statt des Namens der Satz "Frage Gegenstandsinformationen ab".
+            Das ist keine Fehlermeldung des Addons, sondern ein Platzhalter des Spiels: der
+            Client zeigt ihn, solange er die Daten eines Gegenstands noch vom Server holt.
+            Betroffen waren vor allem Gegenstaende mit einem umfangreichen Tooltip - Rezepte,
+            Setteile, gesockelte Ausruestung -, weil deren Anzeige erst dann vollstaendig
+            ist, wenn ALLE darin erwaehnten Daten eingetroffen sind. Bisher uebernahm Sku
+            diesen Platzhalter als NAMEN des Eintrags, und blieb dabei: er verschwand nicht
+            mehr, auch nicht nach mehrfachem Anlaufen oder nach Verlassen und Wiederbetreten
+            des Menues. Doppelt aergerlich, weil der Satz fuer jeden betroffenen Platz gleich
+            lautet - mehrere wartende Gegenstaende klangen identisch, waren nicht
+            auseinanderzuhalten und nicht gezielt anzusteuern, und beim Sortieren nach Namen
+            wie beim Anspringen ueber die Anfangsbuchstaben zaehlte ebenfalls dieser Satz.
+            Jetzt nimmt Sku den Namen aus der eigenen mitgelieferten Gegenstandsliste, wenn
+            der Client ihn noch nicht hat, haengt nur ein kurzes "(laedt)" an, fordert die
+            Daten beim Server aktiv an und liest den Eintrag neu vor, sobald sie da sind.
+            Beim Oeffnen der Bank werden die Daten aller Bankplaetze ausserdem schon vorab
+            angefordert, sodass der erste Durchgang meist gar nicht erst wartet.
+        Technisch: Der Satz ist die Spielkonstante RETRIEVING_ITEM_INFO. Gegen sie gab es im
+            Addon keine einzige Pruefung - die einzige Erwaehnung im Quelltext stand in einem
+            Entwicklerwerkzeug und verglich einen fest verdrahteten deutschen Text. Dauerhaft
+            blieb der Zustand aus drei Gruenden: es gab nirgends einen Empfaenger fuer
+            GET_ITEM_INFO_RECEIVED, es wurde nie ein Ladeauftrag gestellt (das Beschreiben
+            eines Tooltips ist keine Anforderung, die man verfolgen kann), und es gab keinen
+            zweiten Weg zu einem Namen. Neu sind SkuUtil:IsRetrievingItemInfo (erkennt den
+            Platzhalter ueber die Spielkonstante statt ueber deutschen Text),
+            SkuCore:ResolveItemName (Client-Cache, dann SkuDB.itemLookup, dann der Name im
+            Link), SkuCore:PendingItemLabel, SkuCore:RequestItemData und
+            SkuCore:ContinueOnItemData ueber Item:CreateFromItemID():ContinueOnItemLoad. Ein
+            eigener Ereignis-Rahmen sammelt GET_ITEM_INFO_RECEIVED und loest daraus einen
+            einzigen, gebuendelten stillen Neuaufbau aus; BANKFRAME_OPENED fordert Fach -1
+            und die Bankbeutel 5 bis 11 vorab an. Dass ausgerechnet die Bank betroffen war,
+            hat einen eigenen Grund: SetBagItem(-1, Platz) liefert auf 2.5.6 nichts, weshalb
+            der Beutel-Umbau dort auf SetHyperlink(GetContainerItemLink(...)) auswich -
+            ausgerechnet den Weg, der vom Gegenstands-Cache abhaengt. Bankplaetze sind echte
+            Ausruestungsplaetze (Platz n = Ausruestungsplatz n + 39), also liest
+            SetInventoryItem sie genauso oertlich, wie SetBagItem einen Beutel liest; das ist
+            kein Rueckschritt zu den ausgelesenen Fensterelementen, die der Umbau abgeloest
+            hat - kein Rahmen, kein OnEnter, kein Aufklappen der Beutel. Ein Ausweichweg
+            dahinter wurde bewusst nicht stehen gelassen: er wuerde nur verdecken, ob der
+            richtige Weg funktioniert.
+
+    Gegenstaende verschwinden nicht mehr aus den Beutelisten von AtlasLoot
+        Einfach: In den Beutelisten fehlten Eintraege - ohne Luecke, ohne Hinweis. Eine Liste
+            mit zwoelf moeglichen Beutestuecken zeigte sieben und las sich wie eine
+            vollstaendige Liste mit sieben. Die Ursache ist dieselbe wie beim Punkt davor:
+            Gegenstaende, deren Daten der Client noch nicht vom Server hat, wurden nicht als
+            Gegenstand erkannt und ganz weggelassen. Das traf ausgerechnet die Eintraege, um
+            die es hier geht, denn eine Beuteliste besteht fast nur aus Gegenstaenden, die man
+            noch nie erbeutet oder angesehen hat - je unbekannter der Gegner, desto mehr
+            fehlte. Wiederholbar war es auch nicht: dieselbe Liste ein zweites Mal geoeffnet
+            konnte laenger sein, und die Nummern der Eintraege verschoben sich. Jetzt sind
+            alle Eintraege da, und die Suche nach einem Namen findet auch Gegenstaende, die
+            man noch nie in der Hand hatte. Die Listen werden dadurch laenger als gewohnt,
+            und die Nummern der Eintraege verschieben sich einmalig entsprechend.
+        Technisch: An vier Stellen entschied ein Verteiler anhand von
+            C_Item.GetItemNameByID(id), ob eine Beutezeile ein Gegenstand oder ein Zauber ist
+            - eine Pruefung, die "kein Gegenstand" und "vom Server noch nicht geliefert"
+            vermischt. Ein noch nicht geladener Gegenstand fiel in den Zauber-Zweig,
+            GetSpellInfo lieferte fuer ihn nichts, und die Zeile wurde verworfen. Die Absicht
+            der Pruefung ist richtig (keine unsinnigen Kennzahlen im Menue), nur war die
+            Frage falsch gestellt: GetItemInfoInstant beantwortet sie oertlich aus der
+            Gegenstandsdatenbank des Clients. Dafuer gibt es jetzt den Helfer tIsItemId; an
+            einer der vier Stellen war das Problem schon einmal einzeln mit einem
+            SkuDB-Zusatz umgangen worden, der damit entfaellt. Die Reihenfolge der Zweige
+            bleibt unveraendert. Ausserdem entfaellt der fruehe Ausstieg im "item"-Zweig des
+            Menuebauers; der Eintrag heisst SkuCore:ResolveItemName oder - stabil -
+            "Gegenstand <Kennzahl>", bewusst nicht die "(laedt)"-Form, die den Eintrag beim
+            Nachladen unter dem Cursor verschieben wuerde. tItemNameTable fuer die Suche nach
+            Namen wird ebenfalls ueber ResolveItemName gefuellt, und der beim Anmelden ins
+            Leere laufende GetItemNameByID-Aufruf auf die Favoriten ist jetzt ein echter
+            Ladeauftrag.
+
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.12
 

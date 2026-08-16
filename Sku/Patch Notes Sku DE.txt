@@ -4,6 +4,306 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v42.13
+
+    Leistungsverbesserungen und Korrekturen beim Laden der Zauberdatenbank
+        Einfach: Beim Anmelden meldeten einige Spieler einen gesprochenen "Sku Datenbank
+            Fehler, Datensatz spells". Gemeldet wurde das von Era-Spielern, der
+            gemeinsame Nenner ist aber die Rechenleistung und nicht der Client: auf einem
+            schnellen Rechner passierte es nie, auf einem schwaecheren jedes Mal, und auf
+            TBC waere es genauso moeglich gewesen. Die Datenbank selbst war
+            dabei nie kaputt: Gescheitert ist nur die daraus abgeleitete Auswahlliste fuer
+            die Auren, die in EINEM Durchgang ueber rund 90.000 Eintraege aufgebaut wurde.
+            Auf einem langsameren Rechner brach der Client diesen Durchgang mit "script ran
+            too long" ab - und weil die Liste beim Aufbau direkt beschrieben wurde, blieb sie
+            danach halb gefuellt: In den Aura-Einstellungen fehlte ein Teil der Zauber, und
+            Auren, die auf einen fehlenden Eintrag zeigten, sagten nichts mehr an oder
+            liessen das Menue mit einem Fehler stehen. Der Aufbau laeuft jetzt in kleinen
+            Haeppchen ueber mehrere Bilder verteilt, genau wie der uebrige Datenbankaufbau
+            nach dem Anmelden, und wird erst ganz am Ende in einem Stueck uebernommen. Bricht
+            er trotzdem einmal ab, bleiben die bisherigen Listen unveraendert stehen statt
+            halb gefuellt, es wird kein Datenbankfehler mehr gesprochen, und der Rest der
+            Zauberdaten gilt weiterhin als in Ordnung. Zusaetzlich wird die Liste nur noch
+            einmal pro Sitzung gebaut statt bei jedem Ladebildschirm neu.
+        Technisch: SkuAuras:BuildAttributeValueLists laeuft ueber itemLookup UND SpellDataTBC
+            und legt pro Zeile eine Tabelle und ein bis zwei zusammengesetzte Zeichenketten
+            an. Der Aufruf hing bisher an zwei Stellen, beide synchron: am Build-Step
+            "auraValueLists" (nach items+spells) und an PLAYER_ENTERING_WORLD. Die Funktion
+            nimmt jetzt einen optionalen Yield-Callback, den sie alle 1000 Zeilen abfragt,
+            baut in lokale Tabellen und veroeffentlicht diese am Ende mit je einer Zuweisung
+            (atomar - ein Abbruch aendert gar nichts mehr). Gefahren wird sie von einer
+            eigenen Coroutine mit OnUpdate-Pumpe, die sich das gemeinsame Frame-Budget nach
+            dem Anmelden teilt (Sku:BuildFrameBudgetMs, registriert als Build-Worker
+            "skuAuraLists") - drei laufende Worker kosten weiterhin zusammen 150 ms pro Bild.
+            Der Build-Step startet nur noch diesen Treiber und ruft ctx.fail nicht mehr auf:
+            Ein Fehler der abgeleiteten Liste hatte zuvor die ganze Datenfamilie "spells" als
+            gescheitert markiert und die Fehleransage ausgeloest, obwohl die Zauberdaten
+            vollstaendig waren. Fehler landen jetzt in SkuErrorLog ("skuAuraLists") und im
+            Debug-Log. PLAYER_ENTERING_WORLD startet denselben Treiber, der nach einem
+            erfolgreichen Aufbau ein No-Op ist - der bisherige komplette Neuaufbau bei jedem
+            Zonenwechsel und jedem Instanzbetritt entfaellt damit. Ausserdem ueberspringt der
+            Aufbau eine Zauberzeile ohne Namen fuer die aktive Sprache, statt an ihr
+            auszusteigen, und die drei ungeschuetzten friendlyName-Zugriffe im Aura-Menue
+            fallen auf den Rohschluessel zurueck.
+
+    Ein Gegner, der euch vor seinem Tod vergiftet hat, wird nicht mehr weitergezaehlt
+        Einfach: Die Ansage der Gegnerzahl war seit v42.10 in normalen Kaempfen zuverlaessig,
+            hatte aber einen Fall uebrig: Wenn ein Gegner euch kurz vor seinem Tod ein Gift
+            oder einen anderen anhaltenden Effekt verpasst hat, fiel die Zahl bei seinem Tod
+            korrekt, sprang kurz darauf wieder um eins hoch und fiel erst dann endgueltig,
+            wenn das Gift ablief - der Gegner war da laengst tot. Das ist behoben, ohne dass
+            an der Erkennung selbst etwas veraendert wurde: es wird nichts Neues gezaehlt,
+            eine Sache hoert nur auf, faelschlich mitgezaehlt zu werden.
+        Technisch: Ein gestorbener Gegner wird per GUID gemerkt, damit ihn eine nachlaufende
+            Kampf-Log-Zeile nicht wiederbeleben kann. Diese Markierung wurde bisher in
+            PLAYER_REGEN_ENABLED komplett geleert - also genau in dem Moment, in dem euch der
+            Tod des letzten Gegners aus dem Kampf nimmt, und damit unmittelbar bevor der
+            erste Gifttick eintrifft. Jeder Tick ist eine Kampf-Log-Zeile mit dem toten
+            Gegner als Quelle und euch als Ziel; die Aufnahme-Logik liest das als "ein Gegner
+            kaempft gegen uns" und nahm die Leiche ueber ihre GUID wieder auf. Die zweite
+            Null kam danach nur noch ueber den 6-Sekunden-Leerlauf-Sweep nach dem letzten
+            Tick zustande. Die Markierung traegt jetzt einen Zeitstempel und wird am
+            Kampfende nicht mehr pauschal geloescht, sondern nur noch, wenn sie aelter als 60
+            Sekunden ist. Innerhalb eines Kampfes aendert sich damit gar nichts - dort galt
+            die Markierung ohnehin bis zum Kampfende, weshalb der Fall "einer von zwei
+            Gegnern stirbt vergiftet, der zweite lebt weiter" schon vorher richtig gezaehlt
+            wurde. Es kommt kein neuer Zustand und keine neue Sonderregel dazu, nur eine
+            Lebensdauer fuer eine Markierung, die es schon gab. Die vorhandene Ausnahme
+            bleibt: taucht dieselbe GUID nachweislich lebend an einem Unit-Token auf, wird
+            die Markierung sofort aufgehoben, ein echter Gegner kann also nie dauerhaft aus
+            der Zaehlung verschwinden.
+
+    Ein erfolgreich abgeschlossener Handel wurde als zurueckgezogene Bestaetigung gemeldet
+        Einfach: Kam ein Handel wirklich zustande, endete er trotzdem mit "<Partner> hat die
+            Bestaetigung zurueckgezogen". Es war nichts schiefgegangen: der Server raeumt
+            beim Abschluss erst beide Bestaetigungshaken ab und schliesst danach das Fenster,
+            und dieses Abraeumen sah genauso aus wie ein echter Rueckzug. Die falsche Zeile
+            entfaellt jetzt. Eine "Handel abgeschlossen"-Ansage gibt es dafuer bewusst nicht:
+            der Client 2.5.6 liefert kein Signal, das Abschluss von Abbruch unterscheidet,
+            und eine geratene Meldung waere schlechter als keine.
+        Technisch: Mitgeschnitten fuer eine erfolgreiche Verzauberung im Handel, alles
+            innerhalb einer Sekunde: TRADE_ACCEPT_UPDATE(1,1) -> (0,1) -> (0,0) ->
+            TRADE_CLOSED. TRADE_ACCEPT_UPDATE las diese 1->0-Uebergaenge als echten Rueckzug.
+            Unterscheiden laesst sich das nicht: TRADE_CLOSED traegt keine Nutzdaten, und
+            ERR_TRADE_COMPLETE / ERR_TRADE_CANCELLED existieren auf 2.5.6 nicht (gegen die
+            mitgelieferte TradeInfoDocumentation.lua geprueft). Die beiden Rueckzugs-Ansagen
+            warten jetzt 0,5 s hinter einem Generationszaehler, den ResetTradeAcceptState()
+            an jeder Handelsgrenze hochzaehlt, und entfallen, wenn der Handel beendet ist,
+            das Fenster weg ist oder die Seite wieder auf bestaetigt steht.
+
+    "Handel bestaetigt" wurde jedes Mal verschluckt
+        Einfach: Wer den Handel aus dem Menue heraus bestaetigt hat, hat die eigene
+            Bestaetigung nie gehoert. Und von mehreren Handelsansagen kurz hintereinander
+            wurde ueberhaupt nur die letzte gesprochen - also ausgerechnet die falsche. Jetzt
+            kommen sie alle, in der richtigen Reihenfolge.
+        Technisch: OutputStringBTtts haengt mit aOverwrite=true einen "queuereset" an, und
+            die Pumpe loescht alles, was VOR diesem Marker in der Warteschlange steht - in
+            einem Schwung frass also jede Handelsansage ihre Vorgaengerin. Alle
+            Handelsansagen uebergeben jetzt false. Das allein rettet die eigene Bestaetigung
+            noch nicht: bestaetigt man aus dem Menue, steht die Serverantwort schon in der
+            Schlange, bevor das Menue seine eigene Zeile fuer den Tastendruck anhaengt, deren
+            Reset sie dann loescht. Die Bestaetigungsansagen laufen deshalb ueber tSayAccept
+            mit 0,35 s Verzoegerung hinter die Menuezeile. Reine Reihenfolge, kein
+            Zustandsraten - und bewusst ohne Generationspruefung, denn ein unmittelbar danach
+            schliessender Handel ist genau der Fall, in dem diese Bestaetigung zaehlt.
+
+    Enter entzaubert bzw. verzaubert einen Taschengegenstand wieder - in beiden Reihenfolgen
+        Einfach: Wer Entzaubern wirkt (oder eine Verzauberung, einen Ruestungsflicken, ein
+            Waffenoel aufnimmt), waehrend er in der Taschenliste bereits auf dem Zielobjekt
+            steht, und dann Enter drueckt, bei dem passierte bisher gar nichts - nur
+            Strg+Enter half. Die andere Reihenfolge ging: erst wirken, dann zum Gegenstand
+            navigieren. Enter wendet jetzt in beiden Reihenfolgen an. Der Linksklick ist
+            dafuer tatsaechlich der spieleigene Weg: im Taschen-Code von Blizzard benutzt ein
+            Linksklick auf einen Gegenstand diesen fuer den Zauber, solange ein Zauber auf
+            ein Gegenstandsziel wartet. In v41 lief das ueber den alten Eintrag
+            "Linksklick"; der Menue-Umbau in v42.00 hat ihn verloren, und v42.04 hat das
+            Anwenden nur fuer die Reihenfolge "erst wirken" zurueckgeholt.
+        Technisch: Der sichere Linksklick-Knopf wird beim FOKUSSIEREN eines Eintrags
+            bestueckt, und das Anwenden-Makro eines Taschengegenstands ("/use Tasche Slot")
+            nur, solange in diesem Moment SpellIsTargeting() wahr ist. Wird danach gewirkt,
+            trug der Knopf weiter die Bestueckung von vorher - bei einem Taschengegenstand
+            also gar keine -, und der in PreClick genommene Targeting-Schnappschuss laesst
+            zusaetzlich den insecure PickupContainerItem-Rueckfall aussetzen: der Tastendruck
+            tat buchstaeblich nichts. Die Bestueckung ist aus dem generischen OnEnter nach
+            SkuOptions:StageClickMacros gewandert (beide sicheren Knoepfe) und wird von zwei
+            Stellen erneut ausgefuehrt: CURRENT_SPELL_CAST_CHANGED, dessen Handler leer war
+            und dessen Dispatcher-Signatur um eine Stelle verschoben war, und dem PreClick
+            des Linksklick-Knopfes selbst, der laeuft, bevor der sichere Handler die
+            Attribute liest - der Tausch zaehlt also noch fuer genau diesen Tastendruck.
+            Neu bestueckt werden nur Eintraege mit Anwenden-Makro, nur bei offenem Menue und
+            nur ausserhalb des Kampfes.
+
+    Strg+Enter auf einem Haendlergegenstand oeffnete die Anprobe, statt zu kaufen
+        Einfach: Beim Haendler soll Strg+Enter (Rechtsklick) auf einem Gegenstand einen
+            davon kaufen. Stattdessen ging die Anprobe auf. Der Kauf ueber das Untermenue
+            des Gegenstands hat immer funktioniert und bleibt unveraendert; die Taste kauft
+            jetzt ebenfalls, im Rueckkauf-Reiter auch.
+        Technisch: Die Rechtsklick-Taste traegt standardmaessig STRG, ein Makro "/click
+            <Frame> RightButton" liest den LIVE-Tastaturzustand, und das XML jedes nativen
+            Gegenstandsknopfes leitet JEDEN modifizierten Klick auf *_OnModifiedClick ->
+            HandleModifiedItemClick -> DressUpLink um - der einfache Rechtsklick-Zweig wird
+            nie erreicht. Das ist dieselbe Falle, die seinerzeit die Oele auf angelegten
+            Waffen kaputtgemacht hat, dort mit "/use <Slot>" geloest. Haendlergegenstaende
+            rufen jetzt direkt Blizzards unverpacktes MerchantItemButton_OnClick auf, womit
+            die Abfragen fuer Sonderwaehrung und hohen Preis erhalten bleiben. Taschen, Bank
+            und Ausruestungsslots waren schon immun, weil sie ueber "/use" bzw. die
+            Container-API laufen. Ueberall sonst, wo Sku einen nativen Knopf klickt (Beute,
+            Handel, Post, Zauberbuch, Gildenbank), hat die Rechtsklick-Taste keine eigene
+            Aktion zu verlieren - dort passiert bei Strg+Enter nichts oder es kommt die
+            Anprobe, waehrend Enter die eigentliche Aktion ausloest.
+
+    Der Linksklick darf jetzt auf eine Taste mit Umschalt, Strg oder Alt gelegt werden
+        Einfach: Die Aktivieren-Taste laesst sich auf eine Kombination wie Strg+Enter
+            umbelegen und funktioniert trotzdem. Vorher haette so eine Taste beim Haendler
+            oder auf einem angelegten Gegenstand die Anprobe geoeffnet statt zu handeln -
+            aus demselben Grund wie beim Rechtsklick auf einen Haendlergegenstand.
+        Technisch: Eintraege, deren Klick von einem Modifikator verschluckt wuerde, tragen
+            jetzt eine zweite, modifikatorfeste Bestueckung (plainMacrotext), die die Aktion
+            direkt aufruft, statt den nativen Knopf zu klicken: Haendlergegenstaende ueber
+            Blizzards unverpacktes MerchantItemButton_OnClick, Ausruestungsslots ueber
+            PickupInventoryItem, Handelsplaetze ueber ClickTradeButton bzw.
+            ClickTargetTradeButton. Gestaged wird sie nur, solange ein Modifikator
+            tatsaechlich gedrueckt ist - entschieden im PreClick des sicheren Knopfes, weil
+            nur dort der Tastaturzustand lesbar ist und er noch vor dem Lesen der Attribute
+            laeuft. Mit dem modifikatorfreien Standard-Enter bleibt die Bestueckung
+            byte-gleich wie bisher, dort kann also nichts kaputtgehen. Taschen, Bank,
+            Questbelohnungen, Gildenbank, Popups und Reiter brauchten keinen Eintrag: sie
+            laufen entweder ueber die Container-API oder haben gar keinen
+            Modifikator-Zweig. Beute-Knoepfe, Postanhaenge und Zauberbuch-Knoepfe haben
+            diesen Zweig zwar, werden von Sku aber nie geklickt - Beute hat eine eigene
+            Behandlung, Anhaenge laufen ueber TakeInboxItem, und das Zauberbuch gehoert
+            nicht zu den Fenstern, die Sku oeffnet. Kaeme es dazu, braucht es dort
+            "/cast <Name>" statt dieses Verfahrens, denn Zaubern ist geschuetzt und kann
+            von keinem Direktaufruf ausgeloest werden.
+
+    Die Klick-Tasten des Menues liessen sich ueberhaupt nicht belegen
+        Einfach: In der Tastenbelegung antworteten "Menue; Linksklick/aktivieren" und
+            "Menue; Rechtsklick" auf jedes gedrueckte Enter mit "Ungueltig. Andere Taste
+            druecken." - mit und ohne Modifikator - und liessen sich damit gar nicht
+            setzen, nicht einmal auf ihren eigenen Standard zurueck. Beide sind jetzt
+            belegbar.
+        Technisch: Die Liste der gesperrten Tasten wird als TEILSTRING geprueft, "ENTER"
+            trifft also auch NUMPADENTER und CTRL-ENTER. Sie schuetzt die
+            Navigationstasten des Menues - genau auf dieser Familie leben aber diese
+            beiden Belegungen: Enter ist der Standard der einen, Strg+Enter der der
+            anderen. Sie sind jetzt von der Sperre ausgenommen, und zwar nur fuer
+            Enter-Tasten; Pfeile, Rueckschritt und Tabulator bleiben auch dort gesperrt,
+            weil sie die Navigation steuern, die nicht Teil dieser Belegung ist. Fuer die
+            Kampfmenue-Tasten gab es so eine Ausnahme bereits. Umgesetzt an beiden
+            Stellen, die eine Taste abfangen: im Tastenbelegungs-Menue und im
+            Einzeleintrag-Helfer.
+
+    Die Menue-Klicktaste loescht die Spielbelegung derselben Taste nicht mehr
+        Einfach: Wer "Menue; Linksklick/aktivieren" wieder auf Enter legte, bekam die
+            Warnung "bereits belegt mit Chat oeffnen" und, nach dem Bestaetigen, genau
+            das: Enter oeffnete den Chat nicht mehr. Zurueck ging es auch nicht, denn
+            fuer Spielbefehle lehnte die Tastenbelegung jedes Enter als ungueltig ab.
+            Dabei haben sich diese beiden Belegungen nie gestoert - sie lagen jahrelang
+            zusammen auf Enter: solange das Menue offen ist, aktiviert Enter den
+            Eintrag, sonst oeffnet es den Chat. Genau so ist es wieder. Wird eine Taste
+            auf diese Weise geteilt, sagt Sku es jetzt an ("Hinweis! Diese Taste wird
+            auch benutzt von ... Beide Belegungen bleiben erhalten."), statt die andere
+            Belegung zu entfernen. Wem der Chat schon abhanden gekommen ist: "Chat
+            oeffnen" im Tastenbelegungs-Menue einfach wieder auf Enter legen, das geht
+            jetzt. Am uebrigen Konfliktverhalten aendert sich nichts - zwei Sku-Tasten
+            auf derselben Taste werden weiterhin gemeldet und die alte geloest.
+        Technisch: Die Klicktasten des Menues sind nie eine echte Belegung, sondern eine
+            Override-Bindung auf dem sicheren Menue-Knopf, die dessen OnShow aufzieht und
+            dessen OnHide wieder abraeumt - sie existiert also nur, solange das Menue
+            offen ist, und uebertoent den Spielbefehl genau in dieser Zeit. Dasselbe gilt
+            fuer die Kampfmenue-Tasten, die nur waehrend eines Kampfes aufgezogen sind.
+            Die Konfliktpruefung kannte diesen Unterschied nicht: sie vergleicht blanke
+            Tastennamen, meldete deshalb einen Konflikt und rief beim Bestaetigen
+            SetBinding(Taste) samt SaveBindings auf - was OPENCHAT dauerhaft von Enter
+            entfernte. Erreichbar wurde das erst dadurch, dass diese Belegungen seit dem
+            Fix darueber ueberhaupt auf Enter gesetzt werden koennen. Die betroffenen
+            Eintraege tragen jetzt in skuDefaultKeyBindings ein Merkmal
+            transientOverride, abgefragt ueber SkuOptions:SkuKeyBindsIsTransientOverride;
+            fuer sie entfaellt die Konfliktbehandlung gegen SPIELBEFEHLE (keine
+            Rueckfrage, kein Entbinden) und wird durch den gesprochenen Hinweis ersetzt.
+            Gegen andere Sku-Belegungen bleibt sie vollstaendig erhalten, denn die sind
+            gleichzeitig aufgezogen und verdraengen sich wirklich. Dieselbe Regel gilt in
+            der Gegenrichtung, damit ein Spielbefehl die Menuetaste nicht loest, und die
+            Enter-Familie ist beim Belegen von Spielbefehlen nicht mehr gesperrt -
+            Pfeile, Rueckschritt und Tabulator bleiben es. Der Hinweis haengt an derselben
+            Ansage wie die neue Taste, weil ein eigener Aufruf mit aOverwrite die
+            Warteschlange leert und sich selbst wieder verschluckt haette.
+
+    Gegenstaende in der Bank heissen wieder so, wie sie heissen
+        Einfach: In der Bank - und gelegentlich auch anderswo - stand bei manchen
+            Gegenstaenden statt des Namens der Satz "Frage Gegenstandsinformationen ab".
+            Das ist keine Fehlermeldung des Addons, sondern ein Platzhalter des Spiels: der
+            Client zeigt ihn, solange er die Daten eines Gegenstands noch vom Server holt.
+            Betroffen waren vor allem Gegenstaende mit einem umfangreichen Tooltip - Rezepte,
+            Setteile, gesockelte Ausruestung -, weil deren Anzeige erst dann vollstaendig
+            ist, wenn ALLE darin erwaehnten Daten eingetroffen sind. Bisher uebernahm Sku
+            diesen Platzhalter als NAMEN des Eintrags, und blieb dabei: er verschwand nicht
+            mehr, auch nicht nach mehrfachem Anlaufen oder nach Verlassen und Wiederbetreten
+            des Menues. Doppelt aergerlich, weil der Satz fuer jeden betroffenen Platz gleich
+            lautet - mehrere wartende Gegenstaende klangen identisch, waren nicht
+            auseinanderzuhalten und nicht gezielt anzusteuern, und beim Sortieren nach Namen
+            wie beim Anspringen ueber die Anfangsbuchstaben zaehlte ebenfalls dieser Satz.
+            Jetzt nimmt Sku den Namen aus der eigenen mitgelieferten Gegenstandsliste, wenn
+            der Client ihn noch nicht hat, haengt nur ein kurzes "(laedt)" an, fordert die
+            Daten beim Server aktiv an und liest den Eintrag neu vor, sobald sie da sind.
+            Beim Oeffnen der Bank werden die Daten aller Bankplaetze ausserdem schon vorab
+            angefordert, sodass der erste Durchgang meist gar nicht erst wartet.
+        Technisch: Der Satz ist die Spielkonstante RETRIEVING_ITEM_INFO. Gegen sie gab es im
+            Addon keine einzige Pruefung - die einzige Erwaehnung im Quelltext stand in einem
+            Entwicklerwerkzeug und verglich einen fest verdrahteten deutschen Text. Dauerhaft
+            blieb der Zustand aus drei Gruenden: es gab nirgends einen Empfaenger fuer
+            GET_ITEM_INFO_RECEIVED, es wurde nie ein Ladeauftrag gestellt (das Beschreiben
+            eines Tooltips ist keine Anforderung, die man verfolgen kann), und es gab keinen
+            zweiten Weg zu einem Namen. Neu sind SkuUtil:IsRetrievingItemInfo (erkennt den
+            Platzhalter ueber die Spielkonstante statt ueber deutschen Text),
+            SkuCore:ResolveItemName (Client-Cache, dann SkuDB.itemLookup, dann der Name im
+            Link), SkuCore:PendingItemLabel, SkuCore:RequestItemData und
+            SkuCore:ContinueOnItemData ueber Item:CreateFromItemID():ContinueOnItemLoad. Ein
+            eigener Ereignis-Rahmen sammelt GET_ITEM_INFO_RECEIVED und loest daraus einen
+            einzigen, gebuendelten stillen Neuaufbau aus; BANKFRAME_OPENED fordert Fach -1
+            und die Bankbeutel 5 bis 11 vorab an. Dass ausgerechnet die Bank betroffen war,
+            hat einen eigenen Grund: SetBagItem(-1, Platz) liefert auf 2.5.6 nichts, weshalb
+            der Beutel-Umbau dort auf SetHyperlink(GetContainerItemLink(...)) auswich -
+            ausgerechnet den Weg, der vom Gegenstands-Cache abhaengt. Bankplaetze sind echte
+            Ausruestungsplaetze (Platz n = Ausruestungsplatz n + 39), also liest
+            SetInventoryItem sie genauso oertlich, wie SetBagItem einen Beutel liest; das ist
+            kein Rueckschritt zu den ausgelesenen Fensterelementen, die der Umbau abgeloest
+            hat - kein Rahmen, kein OnEnter, kein Aufklappen der Beutel. Ein Ausweichweg
+            dahinter wurde bewusst nicht stehen gelassen: er wuerde nur verdecken, ob der
+            richtige Weg funktioniert.
+
+    Gegenstaende verschwinden nicht mehr aus den Beutelisten von AtlasLoot
+        Einfach: In den Beutelisten fehlten Eintraege - ohne Luecke, ohne Hinweis. Eine Liste
+            mit zwoelf moeglichen Beutestuecken zeigte sieben und las sich wie eine
+            vollstaendige Liste mit sieben. Die Ursache ist dieselbe wie beim Punkt davor:
+            Gegenstaende, deren Daten der Client noch nicht vom Server hat, wurden nicht als
+            Gegenstand erkannt und ganz weggelassen. Das traf ausgerechnet die Eintraege, um
+            die es hier geht, denn eine Beuteliste besteht fast nur aus Gegenstaenden, die man
+            noch nie erbeutet oder angesehen hat - je unbekannter der Gegner, desto mehr
+            fehlte. Wiederholbar war es auch nicht: dieselbe Liste ein zweites Mal geoeffnet
+            konnte laenger sein, und die Nummern der Eintraege verschoben sich. Jetzt sind
+            alle Eintraege da, und die Suche nach einem Namen findet auch Gegenstaende, die
+            man noch nie in der Hand hatte. Die Listen werden dadurch laenger als gewohnt,
+            und die Nummern der Eintraege verschieben sich einmalig entsprechend.
+        Technisch: An vier Stellen entschied ein Verteiler anhand von
+            C_Item.GetItemNameByID(id), ob eine Beutezeile ein Gegenstand oder ein Zauber ist
+            - eine Pruefung, die "kein Gegenstand" und "vom Server noch nicht geliefert"
+            vermischt. Ein noch nicht geladener Gegenstand fiel in den Zauber-Zweig,
+            GetSpellInfo lieferte fuer ihn nichts, und die Zeile wurde verworfen. Die Absicht
+            der Pruefung ist richtig (keine unsinnigen Kennzahlen im Menue), nur war die
+            Frage falsch gestellt: GetItemInfoInstant beantwortet sie oertlich aus der
+            Gegenstandsdatenbank des Clients. Dafuer gibt es jetzt den Helfer tIsItemId; an
+            einer der vier Stellen war das Problem schon einmal einzeln mit einem
+            SkuDB-Zusatz umgangen worden, der damit entfaellt. Die Reihenfolge der Zweige
+            bleibt unveraendert. Ausserdem entfaellt der fruehe Ausstieg im "item"-Zweig des
+            Menuebauers; der Eintrag heisst SkuCore:ResolveItemName oder - stabil -
+            "Gegenstand <Kennzahl>", bewusst nicht die "(laedt)"-Form, die den Eintrag beim
+            Nachladen unter dem Cursor verschieben wuerde. tItemNameTable fuer die Suche nach
+            Namen wird ebenfalls ueber ResolveItemName gefuellt, und der beim Anmelden ins
+            Leere laufende GetItemNameByID-Aufruf auf die Favoriten ist jetzt ein echter
+            Ladeauftrag.
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.12
 
     Im Charakterfenster werden die Beschreibungen der Werte wieder vorgelesen

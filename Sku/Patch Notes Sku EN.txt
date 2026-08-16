@@ -4,6 +4,274 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v42.13
+
+    Performance improvements and fixes when loading the spell database
+        Simple: At login some players got a spoken "Sku database error, data set spells".
+            It was reported from Era, but the common factor is processing power rather than
+            the client: on a fast machine it never happened, on a weaker one it happened
+            every time, and it could just as well have hit TBC. The database itself was
+            never broken: the only thing
+            that failed was the selection list for auras derived from it, which was built in
+            ONE pass over roughly 90,000 rows. On a slower machine the client aborted that
+            pass with "script ran too long" - and because the list was written in place while
+            it was built, it stayed half filled afterwards: part of the spells were missing
+            from the aura settings, and auras pointing at a missing entry either announced
+            nothing or left the menu standing on an error. The build now runs in small slices
+            spread over several frames, exactly like the rest of the post-login database
+            build, and is published in one piece only at the very end. If it does abort, the
+            previous lists stay as they were instead of half filled, no database error is
+            spoken, and the rest of the spell data still counts as sound. On top of that the
+            list is now built once per session instead of on every loading screen.
+        Technical: SkuAuras:BuildAttributeValueLists walks itemLookup AND SpellDataTBC and
+            allocates a table plus one or two concatenated strings per row. It used to be
+            called synchronously from two places: the "auraValueLists" build step (after
+            items+spells) and PLAYER_ENTERING_WORLD. The function now takes an optional yield
+            callback, polled every 1000 rows, builds into local tables and publishes them at
+            the end with one assignment each (atomic - an abort changes nothing at all). It
+            is driven by its own coroutine with an OnUpdate pump that shares the post-login
+            frame budget (Sku:BuildFrameBudgetMs, registered as build worker "skuAuraLists"),
+            so three live workers still cost 150 ms per frame in total. The build step only
+            starts that driver and no longer calls ctx.fail: a failure of the derived list
+            used to mark the whole 'spells' data family failed and trigger the error
+            announcement, although the spell data was complete. Failures now go to
+            SkuErrorLog ("skuAuraLists") and the debug log. PLAYER_ENTERING_WORLD starts the
+            same driver, which is a no-op once a build has succeeded - so the full rebuild on
+            every zone change and instance entry is gone. The build also skips a spell row
+            with no name for the active locale instead of dying on it, and the three
+            unguarded friendlyName lookups in the aura menu fall back to the raw key.
+
+    An enemy that poisoned you before it died is no longer counted again
+        Simple: The enemy count has been reliable in ordinary fights since v42.10, but one
+            case was left: if an enemy hit you with a poison - or any other lingering effect
+            - shortly before it died, the number dropped correctly when it died, climbed back
+            up by one a moment later, and only fell for good once the poison ran out, long
+            after the enemy was dead. That is fixed, and the detection itself was not touched
+            to do it: nothing new is counted, one thing simply stops being counted wrongly.
+        Technical: A dead enemy is remembered by GUID so a trailing combat-log line cannot
+            revive it. That mark used to be cleared wholesale in PLAYER_REGEN_ENABLED - which
+            is exactly the moment the last enemy's death takes you out of combat, and so the
+            instant before the first poison tick arrives. Every tick is a combat-log line
+            with the dead enemy as its source and you as its target; the add path reads that
+            as "an enemy is fighting us" and re-admitted the corpse by its GUID. The second
+            zero then only came from the 6 second idle sweep after the last tick. The mark
+            now carries a timestamp and is no longer dropped wholesale at the end of a fight,
+            only once it is older than 60 seconds. Nothing changes inside a fight - there the
+            mark already lived until combat ended, which is why "one of two enemies dies
+            poisoned while the second one fights on" was counted correctly before. No new
+            state and no new special case are added, only a lifetime for a mark that already
+            existed. The existing escape hatch stays: if the same GUID shows up demonstrably
+            alive on a unit token, the mark is lifted at once, so a real enemy can never
+            disappear from the count for good.
+
+    A trade that completed successfully was announced as a withdrawn confirmation
+        Simple: When a trade actually went through, it still ended on "<partner> withdrew
+            their confirmation". Nothing had gone wrong: on completion the server clears both
+            confirmation ticks first and only then closes the window, and that clearing looks
+            exactly like a real withdrawal. The false line is gone now. There is deliberately
+            no "trade complete" announcement in its place: client 2.5.6 offers no signal that
+            tells completion apart from cancellation, and a guessed message would be worse
+            than none.
+        Technical: Captured for a successful enchant inside a trade, all within one second:
+            TRADE_ACCEPT_UPDATE(1,1) -> (0,1) -> (0,0) -> TRADE_CLOSED. TRADE_ACCEPT_UPDATE
+            read those 1->0 transitions as a real withdrawal. There is no way to tell them
+            apart: TRADE_CLOSED carries no payload, and ERR_TRADE_COMPLETE /
+            ERR_TRADE_CANCELLED do not exist on 2.5.6 (checked against the shipped
+            TradeInfoDocumentation.lua). The two un-accept announcements now wait 0.5s behind
+            a generation counter that ResetTradeAcceptState() bumps at every trade boundary,
+            and are dropped if the trade has ended, the frame is gone, or that side is back
+            to accepted.
+
+    "Trade confirmed" was swallowed every single time
+        Simple: If you confirmed a trade from the menu, you never heard your own
+            confirmation. And out of several trade announcements in quick succession only the
+            last one was ever spoken - that is, the wrong one. They all come through now, in
+            the right order.
+        Technical: OutputStringBTtts with aOverwrite=true appends a "queuereset", and the
+            pump deletes everything queued BEFORE that marker, so in a burst each trade
+            announcement ate its predecessor. All trade announcements now pass false. That
+            alone does not save your own confirmation: when you accept from the menu, the
+            server reply is already queued before the menu appends its own line for the key
+            press, whose reset then deletes it. The accept announcements therefore go through
+            tSayAccept with a flat 0.35s delay that puts them behind the menu line. Queue
+            ordering only, no state inference - and deliberately without a generation check,
+            because a trade closing right afterwards is exactly when that confirmation
+            matters most.
+
+    Enter applies a disenchant or an enchant to a bag item again, in both orders
+        Simple: Cast Disenchant (or take an enchant, an armor kit, a weapon oil) while you
+            are already standing on the target item in the bag list, then press Enter: until
+            now nothing at all happened, and only Ctrl+Enter worked. The other order was
+            fine - cast first, then walk to the item. Enter now applies in both orders. Left
+            click really is the game's own way to do this: in Blizzard's bag code a left
+            click on an item, while a spell is waiting for an item target, uses the item for
+            that spell. In v41 this worked through the old "left click" entry; the menu
+            rework in v42.00 lost it and v42.04 brought it back only for the cast-first
+            order.
+        Technical: The secure left-click button is staged when an entry is FOCUSED, and a
+            bag item's apply payload ("/use <bag> <slot>") is only staged while
+            SpellIsTargeting() is true at that moment. Cast afterwards and the button still
+            held the pre-targeting payload - for a bag item there is none at all - while the
+            targeting snapshot taken in PreClick additionally makes the insecure
+            PickupContainerItem fallback skip itself, so the key press did literally nothing.
+            The staging moved out of the generic OnEnter into SkuOptions:StageClickMacros
+            (both secure buttons) and is re-run from two places: CURRENT_SPELL_CAST_CHANGED,
+            whose handler was empty and whose dispatcher signature was one slot off, and the
+            left button's own PreClick, which runs before the secure handler reads the
+            attributes, so the swap still counts for that very key press. Re-staging touches
+            only entries that carry an apply payload, only while the menu is open, and only
+            out of combat.
+
+    Ctrl+Enter on a vendor item opened the dressing room instead of buying it
+        Simple: At a vendor, Ctrl+Enter (right click) on an item is supposed to buy one of
+            it. Instead the dressing room opened. Buying through the item's submenu always
+            worked and is unchanged; the key now buys as well, on the buyback tab too.
+        Technical: The right-click key carries CTRL by default, a "/click <frame>
+            RightButton" macro reads the LIVE keyboard, and every native item button's XML
+            routes ANY modified click to *_OnModifiedClick -> HandleModifiedItemClick ->
+            DressUpLink - the plain right-click branch is never reached. This is the same
+            trap that broke oils on equipped items back then, fixed there with "/use
+            <slot>". Vendor items now call Blizzard's unwrapped MerchantItemButton_OnClick
+            directly, which keeps the extended-cost and high-price confirmation dialogs.
+            Bags, bank and equipment slots were already immune because they go through
+            "/use" or the container API. Everywhere else that Sku clicks a native button
+            (loot, trade, mail, spellbook, guild bank) the right-click key has no separate
+            action to lose - there Ctrl+Enter does nothing or shows the dressing room, while
+            Enter does the real thing.
+
+    The left click may now be bound to a key with Shift, Control or Alt
+        Simple: The activate key can be rebound to a combination such as Ctrl+Enter and
+            still works. Before, such a key would have opened the dressing room on a vendor
+            item or on an equipped item instead of doing the thing, for the same reason the
+            vendor right click did.
+        Technical: Entries whose click would be swallowed by a modifier carry a second,
+            modifier-proof payload (plainMacrotext) that calls the action directly instead
+            of clicking the native button: vendor items via Blizzard's unwrapped
+            MerchantItemButton_OnClick, equipment slots via PickupInventoryItem, trade slots
+            via ClickTradeButton / ClickTargetTradeButton. It is staged only while a
+            modifier is physically held - the secure button's PreClick decides, since that
+            is the only moment the keyboard state can be read, and it runs before the secure
+            handler reads the attributes. With the default modifier-free Enter, staging is
+            unchanged down to the byte, so nothing can regress there. Bags, the bank, quest
+            rewards, the guild bank, popups and tabs needed no entry: they either go through
+            the container API or have no modified-click branch at all. Loot buttons, mail
+            attachments and spellbook buttons do carry that branch, but Sku never clicks
+            them - loot has its own handling, attachments go through TakeInboxItem and the
+            spellbook is not among the windows Sku opens. Should the spellbook ever be
+            added, it needs "/cast <name>" rather than this mechanism, because casting is a
+            protected function that no direct call may perform.
+
+    The menu's click keys could not be assigned at all
+        Simple: In the key bindings, "Menu; left click/activate" and "Menu; right click"
+            answered "Invalid. Press another key." to every Enter you pressed - with or
+            without a modifier - so neither could be set, not even back to its own default.
+            Both can be assigned now.
+        Technical: The reserved-key list is matched as a SUBSTRING, so "ENTER" also catches
+            NUMPADENTER and CTRL-ENTER. It exists to protect the menu's navigation keys -
+            but these two bindings live on exactly that family: Enter is the default of the
+            one, Ctrl+Enter of the other. They are now exempt from the block for Enter keys
+            only; arrows, backspace and tab stay blocked there as well, because they drive
+            navigation, which is not part of this binding. The in-combat menu keys already
+            had such an exemption. Applied in both places that capture a key: the key
+            binding menu and the single-entry helper.
+
+    The menu click key no longer deletes the game binding on the same key
+        Simple: Putting "Menu; left click/activate" back on Enter warned that the key was
+            "already bound to Open chat" and, once confirmed, did exactly that: Enter no
+            longer opened the chat. There was no way back either, because the key bindings
+            refused every Enter for game commands as invalid. Yet these two never got in
+            each other's way - they shared Enter for years: while the menu is open Enter
+            activates the entry, otherwise it opens the chat. That is how it works again.
+            When a key is shared like this, Sku now says so ("Note! That key is also used
+            by ... Both bindings are kept.") instead of removing the other binding. If you
+            already lost chat: simply assign "Open chat" to Enter again in the key binding
+            menu, which is possible now. Nothing else about conflicts changes - two Sku
+            keys on the same key are still reported and the older one released.
+        Technical: The menu's click keys are never a real binding but an override binding
+            on the secure menu button, armed by its OnShow and cleared by its OnHide - it
+            exists only while the menu is open and outranks the game command exactly for
+            that time. The same holds for the in-combat menu keys, armed only during a
+            fight. The conflict check did not know that difference: it compares bare key
+            names, so it reported a conflict and, on confirmation, called SetBinding(key)
+            plus SaveBindings - which permanently stripped OPENCHAT off Enter. It only
+            became reachable because the fix above made those bindings assignable to Enter
+            in the first place. The affected entries now carry a transientOverride marker
+            in skuDefaultKeyBindings, read through
+            SkuOptions:SkuKeyBindsIsTransientOverride; for them the conflict handling
+            against GAME commands is dropped (no confirmation, no unbind) and replaced by
+            the spoken note. Against other Sku bindings it stays fully in place, because
+            those are armed at the same time and really do evict each other. The same rule
+            applies in the other direction so a game command does not release the menu key,
+            and the Enter family is no longer blocked when assigning game commands - arrows,
+            backspace and tab still are. The note rides on the same announcement as the new
+            key, because a separate call with aOverwrite resets the queue and would have
+            swallowed itself.
+
+    Items in the bank are called what they are called again
+        Simple: In the bank - and occasionally elsewhere - some items read as "Retrieving
+            item information" instead of their name. That is not an addon error message but
+            a placeholder from the game: the client shows it while it is still fetching an
+            item's data from the server. It mostly hit items with a large tooltip - recipes,
+            set pieces, socketed gear - because their display is only complete once ALL the
+            data referenced in it has arrived. Sku used to take that placeholder as the
+            item's NAME, and then kept it: it never went away, not after navigating onto the
+            entry again, not after leaving and re-entering the menu. Doubly annoying, because
+            the sentence is identical for every affected slot - several waiting items sounded
+            the same, could not be told apart or aimed at, and it was also what sort-by-name
+            and the jump-by-first-letter matched on. Now Sku takes the name from its own
+            shipped item list when the client does not have it yet, appends only a short
+            "(loading)", actively requests the data from the server, and re-reads the entry
+            as soon as it arrives. Opening the bank also requests the data for every bank
+            slot up front, so the first pass usually does not have to wait at all.
+        Technically: The sentence is the game constant RETRIEVING_ITEM_INFO. There was not a
+            single check against it in the addon - the only mention in the source sat in a
+            developer tool and compared a hardcoded German string. It stayed permanent for
+            three reasons: there was no GET_ITEM_INFO_RECEIVED handler anywhere, no load
+            request was ever made (writing to a tooltip is not a request you can follow up
+            on), and there was no second route to a name. New: SkuUtil:IsRetrievingItemInfo
+            (detects the placeholder via the game constant rather than German text),
+            SkuCore:ResolveItemName (client cache, then SkuDB.itemLookup, then the name in
+            the link), SkuCore:PendingItemLabel, SkuCore:RequestItemData and
+            SkuCore:ContinueOnItemData via Item:CreateFromItemID():ContinueOnItemLoad. A
+            dedicated event frame collects GET_ITEM_INFO_RECEIVED and triggers one coalesced
+            quiet rebuild from it; BANKFRAME_OPENED pre-requests container -1 and bank bags 5
+            to 11. There is a specific reason the bank was the hotspot: SetBagItem(-1, slot)
+            returns nothing on 2.5.6, so the bags rework fell back to
+            SetHyperlink(GetContainerItemLink(...)) there - precisely the path that depends
+            on the item cache. Bank slots are real inventory slots (slot n = inventory slot
+            n + 39), so SetInventoryItem reads them just as locally as SetBagItem reads a
+            bag; this is not a step back to the rendered widgets the rework retired - no
+            frame, no OnEnter, no force-opening the bags. No fallback was deliberately left
+            behind it: it would only hide whether the correct path works.
+
+    Items no longer disappear from the AtlasLoot loot lists
+        Simple: Entries were missing from the loot lists - no gap, no notice. A list with
+            twelve possible drops showed seven and read like a complete list of seven. The
+            cause is the same as in the item above: items whose data the client had not yet
+            received from the server were not recognised as items and were left out
+            entirely. That hit exactly the entries this feature is for, because a loot list
+            consists almost entirely of items you have never looted or inspected - the less
+            familiar the boss, the more went missing. It was not repeatable either: opening
+            the same list a second time could give a longer one, with the entry numbers
+            shifted. Now every entry is there, and searching by name also finds items you
+            have never held. The lists become longer than you are used to, and the entry
+            numbers shift once accordingly.
+        Technically: At four places a router decided from C_Item.GetItemNameByID(id) whether
+            a loot row is an item or a spell - a test that conflates "not an item" with "not
+            sent by the server yet". An item that had not loaded fell into the spell branch,
+            GetSpellInfo returned nothing for it, and the row was dropped. The intent of the
+            test is right (keep junk ids out of the menu), the question was just wrong:
+            GetItemInfoInstant answers it locally from the client's own item database. There
+            is now a tIsItemId helper for that; at one of the four places the problem had
+            already been worked around individually with a SkuDB check, which this replaces.
+            Branch precedence is unchanged. The early return in the "item" branch of the menu
+            builder is also gone; the entry is named via SkuCore:ResolveItemName or - stably -
+            "item <id>", deliberately not the "(loading)" form, which would move the entry out
+            from under the cursor once the data lands. tItemNameTable behind the search by
+            name is filled via ResolveItemName as well, and the GetItemNameByID call on the
+            favourites at login, whose result was thrown away, is now a real load request.
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.12
 
     The character sheet reads out the description of every stat again

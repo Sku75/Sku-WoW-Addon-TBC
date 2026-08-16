@@ -207,6 +207,70 @@ Changes in Sku v42.13
             key, because a separate call with aOverwrite resets the queue and would have
             swallowed itself.
 
+    Items in the bank are called what they are called again
+        Simple: In the bank - and occasionally elsewhere - some items read as "Retrieving
+            item information" instead of their name. That is not an addon error message but
+            a placeholder from the game: the client shows it while it is still fetching an
+            item's data from the server. It mostly hit items with a large tooltip - recipes,
+            set pieces, socketed gear - because their display is only complete once ALL the
+            data referenced in it has arrived. Sku used to take that placeholder as the
+            item's NAME, and then kept it: it never went away, not after navigating onto the
+            entry again, not after leaving and re-entering the menu. Doubly annoying, because
+            the sentence is identical for every affected slot - several waiting items sounded
+            the same, could not be told apart or aimed at, and it was also what sort-by-name
+            and the jump-by-first-letter matched on. Now Sku takes the name from its own
+            shipped item list when the client does not have it yet, appends only a short
+            "(loading)", actively requests the data from the server, and re-reads the entry
+            as soon as it arrives. Opening the bank also requests the data for every bank
+            slot up front, so the first pass usually does not have to wait at all.
+        Technically: The sentence is the game constant RETRIEVING_ITEM_INFO. There was not a
+            single check against it in the addon - the only mention in the source sat in a
+            developer tool and compared a hardcoded German string. It stayed permanent for
+            three reasons: there was no GET_ITEM_INFO_RECEIVED handler anywhere, no load
+            request was ever made (writing to a tooltip is not a request you can follow up
+            on), and there was no second route to a name. New: SkuUtil:IsRetrievingItemInfo
+            (detects the placeholder via the game constant rather than German text),
+            SkuCore:ResolveItemName (client cache, then SkuDB.itemLookup, then the name in
+            the link), SkuCore:PendingItemLabel, SkuCore:RequestItemData and
+            SkuCore:ContinueOnItemData via Item:CreateFromItemID():ContinueOnItemLoad. A
+            dedicated event frame collects GET_ITEM_INFO_RECEIVED and triggers one coalesced
+            quiet rebuild from it; BANKFRAME_OPENED pre-requests container -1 and bank bags 5
+            to 11. There is a specific reason the bank was the hotspot: SetBagItem(-1, slot)
+            returns nothing on 2.5.6, so the bags rework fell back to
+            SetHyperlink(GetContainerItemLink(...)) there - precisely the path that depends
+            on the item cache. Bank slots are real inventory slots (slot n = inventory slot
+            n + 39), so SetInventoryItem reads them just as locally as SetBagItem reads a
+            bag; this is not a step back to the rendered widgets the rework retired - no
+            frame, no OnEnter, no force-opening the bags. No fallback was deliberately left
+            behind it: it would only hide whether the correct path works.
+
+    Items no longer disappear from the AtlasLoot loot lists
+        Simple: Entries were missing from the loot lists - no gap, no notice. A list with
+            twelve possible drops showed seven and read like a complete list of seven. The
+            cause is the same as in the item above: items whose data the client had not yet
+            received from the server were not recognised as items and were left out
+            entirely. That hit exactly the entries this feature is for, because a loot list
+            consists almost entirely of items you have never looted or inspected - the less
+            familiar the boss, the more went missing. It was not repeatable either: opening
+            the same list a second time could give a longer one, with the entry numbers
+            shifted. Now every entry is there, and searching by name also finds items you
+            have never held. The lists become longer than you are used to, and the entry
+            numbers shift once accordingly.
+        Technically: At four places a router decided from C_Item.GetItemNameByID(id) whether
+            a loot row is an item or a spell - a test that conflates "not an item" with "not
+            sent by the server yet". An item that had not loaded fell into the spell branch,
+            GetSpellInfo returned nothing for it, and the row was dropped. The intent of the
+            test is right (keep junk ids out of the menu), the question was just wrong:
+            GetItemInfoInstant answers it locally from the client's own item database. There
+            is now a tIsItemId helper for that; at one of the four places the problem had
+            already been worked around individually with a SkuDB check, which this replaces.
+            Branch precedence is unchanged. The early return in the "item" branch of the menu
+            builder is also gone; the entry is named via SkuCore:ResolveItemName or - stably -
+            "item <id>", deliberately not the "(loading)" form, which would move the entry out
+            from under the cursor once the data lands. tItemNameTable behind the search by
+            name is filled via ResolveItemName as well, and the GetItemNameByID call on the
+            favourites at login, whose result was thrown away, is now a real load request.
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.12
 

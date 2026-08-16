@@ -7,6 +7,310 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v42.13
+
+    Améliorations de performance et corrections lors du chargement de la base de sorts
+        Simple : À la connexion, certains joueurs entendaient « Sku erreur de base de données,
+            jeu de données spells ». Le problème a été signalé depuis Era, mais le facteur
+            commun est la puissance de la machine et non le client : sur une machine rapide
+            cela n'arrivait jamais, sur une machine plus faible à chaque fois, et TBC aurait
+            tout aussi bien pu être touché. La base elle-même n'a
+            jamais été endommagée : seule échouait la liste de sélection des auras qui en est
+            dérivée, construite en UNE seule passe sur environ 90 000 entrées. Sur une machine
+            lente, le client interrompait cette passe avec « script ran too long » - et comme
+            la liste était écrite au fur et à mesure, elle restait ensuite à moitié remplie :
+            une partie des sorts manquait dans les réglages d'auras, et les auras pointant sur
+            une entrée manquante n'annonçaient plus rien ou laissaient le menu sur une erreur.
+            La construction se fait maintenant par petites tranches réparties sur plusieurs
+            images, exactement comme le reste de la construction de la base après la
+            connexion, et n'est publiée d'un seul bloc qu'à la toute fin. Si elle est tout de
+            même interrompue, les listes précédentes restent intactes au lieu d'être à moitié
+            remplies, aucune erreur de base de données n'est prononcée, et le reste des
+            données de sorts reste considéré comme valide. De plus, la liste n'est construite
+            qu'une fois par session au lieu de l'être à chaque écran de chargement.
+        Technique : SkuAuras:BuildAttributeValueLists parcourt itemLookup ET SpellDataTBC et
+            alloue une table plus une ou deux chaînes concaténées par ligne. Elle était
+            appelée de façon synchrone depuis deux endroits : l'étape de construction
+            « auraValueLists » (après items+spells) et PLAYER_ENTERING_WORLD. La fonction
+            accepte désormais un callback de yield facultatif, consulté toutes les 1000
+            lignes, construit dans des tables locales et les publie à la fin par une
+            affectation chacune (atomique - une interruption ne change plus rien). Elle est
+            pilotée par sa propre coroutine avec une pompe OnUpdate qui partage le budget
+            d'images d'après-connexion (Sku:BuildFrameBudgetMs, enregistrée comme worker
+            « skuAuraLists ») : trois workers actifs coûtent toujours 150 ms par image au
+            total. L'étape de construction ne fait que démarrer ce pilote et n'appelle plus
+            ctx.fail : l'échec de la liste dérivée marquait auparavant toute la famille de
+            données « spells » comme échouée et déclenchait l'annonce d'erreur, alors que les
+            données de sorts étaient complètes. Les erreurs vont maintenant dans SkuErrorLog
+            (« skuAuraLists ») et dans le journal de débogage. PLAYER_ENTERING_WORLD démarre
+            le même pilote, qui ne fait rien une fois la construction réussie - la
+            reconstruction complète à chaque changement de zone et à chaque entrée en instance
+            disparaît donc. La construction ignore également une ligne de sort sans nom pour
+            la langue active au lieu de s'y arrêter, et les trois accès friendlyName non
+            protégés du menu des auras retombent sur la clé brute.
+
+    Un ennemi qui vous a empoisonné avant de mourir n'est plus recompté
+        Simple : L'annonce du nombre d'ennemis est fiable dans les combats ordinaires depuis
+            la v42.10, mais il restait un cas : si un ennemi vous infligeait un poison - ou
+            tout autre effet persistant - juste avant de mourir, le nombre descendait
+            correctement à sa mort, remontait d'un cran un instant plus tard, et ne
+            redescendait définitivement qu'à l'expiration du poison, bien après la mort de
+            l'ennemi. C'est corrigé, et sans toucher à la détection elle-même : rien de
+            nouveau n'est compté, une seule chose cesse d'être comptée à tort.
+        Technique : Un ennemi mort est mémorisé par son GUID afin qu'une ligne de journal de
+            combat tardive ne puisse pas le ressusciter. Cette marque était jusqu'ici effacée
+            en bloc dans PLAYER_REGEN_ENABLED - c'est-à-dire exactement au moment où la mort
+            du dernier ennemi vous sort du combat, donc juste avant l'arrivée du premier tic
+            de poison. Chaque tic est une ligne de journal de combat avec l'ennemi mort comme
+            source et vous comme cible ; la logique d'ajout y lit « un ennemi nous combat »
+            et réadmettait le cadavre par son GUID. Le deuxième zéro ne venait plus alors que
+            du balayage d'inactivité de 6 secondes après le dernier tic. La marque porte
+            désormais un horodatage et n'est plus effacée en bloc à la fin du combat, mais
+            seulement lorsqu'elle a plus de 60 secondes. Rien ne change à l'intérieur d'un
+            combat - la marque y vivait de toute façon jusqu'à la fin du combat, et c'est
+            pourquoi le cas « l'un de deux ennemis meurt empoisonné pendant que le second
+            continue » était déjà compté correctement. Aucun nouvel état ni aucune nouvelle
+            règle particulière n'est ajouté, seulement une durée de vie pour une marque qui
+            existait déjà. La soupape existante demeure : si le même GUID réapparaît
+            manifestement vivant sur un jeton d'unité, la marque est levée immédiatement, un
+            vrai ennemi ne peut donc jamais disparaître durablement du décompte.
+
+    Un échange conclu avec succès était annoncé comme une confirmation retirée
+        Simple : Quand un échange aboutissait vraiment, il se terminait malgré tout sur
+            « <partenaire> a retiré sa confirmation ». Rien n'avait échoué : à la conclusion,
+            le serveur enlève d'abord les deux coches de confirmation et ne ferme la fenêtre
+            qu'ensuite, et cet effacement ressemble exactement à un vrai retrait. La fausse
+            ligne disparaît. Aucune annonce « échange terminé » ne la remplace, et c'est
+            délibéré : le client 2.5.6 ne fournit aucun signal distinguant la conclusion de
+            l'annulation, et un message deviné serait pire que pas de message du tout.
+        Technique : Capturé pour un enchantement réussi dans un échange, le tout en une
+            seconde : TRADE_ACCEPT_UPDATE(1,1) -> (0,1) -> (0,0) -> TRADE_CLOSED.
+            TRADE_ACCEPT_UPDATE lisait ces transitions 1->0 comme un vrai retrait. Impossible
+            de les distinguer : TRADE_CLOSED ne transporte aucune donnée, et
+            ERR_TRADE_COMPLETE / ERR_TRADE_CANCELLED n'existent pas sur 2.5.6 (vérifié contre
+            le TradeInfoDocumentation.lua livré avec le client). Les deux annonces de retrait
+            attendent maintenant 0,5 s derrière un compteur de génération que
+            ResetTradeAcceptState() incrémente à chaque frontière d'échange, et sont
+            abandonnées si l'échange est terminé, si la fenêtre a disparu ou si le côté
+            concerné est repassé à confirmé.
+
+    « Échange confirmé » était avalé à chaque fois
+        Simple : Si vous confirmiez l'échange depuis le menu, vous n'entendiez jamais votre
+            propre confirmation. Et sur plusieurs annonces d'échange rapprochées, seule la
+            dernière était prononcée - donc justement la mauvaise. Elles arrivent maintenant
+            toutes, dans le bon ordre.
+        Technique : OutputStringBTtts avec aOverwrite=true ajoute un « queuereset », et la
+            pompe supprime tout ce qui est en file AVANT ce marqueur ; dans une rafale,
+            chaque annonce d'échange dévorait donc la précédente. Toutes les annonces
+            d'échange passent désormais false. Cela ne sauve pas encore votre propre
+            confirmation : lorsque vous acceptez depuis le menu, la réponse du serveur est
+            déjà en file avant que le menu n'ajoute sa propre ligne pour l'appui de touche,
+            dont la réinitialisation la supprime alors. Les annonces de confirmation passent
+            donc par tSayAccept, avec un délai fixe de 0,35 s qui les place derrière la ligne
+            du menu. De l'ordonnancement de file uniquement, aucune déduction d'état - et
+            volontairement sans contrôle de génération, car un échange qui se ferme juste
+            après est précisément le cas où cette confirmation compte le plus.
+
+    Entrée désenchante ou enchante à nouveau un objet du sac, dans les deux ordres
+        Simple : Si vous lanciez Désenchantement (ou preniez un enchantement, une pièce
+            d'armure, une huile d'arme) alors que vous étiez déjà sur l'objet cible dans la
+            liste des sacs, puis appuyiez sur Entrée, il ne se passait rien du tout - seul
+            Ctrl+Entrée fonctionnait. L'ordre inverse marchait : lancer d'abord, puis
+            naviguer jusqu'à l'objet. Entrée applique maintenant dans les deux ordres. Le
+            clic gauche est bien la voie prévue par le jeu : dans le code des sacs de
+            Blizzard, un clic gauche sur un objet l'utilise pour le sort tant qu'un sort
+            attend une cible objet. En v41 cela passait par l'ancienne entrée « clic
+            gauche » ; la refonte du menu en v42.00 l'a perdue, et la v42.04 n'a rétabli
+            l'application que pour l'ordre « lancer d'abord ».
+        Technique : Le bouton sécurisé du clic gauche est garni au moment où une entrée est
+            FOCALISÉE, et la macro d'application d'un objet de sac (« /use sac
+            emplacement ») uniquement tant que SpellIsTargeting() est vrai à cet instant. Si
+            le sort est lancé après, le bouton gardait la garniture d'avant - pour un objet
+            de sac, donc aucune -, et l'instantané de ciblage pris dans PreClick fait en
+            outre renoncer le repli non sécurisé PickupContainerItem : l'appui de touche ne
+            faisait littéralement rien. La garniture a quitté le OnEnter générique pour
+            SkuOptions:StageClickMacros (les deux boutons sécurisés) et est réexécutée depuis
+            deux endroits : CURRENT_SPELL_CAST_CHANGED, dont le gestionnaire était vide et
+            dont la signature de répartiteur était décalée d'un cran, et le PreClick du
+            bouton gauche lui-même, qui s'exécute avant que le gestionnaire sécurisé ne lise
+            les attributs - l'échange compte donc encore pour cet appui précis. Seules les
+            entrées porteuses d'une macro d'application sont regarnies, uniquement menu
+            ouvert et hors combat.
+
+    Ctrl+Entrée sur un objet de marchand ouvrait la cabine d'essayage au lieu d'acheter
+        Simple : Chez un marchand, Ctrl+Entrée (clic droit) sur un objet doit en acheter
+            un. À la place, la cabine d'essayage s'ouvrait. L'achat par le sous-menu de
+            l'objet a toujours fonctionné et ne change pas ; la touche achète désormais
+            aussi, y compris dans l'onglet de rachat.
+        Technique : La touche du clic droit porte Ctrl par défaut, une macro « /click
+            <cadre> RightButton » lit l'état CLAVIER EN DIRECT, et le XML de chaque bouton
+            d'objet natif redirige TOUT clic modifié vers *_OnModifiedClick ->
+            HandleModifiedItemClick -> DressUpLink : la branche du clic droit simple n'est
+            jamais atteinte. C'est le même piège qui avait cassé les huiles sur les armes
+            équipées, résolu là par « /use <emplacement> ». Les objets de marchand appellent
+            maintenant directement le MerchantItemButton_OnClick non enveloppé de Blizzard,
+            ce qui conserve les confirmations de coût spécial et de prix élevé. Les sacs, la
+            banque et les emplacements d'équipement étaient déjà immunisés car ils passent
+            par « /use » ou l'API des conteneurs. Partout ailleurs où Sku clique un bouton
+            natif (butin, échange, courrier, grimoire, banque de guilde), la touche du clic
+            droit n'a pas d'action propre à perdre : Ctrl+Entrée n'y fait rien ou affiche la
+            cabine d'essayage, tandis qu'Entrée déclenche la vraie action.
+
+    Le clic gauche peut désormais être assigné à une touche avec Maj, Ctrl ou Alt
+        Simple : La touche d'activation peut être réassignée à une combinaison comme
+            Ctrl+Entrée et fonctionne quand même. Auparavant, une telle touche aurait
+            ouvert la cabine d'essayage chez un marchand ou sur un objet équipé au lieu
+            d'agir, pour la même raison que le clic droit chez le marchand.
+        Technique : Les entrées dont le clic serait avalé par un modificateur portent
+            maintenant une seconde charge, insensible aux modificateurs (plainMacrotext),
+            qui appelle l'action directement au lieu de cliquer le bouton natif : objets de
+            marchand via le MerchantItemButton_OnClick non enveloppé de Blizzard,
+            emplacements d'équipement via PickupInventoryItem, emplacements d'échange via
+            ClickTradeButton / ClickTargetTradeButton. Elle n'est mise en place que tant
+            qu'un modificateur est réellement enfoncé - la décision se prend dans le
+            PreClick du bouton sécurisé, seul moment où l'état du clavier est lisible, et
+            qui s'exécute avant la lecture des attributs. Avec la touche Entrée par défaut,
+            sans modificateur, la mise en place reste identique à l'octet près : aucune
+            régression possible de ce côté. Les sacs, la banque, les récompenses de quête,
+            la banque de guilde, les fenêtres de confirmation et les onglets n'avaient
+            besoin de rien : ils passent par l'API des conteneurs ou n'ont aucune branche
+            de clic modifié. Les boutons de butin, les pièces jointes du courrier et les
+            boutons du grimoire ont bien cette branche, mais Sku ne les clique jamais - le
+            butin a son propre traitement, les pièces jointes passent par TakeInboxItem, et
+            le grimoire ne fait pas partie des fenêtres ouvertes par Sku. S'il venait à
+            l'être, il lui faudrait « /cast <nom> » plutôt que ce mécanisme, car
+            l'incantation est une fonction protégée qu'aucun appel direct ne peut déclencher.
+
+    Les touches de clic du menu ne pouvaient pas être assignées du tout
+        Simple : Dans les raccourcis, « Menu ; clic gauche/activer » et « Menu ; clic
+            droit » répondaient « Invalide. Appuyez sur une autre touche. » à chaque
+            Entrée pressée - avec ou sans modificateur - et ne pouvaient donc pas être
+            réglées, pas même remises à leur propre valeur par défaut. Les deux sont
+            assignables désormais.
+        Technique : La liste des touches réservées est comparée en SOUS-CHAÎNE : « ENTER »
+            attrape donc aussi NUMPADENTER et CTRL-ENTER. Elle protège les touches de
+            navigation du menu - mais ces deux assignations vivent précisément sur cette
+            famille : Entrée est le défaut de l'une, Ctrl+Entrée celui de l'autre. Elles en
+            sont maintenant exemptées, uniquement pour les touches Entrée ; les flèches, le
+            retour arrière et la tabulation y restent bloqués, car ils pilotent la
+            navigation, qui ne fait pas partie de cette assignation. Les touches du menu de
+            combat disposaient déjà d'une telle exemption. Appliqué aux deux endroits qui
+            capturent une touche : le menu des raccourcis et l'assistant d'entrée unique.
+
+    La touche de clic du menu n'efface plus l'assignation de jeu de la même touche
+        Simple : Remettre « Menu ; clic gauche/activer » sur Entrée avertissait que la
+            touche était « déjà assignée à Ouvrir la discussion » puis, après
+            confirmation, faisait exactement cela : Entrée n'ouvrait plus la discussion.
+            Impossible de revenir en arrière non plus, car pour les commandes du jeu le
+            menu des raccourcis refusait toute touche Entrée comme invalide. Or ces deux
+            assignations ne se sont jamais gênées - elles partageaient Entrée depuis des
+            années : tant que le menu est ouvert, Entrée active l'entrée, sinon elle ouvre
+            la discussion. C'est de nouveau le cas. Quand une touche est ainsi partagée,
+            Sku l'annonce désormais (« Remarque ! Cette touche est également utilisée
+            par ... Les deux assignations sont conservées. ») au lieu de supprimer l'autre
+            assignation. Si la discussion vous manque déjà : réassignez simplement
+            « Ouvrir la discussion » à Entrée dans le menu des raccourcis, c'est possible
+            maintenant. Le reste du comportement en cas de conflit ne change pas - deux
+            touches Sku sur la même touche sont toujours signalées et l'ancienne libérée.
+        Technique : Les touches de clic du menu ne sont jamais une véritable assignation
+            mais une liaison de substitution sur le bouton sécurisé du menu, armée par son
+            OnShow et effacée par son OnHide : elle n'existe que tant que le menu est
+            ouvert et prime sur la commande du jeu pendant ce laps de temps. Il en va de
+            même pour les touches du menu de combat, armées uniquement pendant un combat.
+            La vérification des conflits ignorait cette différence : elle compare des noms
+            de touches bruts, signalait donc un conflit et, à la confirmation, appelait
+            SetBinding(touche) puis SaveBindings - ce qui retirait définitivement OPENCHAT
+            d'Entrée. Cela n'est devenu atteignable que parce que le correctif ci-dessus a
+            rendu ces assignations possibles sur Entrée. Les entrées concernées portent
+            désormais un marqueur transientOverride dans skuDefaultKeyBindings, lu via
+            SkuOptions:SkuKeyBindsIsTransientOverride ; pour elles, la gestion de conflit
+            contre les COMMANDES DU JEU est abandonnée (pas de confirmation, pas de
+            libération) et remplacée par la remarque vocale. Contre d'autres assignations
+            Sku, elle reste entièrement en place, car celles-ci sont armées en même temps
+            et se chassent réellement. La même règle s'applique dans l'autre sens afin
+            qu'une commande du jeu ne libère pas la touche du menu, et la famille Entrée
+            n'est plus bloquée lors de l'assignation des commandes du jeu - les flèches, le
+            retour arrière et la tabulation le restent. La remarque est accrochée à la même
+            annonce que la nouvelle touche, car un appel séparé avec aOverwrite vide la
+            file d'attente et se serait avalé lui-même.
+
+    Les objets de la banque portent de nouveau leur nom
+        Simple : À la banque - et occasionnellement ailleurs - certains objets étaient
+            annoncés avec le texte d'attente du client (« Retrieving item information » en
+            anglais) au lieu de leur nom. Ce n'est pas un message d'erreur de l'addon mais
+            un texte d'attente du jeu : le
+            client l'affiche tant qu'il récupère encore les données d'un objet auprès du
+            serveur. Étaient surtout touchés les objets à infobulle volumineuse - recettes,
+            pièces d'ensemble, équipement serti -, car leur affichage n'est complet qu'une
+            fois TOUTES les données qui y sont mentionnées arrivées. Jusqu'ici Sku reprenait
+            ce texte d'attente comme NOM de l'entrée, et n'en démordait plus : il ne
+            disparaissait pas, ni en revenant sur l'entrée, ni en quittant puis rouvrant le
+            menu. Doublement gênant, car la phrase est identique pour chaque emplacement
+            concerné - plusieurs objets en attente sonnaient pareil, impossible de les
+            distinguer ni de viser l'un d'eux, et c'est aussi ce que comparaient le tri par
+            nom et le saut par première lettre. Désormais Sku prend le nom dans sa propre
+            liste d'objets fournie avec l'addon quand le client ne l'a pas encore, n'ajoute
+            qu'un bref « (chargement) », demande activement les données au serveur, et relit
+            l'entrée dès qu'elles arrivent. À l'ouverture de la banque, les données de tous
+            les emplacements sont en outre demandées à l'avance, de sorte que le premier
+            passage n'attend généralement pas du tout.
+        Technique : La phrase est la constante du jeu RETRIEVING_ITEM_INFO. Il n'existait pas
+            une seule vérification contre elle dans l'addon - la seule mention dans le code
+            se trouvait dans un outil de développement et comparait un texte allemand écrit
+            en dur. L'état restait permanent pour trois raisons : aucun récepteur de
+            GET_ITEM_INFO_RECEIVED nulle part, aucune demande de chargement (écrire dans une
+            infobulle n'est pas une requête que l'on peut suivre), et aucune seconde voie
+            vers un nom. Nouveautés : SkuUtil:IsRetrievingItemInfo (détecte le texte
+            d'attente via la constante du jeu plutôt que via du texte allemand),
+            SkuCore:ResolveItemName (cache du client, puis SkuDB.itemLookup, puis le nom
+            dans le lien), SkuCore:PendingItemLabel, SkuCore:RequestItemData et
+            SkuCore:ContinueOnItemData via Item:CreateFromItemID():ContinueOnItemLoad. Un
+            cadre d'événements dédié collecte GET_ITEM_INFO_RECEIVED et en déclenche une
+            seule reconstruction silencieuse groupée ; BANKFRAME_OPENED demande à l'avance le
+            conteneur -1 et les sacs de banque 5 à 11. Si la banque était le point noir, il y
+            a une raison précise : SetBagItem(-1, emplacement) ne renvoie rien sur 2.5.6, si
+            bien que la refonte des sacs s'y rabattait sur
+            SetHyperlink(GetContainerItemLink(...)) - précisément la voie qui dépend du cache
+            d'objets. Les emplacements de banque sont de vrais emplacements d'équipement
+            (emplacement n = emplacement d'équipement n + 39), donc SetInventoryItem les lit
+            aussi localement que SetBagItem lit un sac ; ce n'est pas un retour aux éléments
+            de fenêtre lus que la refonte a supprimés - pas de cadre, pas de OnEnter, pas
+            d'ouverture forcée des sacs. Aucune voie de repli n'a été laissée derrière,
+            volontairement : elle ne ferait que masquer si la bonne voie fonctionne.
+
+    Les objets ne disparaissent plus des listes de butin d'AtlasLoot
+        Simple : Des entrées manquaient dans les listes de butin - sans trou, sans
+            indication. Une liste de douze butins possibles en affichait sept et se lisait
+            comme une liste complète de sept. La cause est la même qu'au point précédent :
+            les objets dont le client n'avait pas encore reçu les données du serveur
+            n'étaient pas reconnus comme des objets et étaient purement et simplement omis.
+            Cela touchait justement les entrées qui font l'intérêt de la fonction, car une
+            liste de butin est presque uniquement composée d'objets que l'on n'a jamais
+            ramassés ni consultés - moins le boss est familier, plus il en manquait. Ce
+            n'était pas non plus reproductible : ouvrir la même liste une seconde fois
+            pouvait en donner une plus longue, avec des numéros d'entrée décalés. Désormais
+            toutes les entrées sont là, et la recherche par nom trouve aussi les objets que
+            l'on n'a jamais eus en main. Les listes deviennent donc plus longues que
+            d'habitude, et les numéros d'entrée se décalent une fois en conséquence.
+        Technique : À quatre endroits, un aiguillage décidait à partir de
+            C_Item.GetItemNameByID(id) si une ligne de butin est un objet ou un sort - un
+            test qui confond « pas un objet » et « pas encore envoyé par le serveur ». Un
+            objet non chargé tombait dans la branche des sorts, GetSpellInfo ne renvoyait
+            rien pour lui, et la ligne était écartée. L'intention du test est juste (garder
+            les identifiants aberrants hors du menu), seule la question était mal posée :
+            GetItemInfoInstant y répond localement depuis la base d'objets du client. Il
+            existe maintenant l'assistant tIsItemId pour cela ; à l'un des quatre endroits,
+            le problème avait déjà été contourné isolément par un ajout SkuDB, que ceci
+            remplace. L'ordre des branches est inchangé. La sortie anticipée de la branche
+            « item » du constructeur de menu disparaît également ; l'entrée est nommée via
+            SkuCore:ResolveItemName ou - de façon stable - « objet <identifiant> »,
+            volontairement pas la forme « (chargement) », qui déplacerait l'entrée sous le
+            curseur une fois les données arrivées. tItemNameTable, derrière la recherche par
+            nom, est également remplie via ResolveItemName, et l'appel GetItemNameByID sur
+            les favoris à la connexion, dont le résultat était jeté, est désormais une vraie
+            demande de chargement.
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.12
 
     La feuille de personnage relit la description de chaque caractéristique

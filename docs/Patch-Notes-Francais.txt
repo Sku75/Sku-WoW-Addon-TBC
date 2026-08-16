@@ -234,6 +234,82 @@ Changements dans Sku v42.13
             annonce que la nouvelle touche, car un appel séparé avec aOverwrite vide la
             file d'attente et se serait avalé lui-même.
 
+    Les objets de la banque portent de nouveau leur nom
+        Simple : À la banque - et occasionnellement ailleurs - certains objets étaient
+            annoncés avec le texte d'attente du client (« Retrieving item information » en
+            anglais) au lieu de leur nom. Ce n'est pas un message d'erreur de l'addon mais
+            un texte d'attente du jeu : le
+            client l'affiche tant qu'il récupère encore les données d'un objet auprès du
+            serveur. Étaient surtout touchés les objets à infobulle volumineuse - recettes,
+            pièces d'ensemble, équipement serti -, car leur affichage n'est complet qu'une
+            fois TOUTES les données qui y sont mentionnées arrivées. Jusqu'ici Sku reprenait
+            ce texte d'attente comme NOM de l'entrée, et n'en démordait plus : il ne
+            disparaissait pas, ni en revenant sur l'entrée, ni en quittant puis rouvrant le
+            menu. Doublement gênant, car la phrase est identique pour chaque emplacement
+            concerné - plusieurs objets en attente sonnaient pareil, impossible de les
+            distinguer ni de viser l'un d'eux, et c'est aussi ce que comparaient le tri par
+            nom et le saut par première lettre. Désormais Sku prend le nom dans sa propre
+            liste d'objets fournie avec l'addon quand le client ne l'a pas encore, n'ajoute
+            qu'un bref « (chargement) », demande activement les données au serveur, et relit
+            l'entrée dès qu'elles arrivent. À l'ouverture de la banque, les données de tous
+            les emplacements sont en outre demandées à l'avance, de sorte que le premier
+            passage n'attend généralement pas du tout.
+        Technique : La phrase est la constante du jeu RETRIEVING_ITEM_INFO. Il n'existait pas
+            une seule vérification contre elle dans l'addon - la seule mention dans le code
+            se trouvait dans un outil de développement et comparait un texte allemand écrit
+            en dur. L'état restait permanent pour trois raisons : aucun récepteur de
+            GET_ITEM_INFO_RECEIVED nulle part, aucune demande de chargement (écrire dans une
+            infobulle n'est pas une requête que l'on peut suivre), et aucune seconde voie
+            vers un nom. Nouveautés : SkuUtil:IsRetrievingItemInfo (détecte le texte
+            d'attente via la constante du jeu plutôt que via du texte allemand),
+            SkuCore:ResolveItemName (cache du client, puis SkuDB.itemLookup, puis le nom
+            dans le lien), SkuCore:PendingItemLabel, SkuCore:RequestItemData et
+            SkuCore:ContinueOnItemData via Item:CreateFromItemID():ContinueOnItemLoad. Un
+            cadre d'événements dédié collecte GET_ITEM_INFO_RECEIVED et en déclenche une
+            seule reconstruction silencieuse groupée ; BANKFRAME_OPENED demande à l'avance le
+            conteneur -1 et les sacs de banque 5 à 11. Si la banque était le point noir, il y
+            a une raison précise : SetBagItem(-1, emplacement) ne renvoie rien sur 2.5.6, si
+            bien que la refonte des sacs s'y rabattait sur
+            SetHyperlink(GetContainerItemLink(...)) - précisément la voie qui dépend du cache
+            d'objets. Les emplacements de banque sont de vrais emplacements d'équipement
+            (emplacement n = emplacement d'équipement n + 39), donc SetInventoryItem les lit
+            aussi localement que SetBagItem lit un sac ; ce n'est pas un retour aux éléments
+            de fenêtre lus que la refonte a supprimés - pas de cadre, pas de OnEnter, pas
+            d'ouverture forcée des sacs. Aucune voie de repli n'a été laissée derrière,
+            volontairement : elle ne ferait que masquer si la bonne voie fonctionne.
+
+    Les objets ne disparaissent plus des listes de butin d'AtlasLoot
+        Simple : Des entrées manquaient dans les listes de butin - sans trou, sans
+            indication. Une liste de douze butins possibles en affichait sept et se lisait
+            comme une liste complète de sept. La cause est la même qu'au point précédent :
+            les objets dont le client n'avait pas encore reçu les données du serveur
+            n'étaient pas reconnus comme des objets et étaient purement et simplement omis.
+            Cela touchait justement les entrées qui font l'intérêt de la fonction, car une
+            liste de butin est presque uniquement composée d'objets que l'on n'a jamais
+            ramassés ni consultés - moins le boss est familier, plus il en manquait. Ce
+            n'était pas non plus reproductible : ouvrir la même liste une seconde fois
+            pouvait en donner une plus longue, avec des numéros d'entrée décalés. Désormais
+            toutes les entrées sont là, et la recherche par nom trouve aussi les objets que
+            l'on n'a jamais eus en main. Les listes deviennent donc plus longues que
+            d'habitude, et les numéros d'entrée se décalent une fois en conséquence.
+        Technique : À quatre endroits, un aiguillage décidait à partir de
+            C_Item.GetItemNameByID(id) si une ligne de butin est un objet ou un sort - un
+            test qui confond « pas un objet » et « pas encore envoyé par le serveur ». Un
+            objet non chargé tombait dans la branche des sorts, GetSpellInfo ne renvoyait
+            rien pour lui, et la ligne était écartée. L'intention du test est juste (garder
+            les identifiants aberrants hors du menu), seule la question était mal posée :
+            GetItemInfoInstant y répond localement depuis la base d'objets du client. Il
+            existe maintenant l'assistant tIsItemId pour cela ; à l'un des quatre endroits,
+            le problème avait déjà été contourné isolément par un ajout SkuDB, que ceci
+            remplace. L'ordre des branches est inchangé. La sortie anticipée de la branche
+            « item » du constructeur de menu disparaît également ; l'entrée est nommée via
+            SkuCore:ResolveItemName ou - de façon stable - « objet <identifiant> »,
+            volontairement pas la forme « (chargement) », qui déplacerait l'entrée sous le
+            curseur une fois les données arrivées. tItemNameTable, derrière la recherche par
+            nom, est également remplie via ResolveItemName, et l'appel GetItemNameByID sur
+            les favoris à la connexion, dont le résultat était jeté, est désormais une vraie
+            demande de chargement.
+
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.12
 
