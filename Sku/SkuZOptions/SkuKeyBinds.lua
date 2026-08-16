@@ -51,8 +51,11 @@ SkuOptions.skuDefaultKeyBindings = {
    -- The physical key always clicks the secure menu button with a FIXED virtual button
    -- name ("ENTER" / "RCLICK"), so rebinding never changes the dispatcher logic.
    -- Applied while the menu is open (secure buttons' OnShow re-arms on rebind).
-   ["SKU_KEY_MENULEFTCLICK"] = {key = "ENTER", object = "SecureOnSkuOptionsMainOption1", script = "OnShow",},
-   ["SKU_KEY_MENURIGHTCLICK"] = {key = "CTRL-ENTER", object = "SecureOnSkuOptionsMainOption2", script = "OnShow",},
+   -- transientOverride: the key is armed ONLY while the menu is open (the secure
+   -- button's OnShow/OnHide own it), so it does not really collide with a game
+   -- binding on the same key -- see SkuOptions:SkuKeyBindsIsTransientOverride.
+   ["SKU_KEY_MENULEFTCLICK"] = {key = "ENTER", object = "SecureOnSkuOptionsMainOption1", script = "OnShow", transientOverride = true,},
+   ["SKU_KEY_MENURIGHTCLICK"] = {key = "CTRL-ENTER", object = "SecureOnSkuOptionsMainOption2", script = "OnShow", transientOverride = true,},
    ["SKU_KEY_CHATOPEN"] = {key = "SHIFT-F2", object = "SkuChat", func = "OnEnable",},
    ["SKU_KEY_TOGGLEREACHRANGE"] = {key = "CTRL-SHIFT-Q", object = "SkuNav", func = "CreateSkuNavMain",},
 
@@ -93,14 +96,17 @@ SkuOptions.skuDefaultKeyBindings = {
    -- NOTE: bag (B) and character (C) do NOT get their own bind here -- their in-combat SYNC/CSYNC
    -- follows whatever key already opens bags/character (GetBindingKey in CombatMenuKeysBindNow),
    -- so moving that binding moves the combat action with it.
-   ["SKU_KEY_COMBATMENU_UP"] = {key = "UP", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_COMBATMENU_DOWN"] = {key = "DOWN", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_COMBATMENU_LEFT"] = {key = "LEFT", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_COMBATMENU_RIGHT"] = {key = "RIGHT", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_COMBATMENU_HOME"] = {key = "HOME", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_COMBATMENU_END"] = {key = "END", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_COMBATMENU_BACK"] = {key = "BACKSPACE", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_COMBATMENU_CLOSE"] = {key = "ESCAPE", object = "SkuOptions", func = "CreateMainFrame",},
+   -- transientOverride: bound as secure override clicks only for the duration of a
+   -- fight, so they shadow the game's key there and give it back afterwards --
+   -- same coexistence as the menu click keys above.
+   ["SKU_KEY_COMBATMENU_UP"] = {key = "UP", object = "SkuOptions", func = "CreateMainFrame", transientOverride = true,},
+   ["SKU_KEY_COMBATMENU_DOWN"] = {key = "DOWN", object = "SkuOptions", func = "CreateMainFrame", transientOverride = true,},
+   ["SKU_KEY_COMBATMENU_LEFT"] = {key = "LEFT", object = "SkuOptions", func = "CreateMainFrame", transientOverride = true,},
+   ["SKU_KEY_COMBATMENU_RIGHT"] = {key = "RIGHT", object = "SkuOptions", func = "CreateMainFrame", transientOverride = true,},
+   ["SKU_KEY_COMBATMENU_HOME"] = {key = "HOME", object = "SkuOptions", func = "CreateMainFrame", transientOverride = true,},
+   ["SKU_KEY_COMBATMENU_END"] = {key = "END", object = "SkuOptions", func = "CreateMainFrame", transientOverride = true,},
+   ["SKU_KEY_COMBATMENU_BACK"] = {key = "BACKSPACE", object = "SkuOptions", func = "CreateMainFrame", transientOverride = true,},
+   ["SKU_KEY_COMBATMENU_CLOSE"] = {key = "ESCAPE", object = "SkuOptions", func = "CreateMainFrame", transientOverride = true,},
    -- SKU_KEY_COMBATMENU_USE (was ENTER) is RETIRED. It bound the left-click key to the
    -- secure in-combat use button, so ENTER and SKU_KEY_MENURIGHTCLICK (CTRL-ENTER) both
    -- fired the same armed action and the left/right split collapsed in combat. The two
@@ -265,6 +271,24 @@ function SkuOptions:SkuKeyBindsCheckBound(aKey)
          end
       end
    end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- True for bindings whose key is applied only as a TEMPORARY override binding,
+-- i.e. SetOverrideBindingClick on a frame that owns the key for a limited time:
+-- the menu click keys (armed by the secure button's OnShow, cleared by OnHide,
+-- so only while the menu is open) and the in-combat menu keys (armed at combat
+-- start, cleared at combat end). Such a key does NOT really collide with a GAME
+-- binding on the same key: the override wins while it is armed, the game command
+-- fires the rest of the time. That is exactly how ENTER served the menu's
+-- activate key AND OPENCHAT side by side for years.
+-- The rebind capture must therefore not unbind the game command for these
+-- consts. Conflicts against OTHER Sku consts stay real and keep the normal
+-- warn-and-unbind: two of them are armed at the same time and the last
+-- SetOverrideBindingClick simply wins.
+function SkuOptions:SkuKeyBindsIsTransientOverride(aBindingConst)
+   local tEntry = aBindingConst and SkuOptions.skuDefaultKeyBindings[aBindingConst]
+   return (tEntry and tEntry.transientOverride) == true
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

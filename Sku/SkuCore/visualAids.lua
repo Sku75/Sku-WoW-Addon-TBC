@@ -460,6 +460,17 @@ local function tStartCapture(aMenuTarget, aBindingConst, aSecondary)
 				local tCommand = SkuCore:CheckBound(aKey)
 				local bindingConst = SkuOptions:SkuKeyBindsCheckBound(aKey)
 				dprint("SkuKeyBind OnClick conflict check", "blizzCmd=", tCommand, "skuConst=", bindingConst, "prevKey=", self.prevKey)
+				-- Same coexistence rule as in SkuCore/Options.lua: a binding that is armed
+				-- only temporarily (menu click keys while the menu is open, combat menu keys
+				-- during a fight) shares its key with a GAME command rather than unbinding
+				-- it -- that is how ENTER carried both the menu's activate key and
+				-- "Chat öffnen". Conflicts against other Sku consts stay untouched.
+				local tSharedWith
+				if tCommand and not bindingConst and SkuOptions:SkuKeyBindsIsTransientOverride(self.bindingConst) then
+					tSharedWith = _G["BINDING_NAME_"..tCommand] or tCommand
+					dprint("SkuKeyBind shares key with game command", self.bindingConst, aKey, tCommand)
+					tCommand = nil
+				end
 				if tCommand or bindingConst then
 					if not self.prevKey or self.prevKey ~= aKey then
 						self.prevKey = aKey
@@ -471,7 +482,7 @@ local function tStartCapture(aMenuTarget, aBindingConst, aSecondary)
 						return
 					end
 				end
-				if tCommand or bindingConst and self.prevKey == aKey then
+				if (tCommand or bindingConst) and self.prevKey == aKey then
 					if bindingConst then
 						SkuOptions:SkuKeyBindsDeleteConflictingKey(bindingConst, aKey)
 					elseif tCommand then
@@ -495,7 +506,13 @@ local function tStartCapture(aMenuTarget, aBindingConst, aSecondary)
 					_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
 				end
 				local tShow = (aSecondary == true) and (SkuOptions:SkuKeyBindsGetBinding2(self.bindingConst)) or (SkuOptions:SkuKeyBindsGetBinding(self.bindingConst))
-				SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..tFriendlyKey(tShow or ""), true, true, 0.2, true, nil, nil, 2)
+				-- Note appended to this same line: aOverwrite = true resets the queue, so a
+				-- separate earlier call would be dropped before it could be spoken.
+				local tNewKeyLine = L["New key"]..";"..tFriendlyKey(tShow or "")
+				if tSharedWith then
+					tNewKeyLine = tNewKeyLine..";"..L["Note! That key is also used by"].." "..tSharedWith..". "..L["Both bindings are kept."]
+				end
+				SkuOptions.Voice:OutputStringBTtts(tNewKeyLine, true, true, 0.2, true, nil, nil, 2)
 			elseif aKey == "ESCAPE" then
 				dprint("SkuKeyBind OnClick cancel (ESCAPE)")
 				self.prevKey = nil

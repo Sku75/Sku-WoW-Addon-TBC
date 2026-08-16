@@ -746,23 +746,42 @@ local function tRebindCaptureCommand(self, aSecondary)
 						dprint("CmdBind abort: missing command/category/menuTarget/index", self.command, self.category, self.index)
 						return
 					end
-					for z = 1, #tBlockedKeysParts do
-						if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then 
-							SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
-							self.prevKey = nil
-							return 
+					-- The ENTER family is on the reserved list because it carries the menu's
+					-- activate key -- but that key is a TEMPORARY override (armed only while
+					-- the menu is open), so a GAME command on the same key coexists with it,
+					-- exactly as OPENCHAT did for years. Blocking it here meant "Chat öffnen"
+					-- could never be put back on Enter once something else had taken it.
+					-- Arrows, backspace and tab stay blocked: they drive menu NAVIGATION.
+					local tAllowReserved = string.find(string.upper(aKey), "ENTER", 1, true) ~= nil
+					if not tAllowReserved then
+						for z = 1, #tBlockedKeysParts do
+							if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then
+								SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+								self.prevKey = nil
+								return
+							end
 						end
-					end
 
-					for z = 1, #tBlockedKeysBinds do
-						if aKey == tBlockedKeysBinds[z] or string.lower(aKey) == string.lower(tBlockedKeysBinds[z]) then 
-							SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
-							return
+						for z = 1, #tBlockedKeysBinds do
+							if aKey == tBlockedKeysBinds[z] or string.lower(aKey) == string.lower(tBlockedKeysBinds[z]) then
+								SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+								return
+							end
 						end
 					end
 
 					local tCommand = SkuCore:CheckBound(aKey)
 					local bindingConst = SkuOptions:SkuKeyBindsCheckBound(aKey)
+					-- Mirror of the coexistence rule in tRebindCaptureKeyBind: a Sku binding
+					-- that is only armed temporarily (menu click keys while the menu is open,
+					-- combat menu keys during a fight) shares the key with this game command
+					-- instead of being evicted by it. Say so, then bind.
+					local tSharedWith
+					if bindingConst and SkuOptions:SkuKeyBindsIsTransientOverride(bindingConst) then
+						tSharedWith = L[bindingConst]
+						dprint("game bind shares key with transient Sku bind", self.command, aKey, bindingConst)
+						bindingConst = nil
+					end
 					if tCommand or bindingConst then
 						if not self.prevKey or self.prevKey ~= aKey then
 							self.prevKey = aKey
@@ -775,7 +794,7 @@ local function tRebindCaptureCommand(self, aSecondary)
 						end
 					end
 
-					if tCommand or bindingConst and self.prevKey == aKey then
+					if (tCommand or bindingConst) and self.prevKey == aKey then
 						if bindingConst then
 							SkuOptions:SkuKeyBindsDeleteConflictingKey(bindingConst, aKey)
 						elseif tCommand then
@@ -803,7 +822,13 @@ local function tRebindCaptureCommand(self, aSecondary)
 						_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
 						_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
 					end
-					SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..(aSecondary and tFriendlyKey2 or aFriendlyKey1), true, true, 0.2, true, nil, nil, 2)
+					-- Shared-key note appended to the same utterance -- a separate call would
+					-- be wiped by this line's own queue reset (aOverwrite = true).
+					local tNewKeyLine = L["New key"]..";"..(aSecondary and tFriendlyKey2 or aFriendlyKey1)
+					if tSharedWith then
+						tNewKeyLine = tNewKeyLine..";"..L["Note! That key is also used by"].." "..tSharedWith..". "..L["Both bindings are kept."]
+					end
+					SkuOptions.Voice:OutputStringBTtts(tNewKeyLine, true, true, 0.2, true, nil, nil, 2)
 				elseif aKey == "ESCAPE" then
 					SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2, true, nil, nil, 2)
 				end
@@ -880,6 +905,22 @@ local function tRebindCaptureKeyBind(self, aSecondary)
 
 									local tCommand = SkuCore:CheckBound(aKey)
 									local bindingConst = SkuOptions:SkuKeyBindsCheckBound(aKey)
+									-- COEXISTENCE with a game binding: the menu click keys and the
+									-- in-combat menu keys are armed as TEMPORARY overrides only (while
+									-- the menu is open / during combat), so they share their key with a
+									-- game command instead of colliding with it -- ENTER drove the menu's
+									-- activate key AND "Chat öffnen" that way for years. Treating that as
+									-- a conflict silently unbound the game command below (SetBinding(aKey)
+									-- + SaveBindings), which is what wiped OPENCHAT off ENTER. Bind
+									-- straight away for those consts and only SAY that the key is shared.
+									-- A conflict against another Sku const is NOT skipped: those are armed
+									-- at the same time and really do evict each other.
+									local tSharedWith
+									if tCommand and not bindingConst and SkuOptions:SkuKeyBindsIsTransientOverride(self.bindingConst) then
+										tSharedWith = _G["BINDING_NAME_"..tCommand] or tCommand
+										dprint("keybind shares key with game command", self.bindingConst, aKey, tCommand)
+										tCommand = nil
+									end
 									if tCommand or bindingConst then
 										if not self.prevKey or self.prevKey ~= aKey then
 											self.prevKey = aKey
@@ -888,11 +929,11 @@ local function tRebindCaptureKeyBind(self, aSecondary)
 											elseif tCommand then
 												SkuOptions.Voice:OutputStringBTtts(L["Warning! That key is already bound to"].." ".._G["BINDING_NAME_"..tCommand]..L[". Press the key again to confirm new binding. The current bound action will be unbound!"], true, true, 0.2, true, nil, nil, 2)
 											end
-											return 
+											return
 										end
 									end
 
-									if tCommand or bindingConst and self.prevKey == aKey then
+									if (tCommand or bindingConst) and self.prevKey == aKey then
 										if bindingConst then
 											SkuOptions:SkuKeyBindsDeleteConflictingKey(bindingConst, aKey)
 										elseif tCommand then
@@ -918,7 +959,14 @@ local function tRebindCaptureKeyBind(self, aSecondary)
 										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
 										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
 									end
-									SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..(aSecondary and tFriendlyKey2 or tFriendlyKey1), true, true, 0.2, true, nil, nil, 2)
+									-- The shared-key note rides ON the "new key" line instead of being a
+									-- second call: aOverwrite = true queues a "queuereset", so a separate
+									-- earlier line would be dropped again before it is ever spoken.
+									local tNewKeyLine = L["New key"]..";"..(aSecondary and tFriendlyKey2 or tFriendlyKey1)
+									if tSharedWith then
+										tNewKeyLine = tNewKeyLine..";"..L["Note! That key is also used by"].." "..tSharedWith..". "..L["Both bindings are kept."]
+									end
+									SkuOptions.Voice:OutputStringBTtts(tNewKeyLine, true, true, 0.2, true, nil, nil, 2)
 								elseif aKey == "ESCAPE" then
 									self.prevKey = nil
 									SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2, true, nil, nil, 2)
