@@ -197,6 +197,43 @@ Changements dans Sku v42.13
             combat disposaient déjà d'une telle exemption. Appliqué aux deux endroits qui
             capturent une touche : le menu des raccourcis et l'assistant d'entrée unique.
 
+    La touche de clic du menu n'efface plus l'assignation de jeu de la même touche
+        Simple : Remettre « Menu ; clic gauche/activer » sur Entrée avertissait que la
+            touche était « déjà assignée à Ouvrir la discussion » puis, après
+            confirmation, faisait exactement cela : Entrée n'ouvrait plus la discussion.
+            Impossible de revenir en arrière non plus, car pour les commandes du jeu le
+            menu des raccourcis refusait toute touche Entrée comme invalide. Or ces deux
+            assignations ne se sont jamais gênées - elles partageaient Entrée depuis des
+            années : tant que le menu est ouvert, Entrée active l'entrée, sinon elle ouvre
+            la discussion. C'est de nouveau le cas. Quand une touche est ainsi partagée,
+            Sku l'annonce désormais (« Remarque ! Cette touche est également utilisée
+            par ... Les deux assignations sont conservées. ») au lieu de supprimer l'autre
+            assignation. Si la discussion vous manque déjà : réassignez simplement
+            « Ouvrir la discussion » à Entrée dans le menu des raccourcis, c'est possible
+            maintenant. Le reste du comportement en cas de conflit ne change pas - deux
+            touches Sku sur la même touche sont toujours signalées et l'ancienne libérée.
+        Technique : Les touches de clic du menu ne sont jamais une véritable assignation
+            mais une liaison de substitution sur le bouton sécurisé du menu, armée par son
+            OnShow et effacée par son OnHide : elle n'existe que tant que le menu est
+            ouvert et prime sur la commande du jeu pendant ce laps de temps. Il en va de
+            même pour les touches du menu de combat, armées uniquement pendant un combat.
+            La vérification des conflits ignorait cette différence : elle compare des noms
+            de touches bruts, signalait donc un conflit et, à la confirmation, appelait
+            SetBinding(touche) puis SaveBindings - ce qui retirait définitivement OPENCHAT
+            d'Entrée. Cela n'est devenu atteignable que parce que le correctif ci-dessus a
+            rendu ces assignations possibles sur Entrée. Les entrées concernées portent
+            désormais un marqueur transientOverride dans skuDefaultKeyBindings, lu via
+            SkuOptions:SkuKeyBindsIsTransientOverride ; pour elles, la gestion de conflit
+            contre les COMMANDES DU JEU est abandonnée (pas de confirmation, pas de
+            libération) et remplacée par la remarque vocale. Contre d'autres assignations
+            Sku, elle reste entièrement en place, car celles-ci sont armées en même temps
+            et se chassent réellement. La même règle s'applique dans l'autre sens afin
+            qu'une commande du jeu ne libère pas la touche du menu, et la famille Entrée
+            n'est plus bloquée lors de l'assignation des commandes du jeu - les flèches, le
+            retour arrière et la tabulation le restent. La remarque est accrochée à la même
+            annonce que la nouvelle touche, car un appel séparé avec aOverwrite vide la
+            file d'attente et se serait avalé lui-même.
+
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.12
 

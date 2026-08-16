@@ -193,6 +193,42 @@ Aenderungen in Sku v42.13
             Stellen, die eine Taste abfangen: im Tastenbelegungs-Menue und im
             Einzeleintrag-Helfer.
 
+    Die Menue-Klicktaste loescht die Spielbelegung derselben Taste nicht mehr
+        Einfach: Wer "Menue; Linksklick/aktivieren" wieder auf Enter legte, bekam die
+            Warnung "bereits belegt mit Chat oeffnen" und, nach dem Bestaetigen, genau
+            das: Enter oeffnete den Chat nicht mehr. Zurueck ging es auch nicht, denn
+            fuer Spielbefehle lehnte die Tastenbelegung jedes Enter als ungueltig ab.
+            Dabei haben sich diese beiden Belegungen nie gestoert - sie lagen jahrelang
+            zusammen auf Enter: solange das Menue offen ist, aktiviert Enter den
+            Eintrag, sonst oeffnet es den Chat. Genau so ist es wieder. Wird eine Taste
+            auf diese Weise geteilt, sagt Sku es jetzt an ("Hinweis! Diese Taste wird
+            auch benutzt von ... Beide Belegungen bleiben erhalten."), statt die andere
+            Belegung zu entfernen. Wem der Chat schon abhanden gekommen ist: "Chat
+            oeffnen" im Tastenbelegungs-Menue einfach wieder auf Enter legen, das geht
+            jetzt. Am uebrigen Konfliktverhalten aendert sich nichts - zwei Sku-Tasten
+            auf derselben Taste werden weiterhin gemeldet und die alte geloest.
+        Technisch: Die Klicktasten des Menues sind nie eine echte Belegung, sondern eine
+            Override-Bindung auf dem sicheren Menue-Knopf, die dessen OnShow aufzieht und
+            dessen OnHide wieder abraeumt - sie existiert also nur, solange das Menue
+            offen ist, und uebertoent den Spielbefehl genau in dieser Zeit. Dasselbe gilt
+            fuer die Kampfmenue-Tasten, die nur waehrend eines Kampfes aufgezogen sind.
+            Die Konfliktpruefung kannte diesen Unterschied nicht: sie vergleicht blanke
+            Tastennamen, meldete deshalb einen Konflikt und rief beim Bestaetigen
+            SetBinding(Taste) samt SaveBindings auf - was OPENCHAT dauerhaft von Enter
+            entfernte. Erreichbar wurde das erst dadurch, dass diese Belegungen seit dem
+            Fix darueber ueberhaupt auf Enter gesetzt werden koennen. Die betroffenen
+            Eintraege tragen jetzt in skuDefaultKeyBindings ein Merkmal
+            transientOverride, abgefragt ueber SkuOptions:SkuKeyBindsIsTransientOverride;
+            fuer sie entfaellt die Konfliktbehandlung gegen SPIELBEFEHLE (keine
+            Rueckfrage, kein Entbinden) und wird durch den gesprochenen Hinweis ersetzt.
+            Gegen andere Sku-Belegungen bleibt sie vollstaendig erhalten, denn die sind
+            gleichzeitig aufgezogen und verdraengen sich wirklich. Dieselbe Regel gilt in
+            der Gegenrichtung, damit ein Spielbefehl die Menuetaste nicht loest, und die
+            Enter-Familie ist beim Belegen von Spielbefehlen nicht mehr gesperrt -
+            Pfeile, Rueckschritt und Tabulator bleiben es. Der Hinweis haengt an derselben
+            Ansage wie die neue Taste, weil ein eigener Aufruf mit aOverwrite die
+            Warteschlange leert und sich selbst wieder verschluckt haette.
+
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.12
 

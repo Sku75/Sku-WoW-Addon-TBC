@@ -175,6 +175,38 @@ Changes in Sku v42.13
             had such an exemption. Applied in both places that capture a key: the key
             binding menu and the single-entry helper.
 
+    The menu click key no longer deletes the game binding on the same key
+        Simple: Putting "Menu; left click/activate" back on Enter warned that the key was
+            "already bound to Open chat" and, once confirmed, did exactly that: Enter no
+            longer opened the chat. There was no way back either, because the key bindings
+            refused every Enter for game commands as invalid. Yet these two never got in
+            each other's way - they shared Enter for years: while the menu is open Enter
+            activates the entry, otherwise it opens the chat. That is how it works again.
+            When a key is shared like this, Sku now says so ("Note! That key is also used
+            by ... Both bindings are kept.") instead of removing the other binding. If you
+            already lost chat: simply assign "Open chat" to Enter again in the key binding
+            menu, which is possible now. Nothing else about conflicts changes - two Sku
+            keys on the same key are still reported and the older one released.
+        Technical: The menu's click keys are never a real binding but an override binding
+            on the secure menu button, armed by its OnShow and cleared by its OnHide - it
+            exists only while the menu is open and outranks the game command exactly for
+            that time. The same holds for the in-combat menu keys, armed only during a
+            fight. The conflict check did not know that difference: it compares bare key
+            names, so it reported a conflict and, on confirmation, called SetBinding(key)
+            plus SaveBindings - which permanently stripped OPENCHAT off Enter. It only
+            became reachable because the fix above made those bindings assignable to Enter
+            in the first place. The affected entries now carry a transientOverride marker
+            in skuDefaultKeyBindings, read through
+            SkuOptions:SkuKeyBindsIsTransientOverride; for them the conflict handling
+            against GAME commands is dropped (no confirmation, no unbind) and replaced by
+            the spoken note. Against other Sku bindings it stays fully in place, because
+            those are armed at the same time and really do evict each other. The same rule
+            applies in the other direction so a game command does not release the menu key,
+            and the Enter family is no longer blocked when assigning game commands - arrows,
+            backspace and tab still are. The note rides on the same announcement as the new
+            key, because a separate call with aOverwrite resets the queue and would have
+            swallowed itself.
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.12
 
