@@ -6,6 +6,45 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
 
+    Tippen in Eingabefeldern: kein Nachplappern mehr nach dem Schliessen
+        Einfach: Beim Tippen in ein Sku-Eingabefeld (Brief schreiben, Suchfeld,
+            Auktionshaus) hinkte die Ansage der Zeichen dem Tippen hinterher, ueberschlug
+            sich, und Buchstaben kamen noch, wenn das Feld laengst geschlossen war -
+            besonders deutlich mit SAPI-Stimmen, die ein Tastendruck bisher nicht
+            abgebrochen hat. Sku tippt jetzt so, wie es ein Screenreader tut: Der naechste
+            Anschlag bricht die Ansage des vorigen ab, statt sich dahinter zu stellen. Was
+            waehrend einer laufenden Ansage getippt wurde, wird zu EINER Ansage
+            zusammengefasst, sodass auch Einfuegen mit Strg+V oder eine gedrueckt
+            gehaltene Pfeiltaste keinen Schwall mehr ausloest. Und beim Schliessen des
+            Feldes - mit Enter, mit OK, mit Escape oder auf jedem anderen Weg - wird nicht
+            mehr nur das Wartende verworfen, sondern auch die gerade laufende Ausgabe
+            abgebrochen. Nebenbei behoben: die Zeichen ( und % wurden beim Tippen gar
+            nicht angesagt.
+        Technisch: Das Echo in SkuOptions:EditBoxShow haengte je getipptem Zeichen eine
+            eigene Aeusserung an die BTTS-Queue. Der Rueckstau-Deckel aus v42.11
+            (GetBttsQueueDepth / TrimBttsQueue) griff dabei ins Leere: Die Pumpe in
+            SkuVoice ueberspringt ihre 0.1-s-Taktung, sobald mehr als ein Eintrag wartet
+            (`#mSkuVoiceQueueBTTS > 1`), und schiebt den ganzen Schwall binnen weniger
+            Bilder per C_VoiceChat.SpeakText in die Queue des CLIENTS. Skus eigene Queue
+            ist danach leer, die gemessene Tiefe praktisch immer 0, der Deckel loest nie
+            aus, und beim Schliessen findet Trim nichts mehr zum Wegwerfen - der Rueckstau
+            steht zu dem Zeitpunkt in der Client-/SAPI-Queue, an die nur ein echtes
+            StopSpeakingText herankommt. Das Echo laeuft jetzt ueber genau einen Slot:
+            Zeichen werden bis zum naechsten Flush gesammelt (hoechstens 6, die neuesten
+            gewinnen), als EINE ueberschreibende Aeusserung gesprochen und auf 0.1 s
+            Mindestabstand begrenzt; ein Generationszaehler verwirft Flush-Timer und
+            verzoegerte Pfeil-Lesungen, sobald das Feld zu ist. Neu ist
+            SkuVoice:CancelBttsOutput - leert die BTTS-Queue, ruft StopSpeakingText und
+            setzt die Nachsperre der Pumpe auf 0.15 s, damit die unmittelbar folgende
+            Bestaetigung nicht vom asynchron eintreffenden Stop erschlagen wird; es haengt
+            an ENTER, OK, ESCAPE und am OnHide des Rahmens (also auch an einem fremden
+            :Hide()). Ausserdem: SkuVoice:CheckIgnore vergleicht jetzt mit string.find(...,
+            plain=true) - getippte Sonderzeichen wie ( oder % waren Lua-Muster und warfen
+            "unfinished capture" bzw. "malformed pattern", was der pcall des Aufrufers
+            verschluckte; und das Echo setzt ignoreLinks, denn bisher lief jeder
+            Tastendruck durch die komplette Wiki-Link-Suche, deren Ergebnis hier ohnehin
+            verworfen wird.
+
     Leistungsverbesserungen und Korrekturen beim Laden der Zauberdatenbank
         Einfach: Beim Anmelden meldeten einige Spieler einen gesprochenen "Sku Datenbank
             Fehler, Datensatz spells". Gemeldet wurde das von Era-Spielern, der

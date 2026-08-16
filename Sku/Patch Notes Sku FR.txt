@@ -9,6 +9,43 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
 
+    Saisie dans les champs de texte : plus de lettres qui continuent après la fermeture
+        Simple : en tapant dans un champ de saisie de Sku (écrire un courrier, un champ de
+            recherche, l'hôtel des ventes), l'annonce des caractères prenait du retard, se
+            bousculait, et des lettres arrivaient encore alors que le champ était fermé
+            depuis longtemps - surtout avec les voix SAPI, qu'une frappe n'interrompait
+            pas. Sku se comporte désormais comme un lecteur d'écran : la frappe suivante
+            interrompt l'annonce de la précédente au lieu de se mettre à la file. Ce qui a
+            été tapé pendant une annonce en cours est regroupé en UNE seule annonce, si
+            bien qu'un collage avec Ctrl+V ou une touche fléchée maintenue ne provoque plus
+            de déluge. Et à la fermeture du champ - par Entrée, par OK, par Échap ou par
+            tout autre chemin - Sku ne se contente plus de jeter ce qui attend : il
+            interrompt aussi ce qui est en train d'être prononcé. Corrigé au passage : les
+            caractères ( et % n'étaient jamais annoncés pendant la saisie.
+        Technique : l'écho de SkuOptions:EditBoxShow ajoutait un énoncé par caractère tapé
+            à la file BTTS. Le plafond introduit en v42.11 (GetBttsQueueDepth /
+            TrimBttsQueue) ne pouvait pas fonctionner : la pompe de SkuVoice saute sa
+            cadence de 0,1 s dès que plus d'une entrée attend (`#mSkuVoiceQueueBTTS > 1`)
+            et transmet toute la rafale à C_VoiceChat.SpeakText en quelques images, donc
+            dans la file du CLIENT. La file propre de Sku est ensuite vide, la profondeur
+            mesurée est quasiment toujours 0, le plafond ne se déclenche jamais, et à la
+            fermeture Trim ne trouve plus rien à jeter - à ce moment-là le retard est dans
+            la file client/SAPI, que seul un vrai StopSpeakingText peut atteindre. L'écho
+            passe maintenant par un seul emplacement : les caractères sont accumulés
+            jusqu'au prochain vidage (6 au maximum, les plus récents gagnent), prononcés en
+            UN énoncé en mode écrasement, avec un intervalle minimal de 0,1 s ; un compteur
+            de génération annule les minuteries de vidage et les lectures de flèches
+            différées dès que le champ est fermé. Nouveau : SkuVoice:CancelBttsOutput -
+            vide la file BTTS, appelle StopSpeakingText et arme le délai d'attente de la
+            pompe à 0,15 s pour que la confirmation émise juste après ne soit pas emportée
+            par l'arrêt asynchrone ; il est branché sur ENTRÉE, OK, ÉCHAP et sur le OnHide
+            du cadre (un :Hide() extérieur est donc couvert aussi). Également :
+            SkuVoice:CheckIgnore utilise désormais string.find(..., plain=true) - une
+            ponctuation tapée comme ( ou % était interprétée comme un motif Lua et levait
+            « unfinished capture » / « malformed pattern », erreur avalée par le pcall de
+            l'appelant ; et l'écho passe ignoreLinks, car chaque frappe traversait
+            auparavant toute la recherche de liens wiki dont le résultat est ici ignoré.
+
     Améliorations de performance et corrections lors du chargement de la base de sorts
         Simple : À la connexion, certains joueurs entendaient « Sku erreur de base de données,
             jeu de données spells ». Le problème a été signalé depuis Era, mais le facteur

@@ -6,6 +6,41 @@
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13
 
+    Typing in input fields: no more letters trailing after the field is gone
+        Simple: While typing into a Sku input field (writing mail, a search box, the
+            auction house) the spoken characters lagged behind the typing, tripped over
+            each other, and letters kept arriving long after the field had closed - most
+            noticeably with SAPI voices, which a keystroke did not interrupt. Sku now types
+            the way a screen reader does: the next keystroke cancels the previous
+            announcement instead of queueing up behind it. Whatever was typed while an
+            announcement was still running is merged into ONE announcement, so pasting with
+            Ctrl+V or holding an arrow key can no longer produce a flood. And when the
+            field closes - via Enter, via OK, via Escape or by any other route - Sku no
+            longer just drops what is waiting, it also stops what is currently being
+            spoken. Fixed alongside: the characters ( and % were never announced at all
+            while typing.
+        Technical: The echo in SkuOptions:EditBoxShow appended one utterance per typed
+            character to the BTTS queue. The v42.11 backlog cap (GetBttsQueueDepth /
+            TrimBttsQueue) could never bite: the SkuVoice pump skips its 0.1 s pacing as
+            soon as more than one entry is pending (`#mSkuVoiceQueueBTTS > 1`) and hands
+            the whole burst to C_VoiceChat.SpeakText within a few frames, i.e. into the
+            CLIENT's queue. Sku's own queue is empty afterwards, the measured depth is
+            practically always 0, the cap never triggers, and on close Trim finds nothing
+            left to drop - by then the backlog sits in the client/SAPI queue, which only a
+            real StopSpeakingText can reach. The echo now runs through exactly one slot:
+            characters are collected until the next flush (at most 6, newest win), spoken
+            as ONE overwriting utterance, and rate-limited to a 0.1 s minimum gap; a
+            generation counter discards flush timers and deferred arrow reads the moment
+            the field is gone. New: SkuVoice:CancelBttsOutput - clears the BTTS queue,
+            calls StopSpeakingText and arms the pump's post-stop hold at 0.15 s so the
+            confirmation issued right afterwards is not killed by the asynchronous stop; it
+            is wired to ENTER, OK, ESCAPE and the frame's OnHide (so a foreign :Hide()
+            is covered too). Also: SkuVoice:CheckIgnore now uses string.find(..., plain=true)
+            - typed punctuation such as ( or % was treated as a Lua pattern and threw
+            "unfinished capture" / "malformed pattern", which the caller's pcall swallowed;
+            and the echo passes ignoreLinks, because every keystroke used to run through
+            the full wiki link search whose result is discarded here anyway.
+
     Performance improvements and fixes when loading the spell database
         Simple: At login some players got a spoken "Sku database error, data set spells".
             It was reported from Era, but the common factor is processing power rather than

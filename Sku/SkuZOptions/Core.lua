@@ -6904,46 +6904,126 @@ end
 local tStrLenUtf8 = _G.strlenutf8 or string.len
 local tStrSubUtf8 = _G.strsubutf8 or string.sub
 
--- aQueue=true: an die Queue ANHAENGEN (aOverwrite=false), damit schnelles Tippen JEDES
--- Zeichen der Reihe nach spricht. Mit aOverwrite=true haengte OutputStringBTtts pro
--- Aufruf ein "queuereset" ein und leerte die Queue -> auf langsameren Stimmen wurde nur
--- das zuletzt getippte Zeichen gesprochen. Ohne aQueue (Pfeil-/Wort-/Zeilen-Lesen):
--- neueste Position gewinnt (ueberschreiben), damit schnelles Pfeilen nicht nachhinkt.
+-- [v42.13] EIN Slot statt einer Warteschlange -- so, wie ein Screenreader beim
+-- Tippen arbeitet: der naechste Anschlag bricht die Ansage des vorigen ab.
 --
--- [v42.11] Rueckstau-Deckel. Anhaengen ohne Grenze war der Fehler: wer schneller
--- tippt als die Stimme spricht (4-5 Anschlaege/s gegen ~0.4 s je Zeichen), baut eine
--- Warteschlange auf, die NICHT mit dem Schliessen des Eingabefelds endet -- Sku las
--- die getippten Zeichen noch Minuten spaeter vor ("wiederholt nach dem Absenden eines
--- Briefes die eingegebenen Buchstaben"). Steht mehr als tMaxCharBacklog Ungesprochenes
--- an, werfen wir den WARTENDEN Rest weg und sprechen das neue Zeichen sofort: die
--- Ausgabe folgt damit dem Tippen, statt hinterherzulaufen (genau das Verhalten, das
--- ein Screenreader beim Tippen zeigt). Verworfen wird nur, was Sku noch gar nicht an
--- die TTS uebergeben hat -- nie ein laufendes Wort.
-local tMaxCharBacklog = 3
-local function tSpeakInput(aText, aQueue)
-	if aQueue then
-		if SkuOptions.Voice.GetBttsQueueDepth then
-			pcall(function()
-				if SkuOptions.Voice:GetBttsQueueDepth() > tMaxCharBacklog then
-					SkuOptions.Voice:TrimBttsQueue(0)
-				end
-			end)
-		end
-		pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, false, false, 0.05, nil, nil, nil, 2) end)
-	else
-		pcall(function() SkuOptions.Voice:OutputStringBTtts(aText, true, false, 0.05, nil, nil, nil, 2) end)
+-- Warum die beiden Vorgaenger-Ansaetze das Problem nicht loesen konnten:
+--
+--  * v42.08 haengte je getipptem Zeichen eine eigene Aeusserung an die
+--    BTTS-Queue an. Wer schneller tippt als die Stimme spricht (4-5 Anschlaege/s
+--    gegen ~0.4 s je Zeichen), erzeugt damit einen Rueckstau, der beim
+--    Schliessen des Feldes weiterlaeuft.
+--  * v42.11 setzte einen Deckel auf diesen Rueckstau (GetBttsQueueDepth /
+--    TrimBttsQueue). Der greift aber ins Leere, denn die Pumpe in SkuVoice
+--    ueberspringt ihre 0.1-s-Taktung, sobald mehr als ein Eintrag wartet
+--    (`#mSkuVoiceQueueBTTS > 1`): sie schiebt den ganzen Schwall binnen weniger
+--    Frames per C_VoiceChat.SpeakText in die Queue des CLIENTS. Skus eigene
+--    Queue ist danach leer -- die gemessene Tiefe ist praktisch immer 0, der
+--    Deckel loest nie aus, und Trim findet beim Schliessen nichts mehr zum
+--    Wegwerfen. Der Rueckstau steht zu diesem Zeitpunkt in der Client-/
+--    SAPI-Queue, an die nur ein echtes StopSpeakingText herankommt.
+--
+-- Neues Verhalten:
+--  * Zeichen werden bis zum naechsten Flush gesammelt (max. tEchoMaxChars, die
+--    NEUESTEN gewinnen) und als EINE Aeusserung gesprochen. Damit kann auch
+--    Einfuegen per Strg+V oder eine gedrueckt gehaltene Pfeiltaste keine
+--    hunderte Aeusserungen mehr erzeugen.
+--  * Jeder Flush laeuft ueberschreibend (aOverwrite=true) -> ein neuer Anschlag
+--    bricht die noch laufende Ansage ab, statt sich dahinter zu stellen.
+--  * tEchoMinGap begrenzt die Rate; darunter waere ohnehin nur die 0.1-s-Sperre
+--    der Pumpe wirksam.
+--  * ignoreLinks=true: OutputStringBTtts jagte sonst JEDES getippte Zeichen
+--    durch die Wiki-Link-Suche (GetLinksTableFromString) -- ein Durchlauf ueber
+--    den kompletten Link-Index pro Tastendruck, dessen Ergebnis hier verworfen
+--    wird.
+--  * tEchoActive: nach dem Schliessen des Feldes wird nichts mehr gesprochen --
+--    auch nicht aus den verzoegerten Pfeil-Lesungen (C_Timer unten).
+local tEchoMinGap = 0.10
+local tEchoMaxChars = 6
+local tEchoPending = {}
+local tEchoScheduled = false
+local tEchoLastAt = 0
+local tEchoActive = false
+-- Wird bei jedem Stop hochgezaehlt; ein noch laufender C_Timer aus der alten
+-- Generation erkennt daran, dass er nichts mehr zu sprechen hat.
+local tEchoGeneration = 0
+
+local function tEchoFlush(aGeneration)
+	if aGeneration ~= tEchoGeneration then
+		return
 	end
+	tEchoScheduled = false
+	if #tEchoPending == 0 then
+		return
+	end
+	local tText = table.concat(tEchoPending, " ")
+	wipe(tEchoPending)
+	tEchoLastAt = GetTime()
+	if dprintv then dprintv("editbox echo flush", tText) end
+	pcall(function()
+		SkuOptions.Voice:OutputStringBTtts(tText, {overwrite = true, wait = false, length = 0.05, engine = 2, ignoreLinks = true})
+	end)
 end
 
--- [v42.11] Den noch nicht gesprochenen Tipp-Rueckstau wegwerfen. Wird beim
--- Bestaetigen einer Eingabe aufgerufen, BEVOR der OK-Callback seine eigene Ansage
--- absetzt -- sonst stuende die Bestaetigung ("Empfaenger: Bob") hinter womoeglich
--- hunderten Einzelzeichen und kaeme erst Minuten spaeter. Abbrechen mit ESCAPE
--- braucht das nicht: die "Abgebrochen"-Ansage laeuft ueber den ueberschreibenden
--- Pfad (aQueue=nil) und leert die Queue dabei ohnehin.
-local function tDropInputBacklog()
-	if SkuOptions.Voice.TrimBttsQueue then
+local function tEchoSchedule()
+	if tEchoScheduled then
+		return
+	end
+	tEchoScheduled = true
+	local tWait = tEchoMinGap - (GetTime() - tEchoLastAt)
+	if tWait < 0.01 then
+		tWait = 0.01
+	end
+	local tGeneration = tEchoGeneration
+	C_Timer.After(tWait, function() tEchoFlush(tGeneration) end)
+end
+
+---@param aText string was gesprochen werden soll
+---@param aChar boolean|nil true = getipptes/geloeschtes Zeichen (wird gesammelt);
+---              sonst eine Positionsansage (Pfeil/Wort/Zeile) -- die neueste
+---              ersetzt eine noch wartende, damit schnelles Pfeilen nicht nachhinkt
+local function tSpeakInput(aText, aChar)
+	if not aText or aText == "" or not tEchoActive then
+		return
+	end
+	if aChar then
+		tEchoPending[#tEchoPending + 1] = aText
+		while #tEchoPending > tEchoMaxChars do
+			table.remove(tEchoPending, 1)
+		end
+	else
+		wipe(tEchoPending)
+		tEchoPending[1] = aText
+	end
+	tEchoSchedule()
+end
+
+-- Echo beenden: Wartendes verwerfen UND Laufendes abbrechen. Ohne den Abbruch
+-- bleibt das, was schon an C_VoiceChat.SpeakText uebergeben wurde, hoerbar --
+-- genau die Buchstaben, die "noch kommen, wenn das Eingabefeld laengst zu ist".
+-- Wird auf JEDEM Schliessweg gerufen (ENTER, OK, ESCAPE, fremdes :Hide()) und ist
+-- danach ein No-op, damit ein spaeterer Weg die Ansage des ersten nicht abschiesst.
+---@param aFinalText string|nil Ansage, die den Abbruch ueberleben soll ("Abgebrochen")
+local function tEchoStop(aFinalText)
+	if not tEchoActive then
+		return
+	end
+	tEchoActive = false
+	tEchoGeneration = tEchoGeneration + 1
+	tEchoScheduled = false
+	wipe(tEchoPending)
+	if SkuOptions.Voice.CancelBttsOutput then
+		pcall(function() SkuOptions.Voice:CancelBttsOutput() end)
+	elseif SkuOptions.Voice.TrimBttsQueue then
 		pcall(function() SkuOptions.Voice:TrimBttsQueue(0) end)
+	end
+	if aFinalText then
+		-- overwrite=false: der harte Abbruch oben hat die Queue schon geleert und
+		-- die Nachsperre der Pumpe gesetzt; ein zweites "queuereset" wuerde diese
+		-- Ansage nur erneut verzoegern.
+		pcall(function()
+			SkuOptions.Voice:OutputStringBTtts(aFinalText, {overwrite = false, wait = false, length = 0.05, engine = 2, ignoreLinks = true})
+		end)
 	end
 end
 
@@ -7004,7 +7084,11 @@ local function tEditBoxOnKeyDownRead(self, aKey)
 			tSpeakInput(tText == "" and Sku.deEn("Leer", "Empty", "Vide") or tText)
 		end)
 	elseif aKey == "ESCAPE" then
-		tSpeakInput(Sku.deEn("Abgebrochen", "Cancelled", "Annulé"))
+		-- Abbrechen: erst alles Getippte verwerfen/abbrechen, dann die eine
+		-- Ansage setzen, die den Abbruch ueberleben soll. Das anschliessende
+		-- OnEscapePressed -> :Hide() -> OnHide ruft tEchoStop erneut, findet das
+		-- Echo aber schon gestoppt und laesst "Abgebrochen" in Ruhe.
+		tEchoStop(Sku.deEn("Abgebrochen", "Cancelled", "Annulé"))
 	end
 end
 
@@ -7095,10 +7179,10 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 			eb:SetWidth(sf:GetWidth())
 		end)
 
-		-- [v42.11] tDropInputBacklog() zuerst: der Tipp-Rueckstau darf die Ansage des
-		-- OK-Callbacks nicht ausbremsen (siehe dort).
-		SkuOptionsEditBoxEditBox:HookScript("OnEnterPressed", function(...) tDropInputBacklog() SkuOptionsEditBoxOkScript(...) SkuOptionsEditBox:Hide() end)
-		SkuOptionsEditBoxButton:HookScript("OnClick", function(...) tDropInputBacklog() SkuOptionsEditBoxOkScript(...) SkuOptionsEditBox:Hide() end)
+		-- [v42.11/42.13] tEchoStop() zuerst: der Tipp-Rueckstau darf die Ansage des
+		-- OK-Callbacks weder ausbremsen noch nach dem Schliessen weiterlaufen.
+		SkuOptionsEditBoxEditBox:HookScript("OnEnterPressed", function(...) tEchoStop() SkuOptionsEditBoxOkScript(...) SkuOptionsEditBox:Hide() end)
+		SkuOptionsEditBoxButton:HookScript("OnClick", function(...) tEchoStop() SkuOptionsEditBoxOkScript(...) SkuOptionsEditBox:Hide() end)
 
 		-- [v42.11] Tastaturfokus beim Schliessen freigeben -- auf JEDEM Weg (ENTER,
 		-- OK, ESCAPE, fremdes :Hide()). Das Feld ist ein Enkel von f; wird nur der
@@ -7108,6 +7192,10 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 			if SkuOptionsEditBoxEditBox then
 				SkuOptionsEditBoxEditBox:ClearFocus()
 			end
+			-- [v42.13] Auffangnetz fuer JEDEN Schliessweg -- auch fuer ein fremdes
+			-- :Hide(), das weder ENTER noch OK noch ESCAPE durchlaeuft. Nach ENTER/
+			-- OK/ESCAPE ist das hier ein No-op (siehe tEchoStop).
+			tEchoStop()
 		end)
 
 		f:Show()
@@ -7142,6 +7230,14 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 	SkuOptionsEditBox:Show()
 
 	SkuOptionsEditBoxEditBox:SetFocus()
+
+	-- [v42.13] Echo scharf schalten. Der Generationswechsel verwirft zugleich
+	-- einen etwaigen Flush-Timer der VORIGEN Eingabe, damit deren letztes Zeichen
+	-- nicht in diese hineinspricht.
+	tEchoGeneration = tEchoGeneration + 1
+	tEchoScheduled = false
+	wipe(tEchoPending)
+	tEchoActive = true
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

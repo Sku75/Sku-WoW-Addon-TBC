@@ -95,6 +95,15 @@ local tBttsSpeakingTtl = 12
 -- OutputStringBTtts (writes) and the OnUpdate dequeue (reads+clears).
 local mSkuVoiceQueueBTTS_Voice = {}
 
+-- [v42.13] Pump pacing state, hoisted out of SkuVoice:Create's closure so
+-- SkuVoice:CancelBttsOutput (below) can arm the same hold the queuereset branch
+-- uses. Semantics unchanged; see the long comment in Create.
+--   tNextSpeakAt: GetTime() before which no new utterance may be handed to
+--                 C_VoiceChat.SpeakText.
+--   tLastStopAt:  GetTime() of the last StopSpeakingText this pump issued.
+local tNextSpeakAt = 0
+local tLastStopAt = 0
+
 -- BTTS cache-buster (WoW 12.0 engine): the new client caches synthesized audio
 -- by text and, on a repeat, REPLAYS the cached audio without re-invoking the
 -- voice. For a real voice (Hedda) that replay is audible; for an out-of-band
@@ -168,10 +177,8 @@ function SkuVoice:Create()
 	-- waiting, a longer hold means MORE lost announcements: the bug got worse the
 	-- higher your framerate. A deadline is framerate-independent and identical to
 	-- the old behaviour at 60 fps.
-	local tNextSpeakAt = 0
-	-- GetTime() of the last StopSpeakingText issued by this pump (the queuereset
-	-- branch below). Only used to suppress redundant back-to-back stops.
-	local tLastStopAt = 0
+	-- (tNextSpeakAt / tLastStopAt are file-locals now -- see their declaration
+	-- above; SkuVoice:CancelBttsOutput needs to arm the same hold.)
 	f:SetScript("OnUpdate", function(self, time)
 
 		fTimeBTTS = fTimeBTTS + time
@@ -621,7 +628,12 @@ function SkuVoice:CheckIgnore(aString)
 		if aString == v then
 			return true
 		end
-		if string.find(v, aString) then
+		-- [v42.13] plain find (4th arg true). aString is CALLER text, not a
+		-- pattern: the live typing echo passes single typed characters through
+		-- here, so "(" threw "unfinished capture" and "%" threw "malformed
+		-- pattern", and the whole spoken line was lost inside the caller's
+		-- pcall. A substring test is what this check always meant.
+		if string.find(v, aString, 1, true) then
 			return true
 		end
 	end
@@ -1310,6 +1322,43 @@ function SkuVoice:TrimBttsQueue(aKeep)
 		end
 		table.remove(mSkuVoiceQueueBTTS, 1)
 	end
+end
+
+---------------------------------------------------------------------------------------------------------
+-- [v42.13] HARD cancel of the Blizzard-TTS path: drop everything Sku still has
+-- queued AND stop what the client is already speaking.
+--
+-- Why TrimBttsQueue was not enough for the typing echo. The pump dequeues
+-- WITHOUT waiting for playback whenever more than one entry is pending
+-- (`#mSkuVoiceQueueBTTS > 1` bypasses the 0.1 s pacing), so a burst of queued
+-- lines is handed to C_VoiceChat.SpeakText within a few frames. From that
+-- moment the backlog lives in the CLIENT's TTS queue, where Sku's own queue is
+-- empty and TrimBttsQueue has nothing left to drop -- which is exactly why
+-- typed characters kept being read out long after the edit box was gone.
+-- Stopping playback is the only thing that reaches that backlog.
+--
+-- Deliberately ignores `neverResetQueues`: that setting keeps ROUTINE
+-- announcements from cutting each other off. This is not routine output -- it
+-- is "the input field the echo belonged to no longer exists", and leaving the
+-- letters running is the bug the setting's owner is complaining about too.
+--
+-- Arms the pump's own post-stop hold (0.15 s) so the announcement a caller
+-- makes right after cancelling (a confirmation, "Cancelled") cannot be eaten by
+-- this stop landing asynchronously on the NEXT utterance.
+function SkuVoice:CancelBttsOutput()
+	for x = #mSkuVoiceQueueBTTS, 1, -1 do
+		local tValue = mSkuVoiceQueueBTTS[x]
+		if tValue then
+			mSkuVoiceQueueBTTS_Voice[tValue] = nil
+		end
+		mSkuVoiceQueueBTTS[x] = nil
+	end
+	mSkuVoiceQueueBTTS_Speaking = {}
+	local tNow = GetTime()
+	tLastStopAt = tNow
+	tNextSpeakAt = tNow + 0.15
+	if dprint then dprint("BTTS CancelBttsOutput -> StopSpeakingText") end
+	pcall(function() C_VoiceChat.StopSpeakingText() end)
 end
 
 ---------------------------------------------------------------------------------------------------------
