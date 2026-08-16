@@ -6,13 +6,19 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
 
-    Taxiflug: das Reiseziel wurde als vorzeitiger Landepunkt angesagt
-        Einfach: Kurz vor der Ankunft sagte Sku "Vorzeitige Landung moeglich bei X" -
-            und X war das Ziel, das man ohnehin gerade anflog. Dort vorzeitig zu landen
-            heisst schlicht anzukommen; diese Ansage bleibt jetzt aus.
-        Technisch: Der Ausschluss des letzten Punktes gab es bereits, nur rutschte der
-            Routen-Zeiger im entscheidenden Moment darunter weg. Die Route wird beim
-            Start abgegriffen, und ein Zwischenstopp gilt als passiert, sobald er naeher
+    Taxiflug: zwei falsche Flugansagen
+        Einfach: Zwei Dinge wurden angesagt, die nicht stimmten. Erstens sagte Sku kurz
+            vor der Ankunft "Vorzeitige Landung moeglich bei X" - und X war das Ziel,
+            das man ohnehin gerade anflog; dort vorzeitig zu landen heisst schlicht
+            anzukommen. Zweitens kam "Flug beendet" (oder "Flug gestartet") gelegentlich
+            lange nach dem Flug, typischerweise in dem Moment, in dem man das naechste
+            Mal auf- oder abgesessen ist, mitunter Minuten spaeter und ohne jeden Bezug
+            zu einem Flugpunkt. Die erste Ansage bleibt jetzt aus, die zweite kommt
+            genau dann, wenn der Flug wirklich beginnt oder endet, und sonst nie.
+        Technisch, das Ziel als Landepunkt: Den Ausschluss des letzten Punktes gab es
+            bereits, nur rutschte der Routen-Zeiger im entscheidenden Moment darunter
+            weg. Die Route wird beim Start abgegriffen, und ein Zwischenstopp gilt als
+            passiert, sobald er naeher
             als 250 Yards ist. Das Taxi fliegt aber direkt in seinen letzten Punkt
             hinein, also wurde auch dieser "passiert": der Zeiger lief hinter das
             Routenende, der naechste Halt war nil, und die Zielbestimmung fiel still auf
@@ -24,14 +30,8 @@ Aenderungen in Sku v42.13
             hinauszulaufen: das Ziel ist kein Halt, den man passiert, sondern der Ort,
             an dem der Flug endet. Damit greift die Stummschaltung bis zur Landung, und
             die Taste kann das Ziel weiterhin benennen.
-
-    Flugansagen kamen manchmal Minuten nach der Landung
-        Einfach: "Flug beendet" (oder "Flug gestartet") wurde gelegentlich lange nach dem
-            Flug gesprochen - typischerweise in dem Moment, in dem man das naechste Mal
-            auf- oder abgesessen ist, mitunter Minuten spaeter und ohne jeden Bezug zu
-            einem Flugpunkt. Die Ansage kommt jetzt genau dann, wenn der Flug wirklich
-            beginnt oder endet, und sonst nie.
-        Technisch: Die Ansage hing an zwei Merkern, die PLAYER_CONTROL_LOST bzw.
+        Technisch, die verspaetete Ansage: Sie hing an zwei Merkern, die
+            PLAYER_CONTROL_LOST bzw.
             PLAYER_CONTROL_GAINED auf 1 setzten und die AUSSCHLIESSLICH das naechste
             PLAYER_MOUNT_DISPLAY_CHANGED wieder abgeraeumt hat. Blieb dieses Ereignis aus
             - oder kam es an der Landung vor dem Kontroll-Ereignis - dann wartete die 1
@@ -44,7 +44,8 @@ Aenderungen in Sku v42.13
             denselben idempotenten Test aus (Kontroll-Ereignisse zusaetzlich zeitversetzt,
             weil der Client-Merker dem Ereignis hinterherhinkt), und Login/Neuladen
             uebernimmt den laufenden Zustand stumm.
-        Technisch, zweiter Teil: Im Taxi-Modul ("Vorzeitige Landung moeglich bei X")
+        Technisch, zur Sicherheit obendrauf: Im Taxi-Modul ("Vorzeitige Landung
+            moeglich bei X")
             konnte dieselbe Klasse Fehler nicht auftreten - die Ansage haengt hinter
             UnitOnTaxi UND dem sichtbaren Abbruch-Knopf. Trotzdem abgesichert, weil beide
             Merkmale Client-Zustand sind: Kontrolle zurueckerhalten heisst jetzt "Flug

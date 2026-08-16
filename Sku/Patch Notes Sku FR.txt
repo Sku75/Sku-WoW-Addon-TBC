@@ -9,13 +9,19 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
 
-    Vol en taxi : la destination était annoncée comme point d'atterrissage anticipé
-        Simple : peu avant l'arrivée, Sku disait « atterrissage anticipé possible à X » -
-            et X était la destination vers laquelle on volait déjà. Y atterrir « par
-            anticipation », c'est simplement arriver : cette phrase disparaît.
-        Technique : l'exclusion du dernier point existait bien, mais le curseur d'itinéraire
-            lui glissait dessous au moment décisif. L'itinéraire est capté au décollage et
-            une escale est considérée comme franchie dès qu'elle est à moins de 250 yards.
+    Vol en taxi : deux annonces de vol qui ne collaient pas
+        Simple : deux choses étaient annoncées à tort. D'abord, peu avant l'arrivée, Sku
+            disait « atterrissage anticipé possible à X » - et X était la destination vers
+            laquelle on volait déjà ; y atterrir « par anticipation », c'est simplement
+            arriver. Ensuite, « vol terminé » (ou « vol démarré ») arrivait parfois
+            longtemps après le vol, typiquement au moment où l'on montait ou descendait de
+            monture, parfois plusieurs minutes plus tard et sans le moindre rapport avec un
+            point de vol. La première phrase disparaît ; la seconde arrive désormais
+            exactement quand le vol commence ou se termine réellement, et jamais autrement.
+        Technique, la destination comme point d'atterrissage : l'exclusion du dernier
+            point existait bien, mais le curseur d'itinéraire lui glissait dessous au
+            moment décisif. L'itinéraire est capté au décollage et une escale est
+            considérée comme franchie dès qu'elle est à moins de 250 yards.
             Or le taxi entre droit dans son dernier point : celui-ci était donc « franchi »
             lui aussi, le curseur dépassait la fin de l'itinéraire, l'escale suivante était
             nulle, et la détermination de la cible retombait silencieusement sur la
@@ -27,15 +33,9 @@ Changements dans Sku v42.13
             destination n'est pas une escale que l'on franchit, c'est là où le vol se
             termine. La règle tient donc jusqu'à l'atterrissage, et le raccourci peut
             toujours nommer la destination à la demande.
-
-    Les annonces de vol arrivaient parfois plusieurs minutes après l'atterrissage
-        Simple : « Vol terminé » (ou « vol démarré ») était parfois prononcé longtemps
-            après le vol - typiquement au moment où l'on montait ou descendait de
-            monture, parfois plusieurs minutes plus tard et sans le moindre rapport avec
-            un point de vol. L'annonce arrive désormais exactement quand le vol commence
-            ou se termine réellement, et jamais autrement.
-        Technique : l'annonce reposait sur deux drapeaux que PLAYER_CONTROL_LOST et
-            PLAYER_CONTROL_GAINED mettaient à 1 et que SEUL le PLAYER_MOUNT_DISPLAY_CHANGED
+        Technique, l'annonce tardive : elle reposait sur deux drapeaux que
+            PLAYER_CONTROL_LOST et PLAYER_CONTROL_GAINED mettaient à 1 et que SEUL le
+            PLAYER_MOUNT_DISPLAY_CHANGED
             suivant remettait à zéro. Si cet événement ne suivait pas - ou arrivait avant
             l'événement de contrôle à l'atterrissage - le 1 attendait, tout simplement, et
             la monture suivante le consommait. PLAYER_CONTROL_GAINED se déclenche en outre
@@ -47,7 +47,7 @@ Changements dans Sku v42.13
             contrôle le rejouent aussi en différé, car le drapeau du client est en retard
             sur l'événement), et une connexion ou un /reload adopte l'état courant en
             silence.
-        Technique, deuxième partie : le module taxi (« atterrissage anticipé possible
+        Technique, par précaution : le module taxi (« atterrissage anticipé possible
             à X ») ne pouvait pas échouer ainsi - cette phrase est gardée par UnitOnTaxi
             ET par le bouton d'annulation visible. Renforcé tout de même, ces deux
             éléments étant de l'état client : reprendre le contrôle signifie désormais

@@ -6,13 +6,18 @@
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13
 
-    Taxi flight: the destination was announced as an early-landing point
-        Simple: Shortly before arriving, Sku said "early landing available at X" - and X
-            was the destination you were already flying to. Landing early there is just
-            arriving, so that line is gone.
-        Technical: The last-point exclusion was already there; the route cursor simply
-            slid out from under it at the decisive moment. The route is captured at
-            takeoff and a stop counts as passed once it is closer than 250 yards. But
+    Taxi flight: two flight announcements that were not true
+        Simple: Two things were announced that did not hold. First, shortly before
+            arriving, Sku said "early landing available at X" - and X was the destination
+            you were already flying to; landing early there is just arriving. Second,
+            "flight ended" (or "flight started") sometimes came long after the flight,
+            typically the moment you next mounted or dismounted, occasionally minutes
+            later and nowhere near a flight point. The first line is gone; the second now
+            comes exactly when the flight really starts or ends, and never otherwise.
+        Technical, the destination as a landing point: The last-point exclusion was
+            already there; the route cursor simply slid out from under it at the decisive
+            moment. The route is captured at takeoff and a stop counts as passed once it
+            is closer than 250 yards. But
             the taxi flies straight into its final node, so that one got "passed" too:
             the cursor ran off the end of the route, the next stop was nil, and the
             target lookup quietly degraded to the nearest-flight-point fallback. That
@@ -23,14 +28,8 @@ Changes in Sku v42.13
             past it: the destination is not a stop you pass, it is where the flight
             ends. The rule therefore holds through touchdown, and the keybind can still
             name the destination on demand.
-
-    Flight announcements sometimes arrived minutes after landing
-        Simple: "Flight ended" (or "flight started") was occasionally spoken long after
-            the flight - typically the moment you next mounted or dismounted, sometimes
-            minutes later and nowhere near a flight point. The line now comes exactly
-            when the flight really starts or ends, and never otherwise.
-        Technical: The announcement hung on two flags that PLAYER_CONTROL_LOST and
-            PLAYER_CONTROL_GAINED set to 1 and that ONLY the next
+        Technical, the late announcement: It hung on two flags that PLAYER_CONTROL_LOST
+            and PLAYER_CONTROL_GAINED set to 1 and that ONLY the next
             PLAYER_MOUNT_DISPLAY_CHANGED ever cleared. If that event did not follow - or
             arrived before the control event at a landing - the 1 simply waited, and the
             next mount or dismount consumed it. PLAYER_CONTROL_GAINED also fires for
@@ -41,10 +40,10 @@ Changes in Sku v42.13
             re-runs the same idempotent check (control events also re-check after a short
             delay, because the client flag lags the event), and a login or /reload adopts
             the current state silently.
-        Technical, part two: The taxi module ("early landing available at X") could not
-            fail this way - that line sits behind UnitOnTaxi AND the visible cancel
-            button. Hardened anyway, since both are client state: regaining player control
-            now means "the flight is over, full stop" - the watch is torn down and no
+        Technical, belt and braces: The taxi module ("early landing available at X")
+            could not fail this way - that line sits behind UnitOnTaxi AND the visible
+            cancel button. Hardened anyway, since both are client state: regaining player
+            control now means "the flight is over, full stop" - the watch is torn down and no
             event may re-arm it until a new flight is actually taken. On top of that, a
             momentarily invisible cancel button (a zone hand-off mid-flight is enough) no
             longer wipes the announcement latches, which could otherwise name the same
