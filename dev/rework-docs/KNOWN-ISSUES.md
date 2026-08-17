@@ -353,3 +353,25 @@ here so a future session doesn't re-derive the analysis from scratch.
        on an aura that never had that condition goes silent (it was garbage).
      - Re-check: any multi-condition aura still fires; `/skuperf combat` avg
        for `EvaluateAllAuras` drops further.
+  2. **Duration lookups read the list cache instead of rescanning UnitAura**
+     (`SkuAuras/Core.lua`, `exp` maps in `tAuraListCache`, `getFixedDuration`).
+     The per-aura duration prefetch (buffListTargetDuration & co) rescanned
+     UnitAura for EVERY duration-watching aura on EVERY event, bypassing the
+     Tier-2 cache — and on a miss it built and DISCARDED a full list, then
+     assigned that list TABLE to the Duration field (the numeric operators
+     rejected it via their table guard, so it worked by accident). The cache
+     slots now carry name → expirationTime (first occurrence wins, matching the
+     fresh scan's first-match for duplicate names; `false` marks a nil exp), a
+     hit is a subtraction, and the same frame-accurate invalidation covers both
+     maps — a refresh that moves exp is an `_AURA_` subevent + `UNIT_AURA`.
+     Two deliberate behaviour repairs: on a miss the Duration field is now
+     explicitly CLEARED (was: full-list table), and a nil lookup no longer
+     retains the PREVIOUS aura's duration in the shared tEvaluateData (same
+     stale-leak class as item 1's `tSpellNameOnCdValue`).
+     - Regression net: `/skuauracache verify on` now also diffs the stored
+       expirationTimes (absolute timestamps, exact compare) — run one test
+       fight with a DoT and watch the ring for `AURACACHE MISMATCH`.
+     - Kill switch: `/skuauracache off` disables the exp reads too
+       (getFixedDuration falls back to the original fresh scan).
+     - Re-check: a "Dauer < X" aura on a running DoT fires as before (it still
+       needs an event to wake it until wave-2 item 3 lands).

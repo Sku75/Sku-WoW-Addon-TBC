@@ -1378,12 +1378,19 @@ end
 -- exists to avoid -- i.e. the measuring was costing more than the thing it
 -- measured. Turn it back on with `/skuauracache verify on` when a divergence is
 -- actually suspected.
+-- [v43.0] Each slot also carries `exp`: aura name -> expirationTime, filled by
+-- the same rebuild that fills `list` and staled by the same invalidation. It
+-- exists so the per-aura DURATION lookups (buffListTargetDuration & co) stop
+-- rescanning UnitAura for every duration-watching aura on every event — see
+-- getFixedDuration. First occurrence wins, matching the fresh scan's
+-- first-match return for duplicate aura names (two priests' Renew).
 local tAuraListCache = {
 	enabled = true,
 	verify  = false,
-	player = { HELPFUL = {valid = false, list = {}}, HARMFUL = {valid = false, list = {}} },
-	target = { HELPFUL = {valid = false, list = {}}, HARMFUL = {valid = false, list = {}} },
+	player = { HELPFUL = {valid = false, list = {}, exp = {}}, HARMFUL = {valid = false, list = {}, exp = {}} },
+	target = { HELPFUL = {valid = false, list = {}, exp = {}}, HARMFUL = {valid = false, list = {}, exp = {}} },
 	_verifyBuf = {},
+	_verifyExpBuf = {},
 }
 SkuAuras.auraListCache = tAuraListCache
 
@@ -1576,7 +1583,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 			end
 		end
 	end
-	local function getAuraList(unit, filter, durationForAuraName, aScratch)
+	local function getAuraList(unit, filter, durationForAuraName, aScratch, aExpScratch)
 		filter = filter or "HELPFUL|HARMFUL"
 		-- [W3/P4 #2] Reuse a caller-supplied scratch buffer (wiped) instead of
 		-- allocating, for the four fixed per-event lists. The duration-lookup path
@@ -1587,6 +1594,13 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 			for k in pairs(tBuffList) do tBuffList[k] = nil end
 		else
 			tBuffList = {}
+		end
+		-- [v43.0] Optional exp map (cache slots only): name -> expirationTime,
+		-- first occurrence wins. `false` marks a nil expirationTime so the reader
+		-- can tell "aura has no exp" (never seen; fresh path treated it as "now",
+		-- duration 0) from "aura not present" (nil).
+		if aExpScratch then
+			for k in pairs(aExpScratch) do aExpScratch[k] = nil end
 		end
 		for x = 1, 40  do
 			local name, icon, count, dispelType, duration, expirationTime = UnitAura(unit, x, filter)
@@ -1599,6 +1613,9 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 				if name == durationForAuraName then
 					return (expirationTime or GetTime()) - GetTime()
 				end
+			end
+			if aExpScratch and aExpScratch[name] == nil then
+				aExpScratch[name] = expirationTime or false
 			end
 			tBuffList[name] = name
 		end
@@ -1626,22 +1643,57 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 			return getAuraList(unit, filter, nil, aFallbackScratch)
 		end
 		if not tSlot.valid then
-			getAuraList(unit, filter, nil, tSlot.list)   -- rebuild in place (wipes + fills)
+			getAuraList(unit, filter, nil, tSlot.list, tSlot.exp)   -- rebuild in place (wipes + fills)
 			tSlot.valid = true
 		end
 		if tAuraListCache.verify then
 			local tFresh = tAuraListCache._verifyBuf
-			getAuraList(unit, filter, nil, tFresh)        -- fresh rebuild for comparison
+			local tFreshExp = tAuraListCache._verifyExpBuf
+			getAuraList(unit, filter, nil, tFresh, tFreshExp)        -- fresh rebuild for comparison
 			local tBad = false
 			for k in pairs(tFresh) do if tSlot.list[k] == nil then tBad = true break end end
 			if not tBad then
 				for k in pairs(tSlot.list) do if tFresh[k] == nil then tBad = true break end end
 			end
+			-- [v43.0] Also diff the exp map. expirationTime is an ABSOLUTE
+			-- timestamp, so exact compare is valid (no GetTime drift involved).
+			if not tBad then
+				for k, v in pairs(tFreshExp) do if tSlot.exp[k] ~= v then tBad = true break end end
+			end
+			if not tBad then
+				for k, v in pairs(tSlot.exp) do if tFreshExp[k] ~= v then tBad = true break end end
+			end
 			if tBad then
-				dprint("AURACACHE MISMATCH", unit, filter, "cached", tSlot.list, "fresh", tFresh)
+				dprint("AURACACHE MISMATCH", unit, filter, "cached", tSlot.list, "fresh", tFresh, "cachedExp", tSlot.exp, "freshExp", tFreshExp)
 			end
 		end
 		return tSlot.list
+	end
+
+	-- [v43.0] Cached duration lookup for the per-aura duration prefetch below.
+	-- Cache valid -> a table read + subtraction instead of a UnitAura rescan per
+	-- duration-watching aura per event. The fixed lists were rebuilt via getFixed
+	-- in THIS same call (same frame, same aura state), so list and exp are
+	-- consistent with what the aura conditions just evaluated against.
+	-- Cache off/invalid -> the original fresh scan, behaviour-identical.
+	-- Return semantics replicated exactly from the fresh scan:
+	--   name not present        -> nil   (enchant pseudo-names too: no exp entry)
+	--   present, exp == 0       -> 0 - GetTime()  (permanent auras; 0 is truthy)
+	--   present, exp was nil    -> 0     (fresh path: (nil or GetTime()) - GetTime())
+	local function getFixedDuration(unit, filter, aAuraName)
+		local tUnit = tAuraListCache.enabled and tAuraListCache[unit]
+		local tSlot = tUnit and tUnit[filter]
+		if tSlot and tSlot.valid then
+			local tExp = tSlot.exp[aAuraName]
+			if tExp == nil then
+				return nil
+			end
+			if tExp == false then
+				return 0
+			end
+			return tExp - GetTime()
+		end
+		return getAuraList(unit, filter, aAuraName)
 	end
 
 	local subevent = tEventData[CleuBase.subevent]
@@ -1793,12 +1845,26 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 				local tHasCountCondition_NumConditionsWoCountIsTrue = 0
 
 				--add tEvaluateData for durations of buff/debuff list conditions
+				-- [v43.0] Reads the exp cache (getFixedDuration) instead of a fresh
+				-- UnitAura rescan per duration-watching aura per event. Also two
+				-- deliberate behaviour repairs, both former stale-data paths:
+				--   * watched aura NOT in the list: the old call returned the FULL
+				--     list table and assigned THAT to the Duration field (the numeric
+				--     operators rejected it via their table guard, so the condition
+				--     came out false by accident, after building and discarding a
+				--     whole list). Now the field is explicitly cleared.
+				--   * unconditional assignment: the old `if tduration then` skip
+				--     meant a nil lookup (e.g. a weapon-enchant pseudo-name) RETAINED
+				--     the previous aura's duration value in the shared tEvaluateData —
+				--     the same cross-aura leak class as tSpellNameOnCdValue.
 				for tAttsI, tAttsV in pairs(tAuraDurationAtts) do
 					if tAuraData.attributes[tAttsI] and tAuraData.attributes[tAttsI.."Duration"] then
-						local tduration = getAuraList(tAttsV[1], tAttsV[2], tEvaluateData[tAttsI][SkuAuras:RemoveTags(tAuraData.attributes[tAttsI][1][2])])
-						if tduration then
-							tEvaluateData[tAttsI.."Duration"] = tduration
+						local tWatchedName = tEvaluateData[tAttsI][SkuAuras:RemoveTags(tAuraData.attributes[tAttsI][1][2])]
+						local tduration
+						if tWatchedName then
+							tduration = getFixedDuration(tAttsV[1], tAttsV[2], tWatchedName)
 						end
+						tEvaluateData[tAttsI.."Duration"] = tduration
 					end
 				end
 				
