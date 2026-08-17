@@ -249,7 +249,7 @@ function RangeCheck:DoRangeCheck(aForceFlag)
          end
       end
 
-      -- [v42.14] One line per forced (target-change) check: category, the band
+      -- [v43.0] One line per forced (target-change) check: category, the band
       -- LibRangeCheck returned (nil = the library has NO checker for this unit
       -- right now - the lib/prune suspicion), and whether a sound is configured
       -- for that band. Makes "no range was announced" diagnosable from the ring.

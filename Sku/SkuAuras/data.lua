@@ -155,7 +155,7 @@ local function tNothingOutputFunction(tAuraName, tEvaluateData, aFirst, aInstant
    return
 end
 
--- [v42.14] The sourceUnitId/destUnitId outputs used to hand the RAW unit token
+-- [v43.0] The sourceUnitId/destUnitId outputs used to hand the RAW unit token
 -- ("party3", "party2target") to the audio voice as ONE word. The audio packs
 -- happen to ship single files "party0/1/2/4" -- but NOT "party3" and no
 -- "partyNtarget" at all -- so some slots spoke and the others degraded to the
@@ -626,7 +626,7 @@ for tOutputString, tFriendlyName in pairs(SkuAuras.outputSoundFiles) do
                ]]
                --SkuOptions.Voice:OutputString("sound-silence0.1", true, false, 0.3, true)
             --end
-            -- [v42.14] 16th arg = aAuraSound: let the pump start this beep without
+            -- [v43.0] 16th arg = aAuraSound: let the pump start this beep without
             -- waiting out the TTSSepPause hold of whatever is playing in front of it
             -- (it still yields to another aura sound that is already playing, so two
             -- aura sounds never overlap). Positional rather than the table form on

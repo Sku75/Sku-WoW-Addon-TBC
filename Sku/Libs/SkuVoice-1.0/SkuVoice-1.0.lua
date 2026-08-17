@@ -73,7 +73,7 @@ SkuVoice.TutorialPlaying = 0
 ---------------------------------------------------------------------------------------------------------
 
 local mSkuVoiceQueue = {}
--- [v42.14] Set by every OutputString append to mSkuVoiceQueue; makes the audio
+-- [v43.0] Set by every OutputString append to mSkuVoiceQueue; makes the audio
 -- pump run its body on the NEXT frame instead of waiting for its 0.1 s cadence.
 --
 -- The pump body was gated on `fTime > 0.1` only, and OutputString never plays
@@ -317,7 +317,7 @@ function SkuVoice:Create()
 		end
 
 		fTime = fTime + time
-		-- [v42.14] A "cadence" run is the original every-0.1 s run. A dirty run is the
+		-- [v43.0] A "cadence" run is the original every-0.1 s run. A dirty run is the
 		-- extra one on the frame right after something was queued: it may only START
 		-- sounds, never END them (see the tombstone gate below), and it deliberately
 		-- does NOT reset fTime, so the 0.1 s cadence keeps its own clock exactly as
@@ -326,7 +326,7 @@ function SkuVoice:Create()
 		if #mSkuVoiceQueue == 0 then
 			-- [v42.12] Idle: the audio-file queue is empty, so all five passes below
 			-- plus the pairs() tombstone sweep are no-ops. Skip them.
-			-- [v42.14] Also drop a stale dirty flag: StopOutputEmptyQueue can wipe the
+			-- [v43.0] Also drop a stale dirty flag: StopOutputEmptyQueue can wipe the
 			-- queue between the append and this frame, and the flag must not survive
 			-- into the next unrelated append.
 			if tCadence then fTime = 0 end
@@ -358,7 +358,7 @@ function SkuVoice:Create()
 				end
 			end		
 
-			-- [v42.14] CADENCE ONLY. The tombstone sweep ends a sound at its DECLARED
+			-- [v43.0] CADENCE ONLY. The tombstone sweep ends a sound at its DECLARED
 			-- length and the removal below hard-StopSounds it, but the declared lengths
 			-- in SkuAudioDataLenIndex sit slightly under the real file durations (e.g.
 			-- sound-brass1 declares 0.32 s, the file is 0.34 s). Running this on the
@@ -394,7 +394,7 @@ function SkuVoice:Create()
 				end
 			end
 
-			-- [v42.14] Aura SOUND outputs jump the TTSSepPause hold -- but only one at
+			-- [v43.0] Aura SOUND outputs jump the TTSSepPause hold -- but only one at
 			-- a time.
 			--
 			-- TTSSepPause (default 85) is the word-to-word pacing knob for Sku's
@@ -1357,7 +1357,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 							["auraSound"] = aAuraSound or false,
 						})
 					end
-					-- [v42.14] Wake the pump on the next frame (see mQueueDirty).
+					-- [v43.0] Wake the pump on the next frame (see mQueueDirty).
 					mQueueDirty = true
 				end
 			end
@@ -1465,7 +1465,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:GetAudiodata(aString)
-	-- [v42.14] These three were assigned WITHOUT `local`, so every call wrote three
+	-- [v43.0] These three were assigned WITHOUT `local`, so every call wrote three
 	-- globals (and left them set for the next caller to trip over). Verified safe to
 	-- localise: OutputString captures the return values into its own locals, and
 	-- SkuBeacon's same-named tFile is a proper local -- nothing anywhere read the

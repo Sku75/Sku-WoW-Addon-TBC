@@ -653,7 +653,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 
 		end
 
-		-- [v42.14] Log the FINAL spoken string and which voice path takes it, so a
+		-- [v43.0] Log the FINAL spoken string and which voice path takes it, so a
 		-- "target announce was silent" report can be checked against the ring:
 		-- entry logged but nothing audible -> voice/queue layer; no entry at all ->
 		-- the event never fired (e.g. key press on the already-current target).

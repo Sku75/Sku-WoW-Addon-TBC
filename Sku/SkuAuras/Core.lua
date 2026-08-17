@@ -44,7 +44,7 @@ SkuAuras.SpellCDRepo = {}
 SkuAuras.UnitRepo = {}
 SkuAuras.thingsNamesOnCd = {}
 
--- [v42.14] The exact unit set the ticker walks, as a lookup. UNIT_HEALTH /
+-- [v43.0] The exact unit set the ticker walks, as a lookup. UNIT_HEALTH /
 -- UNIT_POWER_UPDATE / UNIT_TARGET are broadcast for EVERY unit in range
 -- (nameplates, bystanders), so the event handlers must filter to the units Sku
 -- actually tracks or they would run UNIT_TICKER for strangers. AceEvent has no
@@ -63,7 +63,7 @@ for x = 1, 40 do
 	tTrackedUnits["raid"..x] = true
 end
 
--- [v42.14] Coalescing buffers for the event-driven unit/cooldown path.
+-- [v43.0] Coalescing buffers for the event-driven unit/cooldown path.
 --
 -- UNIT_HEALTH / UNIT_POWER_UPDATE can fire many times per second PER UNIT in a
 -- raid, and every UNIT_TICKER call that sees a changed integer percentage fires a
@@ -101,7 +101,7 @@ function SkuAuras:RegisterAuraEvents()
 	SkuAuras:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuAuras:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 
-	-- [v42.14] Event-driven unit + cooldown triggers.
+	-- [v43.0] Event-driven unit + cooldown triggers.
 	--
 	-- Health, power, target changes and cooldown-end used to be discovered ONLY by
 	-- the 0.25 s OnUpdate ticker below, so every aura triggered by them inherited
@@ -165,7 +165,7 @@ function SkuAuras:OnEnable()
 	f:SetPropagateKeyboardInput(true)
 	f:SetPoint("TOP", _G["SkuAurasControl"], "BOTTOM", 0, 0)
 	f:SetScript("OnKeyDown", function(self, aKey)
-		-- [v42.14] Do nothing unless some enabled aura actually watches keys.
+		-- [v43.0] Do nothing unless some enabled aura actually watches keys.
 		--
 		-- This handler is armed for EVERY keystroke in the game, and it used to run a
 		-- full EvaluateAllAuras per keypress -- so spamming a rotation key or typing a
@@ -210,7 +210,7 @@ function SkuAuras:OnEnable()
 	-- false). New frames are shown by default, so this is a no-op on first load.
 	f:Show()
 
-	-- [v42.14] Split cadence. The real events registered in RegisterAuraEvents now
+	-- [v43.0] Split cadence. The real events registered in RegisterAuraEvents now
 	-- carry health / power / target / cooldown-end, so this loop is a BACKSTOP for
 	-- everything except the player.
 	--
@@ -224,7 +224,7 @@ function SkuAuras:OnEnable()
 	local tSweepTime = 0
 	local f = _G["SkuAurasControl"] or CreateFrame("Frame", "SkuAurasControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time)
-		-- [v42.14] Drain the event marks first, every frame. Idle cost is two boolean
+		-- [v43.0] Drain the event marks first, every frame. Idle cost is two boolean
 		-- tests; when something is marked, each affected unit gets exactly one
 		-- UNIT_TICKER no matter how many events named it during this frame.
 		if tDirtyUnitsPending == true then
@@ -299,7 +299,7 @@ function SkuAuras:OnDisable()
 		_G["SkuAurasControl"]:Hide()
 	end
 
-	-- [v42.14] Drop any event marks that will now never be drained, so a later
+	-- [v43.0] Drop any event marks that will now never be drained, so a later
 	-- re-enable does not start by ticking a stale unit set.
 	for tUnit in pairs(tDirtyUnits) do
 		tDirtyUnits[tUnit] = nil
@@ -993,7 +993,7 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 			local tPrevOffId = SkuAuras.UnitRepo[tUnitId].offHandEnchantID or 0
 			local tMainRemoved = (tPrevMainId ~= 0 and tCurMainId == 0)
 			local tOffRemoved = (tPrevOffId ~= 0 and tCurOffId == 0)
-			-- [v42.14] Near-expiry refire is gated on the remaining WHOLE SECOND
+			-- [v43.0] Near-expiry refire is gated on the remaining WHOLE SECOND
 			-- changing, not on every tick.
 			--
 			-- tNearExpiry is true for the whole last 120 s of any temp enchant, and it
@@ -1176,7 +1176,7 @@ function SkuAuras:COMBAT_LOG_EVENT_UNFILTERED(aEventName, aCustomEventData)
 
 
 	if tEventData[CleuBase.subevent] == "SPELL_CAST_SUCCESS" then
-		-- [v42.14] Two passes instead of one relabelled pass.
+		-- [v43.0] Two passes instead of one relabelled pass.
 		--
 		-- WoW has no "cooldown started" combat-log event, so Sku manufactures
 		-- SPELL_COOLDOWN_START out of SPELL_CAST_SUCCESS. It used to do that by
@@ -1247,7 +1247,7 @@ local tAuraScratch = {
 }
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- [v42.14] LAZY tEvaluateData fields.
+-- [v43.0] LAZY tEvaluateData fields.
 --
 -- EvaluateAllAuras used to gather EVERY field of tEvaluateData up front, before it
 -- looked at whether any aura wanted any of them -- so the two most expensive
@@ -1317,7 +1317,7 @@ tLazyEvaluateFields = {
 }
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- [v42.14] Does this aura affirmatively watch aEventValue?
+-- [v43.0] Does this aura affirmatively watch aEventValue?
 --
 -- Used to keep the deferred SPELL_COOLDOWN_START pass (see
 -- COMBAT_LOG_EVENT_UNFILTERED) from re-evaluating auras that already had their pass
@@ -1414,13 +1414,13 @@ end
 
 function SkuAuras:PLAYER_TARGET_CHANGED()
 	SkuAuras:InvalidateAuraListCache("target")
-	-- [v42.14] Publish the change on the next frame instead of up to 250 ms later.
+	-- [v43.0] Publish the change on the next frame instead of up to 250 ms later.
 	SkuAuras:MarkUnitDirty("player")
 	SkuAuras:MarkUnitDirty("target")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- [v42.14] Event-driven replacements for what the 0.25 s ticker used to discover.
+-- [v43.0] Event-driven replacements for what the 0.25 s ticker used to discover.
 --
 -- These only MARK (see tDirtyUnits); the frame driver in OnEnable runs the ORIGINAL
 -- UNIT_TICKER / COOLDOWN_TICKER for whatever is marked. So the change detection, the
@@ -1739,7 +1739,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 	tEvaluateData.itemId = tEventData[40]
 	if tEventData[40] then
 		tEvaluateData.itemName = SkuDB.itemLookup[Sku.Loc][tEventData[40]]
-		-- [v42.14] The 5-bag sweep that used to run here now lives in
+		-- [v43.0] The 5-bag sweep that used to run here now lives in
 		-- tLazyEvaluateFields.itemCount and runs only if an aura reads itemCount.
 	end
 
@@ -1756,7 +1756,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 	--evaluate all auras
 	local tFirst = true
 	for tAuraName, tAuraData in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras) do
-		-- [v42.14] Filtered pass (see aRequiredEventValue). Kept as a flag rather than
+		-- [v43.0] Filtered pass (see aRequiredEventValue). Kept as a flag rather than
 		-- another nesting level so the long body below is untouched.
 		local tSkipAura = false
 		if aRequiredEventValue ~= nil and tAuraWatchesEvent(tAuraData, aRequiredEventValue) ~= true then
