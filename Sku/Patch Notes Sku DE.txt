@@ -830,12 +830,14 @@ Aenderungen in Sku v42.11
             selbst. So kannst du Unterbrechungen auf deinem eigenen Ziel hoeren, ohne jede
             Unterbrechung im ganzen Schlachtzug mitzubekommen. Unterbrichst du selbst oder
             dein Begleiter, heisst es "Du hast den Zauber unterbrochen" mit dem Zaubernamen;
-            unterbricht jemand aus deiner Gruppe, heisst es "Zauber unterbrochen". Die
-            Ansage ist ab Werk an; wer sie schon einmal ausgeschaltet hatte, bleibt still.
+            unterbricht jemand aus deiner Gruppe, heisst es "Zauber unterbrochen". Ab Werk
+            ist nur die Ansage fuer dein aktuelles Ziel an, alle Gegner schaltest du bei
+            Bedarf selbst dazu; wer die Ansage schon einmal ausgeschaltet hatte, bleibt still.
         Technisch: SPELL_INTERRUPT aus dem Kampflog ueber das neue Dispatcher-Ereignis
             SKU_SPELL_INTERRUPT. Der frueher einzelne Schalter outputInterrupts ist durch
-            yourTargetInterrupts und allEnemiesInterrupts ersetzt, beide werden aus dem alten
-            Wert vorbelegt. Steht der globale Schalter aus, wird nur angesagt, wenn die
+            yourTargetInterrupts und allEnemiesInterrupts ersetzt; nur yourTargetInterrupts
+            wird aus dem alten Wert vorbelegt, allEnemiesInterrupts startet aus. Steht der
+            globale Schalter aus, wird nur angesagt, wenn die
             destGUID des unterbrochenen Zaubers dein aktuelles Ziel ist; stehen beide an,
             gibt es trotzdem nur eine Ansage. Als "du" gilt die Quellzugehoerigkeit MINE, was
             den eigenen Begleiter einschliesst (Teufelsjaeger-Zauberblockade und Aehnliches).

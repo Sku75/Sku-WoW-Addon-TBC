@@ -750,12 +750,14 @@ Changes in Sku v42.11
             themselves. That lets you hear kicks on your own target without hearing every
             kick in the raid. When you or your pet interrupt, you hear "You interrupted the
             spell" with the spell name; when someone in your group interrupts, "spell
-            interrupted". The announcement is on by default; anyone who had switched it off
+            interrupted". Only the announcement for your current target is on by default,
+            all enemies is yours to switch on; anyone who had switched the announcement off
             stays silent.
         Technical: SPELL_INTERRUPT from the combat log via the new dispatcher event
             SKU_SPELL_INTERRUPT. The former single outputInterrupts switch is replaced by
-            yourTargetInterrupts and allEnemiesInterrupts, both nil-filled from the old
-            value. With the global switch off, an interrupt is only announced when the
+            yourTargetInterrupts and allEnemiesInterrupts; only yourTargetInterrupts is
+            nil-filled from the old value, allEnemiesInterrupts starts off. With the global
+            switch off, an interrupt is only announced when the
             destGUID of the interrupted cast is your current target; with both on it still
             announces once. "You" means a source affiliation of MINE, which covers your own
             pet (felhunter Spell Lock and the like).

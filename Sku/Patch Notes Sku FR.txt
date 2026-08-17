@@ -849,12 +849,14 @@ Changements dans Sku v42.11
             annonces d'incantation elles-mêmes. Cela permet d'entendre les interruptions sur
             votre propre cible sans entendre toutes celles du raid. Quand vous ou votre familier
             interrompez, vous entendez « Vous avez interrompu le sort » avec le nom du sort ;
-            quand quelqu'un de votre groupe interrompt, « sort interrompu ». L'annonce est
-            activée par défaut ; celles et ceux qui l'avaient désactivée restent tranquilles.
+            quand quelqu'un de votre groupe interrompt, « sort interrompu ». Seule l'annonce
+            pour votre cible actuelle est activée par défaut, tous les ennemis reste à activer
+            vous-même ; celles et ceux qui l'avaient désactivée restent tranquilles.
         Technique : SPELL_INTERRUPT depuis le journal de combat via le nouvel événement du
             répartiteur SKU_SPELL_INTERRUPT. L'ancien interrupteur unique outputInterrupts est
-            remplacé par yourTargetInterrupts et allEnemiesInterrupts, tous deux préremplis
-            depuis l'ancienne valeur là où c'était nil. Avec l'interrupteur global désactivé,
+            remplacé par yourTargetInterrupts et allEnemiesInterrupts ; seul
+            yourTargetInterrupts est prérempli depuis l'ancienne valeur là où c'était nil,
+            allEnemiesInterrupts démarre désactivé. Avec l'interrupteur global désactivé,
             une interruption n'est annoncée que si le destGUID de l'incantation interrompue est
             votre cible actuelle ; avec les deux activés, elle n'est toujours annoncée qu'une
             fois. « Vous » signifie une affiliation de source MINE, ce qui couvre votre propre
