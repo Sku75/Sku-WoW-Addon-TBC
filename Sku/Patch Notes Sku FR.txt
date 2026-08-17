@@ -9,6 +9,83 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.0
 
+    Avec nos remerciements à Naxedim et ZenqFR
+        Les quatre correctifs suivants sont les premières contributions de code directes au dépôt
+        Sku désormais public. Naxedim a trouvé, analysé et corrigé les deux bogues qui rendaient
+        muette une grande partie de la sortie audio de Sku sur les clients français ; ZenqFR a
+        audité les fichiers de traduction, résolu tous les doublons contradictoires côté anglais
+        et français et amélioré l'outil qui protège contre de nouveaux doublons. Tout le mérite de
+        ces correctifs leur revient.
+
+    Clients français : tous les sons d'auras et les clips vocaux enregistrés étaient muets (correctif de Naxedim)
+        Simple : Sur un client français, depuis la v42.11, chaque aura dont la sortie est un son
+            ne jouait plus rien du tout - pas d'erreur, pas de ligne de journal, juste le
+            silence - et chaque clip vocal enregistré retombait sans bruit sur la synthèse vocale
+            (TTS). La cause : depuis que Sku parle français, il cherche aussi un pack vocal
+            FRANÇAIS, et un tel pack n'existe pas ; la recherche ne trouvait donc rien et tout ce
+            que le pack vocal fournit devenait muet. La parole ne faisait que se dégrader en TTS,
+            mais un effet sonore n'a rien vers quoi se dégrader - c'est pourquoi cela ressemblait
+            à « mes auras ne fonctionnent plus » plutôt qu'à « l'audio a changé ». La recherche de
+            pack utilise maintenant le même repli vers l'anglais que le reste du système audio
+            depuis la v42.09. Les clients allemands et anglais ne sont absolument pas affectés.
+        Technique : Le résolveur de pack vocal dans Core.lua comparait les locales des packs à
+            Sku.Loc ; depuis que la v42.11 livre locales/frFR.lua, Sku.Loc vaut « frFR » sur un
+            client français, aucun pack ne pouvait la déclarer, Sku.AudiodataPath restait "" et
+            VoicePackAudioDir() renvoyait nil - réduisant au silence les 64 entrées de
+            SkuCore.outputSoundFiles (sons d'auras, son de combat de SkuMob, son de nouvelle
+            ligne de SkuChat) plus chaque clip vocal du pack. La comparaison se fait maintenant
+            sur Sku.LocAudio ou Sku.Loc, exactement la règle « vers quelle langue enregistrée
+            est-ce que je me replie » qu'IntegratedAudioDir() utilise déjà ; Sku.LocAudio vaut
+            « enUS » sur tout client non allemand, le comportement deDE/enUS est donc identique à
+            l'octet près. Trouvé sur un vrai client français, corrigé et vérifié en jeu par
+            Naxedim (PR #5).
+
+    Clients français : la vérification de distance n'annonçait plus rien et son menu levait une erreur (correctif de Naxedim)
+        Simple : Sur un client français, la vérification de distance n'annonçait plus aucune
+            distance, quelle que soit la cible, et l'ouverture du menu de configuration des
+            distances produisait une erreur au lieu du menu. Deux causes, toutes deux propres au
+            français : premièrement, le réglage « prononcer la distance » est enregistré dans la
+            configuration sous la forme du MOT traduit pour « Parlé » - une configuration écrite
+            quand Sku tournait encore en anglais (avant la v42.11) contient le mot anglais, que
+            le client désormais français ne reconnaît plus. Deuxièmement, les clips de nombres
+            n'existent enregistrés qu'en allemand et en anglais, et le code énumérait exactement
+            ces deux langues - un client français restait donc silencieux même avec une
+            configuration française toute fraîche. Le marqueur enregistré est maintenant accepté
+            dans les trois langues, une valeur inconnue ne peut plus casser le menu, et les clips
+            se replient sur les enregistrements anglais comme le reste du système audio. Les
+            clients allemands et anglais sont inchangés : même marqueur, mêmes clips, même audio.
+        Technique : Un nouveau RangeCheck:IsSpokenSound() accepte « Gesprochen »/« Spoken »/
+            « Parlé » (plus le L["vocalized"] traduit à chaud), utilisé par DoRangeCheck et par le
+            constructeur de menu dans Options.lua - ce dernier tombait jusqu'ici dans la branche
+            else pour une valeur inconnue et concaténait nil depuis SkuCore.RangeCheckSounds, ce
+            qui levait l'erreur. Le dossier de clips vient maintenant de Sku.LocAudio (hans_de-de
+            pour deDE, hans_en-us sinon) au lieu d'une chaîne de Sku.Loc qui ne correspondait à
+            aucune branche en frFR. Les nouvelles entrées écrivent toujours L["vocalized"] ; pas
+            de migration de données. Trouvé et vérifié sur un vrai client français par Naxedim
+            (PR #6).
+
+    Traductions : neuf libellés signifiaient autre chose selon la langue (correctif de ZenqFR)
+        Simple : Neuf textes figuraient en double dans les fichiers de traduction avec deux
+            significations DIFFÉRENTES, et chaque langue pouvait finir par retenir une version
+            différente. C'était le plus audible sur les clients anglais, où le mauvais jumeau
+            l'emportait plusieurs fois : la barre d'action de posture était annoncée « Special
+            Action bar » (une toute autre barre), la touche de débogage « debug mode » au lieu de
+            « debug output », une catégorie de menu « Features » au lieu de « Values ». Pour
+            chaque paire, la signification réellement correcte a été déterminée d'après l'endroit
+            où le texte est utilisé dans le code, et le mauvais jumeau a été supprimé dans les
+            trois langues - l'anglais, l'allemand et le français sont maintenant d'accord sur les
+            neuf. Six doublons purement allemands restent volontairement ouverts jusqu'à ce qu'un
+            germanophone tranche.
+        Technique : AceLocale résout les clés en double par « le premier gagne » pour la langue
+            par défaut (enUS) et par « le dernier gagne » partout ailleurs - un doublon à deux
+            valeurs signifie donc silencieusement autre chose selon la langue. ZenqFR a retracé
+            les points d'appel réels de chaque clé pour déterminer la valeur survivante (PR #3)
+            et a appris à dev/rework-docs/_locale_dupes.py à ne comparer que le littéral de
+            chaîne Lua analysé au lieu de la ligne brute, pour que les commentaires « -- » en fin
+            de ligne ne comptent plus comme conflits (PR #4) - sur 64 conflits signalés, seuls 30
+            étaient réels ; enUS et frFR passent maintenant le lint à zéro, deDE avec les six
+            paires de formulations allemandes laissées à un locuteur natif.
+
     Sacs : les clés du porte-clés étaient annoncées comme « Vide »
         Simple : Depuis la v42.13, chaque emplacement du porte-clés disait « Vide » alors que les
             clés étaient bien là et restaient utilisables - cela ne s'est vu que lorsque quelqu'un

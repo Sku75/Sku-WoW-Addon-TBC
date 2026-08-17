@@ -6,6 +6,81 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.0
 
+    Mit Dank an Naxedim und ZenqFR
+        Die naechsten vier Korrekturen sind die ersten direkten Code-Beitraege zum inzwischen
+        oeffentlichen Sku-Repository. Naxedim hat die beiden Fehler gefunden, analysiert und
+        behoben, die auf franzoesischen Spielclients grosse Teile der Sku-Audioausgabe stumm
+        geschaltet hatten; ZenqFR hat die Uebersetzungsdateien geprueft, alle widerspruechlichen
+        Duplikate auf der englischen und franzoesischen Seite aufgeloest und das Werkzeug
+        verbessert, das vor neuen schuetzt. Die volle Anerkennung fuer diese Korrekturen gebuehrt
+        den beiden.
+
+    Franzoesische Clients: alle Aura-Sounds und aufgenommene Sprachclips waren stumm (Korrektur von Naxedim)
+        Einfach: Auf einem franzoesischen Spielclient spielte seit v42.11 jede Aura, deren Ausgabe
+            ein Sound ist, gar nichts mehr ab - kein Fehler, keine Logzeile, einfach Stille - und
+            jeder aufgenommene Sprachclip fiel unbemerkt auf reines TTS zurueck. Die Ursache: Seit
+            Sku franzoesisch spricht, sucht es auch ein FRANZOESISCHES Sprachpaket, und ein solches
+            Paket gibt es nicht, also fand die Suche nichts und alles, was das Sprachpaket
+            bereitstellt, verstummte. Sprachausgaben wurden nur zu TTS herabgestuft, aber ein
+            Soundeffekt hat nichts, worauf er zurueckfallen koennte - deshalb fuehlte es sich an
+            wie "meine Auren gehen nicht mehr" statt "die Audioausgabe hat sich geaendert". Die
+            Paketsuche nutzt jetzt denselben englischen Rueckfall, den der Rest des Audiosystems
+            seit v42.09 verwendet. Deutsche und englische Clients sind vollstaendig unberuehrt.
+        Technisch: Der Sprachpaket-Resolver in Core.lua verglich die Paket-Locales mit Sku.Loc;
+            seit v42.11 locales/frFR.lua mitliefert, ist Sku.Loc auf franzoesischen Clients
+            "frFR", kein Paket konnte das deklarieren, Sku.AudiodataPath blieb "" und
+            VoicePackAudioDir() lieferte nil - stumm wurden damit alle 64 Eintraege von
+            SkuCore.outputSoundFiles (Aura-Sounds, SkuMob-Kampfsound, SkuChat-Zeilensound) plus
+            jeder Sprachclip des Pakets. Verglichen wird jetzt Sku.LocAudio oder Sku.Loc, exakt
+            die "auf welche aufgenommene Sprache falle ich zurueck"-Regel, die
+            IntegratedAudioDir() bereits nutzt; Sku.LocAudio ist auf jedem nicht-deutschen Client
+            "enUS", deDE/enUS verhalten sich also byte-identisch. Auf einem echten franzoesischen
+            Client gefunden, behoben und im Spiel verifiziert von Naxedim (PR #5).
+
+    Franzoesische Clients: die Entfernungspruefung sagte keine Distanzen mehr an und ihr Menue warf einen Fehler (Korrektur von Naxedim)
+        Einfach: Auf einem franzoesischen Client sagte die Entfernungspruefung keinerlei Distanz
+            mehr an, egal bei welchem Ziel, und das Oeffnen des Entfernungs-Menues erzeugte einen
+            Fehler statt des Menues. Zwei Ursachen, beide nur franzoesisch: Erstens wird die
+            Einstellung "Distanz sprechen" als uebersetztes WORT fuer "Gesprochen" in der
+            Konfiguration gespeichert - eine Konfiguration, die geschrieben wurde, als Sku noch
+            englisch lief (vor v42.11), enthaelt das englische Wort, das der jetzt franzoesische
+            Client nicht mehr erkennt. Zweitens existieren die Zahlenclips nur auf Deutsch und
+            Englisch, und der Code zaehlte genau diese beiden Sprachen auf - ein franzoesischer
+            Client bekam also selbst mit frisch geschriebener franzoesischer Konfiguration
+            Stille. Der gespeicherte Marker wird jetzt in allen drei Sprachen akzeptiert, ein
+            unbekannter Wert kann das Menue nicht mehr zerlegen, und die Clips fallen wie der
+            Rest des Audiosystems auf die englischen Aufnahmen zurueck. Deutsche und englische
+            Clients sind unveraendert: gleicher Marker, gleiche Clips, gleiche Audioausgabe.
+        Technisch: Ein neues RangeCheck:IsSpokenSound() akzeptiert "Gesprochen"/"Spoken"/"Parlé"
+            (plus das live uebersetzte L["vocalized"]), genutzt von DoRangeCheck und dem
+            Menuebauer in Options.lua - letzterer lief bei unbekanntem Wert bisher in den
+            else-Zweig und verkettete nil aus SkuCore.RangeCheckSounds, was den Fehler warf. Der
+            Clip-Ordner kommt jetzt aus Sku.LocAudio (hans_de-de fuer deDE, sonst hans_en-us)
+            statt aus einer Sku.Loc-Kette, die auf frFR keinen Zweig traf. Neue Eintraege
+            schreiben weiter L["vocalized"]; keine Datenmigration. Auf einem echten
+            franzoesischen Client gefunden und verifiziert von Naxedim (PR #6).
+
+    Uebersetzungen: neun Texte bedeuteten je nach Sprache etwas anderes (Korrektur von ZenqFR)
+        Einfach: Neun Texte standen doppelt mit zwei VERSCHIEDENEN Bedeutungen in den
+            Uebersetzungsdateien, und jede Sprache konnte am Ende eine andere der beiden
+            erwischen. Am hoerbarsten auf englischen Clients, wo mehrfach der falsche Zwilling
+            gewann: Die Haltungs-Aktionsleiste wurde als "Special Action bar" angesagt (eine ganz
+            andere Leiste), die Debug-Taste als "debug mode" statt "debug output", eine
+            Menuekategorie als "Features" statt "Values". Fuer jedes Paar wurde anhand der
+            Verwendung im Code die tatsaechlich richtige Bedeutung bestimmt und der falsche
+            Zwilling in allen drei Sprachen geloescht - Englisch, Deutsch und Franzoesisch sind
+            sich bei allen neun jetzt einig. Sechs rein deutsche Duplikate bleiben bewusst offen,
+            bis ein deutscher Muttersprachler entscheidet.
+        Technisch: AceLocale loest doppelte Schluessel fuer die Standardsprache (enUS) nach
+            "erster gewinnt" auf, ueberall sonst nach "letzter gewinnt" - ein Duplikat mit zwei
+            Werten bedeutet also still etwas anderes pro Sprache. ZenqFR hat fuer jeden Schluessel
+            die echten Aufrufstellen verfolgt, um den ueberlebenden Wert zu bestimmen (PR #3),
+            und dev/rework-docs/_locale_dupes.py beigebracht, nur das geparste
+            Lua-String-Literal statt der rohen Zeile zu vergleichen, damit angehaengte
+            "--"-Kommentare nicht mehr als Konflikt zaehlen (PR #4) - von 64 gemeldeten
+            Konflikten waren nur 30 echt; enUS und frFR linten jetzt auf null, deDE auf die sechs
+            deutschen Formulierungspaare, die einem Muttersprachler ueberlassen bleiben.
+
     Taschen: die Schluessel im Schluesselbund wurden als "Leer" angesagt
         Einfach: Seit v42.13 sprach jeder Platz im Schluesselbund "Leer", obwohl die Schluessel da
             waren und sich weiter benutzen liessen - aufgefallen ist es erst, als jemand den

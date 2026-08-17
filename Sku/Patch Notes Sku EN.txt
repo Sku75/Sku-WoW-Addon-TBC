@@ -6,6 +6,73 @@
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.0
 
+    With thanks to Naxedim and ZenqFR
+        The next four fixes are the first direct code contributions to the now-public Sku
+        repository. Naxedim found, diagnosed and fixed the two bugs that had muted large parts of
+        Sku's audio on French game clients; ZenqFR audited the translation files, resolved every
+        conflicting duplicate on the English and French side and improved the tool that guards
+        against new ones. Full credit for these fixes goes to them.
+
+    French clients: all aura sounds and pre-recorded speech were silent (fix by Naxedim)
+        Simple: On a French game client, every aura whose output is a sound played nothing at all
+            since v42.11 - no error, no log line, just silence - and every pre-recorded speech
+            clip quietly fell back to plain TTS. The cause: since Sku speaks French it also looks
+            for a FRENCH voice pack, and no such pack exists, so the search matched nothing and
+            everything the voice pack provides went dead. Spoken output merely degraded to TTS,
+            but a sound effect has nothing to degrade to - which is why this felt like "my auras
+            stopped working" rather than "the audio changed". The pack search now uses the same
+            English fallback the rest of the audio system has used since v42.09. German and
+            English clients are completely unaffected.
+        Technical: The voice-pack resolver in Core.lua matched installed pack locales against
+            Sku.Loc; once v42.11 shipped locales/frFR.lua, Sku.Loc became "frFR" on French
+            clients, no pack could declare it, Sku.AudiodataPath stayed "" and
+            VoicePackAudioDir() returned nil - silencing all 64 SkuCore.outputSoundFiles entries
+            (aura sounds, SkuMob combat sound, SkuChat line sound) plus every pack speech clip.
+            It now matches Sku.LocAudio or Sku.Loc, the exact "which recorded language do I fall
+            back to" rule IntegratedAudioDir() already uses; Sku.LocAudio is "enUS" on every
+            non-deDE client, so deDE/enUS behaviour is byte-identical. Found on a live French
+            client, fixed and verified in game by Naxedim (PR #5).
+
+    French clients: the range check announced no distances and its menu threw an error (fix by Naxedim)
+        Simple: On a French client the range check never announced a distance any more, no matter
+            the target, and opening the range configuration menu produced an error instead of the
+            menu. Two causes, both French-only: first, the setting "speak the distance" is stored
+            in the saved configuration as the translated WORD for "Spoken" - a config written
+            while Sku still ran as English (before v42.11) holds the English word, which the now
+            French client no longer recognises. Second, the number clips only exist recorded in
+            German and English, and the code listed exactly those two languages, so a French
+            client got silence even with a freshly written French config. The stored marker is now
+            accepted in all three languages, an unknown value can no longer break the menu, and
+            the clips fall back to the English recordings like the rest of the audio system.
+            German and English clients are unchanged: same marker, same clips, same audio.
+        Technical: A new RangeCheck:IsSpokenSound() accepts "Gesprochen"/"Spoken"/"Parlé" (plus
+            the live L["vocalized"]), used by both DoRangeCheck and the menu builder in
+            Options.lua - the latter previously fell into the else branch for an unrecognised
+            value and concatenated nil from SkuCore.RangeCheckSounds, which is what threw. The
+            clip folder is chosen via Sku.LocAudio (hans_de-de for deDE, hans_en-us otherwise)
+            instead of a Sku.Loc chain that matched neither branch on frFR. New entries still
+            write L["vocalized"]; no data migration. Found and verified on a live French client
+            by Naxedim (PR #6).
+
+    Translations: nine labels meant something different depending on the language (fix by ZenqFR)
+        Simple: Nine texts existed twice in the translation files with two DIFFERENT meanings,
+            and each language could end up picking a different one of the two. Most audible on
+            English clients, where the wrong twin won several times: the stance action bar was
+            announced as "Special Action bar" (a different bar entirely), the debug keybind as
+            "debug mode" instead of "debug output", a menu category as "Features" instead of
+            "Values", distances as "Meter" instead of "Meters". For each pair the actually
+            correct meaning was determined from where the text is used in the code, and the wrong
+            twin was deleted in all three languages - English, German and French now agree on all
+            nine. Six German-only duplicates remain deliberately open for a German speaker to
+            decide.
+        Technical: AceLocale resolves duplicate keys first-wins for the default locale (enUS) and
+            last-wins everywhere else, so a duplicate with two values silently means a different
+            thing per language. ZenqFR traced each key's live call sites to pick the surviving
+            value (PR #3) and taught dev/rework-docs/_locale_dupes.py to compare only the parsed
+            Lua string literal instead of the raw line, so trailing "--" comments no longer count
+            as conflicts (PR #4) - of 64 reported conflicts only 30 were real; enUS and frFR now
+            lint at zero, deDE at the six German wording pairs left for a native speaker.
+
     Bags: the keys in the keyring were announced as "Empty"
         Simple: Since v42.13 every keyring slot spoke as "Empty" even though the keys were there
             and still worked - it only surfaced once someone actually needed the keyring. The
