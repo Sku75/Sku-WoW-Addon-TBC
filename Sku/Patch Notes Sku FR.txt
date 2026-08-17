@@ -9,6 +9,55 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
 
+    Atlas Loot : saccades à la connexion et à l'ouverture
+        Simple : depuis peu, le jeu se figeait complètement pendant quatre à cinq secondes
+            quelques secondes après l'écran de chargement, puis mettait une vingtaine de
+            secondes au lieu de huit à se calmer. En cause : l'intégration Atlas Loot. À chaque
+            connexion et à chaque rechargement, Sku parcourait toute la base de données
+            d'Atlas Loot - environ 40 000 entrées d'un seul tenant - même dans une session où
+            l'on n'ouvrait jamais Atlas Loot. Cela n'arrive plus à la connexion : cela se
+            produit quand on ouvre réellement Atlas Loot, et le travail est découpé en petites
+            tranches en arrière-plan au lieu de bloquer l'image. Si vous n'utilisez pas Atlas
+            Loot, vous ne payez plus rien pour lui, et ses modules de données ne sont plus
+            chargés inutilement. Deuxième partie : l'ouverture de la liste de recherche dans
+            Atlas Loot marquait elle aussi un temps d'arrêt sensible. Cette liste compte environ
+            20 000 entrées, et sa construction redéterminait le nom et demandait au serveur les
+            données d'objet pour chacune d'elles - pour 20 000 entrées qu'on n'a même pas encore
+            consultées. Le nom est déjà connu à cet endroit, et seule l'entrée sur laquelle se
+            trouve le curseur a besoin des données. La liste s'ouvre donc nettement plus vite.
+        Technique : alIntegrationQueryAll construit deux index inversés sur les données
+            d'Atlas Loot : « quel boss fait tomber cet objet » et la liste de noms derrière la
+            recherche. Le parcours dépendait d'une série de tentatives sur PLAYER_LOGIN
+            (5/10/20/35/60 s) plus d'un filet PLAYER_ENTERING_WORLD/ZONE_CHANGED_NEW_AREA ; il
+            se déclenchait donc environ trois secondes après l'entrée dans le monde, sans
+            découpage, en une seule image. Sa justification était périmée : il devait épargner
+            au raccourci Ctrl+Maj+L une attente à froid, mais ce raccourci a perdu sa détection
+            de contexte depuis longtemps et n'ouvre plus que l'entrée de menu, ce qui lance le
+            calcul de lui-même. Trois des quatre tables remplies par ce parcours n'avaient aucun
+            lecteur : alLookupBosses et alLookupInstances n'étaient qu'écrites et servaient
+            uniquement d'indicateur « déjà exécuté ? » pour la série qui l'exécutait ;
+            alDropsByBoss et alDropsByInstance n'étaient lues que derrière une condition qui ne
+            peut jamais être vraie, puisque l'indicateur de contexte n'est jamais mis qu'à nil.
+            Les quatre sont supprimées, avec cet indicateur, son minuteur de 120 s et
+            BuildContextualWishlistEntry. Ce qui reste tourne en coroutine avec un budget de
+            30 ms par image : le menu le lance en arrière-plan (QueryAllStart), et ceux qui ont
+            besoin d'un index complet - recherche, liste de souhaits par donjon, « Lâché par » -
+            l'attendent à leur propre endroit (alIntegrationQueryAll, sans effet une fois
+            l'index construit). Chaque ligne coûte aussi moins cher : la résolution du nom
+            interroge désormais la table d'objets de Sku avant GetItemInfo, qui déclenchait une
+            requête serveur pour chaque identifiant non mis en cache, et évite les six passes de
+            substitution pour les noms issus de cette table, qui ne contiennent de toute façon
+            aucun balisage. La construction du menu de recherche était le second point chaud :
+            alIntegrationItemMenuBuilder accepte désormais en option le nom que l'appelant
+            possède déjà (l'index de recherche est justement indexé PAR ce nom), ce qui supprime
+            par entrée la résolution du nom, la passe Unescape et surtout
+            SkuCore:RequestItemData - soit un ItemMixin avec son rappel de chargement enregistré
+            et une requête serveur par identifiant non mis en cache, environ 20 000 fois en une
+            seule image. La liste de butin d'un boss (quelques dizaines de lignes) continue de
+            demander les données à l'avance, afin qu'un nom non mis en cache s'y complète tout
+            seul, et l'entrée sous le curseur les demande de toute façon dans son OnEnter : le
+            texte prononcé est donc inchangé.
+
     Avertissement de collision : des bips sans obstacle
         Simple : le bip « tu es bloqué » pouvait survenir pendant qu'on marchait simplement d'un
             PNJ au suivant, alors que rien ne barrait le passage. Le compteur derrière

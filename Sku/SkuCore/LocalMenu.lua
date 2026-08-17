@@ -90,19 +90,45 @@ local tPendingRefreshQueued = false
 -- Item name that needs no server round-trip: the client cache first (it can hold
 -- the name while the rest of the tooltip is still pending), then Sku's own item
 -- table, then the link's own [brackets].
-function SkuCore:ResolveItemName(aItemId, aItemLink)
+--
+-- [v42.13] aPreferOffline flips the first two steps for BULK callers. GetItemInfo
+-- is the expensive path twice over: it is the heavy full-item variant, and on a
+-- MISS it queues a server item query, so a caller that walks tens of thousands of
+-- ids fires tens of thousands of queries the user never asked for. SkuDB.itemLookup
+-- is Sku's own shipped, correctly localized name table and answers nearly all of
+-- them offline, so bulk callers ask it first and only fall back to the client for
+-- the ids it does not know. Single-item callers keep the original order: for ONE
+-- item the client's own name is the more authoritative answer and the one query is
+-- exactly what we want.
+--
+-- Names taken from SkuDB are returned as-is. They are plain data strings with no
+-- |c/|H/|T markup in them, so running Unescape (six gsub passes) over each one is
+-- pure cost - measurable once the caller is doing it 40,000 times.
+function SkuCore:ResolveItemName(aItemId, aItemLink, aPreferOffline)
+	local tLookup = (SkuDB and SkuDB.itemLookup and SkuDB.itemLookup[Sku.Loc]) or nil
+	if aPreferOffline and aItemId and tLookup then
+		local tOffline = tLookup[aItemId]
+		if type(tOffline) == "string" and tOffline ~= "" then
+			return tOffline
+		end
+	end
 	local tName
 	if aItemLink then tName = GetItemInfo(aItemLink) end
 	if not tName and aItemId then tName = GetItemInfo(aItemId) end
-	if not tName and aItemId and SkuDB and SkuDB.itemLookup and SkuDB.itemLookup[Sku.Loc] then
-		tName = SkuDB.itemLookup[Sku.Loc][aItemId]
-	end
-	if not tName and type(aItemLink) == "string" then
-		local tBracketed = string.match(aItemLink, "%[(.-)%]")
-		if tBracketed and tBracketed ~= "" then tName = tBracketed end
-	end
 	if type(tName) == "string" and tName ~= "" then
 		return SkuUtil:Unescape(tName)
+	end
+	if aItemId and tLookup then
+		local tOffline = tLookup[aItemId]
+		if type(tOffline) == "string" and tOffline ~= "" then
+			return tOffline
+		end
+	end
+	if type(aItemLink) == "string" then
+		local tBracketed = string.match(aItemLink, "%[(.-)%]")
+		if tBracketed and tBracketed ~= "" then
+			return SkuUtil:Unescape(tBracketed)
+		end
 	end
 end
 

@@ -6,6 +6,49 @@
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13
 
+    Atlas Loot: stutter on login and on opening
+        Simple: Recently the game froze completely for four to five seconds a few seconds after
+            the loading screen, and then took about twenty seconds instead of eight to calm
+            down. The cause was the Atlas Loot integration: on every login and every reload Sku
+            worked through the entire Atlas Loot database - roughly 40,000 entries in one go -
+            even in a session where you never opened Atlas Loot at all. That no longer happens
+            at login. It happens when you actually open Atlas Loot, and it runs in small slices
+            in the background instead of holding the frame. If you do not use Atlas Loot you now
+            pay nothing for it, and its data addons are no longer loaded needlessly either.
+            Second half: opening the Search list inside Atlas Loot also hung noticeably. That
+            list has around 20,000 entries, and building it looked up the name again and asked
+            the server for item data for every single one - for 20,000 entries you have not even
+            looked at. The name is already known at that point, and only the entry your cursor
+            is on needs the data. The list opens correspondingly faster now.
+        Technical: alIntegrationQueryAll builds two reverse indexes over the Atlas Loot data:
+            "which boss drops this item", and the name list behind Search. The run hung off a
+            PLAYER_LOGIN retry ladder (5/10/20/35/60 s) plus a
+            PLAYER_ENTERING_WORLD/ZONE_CHANGED_NEW_AREA safety net, so it fired about three
+            seconds after entering the world - unsliced, in a single frame. Its justification
+            had expired: it was meant to spare the Ctrl+Shift+L jump a cold start, but that jump
+            lost its context detection long ago and now only opens the menu node, which starts
+            the build itself. Three of the four tables the run filled had no reader at all:
+            alLookupBosses and alLookupInstances were written and never read, serving only as
+            the "has this run yet?" flag for the very ladder that ran it; alDropsByBoss and
+            alDropsByInstance were read only behind a condition that can never be true, since
+            the context flag is only ever set to nil. All four are gone, together with that
+            flag, its 120 s timer and BuildContextualWishlistEntry. What remains runs as a
+            coroutine on a 30 ms per frame budget: the menu starts it in the background
+            (QueryAllStart), and whoever needs a complete index - Search, wishlist by dungeon,
+            "Dropped by" - waits for it at its own call site (alIntegrationQueryAll, a no-op
+            once it is built). Each row also got cheaper: name resolution now asks Sku's own
+            item table before GetItemInfo, which queued a server query for every id the client
+            had not cached, and skips the six substitution passes for names coming from that
+            table, which carry no markup to strip in the first place. Building the Search menu
+            was the second hotspot: alIntegrationItemMenuBuilder now optionally takes the name
+            the caller already has (the Search index is keyed BY that name), which drops the
+            per-entry name resolution, the Unescape pass and above all SkuCore:RequestItemData -
+            an ItemMixin plus a registered load callback per entry, and a server query for every
+            id the client had not cached, some 20,000 times in one frame. A boss's loot list (a
+            few dozen rows) still requests eagerly, so an uncached name there keeps filling
+            itself in, and the focused entry requests its data in OnEnter anyway - so the spoken
+            text is unchanged.
+
     Collision warning: beeps with nothing in the way
         Simple: The "you are stuck" beeps could turn up while you were simply walking from one
             NPC to the next, with nothing blocking you at all. The counter behind the warning

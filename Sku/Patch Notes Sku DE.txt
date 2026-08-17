@@ -6,6 +6,54 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
 
+    Atlas Loot: Ruckler beim Anmelden und beim Oeffnen
+        Einfach: Seit kurzem hing das Spiel ein paar Sekunden nach dem Ladebildschirm fuer
+            vier bis fuenf Sekunden komplett, und danach dauerte es rund zwanzig statt acht
+            Sekunden, bis alles ruhig lief. Schuld war die Atlas-Loot-Anbindung: Sku hat bei
+            jeder Anmeldung und jedem Neuladen die komplette Atlas-Loot-Datenbank durchgearbeitet
+            - rund 40.000 Eintraege in einem Stueck - auch dann, wenn man Atlas Loot in der
+            ganzen Sitzung nie geoeffnet hat. Das passiert jetzt nicht mehr beim Anmelden,
+            sondern erst, wenn man Atlas Loot tatsaechlich oeffnet, und es laeuft in kleinen
+            Haeppchen im Hintergrund, statt das Bild anzuhalten. Wer Atlas Loot nicht benutzt,
+            zahlt gar nichts mehr dafuer - auch die Datenpakete von Atlas Loot werden dann nicht
+            mehr unnoetig geladen. Zweiter Teil: auch das Aufklappen der Suchliste in Atlas Loot
+            hing spuerbar. Diese Liste hat rund 20.000 Eintraege, und fuer jeden einzelnen wurde
+            beim Aufbauen der Name neu ermittelt und beim Server nach Gegenstandsdaten gefragt -
+            fuer 20.000 Eintraege, die man noch gar nicht angesehen hat. Der Name ist an dieser
+            Stelle laengst bekannt, und die Daten braucht nur der Eintrag, auf dem man gerade
+            steht. Die Liste oeffnet sich jetzt entsprechend schneller.
+        Technisch: alIntegrationQueryAll baut zwei Umkehr-Verzeichnisse ueber die Atlas-Loot-
+            Daten auf: "welcher Boss laesst diesen Gegenstand fallen" und die Namensliste fuer
+            die Suche. Der Lauf hing an einer PLAYER_LOGIN-Wiederholungsleiter (5/10/20/35/60 s)
+            plus einem Netz an PLAYER_ENTERING_WORLD/ZONE_CHANGED_NEW_AREA und lief damit etwa
+            drei Sekunden nach dem Betreten der Welt - ungeteilt, in einem einzigen Frame. Die
+            Begruendung dafuer war ueberholt: sie sollte dem Strg+Shift+L-Sprung die kalte
+            Wartezeit ersparen, doch dieser Sprung hat seine Kontexterkennung laengst verloren
+            und oeffnet nur noch den Menuepunkt, was den Aufbau selbst anstoesst. Drei der vier
+            Tabellen, die der Lauf fuellte, hatte ohnehin niemand gelesen: alLookupBosses und
+            alLookupInstances wurden nur geschrieben und dienten allein als "schon gelaufen?"-
+            Merker fuer genau die Leiter, die den Lauf ausloeste; alDropsByBoss und
+            alDropsByInstance wurden nur hinter einer Bedingung gelesen, die nie wahr sein kann,
+            seit das Kontext-Flag ausschliesslich auf nil gesetzt wird. Alle vier sind entfernt,
+            zusammen mit dem Flag, seinem 120-Sekunden-Timer und BuildContextualWishlistEntry.
+            Der verbliebene Lauf ist eine Koroutine mit 30-ms-Budget pro Frame: das Menue
+            startet ihn im Hintergrund (QueryAllStart), und wer ein vollstaendiges Verzeichnis
+            braucht - Suche, Wunschliste nach Dungeon, "Faellt bei" - wartet an seiner eigenen
+            Stelle darauf (alIntegrationQueryAll, ein Nichts-Tun, sobald es steht). Pro Eintrag
+            wurde es ausserdem billiger: die Namensaufloesung fragt jetzt zuerst Skus eigene
+            Gegenstandstabelle statt GetItemInfo, was pro unbekannter ID eine Server-Anfrage
+            ausgeloest hat, und spart die sechs Ersetzungslaeufe fuer Namen, die aus dieser
+            Tabelle kommen und ohnehin keine Markup-Zeichen enthalten. Der Menueaufbau der
+            Suchliste war der zweite Brennpunkt: alIntegrationItemMenuBuilder nimmt jetzt
+            optional den bereits bekannten Namen entgegen (die Suchliste ist nach genau diesem
+            Namen verschluesselt), und ueberspringt damit pro Eintrag die Namensaufloesung, den
+            Unescape-Lauf und vor allem SkuCore:RequestItemData - also ein ItemMixin samt
+            registriertem Lade-Rueckruf und eine Server-Abfrage je nicht zwischengespeicherter
+            ID, rund 20.000 Mal in einem Frame. Die Beutelisten eines Bosses (ein paar Dutzend
+            Zeilen) fordern die Daten weiterhin vorab an, damit sich unbekannte Namen dort
+            weiter selbst nachtragen, und der Eintrag, auf dem der Cursor steht, fordert sie in
+            seinem OnEnter ohnehin an - der gesprochene Text aendert sich also nicht.
+
     Kollisionswarnung: Toene ohne Hindernis
         Einfach: Der "du haengst fest"-Ton konnte auftauchen, waehrend man einfach von einem NPC
             zum naechsten lief, ohne dass irgendetwas im Weg stand. Der Zaehler hinter der

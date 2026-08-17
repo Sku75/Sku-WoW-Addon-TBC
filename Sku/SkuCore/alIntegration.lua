@@ -102,8 +102,16 @@ AtlasLootIntegration.favoriteSlots = {
    [27] = {"INVTYPE_OTHER", {0},},
 }
 
-local tItemDropTable = nil
-local tItemNameTable = nil
+-- [v42.13] Both start as EMPTY TABLES, not nil, and a separate boolean records
+-- whether the index has been built. The nil-as-sentinel these used to be was only
+-- safe because alIntegrationQueryAll ran eagerly a few seconds after every login,
+-- so by the time anything read them they always existed. Now that the build is
+-- on-demand (see alIntegrationQueryAll), several `if tItemDropTable[id]` reads
+-- would nil-index before the first build. An always-present table degrades to
+-- "no source known" instead, which is what those sites already handle.
+local tItemDropTable = {}
+local tItemNameTable = {}
+local tQueryAllDone = false
 
 -- Guard helper: resolve the AtlasLoot addon (or its Classic fork) and confirm
 -- the submodules this integration calls into are present. Returns the resolved
@@ -133,13 +141,13 @@ function AtlasLootIntegration:alItegrationGetItemDropTable(aId)
       return
    end
 
-   if not tItemDropTable then
-      AtlasLootIntegration:alIntegrationQueryAll()
-   end
+   -- Completeness matters here: a half-built index would answer "drops nowhere"
+   -- for an item that does drop. alIntegrationQueryAll returns at once when the
+   -- index is already built, and otherwise finishes whatever the background pass
+   -- has left.
+   AtlasLootIntegration:alIntegrationQueryAll()
 
-   if tItemDropTable then
-      return tItemDropTable[aId]
-   end
+   return tItemDropTable[aId]
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -479,13 +487,16 @@ local function BuildSource(ini, boss, typ, item, diffID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInternalDungeonName, aBossIndex, aTypeId, aDiffId)
+-- aKnownName [v42.13]: the entry's display name when the caller already has it
+-- (the Search list keys its index BY the name). Skips the per-entry name
+-- resolution and the eager item-data request; see the "item" branch below.
+function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInternalDungeonName, aBossIndex, aTypeId, aDiffId, aKnownName)
    if not aId then
       return
    end
 
-   -- Reachable from the wishlist path (BuildContextualWishlistEntry) as well as
-   -- the top-level menu builder; guard here too so it no-ops without AtlasLoot.
+   -- Reachable from the wishlist path as well as the top-level menu builder;
+   -- guard here too so it no-ops without AtlasLoot.
    if not EnsureAtlasLoot() then
       return
    end
@@ -555,9 +566,23 @@ function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, 
       -- deliberately, NOT the "(laedt)" label, because a name that changes once the
       -- data lands would move the entry out from under the cursor. The loading marker
       -- belongs in the spoken text, which OnEnter below rewrites live anyway.
-      local tItemName = SkuCore:ResolveItemName(aId) or (Sku.deEn("Gegenstand", "item", "objet").." "..tostring(aId))
-      SkuCore:RequestItemData(aId)
-      local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuUtil:Unescape(tItemName)}, SkuGenericMenuItem)
+      --
+      -- [v42.13] aKnownName is the BULK path (the Search list). There the name is
+      -- already known - it is the KEY the entry was found under in the name index -
+      -- so resolving and unescaping it again is pure repetition, ~20,000 times in a
+      -- row. RequestItemData is skipped there too, and that is the expensive half:
+      -- it allocates an ItemMixin and registers a load callback PER ENTRY, and fires
+      -- a server query for every id the client has not cached. Nothing needs that
+      -- for an entry the user has not looked at yet - OnEnter below requests the
+      -- data for the one entry actually focused, which is what fills the spoken
+      -- text in. The loot lists (a boss = a couple of dozen rows) keep the eager
+      -- request, because there it is what makes an uncached name fill itself in.
+      local tItemName = aKnownName
+      if not tItemName then
+         tItemName = SkuUtil:Unescape(SkuCore:ResolveItemName(aId) or (Sku.deEn("Gegenstand", "item", "objet").." "..tostring(aId)))
+         SkuCore:RequestItemData(aId)
+      end
+      local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {tItemName}, SkuGenericMenuItem)
       tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
          -- [v42.13] Was: a throwaway getItemComparisnSections(aId) call whose only job
          -- was "warm the cache", followed by a re-read on a fixed 0.1 s timer -- a
@@ -576,8 +601,12 @@ function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, 
             end
 
             local tDropText = L["Dropped by"].."\r\n"
-            if tItemDropTable[aId] then
-               for iDrop, vDrop in pairs(tItemDropTable[aId]) do
+            -- [v42.13] Read through the accessor, which guarantees a COMPLETE index
+            -- (and is a no-op once it is built) rather than touching a table that
+            -- may still be filling in the background.
+            local tDrops = AtlasLootIntegration:alItegrationGetItemDropTable(aId)
+            if tDrops then
+               for iDrop, vDrop in pairs(tDrops) do
                   tDropText = tDropText..vDrop.."\r\n"
                end
             end
@@ -707,8 +736,11 @@ function AtlasLootIntegration:alIntegrationItemMenuBuilder(aParent, aType, aId, 
                local tSections = {}
       
                local tDropText = L["Dropped by"].."\r\n"
-               if tItemDropTable[aId] then
-                  for iDrop, vDrop in pairs(tItemDropTable[aId]) do
+               -- [v42.13] See the item branch above: through the accessor so the
+               -- index is complete before it is read.
+               local tDrops = AtlasLootIntegration:alItegrationGetItemDropTable(aId)
+               if tDrops then
+                  for iDrop, vDrop in pairs(tDrops) do
                      tDropText = tDropText..vDrop.."\r\n"
                   end
                end
@@ -789,16 +821,26 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
       return
    end
 
-   if tItemDropTable == nil then
-      AtlasLootIntegration:alIntegrationQueryAll()
-   end
+   -- [v42.13] Opening this menu is the moment the index becomes worth having, so
+   -- START it here - in the BACKGROUND, sliced over frames. It must not block:
+   -- this runs while the user is navigating, and the entries below are usable
+   -- without it. Whoever actually needs the finished index waits for it at its own
+   -- call site (Search below, alItegrationGetItemDropTable above).
+   AtlasLootIntegration:QueryAllStart()
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Search"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.sorting = true
    tNewMenuEntry.BuildChildren = function(self)
+      -- The one consumer that genuinely needs EVERY name: a partially built index
+      -- would silently give a short list, which is exactly the nondeterminism
+      -- ca8561e set out to remove. Finish the background pass first.
+      AtlasLootIntegration:alIntegrationQueryAll()
+      -- [v42.13] `i` IS the item's name here - the index is keyed by it. Handing it
+      -- over as aKnownName spares ~20,000 redundant name resolutions and, more
+      -- importantly, ~20,000 ItemMixin allocations with a load callback each.
       for i, v in pairs(tItemNameTable) do
-         AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", v.itemID, v.npcId, v.internalName, v.bossIndex, nil, v.difficultyIndex)
+         AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", v.itemID, v.npcId, v.internalName, v.bossIndex, nil, v.difficultyIndex, i)
       end
    end
 
@@ -1043,17 +1085,6 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                         tNewSubMenuEntry.dynamic = true
                         tNewSubMenuEntry.sorting = true
                         tNewSubMenuEntry.BuildChildren = function(self)
-                           -- Kontextuelle Wunschliste (mode="boss"): Geschwister
-                           -- der Bosse, wenn der getargetete Boss in dieser
-                           -- Instanz/diesem Raid liegt.
-                           local ctx = AtlasLootIntegration.alShortcutContext
-                           if ctx and ctx.mode == "boss"
-                              and ctx.instanceName == moduleData[contentInteralName]:GetName()
-                              and ctx.pluginTitle == tModules.module[pluginIndex].tt_title
-                              and ctx.gameVersion == selectedGameVersion then
-                              AtlasLootIntegration:BuildContextualWishlistEntry(self,
-                                 AtlasLootIntegration.alDropsByBoss[ctx.bossName])
-                           end
                            --bosses
                            for bossIndex = 1, #moduleData[contentInteralName].items do
                               local tabVal = moduleData[contentInteralName].items[bossIndex]
@@ -1158,19 +1189,6 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                      tGroupEntry.dynamic = true
                      tGroupEntry.sorting = true
                      tGroupEntry.BuildChildren = function(aSelf)
-                        -- Kontextuelle Wunschliste (mode="instance") als
-                        -- Geschwister der Raids einfügen, wenn der
-                        -- Spieler in einer Raid-Instanz ist und der
-                        -- Plugin-/Erweiterungs-Kontext passt.
-                        local ctx = AtlasLootIntegration.alShortcutContext
-                        if ctx and ctx.mode == "instance"
-                           and ctx.contentIndex ~= 1
-                           and not ctx.isWorldBoss
-                           and ctx.pluginTitle == tModules.module[pluginIndex].tt_title
-                           and ctx.gameVersion == selectedGameVersion then
-                           AtlasLootIntegration:BuildContextualWishlistEntry(aSelf,
-                              AtlasLootIntegration.alDropsByInstance[ctx.instanceName])
-                        end
                         for _, contentInteralName in ipairs(aList) do
                            tBuildModuleEntry(aSelf, contentInteralName)
                         end
@@ -1190,16 +1208,6 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                      tGroupEntry.dynamic = true
                      tGroupEntry.sorting = true
                      tGroupEntry.BuildChildren = function(aSelf)
-                        -- Kontextuelle Wunschliste für Welt-Bosse:
-                        -- Geschwister der Bosse, wenn der gezielte Boss
-                        -- ein Welt-Boss ist.
-                        local ctx = AtlasLootIntegration.alShortcutContext
-                        if ctx and ctx.mode == "boss" and ctx.isWorldBoss
-                           and ctx.pluginTitle == tModules.module[pluginIndex].tt_title
-                           and ctx.gameVersion == selectedGameVersion then
-                           AtlasLootIntegration:BuildContextualWishlistEntry(aSelf,
-                              AtlasLootIntegration.alDropsByBoss[ctx.bossName])
-                        end
                         for _, contentInteralName in ipairs(aList) do
                            for bossIndex = 1, #moduleData[contentInteralName].items do
                               local tabVal = moduleData[contentInteralName].items[bossIndex]
@@ -1292,6 +1300,10 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
       tByDungeon.dynamic = true
       tByDungeon.sorting = true
       tByDungeon.BuildChildren = function(self)
+         -- [v42.13] Groups the wishlist BY the drop index, so a half-built index
+         -- would drop whole dungeons from the list without saying so. Finish it
+         -- first (no-op once built).
+         AtlasLootIntegration:alIntegrationQueryAll()
          local tFavs = SkuOptions and SkuOptions.db and SkuOptions.db.char
             and SkuSettings:Sub("SkuCore", nil, "char")
             and SkuSettings:Sub("SkuCore", nil, "char").alIntegration
@@ -1495,8 +1507,11 @@ function AtlasLootIntegration:alIntegrationMenuBuilder()
                      end
          
                      local tDropText = L["Dropped by"].."\r\n"
-                     if tItemDropTable[aId] then
-                        for iDrop, vDrop in pairs(tItemDropTable[aId]) do
+                     -- [v42.13] See the item branch above: through the accessor so the
+                     -- index is complete before it is read.
+                     local tDrops = AtlasLootIntegration:alItegrationGetItemDropTable(aId)
+                     if tDrops then
+                        for iDrop, vDrop in pairs(tDrops) do
                            tDropText = tDropText..vDrop.."\r\n"
                         end
                      end
@@ -1548,100 +1563,138 @@ local function addToItemsRepos(aItemId, aNpcID, aContentInteralName, aBossIndex,
    -- cached -- so the search could not find exactly the items the user is most
    -- likely to be hunting for. ResolveItemName answers from Sku's own shipped
    -- item table when the client cannot.
-   local tName = SkuCore:ResolveItemName(aItemId)
+   --
+   -- aPreferOffline: this is the bulk caller, run once per id across the whole
+   -- AtlasLoot data set. Asking the CLIENT first would mean a GetItemInfo miss --
+   -- and therefore a queued server item query -- for every id the player has never
+   -- seen, which is most of them; see SkuCore:ResolveItemName.
+   local tName = SkuCore:ResolveItemName(aItemId, nil, true)
    if tName and tName  ~= "" then
       tItemNameTable[tName] = {itemID = aItemId, npcId = aNpcID, internalName = aContentInteralName, bossIndex = aBossIndex, ttype = nil, difficultyIndex = aDifficultyIndex}
    end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- Lookup-Tabellen für das Tastenkürzel:
---   bossesByName    [bossName]    = { ... Pfad-Info ... }
---   instancesByName [instanceName] = { ... Pfad-Info ... }
--- Werden in QueryAll befüllt. Mehrfache Treffer überschreiben sich
--- gegenseitig — meist gewinnt der jüngere Eintrag (höhere Erweiterung
--- / aktuellere Daten), für unsere Zwecke ausreichend.
-AtlasLootIntegration.alLookupBosses    = AtlasLootIntegration.alLookupBosses    or {}
-AtlasLootIntegration.alLookupInstances = AtlasLootIntegration.alLookupInstances or {}
+-- The AtlasLoot index -- what it builds, when it runs, and why it is sliced.
+--
+-- [v42.13] This pass walks EVERY row of EVERY AtlasLoot content module (~40,000
+-- item rows) and it used to run eagerly, ~3 s after every login and /reload, in a
+-- single unsliced frame. That was a 4-5 second freeze just after the loading
+-- screen, and it force-loaded AtlasLoot's LoadOnDemand data addons in a session
+-- where the player may never open AtlasLoot at all. Three things were wrong:
+--
+--   * It ran at all. The two things it produces both already had their own
+--     on-demand trigger (alItegrationGetItemDropTable and the menu builder), so
+--     the eager run was pure prefetch.
+--   * Its stated reason was obsolete. The comment on the old init frame said it
+--     kept the Ctrl+Shift+L jump free of cold-start latency -- but that jump's
+--     context detection was deliberately removed (see AtlasLootShortcut), and the
+--     key now only opens the Atlas Loot menu node, which triggers the build itself.
+--   * Most of what it built had no reader. alLookupBosses / alLookupInstances were
+--     written and never read except as a "has this run yet?" flag for the very
+--     retry ladder that ran it -- circular. alDropsByBoss / alDropsByInstance were
+--     read only behind `if alShortcutContext ...`, and alShortcutContext is set in
+--     exactly one place, with nil, so those branches could never be taken. All
+--     four tables, the context flag, its 120 s timer and BuildContextualWishlistEntry
+--     are deleted here.
+--
+-- What is left are the two products that DO have readers:
+--   tItemDropTable  [itemId] = { "Instanz - Boss (Schwierigkeit)", ... }  -- "Dropped by"
+--   tItemNameTable  [name]   = { itemID=, npcId=, internalName=, bossIndex=, ... }  -- Search
+-- Both are reverse indexes over data AtlasLoot stores the other way round, so they
+-- do need one walk -- but only once, and only once someone asks.
+--
+-- The walk now runs as a coroutine on a frame budget. Two entry points:
+--   QueryAllStart()          -- start it in the background, never blocks
+--   alIntegrationQueryAll()  -- make sure it is COMPLETE now (finishes whatever
+--                               the background pass has left; no-op when done)
+-- Consumers that would give a wrong answer from a half-built index call the second
+-- one. Everything else just starts it.
+local QUERYALL_BUDGET_MS = 30
 
--- Kontext-Flag für die Strg+Shift+L-aktivierte Wunschliste-Einblendung.
--- Wird beim Shortcut gesetzt (sofern Boss/Instanz-Bedingung erfüllt) und
--- nach 120 s automatisch geleert.
-AtlasLootIntegration.alShortcutContext = nil
-AtlasLootIntegration.alShortcutContextTimer = nil
+local tQueryAllCo = nil
+local tQueryAllSliceStart = 0
+local tQueryAllBody -- assigned below; the coroutine's function body
 
-local function tSetShortcutContext(aCtx)
-   AtlasLootIntegration.alShortcutContext = aCtx
-   if AtlasLootIntegration.alShortcutContextTimer then
-      pcall(function() AtlasLootIntegration.alShortcutContextTimer:Cancel() end)
-      AtlasLootIntegration.alShortcutContextTimer = nil
-   end
-   if aCtx and _G.C_Timer and _G.C_Timer.NewTimer then
-      AtlasLootIntegration.alShortcutContextTimer = _G.C_Timer.NewTimer(120, function()
-         AtlasLootIntegration.alShortcutContext = nil
-         AtlasLootIntegration.alShortcutContextTimer = nil
-      end)
-   end
-end
-
--- Drop-Lookup-Tabellen: itemID-Listen pro Boss bzw. pro Instanz.
--- Werden in QueryAll befüllt; Wunschliste-Filter nutzt sie.
-AtlasLootIntegration.alDropsByBoss     = AtlasLootIntegration.alDropsByBoss     or {}
-AtlasLootIntegration.alDropsByInstance = AtlasLootIntegration.alDropsByInstance or {}
-
--- Baut einen "Wunschliste"-Eintrag, dessen Kinder die Schnittmenge
--- zwischen den globalen Favoriten und dem übergebenen Drop-Filter sind.
---   aDropMap: { [itemID]=true, ... } — z. B. AtlasLootIntegration.alDropsByBoss[name]
-function AtlasLootIntegration:BuildContextualWishlistEntry(aParent, aDropMap)
-   local tEntry = SkuOptions:InjectMenuItems(aParent, {L["AL_Wishlist"]}, SkuGenericMenuItem)
-   tEntry.dynamic = true
-   tEntry.sorting = true
-   tEntry.BuildChildren = function(self)
-      local tFavs = SkuOptions and SkuOptions.db and SkuOptions.db.char
-         and SkuSettings:Sub("SkuCore", nil, "char")
-         and SkuSettings:Sub("SkuCore", nil, "char").alIntegration
-         and SkuSettings:Sub("SkuCore", nil, "char").alIntegration.favorites or {}
-      local tFound = false
-      -- favorites ist [invType][1..n] = itemLink. itemID per
-      -- GetItemInfoInstant extrahieren.
-      for invType = 1, #AtlasLootIntegration.favoriteSlots do
-         local list = tFavs[invType] or {}
-         for _, itemLink in ipairs(list) do
-            local itemID = _G.GetItemInfoInstant and _G.GetItemInfoInstant(itemLink)
-            if itemID and aDropMap and aDropMap[itemID] then
-               -- Item in Wunschliste UND es droppt im Scope → anzeigen
-               AtlasLootIntegration:alIntegrationItemMenuBuilder(self, "item", itemID)
-               tFound = true
-            end
-         end
-      end
-      if not tFound then
-         SkuOptions:InjectMenuItems(self, {L["AL_WishlistNoDungeonHits"]}, SkuGenericMenuItem)
-      end
+local function tQueryAllMaybeYield()
+   if debugprofilestop() - tQueryAllSliceStart > QUERYALL_BUDGET_MS then
+      coroutine.yield()
    end
 end
 
+local tQueryAllFrame = CreateFrame("Frame")
+tQueryAllFrame:Hide()
+
+-- Run one slice. Returns true while there is more work left.
+local function tQueryAllResume()
+   if not tQueryAllCo then return false end
+   tQueryAllSliceStart = debugprofilestop()
+   local tOk, tErr = coroutine.resume(tQueryAllCo)
+   if not tOk then
+      tQueryAllCo = nil
+      tQueryAllFrame:Hide()
+      geterrorhandler()("Sku AtlasLoot index build failed: " .. tostring(tErr))
+      return false
+   end
+   if coroutine.status(tQueryAllCo) == "dead" then
+      tQueryAllCo = nil
+      tQueryAllDone = true
+      tQueryAllFrame:Hide()
+      return false
+   end
+   return true
+end
+
+tQueryAllFrame:SetScript("OnUpdate", function(self)
+   if not tQueryAllCo then self:Hide() return end
+   tQueryAllResume()
+end)
+
+-- Start the index in the background. Cheap to call repeatedly: a no-op once the
+-- index is built or already building.
+function AtlasLootIntegration:QueryAllStart()
+   if tQueryAllDone or tQueryAllCo then return end
+   if not EnsureAtlasLoot() then return end
+   tQueryAllCo = coroutine.create(tQueryAllBody)
+   tQueryAllFrame:Show()
+end
+
+-- Guarantee a COMPLETE index before returning. Keeps the old name and the old
+-- blocking contract, so every existing caller still gets what it expects -- it is
+-- just no longer called from a login timer, and whatever the background pass
+-- already finished is work this no longer has to do.
 function AtlasLootIntegration:alIntegrationQueryAll()
-   if not EnsureAtlasLoot() then
-      return
+   if tQueryAllDone then return end
+   -- Called from inside the walk itself (defensive): a resume would error and kill
+   -- the coroutine. The caller's own loop is already draining it.
+   if tQueryAllCo and coroutine.status(tQueryAllCo) == "running" then return end
+   if not EnsureAtlasLoot() then return end
+   if not tQueryAllCo then
+      tQueryAllCo = coroutine.create(tQueryAllBody)
    end
+   while tQueryAllResume() do end
+end
 
-   tItemDropTable = tItemDropTable or {}
-   tItemNameTable = tItemNameTable or {}
-   AtlasLootIntegration.alLookupBosses     = {}
-   AtlasLootIntegration.alLookupInstances  = {}
-   AtlasLootIntegration.alDropsByBoss      = {}
-   AtlasLootIntegration.alDropsByInstance  = {}
+tQueryAllBody = function()
+   -- A run owns the tables: wipe in place (identity matters, other closures hold
+   -- this same local) so a restarted build cannot append its sources twice.
+   wipe(tItemDropTable)
+   wipe(tItemNameTable)
 
    --plugins
    local tModules = AtlasLoot.Loader:GetLootModuleList()
    for pluginIndex = 1, #tModules.module do
       --print("1)", pluginIndex, tModules.module[pluginIndex].tt_title, tModules.module[pluginIndex].addonName, tModules.module[pluginIndex].name, tModules.module[pluginIndex].tt_text)
 
+      -- AtlasLoot's content addons are LoadOnDemand, and indexing one means loading
+      -- it. That is legitimate now that this whole pass is on demand -- we are here
+      -- because the player opened Atlas Loot or asked where an item drops -- but it
+      -- was NOT legitimate on a login timer, which is what forced all of them
+      -- resident in every session regardless of use.
       if AtlasLoot.Loader:IsModuleLoaded(tModules.module[pluginIndex].addonName) == false then
-         --print("2)", "loader", AtlasLoot.Loader:LoadModule(tModules.module[pluginIndex].addonName, LoadAtlasLootModule, LOADER_STRING))
          AtlasLoot.Loader:LoadModule(tModules.module[pluginIndex].addonName, LoadAtlasLootModule, LOADER_STRING)
       end
+      tQueryAllMaybeYield()
 
       --if tModules.module[pluginIndex].addonName == "AtlasLootClassic_Collections" then
 
@@ -1664,52 +1717,16 @@ function AtlasLootIntegration:alIntegrationQueryAll()
                   local tt_text		= moduleData[contentInteralName]:GetInfo()
                   --print("3)", "  ", moduleIndex, tDifficulties, contentTypeName, contentIndex, contentInteralName, name, tt_title, tt_text)
 
-                  -- Lookup-Tabelle für den Tastenkürzel-Sprung füttern.
-                  -- Welt-Boss-Erkennung gleich wie im MenuBuilder.
-                  local lowerName = (name or ""):lower()
-                  local isWorldBoss = lowerName:find("welt")
-                     or lowerName:find("world boss")
-                  if name and name ~= "" and contentIndex == 1 then
-                     AtlasLootIntegration.alLookupInstances[name] = {
-                        pluginTitle  = tModules.module[pluginIndex].tt_title,
-                        gameVersion  = selectedGameVersion,
-                        contentIndex = contentIndex,
-                        instanceName = name,
-                        isWorldBoss  = false,
-                     }
-                  end
+                  -- [v42.13] The alLookupInstances / alLookupBosses build stood here.
+                  -- Both tables were write-only: nothing ever looked a boss or an
+                  -- instance up in them, and the per-boss difficulty-name collection
+                  -- that fed them existed purely for a menu jump that no longer
+                  -- exists. Deleted with them.
 
                   --bosses
                   for bossIndex = 1, #moduleData[contentInteralName].items do
                      local tabVal = moduleData[contentInteralName].items[bossIndex]
                      if tabVal then
-                        local tBossName = moduleData[contentInteralName]:GetNameForItemTable(bossIndex)
-                        if tBossName and tBossName ~= "" then
-                           -- Verfügbare Schwierigkeitsstufen für DIESEN Boss
-                           -- vorab einsammeln. Beim Tastenkürzel-Sprung
-                           -- brauchen wir den lokalisierten diffName als
-                           -- letzten Pfad-Bestandteil (z. B. "Heroisch").
-                           local tBossDiffData = moduleData[contentInteralName].items[bossIndex]
-                           local tDiffNames = {}
-                           for di = 1, #tDifficulties do
-                              if tBossDiffData[di] then
-                                 local dn = tBossDiffData[di].diffName
-                                    or tDifficulties[di].name
-                                 if dn and dn ~= "" then
-                                    tDiffNames[#tDiffNames + 1] = SkuUtil:Unescape(dn)
-                                 end
-                              end
-                           end
-                           AtlasLootIntegration.alLookupBosses[SkuUtil:Unescape(tBossName)] = {
-                              pluginTitle  = tModules.module[pluginIndex].tt_title,
-                              gameVersion  = selectedGameVersion,
-                              contentIndex = contentIndex,
-                              instanceName = name,
-                              bossName     = SkuUtil:Unescape(tBossName),
-                              isWorldBoss  = isWorldBoss,
-                              difficulties = tDiffNames,
-                           }
-                        end
                         local name
                         local coinTexture
                         local tt_title
@@ -1749,30 +1766,16 @@ function AtlasLootIntegration:alIntegrationQueryAll()
                                     --print("6)", "      ", type(items), #items, items, "--", tableType, "--", diffData, #diffData)
                                  --end
 
-                                 -- Drop-Lookup für Wunschliste-Filter füllen.
-                                 local tInstName = moduleData[contentInteralName]:GetName()
-                                 local tBossName = moduleData[contentInteralName]:GetNameForItemTable(bossIndex)
-                                 if tInstName then
-                                    AtlasLootIntegration.alDropsByInstance[tInstName] = AtlasLootIntegration.alDropsByInstance[tInstName] or {}
-                                 end
-                                 if tBossName then
-                                    AtlasLootIntegration.alDropsByBoss[SkuUtil:Unescape(tBossName)] = AtlasLootIntegration.alDropsByBoss[SkuUtil:Unescape(tBossName)] or {}
-                                 end
-                                 local function tRecordDrop(itemID)
-                                    if type(itemID) ~= "number" or itemID <= 0 then return end
-                                    if tInstName then
-                                       AtlasLootIntegration.alDropsByInstance[tInstName][itemID] = true
-                                    end
-                                    if tBossName then
-                                       AtlasLootIntegration.alDropsByBoss[SkuUtil:Unescape(tBossName)][itemID] = true
-                                    end
-                                 end
+                                 -- [v42.13] The alDropsByInstance / alDropsByBoss maps
+                                 -- and their tRecordDrop closure stood here. Their only
+                                 -- reader was BuildContextualWishlistEntry, behind an
+                                 -- `if alShortcutContext ...` that can never be true --
+                                 -- the context flag is only ever set to nil since the
+                                 -- Ctrl+Shift+L jump dropped its context detection. Two
+                                 -- table lookups, an Unescape and a closure per boss
+                                 -- difficulty, for a branch nothing reaches.
 
                                  for itemIndex = 1, #items do
-                                    if items[itemIndex] and items[itemIndex][2] then
-                                       tRecordDrop(items[itemIndex][2])
-                                    end
-
                                     --if tprint == true then
                                        --print("7 0)", "        ", itemIndex, items[itemIndex], AtlasLoot.Data.Profession.IsProfessionSpell(items[itemIndex][2]))
                                     --end
@@ -1824,11 +1827,17 @@ function AtlasLootIntegration:alIntegrationQueryAll()
                                        --print("7)", "        ", "coll", items[itemIndex][2], tName)
                                     end
                                  end
+                                 -- One yield per boss+difficulty item table. Those run
+                                 -- from a handful to a few hundred rows, so this is fine
+                                 -- grained enough to hold the frame budget without
+                                 -- paying a clock read per row.
+                                 tQueryAllMaybeYield()
                               end
                            end
                         end
                      end
                   end
+                  tQueryAllMaybeYield()
                end
             end
          end
@@ -1855,13 +1864,14 @@ function AtlasLootIntegration:AtlasLootShortcut()
    -- Strg+Shift+L öffnet nur noch den Atlas-Loot-Eintrag. Die frühere
    -- Kontext-Erkennung (automatischer Sprung zur aktuellen Instanz bzw.
    -- zum Boss im Ziel) wurde entfernt: sie war unzuverlässig und konnte
-   -- je nach Zonen-/Zielzustand Fehler auslösen. Das Kontext-Flag wird
-   -- geleert, damit keine kontextuelle Wunschliste mehr eingeblendet wird.
+   -- je nach Zonen-/Zielzustand Fehler auslösen.
+   -- [v42.13] Mit ihr ist jetzt auch das Kontext-Flag weg: tSetShortcutContext
+   -- wurde nur noch hier und nur mit nil aufgerufen, also war die kontextuelle
+   -- Wunschliste ohnehin unerreichbar.
    -- W7: Atlas Loot now lives under the top-level "Addons" menu, not "Core".
    local tAddons = "Addons"
    local tAL   = (L and L["Atlas Loot"]) or "Atlas Loot"
    local tBase = Sku.MENU_ROOT .. "," .. string.lower(tAddons) .. "," .. string.lower(tAL)
-   tSetShortcutContext(nil)
    SkuOptions:SlashFunc(tBase)
 end
 
@@ -1937,71 +1947,21 @@ tAlInitFrame:SetScript("OnEvent", function(self)
    end
 end)
 
--- Eager Lookup-Befüllung für die kontextuelle Atlas-Loot-Navigation.
--- Die Lookup-Tabellen alLookupBosses / alLookupInstances sind global
--- (modulübergreifend) und ändern sich pro Session nicht. Wir füllen
--- sie deshalb einmal nach PLAYER_LOGIN (sobald AtlasLoot fertig
--- geladen hat) und sichern das per Zonenwechsel-Fallback ab. Damit
--- ist der Strg+Shift+L-Sprung beim ersten Tastendruck ohne kalte
--- QueryAll-Latenz nutzbar — und insbesondere beim Betreten einer
--- Instanz/eines Raids garantiert vorbefüllt, exakt zum Zeitpunkt,
--- an dem der User das Feature braucht.
-local tAlLookupInitFrame = CreateFrame("Frame")
-tAlLookupInitFrame.attempts = 0
-local function tTryPopulateAlLookups(self)
-   if SkuCore and AtlasLootIntegration.alLookupBosses
-      and next(AtlasLootIntegration.alLookupBosses) ~= nil then
-      return true -- bereits gefüllt
-   end
-   if not _G.AtlasLoot or not _G.AtlasLoot.Loader
-      or not _G.AtlasLoot.ItemDB then
-      return false
-   end
-   local ok = pcall(function()
-      if AtlasLootIntegration and AtlasLootIntegration.alIntegrationQueryAll then
-         AtlasLootIntegration:alIntegrationQueryAll()
-      end
-   end)
-   if ok and AtlasLootIntegration.alLookupBosses
-      and next(AtlasLootIntegration.alLookupBosses) ~= nil then
-      return true
-   end
-   return false
-end
-
-local function tScheduleLookupRetries(self)
-   if not _G.C_Timer or not _G.C_Timer.After then return end
-   for _, t in ipairs({5, 10, 20, 35, 60}) do
-      _G.C_Timer.After(t, function()
-         if SkuCore and AtlasLootIntegration.alLookupBosses
-            and next(AtlasLootIntegration.alLookupBosses) ~= nil then
-            return
-         end
-         pcall(tTryPopulateAlLookups, tAlLookupInitFrame)
-      end)
-   end
-end
-
-tAlLookupInitFrame:RegisterEvent("PLAYER_LOGIN")
-tAlLookupInitFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-tAlLookupInitFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-tAlLookupInitFrame:SetScript("OnEvent", function(self, event)
-   if event == "PLAYER_LOGIN" then
-      tScheduleLookupRetries(self)
-      return
-   end
-   -- Sicherheitsnetz: wenn der Login-Pfad nicht gegriffen hat
-   -- (AtlasLoot z. B. erst durch ein anderes Modul nachgeladen),
-   -- beim Zonenwechsel erneut probieren — insbesondere relevant
-   -- beim Betreten einer Instanz, wo der User das Feature braucht.
-   if SkuCore and AtlasLootIntegration.alLookupBosses
-      and next(AtlasLootIntegration.alLookupBosses) ~= nil then
-      return
-   end
-   if _G.C_Timer and _G.C_Timer.After then
-      _G.C_Timer.After(3, function()
-         pcall(tTryPopulateAlLookups, self)
-      end)
-   end
-end)
-
+-- [v42.13] The eager AtlasLoot index build stood here: a PLAYER_LOGIN retry ladder
+-- (5/10/20/35/60 s) plus a PLAYER_ENTERING_WORLD / ZONE_CHANGED_NEW_AREA safety net
+-- that fired alIntegrationQueryAll ~3 s after every login and /reload -- a single
+-- unsliced walk over ~40,000 AtlasLoot rows, which measured as a 4-5 second frozen
+-- frame right after the loading screen and stretched the whole post-login settle
+-- from ~8 s to ~20 s.
+--
+-- It is gone, not moved. Its own justification (see the deleted comment: keep the
+-- Ctrl+Shift+L jump free of cold QueryAll latency) had expired -- that jump no
+-- longer does context detection, it only opens the Atlas Loot menu node, and doing
+-- so starts the index itself. The ladder also used next(alLookupBosses) as its
+-- "already done?" test, i.e. the pass existed to fill a table whose only purpose
+-- was to record that the pass had run.
+--
+-- The index now builds on demand and sliced: AtlasLootIntegration:QueryAllStart()
+-- from the menu builder, AtlasLootIntegration:alIntegrationQueryAll() wherever a
+-- complete index is required. A session that never opens Atlas Loot never pays for
+-- it, and never force-loads AtlasLoot's LoadOnDemand data addons either.
