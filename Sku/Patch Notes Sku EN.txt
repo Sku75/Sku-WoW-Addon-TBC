@@ -6,6 +6,31 @@
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13
 
+    Combat: "Announce interrupts on your target" is now off by default
+        Simple: The second of the two interrupt switches now starts switched off as well. Both
+            halves of the split - your current target and all enemies - are opt-in from now on,
+            because an interrupt announcement cuts into everything else Sku says and most players
+            do not want it running by itself. Nothing about the announcement changed, only whether
+            it is on when you have never touched the setting. Turn it back on under Combat,
+            Enemies, "Announce interrupts on your target". As with the all-enemies switch this is
+            applied once to existing profiles too, so a value inherited from the old single switch
+            does not silently keep it on.
+        Technical: In aqCombat.lua the migration block no longer seeds yourTargetInterrupts from
+            the former outputInterrupts flag; it defaults to false like allEnemiesInterrupts, and a
+            run-once yourTargetInterruptsDefaultOff marker clears profiles that earlier 42.13
+            builds had already filled from the old value. AceDB defaults only fill nil, which is
+            why the marker is needed rather than a plain default change. tOldOutputInterrupts is
+            gone with its last reader.
+
+    Auction house: a full scan announced itself as "auction started"
+        Simple: Starting a full auction house scan said "auction started, please wait", which does
+            not tell you which of the two kinds of scan is running - a search and a full scan sound
+            far too similar for something that then occupies the auction house for minutes. It now
+            says "full auction house scan started, please wait", matching the completion line,
+            which has always said "auction house full scan completed".
+        Technical: The locale string "Full scan started" was reworded in deDE, enUS and frFR. No
+            code path changed; the announcement site in auctionHouse.lua is untouched.
+
     Sku focus: calling a focus arrived late and stuttered
         Simple: Pressing a focus key to take the stored focus as your target spoke the name with a
             noticeable delay - often started, cut off and started again. A key press delivers two

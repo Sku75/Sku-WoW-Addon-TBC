@@ -6,6 +6,33 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
 
+    Kampf: "Unterbrechungen bei deinem Ziel ansagen" ist jetzt standardmaessig aus
+        Einfach: Auch der zweite der beiden Unterbrechungs-Schalter startet nun ausgeschaltet.
+            Beide Haelften der Aufteilung - dein aktuelles Ziel und alle Gegner - sind ab sofort
+            zuschaltbar statt vorgegeben, denn eine Unterbrechungs-Ansage draengt sich in alles
+            andere, was Sku gerade sagt, und die meisten Spieler wollen sie nicht von allein
+            laufen haben. An der Ansage selbst aendert sich nichts, nur daran, ob sie an ist, wenn
+            du die Einstellung nie angefasst hast. Wieder einschalten unter Kampf, Gegner,
+            "Unterbrechungen bei deinem Ziel ansagen". Wie beim Schalter fuer alle Gegner wird das
+            einmalig auch auf bestehende Profile angewandt, damit ein aus dem alten Einzelschalter
+            uebernommener Wert ihn nicht stillschweigend anlaesst.
+        Technisch: Der Migrationsblock in aqCombat.lua belegt yourTargetInterrupts nicht mehr aus
+            dem frueheren outputInterrupts-Schalter vor; der Standard ist false wie bei
+            allEnemiesInterrupts, und eine einmalige Marke yourTargetInterruptsDefaultOff raeumt
+            Profile auf, die fruehere 42.13-Builds bereits aus dem alten Wert gefuellt hatten.
+            AceDB-Defaults fuellen nur nil, deshalb braucht es die Marke und nicht bloss einen
+            geaenderten Standard. tOldOutputInterrupts faellt mit seinem letzten Leser weg.
+
+    Auktionshaus: der Komplettscan meldete sich als "Auktion gestartet"
+        Einfach: Der Start eines vollen Auktionshaus-Scans sagte "Auktion gestartet, bitte warten"
+            - das verraet nicht, welche der beiden Scan-Arten laeuft, und eine Suche klingt damit
+            viel zu aehnlich wie ein Komplettscan, der das Auktionshaus danach minutenlang
+            belegt. Jetzt heisst es "Voller Auktionshaus Scan gestartet, bitte warten", passend
+            zur Abschlussmeldung, die schon immer "Voller Auktionshaus Scan abgeschlossen" lautet.
+        Technisch: Der Locale-Eintrag "Full scan started" wurde in deDE, enUS und frFR neu
+            formuliert. Kein Codepfad hat sich geaendert; die Ansagestelle in auctionHouse.lua
+            bleibt unberuehrt.
+
     Sku Fokus: der Aufruf eines Fokus kam verzoegert und stotterte
         Einfach: Wer eine Fokus-Taste drueckt, um den gespeicherten Fokus ins Ziel zu nehmen,
             hoerte den Namen mit einer spuerbaren Verzoegerung - haeufig kurz angerissen und dann

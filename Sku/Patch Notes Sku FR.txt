@@ -9,6 +9,36 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
 
+    Combat : « Annoncer les interruptions sur votre cible » est désormais désactivé par défaut
+        Simple : Le second des deux interrupteurs d'interruption démarre lui aussi désactivé. Les
+            deux moitiés de la séparation - votre cible actuelle et tous les ennemis - sont
+            dorénavant facultatives, car une annonce d'interruption s'impose au milieu de tout ce
+            que Sku est en train de dire, et la plupart des joueurs ne veulent pas la voir
+            tourner d'elle-même. L'annonce elle-même ne change pas, seulement le fait qu'elle
+            soit active si vous n'avez jamais touché au réglage. Pour la réactiver : Combat,
+            Ennemis, « Annoncer les interruptions sur votre cible ». Comme pour l'interrupteur
+            « tous les ennemis », cela s'applique une fois aux profils existants, afin qu'une
+            valeur héritée de l'ancien interrupteur unique ne le laisse pas activé en silence.
+        Technique : Dans aqCombat.lua, le bloc de migration ne préremplit plus yourTargetInterrupts
+            depuis l'ancien indicateur outputInterrupts ; la valeur par défaut est false comme pour
+            allEnemiesInterrupts, et un marqueur unique yourTargetInterruptsDefaultOff nettoie les
+            profils que des builds 42.13 antérieurs avaient déjà remplis à partir de l'ancienne
+            valeur. Les valeurs par défaut d'AceDB ne remplissent que les nil, d'où le marqueur
+            plutôt qu'un simple changement de défaut. tOldOutputInterrupts disparaît avec son
+            dernier lecteur.
+
+    Hôtel des ventes : l'analyse complète s'annonçait comme « enchères démarrées »
+        Simple : Le démarrage d'une analyse complète de l'hôtel des ventes disait « Analyse des
+            enchères démarrée, veuillez patienter », ce qui ne dit pas laquelle des deux sortes
+            d'analyse tourne - une recherche ressemblait bien trop à une analyse complète, qui
+            occupe ensuite l'hôtel des ventes pendant des minutes. Il est désormais annoncé
+            « Analyse complète de l'hôtel des ventes démarrée, veuillez patienter », en accord
+            avec le message de fin, qui dit depuis toujours « Analyse complète de l'hôtel des
+            ventes terminée ».
+        Technique : La chaîne de localisation « Full scan started » a été reformulée en deDE, enUS
+            et frFR. Aucun chemin de code n'a changé ; le point d'annonce dans auctionHouse.lua
+            reste intact.
+
     Focalisation Sku : l'appel d'une focalisation arrivait en retard et hachait
         Simple : appuyer sur une touche de focalisation pour prendre la cible mémorisée annonçait
             le nom avec un retard perceptible - souvent commencé, coupé, puis repris. Un appui
