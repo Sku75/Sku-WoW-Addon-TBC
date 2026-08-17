@@ -214,6 +214,11 @@ function RangeCheck:DoRangeCheck(aForceFlag)
    -- targets while in combat. Skip them rather than announce a wrong distance.
    -- Hostile targets are unaffected (harm bands are spell-based, valid in combat).
    if InCombatLockdown() and UnitExists("target") and not UnitCanAttack("player", "target") then
+      -- Log ONLY on the per-target-change force call; this function is also
+      -- driven by an OnUpdate poll, which must not flood the ring.
+      if aForceFlag == true then
+         dprint("RangeCheck: silent - friendly range suppressed in combat (interact checkers combat-blocked)")
+      end
       return
    end
 
@@ -242,6 +247,16 @@ function RangeCheck:DoRangeCheck(aForceFlag)
          elseif UnitCanAssist("player", "target") then
             tCheckType = "Friendly"
          end
+      end
+
+      -- [v42.14] One line per forced (target-change) check: category, the band
+      -- LibRangeCheck returned (nil = the library has NO checker for this unit
+      -- right now - the lib/prune suspicion), and whether a sound is configured
+      -- for that band. Makes "no range was announced" diagnosable from the ring.
+      if aForceFlag == true then
+         local tRCConf = SkuSettings:Sub("SkuCore", nil, "char").RangeChecks
+         local tBand = tRCConf and tRCConf[tCheckType] and tRCConf[tCheckType][tRangeCheckLastTargetminRange]
+         dprint("RangeCheck: force", tCheckType, "minRange", tostring(tRangeCheckLastTargetminRange), "bandConf", tBand and (tBand.sound or "?") or "none")
       end
 
       if SkuSettings:Sub("SkuCore", nil, "char").RangeChecks then

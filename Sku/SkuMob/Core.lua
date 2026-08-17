@@ -345,6 +345,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		end
 
 		if not UnitExists(aUnitId) and aUnitId ~= "softinteract" then
+			dprint("SkuMob PTC: silent - unit does not exist", aUnitId)
 			return
 		end
 
@@ -374,6 +375,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 				end
 				noSubText = true
 			else
+				dprint("SkuMob PTC: silent - player target and vocalizePlayerNamePlaceholders is off")
 				return
 			end
 		end
@@ -651,9 +653,15 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 
 		end
 
+		-- [v42.14] Log the FINAL spoken string and which voice path takes it, so a
+		-- "target announce was silent" report can be checked against the ring:
+		-- entry logged but nothing audible -> voice/queue layer; no entry at all ->
+		-- the event never fired (e.g. key press on the already-current target).
 		if tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true then
+			dprint("SkuMob PTC speak (audio):", tOutputString)
 			SkuOptions.Voice:OutputString(tOutputString, true, true, 0.3)
 		else
+			dprint("SkuMob PTC speak (btts):", tOutputStringB)
 			SkuOptions.Voice:OutputStringBTtts(tOutputStringB, true, true, 0.3, nil, nil, nil, 1)
 		end
 
