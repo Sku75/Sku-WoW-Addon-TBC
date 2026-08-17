@@ -47,6 +47,55 @@ Changements dans Sku v43.0
             emplacements bruts, et les objets pas encore envoyés par le serveur comptent comme
             « en attente » et non comme des échecs.
 
+    Auras : les avertissements d'expiration arrivent à l'heure, pas au prochain événement de combat
+        Simple : Deux plaintes anciennes avaient la même cause : une aura comme « affaiblissement
+            sur la cible sous 3 secondes » ou « mon affaiblissement a disparu de la cible »
+            n'était revérifiée que lorsqu'un AUTRE événement de combat arrivait. Dans un combat
+            purement au corps à corps, l'avertissement pouvait donc arriver avec un coup d'arme
+            entier de retard, hors combat avec des minutes - ou ne jamais partir avant
+            l'expiration elle-même. Sku note désormais, en vérifiant l'effet, QUAND le seuil sera
+            atteint et réveille la vérification exactement à ce moment ; l'apparition ou la
+            disparition d'un effet déclenche aussi la vérification directement. De plus, les mots
+            parlés d'une aura peuvent maintenant dépasser les annonces en attente, comme le font
+            déjà les sons d'alerte - ils n'interrompent rien et ne chevauchent rien, ils ne se
+            mettent simplement plus en queue. Les avertissements d'enchantement d'arme en
+            profitent aussi : au lieu d'un retard pouvant atteindre une seconde, ils partent
+            désormais à l'image près.
+        Technique : Trois mécanismes : (1) un planificateur d'échéances dans SkuAuras/Core.lua -
+            chaque passe d'évaluation note dans tNextDurationDeadline le moment de seuil le plus
+            proche (expirationTime moins seuil) de toutes les conditions de durée actives
+            (opérateur « plus petit ») ; le pilote de trame compare un nombre par trame puis
+            déclenche UNE passe synthétique DURATION_DEADLINE. Remplace la revérification
+            approchée à la seconde des enchantements d'arme. (2) UNIT_AURA déclenche une
+            évaluation lors d'un vrai changement d'ensemble des effets (ajout/retrait, pas les
+            mises à jour de piles ou de durée) - différence de noms contre un instantané,
+            filtrée contre les passes du journal de combat dans la même trame et contre les
+            changements de cible. (3) les sorties en mots utilisent le chemin aInstant
+            d'OutputString, présent mais jamais branché (insertion en tête au lieu d'ajout en
+            queue) ; un curseur de trame garde les sorties en plusieurs parties dans l'ordre
+            parlé.
+
+    Auras : évaluation par événement de combat nettement moins coûteuse
+        Simple : En raid, Sku évalue les auras des centaines de fois par seconde. Plusieurs
+            coûts cachés ont disparu : les conditions étaient vérifiées deux fois, les durées
+            restantes redemandées au client à chaque événement, et le groupe entier parcouru
+            requête par requête pour chaque événement. Deux bogues silencieux corrigés au
+            passage : une aura sans condition « sort en temps de recharge » pouvait annoncer le
+            nom de recharge d'une AUTRE aura, et les temps de recharge d'objets étaient
+            réhorodatés à chaque changement de sac. /skucheck gagne pour cela un domaine
+            « auras » qui vérifie que l'évaluation n'écrit plus de globales.
+        Technique : Évaluer une fois au lieu de deux (la branche à valeur unique de la boucle
+            d'attributs tournait deux fois par accident ; plus deux globales fuitées,
+            tSpellNameOnCdValue injectait des valeurs périmées d'une aura à l'autre). Les durées
+            restantes viennent d'une extension expirationTime du cache de listes de niveau 2 au
+            lieu de rebalayages UnitAura (/skuauracache verify vérifie maintenant aussi les
+            valeurs exp, /skuauracache off désactive les deux). Les GUID de groupe se résolvent
+            via une carte invalidée aux événements de roster au lieu de boucles raid1..40 par
+            événement (l'ordre du résultat et l'horizon historique raid1..25 du RoleChecker sont
+            préservés exactement). targetUnitDistance et targetTargetUnitId sont paresseux,
+            LogRecorder fait un accès aux réglages au lieu de quatre, et la garde
+            UNIT_INVENTORY_CHANGED teste le vrai itemID au lieu d'une globale nil.
+
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13

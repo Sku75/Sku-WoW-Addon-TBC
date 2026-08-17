@@ -198,9 +198,11 @@ here so a future session doesn't re-derive the analysis from scratch.
   Alternative to re-check briefly at the same time: SAPIence
   (github.com/LeonarddeR/SAPIence, LGPL, Rust, same mechanism) — as of
   2026-07-05 zero releases/binaries, not a candidate yet.
-- **v43.0 aura reaction-time work — 8 changes, ALL UNTESTED in game.** Ask:
-  "check the aura latency monitor". Investigated 2026-08-17 after the standing
-  complaint that auras used to react a second or more late. Sounds were
+- **v43.0 aura reaction-time work — TWO WAVES, 15 changes, ALL UNTESTED in
+  game.** Ask: "check the aura latency monitor". Investigated 2026-08-17 after
+  the standing complaint that auras used to react a second or more late.
+  Items 1-8 are wave 1 (commit `4e81678`), items 9-15 are wave 2 (one commit
+  each, same day). Sounds were
   exonerated first: the mp3s were measured for leading silence by parsing the
   Layer-III side info (per-granule `part2_3_length`, 13 ms resolution) — brass /
   glass / waterdrop / error_* are all 0 ms, notification1-27 are 0-26 ms except
@@ -320,27 +322,14 @@ here so a future session doesn't re-derive the analysis from scratch.
      locals and SkuBeacon's same-named `tFile` is a proper local — nothing read
      the leaked globals.
 
-  Measurable check, no code change needed: `/skuperf reset`, run a fight,
-  `/skuperf combat` → the `EvaluateAllAuras` avg and total should drop sharply.
-  `n` may RISE from the new event sources and the extra cooldown pass; that is
-  expected, the per-call cost is what moved.
+  WAVE 2 (items 9-15) targets the two complaints wave 1 left open: a target
+  debuff falling off is announced late, and "remaining duration < X" sounds
+  trigger late. Root cause of both: those auras had no wake-up of their own —
+  they were only re-checked when some UNRELATED combat-log event happened to
+  arrive (melee-only fight: up to a swing timer late; out of combat: minutes
+  late or never before the expiry itself).
 
-  Revert candidates, cleanest first: item 2 = the `data.lua` one-liner; item 1 =
-  the `mQueueDirty` gate; item 6 = the split in
-  `COMBAT_LOG_EVENT_UNFILTERED`; item 5 = the four `RegisterEvent` lines (the
-  frame-driver drain then simply never fires). Items 3/4/7/8 are independent of
-  each other. Status: open / awaiting extended play-testing for regressions.
-
-- **v43.0 aura wave 2 — duration-threshold latency + evaluation cost, ALL
-  UNTESTED in game.** Ask: "check the aura wave 2 monitor". Follow-up to the
-  wave above, targeting the two remaining complaints: a target debuff falling
-  off is announced late, and "remaining duration < X" sounds trigger late.
-  Root cause of both: those auras had no wake-up of their own — they were only
-  re-checked when some UNRELATED combat-log event happened to arrive (melee-only
-  fight: up to a swing timer late; out of combat: minutes late or never before
-  the expiry itself). One numbered item per commit, grown as the wave lands.
-
-  1. **Single-value conditions were evaluated TWICE per aura per event**
+  9. **Single-value conditions were evaluated TWICE per aura per event**
      (`SkuAuras/Core.lua`, `EvaluateAllAuras` attributes loop). The
      single-value `else` branch computed its result and then re-ran the same
      attribute through a leftover copy of the multi-value loop — a straight 2×
@@ -353,7 +342,7 @@ here so a future session doesn't re-derive the analysis from scratch.
        on an aura that never had that condition goes silent (it was garbage).
      - Re-check: any multi-condition aura still fires; `/skuperf combat` avg
        for `EvaluateAllAuras` drops further.
-  2. **Duration lookups read the list cache instead of rescanning UnitAura**
+  10. **Duration lookups read the list cache instead of rescanning UnitAura**
      (`SkuAuras/Core.lua`, `exp` maps in `tAuraListCache`, `getFixedDuration`).
      The per-aura duration prefetch (buffListTargetDuration & co) rescanned
      UnitAura for EVERY duration-watching aura on EVERY event, bypassing the
@@ -367,15 +356,15 @@ here so a future session doesn't re-derive the analysis from scratch.
      Two deliberate behaviour repairs: on a miss the Duration field is now
      explicitly CLEARED (was: full-list table), and a nil lookup no longer
      retains the PREVIOUS aura's duration in the shared tEvaluateData (same
-     stale-leak class as item 1's `tSpellNameOnCdValue`).
+     stale-leak class as item 9's `tSpellNameOnCdValue`).
      - Regression net: `/skuauracache verify on` now also diffs the stored
        expirationTimes (absolute timestamps, exact compare) — run one test
        fight with a DoT and watch the ring for `AURACACHE MISMATCH`.
      - Kill switch: `/skuauracache off` disables the exp reads too
        (getFixedDuration falls back to the original fresh scan).
-     - Re-check: a "Dauer < X" aura on a running DoT fires as before (it still
-       needs an event to wake it until wave-2 item 3 lands).
-  3. **Duration-deadline scheduler: "Dauer < X" wakes itself, frame-precise**
+     - Re-check: a "Dauer < X" aura on a running DoT fires as before (item 11
+       is what gives it its own wake-up).
+  11. **Duration-deadline scheduler: "Dauer < X" wakes itself, frame-precise**
      (`SkuAuras/Core.lua`, `tNextDurationDeadline` / `tArmDeadlineForSmaller` /
      `DURATION_DEADLINE`). A duration threshold is a crossing whose moment is
      KNOWN in advance (expirationTime − threshold), so instead of polling or
@@ -392,7 +381,7 @@ here so a future session doesn't re-derive the analysis from scratch.
      nudge past the exact crossing. Re-arming is implicit (every pass recomputes
      from fresh data); a deadline whose aura vanished early fires one empty pass
      and dies.
-     - **Replaces the wave-1 item-7 refire:** the per-second near-expiry
+     - **Replaces item 7's refire:** the per-second near-expiry
        WEAPON_ENCHANT_UPDATE in UNIT_TICKER is retired; enchant "Dauer < X"
        auras improve from ≤1 s slip to one frame. Edge, expected new behaviour:
        an enchant-duration aura that ALSO has an `event` condition on
@@ -406,7 +395,7 @@ here so a future session doesn't re-derive the analysis from scratch.
        when nothing else happens (stand still, no combat, watch the ring for
        the breadcrumb); a non-`single` condition-aura must not spam (deadline
        passes are one-shot, not periodic).
-  4. **UNIT_AURA drives an evaluation on real membership change**
+  12. **UNIT_AURA drives an evaluation on real membership change**
      (`SkuAuras/Core.lua`, `tAuraMembershipDirty` / `AuraMembershipCheck` /
      `AnyAuraWatchesAuraLists`). UNIT_AURA used to only stale the list cache,
      never schedule an evaluation — so a condition aura ("debuff list target
@@ -429,7 +418,7 @@ here so a future session doesn't re-derive the analysis from scratch.
        rare (appear/disappear only). Out of combat: let a self-buff expire
        while standing still — a "contains not" aura on it must speak within a
        frame of the icon vanishing.
-  5. **GUID → group-index map replaces the per-event roster sweeps**
+  13. **GUID → group-index map replaces the per-event roster sweeps**
      (`SkuAuras/Core.lua`, `tRaidGuidIndex` / `tPartyGuidIndex` /
      `tEnsureGroupGuidMap`). `GetBestUnitId` swept raid1..40 with a UnitGUID
      call each and ran two-or-three times per combat-log event;
@@ -448,7 +437,7 @@ here so a future session doesn't re-derive the analysis from scratch.
      - Re-check in a party AND a raid: target/heal announcements that name a
        unit ("party 2", "raid 15") still name the right one; role-based aq
        announcements unchanged. `/skuperf combat` avg drops again in groups.
-  6. **More lazy fields + three per-event micro-costs**
+  14. **More lazy fields + three per-event micro-costs**
      (`SkuAuras/Core.lua`). `targetUnitDistance` (LibRangeCheck's GetRange is a
      checker CASCADE of item/spell range probes and ran on every event with a
      target) and `targetTargetUnitId` (an eager GetBestUnitId per event) moved
@@ -461,7 +450,7 @@ here so a future session doesn't re-derive the analysis from scratch.
      cooldowns; the guard is live now, which was its written intent.
      - Re-check: a "target distance" aura and a "ziel deines ziels" aura still
        fire; an item-cooldown aura still announces cooldown end once.
-  7. **Word outputs jump the pending queue (the beeps' fast path, word-legal)**
+  15. **Word outputs jump the pending queue (the beeps' fast path, word-legal)**
      (`SkuAuras/data.lua` actions + all 24 word outputs; `SkuVoice-1.0.lua`
      `mInstantInsertPos`). A word can never legally OVERLAY running speech the
      way an aura beep does — word over word is mush — so its latency floor is
@@ -479,7 +468,28 @@ here so a future session doesn't re-derive the analysis from scratch.
      spoken order, re-clamped after an aOverwrite clear. aFirst/overwrite
      interrupt logic, word-to-word pacing (TTSSepPause) and the beeps'
      `auraSound` path are untouched; the word/text outputs still never set
-     `auraSound` (wave-1 item 2's rule stands).
+     `auraSound` (item 2's rule stands).
      - Re-check: an aura speaking spell name + unit says them in that order;
        menu speech queued before an aura firing is spoken AFTER the aura words
        now (intended); nothing slurs or overlaps.
+
+  Measurable check, no code change needed: `/skuperf reset`, run a fight,
+  `/skuperf combat` → the `EvaluateAllAuras` avg and total should drop sharply
+  (wave 1 cut the per-call cost, wave 2 cuts it again — items 9/10/13/14).
+  `n` may RISE from the new event sources, the extra cooldown pass and the
+  deadline/membership passes; that is expected, the per-call cost is what
+  moved. `/skucheck auras` (added with wave 2) must report no problems — it
+  trips if the evaluate loop ever leaks its globals again (item 9).
+
+  Revert candidates, cleanest first — wave 1: item 2 = the `data.lua`
+  one-liner; item 1 = the `mQueueDirty` gate; item 6 = the split in
+  `COMBAT_LOG_EVENT_UNFILTERED`; item 5 = the four `RegisterEvent` lines (the
+  frame-driver drain then simply never fires). Items 3/4/7/8 are independent.
+  Wave 2, one commit each so `git revert` is clean per item: item 15 = the
+  three `instant = true` action flags (the wiring then goes back to dead);
+  item 12 = the two mark lines in `UNIT_AURA` (the drain never fires);
+  item 11 = the arm calls (the deadline never arms — but item 7's refire is
+  GONE, so enchant "Dauer < X" auras would then only fire on real events);
+  item 10 = `/skuauracache off` at runtime, or revert its commit;
+  items 9/13/14 are independent. Status: open / awaiting extended play-testing
+  for regressions.

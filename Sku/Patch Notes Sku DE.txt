@@ -43,6 +43,52 @@ Aenderungen in Sku v43.0
             Plaetzen geprueft, und noch nicht vom Server geladene Items zaehlen als "ausstehend"
             statt als Fehler.
 
+    Auren: Ablauf-Warnungen kommen puenktlich, nicht erst beim naechsten Kampfereignis
+        Einfach: Zwei alte Beschwerden hatten dieselbe Ursache: Eine Aura wie "Debuff auf dem Ziel
+            unter 3 Sekunden" oder "mein Debuff ist vom Ziel abgefallen" wurde nur dann neu
+            geprueft, wenn irgendein anderes Kampfereignis eintraf. In einem reinen Nahkampf kam
+            die Warnung deshalb bis zu einem ganzen Waffenschlag zu spaet, ausserhalb des Kampfes
+            um Minuten - oder gar nicht vor dem Ablauf. Jetzt merkt sich Sku beim Pruefen des
+            Effekts, WANN die Schwelle erreicht sein wird, und weckt die Pruefung genau in diesem
+            Moment; auch das Erscheinen oder Wegfallen eines Effekts selbst stoesst die Pruefung
+            direkt an. Ausserdem duerfen die gesprochenen Woerter einer Aura jetzt wie die
+            Signaltoene an wartenden Ansagen vorbeiziehen - sie unterbrechen nichts und
+            ueberlappen nichts, sie stellen sich nur nicht mehr hinten an.
+            Waffenverzauberungs-Warnungen profitieren mit: statt bis zu einer Sekunde Verzug
+            feuern sie jetzt auf den Frame genau.
+        Technisch: Drei Mechanismen: (1) Termin-Planer in SkuAuras/Core.lua - jeder
+            Auswertungslauf merkt sich in tNextDurationDeadline den fruehesten
+            Schwellen-Zeitpunkt (expirationTime minus Schwelle) aller aktiven Dauer-Bedingungen
+            (kleiner-Operator); der Frame-Treiber vergleicht pro Frame eine Zahl und feuert dann
+            EINEN synthetischen DURATION_DEADLINE-Lauf. Ersetzt die sekuendliche
+            Naeherungs-Neupruefung der Waffenverzauberungen. (2) UNIT_AURA stoesst bei echter
+            Mengen-Aenderung der Effekte (dazu/weg, nicht bei Stapel- oder Dauer-Updates) eine
+            Auswertung an - Namens-Diff gegen einen Schnappschuss, entprellt gegen
+            Kampflog-Laeufe im selben Frame und gegen Zielwechsel. (3) Die Wort-Ausgaben nutzen
+            den vorhandenen, aber nie angeschlossenen aInstant-Pfad von OutputString (Einfuegen
+            vorne statt hinten); ein Frame-Cursor haelt mehrteilige Ausgaben in Sprechreihenfolge.
+
+    Auren: Auswertung pro Kampfereignis deutlich verbilligt
+        Einfach: Im Schlachtzug wertet Sku Auren hunderte Male pro Sekunde aus. Mehrere
+            versteckte Kostentreiber sind raus: Bedingungen wurden doppelt geprueft, Restdauern
+            bei jedem Ereignis neu vom Client erfragt, und fuer jedes Ereignis wurde die komplette
+            Gruppe per Einzelabfrage durchsucht. Nebenbei zwei stille Fehler behoben: Eine Aura
+            ohne "Zauber auf Abklingzeit"-Bedingung konnte den Abklingzeit-Namen einer ANDEREN
+            Aura ansagen, und Gegenstands-Abklingzeiten wurden bei jeder Taschenaenderung neu
+            gestempelt. /skucheck kennt dafuer jetzt die Domaene "auras" und prueft, dass die
+            Auswertung keine Globals mehr schreibt.
+        Technisch: Einmal auswerten statt doppelt (der einwertige Zweig der Attributschleife lief
+            versehentlich zweimal; dazu zwei geleakte Globals, tSpellNameOnCdValue injizierte
+            veraltete Werte quer ueber Auren). Restdauern kommen aus einer
+            expirationTime-Erweiterung des Tier-2-Listencaches statt aus UnitAura-Neuscans
+            (/skuauracache verify prueft jetzt auch die exp-Werte, /skuauracache off schaltet
+            beides ab). Gruppen-GUIDs loesen ueber eine bei Roster-Ereignissen invalidierte Karte
+            auf statt ueber raid1..40-Schleifen pro Ereignis (Ergebnis-Reihenfolge und das
+            historische raid1..25-Fenster des RoleCheckers bleiben exakt erhalten).
+            targetUnitDistance und targetTargetUnitId sind lazy, LogRecorder macht einen
+            Settings-Zugriff statt vier, und der UNIT_INVENTORY_CHANGED-Wachausdruck prueft die
+            echte itemID statt eines nil-Globals.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13

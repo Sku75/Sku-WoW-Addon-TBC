@@ -39,6 +39,49 @@ Changes in Sku v43.0
             with a log line (not silently), the keyring is deliberately swept at all raw 32 slots,
             and items not yet sent by the server count as "pending" rather than as failures.
 
+    Auras: expiry warnings arrive on time, not at the next combat event
+        Simple: Two long-standing complaints shared one cause: an aura like "debuff on the target
+            below 3 seconds" or "my debuff fell off the target" was only re-checked when some
+            OTHER combat event happened to arrive. In a melee-only fight the warning could
+            therefore be a whole swing late, out of combat minutes late - or never fire before
+            the expiry itself. Sku now notes, while checking the effect, WHEN the threshold will
+            be reached and wakes the check at exactly that moment; an effect appearing or
+            vanishing also triggers the check directly. In addition, an aura's spoken words may
+            now move past waiting announcements the way the alert sounds already do - they
+            interrupt nothing and overlap nothing, they just no longer queue at the back. Weapon
+            enchant warnings benefit too: instead of up to a second of slack they now fire
+            frame-exact.
+        Technical: Three mechanisms: (1) a deadline scheduler in SkuAuras/Core.lua - every
+            evaluation pass records in tNextDurationDeadline the earliest threshold moment
+            (expirationTime minus threshold) over all active duration conditions (smaller
+            operator); the frame driver compares one number per frame and then fires ONE
+            synthetic DURATION_DEADLINE pass. Replaces the per-second weapon-enchant
+            near-expiry refire. (2) UNIT_AURA triggers an evaluation on a genuine membership
+            change of the effects (added/removed, not stack or duration updates) - a name diff
+            against a snapshot, debounced against combat-log passes in the same frame and
+            against target changes. (3) the word outputs use OutputString's existing but never
+            connected aInstant path (front insert instead of append); a same-frame cursor keeps
+            multi-part outputs in spoken order.
+
+    Auras: evaluation per combat event made considerably cheaper
+        Simple: In a raid Sku evaluates auras hundreds of times per second. Several hidden cost
+            drivers are gone: conditions were checked twice, remaining durations were re-queried
+            from the client on every event, and the whole group was searched one query at a time
+            for every event. Two silent bugs fixed along the way: an aura without a "spell on
+            cooldown" condition could announce ANOTHER aura's cooldown name, and item cooldowns
+            were re-stamped on every bag change. /skucheck gains an "auras" domain for this,
+            verifying the evaluation writes no globals anymore.
+        Technical: Evaluate once instead of twice (the single-value branch of the attributes
+            loop accidentally ran twice; plus two leaked globals - tSpellNameOnCdValue injected
+            stale values across auras). Remaining durations come from an expirationTime
+            extension of the tier-2 list cache instead of UnitAura rescans (/skuauracache verify
+            now also checks the exp values, /skuauracache off disables both). Group GUIDs
+            resolve through a map invalidated on roster events instead of raid1..40 loops per
+            event (result order and the RoleChecker's historical raid1..25 horizon are preserved
+            exactly). targetUnitDistance and targetTargetUnitId are lazy, LogRecorder does one
+            settings walk instead of four, and the UNIT_INVENTORY_CHANGED guard tests the real
+            itemID instead of a nil global.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13
