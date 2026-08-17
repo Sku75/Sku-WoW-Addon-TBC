@@ -155,6 +155,34 @@ local function tNothingOutputFunction(tAuraName, tEvaluateData, aFirst, aInstant
    return
 end
 
+-- [v42.14] The sourceUnitId/destUnitId outputs used to hand the RAW unit token
+-- ("party3", "party2target") to the audio voice as ONE word. The audio packs
+-- happen to ship single files "party0/1/2/4" -- but NOT "party3" and no
+-- "partyNtarget" at all -- so some slots spoke and the others degraded to the
+-- missing-word beep (db.realm.missingAudio counted 129 beeps for "party3"
+-- alone). Split the party tokens into words the packs reliably ship ("party" +
+-- digit + "ziel"), so every slot speaks the same short way; other tokens fall
+-- back to their localized friendlyName from the value lists, then to the raw
+-- token.
+local function tUnitIdToSpokenName(aUnitId)
+   if not aUnitId then
+      return aUnitId
+   end
+   local tNr = string.match(aUnitId, "^party(%d)$")
+   if tNr then
+      return "party "..tNr
+   end
+   tNr = string.match(aUnitId, "^party(%d)target$")
+   if tNr then
+      return Sku.deEn("ziel", "target", "cible").." party "..tNr
+   end
+   local tEntry = (SkuAuras.values and SkuAuras.values[aUnitId]) or SkuAuras.valuesDefault[aUnitId]
+   if tEntry and tEntry.friendlyName then
+      return tEntry.friendlyName
+   end
+   return aUnitId
+end
+
 ------------------------------------------------------------------------------------------------------------------
 --local tPrevAuraPlaySoundFileHandle
 SkuAuras.outputs = {
@@ -201,12 +229,12 @@ SkuAuras.outputs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.sourceUnitId then
                --dprint("    ","tEvaluateData.sourceUnitId", tEvaluateData.sourceUnitId)
-               SkuOptions.Voice:OutputString(tEvaluateData.sourceUnitId[1], aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tUnitIdToSpokenName(tEvaluateData.sourceUnitId[1]), aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
             if tEvaluateData.sourceUnitId then
-               print(tEvaluateData.sourceUnitId)
+               print(tUnitIdToSpokenName(tEvaluateData.sourceUnitId[1]))
             end
          end,
       },
@@ -219,12 +247,12 @@ SkuAuras.outputs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             --dprint("    ","tEvaluateData.destUnitId", tEvaluateData.destUnitId)
             if tEvaluateData.destUnitId then
-               SkuOptions.Voice:OutputString(tEvaluateData.destUnitId[1], aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tUnitIdToSpokenName(tEvaluateData.destUnitId[1]), aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
             if tEvaluateData.destUnitId then
-               print(tEvaluateData.destUnitId)
+               print(tUnitIdToSpokenName(tEvaluateData.destUnitId[1]))
             end
          end,
       },
