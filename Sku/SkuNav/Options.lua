@@ -965,8 +965,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 	-- builder closures below are invoked at the bottom of this function). Also
 	-- removed here: the top-level "Alles abwählen" action (redundant with the
 	-- dedicated Shift-F12 cancel key, SkuNav:CancelNavigationSilent) and the
-	-- "Optionen" settings group (non-beacon nav settings moved to Einstellungen ->
-	-- Navigation, beacon settings to Monitor -> Beacon).
+	-- "Optionen" settings group (all nav settings moved to Einstellungen ->
+	-- Navigation, the beacon ones into its "Beacon Soundeinstellungen" subentry).
 
 	--wps (flattened: the former "Wegpunkt" submenu's children, built under Nav)
 	local tBuildWaypointNodes = function(self)
@@ -1375,9 +1375,9 @@ function SkuNav:MenuBuilder(aParentEntry)
 	end
 	end -- [41.02.08] schliesst das ausblendende "if false then" fuer "Daten"
 
-	-- Settings ("Optionen") intentionally NOT built here anymore: the non-beacon
-	-- nav settings now live under Einstellungen -> Navigation (SkuCore/Options.lua),
-	-- the beacon settings under Monitor -> Beacon (SkuCore/aq.lua). Both render the
-	-- SAME SkuNav.options.args via IterateOptionsArgs against SkuSettings:Sub(
-	-- "SkuNav"), so saved values are unchanged.
+	-- Settings ("Optionen") intentionally NOT built here anymore: the nav settings
+	-- now live under Einstellungen -> Navigation (SkuCore/Options.lua), the beacon
+	-- ones in its "Beacon Soundeinstellungen" subentry there. They render the SAME
+	-- SkuNav.options.args via IterateOptionsArgs against SkuSettings:Sub("SkuNav"),
+	-- so saved values are unchanged.
 end

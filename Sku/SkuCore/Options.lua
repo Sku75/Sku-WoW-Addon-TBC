@@ -2930,7 +2930,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	-- Monitor: promoted to a top-level entry (SkuMenu "Monitor") -- W7
 
 	-- DIAL-TARGETING (41.02.06e): relocated to the Schnellmenue root entry
-	-- (SkuZOptions\Core.lua, [42.14]; formerly the "Werkzeuge" menu). Entfernbar: Block
+	-- (SkuZOptions\Core.lua, [42.13]; formerly the "Werkzeuge" menu). Entfernbar: Block
 	-- dort löschen + DialTargeting.lua + TOC + Core.lua Init
 
 	-- Social: now a Local window contributor (FriendsMenuBuilder) -- W7
@@ -2973,7 +2973,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		{ kind = "submenu", label = tDeEn("Allgemein", "General"),
 			build = function(self)
 				SkuOptions:MenuBuilder(self)
-				-- [42.14] "Sku Menue im Kampf": the Kampf submenu held nothing else, so
+				-- [42.13] "Sku Menue im Kampf": the Kampf submenu held nothing else, so
 				-- the toggle moved up into Allgemein and Kampf is gone. Same builder and
 				-- same combatMenuOpen setting -> saved value intact.
 				if SkuCore.aqCombat and SkuCore.aqCombat.CombatMenuOpenMenuBuilder then
@@ -3022,7 +3022,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 					pcall(function() SkuCore.VisualAids:VisualAidsBuildMenu(self) end)
 				end
 			end },
-		-- [42.14] "Kampf" (Combat) is gone again: its contents stay relocated
+		-- [42.13] "Kampf" (Combat) is gone again: its contents stay relocated
 		-- (Entfernung and Ziel Optionen in the Monitor menu, Dial/Soft Targeting in the
 		-- Schnellmenue) and its last entry, the "Sku Menü im Kampf" toggle, moved up
 		-- into Allgemein above.
@@ -3046,10 +3046,12 @@ function SkuCore:MenuBuilder(aParentEntry)
 					SkuOptions:IterateOptionsArgs(SkuQuest.options.args, self, SkuSettings:Sub("SkuQuest"), "SkuQuest")
 				end
 			end },
-		-- Navigation settings, relocated here from the Nav menu's "Optionen". Only
-		-- the NON-beacon nav settings render here; the beacon settings (volume, click
-		-- on beacon, sound sets) live under Monitor -> Beacon. Same args/db (SkuNav)
-		-- via IterateOptionsArgs -> saved values are unchanged.
+		-- Navigation settings, relocated here from the Nav menu's "Optionen". Same
+		-- args/db (SkuNav) via IterateOptionsArgs -> saved values are unchanged.
+		-- [42.13] The beacon audio settings (volume, click-on-beacon toggle/angle/
+		-- sound, narrow/wide/last sound sets) came back from Monitor -> Beacon and
+		-- now sit here as the "Beacon Soundeinstellungen" subentry, with the rest of
+		-- the nav settings (renamed from the bare "Beacon" it carried under Monitor).
 		{ kind = "submenu", label = L["SkuNavMenuEntry"], sorting = true,
 			build = function(self)
 				if SkuNav and SkuNav.options and SkuNav.options.args then
@@ -3071,6 +3073,26 @@ function SkuCore:MenuBuilder(aParentEntry)
 						outputDistance                     = a.outputDistance,
 						routesMaxDistance                  = a.routesMaxDistance,
 					}, self, SkuSettings:Sub("SkuNav"), "SkuNav")
+
+					-- Beacon subentry. NOTE: this is an explicit whitelist, not the whole
+					-- args table -- a new node in SkuNav.options.args must be added HERE
+					-- too or it never shows up in the menu. The sound set nodes keep their
+					-- inline OnAction (they play a sample beacon).
+					local tBeacon = SkuOptions:InjectMenuItems(self, {Sku.deEn("Beacon Soundeinstellungen", "Beacon sound settings", "Réglages de son des balises")}, SkuGenericMenuItem)
+					tBeacon.dynamic = true
+					tBeacon.sorting = true
+					tBeacon.BuildChildren = function(self)
+						local a = SkuNav.options.args
+						SkuOptions:IterateOptionsArgs({
+							beaconVolume         = a.beaconVolume,
+							beaconSoundSetNarrow = a.beaconSoundSetNarrow,
+							beaconSoundSetWide   = a.beaconSoundSetWide,
+							beaconSoundSetLast   = a.beaconSoundSetLast,
+							clickClackEnabled    = a.clickClackEnabled,
+							clickClackRange      = a.clickClackRange,
+							clickClackSoundset   = a.clickClackSoundset,
+						}, self, SkuSettings:Sub("SkuNav"), "SkuNav")
+					end
 				end
 			end },
 		{ kind = "submenu", label = tDeEn("Tastenbelegungen", "Key bindings"), children = tKeybinds },

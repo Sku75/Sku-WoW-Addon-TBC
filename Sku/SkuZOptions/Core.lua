@@ -2101,6 +2101,22 @@ function SkuOptions:CreateMainFrame()
 
 					-- 7.3 Kamera: nach Einstellungen -> Kamera verschoben
 					-- (SkuOptions.CameraMenuBuilder, File-Ebene weiter unten).
+
+					-- [42.13] Dial Targeting + Soft Targeting: hierher verschoben aus dem
+					-- aufgeloesten Root-Menue "Werkzeuge" (nur diese zwei Eintraege). Gleiche
+					-- Builder / gleiche db + keyPrefix wie vorher -> gespeicherte Werte bleiben.
+					-- Stehen VOR 7.4, damit "Sonstiges" der letzte Eintrag des Schnellmenues
+					-- bleibt (Einfuegereihenfolge = Anzeigereihenfolge, die Liste ist ungesortiert).
+					if SkuCore and SkuCore.DialTargeting and SkuCore.DialTargeting.DialTargetingMenuBuilder then
+						local tDial = SkuOptions:InjectMenuItems(self, {L["Dial Targeting"]}, SkuGenericMenuItem)
+						tDial.dynamic = true
+						tDial.sorting = true
+						tDial.BuildChildren = SkuCore.DialTargeting.DialTargetingMenuBuilder
+					end
+					if SkuOptions.options and SkuOptions.options.args and SkuOptions.options.args.softTargeting then
+						SkuOptions:IterateOptionsArgs({ softTargeting = SkuOptions.options.args.softTargeting }, self, SkuSettings:Sub("SkuOptions"), "SkuOptions", "", true)
+					end
+
 					-- ============================================================
 					-- 7.4 SONSTIGES  (Verknuepfungen, KEIN Duplikat der Logik)
 					-- Gleiche Technik wie 7.1/7.2: Original-Options-Knoten via
@@ -2246,18 +2262,6 @@ function SkuOptions:CreateMainFrame()
 				-- [41.05->W8] Visuelle Hilfen: nach Einstellungen -> Visuelle Hilfen
 					-- verschoben (SkuCore:MenuBuilder); Logik weiter in SkuCore\visualAids.lua.
 
-					-- [42.14] Dial Targeting + Soft Targeting: hierher verschoben aus dem
-					-- aufgeloesten Root-Menue "Werkzeuge" (nur diese zwei Eintraege). Gleiche
-					-- Builder / gleiche db + keyPrefix wie vorher -> gespeicherte Werte bleiben.
-					if SkuCore and SkuCore.DialTargeting and SkuCore.DialTargeting.DialTargetingMenuBuilder then
-						local tDial = SkuOptions:InjectMenuItems(self, {L["Dial Targeting"]}, SkuGenericMenuItem)
-						tDial.dynamic = true
-						tDial.sorting = true
-						tDial.BuildChildren = SkuCore.DialTargeting.DialTargetingMenuBuilder
-					end
-					if SkuOptions.options and SkuOptions.options.args and SkuOptions.options.args.softTargeting then
-						SkuOptions:IterateOptionsArgs({ softTargeting = SkuOptions.options.args.softTargeting }, self, SkuSettings:Sub("SkuOptions"), "SkuOptions", "", true)
-					end
 					end --[Menue7] schliesst tAccessMenuEntry.BuildChildren (Barrierefreiheit-Umbau; RUECKBAU: diese Zeile entfernen)
 				-- W7: the old top-level "Optionen" (SkuOptions:MenuBuilder) is folded into
 				-- Einstellungen -> Allgemein, so it is no longer appended here at root.

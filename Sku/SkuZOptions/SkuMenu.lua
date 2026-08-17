@@ -339,7 +339,7 @@ SkuMenu:RegisterModule("Addons", {
 	build = function(entry) if SkuCore and SkuCore.AddonsMenuBuilder then SkuCore:AddonsMenuBuilder(entry) end end,
 })
 
--- [42.14] The "Werkzeuge" (Tools) root container is gone: it only ever held
+-- [42.13] The "Werkzeuge" (Tools) root container is gone: it only ever held
 -- "Dial Targeting" and "Soft Targeting", and both now live directly in the
 -- Schnellmenue (Barrierefreiheit) root entry, built in SkuZOptions/Core.lua.
 -- Same builders / same db + keyPrefix -> saved values unchanged.

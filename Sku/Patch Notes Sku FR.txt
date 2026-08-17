@@ -509,6 +509,31 @@ Changements dans Sku v42.13
             miroir sans aModule lira au pire la valeur directement au lieu de lever une
             erreur.
 
+    Deux déplacements dans le menu : les réglages de son des balises et « Divers »
+        Simple : Les réglages de balise (volume de balise, clic sur les balises avec son
+            angle et son son, ainsi que les jeux de sons pour les balises étroites, larges
+            et la dernière) se trouvaient jusqu'ici sous Moniteur. Ils sont désormais là où
+            se trouvent tous les autres réglages de navigation : Réglages, Navigation,
+            Réglages de son des balises. L'entrée ne s'appelle donc plus simplement
+            « Balise » mais dit de quoi il s'agit, et Moniteur ne la contient plus du tout.
+            Par ailleurs, « Divers » est de nouveau la toute dernière entrée du menu
+            rapide - « Dial Targeting » et « Soft Targeting » se placent maintenant avant,
+            et non plus après.
+        Technique : Le bloc balise passe tel quel de Aq:MonitorMenuBuilder (SkuCore/aq.lua)
+            dans la branche Navigation de SkuCore:MenuBuilder (SkuCore/Options.lua), où il
+            est accroché comme sous-entrée « Réglages de son des balises » (en allemand
+            « Beacon Soundeinstellungen », en anglais « Beacon sound settings ») sous les
+            réglages de navigation. Ce sont les mêmes nœuds d'options issus de
+            SkuNav.options.args, transmis via IterateOptionsArgs vers
+            SkuSettings:Sub(« SkuNav ») avec le même module et le même keyPrefix - les
+            valeurs enregistrées restent donc inchangées, et les nœuds de jeux de sons
+            conservent leur OnAction qui joue une balise d'exemple. Comme avant, la liste
+            est une sélection explicite et non toute la table args : un nouveau nœud de
+            balise doit y être ajouté aussi. Dans le menu rapide (SkuZOptions/Core.lua),
+            Dial Targeting et Soft Targeting ont été déplacés avant le bloc 7.4 ; cette
+            liste d'enfants ne porte pas d'indicateur sorting, l'ordre d'insertion est donc
+            l'ordre d'affichage.
+
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.12
 

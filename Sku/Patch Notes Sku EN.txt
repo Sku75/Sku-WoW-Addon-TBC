@@ -450,6 +450,28 @@ Changes in Sku v42.13
             SkuSettings, own get/set closure, direct table access - so a future mirror site
             without aModule at worst reads the value directly instead of throwing.
 
+    Two menu moves: the beacon sound settings and "Other"
+        Simple: The beacon settings (beacon volume, click on beacons with its angle and
+            sound, and the sound sets for narrow, wide and last beacons) used to sit under
+            Monitor. They now live where the rest of the navigation settings live:
+            Settings, Navigation, Beacon sound settings. The entry is no longer called just
+            "Beacon" but says what it is about, and Monitor no longer has it at all. On top
+            of that, "Other" is the last entry of the quick menu again - "Dial Targeting"
+            and "Soft Targeting" now come before it instead of after.
+        Technical: The beacon block moves unchanged out of Aq:MonitorMenuBuilder
+            (SkuCore/aq.lua) into the Navigation branch of SkuCore:MenuBuilder
+            (SkuCore/Options.lua), where it hangs as a "Beacon sound settings" subentry
+            (German "Beacon Soundeinstellungen", French "Réglages de son des balises")
+            below the navigation settings. These are the same option nodes from
+            SkuNav.options.args, passed through IterateOptionsArgs against
+            SkuSettings:Sub("SkuNav") with the same module and keyPrefix - so the stored
+            values are unchanged, and the sound set nodes keep their OnAction that plays a
+            sample beacon. As before the list is an explicit whitelist, not the whole args
+            table: a new beacon node has to be added there too. In the quick menu
+            (SkuZOptions/Core.lua) Dial Targeting and Soft Targeting were pulled in front of
+            the 7.4 block; that child list carries no sorting flag, so insertion order is
+            display order.
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.12
 

@@ -499,6 +499,29 @@ Aenderungen in Sku v42.13
             direkter Tabellenzugriff -, sodass eine kuenftige Spiegelstelle ohne aModule
             hoechstens den Wert direkt liest statt einen Fehler zu werfen.
 
+    Zwei Umzuege im Menue: Beacon Soundeinstellungen und "Sonstiges"
+        Einfach: Die Beacon-Einstellungen (Beacon-Lautstaerke, Klick bei Beacons samt Winkel
+            und Ton, sowie die Toene fuer schmale, breite und letzte Beacons) lagen bisher
+            unter Monitor. Sie sind jetzt dort, wo auch alle uebrigen
+            Navigationseinstellungen liegen: Einstellungen, Navigation, Beacon
+            Soundeinstellungen. Der Punkt heisst also nicht mehr nur "Beacon", sondern sagt
+            jetzt, worum es geht; unter Monitor gibt es ihn nicht mehr. Ausserdem ist
+            "Sonstiges" im Schnellmenue wieder der letzte Eintrag - "Dial Targeting" und
+            "Soft Targeting" stehen jetzt davor statt dahinter.
+        Technisch: Der Beacon-Block wandert unveraendert aus Aq:MonitorMenuBuilder
+            (SkuCore/aq.lua) in den Navigation-Zweig von SkuCore:MenuBuilder
+            (SkuCore/Options.lua) und haengt dort als Unterpunkt "Beacon
+            Soundeinstellungen" (englisch "Beacon sound settings", franzoesisch "Réglages
+            de son des balises") unter den Navigationseinstellungen. Es sind dieselben
+            Options-Knoten aus SkuNav.options.args, durchgereicht per IterateOptionsArgs
+            gegen SkuSettings:Sub("SkuNav") mit gleichem Modul und keyPrefix - gespeicherte
+            Werte bleiben also unveraendert, und die Ton-Knoten behalten ihr OnAction, das
+            ein Beispiel-Beacon abspielt. Wie zuvor ist die Liste eine ausdrueckliche
+            Auswahl, kein Durchreichen der ganzen args-Tabelle: ein neuer Beacon-Knoten muss
+            dort mit eingetragen werden. Im Schnellmenue (SkuZOptions/Core.lua) sind Dial
+            Targeting und Soft Targeting vor den 7.4-Block gezogen; die Kinderliste traegt
+            kein sorting-Flag, die Einfuegereihenfolge ist also die Anzeigereihenfolge.
+
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.12
 
