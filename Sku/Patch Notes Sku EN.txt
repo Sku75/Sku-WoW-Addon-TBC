@@ -6,6 +6,29 @@
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13
 
+    Collision warning: beeps with nothing in the way
+        Simple: The "you are stuck" beeps could turn up while you were simply walking from one
+            NPC to the next, with nothing blocking you at all. The counter behind the warning
+            was never reset, so harmless single measurements piled up over minutes and every
+            sixth one set off a beep.
+        Technical: The warning compares the distance covered in one 0.15 s tick against what
+            your current speed should have covered, and beeps after six slow ticks. Only the
+            counter had no reset except the one when it fired - not on a good tick, not when the
+            warning was disarmed - so it was a lifetime accumulator rather than a run of six in
+            a row. The first tick after every PLAYER_STARTED_MOVING samples a partial window,
+            because the previous sample was taken while you were still standing, and therefore
+            always scores as too slow: roughly every sixth start of any movement produced a
+            beep, minutes apart and unrelated to anything. That has been in there for a long
+            time but only counted while you held a movement key yourself; since engine-driven
+            walks were added to the warning in this version, every automatic walk-to-target
+            counts too, which is why it became noticeable while working through NPCs. The
+            counter now resets on any good tick and whenever the warning is disarmed, exactly as
+            the follow variant of the warning already did. That variant also stays as it is: it
+            is disarmed by AUTOFOLLOW_END, and the unfollow sound is emitted by that same path,
+            so hearing it is the proof the state was reset. The warning now leaves a line in the
+            debug log when it fires, so a report of "beeps out of nowhere" can be pinned to the
+            path it came from.
+
     Taxi flight: two flight announcements that were not true
         Simple: Two things were announced that did not hold. First, shortly before
             arriving, Sku said "early landing available at X" - and X was the destination

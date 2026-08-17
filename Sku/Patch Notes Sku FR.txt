@@ -9,6 +9,31 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
 
+    Avertissement de collision : des bips sans obstacle
+        Simple : le bip « tu es bloqué » pouvait survenir pendant qu'on marchait simplement d'un
+            PNJ au suivant, alors que rien ne barrait le passage. Le compteur derrière
+            l'avertissement n'était jamais remis à zéro, si bien que des mesures isolées et
+            anodines s'accumulaient sur plusieurs minutes et qu'une sur six déclenchait un bip.
+        Technique : l'avertissement compare la distance parcourue en un tic de 0,15 s à celle que
+            la vitesse actuelle aurait dû couvrir, et bipe après six tics trop lents. Seulement,
+            le compteur n'avait aucune remise à zéro en dehors de celle du déclenchement - ni sur
+            un bon tic, ni quand l'avertissement n'était pas armé : il accumulait donc sur toute
+            la session au lieu d'exiger six tics d'affilée. Le premier tic après chaque
+            PLAYER_STARTED_MOVING échantillonne une fenêtre tronquée, puisque la mesure
+            précédente a été prise à l'arrêt, et compte donc forcément comme « trop lent » :
+            environ un démarrage de mouvement sur six produisait un bip, à des minutes
+            d'intervalle et sans le moindre rapport. Cela existe depuis longtemps, mais ne
+            comptait que tant qu'on tenait soi-même une touche de déplacement ; depuis que les
+            trajets pilotés par le moteur du jeu sont couverts dans cette version, chaque marche
+            automatique vers une cible compte aussi - d'où la gêne quand on enchaîne les PNJ. Le
+            compteur est maintenant remis à zéro à chaque bon tic et dès que l'avertissement
+            n'est pas armé, exactement comme le faisait déjà la variante « suivi ». Cette
+            variante reste inchangée : elle est désarmée par AUTOFOLLOW_END, et le son de fin de
+            suivi provient précisément de ce chemin - l'entendre prouve que l'état a bien été
+            remis à zéro. L'avertissement laisse en outre une ligne dans le journal de débogage
+            au déclenchement, pour qu'un signalement de « bips venus de nulle part » puisse être
+            rattaché au chemin d'où ils viennent.
+
     Vol en taxi : deux annonces de vol qui ne collaient pas
         Simple : deux choses étaient annoncées à tort. D'abord, peu avant l'arrivée, Sku
             disait « atterrissage anticipé possible à X » - et X était la destination vers

@@ -6,6 +6,30 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
 
+    Kollisionswarnung: Toene ohne Hindernis
+        Einfach: Der "du haengst fest"-Ton konnte auftauchen, waehrend man einfach von einem NPC
+            zum naechsten lief, ohne dass irgendetwas im Weg stand. Der Zaehler hinter der
+            Warnung wurde nie zurueckgesetzt, also sammelten sich harmlose Einzelmessungen ueber
+            Minuten an, und jede sechste loeste einen Ton aus.
+        Technisch: Die Warnung vergleicht die in einem 0,15-Sekunden-Takt zurueckgelegte Strecke
+            mit der, die das aktuelle Tempo haette schaffen muessen, und gibt nach sechs zu
+            langsamen Takten einen Ton. Nur hatte der Zaehler ausser beim Ausloesen keinerlei
+            Ruecksetzung - nicht bei einem guten Takt, nicht wenn die Warnung gar nicht scharf
+            war - er war also ein Lebenszeit-Sammler statt einer Sechserserie. Der erste Takt
+            nach jedem PLAYER_STARTED_MOVING misst ein angeschnittenes Fenster, weil die vorige
+            Messung noch im Stand erfolgte, und faellt damit zwangslaeufig als "zu langsam" aus:
+            etwa jeder sechste Bewegungsstart ergab einen Ton, Minuten auseinander und ohne
+            jeden Zusammenhang. Das steckt schon lange drin, zaehlte aber nur, solange man
+            selbst eine Bewegungstaste hielt; seit in dieser Version auch motorgetriebene Wege
+            mitwarnen, zaehlt jeder automatische Weg zum Ziel mit - deshalb faellt es beim
+            Abarbeiten von NPCs auf. Der Zaehler wird jetzt bei jedem guten Takt und immer, wenn
+            die Warnung nicht scharf ist, zurueckgesetzt, genau wie es die Folgen-Variante der
+            Warnung schon tat. Diese Variante bleibt unveraendert: sie wird von AUTOFOLLOW_END
+            entschaerft, und der Ton beim Ende des Folgens kommt aus genau diesem Weg - wer ihn
+            hoert, hat den Beweis, dass der Status zurueckgesetzt wurde. Die Warnung
+            hinterlaesst beim Ausloesen jetzt ausserdem eine Zeile im Debug-Log, damit sich
+            "Toene aus dem Nichts" dem Weg zuordnen lassen, aus dem sie kamen.
+
     Taxiflug: zwei falsche Flugansagen
         Einfach: Zwei Dinge wurden angesagt, die nicht stimmten. Erstens sagte Sku kurz
             vor der Ankunft "Vorzeitige Landung moeglich bei X" - und X war das Ziel,

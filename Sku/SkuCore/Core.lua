@@ -1595,13 +1595,24 @@ function SkuCore:OnEnable()
 								tSound = 5
 							end
 
+							-- The counter must count CONSECUTIVE slow ticks -- it used to have no
+							-- reset at all except when it fired, which made it a lifetime
+							-- accumulator: the first tick after every PLAYER_STARTED_MOVING
+							-- samples a partial window (we were standing at the previous sample)
+							-- and scores as "too slow", so ~every 6th movement START produced a
+							-- phantom warning with nothing in the way, minutes apart. Harmless-ish
+							-- while only held movement keys armed this; the engine-walk arm above
+							-- added every auto-interact walk (NPC to NPC) as another source. Reset
+							-- on any good tick, exactly like the follow-collision block below.
 							if tSound ~= 0 then
 								SkuCoreMovement.counter = SkuCoreMovement.counter + 1
 								if SkuCoreMovement.counter > 5 and tSound > 0 then
 									SkuCoreMovement.counter = 0
-									--dprint(tSound, t * 10000)
+									dprint("selfCollision fire", "tier", tSound, "dist", tostring(math.floor(tDistance * 100) / 100), "mod", tostring(math.floor(tMod * 100) / 100), "engineArm", tostring(tEngineWalkArm))
 									SkuOptions.Voice:OutputString("sound-stuck"..tSound, false, false, 0.8)
 								end
+							else
+								SkuCoreMovement.counter = 0
 							end
 
 
@@ -1633,6 +1644,10 @@ function SkuCore:OnEnable()
 							]]
 
 
+						else
+							-- disarmed (standing, turning, falling, following): the run of slow
+							-- ticks is over, so it must not carry into the next movement episode
+							SkuCoreMovement.counter = 0
 						end
 						SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y = tNewX, tNewY
 					end
@@ -2064,6 +2079,10 @@ function SkuCore:AUTOFOLLOW_BEGIN(event, target, ...)
 		SkuOptions:SendTrackingStatusUpdates("FN-"..SkuStatus.followUnitName)
 	end
 end
+-- AUTOFOLLOW_END is the single disarm for the follow state, and it is reliable:
+-- the "sound-off2" below is emitted by this very path, so hearing it IS the proof
+-- that SkuStatus.follow was reset -- and it has never been missed in practice. No
+-- second, redundant disarm here.
 function SkuCore:AUTOFOLLOW_END(event, ...)
 	--dprint("AUTOFOLLOW_END")
 	SkuStatus.followEndFlag = true
