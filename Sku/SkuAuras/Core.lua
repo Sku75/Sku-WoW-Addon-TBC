@@ -1780,6 +1780,12 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 
 				local tSingleBuffListTargetValue
 				local tSingleDebuffListTargetValue
+				-- [v43.0] Was a LEAKED GLOBAL: it survived across auras and across whole
+				-- evaluation passes, so any aura without a spellNameOnCd condition had the
+				-- last-written value from some EARLIER aura injected into its outputs and
+				-- could announce a stale cooldown name. Per-aura local like its two
+				-- siblings above.
+				local tSpellNameOnCdValue
 
 				local tHasCountCondition_NumConditions = 0
 				local tHasCountCondition_NumCountConditions = 0
@@ -1822,16 +1828,19 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 							break
 						end
 					else
+						-- [v43.0] Single-value condition: evaluate ONCE. This branch used to
+						-- run the attribute a SECOND time through a leftover copy of the
+						-- multi-value loop above (iterating the one entry it had already
+						-- evaluated), doubling the work of every single-value condition on
+						-- every event — and assigned `tLocalResult` as a leaked global that
+						-- nothing read. The count-condition bookkeeping below is the same
+						-- bookkeeping that inner loop did, driven by the one real result.
 						local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tAttributeValue[1][1], tAttributeValue[1][2], tRawEventData)
-						for tInd, tLocalValue in pairs(tAttributeValue) do
-							local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2], tRawEventData)
-							if tResult == true then
-								tLocalResult = true
-								if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
-									tHasCountCondition_NumCountConditionsTrue = tHasCountCondition_NumCountConditionsTrue + 1
-								else
-									tHasCountCondition_NumConditionsWoCountIsTrue = tHasCountCondition_NumConditionsWoCountIsTrue + 1
-								end							
+						if tResult == true then
+							if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
+								tHasCountCondition_NumCountConditionsTrue = tHasCountCondition_NumCountConditionsTrue + 1
+							else
+								tHasCountCondition_NumConditionsWoCountIsTrue = tHasCountCondition_NumConditionsWoCountIsTrue + 1
 							end
 						end
 

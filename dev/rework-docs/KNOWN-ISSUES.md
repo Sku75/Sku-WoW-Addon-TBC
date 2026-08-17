@@ -330,3 +330,26 @@ here so a future session doesn't re-derive the analysis from scratch.
   `COMBAT_LOG_EVENT_UNFILTERED`; item 5 = the four `RegisterEvent` lines (the
   frame-driver drain then simply never fires). Items 3/4/7/8 are independent of
   each other. Status: open / awaiting extended play-testing for regressions.
+
+- **v43.0 aura wave 2 — duration-threshold latency + evaluation cost, ALL
+  UNTESTED in game.** Ask: "check the aura wave 2 monitor". Follow-up to the
+  wave above, targeting the two remaining complaints: a target debuff falling
+  off is announced late, and "remaining duration < X" sounds trigger late.
+  Root cause of both: those auras had no wake-up of their own — they were only
+  re-checked when some UNRELATED combat-log event happened to arrive (melee-only
+  fight: up to a swing timer late; out of combat: minutes late or never before
+  the expiry itself). One numbered item per commit, grown as the wave lands.
+
+  1. **Single-value conditions were evaluated TWICE per aura per event**
+     (`SkuAuras/Core.lua`, `EvaluateAllAuras` attributes loop). The
+     single-value `else` branch computed its result and then re-ran the same
+     attribute through a leftover copy of the multi-value loop — a straight 2×
+     on most conditions of most auras on every combat-log event. Also fixed two
+     leaked globals in that loop: `tLocalResult` (write-only) and
+     `tSpellNameOnCdValue` — the latter survived across auras AND across whole
+     passes, so an aura without a `spellNameOnCd` condition could announce a
+     STALE cooldown name from an earlier aura. It is a per-aura local now.
+     - **Expected NEW behaviour, not a bug:** a "spell on cooldown" name output
+       on an aura that never had that condition goes silent (it was garbage).
+     - Re-check: any multi-condition aura still fires; `/skuperf combat` avg
+       for `EvaluateAllAuras` drops further.
