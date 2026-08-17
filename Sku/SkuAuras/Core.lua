@@ -80,6 +80,24 @@ local tDirtyUnits = {}
 local tDirtyUnitsPending = false
 local tDirtyCooldowns = false
 
+-- [v43.0] Duration-deadline scheduler.
+--
+-- A "remaining duration smaller X" condition is not a value to poll — it is a
+-- crossing whose moment is KNOWN the instant the aura is seen: expirationTime
+-- minus threshold. Auras with such conditions used to be re-checked only when
+-- some UNRELATED event happened to arrive (melee-only fight: up to a swing
+-- timer late; out of combat: minutes late), because the crossing itself emits
+-- no event. Every evaluation pass now records the earliest upcoming crossing
+-- over all enabled duration-watching auras (buff/debuff lists AND the two
+-- weapon-enchant durations) in this one variable; the frame driver compares it
+-- against GetTime() — a single number compare per frame — and fires ONE
+-- synthetic evaluation pass when it is reached. Re-arming is implicit: every
+-- pass (including the deadline pass itself) recomputes candidates from fresh
+-- data, and refresh/removal fire _AURA_ CLEU / UNIT_AURA passes anyway. A
+-- deadline whose aura vanished early fires one empty pass and is not re-armed.
+-- Same precision as a per-frame evaluation (~16 ms), without its cost.
+local tNextDurationDeadline = nil
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- W4 Phase D (Rework B-step-2): SkuAuras is a runtime-toggleable top-level
 -- AceAddon. AceAddon runs OnInitialize ONCE per session but OnEnable on EVERY
@@ -237,6 +255,13 @@ function SkuAuras:OnEnable()
 		if tDirtyCooldowns == true then
 			tDirtyCooldowns = false
 			SkuAuras:COOLDOWN_TICKER()
+		end
+		-- [v43.0] Duration-deadline drain: one number compare per frame while a
+		-- deadline is armed, nothing at all while none is. Cleared BEFORE the pass
+		-- so only the pass's own fresh data can re-arm it.
+		if tNextDurationDeadline and GetTime() >= tNextDurationDeadline then
+			tNextDurationDeadline = nil
+			SkuAuras:DURATION_DEADLINE()
 		end
 
 		ttime = ttime + time
@@ -993,28 +1018,12 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 			local tPrevOffId = SkuAuras.UnitRepo[tUnitId].offHandEnchantID or 0
 			local tMainRemoved = (tPrevMainId ~= 0 and tCurMainId == 0)
 			local tOffRemoved = (tPrevOffId ~= 0 and tCurOffId == 0)
-			-- [v43.0] Near-expiry refire is gated on the remaining WHOLE SECOND
-			-- changing, not on every tick.
-			--
-			-- tNearExpiry is true for the whole last 120 s of any temp enchant, and it
-			-- used to re-fire WEAPON_ENCHANT_UPDATE on EVERY tick -- a full
-			-- EvaluateAllAuras 4x/s for two minutes after every sharpening stone or oil,
-			-- silently, in the background. The conditions users actually write are
-			-- "Dauer < X" at a whole-second scale, so one evaluation per elapsed second
-			-- is exactly as precise and costs a quarter as much. Worst-case slip for
-			-- such an aura is therefore under 1 s.
-			local tExpirySec
-			if hasMainHand and mainExpiration then
-				tExpirySec = mfloor(mainExpiration / 1000)
-			end
-			if hasOffHand and offExpiration then
-				local tOffSec = mfloor(offExpiration / 1000)
-				if not tExpirySec or tOffSec < tExpirySec then
-					tExpirySec = tOffSec
-				end
-			end
-			local tNearExpiry = (tExpirySec ~= nil and tExpirySec <= 120
-				and tExpirySec ~= SkuAuras.UnitRepo[tUnitId].lastEnchantExpirySec)
+			-- [v43.0] The near-expiry refire (one WEAPON_ENCHANT_UPDATE per elapsed
+			-- whole second during an enchant's last 120 s) is RETIRED: "Dauer < X"
+			-- enchant auras are now woken frame-precisely by the duration-deadline
+			-- scheduler (tNextDurationDeadline, armed in EvaluateAllAuras from the
+			-- per-pass GetWeaponEnchantInfo snapshot). Only the ID-change and
+			-- removal events remain here.
 			local function tFireEnchantEvent(aSubevent, aHandName)
 				SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", {
 					GetTime(), aSubevent, nil, UnitGUID(tUnitId), UnitName(tUnitId),
@@ -1024,11 +1033,10 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 			if tMainRemoved then tFireEnchantEvent("WEAPON_ENCHANT_REMOVED", L["Main Hand"]) end
 			if tOffRemoved then tFireEnchantEvent("WEAPON_ENCHANT_REMOVED", L["Off hand"]) end
 			if not (tMainRemoved or tOffRemoved) then
-				if tCurMainId ~= tPrevMainId or tCurOffId ~= tPrevOffId or tNearExpiry then
+				if tCurMainId ~= tPrevMainId or tCurOffId ~= tPrevOffId then
 					tFireEnchantEvent("WEAPON_ENCHANT_UPDATE", L["Main Hand"])
 				end
 			end
-			SkuAuras.UnitRepo[tUnitId].lastEnchantExpirySec = tExpirySec
 			SkuAuras.UnitRepo[tUnitId].mainHandEnchantID = tCurMainId
 			SkuAuras.UnitRepo[tUnitId].offHandEnchantID = tCurOffId
 			SkuAuras.UnitRepo[tUnitId].hasMainHandEnchant = hasMainHand
@@ -1152,6 +1160,34 @@ function SkuAuras:ITEM_COOLDOWN_END(aEventData)
 	aEventData[CleuBase.subevent] = "ITEM_COOLDOWN_END"
 	aEventData[CleuBase.timestamp] = GetTime()
 	SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.0] Fired by the frame driver when the earliest armed duration crossing
+-- is reached (see tNextDurationDeadline). A generic synthetic pass shaped like
+-- the KEY_PRESS event: condition-only auras (the normal build for "Dauer < X")
+-- evaluate against fresh data and fire frame-precise; auras gated on a specific
+-- `event` correctly do NOT fire here, exactly as they never fired on the
+-- crossing before. The subevent name deliberately contains no _AURA_ / _DAMAGE
+-- / _HEAL / _MISSED substring so none of the subevent-pattern branches react.
+function SkuAuras:DURATION_DEADLINE()
+	dprint("aura durationDeadline fire")
+	SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", {
+		GetTime(),
+		"DURATION_DEADLINE",
+		nil,
+		UnitGUID("player"),
+		UnitName("player"),
+		nil,
+		nil,
+		UnitGUID("playertarget"),
+		UnitName("playertarget"),
+		nil,
+		nil,
+		nil,
+		nil,
+		nil,
+	})
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1696,6 +1732,26 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 		return getAuraList(unit, filter, aAuraName)
 	end
 
+	-- [v43.0] Deadline arming (see tNextDurationDeadline). Only the "smaller"
+	-- operator gets a deadline: its truth flips at a computable moment. "bigger"
+	-- flips on refresh (event-driven) and "is" on a continuous float never
+	-- matches between events anyway. Armed only while the condition is still
+	-- FALSE (duration above threshold); +0.02 s nudge so the pass at the
+	-- deadline reads a value strictly below the threshold.
+	local function tArmDeadlineForSmaller(aDurationAttValue, aDuration)
+		for _, tEntry in pairs(aDurationAttValue) do
+			if tEntry[1] == "smaller" then
+				local tThreshold = tonumber(SkuAuras:RemoveTags(tEntry[2]))
+				if tThreshold and aDuration > tThreshold then
+					local tWhen = GetTime() + (aDuration - tThreshold) + 0.02
+					if not tNextDurationDeadline or tWhen < tNextDurationDeadline then
+						tNextDurationDeadline = tWhen
+					end
+				end
+			end
+		end
+	end
+
 	local subevent = tEventData[CleuBase.subevent]
 
 	--build event related data to evaluate
@@ -1865,7 +1921,21 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 							tduration = getFixedDuration(tAttsV[1], tAttsV[2], tWatchedName)
 						end
 						tEvaluateData[tAttsI.."Duration"] = tduration
+						if tduration then
+							tArmDeadlineForSmaller(tAuraData.attributes[tAttsI.."Duration"], tduration)
+						end
 					end
+				end
+				-- [v43.0] Same deadline arming for the two weapon-enchant duration
+				-- attributes (not in tAuraDurationAtts; their values were computed
+				-- once per pass in the weapon-buff do-block above). This replaces
+				-- the retired per-second near-expiry refire in UNIT_TICKER with a
+				-- frame-precise single wake-up.
+				if tAuraData.attributes.weaponEnchantMainHandDuration and tEvaluateData.weaponEnchantMainHandDuration > 0 then
+					tArmDeadlineForSmaller(tAuraData.attributes.weaponEnchantMainHandDuration, tEvaluateData.weaponEnchantMainHandDuration)
+				end
+				if tAuraData.attributes.weaponEnchantOffHandDuration and tEvaluateData.weaponEnchantOffHandDuration > 0 then
+					tArmDeadlineForSmaller(tAuraData.attributes.weaponEnchantOffHandDuration, tEvaluateData.weaponEnchantOffHandDuration)
 				end
 				
 				--evaluate all attributes

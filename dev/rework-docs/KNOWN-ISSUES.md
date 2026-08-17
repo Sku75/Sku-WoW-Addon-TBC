@@ -375,3 +375,34 @@ here so a future session doesn't re-derive the analysis from scratch.
        (getFixedDuration falls back to the original fresh scan).
      - Re-check: a "Dauer < X" aura on a running DoT fires as before (it still
        needs an event to wake it until wave-2 item 3 lands).
+  3. **Duration-deadline scheduler: "Dauer < X" wakes itself, frame-precise**
+     (`SkuAuras/Core.lua`, `tNextDurationDeadline` / `tArmDeadlineForSmaller` /
+     `DURATION_DEADLINE`). A duration threshold is a crossing whose moment is
+     KNOWN in advance (expirationTime − threshold), so instead of polling or
+     piggybacking on unrelated events, every evaluation pass records the
+     earliest upcoming crossing over all enabled duration-watching auras (the
+     four buff/debuff Duration attributes AND the two weapon-enchant ones);
+     the frame driver does ONE number compare per frame and fires one synthetic
+     `DURATION_DEADLINE` pass when reached (dprint breadcrumb
+     "aura durationDeadline fire"). Latency for the user's core case — "warn me
+     ~1 s before my target debuff falls off" — goes from "next combat-log event,
+     up to a swing timer or minutes" to one frame. Only the `smaller` operator
+     arms (bigger flips on refresh = event-driven; `is` on a float never matched
+     between events anyway); armed only while still above threshold; +0.02 s
+     nudge past the exact crossing. Re-arming is implicit (every pass recomputes
+     from fresh data); a deadline whose aura vanished early fires one empty pass
+     and dies.
+     - **Replaces the wave-1 item-7 refire:** the per-second near-expiry
+       WEAPON_ENCHANT_UPDATE in UNIT_TICKER is retired; enchant "Dauer < X"
+       auras improve from ≤1 s slip to one frame. Edge, expected new behaviour:
+       an enchant-duration aura that ALSO has an `event` condition on
+       WEAPON_ENCHANT_UPDATE loses the per-second event stream and only fires
+       on real enchant changes — condition-only builds (the normal case) gain.
+     - The synthetic pass is shaped like KEY_PRESS (source player, dest
+       playertarget); the subevent name contains no _AURA_/_DAMAGE/_HEAL/_MISSED
+       substring so no subevent-pattern branch reacts. Auras gated on a specific
+       `event` correctly do not fire on it (they never fired on the crossing).
+     - Re-check: DoT-expiry warning aura fires ~exactly at the threshold even
+       when nothing else happens (stand still, no combat, watch the ring for
+       the breadcrumb); a non-`single` condition-aura must not spam (deadline
+       passes are one-shot, not periodic).
