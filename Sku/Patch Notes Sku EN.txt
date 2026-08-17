@@ -417,6 +417,39 @@ Changes in Sku v42.13
             changes), the counters in DungeonBrowser.tFilterStats, and an "activity filter"
             dprint line carrying the individual counts of both layers.
 
+    Quick menu: Lua errors on some settings
+        Simple: In the quick menu several settings threw a Lua error the moment you opened
+            them with right arrow - most noticeably under "Speech output", but also the
+            beacon volume under "Volumes" and the yes/no toggles under "Other". The very
+            same settings reached through their normal place in the settings menu worked
+            fine. The quick menu does not own any settings of its own: it shows the same
+            entries a second time in a second place, and that second listing was missing
+            one piece of information, without which Sku could not find the stored value.
+            Both routes now show the same value and write to the same setting. On top of
+            that, "Other" lists all four intended entries again: "Do not hide tooltip" and
+            "Play NPC greetings" had quietly disappeared from it when they were given a new
+            home elsewhere in the settings menu.
+        Technical: SkuOptions:IterateOptionsArgs decides from its fourth argument (aModule)
+            whether a node is schema-managed: skuManaged = (v.get == nil and v.set == nil
+            and aModule ~= nil). When it is not, GetCurrentValue reads through
+            self.optionsPath[self.profileIndex]:get() - and those get/set closures are
+            exactly what the schema-managed nodes do not have, since they live off aModule.
+            The quick menu's six mirror calls in SkuZOptions/Core.lua passed no aModule, so
+            opening any such node ran straight into "attempt to call method 'get' (a nil
+            value)". Affected were WowTtsVoice/-Speed/-Volume (SkuChat), beaconVolume
+            (SkuNav), readAllTooltips/interactMove (SkuCore) and vocalizeMenuNumbers/
+            vocalizeSubmenus (SkuOptions); the audio channels and sound settings stayed
+            intact because they carry their own get/set. All six calls now pass module and
+            keyPrefix exactly as the original menu location does ("SkuOptions"/
+            "soundChannels.", "SkuNav"/"", "SkuOptions"/"soundSettings.", "SkuChat"/"",
+            "SkuCore"/"", "SkuOptions"/""), so the stored values are unchanged. The "Other"
+            call additionally gets aIncludeHidden = true, because doNotHideTooltip and
+            playNPCGreetings now carry forAudioMenu = false and were being filtered out
+            without a word. In addition, every node produced by IterateOptionsArgs now reads
+            and writes through two central helpers (tOptGet/tOptSet) with three tiers -
+            SkuSettings, own get/set closure, direct table access - so a future mirror site
+            without aModule at worst reads the value directly instead of throwing.
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.12
 

@@ -464,6 +464,41 @@ Aenderungen in Sku v42.13
             Kinderliste aendert), die Zaehler in DungeonBrowser.tFilterStats und eine
             dprint-Zeile "activity filter" mit den Einzelzahlen beider Lagen.
 
+    Schnellmenue: Lua-Fehler bei einigen Einstellungen
+        Einfach: Im Schnellmenue warfen mehrere Einstellungen einen Lua-Fehler, sobald man
+            sie mit Pfeil rechts aufklappte - besonders unter "Sprachausgabe", aber auch die
+            Beacon-Lautstaerke unter "Lautstaerken" und die Ja/Nein-Schalter unter
+            "Sonstiges". Dieselben Einstellungen ueber ihren normalen Weg im
+            Einstellungsmenue funktionierten einwandfrei. Das Schnellmenue baut naemlich
+            keine eigenen Einstellungen, es zeigt dieselben Eintraege noch einmal an einer
+            zweiten Stelle - und bei dieser Zweitanzeige fehlte eine Angabe, ohne die Sku
+            den gespeicherten Wert nicht finden konnte. Jetzt zeigen beide Wege denselben
+            Wert und schreiben in dieselbe Einstellung. Ausserdem tauchen unter "Sonstiges"
+            wieder alle vier vorgesehenen Eintraege auf: "Tooltip nicht ausblenden" und
+            "NPC Begruessungen abspielen" waren dort still verschwunden, als sie an anderer
+            Stelle im Einstellungsmenue einen neuen Platz bekamen.
+        Technisch: SkuOptions:IterateOptionsArgs entscheidet an seinem vierten Argument
+            (aModule), ob ein Knoten schema-verwaltet ist: skuManaged = (v.get == nil and
+            v.set == nil and aModule ~= nil). Ist er das nicht, liest GetCurrentValue ueber
+            self.optionsPath[self.profileIndex]:get(). Genau diese get/set-Closures haben
+            die schema-verwalteten Knoten aber nicht - sie leben von aModule. Die sechs
+            Spiegel-Aufrufe des Schnellmenues in SkuZOptions/Core.lua gaben aModule nicht
+            mit, also lief jeder Aufklappvorgang eines solchen Knotens in "attempt to call
+            method 'get' (a nil value)". Betroffen waren WowTtsVoice/-Speed/-Volume
+            (SkuChat), beaconVolume (SkuNav), readAllTooltips/interactMove (SkuCore) und
+            vocalizeMenuNumbers/vocalizeSubmenus (SkuOptions); die Audiokanaele und
+            Soundeinstellungen blieben heil, weil sie eigene get/set mitbringen. Alle sechs
+            Aufrufe geben jetzt Modul und keyPrefix genau so mit wie die Original-Menuestelle
+            ("SkuOptions"/"soundChannels.", "SkuNav"/"", "SkuOptions"/"soundSettings.",
+            "SkuChat"/"", "SkuCore"/"", "SkuOptions"/""), womit die gespeicherten Werte
+            unveraendert bleiben. Der Sonstiges-Aufruf bekommt zusaetzlich aIncludeHidden =
+            true, weil doNotHideTooltip und playNPCGreetings inzwischen forAudioMenu = false
+            tragen und deshalb wortlos herausgefiltert wurden. Zusaetzlich lesen und
+            schreiben alle von IterateOptionsArgs erzeugten Knoten jetzt ueber zwei zentrale
+            Helfer (tOptGet/tOptSet) mit drei Stufen - SkuSettings, eigene get/set-Closure,
+            direkter Tabellenzugriff -, sodass eine kuenftige Spiegelstelle ohne aModule
+            hoechstens den Wert direkt liest statt einen Fehler zu werfen.
+
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.12
 

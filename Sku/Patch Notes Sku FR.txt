@@ -472,6 +472,43 @@ Changements dans Sku v42.13
             changeant), les compteurs de DungeonBrowser.tFilterStats et une ligne dprint
             « activity filter » portant les décomptes individuels des deux couches.
 
+    Menu rapide : erreurs Lua sur certains réglages
+        Simple : dans le menu rapide, plusieurs réglages déclenchaient une erreur Lua dès
+            qu'on les ouvrait avec la flèche droite - surtout sous « Synthèse vocale », mais
+            aussi le volume de la balise sous « Volumes » et les interrupteurs oui/non sous
+            « Divers ». Les mêmes réglages atteints par leur chemin normal dans le menu des
+            réglages fonctionnaient parfaitement. C'est que le menu rapide ne possède aucun
+            réglage propre : il affiche les mêmes entrées une seconde fois à un second
+            endroit, et cet affichage secondaire omettait une information sans laquelle Sku
+            ne retrouvait pas la valeur enregistrée. Les deux chemins affichent désormais la
+            même valeur et écrivent dans le même réglage. De plus, « Divers » présente à
+            nouveau les quatre entrées prévues : « Ne pas masquer l'infobulle » et « Jouer
+            les salutations des PNJ » en avaient discrètement disparu lorsqu'elles ont reçu
+            une nouvelle place ailleurs dans le menu des réglages.
+        Technique : SkuOptions:IterateOptionsArgs décide à partir de son quatrième argument
+            (aModule) si un nœud est géré par le schéma : skuManaged = (v.get == nil and
+            v.set == nil and aModule ~= nil). Sinon, GetCurrentValue lit via
+            self.optionsPath[self.profileIndex]:get() - or ces closures get/set sont
+            précisément ce que les nœuds gérés par le schéma n'ont pas, puisqu'ils vivent
+            d'aModule. Les six appels miroir du menu rapide dans SkuZOptions/Core.lua ne
+            transmettaient pas aModule : ouvrir un tel nœud tombait donc droit sur
+            « attempt to call method 'get' (a nil value) ». Étaient touchés
+            WowTtsVoice/-Speed/-Volume (SkuChat), beaconVolume (SkuNav),
+            readAllTooltips/interactMove (SkuCore) et vocalizeMenuNumbers/vocalizeSubmenus
+            (SkuOptions) ; les canaux audio et les réglages de son restaient intacts car ils
+            portent leurs propres get/set. Les six appels transmettent maintenant module et
+            keyPrefix exactement comme l'emplacement de menu d'origine (« SkuOptions »/
+            « soundChannels. », « SkuNav »/« », « SkuOptions »/« soundSettings. »,
+            « SkuChat »/« », « SkuCore »/« », « SkuOptions »/« »), de sorte que les valeurs
+            enregistrées restent inchangées. L'appel de « Divers » reçoit en plus
+            aIncludeHidden = true, car doNotHideTooltip et playNPCGreetings portent
+            désormais forAudioMenu = false et étaient filtrés sans un mot. Par ailleurs,
+            tous les nœuds produits par IterateOptionsArgs lisent et écrivent maintenant via
+            deux aides centrales (tOptGet/tOptSet) à trois niveaux - SkuSettings, closure
+            get/set propre, accès direct à la table -, si bien qu'un futur emplacement
+            miroir sans aModule lira au pire la valeur directement au lieu de lever une
+            erreur.
+
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.12
 

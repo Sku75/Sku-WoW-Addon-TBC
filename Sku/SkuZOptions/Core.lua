@@ -2042,6 +2042,13 @@ function SkuOptions:CreateMainFrame()
 					local tVolEntry = SkuOptions:InjectMenuItems(self, {L["ACC_VolumesTitle"]}, SkuGenericMenuItem)
 					tVolEntry.dynamic = true
 					tVolEntry.BuildChildren = function(self)
+						-- [42.13] Die aModule/aKeyPrefix-Argumente MUESSEN mitgegeben werden.
+						-- IterateOptionsArgs entscheidet daran (skuManaged), ob es die
+						-- Werte ueber SkuSettings:Get/Set liest/schreibt oder ueber die
+						-- get/set-Closures des Options-Knotens. Knoten OHNE eigene
+						-- get/set (schema-verwaltet) liefen hier sonst in
+						-- ":get() -- attempt to call a nil value". Gleiche Module/
+						-- keyPrefix wie am Original-Menuepunkt -> selbe gespeicherte Werte.
 						local tCh = SkuOptions.options.args.soundChannels.args
 						SkuOptions:IterateOptionsArgs({
 							MasterVolume   = tCh.MasterVolume,
@@ -2049,11 +2056,11 @@ function SkuOptions:CreateMainFrame()
 							MusicVolume    = tCh.MusicVolume,
 							AmbienceVolume = tCh.AmbienceVolume,
 							DialogVolume   = tCh.DialogVolume,
-						}, self, SkuSettings:Sub("SkuOptions").soundChannels)
+						}, self, SkuSettings:Sub("SkuOptions").soundChannels, "SkuOptions", "soundChannels.")
 
 						SkuOptions:IterateOptionsArgs({
 							beaconVolume = SkuNav.options.args.beaconVolume,
-						}, self, SkuOptions.db.profile["SkuNav"])
+						}, self, SkuSettings:Sub("SkuNav"), "SkuNav", "")
 
 						local tSs = SkuOptions.options.args.soundSettings.args
 						SkuOptions:IterateOptionsArgs({
@@ -2062,7 +2069,7 @@ function SkuOptions:CreateMainFrame()
 							Sound_EnableDSPEffects              = tSs.Sound_EnableDSPEffects,
 							Sound_EnableSoundWhenGameIsInBG     = tSs.Sound_EnableSoundWhenGameIsInBG,
 							Sound_ZoneMusicNoDelay              = tSs.Sound_ZoneMusicNoDelay,
-						}, self, SkuSettings:Sub("SkuOptions").soundSettings)
+						}, self, SkuSettings:Sub("SkuOptions").soundSettings, "SkuOptions", "soundSettings.")
 
 						-- [41.02.08] Fokus bleibt nach Wertaenderung auf dem Regler stehen
 						-- (nur 7er-Menue; geteilter Renderer/templates.lua bleibt unberuehrt).
@@ -2076,12 +2083,16 @@ function SkuOptions:CreateMainFrame()
 					local tSpeechEntry = SkuOptions:InjectMenuItems(self, {L["ACC_SpeechTitle"]}, SkuGenericMenuItem)
 					tSpeechEntry.dynamic = true
 					tSpeechEntry.BuildChildren = function(self)
+						-- [42.13] aModule "SkuChat" + keyPrefix "" wie am Original
+						-- (Einstellungen -> Sprachausgabe). Diese drei Knoten haben KEINE
+						-- eigenen get/set -> ohne aModule warf jedes Aufklappen einen
+						-- Lua-Fehler in GetCurrentValue.
 						local tC = SkuChat.options.args
 						SkuOptions:IterateOptionsArgs({
 							WowTtsVoice  = tC.WowTtsVoice,
 							WowTtsSpeed  = tC.WowTtsSpeed,
 							WowTtsVolume = tC.WowTtsVolume,
-						}, self, SkuOptions.db.profile["SkuChat"])
+						}, self, SkuSettings:Sub("SkuChat"), "SkuChat", "")
 
 						-- [41.02.08] Fokus bleibt nach Wertaenderung auf dem Regler stehen
 						-- (nur 7er-Menue; geteilter Renderer/templates.lua bleibt unberuehrt).
@@ -2100,16 +2111,21 @@ function SkuOptions:CreateMainFrame()
 					local tOtherEntry = SkuOptions:InjectMenuItems(self, {L["ACC_OtherTitle"]}, SkuGenericMenuItem)
 					tOtherEntry.dynamic = true
 					tOtherEntry.BuildChildren = function(self)
+						-- [42.13] aModule + keyPrefix wie am Original-Menuepunkt (siehe
+						-- Kommentar in 7.1). aIncludeHidden = true, weil doNotHideTooltip
+						-- und playNPCGreetings inzwischen forAudioMenu=false tragen (sie
+						-- wurden nach Einstellungen -> Scan bzw. Audio verschoben) und
+						-- hier sonst stillschweigend wegfielen.
 						SkuOptions:IterateOptionsArgs({
 							doNotHideTooltip = SkuCore.options.args.doNotHideTooltip,
 							readAllTooltips  = SkuCore.options.args.readAllTooltips,
 							playNPCGreetings = SkuCore.options.args.playNPCGreetings,
 							interactMove     = SkuCore.options.args.interactMove,
-						}, self, SkuOptions.db.profile["SkuCore"])
+						}, self, SkuSettings:Sub("SkuCore"), "SkuCore", "", true)
 						SkuOptions:IterateOptionsArgs({
 							vocalizeMenuNumbers = SkuOptions.options.args.vocalizeMenuNumbers,
 							vocalizeSubmenus    = SkuOptions.options.args.vocalizeSubmenus,
-						}, self, SkuSettings:Sub("SkuOptions"))
+						}, self, SkuSettings:Sub("SkuOptions"), "SkuOptions", "")
 
 							-- [41.05] Anzahl der Gegner ansagen: koppelt zwei vorhandene Einstellungen
 							-- aus Core, Monitor feindlich (relativeNumberUnitsInCombat.value + ignoreNonElite).
@@ -6527,6 +6543,39 @@ function SkuOptions.CameraMenuBuilder(self)
 
 end
 
+-- [42.13] Zentrale Lese-/Schreibhilfen fuer die von IterateOptionsArgs erzeugten
+-- Knoten. Drei Faelle, in dieser Reihenfolge:
+--   1. skuManaged   -> ueber SkuSettings:Get/Set (Schema-verwaltet, aModule gesetzt)
+--   2. eigene get/set-Closure am Options-Knoten
+--   3. direkter Tabellenzugriff auf profilePath[profileIndex]
+-- Fall 3 ist das Sicherheitsnetz: ein Knoten OHNE get/set, der an einer
+-- SPIEGEL-Stelle (Schnellmenue) ohne aModule gerendert wird, ist weder managed
+-- noch hat er Closures -- vorher knallte dort `:get()` als Lua-Fehler. Die
+-- Spiegelstellen geben aModule inzwischen mit; das hier faengt kuenftige.
+local function tOptGet(aEntry)
+	if aEntry.skuManaged then
+		return SkuSettings:Get(aEntry.skuModule, aEntry.skuKey)
+	end
+	local tOpt = aEntry.optionsPath[aEntry.profileIndex]
+	if tOpt.get then
+		return tOpt:get()
+	end
+	return aEntry.profilePath and aEntry.profilePath[aEntry.profileIndex]
+end
+
+local function tOptSet(aEntry, aNewValue)
+	if aEntry.skuManaged then
+		SkuSettings:Set(aEntry.skuModule, aEntry.skuKey, aNewValue)
+		return
+	end
+	local tOpt = aEntry.optionsPath[aEntry.profileIndex]
+	if tOpt.set then
+		tOpt:set(aNewValue)
+	elseif aEntry.profilePath then
+		aEntry.profilePath[aEntry.profileIndex] = aNewValue
+	end
+end
+
 function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPath, aModule, aKeyPrefix, aIncludeHidden)
 	for i, v in SkuSpairs(aArgTable, function(t, a, b) if t[b].order and t[a].order then return t[b].order > t[a].order end end) do
 		if v.forAudioMenu == false and not aIncludeHidden then
@@ -6572,12 +6621,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 					tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
 				end
 				tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-					local tStored
-					if self.skuManaged then
-						tStored = SkuSettings:Get(self.skuModule, self.skuKey)
-					else
-						tStored = self.optionsPath[self.profileIndex]:get()
-					end
+					local tStored = tOptGet(self)
 					if tStored == true then
 						return L["On"]
 					else
@@ -6640,12 +6684,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				end
 				tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 					local tValue = ""
-					local tStored
-					if self.skuManaged then
-						tStored = SkuSettings:Get(self.skuModule, self.skuKey)
-					else
-						tStored = self.optionsPath[self.profileIndex]:get()
-					end
+					local tStored = tOptGet(self)
 					for ia, va in pairs(v.values) do
 						if ia == tStored then
 							tValue = va
@@ -6668,11 +6707,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				tNewMenuEntry.skuManaged = (v.get == nil and v.set == nil and aModule ~= nil)
 				tNewMenuEntry.OnAction = function(self, aValue, aName)
 					--self.profilePath[self.profileIndex] = tonumber(aName)
-					if self.skuManaged then
-						SkuSettings:Set(self.skuModule, self.skuKey, tonumber(aName))
-					else
-						self.optionsPath[self.profileIndex]:set(tonumber(aName))
-					end
+					tOptSet(self, tonumber(aName))
 					--PlaySound(835)
 					if self.optionsPath[self.profileIndex].OnAction then
 						self.optionsPath[self.profileIndex]:OnAction(aValue, aName)
@@ -6689,11 +6724,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 					--SkuOptions:InjectMenuItems(self, tList, SkuGenericMenuItem)
 				end
 				tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-					if self.skuManaged then
-						return SkuSettings:Get(self.skuModule, self.skuKey)
-					end
-					return self.optionsPath[self.profileIndex]:get()
-					--return self.profilePath[self.profileIndex]
+					return tOptGet(self)
 				end
 
 			elseif v.type == "execute" then
