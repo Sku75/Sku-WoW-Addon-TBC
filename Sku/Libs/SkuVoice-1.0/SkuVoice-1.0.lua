@@ -85,6 +85,17 @@ local mSkuVoiceQueue = {}
 -- which is what WeakAuras achieves by calling PlaySoundFile straight from its
 -- event handler.
 local mQueueDirty = false
+-- [v43.0] Same-frame cursor for aInstant FRONT-inserts (aura word outputs).
+-- Every instant insert this frame goes to mInstantInsertPos+1, so an aura
+-- firing several output fields (one OutputString call each) keeps its fields in
+-- SPOKEN order — the old `0 + x` position made every later call land at
+-- position 1 and reversed the fields. Frame identity via GetTime() (constant
+-- within a frame); nothing removes queue entries between the synchronous calls
+-- of one evaluation pass (the pump and its tombstone sweep run in OnUpdate),
+-- except the aOverwrite clear inside OutputString itself, which re-clamps the
+-- cursor right after it runs.
+local mInstantInsertPos = 0
+local mInstantInsertTime = -1
 local mSkuVoiceQueueBTTS = {}
 -- Dedup guard for the Blizzard-TTS path: the set of lines Sku has handed to
 -- C_VoiceChat.SpeakText and believes are still playing, so an identical line
@@ -1191,6 +1202,11 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 					end
 				end
 			end
+			-- [v43.0] The clear may have removed entries below this frame's
+			-- instant cursor; clamp so later instant inserts stay contiguous.
+			if mInstantInsertTime == GetTime() and mInstantInsertPos > #mSkuVoiceQueue then
+				mInstantInsertPos = #mSkuVoiceQueue
+			end
 		end
 
 		if not tIsSound then
@@ -1331,7 +1347,13 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 					end
 
 					if aInstant == true then
-						table.insert(mSkuVoiceQueue, 0 + x, {
+						-- [v43.0] Cursor instead of `0 + x` — see mInstantInsertPos.
+						if mInstantInsertTime ~= GetTime() then
+							mInstantInsertTime = GetTime()
+							mInstantInsertPos = 0
+						end
+						mInstantInsertPos = mInstantInsertPos + 1
+						table.insert(mSkuVoiceQueue, mInstantInsertPos, {
 							["text"] = tStrings[x],
 							["file"] = tFile,
 							["wait"] = aWait,

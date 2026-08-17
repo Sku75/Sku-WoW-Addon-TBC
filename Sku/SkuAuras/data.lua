@@ -104,6 +104,16 @@ SkuAuras.actions = {
       	----dprint("    ","action func audio benachrichtigung DING")
       end,
       single = false,
+      -- [v43.0] All aura AUDIO actions are instant now: the flag travels
+      -- evaluate-loop -> output funct 4th arg -> OutputString's aInstant, which
+      -- FRONT-inserts the words right behind whatever is playing instead of
+      -- appending behind the whole pending queue. This is the word counterpart
+      -- of the beeps' auraSound fast path: a word can never legally OVERLAY
+      -- running speech (that is mush), so its floor is the playing clip's
+      -- pacing point — but it no longer waits out unrelated queued speech.
+      -- Word-to-word pacing, aFirst/overwrite interrupt logic and multi-word
+      -- ordering are untouched (see the same-frame cursor in SkuVoice).
+      instant = true,
    },
    notifyChat = {
       tooltip = L["Die Ausgaben werden als Text im Chat ausgegeben"],
@@ -120,6 +130,7 @@ SkuAuras.actions = {
       	----dprint("    ","action func audio benachrichtigung single")
       end,
       single = true,
+      instant = true,
    },
    notifyAudioAndChatSingle = {
       tooltip = L["Die Ausgaben werden als Audio und chat ausgegeben"],
@@ -128,6 +139,7 @@ SkuAuras.actions = {
       	----dprint("    ","action func audio benachrichtigung DING")
       end,
       single = true,
+      instant = true,
    },
    --[[
    notifyAudioSingleInstant = {
@@ -205,9 +217,9 @@ SkuAuras.outputs = {
             if not tEvaluateData.event then return end
             if not SkuAuras.values[tEvaluateData.event] then return end
             if SkuAuras.values[tEvaluateData.event].friendlyNameShort then
-               SkuOptions.Voice:OutputString(SkuAuras.values[tEvaluateData.event].friendlyNameShort, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(SkuAuras.values[tEvaluateData.event].friendlyNameShort, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             else
-               SkuOptions.Voice:OutputString(SkuAuras.values[tEvaluateData.event].friendlyName, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(SkuAuras.values[tEvaluateData.event].friendlyName, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -226,10 +238,10 @@ SkuAuras.outputs = {
       friendlyName = L["quell einheit"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.sourceUnitId then
                --dprint("    ","tEvaluateData.sourceUnitId", tEvaluateData.sourceUnitId)
-               SkuOptions.Voice:OutputString(tUnitIdToSpokenName(tEvaluateData.sourceUnitId[1]), aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tUnitIdToSpokenName(tEvaluateData.sourceUnitId[1]), aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -244,10 +256,10 @@ SkuAuras.outputs = {
       friendlyName = L["ziel einheit"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             --dprint("    ","tEvaluateData.destUnitId", tEvaluateData.destUnitId)
             if tEvaluateData.destUnitId then
-               SkuOptions.Voice:OutputString(tUnitIdToSpokenName(tEvaluateData.destUnitId[1]), aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tUnitIdToSpokenName(tEvaluateData.destUnitId[1]), aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -262,9 +274,9 @@ SkuAuras.outputs = {
       friendlyName = L["eigene Gesundheit"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.unitHealthPlayer then
-               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthPlayer, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthPlayer, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -279,9 +291,9 @@ SkuAuras.outputs = {
       friendlyName = L["aura stapel"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.auraAmount then
-               SkuOptions.Voice:OutputString(tEvaluateData.auraAmount, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.auraAmount, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -297,9 +309,9 @@ SkuAuras.outputs = {
       friendlyName = L["klasse",
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.class then
-               SkuOptions.Voice:OutputString(tEvaluateData.class, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.class, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -315,9 +327,9 @@ SkuAuras.outputs = {
       friendlyName = L["eigene Ressource"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.unitPowerPlayer then
-               SkuOptions.Voice:OutputString(tEvaluateData.unitPowerPlayer, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.unitPowerPlayer, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -332,9 +344,9 @@ SkuAuras.outputs = {
       friendlyName = L["Eigene combopunkte"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.unitComboPlayer then
-               SkuOptions.Voice:OutputString(tEvaluateData.unitComboPlayer, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.unitComboPlayer, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -350,9 +362,9 @@ SkuAuras.outputs = {
       friendlyName = L["eigene gesundheit"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.unitHealthPlayer then
-               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthPlayer, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthPlayer, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -367,9 +379,9 @@ SkuAuras.outputs = {
       friendlyName = L["Your target's health"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.unitHealthTarget then
-               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthTarget, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthTarget, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -384,9 +396,9 @@ SkuAuras.outputs = {
       friendlyName = L["Your target's resource"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.unitPowerTarget then
-               SkuOptions.Voice:OutputString(tEvaluateData.unitPowerTarget, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.unitPowerTarget, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -401,9 +413,9 @@ SkuAuras.outputs = {
       friendlyName = L["Health/Resource update"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.unitHealthOrPowerUpdate then
-               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthOrPowerUpdate, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthOrPowerUpdate, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -418,9 +430,9 @@ SkuAuras.outputs = {
       friendlyName = L["Damage amount"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.damageAmount then
-               SkuOptions.Voice:OutputString(tEvaluateData.damageAmount, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.damageAmount, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -435,9 +447,9 @@ SkuAuras.outputs = {
       friendlyName = L["Healing amount"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.healAmount then
-               SkuOptions.Voice:OutputString(tEvaluateData.healAmount, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.healAmount, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -452,9 +464,9 @@ SkuAuras.outputs = {
       friendlyName = L["Overhealing amount"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.overhealingAmount then
-               SkuOptions.Voice:OutputString(tEvaluateData.overhealingAmount, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.overhealingAmount, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -469,9 +481,9 @@ SkuAuras.outputs = {
       friendlyName = L["Overhealing percentage"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.overhealingPercentage then
-               SkuOptions.Voice:OutputString(tEvaluateData.overhealingPercentage, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.overhealingPercentage, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -486,9 +498,9 @@ SkuAuras.outputs = {
       friendlyName = L["zauber name"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.spellName then
-               SkuOptions.Voice:OutputString(tEvaluateData.spellName, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.spellName, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -509,9 +521,9 @@ SkuAuras.outputs = {
       friendlyName = L["AURA_OutWeMH"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.weaponEnchantMainHandSelected then
-               SkuOptions.Voice:OutputString(tEvaluateData.weaponEnchantMainHandSelected, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.weaponEnchantMainHandSelected, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -526,9 +538,9 @@ SkuAuras.outputs = {
       friendlyName = L["AURA_OutWeOH"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.weaponEnchantOffHandSelected then
-               SkuOptions.Voice:OutputString(tEvaluateData.weaponEnchantOffHandSelected, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.weaponEnchantOffHandSelected, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -543,9 +555,9 @@ SkuAuras.outputs = {
       friendlyName = L["gegenstand name"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.itemName then
-               SkuOptions.Voice:OutputString(tEvaluateData.itemName, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.itemName, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -560,9 +572,9 @@ SkuAuras.outputs = {
       friendlyName = L["gegenstand anzahl"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.itemCount then
-               SkuOptions.Voice:OutputString(tEvaluateData.itemCount, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.itemCount, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -577,9 +589,9 @@ SkuAuras.outputs = {
       friendlyName = L["wert buff liste ziel"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.buffListTarget then
-               SkuOptions.Voice:OutputString(tEvaluateData.buffListTarget, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.buffListTarget, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -594,9 +606,9 @@ SkuAuras.outputs = {
       friendlyName = L["wert debuff liste ziel"],
       functs = {
          ["nothing"] = tNothingOutputFunction,
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             if tEvaluateData.debuffListTarget then
-               SkuOptions.Voice:OutputString(tEvaluateData.debuffListTarget, aFirst, true, 0.1, true)
+               SkuOptions.Voice:OutputString(tEvaluateData.debuffListTarget, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)

@@ -461,3 +461,25 @@ here so a future session doesn't re-derive the analysis from scratch.
      cooldowns; the guard is live now, which was its written intent.
      - Re-check: a "target distance" aura and a "ziel deines ziels" aura still
        fire; an item-cooldown aura still announces cooldown end once.
+  7. **Word outputs jump the pending queue (the beeps' fast path, word-legal)**
+     (`SkuAuras/data.lua` actions + all 24 word outputs; `SkuVoice-1.0.lua`
+     `mInstantInsertPos`). A word can never legally OVERLAY running speech the
+     way an aura beep does — word over word is mush — so its latency floor is
+     the playing clip's pacing point. But the real word latency was queue
+     DEPTH: aura words appended behind every pending `doNotOverwrite` entry.
+     `OutputString` has had an `aInstant` FRONT-insert parameter all along, and
+     the evaluate loop has always passed each action's `instant` flag to the
+     outputs — which every word output DROPPED (the "Instant" action variants
+     were dead wiring). Now: the three aura audio actions carry
+     `instant = true`, the word outputs forward the flag, and aura words insert
+     right behind whatever is playing instead of behind the whole queue.
+     Fixed while wiring: repeated instant calls in one frame each landed at
+     position 1 and REVERSED an aura's output fields ("ziel, Schattenwort"
+     instead of "Schattenwort, ziel") — a same-frame cursor keeps them in
+     spoken order, re-clamped after an aOverwrite clear. aFirst/overwrite
+     interrupt logic, word-to-word pacing (TTSSepPause) and the beeps'
+     `auraSound` path are untouched; the word/text outputs still never set
+     `auraSound` (wave-1 item 2's rule stands).
+     - Re-check: an aura speaking spell name + unit says them in that order;
+       menu speech queued before an aura firing is spoken AFTER the aura words
+       now (intended); nothing slurs or overlaps.
