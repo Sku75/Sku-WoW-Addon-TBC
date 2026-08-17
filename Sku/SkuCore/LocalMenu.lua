@@ -5217,3 +5217,71 @@ function SkuCore:QuestFrame(aParentChilds)
 		end
 	end
 end
+---------------------------------------------------------------------------------------------------------------------------------------
+-- /skucheck -- in-game invariant sweeps ("every regression fix ships its tripwire").
+-- [v42.14] This is NOT a scenario test suite: each check is a rule that must hold
+-- in ANY valid live state, verified against the real client -- which is what
+-- catches client quirks a mocked test would hide (the way SetBagItem populates
+-- nothing for containers -1 and -2). Growth rule (agreed 2026-08-17): a new
+-- invariant is added ONLY when a bug fix implies one, never speculatively.
+-- Violations go to the SkuDebugLog ring as "skucheck" dprint lines; only a
+-- one-line summary is spoken.
+--
+-- Invariant 1 (bags; from the v42.13 keyring regression): a container slot with
+-- an item id must resolve to a speakable name. Id present but blank tooltip text
+-- means the read path for that container is broken -- exactly how keyring keys
+-- spoke as "Empty" while their ids and clicks worked fine.
+local function tSkuCheckBags()
+	local tChecked, tPending, tViolations = 0, 0, 0
+	for q = 1, #tBagSlotListSorted do
+		local tBagId = tBagSlotListSorted[q]
+		local tNumSlots = GetContainerNumSlots(tBagId) or 0
+		-- Same gate as Build_BagsFrame: the CLOSED bank still reports 28 slots but
+		-- reads are not valid then -- sweeping it would only produce noise. Say so
+		-- in the log instead of skipping silently.
+		if tBagId == -1 and not (_G["BankFrame"] and _G["BankFrame"]:IsVisible() == true) then
+			if tNumSlots > 0 then
+				dprint("skucheck", "bags: bank (-1) skipped, bank closed")
+			end
+			tNumSlots = 0
+		end
+		-- Deliberately NO GetKeyRingSize clamp here: the sweep checks DATA, not the
+		-- menu view, so all raw keyring slots are fair game (empty ones pass
+		-- trivially, and a key parked beyond the display clamp must still resolve).
+		for tSlotId = 1, tNumSlots do
+			local tItemId = GetContainerItemID(tBagId, tSlotId)
+			if tItemId then
+				tChecked = tChecked + 1
+				local tText, tIsPending = getItemTooltipTextFromBagItem(tBagId, tSlotId)
+				if tIsPending then
+					tPending = tPending + 1
+				elseif not tText or tText == "" then
+					tViolations = tViolations + 1
+					dprint("skucheck", "VIOLATION bags: bag", tBagId, "slot", tSlotId, "itemId", tItemId, "link", GetContainerItemLink(tBagId, tSlotId) or "nil", "-- item id present but no name resolved")
+				end
+			end
+		end
+	end
+	return tChecked, tPending, tViolations
+end
+
+SLASH_SKUCHECK1 = "/skucheck"
+SlashCmdList["SKUCHECK"] = function(aParam)
+	local tDomain = string.match(aParam or "", "^%s*(%S*)")
+	if tDomain ~= "" and tDomain ~= "bags" then
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags", "Unknown check. Available: bags", "Vérification inconnue. Disponible : bags"), false, true, 0.2) end)
+		return
+	end
+	local tChecked, tPending, tViolations = tSkuCheckBags()
+	dprint("skucheck", "bags done:", tChecked, "filled slots checked,", tPending, "pending,", tViolations, "violations")
+	local tMsg
+	if tViolations == 0 then
+		tMsg = Sku.deEn("Taschenprüfung: ", "Bag check: ", "Vérification des sacs : ")..tChecked..Sku.deEn(" geprüft, keine Probleme", " checked, no problems", " vérifiés, aucun problème")
+	else
+		tMsg = Sku.deEn("Taschenprüfung: ", "Bag check: ", "Vérification des sacs : ")..tViolations..Sku.deEn(" Probleme, siehe Log", " problems, see log", " problèmes, voir le journal")
+	end
+	if tPending > 0 then
+		tMsg = tMsg..", "..tPending..Sku.deEn(" ausstehend", " pending", " en attente")
+	end
+	pcall(function() SkuOptions.Voice:OutputStringBTtts(tMsg, false, true, 0.2) end)
+end
