@@ -354,7 +354,7 @@ local function tSetTooltipContainerItem(tooltip, bag, slot)
 		tooltip:SetInventoryItem("player", BankButtonIDToInvSlotID(slot))
 		return
 	end
-	-- [v42.14] The KEYRING (-2) has the same quirk as the bank: SetBagItem(-2, slot)
+	-- [v43.0] The KEYRING (-2) has the same quirk as the bank: SetBagItem(-2, slot)
 	-- populates nothing, so from v42.13 (which removed the hyperlink fallback) every
 	-- key spoke as "Empty". Keyring slots are inventory slots too, and this is
 	-- exactly what Blizzard's ContainerFrameItemButton_OnEnter does for the keyring.
@@ -1299,7 +1299,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 		if bagId == -1 and not (_G["BankFrame"] and _G["BankFrame"]:IsVisible() == true) then
 			tNumSlots = 0
 		end
-		-- [v42.14] The keyring container reports its MAXIMUM (32) here, but most of
+		-- [v43.0] The keyring container reports its MAXIMUM (32) here, but most of
 		-- those slots are unusable padding -- Blizzard's own keyring frame sizes
 		-- itself with GetKeyRingSize() (filled slots rounded up to whole rows of 4),
 		-- so mirror that instead of announcing dozens of phantom "Empty" slots.
@@ -5219,7 +5219,7 @@ function SkuCore:QuestFrame(aParentChilds)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- /skucheck -- in-game invariant sweeps ("every regression fix ships its tripwire").
--- [v42.14] This is NOT a scenario test suite: each check is a rule that must hold
+-- [v43.0] This is NOT a scenario test suite: each check is a rule that must hold
 -- in ANY valid live state, verified against the real client -- which is what
 -- catches client quirks a mocked test would hide (the way SetBagItem populates
 -- nothing for containers -1 and -2). Growth rule (agreed 2026-08-17): a new

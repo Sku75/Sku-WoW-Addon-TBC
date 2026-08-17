@@ -7,6 +7,48 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+Changements dans Sku v43.0
+
+    Sacs : les clés du porte-clés étaient annoncées comme « Vide »
+        Simple : Depuis la v42.13, chaque emplacement du porte-clés disait « Vide » alors que les
+            clés étaient bien là et restaient utilisables - cela ne s'est vu que lorsque quelqu'un
+            a vraiment eu besoin du porte-clés. Le déclencheur était le correctif de la banque de
+            la v42.13 : dans le client du jeu, le porte-clés présente la même particularité que le
+            conteneur principal de la banque et demandait le même traitement spécial, que seule la
+            banque avait reçu à l'époque. Les clés sont de nouveau annoncées par leur nom. Le
+            porte-clés n'affiche en outre plus que les emplacements qu'il utilise réellement au
+            lieu de 32 fixes - auparavant, des dizaines d'emplacements vides suivaient les clés.
+        Technique : GameTooltip:SetBagItem(-2, slot) ne remplit rien sur ce client, exactement
+            comme le conteneur de banque -1. Les noms de clés ne fonctionnaient que grâce au repli
+            générique SetHyperlink de 67f2132 ; quand la v42.13 a volontairement supprimé ce repli
+            et n'a basculé que la banque (-1) vers SetInventoryItem, le porte-clés est retombé en
+            silence sur le SetBagItem vide. tSetTooltipContainerItem lit désormais -2 via
+            SetInventoryItem("player", KeyRingButtonIDToInvSlotID(slot)) - exactement ce que fait
+            ContainerFrameItemButton_OnEnter de Blizzard pour le porte-clés. Build_BagsFrame limite
+            en plus le nombre d'emplacements de -2 avec GetKeyRingSize() (emplacements occupés
+            arrondis à des rangées complètes de quatre), comme la fenêtre de porte-clés de
+            Blizzard, au lieu de reprendre les 32 bruts de GetContainerNumSlots.
+
+    Diagnostic : nouvelle commande /skucheck qui vérifie des règles fixes sur l'état réel du jeu
+        Simple : /skucheck parcourt toutes les données des sacs et vérifie que chaque emplacement
+            occupé fournit un nom prononçable ; le résultat tient en une ligne parlée, par exemple
+            « Vérification des sacs : 64 vérifiés, aucun problème », avec un renvoi vers le
+            journal en cas de problème. La commande vérifie les données elles-mêmes, pas les
+            menus - elle aurait donc signalé le bogue du porte-clés même sans jamais l'ouvrir. La
+            liste des règles ne grandit qu'avec les bogues corrigés : chaque correctif apportera
+            désormais sa propre règle de garde, afin qu'une modification ultérieure ne puisse pas
+            réintroduire le même bogue sans bruit.
+        Technique : En fin de LocalMenu.lua ; parcourt tBagSlotListSorted avec la même API de
+            conteneurs et la même résolution de noms que le menu des sacs. Règle 1 : emplacement
+            avec un identifiant d'objet mais un texte d'infobulle vide = violation ; chaque
+            violation est écrite dans l'anneau SkuDebugLog en ligne « skucheck » avec sac,
+            emplacement, identifiant et lien. La banque fermée est sautée avec une ligne de
+            journal (pas en silence), le porte-clés est volontairement balayé sur ses 32
+            emplacements bruts, et les objets pas encore envoyés par le serveur comptent comme
+            « en attente » et non comme des échecs.
+
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
 
     Combat : « Annoncer les interruptions sur votre cible » est désormais désactivé par défaut

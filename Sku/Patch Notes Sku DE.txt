@@ -4,6 +4,47 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Aenderungen in Sku v43.0
+
+    Taschen: die Schluessel im Schluesselbund wurden als "Leer" angesagt
+        Einfach: Seit v42.13 sprach jeder Platz im Schluesselbund "Leer", obwohl die Schluessel da
+            waren und sich weiter benutzen liessen - aufgefallen ist es erst, als jemand den
+            Schluesselbund wirklich brauchte. Ausgeloest hat es die Bankkorrektur aus v42.13: Der
+            Schluesselbund hat im Spielclient dieselbe Eigenheit wie das Bankhauptfach und brauchte
+            dieselbe Sonderbehandlung, die damals nur die Bank bekommen hat. Jetzt werden die
+            Schluessel wieder mit Namen angesagt. Ausserdem zeigt der Schluesselbund nur noch so
+            viele Plaetze, wie er wirklich nutzt, statt stur alle 32 - vorher kamen nach den
+            Schluesseln Dutzende leere Plaetze.
+        Technisch: GameTooltip:SetBagItem(-2, slot) befuellt auf dem Client nichts, genau wie beim
+            Bankcontainer -1. Die Schluesselnamen funktionierten nur ueber den generischen
+            SetHyperlink-Rueckfall aus 67f2132; als v42.13 diesen Rueckfall absichtlich entfernte
+            und nur die Bank (-1) auf SetInventoryItem umstellte, fiel der Schluesselbund still auf
+            das leere SetBagItem zurueck. tSetTooltipContainerItem liest -2 jetzt ueber
+            SetInventoryItem("player", KeyRingButtonIDToInvSlotID(slot)) - exakt das, was Blizzards
+            eigenes ContainerFrameItemButton_OnEnter fuer den Schluesselbund tut. Build_BagsFrame
+            begrenzt die Platzzahl von -2 zusaetzlich mit GetKeyRingSize() (belegte Plaetze auf
+            volle Viererreihen gerundet), so wie Blizzards Schluesselbund-Fenster, statt die rohen
+            32 aus GetContainerNumSlots zu uebernehmen.
+
+    Diagnose: neuer Befehl /skucheck prueft feste Regeln gegen den laufenden Spielzustand
+        Einfach: /skucheck geht alle Taschendaten durch und prueft, ob jeder belegte Platz einen
+            ansagbaren Namen liefert; das Ergebnis kommt als eine gesprochene Zeile, etwa
+            "Taschenpruefung: 64 geprueft, keine Probleme", bei Problemen mit Verweis auf das Log.
+            Der Befehl prueft die Daten selbst, nicht die Menues - er haette den
+            Schluesselbund-Fehler also auch gemeldet, wenn man den Schluesselbund nie oeffnet. Die
+            Pruefliste waechst nur mit behobenen Fehlern: Jede Korrektur bringt kuenftig ihre
+            eigene Stolperdraht-Regel mit, damit eine spaetere Aenderung denselben Fehler nicht
+            unbemerkt wieder einbauen kann.
+        Technisch: Am Ende von LocalMenu.lua; laeuft ueber tBagSlotListSorted mit derselben
+            Container-API und derselben Namensaufloesung wie das Taschenmenue. Regel 1: Platz mit
+            Item-Id, aber leerem Tooltiptext = Verstoss; jeder Verstoss landet als "skucheck"-Zeile
+            mit Tasche, Platz, Item-Id und Link im SkuDebugLog-Ring. Die geschlossene Bank wird mit
+            Logzeile uebersprungen (nicht still), der Schluesselbund absichtlich mit allen rohen 32
+            Plaetzen geprueft, und noch nicht vom Server geladene Items zaehlen als "ausstehend"
+            statt als Fehler.
+
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
 
     Kampf: "Unterbrechungen bei deinem Ziel ansagen" ist jetzt standardmaessig aus

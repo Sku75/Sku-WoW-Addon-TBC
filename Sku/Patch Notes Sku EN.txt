@@ -4,6 +4,43 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku v43.0
+
+    Bags: the keys in the keyring were announced as "Empty"
+        Simple: Since v42.13 every keyring slot spoke as "Empty" even though the keys were there
+            and still worked - it only surfaced once someone actually needed the keyring. The
+            trigger was the v42.13 bank fix: in the game client the keyring has the same quirk as
+            the main bank container and needed the same special handling, which back then only the
+            bank received. Keys are announced with their names again. The keyring also now shows
+            only as many slots as it really uses instead of a flat 32 - previously dozens of empty
+            slots followed the keys.
+        Technical: GameTooltip:SetBagItem(-2, slot) populates nothing on this client, exactly like
+            bank container -1. Key names had only ever worked through the generic SetHyperlink
+            fallback from 67f2132; when v42.13 deliberately removed that fallback and switched only
+            the bank (-1) to SetInventoryItem, the keyring silently fell back to the blank
+            SetBagItem. tSetTooltipContainerItem now reads -2 via
+            SetInventoryItem("player", KeyRingButtonIDToInvSlotID(slot)) - exactly what Blizzard's
+            own ContainerFrameItemButton_OnEnter does for the keyring. Build_BagsFrame additionally
+            clamps the slot count of -2 with GetKeyRingSize() (filled slots rounded up to full rows
+            of four), the way Blizzard's keyring frame does, instead of taking the raw 32 from
+            GetContainerNumSlots.
+
+    Diagnostics: new command /skucheck verifies fixed rules against the live game state
+        Simple: /skucheck walks all bag data and checks that every occupied slot resolves to a
+            speakable name; the result is one spoken line, such as "Bag check: 64 checked, no
+            problems", with a pointer to the log when there are problems. The command checks the
+            data itself, not the menus - so it would have reported the keyring bug even if you
+            never open the keyring. The rule list grows only with fixed bugs: from now on every fix
+            ships its own tripwire rule, so a later change cannot quietly reintroduce the same bug.
+        Technical: At the bottom of LocalMenu.lua; iterates tBagSlotListSorted with the same
+            container API and the same name resolution the bag menu uses. Rule 1: slot with an item
+            id but blank tooltip text = violation; each violation is written to the SkuDebugLog
+            ring as a "skucheck" line with bag, slot, item id and link. The closed bank is skipped
+            with a log line (not silently), the keyring is deliberately swept at all raw 32 slots,
+            and items not yet sent by the server count as "pending" rather than as failures.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13
 
     Combat: "Announce interrupts on your target" is now off by default
