@@ -429,3 +429,22 @@ here so a future session doesn't re-derive the analysis from scratch.
        rare (appear/disappear only). Out of combat: let a self-buff expire
        while standing still — a "contains not" aura on it must speak within a
        frame of the icon vanishing.
+  5. **GUID → group-index map replaces the per-event roster sweeps**
+     (`SkuAuras/Core.lua`, `tRaidGuidIndex` / `tPartyGuidIndex` /
+     `tEnsureGroupGuidMap`). `GetBestUnitId` swept raid1..40 with a UnitGUID
+     call each and ran two-or-three times per combat-log event;
+     `RoleCheckerIsUnitGUIDInPartyOrRaid` added its own raid1..25 sweep per
+     event — in a 25er easily 100+ C calls per event, hundreds of times a
+     second. Group membership only changes on roster events, so raid/party
+     members now resolve through a lazily-rebuilt map, staled by all four
+     roster events (they funnel through `RoleCheckerUpdateRoster`) and by
+     `PLAYER_ENTERING_WORLD`. Deliberately preserved semantics: VOLATILE
+     tokens (target, focus, pet, every `*target`) stay live compares;
+     `GetBestUnitId`'s result ORDER is byte-identical (raid, then party1..4
+     interleaved with their partyNtarget compares, then the singles — the old
+     `party0` probe was an invalid token whose UnitGUID is always nil, dropped);
+     RoleChecker keeps its historical raid1..25 horizon via the stored index
+     (raid26..40 stay unknown to it, exactly as before).
+     - Re-check in a party AND a raid: target/heal announcements that name a
+       unit ("party 2", "raid 15") still name the right one; role-based aq
+       announcements unchanged. `/skuperf combat` avg drops again in groups.

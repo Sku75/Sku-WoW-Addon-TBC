@@ -129,6 +129,51 @@ local tAuraMembershipScan = {}
 local tAuraMembershipFilters = { "HELPFUL", "HARMFUL" }
 local tLastAuraCleuEvalTime = {}
 
+-- [v43.0] GUID -> group-member index map (the WeakAuras approach).
+--
+-- GetBestUnitId swept raid1..40 with a UnitGUID call each, and RoleChecker's
+-- RoleCheckerIsUnitGUIDInPartyOrRaid did its own raid1..25 sweep — BOTH run per
+-- combat-log event (GetBestUnitId two or three times), which in a 25er is
+-- easily 100+ C calls per event, hundreds of times a second. Group membership
+-- only changes on roster events, so the raid/party tokens live in these maps,
+-- rebuilt lazily after any of the four roster events (all funnel through
+-- RoleCheckerUpdateRoster) staled them. VOLATILE tokens (target, focus, pet,
+-- every *target) deliberately stay live UnitGUID compares — they change outside
+-- roster events. Values are INDEX NUMBERS, not tokens, so RoleChecker can keep
+-- its historical raid1..25 horizon exactly.
+local tRaidGuidIndex = {}
+local tPartyGuidIndex = {}
+local tGroupGuidMapValid = false
+
+local function tEnsureGroupGuidMap()
+	if tGroupGuidMapValid then
+		return
+	end
+	for k in pairs(tRaidGuidIndex) do tRaidGuidIndex[k] = nil end
+	for k in pairs(tPartyGuidIndex) do tPartyGuidIndex[k] = nil end
+	if IsInRaid() then
+		for x = 1, 40 do
+			local tGuid = UnitGUID("raid" .. x)
+			if tGuid and tRaidGuidIndex[tGuid] == nil then
+				tRaidGuidIndex[tGuid] = x
+			end
+		end
+	end
+	if IsInGroup() then
+		for x = 1, 4 do
+			local tGuid = UnitGUID("party" .. x)
+			if tGuid and tPartyGuidIndex[tGuid] == nil then
+				tPartyGuidIndex[tGuid] = x
+			end
+		end
+	end
+	tGroupGuidMapValid = true
+end
+
+local function tInvalidateGroupGuidMap()
+	tGroupGuidMapValid = false
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- W4 Phase D (Rework B-step-2): SkuAuras is a runtime-toggleable top-level
 -- AceAddon. AceAddon runs OnInitialize ONCE per session but OnEnable on EVERY
@@ -420,15 +465,25 @@ function SkuAuras:GetBestUnitId(aUnitGUID)
 		end
 	end
 
+	-- [v43.0] Group members resolve through tRaidGuidIndex / tPartyGuidIndex
+	-- instead of a 40-token UnitGUID sweep per call (see the map's comment). The
+	-- RESULT is order-identical to the old sweep — consumers read [1], and the
+	-- old order was raid ascending, then party0 (an invalid token whose UnitGUID
+	-- is always nil, so it never matched — dropped), then party1..4 INTERLEAVED
+	-- with their volatile partyNtarget compares, then the singles below.
+	tEnsureGroupGuidMap()
 	if IsInRaid() then
-		for x = 1, 40 do
-			checkUnit("raid" .. x)
+		local tRaidIdx = tRaidGuidIndex[aUnitGUID]
+		if tRaidIdx then
+			tUnitIds[#tUnitIds + 1] = "raid" .. tRaidIdx
 		end
 	end
 	if IsInGroup() then
-		checkUnit("party0")
+		local tPartyIdx = tPartyGuidIndex[aUnitGUID]
 		for x = 1, 4 do
-			checkUnit("party" .. x)
+			if tPartyIdx == x then
+				tUnitIds[#tUnitIds + 1] = "party" .. x
+			end
 			checkUnit("party" .. x .. "target")
 		end
 	end
@@ -676,6 +731,7 @@ local tItemHook
 function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	--print("PLAYER_ENTERING_WORLD", aEvent, aIsInitialLogin, aIsReloadingUi)
 	SkuAuras:InvalidateAuraListCache()
+	tInvalidateGroupGuidMap()
 	SkuSettings:Sub("SkuAuras", nil, "char")
 	SkuSettings:Sub("SkuAuras", nil, "char").Auras = SkuSettings:Sub("SkuAuras", nil, "char").Auras or {}
 
@@ -2290,21 +2346,24 @@ function SkuAuras:RoleCheckerIsUnitGUIDInPartyOrRaid(aUnitGUID)
 	if not aUnitGUID then
 		return
 	end
+	-- [v43.0] Map lookups instead of per-event UnitGUID sweeps (see
+	-- tRaidGuidIndex). The historical raid horizon of raid1..25 is preserved via
+	-- the stored index: raid26..40 stay unknown here, exactly as before.
 	if not UnitInRaid("player") then
 		if aUnitGUID == UnitGUID("player") then
 			return "player"
 		end
-		for x = 1, 4 do
-			if aUnitGUID == UnitGUID("party"..x) then
-				return "party"..x
-			end
+		tEnsureGroupGuidMap()
+		local tIdx = tPartyGuidIndex[aUnitGUID]
+		if tIdx then
+			return "party"..tIdx
 		end
 	end
 	if UnitInRaid("player") then
-		for x = 1, 25 do
-			if aUnitGUID == UnitGUID("raid"..x) then
-				return "raid"..x
-			end
+		tEnsureGroupGuidMap()
+		local tIdx = tRaidGuidIndex[aUnitGUID]
+		if tIdx and tIdx <= 25 then
+			return "raid"..tIdx
 		end
 	end
 end
@@ -2363,6 +2422,9 @@ end
 function SkuAuras:RoleCheckerUpdateRoster()
 	--print("------------RoleCheckerUpdateRoster")
 	tUnitRoles = {}
+	-- [v43.0] All four roster events funnel through here — stale the GUID map;
+	-- it rebuilds lazily on next use.
+	tInvalidateGroupGuidMap()
 end
 
 function SkuAuras:RoleCheckerGetRoster()
