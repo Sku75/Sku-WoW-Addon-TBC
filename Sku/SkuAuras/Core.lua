@@ -1231,7 +1231,10 @@ function SkuAuras:UNIT_INVENTORY_CHANGED(aEventName, a, b, c, d)
 			local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(bagId, slotId)
 			if itemID then
 				local startTime, duration, isEnabled = GetContainerItemCooldown(bagId, slotId)
-				if not SkuAuras.ItemCDRepo[itemId] then
+				-- [v43.0] Was `itemId` (lowercase) — a nil global, so the guard was
+				-- dead and every bag change re-added (and re-timestamped) tracked
+				-- item cooldowns. Live now, which was its written intent.
+				if not SkuAuras.ItemCDRepo[itemID] then
 					tAddFunc(itemID, startTime, duration, isEnabled, "ITEM_COOLDOWN_START")
 				end
 			end
@@ -1242,7 +1245,8 @@ function SkuAuras:UNIT_INVENTORY_CHANGED(aEventName, a, b, c, d)
 		local itemID = GetInventoryItemID("player", slotId)
 		if itemID then
 			local startTime, duration, isEnabled = GetInventoryItemCooldown("player", slotId)
-			if not SkuAuras.ItemCDRepo[itemId] then
+			-- [v43.0] Same dead `itemId` guard as the bag loop above.
+			if not SkuAuras.ItemCDRepo[itemID] then
 				tAddFunc(itemID, startTime, duration, isEnabled, "ITEM_COOLDOWN_START")
 			end
 		end
@@ -1419,6 +1423,25 @@ local tEvaluateDataMT = {
 tLazyEvaluateFields = {
 	spellNameUsable = function()
 		return SkuAuras:GetSpellNamesUsable()
+	end,
+	-- [v43.0] LibRangeCheck's GetRange runs a checker cascade of item/spell
+	-- range probes — dozens of C calls, and it ran eagerly on EVERY event with
+	-- a target. Readers test truthiness (`if aEventData.targetUnitDistance`),
+	-- so the metatable's nil→false caching is safe.
+	targetUnitDistance = function()
+		if UnitName("target") then
+			local tMaxRange, tMinRange = SkuOptions.RangeCheck:GetRange("target")
+			return tMinRange
+		end
+	end,
+	-- [v43.0] Was an eager GetBestUnitId per event. Must ALWAYS return a table
+	-- (the eager default was {}): the attribute guard passes on any table and
+	-- then INDEXES it, so a cached `false` would crash the reader.
+	targetTargetUnitId = function()
+		if UnitName("playertargettarget") then
+			return SkuAuras:GetBestUnitId(UnitGUID("playertargettarget"))
+		end
+		return {}
 	end,
 	-- How many of the event's item the player still has. Only meaningful when the
 	-- event carried an itemId; without one the whole 5-bag sweep was pure waste.
@@ -1774,10 +1797,8 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 		tDestinationUnitIDCannAttack = CombatLog_Object_IsA(tEventData[CleuBase.destFlags], CombatLogFilterAttackable)
 	end
 
-	local tTargetTargetUnitId = {}
-	if UnitName("playertargettarget") then
-		tTargetTargetUnitId = SkuAuras:GetBestUnitId(UnitGUID("playertargettarget"))
-	end
+	-- [v43.0] targetTargetUnitId + targetUnitDistance moved to
+	-- tLazyEvaluateFields — computed on first read instead of per event.
 
 	local tSourceUnitIDCannAttack
 	if tSourceUnitID and tSourceUnitID[1] then
@@ -1962,7 +1983,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 		sourceUnitId = tSourceUnitID,
 		sourceName = tEventData[CleuBase.sourceName],
 		destUnitId = tDestinationUnitID,
-		targetTargetUnitId = tTargetTargetUnitId,
+		-- targetTargetUnitId is LAZY now — see tLazyEvaluateFields.
 		destName = tEventData[CleuBase.destName],
 		event = subevent,
 		spellId = tEventData[CleuBase.spellId],
@@ -1991,12 +2012,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 	tEvaluateData.spellId = tEventData[CleuBase.spellId]
 	tEvaluateData.spellName = tEventData[CleuBase.spellName]
 
-	if UnitName("target") then
-   	local tMaxRange, tMinRange = SkuOptions.RangeCheck:GetRange("target")
-		if tMinRange then
-			tEvaluateData.targetUnitDistance = tMinRange
-		end
-	end
+	-- targetUnitDistance is LAZY now — see tLazyEvaluateFields.
 
 	if sfind(subevent, "_AURA_") then
 		tEvaluateData.auraType = tEventData[15]
@@ -2514,10 +2530,11 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:LogRecorder(aEventName, aEventData)
-	if SkuSettings:Sub("SkuAuras", nil, "global").log then
-		if SkuSettings:Sub("SkuAuras", nil, "global").log.enabled == true then
-			SkuSettings:Sub("SkuAuras", nil, "global").log.data[#SkuSettings:Sub("SkuAuras", nil, "global").log.data + 1] = {event = aEventName, data = aEventData,}
-		end
+	-- [v43.0] One settings walk instead of four — this runs on EVERY combat-log
+	-- event, and the walks ran even with logging disabled.
+	local tLog = SkuSettings:Sub("SkuAuras", nil, "global").log
+	if tLog and tLog.enabled == true then
+		tLog.data[#tLog.data + 1] = {event = aEventName, data = aEventData,}
 	end
 end
 

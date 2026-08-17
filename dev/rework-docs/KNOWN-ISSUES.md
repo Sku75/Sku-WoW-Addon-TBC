@@ -448,3 +448,16 @@ here so a future session doesn't re-derive the analysis from scratch.
      - Re-check in a party AND a raid: target/heal announcements that name a
        unit ("party 2", "raid 15") still name the right one; role-based aq
        announcements unchanged. `/skuperf combat` avg drops again in groups.
+  6. **More lazy fields + three per-event micro-costs**
+     (`SkuAuras/Core.lua`). `targetUnitDistance` (LibRangeCheck's GetRange is a
+     checker CASCADE of item/spell range probes and ran on every event with a
+     target) and `targetTargetUnitId` (an eager GetBestUnitId per event) moved
+     into the existing `tLazyEvaluateFields` metatable — computed on first read.
+     `targetTargetUnitId` always returns a table (eager default was `{}`)
+     because its reader indexes after a truthiness guard. `LogRecorder` does
+     one settings walk instead of four per event. And the `UNIT_INVENTORY_CHANGED`
+     guard tested `ItemCDRepo[itemId]` with a never-assigned lowercase global —
+     always nil, so every bag change re-added (re-timestamped) tracked item
+     cooldowns; the guard is live now, which was its written intent.
+     - Re-check: a "target distance" aura and a "ziel deines ziels" aura still
+       fire; an item-cooldown aura still announces cooldown end once.
