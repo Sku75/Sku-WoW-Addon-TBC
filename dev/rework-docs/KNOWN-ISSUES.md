@@ -406,3 +406,26 @@ here so a future session doesn't re-derive the analysis from scratch.
        when nothing else happens (stand still, no combat, watch the ring for
        the breadcrumb); a non-`single` condition-aura must not spam (deadline
        passes are one-shot, not periodic).
+  4. **UNIT_AURA drives an evaluation on real membership change**
+     (`SkuAuras/Core.lua`, `tAuraMembershipDirty` / `AuraMembershipCheck` /
+     `AnyAuraWatchesAuraLists`). UNIT_AURA used to only stale the list cache,
+     never schedule an evaluation — so a condition aura ("debuff list target
+     does NOT contain X") reacted only when the matching combat-log event
+     arrived, and out of CLEU range / out of combat the fall-off waited for the
+     next unrelated event. Now UNIT_AURA (player/target) marks the unit; the
+     frame driver drains the marks into a bounded NAME rescan (UnitAura caps at
+     40 indices regardless of how many debuffs a raid boss carries) and fires
+     ONE synthetic `UNIT_AURA_CHANGED` pass only when the name SET changed.
+     Raid-storm dampers, all deliberate: dose/refresh/duration UNIT_AURA
+     traffic changes no membership → costs only the capped scan; an `_AURA_`
+     CLEU pass for the same unit in the same frame suppresses the extra pass
+     (`tLastAuraCleuEvalTime`); a target CHANGE only resyncs the snapshot
+     (`tAuraMembershipResync`) because the ticker's UNIT_TARGETCHANGE already
+     evaluates on retarget; and with no enabled aura reading lists/durations
+     the whole check early-outs (live scan gate, same pattern as keypress).
+     Breadcrumb on the rare real fire: `aura membership eval <unit>`.
+     - Re-check in a 25er raid: `/skuperf combat` — `EvaluateAllAuras` `n` must
+       NOT balloon versus a fight before this commit; the breadcrumb should be
+       rare (appear/disappear only). Out of combat: let a self-buff expire
+       while standing still — a "contains not" aura on it must speak within a
+       frame of the icon vanishing.

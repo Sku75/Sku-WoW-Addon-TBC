@@ -98,6 +98,37 @@ local tDirtyCooldowns = false
 -- Same precision as a per-frame evaluation (~16 ms), without its cost.
 local tNextDurationDeadline = nil
 
+-- [v43.0] UNIT_AURA membership diff.
+--
+-- UNIT_AURA used to ONLY stale the list cache — it never scheduled an
+-- evaluation. So a condition-style aura ("debuff list target does not contain
+-- X") reacted only when the matching combat-log event arrived, and when it did
+-- not (unit out of combat-log range, quiet out-of-combat expiry) the fall-off
+-- was announced whenever the NEXT unrelated event happened to land.
+--
+-- The handler now also marks the unit here; the frame driver drains the marks
+-- into AuraMembershipCheck, which rescans the unit's aura NAMES (bounded: the
+-- client's UnitAura indices cap at 40, however many debuffs a raid boss carries)
+-- and fires ONE evaluation only when the name SET actually changed. Dose
+-- changes, refreshes and duration ticks — the bulk of raid UNIT_AURA traffic —
+-- change no membership and cost only the capped scan. Two further dampers:
+-- an _AURA_ combat-log pass for the same unit in the same frame skips the
+-- extra evaluation (tLastAuraCleuEvalTime — in-range raid combat, where the
+-- storm is worst, is exactly where CLEU already covers everything), and a
+-- target CHANGE only resyncs the snapshot without evaluating
+-- (tAuraMembershipResync), because the ticker path already evaluates on
+-- retarget via its UNIT_TARGETCHANGE synthetic event.
+local tAuraMembershipDirty = {}
+local tAuraMembershipDirtyPending = false
+local tAuraMembershipResync = {}
+local tAuraMembershipPrev = {
+	player = { HELPFUL = {}, HARMFUL = {} },
+	target = { HELPFUL = {}, HARMFUL = {} },
+}
+local tAuraMembershipScan = {}
+local tAuraMembershipFilters = { "HELPFUL", "HARMFUL" }
+local tLastAuraCleuEvalTime = {}
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- W4 Phase D (Rework B-step-2): SkuAuras is a runtime-toggleable top-level
 -- AceAddon. AceAddon runs OnInitialize ONCE per session but OnEnable on EVERY
@@ -262,6 +293,14 @@ function SkuAuras:OnEnable()
 		if tNextDurationDeadline and GetTime() >= tNextDurationDeadline then
 			tNextDurationDeadline = nil
 			SkuAuras:DURATION_DEADLINE()
+		end
+		-- [v43.0] Membership-diff drain, coalesced like the unit marks above.
+		if tAuraMembershipDirtyPending == true then
+			tAuraMembershipDirtyPending = false
+			for tUnit in pairs(tAuraMembershipDirty) do
+				tAuraMembershipDirty[tUnit] = nil
+				SkuAuras:AuraMembershipCheck(tUnit)
+			end
 		end
 
 		ttime = ttime + time
@@ -1452,6 +1491,9 @@ end
 function SkuAuras:UNIT_AURA(aEvent, aUnit)
 	if aUnit == "player" or aUnit == "target" then
 		SkuAuras:InvalidateAuraListCache(aUnit)
+		-- [v43.0] Also mark for the membership diff (see tAuraMembershipDirty).
+		tAuraMembershipDirty[aUnit] = true
+		tAuraMembershipDirtyPending = true
 	end
 end
 
@@ -1460,6 +1502,102 @@ function SkuAuras:PLAYER_TARGET_CHANGED()
 	-- [v43.0] Publish the change on the next frame instead of up to 250 ms later.
 	SkuAuras:MarkUnitDirty("player")
 	SkuAuras:MarkUnitDirty("target")
+	-- [v43.0] Membership snapshot RESYNC only — the ticker path above already
+	-- evaluates on retarget (UNIT_TARGETCHANGE); diffing old target vs new
+	-- target here would just double that pass.
+	tAuraMembershipResync.target = true
+	tAuraMembershipDirty.target = true
+	tAuraMembershipDirtyPending = true
+end
+
+-- [v43.0] Live gate for the membership diff: is there any enabled aura at all
+-- that reads the buff/debuff lists or their durations? A scan, not a cached
+-- flag, for the same staleness reason as the keypress gate (one missed
+-- invalidation site would be a silently dead aura; a scan cannot go stale).
+local tAuraListAttributeNames = {
+	"buffListPlayer", "debuffListPlayer", "buffListTarget", "debuffListTarget",
+	"buffListPlayerDuration", "debuffListPlayerDuration",
+	"buffListTargetDuration", "debuffListTargetDuration",
+}
+function SkuAuras:AnyAuraWatchesAuraLists()
+	local tAuras = SkuSettings:Sub("SkuAuras", nil, "char").Auras
+	if not tAuras then
+		return false
+	end
+	for _, tAuraData in pairs(tAuras) do
+		if tAuraData.enabled == true and tAuraData.attributes then
+			for x = 1, #tAuraListAttributeNames do
+				if tAuraData.attributes[tAuraListAttributeNames[x]] then
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.0] Frame-drained per dirty unit — see tAuraMembershipDirty for the why.
+-- Scans NAMES only (raw UnitAura; weapon enchants are not part of UNIT_AURA and
+-- keep their own WEAPON_ENCHANT_* wake-ups), diffs against the previous
+-- snapshot, always updates the snapshot, and fires one synthetic
+-- UNIT_AURA_CHANGED pass only on a genuine appear/disappear that no _AURA_
+-- combat-log pass covered this frame. The subevent name contains _AURA_ on
+-- purpose: the pass then runs the same frame-accurate cache invalidation any
+-- real aura subevent gets before its lists are rebuilt.
+function SkuAuras:AuraMembershipCheck(aUnit)
+	local tResync = tAuraMembershipResync[aUnit]
+	tAuraMembershipResync[aUnit] = nil
+	local tPrevByFilter = tAuraMembershipPrev[aUnit]
+	if not tPrevByFilter then
+		return
+	end
+	if not SkuAuras:AnyAuraWatchesAuraLists() then
+		return
+	end
+	local tChanged = false
+	for f = 1, 2 do
+		local tFilter = tAuraMembershipFilters[f]
+		local tPrev = tPrevByFilter[tFilter]
+		local tScan = tAuraMembershipScan
+		for k in pairs(tScan) do tScan[k] = nil end
+		for x = 1, 40 do
+			local name = UnitAura(aUnit, x, tFilter)
+			if not name then break end
+			tScan[name] = true
+		end
+		if not tChanged then
+			for k in pairs(tScan) do
+				if not tPrev[k] then tChanged = true break end
+			end
+		end
+		if not tChanged then
+			for k in pairs(tPrev) do
+				if not tScan[k] then tChanged = true break end
+			end
+		end
+		for k in pairs(tPrev) do tPrev[k] = nil end
+		for k in pairs(tScan) do tPrev[k] = true end
+	end
+	if tChanged and not tResync and tLastAuraCleuEvalTime[aUnit] ~= GetTime() then
+		dprint("aura membership eval", aUnit)
+		SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", {
+			GetTime(),
+			"UNIT_AURA_CHANGED",
+			nil,
+			UnitGUID(aUnit),
+			UnitName(aUnit),
+			nil,
+			nil,
+			UnitGUID(aUnit),
+			UnitName(aUnit),
+			nil,
+			nil,
+			nil,
+			nil,
+			nil,
+		})
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1547,8 +1685,17 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 		local tSub = tEventData[CleuBase.subevent]
 		if tSub and (sfind(tSub, "_AURA_") or sfind(tSub, "DISPEL") or sfind(tSub, "STOLEN")) then
 			local tDestGuid = tEventData[CleuBase.destGUID]
-			if tDestGuid == UnitGUID("player") then SkuAuras:InvalidateAuraListCache("player") end
-			if tDestGuid == UnitGUID("target") then SkuAuras:InvalidateAuraListCache("target") end
+			-- [v43.0] Stamp the frame time per unit: the membership-diff drain uses
+			-- it to skip its extra evaluation when an _AURA_ combat-log pass already
+			-- ran for that unit this same frame (see tLastAuraCleuEvalTime).
+			if tDestGuid == UnitGUID("player") then
+				SkuAuras:InvalidateAuraListCache("player")
+				tLastAuraCleuEvalTime.player = GetTime()
+			end
+			if tDestGuid == UnitGUID("target") then
+				SkuAuras:InvalidateAuraListCache("target")
+				tLastAuraCleuEvalTime.target = GetTime()
+			end
 		end
 	end
 
