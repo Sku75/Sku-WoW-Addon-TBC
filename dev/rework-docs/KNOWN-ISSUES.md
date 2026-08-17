@@ -426,3 +426,135 @@ here so a future session doesn't re-derive the analysis from scratch.
   Alternative to re-check briefly at the same time: SAPIence
   (github.com/LeonarddeR/SAPIence, LGPL, Rust, same mechanism) — as of
   2026-07-05 zero releases/binaries, not a candidate yet.
+- **v43.0 aura reaction-time work — 8 changes, ALL UNTESTED in game.** Ask:
+  "check the aura latency monitor". Investigated 2026-08-17 after the standing
+  complaint that auras used to react a second or more late. Sounds were
+  exonerated first: the mp3s were measured for leading silence by parsing the
+  Layer-III side info (per-granule `part2_3_length`, 13 ms resolution) — brass /
+  glass / waterdrop / error_* are all 0 ms, notification1-27 are 0-26 ms except
+  notification3/4/5/6 at 52-65 ms, and the declared lengths in
+  SkuAudioDataLenIndex sit at or just under the real durations. So no clip has a
+  latency problem worth fixing. Everything below is code. Grep `v42.14` in the
+  three files for the full reasoning at each site (the tag is the work's
+  original version; it landed as 43.0).
+
+  The latency budget that was measured, per hop: trigger → EvaluateAllAuras was
+  0 ms for real CLEU, +100 ms fixed for own-cast, 0-250 ms for anything polled;
+  OutputString → PlaySoundFile was 0-100 ms; then 0 ms or up to 85 % of whatever
+  sound was playing in front of it; then 0-65 ms of file lead-in. Worst realistic
+  stack ≈ 1.5 s, which matches the original complaint.
+
+  1. **Audio pump wakes on the next frame** (`SkuVoice-1.0.lua`, `mQueueDirty`).
+     The pump body was gated on `fTime > 0.1` and `OutputString` never played
+     anything itself, so every Sku sound waited 0-100 ms (~50 ms avg). Now an
+     append makes the body run on the next frame (~16 ms). Ordering, `tPlayNext`
+     and overwrite rules untouched; the dirty run does not reset `fTime`, so the
+     0.1 s cadence keeps its own clock.
+     - Sub-fix, do not lose it: the tombstone sweep + removal are **cadence
+       only**. They end a sound at its DECLARED length and hard-`StopSound` it,
+       and declared lengths sit slightly under the real durations (brass1
+       declares 0.32 s, file is 0.34 s) — running them on the extra frame would
+       move the stop from "up to 100 ms late" to exactly on time and start
+       clipping ~20 ms of tail. Inaudible on a beep, audible on a word's final
+       consonant.
+     - Re-check: normal announcements must not lose their final syllable.
+  2. **Aura SOUND outputs skip the TTSSepPause hold, one at a time**
+     (`SkuVoice-1.0.lua` + `SkuAuras/data.lua`, `auraSound` flag / 16th
+     positional arg). TTSSepPause (85) is the word-to-word pacing knob for the
+     concatenated audio-file speech — right for words, wrong for a one-shot beep,
+     because the hold scales with whatever plays in front of it (1.36 s sound in
+     front = 1.15 s wait). The first pending aura sound now starts immediately
+     **unless another aura sound is still playing**, in which case it falls back
+     to the normal queued path — deliberate maintainer call: two aura sounds
+     overlapping are indistinguishable, which is worse than one being late.
+     Aura sounds still BLOCK what is queued behind them (not excluded from the
+     `tPlayNext` scan), so speech after an aura sound waits as before.
+     - Only the GENERATED sound-output family may set the flag. The word/text
+       outputs above it must not, or a multi-word aura output slurs its words.
+     - Re-check: two auras firing on one event must stay sequential and
+       distinguishable; "Inneres Feuer verloren" must not slur.
+  3. **`spellNameUsable` + `itemCount` are lazy** (`SkuAuras/Core.lua`,
+     `tLazyEvaluateFields` + a metatable on `tEvaluateData`). Both were gathered
+     eagerly on EVERY combat-log event, before anything checked whether an aura
+     wanted them, and no default aura references either. `GetSpellNamesUsable`
+     alone is ~800-1500 C calls (132 action slots × GetActionInfo + GetSpellInfo
+     + ActionButtonUsable, itself up to 8 GetShapeshiftFormID plus HasAction /
+     IsUsableAction / GetSpellCooldown / GetSpellCharges / IsActionInRange /
+     GetVertexColor / IsDesaturated). Chosen over a precomputed "which attributes
+     are in use" set on purpose: such a set needs invalidating at every aura
+     create / enable / import / delete site and one missed site is a silently
+     dead aura. Lazy cannot go stale. nil caches as `false`; verified every
+     reader tests truthiness, and nothing iterates `tEvaluateData` with `pairs`.
+     - Re-check: an aura using "Zauber benutzbar" or item count must still fire.
+  4. **Keypress early-out** (`SkuAuras/Core.lua`, `OnKeyDown`). The handler is
+     armed for every keystroke in the game and ran a full `EvaluateAllAuras` per
+     keypress — one complete evaluation per typed character in chat. Now it scans
+     the enabled auras for a `pressedKey` attribute and returns if none has one.
+     A live scan, not a cached flag, for the same staleness reason as 3.
+     - Re-check: create a `pressedKey` aura and confirm it still fires.
+  5. **Health / power / target / cooldown are event-driven, coalesced per frame**
+     (`SkuAuras/Core.lua`; `UNIT_HEALTH`, `UNIT_POWER_UPDATE`, `UNIT_TARGET`,
+     `SPELL_UPDATE_COOLDOWN`; `tTrackedUnits` / `tDirtyUnits` / `MarkUnitDirty`).
+     All four confirmed present in the 2.5.6 binary. The handlers only MARK; the
+     frame driver runs the ORIGINAL `UNIT_TICKER` / `COOLDOWN_TICKER` for what is
+     marked, so change detection, event payloads and announcements are identical
+     — only the timing moves (0-250 ms → ~16 ms). Coalescing is deliberate and
+     load-bearing: calling the ticker straight from the event would have traded
+     latency for an unbounded rise in evaluations/sec in a raid, since
+     UNIT_HEALTH fires many times per second per unit. Marking caps the work at
+     one tick per unit per frame. `UNIT_TICKER` emits nothing unless its UnitRepo
+     snapshot changed, which is why an event on top of a backstop tick cannot
+     double-announce. Unit filter needed because UNIT_HEALTH & co are broadcast
+     for every unit in range (AceEvent has no RegisterUnitEvent).
+     - **Combo points stay polled.** `UNIT_COMBO_POINTS` /
+       `PLAYER_COMBO_POINTS` do NOT exist on this client (0 hits in the binary;
+       combo points only became a power type in Legion, WeakAuras polls
+       `GetComboPoints` here too). Hence the ticker keeps the **player at
+       0.25 s** — only the party/raid sweep dropped to 0.5 s. Do not "simplify"
+       that split away, it would regress combo-point latency.
+     - Re-check: a combo-point aura must be no slower than before; a
+       health-triggered and a cooldown-ready aura should be clearly prompter.
+  6. **`SPELL_CAST_SUCCESS` split into two passes** (`SkuAuras/Core.lua`).
+     WoW has no cooldown-started combat-log event, so Sku manufactured
+     `SPELL_COOLDOWN_START` by RELABELLING the `SPELL_CAST_SUCCESS` table in
+     place and evaluating once. Two consequences, both now fixed: the relabel
+     needs `GetSpellCooldown` settled, hence a 0.1 s timer, so the fast event was
+     held hostage by the slow event's data dependency; and the two events became
+     mutually exclusive, so an aura on `SPELL_CAST_SUCCESS` never fired for the
+     player's own cast of any spell WITH a cooldown. Now: immediate pass under
+     the true name, then bookkeeping at +0.1 s and a second pass restricted to
+     auras that affirmatively watch `SPELL_COOLDOWN_START`
+     (`tAuraWatchesEvent`, `aRequiredEventValue`).
+     - The restriction is what stops an aura with no event condition getting two
+       passes for one cast. `aExcludeEventValue` additionally skips an aura that
+       watches BOTH names (they are OR-ed), which would otherwise announce twice
+       per cast for a non-`single` action.
+     - **Expected NEW behaviour, not a bug:** an aura built on "Zauber
+       erfolgreich" for your own cooldown spells was silently dead and will now
+       speak.
+     - Re-check: a `SPELL_COOLDOWN_START` aura must behave exactly as before and
+       must not double-announce.
+  7. **Weapon-enchant near-expiry refire gated on the whole second**
+     (`SkuAuras/Core.lua`, `tExpirySec` / `lastEnchantExpirySec`). `tNearExpiry`
+     is true for the whole last 120 s of any temp enchant and used to re-fire
+     `WEAPON_ENCHANT_UPDATE` on EVERY tick — a full `EvaluateAllAuras` 4×/s for
+     two minutes after every sharpening stone or oil, silently. Maintainer
+     accepted the ≤1 s slip.
+     - Re-check: a "Waffenverzauberung Dauer < X" aura must still fire, within
+       about a second.
+  8. **`GetAudiodata`'s three locals** (`SkuVoice-1.0.lua`). `tFile` / `tPath` /
+     `tLen` were assigned without `local`, writing three globals per call.
+     Verified safe: `OutputString` captures the return values into its own
+     locals and SkuBeacon's same-named `tFile` is a proper local — nothing read
+     the leaked globals.
+
+  Measurable check, no code change needed: `/skuperf reset`, run a fight,
+  `/skuperf combat` → the `EvaluateAllAuras` avg and total should drop sharply.
+  `n` may RISE from the new event sources and the extra cooldown pass; that is
+  expected, the per-call cost is what moved.
+
+  Revert candidates, cleanest first: item 2 = the `data.lua` one-liner; item 1 =
+  the `mQueueDirty` gate; item 6 = the split in
+  `COMBAT_LOG_EVENT_UNFILTERED`; item 5 = the four `RegisterEvent` lines (the
+  frame-driver drain then simply never fires). Items 3/4/7/8 are independent of
+  each other. Status: open / awaiting extended play-testing for regressions.

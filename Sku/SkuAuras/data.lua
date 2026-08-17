@@ -598,7 +598,14 @@ for tOutputString, tFriendlyName in pairs(SkuAuras.outputSoundFiles) do
                ]]
                --SkuOptions.Voice:OutputString("sound-silence0.1", true, false, 0.3, true)
             --end
-            SkuOptions.Voice:OutputString(tOutputString, aFirst, true, 0.3, true)
+            -- [v42.14] 16th arg = aAuraSound: let the pump start this beep without
+            -- waiting out the TTSSepPause hold of whatever is playing in front of it
+            -- (it still yields to another aura sound that is already playing, so two
+            -- aura sounds never overlap). Positional rather than the table form on
+            -- purpose: no table allocated on the aura firing path.
+            -- This is the ONLY output family that may set it -- the word/text outputs
+            -- above must keep the hold or a multi-word output would slur.
+            SkuOptions.Voice:OutputString(tOutputString, aFirst, true, 0.3, true, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true)
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
             print(tFriendlyName)

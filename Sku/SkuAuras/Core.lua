@@ -44,6 +44,42 @@ SkuAuras.SpellCDRepo = {}
 SkuAuras.UnitRepo = {}
 SkuAuras.thingsNamesOnCd = {}
 
+-- [v42.14] The exact unit set the ticker walks, as a lookup. UNIT_HEALTH /
+-- UNIT_POWER_UPDATE / UNIT_TARGET are broadcast for EVERY unit in range
+-- (nameplates, bystanders), so the event handlers must filter to the units Sku
+-- actually tracks or they would run UNIT_TICKER for strangers. AceEvent has no
+-- RegisterUnitEvent, so the filter is this one table lookup instead.
+-- Kept in lockstep with the ticker loop in OnEnable.
+local tTrackedUnits = {
+	player = true,
+	focus = true,
+	target = true,
+	pet = true,
+}
+for x = 1, 4 do
+	tTrackedUnits["party"..x] = true
+end
+for x = 1, 40 do
+	tTrackedUnits["raid"..x] = true
+end
+
+-- [v42.14] Coalescing buffers for the event-driven unit/cooldown path.
+--
+-- UNIT_HEALTH / UNIT_POWER_UPDATE can fire many times per second PER UNIT in a
+-- raid, and every UNIT_TICKER call that sees a changed integer percentage fires a
+-- synthetic event -> a full EvaluateAllAuras. Calling the ticker straight from the
+-- event handler would therefore have traded 0-250 ms of latency for an unbounded
+-- rise in evaluations per second, which in a raid is its own kind of slow.
+--
+-- So the handlers only MARK, and the frame driver drains the marks once per frame.
+-- Result: latency is one frame (~16 ms, better than the 0-250 ms it replaces) AND
+-- the work is hard-capped at one UNIT_TICKER per tracked unit per frame, with all
+-- the events for one unit inside a frame collapsing into a single tick. Same
+-- mark-then-process-next-frame shape WeakAuras uses for its cooldown frame.
+local tDirtyUnits = {}
+local tDirtyUnitsPending = false
+local tDirtyCooldowns = false
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- W4 Phase D (Rework B-step-2): SkuAuras is a runtime-toggleable top-level
 -- AceAddon. AceAddon runs OnInitialize ONCE per session but OnEnable on EVERY
@@ -64,6 +100,30 @@ end
 function SkuAuras:RegisterAuraEvents()
 	SkuAuras:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuAuras:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+
+	-- [v42.14] Event-driven unit + cooldown triggers.
+	--
+	-- Health, power, target changes and cooldown-end used to be discovered ONLY by
+	-- the 0.25 s OnUpdate ticker below, so every aura triggered by them inherited
+	-- 0-250 ms of latency (125 ms average) for no reason: this client has real
+	-- events for all of them. Verified present in the 2.5.6 binary, and UNIT_HEALTH
+	-- / UNIT_POWER_UPDATE are already in live use by SkuCore/aq.lua.
+	--
+	-- These handlers do NOT reimplement anything: they call the same UNIT_TICKER /
+	-- COOLDOWN_TICKER as before, just sooner. Those functions only emit an event
+	-- when their UnitRepo snapshot actually changed, so an event arriving on top of
+	-- a tick can never produce a duplicate announcement -- which is why the ticker
+	-- can safely stay on as a backstop.
+	--
+	-- NOT evented: combo points. UNIT_COMBO_POINTS / PLAYER_COMBO_POINTS do not
+	-- exist in this client (0 hits in the binary; combo points only became a power
+	-- type in Legion, and WeakAuras polls GetComboPoints here too). They stay on the
+	-- player ticker, which is why the player keeps its original 0.25 s cadence.
+	SkuAuras:RegisterEvent("UNIT_HEALTH")
+	SkuAuras:RegisterEvent("UNIT_POWER_UPDATE")
+	SkuAuras:RegisterEvent("UNIT_TARGET")
+	SkuAuras:RegisterEvent("SPELL_UPDATE_COOLDOWN")
+
 	-- [W3/Tier2 #5] aura-list cache invalidation (see tAuraListCache)
 	SkuAuras:RegisterEvent("UNIT_AURA")
 	SkuAuras:RegisterEvent("PLAYER_TARGET_CHANGED")
@@ -105,6 +165,27 @@ function SkuAuras:OnEnable()
 	f:SetPropagateKeyboardInput(true)
 	f:SetPoint("TOP", _G["SkuAurasControl"], "BOTTOM", 0, 0)
 	f:SetScript("OnKeyDown", function(self, aKey)
+		-- [v42.14] Do nothing unless some enabled aura actually watches keys.
+		--
+		-- This handler is armed for EVERY keystroke in the game, and it used to run a
+		-- full EvaluateAllAuras per keypress -- so spamming a rotation key or typing a
+		-- sentence in chat cost one complete aura evaluation per character. No default
+		-- aura uses pressedKey at all.
+		-- Deliberately a live scan of the aura table rather than a cached flag: the
+		-- aura set is small (tens of entries) and a cached flag would have to be
+		-- invalidated at every create/enable/import/delete site, where one missed call
+		-- site means a silently dead aura. A scan cannot go stale.
+		local tAuras = SkuSettings:Sub("SkuAuras", nil, "char").Auras
+		if not tAuras then return end
+		local tKeyAuraExists = false
+		for _, tAuraData in pairs(tAuras) do
+			if tAuraData.enabled == true and tAuraData.attributes and tAuraData.attributes.pressedKey then
+				tKeyAuraExists = true
+				break
+			end
+		end
+		if tKeyAuraExists ~= true then return end
+
 		local aEventData =  {
 			GetTime(),
 			"KEY_PRESS",
@@ -129,17 +210,52 @@ function SkuAuras:OnEnable()
 	-- false). New frames are shown by default, so this is a no-op on first load.
 	f:Show()
 
+	-- [v42.14] Split cadence. The real events registered in RegisterAuraEvents now
+	-- carry health / power / target / cooldown-end, so this loop is a BACKSTOP for
+	-- everything except the player.
+	--
+	--   player: still every 0.25 s, UNCHANGED. Combo points have no event on this
+	--           client and are only read here, so slowing the player down would
+	--           REGRESS combo-point latency. Weapon enchants ride along with it.
+	--   others: every 0.5 s. The 45-unit sweep is ~10 API calls per existing unit,
+	--           and with the events doing the real work it only needs to catch
+	--           anything the events miss.
 	local ttime = 0
+	local tSweepTime = 0
 	local f = _G["SkuAurasControl"] or CreateFrame("Frame", "SkuAurasControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time)
+		-- [v42.14] Drain the event marks first, every frame. Idle cost is two boolean
+		-- tests; when something is marked, each affected unit gets exactly one
+		-- UNIT_TICKER no matter how many events named it during this frame.
+		if tDirtyUnitsPending == true then
+			tDirtyUnitsPending = false
+			for tUnit in pairs(tDirtyUnits) do
+				tDirtyUnits[tUnit] = nil
+				SkuAuras:UNIT_TICKER(tUnit)
+			end
+		end
+		if tDirtyCooldowns == true then
+			tDirtyCooldowns = false
+			SkuAuras:COOLDOWN_TICKER()
+		end
+
 		ttime = ttime + time
 		if ttime < 0.25 then return end
+		-- real elapsed, not a flat 0.25: on a slow frame the tick can be late and the
+		-- sweep must not drift behind wall-clock.
+		local tElapsed = ttime
+		ttime = 0
 
 		SkuAuras:COOLDOWN_TICKER()
 		SkuAuras:UNIT_TICKER("player")
 		--SkuAuras:UNIT_TICKER("playertarget")
-		SkuAuras:UNIT_TICKER("focus")
+
+		tSweepTime = tSweepTime + tElapsed
+		if tSweepTime < 0.5 then return end
+		tSweepTime = 0
+
 		--SkuAuras:UNIT_TICKER("focustarget")
+		SkuAuras:UNIT_TICKER("focus")
 		SkuAuras:UNIT_TICKER("target")
 		--SkuAuras:UNIT_TICKER("targettarget")
 		SkuAuras:UNIT_TICKER("pet")
@@ -151,8 +267,6 @@ function SkuAuras:OnEnable()
 		for x = 1, 40 do
 			SkuAuras:UNIT_TICKER("raid"..x)
 		end
-
-		ttime = 0
 	end)
 	f:Show()
 
@@ -184,6 +298,14 @@ function SkuAuras:OnDisable()
 		_G["SkuAurasControl"]:SetScript("OnUpdate", nil)
 		_G["SkuAurasControl"]:Hide()
 	end
+
+	-- [v42.14] Drop any event marks that will now never be drained, so a later
+	-- re-enable does not start by ticking a stale unit set.
+	for tUnit in pairs(tDirtyUnits) do
+		tDirtyUnits[tUnit] = nil
+	end
+	tDirtyUnitsPending = false
+	tDirtyCooldowns = false
 
 	-- Stop the keypress trigger from swallowing/forwarding keys: stop
 	-- propagating, drop the key handler, and hide it.
@@ -871,8 +993,28 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 			local tPrevOffId = SkuAuras.UnitRepo[tUnitId].offHandEnchantID or 0
 			local tMainRemoved = (tPrevMainId ~= 0 and tCurMainId == 0)
 			local tOffRemoved = (tPrevOffId ~= 0 and tCurOffId == 0)
-			local tNearExpiry = (hasMainHand and mainExpiration and (mainExpiration / 1000) <= 120)
-				or (hasOffHand and offExpiration and (offExpiration / 1000) <= 120)
+			-- [v42.14] Near-expiry refire is gated on the remaining WHOLE SECOND
+			-- changing, not on every tick.
+			--
+			-- tNearExpiry is true for the whole last 120 s of any temp enchant, and it
+			-- used to re-fire WEAPON_ENCHANT_UPDATE on EVERY tick -- a full
+			-- EvaluateAllAuras 4x/s for two minutes after every sharpening stone or oil,
+			-- silently, in the background. The conditions users actually write are
+			-- "Dauer < X" at a whole-second scale, so one evaluation per elapsed second
+			-- is exactly as precise and costs a quarter as much. Worst-case slip for
+			-- such an aura is therefore under 1 s.
+			local tExpirySec
+			if hasMainHand and mainExpiration then
+				tExpirySec = mfloor(mainExpiration / 1000)
+			end
+			if hasOffHand and offExpiration then
+				local tOffSec = mfloor(offExpiration / 1000)
+				if not tExpirySec or tOffSec < tExpirySec then
+					tExpirySec = tOffSec
+				end
+			end
+			local tNearExpiry = (tExpirySec ~= nil and tExpirySec <= 120
+				and tExpirySec ~= SkuAuras.UnitRepo[tUnitId].lastEnchantExpirySec)
 			local function tFireEnchantEvent(aSubevent, aHandName)
 				SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", {
 					GetTime(), aSubevent, nil, UnitGUID(tUnitId), UnitName(tUnitId),
@@ -886,6 +1028,7 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 					tFireEnchantEvent("WEAPON_ENCHANT_UPDATE", L["Main Hand"])
 				end
 			end
+			SkuAuras.UnitRepo[tUnitId].lastEnchantExpirySec = tExpirySec
 			SkuAuras.UnitRepo[tUnitId].mainHandEnchantID = tCurMainId
 			SkuAuras.UnitRepo[tUnitId].offHandEnchantID = tCurOffId
 			SkuAuras.UnitRepo[tUnitId].hasMainHandEnchant = hasMainHand
@@ -1033,9 +1176,39 @@ function SkuAuras:COMBAT_LOG_EVENT_UNFILTERED(aEventName, aCustomEventData)
 
 
 	if tEventData[CleuBase.subevent] == "SPELL_CAST_SUCCESS" then
+		-- [v42.14] Two passes instead of one relabelled pass.
+		--
+		-- WoW has no "cooldown started" combat-log event, so Sku manufactures
+		-- SPELL_COOLDOWN_START out of SPELL_CAST_SUCCESS. It used to do that by
+		-- RELABELLING this very event table in place (SPELL_COOLDOWN_START() sets
+		-- aEventData[subevent] = "SPELL_COOLDOWN_START") and then evaluating once. Two
+		-- consequences, both fixed here:
+		--
+		--   1. The relabel needs GetSpellCooldown to have settled, hence the 0.1 s
+		--      timer -- so the FAST event was held hostage by the SLOW event's data
+		--      dependency and every SPELL_CAST_SUCCESS-driven aura paid 100 ms.
+		--   2. The two events became mutually exclusive: for the player's own cast of a
+		--      spell WITH a cooldown, an aura configured on SPELL_CAST_SUCCESS never
+		--      fired at all, because by evaluation time the event had been renamed.
+		--      (Casts with no cooldown, and other people's casts, return early in
+		--      SPELL_COOLDOWN_START and kept the original name -- which is why this was
+		--      easy to miss.)
+		--
+		-- Now: evaluate immediately under the true name, then do the cooldown
+		-- bookkeeping at +0.1 s and, only if a cooldown actually started, run a SECOND
+		-- pass restricted to auras that affirmatively watch SPELL_COOLDOWN_START. That
+		-- restriction is what keeps the second pass from double-firing auras that have
+		-- no event condition -- they already had their pass above.
+		--
+		-- SPELL_COOLDOWN_START still mutates this same table (wipes slots 15-100,
+		-- relabels) and stores it in SpellCDRepo for the later SPELL_COOLDOWN_END, all
+		-- unchanged; it just happens after the immediate pass has already read it.
+		SkuAuras:EvaluateAllAuras(tEventData)
 		C_Timer.After(0.1, function()
 			SkuAuras:SPELL_COOLDOWN_START(tEventData)
-			SkuAuras:EvaluateAllAuras(tEventData)
+			if tEventData[CleuBase.subevent] == "SPELL_COOLDOWN_START" then
+				SkuAuras:EvaluateAllAuras(tEventData, nil, "SPELL_COOLDOWN_START", "SPELL_CAST_SUCCESS")
+			end
 		end)
 	else
 		SkuAuras:EvaluateAllAuras(tEventData)
@@ -1072,6 +1245,113 @@ local tAuraScratch = {
 	buffPlayer = {},
 	debuffPlayer = {},
 }
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v42.14] LAZY tEvaluateData fields.
+--
+-- EvaluateAllAuras used to gather EVERY field of tEvaluateData up front, before it
+-- looked at whether any aura wanted any of them -- so the two most expensive
+-- gatherers ran on every single combat-log event even for a user with zero enabled
+-- auras. On a filled action bar GetSpellNamesUsable alone is on the order of
+-- 800-1500 C calls (132 action slots, each running GetActionInfo + GetSpellInfo +
+-- ActionButtonUsable, which itself does up to 8 GetShapeshiftFormID calls plus
+-- HasAction / IsUsableAction / GetSpellCooldown / GetSpellCharges / IsActionInRange
+-- / GetVertexColor / IsDesaturated). No default aura references either field.
+--
+-- These two now compute on FIRST READ and cache for the rest of that evaluation.
+-- Chosen over a precomputed "which attributes do the enabled auras use" set on
+-- purpose: such a set has to be invalidated at every aura create / enable / import
+-- / delete site, and one missed site is an aura that silently stops firing. A lazy
+-- read cannot go stale -- if an aura asks, it gets the real value; if none asks, it
+-- was never needed.
+--
+-- nil results are cached as `false` so a genuine miss is not recomputed on every
+-- subsequent aura in the same pass. Verified safe: every reader of these two fields
+-- tests truthiness (`if aEventData.itemCount then`, `if aEventData.spellNameUsable
+-- then`), for which false and nil are identical. Nothing iterates tEvaluateData
+-- with pairs(), so no reader can miss a not-yet-materialised field.
+local tLazyEvaluateFields
+local tEvaluateDataMT = {
+	__index = function(aTab, aKey)
+		local tGetter = tLazyEvaluateFields[aKey]
+		if not tGetter then
+			return nil
+		end
+		local tValue = tGetter(aTab)
+		if tValue == nil then
+			tValue = false
+		end
+		rawset(aTab, aKey, tValue)
+		return tValue
+	end,
+}
+tLazyEvaluateFields = {
+	spellNameUsable = function()
+		return SkuAuras:GetSpellNamesUsable()
+	end,
+	-- How many of the event's item the player still has. Only meaningful when the
+	-- event carried an itemId; without one the whole 5-bag sweep was pure waste.
+	itemCount = function(aTab)
+		local tItemId = rawget(aTab, "itemId")
+		if not tItemId then
+			return nil
+		end
+		local tCount
+		for bagId = 0, 4 do
+			local tNumberOfSlots = GetContainerNumSlots(bagId)
+			for slotId = 1, tNumberOfSlots do
+				local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(bagId, slotId)
+				if itemCount then
+					if itemID == tItemId then
+						if not tCount then
+							tCount = itemCount - 1
+						else
+							tCount = tCount + itemCount
+						end
+					end
+				end
+			end
+		end
+		return tCount
+	end,
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v42.14] Does this aura affirmatively watch aEventValue?
+--
+-- Used to keep the deferred SPELL_COOLDOWN_START pass (see
+-- COMBAT_LOG_EVENT_UNFILTERED) from re-evaluating auras that already had their pass
+-- on the immediate SPELL_CAST_SUCCESS one -- without it, one physical cast would
+-- produce two passes and an aura with no event condition could announce twice.
+--
+-- Only the affirmative operator ("is") counts. An aura whose event condition is
+-- "isNot SPELL_COOLDOWN_START" cannot fire on a SPELL_COOLDOWN_START event anyway,
+-- so skipping it changes nothing. An aura with no event attribute at all is skipped
+-- too: it got its one pass already, which is exactly what it got before this change.
+-- Event values may be ";"-joined lists (e.g.
+-- "SPELL_AURA_APPLIED;SPELL_AURA_REFRESH;SPELL_AURA_APPLIED_DOSE"), so each token is
+-- checked. Event names carry no item:/spell: tags, hence no RemoveTags here.
+local function tAuraWatchesEvent(aAuraData, aEventValue)
+	local tEventAtt = aAuraData.attributes and aAuraData.attributes.event
+	if not tEventAtt then
+		return false
+	end
+	for _, tEntry in pairs(tEventAtt) do
+		if tEntry[1] == "is" and type(tEntry[2]) == "string" then
+			if tEntry[2] == aEventValue then
+				return true
+			end
+			if sfind(tEntry[2], ";", 1, true) then
+				for tToken in string.gmatch(tEntry[2], "[^;]+") do
+					if tToken == aEventValue then
+						return true
+					end
+				end
+			end
+		end
+	end
+	return false
+end
 
 -- [W3/Tier2 #5] Cross-event cache of the four fixed UnitAura name-scans.
 -- EvaluateAllAuras runs once per combat-log event (hundreds/sec in raids) but a
@@ -1134,6 +1414,45 @@ end
 
 function SkuAuras:PLAYER_TARGET_CHANGED()
 	SkuAuras:InvalidateAuraListCache("target")
+	-- [v42.14] Publish the change on the next frame instead of up to 250 ms later.
+	SkuAuras:MarkUnitDirty("player")
+	SkuAuras:MarkUnitDirty("target")
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v42.14] Event-driven replacements for what the 0.25 s ticker used to discover.
+--
+-- These only MARK (see tDirtyUnits); the frame driver in OnEnable runs the ORIGINAL
+-- UNIT_TICKER / COOLDOWN_TICKER for whatever is marked. So the change detection, the
+-- synthetic event payloads and the announcements stay byte-identical -- only the
+-- timing improves. UNIT_TICKER emits nothing unless its UnitRepo snapshot actually
+-- differs, which is why an event landing on top of a backstop tick can never produce
+-- a duplicate announcement.
+--
+-- Unit filter: UNIT_HEALTH & co are broadcast for every unit in range (nameplates,
+-- bystanders), so anything outside tTrackedUnits is dropped here.
+function SkuAuras:MarkUnitDirty(aUnit)
+	if aUnit and tTrackedUnits[aUnit] then
+		tDirtyUnits[aUnit] = true
+		tDirtyUnitsPending = true
+	end
+end
+
+function SkuAuras:UNIT_HEALTH(aEvent, aUnit)
+	SkuAuras:MarkUnitDirty(aUnit)
+end
+
+SkuAuras.UNIT_POWER_UPDATE = SkuAuras.UNIT_HEALTH
+SkuAuras.UNIT_TARGET = SkuAuras.UNIT_HEALTH
+
+-- Cooldown END detection was the other 0-250 ms victim: COOLDOWN_TICKER walks the
+-- two CD repos and emits SPELL_COOLDOWN_END / ITEM_COOLDOWN_END when a tracked
+-- cooldown has run out. It is self-limiting (it only inspects spells/items it is
+-- already tracking and drops each one as it ends), so running it on the real event
+-- as well is free -- coalesced to once per frame because SPELL_UPDATE_COOLDOWN can
+-- fire several times per GCD.
+function SkuAuras:SPELL_UPDATE_COOLDOWN()
+	tDirtyCooldowns = true
 end
 
 -- Temporary weapon enchants are part of the player-HELPFUL list; UNIT_AURA does
@@ -1160,7 +1479,16 @@ SlashCmdList["SKUAURACACHE"] = function(aMsg)
 	print(string.format("|cff80c0ffSkuAuraCache|r enabled=%s verify=%s", tostring(c.enabled), tostring(c.verify)))
 end
 
-function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
+-- aRequiredEventValue: when set, only auras that affirmatively watch that event
+-- value are evaluated (see tAuraWatchesEvent). Everything else is left completely
+-- untouched -- not evaluated, `used` not reset -- i.e. exactly as if this pass had
+-- not happened for them. Only the deferred SPELL_COOLDOWN_START pass uses it.
+-- aExcludeEventValue: skip an aura that ALSO watches this value, because it already
+-- had its pass under that name. Closes the one double-fire the split pass could
+-- otherwise cause: an aura whose event condition lists BOTH SPELL_CAST_SUCCESS and
+-- SPELL_COOLDOWN_START (they are OR-ed) would match the immediate pass AND the
+-- deferred one, and announce twice per cast for a non-`single` action.
+function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequiredEventValue, aExcludeEventValue)
 	local beginTime = debugprofilestop()
 
 	-- [W3/Tier2 #5] Frame-accurate cache invalidation. By the time this runs the
@@ -1343,8 +1671,9 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 		tInCombat = SkuState:IsInCombat(),
 		pressedKey = tEventData[50],
 		spellNameOnCd = SkuAuras.thingsNamesOnCd,
-		spellNameUsable = SkuAuras:GetSpellNamesUsable(),
-	}		
+		-- spellNameUsable + itemCount are LAZY now -- see tLazyEvaluateFields.
+	}
+	setmetatable(tEvaluateData, tEvaluateDataMT)
 	if UnitPowerMax("target") > 0 then
 		tEvaluateData.unitPowerTarget = UnitName("target") and mfloor(UnitPower("target") / (UnitPowerMax("target") / 100))
 	end	
@@ -1410,21 +1739,8 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 	tEvaluateData.itemId = tEventData[40]
 	if tEventData[40] then
 		tEvaluateData.itemName = SkuDB.itemLookup[Sku.Loc][tEventData[40]]
-		for bagId = 0, 4 do
-			local tNumberOfSlots = GetContainerNumSlots(bagId)
-			for slotId = 1, tNumberOfSlots do
-				local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(bagId, slotId)
-				if itemCount then
-					if itemID == tEvaluateData.itemId then
-						if not tEvaluateData.itemCount then
-							tEvaluateData.itemCount = itemCount - 1
-						else
-							tEvaluateData.itemCount = tEvaluateData.itemCount + itemCount
-						end
-					end
-				end
-			end
-		end					
+		-- [v42.14] The 5-bag sweep that used to run here now lives in
+		-- tLazyEvaluateFields.itemCount and runs only if an aura reads itemCount.
 	end
 
 	if tEventData[CleuBase.subevent] == "UNIT_DESTROYED" then
@@ -1440,7 +1756,16 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 	--evaluate all auras
 	local tFirst = true
 	for tAuraName, tAuraData in pairs(SkuSettings:Sub("SkuAuras", nil, "char").Auras) do
-		if tSpecificAuraToTestIndex == nil or (tSpecificAuraToTestIndex ~= nil and tSpecificAuraToTestIndex == tAuraName) then
+		-- [v42.14] Filtered pass (see aRequiredEventValue). Kept as a flag rather than
+		-- another nesting level so the long body below is untouched.
+		local tSkipAura = false
+		if aRequiredEventValue ~= nil and tAuraWatchesEvent(tAuraData, aRequiredEventValue) ~= true then
+			tSkipAura = true
+		end
+		if tSkipAura ~= true and aExcludeEventValue ~= nil and tAuraWatchesEvent(tAuraData, aExcludeEventValue) == true then
+			tSkipAura = true
+		end
+		if tSkipAura ~= true and (tSpecificAuraToTestIndex == nil or (tSpecificAuraToTestIndex ~= nil and tSpecificAuraToTestIndex == tAuraName)) then
 			if tAuraData.enabled == true then
 				tEvaluateData.buffListTarget = toBuffListTarget
 				tEvaluateData.debuffListTarget = toDebuffListTarget

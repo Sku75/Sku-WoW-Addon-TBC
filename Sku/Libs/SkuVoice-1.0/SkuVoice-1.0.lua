@@ -73,6 +73,18 @@ SkuVoice.TutorialPlaying = 0
 ---------------------------------------------------------------------------------------------------------
 
 local mSkuVoiceQueue = {}
+-- [v42.14] Set by every OutputString append to mSkuVoiceQueue; makes the audio
+-- pump run its body on the NEXT frame instead of waiting for its 0.1 s cadence.
+--
+-- The pump body was gated on `fTime > 0.1` only, and OutputString never plays
+-- anything itself, so a freshly queued sound waited a uniformly distributed
+-- 0-100 ms (~50 ms average) before PlaySoundFile was even called -- on EVERY Sku
+-- sound, aura beeps included. Nothing about the queue's ORDER or its play rules
+-- changes here: the same five passes run in the same sequence, they just stop
+-- waiting for the tick. Latency floor becomes one frame (~16 ms at 60 fps),
+-- which is what WeakAuras achieves by calling PlaySoundFile straight from its
+-- event handler.
+local mQueueDirty = false
 local mSkuVoiceQueueBTTS = {}
 -- Dedup guard for the Blizzard-TTS path: the set of lines Sku has handed to
 -- C_VoiceChat.SpeakText and believes are still playing, so an identical line
@@ -305,12 +317,23 @@ function SkuVoice:Create()
 		end
 
 		fTime = fTime + time
-		if fTime > 0.1 and #mSkuVoiceQueue == 0 then
+		-- [v42.14] A "cadence" run is the original every-0.1 s run. A dirty run is the
+		-- extra one on the frame right after something was queued: it may only START
+		-- sounds, never END them (see the tombstone gate below), and it deliberately
+		-- does NOT reset fTime, so the 0.1 s cadence keeps its own clock exactly as
+		-- before.
+		local tCadence = (fTime > 0.1)
+		if #mSkuVoiceQueue == 0 then
 			-- [v42.12] Idle: the audio-file queue is empty, so all five passes below
 			-- plus the pairs() tombstone sweep are no-ops. Skip them.
-			fTime = 0
-		elseif fTime > 0.1 then
-			fTime = 0
+			-- [v42.14] Also drop a stale dirty flag: StopOutputEmptyQueue can wipe the
+			-- queue between the append and this frame, and the flag must not survive
+			-- into the next unrelated append.
+			if tCadence then fTime = 0 end
+			mQueueDirty = false
+		elseif tCadence or mQueueDirty then
+			if tCadence then fTime = 0 end
+			mQueueDirty = false
 			--play everything that is not flagged for queuing (wait == true)
 			for i = 1, table.getn(mSkuVoiceQueue) do
 				if mSkuVoiceQueue[i].wait == false and not mSkuVoiceQueue[i].soundHandle then
@@ -335,27 +358,92 @@ function SkuVoice:Create()
 				end
 			end		
 
-			--check if there is something finished and should be tombstoned
-			for i = 1, table.getn(mSkuVoiceQueue) do
-				if mSkuVoiceQueue[i].soundHandle then
-					if (GetTime() - mSkuVoiceQueue[i].endTimestamp) > 0 then
-						mSkuVoiceQueue[i].tombstone = true
+			-- [v42.14] CADENCE ONLY. The tombstone sweep ends a sound at its DECLARED
+			-- length and the removal below hard-StopSounds it, but the declared lengths
+			-- in SkuAudioDataLenIndex sit slightly under the real file durations (e.g.
+			-- sound-brass1 declares 0.32 s, the file is 0.34 s). Running this on the
+			-- extra dirty frame too would land the stop right on the declared time
+			-- instead of up to 100 ms late, i.e. it would start clipping the last ~20 ms
+			-- of a clip's tail -- inaudible on a beep, but not on a word's final
+			-- consonant. The dirty run has no business ending sounds anyway, so the
+			-- end-of-sound timing stays EXACTLY as it was.
+			if tCadence then
+				--check if there is something finished and should be tombstoned
+				for i = 1, table.getn(mSkuVoiceQueue) do
+					if mSkuVoiceQueue[i].soundHandle then
+						if (GetTime() - mSkuVoiceQueue[i].endTimestamp) > 0 then
+							mSkuVoiceQueue[i].tombstone = true
+						end
+					end
+				end
+
+				-- delete everything that is tombstoned
+				local tIt = true
+				while tIt == true do
+					tIt = false
+					for i, v in pairs(mSkuVoiceQueue) do
+						if v.tombstone == true then
+							--stop it first; just to be sure
+							if v.soundHandle then
+								StopSound(v.soundHandle, 0)
+							end
+							table.remove(mSkuVoiceQueue, i)
+							tIt = true
+						end
 					end
 				end
 			end
 
-			-- delete everything that is tombstoned
-			local tIt = true
-			while tIt == true do
-				tIt = false
-				for i, v in pairs(mSkuVoiceQueue) do
-					if v.tombstone == true then
-						--stop it first; just to be sure
-						if v.soundHandle then
-							StopSound(v.soundHandle, 0)
+			-- [v42.14] Aura SOUND outputs jump the TTSSepPause hold -- but only one at
+			-- a time.
+			--
+			-- TTSSepPause (default 85) is the word-to-word pacing knob for Sku's
+			-- audio-file speech: a queued clip may only start once the playing clip is
+			-- 85% done, which is what keeps concatenated word clips from slurring. That
+			-- rule is right for words and wrong for a one-shot aura beep, because the
+			-- hold scales with the length of whatever happens to be playing in front of
+			-- it (a 1.36 s sound in front = a 1.15 s wait for the beep).
+			--
+			-- So an aura sound starts immediately -- EXCEPT when another aura sound is
+			-- still playing. Two aura sounds on top of each other are indistinguishable,
+			-- which for a screen-reader interface is worse than a late one, so the
+			-- second aura sound falls back to the normal queued path and keeps today's
+			-- separation exactly.
+			--
+			-- Deliberately NOT changed: aura sounds still BLOCK whatever is queued
+			-- behind them (they are not excluded from the tPlayNext scan below), so
+			-- speech queued after an aura sound waits as it does today. Only the
+			-- follower direction is relaxed.
+			--
+			-- "Still playing" is tested against the clock, NOT against whether the
+			-- tombstone sweep above has removed the entry -- because that sweep is
+			-- cadence-only, so on a dirty frame a finished aura sound can still be
+			-- sitting in the queue with its handle set. Without the endTimestamp test a
+			-- finished predecessor would keep blocking, and item 2's whole win would only
+			-- materialise on cadence frames.
+			local tNow = GetTime()
+			local tAuraSoundPlaying = false
+			for i = 1, table.getn(mSkuVoiceQueue) do
+				local v = mSkuVoiceQueue[i]
+				if v.auraSound == true and v.soundHandle and v.tombstone ~= true and tNow < v.endTimestamp then
+					tAuraSoundPlaying = true
+					break
+				end
+			end
+			if tAuraSoundPlaying ~= true then
+				for i = 1, table.getn(mSkuVoiceQueue) do
+					local v = mSkuVoiceQueue[i]
+					if v.auraSound == true and not v.soundHandle and v.tombstone ~= true then
+						local willPlay, soundHandle = PlaySoundFile(v.file, v.soundChannel)
+						if willPlay then
+							SkuVoice.LastPlayedString = v.text
+							v.soundHandle = soundHandle
+							v.endTimestamp = GetTime() + v.length
+						else
+							--there's something quite wrong with that entry
+							v.tombstone = true
 						end
-						table.remove(mSkuVoiceQueue, i)
-						tIt = true
+						break
 					end
 				end
 			end
@@ -951,7 +1039,11 @@ end
 ---@param aString string
 ---@param aOverwrite boolean
 ---@param aWait boolean
-function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial, aAudioFile) -- for strings with lookup in string index
+-- aAuraSound: marks the entry as a one-shot aura SOUND, which lets it skip the
+-- TTSSepPause hold while no other aura sound is playing (see the pump). Only the
+-- generated aura sound outputs in SkuAuras/data.lua set it; word/text outputs
+-- must NOT, or a multi-word aura output would play its words on top of itself.
+function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial, aAudioFile, aAuraSound) -- for strings with lookup in string index
 	if not aString then
 		return
 	end
@@ -972,6 +1064,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		aIgnoreLinks = aOverwrite.ignoreLinks
 		aIsTutorial = aOverwrite.isTutorial
 		aAudioFile = aOverwrite.audioFile
+		aAuraSound = aOverwrite.auraSound
 		aOverwrite = aOverwrite.overwrite
 	end
 	
@@ -1248,6 +1341,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 							["doNotOverwrite"] = aDoNotOverwrite or false,
 							["soundChannel"] = aSoundChannel,
 							["dnq"] = aDnQ,
+							["auraSound"] = aAuraSound or false,
 						})
 					else
 						table.insert(mSkuVoiceQueue, {
@@ -1260,8 +1354,11 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 							["doNotOverwrite"] = aDoNotOverwrite or false,
 							["soundChannel"] = aSoundChannel,
 							["dnq"] = aDnQ,
+							["auraSound"] = aAuraSound or false,
 						})
 					end
+					-- [v42.14] Wake the pump on the next frame (see mQueueDirty).
+					mQueueDirty = true
 				end
 			end
 		end
@@ -1368,10 +1465,15 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:GetAudiodata(aString)
-	tFile = nil
-	tPath = nil
-	tLen = nil
-	
+	-- [v42.14] These three were assigned WITHOUT `local`, so every call wrote three
+	-- globals (and left them set for the next caller to trip over). Verified safe to
+	-- localise: OutputString captures the return values into its own locals, and
+	-- SkuBeacon's same-named tFile is a proper local -- nothing anywhere read the
+	-- leaked globals.
+	local tFile = nil
+	local tPath = nil
+	local tLen = nil
+
 	-- [v42.09 i18n] Two fixes here, both pre-existing bugs exposed by adding a
 	-- third client language:
 	--
