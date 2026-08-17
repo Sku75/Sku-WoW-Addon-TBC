@@ -5265,20 +5265,56 @@ local function tSkuCheckBags()
 	return tChecked, tPending, tViolations
 end
 
+-- Invariant 2 (auras; from the v43.0 evaluate-loop leak fix): EvaluateAllAuras
+-- must not write globals. `tSpellNameOnCdValue` and `tLocalResult` leaked from
+-- its attributes loop for years and injected STALE values across auras (an aura
+-- without a spellNameOnCd condition could announce an earlier aura's cooldown
+-- name). If either name reappears in _G after a session's evaluations, a leak
+-- has regressed.
+local tSkuCheckAuraGlobals = {"tSpellNameOnCdValue", "tLocalResult"}
+local function tSkuCheckAuras()
+	local tChecked, tViolations = 0, 0
+	for x = 1, #tSkuCheckAuraGlobals do
+		tChecked = tChecked + 1
+		if rawget(_G, tSkuCheckAuraGlobals[x]) ~= nil then
+			tViolations = tViolations + 1
+			dprint("skucheck", "VIOLATION auras: global", tSkuCheckAuraGlobals[x], "leaked -- the evaluate loop wrote a global again")
+		end
+	end
+	return tChecked, 0, tViolations
+end
+
 SLASH_SKUCHECK1 = "/skucheck"
 SlashCmdList["SKUCHECK"] = function(aParam)
 	local tDomain = string.match(aParam or "", "^%s*(%S*)")
-	if tDomain ~= "" and tDomain ~= "bags" then
-		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags", "Unknown check. Available: bags", "Vérification inconnue. Disponible : bags"), false, true, 0.2) end)
+	if tDomain ~= "" and tDomain ~= "bags" and tDomain ~= "auras" then
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags, auras", "Unknown check. Available: bags, auras", "Vérification inconnue. Disponible : bags, auras"), false, true, 0.2) end)
 		return
 	end
-	local tChecked, tPending, tViolations = tSkuCheckBags()
-	dprint("skucheck", "bags done:", tChecked, "filled slots checked,", tPending, "pending,", tViolations, "violations")
+	local tChecked, tPending, tViolations = 0, 0, 0
+	if tDomain == "" or tDomain == "bags" then
+		local c, p, v = tSkuCheckBags()
+		dprint("skucheck", "bags done:", c, "filled slots checked,", p, "pending,", v, "violations")
+		tChecked, tPending, tViolations = tChecked + c, tPending + p, tViolations + v
+	end
+	if tDomain == "" or tDomain == "auras" then
+		local c, p, v = tSkuCheckAuras()
+		dprint("skucheck", "auras done:", c, "globals checked,", v, "violations")
+		tChecked, tPending, tViolations = tChecked + c, tPending + p, tViolations + v
+	end
+	-- Keep the TESTED per-domain wording for an explicit `/skucheck bags`; the
+	-- combined (no-arg) run and the auras domain speak the generic label.
+	local tLabel
+	if tDomain == "bags" then
+		tLabel = Sku.deEn("Taschenprüfung: ", "Bag check: ", "Vérification des sacs : ")
+	else
+		tLabel = Sku.deEn("Sku-Prüfung: ", "Sku check: ", "Vérification Sku : ")
+	end
 	local tMsg
 	if tViolations == 0 then
-		tMsg = Sku.deEn("Taschenprüfung: ", "Bag check: ", "Vérification des sacs : ")..tChecked..Sku.deEn(" geprüft, keine Probleme", " checked, no problems", " vérifiés, aucun problème")
+		tMsg = tLabel..tChecked..Sku.deEn(" geprüft, keine Probleme", " checked, no problems", " vérifiés, aucun problème")
 	else
-		tMsg = Sku.deEn("Taschenprüfung: ", "Bag check: ", "Vérification des sacs : ")..tViolations..Sku.deEn(" Probleme, siehe Log", " problems, see log", " problèmes, voir le journal")
+		tMsg = tLabel..tViolations..Sku.deEn(" Probleme, siehe Log", " problems, see log", " problèmes, voir le journal")
 	end
 	if tPending > 0 then
 		tMsg = tMsg..", "..tPending..Sku.deEn(" ausstehend", " pending", " en attente")
