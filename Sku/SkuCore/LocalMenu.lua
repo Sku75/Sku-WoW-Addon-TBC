@@ -354,6 +354,14 @@ local function tSetTooltipContainerItem(tooltip, bag, slot)
 		tooltip:SetInventoryItem("player", BankButtonIDToInvSlotID(slot))
 		return
 	end
+	-- [v42.14] The KEYRING (-2) has the same quirk as the bank: SetBagItem(-2, slot)
+	-- populates nothing, so from v42.13 (which removed the hyperlink fallback) every
+	-- key spoke as "Empty". Keyring slots are inventory slots too, and this is
+	-- exactly what Blizzard's ContainerFrameItemButton_OnEnter does for the keyring.
+	if bag == -2 and _G.KeyRingButtonIDToInvSlotID then
+		tooltip:SetInventoryItem("player", KeyRingButtonIDToInvSlotID(slot))
+		return
+	end
 	tooltip:SetBagItem(bag, slot)
 end
 
@@ -1290,6 +1298,13 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 		-- bank frame is actually open (0 slots -> the slot loop skips it, no bag node created).
 		if bagId == -1 and not (_G["BankFrame"] and _G["BankFrame"]:IsVisible() == true) then
 			tNumSlots = 0
+		end
+		-- [v42.14] The keyring container reports its MAXIMUM (32) here, but most of
+		-- those slots are unusable padding -- Blizzard's own keyring frame sizes
+		-- itself with GetKeyRingSize() (filled slots rounded up to whole rows of 4),
+		-- so mirror that instead of announcing dozens of phantom "Empty" slots.
+		if bagId == -2 and _G.GetKeyRingSize then
+			tNumSlots = GetKeyRingSize() or tNumSlots
 		end
 		for slotId = 1, tNumSlots do
 			-- bag (parent) node, once per bag, keyed by bagId
