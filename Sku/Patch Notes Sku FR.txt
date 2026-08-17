@@ -9,6 +9,75 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
 
+    Focalisation Sku : l'appel d'une focalisation arrivait en retard et hachait
+        Simple : appuyer sur une touche de focalisation pour prendre la cible mémorisée annonçait
+            le nom avec un retard perceptible - souvent commencé, coupé, puis repris. Un appui
+            produit deux événements, un à l'enfoncement et un au relâchement, et Sku exécutait la
+            macro de ciblage sur les deux. Le second passage reprenait la même cible, et comme
+            chaque annonce de cible vide d'abord la file de parole, la ligne à peine commencée
+            était arrêtée puis relancée - en retard exactement du temps pendant lequel la touche
+            était maintenue. La macro ne s'exécute plus qu'une fois par appui. Cela ressort
+            maintenant parce que les touches de focalisation sont sur le pavé numérique par défaut
+            depuis la v42.13, et ne sont donc utilisées que depuis peu.
+        Technique : les huit boutons de focalisation dans skuFocus.lua s'enregistraient avec
+            RegisterForClicks("AnyUp", "AnyDown") et déclenchaient donc la macro sur les deux
+            fronts. Le cadre de contrôle des touches SET avait le même défaut et était déjà passé à
+            un seul front ; les boutons GET en avaient alors été explicitement exclus. Ils
+            s'enregistrent désormais eux aussi en "AnyDown". Il reste dans le journal deux
+            PLAYER_TARGET_CHANGED et exactement une annonce par appui ; ces deux événements
+            viennent de /target <nom> lui-même, qui efface l'ancienne cible avant de poser la
+            nouvelle - visible au verrou de ciblage doux, qui écrit deux valeurs différentes (0
+            puis 2) et non deux fois la même.
+
+    Changement de cible : une vérification de portée en double et des boucles de groupe à vide
+        Simple : à chaque changement de cible, Sku parcourait tout le groupe et tout le raid pour
+            savoir si la cible combat déjà quelqu'un de votre groupe - y compris en solo, où ni
+            l'un ni l'autre n'existe. Cela faisait 88 requêtes dans le vide, et avec l'option
+            « Annoncer les unités contrôlées par un joueur avec des descriptions génériques », plus
+            de deux mille. De plus, la vérification de portée tournait deux fois par changement de
+            cible : le second appel se trouvait dans une portion de code qui ne pouvait jamais
+            recevoir son résultat et n'annonçait donc jamais rien. Les deux ont été retirés. Rien
+            de ce que Sku dit ne change, et la détection de l'état de combat reste complète : en
+            groupe ou en raid, tous les membres sont toujours vérifiés, plus votre familier et
+            vous-même, et la question « qui ma cible attaque-t-elle » est posée comme avant.
+        Technique : dans SkuMob PLAYER_TARGET_CHANGED, les boucles party1-4 et raid1-40 sont
+            désormais conditionnées par IsInGroup() / IsInRaid(), et le raid ne va que jusqu'à
+            GetNumGroupMembers() - la même écriture que dans SkuAuras et SkuQuest. L'ordre est
+            conservé (groupe avant raid) pour qu'un membre de votre propre sous-groupe réponde
+            toujours « party N ». Dans SkuNav, la branche aForTarget de GetNonAutoLevel a disparu :
+            elle commençait par DoRangeCheck, qui ne renvoie aucune valeur, si bien que sa première
+            condition n'était jamais remplie - il ne restait que l'effet de bord, une deuxième
+            vérification de portée forcée et un éventuel second son de distance par changement de
+            cible. Son appelant dans SkuMob et la fonction utilitaire GetCreatureIdFromCreatureGUID,
+            utilisée nulle part ailleurs, sont partis avec elle.
+
+    Cible en combat : l'indicateur restait allumé en permanence pour une partie des utilisateurs
+        Simple : cela ne concernait que ceux qui avaient activé « Annoncer les unités contrôlées
+            par un joueur avec des descriptions génériques » (désactivé par défaut). Chez eux,
+            toute cible était signalée « en combat » - bip ou annonce -, y compris un animal
+            totalement étranger au combat. Pour une unité que Sku ne peut pas classer, ce qui
+            inclut une unité qui n'existe pas, la fonction de nom renvoie une chaîne vide. Cette
+            chaîne vide se retrouvait comme entrée dans la liste des noms de votre propre groupe.
+            Le test suivant - « ma cible attaque-t-elle quelqu'un de mon groupe ? » - recevait lui
+            aussi une chaîne vide pour « ma cible n'attaque personne », et celle-ci correspondait à
+            cette entrée. La réponse était donc toujours oui. Les noms vides ne sont désormais ni
+            enregistrés ni comparés. Pour les personnes concernées, le son de combat arrivera bien
+            plus rarement, uniquement quand la cible combat réellement vous-même, votre familier ou
+            votre groupe. La même cause touchait « Placer automatiquement les marques de raid
+            privées Sku sur les cibles en combat » : là, pratiquement chaque cible recevait une
+            marque.
+        Technique : avec vocalizePlayerNamePlaceholdersSkuTts = true, GetTtsAwareUnitName renvoie
+            "" pour toute unité qui n'est ni vous, ni votre familier, ni un membre du groupe.
+            tRosterNames récupérait cette clé vide, et la consultation de targettarget la
+            retrouvait. Les deux côtés testent maintenant aussi name ~= "".
+
+    Auras : une aide de vérification issue de la refonte était livrée activée
+        Simple : le cache des listes d'auras reconstruisait aussi chaque liste une seconde fois de
+            zéro afin de comparer les deux résultats. C'était un contrôle de la phase de refonte,
+            livré activé par erreur - et il coûtait exactement le travail que le cache fait
+            économiser. Il est désormais désactivé ; /skuauracache verify on le réactive pour une
+            recherche de panne.
+
     Atlas Loot : saccades à la connexion et à l'ouverture
         Simple : depuis peu, le jeu se figeait complètement pendant quatre à cinq secondes
             quelques secondes après l'écran de chargement, puis mettait une vingtaine de

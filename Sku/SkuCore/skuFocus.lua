@@ -67,7 +67,16 @@ local function setupHelper()
       _G["focus"..x] = tmp
       _G["focus"..x]:SetAttribute("type1", "macro")
       _G["focus"..x]:SetAttribute("macrotext1", "")
-      _G["focus"..x]:RegisterForClicks("AnyUp", "AnyDown")
+      -- Fire the stored "/tar <name>" macro ONCE per keypress. A keybind press
+      -- delivers a key-down AND a key-up event, so with both edges registered the
+      -- macro ran twice. The second run re-targets the same unit, which still
+      -- fires PLAYER_TARGET_CHANGED, and SkuMob queues its announcement with
+      -- overwrite = true -- that wipes the voice queue, stops the line already
+      -- playing and starts it over (plus a 0.1 s hold on the Blizzard-TTS path).
+      -- Net effect for the user: calling a focus stuttered and the name arrived
+      -- late, by roughly the time the key was held. Same single-edge fix the
+      -- control frame below already got for the SET keys.
+      _G["focus"..x]:RegisterForClicks("AnyDown")
    end
 
    --control frame
@@ -80,8 +89,8 @@ local function setupHelper()
    -- "AnyUp","AnyDown") made OnClick run twice, so SetFocusUnitName -> print ran
    -- twice and the "focus set" line was spoken twice. This control frame is
    -- insecure and only reads the target/stores a macro attribute, so a single
-   -- down edge is all we need. (The secure focus GET buttons below keep their own
-   -- click registration untouched.)
+   -- down edge is all we need. (The secure focus GET buttons above now register
+   -- the same single edge, for the same reason.)
    tFrame:RegisterForClicks("AnyDown")
    tFrame:SetScript("OnClick", function(self, aKey, aB)
       for x = 1, 8 do

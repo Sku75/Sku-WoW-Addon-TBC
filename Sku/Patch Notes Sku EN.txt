@@ -6,6 +6,68 @@
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13
 
+    Sku focus: calling a focus arrived late and stuttered
+        Simple: Pressing a focus key to take the stored focus as your target spoke the name with a
+            noticeable delay - often started, cut off and started again. A key press delivers two
+            events, one when the key goes down and one when it comes back up, and Sku ran the
+            stored targeting macro on both. The second run took the same unit again, and because
+            every target announcement clears the speech queue first, the line that had just begun
+            was stopped and restarted - late by exactly as long as the key was held. The macro now
+            runs once per press. This surfaced now because the focus keys sit on the numeric
+            keypad by default since v42.13, so they are being used at all.
+        Technical: The eight focus buttons in skuFocus.lua registered
+            RegisterForClicks("AnyUp", "AnyDown") and therefore fired the macro on both edges. The
+            control frame behind the SET keys had the same bug and had already been moved to a
+            single edge; the GET buttons were explicitly left out at the time. They now register
+            "AnyDown" as well. What remains in the log is two PLAYER_TARGET_CHANGED and exactly
+            one spoken line per press; those two events come from /target <name> itself, which
+            clears the old target before setting the new one - visible in the soft-target lock
+            writing two different values (0, then 2) rather than the same one twice.
+
+    Target change: a duplicated range check and roster loops that ran on nothing
+        Simple: On every target change Sku walked the whole party and the whole raid to find out
+            whether the target is already fighting someone in your group - including when you were
+            alone and neither existed. That was 88 lookups into nothing, and with "Announce player
+            controlled units with generic descriptions" enabled it multiplied to over two thousand.
+            On top of that the range check ran twice per target change: the second call sat in a
+            piece of code that could never receive its result and therefore never announced
+            anything. Both are gone. Nothing Sku says changes, and the combat-status detection
+            stays complete - in a party or raid every member is still checked, plus your pet and
+            yourself, and the "who is my target attacking" question is asked exactly as before.
+        Technical: In SkuMob PLAYER_TARGET_CHANGED the party1-4 and raid1-40 loops are now gated
+            on IsInGroup() / IsInRaid(), and the raid walks only to GetNumGroupMembers() - the same
+            idiom already used in SkuAuras and SkuQuest. The order is preserved (party before raid)
+            so a member of your own subgroup still answers "party N". In SkuNav the aForTarget
+            branch of GetNonAutoLevel is gone: it opened with DoRangeCheck, which returns no value
+            at all, so its first condition never held - all that was left was the side effect, a
+            second forced range check and a possible second distance sound per target change. Its
+            caller in SkuMob and the helper GetCreatureIdFromCreatureGUID, used nowhere else, went
+            with it.
+
+    Target in combat: the indicator was permanently on for some users
+        Simple: This only affected anyone with "Announce player controlled units with generic
+            descriptions" switched on (off by default). For them every target was reported as being
+            in combat - beep or spoken - including a completely uninvolved animal standing in a
+            field. For a unit Sku cannot classify, and that includes a unit that does not exist at
+            all, the name function returns an empty string. That empty string was stored as an
+            entry in the list of your own group's names. The test that follows - "is my target
+            attacking someone in my group?" - also got an empty string for "my target is attacking
+            nobody", and it matched that very entry. So the answer was always yes. Empty names are
+            now neither stored nor compared. For affected users the combat sound will come far less
+            often, namely only when the target really is fighting you, your pet or your group. The
+            same cause hit "Auto set private Sku raid targets on in combat targets": there,
+            practically every target got a marker.
+        Technical: With vocalizePlayerNamePlaceholdersSkuTts = true, GetTtsAwareUnitName returns ""
+            for any unit that is neither you nor your pet nor a group member. tRosterNames picked
+            up that empty key, and the targettarget lookup hit it again. Both sides now also test
+            name ~= "".
+
+    Auras: a verification aid from the rebuild shipped switched on
+        Simple: The aura-list cache also rebuilt every list a second time from scratch in order to
+            compare the two results. That was a correctness check from the rebuild phase, shipped
+            enabled by mistake - and it cost exactly the work the cache exists to save. It is off
+            now; /skuauracache verify on turns it back on for a hunt.
+
     Atlas Loot: stutter on login and on opening
         Simple: Recently the game froze completely for four to five seconds a few seconds after
             the loading screen, and then took about twenty seconds instead of eight to calm

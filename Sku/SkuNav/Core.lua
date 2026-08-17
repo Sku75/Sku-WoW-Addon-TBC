@@ -4132,17 +4132,8 @@ function SkuNav:GetWpDataFromId(id)
 	return typeId, dbIndex, spawn, areaId
 end
 
----------------------------------------------------------------------------------------------------------------------------------------
-local function GetCreatureIdFromCreatureGUID(unit)
-	local guid = UnitGUID(unit)
-	if guid then
-		local unit_type = strsplit("-", guid)
-		if unit_type == "Creature" then
-			local _, _, server_id, instance_id, zone_uid, npc_id, spawn_uid = strsplit("-", guid)
-			return npc_id
-		end
-	end
-end
+-- [v42.13] local GetCreatureIdFromCreatureGUID removed with its only caller, the
+-- dead aForTarget branch of GetNonAutoLevel below.
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:GetNonAutoLevel(aUid, aUnitName, aSkuWaypointName, aForTarget)
@@ -4188,59 +4179,18 @@ function SkuNav:GetNonAutoLevel(aUid, aUnitName, aSkuWaypointName, aForTarget)
 			return SkuDB.routedata["global"].WaypointLevels[WaypointCacheGetIdForName(aSkuWaypointName)], true
 		end
 
-	elseif aUid == nil and aForTarget ~= nil then
-		local tDistanceToTarget = SkuCore.RangeCheck:DoRangeCheck(true, true)
-		local fPlayerPosX, fPlayerPosY = UnitPosition("player")
-	
-		if fPlayerPosX and tDistanceToTarget and UnitPlayerControlled("target") == false and UnitIsPlayer("target") == false then
-			local C_MapGetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos			
-			local tPlayerAreaId = SkuNav:GetCurrentAreaId()
-			if not tPlayerAreaId then return end
-			--> fix for dalaran map id
-			if tPlayerAreaId == 100077 or tPlayerAreaId == 4613 then
-				tPlayerAreaId = 4395
-			end
-			--<
-
-			local i = GetCreatureIdFromCreatureGUID("target")
-			if i then
-				i = tonumber(i)
-				if SkuDB.NpcData.Data[i] then
-					if SkuDB.NpcData.Data[i][7] then
-						if SkuDB.NpcData.Data[i][7][tPlayerAreaId] then
-							--local tData = SkuDB.InternalAreaTable[tPlayerAreaId]
-							local isUiMap = SkuNav:GetUiMapIdFromAreaId(tPlayerAreaId)
-							local vs = SkuDB.NpcData.Data[i][7][tPlayerAreaId]
-							local tNumberOfSpawns = #vs
-							local tBestSpawn
-							local tBestSpawnDist = 99999999
-							for sp = 1, tNumberOfSpawns do
-								local _, worldPosition = C_MapGetWorldPosFromMapPos(isUiMap, CreateVector2D(vs[sp][1] / 100, vs[sp][2] / 100))
-								if worldPosition then
-									local tTargetWorldX, tTargetWorldY = worldPosition:GetXY()
-									if tTargetWorldX then
-										local tDistanceToPlayer = SkuNav:Distance(fPlayerPosX, fPlayerPosY, tTargetWorldX, tTargetWorldY)
-										local tDistDiff = tDistanceToPlayer - tDistanceToTarget
-										if tDistDiff < 0 then tDistDiff = (tDistDiff * -1) end
-										if tDistDiff < 55 and tDistDiff < tBestSpawnDist then
-											tBestSpawnDist = tDistDiff
-											tBestSpawn = sp
-										end
-									end
-								end
-							end
-
-							if tBestSpawn ~= nil then
-								local aUid = SkuNav:BuildWpIdFromData(2, i, tBestSpawn, tPlayerAreaId)
-								if aUid then
-									return SkuDB.routedata["global"].WaypointLevels[aUid], tNumberOfSpawns == 1
-								end
-							end
-						end
-					end
-				end
-			end
-		end
+	-- [v42.13] The aForTarget branch (guess the target's layer from the closest
+	-- matching NPC spawn) was REMOVED because it never ran: it opened with
+	--   local tDistanceToTarget = SkuCore.RangeCheck:DoRangeCheck(true, true)
+	-- but DoRangeCheck (SkuCore/RangeCheck.lua) returns NOTHING, so
+	-- tDistanceToTarget was always nil and the guard below it never passed. All
+	-- the call ever did was its SIDE EFFECT: a second FORCED range check per
+	-- target change -- SkuMob/Core.lua already forces one right before this -- so
+	-- every target change ran GetRange twice and could play the range-band sound
+	-- twice. Nothing announced by this branch was ever lost, because nothing was
+	-- ever produced. If the target-layer readout is wanted, it has to start by
+	-- giving DoRangeCheck a real return value; reviving it as it stood would only
+	-- restore the duplicate check.
 	end
 
 	if aUid ~= nil then

@@ -193,15 +193,24 @@ function SkuMob:GetTtsAwareUnitName(aUnitId)
 			return L["dein begleiter"]
 		end
 
-		for x = 1, 4 do
-			if UnitIsUnit(aUnitId, "party"..x) then
-				return "party "..x
+		-- Only walk the roster when there IS one. Solo, both loops were 44
+		-- guaranteed-nil UnitIsUnit calls per invocation -- and PLAYER_TARGET_CHANGED
+		-- calls this 45 times per target change.
+		-- Order preserved: party is still tested before raid (IsInGroup is true in a
+		-- raid too, so a subgroup member keeps answering "party N" as before).
+		if IsInGroup() then
+			for x = 1, 4 do
+				if UnitIsUnit(aUnitId, "party"..x) then
+					return "party "..x
+				end
 			end
 		end
 
-		for x = 1, 40 do
-			if UnitIsUnit(aUnitId, "raid"..x) then
-				return "raid "..x
+		if IsInRaid() then
+			for x = 1, GetNumGroupMembers() do
+				if UnitIsUnit(aUnitId, "raid"..x) then
+					return "raid "..x
+				end
 			end
 		end
 
@@ -401,33 +410,59 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 
 
 		--target in combat indicator
+		-- This block answers one question: is anyone in MY group already fighting
+		-- this unit (threat), and is my target's target one of us? That is why the
+		-- roster is walked at all -- and it runs on EVERY target change, not just on
+		-- a focus call.
+		--
+		-- 4 and 40 are the real maximum party/raid sizes, so they were never wrong,
+		-- only unconditional: solo (the common case) party1-4 and raid1-40 do not
+		-- exist and all 88 lookups returned nothing. Worse, GetTtsAwareUnitName
+		-- walks the same 44 units internally when the placeholder option is on, so
+		-- one target change cost ~2000 UnitIsUnit calls to build an empty table.
+		-- Gate on the real group state and walk only the slots the raid actually
+		-- has (same idiom as SkuAuras/Core.lua and SkuQuest/Options.lua).
+		-- Behaviour-identical: a slot that does not exist yields nothing either way.
+		local tIsInGroup = IsInGroup()
+		local tRaidSize = IsInRaid() and GetNumGroupMembers() or 0
+
+		-- [v42.13] `name ~= ""` on every insert and on the lookup below. With
+		-- vocalizePlayerNamePlaceholdersSkuTts ON, GetTtsAwareUnitName returns ""
+		-- for any unit it cannot classify -- including a unit that does not exist --
+		-- so "" landed in this set as a KEY. The lookup below then matched "" against
+		-- it and set status = true for every target whose target was not a known
+		-- groupmate, i.e. for every target, always. See the comment there.
 		local tRosterNames = {}
-		for x = 1, 4 do
-			local name, realm = SkuMob:GetTtsAwareUnitName("party"..x)
-			if name then
-				tRosterNames[name] = name
+		if tIsInGroup then
+			for x = 1, 4 do
+				local name, realm = SkuMob:GetTtsAwareUnitName("party"..x)
+				if name and name ~= "" then
+					tRosterNames[name] = name
+				end
 			end
 		end
-		for x = 1, 40 do
+		for x = 1, tRaidSize do
 			local name, realm = SkuMob:GetTtsAwareUnitName("raid"..x)
-			if name then
+			if name and name ~= "" then
 				tRosterNames[name] = name
 			end
 		end
 		local name, realm = SkuMob:GetTtsAwareUnitName("pet")
-		if name then
+		if name and name ~= "" then
 			tRosterNames[name] = name
 		end
 		local name, realm = SkuMob:GetTtsAwareUnitName("player")
 		tRosterNames[name] = name
 
 		local status = nil
-		for x = 1, 4 do
-			if UnitThreatSituation("party"..x, aUnitId) then
-				status = UnitThreatSituation("party"..x, aUnitId)
+		if tIsInGroup then
+			for x = 1, 4 do
+				if UnitThreatSituation("party"..x, aUnitId) then
+					status = UnitThreatSituation("party"..x, aUnitId)
+				end
 			end
 		end
-		for x = 1, 40 do
+		for x = 1, tRaidSize do
 			if UnitThreatSituation("raid"..x, aUnitId) then
 				status = UnitThreatSituation("raid"..x, aUnitId)
 			end
@@ -439,8 +474,14 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			status = UnitThreatSituation("player", aUnitId)
 		end
 
+		-- Is my target attacking me, my pet or a groupmate? That is what makes a mob
+		-- "in combat" even when the threat API says nothing.
+		-- [v42.13] The `name ~= ""` guard is what makes this test mean anything with
+		-- vocalizePlayerNamePlaceholdersSkuTts ON: an unclassifiable targettarget --
+		-- no target at all, or a stranger -- comes back as "", which used to match
+		-- the "" key in tRosterNames and flag EVERY target as in combat.
 		local name, realm = SkuMob:GetTtsAwareUnitName("targettarget")
-		if name then
+		if name and name ~= "" then
 			if tRosterNames[name] then
 				status = true
 			end
@@ -602,16 +643,11 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 				end
 			end
 			
-			--layer info
-			-- Route data is lazily built (SkuDeferredData.lua); guard against it
-			-- not being constructed yet so an early scan tick can't nil-error.
-			if SkuDB.routedata and SkuDB.routedata["global"] and SkuDB.routedata["global"].WaypointLevels and (tIsPlayerControled == false or SkuSettings:Sub("SkuMob").vocalizePlayerNamePlaceholdersSkuTts == true) then
-				local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, nil, true))
-				if tLayerText then
-					tOutputString = tOutputString.." "..tLayerText
-					tOutputStringB = tOutputStringB.." "..tLayerText
-				end
-			end
+			-- [v42.13] --layer info-- removed. GetNonAutoLevel's aForTarget branch
+			-- could never return a level (see the comment at that branch in
+			-- SkuNav/Core.lua), so this only ever appended an empty string -- while
+			-- forcing a SECOND range check per target change on top of the one at
+			-- the head of this function. Nothing spoken is lost.
 
 		end
 

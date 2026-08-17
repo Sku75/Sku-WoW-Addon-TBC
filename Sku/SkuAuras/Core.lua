@@ -1090,11 +1090,17 @@ local tAuraScratch = {
 --   enabled=false -> instant revert to the per-event rebuild (Tier-1 behaviour).
 --   verify=true   -> ALSO rebuild a fresh copy each event and dprint any
 --                    divergence (the screen-reader correctness net for the
---                    single-fight test; turn OFF for the raid perf run, it
---                    negates the speed win). Toggle both via /skuauracache.
+--                    single-fight test; it negates the speed win, so it is a
+--                    DIAGNOSTIC, not a shipping default). Toggle both via
+--                    /skuauracache.
+-- [v42.13] verify now ships OFF. It was left on after the W3 verification run,
+-- so every aura combat-log event still paid the second full rebuild the cache
+-- exists to avoid -- i.e. the measuring was costing more than the thing it
+-- measured. Turn it back on with `/skuauracache verify on` when a divergence is
+-- actually suspected.
 local tAuraListCache = {
 	enabled = true,
-	verify  = true,
+	verify  = false,
 	player = { HELPFUL = {valid = false, list = {}}, HARMFUL = {valid = false, list = {}} },
 	target = { HELPFUL = {valid = false, list = {}}, HARMFUL = {valid = false, list = {}} },
 	_verifyBuf = {},

@@ -6,6 +6,76 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
 
+    Sku Fokus: der Aufruf eines Fokus kam verzoegert und stotterte
+        Einfach: Wer eine Fokus-Taste drueckt, um den gespeicherten Fokus ins Ziel zu nehmen,
+            hoerte den Namen mit einer spuerbaren Verzoegerung - haeufig kurz angerissen und dann
+            noch einmal von vorn. Ein Tastendruck liefert zwei Ereignisse, eines beim
+            Herunterdruecken und eines beim Loslassen, und Sku hat das hinterlegte Ziel-Makro auf
+            beiden ausgefuehrt. Der zweite Durchlauf nahm dasselbe Ziel noch einmal, und weil jede
+            Zielansage die laufende Sprachausgabe zuerst abraeumt, wurde die gerade begonnene
+            Ansage gestoppt und neu gestartet - verzoegert um genau die Zeit, die die Taste
+            gehalten wurde. Jetzt laeuft das Makro einmal pro Druck. Aufgefallen ist das gerade
+            jetzt, weil die Fokus-Tasten seit v42.13 in der Voreinstellung auf dem Ziffernblock
+            liegen und damit ueberhaupt erst benutzt werden.
+        Technisch: Die acht Fokus-Knoepfe in skuFocus.lua meldeten sich mit
+            RegisterForClicks("AnyUp", "AnyDown") an, fuehrten das Makro also auf beiden Flanken
+            aus. Das Steuerungsfenster der SET-Tasten hatte denselben Fehler und war bereits auf
+            eine Flanke umgestellt worden; die GET-Knoepfe waren dabei ausdruecklich ausgenommen
+            worden. Sie melden sich jetzt ebenfalls nur noch mit "AnyDown" an. Im Log bleiben pro
+            Druck zwei PLAYER_TARGET_CHANGED und genau eine Sprachausgabe uebrig; diese zwei
+            Ereignisse stammen aus /target Name selbst, das erst das alte Ziel leert und dann das
+            neue setzt - erkennbar daran, dass die Soft-Target-Sperre zwei verschiedene Werte
+            schreibt (0, dann 2) und nicht zweimal denselben.
+
+    Zielwechsel: doppelte Reichweitenpruefung und leerlaufende Gruppenschleifen
+        Einfach: Bei jedem Zielwechsel hat Sku Gruppe und Schlachtzug vollstaendig abgefragt, um
+            zu erkennen, ob das Ziel schon gegen jemanden aus der eigenen Gruppe kaempft - auch
+            allein unterwegs, wo es weder das eine noch das andere gibt. Das waren 88 Abfragen ins
+            Leere, und mit der Einstellung "Spielergesteuerte Einheiten mit allgemeinen
+            Beschreibungen ansagen" wurden ueber zweitausend daraus. Ausserdem lief die
+            Entfernungspruefung bei jedem Zielwechsel zweimal: der zweite Aufruf steckte in einem
+            Programmteil, der sein Ergebnis nie bekommen konnte und deshalb nie etwas angesagt
+            hat. Beides ist entfernt. An dem, was Sku sagt, aendert sich nichts, und die
+            Kampfstatus-Erkennung bleibt vollstaendig - in Gruppe und Schlachtzug werden weiterhin
+            alle Mitglieder geprueft, dazu immer Begleiter und man selbst, und die Frage "wen
+            greift mein Ziel gerade an" wird unveraendert gestellt.
+        Technisch: In SkuMob PLAYER_TARGET_CHANGED sind die Schleifen ueber party1-4 und raid1-40
+            jetzt mit IsInGroup() / IsInRaid() abgesichert, und der Schlachtzug laeuft nur bis
+            GetNumGroupMembers() - dieselbe Schreibweise wie in SkuAuras und SkuQuest. Die
+            Reihenfolge bleibt erhalten (Gruppe vor Schlachtzug), damit ein Mitglied der eigenen
+            Untergruppe weiterhin als "party N" angesagt wird. In SkuNav ist der aForTarget-Zweig
+            von GetNonAutoLevel entfallen: er begann mit DoRangeCheck, das gar keinen Wert
+            zurueckgibt, womit seine erste Bedingung nie erfuellt war - geblieben war nur die
+            Nebenwirkung, eine zweite erzwungene Reichweitenpruefung samt moeglichem zweitem
+            Entfernungston pro Zielwechsel. Sein Aufrufer in SkuMob und die nur dort benutzte
+            Hilfsfunktion GetCreatureIdFromCreatureGUID sind mit entfallen.
+
+    Gegner im Kampf: die Anzeige war fuer einen Teil der Nutzer dauerhaft an
+        Einfach: Betroffen ist nur, wer "Spielergesteuerte Einheiten mit allgemeinen
+            Beschreibungen ansagen" eingeschaltet hat (Voreinstellung: aus). Dann meldete jedes
+            angepeilte Ziel "im Kampf" - Ton oder Ansage -, auch ein voellig unbeteiligtes Tier
+            auf der Wiese. Fuer eine Einheit, die Sku nicht einordnen kann, und dazu zaehlt auch
+            eine, die gar nicht existiert, liefert die Namensfunktion eine leere Zeichenkette. Die
+            landete als Eintrag in der Namensliste der eigenen Gruppe. Der Vergleich danach -
+            "greift mein Ziel jemanden aus meiner Gruppe an?" - bekam fuer "mein Ziel greift
+            niemanden an" ebenfalls eine leere Zeichenkette, und die passte auf genau diesen
+            Eintrag. Die Antwort war damit immer ja. Leere Namen werden jetzt weder eingetragen
+            noch verglichen. Fuer Betroffene heisst das: der Kampf-Ton kommt deutlich seltener,
+            naemlich nur noch, wenn das Ziel wirklich gegen einen selbst, den Begleiter oder die
+            Gruppe kaempft. Dieselbe Ursache traf "Private Sku-Schlachtzugszeichen automatisch auf
+            Ziele im Kampf setzen": dort bekam praktisch jedes Ziel ein Zeichen.
+        Technisch: GetTtsAwareUnitName liefert mit vocalizePlayerNamePlaceholdersSkuTts = true ""
+            fuer jede Einheit, die weder man selbst noch Begleiter noch Gruppenmitglied ist.
+            tRosterNames bekam diesen leeren Schluessel, und die Abfrage von targettarget traf ihn
+            wieder. Beide Seiten pruefen jetzt zusaetzlich auf name ~= "".
+
+    Auren: eine Messhilfe aus der Umbauphase lief im Auslieferungszustand mit
+        Einfach: Der Zwischenspeicher fuer Aurenlisten hat jede Liste zusaetzlich ein zweites Mal
+            komplett neu aufgebaut, um beide Ergebnisse gegeneinander zu pruefen. Das war eine
+            Kontrolle aus der Umbauphase, die versehentlich eingeschaltet ausgeliefert wurde - und
+            sie kostete genau die Arbeit, die der Zwischenspeicher einspart. Sie ist jetzt aus;
+            mit /skuauracache verify on laesst sie sich fuer eine Fehlersuche wieder einschalten.
+
     Atlas Loot: Ruckler beim Anmelden und beim Oeffnen
         Einfach: Seit kurzem hing das Spiel ein paar Sekunden nach dem Ladebildschirm fuer
             vier bis fuenf Sekunden komplett, und danach dauerte es rund zwanzig statt acht
