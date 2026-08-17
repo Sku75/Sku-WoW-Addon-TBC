@@ -1236,22 +1236,24 @@ function aqCombat:aqCombatOnLogin()
 
             --announce interrupts by you/party/raid, split the same way the cast
             --announcements are: one switch for your current target, one for every
-            --enemy. Only the target switch defaults ON — every interrupt in a
-            --raid is noise, so all-enemies stays opt-in; the old single flag is
-            --carried over once so profiles that had it switched off stay silent.
-            local tOldOutputInterrupts = SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.outputInterrupts
+            --enemy. BOTH default OFF — interrupt spam is noise even when it is
+            --limited to the current target, so each switch is opt-in.
             if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.yourTargetInterrupts == nil then
-               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.yourTargetInterrupts = tOldOutputInterrupts ~= false
+               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.yourTargetInterrupts = false
             end
             if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.allEnemiesInterrupts == nil then
                SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.allEnemiesInterrupts = false
             end
-            --the first 42.13 build filled allEnemiesInterrupts from the old flag
-            --too, i.e. ON. AceDB defaults only fill nil, so those profiles would
-            --keep the wrong value forever — clear it exactly once.
+            --earlier 42.13 builds filled these from the old single outputInterrupts
+            --flag, i.e. ON. AceDB defaults only fill nil, so those profiles would
+            --keep the wrong value forever — clear each one exactly once.
             if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.allEnemiesInterruptsDefaultOff ~= true then
                SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.allEnemiesInterrupts = false
                SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.allEnemiesInterruptsDefaultOff = true
+            end
+            if SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.yourTargetInterruptsDefaultOff ~= true then
+               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.yourTargetInterrupts = false
+               SkuSettings:Sub("SkuCore", nil, "char").aq[x].combat.hostile.yourTargetInterruptsDefaultOff = true
             end
 
          
