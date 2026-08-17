@@ -6,6 +6,254 @@
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13
 
+    Combat: "Announce interrupts on your target" is now off by default
+        Simple: The second of the two interrupt switches now starts switched off as well. Both
+            halves of the split - your current target and all enemies - are opt-in from now on,
+            because an interrupt announcement cuts into everything else Sku says and most players
+            do not want it running by itself. Nothing about the announcement changed, only whether
+            it is on when you have never touched the setting. Turn it back on under Combat,
+            Enemies, "Announce interrupts on your target". As with the all-enemies switch this is
+            applied once to existing profiles too, so a value inherited from the old single switch
+            does not silently keep it on.
+        Technical: In aqCombat.lua the migration block no longer seeds yourTargetInterrupts from
+            the former outputInterrupts flag; it defaults to false like allEnemiesInterrupts, and a
+            run-once yourTargetInterruptsDefaultOff marker clears profiles that earlier 42.13
+            builds had already filled from the old value. AceDB defaults only fill nil, which is
+            why the marker is needed rather than a plain default change. tOldOutputInterrupts is
+            gone with its last reader.
+
+    Auction house: a full scan announced itself as "auction started"
+        Simple: Starting a full auction house scan said "auction started, please wait", which does
+            not tell you which of the two kinds of scan is running - a search and a full scan sound
+            far too similar for something that then occupies the auction house for minutes. It now
+            says "full auction house scan started, please wait", matching the completion line,
+            which has always said "auction house full scan completed".
+        Technical: The locale string "Full scan started" was reworded in deDE, enUS and frFR. No
+            code path changed; the announcement site in auctionHouse.lua is untouched.
+
+    Sku focus: calling a focus arrived late and stuttered
+        Simple: Pressing a focus key to take the stored focus as your target spoke the name with a
+            noticeable delay - often started, cut off and started again. A key press delivers two
+            events, one when the key goes down and one when it comes back up, and Sku ran the
+            stored targeting macro on both. The second run took the same unit again, and because
+            every target announcement clears the speech queue first, the line that had just begun
+            was stopped and restarted - late by exactly as long as the key was held. The macro now
+            runs once per press. This surfaced now because the focus keys sit on the numeric
+            keypad by default since v42.13, so they are being used at all.
+        Technical: The eight focus buttons in skuFocus.lua registered
+            RegisterForClicks("AnyUp", "AnyDown") and therefore fired the macro on both edges. The
+            control frame behind the SET keys had the same bug and had already been moved to a
+            single edge; the GET buttons were explicitly left out at the time. They now register
+            "AnyDown" as well. What remains in the log is two PLAYER_TARGET_CHANGED and exactly
+            one spoken line per press; those two events come from /target <name> itself, which
+            clears the old target before setting the new one - visible in the soft-target lock
+            writing two different values (0, then 2) rather than the same one twice.
+
+    Target change: a duplicated range check and roster loops that ran on nothing
+        Simple: On every target change Sku walked the whole party and the whole raid to find out
+            whether the target is already fighting someone in your group - including when you were
+            alone and neither existed. That was 88 lookups into nothing, and with "Announce player
+            controlled units with generic descriptions" enabled it multiplied to over two thousand.
+            On top of that the range check ran twice per target change: the second call sat in a
+            piece of code that could never receive its result and therefore never announced
+            anything. Both are gone. Nothing Sku says changes, and the combat-status detection
+            stays complete - in a party or raid every member is still checked, plus your pet and
+            yourself, and the "who is my target attacking" question is asked exactly as before.
+        Technical: In SkuMob PLAYER_TARGET_CHANGED the party1-4 and raid1-40 loops are now gated
+            on IsInGroup() / IsInRaid(), and the raid walks only to GetNumGroupMembers() - the same
+            idiom already used in SkuAuras and SkuQuest. The order is preserved (party before raid)
+            so a member of your own subgroup still answers "party N". In SkuNav the aForTarget
+            branch of GetNonAutoLevel is gone: it opened with DoRangeCheck, which returns no value
+            at all, so its first condition never held - all that was left was the side effect, a
+            second forced range check and a possible second distance sound per target change. Its
+            caller in SkuMob and the helper GetCreatureIdFromCreatureGUID, used nowhere else, went
+            with it.
+
+    Target in combat: the indicator was permanently on for some users
+        Simple: This only affected anyone with "Announce player controlled units with generic
+            descriptions" switched on (off by default). For them every target was reported as being
+            in combat - beep or spoken - including a completely uninvolved animal standing in a
+            field. For a unit Sku cannot classify, and that includes a unit that does not exist at
+            all, the name function returns an empty string. That empty string was stored as an
+            entry in the list of your own group's names. The test that follows - "is my target
+            attacking someone in my group?" - also got an empty string for "my target is attacking
+            nobody", and it matched that very entry. So the answer was always yes. Empty names are
+            now neither stored nor compared. For affected users the combat sound will come far less
+            often, namely only when the target really is fighting you, your pet or your group. The
+            same cause hit "Auto set private Sku raid targets on in combat targets": there,
+            practically every target got a marker.
+        Technical: With vocalizePlayerNamePlaceholdersSkuTts = true, GetTtsAwareUnitName returns ""
+            for any unit that is neither you nor your pet nor a group member. tRosterNames picked
+            up that empty key, and the targettarget lookup hit it again. Both sides now also test
+            name ~= "".
+
+    Auras: a verification aid from the rebuild shipped switched on
+        Simple: The aura-list cache also rebuilt every list a second time from scratch in order to
+            compare the two results. That was a correctness check from the rebuild phase, shipped
+            enabled by mistake - and it cost exactly the work the cache exists to save. It is off
+            now; /skuauracache verify on turns it back on for a hunt.
+
+    Atlas Loot: stutter on login and on opening
+        Simple: Recently the game froze completely for four to five seconds a few seconds after
+            the loading screen, and then took about twenty seconds instead of eight to calm
+            down. The cause was the Atlas Loot integration: on every login and every reload Sku
+            worked through the entire Atlas Loot database - roughly 40,000 entries in one go -
+            even in a session where you never opened Atlas Loot at all. That no longer happens
+            at login. It happens when you actually open Atlas Loot, and it runs in small slices
+            in the background instead of holding the frame. If you do not use Atlas Loot you now
+            pay nothing for it, and its data addons are no longer loaded needlessly either.
+            Second half: opening the Search list inside Atlas Loot also hung noticeably. That
+            list has around 20,000 entries, and building it looked up the name again and asked
+            the server for item data for every single one - for 20,000 entries you have not even
+            looked at. The name is already known at that point, and only the entry your cursor
+            is on needs the data. The list opens correspondingly faster now.
+        Technical: alIntegrationQueryAll builds two reverse indexes over the Atlas Loot data:
+            "which boss drops this item", and the name list behind Search. The run hung off a
+            PLAYER_LOGIN retry ladder (5/10/20/35/60 s) plus a
+            PLAYER_ENTERING_WORLD/ZONE_CHANGED_NEW_AREA safety net, so it fired about three
+            seconds after entering the world - unsliced, in a single frame. Its justification
+            had expired: it was meant to spare the Ctrl+Shift+L jump a cold start, but that jump
+            lost its context detection long ago and now only opens the menu node, which starts
+            the build itself. Three of the four tables the run filled had no reader at all:
+            alLookupBosses and alLookupInstances were written and never read, serving only as
+            the "has this run yet?" flag for the very ladder that ran it; alDropsByBoss and
+            alDropsByInstance were read only behind a condition that can never be true, since
+            the context flag is only ever set to nil. All four are gone, together with that
+            flag, its 120 s timer and BuildContextualWishlistEntry. What remains runs as a
+            coroutine on a 30 ms per frame budget: the menu starts it in the background
+            (QueryAllStart), and whoever needs a complete index - Search, wishlist by dungeon,
+            "Dropped by" - waits for it at its own call site (alIntegrationQueryAll, a no-op
+            once it is built). Each row also got cheaper: name resolution now asks Sku's own
+            item table before GetItemInfo, which queued a server query for every id the client
+            had not cached, and skips the six substitution passes for names coming from that
+            table, which carry no markup to strip in the first place. Building the Search menu
+            was the second hotspot: alIntegrationItemMenuBuilder now optionally takes the name
+            the caller already has (the Search index is keyed BY that name), which drops the
+            per-entry name resolution, the Unescape pass and above all SkuCore:RequestItemData -
+            an ItemMixin plus a registered load callback per entry, and a server query for every
+            id the client had not cached, some 20,000 times in one frame. A boss's loot list (a
+            few dozen rows) still requests eagerly, so an uncached name there keeps filling
+            itself in, and the focused entry requests its data in OnEnter anyway - so the spoken
+            text is unchanged.
+
+    Collision warning: beeps with nothing in the way
+        Simple: The "you are stuck" beeps could turn up while you were simply walking from one
+            NPC to the next, with nothing blocking you at all. The counter behind the warning
+            was never reset, so harmless single measurements piled up over minutes and every
+            sixth one set off a beep.
+        Technical: The warning compares the distance covered in one 0.15 s tick against what
+            your current speed should have covered, and beeps after six slow ticks. Only the
+            counter had no reset except the one when it fired - not on a good tick, not when the
+            warning was disarmed - so it was a lifetime accumulator rather than a run of six in
+            a row. The first tick after every PLAYER_STARTED_MOVING samples a partial window,
+            because the previous sample was taken while you were still standing, and therefore
+            always scores as too slow: roughly every sixth start of any movement produced a
+            beep, minutes apart and unrelated to anything. That has been in there for a long
+            time but only counted while you held a movement key yourself; since engine-driven
+            walks were added to the warning in this version, every automatic walk-to-target
+            counts too, which is why it became noticeable while working through NPCs. The
+            counter now resets on any good tick and whenever the warning is disarmed, exactly as
+            the follow variant of the warning already did. That variant also stays as it is: it
+            is disarmed by AUTOFOLLOW_END, and the unfollow sound is emitted by that same path,
+            so hearing it is the proof the state was reset. The warning now leaves a line in the
+            debug log when it fires, so a report of "beeps out of nowhere" can be pinned to the
+            path it came from.
+
+    Taxi flight: two flight announcements that were not true
+        Simple: Two things were announced that did not hold. First, shortly before
+            arriving, Sku said "early landing available at X" - and X was the destination
+            you were already flying to; landing early there is just arriving. Second,
+            "flight ended" (or "flight started") sometimes came long after the flight,
+            typically the moment you next mounted or dismounted, occasionally minutes
+            later and nowhere near a flight point. The first line is gone; the second now
+            comes exactly when the flight really starts or ends, and never otherwise.
+        Technical, the destination as a landing point: The last-point exclusion was
+            already there; the route cursor simply slid out from under it at the decisive
+            moment. The route is captured at takeoff and a stop counts as passed once it
+            is closer than 250 yards. But
+            the taxi flies straight into its final node, so that one got "passed" too:
+            the cursor ran off the end of the route, the next stop was nil, and the
+            target lookup quietly degraded to the nearest-flight-point fallback. That
+            fallback knows nothing about the route, so the source flipped from "route"
+            to "nearest" - and that is exactly what the rule silencing the final leg
+            keys off. The destination was well inside the 800-yard threshold by then, so
+            it announced. The cursor now stops on the destination instead of walking
+            past it: the destination is not a stop you pass, it is where the flight
+            ends. The rule therefore holds through touchdown, and the keybind can still
+            name the destination on demand.
+        Technical, the late announcement: It hung on two flags that PLAYER_CONTROL_LOST
+            and PLAYER_CONTROL_GAINED set to 1 and that ONLY the next
+            PLAYER_MOUNT_DISPLAY_CHANGED ever cleared. If that event did not follow - or
+            arrived before the control event at a landing - the 1 simply waited, and the
+            next mount or dismount consumed it. PLAYER_CONTROL_GAINED also fires for
+            plenty of things that are not a landing (mind control ending, a cinematic, a
+            knockback, a vehicle), so the flag could be set with no flight involved at
+            all. The state is now DERIVED from UnitOnTaxi instead of latched: it speaks
+            only on a real false->true / true->false transition, every relevant event
+            re-runs the same idempotent check (control events also re-check after a short
+            delay, because the client flag lags the event), and a login or /reload adopts
+            the current state silently.
+        Technical, belt and braces: The taxi module ("early landing available at X")
+            could not fail this way - that line sits behind UnitOnTaxi AND the visible
+            cancel button. Hardened anyway, since both are client state: regaining player
+            control now means "the flight is over, full stop" - the watch is torn down and no
+            event may re-arm it until a new flight is actually taken. On top of that, a
+            momentarily invisible cancel button (a zone hand-off mid-flight is enough) no
+            longer wipes the announcement latches, which could otherwise name the same
+            flight point a second time. "/skutaxi" reports the new state as "landed=".
+
+    Group invite and summon: the decline button is back
+        Simple: A group invitation or a summon ("port") offered only "Accept" in the
+            menu - the button to decline it was missing, and it stayed missing for as
+            long as the dialog was open. Both buttons are listed again.
+        Technical: Blizzard locks the decline button on exactly these prompts for a
+            moment after the dialog appears (SetupLockOnDeclineButtonAndEscape, the same
+            helper that turns Escape off for them) as mouse-misclick protection against
+            invite and summon spam. Sku's generic frame reader skips any greyed-out
+            widget, and it scrapes a popup exactly ONCE, 0.1 s after it shows
+            (GENERIC_OnOpen) - right inside that lock window. So the decline button was
+            dropped, and because nothing rebuilds the menu while the dialog just sits
+            there, it never came back. SkuCore:IterateChildren now exempts StaticPopup
+            buttons from the "never list a disabled widget" rule: navigating to a menu
+            entry and pressing Enter is a deliberate act, not a misclick. Those buttons
+            also keep their OnClick handler even when the disabled widget reports no
+            mouse-click input, so the entry cannot end up listed but dead.
+
+    Typing in input fields: no more letters trailing after the field is gone
+        Simple: While typing into a Sku input field (writing mail, a search box, the
+            auction house) the spoken characters lagged behind the typing, tripped over
+            each other, and letters kept arriving long after the field had closed - most
+            noticeably with SAPI voices, which a keystroke did not interrupt. Sku now types
+            the way a screen reader does: the next keystroke cancels the previous
+            announcement instead of queueing up behind it. Whatever was typed while an
+            announcement was still running is merged into ONE announcement, so pasting with
+            Ctrl+V or holding an arrow key can no longer produce a flood. And when the
+            field closes - via Enter, via OK, via Escape or by any other route - Sku no
+            longer just drops what is waiting, it also stops what is currently being
+            spoken. Fixed alongside: the characters ( and % were never announced at all
+            while typing.
+        Technical: The echo in SkuOptions:EditBoxShow appended one utterance per typed
+            character to the BTTS queue. The v42.11 backlog cap (GetBttsQueueDepth /
+            TrimBttsQueue) could never bite: the SkuVoice pump skips its 0.1 s pacing as
+            soon as more than one entry is pending (`#mSkuVoiceQueueBTTS > 1`) and hands
+            the whole burst to C_VoiceChat.SpeakText within a few frames, i.e. into the
+            CLIENT's queue. Sku's own queue is empty afterwards, the measured depth is
+            practically always 0, the cap never triggers, and on close Trim finds nothing
+            left to drop - by then the backlog sits in the client/SAPI queue, which only a
+            real StopSpeakingText can reach. The echo now runs through exactly one slot:
+            characters are collected until the next flush (at most 6, newest win), spoken
+            as ONE overwriting utterance, and rate-limited to a 0.1 s minimum gap; a
+            generation counter discards flush timers and deferred arrow reads the moment
+            the field is gone. New: SkuVoice:CancelBttsOutput - clears the BTTS queue,
+            calls StopSpeakingText and arms the pump's post-stop hold at 0.15 s so the
+            confirmation issued right afterwards is not killed by the asynchronous stop; it
+            is wired to ENTER, OK, ESCAPE and the frame's OnHide (so a foreign :Hide()
+            is covered too). Also: SkuVoice:CheckIgnore now uses string.find(..., plain=true)
+            - typed punctuation such as ( or % was treated as a Lua pattern and threw
+            "unfinished capture" / "malformed pattern", which the caller's pcall swallowed;
+            and the echo passes ignoreLinks, because every keystroke used to run through
+            the full wiki link search whose result is discarded here anyway.
+
     Performance improvements and fixes when loading the spell database
         Simple: At login some players got a spoken "Sku database error, data set spells".
             It was reported from Era, but the common factor is processing power rather than
@@ -270,6 +518,89 @@ Changes in Sku v42.13
             from under the cursor once the data lands. tItemNameTable behind the search by
             name is filled via ResolveItemName as well, and the GetItemNameByID call on the
             favourites at login, whose result was thrown away, is now a real load request.
+
+    The dungeon browser offered every dungeon instead of only the ones you can join
+        Simple: Under "Create entry" you got the complete list of the category's dungeons -
+            the same one at every level. A level twenty character was offered the heroic
+            Outland instances, a level seventy character was offered the Deadmines, and both
+            could be ticked and posted even though you cannot get in there at all. The
+            visible window never behaved that way: there the game narrows the list down to
+            what suits your own level, and that narrowing was missing on our side - we simply
+            read the unfiltered list. Sku now shows the same selection the window does. If
+            you do need the whole list anyway, for instance to offer yourself for a dungeon
+            far below your level, switch off the new "Only matching dungeons" entry; it sits
+            directly above the dungeon groups and, while on, says how many entries it is
+            currently hiding. Dungeons you have already ticked always stay visible even when
+            the narrowing would otherwise hide them - otherwise you would post something you
+            can no longer find in the menu.
+        Technical: tGetCategoryActivities called C_LFGList.GetAvailableActivities(categoryID)
+            without the filters argument and therefore got the entire category; the levels
+            from GetActivityInfoTable were only read for the label, never used to filter.
+            Filtering now happens in two AND-ed layers: once through the game's own set
+            (GetAvailableActivities(categoryID, nil, Enum.LFGListFilter.Recommended)) and once
+            locally against UnitLevel("player") using minLevelSuggestion/maxLevelSuggestion -
+            on 2.5.x those are the only fields carrying real levels. The game's set is only
+            trusted when it comes back non-empty AND as a true subset of the unfiltered list,
+            so a build with a different signature can never blank the menu; missing level data
+            lets an entry through. New: the dungeonBrowser.showAllActivities setting (char),
+            the SkuCoreDungeonToggleShowAll toggle (rebuilds the tab, since the set of children
+            changes), the counters in DungeonBrowser.tFilterStats, and an "activity filter"
+            dprint line carrying the individual counts of both layers.
+
+    Quick menu: Lua errors on some settings
+        Simple: In the quick menu several settings threw a Lua error the moment you opened
+            them with right arrow - most noticeably under "Speech output", but also the
+            beacon volume under "Volumes" and the yes/no toggles under "Other". The very
+            same settings reached through their normal place in the settings menu worked
+            fine. The quick menu does not own any settings of its own: it shows the same
+            entries a second time in a second place, and that second listing was missing
+            one piece of information, without which Sku could not find the stored value.
+            Both routes now show the same value and write to the same setting. On top of
+            that, "Other" lists all four intended entries again: "Do not hide tooltip" and
+            "Play NPC greetings" had quietly disappeared from it when they were given a new
+            home elsewhere in the settings menu.
+        Technical: SkuOptions:IterateOptionsArgs decides from its fourth argument (aModule)
+            whether a node is schema-managed: skuManaged = (v.get == nil and v.set == nil
+            and aModule ~= nil). When it is not, GetCurrentValue reads through
+            self.optionsPath[self.profileIndex]:get() - and those get/set closures are
+            exactly what the schema-managed nodes do not have, since they live off aModule.
+            The quick menu's six mirror calls in SkuZOptions/Core.lua passed no aModule, so
+            opening any such node ran straight into "attempt to call method 'get' (a nil
+            value)". Affected were WowTtsVoice/-Speed/-Volume (SkuChat), beaconVolume
+            (SkuNav), readAllTooltips/interactMove (SkuCore) and vocalizeMenuNumbers/
+            vocalizeSubmenus (SkuOptions); the audio channels and sound settings stayed
+            intact because they carry their own get/set. All six calls now pass module and
+            keyPrefix exactly as the original menu location does ("SkuOptions"/
+            "soundChannels.", "SkuNav"/"", "SkuOptions"/"soundSettings.", "SkuChat"/"",
+            "SkuCore"/"", "SkuOptions"/""), so the stored values are unchanged. The "Other"
+            call additionally gets aIncludeHidden = true, because doNotHideTooltip and
+            playNPCGreetings now carry forAudioMenu = false and were being filtered out
+            without a word. In addition, every node produced by IterateOptionsArgs now reads
+            and writes through two central helpers (tOptGet/tOptSet) with three tiers -
+            SkuSettings, own get/set closure, direct table access - so a future mirror site
+            without aModule at worst reads the value directly instead of throwing.
+
+    Two menu moves: the beacon sound settings and "Other"
+        Simple: The beacon settings (beacon volume, click on beacons with its angle and
+            sound, and the sound sets for narrow, wide and last beacons) used to sit under
+            Monitor. They now live where the rest of the navigation settings live:
+            Settings, Navigation, Beacon sound settings. The entry is no longer called just
+            "Beacon" but says what it is about, and Monitor no longer has it at all. On top
+            of that, "Other" is the last entry of the quick menu again - "Dial Targeting"
+            and "Soft Targeting" now come before it instead of after.
+        Technical: The beacon block moves unchanged out of Aq:MonitorMenuBuilder
+            (SkuCore/aq.lua) into the Navigation branch of SkuCore:MenuBuilder
+            (SkuCore/Options.lua), where it hangs as a "Beacon sound settings" subentry
+            (German "Beacon Soundeinstellungen", French "Réglages de son des balises")
+            below the navigation settings. These are the same option nodes from
+            SkuNav.options.args, passed through IterateOptionsArgs against
+            SkuSettings:Sub("SkuNav") with the same module and keyPrefix - so the stored
+            values are unchanged, and the sound set nodes keep their OnAction that plays a
+            sample beacon. As before the list is an explicit whitelist, not the whole args
+            table: a new beacon node has to be added there too. In the quick menu
+            (SkuZOptions/Core.lua) Dial Targeting and Soft Targeting were pulled in front of
+            the 7.4 block; that child list carries no sorting flag, so insertion order is
+            display order.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.12
@@ -549,12 +880,14 @@ Changes in Sku v42.11
             themselves. That lets you hear kicks on your own target without hearing every
             kick in the raid. When you or your pet interrupt, you hear "You interrupted the
             spell" with the spell name; when someone in your group interrupts, "spell
-            interrupted". The announcement is on by default; anyone who had switched it off
+            interrupted". Only the announcement for your current target is on by default,
+            all enemies is yours to switch on; anyone who had switched the announcement off
             stays silent.
         Technical: SPELL_INTERRUPT from the combat log via the new dispatcher event
             SKU_SPELL_INTERRUPT. The former single outputInterrupts switch is replaced by
-            yourTargetInterrupts and allEnemiesInterrupts, both nil-filled from the old
-            value. With the global switch off, an interrupt is only announced when the
+            yourTargetInterrupts and allEnemiesInterrupts; only yourTargetInterrupts is
+            nil-filled from the old value, allEnemiesInterrupts starts off. With the global
+            switch off, an interrupt is only announced when the
             destGUID of the interrupted cast is your current target; with both on it still
             announces once. "You" means a source affiliation of MINE, which covers your own
             pet (felhunter Spell Lock and the like).

@@ -6,6 +6,282 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
 
+    Kampf: "Unterbrechungen bei deinem Ziel ansagen" ist jetzt standardmaessig aus
+        Einfach: Auch der zweite der beiden Unterbrechungs-Schalter startet nun ausgeschaltet.
+            Beide Haelften der Aufteilung - dein aktuelles Ziel und alle Gegner - sind ab sofort
+            zuschaltbar statt vorgegeben, denn eine Unterbrechungs-Ansage draengt sich in alles
+            andere, was Sku gerade sagt, und die meisten Spieler wollen sie nicht von allein
+            laufen haben. An der Ansage selbst aendert sich nichts, nur daran, ob sie an ist, wenn
+            du die Einstellung nie angefasst hast. Wieder einschalten unter Kampf, Gegner,
+            "Unterbrechungen bei deinem Ziel ansagen". Wie beim Schalter fuer alle Gegner wird das
+            einmalig auch auf bestehende Profile angewandt, damit ein aus dem alten Einzelschalter
+            uebernommener Wert ihn nicht stillschweigend anlaesst.
+        Technisch: Der Migrationsblock in aqCombat.lua belegt yourTargetInterrupts nicht mehr aus
+            dem frueheren outputInterrupts-Schalter vor; der Standard ist false wie bei
+            allEnemiesInterrupts, und eine einmalige Marke yourTargetInterruptsDefaultOff raeumt
+            Profile auf, die fruehere 42.13-Builds bereits aus dem alten Wert gefuellt hatten.
+            AceDB-Defaults fuellen nur nil, deshalb braucht es die Marke und nicht bloss einen
+            geaenderten Standard. tOldOutputInterrupts faellt mit seinem letzten Leser weg.
+
+    Auktionshaus: der Komplettscan meldete sich als "Auktion gestartet"
+        Einfach: Der Start eines vollen Auktionshaus-Scans sagte "Auktion gestartet, bitte warten"
+            - das verraet nicht, welche der beiden Scan-Arten laeuft, und eine Suche klingt damit
+            viel zu aehnlich wie ein Komplettscan, der das Auktionshaus danach minutenlang
+            belegt. Jetzt heisst es "Voller Auktionshaus Scan gestartet, bitte warten", passend
+            zur Abschlussmeldung, die schon immer "Voller Auktionshaus Scan abgeschlossen" lautet.
+        Technisch: Der Locale-Eintrag "Full scan started" wurde in deDE, enUS und frFR neu
+            formuliert. Kein Codepfad hat sich geaendert; die Ansagestelle in auctionHouse.lua
+            bleibt unberuehrt.
+
+    Sku Fokus: der Aufruf eines Fokus kam verzoegert und stotterte
+        Einfach: Wer eine Fokus-Taste drueckt, um den gespeicherten Fokus ins Ziel zu nehmen,
+            hoerte den Namen mit einer spuerbaren Verzoegerung - haeufig kurz angerissen und dann
+            noch einmal von vorn. Ein Tastendruck liefert zwei Ereignisse, eines beim
+            Herunterdruecken und eines beim Loslassen, und Sku hat das hinterlegte Ziel-Makro auf
+            beiden ausgefuehrt. Der zweite Durchlauf nahm dasselbe Ziel noch einmal, und weil jede
+            Zielansage die laufende Sprachausgabe zuerst abraeumt, wurde die gerade begonnene
+            Ansage gestoppt und neu gestartet - verzoegert um genau die Zeit, die die Taste
+            gehalten wurde. Jetzt laeuft das Makro einmal pro Druck. Aufgefallen ist das gerade
+            jetzt, weil die Fokus-Tasten seit v42.13 in der Voreinstellung auf dem Ziffernblock
+            liegen und damit ueberhaupt erst benutzt werden.
+        Technisch: Die acht Fokus-Knoepfe in skuFocus.lua meldeten sich mit
+            RegisterForClicks("AnyUp", "AnyDown") an, fuehrten das Makro also auf beiden Flanken
+            aus. Das Steuerungsfenster der SET-Tasten hatte denselben Fehler und war bereits auf
+            eine Flanke umgestellt worden; die GET-Knoepfe waren dabei ausdruecklich ausgenommen
+            worden. Sie melden sich jetzt ebenfalls nur noch mit "AnyDown" an. Im Log bleiben pro
+            Druck zwei PLAYER_TARGET_CHANGED und genau eine Sprachausgabe uebrig; diese zwei
+            Ereignisse stammen aus /target Name selbst, das erst das alte Ziel leert und dann das
+            neue setzt - erkennbar daran, dass die Soft-Target-Sperre zwei verschiedene Werte
+            schreibt (0, dann 2) und nicht zweimal denselben.
+
+    Zielwechsel: doppelte Reichweitenpruefung und leerlaufende Gruppenschleifen
+        Einfach: Bei jedem Zielwechsel hat Sku Gruppe und Schlachtzug vollstaendig abgefragt, um
+            zu erkennen, ob das Ziel schon gegen jemanden aus der eigenen Gruppe kaempft - auch
+            allein unterwegs, wo es weder das eine noch das andere gibt. Das waren 88 Abfragen ins
+            Leere, und mit der Einstellung "Spielergesteuerte Einheiten mit allgemeinen
+            Beschreibungen ansagen" wurden ueber zweitausend daraus. Ausserdem lief die
+            Entfernungspruefung bei jedem Zielwechsel zweimal: der zweite Aufruf steckte in einem
+            Programmteil, der sein Ergebnis nie bekommen konnte und deshalb nie etwas angesagt
+            hat. Beides ist entfernt. An dem, was Sku sagt, aendert sich nichts, und die
+            Kampfstatus-Erkennung bleibt vollstaendig - in Gruppe und Schlachtzug werden weiterhin
+            alle Mitglieder geprueft, dazu immer Begleiter und man selbst, und die Frage "wen
+            greift mein Ziel gerade an" wird unveraendert gestellt.
+        Technisch: In SkuMob PLAYER_TARGET_CHANGED sind die Schleifen ueber party1-4 und raid1-40
+            jetzt mit IsInGroup() / IsInRaid() abgesichert, und der Schlachtzug laeuft nur bis
+            GetNumGroupMembers() - dieselbe Schreibweise wie in SkuAuras und SkuQuest. Die
+            Reihenfolge bleibt erhalten (Gruppe vor Schlachtzug), damit ein Mitglied der eigenen
+            Untergruppe weiterhin als "party N" angesagt wird. In SkuNav ist der aForTarget-Zweig
+            von GetNonAutoLevel entfallen: er begann mit DoRangeCheck, das gar keinen Wert
+            zurueckgibt, womit seine erste Bedingung nie erfuellt war - geblieben war nur die
+            Nebenwirkung, eine zweite erzwungene Reichweitenpruefung samt moeglichem zweitem
+            Entfernungston pro Zielwechsel. Sein Aufrufer in SkuMob und die nur dort benutzte
+            Hilfsfunktion GetCreatureIdFromCreatureGUID sind mit entfallen.
+
+    Gegner im Kampf: die Anzeige war fuer einen Teil der Nutzer dauerhaft an
+        Einfach: Betroffen ist nur, wer "Spielergesteuerte Einheiten mit allgemeinen
+            Beschreibungen ansagen" eingeschaltet hat (Voreinstellung: aus). Dann meldete jedes
+            angepeilte Ziel "im Kampf" - Ton oder Ansage -, auch ein voellig unbeteiligtes Tier
+            auf der Wiese. Fuer eine Einheit, die Sku nicht einordnen kann, und dazu zaehlt auch
+            eine, die gar nicht existiert, liefert die Namensfunktion eine leere Zeichenkette. Die
+            landete als Eintrag in der Namensliste der eigenen Gruppe. Der Vergleich danach -
+            "greift mein Ziel jemanden aus meiner Gruppe an?" - bekam fuer "mein Ziel greift
+            niemanden an" ebenfalls eine leere Zeichenkette, und die passte auf genau diesen
+            Eintrag. Die Antwort war damit immer ja. Leere Namen werden jetzt weder eingetragen
+            noch verglichen. Fuer Betroffene heisst das: der Kampf-Ton kommt deutlich seltener,
+            naemlich nur noch, wenn das Ziel wirklich gegen einen selbst, den Begleiter oder die
+            Gruppe kaempft. Dieselbe Ursache traf "Private Sku-Schlachtzugszeichen automatisch auf
+            Ziele im Kampf setzen": dort bekam praktisch jedes Ziel ein Zeichen.
+        Technisch: GetTtsAwareUnitName liefert mit vocalizePlayerNamePlaceholdersSkuTts = true ""
+            fuer jede Einheit, die weder man selbst noch Begleiter noch Gruppenmitglied ist.
+            tRosterNames bekam diesen leeren Schluessel, und die Abfrage von targettarget traf ihn
+            wieder. Beide Seiten pruefen jetzt zusaetzlich auf name ~= "".
+
+    Auren: eine Messhilfe aus der Umbauphase lief im Auslieferungszustand mit
+        Einfach: Der Zwischenspeicher fuer Aurenlisten hat jede Liste zusaetzlich ein zweites Mal
+            komplett neu aufgebaut, um beide Ergebnisse gegeneinander zu pruefen. Das war eine
+            Kontrolle aus der Umbauphase, die versehentlich eingeschaltet ausgeliefert wurde - und
+            sie kostete genau die Arbeit, die der Zwischenspeicher einspart. Sie ist jetzt aus;
+            mit /skuauracache verify on laesst sie sich fuer eine Fehlersuche wieder einschalten.
+
+    Atlas Loot: Ruckler beim Anmelden und beim Oeffnen
+        Einfach: Seit kurzem hing das Spiel ein paar Sekunden nach dem Ladebildschirm fuer
+            vier bis fuenf Sekunden komplett, und danach dauerte es rund zwanzig statt acht
+            Sekunden, bis alles ruhig lief. Schuld war die Atlas-Loot-Anbindung: Sku hat bei
+            jeder Anmeldung und jedem Neuladen die komplette Atlas-Loot-Datenbank durchgearbeitet
+            - rund 40.000 Eintraege in einem Stueck - auch dann, wenn man Atlas Loot in der
+            ganzen Sitzung nie geoeffnet hat. Das passiert jetzt nicht mehr beim Anmelden,
+            sondern erst, wenn man Atlas Loot tatsaechlich oeffnet, und es laeuft in kleinen
+            Haeppchen im Hintergrund, statt das Bild anzuhalten. Wer Atlas Loot nicht benutzt,
+            zahlt gar nichts mehr dafuer - auch die Datenpakete von Atlas Loot werden dann nicht
+            mehr unnoetig geladen. Zweiter Teil: auch das Aufklappen der Suchliste in Atlas Loot
+            hing spuerbar. Diese Liste hat rund 20.000 Eintraege, und fuer jeden einzelnen wurde
+            beim Aufbauen der Name neu ermittelt und beim Server nach Gegenstandsdaten gefragt -
+            fuer 20.000 Eintraege, die man noch gar nicht angesehen hat. Der Name ist an dieser
+            Stelle laengst bekannt, und die Daten braucht nur der Eintrag, auf dem man gerade
+            steht. Die Liste oeffnet sich jetzt entsprechend schneller.
+        Technisch: alIntegrationQueryAll baut zwei Umkehr-Verzeichnisse ueber die Atlas-Loot-
+            Daten auf: "welcher Boss laesst diesen Gegenstand fallen" und die Namensliste fuer
+            die Suche. Der Lauf hing an einer PLAYER_LOGIN-Wiederholungsleiter (5/10/20/35/60 s)
+            plus einem Netz an PLAYER_ENTERING_WORLD/ZONE_CHANGED_NEW_AREA und lief damit etwa
+            drei Sekunden nach dem Betreten der Welt - ungeteilt, in einem einzigen Frame. Die
+            Begruendung dafuer war ueberholt: sie sollte dem Strg+Shift+L-Sprung die kalte
+            Wartezeit ersparen, doch dieser Sprung hat seine Kontexterkennung laengst verloren
+            und oeffnet nur noch den Menuepunkt, was den Aufbau selbst anstoesst. Drei der vier
+            Tabellen, die der Lauf fuellte, hatte ohnehin niemand gelesen: alLookupBosses und
+            alLookupInstances wurden nur geschrieben und dienten allein als "schon gelaufen?"-
+            Merker fuer genau die Leiter, die den Lauf ausloeste; alDropsByBoss und
+            alDropsByInstance wurden nur hinter einer Bedingung gelesen, die nie wahr sein kann,
+            seit das Kontext-Flag ausschliesslich auf nil gesetzt wird. Alle vier sind entfernt,
+            zusammen mit dem Flag, seinem 120-Sekunden-Timer und BuildContextualWishlistEntry.
+            Der verbliebene Lauf ist eine Koroutine mit 30-ms-Budget pro Frame: das Menue
+            startet ihn im Hintergrund (QueryAllStart), und wer ein vollstaendiges Verzeichnis
+            braucht - Suche, Wunschliste nach Dungeon, "Faellt bei" - wartet an seiner eigenen
+            Stelle darauf (alIntegrationQueryAll, ein Nichts-Tun, sobald es steht). Pro Eintrag
+            wurde es ausserdem billiger: die Namensaufloesung fragt jetzt zuerst Skus eigene
+            Gegenstandstabelle statt GetItemInfo, was pro unbekannter ID eine Server-Anfrage
+            ausgeloest hat, und spart die sechs Ersetzungslaeufe fuer Namen, die aus dieser
+            Tabelle kommen und ohnehin keine Markup-Zeichen enthalten. Der Menueaufbau der
+            Suchliste war der zweite Brennpunkt: alIntegrationItemMenuBuilder nimmt jetzt
+            optional den bereits bekannten Namen entgegen (die Suchliste ist nach genau diesem
+            Namen verschluesselt), und ueberspringt damit pro Eintrag die Namensaufloesung, den
+            Unescape-Lauf und vor allem SkuCore:RequestItemData - also ein ItemMixin samt
+            registriertem Lade-Rueckruf und eine Server-Abfrage je nicht zwischengespeicherter
+            ID, rund 20.000 Mal in einem Frame. Die Beutelisten eines Bosses (ein paar Dutzend
+            Zeilen) fordern die Daten weiterhin vorab an, damit sich unbekannte Namen dort
+            weiter selbst nachtragen, und der Eintrag, auf dem der Cursor steht, fordert sie in
+            seinem OnEnter ohnehin an - der gesprochene Text aendert sich also nicht.
+
+    Kollisionswarnung: Toene ohne Hindernis
+        Einfach: Der "du haengst fest"-Ton konnte auftauchen, waehrend man einfach von einem NPC
+            zum naechsten lief, ohne dass irgendetwas im Weg stand. Der Zaehler hinter der
+            Warnung wurde nie zurueckgesetzt, also sammelten sich harmlose Einzelmessungen ueber
+            Minuten an, und jede sechste loeste einen Ton aus.
+        Technisch: Die Warnung vergleicht die in einem 0,15-Sekunden-Takt zurueckgelegte Strecke
+            mit der, die das aktuelle Tempo haette schaffen muessen, und gibt nach sechs zu
+            langsamen Takten einen Ton. Nur hatte der Zaehler ausser beim Ausloesen keinerlei
+            Ruecksetzung - nicht bei einem guten Takt, nicht wenn die Warnung gar nicht scharf
+            war - er war also ein Lebenszeit-Sammler statt einer Sechserserie. Der erste Takt
+            nach jedem PLAYER_STARTED_MOVING misst ein angeschnittenes Fenster, weil die vorige
+            Messung noch im Stand erfolgte, und faellt damit zwangslaeufig als "zu langsam" aus:
+            etwa jeder sechste Bewegungsstart ergab einen Ton, Minuten auseinander und ohne
+            jeden Zusammenhang. Das steckt schon lange drin, zaehlte aber nur, solange man
+            selbst eine Bewegungstaste hielt; seit in dieser Version auch motorgetriebene Wege
+            mitwarnen, zaehlt jeder automatische Weg zum Ziel mit - deshalb faellt es beim
+            Abarbeiten von NPCs auf. Der Zaehler wird jetzt bei jedem guten Takt und immer, wenn
+            die Warnung nicht scharf ist, zurueckgesetzt, genau wie es die Folgen-Variante der
+            Warnung schon tat. Diese Variante bleibt unveraendert: sie wird von AUTOFOLLOW_END
+            entschaerft, und der Ton beim Ende des Folgens kommt aus genau diesem Weg - wer ihn
+            hoert, hat den Beweis, dass der Status zurueckgesetzt wurde. Die Warnung
+            hinterlaesst beim Ausloesen jetzt ausserdem eine Zeile im Debug-Log, damit sich
+            "Toene aus dem Nichts" dem Weg zuordnen lassen, aus dem sie kamen.
+
+    Taxiflug: zwei falsche Flugansagen
+        Einfach: Zwei Dinge wurden angesagt, die nicht stimmten. Erstens sagte Sku kurz
+            vor der Ankunft "Vorzeitige Landung moeglich bei X" - und X war das Ziel,
+            das man ohnehin gerade anflog; dort vorzeitig zu landen heisst schlicht
+            anzukommen. Zweitens kam "Flug beendet" (oder "Flug gestartet") gelegentlich
+            lange nach dem Flug, typischerweise in dem Moment, in dem man das naechste
+            Mal auf- oder abgesessen ist, mitunter Minuten spaeter und ohne jeden Bezug
+            zu einem Flugpunkt. Die erste Ansage bleibt jetzt aus, die zweite kommt
+            genau dann, wenn der Flug wirklich beginnt oder endet, und sonst nie.
+        Technisch, das Ziel als Landepunkt: Den Ausschluss des letzten Punktes gab es
+            bereits, nur rutschte der Routen-Zeiger im entscheidenden Moment darunter
+            weg. Die Route wird beim Start abgegriffen, und ein Zwischenstopp gilt als
+            passiert, sobald er naeher
+            als 250 Yards ist. Das Taxi fliegt aber direkt in seinen letzten Punkt
+            hinein, also wurde auch dieser "passiert": der Zeiger lief hinter das
+            Routenende, der naechste Halt war nil, und die Zielbestimmung fiel still auf
+            die Notloesung "naechstgelegener Flugpunkt" zurueck. Die kennt die Route
+            nicht, damit wechselte die Quelle von "route" auf "nearest" - und genau
+            daran haengt die Bedingung, die den letzten Punkt stummschaltet. Das Ziel
+            war zu dem Zeitpunkt laengst innerhalb der 800-Yard-Schwelle, also kam die
+            Ansage. Der Zeiger bleibt jetzt auf dem Ziel stehen, statt darueber
+            hinauszulaufen: das Ziel ist kein Halt, den man passiert, sondern der Ort,
+            an dem der Flug endet. Damit greift die Stummschaltung bis zur Landung, und
+            die Taste kann das Ziel weiterhin benennen.
+        Technisch, die verspaetete Ansage: Sie hing an zwei Merkern, die
+            PLAYER_CONTROL_LOST bzw.
+            PLAYER_CONTROL_GAINED auf 1 setzten und die AUSSCHLIESSLICH das naechste
+            PLAYER_MOUNT_DISPLAY_CHANGED wieder abgeraeumt hat. Blieb dieses Ereignis aus
+            - oder kam es an der Landung vor dem Kontroll-Ereignis - dann wartete die 1
+            einfach weiter, und der naechste Reittier-Wechsel loeste sie aus.
+            PLAYER_CONTROL_GAINED feuert ausserdem fuer allerlei, was keine Landung ist
+            (Gedankenkontrolle endet, Zwischensequenz, Rueckstoss, Fahrzeug), sodass der
+            Merker auch voellig ohne Flug gesetzt werden konnte. Der Zustand wird jetzt
+            aus UnitOnTaxi ABGELEITET statt gemerkt: gesprochen wird nur bei einem echten
+            Wechsel falsch->wahr bzw. wahr->falsch, jedes beteiligte Ereignis fuehrt
+            denselben idempotenten Test aus (Kontroll-Ereignisse zusaetzlich zeitversetzt,
+            weil der Client-Merker dem Ereignis hinterherhinkt), und Login/Neuladen
+            uebernimmt den laufenden Zustand stumm.
+        Technisch, zur Sicherheit obendrauf: Im Taxi-Modul ("Vorzeitige Landung
+            moeglich bei X")
+            konnte dieselbe Klasse Fehler nicht auftreten - die Ansage haengt hinter
+            UnitOnTaxi UND dem sichtbaren Abbruch-Knopf. Trotzdem abgesichert, weil beide
+            Merkmale Client-Zustand sind: Kontrolle zurueckerhalten heisst jetzt "Flug
+            vorbei, Punkt" - der Beobachter wird abgeraeumt und kein Ereignis darf ihn
+            wieder starten, bis wirklich ein neuer Flug angetreten wird. Zusaetzlich
+            loescht ein kurzzeitig unsichtbarer Abbruch-Knopf (z.B. bei einem Zonenwechsel
+            im Flug) nicht mehr die Ansage-Merker, was denselben Flugpunkt sonst ein
+            zweites Mal ansagen konnte. "/skutaxi" zeigt den neuen Zustand als "landed=".
+
+    Gruppeneinladung und Beschwoerung: der Ablehnen-Knopf ist zurueck
+        Einfach: Bei einer Gruppeneinladung oder einer Beschwoerung ("Port") bot das
+            Menue nur noch "Annehmen" an - der Knopf zum Ablehnen fehlte, und er fehlte
+            so lange, wie der Dialog offen war. Beide Knoepfe stehen wieder in der Liste.
+        Technisch: Blizzard sperrt genau bei diesen Abfragen den Ablehnen-Knopf fuer
+            einen Moment nach dem Erscheinen des Dialogs (SetupLockOnDeclineButtonAndEscape,
+            dieselbe Hilfsfunktion, die dort auch Escape abschaltet) - als Schutz gegen
+            versehentliches Wegklicken bei Einladungs- und Beschwoerungsspam. Skus
+            generischer Fensterleser ueberspringt jedes ausgegraute Bedienelement, und er
+            liest ein Popup genau EINMAL aus, 0.1 s nach dem Anzeigen (GENERIC_OnOpen) -
+            mitten in dieser Sperrzeit. Der Ablehnen-Knopf fiel also heraus, und da nichts
+            das Menue neu aufbaut, solange der Dialog einfach nur dasteht, kam er nie
+            wieder. SkuCore:IterateChildren nimmt Knoepfe von StaticPopup-Dialogen jetzt
+            von der Regel "nie ein deaktiviertes Element auflisten" aus: einen Menuepunkt
+            anzusteuern und Enter zu druecken ist eine bewusste Handlung, kein Verklicken.
+            Diese Knoepfe behalten ausserdem ihren OnClick-Handler, auch wenn das
+            deaktivierte Element keine Mausklick-Eingabe meldet - sonst stuende der
+            Eintrag zwar in der Liste, waere aber wirkungslos.
+
+    Tippen in Eingabefeldern: kein Nachplappern mehr nach dem Schliessen
+        Einfach: Beim Tippen in ein Sku-Eingabefeld (Brief schreiben, Suchfeld,
+            Auktionshaus) hinkte die Ansage der Zeichen dem Tippen hinterher, ueberschlug
+            sich, und Buchstaben kamen noch, wenn das Feld laengst geschlossen war -
+            besonders deutlich mit SAPI-Stimmen, die ein Tastendruck bisher nicht
+            abgebrochen hat. Sku tippt jetzt so, wie es ein Screenreader tut: Der naechste
+            Anschlag bricht die Ansage des vorigen ab, statt sich dahinter zu stellen. Was
+            waehrend einer laufenden Ansage getippt wurde, wird zu EINER Ansage
+            zusammengefasst, sodass auch Einfuegen mit Strg+V oder eine gedrueckt
+            gehaltene Pfeiltaste keinen Schwall mehr ausloest. Und beim Schliessen des
+            Feldes - mit Enter, mit OK, mit Escape oder auf jedem anderen Weg - wird nicht
+            mehr nur das Wartende verworfen, sondern auch die gerade laufende Ausgabe
+            abgebrochen. Nebenbei behoben: die Zeichen ( und % wurden beim Tippen gar
+            nicht angesagt.
+        Technisch: Das Echo in SkuOptions:EditBoxShow haengte je getipptem Zeichen eine
+            eigene Aeusserung an die BTTS-Queue. Der Rueckstau-Deckel aus v42.11
+            (GetBttsQueueDepth / TrimBttsQueue) griff dabei ins Leere: Die Pumpe in
+            SkuVoice ueberspringt ihre 0.1-s-Taktung, sobald mehr als ein Eintrag wartet
+            (`#mSkuVoiceQueueBTTS > 1`), und schiebt den ganzen Schwall binnen weniger
+            Bilder per C_VoiceChat.SpeakText in die Queue des CLIENTS. Skus eigene Queue
+            ist danach leer, die gemessene Tiefe praktisch immer 0, der Deckel loest nie
+            aus, und beim Schliessen findet Trim nichts mehr zum Wegwerfen - der Rueckstau
+            steht zu dem Zeitpunkt in der Client-/SAPI-Queue, an die nur ein echtes
+            StopSpeakingText herankommt. Das Echo laeuft jetzt ueber genau einen Slot:
+            Zeichen werden bis zum naechsten Flush gesammelt (hoechstens 6, die neuesten
+            gewinnen), als EINE ueberschreibende Aeusserung gesprochen und auf 0.1 s
+            Mindestabstand begrenzt; ein Generationszaehler verwirft Flush-Timer und
+            verzoegerte Pfeil-Lesungen, sobald das Feld zu ist. Neu ist
+            SkuVoice:CancelBttsOutput - leert die BTTS-Queue, ruft StopSpeakingText und
+            setzt die Nachsperre der Pumpe auf 0.15 s, damit die unmittelbar folgende
+            Bestaetigung nicht vom asynchron eintreffenden Stop erschlagen wird; es haengt
+            an ENTER, OK, ESCAPE und am OnHide des Rahmens (also auch an einem fremden
+            :Hide()). Ausserdem: SkuVoice:CheckIgnore vergleicht jetzt mit string.find(...,
+            plain=true) - getippte Sonderzeichen wie ( oder % waren Lua-Muster und warfen
+            "unfinished capture" bzw. "malformed pattern", was der pcall des Aufrufers
+            verschluckte; und das Echo setzt ignoreLinks, denn bisher lief jeder
+            Tastendruck durch die komplette Wiki-Link-Suche, deren Ergebnis hier ohnehin
+            verworfen wird.
+
     Leistungsverbesserungen und Korrekturen beim Laden der Zauberdatenbank
         Einfach: Beim Anmelden meldeten einige Spieler einen gesprochenen "Sku Datenbank
             Fehler, Datensatz spells". Gemeldet wurde das von Era-Spielern, der
@@ -302,6 +578,94 @@ Aenderungen in Sku v42.13
             Namen wird ebenfalls ueber ResolveItemName gefuellt, und der beim Anmelden ins
             Leere laufende GetItemNameByID-Aufruf auf die Favoriten ist jetzt ein echter
             Ladeauftrag.
+
+    Der Dungeonbrowser bot alle Dungeons an statt nur der passenden
+        Einfach: Unter "Eintrag erstellen" stand die vollstaendige Liste aller Dungeons der
+            Kategorie - auf jeder Stufe dieselbe. Ein Charakter der Stufe zwanzig bekam die
+            heroischen Instanzen der Scherbenwelt genauso angeboten wie ein Siebziger die
+            Todesminen, und beides liess sich anhaken und anmelden, obwohl man dort gar nicht
+            hineinkommt. Im sichtbaren Fenster war das nie so: dort grenzt das Spiel die Liste
+            auf das ein, was zur eigenen Stufe passt, und genau diese Eingrenzung fehlte bei
+            uns - wir haben schlicht die ungefilterte Liste gelesen. Jetzt zeigt Sku dieselbe
+            Auswahl wie das Fenster. Wer trotzdem die ganze Liste braucht, etwa um sich fuer
+            einen Dungeon weit unter der eigenen Stufe anzubieten, schaltet den neuen Eintrag
+            "Nur passende Dungeons" ab; er steht direkt ueber den Dungeon-Gruppen und nennt
+            eingeschaltet, wie viele Eintraege er gerade ausblendet. Bereits angehakte
+            Dungeons bleiben immer sichtbar, auch wenn die Eingrenzung sie sonst verstecken
+            wuerde - sonst haettest du etwas angemeldet, das du im Menue nicht mehr
+            wiederfindest.
+        Technisch: tGetCategoryActivities rief C_LFGList.GetAvailableActivities(categoryID)
+            ohne das filters-Argument auf und bekam damit den kompletten Kategorieinhalt; die
+            Stufen aus GetActivityInfoTable wurden nur fuer die Beschriftung gelesen, nie zum
+            Filtern. Gefiltert wird jetzt in zwei UND-verknuepften Lagen: einmal ueber den Satz
+            des Spiels selbst (GetAvailableActivities(categoryID, nil,
+            Enum.LFGListFilter.Recommended)) und einmal lokal gegen UnitLevel("player") anhand
+            von minLevelSuggestion/maxLevelSuggestion - auf 2.5.x sind das die einzigen Felder
+            mit echten Stufen. Der Satz des Spiels wird nur uebernommen, wenn er nicht leer und
+            eine echte Teilmenge der ungefilterten Liste ist, damit eine abweichende Signatur
+            das Menue niemals leer machen kann; fehlende Stufenangaben lassen einen Eintrag
+            durch. Neu sind die Einstellung dungeonBrowser.showAllActivities (char), der
+            Umschalter SkuCoreDungeonToggleShowAll (baut den Reiter neu auf, weil sich die
+            Kinderliste aendert), die Zaehler in DungeonBrowser.tFilterStats und eine
+            dprint-Zeile "activity filter" mit den Einzelzahlen beider Lagen.
+
+    Schnellmenue: Lua-Fehler bei einigen Einstellungen
+        Einfach: Im Schnellmenue warfen mehrere Einstellungen einen Lua-Fehler, sobald man
+            sie mit Pfeil rechts aufklappte - besonders unter "Sprachausgabe", aber auch die
+            Beacon-Lautstaerke unter "Lautstaerken" und die Ja/Nein-Schalter unter
+            "Sonstiges". Dieselben Einstellungen ueber ihren normalen Weg im
+            Einstellungsmenue funktionierten einwandfrei. Das Schnellmenue baut naemlich
+            keine eigenen Einstellungen, es zeigt dieselben Eintraege noch einmal an einer
+            zweiten Stelle - und bei dieser Zweitanzeige fehlte eine Angabe, ohne die Sku
+            den gespeicherten Wert nicht finden konnte. Jetzt zeigen beide Wege denselben
+            Wert und schreiben in dieselbe Einstellung. Ausserdem tauchen unter "Sonstiges"
+            wieder alle vier vorgesehenen Eintraege auf: "Tooltip nicht ausblenden" und
+            "NPC Begruessungen abspielen" waren dort still verschwunden, als sie an anderer
+            Stelle im Einstellungsmenue einen neuen Platz bekamen.
+        Technisch: SkuOptions:IterateOptionsArgs entscheidet an seinem vierten Argument
+            (aModule), ob ein Knoten schema-verwaltet ist: skuManaged = (v.get == nil and
+            v.set == nil and aModule ~= nil). Ist er das nicht, liest GetCurrentValue ueber
+            self.optionsPath[self.profileIndex]:get(). Genau diese get/set-Closures haben
+            die schema-verwalteten Knoten aber nicht - sie leben von aModule. Die sechs
+            Spiegel-Aufrufe des Schnellmenues in SkuZOptions/Core.lua gaben aModule nicht
+            mit, also lief jeder Aufklappvorgang eines solchen Knotens in "attempt to call
+            method 'get' (a nil value)". Betroffen waren WowTtsVoice/-Speed/-Volume
+            (SkuChat), beaconVolume (SkuNav), readAllTooltips/interactMove (SkuCore) und
+            vocalizeMenuNumbers/vocalizeSubmenus (SkuOptions); die Audiokanaele und
+            Soundeinstellungen blieben heil, weil sie eigene get/set mitbringen. Alle sechs
+            Aufrufe geben jetzt Modul und keyPrefix genau so mit wie die Original-Menuestelle
+            ("SkuOptions"/"soundChannels.", "SkuNav"/"", "SkuOptions"/"soundSettings.",
+            "SkuChat"/"", "SkuCore"/"", "SkuOptions"/""), womit die gespeicherten Werte
+            unveraendert bleiben. Der Sonstiges-Aufruf bekommt zusaetzlich aIncludeHidden =
+            true, weil doNotHideTooltip und playNPCGreetings inzwischen forAudioMenu = false
+            tragen und deshalb wortlos herausgefiltert wurden. Zusaetzlich lesen und
+            schreiben alle von IterateOptionsArgs erzeugten Knoten jetzt ueber zwei zentrale
+            Helfer (tOptGet/tOptSet) mit drei Stufen - SkuSettings, eigene get/set-Closure,
+            direkter Tabellenzugriff -, sodass eine kuenftige Spiegelstelle ohne aModule
+            hoechstens den Wert direkt liest statt einen Fehler zu werfen.
+
+    Zwei Umzuege im Menue: Beacon Soundeinstellungen und "Sonstiges"
+        Einfach: Die Beacon-Einstellungen (Beacon-Lautstaerke, Klick bei Beacons samt Winkel
+            und Ton, sowie die Toene fuer schmale, breite und letzte Beacons) lagen bisher
+            unter Monitor. Sie sind jetzt dort, wo auch alle uebrigen
+            Navigationseinstellungen liegen: Einstellungen, Navigation, Beacon
+            Soundeinstellungen. Der Punkt heisst also nicht mehr nur "Beacon", sondern sagt
+            jetzt, worum es geht; unter Monitor gibt es ihn nicht mehr. Ausserdem ist
+            "Sonstiges" im Schnellmenue wieder der letzte Eintrag - "Dial Targeting" und
+            "Soft Targeting" stehen jetzt davor statt dahinter.
+        Technisch: Der Beacon-Block wandert unveraendert aus Aq:MonitorMenuBuilder
+            (SkuCore/aq.lua) in den Navigation-Zweig von SkuCore:MenuBuilder
+            (SkuCore/Options.lua) und haengt dort als Unterpunkt "Beacon
+            Soundeinstellungen" (englisch "Beacon sound settings", franzoesisch "Réglages
+            de son des balises") unter den Navigationseinstellungen. Es sind dieselben
+            Options-Knoten aus SkuNav.options.args, durchgereicht per IterateOptionsArgs
+            gegen SkuSettings:Sub("SkuNav") mit gleichem Modul und keyPrefix - gespeicherte
+            Werte bleiben also unveraendert, und die Ton-Knoten behalten ihr OnAction, das
+            ein Beispiel-Beacon abspielt. Wie zuvor ist die Liste eine ausdrueckliche
+            Auswahl, kein Durchreichen der ganzen args-Tabelle: ein neuer Beacon-Knoten muss
+            dort mit eingetragen werden. Im Schnellmenue (SkuZOptions/Core.lua) sind Dial
+            Targeting und Soft Targeting vor den 7.4-Block gezogen; die Kinderliste traegt
+            kein sorting-Flag, die Einfuegereihenfolge ist also die Anzeigereihenfolge.
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.12
@@ -611,12 +975,14 @@ Aenderungen in Sku v42.11
             selbst. So kannst du Unterbrechungen auf deinem eigenen Ziel hoeren, ohne jede
             Unterbrechung im ganzen Schlachtzug mitzubekommen. Unterbrichst du selbst oder
             dein Begleiter, heisst es "Du hast den Zauber unterbrochen" mit dem Zaubernamen;
-            unterbricht jemand aus deiner Gruppe, heisst es "Zauber unterbrochen". Die
-            Ansage ist ab Werk an; wer sie schon einmal ausgeschaltet hatte, bleibt still.
+            unterbricht jemand aus deiner Gruppe, heisst es "Zauber unterbrochen". Ab Werk
+            ist nur die Ansage fuer dein aktuelles Ziel an, alle Gegner schaltest du bei
+            Bedarf selbst dazu; wer die Ansage schon einmal ausgeschaltet hatte, bleibt still.
         Technisch: SPELL_INTERRUPT aus dem Kampflog ueber das neue Dispatcher-Ereignis
             SKU_SPELL_INTERRUPT. Der frueher einzelne Schalter outputInterrupts ist durch
-            yourTargetInterrupts und allEnemiesInterrupts ersetzt, beide werden aus dem alten
-            Wert vorbelegt. Steht der globale Schalter aus, wird nur angesagt, wenn die
+            yourTargetInterrupts und allEnemiesInterrupts ersetzt; nur yourTargetInterrupts
+            wird aus dem alten Wert vorbelegt, allEnemiesInterrupts startet aus. Steht der
+            globale Schalter aus, wird nur angesagt, wenn die
             destGUID des unterbrochenen Zaubers dein aktuelles Ziel ist; stehen beide an,
             gibt es trotzdem nur eine Ansage. Als "du" gilt die Quellzugehoerigkeit MINE, was
             den eigenen Begleiter einschliesst (Teufelsjaeger-Zauberblockade und Aehnliches).
