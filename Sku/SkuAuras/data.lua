@@ -1435,6 +1435,25 @@ SkuAuras.attributes = {
          "false",
       },
    },
+   -- [v43.0] MODIFIER, not a condition: with value "true", THIS aura's four
+   -- buff/debuff list conditions and their duration conditions see only auras
+   -- the player cast (EvaluateAllAuras swaps in the caster == "player" subsets
+   -- and getFixedDuration reads the own exp map). Evaluate always passes so
+   -- the flag never blocks the aura; the stored value carries the meaning.
+   -- Solves: a debuff-list aura reacting to OTHER players' copies of the same
+   -- debuff (e.g. two priests' Schattenwort: Schmerz on one target).
+   listsOwnOnly = {
+      tooltip = L["Ob die Listen Bedingungen nur selbst gewirkte Auren sehen"],
+      friendlyName = L["Listen nur selbst gewirkte"],
+      type = "BINARY",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         return true
+      end,
+      values = {
+         "true",
+         "false",
+      },
+   },
    critical = {
       tooltip = L["Whether the damage or heal was critical"],
       friendlyName = L["Critical"],

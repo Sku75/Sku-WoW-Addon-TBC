@@ -1270,7 +1270,9 @@ end
 -- crossing before. The subevent name deliberately contains no _AURA_ / _DAMAGE
 -- / _HEAL / _MISSED substring so none of the subevent-pattern branches react.
 function SkuAuras:DURATION_DEADLINE()
-	dprint("aura durationDeadline fire")
+	-- GetTime() with decimals: the ring's own timestamps are whole seconds, the
+	-- t value is what lets a log read-back measure crossing -> firing in ms.
+	dprint(string.format("aura durationDeadline fire  t %.3f", GetTime()))
 	SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", {
 		GetTime(),
 		"DURATION_DEADLINE",
@@ -1379,6 +1381,13 @@ local tAuraScratch = {
 	debuffTarget = {},
 	buffPlayer = {},
 	debuffPlayer = {},
+	-- [v43.0] Own-cast subsets (caster == "player"), filled by the same scan.
+	-- Used by auras carrying the listsOwnOnly flag; see the per-aura swap in
+	-- EvaluateAllAuras.
+	buffTargetOwn = {},
+	debuffTargetOwn = {},
+	buffPlayerOwn = {},
+	debuffPlayerOwn = {},
 }
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1538,13 +1547,22 @@ end
 -- rescanning UnitAura for every duration-watching aura on every event — see
 -- getFixedDuration. First occurrence wins, matching the fresh scan's
 -- first-match return for duplicate aura names (two priests' Renew).
+-- [v43.0] Each slot also carries `own`/`ownExp`: the caster == "player" subset
+-- of list/exp, filled by the same rebuild and staled by the same invalidation.
+-- They exist for auras with the listsOwnOnly flag ("Listen nur selbst
+-- gewirkte"), so e.g. a Schattenwort: Schmerz aura stops reacting to OTHER
+-- priests' copies of the same debuff — including the exp map, whose
+-- first-occurrence-wins rule could otherwise return the other caster's
+-- expiration for duration conditions.
 local tAuraListCache = {
 	enabled = true,
 	verify  = false,
-	player = { HELPFUL = {valid = false, list = {}, exp = {}}, HARMFUL = {valid = false, list = {}, exp = {}} },
-	target = { HELPFUL = {valid = false, list = {}, exp = {}}, HARMFUL = {valid = false, list = {}, exp = {}} },
+	player = { HELPFUL = {valid = false, list = {}, exp = {}, own = {}, ownExp = {}}, HARMFUL = {valid = false, list = {}, exp = {}, own = {}, ownExp = {}} },
+	target = { HELPFUL = {valid = false, list = {}, exp = {}, own = {}, ownExp = {}}, HARMFUL = {valid = false, list = {}, exp = {}, own = {}, ownExp = {}} },
 	_verifyBuf = {},
 	_verifyExpBuf = {},
+	_verifyOwnBuf = {},
+	_verifyOwnExpBuf = {},
 }
 SkuAuras.auraListCache = tAuraListCache
 
@@ -1843,7 +1861,11 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 			end
 		end
 	end
-	local function getAuraList(unit, filter, durationForAuraName, aScratch, aExpScratch)
+	-- [v43.0] aOwnScratch/aOwnExpScratch: parallel caster == "player" subsets,
+	-- filled by the same single scan (one extra compare per aura slot).
+	-- aOwnOnly gates the duration-lookup path to own-cast instances, so two
+	-- same-name auras from different casters cannot answer with the wrong exp.
+	local function getAuraList(unit, filter, durationForAuraName, aScratch, aExpScratch, aOwnScratch, aOwnExpScratch, aOwnOnly)
 		filter = filter or "HELPFUL|HARMFUL"
 		-- [W3/P4 #2] Reuse a caller-supplied scratch buffer (wiped) instead of
 		-- allocating, for the four fixed per-event lists. The duration-lookup path
@@ -1862,15 +1884,21 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 		if aExpScratch then
 			for k in pairs(aExpScratch) do aExpScratch[k] = nil end
 		end
+		if aOwnScratch then
+			for k in pairs(aOwnScratch) do aOwnScratch[k] = nil end
+		end
+		if aOwnExpScratch then
+			for k in pairs(aOwnExpScratch) do aOwnExpScratch[k] = nil end
+		end
 		for x = 1, 40  do
-			local name, icon, count, dispelType, duration, expirationTime = UnitAura(unit, x, filter)
+			local name, icon, count, dispelType, duration, expirationTime, caster = UnitAura(unit, x, filter)
 			-- UnitAura indices are contiguous then nil: once name is nil there are
 			-- no further auras on this unit/filter, so stop instead of probing all
 			-- 40 slots every call. Behaviour-identical (the trailing slots returned
 			-- nil and did nothing); cuts the loop to (aura count + 1) iterations.
 			if not name then break end
 			if durationForAuraName then
-				if name == durationForAuraName then
+				if name == durationForAuraName and (not aOwnOnly or caster == "player") then
 					return (expirationTime or GetTime()) - GetTime()
 				end
 			end
@@ -1878,6 +1906,14 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 				aExpScratch[name] = expirationTime or false
 			end
 			tBuffList[name] = name
+			if caster == "player" then
+				if aOwnScratch then
+					aOwnScratch[name] = name
+				end
+				if aOwnExpScratch and aOwnExpScratch[name] == nil then
+					aOwnExpScratch[name] = expirationTime or false
+				end
+			end
 		end
 
 		--add weapon enchants
@@ -1885,10 +1921,16 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 			local hasMainHandEnchant, mainHandExpiration, mainHandCharges, mainHandEnchantID, hasOffHandEnchant, offHandExpiration, offHandCharges, offHandEnchantID = tWE_hasMH, tWE_mhExp, tWE_mhCharges, tWE_mhId, tWE_hasOH, tWE_ohExp, tWE_ohCharges, tWE_ohId
 			tAddWeaponEnchantName(hasMainHandEnchant, mainHandEnchantID, tBuffList)
 			tAddWeaponEnchantName(hasOffHandEnchant, offHandEnchantID, tBuffList)
+			-- [v43.0] Temp weapon enchants are the player's own by definition.
+			-- Like the full list, they get no exp entries (pseudo-names).
+			if aOwnScratch then
+				tAddWeaponEnchantName(hasMainHandEnchant, mainHandEnchantID, aOwnScratch)
+				tAddWeaponEnchantName(hasOffHandEnchant, offHandEnchantID, aOwnScratch)
+			end
 		end
 
 		if not durationForAuraName then
-			return tBuffList
+			return tBuffList, aOwnScratch
 		end
 	end
 
@@ -1896,20 +1938,23 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 	-- stored table when valid, else rebuild it in place via getAuraList and mark
 	-- valid. Cache off -> a plain per-event rebuild onto the Tier-1 fallback buffer
 	-- (behaviour-identical to pre-cache). verify -> rebuild fresh and diff.
-	local function getFixed(unit, filter, aFallbackScratch)
+	-- [v43.0] Returns list AND own-subset; own rides the same rebuild/validity.
+	local function getFixed(unit, filter, aFallbackScratch, aFallbackOwnScratch)
 		local tUnit = tAuraListCache.enabled and tAuraListCache[unit]
 		local tSlot = tUnit and tUnit[filter]
 		if not tSlot then
-			return getAuraList(unit, filter, nil, aFallbackScratch)
+			return getAuraList(unit, filter, nil, aFallbackScratch, nil, aFallbackOwnScratch)
 		end
 		if not tSlot.valid then
-			getAuraList(unit, filter, nil, tSlot.list, tSlot.exp)   -- rebuild in place (wipes + fills)
+			getAuraList(unit, filter, nil, tSlot.list, tSlot.exp, tSlot.own, tSlot.ownExp)   -- rebuild in place (wipes + fills)
 			tSlot.valid = true
 		end
 		if tAuraListCache.verify then
 			local tFresh = tAuraListCache._verifyBuf
 			local tFreshExp = tAuraListCache._verifyExpBuf
-			getAuraList(unit, filter, nil, tFresh, tFreshExp)        -- fresh rebuild for comparison
+			local tFreshOwn = tAuraListCache._verifyOwnBuf
+			local tFreshOwnExp = tAuraListCache._verifyOwnExpBuf
+			getAuraList(unit, filter, nil, tFresh, tFreshExp, tFreshOwn, tFreshOwnExp)        -- fresh rebuild for comparison
 			local tBad = false
 			for k in pairs(tFresh) do if tSlot.list[k] == nil then tBad = true break end end
 			if not tBad then
@@ -1923,11 +1968,24 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 			if not tBad then
 				for k, v in pairs(tSlot.exp) do if tFreshExp[k] ~= v then tBad = true break end end
 			end
+			-- [v43.0] And the own-subset pair, same rules.
+			if not tBad then
+				for k in pairs(tFreshOwn) do if tSlot.own[k] == nil then tBad = true break end end
+			end
+			if not tBad then
+				for k in pairs(tSlot.own) do if tFreshOwn[k] == nil then tBad = true break end end
+			end
+			if not tBad then
+				for k, v in pairs(tFreshOwnExp) do if tSlot.ownExp[k] ~= v then tBad = true break end end
+			end
+			if not tBad then
+				for k, v in pairs(tSlot.ownExp) do if tFreshOwnExp[k] ~= v then tBad = true break end end
+			end
 			if tBad then
 				dprint("AURACACHE MISMATCH", unit, filter, "cached", tSlot.list, "fresh", tFresh, "cachedExp", tSlot.exp, "freshExp", tFreshExp)
 			end
 		end
-		return tSlot.list
+		return tSlot.list, tSlot.own
 	end
 
 	-- [v43.0] Cached duration lookup for the per-aura duration prefetch below.
@@ -1940,11 +1998,14 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 	--   name not present        -> nil   (enchant pseudo-names too: no exp entry)
 	--   present, exp == 0       -> 0 - GetTime()  (permanent auras; 0 is truthy)
 	--   present, exp was nil    -> 0     (fresh path: (nil or GetTime()) - GetTime())
-	local function getFixedDuration(unit, filter, aAuraName)
+	-- [v43.0] aOwnOnly: read the own-cast exp map instead — first occurrence
+	-- among the PLAYER's instances, so another caster's same-name aura can
+	-- never answer the duration question of a listsOwnOnly aura.
+	local function getFixedDuration(unit, filter, aAuraName, aOwnOnly)
 		local tUnit = tAuraListCache.enabled and tAuraListCache[unit]
 		local tSlot = tUnit and tUnit[filter]
 		if tSlot and tSlot.valid then
-			local tExp = tSlot.exp[aAuraName]
+			local tExp = (aOwnOnly and tSlot.ownExp or tSlot.exp)[aAuraName]
 			if tExp == nil then
 				return nil
 			end
@@ -1953,7 +2014,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 			end
 			return tExp - GetTime()
 		end
-		return getAuraList(unit, filter, aAuraName)
+		return getAuraList(unit, filter, aAuraName, nil, nil, nil, nil, aOwnOnly)
 	end
 
 	-- [v43.0] Deadline arming (see tNextDurationDeadline). Only the "smaller"
@@ -1979,6 +2040,14 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 	local subevent = tEventData[CleuBase.subevent]
 
 	--build event related data to evaluate
+	-- [v43.0] One call per list, capturing BOTH returns: the full set (the
+	-- tEvaluateData default) and the caster == "player" subset, which the
+	-- per-aura loop swaps in for auras carrying the listsOwnOnly flag.
+	local tBuffListTargetFull, tBuffListTargetOwn = getFixed("target", "HELPFUL", tAuraScratch.buffTarget, tAuraScratch.buffTargetOwn)
+	local tDebuffListTargetFull, tDebuffListTargetOwn = getFixed("target", "HARMFUL", tAuraScratch.debuffTarget, tAuraScratch.debuffTargetOwn)
+	local tBuffListPlayerFull, tBuffListPlayerOwn = getFixed("player", "HELPFUL", tAuraScratch.buffPlayer, tAuraScratch.buffPlayerOwn)
+	local tDebuffListPlayerFull, tDebuffListPlayerOwn = getFixed("player", "HARMFUL", tAuraScratch.debuffPlayer, tAuraScratch.debuffPlayerOwn)
+
 	local tEvaluateData = {
 		sourceUnitId = tSourceUnitID,
 		sourceName = tEventData[CleuBase.sourceName],
@@ -1993,10 +2062,10 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 		unitComboPlayer = tEventData[51],
 		unitHealthTarget = UnitName("target") and mfloor(UnitHealth("target") / (UnitHealthMax("target") / 100)),
 		unitHealthOrPowerUpdate = tEventData[35] or tEventData[36],
-		buffListTarget = getFixed("target", "HELPFUL", tAuraScratch.buffTarget),
-		debuffListTarget = getFixed("target", "HARMFUL", tAuraScratch.debuffTarget),
-		buffListPlayer = getFixed("player", "HELPFUL", tAuraScratch.buffPlayer),
-		debuffListPlayer = getFixed("player", "HARMFUL", tAuraScratch.debuffPlayer),
+		buffListTarget = tBuffListTargetFull,
+		debuffListTarget = tDebuffListTargetFull,
+		buffListPlayer = tBuffListPlayerFull,
+		debuffListPlayer = tDebuffListPlayerFull,
 		tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
 		tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
 		targetCanAttack = UnitCanAttack("player", "target"),
@@ -2078,6 +2147,8 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 
 	local toBuffListTarget = tEvaluateData.buffListTarget
 	local toDebuffListTarget = tEvaluateData.debuffListTarget
+	local toBuffListPlayer = tEvaluateData.buffListPlayer
+	local toDebuffListPlayer = tEvaluateData.debuffListPlayer
 	local toSpellNameOnCd = tEvaluateData.spellNameOnCd
 
 	--evaluate all auras
@@ -2096,7 +2167,23 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 			if tAuraData.enabled == true then
 				tEvaluateData.buffListTarget = toBuffListTarget
 				tEvaluateData.debuffListTarget = toDebuffListTarget
+				tEvaluateData.buffListPlayer = toBuffListPlayer
+				tEvaluateData.debuffListPlayer = toDebuffListPlayer
 				tEvaluateData.spellNameOnCd = toSpellNameOnCd
+				-- [v43.0] listsOwnOnly flag ("Listen nur selbst gewirkte"): THIS
+				-- aura's four list conditions (and, via getFixedDuration below,
+				-- their duration conditions) see only auras the player cast.
+				-- Swapped per aura and restored above, so unflagged auras are
+				-- untouched. The flag's own evaluate is always true — it is a
+				-- modifier, not a condition; the value carries the meaning here.
+				local tAuraOwnListsOnly = false
+				if tAuraData.attributes.listsOwnOnly and tAuraData.attributes.listsOwnOnly[1][2] == "true" then
+					tAuraOwnListsOnly = true
+					tEvaluateData.buffListTarget = tBuffListTargetOwn
+					tEvaluateData.debuffListTarget = tDebuffListTargetOwn
+					tEvaluateData.buffListPlayer = tBuffListPlayerOwn
+					tEvaluateData.debuffListPlayer = tDebuffListPlayerOwn
+				end
 				-- [41.03 Fix] pro Aura zuruecksetzen; wird unten mit dem in DIESER Aura
 				-- gewaehlten VZ-Namen gefuellt (fuer die Ausgabe "Waffenverzauberung ... (Name)").
 				tEvaluateData.weaponEnchantMainHandSelected = nil
@@ -2132,16 +2219,32 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 				--     meant a nil lookup (e.g. a weapon-enchant pseudo-name) RETAINED
 				--     the previous aura's duration value in the shared tEvaluateData —
 				--     the same cross-aura leak class as tSpellNameOnCdValue.
+				-- [v43.0] tSmallerDurationNoRead: true when a `smaller` duration
+				-- condition got NO reading this pass (watched aura not in the
+				-- list / no exp entry). The once-gate reset below skips on it:
+				-- "no reading" is not evidence the duration went back above the
+				-- threshold, and treating it as false made the `einmal` gate
+				-- re-arm mid-flight — four sounds in the last second of one DoT
+				-- (2026-08-18 boss-fight log). A REAL re-arm (refresh) always
+				-- yields a present, above-threshold reading and still resets.
+				local tSmallerDurationNoRead = false
 				for tAttsI, tAttsV in pairs(tAuraDurationAtts) do
 					if tAuraData.attributes[tAttsI] and tAuraData.attributes[tAttsI.."Duration"] then
 						local tWatchedName = tEvaluateData[tAttsI][SkuAuras:RemoveTags(tAuraData.attributes[tAttsI][1][2])]
 						local tduration
 						if tWatchedName then
-							tduration = getFixedDuration(tAttsV[1], tAttsV[2], tWatchedName)
+							tduration = getFixedDuration(tAttsV[1], tAttsV[2], tWatchedName, tAuraOwnListsOnly)
 						end
 						tEvaluateData[tAttsI.."Duration"] = tduration
 						if tduration then
 							tArmDeadlineForSmaller(tAuraData.attributes[tAttsI.."Duration"], tduration)
+						else
+							for _, tDurEntry in pairs(tAuraData.attributes[tAttsI.."Duration"]) do
+								if tDurEntry[1] == "smaller" then
+									tSmallerDurationNoRead = true
+									break
+								end
+							end
 						end
 					end
 				end
@@ -2238,6 +2341,14 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 								return true
 							end
 
+							-- [v43.0] Forensics breadcrumb: audio-file outputs leave no other
+							-- trace in the ring (only TTS speech logs), so without this line a
+							-- fired aura is invisible to log read-backs. One line per FIRING
+							-- (not per output), placed after the editor-test early-return so
+							-- test clicks stay silent. Same frequency as the audible outputs
+							-- themselves, so it cannot flood the ring.
+							dprint(string.format("aura fired: %s  event %s  dest %s  t %.3f", tostring(tAuraName), tostring(tEvaluateData.event), tostring(tEvaluateData.destName), GetTime()))
+
 							for i, v in pairs(tAuraData.outputs) do
 								if SkuAuras.outputs[sgsub(v, "output:", "")] then
 									local tAction = tAuraData.actions[1]
@@ -2261,11 +2372,24 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 						end
 					else
 						--set aura to unused
-						if tHasCountCondition_NumCountConditions > 0 then --es großer oder kleiner hat 
+						if tHasCountCondition_NumCountConditions > 0 then --es großer oder kleiner hat
 							if (tHasCountCondition_NumConditionsWoCountIsTrue - tHasCountCondition_NumCountConditionsTrue == tHasCountCondition_NumConditions - tHasCountCondition_NumCountConditions) and ( tHasCountCondition_NumCountConditionsTrue < tHasCountCondition_NumCountConditions) then--alles außer größer oder kleiner = true und größer kleiner = false
-								tAuraData.used = false
+								-- [v43.0] Once-gate refire fix: do NOT re-arm off a pass
+								-- whose `smaller` duration condition had no reading at
+								-- all (see tSmallerDurationNoRead above). Genuine
+								-- re-arms (refresh -> above threshold, or the next
+								-- application) deliver a present reading and pass.
+								if not tSmallerDurationNoRead then
+									if tAuraData.used == true then
+										dprint(string.format("aura gate re-armed: %s  event %s  t %.3f", tostring(tAuraName), tostring(tEvaluateData.event), GetTime()))
+									end
+									tAuraData.used = false
+								end
 							end
 						else
+							if tAuraData.used == true then
+								dprint(string.format("aura gate re-armed: %s  event %s  t %.3f", tostring(tAuraName), tostring(tEvaluateData.event), GetTime()))
+							end
 							tAuraData.used = false
 						end
 
@@ -2279,6 +2403,9 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 							if tSpecificAuraToTestIndex ~= nil then
 								return true
 							end
+
+							-- [v43.0] Same forensics breadcrumb as the "if" branch above.
+							dprint(string.format("aura fired: %s  event %s  dest %s  t %.3f", tostring(tAuraName), tostring(tEvaluateData.event), tostring(tEvaluateData.destName), GetTime()))
 
 							for i, v in pairs(tAuraData.outputs) do
 								if SkuAuras.outputs[sgsub(v, "output:", "")] then
