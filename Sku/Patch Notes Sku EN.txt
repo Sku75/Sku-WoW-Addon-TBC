@@ -73,6 +73,23 @@ Changes in Sku v43.0
             as conflicts (PR #4) - of 64 reported conflicts only 30 were real; enUS and frFR now
             lint at zero, deDE at the six German wording pairs left for a native speaker.
 
+    French clients: two follow-ups from Naxedim's voice-pack report
+        Simple: The sound called "bring" - a bell, named after the noise it makes - was listed in
+            French menus as "apporter": the translation had read it as the English verb "to
+            bring". It is a name, not a word, and now stays "bring" like its untranslated
+            siblings "brang", "dang" and "drmm". And the internal diagnostic that records which
+            voice pack was found now names the language actually searched instead of the client
+            language - before, a French client without the English pack installed would have
+            claimed "no voice pack found for frFR", pointing at a pack that cannot exist.
+        Technical: locales/frFR.lua reverts L["bring"] to the onomatopoeia. Core.lua now sets
+            Sku.AudiodataPathInfo in an else branch of the resolver from tWantedLoc (the
+            Sku.LocAudio-based search key) plus the client locale; read it with /wdeval
+            Sku.AudiodataPathInfo. The third item from the PR #5 report - frFR translating the
+            output-label prefix to "aura;son" - was reviewed and deliberately KEPT: every
+            comparison site rebuilds the prefix from the live locale table and saved
+            settings/auras store identifier keys ("sound-brass1"), never the label, so the
+            translation is safe; French TTS for a French label beats an English clip.
+
     Bags: the keys in the keyring were announced as "Empty"
         Simple: Since v42.13 every keyring slot spoke as "Empty" even though the keys were there
             and still worked - it only surfaced once someone actually needed the keyring. The

@@ -81,6 +81,25 @@ Aenderungen in Sku v43.0
             Konflikten waren nur 30 echt; enUS und frFR linten jetzt auf null, deDE auf die sechs
             deutschen Formulierungspaare, die einem Muttersprachler ueberlassen bleiben.
 
+    Franzoesische Clients: zwei Nachzuegler aus Naxedims Sprachpaket-Bericht
+        Einfach: Der Sound namens "bring" - eine Glocke, benannt nach ihrem Klang - stand in
+            franzoesischen Menues als "apporter": Die Uebersetzung hatte ihn als das englische
+            Verb "to bring" gelesen. Es ist ein Name, kein Wort, und bleibt jetzt wie seine
+            unuebersetzten Geschwister "brang", "dang" und "drmm" einfach "bring". Ausserdem
+            nennt die interne Diagnose, die festhaelt, welches Sprachpaket gefunden wurde, jetzt
+            die tatsaechlich gesuchte Sprache statt der Client-Sprache - vorher haette ein
+            franzoesischer Client ohne installiertes englisches Paket "no voice pack found for
+            frFR" behauptet und damit auf ein Paket gezeigt, das es gar nicht geben kann.
+        Technisch: locales/frFR.lua setzt L["bring"] auf die Onomatopoesie zurueck. Core.lua
+            setzt Sku.AudiodataPathInfo jetzt in einem else-Zweig des Resolvers aus tWantedLoc
+            (dem Sku.LocAudio-basierten Suchschluessel) plus der Client-Locale; auslesbar per
+            /wdeval Sku.AudiodataPathInfo. Der dritte Punkt aus dem PR-#5-Bericht - frFR
+            uebersetzt das Ausgabe-Label-Praefix zu "aura;son" - wurde geprueft und bewusst
+            BEHALTEN: Jede Vergleichsstelle baut das Praefix zur Laufzeit aus der aktiven
+            Locale-Tabelle, und gespeicherte Einstellungen/Auren halten Identifier-Schluessel
+            ("sound-brass1"), nie das Label - die Uebersetzung ist also sicher; franzoesisches
+            TTS fuer ein franzoesisches Label ist besser als ein englischer Clip.
+
     Taschen: die Schluessel im Schluesselbund wurden als "Leer" angesagt
         Einfach: Seit v42.13 sprach jeder Platz im Schluesselbund "Leer", obwohl die Schluessel da
             waren und sich weiter benutzen liessen - aufgefallen ist es erst, als jemand den

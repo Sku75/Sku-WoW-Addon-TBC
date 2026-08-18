@@ -86,6 +86,26 @@ Changements dans Sku v43.0
             étaient réels ; enUS et frFR passent maintenant le lint à zéro, deDE avec les six
             paires de formulations allemandes laissées à un locuteur natif.
 
+    Clients français : deux suites du rapport de Naxedim sur le pack vocal
+        Simple : Le son nommé « bring » - une cloche, nommée d'après le bruit qu'elle fait -
+            apparaissait dans les menus français comme « apporter » : la traduction l'avait lu
+            comme le verbe anglais « to bring ». C'est un nom, pas un mot, et il reste désormais
+            « bring » comme ses voisins non traduits « brang », « dang » et « drmm ». Par
+            ailleurs, le diagnostic interne qui note quel pack vocal a été trouvé nomme
+            maintenant la langue réellement cherchée au lieu de la langue du client - avant, un
+            client français sans le pack anglais installé aurait affirmé « no voice pack found
+            for frFR », désignant un pack qui ne peut pas exister.
+        Technique : locales/frFR.lua remet L["bring"] sur l'onomatopée. Core.lua renseigne
+            maintenant Sku.AudiodataPathInfo dans une branche else du résolveur à partir de
+            tWantedLoc (la clé de recherche basée sur Sku.LocAudio) plus la locale du client ;
+            lisible via /wdeval Sku.AudiodataPathInfo. Le troisième point du rapport de la
+            PR #5 - frFR traduit le préfixe des libellés de sortie en « aura;son » - a été
+            examiné et volontairement CONSERVÉ : chaque site de comparaison reconstruit le
+            préfixe depuis la table de locale active, et les réglages/auras enregistrés
+            conservent des clés d'identifiants (« sound-brass1 »), jamais le libellé - la
+            traduction est donc sûre ; une synthèse vocale française pour un libellé français
+            vaut mieux qu'un clip anglais.
+
     Sacs : les clés du porte-clés étaient annoncées comme « Vide »
         Simple : Depuis la v42.13, chaque emplacement du porte-clés disait « Vide » alors que les
             clés étaient bien là et restaient utilisables - cela ne s'est vu que lorsque quelqu'un

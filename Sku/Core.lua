@@ -126,7 +126,7 @@ Sku.MENU_ROOT = "short"
 -- Muss beim Laden von Sku laufen (TOC-Metadaten sind auch für noch nicht geladene
 -- Addons lesbar), damit Ladezeit-Verbraucher schon den richtigen Pfad sehen.
 Sku.AudiodataPath = ""
-Sku.AudiodataPathInfo = "no voice pack found for "..tostring(Sku.Loc)
+Sku.AudiodataPathInfo = "" -- always set by the do-block below (pack found or not-found message)
 do
 	local tGetNum = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
 	local tGetInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
@@ -170,6 +170,11 @@ do
 		if tExtraSpeed then
 			Sku.AudiodataExtraSpeed = tExtraSpeed
 		end
+	else
+		-- The searched locale is tWantedLoc (Sku.LocAudio-based), not Sku.Loc: on a
+		-- frFR client the old message blamed "frFR" -- a pack nobody ships -- when
+		-- the search actually ran (and failed) for enUS. Reported by Naxedim (PR #5).
+		Sku.AudiodataPathInfo = "no voice pack found for "..tostring(tWantedLoc).." (client locale "..tostring(Sku.Loc)..")"
 	end
 end
 
