@@ -82,6 +82,62 @@
 > laufenden Client getestet.** Charakterauswahl, Erstellen und Löschen sind
 > getestet und laufen.
 
+- **Die Realmliste wurde zu früh gelesen** — die Ursache dafür, dass der
+  Serverwechsel sich "jedes Mal anders" verhielt. `RealmListUI` öffnet, BEVOR
+  die Realmliste existiert: der Client fordert sie beim Server an (Aurora.log
+  `Requesting realm lists` -> `Realm list ready`), bis dahin ist der Dialog ein
+  leerer Rahmen. Die Bildschirmproben erkennen den RAHMEN, also begann der
+  Menüaufbau sofort, las null Zeilen und null Reiter und ließ den Nutzer mit
+  einem Menü zurück, das nur "Serverauswahl schließen" enthielt. Belegt am
+  Client: das Tool loggte `0 realm rows`, ein Dump desselben, unveränderten
+  Dialogs Sekunden später zeigte Thunderstrike, Spineshatter und beide Reiter.
+  `WaitForRealmListContent` wartet jetzt auf den INHALT (bis zu 8 Lesungen,
+  ~5 s).
+- Die beiden leeren Zustände werden unterschieden, und die Regel stammt aus
+  Blizzards eigenem Code (`RealmList_UpdateTabs` zeichnet die Reiter aus der
+  Realmliste selbst): keine Zeilen UND keine Reiter = Daten noch nicht da;
+  keine Zeilen ABER Reiter = eine Kategorie, die wirklich keine Server enthält.
+  Das Tool sagt jetzt, welcher Fall vorliegt, statt zu schweigen.
+- Reiterstreifen aus der echten Geometrie statt geraten: `RealmListTab1` hängt
+  16 Einheiten unter dem Dialograhmen und ist 32 hoch, und die Glue-Oberfläche
+  skaliert über die BILDSCHIRMHÖHE — der Streifen liegt damit bei
+  ny 0.8125-0.8542, unabhaengig vom Seitenverhältnis (gemessen im Dump:
+  0.8239-0.8356). Waagerecht ist der Dialog je Erweiterung verschieden breit
+  (`RealmListBackground` 640 Einheiten auf TBC, 770 auf Era), weshalb die alte
+  linke Grenze 0.28 INNERHALB des Era-Dialogs lag und dort den linken Reiter
+  ("Saisonbedingt", Mitte nx 0.2516) stillschweigend verschluckte. Jetzt 0.20
+  bis 0.85, was beide Clients abdeckt.
+- Umbenannt: "Sprache auswählen: X" heißt jetzt "Kategorie auswählen: X"
+  (alle fünf Sprachdateien). Es sind Realm-KATEGORIEN
+  (`C_RealmList.GetAvailableCategories`), keine Spracheinstellung; ein Klick
+  filtert die Liste an Ort und Stelle und öffnet nichts.
+- Quelle für all das: der Client liefert Blizzards eigenen UI-Quelltext mit,
+  unter `_anniversary_\BlizzardInterfaceCode\Interface\AddOns\`
+  (`Blizzard_GlueXML\TBC\RealmList.lua`/`.xml` fuer TBC,
+  `Vanilla\RealmList.*` fuer Era; die jeweilige `.toc` sagt, welche Variante
+  ein Client laedt). Künftig dort nachsehen statt Regionen zu raten.
+- Unbehandelte AutoHotkey-Fehler landen jetzt IM LOG. Bisher erschienen sie nur
+  als Dialog ("Continue / Abort") und sonst nirgends: log.txt schwieg, ein
+  Fehlerbericht bestand aus "da kam ein Popup" ohne Meldung, Datei oder Zeile,
+  und nach dem Wegklicken war die Information weg. `OnError` schreibt jetzt
+  Meldung, Extra, Funktion, Datei:Zeile und die ersten Stackzeilen in log.txt und
+  gibt danach 0 zurück - der gewohnte Dialog erscheint unverändert, nur der
+  Nachweis fehlt nicht mehr. Registriert in log.ahk, damit auch die Test- und
+  Dump-Skripte abgedeckt sind.
+- Die Realmliste protokolliert ihre Einträge im Klartext, nicht nur deren
+  Anzahl: `BuildRealmMenu` loggt jetzt jeden erzeugten Menünamen, und
+  `RealmTabAction` loggt den Text der Registerkarte, auf die geklickt wird. Der
+  untere Streifen des Realmdialogs enthält die Kategorie-Reiter des Clients
+  (z.B. "Classic-Ära", "Saisonbedingt"), die das Tool als "Sprache
+  auswählen: ..." anbietet - wenn ein Klick darauf den Client woanders hin
+  schickt, sagte die bloße Anzahl nicht, WELCHER Eintrag es war.
+- log.txt wird beim Start rotiert statt gelöscht: die letzten fünf Sitzungen
+  bleiben als log-1.txt bis log-5.txt daneben liegen. Wer einen Fehler hatte,
+  das Tool schloss und neu startete, bevor er die Logs einsammelte, hat bisher
+  genau den Nachweis vernichtet, um den es ging. Der Log-Sammler des Installers
+  nimmt *.txt aus dem Toolordner mit, die Rotationsdateien reisen also von
+  selbst mit.
+
 ## 2.2 (2026-07-24)
 
 - Retired the legacy v1 (pixel-only) tool. The v2 OCR driver is now the only

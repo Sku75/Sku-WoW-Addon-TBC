@@ -130,3 +130,6 @@ The tool does not know this dialog yet. Answer it in the game.==The tool does no
 Press Enter to agree, or press Escape to decline.==Press Enter to agree, or press Escape to decline.
 Agreed. Connecting to the server. Please wait.==Agreed. Connecting to the server. Please wait.
 Declined.==Declined.
+select category==select category
+this category holds no servers==This category holds no servers.
+the server list did not load. please try again.==The server list did not load. Please try again.

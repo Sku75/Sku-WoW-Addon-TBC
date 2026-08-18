@@ -130,3 +130,6 @@ The tool does not know this dialog yet. Answer it in the game.==Инструме
 Press Enter to agree, or press Escape to decline.==Нажмите Enter, чтобы согласиться, или Escape, чтобы отказаться.
 Agreed. Connecting to the server. Please wait.==Принято. Подключение к серверу. Пожалуйста, подождите.
 Declined.==Отклонено.
+select category==Выбрать категорию
+this category holds no servers==В этой категории нет серверов.
+the server list did not load. please try again.==Список серверов не загружен. Попробуйте ещё раз.

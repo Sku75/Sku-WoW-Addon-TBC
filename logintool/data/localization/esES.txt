@@ -130,3 +130,6 @@ The tool does not know this dialog yet. Answer it in the game.==La herramienta a
 Press Enter to agree, or press Escape to decline.==Pulsa Enter para aceptar, o Escape para rechazar.
 Agreed. Connecting to the server. Please wait.==Aceptado. Conectando con el servidor. Espera, por favor.
 Declined.==Rechazado.
+select category==Seleccionar categoría
+this category holds no servers==Esta categoría no contiene servidores.
+the server list did not load. please try again.==La lista de servidores no se cargó. Inténtalo de nuevo.

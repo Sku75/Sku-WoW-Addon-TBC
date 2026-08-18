@@ -130,3 +130,6 @@ The tool does not know this dialog yet. Answer it in the game.==Das Tool kennt d
 Press Enter to agree, or press Escape to decline.==Drücke Enter um zuzustimmen, oder Escape um abzulehnen.
 Agreed. Connecting to the server. Please wait.==Zugestimmt. Verbindung zum Server wird hergestellt. Bitte warte.
 Declined.==Abgelehnt.
+select category==Kategorie auswählen
+this category holds no servers==Diese Kategorie enthält keine Server.
+the server list did not load. please try again.==Die Serverliste wurde nicht geladen. Bitte erneut versuchen.

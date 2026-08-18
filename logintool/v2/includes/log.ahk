@@ -56,3 +56,39 @@ Log(text) {
     global gLogStart, gLogPath
     try FileAppend((A_TickCount - gLogStart) ":" text "`r`n", gLogPath, "UTF-8")
 }
+
+; ---------- unhandled errors ----------
+;
+; An AutoHotkey runtime error used to reach the user as a dialog ("Continue /
+; Abort") and NOWHERE else: log.txt said nothing, so the bug report was "a popup
+; came up" with no message, no file, no line - and by the time anyone looked, the
+; dialog was gone. OnError writes the error into the log FIRST and then returns
+; 0, so AutoHotkey still shows its normal dialog: the user experience is
+; unchanged, the record is not.
+;
+; Registered here rather than in START.ahk so the test/dump scripts that include
+; this file are covered too. OnError only fires for errors nothing caught, so it
+; never competes with the try/catch blocks those scripts already have.
+LogUnhandledError(err, mode) {
+    try {
+        if (err is Error) {
+            extra := ""
+            try extra := (err.Extra != "") ? " | extra: " err.Extra : ""
+            Log("UNHANDLED ERROR [" mode "]: " err.Message extra
+                . " | " err.What " @ " err.File ":" err.Line)
+            stack := ""
+            try stack := err.Stack
+            for line in StrSplit(stack, "`n", "`r") {
+                if (A_Index > 6)
+                    break
+                if (Trim(line) != "")
+                    Log("  stack: " Trim(line, " `t`r`n"))
+            }
+        } else {
+            Log("UNHANDLED ERROR [" mode "]: " String(err))
+        }
+    }
+    return 0   ; 0 = keep AutoHotkey's own error dialog
+}
+
+OnError(LogUnhandledError)

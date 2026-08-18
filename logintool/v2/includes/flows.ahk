@@ -1407,8 +1407,9 @@ WaitForHardcoreJoin() {
 OfferOpenRealmDialog() {
     global gRealmMenuOffered := true
     Say(T("The game has opened the server selection."))
-    BuildRealmMenu(gRealmMenuItem)
+    r := BuildRealmMenu(gRealmMenuItem)
     Log("OfferOpenRealmDialog: built " gRealmMenuItem.children.Length " entries")
+    AnnounceRealmMenuState(r)
     if (gRealmMenuItem.children.Length > 0) {
         gRealmMenuItem.children[1].EnterQueued()
     } else {
@@ -1457,8 +1458,9 @@ SwitchRealmOpenAction(menuItem) {
             Say(T("wait"))
         }
     }
-    BuildRealmMenu(menuItem)
+    r := BuildRealmMenu(menuItem)
     Log("SwitchRealmOpen: built " menuItem.children.Length " entries")
+    AnnounceRealmMenuState(r)
     if (menuItem.children.Length > 0)
         menuItem.children[1].Enter()
     else
@@ -1548,13 +1550,61 @@ RealmListScrollTop() {
     Sleep(250)
 }
 
+; The tabs along the bottom of the dialog. Blizzard calls these realm
+; CATEGORIES (RealmList_UpdateTabs -> C_RealmList.GetAvailableCategories), not
+; languages: clicking one re-filters the list in place and opens nothing.
+;
+; The strip hangs 16 UI units BELOW the dialog frame (RealmListTab1 anchors
+; BOTTOMLEFT -16, height 32), which puts it at ny 0.8125-0.8542 on every aspect
+; ratio, because the glue screen scales by screen HEIGHT. Horizontally it starts
+; at the frame's left edge + 11 units, and that edge moves per expansion: the
+; dialog is 640 units wide on TBC but 770 on Era, so the frame starts at
+; nx 0.259 (TBC) vs nx 0.206 (Era) at 16:10. The old 0.28 left bound sat INSIDE
+; the Era dialog and silently dropped its leftmost tab ("Saisonbedingt" centred
+; at nx 0.2516). 0.20 clears both, and nothing else renders in that band.
+RealmListTabs(s) {
+    return OcrLinesInRegion(s, 0.20, 0.795, 0.85, 0.86)
+}
+
+; Wait for the dialog's CONTENT, not just its frame.
+;
+; RealmListUI opens before the realm list exists: the client asks the server for
+; it (Aurora.log "Requesting realm lists" -> "Realm list ready") and until that
+; answer lands the dialog is an empty frame. The screen probes that decide
+; `realmselect` match the frame, so a build that starts immediately reads zero
+; rows and zero tabs and leaves the user with a menu holding nothing but
+; "close" - and because it is a race against the server it looked like the game
+; behaving differently every time. It is not; we were reading too early.
+;
+; The two empty states are distinguishable, and the distinction comes from
+; Blizzard's own code: the tabs are drawn from the realm list itself, so
+;   no rows AND no tabs -> data has not arrived, keep waiting
+;   no rows BUT tabs    -> a real category that genuinely holds no realms
+WaitForRealmListContent() {
+    tries := 0
+    loop {
+        s := Sense()
+        if !SenseOk(s)
+            return s
+        if (RealmListRows(s).Length > 0 || RealmListTabs(s).Length > 0)
+            return s
+        tries++
+        if (tries >= 8) {
+            Log("WaitForRealmListContent: still empty after " tries " reads - giving up")
+            return s
+        }
+        Log("WaitForRealmListContent: dialog still empty (" tries ") - waiting for the realm list")
+        Sleep(600)
+    }
+}
+
 BuildRealmMenu(menuItem) {
     menuItem.children := []
     ; Always build from the top so the first page is deterministic.
     RealmListScrollTop()
-    s := Sense()
+    s := WaitForRealmListContent()
     if !SenseOk(s)
-        return
+        return {realms: 0, tabs: 0}
     seen := Map()
     found := []
     pages := 0
@@ -1600,9 +1650,10 @@ BuildRealmMenu(menuItem) {
         node.action := RealmSelectClosure(entry.row)
     }
 
-    ; Language tabs (bottom strip of the realm dialog).
-    for tab in OcrLinesInRegion(s, 0.28, 0.795, 0.72, 0.86) {
-        node := MenuNode(T("select language") ": " tab["text"], menuItem)
+    ; Category tabs (bottom strip of the realm dialog).
+    tabs := RealmListTabs(s)
+    for tab in tabs {
+        node := MenuNode(T("select category") ": " tab["text"], menuItem)
         node.action := RealmTabClosure(tab, menuItem)
     }
     ; Backing out must be a menu entry too: the open dialog swallows every
@@ -1610,6 +1661,28 @@ BuildRealmMenu(menuItem) {
     node := MenuNode(T("close server selection"), menuItem)
     node.action := (item) => CloseRealmDialogAction()
     Log("BuildRealmMenu: " found.Length " realm rows over " pages " page(s), " menuItem.children.Length " total entries")
+    ; The entry TEXTS, not just the count. The count alone never says WHICH
+    ; entry the user pressed, and the category tabs sit in this same list.
+    names := ""
+    for child in menuItem.children
+        names .= (names = "" ? "" : " | ") child.name
+    Log("BuildRealmMenu: entries [" names "]")
+    return {realms: found.Length, tabs: tabs.Length}
+}
+
+; An empty realm list has two very different causes and the user has to hear
+; which one it is: a category that holds no realms is a dead end they can back
+; out of, a list that never arrived is worth another try.
+AnnounceRealmMenuState(r) {
+    if (r.realms > 0)
+        return
+    if (r.tabs > 0) {
+        Log("RealmMenu: category is empty (" r.tabs " tabs, 0 realms)")
+        Say(T("this category holds no servers"))
+    } else {
+        Log("RealmMenu: neither realms nor tabs - the realm list never arrived")
+        Say(T("the server list did not load. please try again."))
+    }
 }
 
 ; Scroll from the top until the named realm is on screen and return its CURRENT
@@ -1655,9 +1728,11 @@ RealmTabAction(tab, menuItem) {
         Say(T("Something went wrong. Please restart the game and try again."))
         return
     }
+    Log("RealmTab: '" tab["text"] "' click")
     ClickOcrRect(tab)
     Sleep(900)
-    BuildRealmMenu(menuItem)
+    r := BuildRealmMenu(menuItem)
+    AnnounceRealmMenuState(r)
     if (menuItem.children.Length > 0)
         menuItem.children[1].Enter()
 }
