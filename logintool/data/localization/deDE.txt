@@ -133,3 +133,5 @@ Declined.==Abgelehnt.
 select category==Kategorie auswählen
 this category holds no servers==Diese Kategorie enthält keine Server.
 the server list did not load. please try again.==Die Serverliste wurde nicht geladen. Bitte erneut versuchen.
+The game is still connecting. Press Escape to cancel.==Das Spiel verbindet noch. Escape bricht ab.
+the server list may be incomplete.==Die Serverliste ist möglicherweise unvollständig.

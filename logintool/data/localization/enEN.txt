@@ -133,3 +133,5 @@ Declined.==Declined.
 select category==select category
 this category holds no servers==This category holds no servers.
 the server list did not load. please try again.==The server list did not load. Please try again.
+The game is still connecting. Press Escape to cancel.==The game is still connecting. Press Escape to cancel.
+the server list may be incomplete.==The server list may be incomplete.

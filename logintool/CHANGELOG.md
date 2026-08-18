@@ -107,6 +107,31 @@
   linke Grenze 0.28 INNERHALB des Era-Dialogs lag und dort den linken Reiter
   ("Saisonbedingt", Mitte nx 0.2516) stillschweigend verschluckte. Jetzt 0.20
   bis 0.85, was beide Clients abdeckt.
+- **Das Tool hat jeden Realm-Login selbst abgebrochen.** Blizzards
+  Fortschrittsdialoge sind EINKNÖPFIGE Popups, deren einziger Knopf
+  ABBRECHEN ist, nicht OK: `GlueParent_UpdateDialogs` zeigt
+  `StaticPopupDialogs["CANCEL"]` für `GAME_SERVER_LOGIN` ("In Realm
+  einloggen"), für `LOGIN_STATE_CONNECTING` und für die Warteschlange, dazu
+  `REALM_LIST_IN_PROGRESS` während die Realmliste geholt wird — und dessen
+  `OnAccept` ist `C_Login.DisconnectFromServer()`. Das generische "Popup
+  vorlesen, dann seinen Knopf drücken", das für Ja/Nein-Dialoge richtig ist,
+  hat damit bei JEDEM Beitritt auf Abbrechen geklickt: der Client loggte
+  "BattleNet Join Realm" und 1,1 s später "Glue Script Disconnect From
+  Server". Am Client belegt (Era, Hardcore-Realm Stitches). Einknöpfige
+  Popups werden im Beitrittsablauf jetzt nur noch VORGELESEN und nicht mehr
+  geklickt; sie verschwinden von selbst, wenn die Verbindung steht oder
+  scheitert. Nach 60 s sagt das Tool Bescheid, dass Escape abbricht.
+  Zweiknöpfige Popups werden weiter beantwortet — das sind echte Fragen.
+- Die Realmliste war abgeschnitten und niemand erfuhr es. Die Mausrad-Rasten
+  wurden ohne Pause hintereinander gesendet und vom Client größtenteils
+  verschluckt: 3 Rasten pro Seite bewegten die Era-Liste um etwa EINE Zeile,
+  15 Seiten erreichten 32 der 54 Realms der Region, und alles darunter —
+  Soulseeker inklusive — stand nie im Menü. Jede Raste bekommt jetzt 25 ms,
+  die Seitenobergrenze liegt bei 40, und wird sie doch erreicht, sagt das Tool
+  "Die Serverliste ist möglicherweise unvollständig."
+- Hardcore-Realms haben KEINE eigene Kategorie: sie stehen unter
+  "Classic-Ära" und tragen "Hardcore" in der Typspalte
+  (`Nek'Rosh, Hardcore PvE`). Genau so findet sie auch ein sehender Spieler.
 - **Pfeiltaste während eines Realmlisten-Neuaufbaus = AutoHotkey-Fehlerdialog.**
   `BuildRealmMenu` leerte `menuItem.children` zuerst und füllte sie über die
   nächsten Sekunden aus Scrollen und OCR wieder. Die Pfeiltasten bleiben in
@@ -131,8 +156,8 @@
   filtert die Liste an Ort und Stelle und öffnet nichts.
 - Quelle für all das: der Client liefert Blizzards eigenen UI-Quelltext mit,
   unter `_anniversary_\BlizzardInterfaceCode\Interface\AddOns\`
-  (`Blizzard_GlueXML\TBC\RealmList.lua`/`.xml` fuer TBC,
-  `Vanilla\RealmList.*` fuer Era; die jeweilige `.toc` sagt, welche Variante
+  (`Blizzard_GlueXML\TBC\RealmList.lua`/`.xml` für TBC,
+  `Vanilla\RealmList.*` für Era; die jeweilige `.toc` sagt, welche Variante
   ein Client laedt). Künftig dort nachsehen statt Regionen zu raten.
 - Unbehandelte AutoHotkey-Fehler landen jetzt IM LOG. Bisher erschienen sie nur
   als Dialog ("Continue / Abort") und sonst nirgends: log.txt schwieg, ein

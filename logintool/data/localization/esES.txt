@@ -133,3 +133,5 @@ Declined.==Rechazado.
 select category==Seleccionar categoría
 this category holds no servers==Esta categoría no contiene servidores.
 the server list did not load. please try again.==La lista de servidores no se cargó. Inténtalo de nuevo.
+The game is still connecting. Press Escape to cancel.==El juego sigue conectando. Pulsa Escape para cancelar.
+the server list may be incomplete.==La lista de servidores puede estar incompleta.

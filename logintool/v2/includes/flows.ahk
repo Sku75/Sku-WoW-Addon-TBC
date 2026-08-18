@@ -49,6 +49,27 @@ AnyPopup(s) {
         || SenseCheck(s, "popup12") || SenseCheck(s, "popup22")
 }
 
+; Blizzard's login PROGRESS dialogs are single-button popups whose one button is
+; CANCEL - not OK. GlueParent_UpdateDialogs shows StaticPopupDialogs["CANCEL"]
+; for GAME_SERVER_LOGIN ("In Realm einloggen"), for LOGIN_STATE_CONNECTING and
+; for the logon queue, plus StaticPopupDialogs["REALM_LIST_IN_PROGRESS"] while
+; the realm list is being fetched. That button's OnAccept is
+; C_Login.DisconnectFromServer() / RealmList_OnCancel().
+;
+; So the generic "speak the popup, then press its button" - which is right for
+; the Yes/No dialogs - was pressing ABBRECHEN on every single realm login. The
+; client logged "BattleNet Join Realm" and then "Glue Script Disconnect From
+; Server" 1.1 s later, every time (proven at the client on Era, 2026-08-18,
+; joining the hardcore realm Stitches).
+;
+; During a join a one-button popup is therefore never ours to press: read it
+; aloud and keep waiting. It clears itself when the connection completes or
+; fails. Two-button popups stay answered - those are real questions
+; (REALM_IS_FULL and friends) whose buttons are Yes/No, not Cancel.
+IsOneButtonPopup(s) {
+    return SenseCheck(s, "popup11") || SenseCheck(s, "popup21")
+}
+
 ; Like PopupText, but for taller dialogs the tool has no marker for (e.g. the
 ; hardcore realm confirmation): a wider center region, same icon filter.
 DialogText(s) {
@@ -1299,6 +1320,8 @@ WaitForHardcoreJoin() {
     row := gPendingRealmRow
     tries := 0
     stuck := 0
+    progress := 0
+    lastPopupText := ""
     ; The warning is closed and the list is back: press the join once up front so
     ; a normal join costs no extra round.
     Sleep(600)
@@ -1353,7 +1376,25 @@ WaitForHardcoreJoin() {
             AskHardcoreConfirm(s)
             return
         }
-        if AnyPopup(s) {
+        if (AnyPopup(s) && IsOneButtonPopup(s)) {
+            ; NEVER press this one - its only button is Cancel. See
+            ; IsOneButtonPopup.
+            text := PopupText(s)
+            if (text != "" && text != lastPopupText) {
+                lastPopupText := text
+                Log("HardcoreJoin: progress popup '" text "' - waiting, not clicking")
+                Say(text)
+            }
+            progress++
+            if (progress > 60) {
+                Log("HardcoreJoin: progress popup still up after 60 s - stopping")
+                gPendingRealmRow := ""
+                Say(T("The game is still connecting. Press Escape to cancel."))
+                return
+            }
+            Sleep(1000)
+            continue
+        } else if AnyPopup(s) {
             Log("HardcoreJoin: popup - " s["screen"])
             SpeakAndClosePopup(s)
             stuck := 0
@@ -1549,8 +1590,14 @@ RealmListScroll(notches, up := false) {
     p := PxToScreen(s["width"] * 0.35, s["height"] * 0.45)
     MouseMove(Round(p.x), Round(p.y), 0)
     Sleep(40)
-    loop notches
+    ; Each notch needs air. Fired back to back the client swallowed most of
+    ; them: 3 notches per page moved the Era list by about ONE row, so 15 pages
+    ; reached 32 of the region's 54 realms and everything below - Soulseeker
+    ; included - was simply never in the menu.
+    loop notches {
         Click(up ? "WheelUp" : "WheelDown")
+        Sleep(25)
+    }
     Sleep(60)
 }
 
@@ -1631,10 +1678,11 @@ BuildRealmMenu(menuItem) {
     RealmListScrollTop()
     s := WaitForRealmListContent()
     if !SenseOk(s)
-        return {realms: 0, tabs: 0}
+        return {realms: 0, tabs: 0, truncated: false}
     seen := Map()
     found := []
     pages := 0
+    truncated := false
     lastSig := ""
     loop {
         rows := RealmListRows(s)
@@ -1651,8 +1699,9 @@ BuildRealmMenu(menuItem) {
         pages++
         ; Stop when the list stops moving (bottom reached) or nothing new showed
         ; up. The page cap is a runaway guard, not an expected limit.
-        if (pages >= 15) {
+        if (pages >= 40) {
             Log("BuildRealmMenu: page cap reached - list may be longer")
+            truncated := true
             break
         }
         if (pages > 1 && (sig = lastSig || fresh = 0))
@@ -1696,13 +1745,17 @@ BuildRealmMenu(menuItem) {
     for child in kids
         names .= (names = "" ? "" : " | ") child.name
     Log("BuildRealmMenu: entries [" names "]")
-    return {realms: found.Length, tabs: tabs.Length}
+    return {realms: found.Length, tabs: tabs.Length, truncated: truncated}
 }
 
 ; An empty realm list has two very different causes and the user has to hear
 ; which one it is: a category that holds no realms is a dead end they can back
 ; out of, a list that never arrived is worth another try.
 AnnounceRealmMenuState(r) {
+    ; A short list that stops early looks exactly like a complete one to someone
+    ; who cannot see the scrollbar. Say so.
+    if (r.truncated)
+        SayQueued(T("the server list may be incomplete."))
     if (r.realms > 0)
         return
     if (r.tabs > 0) {
@@ -1799,6 +1852,8 @@ RealmSelectAction(row) {
     tries := 0
     stuck := 0
     unknownRounds := 0
+    progress := 0
+    lastPopupText := ""
     loop {
         if FlowAbort("RealmSelect")
             return
@@ -1843,7 +1898,24 @@ RealmSelectAction(row) {
             AskHardcoreConfirm(s)
             return
         }
-        if AnyPopup(s) {
+        if (AnyPopup(s) && IsOneButtonPopup(s)) {
+            ; NEVER press this one - its only button is Cancel. See
+            ; IsOneButtonPopup.
+            text := PopupText(s)
+            if (text != "" && text != lastPopupText) {
+                lastPopupText := text
+                Log("RealmSelect: progress popup '" text "' - waiting, not clicking")
+                Say(text)
+            }
+            progress++
+            if (progress > 60) {
+                Log("RealmSelect: progress popup still up after 60 s - stopping")
+                Say(T("The game is still connecting. Press Escape to cancel."))
+                return
+            }
+            Sleep(1000)
+            continue
+        } else if AnyPopup(s) {
             ; High-population / wrong-language popup: speak, dismiss.
             Log("RealmSelect: popup - " s["screen"])
             SpeakAndClosePopup(s)
