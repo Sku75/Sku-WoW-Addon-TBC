@@ -198,8 +198,9 @@ here so a future session doesn't re-derive the analysis from scratch.
   Alternative to re-check briefly at the same time: SAPIence
   (github.com/LeonarddeR/SAPIence, LGPL, Rust, same mechanism) — as of
   2026-07-05 zero releases/binaries, not a candidate yet.
-- **v43.0 aura reaction-time work — TWO WAVES, 15 changes, ALL UNTESTED in
-  game.** Ask: "check the aura latency monitor". Investigated 2026-08-17 after
+- **v43.0 aura reaction-time work — TWO WAVES, 15 changes; core scheduler
+  VERIFIED 2026-08-18, rest awaiting play-testing.** Ask: "check the aura
+  latency monitor". Investigated 2026-08-17 after
   the standing complaint that auras used to react a second or more late.
   Items 1-8 are wave 1 (commit `4e81678`), items 9-15 are wave 2 (one commit
   each, same day). Sounds were
@@ -211,6 +212,100 @@ here so a future session doesn't re-derive the analysis from scratch.
   latency problem worth fixing. Everything below is code. Grep `v42.14` in the
   three files for the full reasoning at each site (the tag is the work's
   original version; it landed as 43.0).
+
+  **VERIFIED 2026-08-18** (user, solo self-Renew, log forensics with the new
+  ms breadcrumbs + by ear — this covers the SELF-BUFF paths only):
+  - Item 11 core: crossing fires frame-precise (deadline dprint and the aura's
+    firing carry the IDENTICAL GetTime value → dispatch <1 ms; total
+    event→sound ≈ one frame + audio start). Refresh re-arms correctly; the
+    pre-refresh crossing fires ONE silent no-op pass (min-arming keeps the
+    earlier time, condition evaluates false, pass re-arms the true crossing) —
+    BY DESIGN, do not "fix". `single` once-gate held, no spam. Still open for
+    11: the weapon-enchant duration arm, and target-DEBUFF durations.
+  - Item 12 damper side: zero spurious membership passes solo (CLEU same-frame
+    dedup works). The POSITIVE fire (`aura membership eval <unit>`, fall-off
+    out of CLEU coverage) is still unproven — needs a group test.
+  - Item 9's regression net: `/skucheck auras` clean (2 globals, 0 violations).
+  - Measured reality check: the server removes a buff up to ±0.3 s off the
+    client-side expirationTime (observed 0.34 s early / 0.07 s early on two
+    runs) — that jitter is the game's, not Sku's, and is now the dominant
+    remaining variance.
+  - New forensics breadcrumbs (2026-08-18, in tree): `aura fired: <name>
+    event <subevent>  dest <dest>  t <GetTime %.3f>` at both dispatch sites
+    (one line per firing, editor test clicks silent), and the deadline dprint
+    carries `t %.3f`. Audio-file outputs were previously INVISIBLE in the ring.
+  - Open UX item from testing: the duration attributes still OFFER the
+    `gleich`/equal operator in the editor, but equal on a continuous remaining
+    time never matches (the doc already notes it "never matched between
+    events"); it should be hidden or mapped to `smaller` for the four
+    buff/debuff Duration attributes and the two enchant ones.
+
+  **VERIFIED 2026-08-18, second round (5-man dungeon, ~62 min, log
+  forensics):**
+  - Item 12 damper under real group load: 188 membership evals in 62 min
+    (~3/min) against a dungeon's full UNIT_AURA storm — the diff+dedup dampers
+    hold. Positive fire still unproven (no aura fired from a
+    `UNIT_AURA_CHANGED` pass — the user's falloff auras are event-gated on
+    `SPELL_AURA_REMOVED`, which CLEU delivered every time; the out-of-CLEU-range
+    test remains open).
+  - Item 13 + the party-token speech fix (`tUnitIdToSpokenName`,
+    `SkuAuras/data.lua`): "ziel einheit" outputs fired for three different
+    party members across the run and the lifetime `missingAudio` counters are
+    byte-identical before/after (party3 stayed 132) — slot 3 used to beep on
+    EVERY such announce. Fix works.
+  - `/skuperf combat` after the run: `EvaluateAllAuras` avg 0.095 ms,
+    n=41631, max 8.18 ms, total 3.97 s over ~62 min (~11 calls/s, ~0.1 % of a
+    core). No pre-rework baseline exists on this machine; the absolute cost is
+    the record now. SkuErrorLog: zero entries.
+  - **BUG found and FIXED in tree (v43.0, 2026-08-18, UNTESTED): the `einmal`
+    once-gate re-fired under dense combat.** Boss fight (Ukorz Sandskalp),
+    SW:Pain "Dauer kleiner 1" aura: FOUR firings within 987 ms
+    (`DURATION_DEADLINE` t=369559.383 correct, then `UNIT_POWER` ×2 and
+    `SPELL_PERIODIC_DAMAGE`) = four "dang" sounds in one second; user heard
+    the doubling. Mechanism: the count-condition reset formula re-arms `used`
+    on any pass where the non-count conditions hold and the `smaller` duration
+    condition reads false — and a pass whose duration read is MISSING (watched
+    name not in the list / no exp entry / the exp map answering with ANOTHER
+    caster's same-name aura) satisfies that. Fix, two independent layers in
+    `SkuAuras/Core.lua`:
+    (a) `tSmallerDurationNoRead`: a pass in which a `smaller` duration
+    condition got NO reading cannot reset the once-gate — no reading is not
+    evidence the duration went back above threshold. A genuine re-arm
+    (refresh above threshold, or the next application) delivers a present
+    reading and still resets. Plus breadcrumb `aura gate re-armed: <name>
+    event <e> t <t>` on every used=true→false flip of an "if" aura — one line
+    per firing, pins any remaining flap.
+    (b) The caster filter (next bullet) removes the two-casters-same-name flap
+    class entirely for auras that opt in.
+    Evidence: Sku_grouprun.lua snapshot, seq 12335-12341.
+  - **NEW FEATURE (v43.0, 2026-08-18, UNTESTED): per-aura caster filter
+    "Listen nur selbst gewirkte" (`listsOwnOnly`).** A BINARY modifier
+    condition (always evaluates true; the VALUE carries the meaning): with
+    "true", THIS aura's four buff/debuff list conditions and their duration
+    conditions see only auras the player cast. Mechanics: `getAuraList`
+    captures UnitAura's 7th return (caster) and fills parallel own/ownExp
+    sets in the same scan (cache slots + fallback scratches + verify buffers
+    all extended); `getFixed` returns (list, own); EvaluateAllAuras swaps the
+    own sets into tEvaluateData per flagged aura (restored per aura — the
+    restore now covers all four lists); `getFixedDuration` gained an aOwnOnly
+    arg reading ownExp (fresh-scan fallback matches caster == "player" too).
+    Weapon enchants count as own. Solves the user's long-standing tab-target
+    announce firing on OTHER priests' Schattenwort: Schmerz. Locale keys in
+    deDE/enUS/frFR ("Listen nur selbst gewirkte" + tooltip); lint clean.
+    Known edge, documented: with the flag set, an own aura dropping while
+    ANOTHER caster's same-name aura stays on the unit changes no NAME set, so
+    out of CLEU range the membership wake-up cannot see it (in range, CLEU
+    covers it).
+    - Re-check: flagged debuff aura ignores another priest's SW:P on tab and
+      in duration warnings; unflagged auras behave exactly as before;
+      `/skuauracache verify on` stays mismatch-free (it now diffs own/ownExp
+      too); no once-gate double sounds in a boss fight.
+  - Semantics note, not a bug: at 11:36:40 the SW:Pain warning fired for a
+    party member (Chouffer) carrying an ENEMY's Schattenwort: Schmerz about to
+    expire. List/duration conditions have no caster filter — "Quelle (L)
+    enthält selbst" filters the triggering EVENT's source (here: the player's
+    own UNIT_TARGETCHANGE pass), not the debuff's caster. Possible
+    enhancement: per-caster filter via UnitAura's caster return.
 
   The latency budget that was measured, per hop: trigger → EvaluateAllAuras was
   0 ms for real CLEU, +100 ms fixed for own-cast, 0-250 ms for anything polled;
@@ -306,8 +401,9 @@ here so a future session doesn't re-derive the analysis from scratch.
      - **Expected NEW behaviour, not a bug:** an aura built on "Zauber
        erfolgreich" for your own cooldown spells was silently dead and will now
        speak.
-     - Re-check: a `SPELL_COOLDOWN_START` aura must behave exactly as before and
-       must not double-announce.
+     - Re-check: ~~"Zauber erfolgreich" on an own cooldown spell fires~~
+       **CONFIRMED by user 2026-08-18.** Still open: a `SPELL_COOLDOWN_START`
+       aura must not double-announce.
   7. **Weapon-enchant near-expiry refire gated on the whole second**
      (`SkuAuras/Core.lua`, `tExpirySec` / `lastEnchantExpirySec`). `tNearExpiry`
      is true for the whole last 120 s of any temp enchant and used to re-fire
@@ -391,10 +487,10 @@ here so a future session doesn't re-derive the analysis from scratch.
        playertarget); the subevent name contains no _AURA_/_DAMAGE/_HEAL/_MISSED
        substring so no subevent-pattern branch reacts. Auras gated on a specific
        `event` correctly do not fire on it (they never fired on the crossing).
-     - Re-check: DoT-expiry warning aura fires ~exactly at the threshold even
-       when nothing else happens (stand still, no combat, watch the ring for
-       the breadcrumb); a non-`single` condition-aura must not spam (deadline
-       passes are one-shot, not periodic).
+     - Re-check: ~~self-BUFF threshold fires exactly at the crossing with
+       nothing else happening; no spam~~ **DONE 2026-08-18** (see the VERIFIED
+       block above). Still open: the same on a target DEBUFF (DoT) and on a
+       weapon-enchant duration.
   12. **UNIT_AURA drives an evaluation on real membership change**
      (`SkuAuras/Core.lua`, `tAuraMembershipDirty` / `AuraMembershipCheck` /
      `AnyAuraWatchesAuraLists`). UNIT_AURA used to only stale the list cache,
@@ -415,9 +511,12 @@ here so a future session doesn't re-derive the analysis from scratch.
      Breadcrumb on the rare real fire: `aura membership eval <unit>`.
      - Re-check in a 25er raid: `/skuperf combat` — `EvaluateAllAuras` `n` must
        NOT balloon versus a fight before this commit; the breadcrumb should be
-       rare (appear/disappear only). Out of combat: let a self-buff expire
-       while standing still — a "contains not" aura on it must speak within a
-       frame of the icon vanishing.
+       rare (appear/disappear only). The damper side is verified solo
+       2026-08-18 (zero spurious passes, CLEU dedup works). Still open, the
+       POSITIVE fire: a fall-off that CLEU does not deliver — e.g. target a
+       party member 60+ yards away and let a buff on them drop — must speak
+       within a frame and write `aura membership eval target`. (A solo
+       self-buff CANNOT test this: own buffs always arrive via CLEU.)
   13. **GUID → group-index map replaces the per-event roster sweeps**
      (`SkuAuras/Core.lua`, `tRaidGuidIndex` / `tPartyGuidIndex` /
      `tEnsureGroupGuidMap`). `GetBestUnitId` swept raid1..40 with a UnitGUID
@@ -469,9 +568,9 @@ here so a future session doesn't re-derive the analysis from scratch.
      interrupt logic, word-to-word pacing (TTSSepPause) and the beeps'
      `auraSound` path are untouched; the word/text outputs still never set
      `auraSound` (item 2's rule stands).
-     - Re-check: an aura speaking spell name + unit says them in that order;
-       menu speech queued before an aura firing is spoken AFTER the aura words
-       now (intended); nothing slurs or overlaps.
+     - Re-check: ~~an aura speaking spell name + unit says them in that
+       order; nothing slurs~~ **CONFIRMED by user 2026-08-18** (multi-word
+       auras working in the 5-man run).
 
   Measurable check, no code change needed: `/skuperf reset`, run a fight,
   `/skuperf combat` → the `EvaluateAllAuras` avg and total should drop sharply
@@ -479,7 +578,9 @@ here so a future session doesn't re-derive the analysis from scratch.
   `n` may RISE from the new event sources, the extra cooldown pass and the
   deadline/membership passes; that is expected, the per-call cost is what
   moved. `/skucheck auras` (added with wave 2) must report no problems — it
-  trips if the evaluate loop ever leaks its globals again (item 9).
+  trips if the evaluate loop ever leaks its globals again (item 9) —
+  **reported clean 2026-08-18**; the `/skuperf` before/after numbers are still
+  unmeasured.
 
   Revert candidates, cleanest first — wave 1: item 2 = the `data.lua`
   one-liner; item 1 = the `mQueueDirty` gate; item 6 = the split in
@@ -491,5 +592,7 @@ here so a future session doesn't re-derive the analysis from scratch.
   item 11 = the arm calls (the deadline never arms — but item 7's refire is
   GONE, so enchant "Dauer < X" auras would then only fire on real events);
   item 10 = `/skuauracache off` at runtime, or revert its commit;
-  items 9/13/14 are independent. Status: open / awaiting extended play-testing
-  for regressions.
+  items 9/13/14 are independent. Status: item 11 self-buff core + item 12
+  damper side + item 9 skucheck verified 2026-08-18; everything else awaiting
+  play-testing (the revert map above stays until a release has survived real
+  group play).
