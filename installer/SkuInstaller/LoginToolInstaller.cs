@@ -37,6 +37,24 @@ namespace SkuInstaller
         private static readonly string[] SkipNames = { ".claude", "log.txt" };
 
         /// <summary>
+        /// True for a path segment the payload should never carry over. Beyond the
+        /// exact <see cref="SkipNames"/> this also covers the tool's rotated logs
+        /// (log-1.txt … log-5.txt): the tool keeps the last few sessions beside
+        /// log.txt so a relaunch cannot destroy the evidence in a bug report, and a
+        /// dev machine's copies of those have no business shipping to users.
+        ///
+        /// Only the PAYLOAD is filtered — an existing install's own logs sit in the
+        /// destination and are never touched, so an upgrade still leaves the user's
+        /// history intact.
+        /// </summary>
+        private static bool ShouldSkipSegment(string segment)
+        {
+            if (SkipNames.Contains(segment, StringComparer.OrdinalIgnoreCase)) return true;
+            return segment.StartsWith("log-", StringComparison.OrdinalIgnoreCase) &&
+                   segment.EndsWith(".txt", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
         /// Marker file in the tool folder recording which tool VERSION is deployed
         /// (see <see cref="Config.LoginToolVersion"/>), so a re-run can tell
         /// "current" from "needs upgrade". Installs made by older installers hold a
@@ -288,7 +306,7 @@ namespace SkuInstaller
                     .TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
                 var segments = rel.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-                if (segments.Any(seg => SkipNames.Contains(seg, StringComparer.OrdinalIgnoreCase)))
+                if (segments.Any(ShouldSkipSegment))
                     continue;
                 if (skipInterfacePayload &&
                     segments.Length > 0 &&

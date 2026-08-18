@@ -68,7 +68,9 @@ foreach ($f in @("AtkinsonHyperlegible-Regular.ttf", "AtkinsonHyperlegible-Bold.
 Copy-Item (Join-Path $root "CopyTheContentOfThisFolderToInterface") (Join-Path $toolRoot "CopyTheContentOfThisFolderToInterface") -Recurse
 
 # Strip git/droppings anywhere in the staging tree.
-Get-ChildItem $toolRoot -Recurse -Force -Include ".gitignore", ".gitattributes", "log.txt", "*.bak" |
+# log-*.txt are the rotated previous sessions the tool now keeps beside log.txt;
+# they are runtime droppings exactly like log.txt itself.
+Get-ChildItem $toolRoot -Recurse -Force -Include ".gitignore", ".gitattributes", "log.txt", "log-*.txt", "*.bak" |
     Remove-Item -Force -ErrorAction SilentlyContinue
 
 # 3. Zip.

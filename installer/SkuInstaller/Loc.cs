@@ -87,6 +87,16 @@ namespace SkuInstaller
             ["update.customizeAcc"]        = "Install Sku fresh, or for further game versions — choose versions and components yourself",
             ["update.closeAcc"]            = "Close the installer without changing anything",
 
+            // ── log collection (LogCollector) ────────────────────────────────
+            ["logs.btn"]                   = "Collect all &logs…",
+            ["logs.btnAcc"]                = "Collect all logs of every detected game version into one zip file in your Downloads folder, for a bug report",
+            ["logs.explain"]               = "Collect all logs: writes one zip file to your Downloads folder containing the logs of every detected game version — Sku's debug and error log, BugGrabber, WVDebug, the game's own logs, the login tool's log and this installer's log. Attach that file to a bug report.",
+            ["logs.working"]               = "Collecting logs, please wait.",
+            ["logs.doneTitle"]             = "Logs collected",
+            ["logs.done"]                  = "The logs were saved to:\n{0}\n\n{1} files from {2} game version(s), {3} in total.\n\nAttach this zip file to your bug report.",
+            ["logs.failedTitle"]           = "Logs could not be collected",
+            ["logs.failed"]                = "The logs could not be collected.\n\n{0}",
+
             // ── end of run (CompletionForm) ──────────────────────────────────
             ["done.heading.ok"]        = "Finished",
             ["done.heading.failed"]    = "Finished with problems",
@@ -271,6 +281,16 @@ namespace SkuInstaller
             ["update.browseAcc"]           = "Nach deinem World-of-Warcraft-Ordner suchen",
             ["update.customizeAcc"]        = "Sku neu oder für weitere Spielversionen installieren – Versionen und Bestandteile selbst wählen",
             ["update.closeAcc"]            = "Installer schließen, ohne etwas zu ändern",
+
+            // ── Protokolle sammeln (LogCollector) ────────────────────────────
+            ["logs.btn"]                   = "Alle &Protokolle sammeln…",
+            ["logs.btnAcc"]                = "Alle Protokolle aller gefundenen Spielversionen in einer ZIP-Datei im Downloads-Ordner sammeln, für eine Fehlermeldung",
+            ["logs.explain"]               = "Alle Protokolle sammeln: legt eine ZIP-Datei im Downloads-Ordner an, die die Protokolle aller gefundenen Spielversionen enthält – Skus Debug- und Fehlerprotokoll, BugGrabber, WVDebug, die Protokolle des Spiels, das Protokoll des Anmelde-Tools und das Protokoll dieses Installers. Diese Datei an eine Fehlermeldung anhängen.",
+            ["logs.working"]               = "Protokolle werden gesammelt, bitte warten.",
+            ["logs.doneTitle"]             = "Protokolle gesammelt",
+            ["logs.done"]                  = "Die Protokolle wurden gespeichert unter:\n{0}\n\n{1} Dateien aus {2} Spielversion(en), zusammen {3}.\n\nHänge diese ZIP-Datei an deine Fehlermeldung an.",
+            ["logs.failedTitle"]           = "Protokolle konnten nicht gesammelt werden",
+            ["logs.failed"]                = "Die Protokolle konnten nicht gesammelt werden.\n\n{0}",
 
             // ── Abschluss (CompletionForm) ───────────────────────────────────
             ["done.heading.ok"]        = "Fertig",
@@ -462,6 +482,16 @@ namespace SkuInstaller
             ["update.browseAcc"]           = "Rechercher votre dossier World of Warcraft",
             ["update.customizeAcc"]        = "Installer Sku à neuf, ou pour d'autres versions du jeu — choisir soi-même les versions et les composants",
             ["update.closeAcc"]            = "Fermer l'installateur sans rien modifier",
+
+            // ── collecte des journaux (LogCollector) ─────────────────────────
+            ["logs.btn"]                   = "Collecter tous les &journaux…",
+            ["logs.btnAcc"]                = "Collecter tous les journaux de chaque version du jeu détectée dans un seul fichier zip du dossier Téléchargements, pour un rapport de bogue",
+            ["logs.explain"]               = "Collecter tous les journaux : crée un fichier zip dans votre dossier Téléchargements contenant les journaux de chaque version du jeu détectée — le journal de débogage et d'erreurs de Sku, BugGrabber, WVDebug, les journaux du jeu, le journal de l'outil de connexion et celui de cet installateur. Joignez ce fichier à un rapport de bogue.",
+            ["logs.working"]               = "Collecte des journaux, veuillez patienter.",
+            ["logs.doneTitle"]             = "Journaux collectés",
+            ["logs.done"]                  = "Les journaux ont été enregistrés dans :\n{0}\n\n{1} fichiers de {2} version(s) du jeu, {3} au total.\n\nJoignez ce fichier zip à votre rapport de bogue.",
+            ["logs.failedTitle"]           = "Impossible de collecter les journaux",
+            ["logs.failed"]                = "Les journaux n'ont pas pu être collectés.\n\n{0}",
 
             // ── fin de l'exécution (CompletionForm) ──────────────────────────
             ["done.heading.ok"]        = "Terminé",

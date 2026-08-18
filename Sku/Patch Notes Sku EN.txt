@@ -166,6 +166,46 @@ Changes in Sku v43.0
             settings walk instead of four, and the UNIT_INVENTORY_CHANGED guard tests the real
             itemID instead of a nil global.
 
+    Installer: one button collects every log file for a bug report
+        Simple: The installer's opening screen has a new button, "Collect all logs". It writes ONE
+            zip file to your Downloads folder holding everything needed to diagnose a problem -
+            and it does so for ALL detected game versions at once, not just one: Sku's debug and
+            error log, the captures from BugGrabber/BugSack and WVDebug, the game's own logs
+            including its Lua errors, the CVar file Config.wtf, a list of every installed addon
+            with its version, the login tool's log and the installer's own. Until now these files
+            had to be dug out one by one from three separate directory trees, and forgetting one
+            of them earned you a follow-up question instead of an answer. The file is called
+            Sku-Logs-<date>.zip; the installer reads out its full path and opens the folder with
+            the file already selected, so it can go straight onto a bug report. A typical
+            collection is around 7 MB.
+        Technically: New file LogCollector.cs in the installer, driven by a fourth button in
+            UpdatePromptForm (label and spoken text in all three languages). Collection goes into
+            one subfolder per client: SavedVariables from the account AND the character scope (Sku
+            writes both) including the .bak second copies - those are the PREVIOUS session's state
+            and therefore often the only surviving copy of the very debug ring being reported on -
+            plus Logs, Errors, Config.wtf, Sku.toc, .build.info and an addon list with TOC versions
+            and symlink flags. Alongside them go system-info.txt (OS, language, one block per
+            client, and a list of what did NOT come along and why - an omission should read as an
+            omission rather than as an absence) and the installer log, which is forced out of
+            Logger's in-memory buffer onto disk for the purpose. The Errors folder is deliberately
+            exempt from the 30-day age limit - it only holds anything when something actually
+            broke, and the first test run otherwise shipped zero of the 21 crash reports present -
+            and is capped at the newest 25 instead. This puts the installer at version 4.2.
+
+    Login tool: its log now survives a restart of the tool
+        Simple: The login tool deleted its log on EVERY start. So anyone who hit a bug, closed the
+            tool and opened it again before collecting the logs had destroyed the very evidence
+            they were about to report - and that is the single most common sequence a bug report
+            goes through. The last five sessions now stay beside the live log.txt as log-1.txt
+            through log-5.txt, and the installer's new collect button picks them up automatically.
+        Technically: log.ahk now writes to an ABSOLUTE path derived from the script's own location
+            instead of the bare name "log.txt", which resolves against the process working
+            directory - START.ahk does set that correctly, but it is process-wide state anything
+            later can change, and a log that lands where nobody looks is as good as no log at all.
+            ClearLogFile() rotates instead of deleting. Packaging and .gitignore exclude log-*.txt
+            exactly as they exclude log.txt, and an existing installation's own logs are never
+            touched by an upgrade.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13

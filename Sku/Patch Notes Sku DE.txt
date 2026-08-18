@@ -183,6 +183,51 @@ Aenderungen in Sku v43.0
             Settings-Zugriff statt vier, und der UNIT_INVENTORY_CHANGED-Wachausdruck prueft die
             echte itemID statt eines nil-Globals.
 
+    Installer: eine Taste sammelt alle Logdateien fuer eine Fehlermeldung
+        Einfach: Der Installer hat auf seinem Startbildschirm eine neue Taste "Alle Protokolle
+            sammeln". Sie legt EINE ZIP-Datei im Downloads-Ordner an, die alles enthaelt, was zur
+            Fehlersuche gebraucht wird - und zwar fuer ALLE gefundenen Spielversionen auf einmal,
+            nicht nur fuer eine: Skus Debug- und Fehlerprotokoll, die Aufzeichnungen von
+            BugGrabber/BugSack und WVDebug, die Protokolle des Spiels selbst samt seiner
+            Lua-Fehler, die CVar-Datei Config.wtf, eine Liste aller installierten Addons mit
+            Version, das Protokoll des Anmelde-Tools und das des Installers. Bisher musste man
+            diese Dateien einzeln aus drei verschiedenen Verzeichnisbaeumen zusammensuchen, und wer
+            eine davon vergass, bekam eine Rueckfrage statt einer Antwort. Die Datei heisst
+            Sku-Logs-<Datum>.zip, der Installer nennt den vollstaendigen Pfad und oeffnet den
+            Ordner mit der bereits ausgewaehlten Datei, so dass sie sich direkt an eine
+            Fehlermeldung anhaengen laesst. Eine typische Sammlung sind rund 7 MB.
+        Technisch: Neue Datei LogCollector.cs im Installer, angestossen von einer vierten Taste in
+            UpdatePromptForm (Beschriftung und Vorlesetext in allen drei Sprachen). Gesammelt wird
+            pro Client in einen eigenen Unterordner: SavedVariables aus der Konto- UND der
+            Charakterebene (Sku legt beides an) einschliesslich der .bak-Zweitkopien - die sind der
+            Stand der VORIGEN Sitzung und damit oft die einzige noch vorhandene Fassung des
+            Debug-Rings, ueber den berichtet wird -, dazu Logs, Errors, Config.wtf, Sku.toc,
+            .build.info und eine Addon-Liste mit TOC-Versionen und Symlink-Markierung. Dazu kommen
+            system-info.txt (Betriebssystem, Sprache, ein Block je Client und eine Liste dessen,
+            was NICHT mitkam und warum - eine Auslassung soll als Auslassung lesbar sein und nicht
+            als Abwesenheit) sowie das Installerprotokoll, das dafuer erst aus Loggers
+            Speicherpuffer auf die Platte gezwungen wird. Der Ordner Errors ist bewusst von der
+            30-Tage-Altersgrenze ausgenommen - dort steht nur etwas, wenn wirklich etwas kaputt
+            ging, und der erste Testlauf lieferte sonst null von 21 vorhandenen Absturzberichten -
+            und stattdessen auf die 25 neuesten begrenzt. Der Installer traegt damit die Version
+            4.2.
+
+    Anmelde-Tool: das Protokoll ueberlebt jetzt einen Neustart des Tools
+        Einfach: Das Anmelde-Tool loeschte sein Protokoll bei JEDEM Start. Wer also auf einen
+            Fehler stiess, das Tool schloss und es noch einmal oeffnete, bevor er die Logdateien
+            einsammelte, hatte genau den Nachweis geloescht, um den es ging - und das ist der
+            haeufigste Ablauf einer Fehlermeldung ueberhaupt. Die letzten fuenf Sitzungen bleiben
+            jetzt als log-1.txt bis log-5.txt neben dem laufenden log.txt liegen, und die neue
+            Sammeltaste des Installers nimmt sie automatisch mit.
+        Technisch: log.ahk schreibt jetzt auf einen ABSOLUTEN, aus dem Skriptort abgeleiteten Pfad
+            statt auf den relativen Namen "log.txt", der gegen das Arbeitsverzeichnis des
+            Prozesses aufgeloest wird - START.ahk setzt das zwar passend, aber es ist
+            prozessweiter Zustand, den jede spaetere Stelle aendern kann, und ein Protokoll an
+            einem Ort, an dem niemand nachsieht, ist so gut wie keines. ClearLogFile() rotiert
+            jetzt, statt zu loeschen. Verpackung und .gitignore schliessen log-*.txt genauso aus
+            wie log.txt; die Protokolle einer bestehenden Installation werden bei einem Upgrade
+            nicht angetastet.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13

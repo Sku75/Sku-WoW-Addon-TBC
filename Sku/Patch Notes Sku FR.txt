@@ -193,6 +193,51 @@ Changements dans Sku v43.0
             LogRecorder fait un accès aux réglages au lieu de quatre, et la garde
             UNIT_INVENTORY_CHANGED teste le vrai itemID au lieu d'une globale nil.
 
+    Installateur : un bouton collecte tous les journaux pour un rapport de bogue
+        Simple : L'écran d'accueil de l'installateur comporte un nouveau bouton, « Collecter tous
+            les journaux ». Il crée UN seul fichier zip dans votre dossier Téléchargements
+            contenant tout ce qu'il faut pour diagnostiquer un problème - et ce pour TOUTES les
+            versions du jeu détectées à la fois, pas seulement une : le journal de débogage et
+            d'erreurs de Sku, les captures de BugGrabber/BugSack et de WVDebug, les journaux du jeu
+            lui-même avec ses erreurs Lua, le fichier de CVar Config.wtf, la liste de tous les
+            addons installés avec leur version, le journal de l'outil de connexion et celui de
+            l'installateur. Jusqu'ici il fallait aller chercher ces fichiers un par un dans trois
+            arborescences différentes, et en oublier un valait une question de plus au lieu d'une
+            réponse. Le fichier s'appelle Sku-Logs-<date>.zip ; l'installateur en énonce le chemin
+            complet et ouvre le dossier avec le fichier déjà sélectionné, prêt à être joint à un
+            rapport de bogue. Une collecte typique pèse environ 7 Mo.
+        Technique : Nouveau fichier LogCollector.cs dans l'installateur, déclenché par un quatrième
+            bouton dans UpdatePromptForm (libellé et texte vocalisé dans les trois langues). La
+            collecte se fait dans un sous-dossier par client : les SavedVariables de la portée
+            compte ET de la portée personnage (Sku écrit dans les deux), y compris les copies .bak
+            - celles-ci sont l'état de la session PRÉCÉDENTE et donc souvent la seule copie
+            subsistante de l'anneau de débogage sur lequel porte le rapport - ainsi que Logs,
+            Errors, Config.wtf, Sku.toc, .build.info et une liste des addons avec versions de TOC
+            et marquage des liens symboliques. S'y ajoutent system-info.txt (système, langue, un
+            bloc par client et la liste de ce qui n'a PAS été inclus et pourquoi - une omission
+            doit se lire comme une omission et non comme une absence) et le journal de
+            l'installateur, forcé pour l'occasion du tampon mémoire de Logger vers le disque. Le
+            dossier Errors est délibérément exempté de la limite d'âge de 30 jours - il ne contient
+            quelque chose que lorsque quelque chose a réellement cassé, et le premier essai réel
+            n'en livrait sinon aucun des 21 rapports de plantage présents - et il est plafonné aux
+            25 plus récents à la place. L'installateur passe ainsi en version 4.2.
+
+    Outil de connexion : son journal survit désormais à un redémarrage de l'outil
+        Simple : L'outil de connexion effaçait son journal à CHAQUE démarrage. Quiconque tombait
+            sur un bogue, fermait l'outil puis le rouvrait avant de collecter les journaux
+            détruisait donc la preuve même qu'il s'apprêtait à signaler - et c'est la séquence la
+            plus courante d'un rapport de bogue. Les cinq dernières sessions restent maintenant à
+            côté du log.txt courant sous les noms log-1.txt à log-5.txt, et le nouveau bouton de
+            collecte de l'installateur les emporte automatiquement.
+        Technique : log.ahk écrit désormais vers un chemin ABSOLU dérivé de l'emplacement du script
+            au lieu du nom relatif « log.txt », qui se résout par rapport au répertoire de travail
+            du processus - START.ahk le règle correctement, mais c'est un état global au processus
+            que n'importe quoi peut changer ensuite, et un journal qui atterrit là où personne ne
+            regarde ne vaut pas mieux que pas de journal. ClearLogFile() effectue une rotation au
+            lieu d'effacer. L'empaquetage et le .gitignore excluent log-*.txt exactement comme
+            log.txt, et les journaux d'une installation existante ne sont jamais touchés par une
+            mise à jour.
+
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13

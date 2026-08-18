@@ -4,50 +4,230 @@
 
 
 -------------------------------------------------------------------------------------------------------
-WoW Login Tool 3.0
+Aenderungen in Sku v43.0
 
-    Login Tool: Hardcore-Realms koennen jetzt betreten werden
-        Einfach: Wer einem Hardcore-Realm beitreten wollte, bekam vom Spiel die Warnung "Der Tod
-            ist permanent" mit den Knoepfen "Ich stimme zu" und "Ablehnen" - das Login Tool kannte
-            diesen Dialog nicht, sagte eine viertel Minute lang nur "warte" und drueckte dann
-            selbststaendig Escape, was die Warnung stillschweigend ABLEHNTE. Der Beitritt schlug
-            damit immer fehl, ohne dass hoerbar wurde warum. Jetzt liest das Tool die Warnung
-            komplett vor und fragt nach: Enter stimmt zu und betritt den Hardcore-Realm, Escape
-            lehnt ab und fuehrt zurueck in die Realmliste. Das Tool beantwortet den Dialog nie von
-            selbst.
-        Technisch: Der Helper SkuLoginSense erkennt den Dialog als eigenen Screen hardcoreConfirm
-            ueber vier Pixel-Proben im aufloesungsunabhaengigen UI-Koordinatenraum: die zwei rot
-            getoenten Knoepfe liegen auf einer Reihe UNTERHALB aller Standard-Popup-Hoehen (die
-            Glue-Dialog-Toenung dunkelt das Fiducial-Rot 140 auf ca. 84 ab, darum eine eigene
-            Farbspanne statt GenericRedButton), dazwischen Rahmengrau statt Rot (schliesst einen
-            einzelnen breiten Knopf wie den Reconnect-Dialog aus), darueber der schwarze
-            Dialogkoerper. Der Vorlesetext kommt per OCR eng begrenzt auf den Dialogkoerper. Die
-            Erkennung ist offline gegen sechs Live-Frames (positiv) und alle elf gebuendelten
-            2.5.5-Screenshots (negativ) geprueft.
+    Mit Dank an Naxedim und ZenqFR
+        Die naechsten vier Korrekturen sind die ersten direkten Code-Beitraege zum inzwischen
+        oeffentlichen Sku-Repository. Naxedim hat die beiden Fehler gefunden, analysiert und
+        behoben, die auf franzoesischen Spielclients grosse Teile der Sku-Audioausgabe stumm
+        geschaltet hatten; ZenqFR hat die Uebersetzungsdateien geprueft, alle widerspruechlichen
+        Duplikate auf der englischen und franzoesischen Seite aufgeloest und das Werkzeug
+        verbessert, das vor neuen schuetzt. Die volle Anerkennung fuer diese Korrekturen gebuehrt
+        den beiden.
 
-    Login Tool: Vom Spiel selbst geoeffnete Realmliste wird bedient statt bekaempft
-        Einfach: Auf manchen Client-Kombinationen (z.B. Classic Era direkt nach dem Login) oeffnet
-            das Spiel die Realmauswahl von selbst. Das Tool hat diesen Dialog bisher beim
-            Initialisieren kommentarlos geschlossen und blieb danach stumm - waehrend der offene
-            Dialog jede Tastatureingabe schluckte, sodass sich nicht einmal das Passwortfeld
-            bedienen liess. Jetzt sagt das Tool "Das Spiel hat die Serverauswahl geoeffnet" und
-            bietet die Realmliste sofort als Menue an: Pfeiltasten navigieren, Enter tritt bei.
-            Neu ist auch der Menuepunkt "Serverauswahl schliessen" am Ende der Liste.
-        Technisch: InitLogin schliesst den Realm-Dialog nicht mehr per Escape, sondern ruft
-            OfferOpenRealmDialog (BuildRealmMenu auf dem switch-server-Knoten). Zusaetzlich
-            beobachtet CheckMode im Login-Modus alle 2,5 s per SenseQuick, ob der Dialog NACH dem
-            Moduswechsel aufgeht - InitLogin laeuft nur beim Uebergang und konnte diesen Fall nie
-            sehen. Ein gRealmMenuOffered-Flag verhindert, dass der Waechter das Menue ueber der
-            laufenden Navigation neu aufbaut.
+    Franzoesische Clients: alle Aura-Sounds und aufgenommene Sprachclips waren stumm (Korrektur von Naxedim)
+        Einfach: Auf einem franzoesischen Spielclient spielte seit v42.11 jede Aura, deren Ausgabe
+            ein Sound ist, gar nichts mehr ab - kein Fehler, keine Logzeile, einfach Stille - und
+            jeder aufgenommene Sprachclip fiel unbemerkt auf reines TTS zurueck. Die Ursache: Seit
+            Sku franzoesisch spricht, sucht es auch ein FRANZOESISCHES Sprachpaket, und ein solches
+            Paket gibt es nicht, also fand die Suche nichts und alles, was das Sprachpaket
+            bereitstellt, verstummte. Sprachausgaben wurden nur zu TTS herabgestuft, aber ein
+            Soundeffekt hat nichts, worauf er zurueckfallen koennte - deshalb fuehlte es sich an
+            wie "meine Auren gehen nicht mehr" statt "die Audioausgabe hat sich geaendert". Die
+            Paketsuche nutzt jetzt denselben englischen Rueckfall, den der Rest des Audiosystems
+            seit v42.09 verwendet. Deutsche und englische Clients sind vollstaendig unberuehrt.
+        Technisch: Der Sprachpaket-Resolver in Core.lua verglich die Paket-Locales mit Sku.Loc;
+            seit v42.11 locales/frFR.lua mitliefert, ist Sku.Loc auf franzoesischen Clients
+            "frFR", kein Paket konnte das deklarieren, Sku.AudiodataPath blieb "" und
+            VoicePackAudioDir() lieferte nil - stumm wurden damit alle 64 Eintraege von
+            SkuCore.outputSoundFiles (Aura-Sounds, SkuMob-Kampfsound, SkuChat-Zeilensound) plus
+            jeder Sprachclip des Pakets. Verglichen wird jetzt Sku.LocAudio oder Sku.Loc, exakt
+            die "auf welche aufgenommene Sprache falle ich zurueck"-Regel, die
+            IntegratedAudioDir() bereits nutzt; Sku.LocAudio ist auf jedem nicht-deutschen Client
+            "enUS", deDE/enUS verhalten sich also byte-identisch. Auf einem echten franzoesischen
+            Client gefunden, behoben und im Spiel verifiziert von Naxedim (PR #5).
 
-    Login Tool: Unbekannte Dialoge werden vorgelesen statt totgewartet
-        Einfach: Erscheint beim Serverwechsel kuenftig ein Dialog, den das Tool nicht kennt, liest
-            es dessen Text vor, sagt dass es ihn noch nicht kennt, und stoppt mit OFFENEM Dialog,
-            damit im Spiel geantwortet werden kann. Bisher gab es nur "warte", Timeout und ein
-            blindes Escape.
-        Technisch: Der else-Zweig der RealmSelectAction-Warteschleife prueft nach zwei
-            aufeinanderfolgenden unbekannten Runden DialogText (OCR ueber die Dialogmitte) und
-            beendet den Flow ohne Escape, wenn Text gefunden wurde.
+    Franzoesische Clients: die Entfernungspruefung sagte keine Distanzen mehr an und ihr Menue warf einen Fehler (Korrektur von Naxedim)
+        Einfach: Auf einem franzoesischen Client sagte die Entfernungspruefung keinerlei Distanz
+            mehr an, egal bei welchem Ziel, und das Oeffnen des Entfernungs-Menues erzeugte einen
+            Fehler statt des Menues. Zwei Ursachen, beide nur franzoesisch: Erstens wird die
+            Einstellung "Distanz sprechen" als uebersetztes WORT fuer "Gesprochen" in der
+            Konfiguration gespeichert - eine Konfiguration, die geschrieben wurde, als Sku noch
+            englisch lief (vor v42.11), enthaelt das englische Wort, das der jetzt franzoesische
+            Client nicht mehr erkennt. Zweitens existieren die Zahlenclips nur auf Deutsch und
+            Englisch, und der Code zaehlte genau diese beiden Sprachen auf - ein franzoesischer
+            Client bekam also selbst mit frisch geschriebener franzoesischer Konfiguration
+            Stille. Der gespeicherte Marker wird jetzt in allen drei Sprachen akzeptiert, ein
+            unbekannter Wert kann das Menue nicht mehr zerlegen, und die Clips fallen wie der
+            Rest des Audiosystems auf die englischen Aufnahmen zurueck. Deutsche und englische
+            Clients sind unveraendert: gleicher Marker, gleiche Clips, gleiche Audioausgabe.
+        Technisch: Ein neues RangeCheck:IsSpokenSound() akzeptiert "Gesprochen"/"Spoken"/"Parlé"
+            (plus das live uebersetzte L["vocalized"]), genutzt von DoRangeCheck und dem
+            Menuebauer in Options.lua - letzterer lief bei unbekanntem Wert bisher in den
+            else-Zweig und verkettete nil aus SkuCore.RangeCheckSounds, was den Fehler warf. Der
+            Clip-Ordner kommt jetzt aus Sku.LocAudio (hans_de-de fuer deDE, sonst hans_en-us)
+            statt aus einer Sku.Loc-Kette, die auf frFR keinen Zweig traf. Neue Eintraege
+            schreiben weiter L["vocalized"]; keine Datenmigration. Auf einem echten
+            franzoesischen Client gefunden und verifiziert von Naxedim (PR #6).
+
+    Uebersetzungen: neun Texte bedeuteten je nach Sprache etwas anderes (Korrektur von ZenqFR)
+        Einfach: Neun Texte standen doppelt mit zwei VERSCHIEDENEN Bedeutungen in den
+            Uebersetzungsdateien, und jede Sprache konnte am Ende eine andere der beiden
+            erwischen. Am hoerbarsten auf englischen Clients, wo mehrfach der falsche Zwilling
+            gewann: Die Haltungs-Aktionsleiste wurde als "Special Action bar" angesagt (eine ganz
+            andere Leiste), die Debug-Taste als "debug mode" statt "debug output", eine
+            Menuekategorie als "Features" statt "Values". Fuer jedes Paar wurde anhand der
+            Verwendung im Code die tatsaechlich richtige Bedeutung bestimmt und der falsche
+            Zwilling in allen drei Sprachen geloescht - Englisch, Deutsch und Franzoesisch sind
+            sich bei allen neun jetzt einig. Sechs rein deutsche Duplikate bleiben bewusst offen,
+            bis ein deutscher Muttersprachler entscheidet.
+        Technisch: AceLocale loest doppelte Schluessel fuer die Standardsprache (enUS) nach
+            "erster gewinnt" auf, ueberall sonst nach "letzter gewinnt" - ein Duplikat mit zwei
+            Werten bedeutet also still etwas anderes pro Sprache. ZenqFR hat fuer jeden Schluessel
+            die echten Aufrufstellen verfolgt, um den ueberlebenden Wert zu bestimmen (PR #3),
+            und dev/rework-docs/_locale_dupes.py beigebracht, nur das geparste
+            Lua-String-Literal statt der rohen Zeile zu vergleichen, damit angehaengte
+            "--"-Kommentare nicht mehr als Konflikt zaehlen (PR #4) - von 64 gemeldeten
+            Konflikten waren nur 30 echt; enUS und frFR linten jetzt auf null, deDE auf die sechs
+            deutschen Formulierungspaare, die einem Muttersprachler ueberlassen bleiben.
+
+    Franzoesische Clients: zwei Nachzuegler aus Naxedims Sprachpaket-Bericht
+        Einfach: Der Sound namens "bring" - eine Glocke, benannt nach ihrem Klang - stand in
+            franzoesischen Menues als "apporter": Die Uebersetzung hatte ihn als das englische
+            Verb "to bring" gelesen. Es ist ein Name, kein Wort, und bleibt jetzt wie seine
+            unuebersetzten Geschwister "brang", "dang" und "drmm" einfach "bring". Ausserdem
+            nennt die interne Diagnose, die festhaelt, welches Sprachpaket gefunden wurde, jetzt
+            die tatsaechlich gesuchte Sprache statt der Client-Sprache - vorher haette ein
+            franzoesischer Client ohne installiertes englisches Paket "no voice pack found for
+            frFR" behauptet und damit auf ein Paket gezeigt, das es gar nicht geben kann.
+        Technisch: locales/frFR.lua setzt L["bring"] auf die Onomatopoesie zurueck. Core.lua
+            setzt Sku.AudiodataPathInfo jetzt in einem else-Zweig des Resolvers aus tWantedLoc
+            (dem Sku.LocAudio-basierten Suchschluessel) plus der Client-Locale; auslesbar per
+            /wdeval Sku.AudiodataPathInfo. Der dritte Punkt aus dem PR-#5-Bericht - frFR
+            uebersetzt das Ausgabe-Label-Praefix zu "aura;son" - wurde geprueft und bewusst
+            BEHALTEN: Jede Vergleichsstelle baut das Praefix zur Laufzeit aus der aktiven
+            Locale-Tabelle, und gespeicherte Einstellungen/Auren halten Identifier-Schluessel
+            ("sound-brass1"), nie das Label - die Uebersetzung ist also sicher; franzoesisches
+            TTS fuer ein franzoesisches Label ist besser als ein englischer Clip.
+
+    Taschen: die Schluessel im Schluesselbund wurden als "Leer" angesagt
+        Einfach: Seit v42.13 sprach jeder Platz im Schluesselbund "Leer", obwohl die Schluessel da
+            waren und sich weiter benutzen liessen - aufgefallen ist es erst, als jemand den
+            Schluesselbund wirklich brauchte. Ausgeloest hat es die Bankkorrektur aus v42.13: Der
+            Schluesselbund hat im Spielclient dieselbe Eigenheit wie das Bankhauptfach und brauchte
+            dieselbe Sonderbehandlung, die damals nur die Bank bekommen hat. Jetzt werden die
+            Schluessel wieder mit Namen angesagt. Ausserdem zeigt der Schluesselbund nur noch so
+            viele Plaetze, wie er wirklich nutzt, statt stur alle 32 - vorher kamen nach den
+            Schluesseln Dutzende leere Plaetze.
+        Technisch: GameTooltip:SetBagItem(-2, slot) befuellt auf dem Client nichts, genau wie beim
+            Bankcontainer -1. Die Schluesselnamen funktionierten nur ueber den generischen
+            SetHyperlink-Rueckfall aus 67f2132; als v42.13 diesen Rueckfall absichtlich entfernte
+            und nur die Bank (-1) auf SetInventoryItem umstellte, fiel der Schluesselbund still auf
+            das leere SetBagItem zurueck. tSetTooltipContainerItem liest -2 jetzt ueber
+            SetInventoryItem("player", KeyRingButtonIDToInvSlotID(slot)) - exakt das, was Blizzards
+            eigenes ContainerFrameItemButton_OnEnter fuer den Schluesselbund tut. Build_BagsFrame
+            begrenzt die Platzzahl von -2 zusaetzlich mit GetKeyRingSize() (belegte Plaetze auf
+            volle Viererreihen gerundet), so wie Blizzards Schluesselbund-Fenster, statt die rohen
+            32 aus GetContainerNumSlots zu uebernehmen.
+
+    Diagnose: neuer Befehl /skucheck prueft feste Regeln gegen den laufenden Spielzustand
+        Einfach: /skucheck geht alle Taschendaten durch und prueft, ob jeder belegte Platz einen
+            ansagbaren Namen liefert; das Ergebnis kommt als eine gesprochene Zeile, etwa
+            "Taschenpruefung: 64 geprueft, keine Probleme", bei Problemen mit Verweis auf das Log.
+            Der Befehl prueft die Daten selbst, nicht die Menues - er haette den
+            Schluesselbund-Fehler also auch gemeldet, wenn man den Schluesselbund nie oeffnet. Die
+            Pruefliste waechst nur mit behobenen Fehlern: Jede Korrektur bringt kuenftig ihre
+            eigene Stolperdraht-Regel mit, damit eine spaetere Aenderung denselben Fehler nicht
+            unbemerkt wieder einbauen kann.
+        Technisch: Am Ende von LocalMenu.lua; laeuft ueber tBagSlotListSorted mit derselben
+            Container-API und derselben Namensaufloesung wie das Taschenmenue. Regel 1: Platz mit
+            Item-Id, aber leerem Tooltiptext = Verstoss; jeder Verstoss landet als "skucheck"-Zeile
+            mit Tasche, Platz, Item-Id und Link im SkuDebugLog-Ring. Die geschlossene Bank wird mit
+            Logzeile uebersprungen (nicht still), der Schluesselbund absichtlich mit allen rohen 32
+            Plaetzen geprueft, und noch nicht vom Server geladene Items zaehlen als "ausstehend"
+            statt als Fehler.
+
+    Auren: Ablauf-Warnungen kommen puenktlich, nicht erst beim naechsten Kampfereignis
+        Einfach: Zwei alte Beschwerden hatten dieselbe Ursache: Eine Aura wie "Debuff auf dem Ziel
+            unter 3 Sekunden" oder "mein Debuff ist vom Ziel abgefallen" wurde nur dann neu
+            geprueft, wenn irgendein anderes Kampfereignis eintraf. In einem reinen Nahkampf kam
+            die Warnung deshalb bis zu einem ganzen Waffenschlag zu spaet, ausserhalb des Kampfes
+            um Minuten - oder gar nicht vor dem Ablauf. Jetzt merkt sich Sku beim Pruefen des
+            Effekts, WANN die Schwelle erreicht sein wird, und weckt die Pruefung genau in diesem
+            Moment; auch das Erscheinen oder Wegfallen eines Effekts selbst stoesst die Pruefung
+            direkt an. Ausserdem duerfen die gesprochenen Woerter einer Aura jetzt wie die
+            Signaltoene an wartenden Ansagen vorbeiziehen - sie unterbrechen nichts und
+            ueberlappen nichts, sie stellen sich nur nicht mehr hinten an.
+            Waffenverzauberungs-Warnungen profitieren mit: statt bis zu einer Sekunde Verzug
+            feuern sie jetzt auf den Frame genau.
+        Technisch: Drei Mechanismen: (1) Termin-Planer in SkuAuras/Core.lua - jeder
+            Auswertungslauf merkt sich in tNextDurationDeadline den fruehesten
+            Schwellen-Zeitpunkt (expirationTime minus Schwelle) aller aktiven Dauer-Bedingungen
+            (kleiner-Operator); der Frame-Treiber vergleicht pro Frame eine Zahl und feuert dann
+            EINEN synthetischen DURATION_DEADLINE-Lauf. Ersetzt die sekuendliche
+            Naeherungs-Neupruefung der Waffenverzauberungen. (2) UNIT_AURA stoesst bei echter
+            Mengen-Aenderung der Effekte (dazu/weg, nicht bei Stapel- oder Dauer-Updates) eine
+            Auswertung an - Namens-Diff gegen einen Schnappschuss, entprellt gegen
+            Kampflog-Laeufe im selben Frame und gegen Zielwechsel. (3) Die Wort-Ausgaben nutzen
+            den vorhandenen, aber nie angeschlossenen aInstant-Pfad von OutputString (Einfuegen
+            vorne statt hinten); ein Frame-Cursor haelt mehrteilige Ausgaben in Sprechreihenfolge.
+
+    Auren: Auswertung pro Kampfereignis deutlich verbilligt
+        Einfach: Im Schlachtzug wertet Sku Auren hunderte Male pro Sekunde aus. Mehrere
+            versteckte Kostentreiber sind raus: Bedingungen wurden doppelt geprueft, Restdauern
+            bei jedem Ereignis neu vom Client erfragt, und fuer jedes Ereignis wurde die komplette
+            Gruppe per Einzelabfrage durchsucht. Nebenbei zwei stille Fehler behoben: Eine Aura
+            ohne "Zauber auf Abklingzeit"-Bedingung konnte den Abklingzeit-Namen einer ANDEREN
+            Aura ansagen, und Gegenstands-Abklingzeiten wurden bei jeder Taschenaenderung neu
+            gestempelt. /skucheck kennt dafuer jetzt die Domaene "auras" und prueft, dass die
+            Auswertung keine Globals mehr schreibt.
+        Technisch: Einmal auswerten statt doppelt (der einwertige Zweig der Attributschleife lief
+            versehentlich zweimal; dazu zwei geleakte Globals, tSpellNameOnCdValue injizierte
+            veraltete Werte quer ueber Auren). Restdauern kommen aus einer
+            expirationTime-Erweiterung des Tier-2-Listencaches statt aus UnitAura-Neuscans
+            (/skuauracache verify prueft jetzt auch die exp-Werte, /skuauracache off schaltet
+            beides ab). Gruppen-GUIDs loesen ueber eine bei Roster-Ereignissen invalidierte Karte
+            auf statt ueber raid1..40-Schleifen pro Ereignis (Ergebnis-Reihenfolge und das
+            historische raid1..25-Fenster des RoleCheckers bleiben exakt erhalten).
+            targetUnitDistance und targetTargetUnitId sind lazy, LogRecorder macht einen
+            Settings-Zugriff statt vier, und der UNIT_INVENTORY_CHANGED-Wachausdruck prueft die
+            echte itemID statt eines nil-Globals.
+
+    Installer: eine Taste sammelt alle Logdateien fuer eine Fehlermeldung
+        Einfach: Der Installer hat auf seinem Startbildschirm eine neue Taste "Alle Protokolle
+            sammeln". Sie legt EINE ZIP-Datei im Downloads-Ordner an, die alles enthaelt, was zur
+            Fehlersuche gebraucht wird - und zwar fuer ALLE gefundenen Spielversionen auf einmal,
+            nicht nur fuer eine: Skus Debug- und Fehlerprotokoll, die Aufzeichnungen von
+            BugGrabber/BugSack und WVDebug, die Protokolle des Spiels selbst samt seiner
+            Lua-Fehler, die CVar-Datei Config.wtf, eine Liste aller installierten Addons mit
+            Version, das Protokoll des Anmelde-Tools und das des Installers. Bisher musste man
+            diese Dateien einzeln aus drei verschiedenen Verzeichnisbaeumen zusammensuchen, und wer
+            eine davon vergass, bekam eine Rueckfrage statt einer Antwort. Die Datei heisst
+            Sku-Logs-<Datum>.zip, der Installer nennt den vollstaendigen Pfad und oeffnet den
+            Ordner mit der bereits ausgewaehlten Datei, so dass sie sich direkt an eine
+            Fehlermeldung anhaengen laesst. Eine typische Sammlung sind rund 7 MB.
+        Technisch: Neue Datei LogCollector.cs im Installer, angestossen von einer vierten Taste in
+            UpdatePromptForm (Beschriftung und Vorlesetext in allen drei Sprachen). Gesammelt wird
+            pro Client in einen eigenen Unterordner: SavedVariables aus der Konto- UND der
+            Charakterebene (Sku legt beides an) einschliesslich der .bak-Zweitkopien - die sind der
+            Stand der VORIGEN Sitzung und damit oft die einzige noch vorhandene Fassung des
+            Debug-Rings, ueber den berichtet wird -, dazu Logs, Errors, Config.wtf, Sku.toc,
+            .build.info und eine Addon-Liste mit TOC-Versionen und Symlink-Markierung. Dazu kommen
+            system-info.txt (Betriebssystem, Sprache, ein Block je Client und eine Liste dessen,
+            was NICHT mitkam und warum - eine Auslassung soll als Auslassung lesbar sein und nicht
+            als Abwesenheit) sowie das Installerprotokoll, das dafuer erst aus Loggers
+            Speicherpuffer auf die Platte gezwungen wird. Der Ordner Errors ist bewusst von der
+            30-Tage-Altersgrenze ausgenommen - dort steht nur etwas, wenn wirklich etwas kaputt
+            ging, und der erste Testlauf lieferte sonst null von 21 vorhandenen Absturzberichten -
+            und stattdessen auf die 25 neuesten begrenzt. Der Installer traegt damit die Version
+            4.2.
+
+    Anmelde-Tool: das Protokoll ueberlebt jetzt einen Neustart des Tools
+        Einfach: Das Anmelde-Tool loeschte sein Protokoll bei JEDEM Start. Wer also auf einen
+            Fehler stiess, das Tool schloss und es noch einmal oeffnete, bevor er die Logdateien
+            einsammelte, hatte genau den Nachweis geloescht, um den es ging - und das ist der
+            haeufigste Ablauf einer Fehlermeldung ueberhaupt. Die letzten fuenf Sitzungen bleiben
+            jetzt als log-1.txt bis log-5.txt neben dem laufenden log.txt liegen, und die neue
+            Sammeltaste des Installers nimmt sie automatisch mit.
+        Technisch: log.ahk schreibt jetzt auf einen ABSOLUTEN, aus dem Skriptort abgeleiteten Pfad
+            statt auf den relativen Namen "log.txt", der gegen das Arbeitsverzeichnis des
+            Prozesses aufgeloest wird - START.ahk setzt das zwar passend, aber es ist
+            prozessweiter Zustand, den jede spaetere Stelle aendern kann, und ein Protokoll an
+            einem Ort, an dem niemand nachsieht, ist so gut wie keines. ClearLogFile() rotiert
+            jetzt, statt zu loeschen. Verpackung und .gitignore schliessen log-*.txt genauso aus
+            wie log.txt; die Protokolle einer bestehenden Installation werden bei einem Upgrade
+            nicht angetastet.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13

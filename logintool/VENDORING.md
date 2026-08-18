@@ -14,7 +14,8 @@ What is tracked vs. on-disk only:
   `CopyTheContentOfThisFolderToInterface/` (~44 MB login-screen textures),
   `data/screenshots/` (~26 MB reference screenshots, current BC Anniversary
   client 2.5.5), `data/localization/translations.xlsx`.
-- Excluded from vendoring entirely: `.claude/`, `log.txt` (runtime log).
+- Excluded from vendoring entirely: `.claude/`, `log.txt` and `log-*.txt`
+  (the runtime log plus the rotated previous sessions the tool keeps beside it).
 
 Quirk carried over from the zip: `data/settings.ini` ships with a saved
 setup (BurningCrusade / EUR / deDE / Hedda voice) instead of empty, so a

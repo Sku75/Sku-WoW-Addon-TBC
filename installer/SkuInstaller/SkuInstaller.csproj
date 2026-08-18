@@ -33,8 +33,13 @@
          progress rows, a real Cancel button.
          4.1 = French: Loc.Lang.Fr (same key set as en/de, picked from the OS UI
          culture, switchable in the language list built from
-         ComponentsForm._langOrder). -->
-    <Version>4.1</Version>
+         ComponentsForm._langOrder).
+         4.2 = "Collect all logs": one button on the opening screen bundles every
+         log of EVERY detected client — Sku's SavedVariables (SkuDebugLog +
+         SkuErrorLog), BugGrabber, WVDebug, the client's Logs\ and Errors\,
+         Config.wtf, the addon list, the login tool's log and this installer's own
+         log — into one zip in Downloads (LogCollector). -->
+    <Version>4.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

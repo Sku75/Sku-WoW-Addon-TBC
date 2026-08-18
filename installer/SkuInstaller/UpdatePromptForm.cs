@@ -47,6 +47,7 @@ namespace SkuInstaller
         private Button _primaryButton;
         private Button _browseButton;
         private Button _customizeButton;
+        private Button _collectLogsButton;
         private Button _closeButton;
 
         public UpdatePromptForm(List<InstallTarget> targets)
@@ -72,7 +73,8 @@ namespace SkuInstaller
         private void BuildUi()
         {
             Text = Loc.Get("app.title") + " " + WizardForm.InstallerVersion();
-            ClientSize = new Size(600, 420);
+            // 470, not 420: the log-collect button added a fourth row to the stack.
+            ClientSize = new Size(600, 470);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
@@ -110,12 +112,20 @@ namespace SkuInstaller
             _customizeButton.Click += (s, e) => { Choice = UpdateChoice.Customize; Close(); };
             y += h + gap;
 
+            // Below the two install actions and above Close: it is a diagnostic
+            // errand, not a step of the install, and it must not sit where someone
+            // reaching for "Update now" can hit it by muscle memory.
+            _collectLogsButton = new Button { Location = new Point(x, y), Size = new Size(w, h), Visible = false };
+            _collectLogsButton.Click += OnCollectLogs;
+            y += h + gap;
+
             _closeButton = new Button { Location = new Point(x, y), Size = new Size(w, h) };
             _closeButton.Click += (s, e) => { Choice = UpdateChoice.Close; Close(); };
 
             Controls.AddRange(new Control[]
             {
-                _titleLabel, _infoLabel, _primaryButton, _browseButton, _customizeButton, _closeButton,
+                _titleLabel, _infoLabel, _primaryButton, _browseButton,
+                _customizeButton, _collectLogsButton, _closeButton,
             });
 
             CancelButton = _closeButton;
@@ -154,15 +164,23 @@ namespace SkuInstaller
             _browseButton.Visible = !anyClient;
             _primaryButton.Visible = anyClient;
 
+            // Offered as soon as a client is found, not only once Sku is installed:
+            // a client whose Sku install failed or was removed is exactly the case
+            // where the logs are worth having, and there is still a WoW Logs folder
+            // and possibly a login-tool log to collect either way.
+            _collectLogsButton.Visible = anyClient;
+
             _browseButton.Text = Loc.Get("update.browseBtn");
             _primaryButton.Text = anySku ? Loc.Get("update.updateBtn") : Loc.Get("update.installBtn");
             _customizeButton.Text = Loc.Get("update.customizeBtn");
+            _collectLogsButton.Text = Loc.Get("logs.btn");
             _closeButton.Text = Loc.Get("nav.close");
 
             _browseButton.AccessibleName = Loc.Get("update.browseAcc");
             _primaryButton.AccessibleName = anySku
                 ? Loc.Get("update.updateAcc") : Loc.Get("update.installAcc");
             _customizeButton.AccessibleName = Loc.Get("update.customizeAcc");
+            _collectLogsButton.AccessibleName = Loc.Get("logs.btnAcc");
             _closeButton.AccessibleName = Loc.Get("update.closeAcc");
 
             string announce = $"{_titleLabel.Text}. {_infoLabel.Text}";
@@ -200,8 +218,63 @@ namespace SkuInstaller
                 ? Loc.Format("update.explainUpdate", names)
                 : Loc.Format("update.explainInstall", names));
             sb.AppendLine(Loc.Get("update.explainCustomize"));
+            sb.AppendLine(Loc.Get("logs.explain"));
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Bundle every log of every detected client into one zip in Downloads.
+        ///
+        /// Runs synchronously. The work is seconds, not minutes (log text deflates
+        /// 10-20x and the per-file cap keeps a runaway Sound.log out), and a
+        /// background thread would buy nothing but a progress bar this dialog has
+        /// no room for. What it does buy is a silence a screen-reader user cannot
+        /// interpret, so the announcement goes out BEFORE the work starts: a button
+        /// that says nothing for two seconds reads as a button that did nothing.
+        /// </summary>
+        private void OnCollectLogs(object sender, EventArgs e)
+        {
+            ScreenReaderAnnouncer.Announce(this, Loc.Get("logs.working"));
+
+            _collectLogsButton.Enabled = false;
+            Cursor previous = Cursor;
+            Cursor = Cursors.WaitCursor;
+
+            LogCollector.Result result;
+            try
+            {
+                result = LogCollector.Collect(Found);
+            }
+            finally
+            {
+                Cursor = previous;
+                _collectLogsButton.Enabled = true;
+            }
+
+            if (!result.Success)
+            {
+                // The message box carries the text rather than an announcement
+                // alone: a failure is something the user may want to read twice,
+                // and an announcement cannot be re-read.
+                MessageBox.Show(this,
+                    Loc.Format("logs.failed", result.Error ?? ""),
+                    Loc.Get("logs.failedTitle"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ActiveControl = _collectLogsButton;
+                return;
+            }
+
+            // The full path is in the text on purpose. A user who has relocated
+            // Downloads has no other way to learn where the file landed.
+            string message = Loc.Format("logs.done",
+                result.ArchivePath, result.FileCount, result.ClientCount, result.SizeText);
+
+            MessageBox.Show(this, message, Loc.Get("logs.doneTitle"),
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            LogCollector.RevealInExplorer(result.ArchivePath);
+            ActiveControl = _collectLogsButton;
         }
 
         private void OnBrowse(object sender, EventArgs e)
