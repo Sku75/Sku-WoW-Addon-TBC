@@ -107,6 +107,18 @@
   linke Grenze 0.28 INNERHALB des Era-Dialogs lag und dort den linken Reiter
   ("Saisonbedingt", Mitte nx 0.2516) stillschweigend verschluckte. Jetzt 0.20
   bis 0.85, was beide Clients abdeckt.
+- **Pfeiltaste während eines Realmlisten-Neuaufbaus = AutoHotkey-Fehlerdialog.**
+  `BuildRealmMenu` leerte `menuItem.children` zuerst und füllte sie über die
+  nächsten Sekunden aus Scrollen und OCR wieder. Die Pfeiltasten bleiben in
+  dieser Zeit aktiv, also erreichte ein Tastendruck `MenuNode.Sibling` mit einer
+  LEEREN Kindliste; das Klemmen half nicht, denn `Max(1, Min(0, n))` ist 1, also
+  las der Zugriff `children[1]` auf einem Array der Länge 0 und warf
+  "Invalid index" — beim Nutzer als Continue/Abort-Dialog. Am Client auf Era
+  belegt (Neuaufbau nach einem Kategorie-Reiter), inklusive Datei und Zeile,
+  weil `OnError` jetzt mitschreibt. Die Liste wird nun in einer LOSGELÖSTEN
+  Liste aufgebaut und in EINER Zuweisung veröffentlicht: bis die neue fertig
+  ist, bleibt die alte bedienbar, das Menü verstummt nicht mehr mitten im
+  Neuaufbau. `Sibling` gibt zusätzlich "" zurück, wenn die Kindliste leer ist.
 - Era verlor die Auslastung jeder Realmzeile. Die Spalten des Dialogs liegen
   auf Era weiter rechts, weil der Rahmen dort 770 statt 640 Einheiten breit
   ist: die Auslastung ("Niedrig") liegt bei nx 0.7063-0.7375, Mitte 0.7219 —

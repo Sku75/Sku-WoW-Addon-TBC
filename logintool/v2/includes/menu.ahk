@@ -46,11 +46,22 @@ class MenuNode {
         return 0
     }
 
+    ; A menu can be rebuilt underneath the cursor - the realm list does exactly
+    ; that, and the arrow keys stay live through the seconds of scrolling and OCR
+    ; it takes. That leaves this node pointing at a parent whose child list is
+    ; momentarily EMPTY, and clamping alone did not save it: Max(1, Min(0, n))
+    ; is 1, so the read hit children[1] on a zero-length array and threw
+    ; "Invalid index" straight into the user's face as an AutoHotkey dialog
+    ; (caught at the client on Era, 2026-08-18, while a category tab rebuilt).
+    ; The rebuild now publishes atomically, but the cursor must survive an empty
+    ; list on its own too.
     Sibling(offset) {
         if (this.parent = "")
             return ""
-        index := this.IndexInParent() + offset
-        index := Max(1, Min(this.parent.children.Length, index))
+        count := this.parent.children.Length
+        if (count = 0)
+            return ""
+        index := Max(1, Min(count, this.IndexInParent() + offset))
         return this.parent.children[index]
     }
 

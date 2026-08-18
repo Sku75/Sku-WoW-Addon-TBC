@@ -1607,8 +1607,26 @@ WaitForRealmListContent() {
     }
 }
 
+; A menu node that knows its parent but is NOT yet in the parent's child list.
+; MenuNode's constructor pushes itself into the parent, which is what makes an
+; in-place rebuild visible to the user's cursor half-finished.
+DetachedNode(kids, parent, name) {
+    node := MenuNode(name)
+    node.parent := parent
+    kids.Push(node)
+    return node
+}
+
+; Build into a DETACHED list and publish it in ONE assignment at the end.
+;
+; This used to empty menuItem.children first and refill it over the next few
+; seconds of wheel-scrolling and OCR. The arrow keys stay live that whole time,
+; so a Down press inside that window reached MenuNode.Sibling with a zero-length
+; child list and threw "Invalid index" - which the user meets as an AutoHotkey
+; Continue/Abort dialog (caught on Era, 2026-08-18, rebuilding after a category
+; tab). Until the new list is ready the OLD one stays navigable, which is also
+; the better answer for the user: the menu never goes silent mid-rebuild.
 BuildRealmMenu(menuItem) {
-    menuItem.children := []
     ; Always build from the top so the first page is deterministic.
     RealmListScrollTop()
     s := WaitForRealmListContent()
@@ -1654,26 +1672,28 @@ BuildRealmMenu(menuItem) {
     if SenseOk(sTop)
         s := sTop
 
+    kids := []
     for entry in found {
-        node := MenuNode(entry.row["text"] entry.extra, menuItem)
+        node := DetachedNode(kids, menuItem, entry.row["text"] entry.extra)
         node.action := RealmSelectClosure(entry.row)
     }
 
     ; Category tabs (bottom strip of the realm dialog).
     tabs := RealmListTabs(s)
     for tab in tabs {
-        node := MenuNode(T("select category") ": " tab["text"], menuItem)
+        node := DetachedNode(kids, menuItem, T("select category") ": " tab["text"])
         node.action := RealmTabClosure(tab, menuItem)
     }
     ; Backing out must be a menu entry too: the open dialog swallows every
     ; game key except Escape, so the way out has to be audible in the list.
-    node := MenuNode(T("close server selection"), menuItem)
+    node := DetachedNode(kids, menuItem, T("close server selection"))
     node.action := (item) => CloseRealmDialogAction()
-    Log("BuildRealmMenu: " found.Length " realm rows over " pages " page(s), " menuItem.children.Length " total entries")
+    menuItem.children := kids
+    Log("BuildRealmMenu: " found.Length " realm rows over " pages " page(s), " kids.Length " total entries")
     ; The entry TEXTS, not just the count. The count alone never says WHICH
     ; entry the user pressed, and the category tabs sit in this same list.
     names := ""
-    for child in menuItem.children
+    for child in kids
         names .= (names = "" ? "" : " | ") child.name
     Log("BuildRealmMenu: entries [" names "]")
     return {realms: found.Length, tabs: tabs.Length}
