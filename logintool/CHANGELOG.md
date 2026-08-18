@@ -107,6 +107,20 @@
   linke Grenze 0.28 INNERHALB des Era-Dialogs lag und dort den linken Reiter
   ("Saisonbedingt", Mitte nx 0.2516) stillschweigend verschluckte. Jetzt 0.20
   bis 0.85, was beide Clients abdeckt.
+- Nachtrag zum selben Fehler: den Knopf NICHT zu klicken war nur die Hälfte.
+  `StaticPopupDialogs["CANCEL"]` setzt kein `ignoreKeys` (anders als
+  `REALM_LIST_IN_PROGRESS`), die Tastatur erreicht den Dialog also, und ENTER
+  löst button1 aus — Abbrechen. Das Tool tippte nach dem Beitritt weiter
+  Enter und brachte damit den nächsten Login um (Client 00:06:01.632
+  "BattleNet Join Realm", 00:06:02.782 "Glue Script Disconnect From Server",
+  Era, Soulseeker). `SafeJoinEnter` schaut jetzt erst nach: liegt ein Popup an,
+  wird kein Enter gesendet — der Beitritt läuft dann ohnehin schon, das Popup
+  IST der Beitritt.
+- Kategoriewechsel sagt jetzt Bescheid ("Classic-Ära, 41 Server"). Der
+  Neuaufbau dauert Sekunden; vorher blieb es still und las danach einen
+  Eintrag vor — von "es ist nichts passiert" nicht zu unterscheiden, also
+  navigierte man scheinbar in einer veralteten Liste, während der Wechsel in
+  Wahrheit funktioniert hatte.
 - **Das Tool hat jeden Realm-Login selbst abgebrochen.** Blizzards
   Fortschrittsdialoge sind EINKNÖPFIGE Popups, deren einziger Knopf
   ABBRECHEN ist, nicht OK: `GlueParent_UpdateDialogs` zeigt

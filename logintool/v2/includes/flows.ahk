@@ -70,6 +70,28 @@ IsOneButtonPopup(s) {
     return SenseCheck(s, "popup11") || SenseCheck(s, "popup21")
 }
 
+; Enter is not safe once a popup is on screen, and NOT clicking the button was
+; only half the fix.
+;
+; StaticPopupDialogs["CANCEL"] - the connect dialog, "In Realm einloggen" -
+; does NOT set ignoreKeys (unlike REALM_LIST_IN_PROGRESS, which does). So the
+; keyboard reaches it and ENTER activates button1, and button1 is Abbrechen,
+; whose OnAccept is C_Login.DisconnectFromServer(). The tool stopped clicking
+; that button and then killed the very next login by typing at it instead:
+; client 00:06:01.632 "BattleNet Join Realm", 00:06:02.782 "Glue Script
+; Disconnect From Server" (Era, Soulseeker, 2026-08-19).
+;
+; So: look first, and if anything is up, do not press. The join is already under
+; way in that case - the popup IS the join.
+SafeJoinEnter(what) {
+    if AnyPopup(SenseQuick()) {
+        Log(what ": a popup is up - NOT sending Enter, it would press Abbrechen")
+        return false
+    }
+    Send("{Enter}")
+    return true
+}
+
 ; Like PopupText, but for taller dialogs the tool has no marker for (e.g. the
 ; hardcore realm confirmation): a wider center region, same icon filter.
 DialogText(s) {
@@ -1331,7 +1353,7 @@ WaitForHardcoreJoin() {
             ClickOcrRect(row)
             Sleep(300)
         }
-        Send("{Enter}")
+        SafeJoinEnter("HardcoreJoin")
         Sleep(1200)
     }
     loop {
@@ -1408,7 +1430,7 @@ WaitForHardcoreJoin() {
                     ClickOcrRect(row)
                     Sleep(300)
                 }
-                Send("{Enter}")
+                SafeJoinEnter("HardcoreJoin")
             } else if (stuck = 4 && row != "") {
                 Log("HardcoreJoin: still open, trying double-click join")
                 DoubleClickOcrRect(row)
@@ -1814,9 +1836,15 @@ RealmTabAction(tab, menuItem) {
     ClickOcrRect(tab)
     Sleep(900)
     r := BuildRealmMenu(menuItem)
+    ; Say what changed. The rebuild takes seconds, and without this the list
+    ; simply went quiet and then read an entry - indistinguishable from nothing
+    ; having happened, so the user is left navigating what looks like a stale
+    ; list while the switch actually worked.
+    if (r.realms > 0)
+        Say(tab["text"] ", " r.realms " " T("servers"))
     AnnounceRealmMenuState(r)
     if (menuItem.children.Length > 0)
-        menuItem.children[1].Enter()
+        menuItem.children[1].EnterQueued()
 }
 
 RealmSelectAction(row) {
@@ -1846,7 +1874,7 @@ RealmSelectAction(row) {
     ; coordinate drifts at this aspect ratio. Escape (below) cancels the same way.
     ClickOcrRect(row)
     Sleep(500)
-    Send("{Enter}")
+    SafeJoinEnter("RealmSelect")
     Sleep(1500)
 
     tries := 0
@@ -1931,7 +1959,7 @@ RealmSelectAction(row) {
                 Log("RealmSelect: still open, re-selecting + Enter")
                 ClickOcrRect(row)
                 Sleep(300)
-                Send("{Enter}")
+                SafeJoinEnter("RealmSelect")
             } else if (stuck = 4) {
                 Log("RealmSelect: still open, trying double-click join")
                 DoubleClickOcrRect(row)
