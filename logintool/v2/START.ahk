@@ -23,7 +23,7 @@ CoordMode "Mouse", "Screen"
 CoordMode "Pixel", "Screen"
 SetWorkingDir A_ScriptDir "\.."  ; tool root: data\ and log.txt live here
 
-global gSettingsVersion := "2"
+global gSettingsVersion := "3.0"
 
 #Include includes\log.ahk
 #Include includes\json.ahk

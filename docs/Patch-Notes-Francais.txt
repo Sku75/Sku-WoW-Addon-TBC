@@ -7,6 +7,52 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 
 
 -------------------------------------------------------------------------------------------------------
+WoW Login Tool 3.0
+
+    Login Tool : les royaumes hardcore peuvent désormais être rejoints
+        Simple : Rejoindre un royaume hardcore affiche l'avertissement du jeu « La mort est
+            permanente » avec les boutons « J'accepte » et « Refuser » - le Login Tool ne
+            connaissait pas cette boîte de dialogue, répétait « attendez » pendant un quart de
+            minute puis appuyait de lui-même sur Échap, ce qui REFUSAIT l'avertissement en
+            silence. Rejoindre échouait donc toujours, sans raison audible. Désormais l'outil
+            lit l'avertissement en entier et demande : Entrée accepte et rejoint le royaume
+            hardcore, Échap refuse et ramène à la liste des royaumes. L'outil ne répond jamais
+            de lui-même à cette boîte de dialogue.
+        Technique : L'assistant SkuLoginSense reconnaît la boîte de dialogue comme écran propre
+            hardcoreConfirm via quatre sondes de pixels dans l'espace de coordonnées UI
+            indépendant de la résolution : les deux boutons rouges teintés se trouvent sur une
+            rangée EN DESSOUS de toutes les hauteurs de popups standard, le gris du cadre entre
+            eux exclut un unique bouton large, et le corps noir de la boîte au-dessus doit être
+            noir. Le texte lu provient de l'OCR limité au corps de la boîte. La détection a été
+            vérifiée hors ligne sur six captures réelles (positives) et les onze captures
+            d'écran 2.5.5 fournies (négatives).
+
+    Login Tool : une liste de royaumes ouverte par le jeu lui-même est prise en charge
+        Simple : Sur certaines combinaisons de clients (par ex. Classic Era juste après la
+            connexion), le jeu ouvre de lui-même la sélection de royaume. Jusqu'ici l'outil
+            fermait cette boîte sans commentaire à l'initialisation puis restait muet - alors
+            que la boîte ouverte avalait chaque frappe, si bien que même le champ du mot de
+            passe restait inutilisable. Désormais l'outil annonce « Le jeu a ouvert la sélection
+            de royaume. » et propose aussitôt la liste comme menu : les flèches naviguent,
+            Entrée rejoint. Nouveau également : l'entrée « fermer la sélection de royaume » à la
+            fin de la liste.
+        Technique : InitLogin ne ferme plus le dialogue de royaume par Échap mais appelle
+            OfferOpenRealmDialog (BuildRealmMenu sur le noeud switch-server). De plus, CheckMode
+            surveille en mode connexion toutes les 2,5 s via SenseQuick l'ouverture du dialogue
+            APRÈS le changement de mode - InitLogin ne s'exécute qu'à la transition et ne
+            pouvait jamais voir ce cas. Un indicateur gRealmMenuOffered empêche le veilleur de
+            reconstruire le menu par-dessus la navigation en cours.
+
+    Login Tool : les boîtes de dialogue inconnues sont lues au lieu d'attendre dans le vide
+        Simple : Si une boîte de dialogue inconnue de l'outil apparaît à l'avenir pendant un
+            changement de serveur, l'outil lit son texte, dit qu'il ne la connaît pas encore, et
+            s'arrête avec la boîte OUVERTE afin qu'on puisse y répondre dans le jeu. Avant, il
+            n'y avait que « attendez », un délai d'expiration et un Échap aveugle.
+        Technique : La branche else de la boucle d'attente de RealmSelectAction vérifie
+            DialogText (OCR sur le centre de la boîte) après deux tours inconnus consécutifs et
+            termine le flux sans Échap quand du texte a été trouvé.
+
+-------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
 
     Combat : « Annoncer les interruptions sur votre cible » est désormais désactivé par défaut

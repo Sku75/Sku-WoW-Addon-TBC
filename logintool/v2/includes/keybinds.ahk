@@ -45,6 +45,8 @@ Enter:: {
         EnterCharacterNameHandler()
     } else if gDeleteCharacterNameFlag {
         DeleteCharacterNameHandler()
+    } else if gHardcoreConfirmFlag {
+        HardcoreConfirmAnswer(true)
     } else {
         MenuAction()
     }
@@ -55,6 +57,8 @@ Escape:: {
         CancelCharacterName()
     } else if gDeleteCharacterNameFlag {
         CancelDelete()
+    } else if gHardcoreConfirmFlag {
+        HardcoreConfirmAnswer(false)
     } else {
         ; Not in a name-entry/delete flow: Escape is not a menu action, so it
         ; must reach the GAME (close the realm dialog, back out of character

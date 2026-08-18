@@ -123,3 +123,10 @@ out of date addons will not be loaded==Out of date addons will not be loaded
 addon menu only available on character selection screen==The addon menu is only available on the character selection screen
 Unknown screen. Close the dialog in the game, then press Alt F1 twice.==Unknown screen. Close the dialog in the game, then press Alt F1 twice.
 The character list may be incomplete. Press Alt F1 twice to rebuild it.==The character list may be incomplete. Press Alt F1 twice to rebuild it.
+The game has opened the server selection.==The game has opened the server selection.
+close server selection==close server selection
+server selection closed==server selection closed
+The tool does not know this dialog yet. Answer it in the game.==The tool does not know this dialog yet. Answer it in the game.
+Press Enter to agree, or press Escape to decline.==Press Enter to agree, or press Escape to decline.
+Agreed. Connecting to the server. Please wait.==Agreed. Connecting to the server. Please wait.
+Declined.==Declined.

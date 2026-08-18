@@ -49,6 +49,18 @@ AnyPopup(s) {
         || SenseCheck(s, "popup12") || SenseCheck(s, "popup22")
 }
 
+; Like PopupText, but for taller dialogs the tool has no marker for (e.g. the
+; hardcore realm confirmation): a wider center region, same icon filter.
+DialogText(s) {
+    text := ""
+    for line in OcrLinesInRegion(s, 0.25, 0.22, 0.75, 0.72) {
+        if (line["h"] > s["height"] * 0.04)
+            continue
+        text .= (text = "" ? "" : ", ") line["text"]
+    }
+    return text
+}
+
 ; Speak a popup's text, then click it away (confirm button).
 SpeakAndClosePopup(s) {
     text := PopupText(s)
@@ -91,11 +103,19 @@ InitLogin(s := "") {
         AcceptContract()
         return
     }
+    if SenseCheck(s, "hardcoreConfirm") {
+        ; Arriving on the open hardcore warning (tool start or refocus while
+        ; it is up): re-ask instead of treating the screen as unknown.
+        AskHardcoreConfirm(Sense())
+        return
+    }
     if SenseCheck(s, "realmselect") {
-        ; Escape reliably closes the realm dialog; the cancel-button coordinate
-        ; drifts at 16:10 and would leave it open.
-        Send("{Escape}")
-        Sleep(1000)
+        ; The client opens the realm list on its own on some client/state
+        ; combinations (e.g. right after login when no joinable realm is
+        ; selected). Escaping it here just fought the game: the dialog comes
+        ; back, it swallows every key, and the tool stays mute. Present it as
+        ; the realm menu instead - same machinery as the switch-server flow.
+        OfferOpenRealmDialog()
         return
     }
     ; IsCharCreateScreen, not screen = "charcreate": the helper mistakes the
@@ -1212,7 +1232,130 @@ CancelDelete() {
 
 ; ---------- realm switching via OCR ----------
 
+; ---------- hardcore confirmation ----------
+
+; The hardcore "death is permanent" warning is up. Read it and hand the
+; decision to the user: Enter agrees, Escape declines (the keybinds check
+; gHardcoreConfirmFlag). NEVER auto-answer this dialog - the old timeout
+; path pressed Escape, which silently declined the hardcore realm entry.
+AskHardcoreConfirm(s) {
+    global gHardcoreConfirmFlag := true
+    Log("HardcoreConfirm: dialog up - asking the user")
+    ; Only the dialog's own text: x 0.36-0.63, y 0.41-0.57 is the black body
+    ; between the title bar and the buttons; the realm list visible around
+    ; the dialog stays outside these bounds.
+    text := ""
+    for line in OcrLinesInRegion(s, 0.36, 0.41, 0.63, 0.57) {
+        if (line["h"] > s["height"] * 0.04)
+            continue
+        text .= (text = "" ? "" : ", ") line["text"]
+    }
+    if (text != "")
+        Say(text)
+    SayQueued(T("Press Enter to agree, or press Escape to decline."))
+}
+
+HardcoreConfirmAnswer(accept) {
+    global gHardcoreConfirmFlag := false, gBusy
+    if !SenseCheck(SenseQuick(), "hardcoreConfirm") {
+        ; The dialog is gone (answered in the game, or the client closed it).
+        Say(T("Something went wrong. Please restart the game and try again."))
+        return
+    }
+    gBusy := true
+    try {
+        if accept {
+            Say(T("Agreed. Connecting to the server. Please wait."))
+            ClickWidget("HcConfirmAcceptButton")
+            WaitForHardcoreJoin()
+        } else {
+            Say(T("Declined."))
+            ClickWidget("HcConfirmDeclineButton")
+            Sleep(1000)
+            s := SenseQuick()
+            if SenseCheck(s, "realmselect")
+                OfferOpenRealmDialog()
+            else
+                InitLogin(s)
+        }
+    } finally {
+        gBusy := false
+    }
+}
+
+; After agreeing: same landing logic as a normal realm switch.
+WaitForHardcoreJoin() {
+    global gLoginInitialized, gRealmMenuOffered
+    tries := 0
+    loop {
+        if FlowAbort("HardcoreJoin")
+            return
+        s := Sense()
+        if SenseCheck(s, "ingame") {
+            Log("HardcoreJoin: client is in the world - stopping")
+            return
+        }
+        if SenseCheck(s, "charselect") && !AnyPopup(s) {
+            Log("HardcoreJoin: reached charselect")
+            gRealmMenuOffered := false
+            gLoginInitialized := true
+            Say(T("switched to Server"))
+            SayQueued(T("Please wait, the character list is being rebuilt."))
+            RefreshCharacterMenuSettled()
+            Sleep(400)
+            gMainMenu.EnterQueued()
+            return
+        }
+        if AnyPopup(s) {
+            Log("HardcoreJoin: popup - " s["screen"])
+            SpeakAndClosePopup(s)
+        } else {
+            Say(T("wait"))
+        }
+        Sleep(1000)
+        tries++
+        if (tries > 20) {
+            Log("HardcoreJoin: timed out")
+            FailFlow()
+            return
+        }
+    }
+}
+
+; The realm dialog is open on the client's initiative (not via the tool's
+; switch-server flow). Announce it and put the user into the realm menu -
+; arrows navigate, Enter joins via RealmSelectAction as usual.
+OfferOpenRealmDialog() {
+    global gRealmMenuOffered := true
+    Say(T("The game has opened the server selection."))
+    BuildRealmMenu(gRealmMenuItem)
+    Log("OfferOpenRealmDialog: built " gRealmMenuItem.children.Length " entries")
+    if (gRealmMenuItem.children.Length > 0) {
+        gRealmMenuItem.children[1].EnterQueued()
+    } else {
+        ; Sense/OCR came back empty (scene still loading?) - let the
+        ; CheckMode watcher try again on its next probe.
+        gRealmMenuOffered := false
+        SayQueued(T("wait"))
+    }
+}
+
+; Deliberate way out of an open realm dialog. Escape would also reach the
+; game via the keybind, but a spoken, discoverable exit belongs in the list.
+CloseRealmDialogAction() {
+    global gRealmMenuOffered := false, gLoginInitialized := false
+    Send("{Escape}")
+    Sleep(1200)
+    Say(T("server selection closed"))
+    ; Land wherever the client goes next (character list, login screen, or
+    ; the dialog again if the game insists on a realm choice).
+    InitLogin()
+}
+
 SwitchRealmOpenAction(menuItem) {
+    ; Mark the dialog as presented so the CheckMode watcher does not re-offer
+    ; the menu over the user's navigation while it stays open.
+    global gRealmMenuOffered := true
     Log("SwitchRealmOpen: begin")
     s := SenseQuick()
     if !SenseCheck(s, "realmselect") {
@@ -1276,6 +1419,10 @@ BuildRealmMenu(menuItem) {
         node := MenuNode(T("select language") ": " tab["text"], menuItem)
         node.action := RealmTabClosure(tab, menuItem)
     }
+    ; Backing out must be a menu entry too: the open dialog swallows every
+    ; game key except Escape, so the way out has to be audible in the list.
+    node := MenuNode(T("close server selection"), menuItem)
+    node.action := (item) => CloseRealmDialogAction()
     Log("BuildRealmMenu: " rows.Length " realm rows, " menuItem.children.Length " total entries")
 }
 
@@ -1303,6 +1450,7 @@ RealmTabAction(tab, menuItem) {
 }
 
 RealmSelectAction(row) {
+    global gLoginInitialized, gRealmMenuOffered
     ; The dialog MUST still be open. The row rect was captured when the menu
     ; was built; if the dialog has closed since, that rect points at the middle
     ; of the character screen - the click lands on the 3D scene and the Enter
@@ -1326,6 +1474,7 @@ RealmSelectAction(row) {
 
     tries := 0
     stuck := 0
+    unknownRounds := 0
     loop {
         if FlowAbort("RealmSelect")
             return
@@ -1338,6 +1487,8 @@ RealmSelectAction(row) {
         }
         if SenseCheck(s, "charselect") && !AnyPopup(s) {
             Log("RealmSelect: reached charselect")
+            gRealmMenuOffered := false
+            gLoginInitialized := true       ; also valid when the dialog was auto-opened before any init
             Say(T("switched to Server"))
             SayQueued(T("Please wait, the character list is being rebuilt."))
             RefreshCharacterMenuSettled()   ; wait for all slots to render
@@ -1359,8 +1510,14 @@ RealmSelectAction(row) {
             Say(text != "" ? text : T("Please wait."))
             return
         }
+        if SenseCheck(s, "hardcoreConfirm") {
+            ; The hardcore warning: ask the user and end the flow - the
+            ; Enter/Escape keybinds answer via HardcoreConfirmAnswer.
+            AskHardcoreConfirm(s)
+            return
+        }
         if AnyPopup(s) {
-            ; High-population / hardcore / wrong-language popup: speak, dismiss.
+            ; High-population / wrong-language popup: speak, dismiss.
             Log("RealmSelect: popup - " s["screen"])
             SpeakAndClosePopup(s)
             stuck := 0
@@ -1391,6 +1548,23 @@ RealmSelectAction(row) {
                 return
             }
         } else {
+            ; Unrecognized screen. If a text dialog is up (e.g. the hardcore
+            ; "death is permanent" confirmation - no marker for it yet), read
+            ; it aloud and stop with the dialog OPEN: the user answers it in
+            ; the game. Never blind-click, and never Escape a question the
+            ; tool did not understand - Escape here silently declined the
+            ; hardcore realm entry. Two consecutive rounds, so one transient
+            ; loading frame with stray text cannot abort the switch.
+            unknownRounds++
+            if (unknownRounds >= 2) {
+                text := DialogText(s)
+                if (text != "") {
+                    Log("RealmSelect: unrecognized dialog, reading it and stopping - " text)
+                    Say(text)
+                    SayQueued(T("The tool does not know this dialog yet. Answer it in the game."))
+                    return
+                }
+            }
             Say(T("wait"))
             stuck := 0
         }

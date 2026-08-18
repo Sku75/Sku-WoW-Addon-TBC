@@ -1,5 +1,43 @@
 # WoW Logintool
 
+## 3.0 (2026-08-18)
+
+- Hardcore-Bestätigung ("Der Tod ist permanent") wird erkannt und bedient:
+  Der Helper klassifiziert den Dialog jetzt als eigenen Screen
+  `hardcoreConfirm` (vier Pixel-Proben: zwei dunkelrot getönte Buttons "Ich
+  stimme zu"/"Ablehnen" auf einer Reihe UNTER allen Standard-Popup-Höhen,
+  dazwischen Rahmengrau statt Rot, Dialogkörper schwarz; Werte am 2880x1800-
+  Capture vermessen, Koordinaten im UI-Raum, damit sie auflösungsunabhängig
+  sind; gegen alle gebündelten 2.5.5-Screenshots als Negativtest geprüft).
+  Das Tool liest den Dialogtext vor (OCR, eng auf den Dialogkörper begrenzt)
+  und fragt: Enter stimmt zu, Escape lehnt ab. Niemals Auto-Antwort. Nach
+  Zustimmung wartet ein eigener Join-Flow auf die Charakterauswahl; nach
+  Ablehnung wird die darunter liegende Realmliste wieder als Menü angeboten.
+  Erkannt wird der Dialog im Realmwechsel-Flow, beim Init (Tool-Start/Fokus
+  mit offenem Dialog) und vom CheckMode-Wächter. GETESTET: Erkennung offline
+  gegen 6 Live-Frames positiv + 11 Screenshots negativ; Bedienung am Client
+  noch UNGETESTET.
+- Auto-geöffneter Realm-Dialog: Auf manchen Client/Zustands-Kombinationen
+  (z.B. Era direkt nach dem Login, wenn kein beitretbarer Realm gewählt ist)
+  öffnet das Spiel die Realmliste von selbst. Bisher hat das Tool den Dialog
+  beim Init kommentarlos per Escape geschlossen (Kampf gegen das Spiel, Dialog
+  kam wieder, Tool blieb stumm und der Dialog schluckte alle Tasten). Jetzt:
+  Ansage "Das Spiel hat die Serverauswahl geöffnet." und die Realmliste wird
+  als Menü angeboten — Pfeile navigieren, Enter tritt bei. Ein neuer
+  CheckMode-Wächter (alle 2,5 s, ohne OCR) erkennt den Dialog auch, wenn er
+  erst NACH dem Moduswechsel aufgeht (InitLogin läuft nur beim Übergang).
+- Neuer Menüpunkt "Serverauswahl schließen" am Ende des Realm-Menüs (bewusster
+  Ausstieg statt Escape-Raten).
+- Unbekannter Dialog beim Realm-Beitritt (Fallback, falls künftige Dialoge
+  wieder keinen Marker haben): statt 15 s "warte" und dann Escape (= stilles
+  Ablehnen!) liest das Tool den Dialogtext per OCR vor, sagt dass es den
+  Dialog noch nicht kennt, und stoppt MIT offenem Dialog — der Nutzer
+  antwortet im Spiel.
+- Sieben neue Lokalisierungs-Strings in allen fünf Sprachdateien.
+- Versionsnummer 3.0 (gesprochen im Hauptmenü); installer Config
+  LoginToolVersion auf 3.0 — Veröffentlichung des Zips über release.ps1
+  -PublishLoginTool steht noch aus.
+
 > **Bekannter Stand — Serverwechsel: Fix unbestätigt.**
 > Beim Serverwechsel trat auf, dass ein Enter auf einem Realm den ausgewählten
 > Charakter einloggte statt den Server zu wechseln, und dass ein offener

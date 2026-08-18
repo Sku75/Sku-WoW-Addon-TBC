@@ -123,3 +123,10 @@ out of date addons will not be loaded==Veraltete Addons werden nicht geladen
 addon menu only available on character selection screen==Das Addon Menü ist nur auf dem Charakterauswahlbildschirm verfügbar
 Unknown screen. Close the dialog in the game, then press Alt F1 twice.==Unbekannter Bildschirm. Schließe den Dialog im Spiel und drücke dann zweimal Alt F1.
 The character list may be incomplete. Press Alt F1 twice to rebuild it.==Achtung, die Charakterliste ist möglicherweise unvollständig. Drücke zweimal Alt F1, um sie neu aufzubauen.
+The game has opened the server selection.==Das Spiel hat die Serverauswahl geöffnet.
+close server selection==Serverauswahl schließen
+server selection closed==Serverauswahl geschlossen
+The tool does not know this dialog yet. Answer it in the game.==Das Tool kennt diesen Dialog noch nicht. Beantworte ihn im Spiel.
+Press Enter to agree, or press Escape to decline.==Drücke Enter um zuzustimmen, oder Escape um abzulehnen.
+Agreed. Connecting to the server. Please wait.==Zugestimmt. Verbindung zum Server wird hergestellt. Bitte warte.
+Declined.==Abgelehnt.

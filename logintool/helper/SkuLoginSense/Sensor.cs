@@ -225,6 +225,29 @@ namespace SkuLoginSense
                 && Match(ColorAtUi(10196, 412), "GenericRedButton");
         }
 
+        // The glue-dialog tint darkens the recolored red-button texture to
+        // ~0.6 brightness (140 -> ~84; measured 79..91 over both buttons at
+        // 2880x1800), so GenericRedButton's +-5 window can never match it.
+        static bool IsGlueTintedRed(GameData.Rgb c) => c.R >= 75 && c.R <= 100 && c.G <= 8 && c.B <= 8;
+
+        public bool IsHardcoreConfirm()
+        {
+            // The hardcore "death is permanent" confirmation shown when
+            // joining a hardcore realm: two small red buttons ("Ich stimme
+            // zu" / "Ablehnen") on one row BELOW every standard popup button
+            // row, with the dialog's black body above and between them. The
+            // gap probe kills the one-wide-button case (e.g. the reconnect
+            // popup sits at almost the same height).
+            // The gap between the buttons lands on the dialog's grey frame
+            // strip (measured 46,41,38), so it is checked as "anything but a
+            // red button", which is all it has to prove.
+            var gap = Widget("HcConfirmGap");
+            return IsGlueTintedRed(Widget("HcConfirmAcceptButton"))
+                && IsGlueTintedRed(Widget("HcConfirmDeclineButton"))
+                && !IsGlueTintedRed(gap) && !Match(gap, "GenericRedButton")
+                && Match(Widget("HcConfirmBackdrop"), "GenericBlack");
+        }
+
         public bool IsIngame()
         {
             // GenericBlue corner pixels are set by the Sku addon in-game.
@@ -247,6 +270,7 @@ namespace SkuLoginSense
                 ["popup21"] = Is21Popup(),
                 ["popup12"] = Is12Popup(),
                 ["popup22"] = Is22Popup(),
+                ["hardcoreConfirm"] = IsHardcoreConfirm(),
                 ["ingame"] = IsIngame(),
             };
         }
@@ -256,6 +280,7 @@ namespace SkuLoginSense
         {
             if (checks["ingame"]) return "ingame";
             if (checks["contract"]) return "contract";
+            if (checks["hardcoreConfirm"]) return "hardcoreConfirm";
             if (checks["realmselect"]) return "realmselect";
             if (checks["charcreate"]) return "charcreate";
             if (checks["login"]) return "login";

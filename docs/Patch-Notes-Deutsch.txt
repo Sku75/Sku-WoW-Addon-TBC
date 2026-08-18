@@ -4,6 +4,52 @@
 
 
 -------------------------------------------------------------------------------------------------------
+WoW Login Tool 3.0
+
+    Login Tool: Hardcore-Realms koennen jetzt betreten werden
+        Einfach: Wer einem Hardcore-Realm beitreten wollte, bekam vom Spiel die Warnung "Der Tod
+            ist permanent" mit den Knoepfen "Ich stimme zu" und "Ablehnen" - das Login Tool kannte
+            diesen Dialog nicht, sagte eine viertel Minute lang nur "warte" und drueckte dann
+            selbststaendig Escape, was die Warnung stillschweigend ABLEHNTE. Der Beitritt schlug
+            damit immer fehl, ohne dass hoerbar wurde warum. Jetzt liest das Tool die Warnung
+            komplett vor und fragt nach: Enter stimmt zu und betritt den Hardcore-Realm, Escape
+            lehnt ab und fuehrt zurueck in die Realmliste. Das Tool beantwortet den Dialog nie von
+            selbst.
+        Technisch: Der Helper SkuLoginSense erkennt den Dialog als eigenen Screen hardcoreConfirm
+            ueber vier Pixel-Proben im aufloesungsunabhaengigen UI-Koordinatenraum: die zwei rot
+            getoenten Knoepfe liegen auf einer Reihe UNTERHALB aller Standard-Popup-Hoehen (die
+            Glue-Dialog-Toenung dunkelt das Fiducial-Rot 140 auf ca. 84 ab, darum eine eigene
+            Farbspanne statt GenericRedButton), dazwischen Rahmengrau statt Rot (schliesst einen
+            einzelnen breiten Knopf wie den Reconnect-Dialog aus), darueber der schwarze
+            Dialogkoerper. Der Vorlesetext kommt per OCR eng begrenzt auf den Dialogkoerper. Die
+            Erkennung ist offline gegen sechs Live-Frames (positiv) und alle elf gebuendelten
+            2.5.5-Screenshots (negativ) geprueft.
+
+    Login Tool: Vom Spiel selbst geoeffnete Realmliste wird bedient statt bekaempft
+        Einfach: Auf manchen Client-Kombinationen (z.B. Classic Era direkt nach dem Login) oeffnet
+            das Spiel die Realmauswahl von selbst. Das Tool hat diesen Dialog bisher beim
+            Initialisieren kommentarlos geschlossen und blieb danach stumm - waehrend der offene
+            Dialog jede Tastatureingabe schluckte, sodass sich nicht einmal das Passwortfeld
+            bedienen liess. Jetzt sagt das Tool "Das Spiel hat die Serverauswahl geoeffnet" und
+            bietet die Realmliste sofort als Menue an: Pfeiltasten navigieren, Enter tritt bei.
+            Neu ist auch der Menuepunkt "Serverauswahl schliessen" am Ende der Liste.
+        Technisch: InitLogin schliesst den Realm-Dialog nicht mehr per Escape, sondern ruft
+            OfferOpenRealmDialog (BuildRealmMenu auf dem switch-server-Knoten). Zusaetzlich
+            beobachtet CheckMode im Login-Modus alle 2,5 s per SenseQuick, ob der Dialog NACH dem
+            Moduswechsel aufgeht - InitLogin laeuft nur beim Uebergang und konnte diesen Fall nie
+            sehen. Ein gRealmMenuOffered-Flag verhindert, dass der Waechter das Menue ueber der
+            laufenden Navigation neu aufbaut.
+
+    Login Tool: Unbekannte Dialoge werden vorgelesen statt totgewartet
+        Einfach: Erscheint beim Serverwechsel kuenftig ein Dialog, den das Tool nicht kennt, liest
+            es dessen Text vor, sagt dass es ihn noch nicht kennt, und stoppt mit OFFENEM Dialog,
+            damit im Spiel geantwortet werden kann. Bisher gab es nur "warte", Timeout und ein
+            blindes Escape.
+        Technisch: Der else-Zweig der RealmSelectAction-Warteschleife prueft nach zwei
+            aufeinanderfolgenden unbekannten Runden DialogText (OCR ueber die Dialogmitte) und
+            beendet den Flow ohne Escape, wenn Text gefunden wurde.
+
+-------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
 
     Kampf: "Unterbrechungen bei deinem Ziel ansagen" ist jetzt standardmaessig aus

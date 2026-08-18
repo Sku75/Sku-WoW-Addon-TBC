@@ -17,6 +17,9 @@ global gUnknownAnnounced := false   ; "unknown screen" is said once, not every 2
 global gEnterCharacterNameFlag := false
 global gDeleteCharacterNameFlag := false
 global gLastGlueSense := 0
+global gRealmMenuItem := ""       ; the "switch server" main-menu node; the realm menu builds into it
+global gRealmMenuOffered := false ; the open realm dialog is already presented as the current menu
+global gHardcoreConfirmFlag := false ; the hardcore warning is up: Enter agrees, Escape declines
 
 class MenuNode {
     __New(name, parent := "") {
@@ -158,7 +161,7 @@ Main() {
 }
 
 CheckMode() {
-    global gIsChecking, gLastGlueSense, gBusy, gMode
+    global gIsChecking, gLastGlueSense, gBusy, gMode, gRealmMenuOffered, gHardcoreConfirmFlag
     if (gIsChecking || gBusy)
         return
     gIsChecking := true
@@ -190,6 +193,32 @@ CheckMode() {
                     global gUnknownAnnounced := true
                     Log("CheckMode: unknown screen - telling the user")
                     Say(T("Unknown screen. Close the dialog in the game, then press Alt F1 twice."))
+                }
+            }
+        } else {
+            ; Already in login mode: the client can open the realm list on its
+            ; own (post-login realm choice on some client/state combinations).
+            ; InitLogin only runs on the mode transition, so this watcher is
+            ; the only thing that can notice it. Same 2.5 s cadence, no OCR.
+            if (A_TickCount - gLastGlueSense > 2500) {
+                gLastGlueSense := A_TickCount
+                s := SenseQuick()
+                if SenseCheck(s, "hardcoreConfirm") {
+                    ; The hardcore warning can surface outside the realm-join
+                    ; flow (tab-away and back, or a flow that missed it).
+                    if !gHardcoreConfirmFlag
+                        AskHardcoreConfirm(Sense())
+                } else if SenseCheck(s, "realmselect") {
+                    gHardcoreConfirmFlag := false
+                    if !gRealmMenuOffered {
+                        Log("CheckMode: client opened the realm dialog - offering the realm menu")
+                        OfferOpenRealmDialog()
+                    }
+                } else {
+                    ; Neither dialog is up any more: drop the modal states so
+                    ; a stale flag cannot hijack Enter/Escape later.
+                    gRealmMenuOffered := false
+                    gHardcoreConfirmFlag := false
                 }
             }
         }
@@ -280,6 +309,7 @@ BuildMainMenu() {
 
     realmItem := MenuNode(T("switch server"), gMainMenu)
     realmItem.action := (item) => SwitchRealmOpenAction(item)
+    global gRealmMenuItem := realmItem
 
     deleteItem := MenuNode(T("delete character"), gMainMenu)
     deleteItem.action := (item) => DeleteCharAction()

@@ -4,6 +4,51 @@
 
 
 -------------------------------------------------------------------------------------------------------
+WoW Login Tool 3.0
+
+    Login Tool: hardcore realms can now be entered
+        Simple: Joining a hardcore realm brings up the game's warning "Death is permanent" with
+            the buttons "I agree" and "Decline" - the Login Tool did not know this dialog, said
+            nothing but "wait" for a quarter of a minute and then pressed Escape on its own,
+            which silently DECLINED the warning. Joining therefore always failed without any
+            audible reason. Now the tool reads the whole warning aloud and asks: Enter agrees
+            and enters the hardcore realm, Escape declines and returns to the realm list. The
+            tool never answers this dialog by itself.
+        Technical: The SkuLoginSense helper recognizes the dialog as its own screen
+            hardcoreConfirm via four pixel probes in the resolution-independent UI coordinate
+            space: the two tinted red buttons sit on a row BELOW every standard popup height
+            (the glue-dialog tint darkens the fiducial red 140 to about 84, hence a dedicated
+            color range instead of GenericRedButton), the frame grey between them rules out a
+            single wide button (such as the reconnect dialog), and the dialog body above must
+            be black. The spoken text comes from OCR clamped to the dialog body. Detection was
+            verified offline against six live frames (positive) and all eleven bundled 2.5.5
+            screenshots (negative).
+
+    Login Tool: a realm list opened by the game itself is served instead of fought
+        Simple: On some client combinations (e.g. Classic Era right after login) the game opens
+            the realm selection on its own. The tool used to close this dialog silently during
+            init and then went mute - while the open dialog swallowed every keystroke, so not
+            even the password field could be used. Now the tool announces "The game has opened
+            the server selection." and immediately offers the realm list as a menu: arrows
+            navigate, Enter joins. There is also a new "close server selection" entry at the
+            end of the list.
+        Technical: InitLogin no longer closes the realm dialog with Escape but calls
+            OfferOpenRealmDialog (BuildRealmMenu on the switch-server node). In addition,
+            CheckMode watches in login mode every 2.5 s via SenseQuick for the dialog opening
+            AFTER the mode transition - InitLogin only runs on the transition and could never
+            see this case. A gRealmMenuOffered flag keeps the watcher from rebuilding the menu
+            over the user's ongoing navigation.
+
+    Login Tool: unknown dialogs are read aloud instead of waited to death
+        Simple: If a dialog the tool does not know shows up during a server switch in the
+            future, the tool reads its text aloud, says that it does not know it yet, and stops
+            with the dialog OPEN so it can be answered in the game. Previously there was only
+            "wait", a timeout and a blind Escape.
+        Technical: The else branch of the RealmSelectAction wait loop checks DialogText (OCR
+            over the dialog center) after two consecutive unknown rounds and ends the flow
+            without Escape when text was found.
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13
 
     Combat: "Announce interrupts on your target" is now off by default

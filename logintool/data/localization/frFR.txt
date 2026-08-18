@@ -123,3 +123,10 @@ out of date addons will not be loaded==Les modules obsolètes ne seront pas char
 addon menu only available on character selection screen==Le menu des modules n'est disponible que sur l'écran de sélection des personnages
 Unknown screen. Close the dialog in the game, then press Alt F1 twice.==Écran inconnu. Fermez la boîte de dialogue dans le jeu, puis appuyez deux fois sur Alt F1.
 The character list may be incomplete. Press Alt F1 twice to rebuild it.==Attention, la liste des personnages est peut-être incomplète. Appuyez deux fois sur Alt F1 pour la reconstruire.
+The game has opened the server selection.==Le jeu a ouvert la sélection de royaume.
+close server selection==fermer la sélection de royaume
+server selection closed==sélection de royaume fermée
+The tool does not know this dialog yet. Answer it in the game.==L'outil ne connaît pas encore ce dialogue. Répondez-y dans le jeu.
+Press Enter to agree, or press Escape to decline.==Appuyez sur Entrée pour accepter, ou sur Échap pour refuser.
+Agreed. Connecting to the server. Please wait.==Accepté. Connexion au serveur en cours. Veuillez patienter.
+Declined.==Refusé.
