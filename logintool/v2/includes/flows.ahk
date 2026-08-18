@@ -105,7 +105,9 @@ InitLogin(s := "") {
     }
     if SenseCheck(s, "hardcoreConfirm") {
         ; Arriving on the open hardcore warning (tool start or refocus while
-        ; it is up): re-ask instead of treating the screen as unknown.
+        ; it is up): re-ask instead of treating the screen as unknown. No realm
+        ; row is known here - the resume joins by keyboard only.
+        global gPendingRealmRow := ""
         AskHardcoreConfirm(Sense())
         return
     }
@@ -1284,9 +1286,31 @@ HardcoreConfirmAnswer(accept) {
 }
 
 ; After agreeing: same landing logic as a normal realm switch.
+;
+; Agreeing to the hardcore warning only CLOSES the warning - the realm list is
+; still open underneath with the realm selected, and nothing has joined it yet.
+; The first version only waited for charselect here, so it sat on the open realm
+; dialog for 20 rounds saying "wait" and then reported a timeout while the client
+; was idling on a screen this loop did not recognize. Join it the same way
+; RealmSelectAction does: Enter first (coordinate-free), then a double-click on
+; the row, then escape out cleanly.
 WaitForHardcoreJoin() {
-    global gLoginInitialized, gRealmMenuOffered
+    global gLoginInitialized, gRealmMenuOffered, gPendingRealmRow
+    row := gPendingRealmRow
     tries := 0
+    stuck := 0
+    ; The warning is closed and the list is back: press the join once up front so
+    ; a normal join costs no extra round.
+    Sleep(600)
+    if SenseCheck(SenseQuick(), "realmselect") {
+        Log("HardcoreJoin: realm list still open - joining")
+        if (row != "") {
+            ClickOcrRect(row)
+            Sleep(300)
+        }
+        Send("{Enter}")
+        Sleep(1200)
+    }
     loop {
         if FlowAbort("HardcoreJoin")
             return
@@ -1299,6 +1323,7 @@ WaitForHardcoreJoin() {
             Log("HardcoreJoin: reached charselect")
             gRealmMenuOffered := false
             gLoginInitialized := true
+            gPendingRealmRow := ""
             Say(T("switched to Server"))
             SayQueued(T("Please wait, the character list is being rebuilt."))
             RefreshCharacterMenuSettled()
@@ -1306,16 +1331,70 @@ WaitForHardcoreJoin() {
             gMainMenu.EnterQueued()
             return
         }
+        ; A hardcore join can end in a disconnect that drops the client to the
+        ; login/reconnect screen. Same rule as RealmSelectAction: read the
+        ; prompt and STOP. Never click here - the login screen's red buttons
+        ; (incl. Quit) would be mistaken for popup buttons - and never fall
+        ; through to the character-list rebuild, which is what made the tool
+        ; talk about characters while a reconnect prompt was on screen.
+        if (SenseCheck(s, "login") && !SenseCheck(s, "realmselect") && !SenseCheck(s, "charselect")) {
+            Log("HardcoreJoin: dropped to login screen (likely disconnect) - stopping")
+            gPendingRealmRow := ""
+            gRealmMenuOffered := false
+            gLoginInitialized := false
+            text := PopupText(s)
+            Say(text != "" ? text : T("Please wait."))
+            return
+        }
+        if SenseCheck(s, "hardcoreConfirm") {
+            ; The accept click did not take, or a second warning came up. Never
+            ; auto-answer it - hand it back to the user.
+            Log("HardcoreJoin: hardcore warning still up - re-asking")
+            AskHardcoreConfirm(s)
+            return
+        }
         if AnyPopup(s) {
             Log("HardcoreJoin: popup - " s["screen"])
             SpeakAndClosePopup(s)
+            stuck := 0
+        } else if SenseCheck(s, "realmselect") {
+            ; Still on the dialog. Retry the join a couple of ways, then give up
+            ; cleanly instead of running the counter out in silence.
+            stuck++
+            if (stuck = 2) {
+                Log("HardcoreJoin: still open, re-selecting + Enter")
+                if (row != "") {
+                    ClickOcrRect(row)
+                    Sleep(300)
+                }
+                Send("{Enter}")
+            } else if (stuck = 4 && row != "") {
+                Log("HardcoreJoin: still open, trying double-click join")
+                DoubleClickOcrRect(row)
+            } else if (stuck >= 6) {
+                Log("HardcoreJoin: could not join, escaping out")
+                Send("{Escape}")
+                Sleep(1000)
+                gPendingRealmRow := ""
+                Say(T("Could not switch server."))
+                SayQueued(T("Please wait, the character list is being rebuilt."))
+                RefreshCharacterMenuSettled()
+                Sleep(400)
+                gMainMenu.EnterQueued()
+                return
+            }
         } else {
+            ; Name the screen: this silent "wait" branch is why the timed-out run
+            ; left 45 seconds of unreadable log.
+            Log("HardcoreJoin: waiting - " (SenseOk(s) ? s["screen"] : "no sense"))
             Say(T("wait"))
+            stuck := 0
         }
         Sleep(1000)
         tries++
         if (tries > 20) {
             Log("HardcoreJoin: timed out")
+            gPendingRealmRow := ""
             FailFlow()
             return
         }
@@ -1388,30 +1467,137 @@ SwitchRealmOpenAction(menuItem) {
 
 ; Realm rows: name column left-center, type/load to the right, language tabs
 ; at the bottom of the dialog.
-BuildRealmMenu(menuItem) {
-    s := Sense()
-    menuItem.children := []
+; ---------- realm list rows ----------
+;
+; The realm list scrolls. Its viewport cuts the bottom row off mid-glyph: a live
+; 2880x1800 capture ended every column at py 1256 (ny ~0.698), so the last row
+; OCR-ed as 18px-tall garbage ("N A L\' \'P nch" for the name, "Niedria" for the
+; load) while full rows are 24-32px. That partial row was offered as a normal
+; menu entry, and its rect points at a sliver - clicking it is what sent the
+; hardcore join to the reconnect screen. Rows shorter than 75% of the median are
+; therefore dropped; they are always re-read in full after a scroll.
+RealmListRows(s) {
+    lines := []
+    for line in OcrLinesInRegion(s, 0.18, 0.23, 0.45, 0.79) {
+        if (Trim(line["text"]) != "")
+            lines.Push(line)
+    }
+    if (lines.Length < 2)
+        return lines
+    sorted := []
+    for l in lines {
+        placed := false
+        loop sorted.Length {
+            if (l["h"] < sorted[A_Index]) {
+                sorted.InsertAt(A_Index, l["h"])
+                placed := true
+                break
+            }
+        }
+        if !placed
+            sorted.Push(l["h"])
+    }
+    median := sorted[Max(1, Ceil(sorted.Length / 2))]
+    if (median <= 0)
+        return lines
+    kept := []
+    for l in lines {
+        if (l["h"] >= median * 0.75)
+            kept.Push(l)
+        else
+            Log("RealmRows: dropping clipped row '" l["text"] "' h=" l["h"] " median=" median)
+    }
+    return kept
+}
+
+; The type/load columns to the right of a realm name, for the spoken label.
+RealmRowExtra(s, row) {
+    extra := ""
+    for other in OcrLinesInRegion(s, 0.45, 0.23, 0.72, 0.79) {
+        if (Abs(other["y"] - row["y"]) < s["height"] * 0.012)
+            extra .= ", " RegExReplace(other["text"], "[^\w\säöüÄÖÜß]", "")
+    }
+    return extra
+}
+
+; Names currently on screen, joined - used to detect "the list did not move".
+RealmRowSignature(rows) {
+    sig := ""
+    for r in rows
+        sig .= r["text"] "|"
+    return sig
+}
+
+; Wheel over the list body. The dialog has no keyboard paging the tool can rely
+; on, and the scrollbar arrows are not in the widget table, so the wheel is the
+; portable way to reach realms below the viewport.
+RealmListScroll(notches, up := false) {
+    s := SenseQuick()
     if !SenseOk(s)
         return
-    w := s["width"], h := s["height"]
+    p := PxToScreen(s["width"] * 0.35, s["height"] * 0.45)
+    MouseMove(Round(p.x), Round(p.y), 0)
+    Sleep(40)
+    loop notches
+        Click(up ? "WheelUp" : "WheelDown")
+    Sleep(60)
+}
 
-    ; Rows between the column header strip and the tab strip.
-    rows := []
-    ; Name column left edge: the Era realm dialog (2880x1800) puts realm names at
-    ; nx ~0.23-0.28, so a 0.28 lower bound clipped everything but the single realm
-    ; that reached 0.28. Widened to 0.18 to capture the full name column on both the
-    ; Era and TBC layouts (the Type column stays out, its center is ~0.49+).
-    for line in OcrLinesInRegion(s, 0.18, 0.23, 0.45, 0.79)
-        rows.Push(line)
-    for row in rows {
-        ; Same-row companions (type, load) right of the name.
-        extra := ""
-        for other in OcrLinesInRegion(s, 0.45, 0.23, 0.72, 0.79) {
-            if (Abs(other["y"] - row["y"]) < h * 0.012)
-                extra .= ", " RegExReplace(other["text"], "[^\w\säöüÄÖÜß]", "")
+RealmListScrollTop() {
+    RealmListScroll(25, true)
+    Sleep(250)
+}
+
+BuildRealmMenu(menuItem) {
+    menuItem.children := []
+    ; Always build from the top so the first page is deterministic.
+    RealmListScrollTop()
+    s := Sense()
+    if !SenseOk(s)
+        return
+    seen := Map()
+    found := []
+    pages := 0
+    lastSig := ""
+    loop {
+        rows := RealmListRows(s)
+        fresh := 0
+        for row in rows {
+            name := row["text"]
+            if (name = "" || seen.Has(name))
+                continue
+            seen[name] := true
+            found.Push({row: row, extra: RealmRowExtra(s, row)})
+            fresh++
         }
-        node := MenuNode(row["text"] extra, menuItem)
-        node.action := RealmSelectClosure(row)
+        sig := RealmRowSignature(rows)
+        pages++
+        ; Stop when the list stops moving (bottom reached) or nothing new showed
+        ; up. The page cap is a runaway guard, not an expected limit.
+        if (pages >= 15) {
+            Log("BuildRealmMenu: page cap reached - list may be longer")
+            break
+        }
+        if (pages > 1 && (sig = lastSig || fresh = 0))
+            break
+        lastSig := sig
+        RealmListScroll(3)
+        Sleep(320)
+        s := Sense()
+        if !SenseOk(s)
+            break
+    }
+    ; Leave the list at the top: the stored rects belong to the scroll position
+    ; they were captured at, and RealmSelectAction re-finds the row by name from
+    ; the top anyway.
+    RealmListScrollTop()
+    sTop := Sense()
+    if SenseOk(sTop)
+        s := sTop
+
+    for entry in found {
+        node := MenuNode(entry.row["text"] entry.extra, menuItem)
+        node.action := RealmSelectClosure(entry.row)
     }
 
     ; Language tabs (bottom strip of the realm dialog).
@@ -1423,7 +1609,34 @@ BuildRealmMenu(menuItem) {
     ; game key except Escape, so the way out has to be audible in the list.
     node := MenuNode(T("close server selection"), menuItem)
     node.action := (item) => CloseRealmDialogAction()
-    Log("BuildRealmMenu: " rows.Length " realm rows, " menuItem.children.Length " total entries")
+    Log("BuildRealmMenu: " found.Length " realm rows over " pages " page(s), " menuItem.children.Length " total entries")
+}
+
+; Scroll from the top until the named realm is on screen and return its CURRENT
+; rect. A rect captured while the menu was built is only valid at that scroll
+; position, so clicking a stored one after any scrolling would hit the wrong
+; realm. Returns "" when the name never appears.
+FindRealmRowByName(name) {
+    RealmListScrollTop()
+    pages := 0
+    lastSig := ""
+    loop {
+        s := Sense()
+        if !SenseOk(s)
+            return ""
+        rows := RealmListRows(s)
+        for r in rows {
+            if (r["text"] = name)
+                return r
+        }
+        sig := RealmRowSignature(rows)
+        pages++
+        if (pages >= 15 || (pages > 1 && sig = lastSig))
+            return ""
+        lastSig := sig
+        RealmListScroll(3)
+        Sleep(320)
+    }
 }
 
 RealmSelectClosure(row) {
@@ -1463,6 +1676,13 @@ RealmSelectAction(row) {
         return
     }
     Say(T("switching to server. please wait."))
+    ; Re-find the row by name: the list scrolls, so the rect stored when the menu
+    ; was built points at whatever now sits at those coordinates.
+    fresh := FindRealmRowByName(row["text"])
+    if (fresh != "")
+        row := fresh
+    else
+        Log("RealmSelect: '" row["text"] "' not on screen after scrolling - using the stored rect")
     Log("RealmSelect: '" row["text"] "' select")
     ; Select the realm with an OCR-rect click (reliable), then JOIN by pressing
     ; Enter - keyboard is coordinate-free, unlike the OK button whose stored
@@ -1512,7 +1732,10 @@ RealmSelectAction(row) {
         }
         if SenseCheck(s, "hardcoreConfirm") {
             ; The hardcore warning: ask the user and end the flow - the
-            ; Enter/Escape keybinds answer via HardcoreConfirmAnswer.
+            ; Enter/Escape keybinds answer via HardcoreConfirmAnswer. Hand the
+            ; row over: agreeing only DISMISSES the warning, it does not join,
+            ; so the resume has to press the join itself on this exact row.
+            global gPendingRealmRow := row
             AskHardcoreConfirm(s)
             return
         }

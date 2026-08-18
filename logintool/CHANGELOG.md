@@ -14,9 +14,43 @@
   Zustimmung wartet ein eigener Join-Flow auf die Charakterauswahl; nach
   Ablehnung wird die darunter liegende Realmliste wieder als Menü angeboten.
   Erkannt wird der Dialog im Realmwechsel-Flow, beim Init (Tool-Start/Fokus
-  mit offenem Dialog) und vom CheckMode-Wächter. GETESTET: Erkennung offline
-  gegen 6 Live-Frames positiv + 11 Screenshots negativ; Bedienung am Client
-  noch UNGETESTET.
+  mit offenem Dialog) und vom CheckMode-Wächter. GETESTET am Client: Dialog
+  wird erkannt, vorgelesen und per Enter angenommen; der anschließende Beitritt
+  landet auf der Charakterauswahl.
+- Beitritt nach der Hardcore-Zustimmung (Folgefund aus dem Livetest): Zustimmen
+  SCHLIESST nur die Warnung — die Realmliste liegt weiterhin offen darunter und
+  ist noch nicht beigetreten. Der Join-Flow hat aber nur auf die
+  Charakterauswahl gewartet, 20 Runden lang "warte" gesagt und dann einen
+  Timeout gemeldet, während der Client unverändert auf der Realmliste stand.
+  `WaitForHardcoreJoin` tritt jetzt selbst bei (Enter, danach Reihe neu wählen +
+  Enter, danach Doppelklick, danach sauberer Ausstieg per Escape) — dieselbe
+  Eskalation wie beim normalen Realmwechsel.
+- Reconnect-/Loginbildschirm nach einem Hardcore-Beitritt wird erkannt: Endet
+  der Beitritt in einer Trennung, liest das Tool die Meldung vor und STOPPT.
+  Vorher fiel dieser Bildschirm in den Sammelzweig und das Tool fing an, die
+  Charakterliste neu aufzubauen, während eine Reconnect-Abfrage auf dem Schirm
+  stand. Gleiche Regel wie im Realmwechsel: hier niemals klicken (die roten
+  Buttons des Loginscreens, inkl. Beenden, sähen wie Popup-Buttons aus).
+- Realmliste blättert jetzt: Bisher wurde genau ein Bildschirm ausgelesen, alle
+  Realms darunter (z.B. Soulseeker) fehlten im Menü. `BuildRealmMenu` scrollt
+  jetzt per Mausrad von oben durch die Liste und sammelt die Namen seitenweise,
+  bis nichts Neues mehr auftaucht.
+- Abgeschnittene letzte Zeile wird verworfen: Der Listenausschnitt schneidet die
+  unterste Reihe mitten im Glyph ab (am 2880x1800-Capture endeten alle Spalten
+  bei py 1256). Sie kam als 18 px hohe OCR-Grütze an ("N A L«' 'P nch" statt des
+  Realmnamens, "Niedria" statt "Niedrig") und wurde trotzdem als anklickbarer
+  Eintrag angeboten — ihr Rechteck zeigt auf einen Streifen, und genau dieser
+  Klick hat den Hardcore-Beitritt in die Trennung geschickt. Reihen unter 75 %
+  der Median-Höhe fliegen jetzt raus.
+- Realm wird beim Klick per Name neu gesucht: Ein Rechteck gilt nur für die
+  Scrollposition, an der es aufgenommen wurde. `FindRealmRowByName` scrollt vor
+  dem Klick von oben, bis der Realm sichtbar ist, und klickt das AKTUELLE
+  Rechteck — ohne das würde nach dem Blättern der falsche Realm getroffen.
+- `HardcoreJoin`-Warteschleife protokolliert den Bildschirmnamen statt still
+  "warte" zu sagen; der erste Fehlschlag hinterließ 45 Sekunden unlesbares Log.
+- Neues Diagnose-Skript `v2/dump_realms.ahk`: schreibt jede OCR-Zeile mit
+  normalisiertem und Pixel-Rechteck, alle Screen-Checks und ein PNG des
+  Captures. Ohne Sprachausgabe und ohne Eingaben, beendet sich selbst.
 - Auto-geöffneter Realm-Dialog: Auf manchen Client/Zustands-Kombinationen
   (z.B. Era direkt nach dem Login, wenn kein beitretbarer Realm gewählt ist)
   öffnet das Spiel die Realmliste von selbst. Bisher hat das Tool den Dialog

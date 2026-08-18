@@ -20,6 +20,10 @@ global gLastGlueSense := 0
 global gRealmMenuItem := ""       ; the "switch server" main-menu node; the realm menu builds into it
 global gRealmMenuOffered := false ; the open realm dialog is already presented as the current menu
 global gHardcoreConfirmFlag := false ; the hardcore warning is up: Enter agrees, Escape declines
+; The realm row that triggered the hardcore warning, so the join can be resumed
+; after the user agrees. Empty when the dialog surfaced outside the realm-join
+; flow (tool start, refocus) - the resume then joins by keyboard only.
+global gPendingRealmRow := ""
 
 class MenuNode {
     __New(name, parent := "") {
