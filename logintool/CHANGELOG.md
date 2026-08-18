@@ -107,6 +107,12 @@
   linke Grenze 0.28 INNERHALB des Era-Dialogs lag und dort den linken Reiter
   ("Saisonbedingt", Mitte nx 0.2516) stillschweigend verschluckte. Jetzt 0.20
   bis 0.85, was beide Clients abdeckt.
+- Era verlor die Auslastung jeder Realmzeile. Die Spalten des Dialogs liegen
+  auf Era weiter rechts, weil der Rahmen dort 770 statt 640 Einheiten breit
+  ist: die Auslastung ("Niedrig") liegt bei nx 0.7063-0.7375, Mitte 0.7219 —
+  knapp AUSSERHALB der alten rechten Grenze 0.72, also wurde jede Era-Zeile nur
+  mit dem Typ vorgelesen. Auf TBC liegt sie bei 0.6562 und war nie betroffen,
+  weshalb es nur auf Era auftrat. Grenze jetzt 0.84, was beide Dialoge abdeckt.
 - Umbenannt: "Sprache auswählen: X" heißt jetzt "Kategorie auswählen: X"
   (alle fünf Sprachdateien). Es sind Realm-KATEGORIEN
   (`C_RealmList.GetAvailableCategories`), keine Spracheinstellung; ein Klick

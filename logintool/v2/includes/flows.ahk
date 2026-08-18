@@ -1513,9 +1513,18 @@ RealmListRows(s) {
 }
 
 ; The type/load columns to the right of a realm name, for the spoken label.
+;
+; The right bound has to clear the LOAD column of the WIDEST dialog, and that is
+; Era's: RealmListBackground is 770 units there against 640 on TBC, so Era's
+; columns sit further right. Measured on a 2880x1800 Era capture the load text
+; ("Niedrig") spans nx 0.7063-0.7375, centre 0.7219 - just outside the old 0.72
+; bound, so every Era row lost its load and was announced with the type alone.
+; TBC's load ("Voll") centres at 0.6562 and was never affected, which is why
+; this only ever showed up on Era. 0.84 clears both dialogs (Era's frame ends at
+; nx 0.8328) without reaching the close button, which sits above this y band.
 RealmRowExtra(s, row) {
     extra := ""
-    for other in OcrLinesInRegion(s, 0.45, 0.23, 0.72, 0.79) {
+    for other in OcrLinesInRegion(s, 0.45, 0.23, 0.84, 0.79) {
         if (Abs(other["y"] - row["y"]) < s["height"] * 0.012)
             extra .= ", " RegExReplace(other["text"], "[^\w\säöüÄÖÜß]", "")
     }
