@@ -777,6 +777,14 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 		tWpcHardYield()
 		tWpcPhase("custom")
 		--add custom
+			-- [v43.0] The deleted-tombstone skips used to dprint ONE LINE EACH --
+			-- with ~1500 tombstones that was >80% of a session's SkuDebugLog ring
+			-- and evicted real evidence within minutes. Tombstones (tData[1] ==
+			-- false) are structural: a deleted custom wp keeps its slot so wpId
+			-- (built from tIndex) stays stable. Count all three outcomes and log
+			-- one summary line; the per-slot detail stays inspectable in the
+			-- profile store if the counts ever look wrong.
+			local tWpcCustomCounts = {added = 0, updated = 0, deleted = 0}
 			if SkuDB.SessionRouteData.Waypoints then
 				for tIndex, tData in ipairs(SkuDB.SessionRouteData.Waypoints) do
 					--check if that wp was deleted
@@ -786,6 +794,7 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 						if WaypointCacheLookupAll[tName] then
 							WaypointCache[WaypointCacheLookupAll[tName]].worldX = tData.worldX
 							WaypointCache[WaypointCacheLookupAll[tName]].worldY = tData.worldY
+							tWpcCustomCounts.updated = tWpcCustomCounts.updated + 1
 						else
 
 							local tWaypointData = tData
@@ -836,15 +845,17 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 										WaypointCacheLookupPerContintent[tWaypointData.contintentId] = {}
 									end
 									WaypointCacheLookupPerContintent[tWaypointData.contintentId][tWpIndex] = tName
+									tWpcCustomCounts.added = tWpcCustomCounts.added + 1
 								end
 							end
 						end
 					else
-						dprint("tried caching deleted custom wp", tIndex, tData)
+						tWpcCustomCounts.deleted = tWpcCustomCounts.deleted + 1
 					end
 					tWpcYield()
 				end
 			end
+			dprint("custom wp cache:", tWpcCustomCounts.added, "added,", tWpcCustomCounts.updated, "updated,", tWpcCustomCounts.deleted, "deleted tombstones skipped")
 
 			tWpcPhase("links")
 			SkuNav:LoadLinkDataFromProfile()
