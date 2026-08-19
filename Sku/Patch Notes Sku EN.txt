@@ -1,4 +1,4 @@
--------------------------------------------------------------------------------------------------------
+﻿-------------------------------------------------------------------------------------------------------
 - Sku Anniversary Addon Release Notes (English)
 -------------------------------------------------------------------------------------------------------
 
@@ -293,6 +293,50 @@ Changes in Sku v43.0
             entry carries a tag for that, because its name is no longer a fixed string: the two
             places that used to recognise it by name - the not-selectable gate and the automatic
             refresh at the end of the build - test the tag now.
+
+    Shift-F9 to Shift-F12: named keybindings, and four quick-access slots back
+        Simple: Four Sku actions - the two navigation quick lists (Shift-F9 and Shift-F10), the
+            action bars menu (Shift-F11) and cancelling route navigation (Shift-F12) - were wired
+            straight onto the keys of audio menu quick access 1 to 4. That had two consequences.
+            Those four quick-access slots were dead: their set keys (Ctrl-Shift-F9 to
+            Ctrl-Shift-F12) still stored a menu path and still confirmed it out loud, but no key
+            could ever call it back. And the four actions could only be moved to a different key by
+            rebinding an entry named "audio menu quick access 1" to "4" - which is not where anyone
+            looks for "cancel navigation". Each action now has its own entry in the keybinding
+            menu, under its own name, still on Shift-F9 to Shift-F12. Quick access 1 to 4 are free
+            and unassigned again, exactly like slots 5 to 10. Your existing settings are carried
+            over on first login: whatever key you have on quick access 1 to 4 today is the key that
+            keeps performing that same action - it simply moves to the new entry, so nothing
+            changes for your fingers. A slot you had deliberately cleared stays cleared.
+        Technical: SkuZOptions/Core.lua's OnClick intercepted SKU_KEY_MENUQUICK1..4 and returned
+            before the generic quick-select loop further down the same handler. The three moved
+            actions are now SKU_KEY_NAVWAYPOINTSQUICK, SKU_KEY_NAVROUTEDESTINATIONSQUICK and
+            SKU_KEY_ACTIONBARSOPEN, each dispatched by the module that owns it; the two nav lists
+            joined the "Navigation and waypoints" keybinding group. A run-once migration in
+            SkuKeyBindsUpdate moves key and key2 from the old slot to the new const, detected by
+            the absence of the new const in the profile, so it runs exactly once and before the
+            defaults are filled. Stored quick-select paths are kept, so binding a key to slot 1
+            to 4 restores the old shortcut. New tripwire: /skucheck keys reports any key held by
+            two Sku bindings at once (transient override keys excepted, they share by design).
+
+    Cancelling navigation was two different keys behind one action
+        Simple: there were two ways to stop following a route or waypoint, and they behaved
+            differently. The properly named binding "stop following route or waypoint" shipped
+            without a key at all, and when you did assign one it announced "following stopped" -
+            the same words the automatic arrival uses, so you could not tell the two apart - and it
+            said nothing whatsoever when what you cancelled was a route rather than a single
+            waypoint. The other was the hardcoded Shift-F12, which said "navigation canceled" but
+            existed only as quick-access slot 4. They are one key now: "stop following route or
+            waypoint", on Shift-F12 by default and freely rebindable, with the confirmation sound
+            and the distinct "navigation canceled". It stays completely silent when there was
+            nothing to cancel, and it still works while you are moving and in combat.
+        Technical: the SkuNav OnClick branch for SKU_KEY_STOPROUTEORWAYPOINT now calls
+            SkuNav:CancelNavigationSilent() and only speaks and plays sound 835 on a true return.
+            That drops the old unguarded path, which fired SKU_NAVIGATION_STOPPED and the sound
+            even with nothing running, and whose announce came from EndFollowingWpOrRt and was
+            conditional on a selected waypoint. EndFollowingWpOrRt itself is unchanged - its
+            fifteen other call sites use it as the teardown before selecting a new target, where
+            clearing temporary waypoints would be wrong.
 
 
 -------------------------------------------------------------------------------------------------------

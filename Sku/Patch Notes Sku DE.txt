@@ -1,4 +1,4 @@
--------------------------------------------------------------------------------------------------------
+﻿-------------------------------------------------------------------------------------------------------
 - Sku Anniversary Addon Release Notes (Deutsch)
 -------------------------------------------------------------------------------------------------------
 
@@ -325,6 +325,57 @@ Aenderungen in Sku v43.0
             traegt dafuer eine Markierung, weil sein Name kein fester Text mehr ist: Die beiden
             Stellen, die ihn bisher am Namen erkannten - die Nicht-auswaehlbar-Sperre und die
             automatische Aktualisierung am Ende des Aufbaus - pruefen jetzt die Markierung.
+
+    Shift-F9 bis Shift-F12: eigene Tastenbelegungen, und vier Schnellzugriffe zurueck
+        Einfach: Vier Sku-Aktionen - die beiden Navigations-Schnelllisten (Shift-F9 und Shift-F10),
+            das Aktionsleisten-Menue (Shift-F11) und das Abbrechen der Routennavigation
+            (Shift-F12) - haengten direkt auf den Tasten der Audio-Menue-Schnellzugriffe 1 bis 4.
+            Das hatte zwei Folgen. Diese vier Schnellzugriffe waren tot: Ihre Festlegen-Tasten
+            (Strg-Shift-F9 bis Strg-Shift-F12) speicherten weiterhin einen Menuepfad und bestaetigten
+            ihn auch laut, aber keine Taste konnte ihn je wieder aufrufen. Und die vier Aktionen
+            liessen sich nur auf eine andere Taste legen, indem man einen Eintrag namens
+            "audio menue schnell zugriff 1" bis "4" neu belegte - dort sucht niemand nach
+            "Navigation abbrechen". Jede Aktion hat jetzt ihren eigenen Eintrag in der
+            Tastenbelegung, unter ihrem eigenen Namen, weiterhin auf Shift-F9 bis Shift-F12. Die
+            Schnellzugriffe 1 bis 4 sind wieder frei und unbelegt, genau wie die Plaetze 5 bis 10.
+            Bestehende Einstellungen werden beim ersten Anmelden uebernommen: Welche Taste auch
+            immer heute auf Schnellzugriff 1 bis 4 liegt, sie fuehrt weiterhin genau dieselbe
+            Aktion aus - sie wandert nur auf den neuen Eintrag, fuer die Finger aendert sich
+            nichts. Ein Platz, den du absichtlich geleert hattest, bleibt leer.
+        Technisch: Der OnClick in SkuZOptions/Core.lua fing SKU_KEY_MENUQUICK1..4 ab und kehrte
+            zurueck, bevor die allgemeine Schnellauswahl-Schleife weiter unten im selben Handler
+            sie sehen konnte. Die drei verschobenen Aktionen heissen jetzt
+            SKU_KEY_NAVWAYPOINTSQUICK, SKU_KEY_NAVROUTEDESTINATIONSQUICK und
+            SKU_KEY_ACTIONBARSOPEN und werden von dem Modul verteilt, dem sie gehoeren; die beiden
+            Navigationslisten stehen in der Gruppe "Navigation und Wegpunkte". Eine einmalige
+            Migration in SkuKeyBindsUpdate verschiebt key und key2 vom alten Platz auf die neue
+            Konstante; erkannt wird sie am Fehlen der neuen Konstante im Profil, laeuft also genau
+            einmal und vor dem Setzen der Vorgaben. Gespeicherte Schnellauswahl-Pfade bleiben
+            erhalten - eine Taste auf Platz 1 bis 4 stellt die alte Abkuerzung wieder her. Neue
+            Stolperdrahtpruefung: /skucheck keys meldet jede Taste, die zwei Sku-Belegungen
+            gleichzeitig haelt (ausgenommen die transienten Override-Tasten, die sie sich per
+            Entwurf teilen).
+
+    Navigation abbrechen lief ueber zwei verschiedene Tasten
+        Einfach: Es gab zwei Wege, das Folgen einer Route oder eines Wegpunkts zu beenden, und sie
+            verhielten sich unterschiedlich. Die richtig benannte Belegung "route oder wegpunkt
+            folgen beenden" wurde ganz ohne Taste ausgeliefert, und wenn man ihr eine gab, sagte
+            sie "folgen beendet" - dieselben Worte wie beim automatischen Ankommen, man konnte
+            beides also nicht unterscheiden - und sie sagte ueberhaupt nichts, wenn man eine Route
+            statt eines einzelnen Wegpunkts abbrach. Der andere Weg war das fest verdrahtete
+            Shift-F12, das "Navigation abgebrochen" sagte, aber nur als Schnellzugriff 4
+            existierte. Beides ist jetzt eine Taste: "route oder wegpunkt folgen beenden",
+            standardmaessig auf Shift-F12 und frei belegbar, mit dem Bestaetigungston und dem
+            eindeutigen "Navigation abgebrochen". Sie bleibt vollkommen still, wenn es nichts
+            abzubrechen gab, und funktioniert weiterhin in Bewegung und im Kampf.
+        Technisch: Der SkuNav-OnClick-Zweig fuer SKU_KEY_STOPROUTEORWAYPOINT ruft jetzt
+            SkuNav:CancelNavigationSilent() auf und spricht bzw. spielt Sound 835 nur bei einem
+            true-Rueckgabewert. Damit faellt der alte ungeschuetzte Pfad weg, der
+            SKU_NAVIGATION_STOPPED und den Ton auch dann ausloeste, wenn nichts lief, und dessen
+            Ansage aus EndFollowingWpOrRt kam und an einen ausgewaehlten Wegpunkt gebunden war.
+            EndFollowingWpOrRt selbst bleibt unveraendert - seine fuenfzehn anderen Aufrufstellen
+            nutzen es als Abbau vor dem Auswaehlen eines neuen Ziels, wo das Loeschen temporaerer
+            Wegpunkte falsch waere.
 
 
 -------------------------------------------------------------------------------------------------------

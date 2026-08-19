@@ -31,14 +31,31 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_DEBUGMODE"] = {key = "CTRL-SHIFT-F3", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_QUESTSHARE"] = {key = "CTRL-SHIFT-T", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_OPENMENU"] = {key = "SHIFT-F1", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_MENUQUICK1"] = {key = "SHIFT-F9", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_MENUQUICK2"] = {key = "SHIFT-F10", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_MENUQUICK3"] = {key = "SHIFT-F11", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_MENUQUICK4"] = {key = "SHIFT-F12", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_MENUQUICK1SET"] = {key = "CTRL-SHIFT-F9", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_MENUQUICK2SET"] = {key = "CTRL-SHIFT-F10", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_MENUQUICK3SET"] = {key = "CTRL-SHIFT-F11", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_MENUQUICK4SET"] = {key = "CTRL-SHIFT-F12", object = "SkuOptions", func = "CreateMainFrame",},
+   -- Quick-access slots 1-4 ship UNBOUND like slots 5-10. They used to default to
+   -- Shift-F9..F12, but v42 intercepted exactly those four keys for four FIXED
+   -- actions before the generic quick-select loop could see them: the slots were
+   -- dead (their SET keys still stored a path that nothing could ever recall) and
+   -- the fixed actions were only rebindable under a label that said "audio menu
+   -- quick access N". Each fixed action now owns a proper const of its own
+   -- (SKU_KEY_NAVWAYPOINTSQUICK / -NAVROUTEDESTINATIONSQUICK / -ACTIONBARSOPEN /
+   -- -STOPROUTEORWAYPOINT below) and keeps the Shift-F9..F12 defaults, so nothing
+   -- moves for the user; the ten quick-select slots are all user-assigned again.
+   -- tMigrateQuickKeys() in SkuKeyBindsUpdate carries existing profiles over.
+   ["SKU_KEY_MENUQUICK1"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK2"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK3"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK4"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK1SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK2SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK3SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK4SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+
+   -- The four ex-MENUQUICK1..4 actions, each under its own name and dispatched by
+   -- the module that owns it (the two nav lists + the cancel key from SkuNav's
+   -- OnSkuNavMain, the action bars from SkuOptions' OnSkuOptionsMain).
+   ["SKU_KEY_NAVWAYPOINTSQUICK"] = {key = "SHIFT-F9", object = "SkuNav", func = "CreateSkuNavMain",},
+   ["SKU_KEY_NAVROUTEDESTINATIONSQUICK"] = {key = "SHIFT-F10", object = "SkuNav", func = "CreateSkuNavMain",},
+   ["SKU_KEY_ACTIONBARSOPEN"] = {key = "SHIFT-F11", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_ROLLNEED"] = {key = "CTRL-SHIFT-B", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_ROLLGREED"] = {key = "CTRL-SHIFT-G", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_ROLLPASS"] = {key = "CTRL-SHIFT-X", object = "SkuOptions", func = "CreateMainFrame",},
@@ -113,7 +130,14 @@ SkuOptions.skuDefaultKeyBindings = {
    -- menu click keys now cover combat as well (SkuCore/combatMenuKeys.lua). A stale entry
    -- in an existing profile is inert: every binder iterates skuDefaultKeyBindings.
 
-   ["SKU_KEY_STOPROUTEORWAYPOINT"] = {key = "", object = "SkuNav", func = "CreateSkuNavMain",},
+   -- The ONE cancel-navigation key (default Shift-F12, the key users already press).
+   -- Until v43.0 two paths did nearly the same teardown: this const (correctly named,
+   -- in the Navigation keybind group, but shipped unbound and announcing the same
+   -- "following stopped" line the automatic stop uses) and the hardcoded Shift-F12
+   -- MENUQUICK4 branch (guarded + its own "Navigation abgebrochen" line, but named
+   -- after a quick-access slot). Merged into this const with the guarded behaviour --
+   -- see SkuNav/Core.lua's OnClick branch.
+   ["SKU_KEY_STOPROUTEORWAYPOINT"] = {key = "SHIFT-F12", object = "SkuNav", func = "CreateSkuNavMain",},
 
    ["SKU_KEY_MENUQUICK5"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_MENUQUICK5SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
@@ -321,6 +345,51 @@ function SkuOptions:SkuKeyBindsMatchKey(aKey, aBindingConst)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.0] Run-once carry-over: the four fixed actions v42 had wired onto the
+-- MENUQUICK1..4 keys now own consts of their own. Whatever key a profile has on
+-- MENUQUICK1..4 today IS the key that performs the fixed action today, so move it
+-- verbatim onto the new const and free the quick-access slot -- an unbound slot
+-- stays unbound, so a user who deliberately cleared it does not get a key back.
+-- Sentinel: a pre-change profile has no SKU_KEY_NAVWAYPOINTSQUICK entry (the
+-- defaults loop below creates it, so this runs exactly once). Must therefore run
+-- BEFORE that loop.
+-- SKU_KEY_STOPROUTEORWAYPOINT is the one target that already existed: never
+-- overwrite a key the user set on it, only fill its free slots.
+local function tMigrateQuickKeys(aStore)
+   if aStore["SKU_KEY_NAVWAYPOINTSQUICK"] ~= nil then
+      return
+   end
+   local tPairs = {
+      {"SKU_KEY_MENUQUICK1", "SKU_KEY_NAVWAYPOINTSQUICK"},
+      {"SKU_KEY_MENUQUICK2", "SKU_KEY_NAVROUTEDESTINATIONSQUICK"},
+      {"SKU_KEY_MENUQUICK3", "SKU_KEY_ACTIONBARSOPEN"},
+      {"SKU_KEY_MENUQUICK4", "SKU_KEY_STOPROUTEORWAYPOINT"},
+   }
+   for x = 1, #tPairs do
+      local tOld, tNew = tPairs[x][1], tPairs[x][2]
+      local tOldEntry = aStore[tOld]
+      if tOldEntry then
+         local tNewEntry = aStore[tNew]
+         if not tNewEntry then
+            aStore[tNew] = {key = tOldEntry.key or "", key2 = tOldEntry.key2 or ""}
+         else
+            for _, tKey in ipairs({tOldEntry.key or "", tOldEntry.key2 or ""}) do
+               if tKey ~= "" and tNewEntry.key ~= tKey and tNewEntry.key2 ~= tKey then
+                  if (tNewEntry.key or "") == "" then
+                     tNewEntry.key = tKey
+                  elseif (tNewEntry.key2 or "") == "" then
+                     tNewEntry.key2 = tKey
+                  end
+               end
+            end
+         end
+         dprint("keybind migration", tOld, "->", tNew, aStore[tNew].key, aStore[tNew].key2)
+         tOldEntry.key, tOldEntry.key2 = "", ""
+      end
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsUpdate(aInitializeFlag)
    SkuSettings:Sub("SkuOptions")
 
@@ -328,6 +397,7 @@ function SkuOptions:SkuKeyBindsUpdate(aInitializeFlag)
    if not SkuSettings:Sub("SkuOptions").SkuKeyBinds then
       SkuSettings:Sub("SkuOptions").SkuKeyBinds = {}
    end
+   tMigrateQuickKeys(SkuSettings:Sub("SkuOptions").SkuKeyBinds)
    for i, v in pairs(SkuOptions.skuDefaultKeyBindings) do
       if not SkuSettings:Sub("SkuOptions").SkuKeyBinds[i] then
          SkuSettings:Sub("SkuOptions").SkuKeyBinds[i] = {key = v.key or "", key2 = v.key2 or ""}

@@ -5284,11 +5284,51 @@ local function tSkuCheckAuras()
 	return tChecked, 0, tViolations
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Invariant 3 (keybinds; from the v43.0 MENUQUICK1..4 regression): no two Sku
+-- keybind consts may hold the same key. v42 wired four fixed actions onto the
+-- SKU_KEY_MENUQUICK1..4 keys and returned before the generic quick-select loop
+-- could see them, so one key served two consts, the four quick-access slots were
+-- dead, and the fixed actions were only rebindable under a label that named the
+-- slot. A key held by two consts is the machine-checkable shape of "this key does
+-- not do what its menu entry says".
+-- transientOverride consts are exempt BY DESIGN: the menu click keys and the
+-- in-combat menu keys are armed only for a window and legally share their key
+-- (see SkuOptions:SkuKeyBindsIsTransientOverride).
+local function tSkuCheckKeys()
+	local tChecked, tViolations = 0, 0
+	local tStore = SkuSettings and SkuSettings:Sub("SkuOptions").SkuKeyBinds
+	if not tStore then
+		dprint("skucheck", "keys: no keybind store yet, skipped")
+		return 0, 0, 0
+	end
+	local tSeen = {}
+	for tConst in pairs(SkuOptions.skuDefaultKeyBindings) do
+		if SkuOptions:SkuKeyBindsIsTransientOverride(tConst) ~= true then
+			local tEntry = tStore[tConst]
+			if tEntry then
+				for _, tKey in ipairs({tEntry.key or "", tEntry.key2 or ""}) do
+					if tKey ~= "" then
+						tChecked = tChecked + 1
+						if tSeen[tKey] then
+							tViolations = tViolations + 1
+							dprint("skucheck", "VIOLATION keys: key", tKey, "is held by BOTH", tSeen[tKey], "and", tConst, "-- one of the two cannot fire")
+						else
+							tSeen[tKey] = tConst
+						end
+					end
+				end
+			end
+		end
+	end
+	return tChecked, 0, tViolations
+end
+
 SLASH_SKUCHECK1 = "/skucheck"
 SlashCmdList["SKUCHECK"] = function(aParam)
 	local tDomain = string.match(aParam or "", "^%s*(%S*)")
-	if tDomain ~= "" and tDomain ~= "bags" and tDomain ~= "auras" then
-		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags, auras", "Unknown check. Available: bags, auras", "Vérification inconnue. Disponible : bags, auras"), false, true, 0.2) end)
+	if tDomain ~= "" and tDomain ~= "bags" and tDomain ~= "auras" and tDomain ~= "keys" then
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags, auras, keys", "Unknown check. Available: bags, auras, keys", "Vérification inconnue. Disponible : bags, auras, keys"), false, true, 0.2) end)
 		return
 	end
 	local tChecked, tPending, tViolations = 0, 0, 0
@@ -5300,6 +5340,11 @@ SlashCmdList["SKUCHECK"] = function(aParam)
 	if tDomain == "" or tDomain == "auras" then
 		local c, p, v = tSkuCheckAuras()
 		dprint("skucheck", "auras done:", c, "globals checked,", v, "violations")
+		tChecked, tPending, tViolations = tChecked + c, tPending + p, tViolations + v
+	end
+	if tDomain == "" or tDomain == "keys" then
+		local c, p, v = tSkuCheckKeys()
+		dprint("skucheck", "keys done:", c, "bound keys checked,", v, "violations")
 		tChecked, tPending, tViolations = tChecked + c, tPending + p, tViolations + v
 	end
 	-- Keep the TESTED per-domain wording for an explicit `/skucheck bags`; the

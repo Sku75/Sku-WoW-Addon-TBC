@@ -1,4 +1,4 @@
--------------------------------------------------------------------------------------------------------
+﻿-------------------------------------------------------------------------------------------------------
 - Notes de version de l'addon Sku Anniversary (Français)
 -------------------------------------------------------------------------------------------------------
 
@@ -338,6 +338,58 @@ Changements dans Sku v43.0
             plus un texte fixe : les deux endroits qui la reconnaissaient au nom - le verrou
             « non sélectionnable » et le rafraîchissement automatique à la fin de la construction -
             testent maintenant le marqueur.
+
+    Shift-F9 à Shift-F12 : des raccourcis nommés, et quatre accès rapides retrouvés
+        Simple : quatre actions de Sku - les deux listes rapides de navigation (Shift-F9 et
+            Shift-F10), le menu des barres d'action (Shift-F11) et l'annulation de la navigation
+            (Shift-F12) - étaient câblées directement sur les touches des accès rapides du menu
+            audio 1 à 4. Cela avait deux conséquences. Ces quatre accès rapides étaient morts :
+            leurs touches de définition (Ctrl-Shift-F9 à Ctrl-Shift-F12) enregistraient toujours un
+            chemin de menu et le confirmaient même à voix haute, mais aucune touche ne pouvait
+            plus le rappeler. Et les quatre actions ne pouvaient être déplacées que en réassignant
+            une entrée nommée « accès rapide au menu audio 1 » à « 4 » - ce n'est pas là que l'on
+            cherche « annuler la navigation ». Chaque action possède maintenant sa propre entrée
+            dans le menu des raccourcis, sous son propre nom, toujours sur Shift-F9 à Shift-F12.
+            Les accès rapides 1 à 4 sont de nouveau libres et non assignés, exactement comme les
+            emplacements 5 à 10. Vos réglages existants sont repris à la première connexion : la
+            touche qui se trouve aujourd'hui sur l'accès rapide 1 à 4 continue d'exécuter la même
+            action - elle se déplace simplement vers la nouvelle entrée, rien ne change pour vos
+            doigts. Un emplacement que vous aviez volontairement vidé reste vide.
+        Technique : le OnClick de SkuZOptions/Core.lua interceptait SKU_KEY_MENUQUICK1..4 et
+            retournait avant la boucle générale de sélection rapide située plus bas dans le même
+            gestionnaire. Les trois actions déplacées s'appellent désormais
+            SKU_KEY_NAVWAYPOINTSQUICK, SKU_KEY_NAVROUTEDESTINATIONSQUICK et
+            SKU_KEY_ACTIONBARSOPEN, chacune distribuée par le module qui la possède ; les deux
+            listes de navigation ont rejoint le groupe « Navigation et points de passage ». Une
+            migration unique dans SkuKeyBindsUpdate déplace key et key2 de l'ancien emplacement
+            vers la nouvelle constante ; elle se détecte à l'absence de la nouvelle constante dans
+            le profil, elle s'exécute donc exactement une fois et avant le remplissage des valeurs
+            par défaut. Les chemins de sélection rapide enregistrés sont conservés : assigner une
+            touche à l'emplacement 1 à 4 restaure l'ancien raccourci. Nouveau garde-fou :
+            /skucheck keys signale toute touche détenue par deux assignations Sku à la fois (sauf
+            les touches d'écrasement transitoires, qui la partagent par conception).
+
+    Annuler la navigation passait par deux touches différentes
+        Simple : il existait deux façons d'arrêter de suivre un itinéraire ou un point de passage,
+            et elles ne se comportaient pas pareil. L'assignation correctement nommée « arrêter de
+            suivre l'itinéraire ou le point de passage » était livrée sans aucune touche, et quand
+            on lui en donnait une, elle annonçait « suivi arrêté » - les mêmes mots que l'arrivée
+            automatique, impossible donc de distinguer les deux - et elle ne disait strictement
+            rien lorsque ce que l'on annulait était un itinéraire et non un point de passage isolé.
+            L'autre était le Shift-F12 câblé en dur, qui disait « Navigation annulée » mais
+            n'existait que comme accès rapide 4. Les deux ne font plus qu'une touche : « arrêter de
+            suivre l'itinéraire ou le point de passage », sur Shift-F12 par défaut et librement
+            réassignable, avec le son de confirmation et le « Navigation annulée » distinct. Elle
+            reste totalement silencieuse quand il n'y avait rien à annuler, et elle fonctionne
+            toujours en mouvement et en combat.
+        Technique : la branche OnClick de SkuNav pour SKU_KEY_STOPROUTEORWAYPOINT appelle
+            maintenant SkuNav:CancelNavigationSilent() et ne parle et ne joue le son 835 que sur un
+            retour true. Cela supprime l'ancien chemin non protégé, qui déclenchait
+            SKU_NAVIGATION_STOPPED et le son même lorsque rien ne tournait, et dont l'annonce
+            venait de EndFollowingWpOrRt et dépendait d'un point de passage sélectionné.
+            EndFollowingWpOrRt lui-même reste inchangé : ses quinze autres appels l'utilisent comme
+            démontage avant de sélectionner une nouvelle cible, où effacer les points de passage
+            temporaires serait faux.
 
 
 -------------------------------------------------------------------------------------------------------
