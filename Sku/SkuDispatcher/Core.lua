@@ -32,7 +32,12 @@ function SkuDispatcher:UnregisterEventCallback(aEventName, aCallbackFunc)
 		return
 	end
 	if not SkuDispatcher.Registered[aEventName].callbacks[aCallbackFunc] then
-		dprint("Error: no registered callback function")
+		-- Benign: several modules unregister defensively (DialTargetingDisable
+		-- runs on both PLAYER_LOGIN and PLAYER_ENTERING_WORLD, for one), so this
+		-- fires a few times per login. It used to log one nameless "Error:" line
+		-- each time - 79 lines of pure noise in a 12000-line ring, and no way to
+		-- tell WHICH event it was. Verbose channel, with the event name.
+		dprintv("UnregisterEventCallback: no registered callback for", aEventName)
 		return
 	end
 

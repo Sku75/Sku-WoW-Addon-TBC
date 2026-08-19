@@ -471,7 +471,11 @@ SkuGenericMenuItem = {
 			return
 		end
 
-		if self.name == L["Empty;list"] or self.name == L["Wegpunkte werden noch geladen"] then
+		-- skuWpLoadingHint: the waypoint "still loading" hint carries a live
+		-- percentage in its name now (SkuNav:GetWpcLoadingText), so it can no
+		-- longer be recognised by a fixed string - the tag comes first, the name
+		-- comparison stays for any hint built before the tag existed.
+		if self.name == L["Empty;list"] or self.skuWpLoadingHint == true or self.name == L["Wegpunkte werden noch geladen"] then
 			return
 		end
 

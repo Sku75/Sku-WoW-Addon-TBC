@@ -17,6 +17,7 @@ local sfind = string.find
 local ssplit = string.split
 local ssub = string.sub
 local tinsert = table.insert
+local floor = math.floor
 
 SkuNav.BeaconSoundSetNames  = {}
 
@@ -418,6 +419,11 @@ SkuNav.wpCacheReady = false
 -- synchronous callers) this is a no-op.
 local tWpcSliceStart = 0
 local tWpcInBuild = false
+-- [2026-08-19] Frame driver for the async waypoint-cache build (see the pump in
+-- CreateWaypointCache). One frame for the whole addon lifetime; shown only while
+-- a build runs, because OnUpdate does not fire on a hidden frame.
+local tWpcDriver = CreateFrame("Frame", "SkuNavWpcDriver")
+tWpcDriver:Hide()
 -- [Load-perf 2026-07-06] Same budget heuristic as the SkuDB chunk stream
 -- (SkuDBBudgetMs): a generous slice right after the build starts - the user
 -- is still orienting and routes are unusable until the build ends anyway -
@@ -464,6 +470,10 @@ if Sku.RegisterBuildStep then
 			if SkuNav.wpcPendingArgs then
 				local tArgs = SkuNav.wpcPendingArgs
 				SkuNav.wpcPendingArgs = nil
+				-- fresh login-time build: the kill/restart budget starts over (the
+				-- counter is only reset on a completed build otherwise, so three
+				-- kills would permanently disarm the retry for the session)
+				SkuNav._wpcRestarts = 0
 				local tOk, tErr = pcall(function() SkuNav:CreateWaypointCache(tArgs[1], true) end)
 				if not tOk then
 					-- [2026-08-19] The pending args were consumed BEFORE the
@@ -897,40 +907,39 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	-- old synchronous behaviour.
 	if aAsync then
 		SkuNav._wpcWorkMs = 0
+		SkuNav._wpcWorkPct = 0
+		local tWpcExpectedMs = SkuNav:GetWpcExpectedWorkMs()
 		-- Eviction-proof result field (the SkuDebugLog ring gets flooded by dprint
 		-- and trims our markers; a dedicated field survives). Read SkuDebugLog.wpcResult.
 		local function tWpcSetResult(aText)
 			if type(SkuDebugLog) == "table" then SkuDebugLog.wpcResult = aText .. "  " .. date("%H:%M:%S") end
 		end
-		-- [2026-08-19 pump hardening] The chain used to re-arm itself only AFTER a
-		-- successful coroutine.resume. When the client's Lua VM aborts the running
-		-- script ("insecure scripts exceeded execution limit for addon Sku") the
-		-- abort unwinds this callback, so C_Timer.After below was never reached:
-		-- the coroutine stayed SUSPENDED forever, nothing resumed it, wpCacheReady
-		-- stayed false and every waypoint list answered "Wegpunkte werden noch
-		-- geladen" until relog - with no Lua error and no addon output anywhere
-		-- (reproduced deterministically on a hardcore realm, 2026-08-19, where
-		-- Questie's login DB rebuild shares the same frames).
-		-- Now: arm the NEXT pump BEFORE resuming (costs one no-op pump after the
-		-- build ends), plus a slow ticker that re-arms the chain if a pump has not
-		-- run for 2 s - so even an abort that swallows the arming itself heals.
+		-- [2026-08-19 pump hardening] The pump used to be a C_Timer.After(0) chain
+		-- that re-armed itself only AFTER a successful coroutine.resume. When the
+		-- client's Lua VM aborts the running script ("insecure scripts exceeded
+		-- execution limit for addon Sku") the abort unwinds the callback, so the
+		-- re-arm never ran: the coroutine stayed SUSPENDED forever, nothing resumed
+		-- it, wpCacheReady stayed false and every waypoint list answered "Wegpunkte
+		-- werden noch geladen" until relog - with no Lua error and no addon output
+		-- anywhere (deterministic on a hardcore realm, 2026-08-19).
+		-- The pump is frame-DRIVEN now: the client calls OnUpdate from its own loop
+		-- every frame, so an aborted slice costs one frame instead of the build.
+		-- Nothing in Sku has to survive the abort for the next slice to happen.
+		-- The 1 s ticker below is a pure belt-and-braces re-show of the driver.
 		local tWpcPump
-		local tWpcPumpArmed = false
-		local function tWpcArmPump()
-			if tWpcPumpArmed then return end
-			tWpcPumpArmed = true
-			C_Timer.After(0, tWpcPump)
+		local function tWpcStopDriver()
+			tWpcDriver:Hide()
+			tWpcDriver:SetScript("OnUpdate", nil)
 		end
 		tWpcPump = function()
-			tWpcPumpArmed = false
 			SkuNav._wpcLastPumpAt = GetTime()
 			if SkuNav._wpcGen ~= tWpcMyGen then
+				tWpcStopDriver()
 				tWpcSetResult("superseded by a newer build")
 				return
 			end
 			local co = SkuNav._wpcCo
 			if co and coroutine.status(co) ~= "dead" then
-				tWpcArmPump()
 				local tR0 = debugprofilestop()
 				local ok, err = coroutine.resume(co)
 				SkuNav._wpcWorkMs = SkuNav._wpcWorkMs + (debugprofilestop() - tR0)
@@ -940,17 +949,19 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 					-- [2026-08-19] The client can kill a slice outright: "script ran
 					-- too long" raised INSIDE the coroutine (seen 12:07:19 in the
 					-- links pass), or the LUA_WARNING execution-limit variant. The
-					-- coroutine is dead afterwards, so the stall ticker cancels
-					-- itself and nothing would ever rebuild - the session is left
-					-- with "Wegpunkte werden noch geladen" exactly as before the
-					-- pump fix. Back the frame budget off and restart from scratch,
-					-- at most 3 times (a full build is ~2 s of work).
+					-- coroutine is dead afterwards, so the driver stops and nothing
+					-- would ever rebuild - the session is left with "Wegpunkte
+					-- werden noch geladen" exactly as before the pump fix. Back the
+					-- frame budget off and restart from scratch, at most 3 times (a
+					-- full build is ~2 s of work). Confirmed working 12:16:32:
+					-- killed in the link pass, restarted, ready 6 s later.
 					local tErrText = tostring(err)
 					if Sku.NoteScriptExecutionLimit
 						and (sfind(tErrText, "too long", 1, true) or sfind(tErrText, "execution limit", 1, true)) then
 						pcall(function() Sku:NoteScriptExecutionLimit() end)
 					end
 					SkuNav._wpcRestarts = (SkuNav._wpcRestarts or 0) + 1
+					tWpcStopDriver()
 					if SkuNav._wpcRestarts <= 3 then
 						dprint("restarting waypoint cache build, attempt", SkuNav._wpcRestarts + 1)
 						C_Timer.After(2, function()
@@ -960,8 +971,28 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 						end)
 					end
 				elseif coroutine.status(co) ~= "dead" then
-					-- next pump is already armed (above)
+					-- still building: OnUpdate calls us again next frame. Publish the
+					-- progress so the "Wegpunkte werden noch geladen" hint can say how
+					-- far along the build is (SkuNav:GetWpcLoadingText). Only the
+					-- integer percent change does any work, so this is a comparison
+					-- per frame in the normal case.
+					local tPct = 0
+					if tWpcExpectedMs > 0 then
+						tPct = floor((SkuNav._wpcWorkMs / tWpcExpectedMs) * 100)
+					end
+					if tPct > 99 then tPct = 99 elseif tPct < 0 then tPct = 0 end
+					if tPct ~= SkuNav._wpcWorkPct then
+						SkuNav._wpcWorkPct = tPct
+						-- the hint's name is baked in at build time, so refresh the one
+						-- the user is actually sitting on - otherwise pressing down on
+						-- it would repeat the percentage it had when the list was built.
+						local tCur = SkuOptions and SkuOptions.currentMenuPosition
+						if tCur and tCur.skuWpLoadingHint then
+							tCur.name = SkuNav:GetWpcLoadingText()
+						end
+					end
 				else
+					tWpcStopDriver()
 					-- completes after first-frame -> proves the build is off the freeze.
 					-- [2026-07-06 build profiling] append the per-phase split.
 					local tPhases = ""
@@ -974,6 +1005,17 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 						if tPhases ~= "" then tPhases = "  (phases ms:" .. tPhases .. ")" end
 					end
 					SkuNav._wpcRestarts = 0
+					SkuNav._wpcWorkPct = 100
+					-- [2026-08-19] Self-calibrating yardstick for the progress
+					-- percentage: store what a COMPLETE build costs in work ms on
+					-- this install. Work is stable (1936 ms on Era vs 1955 ms on the
+					-- hardcore realm for the identical build) while wall time is not
+					-- - the frame budget backs off under load - so work is the right
+					-- thing to measure progress against.
+					pcall(function()
+						local tG = SkuSettings and SkuSettings:Sub("SkuNav", nil, "global")
+						if tG then tG.wpcTotalWorkMs = floor(SkuNav._wpcWorkMs + 0.5) end
+					end)
 					tWpcSetResult(string.format("async done = %.1f ms work%s", SkuNav._wpcWorkMs, tPhases))
 					if Sku.MetricPoint then Sku:MetricPoint(string.format("waypoint cache async build done = %.1f ms work%s", SkuNav._wpcWorkMs, tPhases)) end
 					-- [2026-07-06] readiness is logged, not spoken: the voice line
@@ -992,7 +1034,7 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 					-- as the key handler's vocalize gate.
 					pcall(function()
 						local tCur = SkuOptions and SkuOptions.currentMenuPosition
-						if tCur and tCur.name == L["Wegpunkte werden noch geladen"]
+						if tCur and (tCur.skuWpLoadingHint or tCur.name == L["Wegpunkte werden noch geladen"])
 							and tCur.parent and tCur.parent.BuildChildren
 							and (_G["OnSkuOptionsMainOption1"]:IsVisible()
 								or (SkuOptions.combatMenuActive == true and InCombatLockdown())) then
@@ -1009,35 +1051,38 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 						end
 					end)
 				end
+			else
+				-- no coroutine (or already dead) - nothing left to drive
+				tWpcStopDriver()
 			end
 		end
 
-		-- Stall watchdog: a pump that never ran (its arming was swallowed by the
-		-- same VM abort) or a chain that broke anyway is restarted here. Cancels
-		-- itself as soon as the build is done or superseded, so it costs one
-		-- table lookup every 2 s during the build and nothing afterwards.
+		-- Heartbeat: only ever needed if the driver frame itself stopped being
+		-- called (it never did in testing - the client drives OnUpdate). One
+		-- comparison per second while the build runs, then it cancels itself.
 		SkuNav._wpcLastPumpAt = GetTime()
 		if C_Timer.NewTicker then
-			C_Timer.NewTicker(2, function(aTicker)
+			C_Timer.NewTicker(1, function(aTicker)
 				local co = SkuNav._wpcCo
 				if SkuNav._wpcGen ~= tWpcMyGen or not co or coroutine.status(co) == "dead" then
 					aTicker:Cancel()
 					return
 				end
-				if GetTime() - (SkuNav._wpcLastPumpAt or 0) > 2 then
-					dprint("waypoint cache pump stalled - re-arming")
-					tWpcPumpArmed = false
-					tWpcArmPump()
+				if GetTime() - (SkuNav._wpcLastPumpAt or 0) > 1 then
+					dprint("waypoint cache pump stalled - restarting the driver")
+					tWpcDriver:SetScript("OnUpdate", tWpcPump)
+					tWpcDriver:Show()
 				end
 			end)
 		end
 
-		-- [2026-08-19] First slice on the NEXT frame instead of right here: this
-		-- runs inside the SkuDB stream coroutine, which has already spent its own
-		-- slice this frame, so the old immediate call put two full build slices
-		-- (up to 300 ms of insecure script) into one frame - exactly what the VM's
-		-- execution limit kills.
-		tWpcArmPump()
+		-- [2026-08-19] The first slice runs on the NEXT frame, not right here: this
+		-- code runs inside the SkuDB stream coroutine, which has already spent its
+		-- own slice this frame, so an immediate call put two full build slices (up
+		-- to 300 ms of script) into one frame - exactly what the VM's execution
+		-- limit kills.
+		tWpcDriver:SetScript("OnUpdate", tWpcPump)
+		tWpcDriver:Show()
 	else
 		SkuNav:EnsureWaypointCacheComplete()
 	end
@@ -1076,10 +1121,59 @@ end
 -- (the lists are volatile/dynamic, so they re-read as the data streams in).
 function SkuNav:InjectWpListEmptyHint(aParent)
 	if SkuNav.wpCacheReady ~= true then
-		SkuOptions:InjectMenuItems(aParent, {L["Wegpunkte werden noch geladen"]}, SkuGenericMenuItem)
+		-- [2026-08-19] The hint used to be a bare "still loading", which was honest
+		-- while the wait was a second or two. Under the frame-budget backoff the
+		-- wait can be 10 s+, so it carries a percentage now. The node is TAGGED
+		-- (skuWpLoadingHint) because its name is no longer a fixed string: the two
+		-- places that recognise the hint by name - the non-selectable gate in
+		-- SkuZOptions/templates.lua and the push-refresh at the end of the build -
+		-- test the tag first.
+		local tItem = SkuOptions:InjectMenuItems(aParent, {SkuNav:GetWpcLoadingText()}, SkuGenericMenuItem)
+		if tItem then tItem.skuWpLoadingHint = true end
 	else
 		SkuOptions:InjectMenuItems(aParent, {L["Empty;list"]}, SkuGenericMenuItem)
 	end
+end
+
+-- [2026-08-19] What a COMPLETE build costs in work ms on this install, written
+-- by the last successful build (SkuNav global scope). Work, not wall clock: the
+-- per-frame budget backs off under load, the amount of work does not. The 2000
+-- ms default only ever applies to the very first build after a fresh install.
+function SkuNav:GetWpcExpectedWorkMs()
+	local tMs
+	pcall(function()
+		local tG = SkuSettings and SkuSettings:Sub("SkuNav", nil, "global")
+		tMs = tG and tG.wpcTotalWorkMs
+	end)
+	if type(tMs) ~= "number" or tMs < 200 then tMs = 2000 end
+	return tMs
+end
+
+-- 0..100 for "how much of the waypoint data is there". Two stages, because the
+-- cache build cannot even start until SkuDB's creature and object families are
+-- merged - and that wait is a third of the total, so reporting 0% through it
+-- would be the same useless silence as before:
+--   0 / 20 / 40 %  = neither / creatures / creatures+objects ready
+--   40..99 %       = the cache build itself, by work done against the yardstick
+--   100 %          = ready (the hint is not shown at all then)
+-- Costs two readiness lookups; the build-progress part is precomputed per frame.
+function SkuNav:GetWaypointCacheProgressPct()
+	if SkuNav.wpCacheReady == true then return 100 end
+	local co = SkuNav._wpcCo
+	if co and coroutine.status(co) ~= "dead" then
+		local tPct = SkuNav._wpcWorkPct or 0
+		return 40 + floor(tPct * 0.6)
+	end
+	local tReady = 0
+	if Sku.IsDataReady then
+		if Sku:IsDataReady("skudb.creatures") then tReady = tReady + 1 end
+		if Sku:IsDataReady("skudb.objects") then tReady = tReady + 1 end
+	end
+	return tReady * 20
+end
+
+function SkuNav:GetWpcLoadingText()
+	return string.format(L["Wegpunkte werden noch geladen, %d%%"], SkuNav:GetWaypointCacheProgressPct())
 end
 
 ------------------------------------------------------------------------------------------------------------------------

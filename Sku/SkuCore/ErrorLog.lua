@@ -368,7 +368,8 @@ f:SetScript("OnEvent", function(self, event, arg1, arg2, arg3)
       -- = the VM just killed one of our scripts mid-frame. Tell the post-login
       -- build arbiter to back off (Sku:NoteScriptExecutionLimit), otherwise the
       -- next slice runs into the same wall.
-      if string.find(tWarning, "execution limit", 1, true) and Sku and Sku.NoteScriptExecutionLimit then
+      if string.find(tWarning, "execution limit", 1, true) and string.find(tWarning, "Sku", 1, true)
+         and Sku and Sku.NoteScriptExecutionLimit then
          pcall(function() Sku:NoteScriptExecutionLimit() end)
       end
    elseif event == "ADDON_ACTION_FORBIDDEN" then
