@@ -21,6 +21,29 @@ history is the record — to keep this list short and current.
 
 ## Open issues (bugs)
 
+- **Two Hellfire waypoints carry a Kalimdor areaId.** (Found 2026-08-19 while
+  measuring the link graph, see ROUTE-LINK-BUILD-PLAN.md section 2.)
+  - Symptom: two route waypoints that physically sit in Hellfire Peninsula's
+    "Valley of Bones" are stamped with areaId 2657 (Desolace's "Valley of
+    Bones", Kalimdor) instead of 3794. They therefore land in the Kalimdor
+    continent bucket, are listed under Desolace, and are invisible to a player
+    standing in Hellfire Peninsula. They are also the only 8 "cross-continent"
+    link edges in the whole graph.
+  - Repro: decode the Links section of either shipped route file and map both
+    endpoints through InternalAreaTable; the pairs are areaId 2657 -> 3483 and
+    2657 -> 3815.
+  - Suspected cause: the route generator resolved the subzone name "Valley of
+    Bones" to the first matching areaId (a name collision, two areas share it).
+  - Status: open, low priority — defect in the shipped route data, not in code.
+- **User-created waypoints and links do not survive a relog.**
+  - Symptom: SkuNav:SetWaypoint appends to SkuDB.SessionRouteData.Waypoints,
+    which is rebuilt from the shipped route files at every login and is not a
+    SavedVariable; runtime link edits go to the same in-memory table. Only quick
+    and temp waypoints persist (they live in the settings), and importExport is
+    the only route to durable custom map data.
+  - Status: open QUESTION rather than a confirmed bug — needs a decision on
+    whether this is intended.
+
 Carried in from the v41 line / reported by the maintainer. German term kept with
 an English gloss where the term is Sku-specific. Repro/area are best-guess until
 investigated.
