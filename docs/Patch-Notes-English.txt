@@ -206,6 +206,49 @@ Changes in Sku v43.0
             exactly as they exclude log.txt, and an existing installation's own logs are never
             touched by an upgrade.
 
+    Login tool: the login screen announced itself as character selection
+        Simple: When the game cannot reach the server at start you do not land in character
+            selection - you land on the login screen with account name, password and a Login
+            button. The tool led into the main menu there, whose first entry is "select
+            character", so the one screen that proves there is no character list right now
+            announced itself as character selection. Anyone who cannot see it heard nothing that
+            told it apart from the real thing. The tool now says once on arrival: not logged in,
+            either there is no connection to the server or the account name and password still
+            have to be entered in the game. It also notices the screen changing now: log in by
+            hand and the character list is built straight away, instead of the tool sitting
+            silently on the old menu.
+        Technically: "no connection" is NOT a screen of its own - verified on the live 2.5.6
+            client, it is pixel- and OCR-identical to a normal login screen (same widget probes,
+            checks.login = true, no popup). There is nothing to mark, so the tool says only what
+            is always true there: this client is not logged in. The menu is its own tree now
+            rather than the main menu, and InitLogin only ran on the MODE transition, which is why
+            a screen change went unnoticed; the watcher now triggers a full re-initialization
+            whenever the login screen is entered or left.
+
+    Login tool: the login screen is usable now
+        Simple: The menu on the login screen now leads with the screen's own controls: account
+            name, password, log in, save account name - followed, unchanged, by voice, language,
+            game type, region and version, so the settings stay reachable even when the login
+            fails. The tool stores NOTHING and types nothing: it only puts the game's caret in the
+            field and hands the keyboard to the client, and you type. There is no auto-login and
+            there will not be one. The account name is read back, "empty" when it is empty; the
+            password is NEVER read back. While the keyboard belongs to a field the arrow keys go
+            to the game, so you can actually reach a typo; Enter ends the entry, Escape leaves it,
+            and neither is passed to the game - logging in is its own entry so nothing gets
+            submitted by accident. Closing and reopening Battle.net is usually the quicker way
+            back; the manual route is there for when you want it.
+        Technically: four new widgets in data.ini ([Classic] and [BurningCrusade]):
+            LoginAccountField 10000,403, LoginPasswordField 10000,478, LoginSubmitButton
+            10000,531 and LoginSaveAccountCheckbox 26,662 - measured on the live client at
+            2880x1800 and converted into the 768-high UI space, so they are resolution
+            independent, and cross-checked against entries already in the file ("Account
+            erstellen" measured 549 against the stored 550). The field content is OCR'd from the
+            BOX alone, so a label elsewhere can never be read out as the content. "Log in" follows
+            the attempt: one-button progress dialogs are read aloud and NOT clicked, because their
+            single button is Cancel and it disconnects the login in flight - the same trap as the
+            realm join; two-button dialogs are read and answered. Where the widgets are absent
+            (Cata, Retail) the entries say so and do nothing.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13

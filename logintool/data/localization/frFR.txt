@@ -141,3 +141,16 @@ detect game type automatically==détecter le type de jeu automatiquement
 game type is detected automatically now==Le type de jeu est maintenant détecté automatiquement.
 login screen, not logged in==Écran de connexion, non connecté
 Not logged in. Either there is no connection to the server, or account name and password still have to be entered in the game.==Non connecté. Soit il n'y a pas de connexion au serveur, soit le nom de compte et le mot de passe doivent encore être saisis dans le jeu.
+account name==Nom de compte
+password==Mot de passe
+log in==Se connecter
+save account name==Enregistrer le nom de compte
+empty==vide
+on==activé
+off==désactivé
+Type now. Enter ends the entry, Escape leaves it.==Saisis maintenant. Entrée termine la saisie, Échap la quitte.
+Type now. The password is never read back. Enter ends the entry, Escape leaves it.==Saisis maintenant. Le mot de passe n'est jamais lu à voix haute. Entrée termine la saisie, Échap la quitte.
+Entry ended.==Saisie terminée.
+Logging in. Please wait.==Connexion en cours. Patiente.
+The login did not go through.==La connexion n'a pas abouti.
+This is not available on this screen.==Ceci n'est pas disponible sur cet écran.

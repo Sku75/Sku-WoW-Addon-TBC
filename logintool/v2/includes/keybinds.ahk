@@ -30,7 +30,11 @@
     Send("{PrintScreen}")
 }
 
-#HotIf (gMode = 1 || gMode = -2)
+; The navigation keys are RELEASED while the keyboard is handed to a login
+; field. An edit box whose arrow keys move a menu instead of the caret is not a
+; usable edit box - you cannot correct a typo you cannot navigate to. Enter and
+; Escape stay captured below, because they are how the field is left.
+#HotIf (gMode = 1 || gMode = -2) && gLoginFieldFlag = ""
 
 Right:: MenuRight()
 Left:: MenuLeft()
@@ -39,8 +43,15 @@ Down:: MenuDown()
 PgUp:: MenuBigUp()
 PgDn:: MenuBigDown()
 
+#HotIf (gMode = 1 || gMode = -2)
+
 Enter:: {
-    if gEnterCharacterNameFlag {
+    if (gLoginFieldFlag != "") {
+        ; Not forwarded to the game: Enter in WoW's account box submits the
+        ; login, and submitting by accident on the way out of a text field is
+        ; the surprise this exists to remove. Logging in has its own entry.
+        LoginFieldFinish(true)
+    } else if gEnterCharacterNameFlag {
         Send("{Enter}")
         EnterCharacterNameHandler()
     } else if gDeleteCharacterNameFlag {
@@ -53,7 +64,9 @@ Enter:: {
 }
 
 Escape:: {
-    if gEnterCharacterNameFlag {
+    if (gLoginFieldFlag != "") {
+        LoginFieldFinish(false)
+    } else if gEnterCharacterNameFlag {
         CancelCharacterName()
     } else if gDeleteCharacterNameFlag {
         CancelDelete()

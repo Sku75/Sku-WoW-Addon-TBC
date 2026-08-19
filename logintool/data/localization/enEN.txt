@@ -141,3 +141,16 @@ detect game type automatically==detect game type automatically
 game type is detected automatically now==Game type is detected automatically now.
 login screen, not logged in==Login screen, not logged in
 Not logged in. Either there is no connection to the server, or account name and password still have to be entered in the game.==Not logged in. Either there is no connection to the server, or account name and password still have to be entered in the game.
+account name==Account name
+password==Password
+log in==Log in
+save account name==Save account name
+empty==empty
+on==on
+off==off
+Type now. Enter ends the entry, Escape leaves it.==Type now. Enter ends the entry, Escape leaves it.
+Type now. The password is never read back. Enter ends the entry, Escape leaves it.==Type now. The password is never read back. Enter ends the entry, Escape leaves it.
+Entry ended.==Entry ended.
+Logging in. Please wait.==Logging in. Please wait.
+The login did not go through.==The login did not go through.
+This is not available on this screen.==This is not available on this screen.

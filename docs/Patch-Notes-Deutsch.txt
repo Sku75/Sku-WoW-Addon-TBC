@@ -228,6 +228,53 @@ Aenderungen in Sku v43.0
             wie log.txt; die Protokolle einer bestehenden Installation werden bei einem Upgrade
             nicht angetastet.
 
+    Anmelde-Tool: der Anmeldebildschirm meldete sich als Charakterauswahl
+        Einfach: Wenn das Spiel beim Start keine Verbindung zum Server bekommt, landet man nicht
+            in der Charakterauswahl, sondern auf dem Anmeldebildschirm mit Accountname, Passwort
+            und Login-Knopf. Das Tool fuehrte dort ins Hauptmenue, dessen erster Eintrag
+            "Charakter auswaehlen" heisst - ausgerechnet der Bildschirm, der beweist, dass es
+            gerade gar keine Charakterliste gibt, sagte sich also als Charakterauswahl an. Wer ihn
+            nicht sehen kann, hoerte nichts, was ihn von der echten Charakterauswahl unterschieden
+            haette. Das Tool sagt jetzt beim Ankommen einmal: nicht angemeldet, entweder besteht
+            keine Verbindung zum Server oder Accountname und Passwort muessen im Spiel noch
+            eingegeben werden. Und es merkt jetzt auch, wenn der Bildschirm gewechselt wird: wer
+            sich von Hand anmeldet, bekommt die Charakterliste sofort gebaut, statt das Tool stumm
+            auf dem alten Menue stehen zu lassen.
+        Technisch: "Keine Verbindung" ist KEIN eigener Bildschirm - am laufenden 2.5.6-Client
+            geprueft, er ist pixel- und OCR-identisch mit einem normalen Anmeldebildschirm
+            (gleiche Widget-Proben, checks.login = true, kein Popup). Es gibt also nichts zu
+            markieren; angesagt wird nur, was auf diesem Bildschirm immer stimmt: dieser Client
+            ist nicht angemeldet. Das Menue ist jetzt ein eigener Baum statt des Hauptmenues, und
+            InitLogin lief bisher nur beim MODUSwechsel, weshalb ein Bildschirmwechsel unbemerkt
+            blieb; der Waechter loest jetzt eine volle Neuinitialisierung aus, sobald der
+            Anmeldebildschirm betreten oder verlassen wird.
+
+    Anmelde-Tool: der Anmeldebildschirm ist jetzt bedienbar
+        Einfach: Das Menue auf dem Anmeldebildschirm fuehrt jetzt mit den Bedienelementen des
+            Bildschirms selbst: Accountname, Passwort, Anmelden, Accountnamen speichern - und
+            danach unveraendert Stimme, Sprache, Spieltyp, Region und Version, damit die
+            Einstellungen auch dann erreichbar bleiben, wenn die Anmeldung scheitert. Das Tool
+            speichert dabei NICHTS und tippt nichts: es setzt nur den Cursor des Spiels in das
+            Feld und gibt die Tastatur an den Client weiter, getippt wird von Hand. Einen
+            Autologin gibt es nicht und wird es nicht geben. Der Accountname wird vorgelesen,
+            leer als "leer"; das Passwort wird NIE vorgelesen. Solange die Tastatur an einem Feld
+            haengt, gehen die Pfeiltasten ans Spiel, damit man einen Tippfehler auch erreichen
+            kann; Enter beendet die Eingabe, Escape verlaesst sie, und keins von beiden wird ans
+            Spiel weitergereicht - Anmelden ist ein eigener Eintrag, damit nichts versehentlich
+            abgeschickt wird. Meist ist Battle.net schliessen und neu oeffnen der schnellere Weg;
+            der manuelle Weg ist fuer die Faelle da, in denen man ihn will.
+        Technisch: Vier neue Widgets in data.ini ([Classic] und [BurningCrusade]):
+            LoginAccountField 10000,403, LoginPasswordField 10000,478, LoginSubmitButton
+            10000,531 und LoginSaveAccountCheckbox 26,662 - am laufenden Client bei 2880x1800
+            vermessen und in den 768er UI-Raum umgerechnet, also aufloesungsunabhaengig, und
+            gegen bereits vorhandene Eintraege gegengeprueft ("Account erstellen" gemessen 549
+            gegen die gespeicherten 550). Der Feldinhalt wird per OCR NUR des Feldes gelesen,
+            damit kein Label von woanders als Inhalt durchgeht. "Anmelden" verfolgt den Versuch:
+            einbuttonige Fortschrittsdialoge werden vorgelesen und NICHT geklickt, weil ihr
+            einziger Knopf Abbrechen ist und die laufende Anmeldung trennt - dieselbe Falle wie
+            beim Realmbeitritt; zweibuttonige Dialoge werden vorgelesen und beantwortet. Wo die
+            Widgets fehlen (Cata, Retail), sagen die Eintraege das und tun nichts.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13

@@ -268,6 +268,46 @@
   normalen Loginbildschirm (gleiche Widgets, `checks.login = true`, kein
   Popup). Es gibt nichts zu markieren; ansagbar ist nur, was immer stimmt:
   dieser Client ist nicht angemeldet.
+  GETESTET am Client: der Anmeldebildschirm sagt sich als solcher an.
+- **Der Anmeldebildschirm ist jetzt bedienbar, nicht nur richtig angesagt.**
+  Das Menue "Anmeldebildschirm, nicht angemeldet" fuehrt jetzt mit den
+  Bedienelementen des Bildschirms selbst: Accountname, Passwort, Anmelden,
+  Accountnamen speichern - danach unveraendert Stimme, Sprache, Spieltyp,
+  Region und Version, damit die Einstellungen auch dann erreichbar bleiben,
+  wenn die Anmeldung scheitert. Die Warnung beim Ankommen bleibt wie sie war.
+  Das Tool speichert dabei NICHTS und tippt nichts: es setzt nur den Cursor
+  des Spiels in das Feld und gibt die Tastatur an den Client weiter. Es gibt
+  keinen Autologin und in settings.ini kein Feld, das Zugangsdaten halten
+  koennte - das ist eine feste Eigenschaft des Tools, keine Voreinstellung.
+  Solange die Tastatur an einem Feld haengt, sind die Menuetasten FREIGEGEBEN
+  (Pfeile, Bild auf/ab gehen ans Spiel): ein Eingabefeld, dessen Pfeiltasten
+  ein Menue bewegen statt den Cursor, ist kein bedienbares Eingabefeld - man
+  kommt an den Tippfehler nicht heran. Enter beendet die Eingabe, Escape
+  verlaesst sie; keins von beiden geht ans Spiel weiter, weil Enter im
+  Accountfeld die Anmeldung ausloest und ein versehentliches Absenden beim
+  Verlassen eines Textfelds genau die Ueberraschung ist, die hier weg soll.
+  Anmelden ist ein eigener Eintrag.
+  Der Accountname wird vorgelesen (OCR nur des Feldes selbst, damit kein
+  Label von woanders als Inhalt durchgeht), leer als "leer". Das Passwort
+  wird NIE vorgelesen.
+  "Anmelden" drueckt den Login-Knopf des Spiels und verfolgt, was passiert:
+  einbuttonige Fortschrittsdialoge werden vorgelesen und NICHT geklickt (ihr
+  einziger Knopf ist Abbrechen und trennt die laufende Anmeldung - dieselbe
+  Falle wie beim Realmbeitritt), zweibuttonige Dialoge werden vorgelesen und
+  beantwortet, und sobald der Bildschirm verlassen ist, uebernimmt die normale
+  Initialisierung (Charakterliste, Realmdialog, Vertrag).
+  Vier neue Widgets in data.ini ([Classic] und [BurningCrusade]):
+  `LoginAccountField` 10000,403 · `LoginPasswordField` 10000,478 ·
+  `LoginSubmitButton` 10000,531 · `LoginSaveAccountCheckbox` 26,662. Am
+  laufenden 2.5.6-Client bei 2880x1800 vermessen und in den 768er UI-Raum
+  umgerechnet, also aufloesungsunabhaengig; gegen bereits vorhandene Eintraege
+  gegengeprueft ("Account erstellen" gemessen 549 gegen LoginScreenCreate 550,
+  "Beenden" gemessen 716 gegen LoginScreenQuit 717). Wo die Widgets fehlen
+  (Cata, Retail), sagen die vier Eintraege das und tun nichts.
+  Hinweis: Battle.net schliessen und neu oeffnen ist meist der schnellere Weg
+  zurueck - der manuelle Weg ist fuer die Faelle da, in denen man ihn will.
+  GETESTET am Client: Felder anwaehlen, tippen, Accountname vorlesen,
+  anmelden - alles funktioniert.
 
 ## 2.2 (2026-07-24)
 

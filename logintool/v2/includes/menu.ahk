@@ -18,6 +18,10 @@ global gIsChecking := false
 global gUnknownAnnounced := false   ; "unknown screen" is said once, not every 2.5 s
 global gEnterCharacterNameFlag := false
 global gDeleteCharacterNameFlag := false
+; Which login-screen field the keyboard is currently handed to
+; ("" | "account" | "password"). While it is set the menu keys are released to
+; the game so the arrows edit the text - see keybinds.ahk.
+global gLoginFieldFlag := ""
 global gLastGlueSense := 0
 global gRealmMenuItem := ""       ; the "switch server" main-menu node; the realm menu builds into it
 global gRealmMenuOffered := false ; the open realm dialog is already presented as the current menu
@@ -169,6 +173,7 @@ FlowAbort(where) {
         gAbortFlow := false
         gEnterCharacterNameFlag := false
         gDeleteCharacterNameFlag := false
+        gLoginFieldFlag := ""
         return true
     }
     return false
@@ -284,6 +289,9 @@ SwitchToSetup() {
 
 SwitchToPause() {
     global gMode := -1
+    ; Focus is gone, so the keyboard is not in a game field any more. Leaving
+    ; this set would keep the menu keys released after the user came back.
+    global gLoginFieldFlag := ""
     ; Coming back to the game re-orients the user from scratch, so the
     ; logged-out state gets announced again rather than being remembered as
     ; "already said" across a tab-away.
@@ -294,6 +302,7 @@ SwitchToPause() {
 
 SwitchToPlay() {
     global gMode := 0
+    global gLoginFieldFlag := ""
     Log("SwitchToPlay")
     Say(T("play mode"))
 }
@@ -410,6 +419,23 @@ BuildMainMenu() {
 BuildLoginScreenMenu() {
     global gLoginMenu := MenuNode(T("login screen, not logged in"))
 
+    ; The screen's own controls first - this is the one screen where they are
+    ; the point. The tool stores none of what is typed into them.
+    accountItem := MenuNode(T("account name"), gLoginMenu)
+    accountItem.action := (item) => LoginFieldAction("account")
+
+    passwordItem := MenuNode(T("password"), gLoginMenu)
+    passwordItem.action := (item) => LoginFieldAction("password")
+
+    submitItem := MenuNode(T("log in"), gLoginMenu)
+    submitItem.action := (item) => LoginSubmitAction()
+
+    saveNameItem := MenuNode(T("save account name"), gLoginMenu)
+    saveNameItem.action := (item) => LoginSaveNameToggleAction()
+
+    ; Then everything that already worked here, unchanged: a wrong game type
+    ; strands the tool on this screen, so the settings have to stay reachable
+    ; whether or not the login attempt ever succeeds.
     voiceItem := MenuNode(T("select voice"), gLoginMenu)
     for index, voice in GetVoices() {
         node := MenuNode(index ": " voice, voiceItem)

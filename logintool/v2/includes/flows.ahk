@@ -266,6 +266,194 @@ InitLogin(s := "") {
     Say(T("Unknown screen. Close the dialog in the game, then press Alt F1 twice."))
 }
 
+; ---------- login screen: the dialog itself ----------
+;
+; The tool NEVER stores an account name or a password, and never types one.
+; Everything below only moves the game's own focus around and then hands the
+; keyboard to the client - the credentials are typed by the user, into WoW,
+; exactly as a sighted player types them. There is no auto-login and there is
+; no field in settings.ini that could hold one. That is a fixed property of
+; this tool, not a default.
+;
+; What it buys is the part a screen reader cannot get on its own: knowing which
+; control you are on, what is already in the account box, and whether the
+; attempt went anywhere.
+
+; The capture-pixel rectangle of a WoW UI-space rectangle, as the "x,y,w,h"
+; string SkuLoginSense wants for --region. Capture pixels are client-area
+; pixels, so this is UiToScreen minus the client origin.
+UiRegionString(uiX1, uiY1, uiX2, uiY2) {
+    client := WowClientRect()
+    if (client = "")
+        return ""
+    a := UiToScreen(uiX1, uiY1)
+    b := UiToScreen(uiX2, uiY2)
+    x := Max(0, Min(a.x, b.x) - client.x)
+    y := Max(0, Min(a.y, b.y) - client.y)
+    return Round(x) "," Round(y) "," Round(Abs(b.x - a.x)) "," Round(Abs(b.y - a.y))
+}
+
+; What is in the account-name box right now. OCR of the BOX alone (the black
+; edit box measures UI y 392..413, centred, 72 UI units either side) so that a
+; label somewhere else on the screen can never be read out as the content.
+LoginAccountFieldText() {
+    region := UiRegionString(9920, 388, 10080, 418)
+    if (region = "")
+        return ""
+    s := Sense("--region " region)
+    if !(SenseOk(s) && s.Has("lines"))
+        return ""
+    text := ""
+    for line in s["lines"]
+        text .= (text = "" ? "" : " ") line["text"]
+    return Trim(text)
+}
+
+SayAccountFieldContent() {
+    current := LoginAccountFieldText()
+    Say(T("account name") ": " (current = "" ? T("empty") : current))
+}
+
+; Put the game's caret in one of the two fields and hand the keyboard over.
+; While a field is armed the menu keys are released to the client (keybinds.ahk),
+; so the arrows edit the text instead of moving the menu - an edit box without
+; working arrow keys is not an accessible edit box.
+LoginFieldAction(which) {
+    global gLoginFieldFlag
+    widget := (which = "account") ? "LoginAccountField" : "LoginPasswordField"
+    if !gWidgets.Has(widget) {
+        Say(T("This is not available on this screen."))
+        return
+    }
+    ClickWidget(widget)
+    Sleep(200)
+    gLoginFieldFlag := which
+    if (which = "account") {
+        SayAccountFieldContent()
+        SayQueued(T("Type now. Enter ends the entry, Escape leaves it."))
+    } else {
+        Say(T("password"))
+        SayQueued(T("Type now. The password is never read back. Enter ends the entry, Escape leaves it."))
+    }
+}
+
+; Enter/Escape while a field is armed. Neither is forwarded to the game: Enter
+; in WoW's account box submits the login, and submitting by accident on the way
+; out of a text field is exactly the surprise this is meant to remove. Logging
+; in is its own menu entry.
+LoginFieldFinish(readBack) {
+    global gLoginFieldFlag
+    which := gLoginFieldFlag
+    gLoginFieldFlag := ""
+    if (which = "account" && readBack)
+        SayAccountFieldContent()
+    else
+        Say(T("Entry ended."))
+    if (gCurrentItem != "")
+        SayQueued(gCurrentItem.name)
+}
+
+; Back to where the user was standing in the login menu after a flow.
+LoginMenuReturn() {
+    if (gCurrentItem != "" && InMenuTree(gCurrentItem, gLoginMenu))
+        SayQueued(gCurrentItem.name)
+    else
+        gLoginMenu.EnterQueued()
+}
+
+; Press the game's own Login button and follow what happens.
+LoginSubmitAction() {
+    global gOnLoginScreen, gLoginFieldFlag
+    if !gWidgets.Has("LoginSubmitButton") {
+        Say(T("This is not available on this screen."))
+        return
+    }
+    gLoginFieldFlag := ""
+    Log("LoginSubmit: pressing the game's Login button")
+    ClickWidget("LoginSubmitButton")
+    Say(T("Logging in. Please wait."))
+    lastPopupText := ""
+    tries := 0
+    loop {
+        if FlowAbort("LoginSubmit")
+            return
+        Sleep(1200)
+        s := SenseQuick()
+        if SenseOk(s) && !SenseCheck(s, "login") {
+            ; Past the login screen. Hand over to the normal initialization so
+            ; whatever the client landed on gets built the usual way - the
+            ; character list, the realm dialog, the contract.
+            Log("LoginSubmit: left the login screen -> " s["screen"])
+            gOnLoginScreen := false
+            InitLogin(s)
+            return
+        }
+        if SenseOk(s) && AnyPopup(s) {
+            full := Sense()
+            text := PopupText(full)
+            if IsOneButtonPopup(full) {
+                ; NEVER press this one. Blizzard's login PROGRESS dialogs are
+                ; single-button popups whose one button is Abbrechen, and its
+                ; OnAccept disconnects the login that is under way - the same
+                ; trap that was killing every realm join (see IsOneButtonPopup).
+                ; Read it, keep waiting; it clears itself either way.
+                if (text != "" && text != lastPopupText) {
+                    lastPopupText := text
+                    Log("LoginSubmit: progress popup '" text "' - waiting, not clicking")
+                    Say(text)
+                }
+            } else {
+                ; Two buttons means a real question, and on this screen it is
+                ; the failure: wrong account or password, server unreachable.
+                Log("LoginSubmit: answerable popup - " text)
+                SpeakAndClosePopup(full)
+                Sleep(400)
+                SayQueued(T("The login did not go through."))
+                LoginMenuReturn()
+                return
+            }
+        }
+        tries++
+        if (tries > 30)
+            break
+    }
+    Log("LoginSubmit: still on the login screen after the timeout")
+    Say(T("The login did not go through."))
+    LoginMenuReturn()
+}
+
+; "Account-Namen speichern" is the GAME'S option - WoW writes the name into its
+; own Config.wtf. The tool stores nothing here or anywhere else; it only ticks
+; the box the user asked it to tick.
+;
+; The state is read from the box interior. Unchecked it is flat near-black
+; (measured 11..15 on every sample across it) and the check mark is a bright
+; texture, so any bright pixel inside means checked. Read AFTER the click,
+; because the state the user needs is the one they just moved to.
+LoginSaveNameToggleAction() {
+    if !gWidgets.Has("LoginSaveAccountCheckbox") {
+        Say(T("This is not available on this screen."))
+        return
+    }
+    ClickWidget("LoginSaveAccountCheckbox")
+    Sleep(300)
+    Say(T("save account name") ": " (LoginSaveNameChecked() ? T("on") : T("off")))
+}
+
+LoginSaveNameChecked() {
+    box := gWidgets["LoginSaveAccountCheckbox"]
+    points := []
+    for dx in [-4, -2, 0, 2, 4] {
+        for dy in [-3, 0, 3]
+            points.Push(UiToScreen(box.x + dx, box.y + dy))
+    }
+    for c in ScreenColors(points) {
+        if (c != "" && Max(c.r, c.g, c.b) > 90)
+            return true
+    }
+    return false
+}
+
 AcceptContract() {
     MoveToWidget("AcceptContractTextCenter")
     Sleep(2000)

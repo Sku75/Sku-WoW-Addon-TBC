@@ -141,3 +141,16 @@ detect game type automatically==определять тип игры автом�
 game type is detected automatically now==Тип игры теперь определяется автоматически.
 login screen, not logged in==Экран входа, вход не выполнен
 Not logged in. Either there is no connection to the server, or account name and password still have to be entered in the game.==Вход не выполнен. Либо нет соединения с сервером, либо имя учётной записи и пароль ещё нужно ввести в игре.
+account name==Имя учётной записи
+password==Пароль
+log in==Войти
+save account name==Сохранить имя учётной записи
+empty==пусто
+on==включено
+off==выключено
+Type now. Enter ends the entry, Escape leaves it.==Печатай сейчас. Enter завершает ввод, Escape выходит из него.
+Type now. The password is never read back. Enter ends the entry, Escape leaves it.==Печатай сейчас. Пароль никогда не зачитывается. Enter завершает ввод, Escape выходит из него.
+Entry ended.==Ввод завершён.
+Logging in. Please wait.==Выполняется вход. Подожди.
+The login did not go through.==Войти не удалось.
+This is not available on this screen.==На этом экране это недоступно.

@@ -238,6 +238,53 @@ Changements dans Sku v43.0
             log.txt, et les journaux d'une installation existante ne sont jamais touchés par une
             mise à jour.
 
+    Outil de connexion : l'écran de connexion s'annonçait comme la sélection de personnage
+        Simple : Quand le jeu n'atteint pas le serveur au démarrage, on n'arrive pas sur la
+            sélection de personnage mais sur l'écran de connexion, avec nom de compte, mot de
+            passe et bouton Login. L'outil y menait au menu principal, dont la première entrée
+            est « sélectionner un personnage » : l'écran qui prouve justement qu'il n'y a aucune
+            liste de personnages s'annonçait donc comme la sélection de personnage. Qui ne le voit
+            pas n'entendait rien qui le distingue du vrai. L'outil annonce désormais une fois à
+            l'arrivée : pas connecté, soit il n'y a pas de connexion au serveur, soit le nom de
+            compte et le mot de passe doivent encore être saisis dans le jeu. Il remarque aussi
+            maintenant le changement d'écran : si l'on se connecte à la main, la liste des
+            personnages est construite aussitôt, au lieu de laisser l'outil muet sur l'ancien
+            menu.
+        Technique : « pas de connexion » n'est PAS un écran distinct - vérifié sur le client
+            2.5.6 en fonctionnement, il est identique au pixel et à l'OCR près à un écran de
+            connexion normal (mêmes sondes de widgets, checks.login = true, aucune fenêtre). Il
+            n'y a donc rien à marquer : l'outil n'annonce que ce qui y est toujours vrai, ce
+            client n'est pas connecté. Le menu est désormais son propre arbre plutôt que le menu
+            principal, et InitLogin ne s'exécutait qu'au changement de MODE, d'où un changement
+            d'écran passé inaperçu ; le veilleur déclenche maintenant une réinitialisation
+            complète dès que l'écran de connexion est atteint ou quitté.
+
+    Outil de connexion : l'écran de connexion est désormais utilisable
+        Simple : Le menu de l'écran de connexion commence maintenant par les commandes de l'écran
+            lui-même : nom de compte, mot de passe, se connecter, enregistrer le nom de compte -
+            puis, inchangés, la voix, la langue, le type de jeu, la région et la version, afin que
+            les réglages restent accessibles même si la connexion échoue. L'outil n'enregistre
+            RIEN et ne saisit rien : il place seulement le curseur du jeu dans le champ et passe
+            le clavier au client, c'est vous qui tapez. Il n'y a pas de connexion automatique et
+            il n'y en aura pas. Le nom de compte est lu à voix haute, « vide » s'il est vide ; le
+            mot de passe n'est JAMAIS lu. Tant que le clavier appartient à un champ, les flèches
+            vont au jeu, pour pouvoir atteindre une faute de frappe ; Entrée termine la saisie,
+            Échap la quitte, et aucune des deux n'est transmise au jeu - se connecter est une
+            entrée à part, pour que rien ne parte par accident. Fermer et rouvrir Battle.net reste
+            généralement plus rapide ; la voie manuelle existe pour ceux qui la veulent.
+        Technique : quatre nouveaux widgets dans data.ini ([Classic] et [BurningCrusade]) :
+            LoginAccountField 10000,403, LoginPasswordField 10000,478, LoginSubmitButton
+            10000,531 et LoginSaveAccountCheckbox 26,662 - mesurés sur le client en
+            fonctionnement en 2880x1800 puis convertis dans l'espace d'interface de 768 de haut,
+            donc indépendants de la résolution, et recoupés avec des entrées déjà présentes
+            (« Account erstellen » mesuré à 549 contre les 550 enregistrés). Le contenu du champ
+            est lu par OCR du CHAMP seul, pour qu'aucune étiquette venue d'ailleurs ne passe pour
+            du contenu. « Se connecter » suit la tentative : les fenêtres de progression à un
+            seul bouton sont lues mais PAS cliquées, car leur unique bouton est Annuler et il
+            coupe la connexion en cours - le même piège que pour l'entrée en royaume ; les
+            fenêtres à deux boutons sont lues et traitées. Là où les widgets manquent (Cata,
+            Retail), les entrées le disent et ne font rien.
+
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
