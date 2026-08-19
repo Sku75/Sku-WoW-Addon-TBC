@@ -158,3 +158,4 @@ No characters on this realm yet.==Todavía no hay personajes en este reino.
 The server was not found in the list. The list is being read again.==No se encontró el servidor en la lista. La lista se está leyendo de nuevo.
 Attention. The game is on a different server:==Atención. El juego está en otro servidor:
 Change the server again before you play here.==Cambia de servidor otra vez antes de jugar aquí.
+Agreed. Please wait.==Aceptado. Por favor espera.

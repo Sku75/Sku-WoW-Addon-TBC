@@ -44,9 +44,35 @@ PopupText(s) {
     return text
 }
 
+; A THIRD popup button row, checked here because the helper's four popup checks
+; probe two FIXED rows - ui y 386 and 412 (Sensor.cs; note its own click widgets
+; sit at 397/405, between them). A StaticPopup's height follows its text, so a
+; dialog whose button lands BETWEEN those rows is invisible to all four.
+;
+; "Dieser Name ist nicht verfuegbar." is exactly that. Measured on the live
+; 2880x1800 client: its OK button spans ui y 392..409 and x offset -87..+83, so
+; the 386 probe reads dialog frame 14 px above it and the 412 probe frame 8 px
+; below it. Every check came back false, the screen classified as plain
+; "charcreate", and the tool stood in front of the dialog in silence while the
+; user waited for a name that was never going to be accepted. (The BC branch
+; already probes 400 and DID see it - only Classic was blind.)
+;
+; Probed at the button's centre line, ui y 400, in the same three columns the
+; fixed rows use: centre-85 alone for a one-button dialog, -198 and +196 together
+; for a two-button one.
+PopupMidTwo(s) {
+    return SenseProbeMatches(s, "PopupMidLeft", "GenericRedButton")
+        && SenseProbeMatches(s, "PopupMidRight", "GenericRedButton")
+}
+
+PopupMidOne(s) {
+    return SenseProbeMatches(s, "PopupMidButton", "GenericRedButton") && !PopupMidTwo(s)
+}
+
 AnyPopup(s) {
     return SenseCheck(s, "popup11") || SenseCheck(s, "popup21")
         || SenseCheck(s, "popup12") || SenseCheck(s, "popup22")
+        || PopupMidOne(s) || PopupMidTwo(s)
 }
 
 ; Blizzard's login PROGRESS dialogs are single-button popups whose one button is
@@ -67,7 +93,7 @@ AnyPopup(s) {
 ; fails. Two-button popups stay answered - those are real questions
 ; (REALM_IS_FULL and friends) whose buttons are Yes/No, not Cancel.
 IsOneButtonPopup(s) {
-    return SenseCheck(s, "popup11") || SenseCheck(s, "popup21")
+    return SenseCheck(s, "popup11") || SenseCheck(s, "popup21") || PopupMidOne(s)
 }
 
 ; Enter is not safe once a popup is on screen, and NOT clicking the button was
@@ -119,6 +145,11 @@ SpeakAndClosePopup(s) {
         ClickWidget("Is12PopupButtonLeft")
     else if SenseCheck(s, "popup22")
         ClickWidget("Is22PopupButtonRight")
+    else if PopupMidTwo(s)
+        ClickWidget("PopupMidRight")
+    else if PopupMidOne(s)
+        ; The probe row IS the button, so this click cannot land beside it.
+        ClickWidget("PopupMidButton")
     Sleep(400)
 }
 
@@ -155,6 +186,12 @@ InitLogin(s := "") {
         ; Arriving on the open hardcore warning (tool start or refocus while
         ; it is up): re-ask instead of treating the screen as unknown.
         AskHardcoreConfirm(Sense())
+        return
+    }
+    if IsHardcoreCreateConfirm(s) {
+        ; The hardcore CREATION rules - arriving on them after a refocus. Must
+        ; come before the charcreate branch below, which Escapes the screen away.
+        AskHardcoreCreateConfirm()
         return
     }
     if SenseCheck(s, "realmselect") {
@@ -1299,6 +1336,16 @@ EnterCharacterNameHandler() {
             continue
         }
         Log("EnterCharacterName: try " tries ", screen=" s["screen"])
+        if IsHardcoreCreateConfirm(s) {
+            ; Create on a hardcore realm brings up the rules dialog. The name
+            ; entry is over: hand Enter/Escape to the dialog, because the keybind
+            ; dispatch checks gEnterCharacterNameFlag FIRST and would otherwise
+            ; keep sending Enter into a screen that is no longer listening.
+            Log("EnterCharacterName: hardcore creation rules are up")
+            gEnterCharacterNameFlag := false
+            AskHardcoreCreateConfirm()
+            return
+        }
         ; Hardcore warning popup or similar on the create screen.
         if (IsCharCreateScreen(s) && AnyPopup(s)) {
             SpeakAndClosePopup(s)
@@ -1504,7 +1551,7 @@ CancelDelete() {
 ; gHardcoreConfirmFlag). NEVER auto-answer this dialog - the old timeout
 ; path pressed Escape, which silently declined the hardcore realm entry.
 AskHardcoreConfirm(s) {
-    global gHardcoreConfirmFlag := true
+    global gHardcoreConfirmFlag := true, gHardcoreConfirmKind := "realm"
     Log("HardcoreConfirm: dialog up - asking the user")
     ; Only the dialog's own text: x 0.36-0.63, y 0.41-0.57 is the black body
     ; between the title bar and the buttons; the realm list visible around
@@ -1521,7 +1568,15 @@ AskHardcoreConfirm(s) {
 }
 
 HardcoreConfirmAnswer(accept) {
-    global gHardcoreConfirmFlag := false, gBusy
+    global gHardcoreConfirmFlag := false, gHardcoreConfirmKind, gBusy
+    ; One flag, two dialogs: the realm-list warning and the creation rules need
+    ; different buttons clicked and a different continuation.
+    kind := gHardcoreConfirmKind
+    gHardcoreConfirmKind := ""
+    if (kind = "create") {
+        HardcoreCreateAnswer(accept, SenseQuick())
+        return
+    }
     if !SenseCheck(SenseQuick(), "hardcoreConfirm") {
         ; The dialog is gone (answered in the game, or the client closed it).
         Say(T("Something went wrong. Please restart the game and try again."))
@@ -1546,6 +1601,218 @@ HardcoreConfirmAnswer(accept) {
     } finally {
         gBusy := false
     }
+}
+
+; ---------- hardcore CHARACTER CREATION rules ----------
+
+; The SECOND hardcore dialog. Pressing Create on a hardcore realm brings
+; HardcorePopUpFrame back, this time through ShowCharacterCreationWarning: the
+; "Willkommen zu WoW Classic Hardcore-Realms" rules that have to be accepted
+; before the character exists. Same frame as the realm-select warning, but
+; SetSize(510,580) instead of (510,240), so its two buttons sit at ui y 551
+; instead of 448 - and nothing recognised it. The modal frame also dims the
+; screen behind it, which drops the charcreate probe as well, so the helper
+; reported "unknown" and the tool stood mute in front of a dialog only a sighted
+; player could answer.
+;
+; Evaluated here instead of in the helper: the sense JSON already carries every
+; widget probe (repl --probes), so a new screen check costs four data.ini entries
+; and no rebuilt exe. Same shape as the helper's IsHardcoreConfirm - two
+; glue-tinted red buttons on one row, a non-red gap between them, black body.
+IsHardcoreCreateConfirm(s) {
+    if !SenseOk(s)
+        return false
+    accept := SenseProbe(s, "HcCreateAcceptButton")
+    decline := SenseProbe(s, "HcCreateDeclineButton")
+    gap := SenseProbe(s, "HcCreateGap")
+    if (accept = "" || decline = "" || gap = "")
+        return false
+    return IsGlueTintedRedProbe(accept) && IsGlueTintedRedProbe(decline)
+        && !IsGlueTintedRedProbe(gap)
+        && SenseProbeMatches(s, "HcCreateBackdrop", "GenericBlack")
+}
+
+; Port of the helper's IsGlueTintedRed: the glue dialog tint darkens the red
+; button texture to about 0.6 brightness (measured 84,0,0 at ui y 551), which
+; GenericRedButton's +-5 window can never match.
+IsGlueTintedRedProbe(p) {
+    return p != "" && p["r"] >= 75 && p["r"] <= 100 && p["g"] <= 8 && p["b"] <= 8
+}
+
+; The dialog body as OCR lines. The frame is 510 ui units wide and centred, and
+; the glue scale is screenHeight/768 - so the band is computed rather than
+; hardcoded per aspect ratio, which a fixed 0.36..0.63 band would be.
+HcCreateLines(s) {
+    out := []
+    if !SenseOk(s)
+        return out
+    halfW := 150 * (s["height"] / 768) / s["width"]
+    ; y2 543, not 525: the buttons' top edge is at ui 547, so the extra units are
+    ; free and a line sitting just under the old bound is no longer dropped.
+    for line in OcrLinesInRegion(s, 0.5 - halfW, 205 / 768, 0.5 + halfW, 543 / 768) {
+        if (line["h"] > s["height"] * 0.04)   ; skip icons/big artifacts
+            continue
+        out.Push(line)
+    }
+    return out
+}
+
+; Wheel over the dialog body. The scroll box is 470 ui units tall over more text
+; than that, so the visible page ends mid-sentence - on the live German client
+; the last readable line stopped at "um diese Bedingungen zu". Reading a rule set
+; the user is being asked to ACCEPT only as far as it happens to fit is not good
+; enough.
+HcCreateScroll() {
+    s := SenseQuick()
+    if !SenseOk(s)
+        return
+    p := PxToScreen(s["width"] * 0.5, s["height"] * 0.45)
+    MouseMove(Round(p.x), Round(p.y), 0)
+    Sleep(40)
+    ; Same spacing lesson as the realm list: notches fired back to back are
+    ; swallowed by the client.
+    loop 6 {
+        Click("WheelDown")
+        Sleep(25)
+    }
+    Sleep(140)
+}
+
+; Page through the whole agreement and return it as one string.
+HcCreateDialogText() {
+    seen := Map()
+    parts := []
+    pages := 0
+    s := Sense()
+    loop {
+        if !SenseOk(s)
+            break
+        fresh := 0
+        for line in HcCreateLines(s) {
+            t := Trim(line["text"])
+            if (t = "" || seen.Has(t))
+                continue
+            seen[t] := true
+            parts.Push(t)
+            fresh++
+        }
+        pages++
+        Log("HcCreateConfirm: page " pages ": " fresh " new line(s)")
+        if (pages > 1 && fresh = 0)
+            break
+        if (pages >= 8) {
+            Log("HcCreateConfirm: page cap reached - the text may be incomplete")
+            break
+        }
+        HcCreateScroll()
+        s := Sense()
+    }
+    Log("HcCreateConfirm: read " parts.Length " line(s) over " pages " page(s)")
+    out := ""
+    for t in parts
+        out .= (out = "" ? "" : " ") t
+    return out
+}
+
+; Read the rules and hand the decision to the user. Never auto-answer: agreeing
+; creates the character, declining does not, and neither is the tool's call.
+AskHardcoreCreateConfirm() {
+    global gHardcoreConfirmFlag := true, gHardcoreConfirmKind := "create"
+    Log("HcCreateConfirm: dialog up - reading it to the user")
+    ; Paging the text costs a few seconds of OCR - say something first, or the
+    ; dialog arrives as silence.
+    Say(T("Please wait."))
+    text := HcCreateDialogText()
+    if (text != "")
+        SayQueued(text)
+    SayQueued(T("Press Enter to agree, or press Escape to decline."))
+}
+
+HardcoreCreateAnswer(accept, s) {
+    global gBusy, gEnterCharacterNameFlag
+    if !IsHardcoreCreateConfirm(s) {
+        Log("HcCreateConfirm: dialog was gone before the answer")
+        Say(T("Something went wrong. Please restart the game and try again."))
+        return
+    }
+    gBusy := true
+    try {
+        if accept {
+            Log("HcCreateConfirm: accepted")
+            Say(T("Agreed. Please wait."))
+            ClickWidget("HcCreateAcceptButton")
+            WaitForCharacterCreated()
+        } else {
+            Log("HcCreateConfirm: declined")
+            Say(T("Declined."))
+            ClickWidget("HcCreateDeclineButton")
+            Sleep(800)
+            s2 := SenseQuick()
+            if IsCharCreateScreen(s2) {
+                ; Still on the creation screen with the name typed. Leave the
+                ; keyboard where it works: Enter tries again (and brings the
+                ; rules back), Escape cancels the creation.
+                gEnterCharacterNameFlag := true
+                SayQueued(T("enter the name for the new character and press enter, or escape to cancel character creation."))
+            } else {
+                InitLogin(s2)
+            }
+        }
+    } finally {
+        gBusy := false
+    }
+}
+
+; The accept click ran C_CharacterCreation.CreateCharacter, so from here the rule
+; is the one the realm join had to learn: WAIT, press nothing.
+WaitForCharacterCreated() {
+    global gPendingCreate, gEnterCharacterNameFlag
+    tries := 0
+    loop {
+        if FlowAbort("HcCreateConfirm")
+            return
+        Sleep(1200)
+        s := Sense()
+        if SenseOk(s) {
+            if SenseCheck(s, "charselect") {
+                Log("HcCreateConfirm: character created")
+                gPendingCreate := ""
+                Say(T("Character created"))
+                SayQueued(T("Please wait, the character list is being rebuilt."))
+                Sleep(1200)
+                RefreshCharacterMenuSettled()
+                gMainMenu.EnterQueued()
+                return
+            }
+            if IsHardcoreCreateConfirm(s) {
+                ; The click did not take, or a second warning came up. Never
+                ; auto-answer it - hand it back to the user.
+                Log("HcCreateConfirm: rules still up - re-asking")
+                AskHardcoreCreateConfirm()
+                return
+            }
+            if (IsCharCreateScreen(s) && AnyPopup(s)) {
+                ; The name was rejected or is taken: read the popup, close it and
+                ; let the user retype.
+                SpeakAndClosePopup(s)
+                Sleep(400)
+                if IsCharCreateScreen(SenseQuick()) {
+                    gEnterCharacterNameFlag := true
+                    Send("^a")
+                    Sleep(100)
+                    Send("{Backspace}")
+                    Say(T("enter the name for the new character and press enter, or escape to cancel character creation."))
+                    return
+                }
+            }
+            Log("HcCreateConfirm: waiting - " s["screen"])
+        }
+        tries++
+        if (tries > 20)
+            break
+    }
+    Log("HcCreateConfirm: timed out waiting for the character")
+    FailFlow()
 }
 
 ; After agreeing to the hardcore warning: WAIT. Press nothing.

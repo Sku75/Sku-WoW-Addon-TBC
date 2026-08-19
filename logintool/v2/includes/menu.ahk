@@ -26,6 +26,11 @@ global gLastGlueSense := 0
 global gRealmMenuItem := ""       ; the "switch server" main-menu node; the realm menu builds into it
 global gRealmMenuOffered := false ; the open realm dialog is already presented as the current menu
 global gHardcoreConfirmFlag := false ; the hardcore warning is up: Enter agrees, Escape declines
+; WHICH hardcore warning owns Enter/Escape: "" (none), "realm" (the
+; death-is-permanent warning on the realm list) or "create" (the rules shown
+; when a character is created on a hardcore realm). One flag, two dialogs -
+; they need different buttons clicked and a different continuation.
+global gHardcoreConfirmKind := ""
 ; Every realm NAME from the last BuildRealmMenu, and the name the user asked to
 ; join. Both exist for one reason: to check afterwards that the client really
 ; landed on the realm that was picked. A pick that silently selects a different
@@ -202,6 +207,7 @@ Main() {
 
 CheckMode() {
     global gIsChecking, gLastGlueSense, gBusy, gMode, gRealmMenuOffered, gHardcoreConfirmFlag
+    global gHardcoreConfirmKind
     global gOnLoginScreen
     if (gIsChecking || gBusy)
         return
@@ -261,6 +267,14 @@ CheckMode() {
                     ; flow (tab-away and back, or a flow that missed it).
                     if !gHardcoreConfirmFlag
                         AskHardcoreConfirm(Sense())
+                } else if IsHardcoreCreateConfirm(s) {
+                    ; The hardcore CREATION rules. This branch is also what keeps
+                    ; them answerable: the modal frame dims the screen behind it,
+                    ; so every helper check goes false and the final else below
+                    ; used to clear gHardcoreConfirmFlag every 2.5 s - after which
+                    ; Enter and Escape no longer reached the dialog at all.
+                    if !gHardcoreConfirmFlag
+                        AskHardcoreCreateConfirm()
                 } else if SenseCheck(s, "realmselect") {
                     gHardcoreConfirmFlag := false
                     if !gRealmMenuOffered {
@@ -268,10 +282,11 @@ CheckMode() {
                         OfferOpenRealmDialog()
                     }
                 } else {
-                    ; Neither dialog is up any more: drop the modal states so
-                    ; a stale flag cannot hijack Enter/Escape later.
+                    ; No dialog is up any more: drop the modal states so a stale
+                    ; flag cannot hijack Enter/Escape later.
                     gRealmMenuOffered := false
                     gHardcoreConfirmFlag := false
+                    gHardcoreConfirmKind := ""
                 }
             }
         }

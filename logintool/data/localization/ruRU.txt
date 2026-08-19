@@ -158,3 +158,4 @@ No characters on this realm yet.==На этом сервере пока нет �
 The server was not found in the list. The list is being read again.==Сервер не найден в списке. Список считывается заново.
 Attention. The game is on a different server:==Внимание. Игра находится на другом сервере:
 Change the server again before you play here.==Смените сервер, прежде чем играть здесь.
+Agreed. Please wait.==Принято. Пожалуйста, подождите.
