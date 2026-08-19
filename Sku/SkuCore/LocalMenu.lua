@@ -5416,6 +5416,19 @@ local function tSkuCheckMenu()
 		end
 	end
 
+	-- Invariant (from the v43.0 path-walk regression): a path walk must never close
+	-- the menu on a node that has a BuildChildren -- that node is a LEVEL, and closing
+	-- the menu also closes every open interact window (the flightmaster's own gossip
+	-- frame, which is how this surfaced).
+	local tLeafCloses = (SkuOptions and SkuOptions.tMenuLeafCloseMisses) or 0
+	if tLeafCloses > 0 then
+		tViolations = tViolations + tLeafCloses
+		dprint("skucheck", "VIOLATION menu:", tLeafCloses,
+			"path walk(s) closed the menu on an unbuilt level this session, last:",
+			tostring(SkuOptions.tMenuLeafCloseLast))
+	end
+	tChecked = tChecked + 1
+
 	-- Tripwire tally: every ENTER this session that landed on a leaf with no
 	-- selectTarget under a select level (SkuGenericMenuItem.OnPostSelect logs the
 	-- detail). This is the shape the loading-route-list bug had in the live client.

@@ -328,8 +328,21 @@ function SkuOptions:SlashFunc(input, aSilent)
 					local tNodeId = tMenu[y].id and slower(tostring(tMenu[y].id))
 					local tIsMatch = (fields[x] == tNodeId or fields[x] == slower(tMenu[y].name))
 
-					if not tIsMatch and tMenu[y].children then
-						if #tMenu[y].children == 0 then
+					-- ★A MATCHED node still needs the pre-build unless it is `dynamic`.
+					-- The optimisation above rests on "OnSelect rebuilds a dynamic node's
+					-- children anyway" -- and OnPostSelect does, but ONLY for
+					-- `dynamic == true`. Every window node under Local (Dialog, Haendler,
+					-- Quest, Flugmeister, ...) carries a lazy BuildChildren and NO dynamic
+					-- flag, so it reached the tail below with an EMPTY child list, was
+					-- taken for a childless leaf, and the walk "selected" it and CLOSED
+					-- the menu -- and closing the menu clicks the close button of every
+					-- open interact window (~2340). Talking to a flightmaster therefore
+					-- shut its own gossip frame a frame after opening it, so the flight
+					-- map never appeared at all. Building only when the list is EMPTY
+					-- keeps the triple build away from the big dynamic lists the guard
+					-- was written for (a dynamic node is rebuilt by OnSelect regardless).
+					if tMenu[y].children and #tMenu[y].children == 0 then
+						if not tIsMatch or tMenu[y].dynamic ~= true then
 							tMenu[y]:BuildChildren()
 						end
 					end
@@ -371,6 +384,23 @@ function SkuOptions:SlashFunc(input, aSilent)
 							SkuOptions.currentMenuPosition:OnSelect()
 							SkuOptions:VocalizeCurrentMenuName()
 						else
+							-- Tripwire for the pre-build rule above: a node that HAS a
+							-- BuildChildren but arrives here EMPTY is a walk about to close
+							-- the menu on a level it should have descended into. Counted for
+							-- /skucheck menu, which is where this regression would have
+							-- shown up as a number instead of as "the flightmaster does not
+							-- work".
+							-- Every node inherits SkuGenericMenuItem's no-op BuildChildren by
+							-- REFERENCE (SkuUtil.TableCopy copies functions by reference), so
+							-- only a node carrying its OWN builder is a level; a genuine leaf
+							-- closing the menu is normal and must not count.
+							local tOwnBuilder = SkuOptions.currentMenuPosition.BuildChildren
+							if tOwnBuilder and SkuGenericMenuItem and tOwnBuilder ~= SkuGenericMenuItem.BuildChildren then
+								SkuOptions.tMenuLeafCloseMisses = (SkuOptions.tMenuLeafCloseMisses or 0) + 1
+								SkuOptions.tMenuLeafCloseLast = tostring(SkuOptions.currentMenuPosition.name)
+								dprint("menu: path walk closed on an unbuilt level",
+									tostring(SkuOptions.currentMenuPosition.name), "path", tostring(input))
+							end
 							SkuOptions.currentMenuPosition:OnSelect()
 							SkuOptions:CloseMenu()
 						end
