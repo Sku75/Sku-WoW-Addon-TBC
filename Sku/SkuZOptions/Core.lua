@@ -311,15 +311,6 @@ function SkuOptions:SlashFunc(input, aSilent)
 
 			local tMenu = SkuOptions.Menu
 			local tFoundMenuPos = nil
-
-			-- [v43.0 navquick probe] state on entry: what the root holds when a quick
-			-- list is being opened, so a failed descend can be told from a failed splice.
-			if SkuNav and SkuNav.navQuickMenuActive then
-				local tIds = ""
-				for z = 1, #tMenu do tIds = tIds..(tMenu[z].id and tostring(tMenu[z].id) or "-").."/" end
-				dprint("navquick", "slashfunc enter", "mode=", tostring(SkuNav.navQuickMenuActive), "input=", input, "#root=", #tMenu, "ids=", tIds)
-			end
-
 			-- tSelectedInLoop: the node this walk last handed to OnSelect. The tail below
 			-- uses it to avoid selecting the same node twice (see the note there).
 			local tSelectedInLoop = nil
@@ -346,7 +337,6 @@ function SkuOptions:SlashFunc(input, aSilent)
 					if tIsMatch then
 						tFoundMenuPos = tMenu[y]
 						tSelectedInLoop = tMenu[y]
-						if SkuNav and SkuNav.navQuickMenuActive then dprint("navquick", "slashfunc match", fields[x], "->", tMenu[y].name, "id=", tostring(tMenu[y].id)) end
 						tMenu[y].OnSelect(tMenu[y], true)
 						tMenu = tMenu[y].children
 						break
@@ -354,10 +344,6 @@ function SkuOptions:SlashFunc(input, aSilent)
 				end
 			end
 
-			-- [v43.0 navquick probe] why a quick-list open can land back at root.
-			if SkuNav and SkuNav.navQuickMenuActive then
-				dprint("navquick", "slashfunc result", "found=", tostring(tFoundMenuPos ~= nil), "name=", tFoundMenuPos and tFoundMenuPos.name or "nil", "children=", tFoundMenuPos and #(tFoundMenuPos.children or {}) or -1)
-			end
 			if tFoundMenuPos then
 				-- [v43.0] Build the target list ONCE per walk. The loop above already called
 				-- OnSelect on this very node, and OnSelect on a `dynamic` node CLEARS and

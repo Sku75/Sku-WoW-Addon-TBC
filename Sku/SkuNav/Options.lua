@@ -897,7 +897,6 @@ function SkuNav:UpdateQuickRootEntry()
 			tEntry.id = (tMode == "routes") and "navRouteDestinationsQuick" or "navWaypointsQuick"
 			tEntry.isNavQuickRoot = true
 			tEntry.navQuickMode = tMode
-			dprint("navquick", "root spliced", tMode, "label=", tLabel, "#root=", #SkuOptions.Menu)
 			tEntry.dynamic = true
 			tEntry.sorting = true
 			tEntry.isSelect = true
@@ -909,7 +908,6 @@ function SkuNav:UpdateQuickRootEntry()
 				-- the same builder used by the normal menu is untouched.
 				tEntry.BuildChildren = function(self)
 					SkuNav.RouteDestinationsBuildChildren(self)
-					dprint("navquick", "built routes", "#children=", #(self.children or {}))
 					for _, c in ipairs(self.children or {}) do c.OnBack = SkuNav.QuickBackToNavMenu end
 				end
 			else
@@ -917,13 +915,11 @@ function SkuNav:UpdateQuickRootEntry()
 				-- LEFT (OnBack) drops into the full "Direct waypoint" menu.
 				tEntry.BuildChildren = function(self)
 					SkuNav.WaypointsCurrentMapBuildChildren(self)
-					dprint("navquick", "built waypoints", "#children=", #(self.children or {}))
 					for _, c in ipairs(self.children or {}) do c.OnBack = SkuNav.QuickBackToDirectWaypointMenu end
 				end
 			end
 		end
 	elseif tExisting and SkuMenu and SkuMenu.Remove then
-		dprint("navquick", "root removed", "#root=", #SkuOptions.Menu)
 		SkuMenu:Remove(tExisting)
 	end
 end
@@ -933,16 +929,12 @@ end
 -- its stable id -- SlashFunc handles opening the menu and the combat/moving defer.
 function SkuNav:OpenWaypointsQuick()
 	SkuNav.navQuickMenuActive = "waypoints"
-	-- [v43.0 navquick probe]
-	dprint("navquick", "open waypoints", "menuOpen=", tostring(SkuOptions:IsMenuOpen()), "moving=", tostring(SkuState and SkuState:IsMoving()), "combat=", tostring(InCombatLockdown()))
 	pcall(function() SkuOptions:SlashFunc(Sku.MENU_ROOT .. ",navWaypointsQuick") end)
 end
 
 -- Shift-F10: open the "nearby route destinations" list directly.
 function SkuNav:OpenRouteDestinationsQuick()
 	SkuNav.navQuickMenuActive = "routes"
-	-- [v43.0 navquick probe]
-	dprint("navquick", "open routes", "menuOpen=", tostring(SkuOptions:IsMenuOpen()), "moving=", tostring(SkuState and SkuState:IsMoving()), "combat=", tostring(InCombatLockdown()))
 	pcall(function() SkuOptions:SlashFunc(Sku.MENU_ROOT .. ",navRouteDestinationsQuick") end)
 end
 
