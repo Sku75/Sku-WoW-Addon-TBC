@@ -153,9 +153,7 @@ InitLogin(s := "") {
     }
     if SenseCheck(s, "hardcoreConfirm") {
         ; Arriving on the open hardcore warning (tool start or refocus while
-        ; it is up): re-ask instead of treating the screen as unknown. No realm
-        ; row is known here - the resume joins by keyboard only.
-        global gPendingRealmRow := ""
+        ; it is up): re-ask instead of treating the screen as unknown.
         AskHardcoreConfirm(Sense())
         return
     }
@@ -1550,34 +1548,39 @@ HardcoreConfirmAnswer(accept) {
     }
 }
 
-; After agreeing: same landing logic as a normal realm switch.
+; After agreeing to the hardcore warning: WAIT. Press nothing.
 ;
-; Agreeing to the hardcore warning only CLOSES the warning - the realm list is
-; still open underneath with the realm selected, and nothing has joined it yet.
-; The first version only waited for charselect here, so it sat on the open realm
-; dialog for 20 rounds saying "wait" and then reported a timeout while the client
-; was idling on a screen this loop did not recognize. Join it the same way
-; RealmSelectAction does: Enter first (coordinate-free), then a double-click on
-; the row, then escape out cleanly.
+; Blizzard's own accept button has ALREADY joined the realm.
+; HardcorePopUpAcceptButtonMixin:OnClick (client source,
+; Blizzard_GlueXML\Classic\HardcoreFrames.lua) calls
+; C_RealmList.ConnectToRealm(selectedRealm) and only THEN hides the dialog -
+; RealmWarning.lua does the same for the PvP warning. The realm list stays
+; visible for the whole connect, so "the list is still open" does NOT mean
+; "nothing joined it".
+;
+; This function used to read it that way and pressed the join itself: click the
+; row + Enter up front, then re-select + Enter, then a double-click. That Enter
+; went into the client's own connect dialog ("In Realm einloggen"), which is
+; StaticPopupDialogs["CANCEL"]: one button, Abbrechen, OnAccept =
+; C_Login.DisconnectFromServer(), and no ignoreKeys. So every hardcore join died
+; about a second after it started -
+;   Connection.log  BattleNet Join Realm       09:56:52.113
+;   Connection.log  Glue Script Disconnect...   09:56:53.104
+; "Glue Script" means Lua asked for the disconnect, i.e. it was us. What the
+; user heard: silence, one click, then the login screen again.
+;
+; The successful landing is CHARACTER CREATION, not charselect: the warning only
+; fires while the realm has no characters (RealmList_OnConnectToRealm), and an
+; empty realm sends CharacterSelect straight to GlueParent_SetScreen("charcreate")
+; (CharacterSelect.lua, numChars == 0). Waiting only for charselect is why a join
+; that did work still ran into a timeout.
 WaitForHardcoreJoin() {
-    global gLoginInitialized, gRealmMenuOffered, gPendingRealmRow
-    row := gPendingRealmRow
+    global gRealmMenuOffered, gLoginInitialized
     tries := 0
-    stuck := 0
     progress := 0
+    unknownRounds := 0
     lastPopupText := ""
-    ; The warning is closed and the list is back: press the join once up front so
-    ; a normal join costs no extra round.
     Sleep(600)
-    if SenseCheck(SenseQuick(), "realmselect") {
-        Log("HardcoreJoin: realm list still open - joining")
-        if (row != "") {
-            ClickOcrRect(row)
-            Sleep(300)
-        }
-        SafeJoinEnter("HardcoreJoin")
-        Sleep(1200)
-    }
     loop {
         if FlowAbort("HardcoreJoin")
             return
@@ -1586,27 +1589,33 @@ WaitForHardcoreJoin() {
             Log("HardcoreJoin: client is in the world - stopping")
             return
         }
-        if SenseCheck(s, "charselect") && !AnyPopup(s) {
+        if (SenseCheck(s, "charselect") && !AnyPopup(s)) {
             Log("HardcoreJoin: reached charselect")
-            gRealmMenuOffered := false
-            gLoginInitialized := true
-            gPendingRealmRow := ""
-            Say(T("switched to Server"))
-            SayQueued(T("Please wait, the character list is being rebuilt."))
-            RefreshCharacterMenuSettled()
-            Sleep(400)
-            gMainMenu.EnterQueued()
+            AnnounceRealmLanding()
+            HardcoreJoinArrived()
             return
         }
-        ; A hardcore join can end in a disconnect that drops the client to the
-        ; login/reconnect screen. Same rule as RealmSelectAction: read the
-        ; prompt and STOP. Never click here - the login screen's red buttons
-        ; (incl. Quit) would be mistaken for popup buttons - and never fall
-        ; through to the character-list rebuild, which is what made the tool
-        ; talk about characters while a reconnect prompt was on screen.
+        ; Empty realm: the client opens character creation on its own. That is a
+        ; SUCCESS, and this is the only place that can report it - once the tool
+        ; is in login mode CheckMode watches just the login screen and the two
+        ; dialogs, so a landing here went unannounced and looked like a hang.
+        if (IsCharCreateScreen(s) && !AnyPopup(s)) {
+            Log("HardcoreJoin: reached character creation - empty realm, the switch worked")
+            ; Escape FIRST: the realm name lives on the character panel, which
+            ; the creation screen does not show.
+            Send("{Esc}")           ; out to the empty character list
+            Sleep(1200)
+            AnnounceRealmLanding()
+            SayQueued(T("No characters on this realm yet."))
+            HardcoreJoinArrived()
+            return
+        }
+        ; The join can still end in a disconnect (server side, or the user
+        ; cancelling inside the game). Read the prompt and STOP - never click
+        ; here, the login screen's red buttons (Quit included) would be
+        ; mistaken for popup buttons.
         if (SenseCheck(s, "login") && !SenseCheck(s, "realmselect") && !SenseCheck(s, "charselect")) {
             Log("HardcoreJoin: dropped to login screen (likely disconnect) - stopping")
-            gPendingRealmRow := ""
             gRealmMenuOffered := false
             gLoginInitialized := false
             text := PopupText(s)
@@ -1621,8 +1630,8 @@ WaitForHardcoreJoin() {
             return
         }
         if (AnyPopup(s) && IsOneButtonPopup(s)) {
-            ; NEVER press this one - its only button is Cancel. See
-            ; IsOneButtonPopup.
+            ; The connect dialog. Its only button is Cancel: read it, never
+            ; press it. See the header comment.
             text := PopupText(s)
             if (text != "" && text != lastPopupText) {
                 lastPopupText := text
@@ -1630,60 +1639,151 @@ WaitForHardcoreJoin() {
                 Say(text)
             }
             progress++
+            unknownRounds := 0
             if (progress > 60) {
                 Log("HardcoreJoin: progress popup still up after 60 s - stopping")
-                gPendingRealmRow := ""
                 Say(T("The game is still connecting. Press Escape to cancel."))
                 return
             }
             Sleep(1000)
             continue
-        } else if AnyPopup(s) {
+        }
+        if AnyPopup(s) {
+            unknownRounds := 0
             Log("HardcoreJoin: popup - " s["screen"])
             SpeakAndClosePopup(s)
-            stuck := 0
         } else if SenseCheck(s, "realmselect") {
-            ; Still on the dialog. Retry the join a couple of ways, then give up
-            ; cleanly instead of running the counter out in silence.
-            stuck++
-            if (stuck = 2) {
-                Log("HardcoreJoin: still open, re-selecting + Enter")
-                if (row != "") {
-                    ClickOcrRect(row)
-                    Sleep(300)
-                }
-                SafeJoinEnter("HardcoreJoin")
-            } else if (stuck = 4 && row != "") {
-                Log("HardcoreJoin: still open, trying double-click join")
-                DoubleClickOcrRect(row)
-            } else if (stuck >= 6) {
-                Log("HardcoreJoin: could not join, escaping out")
-                Send("{Escape}")
-                Sleep(1000)
-                gPendingRealmRow := ""
-                Say(T("Could not switch server."))
-                SayQueued(T("Please wait, the character list is being rebuilt."))
-                RefreshCharacterMenuSettled()
-                Sleep(400)
-                gMainMenu.EnterQueued()
+            ; The list is still on screen because the connect runs UNDERNEATH
+            ; it. That is the normal picture for the first seconds of a join and
+            ; there is nothing to press - the retry ladder that used to live
+            ; here is what cancelled the join. Wait, and say so now and then so
+            ; the wait is not silent.
+            unknownRounds := 0
+            if (Mod(tries, 8) = 3)
+                Say(T("Please wait."))
+        } else {
+            ; Name the screen: this branch used to be a silent "wait".
+            unknownRounds++
+            Log("HardcoreJoin: waiting - " (SenseOk(s) ? s["screen"] : "no sense"))
+            if (unknownRounds >= 10) {
+                ; The realm dialog is gone, no disconnect happened and the login
+                ; screen never came up - every way this join could have FAILED is
+                ; handled by a branch above, so the switch went through and the
+                ; tool simply cannot name the screen it landed on. Grinding on to
+                ; the round cap and then saying "could not switch server" is
+                ; wrong twice over. That is exactly what a knife-edge
+                ; CharCreationBackdrop probe produced on 2026-08-19: an open
+                ; character creation screen classified "unknown", and 65 rounds
+                ; of "wait" spoken over it.
+                Log("HardcoreJoin: screen unknown for " unknownRounds " rounds - handing back to the user")
+                Say(T("switched to Server"))
+                SayQueued(T("Unknown screen. Close the dialog in the game, then press Alt F1 twice."))
+                gLoginInitialized := false
                 return
             }
-        } else {
-            ; Name the screen: this silent "wait" branch is why the timed-out run
-            ; left 45 seconds of unreadable log.
-            Log("HardcoreJoin: waiting - " (SenseOk(s) ? s["screen"] : "no sense"))
             Say(T("wait"))
-            stuck := 0
         }
         Sleep(1000)
         tries++
-        if (tries > 20) {
-            Log("HardcoreJoin: timed out")
-            gPendingRealmRow := ""
-            FailFlow()
+        if (tries > 45) {
+            ; Give up without touching anything. Escape here would run
+            ; RealmList_OnCancel -> C_Login.DisconnectFromServer(), i.e. the
+            ; exact disconnect this function exists to avoid. The dialog is
+            ; still open, so dropping the offered flag lets CheckMode rebuild
+            ; the realm menu and the user can pick again.
+            Log("HardcoreJoin: no landing after 45 rounds - leaving the dialog alone")
+            Say(T("Could not switch server."))
+            gRealmMenuOffered := false
             return
         }
     }
+}
+
+; ---------- did the client really land on the realm that was picked? ----------
+
+; CharSelectRealmName is a FontString at the TOP of the right-hand character
+; panel (CharacterSelect.xml: the panel anchors TOPRIGHT -5,-15, the label TOP
+; -10 inside it), above the character rows. OcrCharList already reads that panel
+; and then throws the label away with its left-edge alignment filter - the text
+; was always there, it was just never used.
+RealmNameOnCharScreen(s) {
+    best := ""
+    for line in OcrLinesInRegion(s, 0.74, 0.0, 1.0, 0.20) {
+        if (line["h"] > s["height"] * 0.04)
+            continue
+        if (best = "" || line["y"] < best["y"])
+            best := line
+    }
+    return best = "" ? "" : best["text"]
+}
+
+; OCR reads the same name differently from run to run, so compare on letters and
+; digits only, in lower case.
+RealmNameKey(t) {
+    return StrLower(RegExReplace(t, "[^a-zA-Z0-9]", ""))
+}
+
+; What realm is the client actually on? Returns state "ok" (matches the pick),
+; "wrong" (it is another realm from the list that was just built) or "unknown".
+;
+; Deliberately quiet unless it is sure: an unreadable line stays "unknown" and
+; is only logged, so an OCR garble after a switch that worked cannot cry wolf.
+CheckJoinedRealm() {
+    global gJoinRealmName, gRealmNames
+    wanted := gJoinRealmName
+    gJoinRealmName := ""
+    if (wanted = "")
+        return {state: "unknown", name: ""}
+    s := Sense()
+    if !SenseOk(s)
+        return {state: "unknown", name: ""}
+    got := RealmNameOnCharScreen(s)
+    key := RealmNameKey(got)
+    want := RealmNameKey(wanted)
+    if (key = "" || want = "") {
+        Log("JoinCheck: no realm name on the character screen (read '" got "')")
+        return {state: "unknown", name: ""}
+    }
+    if (InStr(key, want) || InStr(want, key)) {
+        Log("JoinCheck: character screen shows '" got "' - matches " wanted)
+        return {state: "ok", name: wanted}
+    }
+    for other in gRealmNames {
+        o := RealmNameKey(other)
+        if (o = "" || o = want)
+            continue
+        if (InStr(key, o) || InStr(o, key)) {
+            Log("JoinCheck: WRONG REALM - wanted '" wanted "', screen shows '" got "' = " other)
+            return {state: "wrong", name: other}
+        }
+    }
+    Log("JoinCheck: realm name '" got "' matches nothing - wanted " wanted)
+    return {state: "unknown", name: ""}
+}
+
+; Say what actually happened, in an order that cannot mislead: a wrong realm
+; must not be introduced by "server changed". Silence used to be the whole
+; problem here - a pick that selected the wrong row was announced as a success
+; and the user only found out after playing a character on the wrong realm.
+AnnounceRealmLanding() {
+    v := CheckJoinedRealm()
+    if (v.state = "wrong") {
+        Say(T("Attention. The game is on a different server:") " " v.name)
+        SayQueued(T("Change the server again before you play here."))
+        return
+    }
+    Say(T("switched to Server"))
+    if (v.state = "ok")
+        SayQueued(v.name)
+}
+
+; Shared landing once a join has reached the character screen.
+HardcoreJoinArrived() {
+    global gLoginInitialized := true, gRealmMenuOffered := false
+    SayQueued(T("Please wait, the character list is being rebuilt."))
+    RefreshCharacterMenuSettled()
+    Sleep(400)
+    gMainMenu.EnterQueued()
 }
 
 ; The realm dialog is open on the client's initiative (not via the tool's
@@ -1846,7 +1946,10 @@ RealmListScroll(notches, up := false) {
 }
 
 RealmListScrollTop() {
-    RealmListScroll(25, true)
+    ; One notch moves the list by roughly one row, so 25 notches only just
+    ; cleared a 41-row list and would NOT clear this region's 54. Overshooting
+    ; the top costs nothing but the 25 ms per notch.
+    RealmListScroll(60, true)
     Sleep(250)
 }
 
@@ -1965,6 +2068,12 @@ BuildRealmMenu(menuItem) {
     if SenseOk(sTop)
         s := sTop
 
+    ; Keep the plain names: AnnounceRealmLanding needs them to tell "the client
+    ; is on another realm from this very list" apart from "OCR garbled the line".
+    global gRealmNames := []
+    for entry in found
+        gRealmNames.Push(entry.row["text"])
+
     kids := []
     for entry in found {
         node := DetachedNode(kids, menuItem, entry.row["text"] entry.extra)
@@ -2019,21 +2128,44 @@ FindRealmRowByName(name) {
     RealmListScrollTop()
     pages := 0
     lastSig := ""
+    still := 0
     loop {
         s := Sense()
-        if !SenseOk(s)
+        if !SenseOk(s) {
+            Log("FindRealmRow: '" name "' - no sense on page " (pages + 1))
             return ""
+        }
         rows := RealmListRows(s)
         for r in rows {
-            if (r["text"] = name)
+            if (r["text"] = name) {
+                Log("FindRealmRow: '" name "' found on page " (pages + 1))
                 return r
+            }
         }
         sig := RealmRowSignature(rows)
         pages++
-        if (pages >= 15 || (pages > 1 && sig = lastSig))
+        ; An unchanged page normally means the bottom of the list - but it is
+        ; also exactly what a swallowed wheel notch looks like, and ONE of those
+        ; used to end the search silently. BuildRealmMenu needed 10 pages to
+        ; reach the last Era realm while this loop gave up after 15 with a
+        ; single-page stop condition, so a realm that IS in the menu could not
+        ; be re-found. Require two unchanged pages in a row, scroll harder after
+        ; the first one, and match BuildRealmMenu's runaway guard of 40.
+        if (pages > 1 && sig = lastSig) {
+            still++
+            if (still >= 2) {
+                Log("FindRealmRow: '" name "' not in the list - bottom after " pages " pages")
+                return ""
+            }
+        } else {
+            still := 0
+        }
+        if (pages >= 40) {
+            Log("FindRealmRow: '" name "' not found - page cap after " pages " pages")
             return ""
+        }
         lastSig := sig
-        RealmListScroll(3)
+        RealmListScroll(still > 0 ? 6 : 3)
         Sleep(320)
     }
 }
@@ -2086,10 +2218,22 @@ RealmSelectAction(row) {
     ; Re-find the row by name: the list scrolls, so the rect stored when the menu
     ; was built points at whatever now sits at those coordinates.
     fresh := FindRealmRowByName(row["text"])
-    if (fresh != "")
-        row := fresh
-    else
-        Log("RealmSelect: '" row["text"] "' not on screen after scrolling - using the stored rect")
+    if (fresh = "") {
+        ; NEVER fall back to the stored rect. It was captured at the scroll
+        ; position where the row was first SEEN (Soulseeker: page 10 of 10), and
+        ; the search above has just left the list somewhere else entirely - so
+        ; the click lands on a different realm and absolutely nothing says so.
+        ; That is how a Soulseeker pick joined Pyrewood Village and let the user
+        ; create a hardcore character there (2026-08-19). Refusing costs one
+        ; menu rebuild; guessing costs a character.
+        Log("RealmSelect: '" row["text"] "' not found after scrolling - refusing to click")
+        RealmListScrollTop()
+        Say(T("The server was not found in the list. The list is being read again."))
+        gRealmMenuOffered := false      ; CheckMode rebuilds the menu from the top
+        return
+    }
+    row := fresh
+    global gJoinRealmName := row["text"]
     Log("RealmSelect: '" row["text"] "' select")
     ; Select the realm with an OCR-rect click (reliable), then JOIN by pressing
     ; Enter - keyboard is coordinate-free, unlike the OK button whose stored
@@ -2118,7 +2262,7 @@ RealmSelectAction(row) {
             Log("RealmSelect: reached charselect")
             gRealmMenuOffered := false
             gLoginInitialized := true       ; also valid when the dialog was auto-opened before any init
-            Say(T("switched to Server"))
+            AnnounceRealmLanding()
             SayQueued(T("Please wait, the character list is being rebuilt."))
             RefreshCharacterMenuSettled()   ; wait for all slots to render
             Sleep(400)
@@ -2141,10 +2285,11 @@ RealmSelectAction(row) {
         }
         if SenseCheck(s, "hardcoreConfirm") {
             ; The hardcore warning: ask the user and end the flow - the
-            ; Enter/Escape keybinds answer via HardcoreConfirmAnswer. Hand the
-            ; row over: agreeing only DISMISSES the warning, it does not join,
-            ; so the resume has to press the join itself on this exact row.
-            global gPendingRealmRow := row
+            ; Enter/Escape keybinds answer via HardcoreConfirmAnswer. No row is
+            ; handed over: Blizzard's own accept button joins the realm itself
+            ; (HardcorePopUpAcceptButtonMixin:OnClick -> ConnectToRealm), so
+            ; WaitForHardcoreJoin only has to wait. Pressing the join again on
+            ; this row is what used to cancel it.
             AskHardcoreConfirm(s)
             return
         }
@@ -2171,8 +2316,24 @@ RealmSelectAction(row) {
             SpeakAndClosePopup(s)
             stuck := 0
         } else if IsCharCreateScreen(s) {
-            Send("{Esc}")
-            stuck := 0
+            ; The realm has no characters, so the client opened creation by
+            ; itself (CharacterSelect.lua, numChars == 0) - the switch WORKED.
+            ; Escaping silently and looping was why a working switch could still
+            ; end in "timed out" with the tool mute on the creation screen.
+            Log("RealmSelect: reached character creation - empty realm, the switch worked")
+            gRealmMenuOffered := false
+            gLoginInitialized := true
+            ; Escape FIRST: the realm name lives on the character panel, which
+            ; the creation screen does not show.
+            Send("{Esc}")           ; out to the empty character list
+            Sleep(1200)
+            AnnounceRealmLanding()
+            SayQueued(T("No characters on this realm yet."))
+            SayQueued(T("Please wait, the character list is being rebuilt."))
+            RefreshCharacterMenuSettled()
+            Sleep(400)
+            gMainMenu.EnterQueued()
+            return
         } else if SenseCheck(s, "realmselect") {
             ; Still on the dialog. Retry the join a couple of ways, then give up
             ; cleanly (escape out) instead of spam-clicking to a timeout.

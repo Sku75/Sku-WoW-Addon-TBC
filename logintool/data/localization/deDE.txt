@@ -154,3 +154,7 @@ Entry ended.==Eingabe beendet.
 Logging in. Please wait.==Anmeldung läuft. Bitte warten.
 The login did not go through.==Die Anmeldung hat nicht geklappt.
 This is not available on this screen.==Das ist auf diesem Bildschirm nicht verfügbar.
+No characters on this realm yet.==Auf diesem Server gibt es noch keine Charaktere.
+The server was not found in the list. The list is being read again.==Der Server wurde in der Liste nicht gefunden. Die Liste wird neu gelesen.
+Attention. The game is on a different server:==Achtung. Das Spiel ist auf einem anderen Server:
+Change the server again before you play here.==Wechsle den Server erneut, bevor du hier spielst.

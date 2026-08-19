@@ -1,4 +1,4 @@
-; Spoken menu engine + mode state machine + menu construction.
+﻿; Spoken menu engine + mode state machine + menu construction.
 ; Navigation semantics are identical to v1: Up/Down = siblings,
 ; PgUp/PgDn = +-10, Right = descend into first child (or re-announce a
 ; leaf), Left = back to parent, Enter = the item's action.
@@ -26,10 +26,12 @@ global gLastGlueSense := 0
 global gRealmMenuItem := ""       ; the "switch server" main-menu node; the realm menu builds into it
 global gRealmMenuOffered := false ; the open realm dialog is already presented as the current menu
 global gHardcoreConfirmFlag := false ; the hardcore warning is up: Enter agrees, Escape declines
-; The realm row that triggered the hardcore warning, so the join can be resumed
-; after the user agrees. Empty when the dialog surfaced outside the realm-join
-; flow (tool start, refocus) - the resume then joins by keyboard only.
-global gPendingRealmRow := ""
+; Every realm NAME from the last BuildRealmMenu, and the name the user asked to
+; join. Both exist for one reason: to check afterwards that the client really
+; landed on the realm that was picked. A pick that silently selects a different
+; row is otherwise unnoticeable - see AnnounceJoinedRealm.
+global gRealmNames := []
+global gJoinRealmName := ""
 
 class MenuNode {
     __New(name, parent := "") {

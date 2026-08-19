@@ -154,3 +154,7 @@ Entry ended.==Saisie terminée.
 Logging in. Please wait.==Connexion en cours. Patiente.
 The login did not go through.==La connexion n'a pas abouti.
 This is not available on this screen.==Ceci n'est pas disponible sur cet écran.
+No characters on this realm yet.==Il n'y a encore aucun personnage sur ce royaume.
+The server was not found in the list. The list is being read again.==Le royaume n'a pas été trouvé dans la liste. La liste est relue.
+Attention. The game is on a different server:==Attention. Le jeu est sur un autre royaume :
+Change the server again before you play here.==Changez de royaume avant de jouer ici.
