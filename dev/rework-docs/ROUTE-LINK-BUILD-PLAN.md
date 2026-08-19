@@ -609,3 +609,87 @@ login, and 71% of its bytes are the waypoint half that `LoadDefaultMapData`
 throws away unread - **~265 ms recoverable on TBC, the full 375 ms on Era**,
 where the whole file is unused. That is now the biggest single item left in the
 route-data path, and unlike tier 4 it needs no safety machinery.
+
+## 13. Saving the 265 ms: what it would take (plan, not started)
+
+**The constraint first, because it decides the shape:** we port to Lich King in
+a few months, and then the WotLK waypoints are the LIVE set. So this is never
+"delete the dead half from the data". It is **"do not BUILD what this flavour
+does not read"**. Both files keep shipping complete, byte for byte.
+
+### 13.1 What is dead, per flavour - measured
+
+Section byte shares (exact, per file):
+
+```
+Era file   19.7 MB    WaypointsNew 14.94 MB (75.8%)   Links 4.63 MB (23.5%)   WaypointLevels 0.15 MB
+WotLK file 31.3 MB    WaypointsNew 22.13 MB (70.7%)   Links 9.00 MB (28.7%)   WaypointLevels 0.20 MB
+```
+
+Builder cost, measured in game: `SkuDBBuildRouteWotlk 375 ms`,
+`SkuDBBuildRouteGlobal 355 ms`. Bytes and ms line up, so:
+
+- **TBC (today):** the WotLK waypoint half is built and then nil'ed unread ->
+  **~265 ms** recoverable. Everything else on both files is live.
+- **Era:** the whole WotLK file is unused -> **~375 ms** recoverable.
+- **WotLK (the port):** it flips - the Era waypoint half (~269 ms) becomes the
+  skippable one, and whether the Era LINKS are still wanted is the union
+  question from ROUTE-PHASE-RESOLUTION.md, to be decided then. Same machinery,
+  different selection.
+
+### 13.2 The work
+
+**A. Re-wrap both route files into per-section builders**
+(`dev/rework-docs/_wrap_deferred.py`, new mode). Today each file is one builder
+holding one `loadstring([[return { ...all sections... }]])()`. It becomes one
+prepare step plus one builder per top-level section, each with its own blob
+assigned into `routedata.global[<section>]`.
+- Source of truth is the pristine `.bak` next to each file (present, 2026-06-28);
+  the tool already regenerates from it, so re-wrapping in a new shape is a
+  supported operation, not a hand edit.
+- Cut the inner blob on top-level `["Section"] = {` boundaries by brace-depth
+  counting. **Never re-serialize the data** - the emitted blobs must concatenate
+  back to the original byte for byte.
+- `SkuDBTMP = {}` has to become `SkuDBTMP = SkuDBTMP or {}` (several builders
+  now touch it), and `routedata.version` must be set by whichever section runs.
+
+**B. Choose the builders per flavour** (`SkuDeferredData.lua`). `Sku.isTBC` and
+`Sku.isEra` are set in Core.lua, which loads BEFORE SkuDeferredData.lua, and the
+route files only DEFINE their builders, so nothing has run before the choice:
+- TBC: Era waypoints + Era levels + Era links + WotLK links
+- Era: the Era sections only
+- WotLK (later): WotLK sections, plus Era links if the port keeps the union
+`Sku:EnsureData` must also nil the builder globals it did NOT run, or their
+source strings stay pinned (that is the ~48 MB the wrapper comment warns about).
+
+**C. `LoadDefaultMapData`** keeps its union logic unchanged. Its explicit nil-ing
+of the WotLK waypoint tables becomes a no-op (they were never built); leave it
+as a guard.
+
+**D. Guard rails.** A `/skucheck` invariant per the standing rule: for the
+current flavour every section the nav path needs is built and non-empty, and the
+skipped ones are absent - so a wrong selection is loud instead of silently
+halving the route graph. `/skucheck wp` must still report 146,922 records, 0
+violations and the same edge count. No release-script guard and no version
+marker are needed - unlike tier 4, nothing about the shipped data changes.
+
+**E. Measure.** `deferred build 'routes' construct = X ms (per builder)` should
+read ~465 ms on TBC and ~355 ms on Era, with a lower peak behind the
+`538 MB -> 438 MB` line.
+
+### 13.3 Things to check while doing it
+
+- The `.bak` must be the PRISTINE body. If a release re-import ever overwrote a
+  wrapped file, re-running the tool would capture the wrapped form as "pristine".
+  Verify before regenerating.
+- On Era, `SkuDBTMP` would then not exist at all. Its only readers are the TBC
+  branch of `LoadDefaultMapData` (not reached) and `/skucheck mem` (already
+  type-guarded) - but re-grep before shipping.
+- `importExport` writes `SequenceNumbers`/`WaypointLevels` into
+  `SkuDB.routedata.global` (the Era file) - still built on TBC.
+- The `Waypoints` section is an empty vestigial table in both files;
+  `LoadDefaultMapData` fills it from `WaypointsNew`. Keep it (or tolerate nil).
+- The TOC loads both files on every flavour regardless; this saves the
+  loadstring parse, not the file load. Skipping the file itself would need
+  per-flavour TOC files - a separate, bigger question, and not needed for these
+  265 ms.

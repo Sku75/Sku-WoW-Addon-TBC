@@ -25,7 +25,7 @@ Changements dans Sku v43.0
             L'évaluation des auras par événement de combat est nettement moins coûteuse.
             Annuler la navigation ne passe plus que par une seule touche.
             Le journal de l'outil de connexion survit à un redémarrage de l'outil.
-            Les données de points de passage sont utilisables bien plus tôt après la connexion, votre propre continent d'abord.
+            Les données de points de passage sont utilisables bien plus tôt après la connexion, votre propre continent d'abord, et occupent environ 22 Mo de mémoire en moins.
 
         Corrections
             Clients français : tous les sons d'auras et les clips vocaux enregistrés étaient muets (correctif de Naxedim).
@@ -372,7 +372,9 @@ Changements dans Sku v43.0
             touche. Mesuré sur la même machine : la partie liaisons coûte environ la moitié, et
             les listes de votre propre continent arrivent environ 0,7 seconde plus tôt. Les
             itinéraires eux-mêmes ne changent pas : mêmes points, mêmes liaisons, simplement plus
-            tôt.
+            tôt. S'y ajoute environ 22 Mo de mémoire en moins pour la gestion des points de
+            passage, car chaque liaison n'est plus stockée en double - sur les machines
+            modestes, c'est la moitié la plus perceptible.
         Technique : La partie liaisons de la construction du cache de points de passage était
             QUATRE parcours complets sur ~197 000 arêtes orientées : élaguer et symétriser
             (CheckAndUpdateProfileLinkData), matérialiser byId/byName, recalculer toute la table à
@@ -395,6 +397,22 @@ Changements dans Sku v43.0
             (dev/rework-docs/simulate_link_build.py : cache identique, table de liaisons
             identique, pour chaque continent) et en jeu par /skucheck wp, qui vérifie désormais
             aussi que chaque liaison possède son arête inverse.
+        Technique, deuxième partie : chaque liaison était conservée deux fois - sous l'indice de
+            cache du point cible (byId) et sous son nom (byName). byName a disparu et les 14
+            points d'appel utilisent byId ; le nouveau WaypointCacheGetIdForIndex est le
+            pendant de WaypointCacheGetIdForName. L'écriture dans la table de liaisons est même
+            devenue moins coûteuse : elle retraduisait chaque nom de cible en identifiant, et
+            elle dispose maintenant directement de l'entrée. Mesuré : environ 70 000 tables et
+            224 000 chaînes en moins, 22 Mo de moins dans le rapport mémoire (/skucheck mem), et
+            encore ~40 ms de gagnées sur la partie liaisons de la construction. Pourquoi ce
+            doublon : une migration jamais terminée - Sku 32.31 contient déjà, en commentaire,
+            l'appel censé écrire la table byName directement dans la table de liaisons
+            enregistrée ; byId est arrivé plus tard comme chemin rapide pour la recherche
+            d'itinéraire, et les deux sont restés. Trois bogues latents sont partis avec :
+            une boucle de suppression de point qui ne nettoyait que le point supprimé
+            contre lui-même, des identifiants construits sur « .areaid » au lieu de
+            « .areaId » (donc toujours avec la zone 1), et un accès à Links[nil] pour les
+            points temporaires.
 
     Les listes de points de passage indiquent désormais l'avancement du chargement
         Simple : Le message « points de passage en cours de chargement » avait été écrit pour une

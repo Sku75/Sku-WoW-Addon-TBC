@@ -22,7 +22,7 @@ Aenderungen in Sku v43.0
             Die Aurenauswertung pro Kampfereignis ist deutlich billiger geworden.
             Navigation abbrechen liegt nur noch auf einer Taste.
             Das Protokoll des Anmelde-Tools ueberlebt einen Neustart des Tools.
-            Die Wegpunktdaten der Routen sind nach dem Anmelden deutlich frueher benutzbar, der eigene Kontinent zuerst.
+            Die Wegpunktdaten der Routen sind nach dem Anmelden deutlich frueher benutzbar, der eigene Kontinent zuerst, und brauchen rund 22 MB weniger Arbeitsspeicher.
 
         Fehlerbehebungen
             Franzoesische Clients: alle Aura-Sounds und aufgenommenen Sprachclips waren stumm (Korrektur von Naxedim).
@@ -359,7 +359,9 @@ Aenderungen in Sku v43.0
             Taste zu druecken. Auf demselben Rechner gemessen: Der Verbindungsteil kostet noch
             etwa die Haelfte, und die Listen des eigenen Kontinents sind rund 0,7 Sekunden frueher
             da. An den Routen selbst aendert sich nichts - dieselben Wegpunkte, dieselben
-            Verbindungen, nur frueher.
+            Verbindungen, nur frueher. Dazu braucht die Wegpunktverwaltung jetzt rund 22 MB
+            weniger Arbeitsspeicher, weil jede Verbindung nicht mehr doppelt gespeichert wird -
+            auf schwachen Rechnern ist das der spuerbarere Teil.
         Technisch: Der Verbindungsteil des Wegpunkt-Cache-Aufbaus lief als VIER volle Durchlaeufe
             ueber ~197.000 gerichtete Kanten: pruefen und symmetrisieren
             (CheckAndUpdateProfileLinkData), byId/byName materialisieren, die ganze Tabelle aus dem
@@ -382,6 +384,22 @@ Aenderungen in Sku v43.0
             (dev/rework-docs/simulate_link_build.py: gleicher Cache, gleiche Verbindungstabelle,
             fuer jeden Kontinent) und im Spiel durch /skucheck wp, das jetzt auch prueft, dass jede
             Verbindung ihre Gegenrichtung hat.
+        Technisch, zweiter Teil: Jede Verbindung lag doppelt im Speicher - einmal unter der
+            Nummer des Zielwegpunkts (byId) und einmal unter seinem Namen (byName). byName ist
+            entfallen, alle 14 Fundstellen arbeiten jetzt mit byId; neu ist dafuer
+            WaypointCacheGetIdForIndex, das Gegenstueck zu WaypointCacheGetIdForName. Der
+            Schreibweg in die Verbindungstabelle wurde dadurch sogar billiger: Er hat bisher
+            jeden Zielnamen wieder in eine Id zurueckuebersetzt, jetzt hat er den Datensatz
+            schon. Gemessen: rund 70.000 Tabellen und 224.000 Zeichenketten weniger, 22 MB
+            weniger im Speicherbericht (/skucheck mem), und der Verbindungsteil des Aufbaus
+            wurde noch einmal etwa 40 ms schneller. Warum das doppelt war: eine nie zu Ende
+            gefuehrte Umstellung - schon in Sku 32.31 steht auskommentiert der Aufruf, der die
+            byName-Tabelle direkt in die gespeicherte Verbindungstabelle schreiben sollte;
+            byId kam spaeter als schneller Weg fuer die Routensuche dazu, und beide blieben.
+            Drei latente Fehler sind mitgegangen: eine Schleife beim Wegpunktloeschen, die nur
+            den geloeschten Wegpunkt gegen sich selbst aufraeumte, Ids die aus ".areaid" statt
+            ".areaId" gebaut wurden (also immer mit Gebiet 1) und ein Zugriff auf Links[nil]
+            bei temporaeren Wegpunkten.
 
     Wegpunktlisten sagen jetzt an, wie weit das Laden fortgeschritten ist
         Einfach: Die Meldung "Wegpunkte werden noch geladen" war fuer ein, zwei Sekunden Wartezeit

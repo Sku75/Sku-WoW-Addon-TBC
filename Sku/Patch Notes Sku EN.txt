@@ -22,7 +22,7 @@ Changes in Sku v43.0
             Aura evaluation per combat event is considerably cheaper.
             Cancelling navigation is one key again instead of two.
             The login tool's log survives a restart of the tool.
-            Route waypoint data becomes usable much earlier after login, your own continent first.
+            Route waypoint data becomes usable much earlier after login, your own continent first, and needs about 22 MB less memory.
 
         Bugfixes
             French clients: all aura sounds and pre-recorded speech clips were silent (fix by Naxedim).
@@ -328,7 +328,9 @@ Changes in Sku v43.0
             entry is read out to you automatically, without pressing a key. Measured on the same
             machine: the connection part now costs about half, and the lists for your own
             continent are there roughly 0.7 seconds earlier. Nothing about the routes themselves
-            changes - the same waypoints, the same connections, just sooner.
+            changes - the same waypoints, the same connections, just sooner. On top of that the
+            waypoint store needs about 22 MB less memory, because every connection is no longer
+            kept twice - on weak machines that is the more noticeable half.
         Technical: The link part of the waypoint cache build ran as FOUR full passes over ~197,000
             directed edges: prune and symmetrise (CheckAndUpdateProfileLinkData), materialise
             byId/byName, re-derive the whole table back out of the cache (SaveLinkDataToProfile),
@@ -349,6 +351,19 @@ Changes in Sku v43.0
             (dev/rework-docs/simulate_link_build.py: identical cache, identical link table, for
             every continent) and in game by /skucheck wp, which now also verifies that every link
             has its reverse edge.
+        Technical, part two: every link was held twice - once under the target waypoint's cache
+            index (byId) and once under its name (byName). byName is gone and all 14 call sites
+            use byId; the new WaypointCacheGetIdForIndex is the counterpart to
+            WaypointCacheGetIdForName. The writer into the link table got cheaper rather than
+            just smaller: it used to translate every target name back into an id, and now it
+            already has the record. Measured: about 70,000 tables and 224,000 strings less,
+            22 MB off the memory report (/skucheck mem), and another ~40 ms off the link part of
+            the build. Why it was doubled: an unfinished migration - Sku 32.31 already carries
+            the commented-out call that was meant to write the byName table straight into the
+            stored link table; byId arrived later as the fast path for route finding, and both
+            stayed. Three latent bugs went with it: a loop in waypoint deletion that only
+            cleaned the deleted waypoint against itself, ids built from ".areaid" instead of
+            ".areaId" (so always with area 1), and an access to Links[nil] for temp waypoints.
 
     Waypoint lists now tell you how far the loading has got
         Simple: the message "waypoints still loading" was written for a wait of a second or two.
