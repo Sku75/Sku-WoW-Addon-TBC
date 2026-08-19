@@ -1,621 +1,669 @@
-# Sku 42 — Known Issues
+# Sku 42 — Bekannte Probleme
 
-Running log of known issues, regressions, and gotchas for the Sku 42 rework.
-Keep entries short and actionable. Remove items once they are fixed — the commit
-history is the record — to keep this list short and current.
+Laufendes Protokoll bekannter Probleme, Regressionen und Fallstricke des
+Sku-42-Reworks. Einträge kurz und umsetzbar halten. Behobenes wieder entfernen —
+die Commit-Historie ist das Archiv —, damit die Liste kurz und aktuell bleibt.
 
-## Format (per entry)
+Sprache: Deutsch, knapper Technikstil. Bezeichner, Dateinamen, Befehle sowie
+Event- und API-Namen bleiben im Original.
 
-- **Title** — one line.
-  - Symptom: what is observed (what is spoken / what breaks).
-  - Repro: deterministic steps if known.
-  - Suspected cause / area: file or workstream.
-  - Status: open / investigating / workaround / blocked.
+## Format (pro Eintrag)
 
-## Setup / environment gotchas
+- **Titel** — eine Zeile.
+  - Symptom: was beobachtet wird (was gesprochen wird / was kaputtgeht).
+  - Repro: deterministische Schritte, falls bekannt.
+  - Vermutete Ursache / Bereich: Datei oder Workstream.
+  - Status: offen / in Untersuchung / Workaround / blockiert.
 
-- **Live addon via symlink.** WoW loads the addon via the `AddOns\Sku` symlink
-  (under the `_anniversary_` client), pointing at this repo's `Sku/` folder —
-  edits here are live after `/reload`. (The old v41-vs-v42 dual-worktree swap is
-  over: v42 shipped, single consolidated repo.)
+## Setup / Umgebung
 
-## Open issues (bugs)
+- **Addon läuft live über den Symlink.** WoW lädt das Addon über den Symlink
+  `AddOns\Sku` (im `_anniversary_`-Client), der auf den Ordner `Sku/` dieses
+  Repos zeigt — Änderungen sind nach `/reload` sofort aktiv. (Der alte
+  v41-/v42-Doppel-Worktree ist Geschichte: v42 ist ausgeliefert, ein Repo.)
 
-- **Two Hellfire waypoints carry a Kalimdor areaId.** (Found 2026-08-19 while
-  measuring the link graph, see ROUTE-LINK-BUILD-PLAN.md section 2.)
-  - Symptom: two route waypoints that physically sit in Hellfire Peninsula's
-    "Valley of Bones" are stamped with areaId 2657 (Desolace's "Valley of
-    Bones", Kalimdor) instead of 3794. They therefore land in the Kalimdor
-    continent bucket, are listed under Desolace, and are invisible to a player
-    standing in Hellfire Peninsula. They are also the only 8 "cross-continent"
-    link edges in the whole graph.
-  - Repro: decode the Links section of either shipped route file and map both
-    endpoints through InternalAreaTable; the pairs are areaId 2657 -> 3483 and
-    2657 -> 3815.
-  - Suspected cause: the route generator resolved the subzone name "Valley of
-    Bones" to the first matching areaId (a name collision, two areas share it).
-  - Status: open, low priority — defect in the shipped route data, not in code.
-- **User-created waypoints and links do not survive a relog.**
-  - Symptom: SkuNav:SetWaypoint appends to SkuDB.SessionRouteData.Waypoints,
-    which is rebuilt from the shipped route files at every login and is not a
-    SavedVariable; runtime link edits go to the same in-memory table. Only quick
-    and temp waypoints persist (they live in the settings), and importExport is
-    the only route to durable custom map data.
-  - Status: open QUESTION rather than a confirmed bug — needs a decision on
-    whether this is intended.
+## Offene Fehler
 
-Carried in from the v41 line / reported by the maintainer. German term kept with
-an English gloss where the term is Sku-specific. Repro/area are best-guess until
-investigated.
+- **Zwei Hellfire-Wegpunkte tragen eine Kalimdor-areaId.** (Gefunden
+  2026-08-19 beim Vermessen des Link-Graphen, siehe ROUTE-LINK-BUILD-PLAN.md
+  Abschnitt 2.)
+  - Symptom: Zwei Wegpunkte, die physisch im "Valley of Bones" der
+    Höllenfeuerhalbinsel liegen, sind mit areaId 2657 gestempelt (Desolace,
+    "Valley of Bones", Kalimdor) statt 3794. Sie landen damit im
+    Kalimdor-Kontinentbucket, erscheinen unter Desolace und sind für einen
+    Spieler auf der Höllenfeuerhalbinsel unsichtbar. Sie sind zugleich die
+    einzigen 8 "kontinentübergreifenden" Link-Kanten des gesamten Graphen.
+  - Repro: Links-Sektion einer der ausgelieferten Routendateien dekodieren und
+    beide Endpunkte über InternalAreaTable auflösen; die Paare sind
+    areaId 2657 -> 3483 und 2657 -> 3815.
+  - Vermutete Ursache: Der Routengenerator hat den Subzonennamen "Valley of
+    Bones" auf die erste passende areaId aufgelöst (Namenskollision, zwei
+    Gebiete teilen den Namen).
+  - Status: offen, niedrige Priorität — Defekt in den ausgelieferten
+    Routendaten, nicht im Code.
+- **Selbst angelegte Wegpunkte und Links überleben keinen Relog.**
+  - Symptom: SkuNav:SetWaypoint hängt an SkuDB.SessionRouteData.Waypoints an;
+    diese Tabelle wird bei jedem Login aus den ausgelieferten Routendateien neu
+    gebaut und ist keine SavedVariable. Link-Änderungen zur Laufzeit gehen in
+    dieselbe In-Memory-Tabelle. Nur Quick- und Temp-Wegpunkte überleben (sie
+    liegen in den Einstellungen); importExport ist der einzige Weg zu dauerhaft
+    eigenen Kartendaten.
+  - Status: offene FRAGE, kein bestätigter Bug — es braucht eine Entscheidung,
+    ob das so gewollt ist.
 
-- **Arena queries not working** ("Arena Abfragen funktionieren noch nicht").
-  - Symptom: arena-related queries / announcements do not function yet.
-  - Repro: TBD (enter/query arena context).
-  - Suspected area: arena data/query code (to be located).
-  - Status: open.
-- **"Zurückkaufen" (buy-back) menu is broken.**
-  - Symptom: the vendor buy-back menu does not work (items not listed /
-    selection does nothing — exact failure to be captured).
-  - Repro: sell an item to a vendor, open the buy-back menu, try to buy it back.
-  - Suspected area: vendor/merchant menu code (buy-back list build + action).
-  - Status: open — needs a `/wdsku` capture plus a `SkuDebugLog` trace at the
-    vendor to pin down whether the list build or the action path fails.
-- **Some default keybinds are not bound for a brand-new user.**
-  - Symptom: on a fresh install (no saved bindings) some keys Sku is supposed to
-    bind by default come up unbound.
-  - Repro: fresh account / cleared `SkuOptions.SkuKeyBinds`; after first login,
-    check which SKU_KEY_* defaults are actually bound.
-  - Suspected area: default-binding application in SkuZOptions/SkuKeyBinds.lua
-    (`skuDefaultKeyBindings` + the first-login apply pass).
-  - Status: open.
+Aus der v41-Linie übernommen / vom Maintainer gemeldet. Repro und Bereich sind
+Vermutung, bis untersucht.
 
-## Feature requests / wishlist
+- **Arena-Abfragen funktionieren nicht.**
+  - Symptom: arenabezogene Abfragen / Ansagen funktionieren noch nicht.
+  - Repro: offen (Arena-Kontext betreten/abfragen).
+  - Vermuteter Bereich: Arena-Daten-/Abfragecode (noch zu lokalisieren).
+  - Status: offen.
+- **Das Menü "Zurückkaufen" (buy-back) ist kaputt.**
+  - Symptom: Das Rückkauf-Menü beim Händler funktioniert nicht (Items werden
+    nicht gelistet / Auswahl tut nichts — genaues Fehlbild noch aufzunehmen).
+  - Repro: Item an einen Händler verkaufen, Rückkauf-Menü öffnen, zurückkaufen.
+  - Vermuteter Bereich: Händler-Menücode (Aufbau der Rückkaufliste + Aktion).
+  - Status: offen — braucht ein `/wdsku`-Capture plus `SkuDebugLog`-Trace beim
+    Händler, um Listenaufbau und Aktionspfad zu trennen.
+- **Einige Standard-Tastenbelegungen fehlen bei einem brandneuen Nutzer.**
+  - Symptom: Bei frischer Installation (keine gespeicherten Bindings) sind
+    einige Tasten, die Sku per Default belegen soll, unbelegt.
+  - Repro: frischer Account / `SkuOptions.SkuKeyBinds` leeren; nach dem ersten
+    Login prüfen, welche SKU_KEY_*-Defaults tatsächlich gebunden sind.
+  - Vermuteter Bereich: Anwendung der Default-Bindings in
+    SkuZOptions/SkuKeyBinds.lua (`skuDefaultKeyBindings` + der Apply-Pass beim
+    ersten Login).
+  - Status: offen.
 
-Maintainer-requested features for the v42 line. Several overlap existing
-workstreams (noted) — fold them in there when that workstream runs.
+## Feature-Wünsche / Wishlist
 
-- **Default macro to insert.** Provide a ready-made default macro the user can
-  insert (e.g. into the macro UI) for common Sku actions — so a screen-reader
-  user does not have to author secure macros by hand. Scope/contents TBD with
-  the maintainer.
-- **Quest button functionality.** Add quest-button functionality (a button /
-  menu action to interact with quests — accept/turn-in/track). Relates to
-  `SkuQuest`; exact behaviour TBD with the maintainer.
-- **PLANNED: Blizzard-TTS language mixing (German/English auto-switch).** We
-  play on an international server; English/German mixed content is constant.
-  Plan: small Lua language detector (stopword lists + umlauts/ß signal) that
-  sets the per-message voice automatically — the plumbing already exists
-  (per-message `aVoice` override / `mSkuVoiceQueueBTTS_Voice` side-map built
-  for per-channel chat voices). Bonus experiment: the dormant SAPI
-  `<LANG LANGID>` tag code (`SkuVoice-1.0.lua:742`, `SapiLangIds` deDE=407 /
-  enUS=409) might allow MID-sentence language switching, since `<silence>` /
-  `<pitch>` tags already pass through. Depends on which voice backend WoW
-  enumerates today (OneCore vs SAPI5 — under investigation 2026-07-05; SAPI5
-  voices reportedly no longer appear in the voice list). Revisit when that is
-  settled.
-- **PLANNED (conditional): dual-language Sku voice databank loader.** If we
-  generate a new sample databank (e.g. in the user's screen-reader voice),
-  rework the audio-pack loader so the deDE and enUS banks can load SIDE BY
-  SIDE: today both packs write the same globals (`SkuAudioFileIndex` /
-  `SkuAudioDataLenIndex`, pack `Core.lua` overrides `Sku.AudiodataPath`), so
-  only one language exists at runtime. Needed shape: per-language index
-  tables + `SkuVoice:GetAudiodata` (SkuVoice-1.0.lua:1324) trying the
-  detected-language bank first and the other bank as per-word fallback —
-  word-level German/English mixing for the concatenative voice.
-- **Equipment-set slash commands + macroability.** Make the equip slash commands
-  work with WoW equipment sets, and make those actions macroable (triggerable from
-  a macro / in combat).
-- **Monitor performance pass.** Check and improve the performance of the monitors
-  (health / power / etc.). NOTE: the **combat** monitor's enemies-in-combat
-  counter is DONE (2026-07-09, commits `5fbfa22`/`f35638c`/`40eed35`, steadied
-  again in `5dec1f8`); health/power and the rest remain.
-- **Monitor + aura reaction-time & precision pass.** Measure reaction time and
-  precision of the monitors and auras; improve where possible. NOTE: the **combat**
-  monitor's enemies-in-combat reactivity/precision is DONE (2026-07-09 / `5dec1f8`);
-  health/power/aura remain.
-- **Discovery mode.** New mode — scope/behaviour TBD with the maintainer.
-- **Stuck-detection experiments for dungeons.** Ideas to test — fall detection and
-  similar systems — to give the player more "am I stuck / where am I" information
-  in dungeons.
-- **AddOn settings menu — shipped, could be improved.** Addons →
-  "AddOn-Einstellungen" (SkuCore/addonOptions.lua) renders other addons'
-  AceConfig settings (Questie, ECS, AtlasLoot via load entry) plus a DBM
-  per-boss-mod adapter; the Escape menu's "AddOns" button routes there.
-  Since 42.05 a curated hand-made Questie menu (chat announcements;
-  `SkuCore:QuestieMenuBuilder`) sits in the same Addons list — check the two
-  Questie entries don't confuse users / consider merging.
-  Works in-game, not fully bug-free yet — polish candidates: verify enabled
-  sliders/dropdowns across more addons (dprint breadcrumbs are in),
-  confirm-prompt buttons, color/keybinding types, Blizzard-Settings
-  AddOns-category split, DBM core options. Details + findings:
-  `ADDON-SETTINGS-ACCESS.md` (same folder).
-- **PLANNED: Sensible defaults for the chat settings.** Pick good shipped
-  defaults for the chat settings (which channels are read, voices, etc.).
-  Chat is called out as a priority.
-- **PLANNED: Different sounds for menu-opening and tooltip-reading.** Both
-  currently reuse the follow/unfollow sound, which is confusing — the same cue
-  means two unrelated things. Pick distinct sounds for (a) menu opening and
-  (b) tooltip reading. Area: the shared sound-id constants used by the menu /
-  tooltip paths (see the shared-sound-assets notes: menu open = 88, close = 89,
-  nav click = 811).
-- **PLANNED: Escape-menu entries act on RIGHT arrow, not Enter.** The entries
-  of the escape (game) menu should react to arrow RIGHT instead of Enter, so
-  they behave like the rest of the Sku menu tree. Area: the game-menu mirror
-  (gameOptions/LocalMenu path).
+Vom Maintainer gewünschte Features der v42-Linie. Mehrere überschneiden sich mit
+bestehenden Workstreams (vermerkt) — dort einarbeiten, wenn der Workstream läuft.
 
-## Possible changes (undecided)
+- **Standardmakro zum Einfügen.** Ein fertiges Makro anbieten, das der Nutzer
+  (z. B. ins Makro-UI) einfügen kann, für gängige Sku-Aktionen — damit ein
+  Screenreader-Nutzer keine Secure-Makros von Hand schreiben muss. Umfang und
+  Inhalt mit dem Maintainer zu klären.
+- **Quest-Button-Funktionalität.** Button / Menüaktion zum Interagieren mit
+  Quests (annehmen / abgeben / verfolgen). Betrifft `SkuQuest`; genaues
+  Verhalten mit dem Maintainer zu klären.
+- **GEPLANT: Blizzard-TTS-Sprachmischung (Deutsch/Englisch automatisch).** Wir
+  spielen auf einem internationalen Server, gemischte Inhalte sind Dauerzustand.
+  Plan: kleiner Lua-Sprachdetektor (Stoppwortlisten + Umlaut-/ß-Signal), der die
+  Stimme pro Nachricht automatisch setzt — die Verdrahtung existiert bereits
+  (`aVoice`-Override pro Nachricht / Seitenmap `mSkuVoiceQueueBTTS_Voice`, für
+  Chat-Stimmen pro Kanal gebaut). Zusatzexperiment: der schlafende
+  SAPI-`<LANG LANGID>`-Tag-Code (`SkuVoice-1.0.lua:742`, `SapiLangIds`
+  deDE=407 / enUS=409) könnte Sprachwechsel MITTEN im Satz erlauben, da
+  `<silence>`- und `<pitch>`-Tags bereits durchgereicht werden. Hängt davon ab,
+  welches Voice-Backend WoW heute enumeriert (OneCore vs. SAPI5 — in
+  Untersuchung seit 2026-07-05; SAPI5-Stimmen tauchen angeblich nicht mehr in
+  der Stimmenliste auf). Wiedervorlage, wenn das geklärt ist.
+- **GEPLANT (bedingt): zweisprachiger Loader für die Sku-Sprachdatenbank.**
+  Falls wir eine neue Sample-Datenbank erzeugen (z. B. in der
+  Screenreader-Stimme des Nutzers), den Audiopaket-Loader so umbauen, dass
+  deDE- und enUS-Bank NEBENEINANDER geladen werden können: heute schreiben beide
+  Pakete dieselben Globals (`SkuAudioFileIndex` / `SkuAudioDataLenIndex`, das
+  `Core.lua` des Pakets überschreibt `Sku.AudiodataPath`), zur Laufzeit
+  existiert also nur eine Sprache. Nötige Form: Index-Tabellen pro Sprache +
+  `SkuVoice:GetAudiodata` (SkuVoice-1.0.lua:1324) probiert erst die erkannte
+  Sprache und die andere Bank als Wort-Fallback — Wort-für-Wort-Mischung
+  Deutsch/Englisch für die konkatenative Stimme.
+- **Ausrüstungssets: Slash-Befehle + Makrofähigkeit.** Die Equip-Slash-Befehle
+  mit den WoW-Ausrüstungssets zusammenarbeiten lassen und diese Aktionen
+  makrofähig machen (aus einem Makro / im Kampf auslösbar).
+- **Performance-Pass für die Monitore.** Performance der Monitore (Gesundheit /
+  Energie / etc.) prüfen und verbessern. HINWEIS: Der Gegnerzähler des
+  **Kampf**monitors ist ERLEDIGT (2026-07-09, Commits `5fbfa22`/`f35638c`/
+  `40eed35`, nachgezogen in `5dec1f8`); Gesundheit/Energie und der Rest stehen
+  noch aus.
+- **Reaktionszeit- und Präzisionspass für Monitore + Auren.** Reaktionszeit und
+  Präzision messen und verbessern. HINWEIS: Reaktivität und Präzision des
+  Gegnerzählers im **Kampf**monitor sind ERLEDIGT (2026-07-09 / `5dec1f8`);
+  Gesundheit/Energie/Auren stehen noch aus.
+- **Erkundungsmodus.** Neuer Modus — Umfang/Verhalten mit dem Maintainer zu
+  klären.
+- **Steckenbleib-Erkennung für Dungeons (Experimente).** Ideen zum Testen —
+  Sturzerkennung und Ähnliches —, damit der Spieler im Dungeon mehr
+  "stecke ich fest / wo bin ich"-Information bekommt.
+- **AddOn-Einstellungsmenü — ausgeliefert, ausbaufähig.** Addons →
+  "AddOn-Einstellungen" (SkuCore/addonOptions.lua) rendert die
+  AceConfig-Einstellungen anderer Addons (Questie, ECS, AtlasLoot über den
+  Load-Eintrag) plus einen DBM-Adapter pro Bossmod; der "AddOns"-Button im
+  Escape-Menü führt dorthin. Seit 42.05 liegt ein kuratiertes, handgebautes
+  Questie-Menü (Chat-Ansagen; `SkuCore:QuestieMenuBuilder`) in derselben
+  Addons-Liste — prüfen, ob die zwei Questie-Einträge Nutzer verwirren, ggf.
+  zusammenlegen. Läuft im Spiel, aber noch nicht fehlerfrei — Politur-Kandidaten:
+  Slider/Dropdowns über mehr Addons hinweg verifizieren (dprint-Breadcrumbs
+  liegen drin), Bestätigungs-Buttons, Color-/Keybinding-Typen, Aufteilung der
+  Blizzard-Settings-AddOns-Kategorie, DBM-Core-Optionen. Details und Befunde:
+  `ADDON-SETTINGS-ACCESS.md` (selber Ordner).
+- **GEPLANT: sinnvolle Defaults für die Chat-Einstellungen.** Gute
+  Auslieferungs-Defaults wählen (welche Kanäle gelesen werden, Stimmen usw.).
+  Chat ist als Priorität benannt.
+- **GEPLANT: unterschiedliche Sounds für Menü-Öffnen und Tooltip-Lesen.** Beide
+  nutzen derzeit den Follow-/Unfollow-Sound — dasselbe Signal bedeutet zwei
+  unzusammenhängende Dinge. Getrennte Sounds wählen für (a) Menü öffnen und
+  (b) Tooltip lesen. Bereich: die geteilten Sound-ID-Konstanten der Menü- und
+  Tooltip-Pfade (siehe Notizen zu den geteilten Sound-Assets: Menü auf = 88,
+  zu = 89, Nav-Klick = 811).
+- **GEPLANT: Escape-Menü-Einträge reagieren auf Pfeil RECHTS statt Enter.** Die
+  Einträge des Escape-(Spiel-)Menüs sollen auf Pfeil RECHTS reagieren, damit sie
+  sich wie der restliche Sku-Menübaum verhalten. Bereich: der Spielmenü-Mirror
+  (gameOptions-/LocalMenu-Pfad).
 
-Design changes we've reasoned through but deliberately have NOT made, because
-they trade a known small problem for a new dependency/behaviour change. Kept
-here so a future session doesn't re-derive the analysis from scratch.
+## Mögliche Änderungen (unentschieden)
 
-- **BTTS queue: feed one utterance at a time (fix the cancel-leak).**
-  - What: today Sku fast-feeds several lines into Blizzard's TTS engine at once
-    (`OutputStringBTtts` / the `#queue > 1` dequeue in `SkuVoice-1.0.lua`), and
-    the engine holds the queue. Change = only call `SpeakText` when nothing is
-    playing and advance on `VOICE_CHAT_TTS_PLAYBACK_FINISHED`/`_FAILED`, so the
-    engine never holds more than one item and Sku owns the real queue.
-  - Why it's the correct fix: `C_VoiceChat.StopSpeakingText()` is broken — it
-    only stops the CURRENT item and leaves the rest of the engine's queue
-    playing. Once Sku hands off several items it cannot recall them, so an
-    overwrite/reset leaks stale trailing speech (the remaining half of the TTS
-    burst bug). One-at-a-time makes cancel reliable because there's only ever
-    one item in the engine; the rest sit in Sku's own queue, which it can flush.
-    This is the approach the WoW-Vision dev took (own queue + monkeypatched
-    SpeakText, gated on STARTED/FINISHED/FAILED).
-  - Why we DIDN'T do it yet: it makes pacing depend on FINISHED/FAILED firing
-    promptly — weakest on exactly the flaky voices/bridge we care about. Risks:
-    small gaps between lines (no engine pre-buffer of the next utterance), and
-    on a laggy voice the failure mode shifts from "says stale stuff" to
-    "pauses/stalls". The 12s self-heal watchdog would become load-bearing (must
-    advance the queue on a lost event) and need to be shorter/smarter (scaled to
-    utterance length). Bigger regression surface — needs testing across real
-    SAPI voices AND the NVDA/SAPI bridge.
-  - Recommendation if revisited: implement behind a setting, default OFF, and
-    A/B per voice in-game before considering it the default. Area:
-    `SkuVoice-1.0.lua` (`OutputStringBTtts`, the OnUpdate BTTS dequeue,
-    `mSkuVoiceQueueBTTS*`). Related shipped fix: `e6a9868`.
+Designänderungen, die wir durchdacht, aber bewusst NICHT gemacht haben, weil sie
+ein bekanntes kleines Problem gegen eine neue Abhängigkeit oder
+Verhaltensänderung tauschen. Hier festgehalten, damit eine spätere Sitzung die
+Analyse nicht erneut herleitet.
 
-## Monitoring (re-check on request)
+- **BTTS-Queue: nur eine Äußerung auf einmal einspeisen (Cancel-Leak beheben).**
+  - Was: Heute füttert Sku mehrere Zeilen auf einmal in Blizzards TTS-Engine
+    (`OutputStringBTtts` / das `#queue > 1`-Dequeue in `SkuVoice-1.0.lua`), die
+    Engine hält die Queue. Änderung = `SpeakText` nur aufrufen, wenn nichts
+    läuft, und auf `VOICE_CHAT_TTS_PLAYBACK_FINISHED`/`_FAILED` weiterschalten;
+    die Engine hält dann nie mehr als ein Element, Sku besitzt die echte Queue.
+  - Warum das der richtige Fix wäre: `C_VoiceChat.StopSpeakingText()` ist
+    kaputt — es stoppt nur das AKTUELLE Element und lässt den Rest der
+    Engine-Queue weiterlaufen. Einmal übergeben, kann Sku nichts zurückholen,
+    also leakt ein Overwrite/Reset abgestandene Restsprache (die zweite Hälfte
+    des TTS-Burst-Bugs). Eins nach dem anderen macht Cancel zuverlässig, weil in
+    der Engine immer nur ein Element steckt; der Rest liegt in Skus eigener
+    Queue, die es leeren kann. So hat es der WoW-Vision-Entwickler gelöst
+    (eigene Queue + gepatchtes SpeakText, gegated auf STARTED/FINISHED/FAILED).
+  - Warum wir es NICHT gemacht haben: Das Timing hängt dann daran, dass
+    FINISHED/FAILED prompt feuern — am schwächsten ausgerechnet bei den
+    wackeligen Stimmen und der Bridge, um die es uns geht. Risiken: kleine
+    Lücken zwischen Zeilen (die Engine puffert die nächste Äußerung nicht mehr
+    vor), und bei einer trägen Stimme kippt das Fehlerbild von "sagt Altes" zu
+    "stockt/hängt". Der 12-s-Selbstheilungs-Watchdog würde tragend (müsste die
+    Queue bei verlorenem Event weiterschalten) und müsste kürzer und klüger
+    werden (skaliert mit der Äußerungslänge). Große Regressionsfläche — braucht
+    Tests über echte SAPI-Stimmen UND die NVDA-/SAPI-Bridge.
+  - Empfehlung bei Wiederaufnahme: hinter einer Einstellung implementieren,
+    Default AUS, und pro Stimme im Spiel A/B testen, bevor es Default wird.
+    Bereich: `SkuVoice-1.0.lua` (`OutputStringBTtts`, das OnUpdate-BTTS-Dequeue,
+    `mSkuVoiceQueueBTTS*`). Verwandter ausgelieferter Fix: `e6a9868`.
 
-- **Dial targeting (#21 dedup) — untested in a group/raid.** The W6-C #21 refactor
-  (commit `d5a4eb9`) extracted shared `tClearUnitNameSlots()` /
-  `tApplyNumpadBindings(aNumpadFrameName)` helpers from the raid/raid10/party
-  branches of `DialTargetingRosterUpdate` (secure `SetOverrideBindingClick`). It
-  loads clean and is identical modulo the numpad-owner frame (raid = ToggleHandler,
-  raid10/party = TargetingFrame), so a regression is unlikely — but numpad
-  member-selection was never exercised in a group. Re-check: in a **party** press
-  numpad digits to select members by slot; in a **raid** (two-digit entry via
-  `SkuSecureTargetingToggleHandler`) confirm the correct unit is targeted. Area
-  `SkuCore/DialTargeting.lua`; revert candidate = `d5a4eb9` alone if it misbehaves.
-- **Syntherceptor (jcsteh) as future replacement for the bundled NVDA-SAPI voice.**
-  Ask: "check the Syntherceptor monitor". SAPI5 voice DLL that forwards speech
-  to NVDA (github.com/jcsteh/syntherceptor, installer at
-  syntherceptor.jantrid.net, GPLv2, free, bundling permitted with GPL text +
-  source link). As of 2026-07-05 NOT suitable for Sku; switch only when ALL of
-  these are true (deliberately no workaround documentation here — public-comms
-  decision of 2026-07-05):
-  1. **Releases are Authenticode-signed.** Blizzard clients refuse to load
-     unsigned SAPI engine DLLs (since ~Oct/Nov 2025), so upstream-signed
-     releases are a hard requirement. Check: download the current installer
-     from syntherceptor.jantrid.net, run `Get-AuthenticodeSignature` on the
-     exe AND the inner `x64\syntherceptor.dll` — need Valid, not NotSigned.
-     Also check `.github/workflows/build.yml` for a signing step (none as of
-     2026-07-05) and the repo for signing-related issues/commits.
-  2. **The game-interrupt problem is fixed on `main`.** As of 2026-07-05 every
-     `Speak()` cancels NVDA speech AND utterances complete instantly
-     (`GetOutputFormat` returns `SPDFID_Text`, no audio timing), so queued
-     game TTS lines clip each other — only the last queued line is heard.
-     Check: issue #1 closed, and/or experimental branches `ssml` /
-     `cancelIfNewSite` merged; read `src/syntherceptor.cpp` `Speak()` — the
-     "cancel speech before each utterance" hack must be gone, ideally replaced
-     by the SSML-completion-callback approach.
-  3. **Fit test against Sku's speech pattern before any switch:** rapid menu
-     navigation must interrupt cleanly AND multi-line queued output (chat
-     backlog, tooltip + menu breadcrumb) must NOT clip. Test with the normal
-     Sku BTTS queue on a dev char.
-  Nice-to-have signals: versioned releases instead of rolling snapshots (today
-  a rolling "snapshots" tag — every update changes the DLL), game-related
-  reports in the issue list, crash reports (a host-app-takedown crash class
-  was fixed 2026-01, issues #2/#3).
-  Alternative to re-check briefly at the same time: SAPIence
-  (github.com/LeonarddeR/SAPIence, LGPL, Rust, same mechanism) — as of
-  2026-07-05 zero releases/binaries, not a candidate yet.
-- **v43.0 aura reaction-time work — TWO WAVES, 15 changes; core scheduler
-  VERIFIED 2026-08-18, rest awaiting play-testing.** Ask: "check the aura
-  latency monitor". Investigated 2026-08-17 after
-  the standing complaint that auras used to react a second or more late.
-  Items 1-8 are wave 1 (commit `4e81678`), items 9-15 are wave 2 (one commit
-  each, same day). Sounds were
-  exonerated first: the mp3s were measured for leading silence by parsing the
-  Layer-III side info (per-granule `part2_3_length`, 13 ms resolution) — brass /
-  glass / waterdrop / error_* are all 0 ms, notification1-27 are 0-26 ms except
-  notification3/4/5/6 at 52-65 ms, and the declared lengths in
-  SkuAudioDataLenIndex sit at or just under the real durations. So no clip has a
-  latency problem worth fixing. Everything below is code. Grep `v42.14` in the
-  three files for the full reasoning at each site (the tag is the work's
-  original version; it landed as 43.0).
+## Beobachtung (auf Anfrage nachprüfen)
 
-  **VERIFIED 2026-08-18** (user, solo self-Renew, log forensics with the new
-  ms breadcrumbs + by ear — this covers the SELF-BUFF paths only):
-  - Item 11 core: crossing fires frame-precise (deadline dprint and the aura's
-    firing carry the IDENTICAL GetTime value → dispatch <1 ms; total
-    event→sound ≈ one frame + audio start). Refresh re-arms correctly; the
-    pre-refresh crossing fires ONE silent no-op pass (min-arming keeps the
-    earlier time, condition evaluates false, pass re-arms the true crossing) —
-    BY DESIGN, do not "fix". `single` once-gate held, no spam. Still open for
-    11: the weapon-enchant duration arm, and target-DEBUFF durations.
-  - Item 12 damper side: zero spurious membership passes solo (CLEU same-frame
-    dedup works). The POSITIVE fire (`aura membership eval <unit>`, fall-off
-    out of CLEU coverage) is still unproven — needs a group test.
-  - Item 9's regression net: `/skucheck auras` clean (2 globals, 0 violations).
-  - Measured reality check: the server removes a buff up to ±0.3 s off the
-    client-side expirationTime (observed 0.34 s early / 0.07 s early on two
-    runs) — that jitter is the game's, not Sku's, and is now the dominant
-    remaining variance.
-  - New forensics breadcrumbs (2026-08-18, in tree): `aura fired: <name>
-    event <subevent>  dest <dest>  t <GetTime %.3f>` at both dispatch sites
-    (one line per firing, editor test clicks silent), and the deadline dprint
-    carries `t %.3f`. Audio-file outputs were previously INVISIBLE in the ring.
-  - Open UX item from testing: the duration attributes still OFFER the
-    `gleich`/equal operator in the editor, but equal on a continuous remaining
-    time never matches (the doc already notes it "never matched between
-    events"); it should be hidden or mapped to `smaller` for the four
-    buff/debuff Duration attributes and the two enchant ones.
+- **Dial Targeting (#21-Dedup) — in Gruppe/Raid ungetestet.** Das W6-C-#21-Refactor
+  (Commit `d5a4eb9`) hat gemeinsame Helfer `tClearUnitNameSlots()` /
+  `tApplyNumpadBindings(aNumpadFrameName)` aus den Raid-/Raid10-/Party-Zweigen
+  von `DialTargetingRosterUpdate` herausgezogen (secure
+  `SetOverrideBindingClick`). Es lädt sauber und ist identisch bis auf den
+  Numpad-Besitzerframe (Raid = ToggleHandler, Raid10/Party = TargetingFrame),
+  eine Regression ist also unwahrscheinlich — aber die Numpad-Mitgliederauswahl
+  wurde nie in einer Gruppe ausgeübt. Nachprüfen: In einer **Gruppe**
+  Numpad-Ziffern drücken und Mitglieder per Slot wählen; in einem **Raid**
+  (zweistellige Eingabe über `SkuSecureTargetingToggleHandler`) prüfen, ob die
+  richtige Einheit anvisiert wird. Bereich `SkuCore/DialTargeting.lua`;
+  Revert-Kandidat = allein `d5a4eb9`, falls es sich falsch verhält.
+- **Syntherceptor (jcsteh) als künftiger Ersatz der mitgelieferten
+  NVDA-SAPI-Stimme.** Anfrage: "check the Syntherceptor monitor". SAPI5-Voice-DLL,
+  die Sprache an NVDA weiterreicht (github.com/jcsteh/syntherceptor, Installer
+  auf syntherceptor.jantrid.net, GPLv2, kostenlos, Bündelung mit GPL-Text +
+  Quell-Link erlaubt). Stand 2026-07-05 NICHT für Sku geeignet; Wechsel erst,
+  wenn ALLE Punkte erfüllt sind (bewusst keine Workaround-Dokumentation hier —
+  Public-Comms-Entscheidung vom 2026-07-05):
+  1. **Releases sind Authenticode-signiert.** Blizzard-Clients laden seit ca.
+     Okt./Nov. 2025 keine unsignierten SAPI-Engine-DLLs, upstream-signierte
+     Releases sind also harte Voraussetzung. Prüfen: aktuellen Installer von
+     syntherceptor.jantrid.net laden, `Get-AuthenticodeSignature` auf die EXE UND
+     die innere `x64\syntherceptor.dll` — nötig ist Valid, nicht NotSigned.
+     Ebenso `.github/workflows/build.yml` auf einen Signierschritt prüfen (Stand
+     2026-07-05 keiner) und das Repo auf Signier-Issues/-Commits.
+  2. **Das Spiel-Interrupt-Problem ist auf `main` behoben.** Stand 2026-07-05
+     canceled jedes `Speak()` die NVDA-Sprache UND Äußerungen sind sofort fertig
+     (`GetOutputFormat` liefert `SPDFID_Text`, kein Audio-Timing), sodass
+     eingereihte Spiel-TTS-Zeilen einander abschneiden — nur die letzte ist
+     hörbar. Prüfen: Issue #1 geschlossen und/oder die Experimentbranches
+     `ssml` / `cancelIfNewSite` gemerged; in `src/syntherceptor.cpp` `Speak()`
+     lesen — der Hack "Sprache vor jeder Äußerung canceln" muss weg sein,
+     idealerweise ersetzt durch den SSML-Completion-Callback-Ansatz.
+  3. **Eignungstest gegen Skus Sprechmuster vor jedem Wechsel:** schnelle
+     Menünavigation muss sauber unterbrechen UND mehrzeilige Queue-Ausgabe
+     (Chat-Backlog, Tooltip + Menü-Breadcrumb) darf nicht abschneiden. Mit der
+     normalen Sku-BTTS-Queue auf einem Dev-Char testen.
+  Wünschenswerte Signale: versionierte Releases statt rollender Snapshots (heute
+  ein rollendes "snapshots"-Tag — jedes Update ändert die DLL), spielbezogene
+  Meldungen in der Issue-Liste, Crash-Reports (eine Crash-Klasse, die die
+  Host-App mitriss, wurde 2026-01 behoben, Issues #2/#3).
+  Alternative, bei der Gelegenheit kurz mitprüfen: SAPIence
+  (github.com/LeonarddeR/SAPIence, LGPL, Rust, gleicher Mechanismus) — Stand
+  2026-07-05 null Releases/Binaries, noch kein Kandidat.
+- **v43.0 Auren-Reaktionszeit — ZWEI WELLEN, 15 Änderungen; Kern-Scheduler
+  VERIFIZIERT 2026-08-18, Rest wartet auf Spieltests.** Anfrage: "check the aura
+  latency monitor". Untersucht 2026-08-17 nach der stehenden Beschwerde, Auren
+  reagierten früher eine Sekunde oder mehr zu spät. Punkte 1-8 sind Welle 1
+  (Commit `4e81678`), Punkte 9-15 Welle 2 (je ein Commit, selber Tag). Die Sounds
+  wurden zuerst entlastet: Die MP3s wurden über die Layer-III-Side-Info auf
+  Vorlaufstille vermessen (`part2_3_length` pro Granule, 13 ms Auflösung) —
+  brass / glass / waterdrop / error_* liegen bei 0 ms, notification1-27 bei
+  0-26 ms außer notification3/4/5/6 mit 52-65 ms, und die deklarierten Längen in
+  SkuAudioDataLenIndex liegen auf oder knapp unter den echten Dauern. Kein Clip
+  hat also ein nennenswertes Latenzproblem. Alles Folgende ist Code. Für die
+  volle Begründung je Stelle `v42.14` in den drei Dateien greppen (das Tag ist
+  die ursprüngliche Version der Arbeit; ausgeliefert wurde sie als 43.0).
 
-  **VERIFIED 2026-08-18, second round (5-man dungeon, ~62 min, log
-  forensics):**
-  - Item 12 damper under real group load: 188 membership evals in 62 min
-    (~3/min) against a dungeon's full UNIT_AURA storm — the diff+dedup dampers
-    hold. Positive fire still unproven (no aura fired from a
-    `UNIT_AURA_CHANGED` pass — the user's falloff auras are event-gated on
-    `SPELL_AURA_REMOVED`, which CLEU delivered every time; the out-of-CLEU-range
-    test remains open).
-  - Item 13 + the party-token speech fix (`tUnitIdToSpokenName`,
-    `SkuAuras/data.lua`): "ziel einheit" outputs fired for three different
-    party members across the run and the lifetime `missingAudio` counters are
-    byte-identical before/after (party3 stayed 132) — slot 3 used to beep on
-    EVERY such announce. Fix works.
-  - `/skuperf combat` after the run: `EvaluateAllAuras` avg 0.095 ms,
-    n=41631, max 8.18 ms, total 3.97 s over ~62 min (~11 calls/s, ~0.1 % of a
-    core). No pre-rework baseline exists on this machine; the absolute cost is
-    the record now. SkuErrorLog: zero entries.
-  - **BUG found and FIXED in tree (v43.0, 2026-08-18, UNTESTED): the `einmal`
-    once-gate re-fired under dense combat.** Boss fight (Ukorz Sandskalp),
-    SW:Pain "Dauer kleiner 1" aura: FOUR firings within 987 ms
-    (`DURATION_DEADLINE` t=369559.383 correct, then `UNIT_POWER` ×2 and
-    `SPELL_PERIODIC_DAMAGE`) = four "dang" sounds in one second; user heard
-    the doubling. Mechanism: the count-condition reset formula re-arms `used`
-    on any pass where the non-count conditions hold and the `smaller` duration
-    condition reads false — and a pass whose duration read is MISSING (watched
-    name not in the list / no exp entry / the exp map answering with ANOTHER
-    caster's same-name aura) satisfies that. Fix, two independent layers in
-    `SkuAuras/Core.lua`:
-    (a) `tSmallerDurationNoRead`: a pass in which a `smaller` duration
-    condition got NO reading cannot reset the once-gate — no reading is not
-    evidence the duration went back above threshold. A genuine re-arm
-    (refresh above threshold, or the next application) delivers a present
-    reading and still resets. Plus breadcrumb `aura gate re-armed: <name>
-    event <e> t <t>` on every used=true→false flip of an "if" aura — one line
-    per firing, pins any remaining flap.
-    (b) The caster filter (next bullet) removes the two-casters-same-name flap
-    class entirely for auras that opt in.
-    Evidence: Sku_grouprun.lua snapshot, seq 12335-12341.
-  - **NEW FEATURE (v43.0, 2026-08-18, UNTESTED): per-aura caster filter
-    "Listen nur selbst gewirkte" (`listsOwnOnly`).** A BINARY modifier
-    condition (always evaluates true; the VALUE carries the meaning): with
-    "true", THIS aura's four buff/debuff list conditions and their duration
-    conditions see only auras the player cast. Mechanics: `getAuraList`
-    captures UnitAura's 7th return (caster) and fills parallel own/ownExp
-    sets in the same scan (cache slots + fallback scratches + verify buffers
-    all extended); `getFixed` returns (list, own); EvaluateAllAuras swaps the
-    own sets into tEvaluateData per flagged aura (restored per aura — the
-    restore now covers all four lists); `getFixedDuration` gained an aOwnOnly
-    arg reading ownExp (fresh-scan fallback matches caster == "player" too).
-    Weapon enchants count as own. Solves the user's long-standing tab-target
-    announce firing on OTHER priests' Schattenwort: Schmerz. Locale keys in
-    deDE/enUS/frFR ("Listen nur selbst gewirkte" + tooltip); lint clean.
-    Known edge, documented: with the flag set, an own aura dropping while
-    ANOTHER caster's same-name aura stays on the unit changes no NAME set, so
-    out of CLEU range the membership wake-up cannot see it (in range, CLEU
-    covers it).
-    - Re-check: flagged debuff aura ignores another priest's SW:P on tab and
-      in duration warnings; unflagged auras behave exactly as before;
-      `/skuauracache verify on` stays mismatch-free (it now diffs own/ownExp
-      too); no once-gate double sounds in a boss fight.
-  - Semantics note, not a bug: at 11:36:40 the SW:Pain warning fired for a
-    party member (Chouffer) carrying an ENEMY's Schattenwort: Schmerz about to
-    expire. List/duration conditions have no caster filter — "Quelle (L)
-    enthält selbst" filters the triggering EVENT's source (here: the player's
-    own UNIT_TARGETCHANGE pass), not the debuff's caster. Possible
-    enhancement: per-caster filter via UnitAura's caster return.
+  **VERIFIZIERT 2026-08-18** (Nutzer, solo Selbst-Renew, Log-Forensik mit den
+  neuen ms-Breadcrumbs + nach Gehör; deckt nur die SELBSTBUFF-Pfade ab):
+  - Punkt 11 Kern: Die Schwellenüberschreitung feuert framegenau (Deadline-dprint
+    und das Feuern der Aura tragen denselben GetTime-Wert → Dispatch <1 ms;
+    gesamt Event→Sound ≈ ein Frame + Audiostart). Refresh armiert korrekt neu;
+    die Überschreitung vor einem Refresh feuert EINEN stillen Leerdurchlauf
+    (Min-Armierung behält die frühere Zeit, Bedingung wertet false, der Pass
+    armiert die echte Überschreitung neu) — SO GEWOLLT, nicht "reparieren". Das
+    `single`-Once-Gate hielt, kein Spam. Offen bei 11: Armierung der
+    Waffenverzauberungs-Dauer und Ziel-DEBUFF-Dauern.
+  - Punkt 12 Dämpferseite: solo null überflüssige Membership-Durchläufe
+    (CLEU-Dedup im selben Frame funktioniert). Das POSITIVE Feuern
+    (`aura membership eval <unit>`, Wegfall außerhalb der CLEU-Reichweite) ist
+    weiter unbewiesen — braucht einen Gruppentest.
+  - Regressionsnetz von Punkt 9: `/skucheck auras` sauber (2 Globals,
+    0 Verstöße).
+  - Realitätsabgleich: Der Server entfernt einen Buff bis zu ±0,3 s neben der
+    clientseitigen expirationTime (beobachtet 0,34 s bzw. 0,07 s zu früh) —
+    dieser Jitter ist der des Spiels, nicht Skus, und ist jetzt die dominante
+    Restvarianz.
+  - Neue Forensik-Breadcrumbs (2026-08-18, im Tree): `aura fired: <name>
+    event <subevent>  dest <dest>  t <GetTime %.3f>` an beiden Dispatch-Stellen
+    (eine Zeile pro Feuern, Testklicks im Editor bleiben still), und der
+    Deadline-dprint trägt `t %.3f`. Audiodatei-Ausgaben waren im Ring vorher
+    UNSICHTBAR.
+  - Offener UX-Punkt aus dem Test: Die Dauer-Attribute bieten im Editor weiter
+    den Operator `gleich` an, aber "gleich" auf einer kontinuierlichen
+    Restlaufzeit trifft nie (die Doku notiert bereits "traf zwischen Events
+    nie"); er sollte für die vier Buff-/Debuff-Dauer-Attribute und die zwei
+    Verzauberungs-Attribute versteckt oder auf `kleiner` abgebildet werden.
 
-  The latency budget that was measured, per hop: trigger → EvaluateAllAuras was
-  0 ms for real CLEU, +100 ms fixed for own-cast, 0-250 ms for anything polled;
-  OutputString → PlaySoundFile was 0-100 ms; then 0 ms or up to 85 % of whatever
-  sound was playing in front of it; then 0-65 ms of file lead-in. Worst realistic
-  stack ≈ 1.5 s, which matches the original complaint.
+  **VERIFIZIERT 2026-08-18, zweite Runde (5-Mann-Dungeon, ~62 min,
+  Log-Forensik):**
+  - Punkt 12 Dämpfer unter echter Gruppenlast: 188 Membership-Auswertungen in
+    62 min (~3/min) gegen den vollen UNIT_AURA-Sturm eines Dungeons — Diff- und
+    Dedup-Dämpfer halten. Positives Feuern weiter unbewiesen (keine Aura feuerte
+    aus einem `UNIT_AURA_CHANGED`-Pass — die Falloff-Auren des Nutzers sind auf
+    `SPELL_AURA_REMOVED` event-gegated, und CLEU lieferte das jedes Mal; der
+    Test außerhalb der CLEU-Reichweite steht aus).
+  - Punkt 13 + der Party-Token-Sprachfix (`tUnitIdToSpokenName`,
+    `SkuAuras/data.lua`): "ziel einheit"-Ausgaben feuerten über den Lauf für drei
+    verschiedene Gruppenmitglieder, und die Lebenszeit-`missingAudio`-Zähler sind
+    davor und danach byte-identisch (party3 blieb bei 132) — Slot 3 piepte
+    früher bei JEDER solchen Ansage. Fix wirkt.
+  - `/skuperf combat` nach dem Lauf: `EvaluateAllAuras` avg 0,095 ms, n=41631,
+    max 8,18 ms, gesamt 3,97 s über ~62 min (~11 Aufrufe/s, ~0,1 % eines Kerns).
+    Auf dieser Maschine existiert keine Baseline vor dem Rework; die absoluten
+    Kosten sind jetzt der Referenzwert. SkuErrorLog: null Einträge.
+  - **BUG gefunden und im Tree BEHOBEN (v43.0, 2026-08-18, UNGETESTET): das
+    `einmal`-Once-Gate feuerte unter dichtem Kampf erneut.** Bosskampf (Ukorz
+    Sandskalp), SW:Pain-Aura "Dauer kleiner 1": VIER Feuerungen in 987 ms
+    (`DURATION_DEADLINE` t=369559.383 korrekt, danach `UNIT_POWER` ×2 und
+    `SPELL_PERIODIC_DAMAGE`) = vier "dang"-Sounds in einer Sekunde; der Nutzer
+    hörte die Dopplung. Mechanismus: Die Reset-Formel der Count-Bedingung
+    armiert `used` bei jedem Pass neu, in dem die Nicht-Count-Bedingungen halten
+    und die `smaller`-Dauerbedingung false liest — und ein Pass, dessen
+    Dauerlesung FEHLT (überwachter Name nicht in der Liste / kein exp-Eintrag /
+    die exp-Map antwortet mit der gleichnamigen Aura eines ANDEREN Wirkers),
+    erfüllt genau das. Fix, zwei unabhängige Schichten in `SkuAuras/Core.lua`:
+    (a) `tSmallerDurationNoRead`: Ein Pass, in dem eine `smaller`-Dauerbedingung
+    KEINE Lesung bekam, darf das Once-Gate nicht zurücksetzen — keine Lesung ist
+    kein Beleg, dass die Dauer wieder über die Schwelle gestiegen ist. Eine echte
+    Neu-Armierung (Refresh über Schwelle oder die nächste Anwendung) liefert eine
+    vorhandene Lesung und setzt weiterhin zurück. Dazu der Breadcrumb
+    `aura gate re-armed: <name> event <e> t <t>` bei jedem used=true→false-Flip
+    einer "if"-Aura — eine Zeile pro Feuern, pinnt jedes verbliebene Flattern.
+    (b) Der Wirker-Filter (nächster Punkt) beseitigt die Flatterklasse
+    "zwei Wirker, gleicher Name" komplett für Auren, die ihn aktivieren.
+    Beleg: Snapshot Sku_grouprun.lua, seq 12335-12341.
+  - **NEUES FEATURE (v43.0, 2026-08-18, UNGETESTET): Wirker-Filter pro Aura
+    "Listen nur selbst gewirkte" (`listsOwnOnly`).** Eine BINÄRE
+    Modifikator-Bedingung (wertet immer true; die Bedeutung trägt der WERT): mit
+    "true" sehen die vier Buff-/Debuff-Listenbedingungen dieser Aura und deren
+    Dauerbedingungen nur selbst gewirkte Auren. Mechanik: `getAuraList` fängt
+    den 7. Rückgabewert von UnitAura (caster) ab und füllt im selben Scan
+    parallele own-/ownExp-Mengen (Cache-Slots, Fallback-Scratches und
+    Verify-Puffer alle erweitert); `getFixed` liefert (list, own);
+    EvaluateAllAuras tauscht die own-Mengen pro markierter Aura in tEvaluateData
+    (Restore pro Aura — er deckt jetzt alle vier Listen ab); `getFixedDuration`
+    bekam ein Argument aOwnOnly und liest ownExp (der Fresh-Scan-Fallback matcht
+    caster == "player" mit). Waffenverzauberungen zählen als eigen. Löst die
+    langjährige Beschwerde, dass die Tab-Ziel-Ansage auf das Schattenwort:
+    Schmerz ANDERER Priester feuerte. Locale-Keys in deDE/enUS/frFR ("Listen nur
+    selbst gewirkte" + Tooltip); Lint sauber. Bekannte, dokumentierte Kante: Mit
+    gesetztem Flag ändert eine eigene Aura, die wegfällt, während die
+    gleichnamige Aura eines ANDEREN Wirkers auf der Einheit bleibt, keine
+    NAME-Menge — außerhalb der CLEU-Reichweite kann der Membership-Weckruf das
+    also nicht sehen (in Reichweite deckt CLEU es ab).
+    - Nachprüfen: markierte Debuff-Aura ignoriert SW:P eines anderen Priesters
+      beim Tabben und in Dauerwarnungen; unmarkierte Auren verhalten sich exakt
+      wie vorher; `/skuauracache verify on` bleibt mismatch-frei (es diffed jetzt
+      auch own/ownExp); keine Once-Gate-Doppelsounds im Bosskampf.
+  - Semantik-Hinweis, kein Bug: Um 11:36:40 feuerte die SW:Pain-Warnung für ein
+    Gruppenmitglied (Chouffer), das ein Schattenwort: Schmerz eines GEGNERS trug,
+    das gleich ablief. Listen- und Dauerbedingungen haben keinen Wirker-Filter —
+    "Quelle (L) enthält selbst" filtert die Quelle des auslösenden EVENTS (hier:
+    der eigene UNIT_TARGETCHANGE-Pass), nicht den Wirker des Debuffs. Mögliche
+    Erweiterung: Filter pro Wirker über den caster-Rückgabewert von UnitAura.
 
-  1. **Audio pump wakes on the next frame** (`SkuVoice-1.0.lua`, `mQueueDirty`).
-     The pump body was gated on `fTime > 0.1` and `OutputString` never played
-     anything itself, so every Sku sound waited 0-100 ms (~50 ms avg). Now an
-     append makes the body run on the next frame (~16 ms). Ordering, `tPlayNext`
-     and overwrite rules untouched; the dirty run does not reset `fTime`, so the
-     0.1 s cadence keeps its own clock.
-     - Sub-fix, do not lose it: the tombstone sweep + removal are **cadence
-       only**. They end a sound at its DECLARED length and hard-`StopSound` it,
-       and declared lengths sit slightly under the real durations (brass1
-       declares 0.32 s, file is 0.34 s) — running them on the extra frame would
-       move the stop from "up to 100 ms late" to exactly on time and start
-       clipping ~20 ms of tail. Inaudible on a beep, audible on a word's final
-       consonant.
-     - Re-check: normal announcements must not lose their final syllable.
-  2. **Aura SOUND outputs skip the TTSSepPause hold, one at a time**
-     (`SkuVoice-1.0.lua` + `SkuAuras/data.lua`, `auraSound` flag / 16th
-     positional arg). TTSSepPause (85) is the word-to-word pacing knob for the
-     concatenated audio-file speech — right for words, wrong for a one-shot beep,
-     because the hold scales with whatever plays in front of it (1.36 s sound in
-     front = 1.15 s wait). The first pending aura sound now starts immediately
-     **unless another aura sound is still playing**, in which case it falls back
-     to the normal queued path — deliberate maintainer call: two aura sounds
-     overlapping are indistinguishable, which is worse than one being late.
-     Aura sounds still BLOCK what is queued behind them (not excluded from the
-     `tPlayNext` scan), so speech after an aura sound waits as before.
-     - Only the GENERATED sound-output family may set the flag. The word/text
-       outputs above it must not, or a multi-word aura output slurs its words.
-     - Re-check: two auras firing on one event must stay sequential and
-       distinguishable; "Inneres Feuer verloren" must not slur.
-  3. **`spellNameUsable` + `itemCount` are lazy** (`SkuAuras/Core.lua`,
-     `tLazyEvaluateFields` + a metatable on `tEvaluateData`). Both were gathered
-     eagerly on EVERY combat-log event, before anything checked whether an aura
-     wanted them, and no default aura references either. `GetSpellNamesUsable`
-     alone is ~800-1500 C calls (132 action slots × GetActionInfo + GetSpellInfo
-     + ActionButtonUsable, itself up to 8 GetShapeshiftFormID plus HasAction /
-     IsUsableAction / GetSpellCooldown / GetSpellCharges / IsActionInRange /
-     GetVertexColor / IsDesaturated). Chosen over a precomputed "which attributes
-     are in use" set on purpose: such a set needs invalidating at every aura
-     create / enable / import / delete site and one missed site is a silently
-     dead aura. Lazy cannot go stale. nil caches as `false`; verified every
-     reader tests truthiness, and nothing iterates `tEvaluateData` with `pairs`.
-     - Re-check: an aura using "Zauber benutzbar" or item count must still fire.
-  4. **Keypress early-out** (`SkuAuras/Core.lua`, `OnKeyDown`). The handler is
-     armed for every keystroke in the game and ran a full `EvaluateAllAuras` per
-     keypress — one complete evaluation per typed character in chat. Now it scans
-     the enabled auras for a `pressedKey` attribute and returns if none has one.
-     A live scan, not a cached flag, for the same staleness reason as 3.
-     - Re-check: create a `pressedKey` aura and confirm it still fires.
-  5. **Health / power / target / cooldown are event-driven, coalesced per frame**
-     (`SkuAuras/Core.lua`; `UNIT_HEALTH`, `UNIT_POWER_UPDATE`, `UNIT_TARGET`,
-     `SPELL_UPDATE_COOLDOWN`; `tTrackedUnits` / `tDirtyUnits` / `MarkUnitDirty`).
-     All four confirmed present in the 2.5.6 binary. The handlers only MARK; the
-     frame driver runs the ORIGINAL `UNIT_TICKER` / `COOLDOWN_TICKER` for what is
-     marked, so change detection, event payloads and announcements are identical
-     — only the timing moves (0-250 ms → ~16 ms). Coalescing is deliberate and
-     load-bearing: calling the ticker straight from the event would have traded
-     latency for an unbounded rise in evaluations/sec in a raid, since
-     UNIT_HEALTH fires many times per second per unit. Marking caps the work at
-     one tick per unit per frame. `UNIT_TICKER` emits nothing unless its UnitRepo
-     snapshot changed, which is why an event on top of a backstop tick cannot
-     double-announce. Unit filter needed because UNIT_HEALTH & co are broadcast
-     for every unit in range (AceEvent has no RegisterUnitEvent).
-     - **Combo points stay polled.** `UNIT_COMBO_POINTS` /
-       `PLAYER_COMBO_POINTS` do NOT exist on this client (0 hits in the binary;
-       combo points only became a power type in Legion, WeakAuras polls
-       `GetComboPoints` here too). Hence the ticker keeps the **player at
-       0.25 s** — only the party/raid sweep dropped to 0.5 s. Do not "simplify"
-       that split away, it would regress combo-point latency.
-     - Re-check: a combo-point aura must be no slower than before; a
-       health-triggered and a cooldown-ready aura should be clearly prompter.
-  6. **`SPELL_CAST_SUCCESS` split into two passes** (`SkuAuras/Core.lua`).
-     WoW has no cooldown-started combat-log event, so Sku manufactured
-     `SPELL_COOLDOWN_START` by RELABELLING the `SPELL_CAST_SUCCESS` table in
-     place and evaluating once. Two consequences, both now fixed: the relabel
-     needs `GetSpellCooldown` settled, hence a 0.1 s timer, so the fast event was
-     held hostage by the slow event's data dependency; and the two events became
-     mutually exclusive, so an aura on `SPELL_CAST_SUCCESS` never fired for the
-     player's own cast of any spell WITH a cooldown. Now: immediate pass under
-     the true name, then bookkeeping at +0.1 s and a second pass restricted to
-     auras that affirmatively watch `SPELL_COOLDOWN_START`
-     (`tAuraWatchesEvent`, `aRequiredEventValue`).
-     - The restriction is what stops an aura with no event condition getting two
-       passes for one cast. `aExcludeEventValue` additionally skips an aura that
-       watches BOTH names (they are OR-ed), which would otherwise announce twice
-       per cast for a non-`single` action.
-     - **Expected NEW behaviour, not a bug:** an aura built on "Zauber
-       erfolgreich" for your own cooldown spells was silently dead and will now
-       speak.
-     - Re-check: ~~"Zauber erfolgreich" on an own cooldown spell fires~~
-       **CONFIRMED by user 2026-08-18.** Still open: a `SPELL_COOLDOWN_START`
-       aura must not double-announce.
-  7. **Weapon-enchant near-expiry refire gated on the whole second**
-     (`SkuAuras/Core.lua`, `tExpirySec` / `lastEnchantExpirySec`). `tNearExpiry`
-     is true for the whole last 120 s of any temp enchant and used to re-fire
-     `WEAPON_ENCHANT_UPDATE` on EVERY tick — a full `EvaluateAllAuras` 4×/s for
-     two minutes after every sharpening stone or oil, silently. Maintainer
-     accepted the ≤1 s slip.
-     - Re-check: a "Waffenverzauberung Dauer < X" aura must still fire, within
-       about a second.
-  8. **`GetAudiodata`'s three locals** (`SkuVoice-1.0.lua`). `tFile` / `tPath` /
-     `tLen` were assigned without `local`, writing three globals per call.
-     Verified safe: `OutputString` captures the return values into its own
-     locals and SkuBeacon's same-named `tFile` is a proper local — nothing read
-     the leaked globals.
+  Gemessenes Latenzbudget pro Sprung: Auslöser → EvaluateAllAuras war 0 ms für
+  echtes CLEU, +100 ms fix für eigene Zauber, 0-250 ms für alles Gepollte;
+  OutputString → PlaySoundFile war 0-100 ms; danach 0 ms oder bis zu 85 % des
+  gerade davor laufenden Sounds; danach 0-65 ms Datei-Vorlauf. Schlechtester
+  realistischer Stapel ≈ 1,5 s, was zur ursprünglichen Beschwerde passt.
 
-  WAVE 2 (items 9-15) targets the two complaints wave 1 left open: a target
-  debuff falling off is announced late, and "remaining duration < X" sounds
-  trigger late. Root cause of both: those auras had no wake-up of their own —
-  they were only re-checked when some UNRELATED combat-log event happened to
-  arrive (melee-only fight: up to a swing timer late; out of combat: minutes
-  late or never before the expiry itself).
+  1. **Die Audio-Pumpe wacht im nächsten Frame auf** (`SkuVoice-1.0.lua`,
+     `mQueueDirty`). Der Pumpenrumpf war auf `fTime > 0.1` gegated und
+     `OutputString` spielte nie selbst etwas, also wartete jeder Sku-Sound
+     0-100 ms (~50 ms im Mittel). Jetzt lässt ein Append den Rumpf im nächsten
+     Frame laufen (~16 ms). Reihenfolge, `tPlayNext` und Overwrite-Regeln
+     unangetastet; der Dirty-Lauf setzt `fTime` nicht zurück, die 0,1-s-Kadenz
+     behält ihre eigene Uhr.
+     - Teilfix, nicht verlieren: Der Tombstone-Sweep und das Entfernen laufen
+       NUR auf Kadenz. Sie beenden einen Sound bei seiner DEKLARIERTEN Länge und
+       stoppen ihn hart per `StopSound`, und deklarierte Längen liegen leicht
+       unter den echten Dauern (brass1 deklariert 0,32 s, die Datei hat 0,34 s) —
+       auf dem Extraframe zu laufen würde den Stopp von "bis zu 100 ms zu spät"
+       auf exakt pünktlich schieben und ~20 ms Ausklang abschneiden. Bei einem
+       Piepser unhörbar, beim Schlusskonsonanten eines Wortes hörbar.
+     - Nachprüfen: Normale Ansagen dürfen ihre letzte Silbe nicht verlieren.
+  2. **Aura-SOUND-Ausgaben überspringen den TTSSepPause-Halt, eine nach der
+     anderen** (`SkuVoice-1.0.lua` + `SkuAuras/data.lua`, Flag `auraSound` /
+     16. Positionsargument). TTSSepPause (85) ist der Wort-zu-Wort-Taktregler der
+     konkatenierten Audiodatei-Sprache — richtig für Wörter, falsch für einen
+     einzelnen Piepser, weil der Halt mit dem skaliert, was davor läuft (1,36 s
+     Sound davor = 1,15 s Warten). Der erste anstehende Aura-Sound startet jetzt
+     sofort, **außer** ein anderer Aura-Sound läuft noch; dann fällt er auf den
+     normalen Queue-Pfad zurück — bewusste Maintainer-Entscheidung: zwei sich
+     überlagernde Aura-Sounds sind ununterscheidbar, das ist schlimmer als ein
+     verspäteter. Aura-Sounds BLOCKIEREN weiterhin, was hinter ihnen liegt (sie
+     sind nicht aus dem `tPlayNext`-Scan ausgenommen), Sprache nach einem
+     Aura-Sound wartet also wie bisher.
+     - Nur die GENERIERTE Sound-Ausgabefamilie darf das Flag setzen. Die Wort-
+       und Textausgaben darüber dürfen es nicht, sonst verschleift eine
+       mehrwortige Aura-Ausgabe ihre Wörter.
+     - Nachprüfen: Zwei Auren, die auf ein Event feuern, müssen sequenziell und
+       unterscheidbar bleiben; "Inneres Feuer verloren" darf nicht verschleifen.
+  3. **`spellNameUsable` + `itemCount` sind lazy** (`SkuAuras/Core.lua`,
+     `tLazyEvaluateFields` + Metatable auf `tEvaluateData`). Beide wurden bei
+     JEDEM Kampflog-Event eifrig eingesammelt, bevor irgendetwas prüfte, ob eine
+     Aura sie überhaupt will, und keine Default-Aura referenziert eines von
+     beiden. `GetSpellNamesUsable` allein sind ~800-1500 C-Aufrufe (132
+     Aktionsslots × GetActionInfo + GetSpellInfo + ActionButtonUsable, das selbst
+     bis zu 8 GetShapeshiftFormID plus HasAction / IsUsableAction /
+     GetSpellCooldown / GetSpellCharges / IsActionInRange / GetVertexColor /
+     IsDesaturated). Bewusst gewählt gegenüber einer vorberechneten Menge
+     "welche Attribute sind in Benutzung": So eine Menge müsste bei jedem
+     Anlegen / Aktivieren / Importieren / Löschen einer Aura invalidiert werden,
+     und eine vergessene Stelle ergibt eine still tote Aura. Lazy kann nicht
+     veralten. nil cached als `false`; verifiziert, dass jeder Leser auf
+     Wahrheitswert prüft und nichts `tEvaluateData` mit `pairs` iteriert.
+     - Nachprüfen: Eine Aura mit "Zauber benutzbar" oder Item-Anzahl muss weiter
+       feuern.
+  4. **Früher Ausstieg bei Tastendruck** (`SkuAuras/Core.lua`, `OnKeyDown`). Der
+     Handler ist für jeden Tastendruck im Spiel scharf und lief pro Tastendruck
+     ein komplettes `EvaluateAllAuras` — eine vollständige Auswertung pro
+     getipptem Zeichen im Chat. Jetzt scannt er die aktivierten Auren auf ein
+     `pressedKey`-Attribut und kehrt zurück, wenn keine eines hat. Live-Scan
+     statt gecachtem Flag, aus demselben Veraltungsgrund wie bei 3.
+     - Nachprüfen: Eine `pressedKey`-Aura anlegen und prüfen, dass sie feuert.
+  5. **Gesundheit / Energie / Ziel / Abklingzeit sind event-getrieben, pro Frame
+     zusammengefasst** (`SkuAuras/Core.lua`; `UNIT_HEALTH`, `UNIT_POWER_UPDATE`,
+     `UNIT_TARGET`, `SPELL_UPDATE_COOLDOWN`; `tTrackedUnits` / `tDirtyUnits` /
+     `MarkUnitDirty`). Alle vier im 2.5.6-Binary bestätigt. Die Handler MARKIEREN
+     nur; der Frame-Treiber lässt für das Markierte den ORIGINALEN
+     `UNIT_TICKER` / `COOLDOWN_TICKER` laufen, sodass Änderungserkennung,
+     Event-Payloads und Ansagen identisch bleiben — nur das Timing verschiebt
+     sich (0-250 ms → ~16 ms). Das Zusammenfassen ist Absicht und tragend: Den
+     Ticker direkt aus dem Event zu rufen hätte Latenz gegen einen unbegrenzten
+     Anstieg der Auswertungen/s im Raid getauscht, da UNIT_HEALTH viele Male pro
+     Sekunde und Einheit feuert. Markieren deckelt die Arbeit auf einen Tick pro
+     Einheit und Frame. `UNIT_TICKER` gibt nichts aus, solange sich sein
+     UnitRepo-Snapshot nicht geändert hat — deshalb kann ein Event zusätzlich zu
+     einem Backstop-Tick nicht doppelt ansagen. Der Einheitenfilter ist nötig,
+     weil UNIT_HEALTH & Co. für jede Einheit in Reichweite gesendet werden
+     (AceEvent hat kein RegisterUnitEvent).
+     - **Combo-Punkte bleiben gepollt.** `UNIT_COMBO_POINTS` /
+       `PLAYER_COMBO_POINTS` existieren auf diesem Client NICHT (0 Treffer im
+       Binary; Combo-Punkte wurden erst in Legion ein Power-Typ, WeakAuras pollt
+       hier ebenfalls `GetComboPoints`). Darum bleibt der Ticker für den
+       **Spieler bei 0,25 s** — nur der Gruppen-/Raid-Sweep ist auf 0,5 s
+       gegangen. Diese Aufteilung nicht "vereinfachen", das würde die
+       Combo-Punkt-Latenz zurückwerfen.
+     - Nachprüfen: Eine Combo-Punkt-Aura darf nicht langsamer sein als vorher;
+       eine gesundheits- und eine abklingzeitgetriebene Aura sollten deutlich
+       prompter sein.
+  6. **`SPELL_CAST_SUCCESS` in zwei Durchläufe gespalten**
+     (`SkuAuras/Core.lua`). WoW hat kein Kampflog-Event für "Abklingzeit
+     gestartet", also fabrizierte Sku `SPELL_COOLDOWN_START`, indem es die
+     `SPELL_CAST_SUCCESS`-Tabelle an Ort und Stelle UMBENANNTE und einmal
+     auswertete. Zwei Folgen, beide jetzt behoben: Das Umbenennen braucht ein
+     gesetztes `GetSpellCooldown`, daher einen 0,1-s-Timer — das schnelle Event
+     war also Geisel der Datenabhängigkeit des langsamen; und die beiden Events
+     wurden gegenseitig exklusiv, sodass eine Aura auf `SPELL_CAST_SUCCESS` für
+     den eigenen Zauber nie feuerte, wenn dieser eine Abklingzeit hatte. Jetzt:
+     sofortiger Durchlauf unter dem echten Namen, dann Buchhaltung bei +0,1 s und
+     ein zweiter Durchlauf, beschränkt auf Auren, die `SPELL_COOLDOWN_START`
+     ausdrücklich beobachten (`tAuraWatchesEvent`, `aRequiredEventValue`).
+     - Diese Beschränkung ist es, die einer Aura ohne Event-Bedingung zwei
+       Durchläufe für einen Zauber erspart. `aExcludeEventValue` überspringt
+       zusätzlich eine Aura, die BEIDE Namen beobachtet (sie sind ODER-verknüpft),
+       was sonst bei einer nicht-`single`-Aktion zwei Ansagen pro Zauber gäbe.
+     - **Erwartetes NEUES Verhalten, kein Bug:** Eine Aura auf "Zauber
+       erfolgreich" für eigene Abklingzeit-Zauber war still tot und spricht jetzt.
+     - Nachprüfen: ~~"Zauber erfolgreich" bei eigenem Abklingzeit-Zauber feuert~~
+       **VOM NUTZER BESTÄTIGT 2026-08-18.** Offen bleibt: Eine
+       `SPELL_COOLDOWN_START`-Aura darf nicht doppelt ansagen.
+  7. **Waffenverzauberung: Nachfeuern kurz vor Ablauf auf ganze Sekunden
+     gegated** (`SkuAuras/Core.lua`, `tExpirySec` / `lastEnchantExpirySec`).
+     `tNearExpiry` ist die letzten 120 s jeder temporären Verzauberung wahr und
+     feuerte früher bei JEDEM Tick `WEAPON_ENCHANT_UPDATE` nach — ein volles
+     `EvaluateAllAuras` 4×/s über zwei Minuten nach jedem Schleifstein oder Öl,
+     lautlos. Der Maintainer akzeptiert den Schlupf von ≤1 s.
+     - Nachprüfen: Eine Aura "Waffenverzauberung Dauer < X" muss weiter feuern,
+       innerhalb von etwa einer Sekunde.
+  8. **Die drei Locals von `GetAudiodata`** (`SkuVoice-1.0.lua`). `tFile` /
+     `tPath` / `tLen` wurden ohne `local` zugewiesen und schrieben drei Globals
+     pro Aufruf. Als unkritisch verifiziert: `OutputString` fängt die
+     Rückgabewerte in eigenen Locals, und das gleichnamige `tFile` in SkuBeacon
+     ist ein echtes Local — nichts las die geleakten Globals.
 
-  9. **Single-value conditions were evaluated TWICE per aura per event**
-     (`SkuAuras/Core.lua`, `EvaluateAllAuras` attributes loop). The
-     single-value `else` branch computed its result and then re-ran the same
-     attribute through a leftover copy of the multi-value loop — a straight 2×
-     on most conditions of most auras on every combat-log event. Also fixed two
-     leaked globals in that loop: `tLocalResult` (write-only) and
-     `tSpellNameOnCdValue` — the latter survived across auras AND across whole
-     passes, so an aura without a `spellNameOnCd` condition could announce a
-     STALE cooldown name from an earlier aura. It is a per-aura local now.
-     - **Expected NEW behaviour, not a bug:** a "spell on cooldown" name output
-       on an aura that never had that condition goes silent (it was garbage).
-     - Re-check: any multi-condition aura still fires; `/skuperf combat` avg
-       for `EvaluateAllAuras` drops further.
-  10. **Duration lookups read the list cache instead of rescanning UnitAura**
-     (`SkuAuras/Core.lua`, `exp` maps in `tAuraListCache`, `getFixedDuration`).
-     The per-aura duration prefetch (buffListTargetDuration & co) rescanned
-     UnitAura for EVERY duration-watching aura on EVERY event, bypassing the
-     Tier-2 cache — and on a miss it built and DISCARDED a full list, then
-     assigned that list TABLE to the Duration field (the numeric operators
-     rejected it via their table guard, so it worked by accident). The cache
-     slots now carry name → expirationTime (first occurrence wins, matching the
-     fresh scan's first-match for duplicate names; `false` marks a nil exp), a
-     hit is a subtraction, and the same frame-accurate invalidation covers both
-     maps — a refresh that moves exp is an `_AURA_` subevent + `UNIT_AURA`.
-     Two deliberate behaviour repairs: on a miss the Duration field is now
-     explicitly CLEARED (was: full-list table), and a nil lookup no longer
-     retains the PREVIOUS aura's duration in the shared tEvaluateData (same
-     stale-leak class as item 9's `tSpellNameOnCdValue`).
-     - Regression net: `/skuauracache verify on` now also diffs the stored
-       expirationTimes (absolute timestamps, exact compare) — run one test
-       fight with a DoT and watch the ring for `AURACACHE MISMATCH`.
-     - Kill switch: `/skuauracache off` disables the exp reads too
-       (getFixedDuration falls back to the original fresh scan).
-     - Re-check: a "Dauer < X" aura on a running DoT fires as before (item 11
-       is what gives it its own wake-up).
-  11. **Duration-deadline scheduler: "Dauer < X" wakes itself, frame-precise**
+  WELLE 2 (Punkte 9-15) zielt auf die zwei Beschwerden, die Welle 1 offenließ:
+  Ein wegfallender Ziel-Debuff wird zu spät angesagt, und "Restdauer < X"-Sounds
+  kommen zu spät. Ursache beider: Diese Auren hatten keinen eigenen Weckruf — sie
+  wurden nur geprüft, wenn zufällig ein UNBETEILIGTES Kampflog-Event eintraf (im
+  reinen Nahkampf: bis zu einen Waffenschwung zu spät; außerhalb des Kampfes:
+  Minuten zu spät oder nie vor dem Ablauf selbst).
+
+  9. **Einwertige Bedingungen wurden pro Aura und Event DOPPELT ausgewertet**
+     (`SkuAuras/Core.lua`, Attributschleife in `EvaluateAllAuras`). Der
+     einwertige `else`-Zweig berechnete sein Ergebnis und schickte dasselbe
+     Attribut anschließend nochmals durch eine übrig gebliebene Kopie der
+     Mehrwert-Schleife — glatt 2× auf den meisten Bedingungen der meisten Auren
+     bei jedem Kampflog-Event. Außerdem zwei geleakte Globals in dieser Schleife
+     behoben: `tLocalResult` (nur geschrieben) und `tSpellNameOnCdValue` —
+     letzteres überlebte über Auren UND über ganze Durchläufe hinweg, sodass eine
+     Aura ohne `spellNameOnCd`-Bedingung einen VERALTETEN Abklingzeit-Namen aus
+     einer früheren Aura ansagen konnte. Es ist jetzt ein Local pro Aura.
+     - **Erwartetes NEUES Verhalten, kein Bug:** Eine "Zauber auf Abklingzeit"-
+       Namensausgabe an einer Aura, die diese Bedingung nie hatte, verstummt
+       (sie war Müll).
+     - Nachprüfen: Jede Aura mit mehreren Bedingungen feuert weiter; der
+       `/skuperf combat`-Mittelwert für `EvaluateAllAuras` sinkt weiter.
+  10. **Dauerabfragen lesen den Listen-Cache statt UnitAura neu zu scannen**
+     (`SkuAuras/Core.lua`, `exp`-Maps in `tAuraListCache`, `getFixedDuration`).
+     Der Dauer-Prefetch pro Aura (buffListTargetDuration & Co.) scannte UnitAura
+     für JEDE dauerbeobachtende Aura bei JEDEM Event neu und umging damit den
+     Tier-2-Cache — und baute bei einem Miss eine volle Liste, VERWARF sie und
+     wies diese TABELLE dann dem Duration-Feld zu (die numerischen Operatoren
+     wiesen sie über ihre Tabellen-Schutzprüfung zurück, es funktionierte also
+     aus Versehen). Die Cache-Slots tragen jetzt name → expirationTime (das erste
+     Vorkommen gewinnt, passend zum First-Match des Fresh-Scans bei
+     Namensdubletten; `false` markiert ein nil-exp), ein Treffer ist eine
+     Subtraktion, und dieselbe framegenaue Invalidierung deckt beide Maps ab —
+     ein Refresh, der exp verschiebt, ist ein `_AURA_`-Subevent + `UNIT_AURA`.
+     Zwei bewusste Verhaltensreparaturen: Bei einem Miss wird das Duration-Feld
+     jetzt explizit GELÖSCHT (vorher: volle Listentabelle), und eine
+     nil-Abfrage behält nicht mehr die Dauer der VORHERIGEN Aura im geteilten
+     tEvaluateData (dieselbe Stale-Leak-Klasse wie `tSpellNameOnCdValue` in
+     Punkt 9).
+     - Regressionsnetz: `/skuauracache verify on` diffed jetzt auch die
+       gespeicherten expirationTimes (absolute Zeitstempel, exakter Vergleich) —
+       einen Testkampf mit einem DoT fahren und den Ring auf `AURACACHE MISMATCH`
+       beobachten.
+     - Notausschalter: `/skuauracache off` deaktiviert auch die exp-Lesungen
+       (getFixedDuration fällt auf den ursprünglichen Fresh-Scan zurück).
+     - Nachprüfen: Eine "Dauer < X"-Aura auf einem laufenden DoT feuert wie
+       vorher (den eigenen Weckruf gibt ihr Punkt 11).
+  11. **Dauer-Deadline-Scheduler: "Dauer < X" weckt sich selbst, framegenau**
      (`SkuAuras/Core.lua`, `tNextDurationDeadline` / `tArmDeadlineForSmaller` /
-     `DURATION_DEADLINE`). A duration threshold is a crossing whose moment is
-     KNOWN in advance (expirationTime − threshold), so instead of polling or
-     piggybacking on unrelated events, every evaluation pass records the
-     earliest upcoming crossing over all enabled duration-watching auras (the
-     four buff/debuff Duration attributes AND the two weapon-enchant ones);
-     the frame driver does ONE number compare per frame and fires one synthetic
-     `DURATION_DEADLINE` pass when reached (dprint breadcrumb
-     "aura durationDeadline fire"). Latency for the user's core case — "warn me
-     ~1 s before my target debuff falls off" — goes from "next combat-log event,
-     up to a swing timer or minutes" to one frame. Only the `smaller` operator
-     arms (bigger flips on refresh = event-driven; `is` on a float never matched
-     between events anyway); armed only while still above threshold; +0.02 s
-     nudge past the exact crossing. Re-arming is implicit (every pass recomputes
-     from fresh data); a deadline whose aura vanished early fires one empty pass
-     and dies.
-     - **Replaces item 7's refire:** the per-second near-expiry
-       WEAPON_ENCHANT_UPDATE in UNIT_TICKER is retired; enchant "Dauer < X"
-       auras improve from ≤1 s slip to one frame. Edge, expected new behaviour:
-       an enchant-duration aura that ALSO has an `event` condition on
-       WEAPON_ENCHANT_UPDATE loses the per-second event stream and only fires
-       on real enchant changes — condition-only builds (the normal case) gain.
-     - The synthetic pass is shaped like KEY_PRESS (source player, dest
-       playertarget); the subevent name contains no _AURA_/_DAMAGE/_HEAL/_MISSED
-       substring so no subevent-pattern branch reacts. Auras gated on a specific
-       `event` correctly do not fire on it (they never fired on the crossing).
-     - Re-check: ~~self-BUFF threshold fires exactly at the crossing with
-       nothing else happening; no spam~~ **DONE 2026-08-18** (see the VERIFIED
-       block above). Still open: the same on a target DEBUFF (DoT) and on a
-       weapon-enchant duration.
-  12. **UNIT_AURA drives an evaluation on real membership change**
+     `DURATION_DEADLINE`). Eine Dauerschwelle ist eine Überschreitung, deren
+     Zeitpunkt im Voraus BEKANNT ist (expirationTime − Schwelle). Statt zu pollen
+     oder auf unbeteiligten Events mitzureiten, notiert jeder Auswertungspass die
+     früheste bevorstehende Überschreitung über alle aktivierten
+     dauerbeobachtenden Auren (die vier Buff-/Debuff-Dauer-Attribute UND die zwei
+     Waffenverzauberungs-Attribute); der Frame-Treiber macht EINEN Zahlenvergleich
+     pro Frame und feuert bei Erreichen einen synthetischen
+     `DURATION_DEADLINE`-Pass (dprint-Breadcrumb "aura durationDeadline fire").
+     Die Latenz für den Kernfall des Nutzers — "warne mich ~1 s bevor mein
+     Ziel-Debuff wegfällt" — geht von "nächstes Kampflog-Event, bis zu einen
+     Waffenschwung oder Minuten" auf einen Frame. Nur der Operator `smaller`
+     armiert (`bigger` kippt beim Refresh = event-getrieben; `is` auf einem Float
+     traf zwischen Events ohnehin nie); armiert nur, solange noch über der
+     Schwelle; +0,02 s Nachschlag über die exakte Überschreitung hinaus.
+     Neu-Armierung ist implizit (jeder Pass rechnet aus frischen Daten neu); eine
+     Deadline, deren Aura vorher verschwand, feuert einen Leerpass und stirbt.
+     - **Ersetzt das Nachfeuern aus Punkt 7:** Das sekündliche
+       WEAPON_ENCHANT_UPDATE im UNIT_TICKER ist stillgelegt; Verzauberungs-"Dauer
+       < X"-Auren verbessern sich von ≤1 s Schlupf auf einen Frame. Kante,
+       erwartetes neues Verhalten: Eine Verzauberungs-Dauer-Aura, die ZUSÄTZLICH
+       eine `event`-Bedingung auf WEAPON_ENCHANT_UPDATE hat, verliert den
+       sekündlichen Eventstrom und feuert nur noch bei echten
+       Verzauberungswechseln — reine Bedingungsbauten (der Normalfall) gewinnen.
+     - Der synthetische Pass ist wie KEY_PRESS geformt (Quelle player, Ziel
+       playertarget); der Subevent-Name enthält keine Teilzeichenkette
+       `_AURA_`/`_DAMAGE`/`_HEAL`/`_MISSED`, also reagiert kein
+       Subevent-Musterzweig. Auren, die auf ein bestimmtes `event` gegated sind,
+       feuern korrekt nicht darauf (sie feuerten auch früher nie auf die
+       Überschreitung).
+     - Nachprüfen: ~~Selbst-BUFF-Schwelle feuert exakt bei der Überschreitung,
+       wenn sonst nichts passiert; kein Spam~~ **ERLEDIGT 2026-08-18** (siehe den
+       VERIFIZIERT-Block oben). Offen bleibt: dasselbe auf einem Ziel-DEBUFF
+       (DoT) und auf einer Waffenverzauberungsdauer.
+  12. **UNIT_AURA treibt eine Auswertung bei echter Mengenänderung**
      (`SkuAuras/Core.lua`, `tAuraMembershipDirty` / `AuraMembershipCheck` /
-     `AnyAuraWatchesAuraLists`). UNIT_AURA used to only stale the list cache,
-     never schedule an evaluation — so a condition aura ("debuff list target
-     does NOT contain X") reacted only when the matching combat-log event
-     arrived, and out of CLEU range / out of combat the fall-off waited for the
-     next unrelated event. Now UNIT_AURA (player/target) marks the unit; the
-     frame driver drains the marks into a bounded NAME rescan (UnitAura caps at
-     40 indices regardless of how many debuffs a raid boss carries) and fires
-     ONE synthetic `UNIT_AURA_CHANGED` pass only when the name SET changed.
-     Raid-storm dampers, all deliberate: dose/refresh/duration UNIT_AURA
-     traffic changes no membership → costs only the capped scan; an `_AURA_`
-     CLEU pass for the same unit in the same frame suppresses the extra pass
-     (`tLastAuraCleuEvalTime`); a target CHANGE only resyncs the snapshot
-     (`tAuraMembershipResync`) because the ticker's UNIT_TARGETCHANGE already
-     evaluates on retarget; and with no enabled aura reading lists/durations
-     the whole check early-outs (live scan gate, same pattern as keypress).
-     Breadcrumb on the rare real fire: `aura membership eval <unit>`.
-     - Re-check in a 25er raid: `/skuperf combat` — `EvaluateAllAuras` `n` must
-       NOT balloon versus a fight before this commit; the breadcrumb should be
-       rare (appear/disappear only). The damper side is verified solo
-       2026-08-18 (zero spurious passes, CLEU dedup works). Still open, the
-       POSITIVE fire: a fall-off that CLEU does not deliver — e.g. target a
-       party member 60+ yards away and let a buff on them drop — must speak
-       within a frame and write `aura membership eval target`. (A solo
-       self-buff CANNOT test this: own buffs always arrive via CLEU.)
-  13. **GUID → group-index map replaces the per-event roster sweeps**
+     `AnyAuraWatchesAuraLists`). UNIT_AURA hat früher nur den Listen-Cache
+     entwertet, nie eine Auswertung angestoßen — eine Bedingungsaura
+     ("Debuff-Liste Ziel enthält X NICHT") reagierte also erst, wenn das passende
+     Kampflog-Event eintraf, und außerhalb der CLEU-Reichweite oder außerhalb des
+     Kampfes wartete der Wegfall auf das nächste unbeteiligte Event. Jetzt
+     markiert UNIT_AURA (player/target) die Einheit; der Frame-Treiber leert die
+     Markierungen in einen begrenzten NAMENS-Rescan (UnitAura deckelt bei 40
+     Indizes, egal wie viele Debuffs ein Raidboss trägt) und feuert EINEN
+     synthetischen `UNIT_AURA_CHANGED`-Pass nur, wenn sich die Namensmenge
+     geändert hat. Raid-Sturm-Dämpfer, alle bewusst: Dosis-/Refresh-/Dauer-
+     UNIT_AURA-Verkehr ändert keine Zugehörigkeit → kostet nur den gedeckelten
+     Scan; ein `_AURA_`-CLEU-Pass für dieselbe Einheit im selben Frame unterdrückt
+     den Zusatzpass (`tLastAuraCleuEvalTime`); ein ZIELWECHSEL synchronisiert nur
+     den Snapshot neu (`tAuraMembershipResync`), weil das UNIT_TARGETCHANGE des
+     Tickers beim Umzielen ohnehin auswertet; und ohne aktivierte Aura, die
+     Listen oder Dauern liest, steigt die ganze Prüfung früh aus (Live-Scan-Gate,
+     dasselbe Muster wie beim Tastendruck). Breadcrumb beim seltenen echten
+     Feuern: `aura membership eval <unit>`.
+     - Im 25er-Raid nachprüfen: `/skuperf combat` — das `n` von
+       `EvaluateAllAuras` darf gegenüber einem Kampf vor diesem Commit NICHT
+       explodieren; der Breadcrumb sollte selten sein (nur bei
+       Erscheinen/Verschwinden). Die Dämpferseite ist solo verifiziert
+       2026-08-18 (null überflüssige Durchläufe, CLEU-Dedup wirkt). Offen bleibt
+       das POSITIVE Feuern: ein Wegfall, den CLEU nicht liefert — z. B. ein
+       Gruppenmitglied 60+ Meter entfernt anvisieren und einen Buff auf ihm
+       auslaufen lassen — muss innerhalb eines Frames sprechen und
+       `aura membership eval target` schreiben. (Ein Selbstbuff solo kann das
+       NICHT testen: eigene Buffs kommen immer über CLEU.)
+  13. **GUID→Gruppenindex-Map ersetzt die Roster-Sweeps pro Event**
      (`SkuAuras/Core.lua`, `tRaidGuidIndex` / `tPartyGuidIndex` /
-     `tEnsureGroupGuidMap`). `GetBestUnitId` swept raid1..40 with a UnitGUID
-     call each and ran two-or-three times per combat-log event;
-     `RoleCheckerIsUnitGUIDInPartyOrRaid` added its own raid1..25 sweep per
-     event — in a 25er easily 100+ C calls per event, hundreds of times a
-     second. Group membership only changes on roster events, so raid/party
-     members now resolve through a lazily-rebuilt map, staled by all four
-     roster events (they funnel through `RoleCheckerUpdateRoster`) and by
-     `PLAYER_ENTERING_WORLD`. Deliberately preserved semantics: VOLATILE
-     tokens (target, focus, pet, every `*target`) stay live compares;
-     `GetBestUnitId`'s result ORDER is byte-identical (raid, then party1..4
-     interleaved with their partyNtarget compares, then the singles — the old
-     `party0` probe was an invalid token whose UnitGUID is always nil, dropped);
-     RoleChecker keeps its historical raid1..25 horizon via the stored index
-     (raid26..40 stay unknown to it, exactly as before).
-     - Re-check in a party AND a raid: target/heal announcements that name a
-       unit ("party 2", "raid 15") still name the right one; role-based aq
-       announcements unchanged. `/skuperf combat` avg drops again in groups.
-  14. **More lazy fields + three per-event micro-costs**
-     (`SkuAuras/Core.lua`). `targetUnitDistance` (LibRangeCheck's GetRange is a
-     checker CASCADE of item/spell range probes and ran on every event with a
-     target) and `targetTargetUnitId` (an eager GetBestUnitId per event) moved
-     into the existing `tLazyEvaluateFields` metatable — computed on first read.
-     `targetTargetUnitId` always returns a table (eager default was `{}`)
-     because its reader indexes after a truthiness guard. `LogRecorder` does
-     one settings walk instead of four per event. And the `UNIT_INVENTORY_CHANGED`
-     guard tested `ItemCDRepo[itemId]` with a never-assigned lowercase global —
-     always nil, so every bag change re-added (re-timestamped) tracked item
-     cooldowns; the guard is live now, which was its written intent.
-     - Re-check: a "target distance" aura and a "ziel deines ziels" aura still
-       fire; an item-cooldown aura still announces cooldown end once.
-  15. **Word outputs jump the pending queue (the beeps' fast path, word-legal)**
-     (`SkuAuras/data.lua` actions + all 24 word outputs; `SkuVoice-1.0.lua`
-     `mInstantInsertPos`). A word can never legally OVERLAY running speech the
-     way an aura beep does — word over word is mush — so its latency floor is
-     the playing clip's pacing point. But the real word latency was queue
-     DEPTH: aura words appended behind every pending `doNotOverwrite` entry.
-     `OutputString` has had an `aInstant` FRONT-insert parameter all along, and
-     the evaluate loop has always passed each action's `instant` flag to the
-     outputs — which every word output DROPPED (the "Instant" action variants
-     were dead wiring). Now: the three aura audio actions carry
-     `instant = true`, the word outputs forward the flag, and aura words insert
-     right behind whatever is playing instead of behind the whole queue.
-     Fixed while wiring: repeated instant calls in one frame each landed at
-     position 1 and REVERSED an aura's output fields ("ziel, Schattenwort"
-     instead of "Schattenwort, ziel") — a same-frame cursor keeps them in
-     spoken order, re-clamped after an aOverwrite clear. aFirst/overwrite
-     interrupt logic, word-to-word pacing (TTSSepPause) and the beeps'
-     `auraSound` path are untouched; the word/text outputs still never set
-     `auraSound` (item 2's rule stands).
-     - Re-check: ~~an aura speaking spell name + unit says them in that
-       order; nothing slurs~~ **CONFIRMED by user 2026-08-18** (multi-word
-       auras working in the 5-man run).
+     `tEnsureGroupGuidMap`). `GetBestUnitId` fegte raid1..40 mit je einem
+     UnitGUID-Aufruf durch und lief zwei- bis dreimal pro Kampflog-Event;
+     `RoleCheckerIsUnitGUIDInPartyOrRaid` legte pro Event einen eigenen
+     raid1..25-Sweep drauf — im 25er leicht 100+ C-Aufrufe pro Event, hunderte
+     Male pro Sekunde. Gruppenzugehörigkeit ändert sich nur bei Roster-Events,
+     also lösen Raid-/Gruppenmitglieder jetzt über eine lazy neu gebaute Map auf,
+     entwertet von allen vier Roster-Events (sie laufen durch
+     `RoleCheckerUpdateRoster`) und von `PLAYER_ENTERING_WORLD`. Bewusst
+     erhaltene Semantik: FLÜCHTIGE Tokens (target, focus, pet, jedes `*target`)
+     bleiben Live-Vergleiche; die Ergebnis-REIHENFOLGE von `GetBestUnitId` ist
+     byte-identisch (Raid, dann party1..4 verschränkt mit ihren
+     partyNtarget-Vergleichen, dann die Einzelnen — die alte `party0`-Sonde war
+     ein ungültiges Token, dessen UnitGUID immer nil ist, entfernt); RoleChecker
+     behält über den gespeicherten Index seinen historischen raid1..25-Horizont
+     (raid26..40 bleiben ihm unbekannt, exakt wie vorher).
+     - In Gruppe UND Raid nachprüfen: Ziel-/Heilansagen, die eine Einheit
+       benennen ("party 2", "raid 15"), benennen weiter die richtige;
+       rollenbasierte aq-Ansagen unverändert. `/skuperf combat`-Mittelwert sinkt
+       in Gruppen erneut.
+  14. **Mehr Lazy-Felder + drei Mikrokosten pro Event**
+     (`SkuAuras/Core.lua`). `targetUnitDistance` (das GetRange von
+     LibRangeCheck ist eine KASKADE aus Item-/Zauber-Reichweitensonden und lief
+     bei jedem Event mit Ziel) und `targetTargetUnitId` (ein eifriges
+     GetBestUnitId pro Event) sind in die bestehende
+     `tLazyEvaluateFields`-Metatable gewandert — berechnet beim ersten Lesen.
+     `targetTargetUnitId` liefert immer eine Tabelle (der eifrige Default war
+     `{}`), weil sein Leser nach einer Wahrheitsprüfung indiziert. `LogRecorder`
+     macht einen Settings-Walk statt vier pro Event. Und die
+     `UNIT_INVENTORY_CHANGED`-Prüfung testete `ItemCDRepo[itemId]` mit einem nie
+     zugewiesenen kleingeschriebenen Global — immer nil, also fügte jede
+     Taschenänderung verfolgte Item-Abklingzeiten neu hinzu (neu gestempelt); die
+     Prüfung ist jetzt scharf, was ihre geschriebene Absicht war.
+     - Nachprüfen: Eine "Zielentfernung"-Aura und eine "Ziel deines Ziels"-Aura
+       feuern weiter; eine Item-Abklingzeit-Aura sagt das Ende weiter einmal an.
+  15. **Wortausgaben überholen die wartende Queue (der schnelle Pfad der
+     Piepser, wortverträglich)** (`SkuAuras/data.lua`-Aktionen + alle 24
+     Wortausgaben; `SkuVoice-1.0.lua` `mInstantInsertPos`). Ein Wort kann
+     laufende Sprache nie legal ÜBERLAGERN, wie ein Aura-Piepser das tut — Wort
+     über Wort ist Brei —, seine Latenzuntergrenze ist also der Taktpunkt des
+     laufenden Clips. Die echte Wortlatenz war aber die Queue-TIEFE: Aura-Wörter
+     hängten sich hinter jeden wartenden `doNotOverwrite`-Eintrag. `OutputString`
+     hatte die ganze Zeit einen `aInstant`-Parameter für Einfügen VORN, und die
+     Auswerteschleife hat schon immer das `instant`-Flag jeder Aktion an die
+     Ausgaben gereicht — nur ließ jede Wortausgabe es FALLEN (die
+     "Instant"-Aktionsvarianten waren tote Verdrahtung). Jetzt tragen die drei
+     Aura-Audioaktionen `instant = true`, die Wortausgaben reichen das Flag
+     weiter, und Aura-Wörter reihen sich direkt hinter das gerade Laufende ein
+     statt hinter die ganze Queue. Beim Verdrahten mitbehoben: Wiederholte
+     Instant-Aufrufe in einem Frame landeten alle auf Position 1 und DREHTEN die
+     Ausgabefelder einer Aura um ("ziel, Schattenwort" statt "Schattenwort,
+     ziel") — ein Cursor pro Frame hält sie in Sprechreihenfolge, nach einem
+     aOverwrite-Clear neu geklemmt. aFirst-/Overwrite-Unterbrechungslogik,
+     Wort-zu-Wort-Takt (TTSSepPause) und der `auraSound`-Pfad der Piepser sind
+     unangetastet; die Wort- und Textausgaben setzen weiterhin nie `auraSound`
+     (die Regel aus Punkt 2 gilt).
+     - Nachprüfen: ~~Eine Aura, die Zaubername + Einheit spricht, sagt sie in
+       dieser Reihenfolge; nichts verschleift~~ **VOM NUTZER BESTÄTIGT
+       2026-08-18** (mehrwortige Auren im 5-Mann-Lauf in Ordnung).
 
-  Measurable check, no code change needed: `/skuperf reset`, run a fight,
-  `/skuperf combat` → the `EvaluateAllAuras` avg and total should drop sharply
-  (wave 1 cut the per-call cost, wave 2 cuts it again — items 9/10/13/14).
-  `n` may RISE from the new event sources, the extra cooldown pass and the
-  deadline/membership passes; that is expected, the per-call cost is what
-  moved. `/skucheck auras` (added with wave 2) must report no problems — it
-  trips if the evaluate loop ever leaks its globals again (item 9) —
-  **reported clean 2026-08-18**; the `/skuperf` before/after numbers are still
-  unmeasured.
+  Messbare Kontrolle, ohne Codeänderung: `/skuperf reset`, einen Kampf fahren,
+  `/skuperf combat` → Mittelwert und Summe von `EvaluateAllAuras` sollten stark
+  sinken (Welle 1 senkte die Kosten pro Aufruf, Welle 2 senkt sie erneut —
+  Punkte 9/10/13/14). `n` darf STEIGEN durch die neuen Eventquellen, den
+  zusätzlichen Abklingzeit-Pass und die Deadline-/Membership-Pässe; das ist
+  erwartet, bewegt hat sich die Kosten pro Aufruf. `/skucheck auras` (mit Welle 2
+  hinzugekommen) muss problemfrei melden — es schlägt an, wenn die
+  Auswerteschleife je wieder ihre Globals leakt (Punkt 9) — **2026-08-18 als
+  sauber gemeldet**; die `/skuperf`-Zahlen vorher/nachher sind noch ungemessen.
 
-  Revert candidates, cleanest first — wave 1: item 2 = the `data.lua`
-  one-liner; item 1 = the `mQueueDirty` gate; item 6 = the split in
-  `COMBAT_LOG_EVENT_UNFILTERED`; item 5 = the four `RegisterEvent` lines (the
-  frame-driver drain then simply never fires). Items 3/4/7/8 are independent.
-  Wave 2, one commit each so `git revert` is clean per item: item 15 = the
-  three `instant = true` action flags (the wiring then goes back to dead);
-  item 12 = the two mark lines in `UNIT_AURA` (the drain never fires);
-  item 11 = the arm calls (the deadline never arms — but item 7's refire is
-  GONE, so enchant "Dauer < X" auras would then only fire on real events);
-  item 10 = `/skuauracache off` at runtime, or revert its commit;
-  items 9/13/14 are independent. Status: item 11 self-buff core + item 12
-  damper side + item 9 skucheck verified 2026-08-18; everything else awaiting
-  play-testing (the revert map above stays until a release has survived real
-  group play).
+  Revert-Kandidaten, sauberster zuerst — Welle 1: Punkt 2 = der Einzeiler in
+  `data.lua`; Punkt 1 = das `mQueueDirty`-Gate; Punkt 6 = die Aufspaltung in
+  `COMBAT_LOG_EVENT_UNFILTERED`; Punkt 5 = die vier `RegisterEvent`-Zeilen (die
+  Drain des Frame-Treibers feuert dann schlicht nie). Punkte 3/4/7/8 sind
+  unabhängig. Welle 2, je ein Commit, damit `git revert` pro Punkt sauber ist:
+  Punkt 15 = die drei `instant = true`-Aktionsflags (die Verdrahtung ist dann
+  wieder tot); Punkt 12 = die zwei Markierungszeilen in `UNIT_AURA` (die Drain
+  feuert nie); Punkt 11 = die Arm-Aufrufe (die Deadline armiert nie — aber das
+  Nachfeuern aus Punkt 7 ist WEG, Verzauberungs-"Dauer < X"-Auren feuerten dann
+  nur noch auf echte Events); Punkt 10 = `/skuauracache off` zur Laufzeit oder
+  den Commit reverten; Punkte 9/13/14 sind unabhängig. Status: Punkt 11
+  Selbstbuff-Kern + Punkt 12 Dämpferseite + Punkt 9 skucheck verifiziert
+  2026-08-18; alles andere wartet auf Spieltests (die Revert-Karte oben bleibt
+  stehen, bis ein Release echtes Gruppenspiel überstanden hat).
