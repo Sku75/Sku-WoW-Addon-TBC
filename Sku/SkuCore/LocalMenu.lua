@@ -5324,11 +5324,116 @@ local function tSkuCheckKeys()
 	return tChecked, 0, tViolations
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Invariant 4 (menu; from the v43.0 "route list finished loading" regression):
+-- inside a BUILT level, every child must carry the same selectTarget as the
+-- level itself. That pointer is what makes ENTER on a leaf run the owning
+-- list's OnAction (SkuGenericMenuItem.OnPostSelect); a child with a nil/foreign
+-- one silently degrades to "step up a level, do nothing" -- which is exactly
+-- what the waypoint push-refresh produced by rebuilding the children with a raw
+-- children={} + BuildChildren instead of SkuOptions:RebuildNodeChildren.
+-- Three parts, because a pure tree sweep is nearly always empty: dynamic levels
+-- free their children when you leave them and the quick roots exist only for
+-- their session, so nothing is built by the time a slash command can be typed.
+--   1. live sweep over whatever IS built (read-only, never builds a level),
+--   2. a rebuild probe on a throwaway level - the fix's contract, always runs,
+--   3. the session tally of ENTERs that hit a leaf with no selectTarget under a
+--      select level (the tripwire in SkuGenericMenuItem.OnPostSelect).
+local function tSkuCheckMenu()
+	local tChecked, tViolations = 0, 0
+	local tWalk
+	tWalk = function(aNode, aDepth)
+		if aDepth > 12 or type(aNode) ~= "table" or type(aNode.children) ~= "table" then
+			return
+		end
+		for x = 1, #aNode.children do
+			local tChild = aNode.children[x]
+			if type(tChild) == "table" then
+				-- A child that is itself a select/multiselect level legitimately OWNS
+				-- its target (OnPostSelect re-points it to itself on descent), so only
+				-- a MISSING target is a violation.
+				if aNode.selectTarget and tChild.isSelect ~= true and tChild.isMultiselect ~= true then
+					tChecked = tChecked + 1
+					if tChild.selectTarget == nil then
+						tViolations = tViolations + 1
+						dprint("skucheck", "VIOLATION menu: child", tostring(tChild.name), "of", tostring(aNode.name),
+							"has no selectTarget -- expected", tostring(aNode.selectTarget.name),
+							"; ENTER on it would run no action and only step up")
+					end
+				end
+				tWalk(tChild, aDepth + 1)
+			end
+		end
+	end
+	if SkuOptions and SkuOptions.Menu then
+		for x = 1, #SkuOptions.Menu do
+			tWalk(SkuOptions.Menu[x], 1)
+		end
+	end
+	local tSweepChecked = tChecked
+	if tSweepChecked == 0 then
+		-- Not a pass: dynamic levels drop their children when you leave them and the
+		-- Shift-F9/F10 quick roots exist only during their session, so by the time a
+		-- slash command can be typed the built tree is usually empty. Say so instead
+		-- of reporting a silent, meaningless "no problems".
+		dprint("skucheck", "menu: no built levels in the tree right now - the live sweep had nothing to look at")
+	end
+
+	-- Contract probe (always runs, so this domain is never vacuous): the fix for
+	-- the loading-route-list bug IS SkuOptions:RebuildNodeChildren handing every
+	-- fresh child the level's selectTarget. Rebuild a throwaway select level and
+	-- verify it. Touches nothing live - the probe node is local and discarded.
+	if SkuOptions and SkuOptions.RebuildNodeChildren and SkuGenericMenuItem then
+		local tProbe = {name = "skucheckProbe", children = {}, isSelect = true, dynamic = true}
+		tProbe.BuildChildren = function(self)
+			SkuOptions:InjectMenuItems(self, {"skucheckProbeA", "skucheckProbeB"}, SkuGenericMenuItem)
+		end
+		local ok = pcall(function() SkuOptions:RebuildNodeChildren(tProbe) end)
+		tChecked = tChecked + 1
+		if not ok or #tProbe.children ~= 2 or tProbe.selectTarget ~= tProbe then
+			tViolations = tViolations + 1
+			dprint("skucheck", "VIOLATION menu: rebuild probe -- built", #tProbe.children, "children, level selectTarget",
+				tostring(tProbe.selectTarget == tProbe), "-- expected 2 children and the level pointing at itself")
+		else
+			for x = 1, #tProbe.children do
+				tChecked = tChecked + 1
+				if tProbe.children[x].selectTarget ~= tProbe then
+					tViolations = tViolations + 1
+					dprint("skucheck", "VIOLATION menu: rebuild probe -- child", x, "got no selectTarget from the level; ENTER below such a level would do nothing but step up")
+				end
+			end
+			-- and the keep-mode used by the live/volatile refresh must NOT re-seed the
+			-- target (that would discard what the user already selected) but must
+			-- still re-propagate it.
+			local tKeepTarget = {name = "skucheckProbeTarget"}
+			tProbe.selectTarget = tKeepTarget
+			pcall(function() SkuOptions:RebuildNodeChildren(tProbe, true) end)
+			tChecked = tChecked + 1
+			if tProbe.selectTarget ~= tKeepTarget or (tProbe.children[1] and tProbe.children[1].selectTarget ~= tKeepTarget) then
+				tViolations = tViolations + 1
+				dprint("skucheck", "VIOLATION menu: rebuild probe -- keep mode lost the existing selectTarget")
+			end
+		end
+	end
+
+	-- Tripwire tally: every ENTER this session that landed on a leaf with no
+	-- selectTarget under a select level (SkuGenericMenuItem.OnPostSelect logs the
+	-- detail). This is the shape the loading-route-list bug had in the live client.
+	local tMisses = (SkuOptions and SkuOptions.tMenuSelectTargetMisses) or 0
+	if tMisses > 0 then
+		tViolations = tViolations + tMisses
+		dprint("skucheck", "VIOLATION menu:", tMisses, "dead ENTER(s) this session, last:",
+			tostring(SkuOptions.tMenuSelectTargetLast))
+	end
+	dprint("skucheck", "menu: live sweep checked", tSweepChecked, "built children,", tMisses, "dead ENTERs this session")
+	return tChecked, 0, tViolations
+end
+
 SLASH_SKUCHECK1 = "/skucheck"
 SlashCmdList["SKUCHECK"] = function(aParam)
 	local tDomain = string.match(aParam or "", "^%s*(%S*)")
-	if tDomain ~= "" and tDomain ~= "bags" and tDomain ~= "auras" and tDomain ~= "keys" then
-		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags, auras, keys", "Unknown check. Available: bags, auras, keys", "Vérification inconnue. Disponible : bags, auras, keys"), false, true, 0.2) end)
+	if tDomain ~= "" and tDomain ~= "bags" and tDomain ~= "auras" and tDomain ~= "keys" and tDomain ~= "menu" then
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags, auras, keys, menu", "Unknown check. Available: bags, auras, keys, menu", "Vérification inconnue. Disponible : bags, auras, keys, menu"), false, true, 0.2) end)
 		return
 	end
 	local tChecked, tPending, tViolations = 0, 0, 0
@@ -5345,6 +5450,11 @@ SlashCmdList["SKUCHECK"] = function(aParam)
 	if tDomain == "" or tDomain == "keys" then
 		local c, p, v = tSkuCheckKeys()
 		dprint("skucheck", "keys done:", c, "bound keys checked,", v, "violations")
+		tChecked, tPending, tViolations = tChecked + c, tPending + p, tViolations + v
+	end
+	if tDomain == "" or tDomain == "menu" then
+		local c, p, v = tSkuCheckMenu()
+		dprint("skucheck", "menu done:", c, "menu checks,", v, "violations")
 		tChecked, tPending, tViolations = tChecked + c, tPending + p, tViolations + v
 	end
 	-- Keep the TESTED per-domain wording for an explicit `/skucheck bags`; the

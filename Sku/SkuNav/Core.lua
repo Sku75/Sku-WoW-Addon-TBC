@@ -1039,8 +1039,13 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 							and (_G["OnSkuOptionsMainOption1"]:IsVisible()
 								or (SkuOptions.combatMenuActive == true and InCombatLockdown())) then
 							local tParent = tCur.parent
-							tParent.children = {}
-							tParent:BuildChildren(tParent)
+							-- [2026-08-19] Rebuild through the shared helper, NOT with a bare
+							-- children={} + BuildChildren: the raw form dropped the
+							-- isSelect/selectTarget wiring the fresh children need, so ENTER
+							-- on a route point below this list ran no OnAction and only
+							-- stepped the cursor up a level (navigation never started) until
+							-- the menu was closed and reopened.
+							SkuOptions:RebuildNodeChildren(tParent)
 							local tFirst = tParent.children and tParent.children[1]
 							if tFirst then
 								SkuOptions.currentMenuPosition = tFirst

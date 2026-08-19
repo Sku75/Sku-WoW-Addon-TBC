@@ -391,6 +391,32 @@ Changements dans Sku v43.0
             démontage avant de sélectionner une nouvelle cible, où effacer les points de passage
             temporaires serait faux.
 
+    Navigation : un itinéraire ne démarrait pas si sa liste finissait de charger pendant que vous y étiez
+        Simple : Si vous ouvriez la liste des itinéraires (Shift-F10) pendant que Sku construisait
+            encore ses données de points de passage, la liste se rafraîchissait au moment où ces
+            données étaient prêtes - et à partir de là, Entrée sur un point d'itinéraire ne lançait
+            plus la navigation. Le menu remontait au contraire au niveau des points d'entrée, comme
+            si la touche n'avait rien fait du tout. Fermer puis rouvrir le menu corrigeait le
+            problème, ce qui donnait un aspect aléatoire à toute l'affaire. La liste rafraîchie se
+            comporte désormais exactement comme une liste fraîchement ouverte : Entrée démarre la
+            navigation. Cela vaut aussi pour la liste des points de passage à proximité (Shift-F9)
+            et pour toute liste de points de passage qui se rafraîchit à l'arrivée des données.
+        Technique : le rafraîchissement à la fin de la construction asynchrone du cache des points
+            de passage reconstruisait le niveau avec un simple children = {} suivi de
+            BuildChildren. Cela saute ce que fait OnPostSelect pour un niveau de sélection :
+            initialiser selectTarget sur le niveau et le copier sur chaque enfant fraîchement
+            construit. Sans cela, tout le sous-niveau hérite de selectTarget = nil, donc l'Entrée
+            de la feuille tombe dans la branche générique d'OnPostSelect - aucun OnAction ne
+            s'exécute (RouteFollowOnAction n'a jamais été appelé) et le curseur est placé sur
+            self.parent, exactement le saut observé. Cette reconstruction se trouve maintenant à un
+            seul endroit, SkuOptions:RebuildNodeChildren, utilisé par OnPostSelect lui-même, par le
+            rafraîchissement des points de passage et par celui des listes volatiles - ce dernier en
+            mode conservation, afin qu'un rafraîchissement en cours ne jette pas une cible déjà
+            sélectionnée. Deux fils-pièges accompagnent la correction : OnPostSelect journalise et
+            compte chaque Entrée qui atterrit sur une feuille sans selectTarget sous un niveau de
+            sélection, et /skucheck menu reconstruit un niveau de sélection jetable pour vérifier le
+            contrat et rapporte ce décompte de session.
+
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13

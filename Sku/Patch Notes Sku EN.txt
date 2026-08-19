@@ -338,6 +338,29 @@ Changes in Sku v43.0
             fifteen other call sites use it as the teardown before selecting a new target, where
             clearing temporary waypoints would be wrong.
 
+    Navigation: a route would not start if its list finished loading while you were in it
+        Simple: If you opened the route list (Shift-F10) while Sku was still building its waypoint
+            data, the list refreshed itself the moment that data was ready - and from then on
+            Enter on a route point no longer started the navigation. Instead the menu jumped back
+            up to the entry-point level, as if the key had done nothing at all. Closing the menu
+            and opening it again fixed it, which made the whole thing look random. The refreshed
+            list now behaves exactly like a freshly opened one: Enter starts the navigation. The
+            same applies to the nearby-waypoints list (Shift-F9) and to every waypoint list that
+            refreshes itself when the data arrives.
+        Technical: the push-refresh at the end of the asynchronous waypoint-cache build rebuilt the
+            level with a bare children = {} plus BuildChildren. That skips what OnPostSelect does
+            for a select level: seed selectTarget on the level and copy it onto every fresh child.
+            Without it the entire sublevel below inherits selectTarget = nil, so the leaf's Enter
+            falls into the generic branch of OnPostSelect - no OnAction runs (RouteFollowOnAction
+            never fired) and the cursor is set to self.parent, which is the observed jump. That
+            rebuild now lives in exactly one place, SkuOptions:RebuildNodeChildren, used by
+            OnPostSelect itself, by the waypoint push-refresh and by the volatile-list refresh -
+            the last one in keep mode, so a live refresh cannot discard a target the user has
+            already selected. Two tripwires ship with the fix: OnPostSelect logs and counts every
+            Enter that lands on a leaf with no selectTarget below a select level, and
+            /skucheck menu rebuilds a throwaway select level to verify the contract and reports
+            that session tally.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13

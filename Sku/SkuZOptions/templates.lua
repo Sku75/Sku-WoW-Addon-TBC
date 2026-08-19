@@ -40,6 +40,42 @@ SkuOptions.MenuMT = {
 	end,
 	}
 
+-- [2026-08-19] Rebuilding a level's children OUTSIDE of OnPostSelect used to
+-- silently break ENTER on every entry below it: the isSelect/isMultiselect
+-- wiring (selectTarget on the level itself AND a copy on every child) is what
+-- routes a leaf's ENTER to the owning list's OnAction. A raw
+-- `node.children = {} node:BuildChildren(node)` leaves the fresh children with
+-- selectTarget = nil, so OnPostSelect falls into its generic branch: no
+-- OnAction runs and the cursor just steps up to the parent. That was the
+-- "route list finished loading -> ENTER on a route point jumps to the top of
+-- the list instead of starting navigation" bug (closing and reopening the menu
+-- fixed it because the re-entry went through OnPostSelect again).
+-- One source of truth for that rebuild; OnPostSelect's dynamic block calls it
+-- too. aKeepSelectTarget = do not re-seed the target (a mid-list live refresh
+-- must not throw away what the user already selected), only re-propagate it.
+function SkuOptions:RebuildNodeChildren(aNode, aKeepSelectTarget)
+	if not aNode or not aNode.BuildChildren then
+		return
+	end
+	-- we need to free up the memory of the old children before we're re-building; otherwise we'll leak memory on next BuildChildren
+	aNode.children = {}
+	if aKeepSelectTarget ~= true then
+		if aNode.isMultiselect == true then
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(aNode, {L["Nothing selected"]}, SkuGenericMenuItem)
+			aNode.selectTarget = tNewMenuEntry
+		end
+		if aNode.isSelect == true then
+			aNode.selectTarget = aNode
+		end
+	end
+	aNode:BuildChildren(aNode)
+	if aNode.selectTarget then
+		for x = 1, #aNode.children do
+			aNode.children[x].selectTarget = aNode.selectTarget
+		end
+	end
+end
+
 local tPrevErrorUtterance
 local tCurrentErrorUtteranceTimerHandle
 SkuGenericMenuItem = {
@@ -197,9 +233,13 @@ SkuGenericMenuItem = {
 			end
 		end
 
-		-- swap out the children for a freshly built list
-		tParent.children = {}
-		tParent:BuildChildren(tParent)
+		-- swap out the children for a freshly built list. Through the shared
+		-- helper so the fresh children keep the level's selectTarget (a raw
+		-- rebuild left it nil and ENTER below such a list stopped acting - the
+		-- same defect the waypoint-list push-refresh had). aKeepSelectTarget:
+		-- this is a LIVE refresh mid-list, so the target the user may already
+		-- have selected must survive it - only the propagation is redone.
+		SkuOptions:RebuildNodeChildren(tParent, true)
 		dprint("volatile refresh", tParent.name, "->", #tParent.children, "items")
 
 		-- re-resolve the cursor: prefer the same entry by name, else fall
@@ -484,28 +524,9 @@ SkuGenericMenuItem = {
 	OnPostSelect = function(self, aEnterFlag)
 		--print("++ OnPostSelect generic", self.name, self.actionOnEnter, aEnterFlag, self.isSelect, self.isMultiselect, self.dynamic)
 		if self.dynamic == true then
-			self.children = {}
-			if self.isMultiselect == true then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Nothing selected"]}, SkuGenericMenuItem)
-				self.selectTarget = tNewMenuEntry
-			end
-			if self.isSelect == true then
-				self.selectTarget = self
-			end
-
-			-- we need to free up the memory of the old children before we're re-building; otherwise we'll leak memory on next BuildChildren
-			-- we can't do that for multi select menu items now, as we do need to collect the result from the selected sub items first
-			if self.isMultiselect ~= true then
-				self.children = {}
-				--collectgarbage("collect")
-			end
-
-			self:BuildChildren(self)
-			if self.selectTarget then
-				for x = 1, #self.children do
-					self.children[x].selectTarget = self.selectTarget
-				end
-			end		
+			-- (the former inline rebuild lives in SkuOptions:RebuildNodeChildren now,
+			-- so every out-of-band rebuild gets the identical selectTarget wiring)
+			SkuOptions:RebuildNodeChildren(self)
 		end
 		if #self.children > 0 and (self.actionOnEnter ~= true or aEnterFlag ~= true) then
 			SkuOptions.currentMenuPosition = self.children[1]
@@ -580,6 +601,30 @@ SkuGenericMenuItem = {
 					end					
 				end
 			else
+				-- [skucheck invariant 4 tripwire, 2026-08-19] We are about to run the
+				-- GENERIC action path: no selectTarget, so ENTER can only step up a
+				-- level. That is correct for a plain leaf, but it is also exactly how
+				-- the "route list finished loading" bug looked - a level rebuilt
+				-- without SkuOptions:RebuildNodeChildren leaves its children (and
+				-- everything below them) with selectTarget = nil, and the leaf's ENTER
+				-- silently does nothing. A leaf that sits UNDER a select level must
+				-- have inherited that level's target, so a missing one there is a real
+				-- defect. Counted for /skucheck menu; the walk only runs on this
+				-- branch and stops at the first select ancestor.
+				if not self.selectTarget then
+					local tAncestor, tDepth = self.parent, 0
+					while type(tAncestor) == "table" and tDepth < 12 do
+						if tAncestor.isSelect == true or tAncestor.isMultiselect == true then
+							SkuOptions.tMenuSelectTargetMisses = (SkuOptions.tMenuSelectTargetMisses or 0) + 1
+							SkuOptions.tMenuSelectTargetLast = tostring(self.name).." / "..tostring(tAncestor.name)
+							dprint("skucheck", "VIOLATION menu: ENTER on", self.name, "-- no selectTarget although", tAncestor.name,
+								"is a select level; those children were rebuilt without SkuOptions:RebuildNodeChildren")
+							break
+						end
+						tAncestor = tAncestor.parent
+						tDepth = tDepth + 1
+					end
+				end
 				local rValue = self.name
 				local tUncleanValue = self.name
 				local tCleanValue = self.name

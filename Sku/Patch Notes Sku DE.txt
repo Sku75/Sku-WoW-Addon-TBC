@@ -377,6 +377,31 @@ Aenderungen in Sku v43.0
             nutzen es als Abbau vor dem Auswaehlen eines neuen Ziels, wo das Loeschen temporaerer
             Wegpunkte falsch waere.
 
+    Navigation: Eine Route liess sich nicht starten, wenn ihre Liste waehrend des Ladens fertig wurde
+        Einfach: Wenn du die Routenliste (Shift-F10) geoeffnet hast, waehrend Sku seine
+            Wegpunktdaten noch aufgebaut hat, hat sich die Liste in dem Moment aktualisiert, in dem
+            diese Daten fertig waren - und ab da hat Enter auf einem Routenpunkt die Navigation
+            nicht mehr gestartet. Stattdessen ist das Menue zurueck auf die Ebene der
+            Einstiegspunkte gesprungen, so als haette die Taste gar nichts getan. Menue schliessen
+            und neu oeffnen hat es behoben, was das Ganze zufaellig wirken liess. Die aktualisierte
+            Liste verhaelt sich jetzt genau wie eine frisch geoeffnete: Enter startet die
+            Navigation. Das gilt genauso fuer die Liste der Wegpunkte in der Naehe (Shift-F9) und
+            fuer jede Wegpunktliste, die sich beim Eintreffen der Daten selbst aktualisiert.
+        Technisch: Die Aktualisierung am Ende des asynchronen Wegpunkt-Cache-Aufbaus hat die Ebene
+            mit einem blossen children = {} plus BuildChildren neu gebaut. Damit faellt weg, was
+            OnPostSelect fuer eine Auswahl-Ebene tut: selectTarget auf der Ebene setzen und auf
+            jedes frisch gebaute Kind kopieren. Ohne das erbt die gesamte Unterebene
+            selectTarget = nil, also landet das Enter des Blatts im generischen Zweig von
+            OnPostSelect - es laeuft kein OnAction (RouteFollowOnAction wurde nie aufgerufen) und
+            der Cursor wird auf self.parent gesetzt, genau der beobachtete Sprung nach oben. Dieser
+            Neuaufbau liegt jetzt an genau einer Stelle, SkuOptions:RebuildNodeChildren, benutzt von
+            OnPostSelect selbst, von der Wegpunkt-Aktualisierung und von der Auffrischung
+            veraenderlicher Listen - letztere im Behalten-Modus, damit eine laufende Auffrischung
+            kein bereits ausgewaehltes Ziel wegwirft. Zwei Stolperdraehte gehoeren zur Korrektur:
+            OnPostSelect protokolliert und zaehlt jedes Enter, das auf einem Blatt ohne
+            selectTarget unterhalb einer Auswahl-Ebene landet, und /skucheck menu baut eine
+            Wegwerf-Auswahl-Ebene neu auf, prueft die Zusicherung und meldet diese Sitzungszaehlung.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
