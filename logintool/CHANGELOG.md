@@ -17,14 +17,17 @@
   mit offenem Dialog) und vom CheckMode-Wächter. GETESTET am Client: Dialog
   wird erkannt, vorgelesen und per Enter angenommen; der anschließende Beitritt
   landet auf der Charakterauswahl.
-- Beitritt nach der Hardcore-Zustimmung (Folgefund aus dem Livetest): Zustimmen
-  SCHLIESST nur die Warnung — die Realmliste liegt weiterhin offen darunter und
-  ist noch nicht beigetreten. Der Join-Flow hat aber nur auf die
-  Charakterauswahl gewartet, 20 Runden lang "warte" gesagt und dann einen
-  Timeout gemeldet, während der Client unverändert auf der Realmliste stand.
-  `WaitForHardcoreJoin` tritt jetzt selbst bei (Enter, danach Reihe neu wählen +
-  Enter, danach Doppelklick, danach sauberer Ausstieg per Escape) — dieselbe
-  Eskalation wie beim normalen Realmwechsel.
+- Beitritt nach der Hardcore-Zustimmung — KORRIGIERT gegenueber der ersten
+  Fassung dieses Eintrags, der genau falsch herum war: Zustimmen tritt dem Realm
+  BEREITS BEI. `HardcorePopUpAcceptButtonMixin:OnClick` (Blizzards eigener
+  Quelltext, `Blizzard_GlueXML\Classic\HardcoreFrames.lua`) ruft
+  `C_RealmList.ConnectToRealm(...)` auf und schliesst den Dialog erst DANACH,
+  genauso `RealmWarning.lua` fuer die PvP-Warnung. Die Realmliste bleibt
+  waehrend der ganzen Verbindung sichtbar — "die Liste ist noch offen" beweist
+  also NICHT, dass niemand beigetreten ist. Der erste Anlauf hat das falsch
+  gelesen und selbst nachgedrueckt, was jeden Beitritt abbrach (siehe "Der
+  Hardcore-Beitritt hat sich selbst abgebrochen" weiter unten).
+  `WaitForHardcoreJoin` wartet jetzt und drueckt gar nichts.
 - Reconnect-/Loginbildschirm nach einem Hardcore-Beitritt wird erkannt: Endet
   der Beitritt in einer Trennung, liest das Tool die Meldung vor und STOPPT.
   Vorher fiel dieser Bildschirm in den Sammelzweig und das Tool fing an, die
@@ -308,6 +311,126 @@
   zurueck - der manuelle Weg ist fuer die Faelle da, in denen man ihn will.
   GETESTET am Client: Felder anwaehlen, tippen, Accountname vorlesen,
   anmelden - alles funktioniert.
+- **Der Hardcore-Beitritt hat sich selbst abgebrochen.** Nach dem Zustimmen hat
+  der Join-Flow selbst nachgedrueckt (Reihe klicken + Enter, dann neu waehlen +
+  Enter, dann Doppelklick). Dieses Enter landete im Verbindungsdialog des
+  Clients ("In Realm einloggen"), und der ist `StaticPopupDialogs["CANCEL"]`:
+  ein einziger Knopf, Abbrechen, `OnAccept = C_Login.DisconnectFromServer()`,
+  und ohne `ignoreKeys`. Jeder Hardcore-Beitritt starb rund eine Sekunde nach
+  dem Start — `Connection.log`: `BattleNet Join Realm` 09:56:52.113, dann
+  `Glue Script Disconnect From Server` 09:56:53.104 ("Glue Script" heisst: Lua
+  hat die Trennung angefordert, also wir). Zu hoeren war Stille, ein Klick und
+  danach wieder der Loginbildschirm. Hier wird jetzt nichts mehr gedrueckt, auch
+  kein Escape beim Aufgeben — das waere `RealmList_OnCancel` und damit genau
+  dieselbe Trennung. GETESTET am Client: Soulseeker wird beigetreten, keine
+  Trennung mehr.
+- **Ein Klick auf einen nicht wiedergefundenen Realm hat einen ANDEREN Realm
+  erwischt.** Fand `FindRealmRowByName` die Zeile nicht, klickte
+  `RealmSelectAction` trotzdem das gespeicherte Rechteck. Das gehoerte zur
+  Scrollposition, an der die Zeile zuerst gesehen wurde (Soulseeker: Seite 10
+  von 10), und die gescheiterte Suche hatte die Liste ganz woanders stehen
+  gelassen. Ergebnis: eine Auswahl von Soulseeker trat Pyrewood Village bei,
+  lautlos, und dort wurde ein Hardcore-Charakter erstellt. Jetzt wird der Klick
+  VERWEIGERT: die Liste geht zurueck nach oben, das Tool sagt es, und das Menue
+  wird neu aufgebaut. Die Suche selbst war ausserdem die schwaechere Haelfte —
+  Seitenlimit 15 gegen 40 bei `BuildRealmMenu`, und sie gab nach EINER
+  unveraenderten Seite auf, was genau so aussieht wie eine verschluckte
+  Mausrad-Raste. Jetzt: Limit 40, zwei unveraenderte Seiten noetig (die zweite
+  scrollt mit 6 Rasten statt 3), und `FindRealmRow:` im Log sagt, auf welcher
+  Seite der Name gefunden wurde oder warum die Suche endete.
+  `RealmListScrollTop` scrollt 60 statt 25 Rasten nach oben — eine Raste bewegt
+  etwa eine Zeile, 25 raeumten eine 54-Realm-Liste nicht. GETESTET am Client:
+  `FindRealmRow: 'Soulseeker' found on page 9`.
+- **Ein Beitritt auf einen LEEREN Realm landet in der Charaktererstellung, nicht
+  in der Charakterauswahl.** Die Hardcore-Warnung erscheint ueberhaupt nur,
+  solange der Realm keinen Charakter hat, und `CharacterSelect.lua` schickt
+  `numChars == 0` direkt auf `GlueParent_SetScreen("charcreate")`. Beide
+  Warteschleifen behandeln diesen Bildschirm jetzt als ERFOLG (ansagen, per
+  Escape auf die leere Liste, Menue neu aufbauen); vorher lief die eine in einen
+  Timeout und die andere drueckte still Escape, sodass ein geglueckter Wechsel
+  als "Timeout" gemeldet wurde. GETESTET am Client.
+- **Die Pixel-Probe fuer die Charaktererstellung sass auf einer Kante.**
+  `CharCreationBackdrop` lag bei ui y 136 und erwartete Schwarz — auf dem
+  lebenden Hardcore-Erstellungsbildschirm war das die LETZTE nicht-schwarze
+  Zeile im Schein der Fraktionsueberschrift: 1 Pixel Rand, gelesen 124,143,0.
+  Damit war `charcreate` falsch, der ganze Bildschirm "unknown", und das Tool
+  sagte 65 mal "warte" ueber einer offenen Charaktererstellung. Auf dem
+  Pyrewood-Bildschirm Minuten vorher hatte dieselbe Probe noch bestanden; die
+  Hardcore-Erstellung zeigt zusaetzlich "Selbstgefunden" und verschiebt die
+  Spalte um wenige UI-Einheiten. Die Probe liegt jetzt bei ui y 170: dort ist es
+  von y 140 bis 196 schwarz (rund 26 UI-Einheiten Rand) und auf
+  Charakterauswahl, Login und Realmdialog NICHT schwarz, die Unterscheidung
+  bleibt also. Gegen den lebenden Client und gegen alle mitgelieferten
+  Screenshots in beiden Spieltypen geprueft. GETESTET am Client.
+- **Das Tool sagt jetzt, auf welchem Realm der Client wirklich steht.**
+  `CheckJoinedRealm` liest `CharSelectRealmName` oben aus der Charakterspalte
+  und vergleicht ihn mit dem gewaehlten Namen (nur Buchstaben und Ziffern,
+  Kleinschreibung). Passt er, wird der Realmname angesagt; ist es ein ANDERER
+  Name aus der gerade gelesenen Liste, kommt eine Warnung ("Achtung. Das Spiel
+  ist auf einem anderen Server: ...") und die Aufforderung, vor dem Spielen neu
+  zu wechseln; ist nichts lesbar, bleibt es still und steht nur im Log. Ein
+  falscher Realm kann damit nie wieder als Erfolg gemeldet werden. GETESTET am
+  Client: `JoinCheck: character screen shows 'Soulseeker' - matches Soulseeker`.
+- Ein Beitritt, der auf einem unbenannten Bildschirm endet, wird nach 10 Runden
+  an den Benutzer zurueckgegeben ("Server gewechselt" plus "Unbekannter
+  Bildschirm ... Alt F1 zweimal") statt bis zum Rundenlimit zu laufen und danach
+  "Server konnte nicht gewechselt werden" zu behaupten. Jede Art, wie ein
+  Beitritt SCHEITERN kann, hat einen eigenen Zweig darueber — ein unbenannter
+  Bildschirm heisst also, dass der Wechsel geklappt hat.
+- **Die Hardcore-Regeln bei der Charaktererstellung werden erkannt, vorgelesen
+  und sind beantwortbar.** Das ist der ZWEITE Hardcore-Dialog ("Willkommen zu
+  WoW Classic Hardcore-Realms ...", der bestaetigt werden muss, bevor der
+  Charakter entsteht) — derselbe `HardcorePopUpFrame` wie die Realm-Warnung, nur
+  mit `SetSize(510,580)` statt `(510,240)`. Dadurch sitzen seine Knoepfe bei
+  ui y 551 statt 448 und `IsHardcoreConfirm` sah ihn nicht; der modale Rahmen
+  dunkelt zusaetzlich den Bildschirm dahinter ab (`CharCreationLogo` faellt von
+  198,227,0 auf 50,57,0), also war auch `charcreate` falsch. Alle Pruefungen
+  falsch, Bildschirm "unknown", Tool stumm vor einem Dialog, den nur ein
+  sehender Spieler beantworten kann. Vier neue Proben in `data.ini`: bei
+  ui y 551 lesen beide Knopfflaechen genau 84,0,0 — die Mitte des Fensters
+  75..100, in dem `IsGlueTintedRed` sucht (y 549 ist die dunkle Oberkante mit
+  58,0,0, y 553 erreicht schon 102). Die x-Offsets liegen zwischen der linken
+  Knopfkante und der Beschriftung, also klickt `ClickWidget` genau den Punkt,
+  den die Probe geprueft hat. `HcCreateBackdrop` prueft den Streifen UNTER der
+  Scrollbox und UEBER den Knoepfen, den die Rahmengeometrie in jeder Sprache und
+  bei jeder Scrollposition leer laesst. Der Text wird seitenweise gelesen — die
+  sichtbare Seite endet mitten im Satz —, und das OCR-Fenster wird aus dem
+  Glue-Massstab berechnet statt pro Seitenverhaeltnis hart hinterlegt. Enter
+  stimmt zu, Escape lehnt ab; niemals das Tool. Nach dem Zustimmen wird nur
+  gewartet. GETESTET am Client.
+- Zwei Fallen dabei, beide behoben: die Tastenverteilung prueft
+  `gEnterCharacterNameFlag` VOR `gHardcoreConfirmFlag`, das Namensfeld-Flag muss
+  also geloescht werden, sonst laeuft Enter weiter in ein Feld, das niemand mehr
+  liest. Und `CheckMode` loeschte `gHardcoreConfirmFlag` alle 2,5 Sekunden im
+  Sammelzweig — weil dieser Dialog als "unknown" gilt, waren Enter und Escape
+  Sekunden nach der Frage lautlos entwaffnet.
+- **"Dieser Name ist nicht verfuegbar." war unsichtbar.** Der Helper sucht die
+  rote Knopfflaeche eines StaticPopups in zwei FESTEN Reihen, ui y 386 und 412 —
+  und die Hoehe eines StaticPopups haengt an seinem Text. Der OK-Knopf dieses
+  Dialogs liegt bei ui y 392..409, also liest 386 den Rahmen 14 Pixel darueber
+  und 412 den Rahmen 8 Pixel darunter: alle vier Popup-Pruefungen falsch,
+  waehrend der Bildschirm wie eine gewoehnliche Charaktererstellung aussah.
+  `PopupMidOne`/`PopupMidTwo` pruefen jetzt die Mittellinie bei ui y 400 in
+  denselben drei Spalten — genau die Reihe, die der Burning-Crusade-Zweig schon
+  immer nahm; blind war also nur Classic. Gegen den lebenden Dialog und alle
+  mitgelieferten Screenshots in beiden Spieltypen geprueft, keine
+  Falschmeldungen. GETESTET am Client.
+- **Ein Dialog auf der Charaktererstellung wird jetzt auch beim Ankommen und im
+  Leerlauf vorgelesen.** `InitLogin` erkannte den Bildschirm richtig als
+  `charcreate` und drueckte dann wortlos Escape, ohne ueberhaupt nach einem
+  Popup zu sehen — wer mit offenem "Dieser Name ist nicht verfuegbar." zum
+  Client zurueckwechselte, bekam Stille, und auch keinen Unbekannt-Hinweis, denn
+  der Bildschirm WAR erkannt. Jetzt wird zuerst gelesen und beantwortet und
+  danach das Namensfeld zurueckgegeben, statt die schon gewaehlte Rasse, Klasse
+  und Geschlecht per Escape wegzuwerfen. Zusaetzlich sieht der
+  `CheckMode`-Waechter Popups auf Charaktererstellung und Charakterauswahl, wenn
+  gerade kein Ablauf laeuft — bewusst nur dort: auf Login und Realmliste ist ein
+  Ein-Knopf-Popup ein Abbrechen und wuerde den Versuch toeten. Derselbe Text
+  wird nicht wieder und wieder vorgelesen, falls ein Klick den Dialog nicht
+  schliesst. GETESTET am Client.
+- Fuenf weitere Lokalisierungs-Strings in allen fuenf Sprachdateien (kein
+  Charakter auf diesem Realm, Server nicht in der Liste gefunden, Achtung
+  anderer Server, vor dem Spielen neu wechseln, Zugestimmt bitte warten).
 
 ## 2.2 (2026-07-24)
 

@@ -218,6 +218,28 @@ InitLogin(s := "") {
             Log("InitLogin: creation in progress, leaving the screen alone")
             return
         }
+        ; A dialog ON the creation screen is the whole message - read it and
+        ; answer it before deciding anything else. Escaping first is how an
+        ; alt-tab back onto a waiting "Dieser Name ist nicht verfuegbar." became
+        ; pure silence: this branch fired, sent Escape without a word, and
+        ; nothing else in the tool looks at that screen again.
+        full := Sense()
+        if AnyPopup(full) {
+            Log("InitLogin: popup on the creation screen - reading it")
+            SpeakAndClosePopup(full)
+            Sleep(400)
+            if IsCharCreateScreen(SenseQuick()) {
+                ; It was a name rejection: race, class and gender are still
+                ; chosen, so hand the name field back instead of Escaping the
+                ; work away.
+                global gEnterCharacterNameFlag := true
+                Send("^a")
+                Sleep(100)
+                Send("{Backspace}")
+                Say(T("enter the name for the new character and press enter, or escape to cancel character creation."))
+            }
+            return
+        }
         Send("{Esc}")
         Sleep(1000)
         return

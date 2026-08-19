@@ -36,6 +36,10 @@ global gHardcoreConfirmKind := ""
 ; landed on the realm that was picked. A pick that silently selects a different
 ; row is otherwise unnoticeable - see AnnounceJoinedRealm.
 global gRealmNames := []
+; Text of the popup CheckMode last read on its own, so a dialog whose button
+; click does not take is not spoken again every 2.5 s. Cleared as soon as a
+; probe sees no popup, so the same message can be announced again next time.
+global gCheckModePopupText := ""
 global gJoinRealmName := ""
 
 class MenuNode {
@@ -207,7 +211,7 @@ Main() {
 
 CheckMode() {
     global gIsChecking, gLastGlueSense, gBusy, gMode, gRealmMenuOffered, gHardcoreConfirmFlag
-    global gHardcoreConfirmKind
+    global gHardcoreConfirmKind, gCheckModePopupText
     global gOnLoginScreen
     if (gIsChecking || gBusy)
         return
@@ -281,12 +285,30 @@ CheckMode() {
                         Log("CheckMode: client opened the realm dialog - offering the realm menu")
                         OfferOpenRealmDialog()
                     }
+                } else if (AnyPopup(s)
+                        && (SenseCheck(s, "charcreate") || SenseCheck(s, "charselect"))) {
+                    ; A popup sitting on a character screen while no flow is
+                    ; running. Nothing else was watching for it: the flows only
+                    ; look while they are alive, and InitLogin only runs on a mode
+                    ; change - so alt-tabbing back onto a waiting dialog was
+                    ; silence. Answering it HERE is safe because no connection is
+                    ; in progress on these screens; on the login screen and the
+                    ; realm list a one-button popup is a Cancel that would kill
+                    ; the attempt, which is why they are excluded.
+                    full := Sense()
+                    text := PopupText(full)
+                    if (text != gCheckModePopupText) {
+                        gCheckModePopupText := text
+                        Log("CheckMode: popup on the character screen - reading it")
+                        SpeakAndClosePopup(full)
+                    }
                 } else {
                     ; No dialog is up any more: drop the modal states so a stale
                     ; flag cannot hijack Enter/Escape later.
                     gRealmMenuOffered := false
                     gHardcoreConfirmFlag := false
                     gHardcoreConfirmKind := ""
+                    gCheckModePopupText := ""
                 }
             }
         }
