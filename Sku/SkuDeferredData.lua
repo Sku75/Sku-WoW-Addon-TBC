@@ -122,6 +122,28 @@ function Sku:RegisterBuildWorker(aName, aIsAliveFn)
 	Sku.DeferredData.buildWorkers[aName] = aIsAliveFn
 end
 
+-- [2026-08-19 watchdog backoff] The client's Lua VM aborts an insecure script
+-- that runs too long ("insecure scripts exceeded execution limit for addon
+-- Sku", the string sits next to "script ran too long" in the VM's error table).
+-- Sku's 150 ms/frame post-login ceiling is fine while Sku is the only busy
+-- addon, but not when another one burns the same frames (observed: Questie
+-- rebuilding its DB at login on a hardcore realm) - the VM then kills whichever
+-- Sku build slice is running, and before the pump hardening in SkuNav/Core.lua
+-- that silently ended the waypoint-cache build for the whole session. Halve the
+-- ceiling every time the client complains; floor 20 ms. Slower builds, but they
+-- run to completion. Reset per session (this is a live-load property, not a
+-- setting). SkuCore/ErrorLog.lua calls this from its LUA_WARNING handler.
+Sku.DeferredData.buildBudgetCapMs = 150
+
+function Sku:NoteScriptExecutionLimit()
+	local tCap = Sku.DeferredData.buildBudgetCapMs or 150
+	if tCap <= 20 then return end
+	tCap = tCap / 2
+	if tCap < 20 then tCap = 20 end
+	Sku.DeferredData.buildBudgetCapMs = tCap
+	if dprint then dprint("build frame budget lowered to", tCap, "ms (client script execution limit)") end
+end
+
 function Sku:BuildFrameBudgetMs()
 	local tN = 0
 	for _, tAlive in pairs(Sku.DeferredData.buildWorkers) do
@@ -129,7 +151,7 @@ function Sku:BuildFrameBudgetMs()
 		if tOk and tLive then tN = tN + 1 end
 	end
 	if tN < 1 then tN = 1 end
-	return 150 / tN
+	return (Sku.DeferredData.buildBudgetCapMs or 150) / tN
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

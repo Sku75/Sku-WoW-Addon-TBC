@@ -464,7 +464,31 @@ if Sku.RegisterBuildStep then
 			if SkuNav.wpcPendingArgs then
 				local tArgs = SkuNav.wpcPendingArgs
 				SkuNav.wpcPendingArgs = nil
-				pcall(function() SkuNav:CreateWaypointCache(tArgs[1], true) end)
+				local tOk, tErr = pcall(function() SkuNav:CreateWaypointCache(tArgs[1], true) end)
+				if not tOk then
+					-- [2026-08-19] The pending args were consumed BEFORE the
+					-- attempt and the pcall swallowed the failure, so a build that
+					-- died here (the client's Lua VM aborting a long slice, see
+					-- Sku:NoteScriptExecutionLimit) left nothing for the re-armed
+					-- step to retry: the cache never built and every waypoint list
+					-- said "Wegpunkte werden noch geladen" for the rest of the
+					-- session, with no error anywhere. Put the request back and
+					-- retry off the stream as well, in case the remaining
+					-- scheduler passes are already behind us.
+					SkuNav.wpcPendingArgs = tArgs
+					dprint("waypoint cache build start FAILED, retrying:", tErr)
+					C_Timer.After(2, function()
+						if SkuNav.wpcPendingArgs then
+							local tRetry = SkuNav.wpcPendingArgs
+							SkuNav.wpcPendingArgs = nil
+							local tOk2, tErr2 = pcall(function() SkuNav:CreateWaypointCache(tRetry[1], true) end)
+							if not tOk2 then
+								SkuNav.wpcPendingArgs = tRetry
+								dprint("waypoint cache build retry FAILED:", tErr2)
+							end
+						end
+					end)
+				end
 			end
 		end,
 	})
@@ -878,21 +902,65 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 		local function tWpcSetResult(aText)
 			if type(SkuDebugLog) == "table" then SkuDebugLog.wpcResult = aText .. "  " .. date("%H:%M:%S") end
 		end
-		local function tWpcPump()
+		-- [2026-08-19 pump hardening] The chain used to re-arm itself only AFTER a
+		-- successful coroutine.resume. When the client's Lua VM aborts the running
+		-- script ("insecure scripts exceeded execution limit for addon Sku") the
+		-- abort unwinds this callback, so C_Timer.After below was never reached:
+		-- the coroutine stayed SUSPENDED forever, nothing resumed it, wpCacheReady
+		-- stayed false and every waypoint list answered "Wegpunkte werden noch
+		-- geladen" until relog - with no Lua error and no addon output anywhere
+		-- (reproduced deterministically on a hardcore realm, 2026-08-19, where
+		-- Questie's login DB rebuild shares the same frames).
+		-- Now: arm the NEXT pump BEFORE resuming (costs one no-op pump after the
+		-- build ends), plus a slow ticker that re-arms the chain if a pump has not
+		-- run for 2 s - so even an abort that swallows the arming itself heals.
+		local tWpcPump
+		local tWpcPumpArmed = false
+		local function tWpcArmPump()
+			if tWpcPumpArmed then return end
+			tWpcPumpArmed = true
+			C_Timer.After(0, tWpcPump)
+		end
+		tWpcPump = function()
+			tWpcPumpArmed = false
+			SkuNav._wpcLastPumpAt = GetTime()
 			if SkuNav._wpcGen ~= tWpcMyGen then
 				tWpcSetResult("superseded by a newer build")
 				return
 			end
 			local co = SkuNav._wpcCo
 			if co and coroutine.status(co) ~= "dead" then
+				tWpcArmPump()
 				local tR0 = debugprofilestop()
 				local ok, err = coroutine.resume(co)
 				SkuNav._wpcWorkMs = SkuNav._wpcWorkMs + (debugprofilestop() - tR0)
 				if not ok then
 					tWpcSetResult("ERROR: " .. tostring(err))
 					dprint("CreateWaypointCache coroutine error", err)
+					-- [2026-08-19] The client can kill a slice outright: "script ran
+					-- too long" raised INSIDE the coroutine (seen 12:07:19 in the
+					-- links pass), or the LUA_WARNING execution-limit variant. The
+					-- coroutine is dead afterwards, so the stall ticker cancels
+					-- itself and nothing would ever rebuild - the session is left
+					-- with "Wegpunkte werden noch geladen" exactly as before the
+					-- pump fix. Back the frame budget off and restart from scratch,
+					-- at most 3 times (a full build is ~2 s of work).
+					local tErrText = tostring(err)
+					if Sku.NoteScriptExecutionLimit
+						and (sfind(tErrText, "too long", 1, true) or sfind(tErrText, "execution limit", 1, true)) then
+						pcall(function() Sku:NoteScriptExecutionLimit() end)
+					end
+					SkuNav._wpcRestarts = (SkuNav._wpcRestarts or 0) + 1
+					if SkuNav._wpcRestarts <= 3 then
+						dprint("restarting waypoint cache build, attempt", SkuNav._wpcRestarts + 1)
+						C_Timer.After(2, function()
+							if SkuNav._wpcGen == tWpcMyGen and SkuNav.wpCacheReady ~= true then
+								SkuNav:CreateWaypointCache(aAddLocalizedNames, true)
+							end
+						end)
+					end
 				elseif coroutine.status(co) ~= "dead" then
-					C_Timer.After(0, tWpcPump)
+					-- next pump is already armed (above)
 				else
 					-- completes after first-frame -> proves the build is off the freeze.
 					-- [2026-07-06 build profiling] append the per-phase split.
@@ -905,6 +973,7 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 						end
 						if tPhases ~= "" then tPhases = "  (phases ms:" .. tPhases .. ")" end
 					end
+					SkuNav._wpcRestarts = 0
 					tWpcSetResult(string.format("async done = %.1f ms work%s", SkuNav._wpcWorkMs, tPhases))
 					if Sku.MetricPoint then Sku:MetricPoint(string.format("waypoint cache async build done = %.1f ms work%s", SkuNav._wpcWorkMs, tPhases)) end
 					-- [2026-07-06] readiness is logged, not spoken: the voice line
@@ -942,7 +1011,33 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 				end
 			end
 		end
-		tWpcPump()
+
+		-- Stall watchdog: a pump that never ran (its arming was swallowed by the
+		-- same VM abort) or a chain that broke anyway is restarted here. Cancels
+		-- itself as soon as the build is done or superseded, so it costs one
+		-- table lookup every 2 s during the build and nothing afterwards.
+		SkuNav._wpcLastPumpAt = GetTime()
+		if C_Timer.NewTicker then
+			C_Timer.NewTicker(2, function(aTicker)
+				local co = SkuNav._wpcCo
+				if SkuNav._wpcGen ~= tWpcMyGen or not co or coroutine.status(co) == "dead" then
+					aTicker:Cancel()
+					return
+				end
+				if GetTime() - (SkuNav._wpcLastPumpAt or 0) > 2 then
+					dprint("waypoint cache pump stalled - re-arming")
+					tWpcPumpArmed = false
+					tWpcArmPump()
+				end
+			end)
+		end
+
+		-- [2026-08-19] First slice on the NEXT frame instead of right here: this
+		-- runs inside the SkuDB stream coroutine, which has already spent its own
+		-- slice this frame, so the old immediate call put two full build slices
+		-- (up to 300 ms of insecure script) into one frame - exactly what the VM's
+		-- execution limit kills.
+		tWpcArmPump()
 	else
 		SkuNav:EnsureWaypointCacheComplete()
 	end

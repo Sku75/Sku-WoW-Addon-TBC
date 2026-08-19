@@ -14,7 +14,10 @@
 
 import sys
 
-PATH = r"C:\Program Files (x86)\World of Warcraft\_anniversary_\WTF\Account\1107979492#1\SavedVariables\Sku.lua"
+import os
+# Default = the TBC-Anniversary client. Set SKU_SV to read another client's store
+# (e.g. Era/Hardcore: ..._classic_era_\WTF\...\SavedVariables\Sku.lua).
+PATH = os.environ.get("SKU_SV") or r"C:\Program Files (x86)\World of Warcraft\_anniversary_\WTF\Account\1107979492#1\SavedVariables\Sku.lua"
 
 tail = int(sys.argv[1]) if len(sys.argv) > 1 else 90
 needle = sys.argv[2] if len(sys.argv) > 2 else None

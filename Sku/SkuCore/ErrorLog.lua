@@ -362,7 +362,15 @@ f:SetScript("OnEvent", function(self, event, arg1, arg2, arg3)
          end)
       end
    elseif event == "LUA_WARNING" then
-      tAppend("lua_warning", tostring(arg2 or arg1 or ""), debugstack(2, 6, 2) or "")
+      local tWarning = tostring(arg2 or arg1 or "")
+      tAppend("lua_warning", tWarning, debugstack(2, 6, 2) or "")
+      -- [2026-08-19] "insecure scripts exceeded execution limit for addon Sku"
+      -- = the VM just killed one of our scripts mid-frame. Tell the post-login
+      -- build arbiter to back off (Sku:NoteScriptExecutionLimit), otherwise the
+      -- next slice runs into the same wall.
+      if string.find(tWarning, "execution limit", 1, true) and Sku and Sku.NoteScriptExecutionLimit then
+         pcall(function() Sku:NoteScriptExecutionLimit() end)
+      end
    elseif event == "ADDON_ACTION_FORBIDDEN" then
       tAppend("addon_action_forbidden",
               "addon=" .. tostring(arg1) .. " action=" .. tostring(arg2),
