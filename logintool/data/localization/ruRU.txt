@@ -135,3 +135,7 @@ this category holds no servers==В этой категории нет серве
 the server list did not load. please try again.==Список серверов не загружен. Попробуйте ещё раз.
 The game is still connecting. Press Escape to cancel.==Игра ещё подключается. Escape — отмена.
 the server list may be incomplete.==Список серверов может быть неполным.
+This game version is not supported yet.==Эта версия игры пока не поддерживается.
+game version detected==версия игры определена
+detect game type automatically==определять тип игры автоматически
+game type is detected automatically now==Тип игры теперь определяется автоматически.

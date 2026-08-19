@@ -181,6 +181,8 @@ CheckMode() {
         return
     gIsChecking := true
     try {
+        ; Cheap: keys on the client's PID and returns at once until that changes.
+        ApplyDetectedGametype()
         if (gHasSetup = false) {
             if (gMode != -2)
                 SwitchToSetup()
@@ -347,6 +349,9 @@ BuildMainMenu() {
         node.action := GametypeSelectClosure(gametype)
     }
 
+    autoItem := MenuNode(T("detect game type automatically"), gametypeItem)
+    autoItem.action := (item) => GametypeAutoAction()
+
     regionItem := MenuNode(T("select region"), gMainMenu)
     for r in GetRegions() {
         node := MenuNode(T(r.name), regionItem)
@@ -416,6 +421,17 @@ RegionSelectAction(code, restart) {
     Reload()
 }
 
+; Hand control back to detection. Clearing the remembered PID forces the next
+; probe to act instead of recognising the client it already adopted.
+GametypeAutoAction() {
+    global gGametypePin := false
+    global gDetectedPid := 0
+    WriteSettings()
+    Say(T("game type is detected automatically now"))
+    Sleep(1200)
+    ApplyDetectedGametype()
+}
+
 GametypeSelectClosure(name) {
     return (item) => GametypeSelectAction(name)
 }
@@ -423,6 +439,10 @@ GametypeSelectClosure(name) {
 GametypeSelectAction(name) {
     global gHasSetupGametype := name
     global gHasSetup := true
+    ; Picking one by hand PINS it. An override you have to re-assert every time
+    ; the client changes is not an override - and the whole reason to reach for
+    ; this entry is that detection got it wrong.
+    global gGametypePin := true
     WriteSettings()
     if (gMode = -2) {
         LoadGameData()

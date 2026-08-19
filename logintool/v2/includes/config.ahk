@@ -35,6 +35,7 @@ LoadSettings() {
             case "gHasSetup": gHasSetup := (value = "1" || value = "true")
             case "gHasSetupVersion": gHasSetupVersion := value
             case "gAudioOutputMatch": gAudioOutputMatch := value
+            case "gGametypePin": gGametypePin := (value = "1" || value = "true")
         }
     }
 }
@@ -50,6 +51,7 @@ WriteSettings() {
     content .= "gHasSetup=1`n"
     content .= "gHasSetupVersion=" gSettingsVersion "`n"
     content .= "gAudioOutputMatch=" gAudioOutputMatch "`n"
+    content .= "gGametypePin=" (gGametypePin ? "1" : "0") "`n"
     ; ANSI like v1's FileOpen("w"), so both tool generations read either file.
     try FileDelete("data\settings.ini")
     FileAppend(content, "data\settings.ini", "CP0")

@@ -22,6 +22,11 @@ SenseOcrLang() {
 
 SenseStart() {
     global gSense
+    ; Before anything is captured: adopt the running client's own version. The
+    ; helper reads the SAME gametype-specific data.ini section for its screen
+    ; probes, so it is handed --gametype explicitly - leaving it to read
+    ; settings.ini would let the two halves classify with different rules.
+    ApplyDetectedGametype()
     if (gSense.pid && ProcessExist(gSense.pid))
         return true
     SenseStop()
@@ -31,6 +36,7 @@ SenseStart() {
         return false
     }
     cmd := '"' exe '" repl --probes --data "data\data.ini" --lang ' SenseOcrLang()
+        . ' --gametype "' gHasSetupGametype '"'
 
     ; Anonymous pipes, child side inheritable.
     sa := Buffer(24, 0)

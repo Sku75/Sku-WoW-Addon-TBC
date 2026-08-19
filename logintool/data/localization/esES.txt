@@ -135,3 +135,7 @@ this category holds no servers==Esta categoría no contiene servidores.
 the server list did not load. please try again.==La lista de servidores no se cargó. Inténtalo de nuevo.
 The game is still connecting. Press Escape to cancel.==El juego sigue conectando. Pulsa Escape para cancelar.
 the server list may be incomplete.==La lista de servidores puede estar incompleta.
+This game version is not supported yet.==Esta versión del juego aún no es compatible.
+game version detected==versión del juego detectada
+detect game type automatically==detectar el tipo de juego automáticamente
+game type is detected automatically now==El tipo de juego se detecta automáticamente ahora.

@@ -107,6 +107,39 @@
   linke Grenze 0.28 INNERHALB des Era-Dialogs lag und dort den linken Reiter
   ("Saisonbedingt", Mitte nx 0.2516) stillschweigend verschluckte. Jetzt 0.20
   bis 0.85, was beide Clients abdeckt.
+- **Die Spielversion wird jetzt erkannt, nicht mehr eingestellt.** Gelesen
+  wird sie aus den DATEIEN des laufenden Clients, nicht vom Bildschirm: neben
+  jeder `WowClassic.exe` liegt eine `.flavor.info` ("wow_classic_era",
+  "wow_anniversary", "wow_classic"), und die gemeinsame `.build.info` eine
+  Ebene darüber trägt die Version je Produkt. Das Tool holt sich den
+  Prozesspfad des Clientfensters und liest beide Dateien — gemessene 0,65 ms,
+  einmal pro Client.
+  Die Reihenfolge ist der Punkt: die Bildschirmerkennung kann gar nicht sagen,
+  wo man ist, bevor sie die Spielversion kennt (`IsLoginScreen`,
+  `IsCharSelectionScreen`, `IsCharCreationScreen` und die Popup-Probe
+  verzweigen darauf, und 10 der 49 Widget-Koordinaten unterscheiden sich
+  zwischen Era und TBC). Die Version aus Pixeln zu raten würde diese
+  Abhängigkeit auf sich selbst schließen — und zwar SPÄT, denn ausgerechnet
+  der Loginbildschirm, auf dem ein falsch eingestelltes Tool hängenbleibt,
+  ist der, auf dem sich beide Clients am ähnlichsten sehen.
+  Entschieden wird nach der VERSIONSNUMMER, nicht nach dem Flavor-Namen:
+  "wow_anniversary" ist heute TBC und nach dem nächsten Wechsel WotLK.
+  1.x = Classic, 2.x = BurningCrusade, 4.x = Cata, ab 9.x = Retail; 3.x (WotLK)
+  und 5.x (MoP) haben keine data.ini-Sektion und werden ANGESAGT statt
+  stillschweigend auf die nächstbeste Sektion gerundet. Gegen alle drei
+  installierten Clients geprüft: Era 1.15.9 -> Classic, Anniversary 2.5.6 ->
+  BurningCrusade, wow_classic 5.5.4 -> nicht unterstützt.
+- Der Helper bekommt `--gametype` beim Start mit, statt selbst settings.ini zu
+  lesen, und wird beim Wechsel neu gestartet — sonst klassifizieren beide
+  Hälften nach unterschiedlichen Regeln.
+- "Spieltyp auswählen" von Hand PINNT die Wahl (`gGametypePin` in settings.ini)
+  und schaltet die Erkennung ab. Ein Override, den man nach jedem Clientwechsel
+  neu setzen müsste, wäre keiner — und der Grund, diesen Eintrag überhaupt
+  aufzusuchen, ist ja, dass die Erkennung danebenlag. Zurück geht es über den
+  neuen Eintrag "Spieltyp automatisch erkennen".
+- Erkannt wird nie mitten in einem Ablauf (`gBusy`): Widget-Koordinaten unter
+  einer laufenden Klickkette auszutauschen ist genau der Weg, auf dem eine
+  Löschbestätigung woanders landet als gedacht.
 - **Auf dem Loginbildschirm gab es überhaupt kein Menü.** Nur der
   charselect-Zweig von `InitLogin` setzt `gCurrentItem`, und `MenuUp`/
   `MenuDown` kehren sofort zurück, solange es leer ist — ein Tool, das auf dem
