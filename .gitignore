@@ -4,3 +4,6 @@ old-addon-versions/
 /CLAUDE.md
 /archive/
 /userlogs/
+
+# python bytecode from the dev/ helper scripts
+__pycache__/

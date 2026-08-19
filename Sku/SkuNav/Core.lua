@@ -409,6 +409,24 @@ end
 -- use SkuNav:InjectWpListEmptyHint() to tell "still loading" from "empty".
 SkuNav.wpCacheReady = false
 
+-- [Link build tier 3, 2026-08-19] Per-CONTINENT readiness. The link pass now
+-- resolves the player's own continent first (see LoadLinkDataFromProfile), and
+-- every consumer of the waypoint lists is continent-scoped anyway, so the
+-- "still loading" hint can stop waiting on the whole world: measured zero
+-- genuine cross-continent links, so a finished continent is genuinely finished.
+-- [contintentId] = true, filled as each continent's links are materialized and
+-- cleaned; reset at the start of every build.
+SkuNav.wpCacheContinentReady = {}
+
+-- true once the waypoint data for that continent is usable. Falls back to the
+-- global flag when no continent is given / known - never reports ready for a
+-- continent it has no evidence about.
+function SkuNav:IsWpCacheReadyForContinent(aContinentId)
+	if SkuNav.wpCacheReady == true then return true end
+	if aContinentId == nil then return false end
+	return SkuNav.wpCacheContinentReady[aContinentId] == true
+end
+
 -- [Load-perf 2026-07-05] Cooperative yield for the waypoint-cache build, moved
 -- to file scope so the helpers that run as part of the build (the custom-
 -- waypoint pass, LoadLinkDataFromProfile, CheckAndUpdateProfileLinkData,
@@ -594,6 +612,7 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	if not (Sku:IsDataReady("skudb.creatures") and Sku:IsDataReady("skudb.objects")) then
 		dprint("CreateWaypointCache deferred: skudb not ready")
 		SkuNav.wpCacheReady = false
+		SkuNav.wpCacheContinentReady = {}
 		SkuNav.wpcPendingArgs = {aAddLocalizedNames, aAsync}
 		return
 	end
@@ -617,6 +636,7 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	-- SkuNav:EnsureWaypointCacheComplete() force-finishes a pending async build
 	-- for any path that needs the whole cache at once.
 	SkuNav.wpCacheReady = false
+	SkuNav.wpCacheContinentReady = {}
 
 	-- [Load-perf 2026-07-05] Two-round meta-target passes: the player's
 	-- continent first, so the nearby waypoint lists are usable long before the
@@ -624,12 +644,22 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 	-- (creatures -> objects -> custom -> links) is unchanged, so the
 	-- name-collision merge in the custom pass and the link resolution see
 	-- exactly the same state as before.
-	local tWpcCurrentContinent
-	do
+	-- [2026-08-19] Resolution is RETRIED before the link pass (see below). Proven
+	-- on the 17:19 login: the whole build ran as ONE round because this returned
+	-- nil here - SkuNav:GetCurrentAreaId matches GetMinimapZoneText against the
+	-- area table, and the minimap zone text can still be empty when the build
+	-- starts (~2 s after PEW, right off the SkuDB stream). Nothing announced it,
+	-- so the two-round dispatch had been silently dead on login since it was
+	-- written; the retry is what makes the reordering actually happen.
+	local function tWpcResolveContinent()
 		local tOk, tAreaId = pcall(SkuNav.GetCurrentAreaId, SkuNav)
 		if tOk and tAreaId and SkuDB.InternalAreaTable[tAreaId] then
-			tWpcCurrentContinent = SkuDB.InternalAreaTable[tAreaId].ContinentID
+			return SkuDB.InternalAreaTable[tAreaId].ContinentID
 		end
+	end
+	local tWpcCurrentContinent = tWpcResolveContinent()
+	if not tWpcCurrentContinent then
+		dprint("wp cache: player continent unknown at build start - meta target passes run as one round")
 	end
 
 	SkuNav._wpcGen = (SkuNav._wpcGen or 0) + 1
@@ -819,6 +849,14 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 			-- one summary line; the per-slot detail stays inspectable in the
 			-- profile store if the counts ever look wrong.
 			local tWpcCustomCounts = {added = 0, updated = 0, deleted = 0}
+			-- [Link build tier 1, 2026-08-19] CleanupWaypoints only ever acts on
+			-- typeId == 1 records, but it used to find them by scanning ALL ~145k
+			-- cache records. This pass is the only place custom records are
+			-- created, so it hands the cleanup the exact index list, bucketed by
+			-- continent (tier 3 cleans per continent as that continent finishes).
+			-- Published on SkuNav with the build generation: a consumer that does
+			-- not match the current build falls back to the full scan.
+			local tWpcCustomIdx = {}
 			if SkuDB.SessionRouteData.Waypoints then
 				for tIndex, tData in ipairs(SkuDB.SessionRouteData.Waypoints) do
 					--check if that wp was deleted
@@ -879,6 +917,11 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 										WaypointCacheLookupPerContintent[tWaypointData.contintentId] = {}
 									end
 									WaypointCacheLookupPerContintent[tWaypointData.contintentId][tWpIndex] = tName
+									if not tWpcCustomIdx[tWaypointData.contintentId] then
+										tWpcCustomIdx[tWaypointData.contintentId] = {}
+									end
+									local tCustomList = tWpcCustomIdx[tWaypointData.contintentId]
+									tCustomList[#tCustomList + 1] = tWpIndex
 									tWpcCustomCounts.added = tWpcCustomCounts.added + 1
 								end
 							end
@@ -890,9 +933,18 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 				end
 			end
 			dprint("custom wp cache:", tWpcCustomCounts.added, "added,", tWpcCustomCounts.updated, "updated,", tWpcCustomCounts.deleted, "deleted tombstones skipped")
+			SkuNav._wpcCustomIdx = tWpcCustomIdx
+			SkuNav._wpcCustomIdxGen = tWpcMyGen
 
-			tWpcPhase("links")
-			SkuNav:LoadLinkDataFromProfile()
+			-- [2026-08-19] Retry the continent here: the world has been up for
+			-- seconds by now, so GetMinimapZoneText answers even when it did not at
+			-- build start - and the link pass is the one that gains the most from
+			-- knowing it (it is the last thing between login and usable routes).
+			if not tWpcCurrentContinent then
+				tWpcCurrentContinent = tWpcResolveContinent()
+				dprint("wp cache: player continent resolved late:", tWpcCurrentContinent or "still unknown")
+			end
+			SkuNav:LoadLinkDataFromProfile(tWpcCurrentContinent)
 			tWpcPhaseSeg()
 			tWpcPhaseName = nil
 
@@ -997,7 +1049,11 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 					-- [2026-07-06 build profiling] append the per-phase split.
 					local tPhases = ""
 					if tWpcPhaseMs then
-						for _, tP in ipairs({"creatures", "objects", "custom", "links"}) do
+						-- [2026-08-19] the single "links" bucket is split into its real
+						-- steps now (plan step 0): the walk for the player's continent,
+						-- the walk for the rest, the per-continent cleanup, and the
+						-- re-derive if it ever has to run.
+						for _, tP in ipairs({"creatures", "objects", "custom", "links", "linksCur", "linksRest", "linksClean", "linksSave"}) do
 							if tWpcPhaseMs[tP] then
 								tPhases = tPhases .. string.format("  %s %.0f", tP, tWpcPhaseMs[tP])
 							end
@@ -1032,29 +1088,7 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames, aAsync)
 					-- left alone (they are doing something else; the next keypress
 					-- or re-entry picks up fresh data as before). Same open-check
 					-- as the key handler's vocalize gate.
-					pcall(function()
-						local tCur = SkuOptions and SkuOptions.currentMenuPosition
-						if tCur and (tCur.skuWpLoadingHint or tCur.name == L["Wegpunkte werden noch geladen"])
-							and tCur.parent and tCur.parent.BuildChildren
-							and (_G["OnSkuOptionsMainOption1"]:IsVisible()
-								or (SkuOptions.combatMenuActive == true and InCombatLockdown())) then
-							local tParent = tCur.parent
-							-- [2026-08-19] Rebuild through the shared helper, NOT with a bare
-							-- children={} + BuildChildren: the raw form dropped the
-							-- isSelect/selectTarget wiring the fresh children need, so ENTER
-							-- on a route point below this list ran no OnAction and only
-							-- stepped the cursor up a level (navigation never started) until
-							-- the menu was closed and reopened.
-							SkuOptions:RebuildNodeChildren(tParent)
-							local tFirst = tParent.children and tParent.children[1]
-							if tFirst then
-								SkuOptions.currentMenuPosition = tFirst
-								if tFirst.OnEnter then tFirst:OnEnter() end
-								SkuOptions:VocalizeCurrentMenuName(true)
-								dprint("wp list push-refresh:", tParent.name, "->", #tParent.children, "items, announced", tFirst.name)
-							end
-						end
-					end)
+					SkuNav:PushRefreshWpLoadingHint()
 				end
 			else
 				-- no coroutine (or already dead) - nothing left to drive
@@ -1124,8 +1158,19 @@ end
 -- streaming after login, an empty list usually means "not built yet", not
 -- "nothing there". Inject an honest hint instead of the generic empty entry
 -- (the lists are volatile/dynamic, so they re-read as the data streams in).
-function SkuNav:InjectWpListEmptyHint(aParent)
-	if SkuNav.wpCacheReady ~= true then
+-- [Link build tier 3, 2026-08-19] aContinentId: the continent the list that is
+-- asking belongs to. Every waypoint list is continent-scoped and defaults to
+-- the player's own, so that is the default here too - and the link pass makes
+-- that continent ready first. Nothing is claimed for a continent whose links
+-- have not been walked yet: the hint stays.
+function SkuNav:InjectWpListEmptyHint(aParent, aContinentId)
+	if aContinentId == nil then
+		local tOk, tAreaId = pcall(SkuNav.GetCurrentAreaId, SkuNav)
+		if tOk and tAreaId and SkuDB.InternalAreaTable[tAreaId] then
+			aContinentId = SkuDB.InternalAreaTable[tAreaId].ContinentID
+		end
+	end
+	if SkuNav:IsWpCacheReadyForContinent(aContinentId) ~= true then
 		-- [2026-08-19] The hint used to be a bare "still loading", which was honest
 		-- while the wait was a second or two. Under the frame-budget backoff the
 		-- wait can be 10 s+, so it carries a percentage now. The node is TAGGED
@@ -1138,6 +1183,41 @@ function SkuNav:InjectWpListEmptyHint(aParent)
 	else
 		SkuOptions:InjectMenuItems(aParent, {L["Empty;list"]}, SkuGenericMenuItem)
 	end
+end
+
+-- [2026-07-06] Push-refresh for a WAITING user: if the menu is open and the
+-- cursor sits on the "Wegpunkte werden noch geladen" hint of a waypoint list,
+-- rebuild that level now and announce its first real entry - the user just
+-- waits on the hint instead of reopening the list. Focus anywhere else is left
+-- alone (they are doing something else; the next keypress or re-entry picks up
+-- fresh data as before). Same open-check as the key handler's vocalize gate.
+-- [Link build tier 3, 2026-08-19] Extracted from the build pump: it now fires
+-- twice - when the PLAYER'S continent is done (which is what the lists in front
+-- of the user need) and again when the whole build ends.
+function SkuNav:PushRefreshWpLoadingHint()
+	pcall(function()
+		local tCur = SkuOptions and SkuOptions.currentMenuPosition
+		if tCur and (tCur.skuWpLoadingHint or tCur.name == L["Wegpunkte werden noch geladen"])
+			and tCur.parent and tCur.parent.BuildChildren
+			and (_G["OnSkuOptionsMainOption1"]:IsVisible()
+				or (SkuOptions.combatMenuActive == true and InCombatLockdown())) then
+			local tParent = tCur.parent
+			-- [2026-08-19] Rebuild through the shared helper, NOT with a bare
+			-- children={} + BuildChildren: the raw form dropped the
+			-- isSelect/selectTarget wiring the fresh children need, so ENTER
+			-- on a route point below this list ran no OnAction and only
+			-- stepped the cursor up a level (navigation never started) until
+			-- the menu was closed and reopened.
+			SkuOptions:RebuildNodeChildren(tParent)
+			local tFirst = tParent.children and tParent.children[1]
+			if tFirst then
+				SkuOptions.currentMenuPosition = tFirst
+				if tFirst.OnEnter then tFirst:OnEnter() end
+				SkuOptions:VocalizeCurrentMenuName(true)
+				dprint("wp list push-refresh:", tParent.name, "->", #tParent.children, "items, announced", tFirst.name)
+			end
+		end
+	end)
 end
 
 -- [2026-08-19] What a COMPLETE build costs in work ms on this install, written
@@ -1164,6 +1244,15 @@ end
 -- Costs two readiness lookups; the build-progress part is precomputed per frame.
 function SkuNav:GetWaypointCacheProgressPct()
 	if SkuNav.wpCacheReady == true then return 100 end
+	-- [Link build tier 3, 2026-08-19] the player's own continent finishes first
+	-- and everything the user can list is scoped to it, so report ITS progress,
+	-- not the world's: once it is done the data behind every list the player can
+	-- reach is complete.
+	do
+		local tOk, tAreaId = pcall(SkuNav.GetCurrentAreaId, SkuNav)
+		local tCont = tOk and tAreaId and SkuDB.InternalAreaTable[tAreaId] and SkuDB.InternalAreaTable[tAreaId].ContinentID
+		if tCont and SkuNav.wpCacheContinentReady[tCont] == true then return 100 end
+	end
 	local co = SkuNav._wpcCo
 	if co and coroutine.status(co) ~= "dead" then
 		local tPct = SkuNav._wpcWorkPct or 0
@@ -1182,155 +1271,346 @@ function SkuNav:GetWpcLoadingText()
 end
 
 ------------------------------------------------------------------------------------------------------------------------
-function SkuNav:LoadLinkDataFromProfile()
-	-- [Load-perf 2026-07-05] Stale links are counted and summarised in ONE log
-	-- line instead of one dprint per link: the per-link spam (thousands of
-	-- lines every login) flooded the SkuDebugLog ring and evicted everything
-	-- else, including the load-perf capture.
-	local tStaleSources = 0
-	if SkuDB.SessionRouteData.Links then
-		SkuNav:CheckAndUpdateProfileLinkData()
-		for tSourceWpID, tSourceWpLinks in pairs(SkuDB.SessionRouteData.Links) do
-			tWpcYield()
-			-- Guard: a stale link can reference a waypoint no longer in the cache.
-			-- Skip it instead of nil-indexing (which previously crashed; harmless in
-			-- a C_Timer callback, but it aborts the whole build inside the coroutine).
-			local tSourceWpIdx = WaypointCacheLookupIdForCacheIndex[tSourceWpID]
-			if not tSourceWpIdx then
-				tStaleSources = tStaleSources + 1
-			else
-			local tSourceWpName = WaypointCache[tSourceWpIdx].name
+-- [Link build tier 1+3, 2026-08-19 - dev/rework-docs/ROUTE-LINK-BUILD-PLAN.md]
+-- Records that an early per-continent CleanupWaypoints removed, keyed by wpId,
+-- so an edge arriving later from a continent that had not been walked yet can
+-- put one back instead of dropping it. Measured on the shipped data: not a
+-- single waypoint is reachable by an inbound edge only, so this never fires -
+-- but a waypoint deleted by mistake would be silently gone for the whole
+-- session, and that is not a failure this build may risk.
+local tWpcCleanupDeleted = nil
 
-			-- [2026-07-06 build perf] the canonical record and its byId/byName
-			-- tables are loop-invariant - resolved once instead of two full
-			-- lookup chains per link (~215k directed links every login).
-			local tSourceCanonIdx = WaypointCacheLookupAll[tSourceWpName]
-			if tSourceCanonIdx then
-				-- [DB rework lever B] materialize the real per-record wrapper here
-				-- (records no longer carry one until they actually have links)
-				local tLinks = {byId = {}, byName = {}}
-				WaypointCache[tSourceCanonIdx].links = tLinks
-				local tByName, tById = tLinks.byName, tLinks.byId
-				for tTargetWpID, tTargetWpDistance in pairs(tSourceWpLinks) do
-					local tTargetWpIdx = WaypointCacheLookupIdForCacheIndex[tTargetWpID]
-					if tTargetWpIdx then
-					local tTargetWpName = WaypointCache[tTargetWpIdx].name
-					local tTargetCanonIdx = WaypointCacheLookupAll[tTargetWpName]
-					if tTargetCanonIdx then
-						tByName[tTargetWpName] = tTargetWpDistance
-						tById[tTargetCanonIdx] = tTargetWpDistance
-					end
-					end
-				end
-			end
-			end
-		end
+local function tWpcRestoreCleanedWp(aWpId)
+	local tEntry = tWpcCleanupDeleted and tWpcCleanupDeleted[aWpId]
+	if not tEntry then
+		return nil
 	end
-	if tStaleSources > 0 then
-		dprint("LoadLinkDataFromProfile: stale link sources skipped (not in cache):", tStaleSources)
+	tWpcCleanupDeleted[aWpId] = nil
+	local tIdx, tRecord = tEntry[1], tEntry[2]
+	if WaypointCache[tIdx] ~= nil then
+		return nil
 	end
-	SkuNav:SaveLinkDataToProfile()
-	SkuNav:CleanupWaypoints()
+	WaypointCache[tIdx] = tRecord
+	WaypointCacheLookupIdForCacheIndex[aWpId] = tIdx
+	-- only re-claim the name if nothing else took it over meanwhile (duplicate
+	-- names exist; the name-keyed lookup can only point at one record)
+	if WaypointCacheLookupAll[tRecord.name] == nil then
+		WaypointCacheLookupAll[tRecord.name] = tIdx
+	end
+	local tCont = tRecord.contintentId
+	if tCont and WaypointCacheLookupPerContintent[tCont] then
+		WaypointCacheLookupPerContintent[tCont][tIdx] = tRecord.name
+	end
+	dprint("link build: restored", tRecord.name, "- the per-continent cleanup dropped it before its links arrived")
+	return tIdx
 end
 
 ------------------------------------------------------------------------------------------------------------------------
-function SkuNav:CleanupWaypoints()
-	for i, v in pairs(WaypointCache) do
-		tWpcYield()
-		if v.typeId == 1 then
-			local tHasLinks = false
-			if WaypointCache[i].links.byId ~= nil then
-				for id, dist in pairs(WaypointCache[i].links.byId) do
-					tHasLinks = true
-					break
-				end
-			end
-			if tHasLinks ~= true and not string.find(v.name, L["Quick waypoint"]) then
-				--print("disconnected custom wp:", v.name)
-				WaypointCacheLookupAll[v.name] = nil
-				local tWpId = SkuNav:BuildWpIdFromData(1, v.dbIndex, 1, v.areaId)
-				WaypointCacheLookupIdForCacheIndex[tWpId] = nil
-				WaypointCacheLookupPerContintent[v.contintentId][i] = nil
-				WaypointCache[i] = nil
-			end
-		end
-	end
-end
-
-------------------------------------------------------------------------------------------------------------------------
-function SkuNav:CheckAndUpdateProfileLinkData()
-	local tDeletedCounter = 0
-
-	-- [2026-07-06 build perf] the Links table and the per-id index lookups are
-	-- hoisted to locals (the table itself is never replaced inside this
-	-- function, only mutated) - this loop touches every directed link every
-	-- login and repeated the same global chains several times per link.
+-- [Link build tier 1+3, 2026-08-19] ONE walk over the link table instead of
+-- four (plan sections 4 and 5; this phase was ~60% of the whole waypoint-cache
+-- build). What the four passes did, and where each went:
+--
+--  1. CheckAndUpdateProfileLinkData - prune stale and self edges, add missing
+--     reverse edges. FOLDED into the walk below; the function is gone, the
+--     work is not. Pruning happens in place while iterating, which Lua allows;
+--     the reverse edges are collected and applied AFTER the walk, because
+--     inserting new KEYS into the table you are iterating is undefined
+--     behaviour - which is exactly what the old pass 1 did.
+--  2. the materialisation loop - produces the same links = {byId, byName} as
+--     before, and now also writes the reverse edge straight into the target
+--     record. That is what makes folding pass 1 in safe no matter which order
+--     the sources are walked in.
+--  3. SaveLinkDataToProfile() - re-derived the whole link table back out of the
+--     cache. SKIPPED: the walk leaves the table pruned and symmetric, so the
+--     re-derive rewrites what is already there. The one case where it does not
+--     is an endpoint whose NAME belongs to a different record (the cache is
+--     name-keyed, last one wins) - that is counted, and the re-derive runs if
+--     it ever happens. Measured on the shipped data: 6 duplicate names among
+--     50,699 custom waypoints and NONE of them a link endpoint, so this costs
+--     nothing today and stays correct if the data changes.
+--     The link edit paths (SaveLinkDataToProfile(aWpName)) and the callers that
+--     need the derived table right now (export, DeleteWaypoint) are untouched.
+--  4. CleanupWaypoints - driven by the custom-record index list the custom pass
+--     collected instead of a scan over all ~145k records.
+--
+-- aPlayerContinent (build only): walk that continent's links FIRST and flip its
+-- ready flag as soon as they are done, so the waypoint lists - every one of
+-- them continent-scoped - stop saying "Wegpunkte werden noch geladen" while the
+-- rest of the world is still being wired up. Measured: 14 cross-continent edges
+-- in the whole shipped union (all of them the "Valley of Bones" area-id
+-- collision), and no waypoint whose only links cross a continent border.
+function SkuNav:LoadLinkDataFromProfile(aPlayerContinent)
+	-- start clean: a build the client killed mid-walk (execution limit) would
+	-- otherwise leave records of the PREVIOUS cache recoverable into this one
+	tWpcCleanupDeleted = nil
 	local tLinks = SkuDB.SessionRouteData.Links
-	if tLinks then
+	if not tLinks then
+		SkuNav:CleanupWaypoints()
+		return
+	end
+
+	local tAreaTable = SkuDB.InternalAreaTable
+	local tStaleSources, tStaleTargets, tSelfLinks, tDivergent = 0, 0, 0, 0
+	local tBackEdges = {}	-- flat triples: target id, source id, distance
+	-- sources parked for round 2 (id + already resolved canonical cache index)
+	local tRestIds, tRestCanon = {}, {}
+
+	local function tContinentOf(aRecord)
+		local tCont = rawget(aRecord, "contintentId")
+		if tCont then
+			return tCont
+		end
+		local tArea = tAreaTable[rawget(aRecord, "areaId")]
+		return tArea and tArea.ContinentID
+	end
+
+	-- [DB rework lever B] a record carries no links table until it actually has
+	-- links; materialize the real per-record one before writing (writing into
+	-- the shared empty wrapper is trapped and would poison every unlinked wp).
+	local function tEnsureLinks(aRecord)
+		local tRecordLinks = WpEnsureLinks(aRecord)
+		if not tRecordLinks.byId then
+			tRecordLinks.byId = {}
+			tRecordLinks.byName = tRecordLinks.byName or {}
+		end
+		return tRecordLinks
+	end
+
+	-- One source's edges. tSourceCanonIdx/tCanonRec are the CANONICAL record for
+	-- the source's name (the cache is name-keyed); both are resolved by the
+	-- caller, which is what lets the second round skip the resolution entirely.
+	local function tProcessSource(tSourceWpID, tSourceWpLinks, tSourceCanonIdx, tCanonRec)
+		local tSourceName = tCanonRec.name
+		local tSourceLinks
+		for tTargetWpID, tTargetWpDistance in pairs(tSourceWpLinks) do
+			local tTargetWpIdx = WaypointCacheLookupIdForCacheIndex[tTargetWpID]
+			if not tTargetWpIdx and tWpcCleanupDeleted then
+				tTargetWpIdx = tWpcRestoreCleanedWp(tTargetWpID)
+			end
+			local tTargetRec = tTargetWpIdx and WaypointCache[tTargetWpIdx]
+			local tTargetName = tTargetRec and tTargetRec.name
+			local tTargetCanonIdx = tTargetName and WaypointCacheLookupAll[tTargetName]
+			local tTargetCanonRec = tTargetCanonIdx and WaypointCache[tTargetCanonIdx]
+			if not tTargetCanonRec then
+				tSourceWpLinks[tTargetWpID] = nil
+				tStaleTargets = tStaleTargets + 1
+			elseif tTargetCanonIdx == tSourceCanonIdx then
+				-- self link (the old pass compared the two NAMES, same test)
+				tSourceWpLinks[tTargetWpID] = nil
+				tSelfLinks = tSelfLinks + 1
+			else
+				if tTargetCanonIdx ~= tTargetWpIdx then
+					tDivergent = tDivergent + 1
+				end
+				tSourceLinks = tSourceLinks or tEnsureLinks(tCanonRec)
+				tSourceLinks.byId[tTargetCanonIdx] = tTargetWpDistance
+				tSourceLinks.byName[tTargetName] = tTargetWpDistance
+				-- the reverse edge, straight into the target record: the graph
+				-- comes out symmetric whichever continent runs first. Only fills a
+				-- gap - when the target is walked as a source itself, its own
+				-- distance overwrites this one, exactly as the old
+				-- prune-then-materialise order did.
+				local tTargetLinks = tEnsureLinks(tTargetCanonRec)
+				if tTargetLinks.byId[tSourceCanonIdx] == nil then
+					tTargetLinks.byId[tSourceCanonIdx] = tTargetWpDistance
+					tTargetLinks.byName[tSourceName] = tTargetWpDistance
+				end
+				local tBack = tLinks[tTargetWpID]
+				if tBack then
+					if tBack[tSourceWpID] == nil then
+						tBack[tSourceWpID] = tTargetWpDistance
+					end
+				else
+					-- a new KEY in tLinks - deferred, see the header note
+					tBackEdges[#tBackEdges + 1] = tTargetWpID
+					tBackEdges[#tBackEdges + 1] = tSourceWpID
+					tBackEdges[#tBackEdges + 1] = tTargetWpDistance
+				end
+			end
+		end
+	end
+
+	-- Round 1: the ONE pass over the link table. Sources that belong to another
+	-- continent are not walked again later - they are parked with their already
+	-- resolved canonical index and picked straight out of that list by round 2.
+	-- [2026-08-19] Measured why: doing it as two filtered `pairs` rounds (the
+	-- shape the creature and object passes use) cost +223 ms of the ~930 ms link
+	-- phase, because every one of the ~96k sources was resolved twice. The lists
+	-- are ~72k numbers, transient, freed when the build ends.
+	local function tWalkLinks(aPartition)
 		for tSourceWpID, tSourceWpLinks in pairs(tLinks) do
 			tWpcYield()
 			local tSourceWpIdx = WaypointCacheLookupIdForCacheIndex[tSourceWpID]
-			if not tSourceWpIdx then
-				-- [Load-perf 2026-07-05] counted + summarised below instead of one
-				-- dprint per stale link (thousands per login flooded the ring)
+			local tSourceRec = tSourceWpIdx and WaypointCache[tSourceWpIdx]
+			local tSourceName = tSourceRec and tSourceRec.name
+			local tSourceCanonIdx = tSourceName and WaypointCacheLookupAll[tSourceName]
+			local tCanonRec = tSourceCanonIdx and WaypointCache[tSourceCanonIdx]
+			if not tCanonRec then
+				-- an id this cache does not know. On TBC that is ~11k sources: the
+				-- live graph is the UNION of both link sets, and the WotLK half
+				-- references waypoints the Era waypoint set never had.
 				tLinks[tSourceWpID] = nil
-				tDeletedCounter = tDeletedCounter + 1
+				tStaleSources = tStaleSources + 1
 			else
-				local tSourceWpName = WaypointCache[tSourceWpIdx].name
-				if SkuNav:GetWaypointData2(tSourceWpName) then
-					for tTargetWpID, tTargetWpDistance in pairs(tSourceWpLinks) do
-						local tTargetWpIdx = WaypointCacheLookupIdForCacheIndex[tTargetWpID]
-						if not tTargetWpIdx then
-							tSourceWpLinks[tTargetWpID] = nil
-							tDeletedCounter = tDeletedCounter + 1
-						else
-							local tTargetWpName = WaypointCache[tTargetWpIdx].name
-							if tSourceWpName == tTargetWpName then
-								tSourceWpLinks[tTargetWpID] = nil
-								--print("+++UPDATED deleted", tTargetWpName, "from", tSourceWpName, "because source was linked with self")
-							else
-								if SkuNav:GetWaypointData2(tTargetWpName) then
-									local tBack = tLinks[tTargetWpID]
-									if not tBack then
-										tBack = {}
-										tLinks[tTargetWpID] = tBack
-									end
-									if not tBack[tSourceWpID] then
-										--print("+++UPDATED added", tSourceWpName, "to", tTargetWpName)
-										tBack[tSourceWpID] = tTargetWpDistance
-									end
-								else
-									--print("+++UPDATED deleted", tTargetWpName, "from", tSourceWpName, "because target does not exist")
-									tSourceWpLinks[tTargetWpID] = nil
-									--print("  +++UPDATED deleted", tTargetWpName, "because target does not exist")
-									tLinks[tTargetWpID] = nil
-								end
-							end
-						end
-					end
+				if tSourceCanonIdx ~= tSourceWpIdx then
+					-- duplicate name: the canonical record for this name is another
+					-- one, so the cache would derive a different id for it than the
+					-- one the link table uses (see the pass 3 note above)
+					tDivergent = tDivergent + 1
+				end
+				if aPartition and tContinentOf(tSourceRec) ~= aPartition then
+					tRestIds[#tRestIds + 1] = tSourceWpID
+					tRestCanon[#tRestCanon + 1] = tSourceCanonIdx
 				else
-					for tTargetWpID, tTargetWpDistance in pairs(tSourceWpLinks) do
-						local tTargetWpName = WaypointCache[WaypointCacheLookupIdForCacheIndex[tTargetWpID]].name
-						local tBack = tLinks[tTargetWpID]
-						if not tBack then
-							tBack = {}
-							tLinks[tTargetWpID] = tBack
-						end
-						if not tBack[tSourceWpID] then
-							--print("+++UPDATED deleted", tSourceWpName, "from", tTargetWpName, "because source does not exist")
-							tBack[tSourceWpID] = nil
-						end
-					end
-					--print("  +++UPDATED delted", tSourceWpName, "because source does not exist")
-					tLinks[tSourceWpID] = nil
+					tProcessSource(tSourceWpID, tSourceWpLinks, tSourceCanonIdx, tCanonRec)
 				end
 			end
 		end
 	end
 
-	if tDeletedCounter > 0 then
-		dprint("CheckAndUpdateProfileLinkData: stale link refs removed:", tDeletedCounter)
+	-- Round 2: the parked sources, no resolution, no second traversal. The
+	-- record is re-checked because the per-continent cleanup between the rounds
+	-- deletes records - it only ever deletes from the player's continent, which
+	-- these are not, but a deleted record must never be written to.
+	local function tWalkRest()
+		for x = 1, #tRestIds do
+			tWpcYield()
+			local tSourceWpID = tRestIds[x]
+			local tSourceWpLinks = tLinks[tSourceWpID]
+			local tSourceCanonIdx = tRestCanon[x]
+			local tCanonRec = tSourceCanonIdx and WaypointCache[tSourceCanonIdx]
+			if tSourceWpLinks and tCanonRec then
+				tProcessSource(tSourceWpID, tSourceWpLinks, tSourceCanonIdx, tCanonRec)
+			end
+		end
 	end
+
+	if aPlayerContinent then
+		tWpcPhase("linksCur")
+		tWalkLinks(aPlayerContinent)
+		tWpcPhase("linksClean")
+		SkuNav:CleanupWaypoints(aPlayerContinent)
+		SkuNav.wpCacheContinentReady[aPlayerContinent] = true
+		dprint("link build: player continent", aPlayerContinent, "ready")
+		if Sku.MetricPoint then Sku:MetricPoint("waypoint cache: current continent links done") end
+		-- the lists the user can be sitting on are exactly this continent's.
+		-- Next frame, NOT here: this runs inside the build coroutine and the
+		-- refresh rebuilds a menu level behind a pcall (project rule: never let
+		-- anything that might yield run inside a pcall inside the build).
+		C_Timer.After(0, function() SkuNav:PushRefreshWpLoadingHint() end)
+		tWpcHardYield()
+		tWpcPhase("linksRest")
+		tWalkRest()
+	else
+		tWpcPhase("linksCur")
+		tWalkLinks(nil)
+	end
+
+	-- the reverse edges the walk was not allowed to insert while iterating
+	for x = 1, #tBackEdges, 3 do
+		local tTargetWpID, tSourceWpID, tDistance = tBackEdges[x], tBackEdges[x + 1], tBackEdges[x + 2]
+		local tBack = tLinks[tTargetWpID]
+		if not tBack then
+			tBack = {}
+			tLinks[tTargetWpID] = tBack
+		end
+		if tBack[tSourceWpID] == nil then
+			tBack[tSourceWpID] = tDistance
+		end
+		tWpcYield()
+	end
+
+	tWpcPhase("linksClean")
+	SkuNav:CleanupWaypoints(nil, aPlayerContinent)
+	tWpcCleanupDeleted = nil
+
+	if tStaleSources > 0 or tStaleTargets > 0 or tSelfLinks > 0 or #tBackEdges > 0 then
+		dprint("link build: stale sources", tStaleSources, "stale targets", tStaleTargets,
+			"self links", tSelfLinks, "reverse edges added", #tBackEdges / 3)
+	end
+
+	-- the legacy profile field the old pass 3 cleared on every build
+	SkuSettings:Sub("SkuNav").Links = nil
+	if tDivergent > 0 then
+		tWpcPhase("linksSave")
+		dprint("link build:", tDivergent, "endpoints belong to a duplicate name - re-deriving the link table")
+		SkuNav:SaveLinkDataToProfile()
+	end
+end
+
+------------------------------------------------------------------------------------------------------------------------
+-- Deletes custom waypoints that ended up with no links at all.
+-- [Link build tier 1, 2026-08-19] Only typeId == 1 records can ever qualify and
+-- the build's custom pass hands over exactly those indices, bucketed by
+-- continent (SkuNav._wpcCustomIdx), so the scan over all ~145k cache records is
+-- gone. Without an index list from the CURRENT build (any caller outside the
+-- build) it falls back to that full scan - the work is never skipped, only
+-- reached faster. Consequence worth knowing: waypoints created AFTER the build
+-- (SkuNav:SetWaypoint) are not in the list, so a linkless one now survives
+-- until the next full build instead of being cleaned by the next link load.
+--  aOnlyContinentId : clean just this continent (tier 3 cleans the player's
+--                     continent the moment its links are done)
+--  aSkipContinentId : the continent already cleaned earlier in this build
+function SkuNav:CleanupWaypoints(aOnlyContinentId, aSkipContinentId)
+	local tDeleted = 0
+
+	local function tCleanOne(i)
+		local v = WaypointCache[i]
+		if not v or v.typeId ~= 1 then
+			return
+		end
+		local tHasLinks = false
+		local tRecordLinks = v.links
+		if tRecordLinks.byId ~= nil then
+			for id, dist in pairs(tRecordLinks.byId) do
+				tHasLinks = true
+				break
+			end
+		end
+		if tHasLinks ~= true and not string.find(v.name, L["Quick waypoint"]) then
+			--print("disconnected custom wp:", v.name)
+			local tWpId = SkuNav:BuildWpIdFromData(1, v.dbIndex, 1, v.areaId)
+			WaypointCacheLookupAll[v.name] = nil
+			WaypointCacheLookupIdForCacheIndex[tWpId] = nil
+			if WaypointCacheLookupPerContintent[v.contintentId] then
+				WaypointCacheLookupPerContintent[v.contintentId][i] = nil
+			end
+			WaypointCache[i] = nil
+			tDeleted = tDeleted + 1
+			-- keep it recoverable while other continents are still being walked
+			if aOnlyContinentId then
+				tWpcCleanupDeleted = tWpcCleanupDeleted or {}
+				tWpcCleanupDeleted[tWpId] = {i, v}
+			end
+		end
+	end
+
+	local tCustomIdx = (SkuNav._wpcCustomIdxGen == SkuNav._wpcGen) and SkuNav._wpcCustomIdx or nil
+	if tCustomIdx then
+		for tCont, tList in pairs(tCustomIdx) do
+			if (aOnlyContinentId == nil or aOnlyContinentId == tCont)
+				and (aSkipContinentId == nil or aSkipContinentId ~= tCont) then
+				for x = 1, #tList do
+					tWpcYield()
+					tCleanOne(tList[x])
+				end
+			end
+		end
+	else
+		for i, v in pairs(WaypointCache) do
+			tWpcYield()
+			local tCont = v.contintentId
+			if (aOnlyContinentId == nil or aOnlyContinentId == tCont)
+				and (aSkipContinentId == nil or aSkipContinentId ~= tCont) then
+				tCleanOne(i)
+			end
+		end
+	end
+
+	if tDeleted > 0 then
+		dprint("CleanupWaypoints: disconnected custom waypoints removed:", tDeleted, "continent", aOnlyContinentId or "all")
+	end
+	return tDeleted
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -1632,8 +1912,16 @@ function SkuNav:DeleteWpLink(aWpAName, aWpBName)
 	local tWpAId = WaypointCacheGetIdForName(aWpAName)
 	local tWpBId = WaypointCacheGetIdForName(aWpBName)
 
-	SkuDB.SessionRouteData.Links[tWpAId][tWpBId] = nil
-	SkuDB.SessionRouteData.Links[tWpBId][tWpAId] = nil
+	-- [Link build tier 1, 2026-08-19] guarded: the build no longer re-derives the
+	-- whole link table at the end (LoadLinkDataFromProfile pass 3), so an entry
+	-- that only ever existed as a duplicate-name artifact can be absent here.
+	-- A missing entry means there is nothing to unlink on that side, not an error.
+	if SkuDB.SessionRouteData.Links[tWpAId] then
+		SkuDB.SessionRouteData.Links[tWpAId][tWpBId] = nil
+	end
+	if SkuDB.SessionRouteData.Links[tWpBId] then
+		SkuDB.SessionRouteData.Links[tWpBId][tWpAId] = nil
+	end
 
 
 	--WaypointCacheLookupAll[aWpName]].links.byName

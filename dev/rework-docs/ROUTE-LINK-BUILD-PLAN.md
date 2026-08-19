@@ -1,6 +1,9 @@
 # Route link build: why it costs 1.2 s every login, and the plan to fix it
 
-Date: 2026-08-19. Status: **plan agreed, not started.** Written after the
+Date: 2026-08-19. Status: **tiers 1 + 3 implemented 2026-08-19, UNTESTED in
+game** (see section 10 for what the implementation actually does and what the
+data said about the plan's assumptions). Tier 2 and tier 4 are still open.
+Written after the
 hardcore-realm build-watchdog work (commits 528828a / 90556d6), which made the
 cost visible: on a realm that throttles addon scripts the same build stretches
 from ~2 s to 10 s of wall time, and the user sits on "Wegpunkte werden noch
@@ -252,3 +255,182 @@ That is the floor for this build.
   in the shipped route data, not in the code. Two waypoints, so not urgent.
 - **User-created waypoints and links do not survive a relog** (section 1). Worth
   a deliberate decision: intended, or a gap?
+
+## 10. What was implemented (2026-08-19, tiers 1 + 3) and what the data said
+
+Before writing a line of code, every assumption in sections 1-5 was checked
+against the shipped data with two new tools:
+
+- `dev/rework-docs/analyze_link_build_assumptions.py` - duplicate names,
+  asymmetric edges, cross-continent edges, inbound-only waypoints.
+- `dev/rework-docs/simulate_link_build.py` - reimplements BOTH the old four
+  passes and the new folded walk in Python over the real Era waypoints + the
+  real TBC link union, and diffs the resulting cache and link table.
+
+### 10.1 Assumptions that held
+
+- **Nothing is persisted** (section 1). Confirmed in code: the only writer of
+  the profile field clears it, and the export path (`ExportWpAndLinkData`) calls
+  `SaveLinkDataToProfile()` itself, so skipping the re-derive during the build
+  cannot cost an export anything.
+- **Pass 3 is redundant.** Measured: 6 duplicate names among 50,699 live custom
+  waypoints, and **not one of them is a link endpoint**, so the re-derive
+  reproduces the table it was handed. The simulation confirms it end to end:
+  old and new produce an **identical** cache (48,732 surviving waypoints, every
+  `links.byId` equal) and an identical link table (50,170 sources / 93,906
+  edges), for every choice of "player's continent".
+- **Per-continent partitioning is safe** (section 5). Measured: 14
+  cross-continent edges in the whole union (the Valley-of-Bones area-id
+  collision from section 2), and **zero** waypoints that are reachable only by
+  an inbound edge - so no waypoint can lose its links to the ordering.
+
+### 10.2 Assumptions that did NOT hold
+
+- **"Pass 4 only touches ~1.5k records."** Wrong: ~1,500 is the number of
+  deleted *tombstones*, not of custom waypoints. There are **50,699** live
+  custom records out of ~145k cache records. The index list still removes ~2/3
+  of that scan, but it is not the 30x the plan implied.
+- **"Pass 1 spends its time symmetrising."** Wrong: the shipped union is
+  **already fully symmetric** - 0 missing reverse edges, 0 self links. What pass
+  1 actually does is *pruning*: 45,951 of 96,121 sources are ids this cache does
+  not know (the WotLK half of the union references waypoints the Era waypoint
+  set never had), and 197,072 shipped edges come out as 93,906 live ones.
+  **This rewrites tier 4's open question** (section 7.2): shipping the links
+  already normalized would make the files *smaller*, not bigger - the symmetry
+  half adds nothing and the pruning half removes half the edges. Still needs the
+  flavour rule from 7.2 (the WotLK file must be pruned against the *Era*
+  waypoint set) and every safety rule from 7.3.
+
+### 10.3 The implementation
+
+`SkuNav/Core.lua`:
+
+- `LoadLinkDataFromProfile(aPlayerContinent)` is now ONE walk over the link
+  table. `CheckAndUpdateProfileLinkData` is gone - its pruning happens in place
+  while iterating (which Lua allows), and its symmetrisation is done by writing
+  the reverse edge straight into the target record. That is what makes the fold
+  order-independent, and it also fixes a latent bug: the old pass 1 inserted new
+  KEYS into the very table it was iterating with `pairs`, which is undefined
+  behaviour in Lua. The new walk collects those and applies them afterwards.
+- The re-derive (`SaveLinkDataToProfile()`) is skipped during the build. The one
+  case that would make it necessary - an endpoint whose name belongs to another
+  record - is counted, and the re-derive runs if that count is ever non-zero.
+- `CleanupWaypoints(aOnlyContinentId, aSkipContinentId)` walks the custom-record
+  index list the custom pass collects (bucketed by continent) instead of all
+  ~145k records, and falls back to the full scan for any caller that is not the
+  current build.
+- Tier 3: the walk runs the player's continent first, then the rest.
+  `SkuNav.wpCacheContinentReady[continent]` flips as soon as that continent's
+  links are materialized and cleaned; `InjectWpListEmptyHint`,
+  `GetWaypointCacheProgressPct` and the push-refresh of a waiting menu level all
+  go by it. Records deleted by the early cleanup are kept recoverable
+  (`tWpcCleanupDeleted`) so a late cross-continent edge can put one back - it
+  cannot happen with the shipped data, but a silently deleted waypoint is not a
+  failure this build may risk.
+- Plan step 0 (split the phase counter) is in: `SkuDebugLog.wpcResult` reports
+  `linksCur`, `linksRest`, `linksClean` and `linksSave` instead of one `links`.
+
+`SkuDBTools.lua`: `/skudbwpcheck` gained the invariant the new walk has to keep -
+every `byId` entry has its `byName` twin, and every edge has its reverse edge.
+
+### 10.4 What to check in game
+
+- `SkuDebugLog.wpcResult`: the four new link phases, and the total against the
+  ~1950 ms baseline.
+- The waypoint lists must be usable as soon as the player's continent is done -
+  `dprint` line "link build: player continent N ready".
+- `/skudbwpcheck`: 0 errors (it now also checks link symmetry).
+- Route navigation itself: pick a route, follow it, and check a zone that the
+  union is known to be delicate about (EPL - see ROUTE-PHASE-RESOLUTION.md).
+
+### 10.5 First in-game run (2026-08-19, 17:19 login)
+
+```
+async done = 2085.8 ms work  (phases ms:  creatures 739  objects 67  custom 351  linksCur 807  linksClean 121)
+custom wp cache: 50434 added, 278 updated, 1564 deleted tombstones skipped
+CleanupWaypoints: disconnected custom waypoints removed: 717  continent  all
+link build: stale sources 10833  stale targets 6858  self links 0  reverse edges added 0
+```
+
+Correct: routes came up, navigation worked, and the push-refresh fired for a user
+who was sitting on the "Wegpunkte werden noch geladen 57%" hint - the list was
+announced 2 s later without touching a key.
+
+Two things the run proved:
+
+- **Tier 1 works.** Do NOT compare the total against the 1936 ms baseline: this
+  run was simply a slower session (creatures 739 vs 453 for identical work). The
+  honest comparison is within the run - the link phase went from 2.60x the
+  creature pass to 1.26x, i.e. it was cut roughly in half. `reverse edges added
+  0` also confirms in the live client what the offline analysis said: the
+  shipped graph is already symmetric.
+- **Tier 3 did not run at all** - `continent all` in the cleanup line and no
+  `linksRest` phase mean `tWpcCurrentContinent` was nil. `SkuNav:GetCurrentAreaId`
+  matches `GetMinimapZoneText()` against the area table, and the minimap zone
+  text can still be empty when the build starts right off the SkuDB stream.
+  **This is not new code failing - the two-round creature/object dispatch from
+  2026-07-05 has been silently dead on login the whole time**, and nothing said
+  so. Fixed by retrying the resolution before the link pass (and logging both
+  the failure at build start and the late result), so the reordering happens
+  where it matters most. Still to verify on the next login: a `linksRest` phase
+  in `wpcResult` and `link build: player continent N ready` in the ring.
+
+### 10.6 Second in-game run (17:28 login) - tier 3 alive, and what it cost
+
+```
+async done = 2316.0 ms work  (phases ms:  creatures 743  objects 77  custom 345  linksCur 450  linksRest 582  linksClean 119)
+```
+
+The continent retry works: two link rounds, the player's continent first. The
+lists become usable after ~1615 ms of work instead of ~2316 ms - **~0.7 s
+earlier**, which is the whole point of tier 3.
+
+But the split cost real work: the link phase went 928 -> 1151 ms against the
+17:19 run (comparable session - creatures 739 vs 743 for identical work). The
+plan called the partitioning "one InternalAreaTable lookup per link source,
+negligible"; measured it is **+223 ms**, because two filtered `pairs` rounds
+resolve every one of the ~96k sources TWICE.
+
+Fixed by walking the link table exactly once: round 1 parks each other-continent
+source together with its already resolved canonical cache index in two flat
+arrays, and round 2 iterates those - no second traversal and no second
+resolution. ~72k numbers, transient. Re-verified with `simulate_link_build.py`:
+still identical to the old four passes for every player continent.
+
+### 10.7 Command consolidation (2026-08-19)
+
+The verification tools moved into `/skucheck` as domains (`wp`, `db`, `mem`);
+the old `/skudbwpcheck`, `/skudbcheck` and `/skudbmem` stay as aliases because
+the dev docs name them. Reason: with three separate commands it was possible to
+run "the check" and never touch the waypoint invariants - which is exactly what
+happened during this session's testing. A bare `/skucheck` now includes the
+waypoint sweep; `db` and `mem` are measurements and stay opt-in. All three log
+their result into the SkuDebugLog ring as `skucheck ...` lines (the waypoint
+violations too, which used to be readable only in SavedVariables), and `db` now
+reports how many datasets changed against the previous capture.
+
+### 10.8 Verified in game (2026-08-19) - TESTED OK
+
+Final login of the session (17:42), with the single-traversal walk:
+
+```
+async done = 2191.3 ms work  (phases ms:  creatures 764  objects 74  custom 321  linksCur 414  linksRest 501  linksClean 117)
+skucheck wp done: 146922 records checked, 0 violations (verlinkt 84384, Namensdubletten 57, Sitzung 0)
+```
+
+- **`/skucheck wp`: 0 violations** over 146,922 records, including the new
+  invariants (every `byId` entry has its `byName` twin, every link has its
+  reverse edge) across all 84,384 linked records.
+- **The result does not depend on where the player stands.** Tested from three
+  continents; the disconnected-custom cleanup always removes 717 in total, only
+  the split moves: Kalimdor 108 + 609, Eastern Kingdoms 111 + 606, Outland
+  21 + 696. `stale sources 10833 / stale targets 6858 / self links 0 / reverse
+  edges added 0` is identical in every run, on any continent, and identical to
+  the pre-tier-3 run.
+- **Link phase over the session:** 928 ms (one round, tier 1 only) -> 1151 ms
+  (naive two-round tier 3) -> 1032 ms (parked-source list). The ~100 ms that
+  remain above the unpartitioned build are what tier 3 costs; it buys the
+  player's own continent being ready ~0.7 s earlier, which is the wait the user
+  actually sits through.
+- No restore of a cleaned waypoint ever fired (the safety net for
+  cross-continent inbound edges), as the offline analysis predicted.
