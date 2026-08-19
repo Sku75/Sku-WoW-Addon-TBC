@@ -312,6 +312,14 @@ function SkuOptions:SlashFunc(input, aSilent)
 			local tMenu = SkuOptions.Menu
 			local tFoundMenuPos = nil
 
+			-- [v43.0 navquick probe] state on entry: what the root holds when a quick
+			-- list is being opened, so a failed descend can be told from a failed splice.
+			if SkuNav and SkuNav.navQuickMenuActive then
+				local tIds = ""
+				for z = 1, #tMenu do tIds = tIds..(tMenu[z].id and tostring(tMenu[z].id) or "-").."/" end
+				dprint("navquick", "slashfunc enter", "mode=", tostring(SkuNav.navQuickMenuActive), "input=", input, "#root=", #tMenu, "ids=", tIds)
+			end
+
 			for x = 2, #fields do
 				for y = 1, #tMenu do
 					if tMenu[y].children then
@@ -327,6 +335,7 @@ function SkuOptions:SlashFunc(input, aSilent)
 					local tNodeId = tMenu[y].id and slower(tostring(tMenu[y].id))
 					if fields[x] == tNodeId or fields[x] == slower(tMenu[y].name) then
 						tFoundMenuPos = tMenu[y]
+						if SkuNav and SkuNav.navQuickMenuActive then dprint("navquick", "slashfunc match", fields[x], "->", tMenu[y].name, "id=", tostring(tMenu[y].id)) end
 						tMenu[y].OnSelect(tMenu[y], true)
 						tMenu = tMenu[y].children
 						break
@@ -334,6 +343,10 @@ function SkuOptions:SlashFunc(input, aSilent)
 				end
 			end
 
+			-- [v43.0 navquick probe] why a quick-list open can land back at root.
+			if SkuNav and SkuNav.navQuickMenuActive then
+				dprint("navquick", "slashfunc result", "found=", tostring(tFoundMenuPos ~= nil), "name=", tFoundMenuPos and tFoundMenuPos.name or "nil", "children=", tFoundMenuPos and #(tFoundMenuPos.children or {}) or -1)
+			end
 			if tFoundMenuPos then
 				SkuOptions.currentMenuPosition = tFoundMenuPos
 				if SkuOptions.currentMenuPosition.children then
