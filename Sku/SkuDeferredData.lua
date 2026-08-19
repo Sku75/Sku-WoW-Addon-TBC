@@ -40,10 +40,17 @@ function Sku:EnsureData(aKey)
 	end
 	Sku.DeferredData.failed[aKey] = true       -- set first: a builder error must not loop
 	local t0 = debugprofilestop()
+	-- [2026-08-19] Per-BUILDER timing, not just per key: 'routes' is two builders
+	-- (the Era file and the WotLK file) of very different size, and on TBC most of
+	-- the WotLK one is thrown away again a moment later (LoadDefaultMapData nils
+	-- its waypoint half). Without the split there is no way to price that.
+	local tPerBuilder = ""
 	for _, tName in ipairs(tBuilders) do
 		local tFn = _G[tName]
 		if type(tFn) == "function" then
+			local tB0 = debugprofilestop()
 			local tOk, tErr = pcall(tFn)
+			tPerBuilder = tPerBuilder .. string.format("  %s %.0f", tName, debugprofilestop() - tB0)
 			if not tOk then
 				local tMsg = string.format("deferred build '%s' FAILED in %s: %s", aKey, tName, tostring(tErr))
 				if SkuErrorLog and SkuErrorLog.Log then pcall(function() SkuErrorLog:Log("deferredData", tMsg) end) end
@@ -68,8 +75,8 @@ function Sku:EnsureData(aKey)
 	local tGcBeforeKb = collectgarbage("count")
 	collectgarbage("collect")
 	if Sku.MetricPoint then
-		Sku:MetricPoint(string.format("deferred build '%s' construct = %.1f ms, GC = %.0f ms, %.0f MB -> %.0f MB",
-			aKey, tMs, debugprofilestop() - tGcT0, tGcBeforeKb / 1024, collectgarbage("count") / 1024))
+		Sku:MetricPoint(string.format("deferred build '%s' construct = %.1f ms (%s), GC = %.0f ms, %.0f MB -> %.0f MB",
+			aKey, tMs, tPerBuilder, debugprofilestop() - tGcT0, tGcBeforeKb / 1024, collectgarbage("count") / 1024))
 	end
 	if Sku.Probe then Sku:Probe("DeferredBuild:" .. aKey, tMs) end
 	return true

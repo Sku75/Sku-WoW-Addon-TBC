@@ -434,3 +434,83 @@ skucheck wp done: 146922 records checked, 0 violations (verlinkt 84384, Namensdu
   actually sits through.
 - No restore of a cleaned waypoint ever fired (the safety net for
   cross-continent inbound edges), as the offline analysis predicted.
+
+## 11. Tier 4 re-evaluated after tiers 1+3 (2026-08-19) - RECOMMEND DROPPING IT
+
+Section 7 asked for one measurement before committing to tier 4: the size delta
+of the normalized files. Done, plus the two questions tier 1 changed
+(`dev/rework-docs/analyze_tier4_payoff.py`, exact byte accounting, not estimates).
+
+### 11.1 The headline saving is already banked
+
+Tier 4's promise was "pass 1 becomes a no-op" - worth ~half the link phase when
+pass 1 was a full separate walk. Tier 1 folded that pass INTO the materialisation
+walk, so what pruning still costs at runtime is: one failed lookup for each of
+the ~10,833 dead sources (their edges are never even iterated - the source entry
+is dropped whole) and ~3 lookups for each of the 6,858 dead edges. Order of a few
+milliseconds. **There is no runtime saving left for tier 4 to collect.**
+
+### 11.2 The data saving is 1-2%
+
+Shipped, both files together: 165,480 source lines and 336,448 edge lines,
+13.6 MB of links inside 51 MB of route data. The runtime drops 6.5% of the
+sources and a further 2.0% of the edges. Priced with the real per-line byte
+costs, and bracketing the edges hanging below a dropped source between 1 and the
+average fan-out of 2.0:
+
+```
+0.71 - 1.00 MB saved   = 5.2 - 7.4% of the links sections
+                       = 1.4 - 2.0% of the shipped route data
+```
+
+### 11.3 And the generator would be harder than section 7.2 assumed
+
+**47% of the link endpoints are not route waypoints.** Of 96,121 distinct source
+ids in the TBC union, 45,033 are creature or object ids (Era file: 20,147
+creature + 2,091 object sources; WotLK file: 39,451 + 5,329). Only 51,088 are
+custom waypoints, and of those the Era waypoint list resolves all but 918.
+
+So "pruned" cannot be decided from the route file at all - it depends on the
+SkuDB creature and object tables, which are generated separately and change with
+every data update, and even on a user SETTING (`showGatherWaypoints` decides
+whether gather objects enter the cache, so an edge that is dead by default is
+live for that user). The release-script guard from 7.3 would have to cover every
+one of those files, and the generator would have to normalize against the UNION
+of all configurations to stay safe.
+
+**Verdict: not worth it.** A few ms of runtime, 1-2% of the data, in exchange for
+an offline generator coupled to four generated datasets plus a user setting, a
+per-version background verification, a `/skucheck` invariant and a release guard.
+Tier 4 is dropped unless something changes the numbers.
+
+### 11.4 The prize is next door, and it is much bigger
+
+Measured this session, from the client's own metric point:
+
+```
+deferred build 'routes' construct = 736.7 ms, GC = 166 ms, 538 MB -> 439 MB
+```
+
+That is ~0.9 s of login - comparable to the whole link phase we just halved - and
+**waypoints, not links, are 73% of the shipped route bytes** (37 of 51 MB; Era
+14.9 MB waypoints / 4.6 MB links, WotLK 22.1 MB / 9.0 MB).
+
+The WotLK file's waypoint half is built and then **explicitly thrown away**:
+`LoadDefaultMapData` nils `SkuDBTMP.routedata.global.WaypointsNew`, `.Waypoints`,
+`.WaypointLevels` and `.SequenceNumbers` right after merging the links (only the
+links are the live union). On Era the whole WotLK file is unused. Grep confirms
+the only other reader of `SkuDBTMP` is the memory tool.
+
+So ~22 MB of the 51 MB is parsed, built into tables and dropped unread at every
+TBC login, and ~31 MB at every Era login. Bytes-proportional that is **~320 ms on
+TBC and ~450 ms on Era**, plus the transient memory behind the 538 -> 439 MB line.
+
+Unlike tier 4 this needs no marker, no verification and no release guard: the
+runtime would simply not build a table it nils moments later. The work is in the
+file wrapper (`_wrap_deferred.py`) - emit the waypoint and link sections as
+separate builders so the flavour can pick.
+
+**Next measurement (instrumented 2026-08-19, read it on the next login):**
+`Sku:EnsureData` now times each builder separately, so the metric point reads
+`construct = X ms (SkuDBBuildRouteWotlk N  SkuDBBuildRouteGlobal M)`. That prices
+the WotLK file exactly instead of by byte share.
