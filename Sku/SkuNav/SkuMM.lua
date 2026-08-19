@@ -214,9 +214,14 @@ local function DrawWaypoints(aFrame)
 				end
 
 				if (SkuNavMMShowCustomWo == true or SkuNavMMShowDefaultWo == true) == false then
-					if tWP.links.byName then
-						for tName, tDistance in pairs(tWP.links.byName) do
-							if tWpFrames[tName] then
+					-- [Link tier 2, 2026-08-19] links are byId (target cache index)
+					-- only now; the frame table is keyed by NAME, so resolve it
+					-- through the target record.
+					if tWP.links.byId then
+						for tIndex, tDistance in pairs(tWP.links.byId) do
+							local tTarget = SkuNav:GetWaypointData2(nil, tIndex)
+							local tName = tTarget and tTarget.name
+							if tName and tWpFrames[tName] then
 								local _, relativeTo, _, xOfs, yOfs = tWpFrames[v]:GetPoint(1)
 								local _, PrevrelativeTo, _, PrevxOfs, PrevyOfs = tWpFrames[tName]:GetPoint(1)
 								DrawLine(xOfs, yOfs, PrevxOfs, PrevyOfs, 1, tRouteColor.a, tRouteColor.r, tRouteColor.g, tRouteColor.b, aFrame, tForce) 
@@ -533,9 +538,13 @@ function SkuNavDrawWaypointsMM(aFrame)
 						end
 
 						if (SkuNavMMShowCustomWo == true or SkuNavMMShowDefaultWo == true) == false then
-							if tWP.links.byName then
-								for tName, tDistance in pairs(tWP.links.byName) do
-									if tWpFrames[tName] then
+							-- [Link tier 2, 2026-08-19] see the note in the other
+							-- drawing pass: byId + record lookup for the frame key.
+							if tWP.links.byId then
+								for tIndex, tDistance in pairs(tWP.links.byId) do
+									local tTarget = SkuNav:GetWaypointData2(nil, tIndex)
+									local tName = tTarget and tTarget.name
+									if tName and tWpFrames[tName] then
 										tCountDrawnWPs = tCountDrawnWPs + 1
 										local _, relativeTo, _, xOfs, yOfs = tWpFrames[v]:GetPoint(1)
 										local _, PrevrelativeTo, _, PrevxOfs, PrevyOfs = tWpFrames[tName]:GetPoint(1)

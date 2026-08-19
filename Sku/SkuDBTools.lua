@@ -16,8 +16,8 @@
 --                          and type-checks it, round-trips wpId vs
 --                          BuildWpIdFromData over the derived dbIndex/spawn,
 --                          cross-checks the four lookup tables, and (since the
---                          folded link build) asserts that every link has its
---                          byName twin and its reverse edge. Persists to
+--                          folded link build) asserts that every link points at
+--                          a live record and has its reverse edge. Persists to
 --                          SkuDebugLog.wpCheck (reader: _wpcheck.py). Needs the
 --                          cache to be built ("Wegpunkte werden noch geladen"
 --                          hint gone). Included in a bare /skucheck.
@@ -545,11 +545,15 @@ local function SkuDBToolsRunWpCheck()
 			-- [Link build tier 1+3, 2026-08-19] The link graph is built in ONE
 			-- walk now, per continent, and the reverse edge is written straight
 			-- into the target record instead of being added to the link table by
-			-- a separate symmetrisation pass. Two invariants prove that walk:
-			--   * every byId entry has the matching byName entry (same edge
-			--     stored twice - see tier 2 of ROUTE-LINK-BUILD-PLAN.md)
+			-- a separate symmetrisation pass. Three invariants prove that walk:
+			--   * every link points at a record that is still in the cache
+			--   * every link points at the CANONICAL record for that name - the
+			--     walk resolves through WaypointCacheLookupAll, so a link that
+			--     ends on a shadowed duplicate would be unreachable by name
 			--   * every edge has its reverse edge; an asymmetric link is a route
 			--     that can only be walked in one direction
+			-- [Link tier 2, 2026-08-19] byName is gone (it duplicated byId), so
+			-- the byName-twin check went with it - the second rule replaces it.
 			-- Checked for the canonical record of a name only (a duplicate-name
 			-- record legitimately keeps whatever it was built with).
 			local tRecLinks = rawget(tRec, "links")
@@ -559,8 +563,8 @@ local function SkuDBToolsRunWpCheck()
 					if not tTarget then
 						tFail(tRec.name, "link target gone")
 					else
-						if tRecLinks.byName[tTarget.name] == nil then
-							tFail(tRec.name, "link byName missing")
+						if tLookupAll[tTarget.name] ~= tTargetIdx then
+							tFail(tRec.name, "link target not canonical: " .. tostring(tTarget.name))
 						end
 						local tBack = rawget(tTarget, "links")
 						if not (tBack and tBack.byId and tBack.byId[tIdx] ~= nil) then

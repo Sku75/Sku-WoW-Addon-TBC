@@ -514,3 +514,54 @@ separate builders so the flavour can pick.
 `Sku:EnsureData` now times each builder separately, so the metric point reads
 `construct = X ms (SkuDBBuildRouteWotlk N  SkuDBBuildRouteGlobal M)`. That prices
 the WotLK file exactly instead of by byte share.
+
+## 12. Tier 2 done (2026-08-19) - links.byName removed
+
+Every link was stored twice on every record: `byId` (target cache index ->
+distance) and `byName` (target name -> distance). `byName` is gone; the 14 call
+sites are migrated to `byId`.
+
+What replaced it: `WaypointCacheGetIdForIndex(aIndex)`, the index-side twin of
+`WaypointCacheGetIdForName`, next to it in SkuNav/Core.lua. Same semantics (temp
+waypoints answer nil, SetWaypoint-created records compute their id from their
+stored fields). The profile writer is now *cheaper* than before, not just
+smaller: it used to turn every target name back into an id through
+`WaypointCacheGetIdForName` (name -> lookup -> record -> id); from `byId` it
+already has the record.
+
+Call sites migrated:
+
+- the link walk (2 writes per edge -> 1)
+- `SaveLinkDataToProfile`, both branches
+- `DeleteWpLink`, `CreateWpLink`, `UpdateWpLinks`
+- `SetWaypoint` (the empty-links literal)
+- `DeleteWaypoint`
+- `SkuMM`'s two route-drawing passes - they key their frame table by NAME, so
+  they resolve the target record and take its name
+
+Three latent bugs died with it, all on lines this had to touch anyway:
+
+1. `DeleteWaypoint` had a second loop over `byName` that only ever cleared the
+   deleted waypoint's own entry against ITSELF, once per link - a self-link,
+   which cannot exist. It did nothing except risk a nil index on
+   `SessionRouteData.Links[ownId]`.
+2. The surviving loop built its ids from `.areaid` (the field is `areaId`), so
+   every id was computed with the default area 1 and the profile-side unlink
+   silently missed. Fixed, and the write is guarded now.
+3. `SaveLinkDataToProfile(aWpName)` indexed `Links[nil]` for a temp waypoint and
+   called `pairs(nil)` for a record that had no links at all. Both guarded.
+
+`/skucheck wp` keeps the same number of link invariants: the byName-twin check
+is replaced by "every link points at the CANONICAL record for that name", which
+is the property the walk actually relies on.
+
+**Memory, before (this session's `/skucheck mem`, for the comparison after):**
+
+```
+SkuNav.WaypointCache   tables 535115  strings 1749425  stringBytes 18656261  numbers 1372231  est 149802 KB
+```
+
+Expect roughly 84k tables and ~190k string slots less (one `byName` table per
+linked record, one key per directed edge); the estimator should drop by ~15-20
+MB, real Lua memory by ~10 MB. Measure with `/skucheck mem` and compare the
+`SkuNav.WaypointCache` line.

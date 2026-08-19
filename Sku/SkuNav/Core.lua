@@ -289,6 +289,26 @@ local function WaypointCacheGetIdForName(aName)
 	end
 end
 
+-- [Link tier 2, 2026-08-19] The same derivation starting from a CACHE INDEX.
+-- Records store their links as byId (target cache index -> distance) only now,
+-- so every "which wpId is that link pointing at" question starts here instead
+-- of at a name. Identical semantics to the name version above: temp waypoints
+-- answer nil, SetWaypoint-created records compute their id from the stored
+-- typeId/dbIndex/spawn/areaId.
+local function WaypointCacheGetIdForIndex(aIndex)
+	local tRec = aIndex and WaypointCache[aIndex]
+	if not tRec or tRec.isTempWaypoint == true then
+		return nil
+	end
+	local tWpId = rawget(tRec, "wpId")
+	if tWpId then
+		return tWpId
+	end
+	if tRec.dbIndex then
+		return SkuNav:BuildWpIdFromData(tRec.typeId, tRec.dbIndex, tRec.spawn, rawget(tRec, "areaId"))
+	end
+end
+
 -- public accessor (SkuDBTools /skudbwpcheck and any future external reader)
 function SkuNav:GetWpIdForWpName(aName)
 	return WaypointCacheGetIdForName(aName)
@@ -316,9 +336,9 @@ end
 local tWpCacheBuildTime = 0
 
 -- [DB rework lever B] Shared read-only empty links wrapper: the ~94k
--- never-linked records no longer allocate a private {byId=nil,byName=nil}
--- each. Reading .byId/.byName on it answers nil exactly like an unlinked
--- record's own wrapper always did. WRITING into it would leak links into
+-- never-linked records no longer allocate a private {byId=nil} each. Reading
+-- .byId on it answers nil exactly like an unlinked record's own wrapper
+-- always did. WRITING into it would leak links into
 -- every unlinked waypoint at once - trap that loudly; writers must
 -- materialize a real per-record table first (WpEnsureLinks).
 local WpEmptyLinks = setmetatable({}, {
@@ -1316,8 +1336,8 @@ end
 --     the reverse edges are collected and applied AFTER the walk, because
 --     inserting new KEYS into the table you are iterating is undefined
 --     behaviour - which is exactly what the old pass 1 did.
---  2. the materialisation loop - produces the same links = {byId, byName} as
---     before, and now also writes the reverse edge straight into the target
+--  2. the materialisation loop - produces the same links.byId as before (tier 2
+--     dropped the duplicate byName half), and now also writes the reverse edge
 --     record. That is what makes folding pass 1 in safe no matter which order
 --     the sources are walked in.
 --  3. SaveLinkDataToProfile() - re-derived the whole link table back out of the
@@ -1371,7 +1391,6 @@ function SkuNav:LoadLinkDataFromProfile(aPlayerContinent)
 		local tRecordLinks = WpEnsureLinks(aRecord)
 		if not tRecordLinks.byId then
 			tRecordLinks.byId = {}
-			tRecordLinks.byName = tRecordLinks.byName or {}
 		end
 		return tRecordLinks
 	end
@@ -1404,7 +1423,6 @@ function SkuNav:LoadLinkDataFromProfile(aPlayerContinent)
 				end
 				tSourceLinks = tSourceLinks or tEnsureLinks(tCanonRec)
 				tSourceLinks.byId[tTargetCanonIdx] = tTargetWpDistance
-				tSourceLinks.byName[tTargetName] = tTargetWpDistance
 				-- the reverse edge, straight into the target record: the graph
 				-- comes out symmetric whichever continent runs first. Only fills a
 				-- gap - when the target is walked as a source itself, its own
@@ -1413,7 +1431,6 @@ function SkuNav:LoadLinkDataFromProfile(aPlayerContinent)
 				local tTargetLinks = tEnsureLinks(tTargetCanonRec)
 				if tTargetLinks.byId[tSourceCanonIdx] == nil then
 					tTargetLinks.byId[tSourceCanonIdx] = tTargetWpDistance
-					tTargetLinks.byName[tSourceName] = tTargetWpDistance
 				end
 				local tBack = tLinks[tTargetWpID]
 				if tBack then
@@ -1616,11 +1633,26 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function SkuNav:SaveLinkDataToProfile(aWpName)
 	if aWpName then
-		SkuDB.SessionRouteData.Links[WaypointCacheGetIdForName(aWpName)] = {}
-		for twname, twdist in pairs(WaypointCache[WaypointCacheLookupAll[aWpName]].links.byName) do
-			SkuDB.SessionRouteData.Links[WaypointCacheGetIdForName(aWpName)][WaypointCacheGetIdForName(twname)] = twdist
+		-- [Link tier 2] the targets come from byId now, so the target's wpId is
+		-- derived from its record directly instead of going back through its name.
+		-- guarded: a temp waypoint has no id (WaypointCacheGetIdForName answers
+		-- nil for it) and an unlinked record has no byId table - the old form
+		-- indexed Links[nil] and called pairs(nil) respectively.
+		local tSourceId = WaypointCacheGetIdForName(aWpName)
+		local tRecord = WaypointCache[WaypointCacheLookupAll[aWpName]]
+		if tSourceId then
+			local tNew = {}
+			SkuDB.SessionRouteData.Links[tSourceId] = tNew
+			local tRecordLinks = tRecord and rawget(tRecord, "links")
+			if tRecordLinks and tRecordLinks.byId then
+				for tTargetIndex, tDistance in pairs(tRecordLinks.byId) do
+					local tTargetId = WaypointCacheGetIdForIndex(tTargetIndex)
+					if tTargetId then
+						tNew[tTargetId] = tDistance
+					end
+				end
+			end
 		end
-
 	else
 		SkuSettings:Sub("SkuNav").Links = nil
 		-- [2026-07-06 build perf] source id + tables hoisted out of the link
@@ -1632,11 +1664,16 @@ function SkuNav:SaveLinkDataToProfile(aWpName)
 			tWpcYield()
 			local tSourceLinks = tSourceWpData.links
 			if tSourceLinks and tSourceLinks.byId then
-				local tSourceId = WaypointCacheGetIdForName(tSourceWpData.name)
-				local tNew = {}
-				tNewLinks[tSourceId] = tNew
-				for twname, twdist in pairs(tSourceLinks.byName) do
-					tNew[WaypointCacheGetIdForName(twname)] = twdist
+				local tSourceId = WaypointCacheGetIdForIndex(tSourceWpIndex)
+				if tSourceId then
+					local tNew = {}
+					tNewLinks[tSourceId] = tNew
+					for tTargetIndex, tDistance in pairs(tSourceLinks.byId) do
+						local tTargetId = WaypointCacheGetIdForIndex(tTargetIndex)
+						if tTargetId then
+							tNew[tTargetId] = tDistance
+						end
+					end
 				end
 			end
 		end
@@ -1906,8 +1943,6 @@ function SkuNav:DeleteWpLink(aWpAName, aWpBName)
 
 	WaypointCache[tWpAIndex].links.byId[tWpBIndex] = nil
 	WaypointCache[tWpBIndex].links.byId[tWpAIndex] = nil
-	WaypointCache[tWpAIndex].links.byName[aWpBName] = nil
-	WaypointCache[tWpBIndex].links.byName[aWpAName] = nil
 	
 	local tWpAId = WaypointCacheGetIdForName(aWpAName)
 	local tWpBId = WaypointCacheGetIdForName(aWpBName)
@@ -1924,7 +1959,6 @@ function SkuNav:DeleteWpLink(aWpAName, aWpBName)
 	end
 
 
-	--WaypointCacheLookupAll[aWpName]].links.byName
 	SkuNav:SaveLinkDataToProfile(aWpAName)
 	SkuNav:SaveLinkDataToProfile(aWpBName)
 
@@ -1945,15 +1979,11 @@ function SkuNav:CreateWpLink(aWpAName, aWpBName)
 		-- writing (unlinked records only carry the shared read-only wrapper)
 		local tLinksA = WpEnsureLinks(WaypointCache[tWpAIndex])
 		tLinksA.byId = tLinksA.byId or {}
-		tLinksA.byName = tLinksA.byName or {}
 		tLinksA.byId[tWpBIndex] = tDistance
-		tLinksA.byName[aWpBName] = tDistance
 
 		local tLinksB = WpEnsureLinks(WaypointCache[tWpBIndex])
 		tLinksB.byId = tLinksB.byId or {}
-		tLinksB.byName = tLinksB.byName or {}
 		tLinksB.byId[tWpAIndex] = tDistance
-		tLinksB.byName[aWpAName] = tDistance
 
 
 		local tWpAId = WaypointCacheGetIdForName(aWpAName)
@@ -1988,9 +2018,7 @@ function SkuNav:UpdateWpLinks(aWpAName)
 	for tWpBIndex, _ in pairs(tWpAData.links.byId) do
 		local tDistance = SkuNav:Distance(tWpAData.worldX, tWpAData.worldY, WaypointCache[tWpBIndex].worldX, WaypointCache[tWpBIndex].worldY)
 		WaypointCache[tWpAIndex].links.byId[tWpBIndex] = tDistance
-		WaypointCache[tWpAIndex].links.byName[WaypointCache[tWpBIndex].name] = tDistance
 		WaypointCache[tWpBIndex].links.byId[tWpAIndex] = tDistance
-		WaypointCache[tWpBIndex].links.byName[aWpAName] = tDistance
 
 		local tWpAId = WaypointCacheGetIdForName(aWpAName)
 
@@ -4260,7 +4288,7 @@ function SkuNav:SetWaypoint(aName, aData, aIsTempWaypoint)
 	-- [DB rework lever B] rawget: the derived .links is the SHARED empty
 	-- wrapper - storing it as this record's own links would corrupt all
 	-- unlinked waypoints on the first link write
-	WaypointCache[tWpIndex].links = aData.links or rawget(WaypointCache[tWpIndex], "links") or {byId = nil, byName = nil,}
+	WaypointCache[tWpIndex].links = aData.links or rawget(WaypointCache[tWpIndex], "links") or {byId = nil,}
 	WaypointCache[tWpIndex].isTempWaypoint = aIsTempWaypoint
 
 	WaypointCacheLookupAll[aName] = tWpIndex
@@ -4476,24 +4504,28 @@ function SkuNav:DeleteWaypoint(aWpName, aIsTempWaypoint)
 			--remove from links db
 
 			--remove links in linked wps in cache
+			-- [Link tier 2, 2026-08-19] One loop over byId. The second loop that
+			-- used to follow (over byName) only ever cleared the DELETED waypoint's
+			-- own entry against itself, once per link - a self-link, which cannot
+			-- exist; it did nothing except risk a nil index on
+			-- SessionRouteData.Links[ownId]. Gone with byName.
+			-- Two fixes on the surviving loop, both on lines this had to touch
+			-- anyway: the ids were built from ".areaid" (the field is areaId), so
+			-- every id was computed with the default area 1 and the profile-side
+			-- unlink silently missed - and the write itself was unguarded, which is
+			-- a nil index the moment the source has no entry.
+			local tOwnId = WaypointCacheGetIdForIndex(tCacheIndex)
 			if tWpData.links.byId then
 				for index, distance in pairs(tWpData.links.byId) do
-					WaypointCache[index].links.byId[tCacheIndex] = nil
-					WaypointCache[index].links.byName[aWpName] = nil
+					local tOther = WaypointCache[index]
+					if tOther and tOther.links and tOther.links.byId then
+						tOther.links.byId[tCacheIndex] = nil
+					end
 					--and in options links
-					local tCacheLinksId = SkuNav:BuildWpIdFromData(WaypointCache[index].typeId, WaypointCache[index].dbIndex, WaypointCache[index].spawn, WaypointCache[index].areaid)
-					local tLinksId = SkuNav:BuildWpIdFromData(WaypointCache[tCacheIndex].typeId, WaypointCache[tCacheIndex].dbIndex, WaypointCache[tCacheIndex].spawn, WaypointCache[tCacheIndex].areaid)
-					SkuDB.SessionRouteData.Links[tCacheLinksId][tLinksId] = nil
-				end
-			end
-			if tWpData.links.byName then
-				for name, distance in pairs(tWpData.links.byName) do
-					WaypointCache[WaypointCacheLookupAll[aWpName]].links.byId[tCacheIndex] = nil
-					WaypointCache[WaypointCacheLookupAll[aWpName]].links.byName[aWpName] = nil
-
-					local tCacheLinksId = SkuNav:BuildWpIdFromData(WaypointCache[WaypointCacheLookupAll[aWpName]].typeId, WaypointCache[WaypointCacheLookupAll[aWpName]].dbIndex, WaypointCache[WaypointCacheLookupAll[aWpName]].spawn, WaypointCache[WaypointCacheLookupAll[aWpName]].areaid)
-					local tLinksId = SkuNav:BuildWpIdFromData(WaypointCache[tCacheIndex].typeId, WaypointCache[tCacheIndex].dbIndex, WaypointCache[tCacheIndex].spawn, WaypointCache[tCacheIndex].areaid)
-					SkuDB.SessionRouteData.Links[tCacheLinksId][tLinksId] = nil
+					local tCacheLinksId = WaypointCacheGetIdForIndex(index)
+					if tCacheLinksId and tOwnId and SkuDB.SessionRouteData.Links[tCacheLinksId] then
+						SkuDB.SessionRouteData.Links[tCacheLinksId][tOwnId] = nil
+					end
 				end
 			end
 
