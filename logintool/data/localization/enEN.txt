@@ -139,3 +139,5 @@ This game version is not supported yet.==This game version is not supported yet.
 game version detected==game version detected
 detect game type automatically==detect game type automatically
 game type is detected automatically now==Game type is detected automatically now.
+login screen, not logged in==Login screen, not logged in
+Not logged in. Either there is no connection to the server, or account name and password still have to be entered in the game.==Not logged in. Either there is no connection to the server, or account name and password still have to be entered in the game.

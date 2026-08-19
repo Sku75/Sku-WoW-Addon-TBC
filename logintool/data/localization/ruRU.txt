@@ -139,3 +139,5 @@ This game version is not supported yet.==Эта версия игры пока �
 game version detected==версия игры определена
 detect game type automatically==определять тип игры автоматически
 game type is detected automatically now==Тип игры теперь определяется автоматически.
+login screen, not logged in==Экран входа, вход не выполнен
+Not logged in. Either there is no connection to the server, or account name and password still have to be entered in the game.==Вход не выполнен. Либо нет соединения с сервером, либо имя учётной записи и пароль ещё нужно ввести в игре.

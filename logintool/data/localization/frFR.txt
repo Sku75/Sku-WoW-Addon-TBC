@@ -139,3 +139,5 @@ This game version is not supported yet.==Cette version du jeu n'est pas encore p
 game version detected==version du jeu détectée
 detect game type automatically==détecter le type de jeu automatiquement
 game type is detected automatically now==Le type de jeu est maintenant détecté automatiquement.
+login screen, not logged in==Écran de connexion, non connecté
+Not logged in. Either there is no connection to the server, or account name and password still have to be entered in the game.==Non connecté. Soit il n'y a pas de connexion au serveur, soit le nom de compte et le mot de passe doivent encore être saisis dans le jeu.

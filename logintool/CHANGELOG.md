@@ -237,6 +237,37 @@
   genau den Nachweis vernichtet, um den es ging. Der Log-Sammler des Installers
   nimmt *.txt aus dem Toolordner mit, die Rotationsdateien reisen also von
   selbst mit.
+- **Der Loginbildschirm wird nicht mehr als Charakterauswahl angesagt.** Wenn
+  das Spiel beim Start keine Verbindung zum Server bekommt, faellt der Client
+  auf den Account-Loginbildschirm zurueck (Account-Name / Account-Passwort /
+  Login). Das Tool landete dort im HAUPTMENUE, dessen erster Eintrag "Charakter
+  auswaehlen" heisst - ausgerechnet der Bildschirm, der beweist, dass es keine
+  Charakterliste gibt, meldete sich also als Charakterauswahl. Fuer jemanden,
+  der ihn nicht sehen kann, klingt er sonst nach nichts Besonderem.
+  Jetzt sagt das Tool beim Ankommen einmal: "Nicht angemeldet. Entweder besteht
+  keine Verbindung zum Server, oder Accountname und Passwort muessen im Spiel
+  noch eingegeben werden." - und bietet ein eigenes Menue "Anmeldebildschirm,
+  nicht angemeldet" an, das nur enthaelt, was ohne Anmeldung funktioniert:
+  Stimme, Sprache, Spieltyp (inklusive automatischer Erkennung), Region,
+  Version. Charakter waehlen, einloggen, erstellen, loeschen und Server
+  wechseln stehen dort NICHT mehr - sie brauchen alle einen angemeldeten
+  Client und wuerden sonst irgendwo tief in einem Flow scheitern statt am
+  Menueeintrag.
+  Der Grund, aus dem der Loginbildschirm ueberhaupt ein Menue bekam, bleibt
+  erhalten: ein falscher Spieltyp strandet das Tool genau hier, "Spieltyp
+  auswaehlen" muss also erreichbar sein, ohne an diesem Bildschirm
+  vorbeizukommen.
+  Der Wachter merkt jetzt ausserdem, wenn der Bildschirm gewechselt wird:
+  InitLogin lief bisher nur beim MODUSwechsel, also blieb das Tool nach einer
+  von Hand nachgeholten Anmeldung stumm auf dem Loginmenue stehen, waehrend im
+  Spiel laengst die Charakterauswahl stand - die Charakterliste wurde nie
+  gebaut. Ein Wechsel auf den Loginbildschirm oder von ihm weg loest jetzt eine
+  volle Neuinitialisierung aus.
+  Hinweis fuer spaeter: "keine Verbindung" ist KEIN eigener Bildschirm. Am
+  laufenden 2.5.6-Client geprueft - er ist pixel- und OCR-identisch mit einem
+  normalen Loginbildschirm (gleiche Widgets, `checks.login = true`, kein
+  Popup). Es gibt nichts zu markieren; ansagbar ist nur, was immer stimmt:
+  dieser Client ist nicht angemeldet.
 
 ## 2.2 (2026-07-24)
 

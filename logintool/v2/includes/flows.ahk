@@ -125,13 +125,18 @@ SpeakAndClosePopup(s) {
 ; ---------- login initialization (single-pass steps, driven by CheckMode) ----------
 
 InitLogin(s := "") {
-    global gLoginInitialized, gBusy
+    global gLoginInitialized, gBusy, gOnLoginScreen
     if !SenseOk(s)
         s := SenseQuick()
     if !SenseOk(s)
         return
     screen := s["screen"]
     Log("InitLogin step: " screen (IsCharCreateScreen(s) ? "" : (SenseCheck(s, "charselect") ? " (charselect wins)" : "")))
+    ; Any screen other than the login one means the client got past it, so the
+    ; "not logged in" state is over and its announcement may be made again the
+    ; next time we drop back to it.
+    if !SenseCheck(s, "login")
+        gOnLoginScreen := false
 
     if SenseCheck(s, "outdatedAddons") {
         ClickWidget("OutdatedAddonsWarning1Button")
@@ -183,6 +188,24 @@ InitLogin(s := "") {
         return
     }
     if SenseCheck(s, "login") {
+        ; The account-entry login screen means exactly one thing: this client
+        ; is NOT logged in. Landing here after starting the game is the "no
+        ; connection to the server" case - the client could not complete its
+        ; own login and fell back to asking for account name and password.
+        ;
+        ; The tool used to hand the user the MAIN menu here, whose first entry
+        ; is "select character". So the one screen that proves there is no
+        ; character list announced itself as character selection - and that is
+        ; the worst lie available, because nothing else about this screen
+        ; sounds any different to someone who cannot see it.
+        ;
+        ; Say what the screen is, then offer the entries that actually work
+        ; while logged out: the settings, including the game-type entry the
+        ; earlier fix came here to keep reachable. Everything that needs a
+        ; logged-in client (characters, realms, create, delete) is not in that
+        ; menu, so it cannot be walked into from here.
+        alreadyHere := gOnLoginScreen
+        gOnLoginScreen := true
         full := Sense()
         if AnyPopup(full) {
             SpeakAndClosePopup(full)
@@ -190,22 +213,17 @@ InitLogin(s := "") {
             ClickWidget("LoginScreenReconnectButton")
             Sleep(600)
         }
-        ; The login screen used to end here with NO MENU AT ALL. Only the
-        ; charselect branch below ever points gCurrentItem at anything, and
-        ; MenuUp/MenuDown return immediately while it is empty - so a tool that
-        ; came up on the login screen had dead arrow keys and no way in.
-        ;
-        ; That is a trap, not just an inconvenience: the entry that fixes a
-        ; wrong game version ("Spieltyp auswaehlen") lives in the main menu,
-        ; the main menu was only reachable by getting PAST this screen, and a
-        ; wrong game version is one of the things that can stop you getting
-        ; past this screen. Land on the main menu instead, so the settings are
-        ; always reachable.
-        ;
-        ; Only when nothing is focused: this must never yank the cursor out
-        ; from under someone who is already navigating.
-        if (gCurrentItem = "")
-            gMainMenu.EnterQueued()
+        ; Once per arrival, not once per sense: InitLogin runs again on every
+        ; refocus, and repeating the sentence each time would bury whatever the
+        ; user was actually doing.
+        if !alreadyHere
+            SayQueued(T("Not logged in. Either there is no connection to the server, or account name and password still have to be entered in the game."))
+        ; Only when the cursor is not already inside this menu: re-entering it
+        ; would yank someone who is navigating back to the top. A cursor left
+        ; pointing anywhere ELSE is exactly what has to be corrected - the
+        ; characters it names do not exist while logged out.
+        if (gCurrentItem = "" || !InMenuTree(gCurrentItem, gLoginMenu))
+            gLoginMenu.EnterQueued()
         return
     }
     ; The check, not the helper's verdict: with a dark scene behind the UI it

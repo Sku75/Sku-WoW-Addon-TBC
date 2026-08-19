@@ -6,6 +6,8 @@
 global gMode := -1              ; -2 setup, -1 paused, 0 in-game, 1 login menu
 global gCurrentItem := ""
 global gMainMenu := ""
+global gLoginMenu := ""         ; what the account-login screen offers (logged out)
+global gOnLoginScreen := false  ; the client is sitting on the account-login screen
 global gMenuVoice := ""
 global gMenuLanguage := ""
 global gMenuRegion := ""
@@ -126,6 +128,21 @@ MenuLeft() {
         gCurrentItem.Enter()
 }
 
+; Is `node` this menu tree, or anywhere inside it? Used to tell "the cursor is
+; already where it belongs" from "the cursor still points at a menu that no
+; longer describes the screen" - re-entering the first is rude, leaving the
+; second is the bug this exists for.
+InMenuTree(node, root) {
+    if (root = "" || node = "")
+        return false
+    while (node != "") {
+        if (node = root)
+            return true
+        node := node.parent
+    }
+    return false
+}
+
 MenuAction() {
     global gBusy, gAbortFlow
     if (gCurrentItem = "" || gCurrentItem.action = "")
@@ -166,6 +183,7 @@ Main() {
     LoadLocalization()
     LoadGameData()
     BuildMainMenu()
+    BuildLoginScreenMenu()
     BuildSetupMenus()
     if (gHasSetup = false) {
         SwitchToSetup()
@@ -177,6 +195,7 @@ Main() {
 
 CheckMode() {
     global gIsChecking, gLastGlueSense, gBusy, gMode, gRealmMenuOffered, gHardcoreConfirmFlag
+    global gOnLoginScreen
     if (gIsChecking || gBusy)
         return
     gIsChecking := true
@@ -220,7 +239,17 @@ CheckMode() {
             if (A_TickCount - gLastGlueSense > 2500) {
                 gLastGlueSense := A_TickCount
                 s := SenseQuick()
-                if SenseCheck(s, "hardcoreConfirm") {
+                if (SenseCheck(s, "login") != gOnLoginScreen) {
+                    ; Crossing into or out of the logged-out login screen is a
+                    ; full change of what the tool can offer, and InitLogin only
+                    ; runs on the MODE transition - so nothing noticed it. A user
+                    ; who typed their account name after a failed connection got
+                    ; to character selection with the tool still parked on the
+                    ; login menu, silent, its character list never built.
+                    Log("CheckMode: login screen "
+                        . (SenseCheck(s, "login") ? "reached" : "left") " - re-initializing")
+                    InitLogin(s)
+                } else if SenseCheck(s, "hardcoreConfirm") {
                     ; The hardcore warning can surface outside the realm-join
                     ; flow (tab-away and back, or a flow that missed it).
                     if !gHardcoreConfirmFlag
@@ -255,6 +284,10 @@ SwitchToSetup() {
 
 SwitchToPause() {
     global gMode := -1
+    ; Coming back to the game re-orients the user from scratch, so the
+    ; logged-out state gets announced again rather than being remembered as
+    ; "already said" across a tab-away.
+    global gOnLoginScreen := false
     Log("SwitchToPause")
     Say(T("pause mode"))
 }
@@ -359,6 +392,51 @@ BuildMainMenu() {
     }
 
     MenuNode("WoW Logintool V" gSettingsVersion ", " T("Version") ": V" gSettingsVersion, gMainMenu)
+}
+
+; The menu for the account-login screen - i.e. for a client that is NOT logged
+; in, which is what you get when the game could not reach the server.
+;
+; It deliberately holds only entries that work logged out. The main menu leads
+; with "select character", and offering that here was the actual bug: it told a
+; blind user they were at character selection while the game was sitting on the
+; login prompt with no characters anywhere. Realm switching, creating and
+; deleting are out for the same reason - every one of them needs a logged-in
+; client and would fail somewhere deep in a flow instead of at the menu entry.
+;
+; What stays is the settings, because the reason the login screen got a menu in
+; the first place was that a wrong game type strands the tool exactly here, and
+; "select game type" has to be reachable without getting past this screen.
+BuildLoginScreenMenu() {
+    global gLoginMenu := MenuNode(T("login screen, not logged in"))
+
+    voiceItem := MenuNode(T("select voice"), gLoginMenu)
+    for index, voice in GetVoices() {
+        node := MenuNode(index ": " voice, voiceItem)
+        node.action := VoiceSelectClosure(voice, false)
+    }
+
+    langItem := MenuNode(T("select language"), gLoginMenu)
+    for index, lang in GetLanguages() {
+        node := MenuNode(index ": " T(lang.name), langItem)
+        node.action := LangSelectClosure(lang.code)
+    }
+
+    gametypeItem := MenuNode(T("select game type"), gLoginMenu)
+    for gametype in GetGametypes() {
+        node := MenuNode(T(gametype), gametypeItem)
+        node.action := GametypeSelectClosure(gametype)
+    }
+    autoItem := MenuNode(T("detect game type automatically"), gametypeItem)
+    autoItem.action := (item) => GametypeAutoAction()
+
+    regionItem := MenuNode(T("select region"), gLoginMenu)
+    for r in GetRegions() {
+        node := MenuNode(T(r.name), regionItem)
+        node.action := RegionSelectClosure(r.code, true)
+    }
+
+    MenuNode("WoW Logintool V" gSettingsVersion ", " T("Version") ": V" gSettingsVersion, gLoginMenu)
 }
 
 CreateCharClosure(genderIndex, raceIndex, classIndex, zoneIndex) {
