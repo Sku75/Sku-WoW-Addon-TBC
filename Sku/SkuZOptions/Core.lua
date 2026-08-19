@@ -4643,12 +4643,28 @@ function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString)
 			end
 		end
 	end
-	if SkuOptions.currentMenuPosition.BuildChildren then
-		-- Isolate BuildChildren: a submenu-builder error must never abort the
-		-- vocalization below (that would silence the item NAME on nav while the
-		-- error keeps firing). Speak-the-name is more important than a complete
-		-- submenu; a partial/failed submenu is recoverable, a silent menu is not.
-		pcall(function() SkuOptions.currentMenuPosition:BuildChildren(SkuOptions.currentMenuPosition) end)
+	-- [v43.0] Build only when there is nothing to count yet. The ONLY thing this
+	-- function needs the children for is the ";plus" submenu marker below
+	-- (#children > 0), so once they exist a rebuild cannot change the answer.
+	-- It ran on EVERY vocalization though -- i.e. every arrow keystroke that
+	-- lands on a node with a builder -- and most builders APPEND through
+	-- InjectMenuItems rather than replace, so each landing stacked another full
+	-- copy: the nearby-waypoints list was measured growing 1859 -> 3718 -> 5577
+	-- -> 7436 over four keypresses. That was invisible in the menu (descending
+	-- runs OnPostSelect, which clears first) but it is real work every time, and
+	-- on a big list it feeds the same "insecure scripts exceeded execution
+	-- limit" watchdog that broke the Shift-F9 open. Same guard the sibling call
+	-- site in the path resolver already uses.
+	-- A level whose children genuinely change while the menu sits open does NOT
+	-- rely on this: that is what `volatileChildren` is for (templates.lua), and
+	-- it clears before rebuilding and is throttled.
+	-- Isolate BuildChildren: a submenu-builder error must never abort the
+	-- vocalization below (that would silence the item NAME on nav while the
+	-- error keeps firing). Speak-the-name is more important than a complete
+	-- submenu; a partial/failed submenu is recoverable, a silent menu is not.
+	local tPos = SkuOptions.currentMenuPosition
+	if tPos.BuildChildren and not (tPos.children and #tPos.children > 0) then
+		pcall(function() tPos:BuildChildren(tPos) end)
 	end
 
 	--handle filter placeholder
