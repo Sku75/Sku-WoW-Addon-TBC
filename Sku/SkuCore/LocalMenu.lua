@@ -5442,11 +5442,36 @@ local function tSkuCheckMenu()
 	return tChecked, 0, tViolations
 end
 
+-- [2026-08-19] The SkuDB verification tools are domains here now (wp / db /
+-- mem, SkuDBTools.lua), not commands of their own: with three separate slash
+-- commands it was possible to run "the check" and never touch the waypoint
+-- invariants - which happened. They are BACKGROUND jobs, so they speak their
+-- own summary when they finish instead of joining the count below.
+--   wp  = waypoint cache + link graph. Part of a bare /skucheck (~9 s).
+--   db  = dataset fingerprints (~40 s) - opt-in only, it is a measurement.
+--   mem = memory ranking - opt-in only, same reason.
+local tSkuCheckDomains = {
+	bags = true, auras = true, keys = true, menu = true, taxi = true,
+	wp = true, db = true, mem = true,
+}
+
 SLASH_SKUCHECK1 = "/skucheck"
 SlashCmdList["SKUCHECK"] = function(aParam)
-	local tDomain = string.match(aParam or "", "^%s*(%S*)")
-	if tDomain ~= "" and tDomain ~= "bags" and tDomain ~= "auras" and tDomain ~= "keys" and tDomain ~= "menu" and tDomain ~= "taxi" then
-		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags, auras, keys, menu, taxi", "Unknown check. Available: bags, auras, keys, menu, taxi", "Vérification inconnue. Disponible : bags, auras, keys, menu, taxi"), false, true, 0.2) end)
+	local tDomain, tArg = string.match(aParam or "", "^%s*(%S*)%s*(.-)%s*$")
+	if tDomain ~= "" and not tSkuCheckDomains[tDomain] then
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags, auras, keys, menu, taxi, wp, db, mem", "Unknown check. Available: bags, auras, keys, menu, taxi, wp, db, mem", "Vérification inconnue. Disponible : bags, auras, keys, menu, taxi, wp, db, mem"), false, true, 0.2) end)
+		return
+	end
+	-- the two measurement domains never run as part of a sweep: they are
+	-- explicitly asked for, they take 40 s, and they answer with numbers to
+	-- compare out of game rather than with a verdict.
+	if tDomain == "db" or tDomain == "mem" then
+		if not SkuDBTools then return end
+		if tDomain == "db" then
+			SkuDBTools.RunDbCheck(tArg ~= "" and tArg or nil)
+		else
+			SkuDBTools.RunMem()
+		end
 		return
 	end
 	local tChecked, tPending, tViolations = 0, 0, 0
@@ -5494,5 +5519,15 @@ SlashCmdList["SKUCHECK"] = function(aParam)
 	if tPending > 0 then
 		tMsg = tMsg..", "..tPending..Sku.deEn(" ausstehend", " pending", " en attente")
 	end
-	pcall(function() SkuOptions.Voice:OutputStringBTtts(tMsg, false, true, 0.2) end)
+	-- `/skucheck wp` alone speaks only the waypoint job's own summary; the
+	-- combined run speaks this one first and the job's when it finishes.
+	if tDomain ~= "wp" then
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(tMsg, false, true, 0.2) end)
+	end
+	-- The waypoint sweep is a real invariant check, so a bare /skucheck runs it
+	-- too - as a background job (~9 s over ~145k records), announced on its own
+	-- when it is done. It declines politely while the cache is still building.
+	if (tDomain == "" or tDomain == "wp") and SkuDBTools and SkuDBTools.RunWpCheck then
+		SkuDBTools.RunWpCheck()
+	end
 end

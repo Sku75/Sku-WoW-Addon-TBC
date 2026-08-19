@@ -1,31 +1,48 @@
 -- [DB rework stage 0] Verification tools for the SkuDB restructuring
 -- (see Sku42-Rework-Docs/DB-RESTRUCTURE-PLAN.md, section 4, tools 3 and 5).
 --
---   /skudbcheck [label]  - deterministic per-dataset fingerprint of the BUILT
---                          data tables (sorted-key deep walk, FNV-1a 32 bit,
---                          numbers as %.17g) plus record counts. Runs sliced in
---                          a coroutine (the walk covers ~40 MB of tables), then
---                          speaks a summary and persists the capture to
---                          SkuDebugLog.dbCheck (eviction-proof dedicated field,
---                          same pattern as SkuDebugLog.wpcResult). Read and
---                          diff out-of-game with _dbcheck.py.
---                          Run it AFTER login is complete (post fix+merge).
---   /skudbmem            - per-subtree memory estimator: walks SkuDB.*,
---                          SkuDB.WotLK.*, SkuDBTMP and the SkuNav waypoint
---                          cache, counts tables/strings/numbers and sums
---                          string bytes; persists to SkuDebugLog.dbMem.
---                          Ranked out-of-game by _dbmem.py. Stage-4 tool.
---   /skudbwpcheck        - [DB rework lever A] validates the slim waypoint-
---                          cache records: reads every legacy field of every
---                          record THROUGH the shared metatable and type-checks
---                          it, round-trips wpId vs BuildWpIdFromData over the
---                          derived dbIndex/spawn, and cross-checks the four
---                          lookup tables. Persists to SkuDebugLog.wpCheck
---                          (reader: _wpcheck.py). Run after the cache build
---                          ("Wegpunkte werden noch geladen" hint gone).
+-- [2026-08-19] These are DOMAINS OF /skucheck now, not commands of their own -
+-- one entry point for "check that Sku is sane", the same structure as the
+-- other invariant sweeps (SkuCore/LocalMenu.lua): each domain logs its result
+-- into the SkuDebugLog ring as "skucheck ..." lines and speaks one summary.
+-- The reason for the move: three separate commands meant it was possible to
+-- run "the check" and never touch the waypoint invariants at all (happened
+-- 2026-08-19). The old slash names stay registered as aliases, because older
+-- notes and the dev docs name them.
+--
+--   /skucheck wp         (alias /skudbwpcheck) - [DB rework lever A] validates
+--                          the slim waypoint-cache records: reads every legacy
+--                          field of every record THROUGH the shared metatable
+--                          and type-checks it, round-trips wpId vs
+--                          BuildWpIdFromData over the derived dbIndex/spawn,
+--                          cross-checks the four lookup tables, and (since the
+--                          folded link build) asserts that every link has its
+--                          byName twin and its reverse edge. Persists to
+--                          SkuDebugLog.wpCheck (reader: _wpcheck.py). Needs the
+--                          cache to be built ("Wegpunkte werden noch geladen"
+--                          hint gone). Included in a bare /skucheck.
+--   /skucheck db [label] (alias /skudbcheck) - deterministic per-dataset
+--                          fingerprint of the BUILT data tables (sorted-key
+--                          deep walk, FNV-1a 32 bit, numbers as %.17g) plus
+--                          record counts. ~40 s of sliced background work over
+--                          ~40 MB of tables, so it is NEVER part of a bare
+--                          /skucheck - ask for it. Persists to
+--                          SkuDebugLog.dbCheck (differ: _dbcheck.py) and
+--                          reports how many datasets changed against the
+--                          previous capture. Run it AFTER login is complete.
+--   /skucheck mem        (alias /skudbmem) - per-subtree memory estimator:
+--                          walks SkuDB.*, SkuDB.WotLK.*, SkuDBTMP and the
+--                          SkuNav waypoint cache, counts tables/strings/numbers
+--                          and sums string bytes; persists to SkuDebugLog.dbMem.
+--                          Ranked out-of-game by _dbmem.py. A measurement, not
+--                          a check - also opt-in only.
 --
 -- Both fingerprints and estimates are computed by the SAME code before and
 -- after any conversion, so comparisons never cross implementations.
+
+-- The handles /skucheck calls. Each returns true when the background job was
+-- started (false = busy, or a precondition like "cache not built" failed).
+SkuDBTools = SkuDBTools or {}
 
 local function SkuDBToolsPrint(aText)
 	print("|cff80c0ffSkuDB|r " .. aText)
@@ -244,25 +261,57 @@ local function SkuDBToolsRunCheck(aLabel)
 			lines = tLines,
 		})
 		while #SkuDebugLog.dbCheck > 12 do table.remove(SkuDebugLog.dbCheck, 1) end
+		-- [2026-08-19] What the capture is FOR is the comparison, so do the
+		-- obvious half of it in game: how many datasets differ from the previous
+		-- capture. Not a violation (data legitimately changes between versions),
+		-- but it is the number that says whether a conversion moved anything.
+		local tChanged = 0
+		local tPrev = SkuDebugLog.dbCheck[#SkuDebugLog.dbCheck - 1]
+		if tPrev and tPrev.lines then
+			local tOld = {}
+			for _, tRow in ipairs(tPrev.lines) do
+				tOld[string.match(tRow, "^[^|]+") or tRow] = tRow
+			end
+			for _, tRow in ipairs(tLines) do
+				local tKey = string.match(tRow, "^[^|]+") or tRow
+				if tOld[tKey] ~= tRow then
+					tChanged = tChanged + 1
+					dprint("skucheck", "db: dataset changed since the last capture:", tRow, "was", tOld[tKey] or "absent")
+				end
+			end
+		end
+		dprint("skucheck", "db done:", #tLines - tMissing, "datasets fingerprinted,", tMissing, "missing,",
+			tChanged, "changed vs the previous capture,", string.format("%.0f", tTook), "s")
 		local tMsg = string.format("Prüfsumme geschrieben, %d Datensätze%s, %.0f Sekunden",
 			#tLines - tMissing, tMissing > 0 and (", " .. tMissing .. " fehlen") or "", tTook)
+		if tPrev then
+			tMsg = tMsg .. string.format(", %d geändert", tChanged)
+		end
 		SkuDBToolsPrint(tMsg .. "  (Label: " .. (aLabel or "-") .. ")")
 		SkuDBToolsSpeak(tMsg)
 	end
 	if SkuDBToolsStartJob("skudbcheck", tWork, tDone) then
 		SkuDBToolsPrint("Prüfsumme läuft (im Hintergrund, Ansage am Ende) ...")
 		SkuDBToolsSpeak("Datenbankprüfung gestartet")
+		return true
 	end
+	return false
+end
+
+-- /skucheck db [label]. Alias kept: the dev docs and older notes say /skudbcheck.
+function SkuDBTools.RunDbCheck(aLabel)
+	if type(SkuDB) ~= "table" then
+		SkuDBToolsPrint("SkuDB existiert nicht.")
+		dprint("skucheck", "db: SkuDB does not exist - skipped")
+		return false
+	end
+	return SkuDBToolsRunCheck(aLabel)
 end
 
 SLASH_SKUDBCHECK1 = "/skudbcheck"
 SlashCmdList["SKUDBCHECK"] = function(aParam)
-	if type(SkuDB) ~= "table" then
-		SkuDBToolsPrint("SkuDB existiert nicht.")
-		return
-	end
 	local tLabel = string.match(aParam or "", "^%s*(.-)%s*$")
-	SkuDBToolsRunCheck(tLabel ~= "" and tLabel or nil)
+	SkuDBTools.RunDbCheck(tLabel ~= "" and tLabel or nil)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -369,6 +418,8 @@ local function SkuDBToolsRunMem()
 			took = string.format("%.1f", tTook),
 			lines = tLines,
 		}
+		dprint("skucheck", "mem done:", #tLines, "subtrees measured, Lua heap",
+			string.format("%.0f", tTotalKb / 1024), "MB,", string.format("%.0f", tTook), "s")
 		local tMsg = string.format("Speicherstatistik geschrieben, %d Teilbäume, gesamt %.0f Megabyte", #tLines, tTotalKb / 1024)
 		SkuDBToolsPrint(tMsg)
 		SkuDBToolsSpeak(tMsg)
@@ -376,12 +427,19 @@ local function SkuDBToolsRunMem()
 	if SkuDBToolsStartJob("skudbmem", tWork, tDone) then
 		SkuDBToolsPrint("Speicherstatistik läuft (im Hintergrund, Ansage am Ende) ...")
 		SkuDBToolsSpeak("Speicherstatistik gestartet")
+		return true
 	end
+	return false
+end
+
+-- /skucheck mem. Alias kept, see above.
+function SkuDBTools.RunMem()
+	return SkuDBToolsRunMem()
 end
 
 SLASH_SKUDBMEM1 = "/skudbmem"
 SlashCmdList["SKUDBMEM"] = function()
-	SkuDBToolsRunMem()
+	SkuDBTools.RunMem()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -484,6 +542,35 @@ local function SkuDBToolsRunWpCheck()
 					tFail(tRec.name, "PerContinent")
 				end
 			end
+			-- [Link build tier 1+3, 2026-08-19] The link graph is built in ONE
+			-- walk now, per continent, and the reverse edge is written straight
+			-- into the target record instead of being added to the link table by
+			-- a separate symmetrisation pass. Two invariants prove that walk:
+			--   * every byId entry has the matching byName entry (same edge
+			--     stored twice - see tier 2 of ROUTE-LINK-BUILD-PLAN.md)
+			--   * every edge has its reverse edge; an asymmetric link is a route
+			--     that can only be walked in one direction
+			-- Checked for the canonical record of a name only (a duplicate-name
+			-- record legitimately keeps whatever it was built with).
+			local tRecLinks = rawget(tRec, "links")
+			if tRecLinks and tRecLinks.byId and tLookupAll[tRec.name] == tIdx then
+				for tTargetIdx, tDist in pairs(tRecLinks.byId) do
+					local tTarget = tCache[tTargetIdx]
+					if not tTarget then
+						tFail(tRec.name, "link target gone")
+					else
+						if tRecLinks.byName[tTarget.name] == nil then
+							tFail(tRec.name, "link byName missing")
+						end
+						local tBack = rawget(tTarget, "links")
+						if not (tBack and tBack.byId and tBack.byId[tIdx] ~= nil) then
+							tFail(tRec.name, "link not symmetric: " .. tostring(tTarget.name))
+						end
+					end
+					SkuDBToolsOps = SkuDBToolsOps + 4
+					SkuDBToolsMaybeYield()
+				end
+			end
 			SkuDBToolsOps = SkuDBToolsOps + 32
 			SkuDBToolsMaybeYield()
 		end
@@ -494,23 +581,39 @@ local function SkuDBToolsRunWpCheck()
 		tResult.took = string.format("%.1f", (debugprofilestop() - tT0) / 1000)
 		tResult.wpCacheReady = SkuNav and SkuNav.wpCacheReady or false
 		SkuDebugLog.wpCheck = tResult
+		-- [2026-08-19] /skucheck structure: the violations land in the ring, not
+		-- only in the persisted capture - a check whose result you can only read
+		-- by opening SavedVariables is a check nobody runs.
+		for _, tExample in ipairs(tResult.examples) do
+			dprint("skucheck", "VIOLATION wp:", tExample)
+		end
+		dprint("skucheck", "wp done:", tResult.total, "records checked,", tResult.errors, "violations",
+			"(verlinkt", tResult.linked, "Namensdubletten", tResult.dupNames, "Sitzung", tResult.sessionRecords, ")")
 		local tMsg = string.format("Wegpunkt Prüfung: %d Wegpunkte, %d Fehler", tResult.total, tResult.errors)
 		SkuDBToolsPrint(tMsg .. string.format(" (Sitzung %d, ohne Kommentare %d, überschrieben %d, Namensdubletten %d, verlinkt %d)",
 			tResult.sessionRecords, tResult.commentsNil, tResult.shadowed, tResult.dupNames, tResult.linked))
 		SkuDBToolsSpeak(tMsg)
 	end
 	if not (SkuNav and SkuNav.wpCacheReady) then
+		dprint("skucheck", "wp: waypoint cache not built yet - skipped")
 		SkuDBToolsPrint("Wegpunkt Cache ist noch nicht fertig gebaut - später erneut ausführen")
 		SkuDBToolsSpeak("Wegpunkt Cache noch nicht bereit")
-		return
+		return false
 	end
 	if SkuDBToolsStartJob("skudbwpcheck", tWork, tDone) then
 		SkuDBToolsPrint("Wegpunkt Prüfung läuft (im Hintergrund, Ansage am Ende) ...")
 		SkuDBToolsSpeak("Wegpunkt Prüfung gestartet")
+		return true
 	end
+	return false
+end
+
+-- /skucheck wp, and part of a bare /skucheck. Alias kept, see above.
+function SkuDBTools.RunWpCheck()
+	return SkuDBToolsRunWpCheck()
 end
 
 SLASH_SKUDBWPCHECK1 = "/skudbwpcheck"
 SlashCmdList["SKUDBWPCHECK"] = function()
-	SkuDBToolsRunWpCheck()
+	SkuDBTools.RunWpCheck()
 end
