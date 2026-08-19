@@ -461,6 +461,11 @@ local function SkuDBToolsRunWpCheck()
 		                      -- NPCs all named "Luftüberwachung" on shared positions)
 		linked = 0,           -- records with a real (materialized) links table - lever B:
 		                      -- everything else answers the shared empty wrapper
+		edges = 0,            -- [tier 2] directed edges actually materialized in the
+		                      -- cache. The sweep walks every one of them anyway, and it
+		                      -- is the number that prices any work on the link graph
+		                      -- (memory, build cost, what shipping pre-pruned data
+		                      -- could ever save).
 		errors = 0,
 		examples = {},
 	}
@@ -559,6 +564,7 @@ local function SkuDBToolsRunWpCheck()
 			local tRecLinks = rawget(tRec, "links")
 			if tRecLinks and tRecLinks.byId and tLookupAll[tRec.name] == tIdx then
 				for tTargetIdx, tDist in pairs(tRecLinks.byId) do
+					tResult.edges = tResult.edges + 1
 					local tTarget = tCache[tTargetIdx]
 					if not tTarget then
 						tFail(tRec.name, "link target gone")
@@ -592,7 +598,8 @@ local function SkuDBToolsRunWpCheck()
 			dprint("skucheck", "VIOLATION wp:", tExample)
 		end
 		dprint("skucheck", "wp done:", tResult.total, "records checked,", tResult.errors, "violations",
-			"(verlinkt", tResult.linked, "Namensdubletten", tResult.dupNames, "Sitzung", tResult.sessionRecords, ")")
+			"(verlinkt", tResult.linked, "Kanten", tResult.edges, "Namensdubletten", tResult.dupNames,
+			"Sitzung", tResult.sessionRecords, ")")
 		local tMsg = string.format("Wegpunkt Prüfung: %d Wegpunkte, %d Fehler", tResult.total, tResult.errors)
 		SkuDBToolsPrint(tMsg .. string.format(" (Sitzung %d, ohne Kommentare %d, überschrieben %d, Namensdubletten %d, verlinkt %d)",
 			tResult.sessionRecords, tResult.commentsNil, tResult.shadowed, tResult.dupNames, tResult.linked))

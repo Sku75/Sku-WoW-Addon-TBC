@@ -565,3 +565,47 @@ Expect roughly 84k tables and ~190k string slots less (one `byName` table per
 linked record, one key per directed edge); the estimator should drop by ~15-20
 MB, real Lua memory by ~10 MB. Measure with `/skucheck mem` and compare the
 `SkuNav.WaypointCache` line.
+
+### 12.1 Tier 2 verified in game (2026-08-19 23:49) - TESTED OK
+
+```
+async done = 2143.4 ms work  (phases ms:  creatures 705  objects 84  custom 365  linksCur 411  linksRest 463  linksClean 115)
+skucheck wp done: 146922 records checked, 0 violations (verlinkt 84384, Namensdubletten 57)
+SkuNav.WaypointCache|464842|1524986|12846374|1228045|0|127619     (tables|strings|stringBytes|numbers|booleans|estKb)
+```
+
+Routes work, no errors, `/skucheck wp` clean - including the replacement
+invariant (every link points at the canonical record for its name).
+
+**Memory.** Against the recorded baseline
+`535115|1749425|18656261|1372231|0|149802`:
+
+```
+tables       -70,273
+strings     -224,439
+stringBytes  -5.8 MB
+estimate      -22 MB   (149.8 -> 127.6 MB)
+```
+
+Read that as a LOWER bound. The baseline capture is the July one (its
+`WaypointCacheLookupAll` holds 144,766 names against today's 146,865 - the
+2026-08-13 route data update added 2,099 waypoints), so today's cache is
+carrying *more* data than the baseline and still measures 22 MB less. The
+byName half itself was 84,384 tables plus one string key and one number value
+per directed edge; `/skucheck wp` now counts those edges (`Kanten`), so the next
+run pins the number exactly instead of inferring it from the deltas.
+
+The link phase also came down a little, 1032 -> 989 ms, which is the second
+write per edge disappearing.
+
+### 12.2 The route builders, now measured separately
+
+```
+deferred build 'routes' construct = 729.8 ms (SkuDBBuildRouteWotlk 375  SkuDBBuildRouteGlobal 355), GC = 157 ms, 538 MB -> 438 MB
+```
+
+So section 11.4's estimate holds: the WotLK file costs **375 ms** at every
+login, and 71% of its bytes are the waypoint half that `LoadDefaultMapData`
+throws away unread - **~265 ms recoverable on TBC, the full 375 ms on Era**,
+where the whole file is unused. That is now the biggest single item left in the
+route-data path, and unlike tier 4 it needs no safety machinery.
