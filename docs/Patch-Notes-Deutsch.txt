@@ -275,6 +275,57 @@ Aenderungen in Sku v43.0
             beim Realmbeitritt; zweibuttonige Dialoge werden vorgelesen und beantwortet. Wo die
             Widgets fehlen (Cata, Retail), sagen die Eintraege das und tun nichts.
 
+    Hardcore-Realms: Sku baut seine Wegpunktdaten jetzt fertig, statt still stehenzubleiben
+        Einfach: Auf Hardcore-Realms raeumt der Spielclient Addons deutlich weniger Rechenzeit pro
+            Bild ein als auf normalen Realms. Sku baut direkt nach dem Anmelden seine Wegpunkt- und
+            Routendaten auf, und genau dieser Aufbau lief dort in diese Grenze: Der Client brach
+            den laufenden Vorgang einfach ab, und Sku bekam davon nichts mit. Ergebnis: Jede
+            Wegpunktliste antwortete die ganze Sitzung lang nur mit "Wegpunkte werden noch geladen"
+            - ohne Fehlermeldung, ohne Sprachausgabe, ohne Logeintrag, und auch ein Neuladen der
+            Oberflaeche half nicht. Sku merkt jetzt, wenn der Client bremst, verkleinert seine
+            Arbeitspakete und macht weiter, statt liegen zu bleiben; wird ein Paket doch
+            abgeschossen, startet der Aufbau von selbst neu. Der Preis dafuer: Auf solchen Realms
+            dauert es nach dem Anmelden ein paar Sekunden laenger, bis Routen und Wegpunkte
+            vollstaendig da sind. Alles andere in Sku ist sofort benutzbar, und die Wegpunktlisten
+            sagen jetzt an, wie weit der Aufbau ist (naechster Eintrag). Normale Realms sind
+            unveraendert.
+        Technisch: Der Client meldet den Abbruch als LUA_WARNING "insecure scripts exceeded
+            execution limit for addon Sku" oder als "script ran too long" mitten im laufenden
+            Coroutine-Abschnitt. Auf dem Hardcore-Realm kam das bei jedem einzelnen Anmelden
+            (52/25/25 Meldungen pro Login), in acht aufgezeichneten Sitzungen auf normalen Era- und
+            Anniversary-Realms kein einziges Mal - bei identischer Arbeit (1936 ms auf Era
+            gegenueber 1955 ms auf Hardcore fuer denselben Aufbau). Sku:BuildFrameBudgetMs ist
+            jetzt adaptiv: Jede solche Meldung halbiert die Frame-Obergrenze (150 -> 75 -> 37,5 ->
+            20 ms), wovon der gesamte Aufbau nach dem Anmelden profitiert, nicht nur der
+            Wegpunkt-Cache. Getaktet wird der Cache-Aufbau nicht mehr von einer sich selbst neu
+            setzenden C_Timer-Kette - genau dieses Neusetzen fiel dem Abbruch zum Opfer, die
+            Coroutine blieb danach fuer immer angehalten und niemand weckte sie wieder - sondern
+            von einem OnUpdate-Treiber, den der Client selbst in jedem Bild aufruft; ein
+            abgeschossenes Paket kostet damit ein Bild statt den ganzen Aufbau. Stirbt die
+            Coroutine trotzdem, wird bis zu dreimal neu aufgebaut, und der Build-Step legt seine
+            Anforderung zurueck, statt sie in einem pcall zu verlieren.
+
+    Wegpunktlisten sagen jetzt an, wie weit das Laden fortgeschritten ist
+        Einfach: Die Meldung "Wegpunkte werden noch geladen" war fuer ein, zwei Sekunden Wartezeit
+            gedacht. Wenn der Client Sku ausbremst (siehe voriger Eintrag), kann sie aber zehn
+            Sekunden und laenger stehen bleiben, und dann ist sie von einem Haenger nicht mehr zu
+            unterscheiden. Sie nennt jetzt einen Prozentwert, also zum Beispiel "Wegpunkte werden
+            noch geladen, 47%". Die Zahl bewegt sich von Anfang an: Die ersten Schritte sind die
+            Datenbankteile, auf die der Aufbau ueberhaupt erst wartet (0, 20, 40 Prozent), danach
+            zaehlt der Aufbau selbst bis 99 hoch. Jeder Tastendruck auf dem Eintrag sagt den
+            aktuellen Stand an, und sobald alles da ist, wird wie bisher automatisch der erste
+            echte Wegpunkt angesagt.
+        Technisch: Der Massstab ist die Arbeitszeit eines VOLLSTAENDIGEN Aufbaus, die jeder
+            erfolgreiche Lauf in den globalen SkuNav-Einstellungen hinterlegt (wpcTotalWorkMs).
+            Gemessen wird Arbeit, nicht Wanduhrzeit: Die Arbeit ist stabil, die Wanduhrzeit
+            schwankt jetzt mit der Budget-Drosselung. Damit stimmt der Prozentwert auf jedem
+            Rechner; nur der allererste Aufbau nach einer Neuinstallation nutzt den Vorgabewert.
+            Kosten pro Bild: ein Ganzzahlvergleich - nur ein GEAENDERTER Prozentwert baut den Text
+            neu, und das auch nur fuer einen Eintrag, auf dem der Fokus gerade steht. Der Eintrag
+            traegt dafuer eine Markierung, weil sein Name kein fester Text mehr ist: Die beiden
+            Stellen, die ihn bisher am Namen erkannten - die Nicht-auswaehlbar-Sperre und die
+            automatische Aktualisierung am Ende des Aufbaus - pruefen jetzt die Markierung.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13

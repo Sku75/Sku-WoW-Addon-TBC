@@ -249,6 +249,51 @@ Changes in Sku v43.0
             realm join; two-button dialogs are read and answered. Where the widgets are absent
             (Cata, Retail) the entries say so and do nothing.
 
+    Hardcore realms: Sku now finishes loading its waypoint data instead of stopping silently
+        Simple: On hardcore realms the game client allows addons noticeably less computing time per
+            frame than on normal realms. Sku builds its waypoint and route data right after login,
+            and that build ran straight into the limit there: the client simply aborted whatever
+            was running, and Sku never noticed. The result was that every waypoint list answered
+            "waypoints still loading" for the entire session - no error, no speech, no log entry -
+            and reloading the interface did not help either. Sku now notices when the client
+            throttles it, makes its work packets smaller and carries on instead of stopping; if a
+            packet is killed anyway, the build restarts by itself. The price: on such realms it
+            takes a few seconds longer after login until routes and waypoints are fully there.
+            Everything else in Sku is usable immediately, and the waypoint lists now tell you how
+            far the build has got (next entry). Normal realms are unchanged.
+        Technically: the client reports the abort as the LUA_WARNING "insecure scripts exceeded
+            execution limit for addon Sku", or as "script ran too long" raised inside the running
+            coroutine slice. On the hardcore realm this happened at every single login (52/25/25
+            warnings per login) and in eight recorded normal Era and Anniversary sessions not once
+            - for identical work (1936 ms on Era against 1955 ms on hardcore for the same build).
+            Sku:BuildFrameBudgetMs is adaptive now: every such warning halves the per-frame ceiling
+            (150 -> 75 -> 37.5 -> 20 ms), which benefits the whole post-login build sequence, not
+            just the waypoint cache. The cache build is no longer paced by a self-re-arming
+            C_Timer chain either - that re-arming was exactly what the abort swallowed, leaving the
+            coroutine suspended forever with nobody to resume it - but by an OnUpdate driver the
+            client itself calls every frame, so a killed packet costs one frame instead of the
+            whole build. If the coroutine dies regardless, the build restarts up to three times,
+            and the build step puts its request back instead of losing it inside a pcall.
+
+    Waypoint lists now tell you how far the loading has got
+        Simple: the message "waypoints still loading" was written for a wait of a second or two.
+            When the client throttles Sku (see the previous entry) it can stand for ten seconds and
+            more, and at that point it is indistinguishable from a hang. It now carries a
+            percentage, for example "waypoints still loading, 47%". The number moves from the
+            start: the first steps are the database parts the build has to wait for at all (0, 20,
+            40 percent), after which the build itself counts up to 99. Every keypress on the entry
+            announces the current value, and once everything is there the first real waypoint is
+            announced automatically as before.
+        Technically: the yardstick is the work time of a COMPLETE build, which every successful run
+            stores in the global SkuNav settings (wpcTotalWorkMs). What is measured is work, not
+            wall clock: the work is stable, the wall clock now varies with the budget backoff. That
+            keeps the percentage honest on any machine; only the very first build after a fresh
+            install uses the default. Cost per frame: one integer comparison - only a CHANGED
+            percentage rebuilds the string, and only for an entry the focus is actually on. The
+            entry carries a tag for that, because its name is no longer a fixed string: the two
+            places that used to recognise it by name - the not-selectable gate and the automatic
+            refresh at the end of the build - test the tag now.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13

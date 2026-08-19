@@ -285,6 +285,60 @@ Changements dans Sku v43.0
             fenêtres à deux boutons sont lues et traitées. Là où les widgets manquent (Cata,
             Retail), les entrées le disent et ne font rien.
 
+    Royaumes hardcore : Sku termine désormais le chargement de ses points de passage au lieu de s'arrêter en silence
+        Simple : Sur les royaumes hardcore, le client de jeu accorde aux addons nettement moins de
+            temps de calcul par image que sur les royaumes normaux. Sku construit ses données de
+            points de passage et d'itinéraires juste après la connexion, et c'est précisément cette
+            construction qui se heurtait à cette limite : le client interrompait purement et
+            simplement le travail en cours, et Sku ne s'en apercevait pas. Résultat : toutes les
+            listes de points de passage répondaient « points de passage en cours de chargement »
+            pendant toute la session - sans erreur, sans annonce vocale, sans entrée de journal -
+            et recharger l'interface n'y changeait rien. Sku détecte maintenant que le client le
+            freine, réduit la taille de ses lots de travail et continue au lieu de s'arrêter ; si
+            un lot est malgré tout interrompu, la construction repart d'elle-même. Le prix à
+            payer : sur ces royaumes, il faut quelques secondes de plus après la connexion avant
+            que les itinéraires et les points de passage soient complets. Tout le reste de Sku est
+            utilisable immédiatement, et les listes indiquent maintenant l'avancement (entrée
+            suivante). Les royaumes normaux ne changent pas.
+        Technique : Le client signale l'interruption par le LUA_WARNING « insecure scripts exceeded
+            execution limit for addon Sku », ou par « script ran too long » levé à l'intérieur de la
+            coroutine en cours. Sur le royaume hardcore, cela s'est produit à chaque connexion
+            (52/25/25 avertissements par connexion) et pas une seule fois dans les huit sessions
+            enregistrées sur des royaumes Era et Anniversary normaux - pour un travail identique
+            (1936 ms sur Era contre 1955 ms en hardcore pour la même construction).
+            Sku:BuildFrameBudgetMs est désormais adaptatif : chaque avertissement de ce type divise
+            par deux le plafond par image (150 -> 75 -> 37,5 -> 20 ms), ce dont profite toute la
+            séquence de construction d'après-connexion, pas seulement le cache des points de
+            passage. La construction n'est plus rythmée par une chaîne C_Timer qui se réarmait
+            elle-même - c'est justement ce réarmement que l'interruption avalait, laissant la
+            coroutine suspendue pour toujours sans personne pour la reprendre - mais par un pilote
+            OnUpdate que le client appelle lui-même à chaque image : un lot interrompu coûte une
+            image au lieu de toute la construction. Si la coroutine meurt malgré tout, la
+            construction est relancée jusqu'à trois fois, et l'étape de construction remet sa
+            demande en place au lieu de la perdre dans un pcall.
+
+    Les listes de points de passage indiquent désormais l'avancement du chargement
+        Simple : Le message « points de passage en cours de chargement » avait été écrit pour une
+            attente d'une ou deux secondes. Quand le client freine Sku (voir l'entrée précédente),
+            il peut rester affiché dix secondes ou plus, et il devient alors impossible à
+            distinguer d'un blocage. Il indique maintenant un pourcentage, par exemple « points de
+            passage en cours de chargement, 47 % ». Le nombre bouge dès le début : les premières
+            étapes sont les parties de la base de données que la construction doit attendre (0, 20,
+            40 pour cent), puis la construction elle-même compte jusqu'à 99. Chaque appui de touche
+            sur l'entrée annonce la valeur actuelle, et dès que tout est là, le premier vrai point
+            de passage est annoncé automatiquement comme avant.
+        Technique : L'étalon est le temps de travail d'une construction COMPLÈTE, que chaque
+            exécution réussie enregistre dans les réglages globaux de SkuNav (wpcTotalWorkMs). Ce
+            qui est mesuré, c'est le travail, pas le temps réel : le travail est stable, le temps
+            réel varie maintenant avec la réduction du budget. Le pourcentage reste donc honnête
+            sur n'importe quelle machine ; seule la toute première construction après une nouvelle
+            installation utilise la valeur par défaut. Coût par image : une comparaison d'entiers -
+            seul un pourcentage MODIFIÉ reconstruit le texte, et uniquement pour une entrée sur
+            laquelle se trouve le focus. L'entrée porte pour cela un marqueur, car son nom n'est
+            plus un texte fixe : les deux endroits qui la reconnaissaient au nom - le verrou
+            « non sélectionnable » et le rafraîchissement automatique à la fin de la construction -
+            testent maintenant le marqueur.
+
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13
