@@ -6,6 +6,36 @@
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.0
 
+    Overview
+
+        New
+            Shift-F9 to Shift-F12 have their own keybinding entries now, and quick-access slots 1 to 4 are free again.
+            The taxi flight announcements can be switched off, and they never name your take-off or arrival point as a landing option.
+            New aura condition "Lists own casts only" filters the lists to your own effects, and "Source/target (L)" are now "Event source/target (L)".
+            New command /skucheck verifies fixed rules against the live game state.
+            The installer collects every log file for a bug report at one button press.
+            The login screen is usable with the login tool now.
+            Waypoint lists announce how far the loading has got.
+
+        Changes
+            Aura expiry warnings arrive on time instead of at the next combat event.
+            Aura evaluation per combat event is considerably cheaper.
+            Cancelling navigation is one key again instead of two.
+            The login tool's log survives a restart of the tool.
+
+        Bugfixes
+            French clients: all aura sounds and pre-recorded speech clips were silent (fix by Naxedim).
+            French clients: the range check announced nothing and its menu threw an error (fix by Naxedim).
+            French clients: two follow-ups from the same report fixed.
+            Nine translated labels meant something different depending on the language (fix by ZenqFR).
+            Auras: some group slots were announced as a beep instead of a word.
+            Auras: an aura set to "once" could fire several times in a row in dense combat.
+            Menu: on large maps the Shift-F9 waypoint list only opened on the second try.
+            The keys in the keyring were announced as "Empty".
+            On hardcore realms Sku now finishes building its waypoint data instead of stopping silently.
+            A route would not start if its list finished loading while you were in it.
+            The login tool mistook the login screen for character selection.
+
     With thanks to Naxedim and ZenqFR
         The next four fixes are the first direct code contributions to the now-public Sku
         repository. Naxedim found, diagnosed and fixed the two bugs that had muted large parts of
@@ -360,6 +390,116 @@ Changes in Sku v43.0
             Enter that lands on a leaf with no selectTarget below a select level, and
             /skucheck menu rebuilds a throwaway select level to verify the contract and reports
             that session tally.
+
+    Auras: group slots were announced as a beep instead of a word
+        Simple: When an aura announces the unit that triggered the event, some group slots
+            produced only a short beep instead of a word - the sound Sku plays when it has no
+            recording for a word. Slot 3 and every "target of" slot were affected. These are now
+            split into words the voice pack reliably ships: "party 3", "target party 2". All
+            other units keep saying their translated name.
+        Technical: sourceUnitId and destUnitId handed the raw unit token to the audio voice as
+            ONE word. The packs ship party0/1/2/4 but no party3 and no partyNtarget file at all,
+            so the rest degraded to the missingAudio beep (party3 alone counted 129).
+            tUnitIdToSpokenName in SkuAuras/data.lua splits the party tokens; other tokens fall
+            back to their localised friendlyName from the value lists and only then to the raw
+            token. Fixed in passing: notifyChat printed the table reference instead of the unit.
+
+    Auras: an aura set to "once" could fire several times in a row in dense combat
+        Simple: An aura meant to report only ONCE per application - typically "Shadow Word: Pain
+            expires in one second" - could produce four sounds in one second during a boss
+            fight. It happened when several players had the same effect on the target, or when
+            the remaining duration could not be read at all in one pass: Sku took that as "the
+            effect is fresh again" and released the once-lock. With no reading, the lock now
+            stays closed. A genuine refresh or a new application still releases it immediately.
+        Technical: The reset formula of the count condition re-armed used on every pass where the
+            other conditions held and the smaller-duration condition read false - and a pass with
+            NO reading (name not in the list, no exp entry, or the exp map answering with another
+            caster's same-name aura) satisfies exactly that. tSmallerDurationNoRead in
+            SkuAuras/Core.lua blocks the reset when there was no reading; the new log line
+            "aura gate re-armed" records every release. Observed as four firings within 987 ms
+            (DURATION_DEADLINE, then UNIT_POWER twice and SPELL_PERIODIC_DAMAGE).
+
+    Auras: new condition "Lists own casts only", and two conditions have clearer names
+        Simple: The aura editor has a new condition, "Lists own casts only". Set to true, this
+            aura's buff and debuff lists - and their duration conditions - only see effects YOU
+            cast. So "my Shadow Word: Pain is expiring" no longer reports another priest's on the
+            same target. Weapon enchants count as your own, and without the condition everything
+            behaves as before. The conditions "Source (L)" and "target (L)" are now called
+            "Event source (L)" and "Event target (L)": they filter the TRIGGERING EVENT, not your
+            current target - a confusion that repeatedly produced auras which never fired.
+        Technical: listsOwnOnly is a binary modifier (the condition always evaluates true, the
+            VALUE carries the meaning). getAuraList captures UnitAura's 7th return (the caster)
+            in the same scan and fills parallel own/ownExp sets; cache slots, fallback scratches
+            and the verify buffers were all extended. EvaluateAllAuras swaps the sets into
+            tEvaluateData per flagged aura and restores all four lists afterwards;
+            getFixedDuration reads ownExp. Known edge: if your own aura drops while another
+            caster's same-name aura stays on the unit, no name set changes - out of combat-log
+            range the wake-up cannot see it. The renames are value-only changes in
+            deDE/enUS/frFR, keys stay stable; the tooltips now explain the event plane versus the
+            list conditions.
+
+    Menu: on large maps the Shift-F9 waypoint list only opened on the second try
+        Simple: On maps with very many waypoints Shift-F9 stayed on the top entry instead of
+            opening the list; one more arrow press then opened it. The reason was work that ran
+            three times instead of once: the jump built the same list - about 1900 entries on
+            some maps - three times in a single frame, and the game client aborted that with its
+            script time limit. The abort is silent, which is why nothing appeared to happen. On
+            top of that, every keypress on an entry rebuilt its child list and duplicated the
+            entries. Both are gone, the list is built once. Shift-F10 was never affected because
+            that list is capped at ten destinations.
+        Technical: SlashFunc built the children three times: before the name match, in the loop's
+            OnSelect, and again in the tail. The match is now decided BEFORE the build, and the
+            tail skips its re-select when the loop already selected that same node
+            (actionOnEnter nodes excluded - there the two calls genuinely differ).
+            VocalizeCurrentMenuName only builds when there is nothing to count - it needs the
+            children solely for the ";plus" marker, and most builders APPEND through
+            InjectMenuItems rather than replace (measured 1859 -> 3718 -> 5577 entries while
+            arrowing). Follow-up from testing: window levels under "Local" (Dialog, Merchant,
+            Quest, Flight master) build their children lazily and carry no dynamic flag; with the
+            pre-build skipped they looked like childless leaves, and the leaf branch calls
+            CloseMenu - but closing clicks the close button of every window in
+            interactFramesList, so the jump to a flight master closed its window again at once.
+            The build therefore still runs when the list is empty, unless the node is dynamic.
+            Two tripwires in /skucheck menu count both cases.
+
+    Taxi flight: the landing announcements can be switched off - and they no longer name the flight point you took off from or the one you are flying to
+        Simple: During a taxi flight Sku says "next flight point X" and, about 800 yards out,
+            "early landing available at X", so that you can get off early with the keybind.
+            For anybody who flies a lot that is chatter, so there is a switch now: Settings >
+            General > "Announce flight points you can land at". It is on by default and it
+            silences the SPEECH only - the flight is still tracked, and the early-landing key
+            works exactly as before and still confirms out loud what it did, because that is
+            the answer to a key you just pressed. Second, several reports said Sku named the
+            flight point the flight had STARTED at, or the one it was heading to, as a place
+            you could land early. Neither is an early landing: one is where you already were,
+            the other is simply arriving. Both are impossible now. Third, once you have
+            actually requested the early landing, Sku stops commenting on the route. It used
+            to name the stop AFTER the one you were being set down at - ten seconds before
+            touching down at Ratchet it would say "next flight point Astranaar", which reads
+            as if the flight were carrying on.
+        Technical: The announcement had one blind spot, the fallback to the nearest flight
+            point. The route is captured at takeoff from the flight map (the only moment the
+            route interface answers at all), and every announcement hangs off that route. If it
+            is missing, the code falls back to "the nearest usable flight point" - and that
+            knows nothing about the flight: shortly after takeoff the takeoff point is the
+            closest one for a while, and shortly before landing the destination is. The one
+            everyday way to lose the route is a /reload in mid-flight: the capture hook fired
+            before the reload and cannot fire a second time. That is exactly why this was
+            reproducible for the people affected and never visible here. Three changes: (1) the
+            captured route survives a /reload - it is written to the character's saved
+            variables together with the current leg and read back while still airborne, so a
+            reload no longer drops you into the fallback at all; (2) the flight's own start
+            point is now read from the route capture as well (the source slot of the first
+            hop), so start and destination are both known by name and neither can be announced
+            in any mode; (3) in fallback mode a flight point has to be getting CLOSER before it
+            is offered as a landing option - a point you are flying away from is behind you.
+            (4) a granted request now ends the route as far as the cursor is concerned: the
+            requested stop is where the flight ends, so passing it is arriving, not a hop.
+            The escape from that is geometric rather than a timer - still airborne a thousand
+            yards beyond it means the server ignored the request, and the route resumes on the
+            spot. New tripwire "/skucheck taxi" pins the rule: an early landing is never the flight's
+            own start or end point. The switch is stored per profile as
+            taxiAnnounceLandingPoints.
 
 
 -------------------------------------------------------------------------------------------------------

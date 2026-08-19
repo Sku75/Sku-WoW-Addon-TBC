@@ -6,6 +6,36 @@
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.0
 
+    Ueberblick
+
+        Neu
+            Shift-F9 bis Shift-F12 haben jetzt eigene Eintraege in der Tastenbelegung, die Schnellzugriffe 1 bis 4 sind wieder frei.
+            Die Ansagen im Taxiflug lassen sich abschalten, und sie nennen nie mehr den Start- oder Zielpunkt als Landemoeglichkeit.
+            Neue Aura-Bedingung "Listen nur selbst gewirkte" filtert die Listen auf eigene Effekte, und "Quelle/ziel (L)" heissen jetzt "Ereignis Quelle/Ziel (L)".
+            Neuer Befehl /skucheck prueft feste Regeln gegen den laufenden Spielzustand.
+            Der Installer sammelt auf Knopfdruck alle Logdateien fuer eine Fehlermeldung.
+            Der Anmeldebildschirm ist mit dem Anmelde-Tool jetzt bedienbar.
+            Wegpunktlisten sagen an, wie weit das Laden fortgeschritten ist.
+
+        Aenderungen
+            Auren-Ablaufwarnungen kommen puenktlich statt erst beim naechsten Kampfereignis.
+            Die Aurenauswertung pro Kampfereignis ist deutlich billiger geworden.
+            Navigation abbrechen liegt nur noch auf einer Taste.
+            Das Protokoll des Anmelde-Tools ueberlebt einen Neustart des Tools.
+
+        Fehlerbehebungen
+            Franzoesische Clients: alle Aura-Sounds und aufgenommenen Sprachclips waren stumm (Korrektur von Naxedim).
+            Franzoesische Clients: die Entfernungspruefung sagte nichts an und ihr Menue warf einen Fehler (Korrektur von Naxedim).
+            Franzoesische Clients: zwei Nachzuegler aus demselben Bericht behoben.
+            Neun Uebersetzungstexte bedeuteten je nach Sprache etwas anderes (Korrektur von ZenqFR).
+            Auren: manche Gruppenplaetze wurden als Piepser statt als Wort angesagt.
+            Auren: eine Aura mit "einmal" konnte im dichten Kampf mehrfach hintereinander feuern.
+            Menue: die Wegpunktliste auf Shift-F9 oeffnete sich auf grossen Karten erst beim zweiten Versuch.
+            Die Schluessel im Schluesselbund wurden als "Leer" angesagt.
+            Auf Hardcore-Realms baut Sku seine Wegpunktdaten jetzt fertig statt still stehenzubleiben.
+            Eine Route liess sich nicht starten, wenn ihre Liste waehrend des Ladens fertig wurde.
+            Das Anmelde-Tool hielt den Anmeldebildschirm faelschlich fuer die Charakterauswahl.
+
     Mit Dank an Naxedim und ZenqFR
         Die naechsten vier Korrekturen sind die ersten direkten Code-Beitraege zum inzwischen
         oeffentlichen Sku-Repository. Naxedim hat die beiden Fehler gefunden, analysiert und
@@ -401,6 +431,127 @@ Aenderungen in Sku v43.0
             OnPostSelect protokolliert und zaehlt jedes Enter, das auf einem Blatt ohne
             selectTarget unterhalb einer Auswahl-Ebene landet, und /skucheck menu baut eine
             Wegwerf-Auswahl-Ebene neu auf, prueft die Zusicherung und meldet diese Sitzungszaehlung.
+
+    Auren: Gruppenplaetze wurden als Piepser statt als Wort angesagt
+        Einfach: Sagt eine Aura die Einheit an, die das Ereignis ausgeloest hat, kam bei manchen
+            Gruppenplaetzen nur ein kurzer Piepser statt eines Wortes - der Ton, den Sku spielt,
+            wenn ihm die Aufnahme fuer ein Wort fehlt. Betroffen waren Platz 3 und jeder
+            "Ziel von"-Platz. Diese Angaben werden jetzt in Woerter zerlegt, die das Sprachpaket
+            sicher enthaelt: "party 3", "ziel party 2". Alle anderen Einheiten sagen weiterhin
+            ihren uebersetzten Namen.
+        Technisch: sourceUnitId und destUnitId reichten das rohe Unit-Token als EIN Wort an die
+            Audioausgabe. Die Pakete liefern party0/1/2/4, aber kein party3 und keine einzige
+            partyNtarget-Datei, der Rest fiel also auf den missingAudio-Piepser zurueck (allein
+            party3 zaehlte 129). tUnitIdToSpokenName in SkuAuras/data.lua splittet die
+            Party-Tokens; andere Tokens fallen auf ihren uebersetzten friendlyName aus den
+            Wertelisten und erst dann auf das rohe Token zurueck. Nebenbei behoben: notifyChat
+            druckte die Tabellenreferenz statt der Einheit.
+
+    Auren: eine Aura mit "einmal" konnte im dichten Kampf mehrfach hintereinander feuern
+        Einfach: Eine Aura, die pro Anwendung nur EINMAL melden soll - typisch "Schattenwort:
+            Schmerz laeuft in einer Sekunde ab" -, konnte im Bosskampf vier Toene in einer
+            Sekunde abgeben. Das passierte, wenn mehrere Spieler denselben Effekt auf dem Ziel
+            hatten oder die Restdauer in einem Durchlauf gar nicht ablesbar war: Sku wertete das
+            faelschlich als "der Effekt ist wieder frisch" und hob die Einmal-Sperre auf. Fehlt
+            die Ablesung, bleibt die Sperre jetzt zu. Eine echte Auffrischung oder eine neue
+            Anwendung hebt sie weiterhin sofort auf.
+        Technisch: Die Reset-Formel der Zaehl-Bedingung armierte used bei jedem Durchlauf neu, in
+            dem die uebrigen Bedingungen hielten und die kleiner-Dauerbedingung false las - und
+            ein Durchlauf OHNE Ablesung (Name nicht in der Liste, kein exp-Eintrag, oder die
+            exp-Karte antwortet mit der gleichnamigen Aura eines anderen Wirkers) erfuellt genau
+            das. tSmallerDurationNoRead in SkuAuras/Core.lua verhindert das Zuruecksetzen ohne
+            Ablesung; der neue Logeintrag "aura gate re-armed" haelt jedes Entsperren fest.
+            Beobachtet wurden vier Feuerungen in 987 ms (DURATION_DEADLINE, dann zweimal
+            UNIT_POWER und SPELL_PERIODIC_DAMAGE).
+
+    Auren: neue Bedingung "Listen nur selbst gewirkte", und zwei Bedingungen heissen jetzt klarer
+        Einfach: Neu im Aura-Editor ist die Bedingung "Listen nur selbst gewirkte". Steht sie auf
+            wahr, sehen die Buff- und Debuff-Listen dieser Aura - und deren Dauer-Bedingungen -
+            nur noch Effekte, die DU gewirkt hast. Damit meldet "mein Schattenwort: Schmerz
+            laeuft ab" nicht mehr das eines anderen Priesters auf demselben Ziel.
+            Waffenverzauberungen zaehlen als selbst gewirkt, und ohne die Bedingung bleibt alles
+            wie bisher. Ausserdem heissen die Bedingungen "Quelle (L)" und "ziel (L)" jetzt
+            "Ereignis Quelle (L)" und "Ereignis Ziel (L)": Sie filtern das ausloesende EREIGNIS,
+            nicht dein aktuelles Ziel - eine Verwechslung, die immer wieder zu Auren gefuehrt
+            hat, die nie feuerten.
+        Technisch: listsOwnOnly ist ein binaerer Modifikator (die Bedingung wertet immer wahr,
+            die Bedeutung traegt der Wert). getAuraList faengt im selben Scan den 7.
+            Rueckgabewert von UnitAura ab (den Wirker) und fuellt parallele own- und
+            ownExp-Mengen; Cache-Slots, Rueckfallpuffer und die Verify-Puffer sind mitgezogen.
+            EvaluateAllAuras tauscht die Mengen pro markierter Aura in tEvaluateData und stellt
+            danach alle vier Listen wieder her, getFixedDuration liest ownExp. Bekannte Grenze:
+            Faellt deine eigene Aura weg, waehrend die gleichnamige eines anderen Wirkers auf der
+            Einheit bleibt, aendert sich keine Namensmenge - ausserhalb der Kampflog-Reichweite
+            fehlt dann der Weckruf. Die Umbenennungen sind reine Werteaenderungen in
+            deDE/enUS/frFR, die Schluessel bleiben stabil; die Tooltips erklaeren jetzt
+            Ereignisebene gegen Listenbedingung.
+
+    Menue: die Wegpunktliste auf Shift-F9 oeffnete sich auf grossen Karten erst beim zweiten Versuch
+        Einfach: Auf Karten mit sehr vielen Wegpunkten blieb Shift-F9 auf dem obersten Eintrag
+            stehen, statt die Liste zu oeffnen; ein weiterer Pfeildruck oeffnete sie dann doch.
+            Grund war Arbeit, die dreimal statt einmal lief: Der Sprung baute dieselbe Liste - auf
+            manchen Karten rund 1900 Eintraege - drei Mal in einem einzigen Frame, und der
+            Spielclient brach das mit seiner Skript-Zeitgrenze ab. Der Abbruch passiert
+            lautlos, deshalb schien einfach nichts zu geschehen. Dazu kam, dass jeder
+            Tastendruck auf einem Eintrag dessen Unterliste erneut aufbaute und die Eintraege
+            dabei verdoppelte. Beides ist weg, die Liste wird einmal gebaut. Shift-F10 war nie
+            betroffen, weil diese Liste auf zehn Ziele begrenzt ist.
+        Technisch: SlashFunc baute die Kinder dreimal: vor dem Namensvergleich, im OnSelect der
+            Schleife und noch einmal im Nachlauf. Der Vergleich entscheidet jetzt VOR dem Bau,
+            und der Nachlauf ueberspringt seine Wiederauswahl, wenn die Schleife denselben Knoten
+            bereits gewaehlt hat (actionOnEnter-Knoten ausgenommen, dort unterscheiden sich die
+            beiden Aufrufe wirklich). VocalizeCurrentMenuName baut nur noch, wenn es nichts zu
+            zaehlen gibt - es braucht die Kinder allein fuer die ";plus"-Markierung, und die
+            meisten Builder haengen ueber InjectMenuItems an, statt zu ersetzen (gemessen
+            1859 -> 3718 -> 5577 Eintraege beim Durchpfeilen). Nachtrag aus dem Test:
+            Fenster-Ebenen unter "Lokal" (Dialog, Haendler, Quest, Flugmeister) bauen ihre Kinder
+            lazy und tragen kein dynamic-Flag; mit uebersprungenem Vorbau sahen sie aus wie
+            kinderlose Blaetter, und der Blattzweig ruft CloseMenu - Schliessen klickt aber jeden
+            Fensterknopf aus interactFramesList, der Sprung zum Flugmeister schloss dessen
+            Fenster also sofort wieder. Gebaut wird deshalb weiter, wenn die Liste leer ist, es
+            sei denn der Knoten ist dynamic. Zwei Stolperdraehte in /skucheck menu zaehlen beide
+            Faelle mit.
+
+    Taxiflug: Die Ansagen lassen sich abschalten - und sie nennen nicht mehr den Startpunkt oder das Ziel des Fluges
+        Einfach: Waehrend eines Taxiflugs sagt Sku "Naechster Flugpunkt X" und rund 800 Meter
+            vorher "Vorzeitige Landung moeglich bei X", damit man mit der Tastenbelegung frueher
+            aussteigen kann. Wer viel fliegt, empfindet das als Geschwaetz, deshalb gibt es
+            jetzt einen Schalter: Einstellungen > Allgemein > "Flugpunkte zum Landen ansagen".
+            Er steht auf Ja und schaltet ausschliesslich die SPRACHAUSGABE ab - der Flug wird
+            weiter verfolgt, und die Taste fuer die vorzeitige Landung funktioniert unveraendert
+            und bestaetigt weiterhin laut, was sie getan hat, denn das ist die Antwort auf einen
+            gerade gedrueckten Tastendruck. Zweitens gab es Meldungen, Sku habe den Flugpunkt,
+            an dem der Flug BEGONNEN hat, oder den Zielflugpunkt als Ort fuer eine vorzeitige
+            Landung genannt. Beides ist keine vorzeitige Landung: das eine ist der Ort, an dem
+            man ohnehin schon war, das andere ist schlicht das Ankommen. Beides ist jetzt
+            ausgeschlossen. Drittens haelt Sku den Mund, sobald die vorzeitige Landung
+            wirklich angefordert wurde. Bisher nannte es den Flugpunkt NACH dem, an dem man
+            abgesetzt wurde - zehn Sekunden vor der Landung in Ratschet kam noch "Naechster
+            Flugpunkt Astranaar", was klingt, als ginge der Flug weiter.
+        Technisch: Die Ansage hatte einen blinden Fleck, den Rueckfall auf den naechstgelegenen
+            Flugpunkt. Die Route wird beim Start von der Flugkarte erfasst (der einzige Moment,
+            in dem die Routen-Schnittstelle ueberhaupt antwortet), und alle Ansagen haengen an
+            dieser Route. Fehlt sie, faellt der Code auf "der naechstgelegene benutzbare
+            Flugpunkt" zurueck - und der weiss nichts vom Flug: Kurz nach dem Start ist das eine
+            Weile lang genau der Startpunkt, kurz vor der Landung der Zielpunkt. Die eine
+            alltaegliche Art, die Route zu verlieren, ist ein /reload mitten im Flug: Der
+            Erfassungshaken hat vor dem Neuladen ausgeloest und kann kein zweites Mal ausloesen.
+            Genau deshalb war das fuer die Betroffenen reproduzierbar und hier nie zu sehen.
+            Drei Aenderungen: (1) Die erfasste Route ueberlebt ein /reload - sie wird zusammen
+            mit der aktuellen Teilstrecke in die charakterbezogenen Einstellungen geschrieben
+            und im Flug wieder eingelesen, ein Neuladen fuehrt also gar nicht mehr in den
+            Rueckfall; (2) der Startpunkt des Fluges wird jetzt ebenfalls aus der
+            Routenerfassung gelesen (der Quellplatz der ersten Teilstrecke), damit sind Start
+            und Ziel namentlich bekannt und koennen in keinem Modus mehr angesagt werden; (3) im
+            Rueckfallbetrieb muss ein Flugpunkt NAEHER kommen, bevor er als Landemoeglichkeit
+            angeboten wird - ein Punkt, von dem man wegfliegt, liegt hinter einem; (4) eine bewilligte Anforderung beendet die Route
+            auch fuer den Streckenzeiger: Der angeforderte Halt ist das Flugende, ihn zu
+            passieren ist Ankommen und keine Zwischenstation. Der Ausweg dafuer ist Geometrie
+            statt Zeitschaltung - wer tausend Meter dahinter immer noch fliegt, dessen
+            Anforderung hat der Server ignoriert, und die Route lebt sofort wieder auf. Die neue
+            Pruefung "/skucheck taxi" haelt die Regel fest: Eine vorzeitige Landung ist nie der
+            Start- oder Zielpunkt des eigenen Fluges. Der Schalter liegt pro Profil unter
+            taxiAnnounceLandingPoints.
 
 
 -------------------------------------------------------------------------------------------------------

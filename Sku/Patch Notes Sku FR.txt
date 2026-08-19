@@ -9,6 +9,36 @@ versions antérieures, voir « Patch Notes Sku EN.txt » ou « Patch Notes Sku D
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v43.0
 
+    Aperçu
+
+        Nouveautés
+            Shift-F9 à Shift-F12 ont désormais leurs propres entrées de raccourcis, et les accès rapides 1 à 4 sont de nouveau libres.
+            Les annonces de vol en taxi peuvent être désactivées, et elles ne nomment plus jamais le point de départ ni celui d'arrivée comme atterrissage possible.
+            Nouvelle condition d'aura « Listes : vos sorts uniquement » qui filtre les listes sur vos propres effets, et « Source/cible (L) » deviennent « Source/Cible de l'événement (L) ».
+            Nouvelle commande /skucheck qui vérifie des règles fixes sur l'état réel du jeu.
+            L'installateur collecte tous les journaux pour un rapport de bogue en un seul bouton.
+            L'écran de connexion est désormais utilisable avec l'outil de connexion.
+            Les listes de points de passage annoncent l'avancement du chargement.
+
+        Changements
+            Les avertissements d'expiration d'aura arrivent à l'heure au lieu du prochain événement de combat.
+            L'évaluation des auras par événement de combat est nettement moins coûteuse.
+            Annuler la navigation ne passe plus que par une seule touche.
+            Le journal de l'outil de connexion survit à un redémarrage de l'outil.
+
+        Corrections
+            Clients français : tous les sons d'auras et les clips vocaux enregistrés étaient muets (correctif de Naxedim).
+            Clients français : la vérification de distance n'annonçait rien et son menu levait une erreur (correctif de Naxedim).
+            Clients français : deux suites du même rapport corrigées.
+            Neuf libellés traduits signifiaient autre chose selon la langue (correctif de ZenqFR).
+            Auras : certaines places de groupe étaient annoncées par un bip au lieu d'un mot.
+            Auras : une aura réglée sur « une fois » pouvait se déclencher plusieurs fois de suite en combat dense.
+            Menu : sur les grandes cartes, la liste de points de passage de Shift-F9 ne s'ouvrait qu'au deuxième essai.
+            Les clés du porte-clés étaient annoncées comme « Vide ».
+            Sur les royaumes hardcore, Sku termine désormais le chargement de ses points de passage au lieu de s'arrêter en silence.
+            Un itinéraire ne démarrait pas si sa liste finissait de charger pendant que vous y étiez.
+            L'outil de connexion prenait l'écran de connexion pour la sélection de personnage.
+
     Avec nos remerciements à Naxedim et ZenqFR
         Les quatre correctifs suivants sont les premières contributions de code directes au dépôt
         Sku désormais public. Naxedim a trouvé, analysé et corrigé les deux bogues qui rendaient
@@ -416,6 +446,129 @@ Changements dans Sku v43.0
             compte chaque Entrée qui atterrit sur une feuille sans selectTarget sous un niveau de
             sélection, et /skucheck menu reconstruit un niveau de sélection jetable pour vérifier le
             contrat et rapporte ce décompte de session.
+
+    Auras : les places de groupe étaient annoncées par un bip au lieu d'un mot
+        Simple : Quand une aura annonce l'unité qui a déclenché l'événement, certaines places de
+            groupe ne produisaient qu'un bref bip au lieu d'un mot - le son que Sku joue quand
+            l'enregistrement d'un mot lui manque. La place 3 et toutes les places « cible de »
+            étaient concernées. Ces indications sont désormais découpées en mots que le pack
+            vocal fournit à coup sûr : « party 3 », « cible party 2 ». Toutes les autres unités
+            continuent de dire leur nom traduit.
+        Technique : sourceUnitId et destUnitId passaient le jeton d'unité brut à la sortie audio
+            comme UN seul mot. Les packs livrent party0/1/2/4, mais pas party3 ni le moindre
+            fichier partyNtarget ; le reste retombait donc sur le bip missingAudio (party3 à lui
+            seul en comptait 129). tUnitIdToSpokenName dans SkuAuras/data.lua découpe les jetons
+            party ; les autres jetons retombent sur leur friendlyName traduit issu des listes de
+            valeurs, puis seulement sur le jeton brut. Corrigé au passage : notifyChat affichait
+            la référence de table au lieu de l'unité.
+
+    Auras : une aura réglée sur « une fois » pouvait se déclencher plusieurs fois de suite en combat dense
+        Simple : Une aura censée signaler UNE seule fois par application - typiquement « Mot de
+            l'ombre : douleur expire dans une seconde » - pouvait produire quatre sons en une
+            seconde lors d'un combat de boss. Cela arrivait quand plusieurs joueurs avaient le
+            même effet sur la cible, ou quand la durée restante n'était pas lisible du tout lors
+            d'un passage : Sku l'interprétait à tort comme « l'effet est de nouveau frais » et
+            levait le verrou « une fois ». Sans lecture, le verrou reste désormais fermé. Un
+            vrai rafraîchissement ou une nouvelle application le lève toujours immédiatement.
+        Technique : La formule de réinitialisation de la condition de comptage réarmait used à
+            chaque passage où les autres conditions tenaient et où la condition de durée
+            « plus petit » lisait false - et un passage SANS lecture (nom absent de la liste, pas
+            d'entrée exp, ou la carte exp répondant avec l'aura de même nom d'un autre lanceur)
+            remplit exactement cela. tSmallerDurationNoRead dans SkuAuras/Core.lua empêche la
+            réinitialisation en l'absence de lecture ; la nouvelle ligne de journal
+            « aura gate re-armed » consigne chaque levée. Observé : quatre déclenchements en
+            987 ms (DURATION_DEADLINE, puis deux fois UNIT_POWER et SPELL_PERIODIC_DAMAGE).
+
+    Auras : nouvelle condition « Listes : vos sorts uniquement », et deux conditions plus claires
+        Simple : L'éditeur d'auras dispose d'une nouvelle condition, « Listes : vos sorts
+            uniquement ». Réglée sur vrai, les listes de buffs et de debuffs de cette aura - et
+            leurs conditions de durée - ne voient plus que les effets que VOUS avez lancés.
+            Ainsi « mon Mot de l'ombre : douleur expire » ne signale plus celui d'un autre prêtre
+            sur la même cible. Les enchantements d'arme comptent comme vôtres, et sans la
+            condition tout se comporte comme avant. Par ailleurs, les conditions « Source (L) »
+            et « cible (L) » s'appellent désormais « Source de l'événement (L) » et « Cible de
+            l'événement (L) » : elles filtrent l'ÉVÉNEMENT déclencheur, pas votre cible actuelle -
+            une confusion qui a maintes fois produit des auras qui ne se déclenchaient jamais.
+        Technique : listsOwnOnly est un modificateur binaire (la condition vaut toujours vrai,
+            c'est la VALEUR qui porte le sens). getAuraList capture le 7e retour d'UnitAura (le
+            lanceur) dans le même balayage et remplit des ensembles own/ownExp parallèles ;
+            emplacements de cache, tampons de repli et tampons de vérification ont tous été
+            étendus. EvaluateAllAuras échange les ensembles dans tEvaluateData pour chaque aura
+            marquée puis restaure les quatre listes ; getFixedDuration lit ownExp. Limite connue :
+            si votre propre aura disparaît alors que celle de même nom d'un autre lanceur reste
+            sur l'unité, aucun ensemble de noms ne change - hors de portée du journal de combat,
+            le réveil ne peut pas le voir. Les renommages ne changent que des valeurs dans
+            deDE/enUS/frFR, les clés restent stables ; les infobulles expliquent désormais le
+            plan de l'événement face aux conditions de liste.
+
+    Menu : sur les grandes cartes, la liste de points de passage de Shift-F9 ne s'ouvrait qu'au deuxième essai
+        Simple : Sur les cartes comptant beaucoup de points de passage, Shift-F9 restait sur
+            l'entrée du haut au lieu d'ouvrir la liste ; une pression de flèche supplémentaire
+            l'ouvrait ensuite. La cause : un travail effectué trois fois au lieu d'une. Le saut
+            construisait la même liste - environ 1900 entrées sur certaines cartes - trois fois
+            dans une seule image, et le client du jeu interrompait tout via sa limite de temps de
+            script. Cette interruption est silencieuse, d'où l'impression qu'il ne se passait
+            rien. S'y ajoutait que chaque appui de touche sur une entrée reconstruisait sa
+            sous-liste en doublant les entrées. Les deux sont réglés, la liste est construite une
+            fois. Shift-F10 n'a jamais été concerné, cette liste étant limitée à dix destinations.
+        Technique : SlashFunc construisait les enfants trois fois : avant la comparaison de nom,
+            dans le OnSelect de la boucle, puis encore dans la phase finale. La comparaison se
+            décide maintenant AVANT la construction, et la phase finale saute sa resélection
+            quand la boucle a déjà sélectionné ce même nœud (nœuds actionOnEnter exclus : là, les
+            deux appels diffèrent réellement). VocalizeCurrentMenuName ne construit plus que s'il
+            n'y a rien à compter - il n'a besoin des enfants que pour le marqueur « ;plus », et la
+            plupart des constructeurs AJOUTENT via InjectMenuItems au lieu de remplacer (mesuré
+            1859 -> 3718 -> 5577 entrées en parcourant). Suite du test : les niveaux de fenêtre
+            sous « Local » (Dialogue, Marchand, Quête, Maître de vol) construisent leurs enfants
+            paresseusement et ne portent pas d'indicateur dynamic ; sans pré-construction ils
+            ressemblaient à des feuilles sans enfants, et la branche feuille appelle CloseMenu -
+            or fermer clique le bouton de fermeture de chaque fenêtre d'interactFramesList, si
+            bien que le saut vers un maître de vol refermait aussitôt sa fenêtre. La construction
+            a donc lieu quand la liste est vide, sauf si le nœud est dynamic. Deux fils
+            déclencheurs dans /skucheck menu comptent les deux cas.
+
+    Vol en taxi : les annonces peuvent être désactivées - et elles ne nomment plus le point de vol de départ ni celui d'arrivée
+        Simple : Pendant un vol en taxi, Sku annonce « Prochain point de vol X » puis, environ
+            800 mètres avant, « Atterrissage anticipé possible à X », afin de pouvoir descendre
+            plus tôt avec le raccourci. Pour qui vole beaucoup, c'est du bavardage : il existe
+            désormais un réglage, Paramètres > Général > « Annoncer les points de vol où
+            atterrir ». Il est activé par défaut et ne coupe QUE la parole - le vol reste suivi,
+            et la touche d'atterrissage anticipé fonctionne exactement comme avant, avec sa
+            confirmation vocale, car celle-ci répond à une touche que l'on vient d'appuyer.
+            Ensuite, plusieurs retours signalaient que Sku nommait le point de vol où le vol
+            avait COMMENCÉ, ou celui vers lequel il se dirigeait, comme un endroit où atterrir
+            par anticipation. Ni l'un ni l'autre n'est un atterrissage anticipé : le premier est
+            l'endroit d'où l'on vient, le second n'est que l'arrivée. Les deux sont désormais
+            impossibles. Troisièmement, dès que l'atterrissage anticipé a réellement été
+            demandé, Sku cesse de commenter l'itinéraire. Il nommait auparavant le point
+            APRÈS celui où l'on était déposé - dix secondes avant de se poser à Ratchet, il
+            annonçait encore « Prochain point de vol Astranaar », comme si le vol
+            continuait.
+        Technique : L'annonce avait un angle mort, le repli sur le point de vol le plus proche.
+            L'itinéraire est capturé au décollage depuis la carte des vols (le seul moment où
+            l'interface des itinéraires répond), et toutes les annonces dépendent de lui. S'il
+            manque, le code se rabat sur « le point de vol utilisable le plus proche » - qui ne
+            sait rien du vol : peu après le décollage, c'est précisément le point de départ
+            pendant un moment, et peu avant l'atterrissage, le point d'arrivée. La seule
+            manière courante de perdre l'itinéraire est un /reload en plein vol : le crochet de
+            capture s'est déclenché avant le rechargement et ne peut pas se déclencher une
+            seconde fois. C'est exactement pour cela que le problème était reproductible chez
+            les personnes concernées et invisible ici. Trois changements : (1) l'itinéraire
+            capturé survit à un /reload - il est écrit dans les variables sauvegardées du
+            personnage avec l'étape en cours, puis relu en vol, si bien qu'un rechargement ne
+            fait plus du tout basculer dans le repli ; (2) le point de départ du vol est
+            désormais lu lui aussi dans la capture de l'itinéraire (l'emplacement source de la
+            première étape), donc départ et destination sont connus par leur nom et aucun des
+            deux ne peut plus être annoncé, dans quelque mode que ce soit ; (3) en mode repli,
+            un point de vol doit se RAPPROCHER avant d'être proposé comme possibilité
+            d'atterrissage - un point dont on s'éloigne est derrière soi ; (4) une demande acceptée met fin à l'itinéraire
+            pour le curseur aussi : le point demandé est la fin du vol, le franchir c'est
+            arriver, pas faire une étape. La porte de sortie est géométrique et non minutée -
+            encore en vol mille mètres au-delà signifie que le serveur a ignoré la demande, et
+            l'itinéraire reprend aussitôt. Le nouveau contrôle
+            « /skucheck taxi » fixe la règle : un atterrissage anticipé n'est jamais le point de
+            départ ni le point d'arrivée du vol lui-même. Le réglage est enregistré par profil
+            sous taxiAnnounceLandingPoints.
 
 
 -------------------------------------------------------------------------------------------------------
