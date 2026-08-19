@@ -5445,8 +5445,8 @@ end
 SLASH_SKUCHECK1 = "/skucheck"
 SlashCmdList["SKUCHECK"] = function(aParam)
 	local tDomain = string.match(aParam or "", "^%s*(%S*)")
-	if tDomain ~= "" and tDomain ~= "bags" and tDomain ~= "auras" and tDomain ~= "keys" and tDomain ~= "menu" then
-		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags, auras, keys, menu", "Unknown check. Available: bags, auras, keys, menu", "Vérification inconnue. Disponible : bags, auras, keys, menu"), false, true, 0.2) end)
+	if tDomain ~= "" and tDomain ~= "bags" and tDomain ~= "auras" and tDomain ~= "keys" and tDomain ~= "menu" and tDomain ~= "taxi" then
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags, auras, keys, menu, taxi", "Unknown check. Available: bags, auras, keys, menu, taxi", "Vérification inconnue. Disponible : bags, auras, keys, menu, taxi"), false, true, 0.2) end)
 		return
 	end
 	local tChecked, tPending, tViolations = 0, 0, 0
@@ -5469,6 +5469,13 @@ SlashCmdList["SKUCHECK"] = function(aParam)
 		local c, p, v = tSkuCheckMenu()
 		dprint("skucheck", "menu done:", c, "menu checks,", v, "violations")
 		tChecked, tPending, tViolations = tChecked + c, tPending + p, tViolations + v
+	end
+	-- taxi: an early landing is never the flight's own start or end point
+	-- (SkuCore/taxi.lua, Taxi.SkuCheck).
+	if (tDomain == "" or tDomain == "taxi") and SkuCore.Taxi and SkuCore.Taxi.SkuCheck then
+		local c, p, v = SkuCore.Taxi.SkuCheck()
+		dprint("skucheck", "taxi done:", c, "taxi checks,", v, "violations")
+		tChecked, tPending, tViolations = tChecked + c, tPending + (p or 0), tViolations + v
 	end
 	-- Keep the TESTED per-domain wording for an explicit `/skucheck bags`; the
 	-- combined (no-arg) run and the auras domain speak the generic label.

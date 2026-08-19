@@ -339,6 +339,50 @@ Changements dans Sku v43.0
             « non sélectionnable » et le rafraîchissement automatique à la fin de la construction -
             testent maintenant le marqueur.
 
+    Vol en taxi : les annonces peuvent être désactivées - et elles ne nomment plus le point de
+    vol de départ ni celui d'arrivée
+        Simple : Pendant un vol en taxi, Sku annonce « Prochain point de vol X » puis, environ
+            800 mètres avant, « Atterrissage anticipé possible à X », afin de pouvoir descendre
+            plus tôt avec le raccourci. Pour qui vole beaucoup, c'est du bavardage : il existe
+            désormais un réglage, Paramètres > Général > « Annoncer les points de vol où
+            atterrir ». Il est activé par défaut et ne coupe QUE la parole - le vol reste suivi,
+            et la touche d'atterrissage anticipé fonctionne exactement comme avant, avec sa
+            confirmation vocale, car celle-ci répond à une touche que l'on vient d'appuyer.
+            Ensuite, plusieurs retours signalaient que Sku nommait le point de vol où le vol
+            avait COMMENCÉ, ou celui vers lequel il se dirigeait, comme un endroit où atterrir
+            par anticipation. Ni l'un ni l'autre n'est un atterrissage anticipé : le premier est
+            l'endroit d'où l'on vient, le second n'est que l'arrivée. Les deux sont désormais
+            impossibles. Troisièmement, dès que l'atterrissage anticipé a réellement été
+            demandé, Sku cesse de commenter l'itinéraire. Il nommait auparavant le point
+            APRÈS celui où l'on était déposé - dix secondes avant de se poser à Ratchet, il
+            annonçait encore « Prochain point de vol Astranaar », comme si le vol
+            continuait.
+        Technique : L'annonce avait un angle mort, le repli sur le point de vol le plus proche.
+            L'itinéraire est capturé au décollage depuis la carte des vols (le seul moment où
+            l'interface des itinéraires répond), et toutes les annonces dépendent de lui. S'il
+            manque, le code se rabat sur « le point de vol utilisable le plus proche » - qui ne
+            sait rien du vol : peu après le décollage, c'est précisément le point de départ
+            pendant un moment, et peu avant l'atterrissage, le point d'arrivée. La seule
+            manière courante de perdre l'itinéraire est un /reload en plein vol : le crochet de
+            capture s'est déclenché avant le rechargement et ne peut pas se déclencher une
+            seconde fois. C'est exactement pour cela que le problème était reproductible chez
+            les personnes concernées et invisible ici. Trois changements : (1) l'itinéraire
+            capturé survit à un /reload - il est écrit dans les variables sauvegardées du
+            personnage avec l'étape en cours, puis relu en vol, si bien qu'un rechargement ne
+            fait plus du tout basculer dans le repli ; (2) le point de départ du vol est
+            désormais lu lui aussi dans la capture de l'itinéraire (l'emplacement source de la
+            première étape), donc départ et destination sont connus par leur nom et aucun des
+            deux ne peut plus être annoncé, dans quelque mode que ce soit ; (3) en mode repli,
+            un point de vol doit se RAPPROCHER avant d'être proposé comme possibilité
+            d'atterrissage - un point dont on s'éloigne est derrière soi ; (4) une demande acceptée met fin à l'itinéraire
+            pour le curseur aussi : le point demandé est la fin du vol, le franchir c'est
+            arriver, pas faire une étape. La porte de sortie est géométrique et non minutée -
+            encore en vol mille mètres au-delà signifie que le serveur a ignoré la demande, et
+            l'itinéraire reprend aussitôt. Le nouveau contrôle
+            « /skucheck taxi » fixe la règle : un atterrissage anticipé n'est jamais le point de
+            départ ni le point d'arrivée du vol lui-même. Le réglage est enregistré par profil
+            sous taxiAnnounceLandingPoints.
+
 
 -------------------------------------------------------------------------------------------------------
 Changements dans Sku v42.13

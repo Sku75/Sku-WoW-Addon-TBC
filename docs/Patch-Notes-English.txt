@@ -294,6 +294,46 @@ Changes in Sku v43.0
             places that used to recognise it by name - the not-selectable gate and the automatic
             refresh at the end of the build - test the tag now.
 
+    Taxi flight: the landing announcements can be switched off - and they no longer name the
+    flight point you took off from or the one you are flying to
+        Simple: During a taxi flight Sku says "next flight point X" and, about 800 yards out,
+            "early landing available at X", so that you can get off early with the keybind.
+            For anybody who flies a lot that is chatter, so there is a switch now: Settings >
+            General > "Announce flight points you can land at". It is on by default and it
+            silences the SPEECH only - the flight is still tracked, and the early-landing key
+            works exactly as before and still confirms out loud what it did, because that is
+            the answer to a key you just pressed. Second, several reports said Sku named the
+            flight point the flight had STARTED at, or the one it was heading to, as a place
+            you could land early. Neither is an early landing: one is where you already were,
+            the other is simply arriving. Both are impossible now. Third, once you have
+            actually requested the early landing, Sku stops commenting on the route. It used
+            to name the stop AFTER the one you were being set down at - ten seconds before
+            touching down at Ratchet it would say "next flight point Astranaar", which reads
+            as if the flight were carrying on.
+        Technical: The announcement had one blind spot, the fallback to the nearest flight
+            point. The route is captured at takeoff from the flight map (the only moment the
+            route interface answers at all), and every announcement hangs off that route. If it
+            is missing, the code falls back to "the nearest usable flight point" - and that
+            knows nothing about the flight: shortly after takeoff the takeoff point is the
+            closest one for a while, and shortly before landing the destination is. The one
+            everyday way to lose the route is a /reload in mid-flight: the capture hook fired
+            before the reload and cannot fire a second time. That is exactly why this was
+            reproducible for the people affected and never visible here. Three changes: (1) the
+            captured route survives a /reload - it is written to the character's saved
+            variables together with the current leg and read back while still airborne, so a
+            reload no longer drops you into the fallback at all; (2) the flight's own start
+            point is now read from the route capture as well (the source slot of the first
+            hop), so start and destination are both known by name and neither can be announced
+            in any mode; (3) in fallback mode a flight point has to be getting CLOSER before it
+            is offered as a landing option - a point you are flying away from is behind you.
+            (4) a granted request now ends the route as far as the cursor is concerned: the
+            requested stop is where the flight ends, so passing it is arriving, not a hop.
+            The escape from that is geometric rather than a timer - still airborne a thousand
+            yards beyond it means the server ignored the request, and the route resumes on the
+            spot. New tripwire "/skucheck taxi" pins the rule: an early landing is never the flight's
+            own start or end point. The switch is stored per profile as
+            taxiAnnounceLandingPoints.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v42.13

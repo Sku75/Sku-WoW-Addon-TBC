@@ -576,6 +576,12 @@ SkuCore.defaults = {
 	-- spoken "Folgen beendet" on top of it is redundant chatter for most players.
 	-- Opt-in for anyone who wants the explicit wording instead of just the bling.
 	followBreakWarn = false,
+	-- Taxi flights: speak the flight point an early landing would put you at
+	-- (SkuCore/taxi.lua). ON by default - it is the whole point of the feature -
+	-- but silenceable for players who fly a lot and find it chatty. Muting only
+	-- the SPEECH: the route tracking and the SKU_KEY_TAXICANCEL keybind (with its
+	-- own spoken confirmation) keep working either way.
+	taxiAnnounceLandingPoints = true,
 	turnToUnit = {
 		speed = 6,
 		soundOnSuccess = "sound-waterdrop5",
@@ -680,6 +686,9 @@ SkuSettings:Register("SkuCore", {
 	-- and quest log WHILE IN COMBAT (headless capture + relaxed self-deactivation).
 	-- Default ON; toggle in the Kampf menu or via /skucombatmenu.
 	["combatMenuOpen"]                            = { scope = "profile", default = true, type = "boolean" },
+	-- Taxi: announce the flight point you could land at early. Default ON; the
+	-- toggle is in Einstellungen -> Allgemein (SkuCore.Taxi.AnnounceMenuBuilder).
+	["taxiAnnounceLandingPoints"]                 = { scope = "profile", default = true, type = "boolean" },
 	["turnToUnit.speed"]                          = { scope = "profile", default = 6, type = "number" },
 	["turnToUnit.soundOnSuccess"]                 = { scope = "profile", default = "sound-waterdrop5", type = "string" },
 	["turnToUnit.soundOnFail"]                    = { scope = "profile", default = "sound-waterdrop1", type = "string" },
@@ -2987,6 +2996,11 @@ function SkuCore:MenuBuilder(aParentEntry)
 				-- same combatMenuOpen setting -> saved value intact.
 				if SkuCore.aqCombat and SkuCore.aqCombat.CombatMenuOpenMenuBuilder then
 					SkuCore.aqCombat.CombatMenuOpenMenuBuilder(self)
+				end
+				-- Taxi flight announcements on/off (SkuCore/taxi.lua). Speech only —
+				-- the early-landing keybind keeps working when it is off.
+				if SkuCore.Taxi and SkuCore.Taxi.AnnounceMenuBuilder then
+					SkuCore.Taxi.AnnounceMenuBuilder(self)
 				end
 			end },
 		{ kind = "submenu", label = tDeEn("Spieleinstellungen", "Game options"),

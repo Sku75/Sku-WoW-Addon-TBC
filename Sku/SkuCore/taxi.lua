@@ -43,6 +43,14 @@
 --    character. Nearest-node survives only as a labelled fallback for a /reload
 --    mid-flight, faction-filtered and proximity-gated.
 --
+-- ============ ANNOUNCEMENTS ARE OPTIONAL, THE FEATURE IS NOT ================
+-- Einstellungen -> Allgemein -> "Flugpunkte zum Landen ansagen" (default ON,
+-- SkuCore.taxiAnnounceLandingPoints) silences the two spoken lines for players
+-- who find them chatty. Nothing else changes: the route is still captured and
+-- tracked, /skutaxi still answers, and SKU_KEY_TAXICANCEL still requests the
+-- landing AND still speaks its own confirmation - that one answers a key the
+-- player just pressed, so it is not chatter. See tAnnounceEnabled.
+--
 -- LOGGING: everything under the "taxi:" prefix, gated behind /skudebug log on.
 --   py -3 dev/rework-docs/_dbgtail.py 400 taxi:
 -- `/skutaxi` dumps live state on demand.
@@ -87,6 +95,13 @@ local APPROACH_DIST = 800
 -- are ON it - that is the takeoff node, not a landing target.
 local ORIGIN_RADIUS = 150
 
+-- ★How far past the stop we asked to be put down at we have to get before we
+-- believe the landing is NOT happening. A granted request ends the flight within
+-- seconds of passing the node (measured: touchdown 10s after the pass), so this
+-- only ever fires if the server ignored the request - and then the route must
+-- come back to life rather than stay silent for the rest of the flight.
+local LANDING_ABANDONED_DIST = 1000
+
 -- Per-flight state.
 local gTicker = nil          -- non-nil only while airborne
 local gRoute = nil           -- ordered stop names captured at takeoff, destination last
@@ -116,6 +131,40 @@ local gLoggedOnce = {}
 -- rest of that flight rather than risk speaking on the ground.
 local gLanded = false
 
+-- ★The origin and the destination of the CURRENT flight, learned from the route
+-- capture instead of from geometry.
+--
+-- Neither is ever an "early landing": the origin is where the flight started
+-- (landing there is not landing early, it is not having flown), the destination
+-- is where it ends anyway. The route cursor already keeps the destination quiet,
+-- but only while a route is known - and both standing user reports ("it named
+-- the flight point I took off from" / "...the one I was flying to") describe the
+-- nearest-node FALLBACK, which knows neither. TaxiGetNodeSlot(index, 1, true) is
+-- the source slot of the first hop (the same srcSlot Blizzard's TaxiFrame.lua:172
+-- draws its route line from), so both names are free at capture time; keeping
+-- them makes the guard work in every mode.
+local gFlightOrigin = nil
+
+-- Distance to the current FALLBACK target on the previous tick. Without a route
+-- the target is a pure geometry guess, and a guess that is getting farther away
+-- is by definition behind us - the takeoff node in the seconds after takeoff
+-- being exactly the case the reports describe. Costs at most one extra 0.5s tick
+-- of lead; route mode is unaffected.
+local gLastTargetDist = nil
+
+-- ★The stop an early landing was actually REQUESTED and accepted for.
+--
+-- Distinct from gRequestedFor, which is only a "do not spam the server with the
+-- same request twice" latch and is cleared whenever the offer blinks or the leg
+-- changes. This one records a decided OUTCOME: the flight now ends at this stop.
+-- Without it the route cursor treated the requested stop as an ordinary passed
+-- waypoint, so ten seconds before actually landing at Ratschet the player was
+-- told "next flight point Astranaar" - naming the stop the taxi would have flown
+-- on to if they had NOT just asked to get off. Both announcements are wrong once
+-- the landing is settled, so this silences them and holds the cursor where the
+-- flight really ends.
+local gLandingRequestedAt = nil
+
 local function tLogOnce(aKey, ...)
    if gLoggedOnce[aKey] then return end
    gLoggedOnce[aKey] = true
@@ -138,6 +187,114 @@ local function tSpeak(aText)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- ANNOUNCEMENTS ON/OFF - Einstellungen -> Allgemein, default ON.
+--
+-- Gates SPEECH ONLY. Route capture, the cursor, the offer watch and the
+-- SKU_KEY_TAXICANCEL keybind (including ITS spoken feedback, which answers a key
+-- the player just pressed) all keep running: silencing the chatter must never
+-- cost anybody the ability to actually request the landing.
+local function tAnnounceEnabled()
+   if not (SkuSettings and SkuSettings.Get) then return true end
+   local tOk, tVal = pcall(SkuSettings.Get, SkuSettings, "SkuCore", "taxiAnnounceLandingPoints")
+   if not tOk then return true end
+   return tVal ~= false
+end
+
+local function tAnnounce(aText, aWhat)
+   if not tAnnounceEnabled() then
+      dprint("taxi: announcement muted by the setting", tostring(aWhat))
+      return
+   end
+   tSpeak(aText)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- THE FLIGHT RECORD - the captured route, kept across a /reload.
+--
+-- A reload mid-flight was the one routine way to LOSE the route: the capture
+-- hook fired before the reload and cannot fire again, so OnEnable came back
+-- airborne with nothing but the nearest-node fallback for the rest of the
+-- flight - precisely the mode that names the takeoff node and then the arrival
+-- node. Sku users reload often, which fits "several people report it and I can
+-- never reproduce it". So the capture is written to char-scoped saved variables
+-- (flushed on every reload/logout) and read back while still on the taxi.
+--
+-- Stored by reference: the stop list is a fresh table per capture and is never
+-- mutated afterwards - only gStopIndex moves, and that is written through.
+local FLIGHT_RECORD_TTL = 30 * 60
+
+local function tFlightStore()
+   if not (SkuSettings and SkuSettings.Sub and SkuOptions and SkuOptions.db) then return nil end
+   local tOk, tTbl = pcall(SkuSettings.Sub, SkuSettings, "SkuCore", nil, "char")
+   if not tOk then return nil end
+   return tTbl
+end
+
+local function tSaveFlight()
+   local tStore = tFlightStore()
+   if not tStore then return end
+   if not gRoute then
+      tStore.taxiFlight = nil
+      return
+   end
+   tStore.taxiFlight = {
+      stops  = gRoute,
+      dest   = gRouteDest,
+      origin = gFlightOrigin,
+      index  = gStopIndex,
+      t      = time and time() or 0,
+   }
+end
+
+local function tUpdateFlightIndex()
+   local tStore = tFlightStore()
+   if tStore and type(tStore.taxiFlight) == "table" then
+      tStore.taxiFlight.index = gStopIndex
+   end
+end
+
+local function tClearFlight(aWhy)
+   local tStore = tFlightStore()
+   if tStore and tStore.taxiFlight ~= nil then
+      dprint("taxi: flight record cleared", tostring(aWhy))
+      tStore.taxiFlight = nil
+   end
+end
+
+-- Restore only while genuinely airborne, and only from a RECENT record: one that
+-- outlived its flight (a crash, or a capture that failed on a later flight) must
+-- never furnish a route for a different flight.
+--
+-- Known limitation, deliberately not guessed around: the cursor comes back on
+-- the leg it was written on, and a stop flown over DURING the loading screen is
+-- not re-passed (the pass test needs 250 yards). The cursor then trails by one
+-- leg for the rest of the flight. That costs a stale "next flight point" line
+-- and a stale answer from the keybind - it can NOT produce a false "early
+-- landing possible", because a stop behind us is receding. Auto-advancing on
+-- "the following stop is closer" would fix it on a straight route and skip a
+-- real leg on a route that bends, which is the worse failure.
+local function tRestoreFlight()
+   if gRoute then return false end
+   if not tOnTaxi() then return false end
+   local tStore = tFlightStore()
+   local tRec = tStore and tStore.taxiFlight
+   if type(tRec) ~= "table" or type(tRec.stops) ~= "table" or #tRec.stops == 0 then return false end
+   local tNow = time and time() or 0
+   if tRec.t and tNow > 0 and (tNow - tRec.t) > FLIGHT_RECORD_TTL then
+      tClearFlight("record too old")
+      return false
+   end
+   gRoute, gRouteDest, gFlightOrigin = tRec.stops, tRec.dest, tRec.origin
+   gStopIndex = tRec.index or 1
+   if gStopIndex > #gRoute then gStopIndex = #gRoute end
+   dprint("taxi: ROUTE restored from the flight record",
+      "index", tostring(gStopIndex) .. "/" .. tostring(#gRoute),
+      "origin", tostring(gFlightOrigin), "dest", tostring(gRouteDest),
+      "stops", table.concat(gRoute, " > "))
+   return true
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- ROUTE CAPTURE
 --
 -- TakeTaxiNode(index) is called by the TaxiButton OnClick (Blizzard's
@@ -150,10 +307,14 @@ end
 -- order, so the destination names are the stop list. Every one of them is a node
 -- this character can actually use - which is exactly the filter v1 was missing.
 local function tCaptureRoute(aIndex)
-   gRoute, gRouteDest, gStopIndex = nil, nil, nil
+   gRoute, gRouteDest, gStopIndex, gFlightOrigin = nil, nil, nil, nil
    -- Taking a node IS the start of a new flight - the one unambiguous "we are
-   -- flying again" signal, and it precedes every event the client fires.
+   -- flying again" signal, and it precedes every event the client fires. It is
+   -- also the moment any leftover record stops describing the current flight:
+   -- drop it FIRST, so a capture that fails below cannot leave a stale route
+   -- lying around for the restore to pick up.
    gLanded = false
+   tClearFlight("new flight")
 
    if not (aIndex and _G.GetNumRoutes and _G.TaxiGetNodeSlot and _G.TaxiNodeName) then
       dprint("taxi: route capture skipped - taxi API unavailable", "index", tostring(aIndex))
@@ -167,6 +328,13 @@ local function tCaptureRoute(aIndex)
    if not tOkNum or not tHops or tHops < 1 then
       dprint("taxi: route capture got no hops", "index", tostring(aIndex), "dest", tostring(gRouteDest))
       return
+   end
+
+   -- Hop 1's SOURCE slot is the flight point we are leaving.
+   local tOkSrc, tSrcSlot = pcall(_G.TaxiGetNodeSlot, aIndex, 1, true)
+   if tOkSrc and tSrcSlot then
+      local tOkSrcName, tSrcName = pcall(_G.TaxiNodeName, tSrcSlot)
+      if tOkSrcName and tSrcName and tSrcName ~= "" then gFlightOrigin = tSrcName end
    end
 
    local tStops = {}
@@ -186,8 +354,9 @@ local function tCaptureRoute(aIndex)
    end
 
    gRoute, gStopIndex = tStops, 1
-   dprint("taxi: ROUTE captured", "dest", tostring(gRouteDest), "hops", tostring(tHops),
-      "stops", table.concat(tStops, " > "))
+   dprint("taxi: ROUTE captured", "dest", tostring(gRouteDest), "origin", tostring(gFlightOrigin),
+      "hops", tostring(tHops), "stops", table.concat(tStops, " > "))
+   tSaveFlight()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -322,6 +491,19 @@ local function tDistanceToStop(aScan, aName)
    return nil
 end
 
+-- Do two node names mean the same flight point? Same exact-then-normalized rule
+-- tDistanceToStop uses, so "Ratschet, Brachland" still matches "Ratschet".
+local function tSameNode(aA, aB)
+   local tA, tB = tNormalizeNodeName(aA), tNormalizeNodeName(aB)
+   return tA ~= nil and tB ~= nil and tA == tB
+end
+
+-- Is this name the flight's own start or end point? Both come from the capture.
+local function tIsFlightEdgeNode(aName)
+   return tSameNode(aName, gFlightOrigin) or tSameNode(aName, gRouteDest)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- Nearest USABLE node - the fallback when no route was captured (a /reload
 -- mid-flight, or a takeoff the hook missed). Explicitly a guess.
 --
@@ -340,7 +522,7 @@ local function tNearestUsable(aScan)
             dprint("taxi: origin node noted (excluded from the fallback)", tNode.name,
                "dist", tostring(floor(tNode.dist)))
          end
-         if tNode.name ~= gOriginNode then
+         if tNode.name ~= gOriginNode and not tIsFlightEdgeNode(tNode.name) then
             return tNode.name, tNode.dist
          end
       end
@@ -387,12 +569,32 @@ local function tAdvanceRoute(aScan)
          break
       end
       local tDist = tDistanceToStop(aScan, gRoute[gStopIndex])
+
+      -- ★The stop we asked to be put down at is where the flight ENDS, so the
+      -- cursor must stop there exactly like it stops on the destination. Passing
+      -- it is arriving, not a hop. The escape hatch is geometric, not a timer: if
+      -- we are ever this far beyond it and still airborne, the request plainly did
+      -- not take and the route resumes on the spot.
+      if gLandingRequestedAt and tSameNode(gRoute[gStopIndex], gLandingRequestedAt) then
+         if tDist and tDist > LANDING_ABANDONED_DIST then
+            dprint("taxi: requested landing did not happen - route resumes",
+               tostring(gRoute[gStopIndex]), "dist", tostring(floor(tDist)))
+            gLandingRequestedAt = nil
+         else
+            tLogOnce("holdRequested",
+               "taxi: cursor holds on the stop the landing was requested at - the flight ends here",
+               tostring(gRoute[gStopIndex]))
+            break
+         end
+      end
+
       if tDist and tDist <= PASS_RADIUS then
          dprint("taxi: stop passed", gRoute[gStopIndex], "dist", tostring(floor(tDist)),
             "index", tostring(gStopIndex) .. "/" .. tostring(#gRoute))
          gStopIndex = gStopIndex + 1
          gRequestedFor = nil   -- new leg, new request allowed
          tMoved = true
+         tUpdateFlightIndex()  -- so a /reload resumes on the right leg
       else
          break
       end
@@ -525,6 +727,31 @@ function Taxi:Evaluate(aSource)
       return
    end
 
+   -- ★The flight's OWN start and end point are never an early landing. The
+   -- cursor rule above already covers the destination while a route is known;
+   -- this covers both of them in every mode - including the nearest-node
+   -- fallback, which is where the "it announced the flight point I started at /
+   -- was flying to" reports come from (a /reload mid-flight drops you into it,
+   -- and there the takeoff node is simply the closest node for a while, and the
+   -- arrival node is the closest one right before you land).
+   -- The landing is already settled: we are being put down at this stop, so
+   -- neither "next flight point" nor "early landing possible" says anything true
+   -- any more. The keybind still answers "landing already requested at X".
+   if gLandingRequestedAt and tSameNode(tTarget, gLandingRequestedAt) then
+      tLogOnce("settled" .. tostring(tTarget),
+         "taxi: landing already requested here - nothing left to announce", tostring(tTarget))
+      gLastTargetDist = tDist
+      return
+   end
+
+   if tIsFlightEdgeNode(tTarget) then
+      tLogOnce("edge" .. tostring(tTarget),
+         "taxi: target is this flight's own origin/destination - not announced", tostring(tTarget),
+         "origin", tostring(gFlightOrigin), "dest", tostring(gRouteDest), "via", tostring(tVia))
+      gLastTargetDist = tDist
+      return
+   end
+
    -- TWO announcements per leg, because they answer different questions.
    --
    -- ★2026-08-04: the first route-mode flight named Thalanaar once, at takeoff,
@@ -542,6 +769,21 @@ function Taxi:Evaluate(aSource)
    local tChanged = (tTarget ~= gAnnouncedStop)
    local tNear = (tDist ~= nil and tDist <= APPROACH_DIST)
 
+   -- ★FALLBACK ONLY: the target must be getting CLOSER before we call it a
+   -- landing option. Route mode knows what is ahead; the fallback does not, so
+   -- without this a node we are flying AWAY from - the takeoff point, in the
+   -- seconds after takeoff, while it is still inside APPROACH_DIST - reads
+   -- exactly like one we are approaching. Two samples 0.5s apart settle it,
+   -- which is nothing against ~25 seconds of lead.
+   local tClosing = true
+   if tVia ~= "route" then
+      tClosing = (tChanged ~= true) and tDist ~= nil and gLastTargetDist ~= nil and tDist < gLastTargetDist
+      if tNear and not tClosing then
+         dprintv("taxi: fallback target near but not closing - held", tostring(tTarget),
+            "dist", tostring(tDist and floor(tDist)), "prev", tostring(gLastTargetDist and floor(gLastTargetDist)))
+      end
+   end
+
    if tChanged then
       gAnnouncedStop = tTarget
       gApproachAnnounced = false
@@ -554,20 +796,22 @@ function Taxi:Evaluate(aSource)
       if tVia == "route" and not tNear then
          dprint("taxi: ANNOUNCE next stop", tostring(tTarget), "dist", tostring(tDist and floor(tDist)),
             "source", tostring(aSource), "index", tostring(gStopIndex) .. "/" .. tostring(gRoute and #gRoute))
-         tSpeak(Sku.deEn("Naechster Flugpunkt ", "Next flight point ", "Prochain point de vol ") .. tTarget)
+         tAnnounce(Sku.deEn("Naechster Flugpunkt ", "Next flight point ", "Prochain point de vol ") .. tTarget, "next stop")
       elseif tVia == "nearest" then
          dprintv("taxi: fallback target changed (silent until near)", tostring(tTarget),
             "dist", tostring(tDist and floor(tDist)))
       end
    end
 
-   if tNear and gApproachAnnounced ~= true then
+   if tNear and tClosing and gApproachAnnounced ~= true then
       gApproachAnnounced = true
       dprint("taxi: ANNOUNCE landing possible", tostring(tTarget), "dist", tostring(tDist and floor(tDist)),
          "via", tostring(tVia), "source", tostring(aSource),
          "index", tostring(gStopIndex) .. "/" .. tostring(gRoute and #gRoute))
-      tSpeak(Sku.deEn("Vorzeitige Landung moeglich bei ", "Early landing available at ", "Atterrissage anticipé possible à ") .. tTarget)
+      tAnnounce(Sku.deEn("Vorzeitige Landung moeglich bei ", "Early landing available at ", "Atterrissage anticipé possible à ") .. tTarget, "landing possible")
    end
+
+   gLastTargetDist = tDist
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -618,6 +862,7 @@ function Taxi:RequestEarlyLanding()
    end
 
    gRequestedFor = tTarget
+   gLandingRequestedAt = tTarget
    if tTarget then
       tSpeak(Sku.deEn("Landung angefordert bei ", "Landing requested at ", "Atterrissage demandé à ") .. tTarget)
    else
@@ -631,10 +876,14 @@ function Taxi:StartWatch(aSource)
    -- Single chokepoint for the landed latch: no event may re-arm the watch
    -- between a landing and the next TakeTaxiNode / PLAYER_CONTROL_LOST.
    if gLanded == true then return end
+   -- A /reload mid-flight arrives here airborne with no route (the capture hook
+   -- fired before the reload): the flight record still has it.
+   tRestoreFlight()
    dprint("taxi: watch started", "source", tostring(aSource),
       "route", tostring(gRoute and table.concat(gRoute, " > ")))
    gOfferOpen, gAnnouncedStop, gRequestedFor, gLastState, gApproachAnnounced = false, nil, nil, nil, false
    gScanAt, gScanResult, gLoggedOnce, gOriginNode = 0, nil, {}, nil
+   gLastTargetDist, gLandingRequestedAt = nil, nil
    gTicker = C_Timer.NewTicker(POLL_INTERVAL, function() Taxi:Evaluate("poll") end)
    Taxi:Evaluate(aSource or "start")
 end
@@ -655,10 +904,12 @@ function Taxi:StopWatch()
       dprint("taxi: watch stopped")
    end
    if tWasWatching then
-      gRoute, gRouteDest, gStopIndex = nil, nil, nil
+      gRoute, gRouteDest, gStopIndex, gFlightOrigin = nil, nil, nil, nil
+      tClearFlight("flight ended")
    end
    gOfferOpen, gAnnouncedStop, gRequestedFor, gLastState, gApproachAnnounced = false, nil, nil, nil, false
    gOriginNode = nil
+   gLastTargetDist, gLandingRequestedAt = nil, nil
    gScanAt, gScanResult = 0, nil
 end
 
@@ -697,6 +948,9 @@ function Taxi:OnFlightEdge(aEvent)
       if gTicker or gLanded ~= true then dprint("taxi: control regained -> flight over", tostring(aEvent)) end
       gLanded = true
       Taxi:StopWatch()
+      -- StopWatch only drops the record when it was actually watching; a landing
+      -- is the end of the flight either way.
+      tClearFlight("control regained")
       return
    end
 
@@ -746,8 +1000,15 @@ function Taxi:OnEnable()
    end
 
    -- A /reload mid-flight leaves us airborne with no edge event and no route
-   -- (the hook fired before the reload) - the nearest-usable fallback covers it.
-   if tOnTaxi() then Taxi:StartWatch("OnEnable") end
+   -- (the hook fired before the reload) - StartWatch restores it from the flight
+   -- record, and the nearest-usable fallback still covers a record-less case.
+   -- Not airborne: whatever is on file describes a flight that is over. Dropped
+   -- on a short delay because the AceDB may not be up yet this early.
+   if tOnTaxi() then
+      Taxi:StartWatch("OnEnable")
+   elseif C_Timer and C_Timer.After then
+      C_Timer.After(5, function() if not tOnTaxi() then tClearFlight("not airborne at load") end end)
+   end
 end
 
 function Taxi:OnDisable()
@@ -775,7 +1036,10 @@ function Taxi:SlashDump()
    else
       tOut("  route: none captured (using nearest-usable fallback)")
    end
+   tOut("  origin=" .. tostring(gFlightOrigin) .. " dest=" .. tostring(gRouteDest) ..
+      " announce=" .. tostring(tAnnounceEnabled()))
    tOut("  target=" .. tostring(tTarget) .. " dist=" .. tostring(tDist and floor(tDist)) .. " via=" .. tostring(tVia))
+   tOut("  landingRequestedAt=" .. tostring(gLandingRequestedAt))
    tOut("  requestedFor=" .. tostring(gRequestedFor) .. " watching=" .. tostring(gTicker ~= nil) ..
       " landed=" .. tostring(gLanded))
    if tScan then
@@ -788,4 +1052,102 @@ function Taxi:SlashDump()
       end
    end
    dprint("taxi: /skutaxi dump", "onTaxi", tostring(tOnTaxi()), "target", tostring(tTarget), "via", tostring(tVia))
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Einstellungen -> Allgemein: "Flugpunkte zum Landen ansagen" (default ON).
+--
+-- Built here rather than as an AceConfig node so the toggle sits next to the
+-- feature it belongs to; SkuCore/Options.lua calls this from the Allgemein spec,
+-- the same way it calls aqCombat.CombatMenuOpenMenuBuilder. SPEECH ONLY - the
+-- keybind and the tracking stay on at "No" (see tAnnounceEnabled).
+function Taxi.AnnounceMenuBuilder(aParentEntry)
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {
+      Sku.deEn("Flugpunkte zum Landen ansagen", "Announce flight points you can land at",
+         "Annoncer les points de vol où atterrir"),
+   }, SkuGenericMenuItem)
+   tNewMenuEntry.dynamic = true
+   tNewMenuEntry.sorting = true
+   tNewMenuEntry.isSelect = true
+   tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+      if tAnnounceEnabled() == true then
+         return L["Yes"]
+      else
+         return L["No"]
+      end
+   end
+   tNewMenuEntry.OnAction = function(self, aValue, aName)
+      if aName == L["No"] then
+         SkuSettings:Set("SkuCore", "taxiAnnounceLandingPoints", false)
+      elseif aName == L["Yes"] then
+         SkuSettings:Set("SkuCore", "taxiAnnounceLandingPoints", true)
+      end
+   end
+   tNewMenuEntry.BuildChildren = function(self)
+      SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+      SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- /skucheck taxi - the tripwire for the fix above.
+--
+-- Invariant: an EARLY LANDING is never the flight's own start or end point.
+-- Landing where you took off is not landing early, and landing at the
+-- destination is just arriving - yet both were being announced (the reports this
+-- shipped for), because the nearest-node fallback knows neither name.
+--
+-- Two parts, so the domain is never vacuous:
+--   * a contract probe on the name comparison the guard is built out of - it
+--     runs on the ground and pins the "Ratschet, Brachland" == "Ratschet" rule
+--     that makes the guard fire at all;
+--   * the live invariant, checked only while actually airborne.
+function Taxi.SkuCheck()
+   local tChecked, tViolations = 0, 0
+
+   -- Contract probe: the guard is exactly as good as this comparison.
+   local tProbe = {
+      { "Ratschet, Brachland", "Ratschet",            true  },
+      { "Ratschet",            "Ratschet, Brachland", true  },
+      { "Ratschet",            "Ratschet",            true  },
+      { "Ratschet",            "Beutebucht",          false },
+      { "Ratschet",            nil,                   false },
+      { nil,                   nil,                   false },
+   }
+   for x = 1, #tProbe do
+      tChecked = tChecked + 1
+      if tSameNode(tProbe[x][1], tProbe[x][2]) ~= tProbe[x][3] then
+         tViolations = tViolations + 1
+         dprint("skucheck", "VIOLATION taxi: node name compare", tostring(tProbe[x][1]), "vs",
+            tostring(tProbe[x][2]), "-- expected", tostring(tProbe[x][3]),
+            "-- the origin/destination guard cannot match names it should")
+      end
+   end
+
+   if not tOnTaxi() then
+      dprint("skucheck", "taxi: not on a flight - live invariant not applicable")
+      return tChecked, 0, tViolations
+   end
+
+   -- Live: whatever we would announce right now must not be either end of the
+   -- flight, and the route cursor must stay inside the route.
+   local tTarget, _, tVia = tCurrentTarget(tScanNodes(true))
+   tChecked = tChecked + 1
+   if tTarget and tIsFlightEdgeNode(tTarget) then
+      tViolations = tViolations + 1
+      dprint("skucheck", "VIOLATION taxi: current target", tostring(tTarget), "is this flight's own",
+         (tSameNode(tTarget, gFlightOrigin) and "ORIGIN" or "DESTINATION"), "-- via", tostring(tVia),
+         "origin", tostring(gFlightOrigin), "dest", tostring(gRouteDest))
+   end
+   if gRoute then
+      tChecked = tChecked + 1
+      if not gStopIndex or gStopIndex < 1 or gStopIndex > #gRoute then
+         tViolations = tViolations + 1
+         dprint("skucheck", "VIOLATION taxi: route cursor", tostring(gStopIndex), "outside 1..", #gRoute,
+            "-- the target silently degrades to the nearest-node fallback there")
+      end
+   else
+      dprint("skucheck", "taxi: airborne with no route (fallback mode)", "landed", tostring(gLanded))
+   end
+   return tChecked, 0, tViolations
 end

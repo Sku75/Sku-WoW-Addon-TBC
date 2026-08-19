@@ -326,6 +326,48 @@ Aenderungen in Sku v43.0
             Stellen, die ihn bisher am Namen erkannten - die Nicht-auswaehlbar-Sperre und die
             automatische Aktualisierung am Ende des Aufbaus - pruefen jetzt die Markierung.
 
+    Taxiflug: Die Ansagen lassen sich abschalten - und sie nennen nicht mehr den Startpunkt
+    oder das Ziel des Fluges
+        Einfach: Waehrend eines Taxiflugs sagt Sku "Naechster Flugpunkt X" und rund 800 Meter
+            vorher "Vorzeitige Landung moeglich bei X", damit man mit der Tastenbelegung frueher
+            aussteigen kann. Wer viel fliegt, empfindet das als Geschwaetz, deshalb gibt es
+            jetzt einen Schalter: Einstellungen > Allgemein > "Flugpunkte zum Landen ansagen".
+            Er steht auf Ja und schaltet ausschliesslich die SPRACHAUSGABE ab - der Flug wird
+            weiter verfolgt, und die Taste fuer die vorzeitige Landung funktioniert unveraendert
+            und bestaetigt weiterhin laut, was sie getan hat, denn das ist die Antwort auf einen
+            gerade gedrueckten Tastendruck. Zweitens gab es Meldungen, Sku habe den Flugpunkt,
+            an dem der Flug BEGONNEN hat, oder den Zielflugpunkt als Ort fuer eine vorzeitige
+            Landung genannt. Beides ist keine vorzeitige Landung: das eine ist der Ort, an dem
+            man ohnehin schon war, das andere ist schlicht das Ankommen. Beides ist jetzt
+            ausgeschlossen. Drittens haelt Sku den Mund, sobald die vorzeitige Landung
+            wirklich angefordert wurde. Bisher nannte es den Flugpunkt NACH dem, an dem man
+            abgesetzt wurde - zehn Sekunden vor der Landung in Ratschet kam noch "Naechster
+            Flugpunkt Astranaar", was klingt, als ginge der Flug weiter.
+        Technisch: Die Ansage hatte einen blinden Fleck, den Rueckfall auf den naechstgelegenen
+            Flugpunkt. Die Route wird beim Start von der Flugkarte erfasst (der einzige Moment,
+            in dem die Routen-Schnittstelle ueberhaupt antwortet), und alle Ansagen haengen an
+            dieser Route. Fehlt sie, faellt der Code auf "der naechstgelegene benutzbare
+            Flugpunkt" zurueck - und der weiss nichts vom Flug: Kurz nach dem Start ist das eine
+            Weile lang genau der Startpunkt, kurz vor der Landung der Zielpunkt. Die eine
+            alltaegliche Art, die Route zu verlieren, ist ein /reload mitten im Flug: Der
+            Erfassungshaken hat vor dem Neuladen ausgeloest und kann kein zweites Mal ausloesen.
+            Genau deshalb war das fuer die Betroffenen reproduzierbar und hier nie zu sehen.
+            Drei Aenderungen: (1) Die erfasste Route ueberlebt ein /reload - sie wird zusammen
+            mit der aktuellen Teilstrecke in die charakterbezogenen Einstellungen geschrieben
+            und im Flug wieder eingelesen, ein Neuladen fuehrt also gar nicht mehr in den
+            Rueckfall; (2) der Startpunkt des Fluges wird jetzt ebenfalls aus der
+            Routenerfassung gelesen (der Quellplatz der ersten Teilstrecke), damit sind Start
+            und Ziel namentlich bekannt und koennen in keinem Modus mehr angesagt werden; (3) im
+            Rueckfallbetrieb muss ein Flugpunkt NAEHER kommen, bevor er als Landemoeglichkeit
+            angeboten wird - ein Punkt, von dem man wegfliegt, liegt hinter einem; (4) eine bewilligte Anforderung beendet die Route
+            auch fuer den Streckenzeiger: Der angeforderte Halt ist das Flugende, ihn zu
+            passieren ist Ankommen und keine Zwischenstation. Der Ausweg dafuer ist Geometrie
+            statt Zeitschaltung - wer tausend Meter dahinter immer noch fliegt, dessen
+            Anforderung hat der Server ignoriert, und die Route lebt sofort wieder auf. Die neue
+            Pruefung "/skucheck taxi" haelt die Regel fest: Eine vorzeitige Landung ist nie der
+            Start- oder Zielpunkt des eigenen Fluges. Der Schalter liegt pro Profil unter
+            taxiAnnounceLandingPoints.
+
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v42.13
