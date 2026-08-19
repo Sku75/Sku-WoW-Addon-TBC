@@ -107,6 +107,16 @@
   linke Grenze 0.28 INNERHALB des Era-Dialogs lag und dort den linken Reiter
   ("Saisonbedingt", Mitte nx 0.2516) stillschweigend verschluckte. Jetzt 0.20
   bis 0.85, was beide Clients abdeckt.
+- **Auf dem Loginbildschirm gab es überhaupt kein Menü.** Nur der
+  charselect-Zweig von `InitLogin` setzt `gCurrentItem`, und `MenuUp`/
+  `MenuDown` kehren sofort zurück, solange es leer ist — ein Tool, das auf dem
+  Loginbildschirm startete, hatte also tote Pfeiltasten. Das ist eine Falle,
+  keine Unbequemlichkeit: der Eintrag, der eine falsche Spielversion korrigiert
+  ("Spieltyp auswählen"), liegt im Hauptmenue, das Hauptmenue war nur zu
+  erreichen, indem man an diesem Bildschirm VORBEIKAM, und eine falsche
+  Spielversion ist einer der Gründe, warum man daran nicht vorbeikommt. Jetzt
+  landet der Fokus auf dem Hauptmenue — aber nur, wenn gar nichts fokussiert
+  ist, damit niemandem der Cursor weggezogen wird, der gerade navigiert.
 - Nachtrag zum selben Fehler: den Knopf NICHT zu klicken war nur die Hälfte.
   `StaticPopupDialogs["CANCEL"]` setzt kein `ignoreKeys` (anders als
   `REALM_LIST_IN_PROGRESS`), die Tastatur erreicht den Dialog also, und ENTER

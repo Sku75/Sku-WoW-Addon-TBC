@@ -190,6 +190,22 @@ InitLogin(s := "") {
             ClickWidget("LoginScreenReconnectButton")
             Sleep(600)
         }
+        ; The login screen used to end here with NO MENU AT ALL. Only the
+        ; charselect branch below ever points gCurrentItem at anything, and
+        ; MenuUp/MenuDown return immediately while it is empty - so a tool that
+        ; came up on the login screen had dead arrow keys and no way in.
+        ;
+        ; That is a trap, not just an inconvenience: the entry that fixes a
+        ; wrong game version ("Spieltyp auswaehlen") lives in the main menu,
+        ; the main menu was only reachable by getting PAST this screen, and a
+        ; wrong game version is one of the things that can stop you getting
+        ; past this screen. Land on the main menu instead, so the settings are
+        ; always reachable.
+        ;
+        ; Only when nothing is focused: this must never yank the cursor out
+        ; from under someone who is already navigating.
+        if (gCurrentItem = "")
+            gMainMenu.EnterQueued()
         return
     }
     ; The check, not the helper's verdict: with a dark scene behind the UI it
