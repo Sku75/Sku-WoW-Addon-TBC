@@ -12,7 +12,7 @@ Changes in Sku v43.0
             Shift-F9 to Shift-F12 have their own keybinding entries now, and quick-access slots 1 to 4 are free again.
             The taxi flight announcements can be switched off, and they never name your take-off or arrival point as a landing option.
             New aura condition "Lists own casts only" filters the lists to your own effects, and "Source/target (L)" are now "Event source/target (L)".
-            New command /skucheck verifies fixed rules against the live game state.
+            New command /skucheck verifies fixed rules against the live game state; it has also taken over the database tools as sub-commands (wp, db, mem).
             The installer collects every log file for a bug report at one button press.
             The login screen is usable with the login tool now.
             Waypoint lists announce how far the loading has got.
@@ -22,6 +22,7 @@ Changes in Sku v43.0
             Aura evaluation per combat event is considerably cheaper.
             Cancelling navigation is one key again instead of two.
             The login tool's log survives a restart of the tool.
+            Route waypoint data becomes usable much earlier after login, your own continent first.
 
         Bugfixes
             French clients: all aura sounds and pre-recorded speech clips were silent (fix by Naxedim).
@@ -146,12 +147,24 @@ Changes in Sku v43.0
             data itself, not the menus - so it would have reported the keyring bug even if you
             never open the keyring. The rule list grows only with fixed bugs: from now on every fix
             ships its own tripwire rule, so a later change cannot quietly reintroduce the same bug.
+            As of this version /skucheck is also the only check command: the three database
+            tools have become sub-commands - /skucheck wp verifies the waypoint data and runs
+            as part of a bare /skucheck, while /skucheck db and /skucheck mem are measurements
+            and only run when asked for. The old names /skudbwpcheck, /skudbcheck and
+            /skudbmem still work.
         Technical: At the bottom of LocalMenu.lua; iterates tBagSlotListSorted with the same
             container API and the same name resolution the bag menu uses. Rule 1: slot with an item
             id but blank tooltip text = violation; each violation is written to the SkuDebugLog
             ring as a "skucheck" line with bag, slot, item id and link. The closed bank is skipped
             with a log line (not silently), the keyring is deliberately swept at all raw 32 slots,
             and items not yet sent by the server count as "pending" rather than as failures.
+            The wp/db/mem domains call SkuDBTools.RunWpCheck/RunDbCheck/RunMem
+            (SkuDBTools.lua); they run as a background job and announce their own result, but
+            also write it into the ring as "skucheck" lines - the waypoint violations
+            individually, which used to be readable only in SavedVariables. /skucheck db also
+            reports how many datasets changed against the previous capture. The reason for the
+            merge: with three separate commands it was possible to run "the check" and miss
+            the waypoint rules entirely.
 
     Auras: expiry warnings arrive on time, not at the next combat event
         Simple: Two long-standing complaints shared one cause: an aura like "debuff on the target
@@ -304,6 +317,38 @@ Changes in Sku v43.0
             client itself calls every frame, so a killed packet costs one frame instead of the
             whole build. If the coroutine dies regardless, the build restarts up to three times,
             and the build step puts its request back instead of losing it inside a pcall.
+
+    Login: the route waypoint data is ready much earlier
+        Simple: After login Sku rebuilds every waypoint and every connection between them; until
+            that is done the waypoint lists answer "waypoints are still loading". More than half
+            of that wait went into the connections, and the same data was walked four times over.
+            It is one walk now, and it starts with the continent you are standing on: that one is
+            finished first, and from that moment your lists are usable while the rest of the world
+            is still being built. If you are sitting on the waiting hint at that moment, the first
+            entry is read out to you automatically, without pressing a key. Measured on the same
+            machine: the connection part now costs about half, and the lists for your own
+            continent are there roughly 0.7 seconds earlier. Nothing about the routes themselves
+            changes - the same waypoints, the same connections, just sooner.
+        Technical: The link part of the waypoint cache build ran as FOUR full passes over ~197,000
+            directed edges: prune and symmetrise (CheckAndUpdateProfileLinkData), materialise
+            byId/byName, re-derive the whole table back out of the cache (SaveLinkDataToProfile),
+            and a final pass over all ~145,000 cache records (CleanupWaypoints). It is one pass
+            now: the pruning rides along, the reverse edge is written straight into the target
+            record - which is why the order of continents no longer matters - and the re-derive is
+            gone, because it rewrote the table that is already there. The one case where it could
+            still change something (an endpoint whose name belongs to a different cache record) is
+            counted and triggers the old path; it does not occur in the shipped route data. The
+            final pass gets the list of records that can be deleted at all from the custom pass,
+            bucketed by continent, and runs per continent as soon as that continent is done. Fixed
+            along the way: the old prune pass inserted new KEYS into the very table it was
+            iterating with pairs() - undefined behaviour in Lua; the reverse edges are collected
+            and applied afterwards now. And the "own continent first" split added in July was
+            never active at login: it resolves the zone through GetMinimapZoneText, which is still
+            empty when the build starts - the continent is resolved again before the link part
+            now. Backed by a reimplementation of both variants over the real route data
+            (dev/rework-docs/simulate_link_build.py: identical cache, identical link table, for
+            every continent) and in game by /skucheck wp, which now also verifies that every link
+            has its reverse edge.
 
     Waypoint lists now tell you how far the loading has got
         Simple: the message "waypoints still loading" was written for a wait of a second or two.

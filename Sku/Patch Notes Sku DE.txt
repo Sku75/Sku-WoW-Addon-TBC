@@ -12,7 +12,7 @@ Aenderungen in Sku v43.0
             Shift-F9 bis Shift-F12 haben jetzt eigene Eintraege in der Tastenbelegung, die Schnellzugriffe 1 bis 4 sind wieder frei.
             Die Ansagen im Taxiflug lassen sich abschalten, und sie nennen nie mehr den Start- oder Zielpunkt als Landemoeglichkeit.
             Neue Aura-Bedingung "Listen nur selbst gewirkte" filtert die Listen auf eigene Effekte, und "Quelle/ziel (L)" heissen jetzt "Ereignis Quelle/Ziel (L)".
-            Neuer Befehl /skucheck prueft feste Regeln gegen den laufenden Spielzustand.
+            Neuer Befehl /skucheck prueft feste Regeln gegen den laufenden Spielzustand; er hat auch die Datenbank-Werkzeuge als Unterbefehle uebernommen (wp, db, mem).
             Der Installer sammelt auf Knopfdruck alle Logdateien fuer eine Fehlermeldung.
             Der Anmeldebildschirm ist mit dem Anmelde-Tool jetzt bedienbar.
             Wegpunktlisten sagen an, wie weit das Laden fortgeschritten ist.
@@ -22,6 +22,7 @@ Aenderungen in Sku v43.0
             Die Aurenauswertung pro Kampfereignis ist deutlich billiger geworden.
             Navigation abbrechen liegt nur noch auf einer Taste.
             Das Protokoll des Anmelde-Tools ueberlebt einen Neustart des Tools.
+            Die Wegpunktdaten der Routen sind nach dem Anmelden deutlich frueher benutzbar, der eigene Kontinent zuerst.
 
         Fehlerbehebungen
             Franzoesische Clients: alle Aura-Sounds und aufgenommenen Sprachclips waren stumm (Korrektur von Naxedim).
@@ -158,14 +159,26 @@ Aenderungen in Sku v43.0
             Schluesselbund-Fehler also auch gemeldet, wenn man den Schluesselbund nie oeffnet. Die
             Pruefliste waechst nur mit behobenen Fehlern: Jede Korrektur bringt kuenftig ihre
             eigene Stolperdraht-Regel mit, damit eine spaetere Aenderung denselben Fehler nicht
-            unbemerkt wieder einbauen kann.
+            unbemerkt wieder einbauen kann. Seit dieser Version ist /skucheck ausserdem der
+            einzige Pruefbefehl: Die drei Datenbank-Werkzeuge sind Unterbefehle geworden -
+            /skucheck wp prueft die Wegpunktdaten und laeuft bei einem blossen /skucheck
+            automatisch mit, /skucheck db und /skucheck mem sind Messungen und laufen nur auf
+            Anforderung. Die alten Namen /skudbwpcheck, /skudbcheck und /skudbmem funktionieren
+            weiter.
         Technisch: Am Ende von LocalMenu.lua; laeuft ueber tBagSlotListSorted mit derselben
             Container-API und derselben Namensaufloesung wie das Taschenmenue. Regel 1: Platz mit
             Item-Id, aber leerem Tooltiptext = Verstoss; jeder Verstoss landet als "skucheck"-Zeile
             mit Tasche, Platz, Item-Id und Link im SkuDebugLog-Ring. Die geschlossene Bank wird mit
             Logzeile uebersprungen (nicht still), der Schluesselbund absichtlich mit allen rohen 32
             Plaetzen geprueft, und noch nicht vom Server geladene Items zaehlen als "ausstehend"
-            statt als Fehler.
+            statt als Fehler. Die Domaenen wp/db/mem rufen
+            SkuDBTools.RunWpCheck/RunDbCheck/RunMem (SkuDBTools.lua); sie laufen als
+            Hintergrundjob und sagen ihr Ergebnis selbst an, schreiben es aber zusaetzlich als
+            "skucheck"-Zeilen in den Ring - die Wegpunkt-Verstoesse einzeln, die vorher nur in
+            den SavedVariables lesbar waren. /skucheck db meldet zusaetzlich, wie viele
+            Datensaetze sich gegenueber der vorherigen Aufnahme geaendert haben. Grund fuer die
+            Zusammenlegung: Mit drei getrennten Befehlen liess sich "die Pruefung" laufen
+            lassen und die Wegpunktregeln dabei komplett verfehlen.
 
     Auren: Ablauf-Warnungen kommen puenktlich, nicht erst beim naechsten Kampfereignis
         Einfach: Zwei alte Beschwerden hatten dieselbe Ursache: Eine Aura wie "Debuff auf dem Ziel
@@ -334,6 +347,41 @@ Aenderungen in Sku v43.0
             abgeschossenes Paket kostet damit ein Bild statt den ganzen Aufbau. Stirbt die
             Coroutine trotzdem, wird bis zu dreimal neu aufgebaut, und der Build-Step legt seine
             Anforderung zurueck, statt sie in einem pcall zu verlieren.
+
+    Anmelden: die Wegpunktdaten der Routen stehen deutlich frueher bereit
+        Einfach: Nach dem Anmelden baut Sku alle Wegpunkte und ihre Verbindungen neu auf; bis das
+            fertig ist, antworten die Wegpunktlisten mit "Wegpunkte werden noch geladen". Mehr als
+            die Haelfte dieser Wartezeit ging fuer die Verbindungen drauf, und dieselben Daten
+            wurden dabei viermal durchlaufen. Jetzt ist es ein Durchlauf, und er beginnt mit dem
+            Kontinent, auf dem ihr gerade steht: Der ist als erstes fertig, und ab diesem Moment
+            sind eure Listen benutzbar, waehrend der Rest der Welt noch gebaut wird. Wer dabei auf
+            dem Wartehinweis steht, bekommt den ersten Eintrag automatisch vorgelesen, ohne eine
+            Taste zu druecken. Auf demselben Rechner gemessen: Der Verbindungsteil kostet noch
+            etwa die Haelfte, und die Listen des eigenen Kontinents sind rund 0,7 Sekunden frueher
+            da. An den Routen selbst aendert sich nichts - dieselben Wegpunkte, dieselben
+            Verbindungen, nur frueher.
+        Technisch: Der Verbindungsteil des Wegpunkt-Cache-Aufbaus lief als VIER volle Durchlaeufe
+            ueber ~197.000 gerichtete Kanten: pruefen und symmetrisieren
+            (CheckAndUpdateProfileLinkData), byId/byName materialisieren, die ganze Tabelle aus dem
+            Cache zurueckrechnen (SaveLinkDataToProfile) und ein Schlussdurchlauf ueber alle
+            ~145.000 Cache-Eintraege (CleanupWaypoints). Jetzt ist es ein Durchlauf: Das Pruefen
+            laeuft mit, die Gegenrichtung jeder Kante wird direkt in den Zieleintrag geschrieben -
+            deshalb ist die Reihenfolge der Kontinente egal -, und das Zurueckrechnen entfaellt,
+            weil es die Tabelle schrieb, die ohnehin schon dasteht. Der einzige Fall, in dem es
+            doch etwas aendern koennte (ein Endpunkt, dessen Name im Cache zu einem anderen
+            Eintrag gehoert), wird gezaehlt und loest den alten Weg aus; in den ausgelieferten
+            Routendaten kommt er nicht vor. Der Schlussdurchlauf bekommt vom Custom-Pass die Liste
+            der ueberhaupt loeschbaren Eintraege, nach Kontinent sortiert, und laeuft pro
+            Kontinent, sobald dieser fertig ist. Nebenbei behoben: Der alte Pruefdurchlauf fuegte
+            waehrend pairs() neue SCHLUESSEL in genau die Tabelle ein, ueber die er lief - in Lua
+            undefiniertes Verhalten; die Gegenkanten werden jetzt gesammelt und danach eingetragen.
+            Ausserdem war die im Juli eingebaute Zweiteilung "eigener Kontinent zuerst" beim
+            Anmelden nie aktiv: Sie ermittelt die Zone ueber GetMinimapZoneText, und die ist beim
+            Start des Aufbaus noch leer - der Kontinent wird jetzt vor dem Verbindungsteil erneut
+            ermittelt. Belegt durch einen Nachbau beider Varianten ueber die echten Routendaten
+            (dev/rework-docs/simulate_link_build.py: gleicher Cache, gleiche Verbindungstabelle,
+            fuer jeden Kontinent) und im Spiel durch /skucheck wp, das jetzt auch prueft, dass jede
+            Verbindung ihre Gegenrichtung hat.
 
     Wegpunktlisten sagen jetzt an, wie weit das Laden fortgeschritten ist
         Einfach: Die Meldung "Wegpunkte werden noch geladen" war fuer ein, zwei Sekunden Wartezeit
