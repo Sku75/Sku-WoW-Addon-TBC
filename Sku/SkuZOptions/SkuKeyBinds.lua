@@ -50,11 +50,14 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_MENUQUICK3SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_MENUQUICK4SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
 
-   -- The four ex-MENUQUICK1..4 actions, each under its own name and dispatched by
-   -- the module that owns it (the two nav lists + the cancel key from SkuNav's
-   -- OnSkuNavMain, the action bars from SkuOptions' OnSkuOptionsMain).
-   ["SKU_KEY_NAVWAYPOINTSQUICK"] = {key = "SHIFT-F9", object = "SkuNav", func = "CreateSkuNavMain",},
-   ["SKU_KEY_NAVROUTEDESTINATIONSQUICK"] = {key = "SHIFT-F10", object = "SkuNav", func = "CreateSkuNavMain",},
+   -- The four ex-MENUQUICK1..4 actions, each under its own name. All four are
+   -- dispatched from SkuOptions' OnSkuOptionsMain OnClick and bound there
+   -- (CreateMainFrame) -- the same frame that handled them as MENUQUICK keys.
+   -- Handing the three nav-ish ones to SkuNav's OnSkuNavMain instead looked
+   -- tidier (module ownership) but changed behaviour: Shift-F9 stopped opening
+   -- the waypoint list. One frame, one owner per key, dispatch order preserved.
+   ["SKU_KEY_NAVWAYPOINTSQUICK"] = {key = "SHIFT-F9", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_NAVROUTEDESTINATIONSQUICK"] = {key = "SHIFT-F10", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_ACTIONBARSOPEN"] = {key = "SHIFT-F11", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_ROLLNEED"] = {key = "CTRL-SHIFT-B", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_ROLLGREED"] = {key = "CTRL-SHIFT-G", object = "SkuOptions", func = "CreateMainFrame",},
@@ -136,8 +139,8 @@ SkuOptions.skuDefaultKeyBindings = {
    -- "following stopped" line the automatic stop uses) and the hardcoded Shift-F12
    -- MENUQUICK4 branch (guarded + its own "Navigation abgebrochen" line, but named
    -- after a quick-access slot). Merged into this const with the guarded behaviour --
-   -- see SkuNav/Core.lua's OnClick branch.
-   ["SKU_KEY_STOPROUTEORWAYPOINT"] = {key = "SHIFT-F12", object = "SkuNav", func = "CreateSkuNavMain",},
+   -- see the branch at the top of OnSkuOptionsMain's OnClick (SkuZOptions/Core.lua).
+   ["SKU_KEY_STOPROUTEORWAYPOINT"] = {key = "SHIFT-F12", object = "SkuOptions", func = "CreateMainFrame",},
 
    ["SKU_KEY_MENUQUICK5"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_MENUQUICK5SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},

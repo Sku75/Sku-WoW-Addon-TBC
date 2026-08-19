@@ -2860,41 +2860,11 @@ function SkuNav:CreateSkuNavMain()
 			end
 		end
 
-		-- The ONE cancel-navigation key (default Shift-F12). [v43.0] Merged from the
-		-- two paths that used to exist: this const's old body (EndFollowingWpOrRt +
-		-- ClearWaypointsTemporary + sound, but unguarded -- it fired
-		-- SKU_NAVIGATION_STOPPED and the sound even with nothing running, and its
-		-- announce came from EndFollowingWpOrRt, i.e. the same "following stopped"
-		-- line the AUTOMATIC stop speaks, and only when a waypoint was selected, so
-		-- cancelling a pure route follow said nothing at all) and the hardcoded
-		-- Shift-F12 branch in SkuZOptions/Core.lua (guarded, distinct announce, but
-		-- riding on the SKU_KEY_MENUQUICK4 const). Kept: the guard and the distinct
-		-- "Navigation abgebrochen" line, so the user can tell a cancel from an
-		-- arrival, plus the confirmation sound. CancelNavigationSilent does the same
-		-- teardown as EndFollowingWpOrRt and additionally clears temporary waypoints
-		-- (what the removed "Alles abwaehlen" menu action did); it returns false when
-		-- nothing was active, and then this key stays silent.
-		-- NOTE this frame has no combat/moving guard, so the key works while moving
-		-- and in combat, as the Shift-F12 branch deliberately did.
-		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_STOPROUTEORWAYPOINT") then
-			if SkuNav:CancelNavigationSilent() == true then
-				PlaySound(835)
-				SkuOptions.Voice:OutputStringBTtts(L["Navigation abgebrochen"], true, true, 0.2, nil, nil, nil, 2)
-			end
-		end
-
-		-- SKU_KEY_NAVWAYPOINTSQUICK / -NAVROUTEDESTINATIONSQUICK (default Shift-F9 /
-		-- Shift-F10): open the two nav quick lists. [v43.0] Moved here from the
-		-- hardcoded SKU_KEY_MENUQUICK1/-2 branches in SkuZOptions/Core.lua, which
-		-- returned before the generic quick-select loop and so killed quick-access
-		-- slots 1 and 2. Same actions, own consts, dispatched by the module that
-		-- owns them.
-		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_NAVWAYPOINTSQUICK") then
-			SkuNav:OpenWaypointsQuick()
-		end
-		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_NAVROUTEDESTINATIONSQUICK") then
-			SkuNav:OpenRouteDestinationsQuick()
-		end
+		-- [v43.0] Cancel navigation and the two nav quick lists are dispatched from
+		-- SkuOptions' OnSkuOptionsMain OnClick, NOT here -- that is where they have
+		-- always been handled and moving them here broke the Shift-F9 waypoint list.
+		-- Their keys are bound there too (CreateMainFrame), so exactly one frame owns
+		-- each key. Only the const names changed in v43.0; see SkuZOptions/Core.lua.
 
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_QUICKWP1") then
 			SkuNav:EndFollowingWpOrRt()
@@ -2958,9 +2928,6 @@ function SkuNav:CreateSkuNavMain()
 	tBindNavKey("SKU_KEY_QUICKWP3SET")
 	tBindNavKey("SKU_KEY_QUICKWP4")
 	tBindNavKey("SKU_KEY_QUICKWP4SET")
-	tBindNavKey("SKU_KEY_STOPROUTEORWAYPOINT")
-	tBindNavKey("SKU_KEY_NAVWAYPOINTSQUICK")
-	tBindNavKey("SKU_KEY_NAVROUTEDESTINATIONSQUICK")
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------

@@ -1433,20 +1433,59 @@ function SkuOptions:CreateMainFrame()
 	SkuOptions.InteractMove = false
 
 	tFrame:SetScript("OnClick", function(self, a, b)
+		-- [v43.0] The four keys that were hardcoded onto SKU_KEY_MENUQUICK1..4 own
+		-- named consts now, but they are dispatched from exactly where they always
+		-- were: the TOP of this handler, one branch each, each ending in `return`.
+		-- A first attempt moved three of them to SkuNav's OnSkuNavMain (the module
+		-- that owns the actions) and dropped the `return`; Shift-F9 stopped opening
+		-- the waypoint list, so the dispatch is back to the shape that was known
+		-- good. Keep them here: the position matters (before the combat/moving
+		-- guards further down) and so does the `return` (the rest of this handler is
+		-- the MENU's own key handling and must not also run for these keys).
+
+		-- SKU_KEY_STOPROUTEORWAYPOINT (default Shift-F12): cancel route navigation.
+		-- Stop any active waypoint/route following and announce once, leaving the
+		-- menu's open/closed state untouched. Before the guards below so it also
+		-- works while moving and in combat (it only tears down beacons + state,
+		-- nothing protected). CancelNavigationSilent returns false when nothing was
+		-- active, and then this key stays completely silent -- that guard, the
+		-- distinct announce and sound 835 are what the v43.0 merge of the two former
+		-- cancel paths kept (see SkuZOptions/SkuKeyBinds.lua).
+		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_STOPROUTEORWAYPOINT") then
+			local tWasActive = false
+			if SkuNav and SkuNav.CancelNavigationSilent then
+				tWasActive = SkuNav:CancelNavigationSilent()
+			end
+			if tWasActive then
+				PlaySound(835)
+				SkuOptions.Voice:OutputStringBTtts(L["Navigation abgebrochen"], true, true, 0.2, nil, nil, nil, 2)
+			end
+			return
+		end
+
 		-- SKU_KEY_ACTIONBARSOPEN (default Shift-F11): open the action bars menu.
 		-- The action bars menu is no longer a browsable settings node; it is the
 		-- hidden "Aktionsleisten" root entry that this handler splices in and
 		-- navigates to (SkuCore:ActionBarsShowHandler, which routes through SlashFunc
 		-- so combat/moving deferral and opening the menu are handled as usual).
-		-- [v43.0] Was hardcoded onto SKU_KEY_MENUQUICK3 and returned before the
-		-- generic quick-select loop further down, which killed quick-access slot 3
-		-- outright and left this action rebindable only under a label reading "audio
-		-- menu quick access 3". It owns a const of its own now; the three sibling
-		-- actions moved to SkuNav, which owns them (SkuNav/Core.lua's OnClick).
 		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_ACTIONBARSOPEN") then
 			if SkuCore and SkuCore.ActionBarsShowHandler then
 				SkuCore:ActionBarsShowHandler()
 			end
+			return
+		end
+
+		-- SKU_KEY_NAVWAYPOINTSQUICK / -NAVROUTEDESTINATIONSQUICK (default Shift-F9 /
+		-- Shift-F10): quick-open of the two navigation lists. SkuNav opens the target
+		-- list through its own controlled root entry. Placed before the general
+		-- MENUQUICK loop (further down this handler) so a quick-access slot that a
+		-- user puts on the same key can never swallow them.
+		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_NAVWAYPOINTSQUICK") then
+			if SkuNav and SkuNav.OpenWaypointsQuick then SkuNav:OpenWaypointsQuick() end
+			return
+		end
+		if SkuOptions:SkuKeyBindsMatchKey(a, "SKU_KEY_NAVROUTEDESTINATIONSQUICK") then
+			if SkuNav and SkuNav.OpenRouteDestinationsQuick then SkuNav:OpenRouteDestinationsQuick() end
 			return
 		end
 
@@ -2484,6 +2523,12 @@ function SkuOptions:CreateMainFrame()
 	if tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key2 and tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key2, tFrame:GetName(), tKbds["SKU_KEY_OPENDUNGEONBROWSER"].key2) end
 	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_ACTIONBARSOPEN"].key, tFrame:GetName(), tKbds["SKU_KEY_ACTIONBARSOPEN"].key)
 	if tKbds["SKU_KEY_ACTIONBARSOPEN"].key2 and tKbds["SKU_KEY_ACTIONBARSOPEN"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_ACTIONBARSOPEN"].key2, tFrame:GetName(), tKbds["SKU_KEY_ACTIONBARSOPEN"].key2) end
+	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_NAVWAYPOINTSQUICK"].key, tFrame:GetName(), tKbds["SKU_KEY_NAVWAYPOINTSQUICK"].key)
+	if tKbds["SKU_KEY_NAVWAYPOINTSQUICK"].key2 and tKbds["SKU_KEY_NAVWAYPOINTSQUICK"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_NAVWAYPOINTSQUICK"].key2, tFrame:GetName(), tKbds["SKU_KEY_NAVWAYPOINTSQUICK"].key2) end
+	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_NAVROUTEDESTINATIONSQUICK"].key, tFrame:GetName(), tKbds["SKU_KEY_NAVROUTEDESTINATIONSQUICK"].key)
+	if tKbds["SKU_KEY_NAVROUTEDESTINATIONSQUICK"].key2 and tKbds["SKU_KEY_NAVROUTEDESTINATIONSQUICK"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_NAVROUTEDESTINATIONSQUICK"].key2, tFrame:GetName(), tKbds["SKU_KEY_NAVROUTEDESTINATIONSQUICK"].key2) end
+	SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_STOPROUTEORWAYPOINT"].key, tFrame:GetName(), tKbds["SKU_KEY_STOPROUTEORWAYPOINT"].key)
+	if tKbds["SKU_KEY_STOPROUTEORWAYPOINT"].key2 and tKbds["SKU_KEY_STOPROUTEORWAYPOINT"].key2 ~= "" then SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_STOPROUTEORWAYPOINT"].key2, tFrame:GetName(), tKbds["SKU_KEY_STOPROUTEORWAYPOINT"].key2) end
 
 	for q = 1, 10 do
 		SetOverrideBindingClick(tFrame, true, tKbds["SKU_KEY_MENUQUICK"..q].key, tFrame:GetName(), tKbds["SKU_KEY_MENUQUICK"..q].key)
