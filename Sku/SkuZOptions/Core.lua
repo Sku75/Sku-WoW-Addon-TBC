@@ -320,21 +320,32 @@ function SkuOptions:SlashFunc(input, aSilent)
 				dprint("navquick", "slashfunc enter", "mode=", tostring(SkuNav.navQuickMenuActive), "input=", input, "#root=", #tMenu, "ids=", tIds)
 			end
 
+			-- tSelectedInLoop: the node this walk last handed to OnSelect. The tail below
+			-- uses it to avoid selecting the same node twice (see the note there).
+			local tSelectedInLoop = nil
 			for x = 2, #fields do
 				for y = 1, #tMenu do
-					if tMenu[y].children then
+					-- Match a path segment against the node's stable `id` first, then
+					-- fall back to its localized display `name` (W6-B #14). This is a
+					-- pure superset: existing label paths keep working unchanged, and
+					-- id paths are locale-independent and survive menu renames.
+					-- [v43.0] The match is decided BEFORE the children are built: a node we
+					-- are about to select needs no pre-build, because OnSelect rebuilds a
+					-- dynamic node's children anyway. Only nodes we walk PAST still get the
+					-- pre-build they always had. Neither the id nor the name depends on the
+					-- children, so the match itself is unaffected.
+					local tNodeId = tMenu[y].id and slower(tostring(tMenu[y].id))
+					local tIsMatch = (fields[x] == tNodeId or fields[x] == slower(tMenu[y].name))
+
+					if not tIsMatch and tMenu[y].children then
 						if #tMenu[y].children == 0 then
 							tMenu[y]:BuildChildren()
 						end
 					end
 
-					-- Match a path segment against the node's stable `id` first, then
-					-- fall back to its localized display `name` (W6-B #14). This is a
-					-- pure superset: existing label paths keep working unchanged, and
-					-- id paths are locale-independent and survive menu renames.
-					local tNodeId = tMenu[y].id and slower(tostring(tMenu[y].id))
-					if fields[x] == tNodeId or fields[x] == slower(tMenu[y].name) then
+					if tIsMatch then
 						tFoundMenuPos = tMenu[y]
+						tSelectedInLoop = tMenu[y]
 						if SkuNav and SkuNav.navQuickMenuActive then dprint("navquick", "slashfunc match", fields[x], "->", tMenu[y].name, "id=", tostring(tMenu[y].id)) end
 						tMenu[y].OnSelect(tMenu[y], true)
 						tMenu = tMenu[y].children
@@ -348,18 +359,39 @@ function SkuOptions:SlashFunc(input, aSilent)
 				dprint("navquick", "slashfunc result", "found=", tostring(tFoundMenuPos ~= nil), "name=", tFoundMenuPos and tFoundMenuPos.name or "nil", "children=", tFoundMenuPos and #(tFoundMenuPos.children or {}) or -1)
 			end
 			if tFoundMenuPos then
-				SkuOptions.currentMenuPosition = tFoundMenuPos
-				if SkuOptions.currentMenuPosition.children then
-					if #SkuOptions.currentMenuPosition.children > 0 then
-						SkuOptions.currentMenuPosition:OnSelect()
-						SkuOptions:VocalizeCurrentMenuName()--SkuOptions.currentMenuPosition:BuildChildren(SkuOptions.currentMenuPosition)
+				-- [v43.0] Build the target list ONCE per walk. The loop above already called
+				-- OnSelect on this very node, and OnSelect on a `dynamic` node CLEARS and
+				-- REBUILDS its children -- so re-selecting it here rebuilt the same list a
+				-- second time for nothing. On a big list that is not merely wasted work: the
+				-- nearby-waypoints list is ~1900 entries on a large map, and three builds in
+				-- one keypress (this one, the loop's, and the pre-build that used to run
+				-- before the match test) tripped the client's "insecure scripts exceeded
+				-- execution limit" watchdog. The error surfaced inside the pcall that wraps
+				-- SkuNav:OpenWaypointsQuick, so it was swallowed and the descend simply never
+				-- finished: the menu sat on the root entry and one arrow press then opened the
+				-- list correctly. Skip the re-select when the loop's OnSelect already did the
+				-- job -- same node, children present, and no actionOnEnter (for those the two
+				-- calls genuinely differ: the loop passes aEnterFlag=true, which fires the
+				-- action, while this one descends).
+				if tFoundMenuPos == tSelectedInLoop
+					and tFoundMenuPos.actionOnEnter ~= true
+					and tFoundMenuPos.children and #tFoundMenuPos.children > 0
+				then
+					SkuOptions:VocalizeCurrentMenuName()
+				else
+					SkuOptions.currentMenuPosition = tFoundMenuPos
+					if SkuOptions.currentMenuPosition.children then
+						if #SkuOptions.currentMenuPosition.children > 0 then
+							SkuOptions.currentMenuPosition:OnSelect()
+							SkuOptions:VocalizeCurrentMenuName()
+						else
+							SkuOptions.currentMenuPosition:OnSelect()
+							SkuOptions:CloseMenu()
+						end
 					else
 						SkuOptions.currentMenuPosition:OnSelect()
 						SkuOptions:CloseMenu()
 					end
-				else
-					SkuOptions.currentMenuPosition:OnSelect()
-					SkuOptions:CloseMenu()
 				end
 			end
 		elseif fields[1] == "mmreset" then
