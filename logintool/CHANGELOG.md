@@ -2,6 +2,47 @@
 
 ## 3.0 (2026-08-18)
 
+**Das Tool brach den Login des Clients selbst ab.** Am Client gemeldet und
+reproduziert: Spiel starten, "Das Spiel startet" hören, ein Klickgeräusch — und
+danach steht der Anmeldebildschirm da und die Zugangsdaten müssen neu getippt
+werden. Von Hand mitgelesen steht in dem Moment "Realmliste wird abgerufen" mit
+einem Abbrechen-Knopf auf dem Schirm.
+
+Genau den hat das Tool gedrückt. `InitLogin` behandelt ein Popup auf dem
+Anmeldebildschirm wie eine Fehlermeldung: vorlesen und wegklicken. Bei einem
+Dialog mit EINEM Knopf ist dieser Knopf aber Abbrechen, und dessen OnAccept
+trennt die laufende Verbindung — dieselbe Falle, die schon jeden Realm-Beitritt
+gekillt hat und gegen die `LoginSubmitAction` und `RealmSelectAction` längst
+gewappnet sind ("NEVER press this one"). Der Bildschirmwächter war es nicht,
+weil er während eines Client-Starts nie HINGESEHEN hat: Bei 2500 ms Abstand lag
+der ganze Verbindungsaufbau zwischen zwei Proben. Mit 500 ms landet er mitten
+darauf. Die schnellere Erkennung hat den Fehler nicht gebaut, sie hat ihn
+erreichbar gemacht.
+
+- Auf dem Anmeldebildschirm wird ein Ein-Knopf-Popup jetzt nur noch vorgelesen,
+  nie gedrückt (`AnnounceProgressPopup`, einmal pro Text statt bei jeder Probe).
+  Zwei Knöpfe sind weiterhin eine echte Frage — falsches Passwort, Server nicht
+  erreichbar — und werden beantwortet.
+- Solange dieser Dialog steht, passiert sonst gar nichts: kein Klick auf
+  "Erneut verbinden" (der würde in eine laufende Verbindung greifen), keine
+  Ansage "Nicht angemeldet" (das ist noch gar nicht entschieden), und der
+  Menüzeiger bleibt, wo der Benutzer ihn hatte.
+- Verschwindet der Dialog und der Anmeldebildschirm ist NOCH da, ist der Versuch
+  gescheitert — das zählt als Ankunft und wird angesagt, auch wenn das Tool
+  vorher schon auf diesem Bildschirm stand.
+- Auch der rote Knopf auf dem Anmeldebildschirm wird während des Client-Starts
+  nicht mehr gedrückt. Als Wiederholversuch ist er wertlos, solange der Client
+  von sich aus verbindet, und ein roter Knopf an dieser Stelle kann genauso gut
+  das Abbrechen eines Fortschrittsdialogs sein, den die Popup-Proben nicht
+  erkannt haben. Beide Lesarten führen zum selben Schluss. Welcher der beiden
+  Klicks es war, sagt jetzt das Log.
+- Dieselbe Regel auf dem Charakterbildschirm, aber NUR während des Starts:
+  "Charakterliste wird abgerufen" ist dort derselbe Dialog mit demselben Knopf.
+  Danach gilt wieder das Übliche, denn auf diesem Bildschirm läuft sonst keine
+  Verbindung. Maßgeblich ist `ClientStillStartingUp` — wahr nur für einen
+  Client, dessen Erscheinen das Tool gesehen hat, und nur für dessen erste
+  Minute.
+
 **Kein Charakter-Walk mehr, wenn das Panel die ganze Liste hält.** Eine
 Charakterliste zu zählen kostete zuletzt 9,2 Sekunden — für EINEN Charakter
 (`CountAndReadCharacters: 1 characters … 9172 ms`), davon über drei Sekunden

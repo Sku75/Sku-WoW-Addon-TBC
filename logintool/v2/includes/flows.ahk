@@ -12,6 +12,14 @@ global gPendingCreate := ""       ; {gender, race, class, zone} while naming
 global gLastCharList := []
 global gCharCursor := 0           ; character the game's own selection sits on
                                   ; (1..gLastCharList.Length, 0 = unknown)
+; The client's own progress dialog that was last read out, so a wait of several
+; seconds is not narrated on every probe. Cleared as soon as a screen without
+; one is seen.
+global gProgressPopupText := ""
+; How long after a client appeared its own start-up dialogs can still be on
+; screen. A minute, because this covers a slow connection, and being wrong in
+; this direction only means a popup is READ instead of pressed.
+global gClientStartupWindowMs := 60000
 global gCharListFromWalk := false ; true: list came from the counted walk, so
                                   ; entries below the fold are in it and their
                                   ; stored click rects are stale. false: list is
@@ -153,6 +161,39 @@ SpeakAndClosePopup(s) {
     Sleep(400)
 }
 
+; Can a popup on screen still be one of the CLIENT'S OWN start-up dialogs?
+;
+; "Realmliste wird abgerufen ... Abbrechen" and its siblings are single-button
+; popups whose one button cancels the connection that is under way. The tool has
+; known that since the realm-join fix (see IsOneButtonPopup) - but only inside
+; the flows that press buttons on purpose. The screen watcher did not, because
+; it never used to LOOK during a client start: at 2500 ms between probes the
+; whole connect went by unseen. Probing every 500 ms it lands squarely on that
+; dialog, InitLogin answered it the way it answers an error message, and the
+; single button it pressed was Abbrechen - so the game dropped to the login
+; screen and the account name had to be typed again. Caught at the client
+; 2026-08-20, straight after the faster probing went in.
+;
+; Only true for a client the tool watched appear (gClientWitnessed, detect.ahk),
+; and only for the first minute of it.
+ClientStillStartingUp() {
+    return gClientWitnessed && gClientSeenTick > 0
+        && (A_TickCount - gClientSeenTick) < gClientStartupWindowMs
+}
+
+; Read a progress dialog out once, not on every probe. Returns nothing to click
+; - that is the whole point.
+AnnounceProgressPopup(s, where) {
+    text := PopupText(s)
+    if (text = "")
+        text := T("Please wait.")
+    if (text = gProgressPopupText)
+        return
+    global gProgressPopupText := text
+    Log(where ": progress popup '" text "' - reading it, never clicking")
+    Say(text)
+}
+
 ; ---------- login initialization (single-pass steps, driven by CheckMode) ----------
 
 InitLogin(s := "") {
@@ -261,14 +302,49 @@ InitLogin(s := "") {
         ; earlier fix came here to keep reachable. Everything that needs a
         ; logged-in client (characters, realms, create, delete) is not in that
         ; menu, so it cannot be walked into from here.
-        alreadyHere := gOnLoginScreen
-        gOnLoginScreen := true
         full := Sense()
+        ; On THIS screen a single-button popup is the client's own progress
+        ; dialog and its one button is Abbrechen - the same rule LoginSubmit
+        ; and RealmSelect already follow. Read it and wait; it clears itself
+        ; either way. Nothing else happens while it is up: the reconnect button
+        ; below would act on a connection that is still in flight, and nothing
+        ; is decided yet about being logged out, so that is not announced and
+        ; the menu is left where the user had it.
+        if (AnyPopup(full) && IsOneButtonPopup(full)) {
+            AnnounceProgressPopup(full, "InitLogin")
+            ; Still counts as "on the login screen": leaving it is what tells
+            ; CheckMode to initialize again once the client is through.
+            gOnLoginScreen := true
+            return
+        }
+        ; A dialog that was up and is gone while the login screen is STILL here
+        ; means the attempt ended and did not get past this screen - so this
+        ; counts as an arrival and gets announced, even if the tool was already
+        ; standing here while the client was connecting.
+        wasConnecting := (gProgressPopupText != "")
+        global gProgressPopupText := ""
+        alreadyHere := gOnLoginScreen && !wasConnecting
+        gOnLoginScreen := true
         if AnyPopup(full) {
+            ; Two buttons: a real question - wrong account, wrong password,
+            ; server unreachable. Those are answered.
+            Log("InitLogin: answerable popup on the login screen")
             SpeakAndClosePopup(full)
         } else if SenseProbeMatches(full, "LoginScreenReconnectButton", "GenericRedButton") {
-            ClickWidget("LoginScreenReconnectButton")
-            Sleep(600)
+            ; The other button this screen can be made to press. It is a retry,
+            ; which is worth nothing while the client is still connecting on its
+            ; own - and a red button at this spot during a start-up is at least
+            ; as likely to be the Cancel of a progress dialog the popup probes
+            ; did not match. Both readings say the same thing: do not press it
+            ; during the client's own start-up.
+            if ClientStillStartingUp() {
+                Log("InitLogin: red button on the login screen, but the client is"
+                    . " still starting up - not pressing it")
+            } else {
+                Log("InitLogin: clicking the reconnect button")
+                ClickWidget("LoginScreenReconnectButton")
+                Sleep(600)
+            }
         }
         ; Once per arrival, not once per sense: InitLogin runs again on every
         ; refocus, and repeating the sentence each time would bury whatever the
@@ -295,9 +371,19 @@ InitLogin(s := "") {
         }
         full := Sense()
         if AnyPopup(full) {
+            ; The character screen is normally safe to answer - nothing is
+            ; connecting there. During the client's OWN start-up it is not:
+            ; "Charakterliste wird abgerufen" is a single-button popup on this
+            ; screen too, and its button cancels. Read it and let the next probe
+            ; look again.
+            if (IsOneButtonPopup(full) && ClientStillStartingUp()) {
+                AnnounceProgressPopup(full, "InitLogin/charselect")
+                return
+            }
             SpeakAndClosePopup(full)
             return
         }
+        global gProgressPopupText := ""
         ; Counting the list walks the characters with the arrow keys and takes
         ; a while on a full realm; block menu actions meanwhile so a keypress
         ; cannot start a second flow on top of the walk.

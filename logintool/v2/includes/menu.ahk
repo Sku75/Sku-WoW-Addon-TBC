@@ -370,8 +370,17 @@ CheckMode() {
                     text := PopupText(full)
                     if (text != gCheckModePopupText) {
                         gCheckModePopupText := text
-                        Log("CheckMode: popup on the character screen - reading it")
-                        SpeakAndClosePopup(full)
+                        ; ... unless the client is still starting up, where a
+                        ; single-button popup on this screen is its own progress
+                        ; dialog and the one button cancels the connection. See
+                        ; ClientStillStartingUp.
+                        if (IsOneButtonPopup(full) && ClientStillStartingUp()) {
+                            Log("CheckMode: start-up progress popup - reading it, never clicking")
+                            AnnounceProgressPopup(full, "CheckMode")
+                        } else {
+                            Log("CheckMode: popup on the character screen - reading it")
+                            SpeakAndClosePopup(full)
+                        }
                     }
                 } else {
                     ; No dialog is up any more: drop the modal states so a stale
