@@ -2,6 +2,222 @@
 
 ## 3.0 (2026-08-18)
 
+**Kein Charakter-Walk mehr, wenn das Panel die ganze Liste hält.** Eine
+Charakterliste zu zählen kostete zuletzt 9,2 Sekunden — für EINEN Charakter
+(`CountAndReadCharacters: 1 characters … 9172 ms`), davon über drei Sekunden
+allein dafür, das Ende einer einelementigen Liste zu beweisen. Der Einwand
+"die Liste könnte auf Charakter 10 stehen, dann ist nur einer sichtbar" ist der
+richtige — und er ist der eine Fall, den es nicht gibt. Aus dem Client selbst
+(`Blizzard_GlueXML/Classic/CharacterSelect.lua`, `UpdateCharacterList`):
+
+```
+local characterLimit = min(numChars, MAX_CHARACTERS_DISPLAYED);
+for i=1, characterLimit, 1 do   -- Knopf i aus Index i + CHARACTER_LIST_OFFSET
+```
+
+Die ANZAHL gezeichneter Knöpfe hängt allein an `numChars`; der Scroll-Offset
+entscheidet nur, WELCHE Charaktere darin stehen. Versteckt werden Knöpfe an
+genau einer Stelle, `if (numChars < MAX_CHARACTERS_DISPLAYED)`. Ein Realm mit
+zehn Charakteren zeigt also bei jeder Scrollposition neun Knöpfe, und ein Panel
+mit weniger Einträgen als es fasst bedeutet: Der Realm HAT weniger. (Der Offset
+ist ohnehin überall geklemmt — `max(numChars - MAX, 0)` in den Scroll-Handlern,
+`SetMinMaxValues(0, numChars - MAX)` an der Scrollleiste.) Und unterhalb einer
+vollen Seite gibt es nichts zu scrollen: dieselbe Funktion versteckt die
+Scrollleiste und setzt `blockUpdates`, "keep mousewheel from doing anything" —
+die sichtbare Reihenfolge IST die Charakterreihenfolge ab Charakter 1.
+
+- Was der Panel-Befund nicht beweist, ist eine korrekte OCR-Lesung. Dafür der
+  Slot-Test in `CharPanelHoldsWholeList`: Die Blöcke müssen auf den Slots 1..N
+  sitzen und jeder Slot darunter leer sein. Fällt OCR ein Block in der Mitte
+  weg, laufen die belegten Slots über die Anzahl hinaus — dann entscheidet wie
+  bisher der Walk.
+- Zusätzlich müssen ZWEI Lesungen in Anzahl und Namen übereinstimmen, bevor der
+  Walk übersprungen wird. Ab neun sichtbaren Blöcken wird immer gewalkt.
+- Weil diese Liste die sichtbare Sektion ist und nicht scrollen kann, sind die
+  gespeicherten Klick-Rechtecke aktuell: `gCharListFromWalk` wird auf false
+  gesetzt, und die Auswahl eines Charakters ist damit ein Klick statt eines
+  Cursor-Walks.
+
+**OCR nur noch auf dem Ausschnitt, der gelesen wird — großzügig geschnitten.**
+Windows-OCR arbeitet über die Pixel, die man ihm gibt; das Tool gab ihm bisher
+meist das ganze Fenster. Neu sind zwei Zuschnitte mit Vollbild als Auffangnetz:
+
+- `CharPanelRegion` beginnt bei 0,60 der Breite statt bei 0,74 (dort filtert
+  `OcrCharList`) und nimmt die volle Höhe. Der Anteil, den das Panel an der
+  Breite hat, ist eben KEINE Konstante: Der Glue-Bildschirm skaliert über die
+  HÖHE, ein 4:3-Fenster gibt denselben 280 UI-Einheiten einen viel größeren
+  Anteil als ein 21:9-Fenster. Ein Filter, der eine Zeile verwirft, ist
+  harmlos; ein Zuschnitt, der sie zerschneidet, ändert die Buchstaben.
+- `RealmListRegion` schneidet vor allem oben und unten (ny 0,12–0,94), weil die
+  vertikalen Brüche die stabilen sind — die Reiterleiste sitzt bei jedem
+  Seitenverhältnis auf ny 0,81–0,85. Horizontal bleiben 5 % Rand auf jeder
+  Seite stehen, weil sich die Dialogbreite mit Client und Fensterform
+  verschiebt (nx 0,259 auf TBC gegen 0,206 auf Era).
+- Kommt eine zugeschnittene Lesung ganz ohne Zeilen zurück, wird einmal das
+  volle Bild gelesen. "Da ist nichts" ist die eine Antwort, die ein Zuschnitt
+  erfinden kann, und die wird ihm nicht geglaubt.
+
+**Blinde Wartezeiten werden zu Bedingungen — und schreiben ihre echten Zeiten
+ins Log.** Neu ist `WaitUntil(was, bedingung, maxMs)`: Es fragt den Bildschirm
+(Pixelprobe oder Sense ohne OCR), kehrt zurück, sobald die Bedingung stimmt, und
+loggt `Settle: <was> after N ms (limit M)`. Die alte Schlafdauer ist jetzt die
+OBERGRENZE — langsamer kann es nicht werden. Läuft sie ab, steht das ebenfalls
+im Log, deutlich als `TIMED OUT`, denn "die Zahl war zu klein" und "es ist nie
+passiert" dürfen nicht gleich aussehen.
+
+- `RefreshCharacterMenuSettled`: flache Sekunde vor jedem Neuaufbau → wartet auf
+  die Auswahlleiste (`UpdateCharacterList` zeichnet Knöpfe und Auswahl im selben
+  Durchlauf; die Pixelprobe kostet ~17 ms).
+- Serverauswahl schließen, Beitritt nach dem Enter, Erstellung/Löschung
+  abbrechen: warten jetzt auf den Bildschirmwechsel statt auf die Uhr.
+- Warten auf den geöffneten Serverdialog: Probe alle 200 ms statt alle 700 ms,
+  Obergrenze unverändert bei ~7 s; die Zeit bis zum Öffnen steht als
+  `Settle: realm dialog opens after N ms` im Log.
+- Die drei Wartezeiten auf dem ERSTELLUNGS-Bildschirm bleiben blind und mit
+  Absicht: Was ein Rassenklick ändert (die Klassenzeile filtert sich neu, das
+  Modell wechselt), kann keine billige Probe bestätigen, und ein Klick auf die
+  Klasse vor dem Neufiltern trifft die falsche. Sie hängen jetzt aber an EINEM
+  Wert (`gCreateClickSettleMs`) und loggen ihre Gesamtdauer, damit die nächste
+  Erstellung sagt, was sie wirklich kostet.
+
+**Die Serverliste wird ungefähr doppelt so schnell aufgebaut — mit denselben
+Zeilen.** Aus dem Log vom 2026-08-20 (41 Realms, Era): elf Seiten, gut 15
+Sekunden, und auf jeder Seite stand "17 rows, 3 fresh". Genau das war die
+veraltete Annahme: Drei Rasten pro Seite stammen aus der Zeit, als der Client
+die Rasten verschluckte, weil sie ohne Pause abgefeuert wurden — eine Raste war
+damals rund ein Drittel einer Zeile wert. Die 25 ms Luft in `RealmListScroll`
+haben das längst behoben; seitdem ist eine Raste eine Zeile, und das Tool las
+ein 17 Zeilen hohes Fenster elfmal, um jedesmal drei neue Realms mitzunehmen.
+
+- Die Schrittweite kommt jetzt aus der gerade gelesenen Seite:
+  `RealmPageStep` = sichtbare Zeilen minus `gRealmScrollOverlap` (5). Die Seiten
+  greifen also weiter ineinander, als eine Zeile breit ist — dazwischen kann
+  nichts verlorengehen, und die "hat sich die Liste bewegt"-Signatur hat
+  weiterhin gemeinsame Zeilen zum Vergleichen. Aus elf Seiten werden vier bis
+  fünf.
+- Sicherheitsnetz dazu: Teilt eine Seite KEINE einzige Zeile mit der
+  vorherigen, wäre theoretisch etwas dazwischen übersprungen worden. Das steht
+  im Log und meldet die Liste als möglicherweise unvollständig, statt sie
+  stillschweigend zu kürzen. Bei fünf Zeilen Überlappung müsste eine Raste
+  1,4 Zeilen weit springen, damit das überhaupt eintritt.
+- Die beiden "Seite bringt nichts"-Fälle werden jetzt unterschieden, weil die
+  große Schrittweite sie unterschiedlich gefährlich macht: Eine misslungene
+  Lesung (weniger als zwei Zeilen) wird OHNE Scrollen wiederholt — auf einer
+  Seite, die nie gelesen wurde, weiterzuscrollen ist genau das, was Zeilen
+  überspringt. Eine Seite, die identisch zur vorherigen ist, bekommt einen
+  kleinen Schubs von vier Rasten; der kann nichts überspringen, weil eben diese
+  Seite gerade vollständig gelesen wurde.
+- `RealmListScroll` holte sich die Fenstergröße bei JEDEM Scrollen per Sense
+  vom Helfer — eine komplette Fensteraufnahme samt Klassifizierung, nur um die
+  Maus in die Mitte der Liste zu setzen. Die Aufnahme IST der Client-Bereich,
+  also liefert `WowClientRect()` dieselben Zahlen umsonst. Das war eine
+  Aufnahme pro Seite und eine vor jedem Scroll an den Listenanfang.
+- Die Kategorie-Reiter werden aus der Seite gelesen, die ohnehin schon im
+  Speicher liegt (sie scrollen nicht mit), statt am Ende jedes Aufbaus noch
+  einen vollen OCR-Durchlauf zu kosten. Nur wenn diese Lesung gar keine Reiter
+  hat, wird noch einmal nachgesehen.
+- `RealmListScrollTop` bekommt die bekannte Listenlänge übergeben und spult
+  nicht mehr blind 60 Rasten zurück, wo 49 reichen. Ohne bekanntes Maß bleibt
+  es bei 60 — eine nicht ganz zurückgespulte Liste lässt die nächste Seite 1
+  mitten in der Liste anfangen, und das ist der teure Fehler, nicht die
+  zusätzliche Sekunde.
+
+**Der Helfer startet, sobald ein Client erkannt ist.** `SkuLoginSense.exe`
+wurde bisher erst gestartet, wenn die erste Prüfung eine Antwort wollte — der
+Prozessstart, das Pipe-Paar und die OCR-Engine (etwa eine halbe Sekunde) lagen
+damit genau zwischen "das Spiel ist da" und der ersten Aussage darüber. Jetzt
+läuft das parallel zum Hochfahren des Clients, also in Zeit, die ohnehin
+niemand nutzt.
+
+**Die Serverliste brach nach einer einzigen leeren Seite ab.** Am 2026-08-20 auf
+Era: 17 von 41 Realms, `BuildRealmMenu: 17 realm rows over 2 page(s)` — und
+angesagt wurde die Liste als wäre sie vollständig, weil nur die Seitenobergrenze
+`truncated` setzt. Die Abbruchbedingung war "gleiche Zeilen wie eben ODER nichts
+Neues" — und genau so sehen auch ein verschluckter Mausrad-Klick und eine
+Aufnahme mitten im Neuzeichnen des Dialogs aus. Ein einziger davon beendete
+den Aufbau. `FindRealmRowByName` hat dieselbe Lehre schon hinter sich ("ONE of
+those used to end the search silently"); jetzt gilt sie hier auch:
+
+- Eine leer ausgegangene Seite wird nachgeprüft: härter scrollen (6 statt 3
+  Rasten), länger setzen lassen (600 statt 320 ms), nochmal lesen. Erst die
+  ZWEITE leere Seite ist das Listenende.
+- Eine Lesung mit weniger als zwei Zeilen zählt ebenfalls als leer ausgegangen —
+  in einem Dialog, der sichtbar eine Liste hält, ist das eine misslungene
+  Lesung, nie der Boden.
+- Nur eine Lesung, die wirklich eine Liste gesehen hat, darf "unverändert" für
+  die nächste Runde definieren. Sonst sieht die Seite NACH einer misslungenen
+  Lesung wie Fortschritt aus und verdeckt eine Liste, die sich gar nicht bewegt.
+- Bricht der Aufbau ab, weil gar keine Antwort mehr kommt, wird das jetzt als
+  unvollständig gemeldet statt stillschweigend eine kurze Liste zu übergeben.
+- Jede Seite steht mit Zeilen- und Neuzugangszahl im Log, dazu der Grund für den
+  Abbruch. Vorher war aus dem Log nicht zu sehen, WARUM Schluss war.
+
+**"Das Spiel startet" statt Schweigen beim Hochfahren.** Der Bildschirm, den das
+Tool beim Start überspringt, ist der einzige unerkannte, den es benennen KANN:
+Ein Client, dessen Fenster das Tool hat auftauchen sehen und der ein paar
+Sekunden alt ist, fährt hoch. Also wird das gesagt, sobald die erste
+unerkannte Aufnahme kommt. Der Anspruch wird nur dort erhoben, wo er stimmt —
+`gClientWitnessed` ist nur wahr, wenn das Tool beim Erscheinen des Clients schon
+mindestens fünf Sekunden lief; ein Client, der vorher schon da war, sagt nichts
+über sein Alter. Der Hinweis "Unbekannter Bildschirm" folgt weiterhin, wenn die
+Strecke die 12 Sekunden überlebt: ein Start, der nicht endet, ist ein Client, der
+hängt. Neuer Text in allen fünf Sprachdateien.
+
+**Spielstart: kein "Unbekannter Bildschirm" mehr, und schneller erkannt.** Beim
+Start sagte das Tool zuverlässig erst "Unbekannter Bildschirm" und erkannte
+Sekunden später den Anmeldebildschirm doch. Beides war dieselbe Ursache: Ein
+startender Client zeigt schwarzes Bild, Logo und Ladebildschirm, und die
+klassifizieren alle als "unknown" — der Satz, der eigentlich "du hängst fest"
+bedeutet, war damit der Satz, den man bei jedem normalen Start hörte.
+
+- Die Meldung kommt jetzt erst, wenn 12 Sekunden lang ununterbrochen kein
+  Bildschirm erkannt wurde (`gUnknownGraceMs`). Ein Sense, der
+  gar keine Antwort liefert (Fenster weg, Helfer tot), zählt dabei NICHT mit —
+  das ist kein Bildschirm, über den sich etwas sagen ließe. Wer wirklich vor
+  WoWs eigenem Menü steht, hört den Hinweis also weiterhin, nur eben erst dann.
+- Solange nichts erkannt ist, wird jetzt alle 500 ms geprüft statt alle 2500 ms
+  (`gGlueProbeFastMs`), und der Moduswächter selbst tickt mit 500 ms statt 1000
+  ms — sonst wäre die schnellere Prüfung an seinem Sekundenraster hängen
+  geblieben. Ein Sense ohne OCR ist billig; die Erkennung hinkte dem Client
+  vorher um bis zu 3,5 Sekunden hinterher, und zwar nur wegen der Bremse. Nach
+  25 Sekunden ohne Ergebnis (`gGlueFastWindowMs`) fällt die Prüfung von selbst
+  auf den langsamen Takt zurück: dann startet der Client nicht mehr, dann steht
+  er.
+- Im Anmeldemodus bleibt der Hintergrundwächter bei 2500 ms — der schaut nur
+  nach, ob das Spiel von sich aus die Serverauswahl geöffnet hat.
+
+**Die Serverliste arbeitet nicht mehr stumm.** Der Aufbau der Realmliste ist
+Sekunden aus Mausrad-Scrollen und OCR (bei 41 Realms rund zehn Seiten), und in
+dieser Zeit kam kein Ton — nicht unterscheidbar von einem Tool, das gestorben
+ist. Neu ist `WorkBeep`: der Arbeitston, entkoppelt vom Rest, mit einer Sperre
+von 1,2 Sekunden, damit schnelle Seiten nicht Ton auf Ton stapeln. Er läuft beim
+Hochscrollen an den Listenanfang, pro gelesener Seite, beim Warten auf die
+Realmdaten und beim Wiederfinden einer Zeile vor dem Beitritt. `Say(T("wait"))`
+ist der Benachrichtigungs-KLANG, keine Sprache, und unterbricht nichts —
+deshalb darf er mitten in einen Ablauf.
+
+**Die Wartezeiten bis "Da ist etwas schiefgelaufen" sind halbiert.** Sie waren
+für ein langsameres Tool bemessen. Halbiert wurde dort, wo auf eine ÖRTLICHE
+Bildschirmänderung gewartet wird — der Server wird da gar nicht gefragt, also
+bringt langes Warten nichts außer später Bescheid zu wissen:
+
+- Charaktererstellung öffnen: 20 → 10 Runden (~8 s).
+- Name bestätigen: 25 → 12 Runden (~18 s). Der Namenscheck ist eine echte
+  Serverantwort, deshalb bleibt der hier großzügiger.
+- Erstellung abbrechen: 15 → 8. Löschen abbrechen: 10 → 5.
+- Hardcore-Regeln bestätigen: 20 → 10 Runden. Das war mit 25-30 Sekunden die
+  längste von allen und die, die direkt nach dem Zustimmen kommt.
+- Serverauswahl öffnen: 15 → 8. Serverbeitritt: 15 → 10 Runden — ein LAUFENDER
+  Beitritt zählt hier ohnehin nicht mit (der Verbindungsdialog nimmt den
+  `progress`-Zweig), diese Grenze entscheidet nur, wie lange ein unerkannter
+  Bildschirm angestarrt wird.
+- Danach piept `FailFlow` noch zweimal statt viermal.
+
+Absichtlich NICHT verkürzt: die Anmeldung selbst (`LoginSubmitAction`, ~36 s)
+und der Hardcore-Beitritt (`WaitForHardcoreJoin`, 45 Runden). Beide warten auf
+den Server, nicht auf den Client — sie kürzen hieße, eine langsame Verbindung
+als Fehler zu melden.
+
 **Charakterliste ab neun Charakteren.** Die folgenden Punkte gehören alle zu
 EINEM Befund: Das Panel zeigt genau neun Slots
 (`Blizzard_GlueXML_TBC.toc` lädt `Vanilla\CharacterSelectConstants.lua` mit

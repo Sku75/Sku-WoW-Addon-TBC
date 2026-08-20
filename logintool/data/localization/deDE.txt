@@ -159,3 +159,4 @@ The server was not found in the list. The list is being read again.==Der Server 
 Attention. The game is on a different server:==Achtung. Das Spiel ist auf einem anderen Server:
 Change the server again before you play here.==Wechsle den Server erneut, bevor du hier spielst.
 Agreed. Please wait.==Zugestimmt. Bitte warten.
+The game is starting. Please wait.==Das Spiel startet. Bitte warten.

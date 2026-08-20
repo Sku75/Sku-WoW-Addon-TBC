@@ -159,3 +159,4 @@ The server was not found in the list. The list is being read again.==The server 
 Attention. The game is on a different server:==Attention. The game is on a different server:
 Change the server again before you play here.==Change the server again before you play here.
 Agreed. Please wait.==Agreed. Please wait.
+The game is starting. Please wait.==The game is starting. Please wait.

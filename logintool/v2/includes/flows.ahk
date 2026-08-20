@@ -687,6 +687,9 @@ global gCharStallRetries := 2
 ; A long walk is a long silence, and silence is the one state a blind user
 ; cannot interpret. Speak the running count every N characters.
 global gCharWalkSayEvery := 10
+; Settle after each click on the character CREATION screen. See CreateCharAction:
+; the only one of the tool's waits that still has no observable condition.
+global gCreateClickSettleMs := 900
 
 ; The OCR character block sitting at the given slot, or "" if none matches.
 CharBlockAtSlot(blocks, s, slot) {
@@ -810,12 +813,40 @@ CharListSignature(blocks) {
 ; helper to OCR that strip instead of the whole frame: measured 266 ms per
 ; look instead of 403 ms, and the walk does a lot of them. Line rects come
 ; back in full-frame coordinates either way.
+; The crop for a character-panel read: everything OcrCharList could possibly
+; want, plus room.
+;
+; Cropping is worth real time - OCR runs over the pixels it is handed, and the
+; panel is a strip down the right edge - but the crop must never be the thing
+; that decides what is readable. It starts at 0.60 where the panel's own filter
+; starts at 0.74, and takes the full height where the filter stops at 0.97,
+; because the fraction the panel occupies is NOT a constant: the glue screen
+; scales by screen HEIGHT, so a 4:3 window gives the same 280 UI units a much
+; wider share of the frame than a 21:9 one does. A filter that trims a line is
+; harmless; a crop that cuts one changes the letters that come back. Widening
+; costs a little OCR and removes that whole class of failure.
 CharPanelRegion() {
     client := WowClientRect()
     if (client = "")
         return ""
-    x := Round(client.w * 0.74)
-    return "--region " x ",0," (client.w - x) "," Round(client.h * 0.97)
+    x := Round(client.w * 0.60)
+    return "--region " x ",0," (client.w - x) "," client.h
+}
+
+; A cropped panel read, with the full frame as a safety net. "No lines at all"
+; is the one answer a crop can invent - an empty realm and a crop that went
+; wrong look identical - so that answer is never taken on the crop's word.
+SenseCharPanel() {
+    global gCharSenseCount
+    gCharSenseCount++
+    region := CharPanelRegion()
+    if (region = "")
+        return Sense()
+    s := Sense(region)
+    if (SenseOk(s) && s.Has("lines") && s["lines"].Length > 0)
+        return s
+    Log("SenseCharPanel: cropped read came back empty - reading the full frame")
+    return Sense()
 }
 
 ; The selected character's name, as printed under the character model
@@ -832,12 +863,49 @@ SelectedCharNameOnScreen() {
     return ""
 }
 
+; Does the panel PROVE that the whole list is on it?
+;
+; Blizzard's own list update settles this, and it is worth spelling out because
+; the obvious worry - "the list could be scrolled to character 10, so only one
+; is visible" - is the one thing that cannot happen. From the client's own
+; Blizzard_GlueXML/Classic/CharacterSelect.lua, UpdateCharacterList:
+;
+;     local characterLimit = min(numChars, MAX_CHARACTERS_DISPLAYED);
+;     for i=1, characterLimit, 1 do   ... fill button i from index i + OFFSET
+;
+; The number of buttons drawn depends on numChars ALONE - the scroll offset only
+; decides WHICH characters they show. Buttons are hidden in exactly one place,
+; `if (numChars < MAX_CHARACTERS_DISPLAYED) then for i = numChars+1, ... Hide()`.
+; So a realm with ten characters draws nine buttons at every scroll position,
+; and a panel showing fewer than it can hold means the realm HAS fewer. (The
+; offset is clamped everywhere anyway - max(numChars - MAX, 0) in the scroll
+; handlers, SetMinMaxValues(0, numChars - MAX) on the scrollbar - but the button
+; count does not even depend on that.) With fewer than a panelful there is also
+; nothing to scroll: the same function hides the scrollbar and sets
+; blockUpdates, "keep mousewheel from doing anything", so the visible order IS
+; character order, starting at character 1.
+;
+; What the panel cannot prove is that OCR read it correctly, and that is what
+; the slot check is for: the blocks must sit on slots 1..N with every slot below
+; N empty. If OCR dropped a block in the middle, the occupied slots run past the
+; count and this returns false - then the arrow-key walk decides, as before.
+CharPanelHoldsWholeList(blocks, s) {
+    slots := gCharUIPositions.Length
+    if (slots = 0 || blocks.Length = 0 || blocks.Length >= slots)
+        return false
+    loop slots {
+        occupied := CharBlockAtSlot(blocks, s, A_Index) != ""
+        if (occupied != (A_Index <= blocks.Length))
+            return false
+    }
+    return true
+}
+
 ; Highlighted slot + the visible list as OCR sees it right now.
 CharSnapshot() {
     global gCharSenseCount
     slot := SelectedCharSlotStable()
-    s := Sense(CharPanelRegion())
-    gCharSenseCount++
+    s := SenseCharPanel()
     blocks := OcrCharList(s)
     return {slot: slot, s: s, blocks: blocks, signature: CharListSignature(blocks)}
 }
@@ -1301,12 +1369,57 @@ CountAndReadCharacters() {
     ; keypresses finding that out. If a realm has characters at least the top
     ; ones are on screen, so "OCR sees nothing" means empty - confirmed with a
     ; second look, because a list captured mid-redraw can come back empty.
-    if (OcrCharList(Sense()).Length = 0) {
+    first := SenseCharPanel()
+    blocks := OcrCharList(first)
+    if (blocks.Length = 0) {
         Sleep(700)
-        if (OcrCharList(Sense()).Length = 0) {
+        first := SenseCharPanel()
+        blocks := OcrCharList(first)
+        if (blocks.Length = 0) {
             Log("CountAndReadCharacters: no characters on this realm")
             return ""
         }
+    }
+
+    ; A list shorter than the panel is ALREADY complete on screen - see
+    ; CharPanelHoldsWholeList. Walking it with the arrow keys reads exactly the
+    ; same names, one keypress and one settle at a time: measured 9.2 s for a
+    ; realm holding a single character, most of it spent proving that a list of
+    ; one had ended. Two reads have to agree on the count AND on the names
+    ; before the walk is skipped, because a single OCR pass is the one thing
+    ; here that can be wrong.
+    if CharPanelHoldsWholeList(blocks, first) {
+        Sleep(250)
+        second := SenseCharPanel()
+        confirm := OcrCharList(second)
+        if (CharPanelHoldsWholeList(confirm, second)
+                && confirm.Length = blocks.Length
+                && CharListSignature(confirm) = CharListSignature(blocks)) {
+            ; This list is the visible section and nothing has scrolled since
+            ; it was read - it CANNOT have scrolled, the client blocks the wheel
+            ; on a list this short - so every stored click rect is current.
+            ; Saying so lets SelectCharacterAction click the character instead
+            ; of walking the cursor to it, which is the same saving again on
+            ; every pick. (CharacterListForMenu sets this to true before the
+            ; call; the walk is what makes rects stale, and there was no walk.)
+            global gCharListFromWalk := false
+            ; The walk used to end on character 1 and could promise the cursor
+            ; was there. Nothing is pressed here, so the selection stays where
+            ; the client put it - which on this screen is the last character
+            ; played. That costs nothing, because the highlighted SLOT can just
+            ; be read (one pixel probe), and on an unscrolled list the slot IS
+            ; the character number. A missing highlight leaves it at 0, i.e.
+            ; unknown, and MoveCharCursorTo resyncs from the screen.
+            global gCharCursor := SelectedCharSlot()
+            Log("CountAndReadCharacters: selection sits on character " gCharCursor)
+            Log("CountAndReadCharacters: " confirm.Length " of "
+                . gCharUIPositions.Length " slots filled - the panel holds the whole"
+                . " list, no walk needed (" (A_TickCount - startTick) " ms, "
+                . gCharSenseCount " screen reads)")
+            return confirm
+        }
+        Log("CountAndReadCharacters: panel looked complete but the two reads"
+            . " disagreed (" blocks.Length " vs " confirm.Length ") - walking")
     }
 
     ; The walk needs the highlight - it is the only thing telling us where we
@@ -1466,8 +1579,17 @@ MoveCharCursorTo(index) {
 ; Fresh character list after the screen changed (realm switch, create, delete).
 ; The game needs a moment to draw the character slots, and the walk starts by
 ; reading them, so let the screen settle first.
+; Called right after a join, a creation or a deletion, when the character panel
+; is being redrawn. The flat second here was the client's slowest case, paid on
+; every rebuild; the highlight bar appearing is the client itself saying the
+; list has been drawn (UpdateCharacterList draws the buttons and the selection
+; in the same pass), and SelectedCharSlot is a pixel probe costing ~17 ms.
+; The short sleep after it is for the row texts to finish rendering behind the
+; bar; the walk that follows re-reads and re-confirms anyway.
 RefreshCharacterMenuSettled() {
-    Sleep(1000)
+    if !WaitUntil("character panel redrawn", () => SelectedCharSlot() > 0, 1000, 80)
+        Log("RefreshCharacterMenuSettled: no highlight yet - rebuilding anyway")
+    Sleep(200)
     RefreshCharacterMenu()
 }
 
@@ -1644,27 +1766,40 @@ CreateCharAction(genderIndex, raceIndex, classIndex, zoneIndex) {
         if IsCharCreateScreen(s)
             break
         tries++
-        if (tries > 20) {
+        ; ~8 s. Switching to the creation screen is a LOCAL redraw - nothing is
+        ; asked of the server - so a wait long enough to sit through a server
+        ; round trip only meant that a click which never landed took half a
+        ; minute to admit it. See the timeout note in the changelog.
+        if (tries > 10) {
             FailFlow()
             return
         }
         Say(T("wait"))
     }
+    ; The three settles below are still blind, and deliberately so: what a race
+    ; click changes on screen (the class row re-filters, the model swaps) is not
+    ; something a cheap probe can confirm, and clicking the class before the row
+    ; has re-filtered picks the wrong class. One number drives all of them so it
+    ; can be lowered in one place, and the total is logged so the next creation
+    ; says what it really cost.
+    clickTick := A_TickCount
     race := gRaces[raceIndex]
     ClickUi(race.x, race.y)
-    Sleep(900)
+    Sleep(gCreateClickSettleMs)
     if (gClassBoxes.Length >= classIndex) {
         box := gClassBoxes[classIndex]
         ClickUi(box.x, box.y)
-        Sleep(900)
+        Sleep(gCreateClickSettleMs)
     }
     gender := gGenders[genderIndex]
     ClickUi(gender.x, gender.y)
-    Sleep(900)
+    Sleep(gCreateClickSettleMs)
     if (gHasSetupGametype = "Retail" && gWidgets.Has("CharCreationRetailCustomizeButton")) {
         ClickWidget("CharCreationRetailCustomizeButton")
-        Sleep(900)
+        Sleep(gCreateClickSettleMs)
     }
+    Log("Settle: race/class/gender clicks took " (A_TickCount - clickTick)
+        . " ms (blind, gCreateClickSettleMs=" gCreateClickSettleMs ")")
     global gEnterCharacterNameFlag := true
     gPendingCreate := {zone: zoneIndex}
     Say(T("enter the name for the new character and press enter, or escape to cancel character creation."))
@@ -1734,7 +1869,10 @@ EnterCharacterNameHandler() {
             return
         }
         tries++
-        if (tries > 25) {
+        ; ~18 s. The name check IS a server round trip, so this one keeps room
+        ; for a slow answer - but 25 rounds of 1.2 s plus a full OCR read each
+        ; was over half a minute of silence before the tool said anything.
+        if (tries > 12) {
             gEnterCharacterNameFlag := false
             gPendingCreate := ""
             FailFlow()
@@ -1750,7 +1888,11 @@ CancelCharacterName() {
     Say(T("Creation is canceled. Please wait."))
     tries := 0
     loop {
-        Sleep(1200)
+        ; The 1.2 s is the LIMIT now, not the wait: the screen is asked as fast
+        ; as a no-OCR probe comes back, and the round ends the moment the
+        ; character list is there. Escape is still re-sent only once a round.
+        WaitUntil("creation screen closes",
+            () => SenseCheck(SenseQuick(), "charselect"), 1200, 0)
         s := SenseQuick()
         if SenseCheck(s, "charselect") {
             ; A cancelled creation adds no character, so the list is unchanged -
@@ -1765,7 +1907,9 @@ CancelCharacterName() {
         if IsCharCreateScreen(s)
             Send("{Esc}")
         tries++
-        if (tries > 15) {
+        ; ~10 s. Escaping out of the creation screen is local; if eight Escapes
+        ; have not been answered, a ninth will not be either.
+        if (tries > 8) {
             FailFlow()
             return
         }
@@ -1884,9 +2028,11 @@ CancelDelete() {
             return
         }
         Send("{Esc}")
-        Sleep(1200)
+        WaitUntil("delete dialog closes",
+            () => SenseCheck(SenseQuick(), "charselect"), 1200, 0)
         tries++
-        if (tries > 10) {
+        ; ~7 s - closing a dialog is local, same reasoning as above.
+        if (tries > 5) {
             FailFlow()
             return
         }
@@ -2159,7 +2305,10 @@ WaitForCharacterCreated() {
             Log("HcCreateConfirm: waiting - " s["screen"])
         }
         tries++
-        if (tries > 20)
+        ; ~15 s. This was the longest of them (20 rounds of 1.2 s plus a full
+        ; OCR read each, ~25-30 s), and it is the one a user meets right after
+        ; agreeing to the hardcore rules - so it was also the longest silence.
+        if (tries > 10)
             break
     }
     Log("HcCreateConfirm: timed out waiting for the character")
@@ -2428,7 +2577,7 @@ OfferOpenRealmDialog() {
 CloseRealmDialogAction() {
     global gRealmMenuOffered := false, gLoginInitialized := false
     Send("{Escape}")
-    Sleep(1200)
+    WaitUntil("realm dialog closes", () => !SenseCheck(SenseQuick(), "realmselect"), 1200, 0)
     Say(T("server selection closed"))
     ; Land wherever the client goes next (character list, login screen, or
     ; the dialog again if the game insists on a realm choice).
@@ -2445,20 +2594,29 @@ SwitchRealmOpenAction(menuItem) {
         Log("SwitchRealmOpen: clicking Realms button")
         ClickWidget("CharSelectionRealmsButton")
         tries := 0
+        opened := A_TickCount
         loop {
             if FlowAbort("SwitchRealmOpen")
                 return
-            Sleep(700)
+            ; A no-OCR probe IS the wait here - it costs a capture and a handful
+            ; of pixel reads, so asking three times a second finds the dialog
+            ; when it opens instead of up to 700 ms later.
+            Sleep(200)
             s := SenseQuick()
-            if SenseCheck(s, "realmselect")
+            if SenseCheck(s, "realmselect") {
+                Log("Settle: realm dialog opens after " (A_TickCount - opened) " ms")
                 break
+            }
             tries++
-            if (tries > 15) {
+            ; ~7 s. The dialog opens locally (RealmListUI); the realm DATA it
+            ; then waits for is WaitForRealmListContent's problem, not this
+            ; loop's, so there is nothing here worth waiting longer for.
+            if (tries > 14) {
                 Log("SwitchRealmOpen: realmselect never appeared")
                 FailFlow()
                 return
             }
-            Say(T("wait"))
+            WorkBeep()
         }
     }
     r := BuildRealmMenu(menuItem)
@@ -2542,14 +2700,56 @@ RealmRowSignature(rows) {
     return sig
 }
 
+; The crop for a realm-dialog read - deliberately far wider than anything read
+; out of it.
+;
+; The horizontal margins are the reason it is this loose. The glue screen scales
+; by screen HEIGHT, so how much of the WIDTH a dialog covers depends on the
+; window shape: the same realm list starts at nx 0.259 on TBC and nx 0.206 on
+; Era at 16:10, and both move again at 16:9 or 4:3. Vertical fractions are the
+; stable ones - the tab strip sits at ny 0.81-0.85 on every aspect ratio - so
+; the crop trims mostly top and bottom, where only the dialog title and the
+; screen's own buttons live. Nothing that is read (rows ny 0.23-0.79, tabs to
+; 0.86) comes near an edge of this.
+RealmListRegion() {
+    client := WowClientRect()
+    if (client = "")
+        return ""
+    x := Round(client.w * 0.05)
+    y := Round(client.h * 0.12)
+    return "--region " x "," y "," Round(client.w * 0.90) "," Round(client.h * 0.82)
+}
+
+; A cropped realm-dialog read with the full frame as a safety net, for the same
+; reason as SenseCharPanel: "nothing there" must never be something the crop
+; invented. An empty dialog is a real state here (the client asks the server for
+; the list and draws the frame first), so it costs a second read - which is
+; still the right trade against a build that reads a list that is not there.
+SenseRealmList() {
+    region := RealmListRegion()
+    if (region = "")
+        return Sense()
+    s := Sense(region)
+    if (SenseOk(s) && s.Has("lines") && s["lines"].Length > 0)
+        return s
+    Log("SenseRealmList: cropped read came back empty - reading the full frame")
+    return Sense()
+}
+
 ; Wheel over the list body. The dialog has no keyboard paging the tool can rely
 ; on, and the scrollbar arrows are not in the widget table, so the wheel is the
 ; portable way to reach realms below the viewport.
 RealmListScroll(notches, up := false) {
-    s := SenseQuick()
-    if !SenseOk(s)
+    ; The client rect, not a sense. This only needs the size of the capture to
+    ; put the pointer over the middle of the list - and the capture IS the
+    ; client area (WindowCapture crops to it), so the two are the same numbers.
+    ; Asking the helper for them cost a full window capture plus classification
+    ; on EVERY scroll, once per page of the realm list and 60 notches deep on
+    ; every scroll-to-top, for information Windows hands over for free.
+    client := WowClientRect()
+    if (client = "")
         return
-    p := PxToScreen(s["width"] * 0.35, s["height"] * 0.45)
+    p := PxToScreen(client.w * 0.35, client.h * 0.45)
     MouseMove(Round(p.x), Round(p.y), 0)
     Sleep(40)
     ; Each notch needs air. Fired back to back the client swallowed most of
@@ -2563,11 +2763,45 @@ RealmListScroll(notches, up := false) {
     Sleep(60)
 }
 
-RealmListScrollTop() {
-    ; One notch moves the list by roughly one row, so 25 notches only just
-    ; cleared a 41-row list and would NOT clear this region's 54. Overshooting
-    ; the top costs nothing but the 25 ms per notch.
-    RealmListScroll(60, true)
+; How far to wheel between two reads of the list.
+;
+; Three notches was measured when a notch was worth about a THIRD of a row: the
+; client swallowed most of them because they were fired back to back, and the
+; 25 ms of air in RealmListScroll is what fixed that. Since then a notch moves
+; one row - the log says so plainly, "17 rows, 3 fresh" on every page - so the
+; tool was reading a 17-row viewport over and over to collect three new realms
+; at a time, at about a second per page. 41 realms took 11 pages and ~15 s.
+;
+; The step is taken from the page that was just read instead of from a constant,
+; because the viewport height is the only thing that decides it, and that varies
+; with resolution. Keeping `gRealmScrollOverlap` rows of the old page on screen
+; is what makes the step safe: the pages still interlock, so nothing between
+; them can be skipped, and the "did the list move" signature still has rows in
+; common to compare. Five rows of slack means a notch would have to move 1.4
+; rows before anything could be missed - and if that ever happens, the overlap
+; check in BuildRealmMenu SAYS so instead of quietly shortening the list.
+global gRealmScrollOverlap := 5
+RealmPageStep(visibleRows) {
+    return Max(3, visibleRows - gRealmScrollOverlap)
+}
+
+; One notch moves the list by roughly one row, so 25 notches only just cleared a
+; 41-row list and would NOT clear this region's 54. Overshooting the top costs
+; nothing but the 25 ms per notch - but 60 of them is a second and a half, and
+; this runs twice per build plus once before every join.
+;
+; So: when the caller KNOWS how long the list is - after a build, or from the
+; last one - it says so and only that many notches (plus a margin for the ones
+; the client swallows) are spent. Not knowing keeps the blind 60, because a list
+; that is not wound fully back makes the first page of the next build start in
+; the middle and that is the expensive mistake, not the extra second.
+RealmListScrollTop(knownRows := 0) {
+    notches := (knownRows > 0) ? Min(60, knownRows + 8) : 60
+    ; 60 notches at 25 ms is a second and a half of nothing to hear, and it is
+    ; the FIRST thing every realm-list build does - so the heartbeat starts here
+    ; rather than one page later.
+    WorkBeep()
+    RealmListScroll(notches, true)
     Sleep(250)
 }
 
@@ -2604,7 +2838,7 @@ RealmListTabs(s) {
 WaitForRealmListContent() {
     tries := 0
     loop {
-        s := Sense()
+        s := SenseRealmList()
         if !SenseOk(s)
             return s
         if (RealmListRows(s).Length > 0 || RealmListTabs(s).Length > 0)
@@ -2615,6 +2849,7 @@ WaitForRealmListContent() {
             return s
         }
         Log("WaitForRealmListContent: dialog still empty (" tries ") - waiting for the realm list")
+        WorkBeep()
         Sleep(600)
     }
 }
@@ -2649,6 +2884,7 @@ BuildRealmMenu(menuItem) {
     pages := 0
     truncated := false
     lastSig := ""
+    still := 0
     loop {
         rows := RealmListRows(s)
         fresh := 0
@@ -2662,29 +2898,107 @@ BuildRealmMenu(menuItem) {
         }
         sig := RealmRowSignature(rows)
         pages++
-        ; Stop when the list stops moving (bottom reached) or nothing new showed
-        ; up. The page cap is a runaway guard, not an expected limit.
+        ; The page cap is a runaway guard, not an expected limit.
         if (pages >= 40) {
             Log("BuildRealmMenu: page cap reached - list may be longer")
             truncated := true
             break
         }
-        if (pages > 1 && (sig = lastSig || fresh = 0))
+        ; A page that brings nothing is NOT proof that the list has ended. It is
+        ; also exactly what a swallowed wheel notch looks like, and what a
+        ; capture taken while the dialog is still redrawing looks like - and ONE
+        ; of those used to end the build on the spot. Caught on Era 2026-08-20:
+        ; 17 of 41 realms, stopped on page 2, and announced as a finished list
+        ; because only the page cap sets `truncated`. FindRealmRowByName learned
+        ; this already ("ONE of those used to end the search silently"); the same
+        ; rule belongs here - only the SECOND empty-handed page in a row is the
+        ; bottom of the list.
+        ;
+        ; What follows also decides how far to wheel before the next look,
+        ; because the two empty-handed cases are not the same and must not be
+        ; answered the same way:
+        ;
+        ;   a failed read (a dialog that holds a list cannot show one row)
+        ;     - the list is wherever it was. Look again WITHOUT scrolling;
+        ;       scrolling on a page we never actually read is how rows get
+        ;       skipped.
+        ;   a page identical to the last one
+        ;     - either the bottom, or the client swallowed the notches. A small
+        ;       nudge decides it, and cannot skip anything: this exact page has
+        ;       just been read in full, so a few rows of movement still leaves
+        ;       most of it on screen.
+        if (pages > 1 && rows.Length < 2) {
+            still++
+            nudge := 0
+            Log("BuildRealmMenu: page " pages " read only " rows.Length
+                . " rows - looking again without scrolling (" still " of 2)")
+        } else if (pages > 1 && (sig = lastSig || fresh = 0)) {
+            still++
+            nudge := 4
+            Log("BuildRealmMenu: page " pages " brought nothing (" rows.Length
+                . " rows, " fresh " fresh) - nudging (" still " of 2)")
+        } else {
+            still := 0
+            nudge := RealmPageStep(rows.Length)
+            Log("BuildRealmMenu: page " pages " - " rows.Length " rows, " fresh " fresh")
+        }
+        if (still >= 2) {
+            Log("BuildRealmMenu: bottom of the list after " pages " pages")
             break
-        lastSig := sig
-        RealmListScroll(3)
-        Sleep(320)
-        s := Sense()
-        if !SenseOk(s)
+        }
+        ; Not one row of this page was on the last one - the wheel moved
+        ; further than the viewport, so whatever lay between them was never
+        ; read. It should not be reachable (the step leaves several rows of
+        ; overlap), but a silently shortened list is exactly the failure this
+        ; build has already had once, so it is reported rather than assumed
+        ; away: the user hears that the list may be incomplete.
+        if (pages > 1 && rows.Length > 1 && fresh = rows.Length) {
+            Log("BuildRealmMenu: page " pages " shares no row with the previous"
+                . " one - the list may have jumped a page")
+            truncated := true
+        }
+        ; Only a read that actually saw a list may define "unchanged" for the
+        ; next round - otherwise one failed read makes the page after it look
+        ; like progress and hides a list that is not moving at all.
+        if (rows.Length >= 2)
+            lastSig := sig
+        ; Every page is a wheel-scroll plus a full OCR read - about a second,
+        ; and a long list is dozens of them. Without this the whole build was
+        ; silent, which is indistinguishable from a tool that has died.
+        WorkBeep()
+        if (nudge > 0)
+            RealmListScroll(nudge)
+        ; A page that brought nothing gets longer to settle before the retry.
+        Sleep(still > 0 ? 600 : 320)
+        s := SenseRealmList()
+        if !SenseOk(s) {
+            ; Stopping here is not "the list ended" either - say so rather than
+            ; hand over a short list that sounds complete.
+            Log("BuildRealmMenu: no sense after page " pages " - stopping short")
+            truncated := true
             break
+        }
     }
+    ; The category tabs hang below the list and do NOT scroll with it, so the
+    ; page that is already in hand describes them exactly as well as a fresh
+    ; capture would - and a fresh capture here cost a full OCR pass at the end
+    ; of every build. Only fall back to one if this read has no tabs at all,
+    ; which is what a build that ended on a failed sense looks like.
+    tabs := RealmListTabs(s)
+
     ; Leave the list at the top: the stored rects belong to the scroll position
     ; they were captured at, and RealmSelectAction re-finds the row by name from
-    ; the top anyway.
-    RealmListScrollTop()
-    sTop := Sense()
-    if SenseOk(sTop)
-        s := sTop
+    ; the top anyway. The distance is known now - the list is `found.Length`
+    ; rows long and `visible` of them are on screen - so this no longer wheels a
+    ; blind 60 notches.
+    RealmListScrollTop(found.Length)
+    if (tabs.Length = 0) {
+        sTop := Sense()
+        if SenseOk(sTop) {
+            s := sTop
+            tabs := RealmListTabs(s)
+        }
+    }
 
     ; Keep the plain names: AnnounceRealmLanding needs them to tell "the client
     ; is on another realm from this very list" apart from "OCR garbled the line".
@@ -2698,8 +3012,8 @@ BuildRealmMenu(menuItem) {
         node.action := RealmSelectClosure(entry.row)
     }
 
-    ; Category tabs (bottom strip of the realm dialog).
-    tabs := RealmListTabs(s)
+    ; Category tabs (bottom strip of the realm dialog) - read above, before the
+    ; list was scrolled back to the top.
     for tab in tabs {
         node := DetachedNode(kids, menuItem, T("select category") ": " tab["text"])
         node.action := RealmTabClosure(tab, menuItem)
@@ -2743,12 +3057,14 @@ AnnounceRealmMenuState(r) {
 ; position, so clicking a stored one after any scrolling would hit the wrong
 ; realm. Returns "" when the name never appears.
 FindRealmRowByName(name) {
-    RealmListScrollTop()
+    ; gRealmNames is the list this row came from, so its length is the scroll
+    ; distance back to the top.
+    RealmListScrollTop(gRealmNames.Length)
     pages := 0
     lastSig := ""
     still := 0
     loop {
-        s := Sense()
+        s := SenseRealmList()
         if !SenseOk(s) {
             Log("FindRealmRow: '" name "' - no sense on page " (pages + 1))
             return ""
@@ -2783,9 +3099,24 @@ FindRealmRowByName(name) {
             return ""
         }
         lastSig := sig
-        RealmListScroll(still > 0 ? 6 : 3)
+        WorkBeep()
+        ; Same page step as the build: pages that interlock by a few rows, not
+        ; three rows at a time. The name cannot be scrolled past - every page is
+        ; read in full before the next scroll.
+        step := RealmPageStep(rows.Length)
+        RealmListScroll(still > 0 ? step + Ceil(step / 2) : step)
         Sleep(320)
     }
+}
+
+; Something to look at: the realm dialog is gone, or the client's own connect
+; popup is on top of it. A sense that failed is NOT one of those - it would
+; otherwise read as "the dialog is gone" and end the wait on no evidence.
+RealmJoinShowedSomething() {
+    s := SenseQuick()
+    if !SenseOk(s)
+        return false
+    return !SenseCheck(s, "realmselect") || AnyPopup(s)
 }
 
 RealmSelectClosure(row) {
@@ -2859,7 +3190,10 @@ RealmSelectAction(row) {
     ClickOcrRect(row)
     Sleep(500)
     SafeJoinEnter("RealmSelect")
-    Sleep(1500)
+    ; The join either takes the dialog away or puts the client's own connect
+    ; popup on top of it. Either one means there is something to look at, so
+    ; there is no reason to sit out the rest of a blind second and a half.
+    WaitUntil("join leaves the realm dialog", RealmJoinShowedSomething, 1500, 0)
 
     tries := 0
     stuck := 0
@@ -2998,7 +3332,12 @@ RealmSelectAction(row) {
         }
         Sleep(1000)
         tries++
-        if (tries > 15) {
+        ; ~15 s of rounds that got NOWHERE. A join that is actually running is
+        ; not counted here at all - the connect dialog takes the `progress`
+        ; branch above and continues without touching `tries` - and the retry
+        ; ladder gives up at stuck >= 6 before this. So this cap only decides
+        ; how long an unrecognized screen is stared at.
+        if (tries > 10) {
             Log("RealmSelect: timed out")
             Send("{Escape}")
             FailFlow()

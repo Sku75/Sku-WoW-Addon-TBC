@@ -15,7 +15,17 @@ global gMenuGametype := ""
 global gBusy := false           ; an action/flow is running
 global gAbortFlow := false      ; set by Alt+F1 / focus loss to stop a flow
 global gIsChecking := false
-global gUnknownAnnounced := false   ; "unknown screen" is said once, not every 2.5 s
+global gUnknownAnnounced := false   ; "unknown screen" is said once, not every probe
+; A screen the tool has no marker for is NOT news while the client is still
+; starting up: a booting client shows a black frame, a logo and a loading screen
+; for several seconds, and every one of them classifies as "unknown". Announcing
+; the first one made "unknown screen" the first thing the tool said at EVERY
+; game start, seconds before it recognized the login screen perfectly well - so
+; the one sentence that means "you are stuck" was the sentence the user heard
+; when nothing was wrong at all. It is only worth saying once the screen has
+; stayed unrecognized longer than booting can explain.
+global gUnknownSince := 0           ; tick the current unrecognized streak began
+global gUnknownGraceMs := 12000     ; ... how long it has to last before we say so
 global gEnterCharacterNameFlag := false
 global gDeleteCharacterNameFlag := false
 ; Which login-screen field the keyboard is currently handed to
@@ -23,6 +33,21 @@ global gDeleteCharacterNameFlag := false
 ; the game so the arrows edit the text - see keybinds.ahk.
 global gLoginFieldFlag := ""
 global gLastGlueSense := 0
+; How often the glue-screen probe may run, and why there are two cadences.
+; Until a screen is recognized the user is sitting in silence waiting for the
+; tool to come to life, so this is the one moment where probing costs less than
+; waiting: at 2500 ms on top of the watcher tick, recognizing the login screen
+; lagged the client by up to 3.5 s for no reason other than the throttle. A
+; no-OCR sense is cheap (capture plus a handful of pixel probes), so during that
+; wait it runs on every tick. Once the tool IS in login mode the same probe is
+; only a background watcher for a dialog the client opened by itself, and there
+; the slow cadence is right. The fast rate is not paid forever either: after
+; gGlueFastWindowMs of getting nowhere the client is not booting any more.
+global gGlueProbeFastMs := 500
+global gGlueProbeSlowMs := 2500
+global gGlueFastWindowMs := 25000
+global gGlueWaitSince := 0        ; tick we started waiting for a known screen
+global gLastWorkBeep := 0         ; last "still working" sound - see WorkBeep
 global gRealmMenuItem := ""       ; the "switch server" main-menu node; the realm menu builds into it
 global gRealmMenuOffered := false ; the open realm dialog is already presented as the current menu
 global gHardcoreConfirmFlag := false ; the hardcore warning is up: Enter agrees, Escape declines
@@ -206,7 +231,13 @@ Main() {
     } else {
         SwitchToPause()
     }
-    SetTimer(CheckMode, 1000)
+    ; 500 ms, not 1000. The watcher itself is nearly free (a focus test, two
+    ; pixel reads, and a PID compare); what it gates is not. At one second the
+    ; glue probe could only ever fire on a one-second grid, so the "probe every
+    ; 500 ms while nothing is recognized" cadence below would silently be a
+    ; one-second one, and every mode change (focus, entering the world) was up
+    ; to a second late on top of it.
+    SetTimer(CheckMode, 500)
 }
 
 CheckMode() {
@@ -229,23 +260,63 @@ CheckMode() {
             if (gMode != 0)
                 SwitchToPlay()
         } else if (gMode != 1) {
-            ; Not in-game, focused: probe for a glue screen via the helper,
-            ; at most every 2.5 s.
-            if (A_TickCount - gLastGlueSense > 2500) {
+            ; Not in-game, focused, nothing recognized yet - the client is
+            ; booting, or it is sitting on a screen the tool cannot name. This
+            ; is the wait the user hears as "the tool is dead", so probe fast
+            ; while it can still be a boot, then back off.
+            if (gGlueWaitSince = 0)
+                global gGlueWaitSince := A_TickCount
+            waited := A_TickCount - gGlueWaitSince
+            interval := (waited < gGlueFastWindowMs) ? gGlueProbeFastMs : gGlueProbeSlowMs
+            if (A_TickCount - gLastGlueSense >= interval) {
                 gLastGlueSense := A_TickCount
                 s := SenseQuick()
                 if (SenseOk(s) && s["screen"] != "ingame" && s["screen"] != "unknown") {
                     global gUnknownAnnounced := false
+                    global gUnknownSince := 0
+                    global gGlueWaitSince := 0
                     SwitchToLogin()
                     InitLogin(s)
-                } else if (SenseOk(s) && s["screen"] = "unknown" && !gUnknownAnnounced) {
+                } else if (SenseOk(s) && s["screen"] = "unknown") {
                     ; A screen the tool has no marker for - WoW's own menu is
                     ; the common one. It used to just say nothing at all, which
                     ; leaves a blind user with no way to tell "thinking" from
-                    ; "dead". Say it once, and say what gets out of it.
-                    global gUnknownAnnounced := true
-                    Log("CheckMode: unknown screen - telling the user")
-                    Say(T("Unknown screen. Close the dialog in the game, then press Alt F1 twice."))
+                    ; "dead". Say it once, and say what gets out of it - but
+                    ; only after the streak has outlasted a client start, see
+                    ; gUnknownGraceMs.
+                    if (gUnknownSince = 0) {
+                        global gUnknownSince := A_TickCount
+                        Log("CheckMode: unknown screen - waiting out the grace period")
+                        ; There is one unrecognized screen the tool CAN name. A
+                        ; client the tool watched appear, seconds old, is
+                        ; starting up - the black frame, the logo and the
+                        ; loading screen are exactly what it has no marker for.
+                        ; Saying so turns the silence into an answer, and it
+                        ; costs nothing: if the streak outlives the grace period
+                        ; the "unknown screen" hint still follows, because a boot
+                        ; that never ends is a client that is stuck.
+                        ; The claim is only made where it is TRUE - see
+                        ; gClientWitnessed in detect.ahk.
+                        if (gClientWitnessed && !gLoadingAnnounced
+                                && A_TickCount - gClientSeenTick < 30000) {
+                            global gLoadingAnnounced := true
+                            Log("CheckMode: client is "
+                                . Round((A_TickCount - gClientSeenTick) / 1000)
+                                . " s old - announcing the start-up, not the screen")
+                            Say(T("The game is starting. Please wait."))
+                        }
+                    } else if (!gUnknownAnnounced
+                            && A_TickCount - gUnknownSince >= gUnknownGraceMs) {
+                        global gUnknownAnnounced := true
+                        Log("CheckMode: unknown screen for "
+                            . Round((A_TickCount - gUnknownSince) / 1000) " s - telling the user")
+                        Say(T("Unknown screen. Close the dialog in the game, then press Alt F1 twice."))
+                    }
+                } else if !SenseOk(s) {
+                    ; No answer at all (the window is gone, the helper died).
+                    ; That is not a screen, so it must not age the streak
+                    ; towards an announcement about one.
+                    global gUnknownSince := 0
                 }
             }
         } else {
@@ -328,6 +399,11 @@ SwitchToSetup() {
 
 SwitchToPause() {
     global gMode := -1
+    ; The wait for a known screen is over (focus is gone). Coming back starts a
+    ; fresh probe streak - and a fresh grace period, because the screen the user
+    ; returns to is not the one we were waiting on.
+    global gGlueWaitSince := 0
+    global gUnknownSince := 0
     ; Focus is gone, so the keyboard is not in a game field any more. Leaving
     ; this set would keep the menu keys released after the user came back.
     global gLoginFieldFlag := ""
@@ -341,6 +417,8 @@ SwitchToPause() {
 
 SwitchToPlay() {
     global gMode := 0
+    global gGlueWaitSince := 0
+    global gUnknownSince := 0
     global gLoginFieldFlag := ""
     Log("SwitchToPlay")
     Say(T("play mode"))
@@ -348,6 +426,8 @@ SwitchToPlay() {
 
 SwitchToLogin() {
     global gMode := 1
+    global gGlueWaitSince := 0
+    global gUnknownSince := 0
     Log("SwitchToLogin")
     LoadGameData()
     regionName := gHasSetupRegion
@@ -372,9 +452,58 @@ WaitBeep(cycles, ms) {
     }
 }
 
+; The heartbeat for a stretch that is neither a wait for the client nor a menu
+; the user can hear: the realm list is seconds of wheel-scrolling and OCR, and
+; it used to run in complete silence. Rate-limited, because the sound is a sign
+; of life and not a metronome - a page that comes back fast must not stack beep
+; on beep.
+;
+; Say(T("wait")) is the notification SOUND, not speech (see sapi.ahk), and it
+; deliberately does not purge: it can be dropped into a flow without cutting off
+; whatever was last announced.
+WorkBeep(minGapMs := 1200) {
+    global gLastWorkBeep
+    if (A_TickCount - gLastWorkBeep < minGapMs)
+        return
+    gLastWorkBeep := A_TickCount
+    Say(T("wait"))
+}
+
+; Wait until the screen SAYS something happened, instead of sleeping a number
+; somebody once guessed on some other machine.
+;
+; Two things come out of this. The obvious one: when the client is ready in
+; 200 ms, the tool goes on in 200 ms instead of standing through the full
+; second. The one that matters more in the long run: every call logs how long
+; it actually took - "Settle: <what> after N ms" - so an ordinary session
+; produces the measurements these numbers should have been picked from. A wait
+; that runs out logs that too, and says so plainly, because "the number was too
+; small" and "the thing never happened" must not look the same in a log.
+;
+; `condition` is called on every poll, so it has to be CHEAP - a pixel probe or
+; a no-OCR sense. maxMs is the old blind sleep: this can only be faster, never
+; slower.
+WaitUntil(what, condition, maxMs, pollMs := 100) {
+    start := A_TickCount
+    loop {
+        if condition() {
+            Log("Settle: " what " after " (A_TickCount - start) " ms (limit " maxMs ")")
+            return true
+        }
+        if (A_TickCount - start >= maxMs) {
+            Log("Settle: " what " TIMED OUT after " (A_TickCount - start) " ms")
+            return false
+        }
+        Sleep(pollMs)
+    }
+}
+
 FailFlow() {
     Say(T("Something went wrong. Please restart the game and try again."))
-    WaitBeep(4, 1000)
+    ; Two beeps, not four. The sentence has already been said - what follows is
+    ; only the seam before "pause mode", and four seconds of it is four seconds
+    ; the user spends waiting for a tool that is done.
+    WaitBeep(2, 1000)
     SwitchToPause()
 }
 

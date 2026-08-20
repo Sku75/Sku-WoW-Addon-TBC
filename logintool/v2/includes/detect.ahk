@@ -1,4 +1,4 @@
-; Which game version is actually running - read from the CLIENT'S OWN FILES,
+﻿; Which game version is actually running - read from the CLIENT'S OWN FILES,
 ; not from the screen.
 ;
 ; The order is the whole point. Screen recognition cannot tell you which screen
@@ -24,6 +24,14 @@
 global gGametypePin := false      ; user picked one by hand -> never override it
 global gDetectedPid := 0          ; client the current detection came from
 global gDetectedGametype := ""    ; what that client reported ("" = unsupported)
+; When the current client's window turned up, and whether the tool was already
+; running when it did. A client we WATCHED appear is a client that is starting,
+; and that is the one unrecognized screen the tool can put a name to - see the
+; loading announcement in CheckMode. A client that was already there when the
+; tool came up says nothing about its own age, so it gets no such claim.
+global gClientSeenTick := 0
+global gClientWitnessed := false
+global gLoadingAnnounced := false ; "the game is starting" is said once per client
 
 ; The first component of the client version maps onto the data.ini sections.
 ; Versions the tool has no section for return "" - that has to be SAID, never
@@ -127,6 +135,11 @@ ApplyDetectedGametype() {
         return
     gDetectedPid := info.pid
     gDetectedGametype := info.gametype
+    global gClientSeenTick := A_TickCount
+    ; gLogStart is set when Main() starts, so "the tool had already been up for
+    ; five seconds when this client appeared" means we saw it launch.
+    global gClientWitnessed := (A_TickCount - gLogStart > 5000)
+    global gLoadingAnnounced := false
     Log("Detect: pid " info.pid " flavor='" info.flavor "' version='" info.version "'"
         . " -> " (info.gametype = "" ? "UNSUPPORTED" : info.gametype) " [" info.exe "]")
     if (info.gametype = "") {
@@ -135,14 +148,23 @@ ApplyDetectedGametype() {
         Say(T("This game version is not supported yet.") " " info.version)
         return
     }
-    if (info.gametype = gHasSetupGametype)
-        return
-    Log("Detect: switching game type " gHasSetupGametype " -> " info.gametype)
-    gHasSetupGametype := info.gametype
-    LoadGameData()
-    ; The helper loads the same data.ini section and is handed --gametype at
-    ; spawn, so it has to be restarted or it keeps classifying screens with the
-    ; old client's rules.
-    SenseStop()
-    Say(T("game version detected") ": " T(info.gametype))
+    if (info.gametype != gHasSetupGametype) {
+        Log("Detect: switching game type " gHasSetupGametype " -> " info.gametype)
+        gHasSetupGametype := info.gametype
+        LoadGameData()
+        ; The helper loads the same data.ini section and is handed --gametype at
+        ; spawn, so it has to be restarted or it keeps classifying screens with
+        ; the old client's rules.
+        SenseStop()
+        Say(T("game version detected") ": " T(info.gametype))
+    }
+    ; The client is up and its version is settled, so the helper can be started
+    ; HERE instead of when the first probe wants an answer. That is a process
+    ; start, a pipe pair and the OCR engine - about half a second, and it used
+    ; to sit squarely between "the game is on screen" and the tool saying
+    ; anything about it. Starting it now overlaps it with the client's own
+    ; start-up, which is time nobody is using anyway.
+    ; (SenseStart calls back into this function; that call returns immediately
+    ; because gDetectedPid has already been advanced above.)
+    SenseStart()
 }
