@@ -197,12 +197,25 @@ IsSelectionHighlight(c) {
 ; the bar, where the colour is washed out the most - and reads them all from a
 ; single copy of the slot column, which is what makes this affordable to call
 ; after every keypress.
+;
+; The offsets go LEFT only, and that is not cosmetic. From CharacterSelect.lua:
+; a realm with more characters than the panel shows widens
+; CharacterSelectCharacterFrame from 260 to 280 and shows its scrollBar. The
+; frame is anchored TOPRIGHT, so the whole list slides 20 UI units left, while
+; the selection highlight (256 wide, anchored TOPLEFT -20 on a button that sits
+; 24 in from the frame's left edge) then ends 20 units short of where it ends on
+; a short list - and the scrollBar's own backdrop is a SOLID BLACK texture over
+; the strip it vacates. The old offsets +10 and +20 sat exactly there, so on any
+; realm past the fold - the only realms that scroll at all - half the probe
+; points were reading black. Negative x is measured from the right edge (see
+; UiToScreen), so more negative = further left = further inside the bar in both
+; layouts.
 SelectedCharSlot() {
     points := [], slotOf := []
     for slot, pos in gCharUIPositions {
         if (pos = "")
             continue
-        for offset in [0, 10, -10, 20] {
+        for offset in [0, -10, -20, -30] {
             points.Push(UiToScreen(pos.x + offset, pos.y))
             slotOf.Push(slot)
         }

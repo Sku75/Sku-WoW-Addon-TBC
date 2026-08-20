@@ -2,6 +2,98 @@
 
 ## 3.0 (2026-08-18)
 
+**Charakterliste ab neun Charakteren.** Die folgenden Punkte gehören alle zu
+EINEM Befund: Das Panel zeigt genau neun Slots
+(`Blizzard_GlueXML_TBC.toc` lädt `Vanilla\CharacterSelectConstants.lua` mit
+`CHARACTER_SELECT_MAX_CHARACTERS = 9`, und `CharacterSelect_OnShow` setzt
+`MAX_CHARACTERS_DISPLAYED` darauf). Ab dem zehnten Charakter bewegt sich die
+Auswahlleiste nicht mehr, sondern die LISTE scrollt unter ihr durch — und genau
+dieser Zweig im Walk war an jeder Stelle mit EINER einzigen Beobachtung
+abgesichert. Bei bis zu neun Charakteren wird er nie betreten, deshalb ist davon
+nie etwas aufgefallen. Gemeldet wurde es als "zeigt nicht alle", "scrollt nicht
+richtig zurück" und "falsche Nummern"; das sind drei Symptome derselben Sache.
+UNGETESTET am Client — hier existiert kein Realm mit mehr als neun Charakteren.
+
+- Ein einzelner unveränderter Blick beendet die Liste nicht mehr. In
+  `WalkCharacterList` galt "gleicher Slot, gleiche Namen" als Listenende — was
+  aber genauso aussieht wie ein verschluckter Tastendruck oder ein Panel, das
+  noch neu zeichnet. Ergebnis: Der Walk brach mittendrin ab und meldete das
+  Ergebnis als vollständig (die Warnung hängt am OCR-Fallback, nicht am Walk).
+  Neu ist `CharWalkResolveStall`: erst nochmal hinsehen (länger warten), und
+  ERST wenn ein Blick bewiesen hat, dass sich gar nichts bewegt hat, nochmal
+  drücken — die Reihenfolge ist der Punkt, ein zweiter Druck auf einen Schritt,
+  der längst angekommen war, überspringt einen Charakter spurlos. Dieselbe
+  Lehre wie bei der Realmliste ("ONE of those used to end the search silently",
+  `FindRealmRowByName`). Gleiche Behandlung in `ClimbToFirstChar`.
+- Der Umbruch wird erst nach dem Nachziehen der Liste geprüft. Der Wrap
+  scrollt die GANZE Liste zurück nach oben (`CharacterSelectScrollDown_OnClick`
+  setzt `CHARACTER_LIST_OFFSET = 0`), und das dauert länger als die Leiste zum
+  Springen braucht. Die Bestätigung las sofort danach, verglich also die Liste
+  von vorher, verwarf einen Wrap der stattgefunden hatte als Fehllesung — und
+  der Walk sammelte die Liste ein zweites Mal, bis ihm die Schritte ausgingen.
+  Jetzt mit Settle davor; scheitert die Panel-OCR trotzdem, entscheidet der
+  große Name unter dem Charaktermodell. `CountAndReadCharacters` hatte dieses
+  `Sleep(500)` übrigens schon — an genau einer Stelle zu wenig.
+- Wrap-Erkennung im Abwärts-Walk verlangt jetzt Slot 1, nicht "irgendwie
+  weiter oben". Blizzard sagt es exakt: nach dem letzten Charakter
+  `CHARACTER_LIST_OFFSET = 0; CharacterSelect_SelectCharacter(1)` — der Wrap
+  landet auf Slot 1, nie woanders. Jeder andere Rücksprung ist eine Probe
+  mitten im Neuzeichnen einer gescrollten Liste, und die gibt es erst ab dem
+  zehnten Charakter. Bestätigt wird zusätzlich nach einem Settle.
+- `ClimbToFirstChar` erkennt den Listenanfang jetzt am Slot statt am Zufall.
+  `CharacterSelectScrollUp_OnClick` rechnet `CHARACTER_LIST_OFFSET` bei jedem
+  Schritt neu, solange der neue Index noch im Panel liegt — der Offset ist also
+  null, bevor die Leiste überhaupt anfängt, im Panel nach oben zu wandern.
+  Heißt: während die Liste scrollt steht die Leiste auf dem UNTERSTEN Slot,
+  und Slot 1 kann nur Charakter 1 sein. Gilt nur für einen Offset, den die
+  Pfeiltasten gebaut haben — eine vom Benutzer mit dem Mausrad gescrollte Liste
+  kann bei Offset 5 auch Slot 1 zeigen. Deshalb wird Slot 1 nur geglaubt, wenn
+  dieser Aufstieg vorher den untersten Slot gesehen hat oder das Panel weniger
+  Blöcke hält als es Slots hat (dann ist die Liste kürzer als das Panel und
+  kann gar nicht scrollen). Ohne diesen Beweis bleibt es beim alten Verhalten.
+- Der OCR-Notbehelf nummeriert keine gescrollte Liste mehr ab 1. Scheitert der
+  Walk, wurde bisher gelesen was gerade auf dem Schirm steht — und das ist
+  regelmäßig NICHT der Listenanfang: `UpdateCharacterSelection` setzt
+  `CHARACTER_LIST_OFFSET = selectedIndex - MAX_CHARACTERS_DISPLAYED`, sobald der
+  zuletzt gespielte Charakter unter der Kante sitzt. Die neun sichtbaren Zeilen
+  waren dann Charakter 6 bis 14, angesagt als 1 bis 9. Das ist keine
+  unvollständige Liste, das ist eine falsche. Jetzt wird vorher nach oben
+  gefahren; die Lücke bleibt unten, wo die Warnung sie hinsagt.
+- Charakternamen sind pro Realm eindeutig — daraus ist jetzt eine Schranke
+  geworden: Ein Name, der schon in der Liste steht, kann nur bedeuten, dass der
+  Walk herumgekommen ist (Schritt doppelt gezählt, oder ein nicht erkannter
+  Wrap). Wird nicht mehr doppelt aufgenommen; trifft es Charakter 1, gilt es als
+  Wrap. Bewusst mit STRIKTEM Namensvergleich (`SameCharNameStrict`) — der
+  normale akzeptiert absichtlich, dass ein Name im anderen steckt, und würde
+  die Liste bei "Sku" abbrechen, sobald es "Skubella" gibt.
+- Die Pixelproben der Auswahlleiste tasten nur noch nach links. Ab zehn
+  Charakteren wird `CharacterSelectCharacterFrame` von 260 auf 280 verbreitert
+  und die Scrollbar eingeblendet (`CharacterSelect.lua`, Zeile 1321). Der Rahmen
+  hängt TOPRIGHT, die Liste rutscht also 20 UI-Einheiten nach links, die
+  Auswahlleiste (256 breit) endet 20 Einheiten früher — und die Scrollbar legt
+  eine SCHWARZE Fläche genau auf den freigewordenen Streifen. Die alten Offsets
+  +10 und +20 lagen dort. Auf jedem Realm, der überhaupt scrollt, hat also die
+  Hälfte der Probenpunkte Schwarz gelesen.
+- Das Charaktermenü wird wie die Realmliste ATOMAR veröffentlicht.
+  `RefreshCharacterMenu` hat die Kinderliste zuerst geleert und erst nach dem
+  Walk wieder gefüllt — bei dreißig Charakteren fast eine Minute, in der die
+  Pfeiltasten auf ein leeres Untermenü treffen und schlicht nichts tun. Die
+  ALTE Liste bleibt jetzt bedienbar, bis die neue fertig ist. Steht der Cursor
+  danach auf einem Knoten der ersetzten Liste (dessen Aktion einen Index in die
+  ersetzte Liste hält — nach einer Löschung ein anderer Charakter), wird er
+  auf den Elternknoten zurückgesetzt.
+- Maus wird auch vor `MoveCharCursorTo` geparkt, nicht nur vor dem Zähl-Walk.
+  Ein Mauszeiger über der Liste hebt einen zweiten Slot hervor, und
+  `SelectedCharSlot` liefert den OBERSTEN hervorgehobenen — der Walk hätte also
+  die Maus statt der Auswahl verfolgt, und der Benutzer hörte "etwas ist
+  schiefgelaufen" für eine Auswahl, die stimmte. Dazu Settles nach dem
+  Zurückfahren auf Charakter 1 und vor der Kontrolle am Ziel: jedes Ziel jenseits
+  des neunten Charakters kommt auf einem Schritt an, der GESCROLLT hat.
+- Lange Walks sind nicht mehr stumm: Der Zähl-Walk sagt alle zehn Charaktere
+  den Stand an (das sagt nebenbei, wie groß die Liste wird), das reine
+  Zurückfahren auf Charakter 1 sagt "warten" — bewusst KEINE Zahl, das sind
+  Schritte und keine Charakternummern.
+
 - Hardcore-Bestätigung ("Der Tod ist permanent") wird erkannt und bedient:
   Der Helper klassifiziert den Dialog jetzt als eigenen Screen
   `hardcoreConfirm` (vier Pixel-Proben: zwei dunkelrot getönte Buttons "Ich

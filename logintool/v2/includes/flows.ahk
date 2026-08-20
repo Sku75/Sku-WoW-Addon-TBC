@@ -675,6 +675,19 @@ global gCharWalkMaxSteps := 55    ; a realm holds at most 50 characters
 global gCharWalkStepMs := 300     ; settle time after each key (v1 used ~266)
 global gCharSenseCount := 0       ; looks at the screen per walk, for the log
 
+; Extra time for a step that SCROLLED the list instead of moving the highlight.
+; Redrawing nine slots and swapping the 3D model takes longer than moving a bar,
+; and every one of the bugs this file used to have below the fold came from
+; reading the panel while that redraw was still in flight. Only spent where it
+; is needed: a step that moved the highlight never waits this.
+global gCharScrollSettleMs := 450
+; How often a stalled step is re-checked before it is believed to be the end of
+; the list. See CharWalkResolveStall.
+global gCharStallRetries := 2
+; A long walk is a long silence, and silence is the one state a blind user
+; cannot interpret. Speak the running count every N characters.
+global gCharWalkSayEvery := 10
+
 ; The OCR character block sitting at the given slot, or "" if none matches.
 CharBlockAtSlot(blocks, s, slot) {
     if (!SenseOk(s) || slot < 1 || slot > gCharUIPositions.Length || gCharUIPositions[slot] = "")
@@ -859,6 +872,12 @@ WalkToFirstChar() {
             Log("WalkToFirstChar: lost the highlight after " A_Index " steps")
             return false
         }
+        ; Getting to character 1 on a full realm is fifty keypresses of
+        ; silence before the read-out even starts. Say something - but NOT a
+        ; number: these are steps, not characters, and the walk that follows
+        ; counts out real character numbers.
+        if (Mod(A_Index, gCharWalkSayEvery) = 0)
+            SayQueued(T("wait"))
         ; The wrap-around is the highlight JUMPING BACK up the panel, not
         ; merely sitting on slot 1. Walking down, it can only move down or
         ; stick to the bottom slot while the list scrolls underneath - so a
@@ -869,9 +888,39 @@ WalkToFirstChar() {
         ; Skuminator (character 7), the walk took him for character 1, and
         ; every comparison after that failed - 55 steps, then a fall back to
         ; the nine visible characters.
+        ;
+        ; But "any jump back" is too loose, and Blizzard says so exactly:
+        ; CharacterSelectScrollDown_OnClick past the last character does
+        ;     CHARACTER_LIST_OFFSET = 0; CharacterSelect_SelectCharacter(1)
+        ; so the wrap-around lands on SLOT 1, never anywhere else. Every other
+        ; jump back up the panel is a probe taken while the client was redrawing
+        ; a scrolled list - which only happens past the ninth character, which
+        ; is precisely where this walk was starting its count in the middle of
+        ; the list. Demand slot 1, and demand that it still be slot 1 once the
+        ; scroll-to-the-top has actually finished drawing.
+        if (slot = 1 && previous > 1) {
+            Sleep(gCharScrollSettleMs)
+            if (SelectedCharSlot() = 1) {
+                Log("WalkToFirstChar: wrapped to character 1 after " A_Index " steps down")
+                return true
+            }
+            Log("WalkToFirstChar: slot 1 did not hold after " A_Index " steps - misread, continuing")
+            slot := SelectedCharSlotStable()
+            if (slot = 0) {
+                Log("WalkToFirstChar: lost the highlight confirming the wrap")
+                return false
+            }
+            continue
+        }
         if (slot < previous) {
-            Log("WalkToFirstChar: wrapped to character 1 after " A_Index " steps down")
-            return true
+            Log("WalkToFirstChar: highlight jumped " previous " -> " slot
+                . " (not slot 1) - misread mid-scroll, continuing")
+            slot := SelectedCharSlotStable()
+            if (slot = 0) {
+                Log("WalkToFirstChar: lost the highlight after a misread")
+                return false
+            }
+            continue
         }
         ; A realm with a single character never jumps - the highlight simply
         ; stays put. Two steps without any movement mean we are already there.
@@ -896,12 +945,49 @@ WalkToFirstChar() {
 ; the highlight reaches slot 1 and stays there while the list scrolls past it.
 ; The end of the list is where a step changes nothing (no wrap-around) or where
 ; the highlight jumps to the bottom of the panel (wrap-around).
+;
+; Climbing up, does the highlight sitting on slot 1 mean character 1?
+;
+; From CharacterSelectScrollUp_OnClick: every step recomputes
+;     CHARACTER_LIST_OFFSET = max(newIndex - MAX_CHARACTERS_DISPLAYED, 0)
+; while newIndex is still at or below the panel size, so the offset is driven to
+; zero by the time the selection reaches the ninth character - and only THEN
+; does the highlight start walking up the panel. Which is the useful half of the
+; guarantee: while the list is still scrolling the highlight sits on the BOTTOM
+; slot, so a highlight anywhere above it means the offset is already zero and
+; slot number = character number. Slot 1 is character 1.
+;
+; The guarantee only holds for an offset the ARROW KEYS built. A list the user
+; wheel-scrolled or dragged the scrollbar on before pressing Alt+F1 can sit at
+; offset 5 with character 6 selected, and that lights slot 1 too - climbing from
+; there would report the top four characters early. So slot 1 is believed only
+; once this climb has proved the offset is being rebuilt, which is either:
+;   - the highlight has been on the bottom slot (the scrolling position), or
+;   - the panel holds fewer blocks than it has slots, so the list is shorter
+;     than the panel and cannot be scrolled at all.
+; Without that proof the old behaviour stands: press Up, let it wrap or lose the
+; highlight, and answer honestly instead of guessing.
+ClimbTopTrusted(snapshot) {
+    return snapshot.slot >= gCharUIPositions.Length
+        || snapshot.blocks.Length < gCharUIPositions.Length
+}
+
+ClimbTopReached(slot, trusted) {
+    if (slot != 1 || !trusted)
+        return false
+    ; The step that got us here may have been the last scrolled one and may
+    ; still be drawing.
+    Sleep(gCharScrollSettleMs)
+    return SelectedCharSlotStable() = 1
+}
+
 ClimbToFirstChar() {
     snapshot := CharSnapshot()
     if (snapshot.slot = 0) {
         Log("ClimbToFirstChar: no highlight found")
         return false
     }
+    trusted := ClimbTopTrusted(snapshot)
     loop gCharWalkMaxSteps {
         if FlowAbort("ClimbToFirstChar")
             return false
@@ -912,8 +998,14 @@ ClimbToFirstChar() {
             Log("ClimbToFirstChar: lost the highlight after " A_Index " steps")
             return false
         }
+        if (slot >= gCharUIPositions.Length)
+            trusted := true
         if (slot < previousSlot) {
             ; Still climbing, list unchanged - no need to look at it.
+            if ClimbTopReached(slot, trusted) {
+                Log("ClimbToFirstChar: reached character 1 after " A_Index " steps")
+                return true
+            }
             snapshot.slot := slot
             continue
         }
@@ -924,17 +1016,123 @@ ClimbToFirstChar() {
             CharWalkStep("Down", 1)
             return true
         }
-        ; Same slot: either the list scrolled under the highlight, or we are at
-        ; the top and the key did nothing.
+        ; Same slot. Three situations hide in here, and taking the wrong one
+        ; for "we are at the top" is what left this walk convinced it stood on
+        ; character 1 while it stood in the middle of the list - after which
+        ; every number the menu spoke was off by that much:
+        ;
+        ;   - slot 1: the top (see ClimbTopReached).
+        ;   - the list scrolled underneath the highlight: the signature changed.
+        ;   - nothing happened at all: a swallowed keypress, or a panel read
+        ;     before the client redrew. ONE unchanged look cannot tell this from
+        ;     the top - the realm list learned the same thing about swallowed
+        ;     wheel notches (FindRealmRowByName: require two unchanged pages,
+        ;     scroll harder after the first).
+        if ClimbTopReached(slot, trusted) {
+            Log("ClimbToFirstChar: reached character 1 after " A_Index " steps")
+            return true
+        }
         fresh := CharSnapshot()
-        if (fresh.signature = previousSignature) {
-            Log("ClimbToFirstChar: reached the top after " A_Index " steps")
+        if ClimbTopTrusted(fresh)
+            trusted := true
+        if (fresh.signature != previousSignature) {
+            snapshot := fresh
+            continue
+        }
+        stalled := true
+        loop gCharStallRetries {
+            if FlowAbort("ClimbToFirstChar")
+                return false
+            ; Look again before pressing again: a step that DID register but
+            ; whose redraw we read too early must never be answered with another
+            ; press.
+            Sleep(gCharScrollSettleMs)
+            fresh := CharSnapshot()
+            if (fresh.signature != previousSignature || fresh.slot != previousSlot) {
+                stalled := false
+                break
+            }
+            ; Nothing moved at all, so the key itself was swallowed. Press
+            ; again. If this happens to be character 1 - which we could not
+            ; prove above - the press wraps to the bottom of the list instead,
+            ; and the wrap branch at the top of the loop picks that up on the
+            ; next pass and steps back down. Either way the position stays
+            ; known, which is the only thing that must never break.
+            Log("ClimbToFirstChar: step " A_Index " changed nothing at slot "
+                . slot " - pressing Up again (" A_Index ")")
+            CharWalkStep("Up", A_Index)
+        }
+        if (stalled) {
+            Log("ClimbToFirstChar: stuck at slot " slot " after " gCharStallRetries
+                . " retries - that is not the top, giving up")
+            return false
+        }
+        if ClimbTopReached(fresh.slot, trusted) {
+            Log("ClimbToFirstChar: reached character 1 after " A_Index " steps (via a retry)")
             return true
         }
         snapshot := fresh
     }
     Log("ClimbToFirstChar: no top within " gCharWalkMaxSteps " steps")
     return false
+}
+
+; A Down step that left the highlight on the same slot AND the panel unchanged:
+; the end of the list, or a step that did not take?
+;
+; This question only exists once the list scrolls underneath the highlight -
+; character ten and below on a nine-slot panel - which is why every realm that
+; fits on screen was fine and every realm past the fold came up short. ONE
+; unchanged look was taken as the end of the list, the walk returned there, and
+; because the answer came from the walk the menu presented it as complete.
+;
+; Answered the way the realm list learned to answer a page that would not move
+; (FindRealmRowByName: "ONE of those used to end the search silently"): look
+; again with more time before believing it, and press again only after a look
+; has proved that nothing moved at all. That order is the whole point. A press
+; that DID register but whose redraw we read too early must never be answered
+; with another press - that steps over a character and drops it without a trace.
+;
+; The tie-breaker is the name printed under the character model: it is the
+; SELECTED character no matter where the list is scrolled, so it answers the one
+; question neither the slot probe nor the panel OCR can.
+;
+; Returns "end", "more" (the step had taken effect - keep walking), "wrap" (it
+; had taken effect and landed back on character 1) or "abort", and hands back
+; the snapshot the verdict was reached on.
+CharWalkResolveStall(chars, previousSignature, &snapshot) {
+    standingOn := chars.Length > 0 ? chars[chars.Length].name : ""
+    firstName := chars.Length > 0 ? chars[1].name : ""
+    modelName := ""
+    loop gCharStallRetries {
+        if FlowAbort("CharWalkResolveStall")
+            return "abort"
+        Sleep(gCharScrollSettleMs)
+        snapshot := CharSnapshot()
+        modelName := SelectedCharNameOnScreen()
+        moved := snapshot.signature != previousSignature
+        if (!moved && modelName != "" && standingOn != ""
+            && !SameCharName(modelName, standingOn))
+            moved := true
+        if (moved) {
+            if (firstName != "" && modelName != "" && SameCharName(modelName, firstName)) {
+                Log("CharWalkStall: the step had landed back on character 1 - wrap-around")
+                return "wrap"
+            }
+            Log("CharWalkStall: the step had taken effect after all (look " A_Index ")")
+            return "more"
+        }
+        Log("CharWalkStall: nothing moved at " chars.Length " characters"
+            . " (model reads '" modelName "') - pressing Down again (" A_Index ")")
+        Send("{Down}")
+    }
+    Sleep(gCharScrollSettleMs)
+    snapshot := CharSnapshot()
+    if (snapshot.signature != previousSignature) {
+        Log("CharWalkStall: the extra press moved the list after all")
+        return "more"
+    }
+    return "end"
 }
 
 ; Walk the whole list from character 1 down and collect every entry.
@@ -978,7 +1176,29 @@ WalkCharacterList() {
             Log("WalkCharacterList: no OCR block at slot " snapshot.slot ", character " A_Index)
             entry := {name: T("character") " " A_Index, details: "", detailLines: [], clickLine: "", lastY: 0}
         }
-        chars.Push(entry)
+        ; Character names are unique per realm, so a name already in the list can
+        ; only mean the walk came back around: either a step was counted twice,
+        ; or the wrap-around went unrecognized and we are collecting the list a
+        ; second time. Both used to end as a menu of duplicates numbered past the
+        ; real character count. Strict comparison on purpose - see
+        ; SameCharNameStrict; a lenient one would stop the walk on "Sku" the
+        ; moment it met "Skubella".
+        if (chars.Length > 0 && SameCharNameStrict(entry.name, chars[chars.Length].name)) {
+            Log("WalkCharacterList: '" entry.name "' again at character "
+                . (chars.Length + 1) " - the step did not move, not counting it twice")
+        } else if (chars.Length > 1 && SameCharNameStrict(entry.name, chars[1].name)) {
+            Log("WalkCharacterList: back on '" chars[1].name "' after " chars.Length
+                . " characters - that was the wrap-around")
+            return {chars: chars, wrapped: true}
+        } else {
+            chars.Push(entry)
+            ; Every step past the ninth character costs a settle plus a panel
+            ; OCR, so a big realm is half a minute of nothing. Count out loud:
+            ; it is the one progress signal that also tells the user how big the
+            ; list is turning out to be.
+            if (Mod(chars.Length, gCharWalkSayEvery) = 0)
+                SayQueued(chars.Length . "")
+        }
 
         previousSlot := snapshot.slot
         previousSignature := snapshot.signature
@@ -998,6 +1218,19 @@ WalkCharacterList() {
             ; name at the highlight must be the first name we collected. A
             ; misread mid-scroll would otherwise end the count early and
             ; silently drop every character below it.
+            ;
+            ; Confirm it AFTER a settle, though. The wrap re-scrolls the ENTIRE
+            ; list back to the top (CharacterSelectScrollDown_OnClick sets
+            ; CHARACTER_LIST_OFFSET = 0), and that takes longer than the
+            ; highlight takes to move - CountAndReadCharacters already sleeps
+            ; 500 ms after WalkToFirstChar for exactly this reason. Reading
+            ; straight after the keypress captured the list as it still was, the
+            ; name never matched, a wrap that HAD happened was written off as a
+            ; misread, and the walk carried on and collected the list a second
+            ; time until it ran out of steps. On a realm that fits on screen the
+            ; wrap scrolls nothing, so there was nothing to settle and none of
+            ; this was ever visible.
+            Sleep(gCharScrollSettleMs)
             fresh := CharSnapshot()
             entry := CharBlockAtSlot(fresh.blocks, fresh.s, fresh.slot)
             if (IsObject(entry) && chars.Length > 0
@@ -1005,15 +1238,43 @@ WalkCharacterList() {
                 Log("WalkCharacterList: wrapped around after " chars.Length " characters")
                 return {chars: chars, wrapped: true}
             }
+            ; The panel OCR can still lose the name at the highlight to a
+            ; redraw. The name under the character model is the same character
+            ; and does not care where the list is scrolled, so ask it before
+            ; declaring a misread and walking the whole list again.
+            modelName := SelectedCharNameOnScreen()
+            if (chars.Length > 0 && modelName != ""
+                && SameCharName(modelName, chars[1].name)) {
+                Log("WalkCharacterList: wrapped around after " chars.Length
+                    . " characters (confirmed under the model)")
+                return {chars: chars, wrapped: true}
+            }
             Log("WalkCharacterList: slot jumped back at " chars.Length
                 . " but the highlight shows '" (IsObject(entry) ? entry.name : "?")
-                . "', not '" (chars.Length > 0 ? chars[1].name : "?") "' - misread, continuing")
+                . "' / model '" modelName "', not '"
+                . (chars.Length > 0 ? chars[1].name : "?") "' - misread, continuing")
             snapshot := fresh
             continue
         }
+        ; Same slot: the list scrolled underneath the highlight - or nothing
+        ; happened at all. Never decide that on one look; see
+        ; CharWalkResolveStall.
         fresh := CharSnapshot()
-        if (fresh.signature = previousSignature) {
-            Log("WalkCharacterList: list ends at " chars.Length " characters (no wrap-around)")
+        if (fresh.signature != previousSignature) {
+            snapshot := fresh
+            continue
+        }
+        verdict := CharWalkResolveStall(chars, previousSignature, &fresh)
+        if (verdict = "abort")
+            return ""
+        if (verdict = "wrap") {
+            Log("WalkCharacterList: wrapped around after " chars.Length
+                . " characters (a swallowed step, resolved)")
+            return {chars: chars, wrapped: true}
+        }
+        if (verdict = "end") {
+            Log("WalkCharacterList: list ends at " chars.Length
+                . " characters (nothing moved in " gCharStallRetries " retries)")
             return {chars: chars, wrapped: false}
         }
         snapshot := fresh
@@ -1113,6 +1374,20 @@ SameCharName(a, b) {
     return a = b || InStr(a, b) || InStr(b, a)
 }
 
+; The same question, asked strictly. SameCharName deliberately accepts one name
+; CONTAINING the other, which is right when the answer is "is the selection
+; where we put it" - refusing a correct selection over an OCR wobble is the
+; worse outcome there. It is wrong wherever the answer ENDS the walk: "Sku" is
+; contained in "Skubella" and both can live on the same realm, so a lenient
+; match would cut the list off at the first character whose name is a fragment
+; of another. Names are unique per realm, so exact equality after normalizing is
+; the right test - and when OCR jitter breaks it the guard simply does not fire
+; and the old behaviour stands.
+SameCharNameStrict(a, b) {
+    a := NormalizedName(a), b := NormalizedName(b)
+    return a != "" && a = b
+}
+
 ; Is the game's selection really on the character we think it is? Reads the
 ; name at the highlighted slot and compares it to the list entry.
 CharCursorMatches(index) {
@@ -1143,10 +1418,23 @@ MoveCharCursorTo(index) {
     total := gLastCharList.Length
     if (total = 0 || index < 1 || index > total)
         return false
+    ; Park the mouse first, for the reason CountAndReadCharacters parks it
+    ; before ITS walk: a pointer resting over the list lights a second slot, and
+    ; SelectedCharSlot returns the TOPMOST lit one - so the highlight this walk
+    ; steers by, and the verification at the end of it, would both be reading
+    ; the mouse instead of the selection. The walk then "failed" and the user
+    ; heard "something went wrong" for a selection that was perfectly fine.
+    MoveToWidget("CharSelectionScreenSafeMousePos")
+    Sleep(150)
     loop 2 {
         if (gCharCursor < 1) {
             if !WalkToFirstChar()
                 return false
+            ; Getting to character 1 goes through the wrap-around, which
+            ; re-scrolls the whole list to the top - and that finishes later
+            ; than the highlight does. Stepping off immediately counts from a
+            ; list that has not settled.
+            Sleep(gCharScrollSettleMs)
             gCharCursor := 1
         }
         key := index > gCharCursor ? "Down" : "Up"
@@ -1158,6 +1446,12 @@ MoveCharCursorTo(index) {
             slot := CharWalkStep(key, A_Index, slot)
         }
         gCharCursor := index
+        ; Any target past the ninth character arrives on a step that SCROLLED
+        ; the list rather than moving the highlight, and the check below reads
+        ; that list. Reading it mid-redraw fails a selection that is in fact
+        ; correct, and the user hears "something went wrong" - or waits out a
+        ; second full walk - for nothing.
+        Sleep(gCharScrollSettleMs)
         if CharCursorMatches(index) {
             Log("MoveCharCursorTo: selection on " index " (" gLastCharList[index].name ")")
             return true
@@ -1205,6 +1499,21 @@ CharacterListForMenu(s) {
     ; wrong list as a correct one, which is worse than admitting the gap: the
     ; user sees the list end at 9 and has no idea why.
     Log("CharacterListForMenu: walk unavailable, using visible-section OCR")
+    ; And "incomplete" is only half of it. The client does not have to be
+    ; scrolled to the top: UpdateCharacterSelection sets
+    ;     CHARACTER_LIST_OFFSET = selectedIndex - MAX_CHARACTERS_DISPLAYED
+    ; whenever the last-played character sits below the fold, so the nine
+    ; visible rows are routinely characters 6..14 - and numbering those 1..9 is
+    ; not an incomplete list, it is a WRONG one. Which is exactly what people
+    ; with more than nine characters were hearing. So drive the list back to
+    ; the top before reading it; then "1" really is character one, and the gap
+    ; is only at the bottom, where the warning says it is.
+    if WalkToFirstChar() {
+        Sleep(gCharScrollSettleMs)
+        s := Sense()
+    } else {
+        Log("CharacterListForMenu: could not scroll to the top - numbering may be off")
+    }
     SayQueued(T("The character list may be incomplete. Press Alt F1 twice to rebuild it."))
     if !SenseOk(s)
         s := Sense()
@@ -1215,24 +1524,44 @@ CharacterListForMenu(s) {
     return second.Length >= first.Length ? second : first
 }
 
+; Build into a DETACHED list and publish it in ONE assignment at the end -
+; the same lesson BuildRealmMenu learned, and this list needed it more.
+;
+; This used to empty charNode.children first and refill it once the walk was
+; done. The walk is not quick: every step past the ninth character costs a
+; settle plus a panel OCR, so a realm with thirty characters spends the better
+; part of a minute in there, and a rebuild after a deletion or a realm switch
+; does it again. The arrow keys stay live that entire time, and against an empty
+; child list they do nothing at all - the submenu simply went dead, with no way
+; for the user to tell that from the tool having crashed. Until the new list is
+; ready the OLD one stays navigable.
 RefreshCharacterMenu(s := "") {
-    global gLastCharList
+    global gLastCharList, gCurrentItem
     charNode := gMainMenu.children[1]
-    charNode.children := []
-    gLastCharList := CharacterListForMenu(s)
+    list := CharacterListForMenu(s)
     names := ""
-    for entry in gLastCharList
+    for entry in list
         names .= (names = "" ? "" : " | ") entry.name
-    Log("RefreshCharacterMenu: " gLastCharList.Length " chars [" names "]")
-    if (gLastCharList.Length = 0) {
-        MenuNode(T("Empty - No characters on this server."), charNode)
-        return
+    Log("RefreshCharacterMenu: " list.Length " chars [" names "]")
+    kids := []
+    if (list.Length = 0) {
+        DetachedNode(kids, charNode, T("Empty - No characters on this server."))
+    } else {
+        for index, entry in list {
+            label := index ": " entry.name (entry.details != "" ? ", " entry.details : "")
+            node := DetachedNode(kids, charNode, label)
+            node.action := SelectCharClosure(index)
+        }
     }
-    for index, entry in gLastCharList {
-        label := index ": " entry.name (entry.details != "" ? ", " entry.details : "")
-        node := MenuNode(label, charNode)
-        node.action := SelectCharClosure(index)
-    }
+    ; The cursor can still be parked on a node from the list being replaced, and
+    ; that node's action closure holds an index into the list being replaced too
+    ; - which after a deletion is a different character. Publish first, then put
+    ; a stranded cursor back on the parent so Enter cannot fire a stale index.
+    stranded := InMenuTree(gCurrentItem, charNode) && gCurrentItem != charNode
+    charNode.children := kids
+    gLastCharList := list
+    if stranded
+        gCurrentItem := charNode
 }
 
 SelectCharClosure(index) {

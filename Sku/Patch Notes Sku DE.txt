@@ -36,6 +36,7 @@ Aenderungen in Sku v43.0
             Auf Hardcore-Realms baut Sku seine Wegpunktdaten jetzt fertig statt still stehenzubleiben.
             Eine Route liess sich nicht starten, wenn ihre Liste waehrend des Ladens fertig wurde.
             Das Anmelde-Tool hielt den Anmeldebildschirm faelschlich fuer die Charakterauswahl.
+            Anmelde-Tool: Auf Realms mit zehn oder mehr Charakteren war die Charakterliste unvollstaendig, falsch nummeriert oder liess sich nicht zurueckblaettern.
 
     Mit Dank an Naxedim und ZenqFR
         Die naechsten vier Korrekturen sind die ersten direkten Code-Beitraege zum inzwischen
@@ -317,6 +318,44 @@ Aenderungen in Sku v43.0
             einziger Knopf Abbrechen ist und die laufende Anmeldung trennt - dieselbe Falle wie
             beim Realmbeitritt; zweibuttonige Dialoge werden vorgelesen und beantwortet. Wo die
             Widgets fehlen (Cata, Retail), sagen die Eintraege das und tun nichts.
+
+    Anmelde-Tool: die Charakterliste auf Realms mit zehn oder mehr Charakteren
+        Einfach: Die Charakterleiste zeigt genau neun Charaktere gleichzeitig. Ab dem zehnten
+            blaettert die Liste, und damit ging alles auf einmal schief: Charaktere fehlten, die
+            Nummerierung passte nicht zur tatsaechlichen Liste, und der Weg zurueck an den Anfang
+            der Liste klappte nicht zuverlaessig. Alle drei haben dieselbe Ursache. Das Tool
+            laeuft die Liste mit den Pfeiltasten ab und beobachtet dabei, wie sich die
+            Auswahlleiste bewegt - sobald die Liste blaettert, bewegt sie sich aber nicht mehr,
+            und "nichts hat sich geaendert" wurde als "hier endet die Liste" gelesen. Ein vom
+            Spiel verschluckter Tastendruck sieht genau gleich aus, und der hat die Listen
+            abgeschnitten. Mit neun Charakteren oder weniger blaettert die Liste nie, deshalb war
+            davon nie etwas zu sehen. Das Tool fragt jetzt zweimal nach, bevor es ein Listenende
+            glaubt, und zieht den grossen Charakternamen unter dem Charaktermodell zur
+            Entscheidung heran - der zeigt den ausgewaehlten Charakter, egal wie weit die Liste
+            gescrollt ist. Ausserdem sagt es alle zehn Charaktere den Stand an, weil eine lange
+            Liste sonst eine halbe Minute Stille ist, und das Menue bleibt waehrend des Neuaufbaus
+            bedienbar statt tot. NICHT GETESTET im Spiel: Hier gibt es keinen Realm mit mehr als
+            neun Charakteren. Sollte die Liste weiterhin falsch sein, benennt das Log des Tools
+            jetzt genau die Entscheidung, die schiefging.
+        Technisch: Gegen den Interface-Quelltext des Clients selbst geprueft. Blizzard_GlueXML_TBC.toc
+            laedt Vanilla\CharacterSelectConstants.lua mit CHARACTER_SELECT_MAX_CHARACTERS = 9,
+            und CharacterSelect_OnShow setzt MAX_CHARACTERS_DISPLAYED darauf. Jede Abbruch-
+            bedingung im Walk, die auf EINER Beobachtung beruhte, braucht jetzt zwei mit
+            laengerer Wartezeit dazwischen und drueckt erst dann erneut, wenn ein Blick bewiesen
+            hat, dass sich nichts bewegt hat - ein zweiter Druck auf einen bereits angekommenen
+            Schritt ueberspringt spurlos einen Charakter. Die Umbruch-Erkennung verlangt jetzt
+            exakt Slot 1, denn CharacterSelectScrollDown_OnClick setzt nach dem letzten Charakter
+            CHARACTER_LIST_OFFSET = 0 und dann SelectCharacter(1); ausserdem wird das
+            Zurueckscrollen abgewartet, bevor bestaetigt wird. Der Notbehelf, der nur den
+            sichtbaren Ausschnitt liest, faehrt jetzt zuerst nach oben, denn
+            UpdateCharacterSelection setzt den Offset auf selectedIndex -
+            MAX_CHARACTERS_DISPLAYED, sobald der zuletzt gespielte Charakter unter der Kante
+            sitzt - die neun sichtbaren Zeilen waren dann Charakter 6 bis 14, angesagt als 1 bis
+            9. Die Pixelproben der Auswahlleiste wurden nach links verschoben: ab zehn Charakteren
+            verbreitert UpdateCharacterList die Leiste von 260 auf 280 und blendet eine Scrollbar
+            ein, deren Hintergrund schwarz genau auf dem Streifen liegt, den die Auswahlleiste
+            freigibt. Das Menue wird jetzt wie die Realmliste losgeloest aufgebaut und in einer
+            einzigen Zuweisung veroeffentlicht.
 
     Hardcore-Realms: Sku baut seine Wegpunktdaten jetzt fertig, statt still stehenzubleiben
         Einfach: Auf Hardcore-Realms raeumt der Spielclient Addons deutlich weniger Rechenzeit pro

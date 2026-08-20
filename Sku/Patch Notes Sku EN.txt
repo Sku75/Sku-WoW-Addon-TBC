@@ -36,6 +36,7 @@ Changes in Sku v43.0
             On hardcore realms Sku now finishes building its waypoint data instead of stopping silently.
             A route would not start if its list finished loading while you were in it.
             The login tool mistook the login screen for character selection.
+            The login tool: on realms with ten or more characters the character list was incomplete, wrongly numbered or would not scroll back.
 
     With thanks to Naxedim and ZenqFR
         The next four fixes are the first direct code contributions to the now-public Sku
@@ -291,6 +292,41 @@ Changes in Sku v43.0
             single button is Cancel and it disconnects the login in flight - the same trap as the
             realm join; two-button dialogs are read and answered. Where the widgets are absent
             (Cata, Retail) the entries say so and do nothing.
+
+    Login tool: the character list on realms with ten or more characters
+        Simple: The character panel shows exactly nine characters at a time. From the tenth on
+            the list scrolls, and everything about the list went wrong at once: characters were
+            missing, the numbering did not match the actual list, and getting back to the top of
+            the list did not always work. All three are the same cause. The tool walks the list
+            with the arrow keys and watches how the highlight moves - and once the list scrolls,
+            the highlight stops moving, so "nothing changed" was read as "the list ends here".
+            A single keypress the game swallows looks exactly the same, and that is what cut
+            lists short. With nine characters or fewer the list never scrolls, which is why none
+            of this was ever visible. The tool now asks twice before believing the list ended,
+            and it reads the character name printed under the character model to settle it -
+            that name is the selected character no matter where the list is scrolled. It also
+            says the running count every ten characters, because a long list is otherwise half a
+            minute of silence, and the menu stays usable while it is being rebuilt instead of
+            going dead. NOT TESTED in the game: there is no realm here with more than nine
+            characters. If the list is still wrong, the tool's log now names the exact decision
+            it got wrong.
+        Technically: Verified against the client's own interface source. Blizzard_GlueXML_TBC.toc
+            loads Vanilla\CharacterSelectConstants.lua with CHARACTER_SELECT_MAX_CHARACTERS = 9,
+            and CharacterSelect_OnShow assigns that to MAX_CHARACTERS_DISPLAYED. Every stop
+            condition in the walk that rested on ONE observation now needs two, with a longer
+            settle in between, and presses again only after a look has proved nothing moved -
+            pressing again on a step that already registered skips a character silently.
+            The wrap-around detection now demands slot 1 exactly, because
+            CharacterSelectScrollDown_OnClick past the last character does
+            CHARACTER_LIST_OFFSET = 0 followed by SelectCharacter(1); it also waits for the
+            re-scroll to draw before confirming. The fallback that reads only the visible section
+            now scrolls to the top first, because UpdateCharacterSelection sets the offset to
+            selectedIndex - MAX_CHARACTERS_DISPLAYED whenever the last played character sits
+            below the fold - the nine visible rows were then characters 6 to 14 announced as 1 to
+            9. The pixel probes for the selection bar were moved left: at ten characters
+            UpdateCharacterList widens the panel from 260 to 280 and shows a scrollbar whose
+            backdrop is solid black over the strip the bar vacates. The menu is now built
+            detached and published in one assignment like the realm list.
 
     Hardcore realms: Sku now finishes loading its waypoint data instead of stopping silently
         Simple: On hardcore realms the game client allows addons noticeably less computing time per

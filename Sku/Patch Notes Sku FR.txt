@@ -39,6 +39,7 @@ Changements dans Sku v43.0
             Sur les royaumes hardcore, Sku termine désormais le chargement de ses points de passage au lieu de s'arrêter en silence.
             Un itinéraire ne démarrait pas si sa liste finissait de charger pendant que vous y étiez.
             L'outil de connexion prenait l'écran de connexion pour la sélection de personnage.
+            L'outil de connexion : sur les royaumes comptant dix personnages ou plus, la liste des personnages était incomplète, mal numérotée ou refusait de revenir en arrière.
 
     Avec nos remerciements à Naxedim et ZenqFR
         Les quatre correctifs suivants sont les premières contributions de code directes au dépôt
@@ -327,6 +328,43 @@ Changements dans Sku v43.0
             coupe la connexion en cours - le même piège que pour l'entrée en royaume ; les
             fenêtres à deux boutons sont lues et traitées. Là où les widgets manquent (Cata,
             Retail), les entrées le disent et ne font rien.
+
+    Outil de connexion : la liste des personnages sur les royaumes de dix personnages ou plus
+        Simple : Le panneau des personnages en affiche exactement neuf à la fois. À partir du
+            dixième, la liste défile, et tout a déraillé en même temps : des personnages
+            manquaient, la numérotation ne correspondait pas à la liste réelle, et le retour au
+            début de la liste ne fonctionnait pas de façon fiable. Les trois ont la même cause.
+            L'outil parcourt la liste avec les touches fléchées et observe le déplacement de la
+            barre de sélection - or dès que la liste défile, la barre ne bouge plus, et « rien
+            n'a changé » était lu comme « la liste s'arrête ici ». Une touche avalée par le jeu a
+            exactement la même allure, et c'est elle qui tronquait les listes. Avec neuf
+            personnages ou moins la liste ne défile jamais, ce qui explique que rien de tout cela
+            n'ait jamais été visible. L'outil demande maintenant deux fois avant de croire à une
+            fin de liste, et s'appuie sur le grand nom affiché sous le modèle du personnage pour
+            trancher - ce nom est celui du personnage sélectionné, quel que soit le défilement.
+            Il annonce également le compte en cours tous les dix personnages, car une longue
+            liste représente sinon une demi-minute de silence, et le menu reste utilisable
+            pendant sa reconstruction au lieu de devenir muet. NON TESTÉ en jeu : il n'existe ici
+            aucun royaume de plus de neuf personnages. Si la liste reste fausse, le journal de
+            l'outil nomme désormais précisément la décision erronée.
+        Technique : Vérifié sur le code d'interface du client lui-même. Blizzard_GlueXML_TBC.toc
+            charge Vanilla\CharacterSelectConstants.lua avec CHARACTER_SELECT_MAX_CHARACTERS = 9,
+            et CharacterSelect_OnShow l'affecte à MAX_CHARACTERS_DISPLAYED. Toute condition
+            d'arrêt du parcours qui reposait sur UNE seule observation en exige désormais deux,
+            avec une attente plus longue entre les deux, et ne represse qu'après qu'un coup d'œil
+            a prouvé que rien n'avait bougé - une seconde pression sur une étape déjà enregistrée
+            saute un personnage sans laisser de trace. La détection du bouclage exige maintenant
+            l'emplacement 1 exactement, car CharacterSelectScrollDown_OnClick, passé le dernier
+            personnage, fait CHARACTER_LIST_OFFSET = 0 puis SelectCharacter(1) ; le retour en
+            haut est en outre attendu avant confirmation. Le repli qui ne lit que la portion
+            visible remonte désormais d'abord en haut, car UpdateCharacterSelection fixe le
+            décalage à selectedIndex - MAX_CHARACTERS_DISPLAYED dès que le dernier personnage
+            joué se trouve sous la limite - les neuf lignes visibles étaient alors les
+            personnages 6 à 14, annoncés 1 à 9. Les sondes de pixels de la barre de sélection ont
+            été déplacées vers la gauche : à dix personnages, UpdateCharacterList élargit le
+            panneau de 260 à 280 et affiche une barre de défilement dont le fond noir recouvre
+            précisément la bande que la barre de sélection libère. Le menu est maintenant
+            construit détaché et publié en une seule affectation, comme la liste des royaumes.
 
     Royaumes hardcore : Sku termine désormais le chargement de ses points de passage au lieu de s'arrêter en silence
         Simple : Sur les royaumes hardcore, le client de jeu accorde aux addons nettement moins de
