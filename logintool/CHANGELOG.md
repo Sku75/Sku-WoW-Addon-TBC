@@ -2,6 +2,16 @@
 
 ## 3.0 (2026-08-18)
 
+**"Die Charakterliste wird neu aufgebaut" nur noch, wenn sie das wirklich
+wird.** Der Satz deckte die Sekunden ab, die der Walk mit Tastendrücken und
+Wartezeiten verbringt — angesagt haben ihn aber die AUFRUFER, jeder vor seinem
+Neuaufbau, also auch dann, wenn gar nichts gewalkt wurde. Seit der Walk bei
+einer Liste, die vollständig auf dem Panel steht, entfällt, war das eine Ansage
+über nichts: rund eine Sekunde, in der nichts zu überbrücken ist. Der Satz sitzt
+jetzt an genau einer Stelle, in `CountAndReadCharacters` unmittelbar vor
+`WalkToFirstChar` — hinter der Panel-Prüfung und hinter dem Warten auf die
+Auswahlleiste. Acht Aufrufstellen sagen ihn nicht mehr selbst.
+
 **Nach den Messungen: drei Wartezeiten gekürzt, die das Log als Kosten
 ausgewiesen hat.** Die neuen `Settle:`-Zeilen haben geliefert, wofür sie da
 sind (Sitzung vom 2026-08-20):

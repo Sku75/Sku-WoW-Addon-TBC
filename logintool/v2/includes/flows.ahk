@@ -392,10 +392,8 @@ InitLogin(s := "") {
         global gProgressPopupText := ""
         ; Counting the list walks the characters with the arrow keys and takes
         ; a while on a full realm; block menu actions meanwhile so a keypress
-        ; cannot start a second flow on top of the walk.
-        ; Announce it: the walk is otherwise seconds of silence, and silence is
-        ; the one state a blind user cannot interpret.
-        SayQueued(T("Please wait, the character list is being rebuilt."))
+        ; cannot start a second flow on top of the walk. The walk announces
+        ; itself if it happens - see CountAndReadCharacters.
         wasBusy := gBusy
         gBusy := true
         try {
@@ -1527,6 +1525,14 @@ CountAndReadCharacters() {
         return ""
     }
 
+    ; Announced HERE, not by the callers, and not before the check above.
+    ; The walk is seconds of keypresses and settles, and silence is the one
+    ; state a blind user cannot interpret - but a list the panel already holds
+    ; in full is rebuilt in about a second, and saying "the character list is
+    ; being rebuilt" over that is an announcement about nothing. Every caller
+    ; used to say the sentence before calling, so it was spoken even when there
+    ; was no walk to cover.
+    SayQueued(T("Please wait, the character list is being rebuilt."))
     if !WalkToFirstChar()
         return ""
     ; The wrap-around scrolls the list back to the top, and that takes a moment
@@ -1952,9 +1958,6 @@ EnterCharacterNameHandler() {
             gEnterCharacterNameFlag := false
             gPendingCreate := ""
             Say(T("Character created"))
-            ; The walk takes several seconds and only beeps - say what is going
-            ; on. Queued: must not clip "Character created".
-            SayQueued(T("Please wait, the character list is being rebuilt."))
             Sleep(1200)
             RefreshCharacterMenuSettled()   ; new slot needs a moment to draw
             ; No number is announced and the new character is not selected.
@@ -2078,9 +2081,6 @@ DeleteCharacterNameHandler() {
             MoveToWidget("CharDeleteConfirmButton")
             Say(T("character deleted"))
             Click()
-            ; The walk that follows takes several seconds and only beeps, so
-            ; say what is happening. Queued: must not clip "character deleted".
-            SayQueued(T("Please wait, the character list is being rebuilt."))
             Sleep(1500)
             RefreshCharacterMenuSettled()   ; list shrinks; let it redraw
             gMainMenu.EnterQueued()         ; same landing spot as after creating
@@ -2421,7 +2421,6 @@ WaitForCharacterCreated() {
                 global gHcCreateRulesText := ""
                 gPendingCreate := ""
                 Say(T("Character created"))
-                SayQueued(T("Please wait, the character list is being rebuilt."))
                 Sleep(1200)
                 RefreshCharacterMenuSettled()
                 gMainMenu.EnterQueued()
@@ -2693,7 +2692,6 @@ AnnounceRealmLanding() {
 ; Shared landing once a join has reached the character screen.
 HardcoreJoinArrived() {
     global gLoginInitialized := true, gRealmMenuOffered := false
-    SayQueued(T("Please wait, the character list is being rebuilt."))
     RefreshCharacterMenuSettled()
     Sleep(400)
     gMainMenu.EnterQueued()
@@ -3362,7 +3360,6 @@ RealmSelectAction(row) {
             gRealmMenuOffered := false
             gLoginInitialized := true       ; also valid when the dialog was auto-opened before any init
             AnnounceRealmLanding()
-            SayQueued(T("Please wait, the character list is being rebuilt."))
             RefreshCharacterMenuSettled()   ; wait for all slots to render
             Sleep(400)
             gMainMenu.EnterQueued()         ; same landing spot as create/delete
@@ -3428,7 +3425,6 @@ RealmSelectAction(row) {
             Sleep(1200)
             AnnounceRealmLanding()
             SayQueued(T("No characters on this realm yet."))
-            SayQueued(T("Please wait, the character list is being rebuilt."))
             RefreshCharacterMenuSettled()
             Sleep(400)
             gMainMenu.EnterQueued()
@@ -3450,7 +3446,6 @@ RealmSelectAction(row) {
                 Send("{Escape}")
                 Sleep(1000)
                 Say(T("Could not switch server."))
-                SayQueued(T("Please wait, the character list is being rebuilt."))
                 RefreshCharacterMenuSettled()
                 Sleep(400)
                 gMainMenu.EnterQueued()
