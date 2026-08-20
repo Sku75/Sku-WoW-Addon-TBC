@@ -1,6 +1,13 @@
 # WoW Logintool
 
-## 3.0 (2026-08-18)
+## 3.1 (2026-08-20)
+
+Ausgeliefert als 3.1, nicht als 3.0: Eine 3.0 ist nie veröffentlicht worden.
+Ihre Versionsnummer stand seit dem 2026-08-18 im Installer, ohne dass je ein
+Paket dazu hochgeladen wurde — wer in dieser Zeit installiert hat, bekam den
+2.2-Stand mit einer 3.0-Markierung. Eine Veröffentlichung ALS 3.0 würde bei
+genau diesen Leuten als "schon installiert" gelten und nie ankommen. Die
+Einträge der nie erschienenen 3.0 stehen deshalb hier mit drin.
 
 Alle Punkte bis auf den letzten ("Charakterliste ab neun Charakteren") sind am
 2026-08-20 am Client geprüft.
