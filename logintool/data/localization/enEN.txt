@@ -160,3 +160,4 @@ Attention. The game is on a different server:==Attention. The game is on a diffe
 Change the server again before you play here.==Change the server again before you play here.
 Agreed. Please wait.==Agreed. Please wait.
 The game is starting. Please wait.==The game is starting. Please wait.
+The hardcore rules are still open.==The hardcore rules are still open.

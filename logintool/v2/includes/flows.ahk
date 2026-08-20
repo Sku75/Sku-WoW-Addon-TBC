@@ -16,6 +16,12 @@ global gCharCursor := 0           ; character the game's own selection sits on
 ; seconds is not narrated on every probe. Cleared as soon as a screen without
 ; one is seen.
 global gProgressPopupText := ""
+; The hardcore creation rules as they were last read out in full. Kept until a
+; character is actually created or the creation is cancelled - NOT until the
+; dialog closes, because a rejected name brings the same rules straight back.
+; What makes that safe is that the text is verified before it is trusted; see
+; AskHardcoreCreateConfirm.
+global gHcCreateRulesText := ""
 ; How long after a client appeared its own start-up dialogs can still be on
 ; screen. A minute, because this covers a slow connection, and being wrong in
 ; this direction only means a popup is READ instead of pressed.
@@ -773,9 +779,11 @@ global gCharStallRetries := 2
 ; A long walk is a long silence, and silence is the one state a blind user
 ; cannot interpret. Speak the running count every N characters.
 global gCharWalkSayEvery := 10
-; Settle after each click on the character CREATION screen. See CreateCharAction:
-; the only one of the tool's waits that still has no observable condition.
+; Settle after a click on the character CREATION screen. See CreateCharAction:
+; the only one of the tool's waits that still has no observable condition. The
+; long one is only needed after the RACE click, which rebuilds the class row.
 global gCreateClickSettleMs := 900
+global gCreateClickShortMs := 300
 
 ; The OCR character block sitting at the given slot, or "" if none matches.
 CharBlockAtSlot(blocks, s, slot) {
@@ -1862,12 +1870,16 @@ CreateCharAction(genderIndex, raceIndex, classIndex, zoneIndex) {
         }
         Say(T("wait"))
     }
-    ; The three settles below are still blind, and deliberately so: what a race
-    ; click changes on screen (the class row re-filters, the model swaps) is not
-    ; something a cheap probe can confirm, and clicking the class before the row
-    ; has re-filtered picks the wrong class. One number drives all of them so it
-    ; can be lowered in one place, and the total is logged so the next creation
-    ; says what it really cost.
+    ; These settles are still blind, and deliberately so: what a race click
+    ; changes on screen (the class row re-filters, the model swaps) is not
+    ; something a cheap probe can confirm.
+    ;
+    ; But only ONE of them is a dependency. The class row is rebuilt from the
+    ; race, so clicking a class before that has happened picks the wrong class -
+    ; that wait keeps its full length. Nothing reads the class or the gender
+    ; before the user types a name, so those two get the short settle: they only
+    ; have to let the click land, not let a panel rebuild. Measured 2844 ms for
+    ; the three of them; this makes it about 1500.
     clickTick := A_TickCount
     race := gRaces[raceIndex]
     ClickUi(race.x, race.y)
@@ -1875,17 +1887,17 @@ CreateCharAction(genderIndex, raceIndex, classIndex, zoneIndex) {
     if (gClassBoxes.Length >= classIndex) {
         box := gClassBoxes[classIndex]
         ClickUi(box.x, box.y)
-        Sleep(gCreateClickSettleMs)
+        Sleep(gCreateClickShortMs)
     }
     gender := gGenders[genderIndex]
     ClickUi(gender.x, gender.y)
-    Sleep(gCreateClickSettleMs)
+    Sleep(gCreateClickShortMs)
     if (gHasSetupGametype = "Retail" && gWidgets.Has("CharCreationRetailCustomizeButton")) {
         ClickWidget("CharCreationRetailCustomizeButton")
         Sleep(gCreateClickSettleMs)
     }
     Log("Settle: race/class/gender clicks took " (A_TickCount - clickTick)
-        . " ms (blind, gCreateClickSettleMs=" gCreateClickSettleMs ")")
+        . " ms (blind, race=" gCreateClickSettleMs " rest=" gCreateClickShortMs ")")
     global gEnterCharacterNameFlag := true
     gPendingCreate := {zone: zoneIndex}
     Say(T("enter the name for the new character and press enter, or escape to cancel character creation."))
@@ -1970,6 +1982,7 @@ EnterCharacterNameHandler() {
 CancelCharacterName() {
     global gEnterCharacterNameFlag := false
     global gPendingCreate := ""
+    global gHcCreateRulesText := ""
     Send("{Esc}")
     Say(T("Creation is canceled. Please wait."))
     tries := 0
@@ -2299,16 +2312,62 @@ HcCreateDialogText() {
 
 ; Read the rules and hand the decision to the user. Never auto-answer: agreeing
 ; creates the character, declining does not, and neither is the tool's call.
+;
+; Asked a second time while the SAME dialog is still up, the rules are not read
+; again. Several things arrive at this function - the name handler, CheckMode,
+; InitLogin after a refocus - and one creation attempt went through it three
+; times, paging 27 lines of legalese at about seven seconds a go. The third pass
+; returned nothing at all ("read 0 line(s) over 2 page(s)"), which is exactly
+; what a re-read must do: the dialog is still scrolled to where the last pass
+; left it, so there is no text above to find. Repeating the CHOICE is the useful
+; part; repeating the rules is not.
 AskHardcoreCreateConfirm() {
     global gHardcoreConfirmFlag := true, gHardcoreConfirmKind := "create"
+    if (gHcCreateRulesText != "" && HcCreateRulesAreTheSame()) {
+        Log("HcCreateConfirm: same rules as before - repeating the choice only")
+        Say(T("The hardcore rules are still open."))
+        SayQueued(T("Press Enter to agree, or press Escape to decline."))
+        return
+    }
     Log("HcCreateConfirm: dialog up - reading it to the user")
     ; Paging the text costs a few seconds of OCR - say something first, or the
     ; dialog arrives as silence.
     Say(T("Please wait."))
     text := HcCreateDialogText()
-    if (text != "")
+    if (text != "") {
+        global gHcCreateRulesText := text
         SayQueued(text)
+    }
     SayQueued(T("Press Enter to agree, or press Escape to decline."))
+}
+
+; Is the dialog on screen the same agreement that was read out before?
+;
+; One look, no scrolling - against seven seconds for the full paging. Two
+; answers count as "same": the visible page is part of the text already read, or
+; there is no readable text at all, which is what the dialog looks like when it
+; is still scrolled to where the last pass left it (measured: "read 0 line(s)
+; over 2 page(s)" on the third pass of one creation). Anything else is a
+; different dialog and gets read out properly.
+;
+; The comparison is a chunk of the visible page rather than the whole of it,
+; because the page is a window into the text and OCR does not cut it in the same
+; place twice.
+HcCreateRulesAreTheSame() {
+    s := Sense()
+    if !SenseOk(s)
+        return false
+    page := ""
+    for line in HcCreateLines(s) {
+        t := Trim(line["text"])
+        if (t != "")
+            page .= (page = "" ? "" : " ") t
+    }
+    if (page = "") {
+        Log("HcCreateConfirm: nothing readable on the open dialog - taking it for the same one")
+        return true
+    }
+    return InStr(gHcCreateRulesText, SubStr(page, 1, 60)) > 0
 }
 
 HardcoreCreateAnswer(accept, s) {
@@ -2359,6 +2418,7 @@ WaitForCharacterCreated() {
         if SenseOk(s) {
             if SenseCheck(s, "charselect") {
                 Log("HcCreateConfirm: character created")
+                global gHcCreateRulesText := ""
                 gPendingCreate := ""
                 Say(T("Character created"))
                 SayQueued(T("Please wait, the character list is being rebuilt."))
@@ -3072,12 +3132,13 @@ BuildRealmMenu(menuItem) {
     ; which is what a build that ended on a failed sense looks like.
     tabs := RealmListTabs(s)
 
-    ; Leave the list at the top: the stored rects belong to the scroll position
-    ; they were captured at, and RealmSelectAction re-finds the row by name from
-    ; the top anyway. The distance is known now - the list is `found.Length`
-    ; rows long and `visible` of them are on screen - so this no longer wheels a
-    ; blind 60 notches.
-    RealmListScrollTop(found.Length)
+    ; The list is NOT wound back here any more. That cost 1.9 s at the end of
+    ; every build (measured 2026-08-20) to leave the dialog tidy for a reader
+    ; that winds it back itself: RealmSelectAction never clicks a stored realm
+    ; rect - it refuses to, see the comment there - it calls FindRealmRowByName,
+    ; and that starts with its own scroll to the top. The tab rects handed to
+    ; the menu are unaffected either way, because the category strip does not
+    ; scroll with the list.
     if (tabs.Length = 0) {
         sTop := Sense()
         if SenseOk(sTop) {
@@ -3098,8 +3159,8 @@ BuildRealmMenu(menuItem) {
         node.action := RealmSelectClosure(entry.row)
     }
 
-    ; Category tabs (bottom strip of the realm dialog) - read above, before the
-    ; list was scrolled back to the top.
+    ; Category tabs (bottom strip of the realm dialog) - read above, from the
+    ; last page of the build.
     for tab in tabs {
         node := DetachedNode(kids, menuItem, T("select category") ": " tab["text"])
         node.action := RealmTabClosure(tab, menuItem)

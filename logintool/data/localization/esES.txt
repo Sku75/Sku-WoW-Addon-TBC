@@ -160,3 +160,4 @@ Attention. The game is on a different server:==Atención. El juego está en otro
 Change the server again before you play here.==Cambia de servidor otra vez antes de jugar aquí.
 Agreed. Please wait.==Aceptado. Por favor espera.
 The game is starting. Please wait.==El juego se está iniciando. Por favor espera.
+The hardcore rules are still open.==Las reglas hardcore siguen abiertas.

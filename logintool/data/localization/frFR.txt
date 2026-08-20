@@ -160,3 +160,4 @@ Attention. The game is on a different server:==Attention. Le jeu est sur un autr
 Change the server again before you play here.==Changez de royaume avant de jouer ici.
 Agreed. Please wait.==Accepte. Veuillez patienter.
 The game is starting. Please wait.==Le jeu démarre. Veuillez patienter.
+The hardcore rules are still open.==Les règles hardcore sont toujours ouvertes.

@@ -2,6 +2,43 @@
 
 ## 3.0 (2026-08-18)
 
+**Nach den Messungen: drei Wartezeiten gekürzt, die das Log als Kosten
+ausgewiesen hat.** Die neuen `Settle:`-Zeilen haben geliefert, wofür sie da
+sind (Sitzung vom 2026-08-20):
+
+- Die Hardcore-Regeln wurden bei EINER Charaktererstellung dreimal komplett
+  vorgelesen — je 27 Zeilen über drei Seiten OCR, rund sieben Sekunden pro
+  Durchgang. Der dritte Durchgang lieferte `read 0 line(s) over 2 page(s)`, also
+  gar nichts: Der Dialog steht noch da, wo ihn der vorige Durchgang
+  hingescrollt hat, oberhalb ist nichts mehr zu finden. An dieser Funktion
+  kommen mehrere Wege an (Namenseingabe, CheckMode, InitLogin nach einem
+  Fokuswechsel), und jeder las neu. Jetzt wird EINMAL hingesehen (eine
+  Aufnahme, kein Scrollen) und geprüft, ob die sichtbare Seite Teil des schon
+  vorgelesenen Textes ist — dann kommt nur noch die Wahl ("Die Hardcore-Regeln
+  stehen noch offen. Enter zum Zustimmen…"). Ist der Text ein anderer, wird
+  wie bisher komplett vorgelesen. Der Merker überlebt einen abgelehnten Namen
+  (der bringt dieselben Regeln sofort zurück) und wird gelöscht, wenn der
+  Charakter erstellt oder die Erstellung abgebrochen wird.
+- Am Ende jedes Serverlisten-Aufbaus wurde die Liste zurück an den Anfang
+  gespult: 1,9 Sekunden, gemessen zwischen `bottom of the list` und der
+  fertigen Liste. Für einen Leser, der das ohnehin selbst tut —
+  `RealmSelectAction` klickt NIE ein gespeichertes Realm-Rechteck (es weigert
+  sich, siehe Kommentar dort), sondern ruft `FindRealmRowByName`, und das
+  beginnt mit seinem eigenen Zurückspulen. Die Reiter-Rechtecke sind davon
+  unabhängig, die Kategorieleiste scrollt nicht mit.
+- Die drei blinden Wartezeiten auf dem Erstellungsbildschirm brauchten
+  gemessene 2844 ms. Nur EINE davon ist eine Abhängigkeit: Die Klassenzeile
+  wird aus der Rasse neu aufgebaut, ein Klick auf die Klasse davor trifft die
+  falsche — die behält ihre volle Länge (`gCreateClickSettleMs`). Klasse und
+  Geschlecht liest niemand, bevor der Name getippt wird; die bekommen die kurze
+  Wartezeit (`gCreateClickShortMs`, 300 ms). Zusammen jetzt rund 1500 ms.
+
+Zum Vergleich, ebenfalls aus dieser Sitzung: `Settle: character panel redrawn
+after 16 ms (limit 1000)` — die flache Sekunde vor jedem Neuaufbau der
+Charakterliste war sechzigmal zu lang. Der Client-Start bis "Anmeldemodus"
+dauerte 0,9 s, die Charakterliste ohne Walk 1359 ms statt 9172 ms, und die
+Serverliste 41 Realms über fünf Seiten statt elf.
+
 **Das Tool brach den Login des Clients selbst ab.** Am Client gemeldet und
 reproduziert: Spiel starten, "Das Spiel startet" hören, ein Klickgeräusch — und
 danach steht der Anmeldebildschirm da und die Zugangsdaten müssen neu getippt
