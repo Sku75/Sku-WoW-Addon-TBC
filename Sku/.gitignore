@@ -23,3 +23,5 @@
 .DS_Store
 Thumbs.db
 *.bak
+# _wrap_deferred.py --rebak keeps the superseded backup here
+*.bak.old

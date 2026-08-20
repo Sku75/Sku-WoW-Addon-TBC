@@ -3949,11 +3949,22 @@ function SkuNav:LoadDefaultMapData(aForce)
 	-- Route data is deferred (see SkuDeferredData.lua): the route files now only
 	-- define builder functions at load. This is the single chokepoint every
 	-- navigation path passes, so build the tables here on first use.
+	local tT0 = debugprofilestop()
 	Sku:EnsureData("routes")
+	local tEnsureMs = debugprofilestop() - tT0
 
+	-- [2026-08-20 instrumentation, ROUTE-LINK-BUILD-PLAN.md 13.7] The two blocks
+	-- below sit BETWEEN the deferred-build metric and the waypoint-cache build,
+	-- so until now no counter covered them. The name unpack walks all ~50k Era
+	-- waypoints and allocates one table plus one string slot per RESIDENT locale
+	-- each; the link block wires (and on TBC unions) the link tables. Priced
+	-- separately so the next step is chosen on a measurement, not a guess.
+	local tNamesT0 = debugprofilestop()
+	local tNamesCount = 0
 	if SkuDB.routedata["global"].WaypointsNew then
 		SkuDB.routedata["global"].Waypoints = {}
 		for x = 1, #SkuDB.routedata["global"].WaypointsNew do
+			tNamesCount = tNamesCount + 1
 			local tData = SkuDB.routedata["global"].WaypointsNew[x]
 			SkuDB.routedata["global"].Waypoints[x] = tData
 			if SkuDB.routedata["global"].Waypoints[x][1] ~= false then
@@ -3998,6 +4009,8 @@ function SkuNav:LoadDefaultMapData(aForce)
 		end
 		SkuDB.routedata["global"].WaypointsNew = nil
 	end
+	local tNamesMs = debugprofilestop() - tNamesT0
+	local tLinksT0 = debugprofilestop()
 
 	--if SkuSettings:Sub("SkuNav", nil, "global").hasCustomMapData ~= true or aForce then
 		local t = SkuDB.routedata["global"]["Waypoints"]
@@ -4042,6 +4055,11 @@ function SkuNav:LoadDefaultMapData(aForce)
 			-- waypoints); drop it for the GC. Keep SkuDBTMP...Links — it IS the live
 			-- unioned link table now. Guard is re-callable: on a reset LoadDefaultMapData
 			-- re-runs, tEra is already nil (skip merge), tWotlk still holds the union.
+			-- [2026-08-20] Since the route files are wrapped per SECTION and
+			-- SkuDeferredData.lua builds only the WotLK LINKS on TBC, these four are
+			-- already nil — the ~265 ms and the ~21 MB that used to be constructed
+			-- here and thrown away are never spent. Kept as a guard: it costs
+			-- nothing, and it stays correct if the selection ever widens again.
 			SkuDBTMP.routedata["global"]["WaypointsNew"] = nil
 			SkuDBTMP.routedata["global"]["Waypoints"] = nil
 			SkuDBTMP.routedata["global"]["WaypointLevels"] = nil
@@ -4052,6 +4070,16 @@ function SkuNav:LoadDefaultMapData(aForce)
 			SkuDB.SessionRouteData.Links = tl
 		end
 	--end
+	local tLinksMs = debugprofilestop() - tLinksT0
+	local tLocales = 0
+	for i = 1, #Sku.Locs do
+		if Sku:LocaleIsWanted(Sku.Locs[i]) then tLocales = tLocales + 1 end
+	end
+	if Sku.MetricPoint then
+		Sku:MetricPoint(string.format("LoadDefaultMapData = %.1f ms (EnsureData %.0f  names %.0f for %d wps x %d locales  links %.0f)",
+			debugprofilestop() - tT0, tEnsureMs, tNamesMs, tNamesCount, tLocales, tLinksMs))
+	end
+	dprint("LoadDefaultMapData done", "ensure", tEnsureMs, "names", tNamesMs, "wps", tNamesCount, "locales", tLocales, "links", tLinksMs)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

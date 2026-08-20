@@ -5325,7 +5325,67 @@ local function tSkuCheckKeys()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- Invariant 4 (menu; from the v43.0 "route list finished loading" regression):
+-- Invariant 4 (routes; from the 2026-08-20 per-section route builders,
+-- ROUTE-LINK-BUILD-PLAN.md section 13): the route files define ONE builder per
+-- top-level section and SkuDeferredData.lua picks the ones this flavour reads.
+-- A wrong pick is silent -- half the link graph, or waypoints that never
+-- arrive, look exactly like "the data is like that". So assert the shape:
+--   1. no SkuDBBuildRoute* global survives EnsureData. That covers both halves
+--      at once: a builder that was RUN is nil'ed after it succeeded, one that
+--      was SKIPPED is nil'ed as unused -- so a survivor means a section the
+--      selection does not know about (e.g. the wrapper emitted a new one and
+--      nobody added it), still pinning its multi-MB source string.
+--   2. the tables the nav path actually reads are present and non-empty.
+--   3. per flavour: on TBC the WotLK LINKS are built and are the live union
+--      table, and its waypoint half is absent; on Era the WotLK file is not
+--      built at all.
+local tSkuCheckRouteSections = {"WaypointsNew", "Waypoints", "SequenceNumbers", "WaypointLevels", "Links"}
+local function tSkuCheckRoutes()
+	local tChecked, tViolations = 0, 0
+	if not (Sku.IsDataReady and Sku:IsDataReady("routes")) then
+		dprint("skucheck", "routes: route data not built yet - skipped")
+		return 0, 1, 0
+	end
+	local tCheck = function(aOk, aWhat)
+		tChecked = tChecked + 1
+		if not aOk then
+			tViolations = tViolations + 1
+			dprint("skucheck", "VIOLATION routes:", aWhat)
+		end
+	end
+	local tNames = {"SkuDBBuildRouteWotlk", "SkuDBBuildRouteGlobal"}
+	for x = 1, #tSkuCheckRouteSections do
+		tNames[#tNames + 1] = "SkuDBBuildRouteWotlk"..tSkuCheckRouteSections[x]
+		tNames[#tNames + 1] = "SkuDBBuildRouteGlobal"..tSkuCheckRouteSections[x]
+	end
+	for x = 1, #tNames do
+		tCheck(rawget(_G, tNames[x]) == nil, "builder global "..tNames[x].." still alive after EnsureData -- it was neither built nor listed as unused, and its source blob stays pinned")
+	end
+	local tCount = function(aTable)
+		if type(aTable) ~= "table" then return -1 end
+		local c = 0
+		for _ in pairs(aTable) do c = c + 1 end
+		return c
+	end
+	local tGlobal = SkuDB and SkuDB.routedata and SkuDB.routedata["global"]
+	local tSession = SkuDB and SkuDB.SessionRouteData
+	tCheck(tCount(tSession and tSession.Waypoints) > 0, "SessionRouteData.Waypoints is empty -- the Era waypoint section was not built")
+	tCheck(tCount(tSession and tSession.Links) > 0, "SessionRouteData.Links is empty -- no link section was built")
+	tCheck(tCount(tGlobal and tGlobal.WaypointLevels) > 0, "routedata.global.WaypointLevels is empty -- GetWaypointLevel would answer nil for every waypoint")
+	if Sku.isTBC then
+		local tTmp = type(SkuDBTMP) == "table" and SkuDBTMP.routedata and SkuDBTMP.routedata["global"]
+		if type(tTmp) ~= "table" then tTmp = nil end
+		tCheck(tTmp ~= nil, "SkuDBTMP.routedata.global missing on TBC -- the WotLK link section was not built")
+		tCheck(tTmp ~= nil and tTmp.Links ~= nil and tTmp.Links == (tSession and tSession.Links), "the live SessionRouteData.Links is not the WotLK link table -- the union did not happen")
+		tCheck(tTmp == nil or tTmp.WaypointsNew == nil, "the WotLK waypoint half is present on TBC -- it is never read, it should not be built")
+	else
+		tCheck(SkuDBTMP == nil, "SkuDBTMP exists outside TBC -- the WotLK file is unused on this flavour and should not be built at all")
+	end
+	return tChecked, 0, tViolations
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Invariant 5 (menu; from the v43.0 "route list finished loading" regression):
 -- inside a BUILT level, every child must carry the same selectTarget as the
 -- level itself. That pointer is what makes ENTER on a leaf run the owning
 -- list's OnAction (SkuGenericMenuItem.OnPostSelect); a child with a nil/foreign
@@ -5452,14 +5512,14 @@ end
 --   mem = memory ranking - opt-in only, same reason.
 local tSkuCheckDomains = {
 	bags = true, auras = true, keys = true, menu = true, taxi = true,
-	wp = true, db = true, mem = true,
+	routes = true, wp = true, db = true, mem = true,
 }
 
 SLASH_SKUCHECK1 = "/skucheck"
 SlashCmdList["SKUCHECK"] = function(aParam)
 	local tDomain, tArg = string.match(aParam or "", "^%s*(%S*)%s*(.-)%s*$")
 	if tDomain ~= "" and not tSkuCheckDomains[tDomain] then
-		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags, auras, keys, menu, taxi, wp, db, mem", "Unknown check. Available: bags, auras, keys, menu, taxi, wp, db, mem", "Vérification inconnue. Disponible : bags, auras, keys, menu, taxi, wp, db, mem"), false, true, 0.2) end)
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags, auras, keys, menu, taxi, routes, wp, db, mem", "Unknown check. Available: bags, auras, keys, menu, taxi, routes, wp, db, mem", "Vérification inconnue. Disponible : bags, auras, keys, menu, taxi, routes, wp, db, mem"), false, true, 0.2) end)
 		return
 	end
 	-- the two measurement domains never run as part of a sweep: they are
@@ -5493,6 +5553,11 @@ SlashCmdList["SKUCHECK"] = function(aParam)
 	if tDomain == "" or tDomain == "menu" then
 		local c, p, v = tSkuCheckMenu()
 		dprint("skucheck", "menu done:", c, "menu checks,", v, "violations")
+		tChecked, tPending, tViolations = tChecked + c, tPending + p, tViolations + v
+	end
+	if tDomain == "" or tDomain == "routes" then
+		local c, p, v = tSkuCheckRoutes()
+		dprint("skucheck", "routes done:", c, "route-data checks,", p, "pending,", v, "violations")
 		tChecked, tPending, tViolations = tChecked + c, tPending + p, tViolations + v
 	end
 	-- taxi: an early landing is never the flight's own start or end point

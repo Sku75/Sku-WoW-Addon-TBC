@@ -25,7 +25,7 @@ Changements dans Sku v43.0
             L'évaluation des auras par événement de combat est nettement moins coûteuse.
             Annuler la navigation ne passe plus que par une seule touche.
             Le journal de l'outil de connexion survit à un redémarrage de l'outil.
-            Les données de points de passage sont utilisables bien plus tôt après la connexion, votre propre continent d'abord, et occupent environ 22 Mo de mémoire en moins.
+            Les données de points de passage sont utilisables bien plus tôt après la connexion, votre propre continent d'abord, et occupent environ 22 Mo de mémoire en moins ; la partie des données d'itinéraires que votre version de jeu ne lit pas n'est plus construite du tout.
 
         Corrections
             Clients français : tous les sons d'auras et les clips vocaux enregistrés étaient muets (correctif de Naxedim).
@@ -374,7 +374,15 @@ Changements dans Sku v43.0
             itinéraires eux-mêmes ne changent pas : mêmes points, mêmes liaisons, simplement plus
             tôt. S'y ajoute environ 22 Mo de mémoire en moins pour la gestion des points de
             passage, car chaque liaison n'est plus stockée en double - sur les machines
-            modestes, c'est la moitié la plus perceptible.
+            modestes, c'est la moitié la plus perceptible. Et une autre part de l'attente
+            disparaît complètement : Sku livre deux gros fichiers d'itinéraires, et la version TBC
+            n'a besoin que des liaisons du second. Ses points de passage étaient malgré tout
+            construits à chaque connexion, puis jetés sans avoir été lus un instant plus tard ;
+            ils ne sont désormais tout simplement plus construits. Cela économise environ un quart
+            de seconde et environ 21 Mo de mémoire de pointe par connexion - sur les royaumes Era,
+            où le fichier entier est inutilisé, environ 0,4 seconde. Les deux fichiers continuent
+            d'être livrés en entier : lors du passage ultérieur à Wrath of the Lich King, ce sont
+            précisément ces données qui deviendront les bonnes, et la sélection s'inversera.
         Technique : La partie liaisons de la construction du cache de points de passage était
             QUATRE parcours complets sur ~197 000 arêtes orientées : élaguer et symétriser
             (CheckAndUpdateProfileLinkData), matérialiser byId/byName, recalculer toute la table à
@@ -413,6 +421,26 @@ Changements dans Sku v43.0
             contre lui-même, des identifiants construits sur « .areaid » au lieu de
             « .areaId » (donc toujours avec la zone 1), et un accès à Links[nil] pour les
             points temporaires.
+        Technique, troisième partie : chacun des deux fichiers d'itinéraires était UN seul
+            constructeur qui bâtissait tout le fichier. Mesuré en jeu : 375 ms pour le fichier
+            WotLK et 355 ms pour le fichier de base, à chaque connexion. Sur TBC la navigation
+            utilise les points de passage du fichier de base et, du fichier WotLK, uniquement les
+            LIAISONS (l'union des deux graphes, depuis juillet) - LoadDefaultMapData remettait à
+            nil les points de passage, niveaux et numéros de séquence WotLK juste après la fusion.
+            Cela représente 71 % des octets de ce fichier, construits puis jetés sans lecture. Les
+            fichiers sont maintenant emballés par SECTION (dev/rework-docs/_wrap_deferred.py, mode
+            « sections ») : un constructeur par section de premier niveau de routedata.global,
+            chacun contenant une tranche exacte, octet pour octet, des données d'origine - l'outil
+            vérifie que les tranches se recomposent en le fichier source, rien n'est
+            re-sérialisé. SkuDeferredData.lua choisit les constructeurs selon la version du jeu
+            (TBC : toutes les sections du fichier de base plus les liaisons WotLK ; Era : le
+            fichier de base seul) et met à nil les globales des constructeurs ignorés, sans quoi
+            leurs constantes de texte source resteraient en mémoire. Nouveau : /skucheck routes.
+            La vérification est conçue pour qu'une sélection erronée soit bruyante au lieu de
+            coûter silencieusement la moitié du graphe : après EnsureData, plus aucune globale
+            SkuDBBuildRoute* ne doit exister - une survivante signale une section que la sélection
+            ne connaît pas -, les tables que lit la navigation doivent être présentes et non
+            vides, et selon la version du jeu c'est exactement la bonne moitié qui doit manquer.
 
     Les listes de points de passage indiquent désormais l'avancement du chargement
         Simple : Le message « points de passage en cours de chargement » avait été écrit pour une

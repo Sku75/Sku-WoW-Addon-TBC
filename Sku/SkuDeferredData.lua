@@ -2,7 +2,7 @@
 --
 -- Some SkuDB datasets are large and only needed on demand (navigation routes
 -- first; items/objects/quests later). Their data files are wrapped as BUILDER
--- functions (e.g. SkuDBBuildRouteGlobal, see _wrap_deferred.py) that DEFINE the
+-- functions (e.g. SkuDBBuildRouteGlobalLinks, see _wrap_deferred.py) that DEFINE the
 -- data but do not construct the tables at load - construction is the expensive,
 -- RAM-heavy part of login. This module builds them lazily through a single
 -- chokepoint: any consumer calls Sku:EnsureData(key) at its entry point to
@@ -10,12 +10,17 @@
 -- yet). Build time is recorded into the load timeline (Sku:MetricPoint) and the
 -- combat probes (Sku:Probe) so the construct cost is measurable separately from
 -- the file parse cost reported by /skuperf files.
-Sku.DeferredData = Sku.DeferredData or {registered = {}, ready = {}, failed = {}, buildMs = {}, buildSteps = {}, buildWorkers = {}}
+Sku.DeferredData = Sku.DeferredData or {registered = {}, unused = {}, ready = {}, failed = {}, buildMs = {}, buildSteps = {}, buildWorkers = {}}
+Sku.DeferredData.unused = Sku.DeferredData.unused or {}
 
 -- aKey: logical dataset name. aBuilderNames: list of GLOBAL function names that,
--- when called, construct the dataset's tables.
-function Sku:RegisterDeferredData(aKey, aBuilderNames)
+-- when called, construct the dataset's tables. aUnusedBuilderNames: builders
+-- this flavour does NOT want (see the routes registration at the bottom) - they
+-- are never called, and EnsureData nils their globals so their source strings
+-- stop pinning memory.
+function Sku:RegisterDeferredData(aKey, aBuilderNames, aUnusedBuilderNames)
 	Sku.DeferredData.registered[aKey] = aBuilderNames
+	Sku.DeferredData.unused[aKey] = aUnusedBuilderNames
 end
 
 -- Guarantee a dataset is built. Idempotent and cheap once ready, so it is safe
@@ -64,6 +69,16 @@ function Sku:EnsureData(aKey)
 				return false                   -- stays failed; consumers keep their guards up
 			end
 			_G[tName] = nil                    -- free the builder and its source-string constants
+		end
+	end
+	-- [2026-08-20] The builders this flavour deliberately skipped still hold
+	-- their blob as a source-string constant (the WotLK waypoint half alone is
+	-- ~21 MB). Drop them here too, or "not building it" would save the
+	-- construct time and none of the memory.
+	local tUnused = Sku.DeferredData.unused[aKey]
+	if tUnused then
+		for _, tName in ipairs(tUnused) do
+			_G[tName] = nil
 		end
 	end
 	Sku.DeferredData.failed[aKey] = nil
@@ -164,8 +179,38 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- Dataset registrations.
 --
--- routes: the two wrapped route files define these builder globals
--- (SkuDBBuildRouteWotlk loads before Core.lua; SkuDBBuildRouteGlobal inside the
--- SkuDB block). Built together by Sku:EnsureData("routes"), called from
--- SkuNav:LoadDefaultMapData (the single chokepoint every nav path passes).
-Sku:RegisterDeferredData("routes", {"SkuDBBuildRouteWotlk", "SkuDBBuildRouteGlobal"})
+-- routes: the two wrapped route files define one builder global PER TOP-LEVEL
+-- SECTION of routedata.global (dev/rework-docs/_wrap_deferred.py, mode
+-- "sections"; the WotLK file loads before Core.lua, the Era one inside the
+-- SkuDB block - both only DEFINE, so nothing has run before the choice below).
+-- Built by Sku:EnsureData("routes") from SkuNav:LoadDefaultMapData, the single
+-- chokepoint every nav path passes.
+--
+-- [2026-08-20, ROUTE-LINK-BUILD-PLAN.md section 13] Which sections a flavour
+-- reads is NOT the same as which ones ship. Measured: the two files cost
+-- 375 + 355 ms of table construction at every login, and on TBC the WotLK
+-- WAYPOINT half (70% of that file's bytes) is built and then nil'ed unread by
+-- LoadDefaultMapData a moment later - the TBC nav uses the Era waypoints and
+-- only the WotLK LINKS, through the union. On Era the whole WotLK file is
+-- unused. So build what the flavour reads and skip the rest: ~265 ms on TBC,
+-- ~375 ms on Era. Both files keep shipping complete, byte for byte - we port to
+-- Lich King later, and then the WotLK sections are the live ones (same
+-- machinery, different selection; note that the port must UNION the waypoints,
+-- not swap them - see the plan's 13.4).
+local tRouteSections = {"WaypointsNew", "Waypoints", "SequenceNumbers", "WaypointLevels", "Links"}
+local tRouteUse, tRouteSkip = {}, {}
+for _, tSection in ipairs(tRouteSections) do
+	-- Era file: every section is live on both flavours. Its waypoints are the
+	-- ones we navigate, and SequenceNumbers/WaypointLevels are read by
+	-- SkuNav/importExport.lua and SkuNav:GetWaypointLevel.
+	tRouteUse[#tRouteUse + 1] = "SkuDBBuildRouteGlobal" .. tSection
+	-- WotLK file: only the links, and only on TBC (where they are the base of
+	-- the unioned graph). Everything else is dead weight this session.
+	local tWotlk = "SkuDBBuildRouteWotlk" .. tSection
+	if Sku.isTBC and tSection == "Links" then
+		tRouteUse[#tRouteUse + 1] = tWotlk
+	else
+		tRouteSkip[#tRouteSkip + 1] = tWotlk
+	end
+end
+Sku:RegisterDeferredData("routes", tRouteUse, tRouteSkip)

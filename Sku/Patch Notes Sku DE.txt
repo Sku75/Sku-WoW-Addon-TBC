@@ -22,7 +22,7 @@ Aenderungen in Sku v43.0
             Die Aurenauswertung pro Kampfereignis ist deutlich billiger geworden.
             Navigation abbrechen liegt nur noch auf einer Taste.
             Das Protokoll des Anmelde-Tools ueberlebt einen Neustart des Tools.
-            Die Wegpunktdaten der Routen sind nach dem Anmelden deutlich frueher benutzbar, der eigene Kontinent zuerst, und brauchen rund 22 MB weniger Arbeitsspeicher.
+            Die Wegpunktdaten der Routen sind nach dem Anmelden deutlich frueher benutzbar, der eigene Kontinent zuerst, und brauchen rund 22 MB weniger Arbeitsspeicher; der Teil der Routendaten, den die eigene Spielversion nicht liest, wird gar nicht mehr aufgebaut.
 
         Fehlerbehebungen
             Franzoesische Clients: alle Aura-Sounds und aufgenommenen Sprachclips waren stumm (Korrektur von Naxedim).
@@ -361,7 +361,15 @@ Aenderungen in Sku v43.0
             da. An den Routen selbst aendert sich nichts - dieselben Wegpunkte, dieselben
             Verbindungen, nur frueher. Dazu braucht die Wegpunktverwaltung jetzt rund 22 MB
             weniger Arbeitsspeicher, weil jede Verbindung nicht mehr doppelt gespeichert wird -
-            auf schwachen Rechnern ist das der spuerbarere Teil.
+            auf schwachen Rechnern ist das der spuerbarere Teil. Und ein weiteres Stueck
+            Wartezeit faellt ganz weg: Sku liefert zwei grosse Routendateien mit, und von der
+            zweiten braucht die TBC-Fassung nur die Verbindungen. Deren Wegpunkte wurden bisher
+            trotzdem bei jedem Anmelden aufgebaut und einen Augenblick spaeter ungelesen wieder
+            weggeworfen; sie werden jetzt gar nicht erst gebaut. Das spart rund eine viertel
+            Sekunde und rund 21 MB Spitzenspeicher pro Anmeldung - auf Era-Realms, wo die ganze
+            Datei ungenutzt ist, rund 0,4 Sekunden. Beide Dateien werden weiter vollstaendig
+            ausgeliefert: Beim spaeteren Wechsel auf Wrath of the Lich King sind genau diese
+            Daten die richtigen, dann wird andersherum ausgewaehlt.
         Technisch: Der Verbindungsteil des Wegpunkt-Cache-Aufbaus lief als VIER volle Durchlaeufe
             ueber ~197.000 gerichtete Kanten: pruefen und symmetrisieren
             (CheckAndUpdateProfileLinkData), byId/byName materialisieren, die ganze Tabelle aus dem
@@ -400,6 +408,26 @@ Aenderungen in Sku v43.0
             den geloeschten Wegpunkt gegen sich selbst aufraeumte, Ids die aus ".areaid" statt
             ".areaId" gebaut wurden (also immer mit Gebiet 1) und ein Zugriff auf Links[nil]
             bei temporaeren Wegpunkten.
+        Technisch, dritter Teil: Die beiden Routendateien waren je EIN Builder, der die ganze
+            Datei aufbaute. Gemessen im Spiel: 375 ms fuer die WotLK-Datei und 355 ms fuer die
+            Basisdatei, jedes Mal. Auf TBC nutzt die Navigation die Wegpunkte der Basisdatei und
+            von der WotLK-Datei nur die Verbindungen (die Vereinigung beider Graphen, seit
+            Juli) - LoadDefaultMapData setzte die WotLK-Wegpunkte, -Level und -Sequenznummern
+            direkt nach dem Verknuepfen wieder auf nil. Das sind 71% der Bytes dieser Datei,
+            gebaut und ungelesen weggeworfen. Die Dateien werden jetzt pro ABSCHNITT verpackt
+            (dev/rework-docs/_wrap_deferred.py, Modus "sections"): ein Builder je
+            Top-Level-Abschnitt von routedata.global, jeder mit einem byte-genauen Ausschnitt
+            der Originaldaten - das Werkzeug prueft, dass die Ausschnitte wieder exakt die
+            Ursprungsdatei ergeben, es wird nichts neu serialisiert. SkuDeferredData.lua waehlt
+            die Builder nach Spielversion (TBC: alle Abschnitte der Basisdatei plus die
+            WotLK-Verbindungen; Era: nur die Basisdatei) und setzt die uebersprungenen
+            Builder-Globals auf nil, sonst haengen ihre Quelltext-Konstanten weiter im Speicher.
+            Neu: /skucheck routes. Die Pruefung ist absichtlich so gebaut, dass ein falsch
+            gewaehlter Abschnitt laut wird statt still den halben Graphen zu kosten: Nach
+            EnsureData darf kein einziges SkuDBBuildRoute*-Global mehr existieren - ein
+            ueberlebendes bedeutet einen Abschnitt, den die Auswahl nicht kennt -, die Tabellen,
+            die die Navigation liest, muessen da und nicht leer sein, und pro Spielversion muss
+            genau die richtige Haelfte fehlen.
 
     Wegpunktlisten sagen jetzt an, wie weit das Laden fortgeschritten ist
         Einfach: Die Meldung "Wegpunkte werden noch geladen" war fuer ein, zwei Sekunden Wartezeit

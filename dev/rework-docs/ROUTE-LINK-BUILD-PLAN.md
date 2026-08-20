@@ -1,9 +1,10 @@
 # Route link build: why it costs 1.2 s every login, and the plan to fix it
 
-Date: 2026-08-19. Status: **tiers 1 + 3 implemented 2026-08-19, UNTESTED in
-game** (see section 10 for what the implementation actually does and what the
-data said about the plan's assumptions). Tier 2 and tier 4 are still open.
-Written after the
+Date: 2026-08-19. Status: **tiers 1 + 2 + 3 shipped and verified in game**
+(sections 10 and 12); **tier 4 dropped** with reasons (section 11); the
+per-section route builders of section 13 are **shipped and verified in game
+2026-08-20 (-261 ms, -99 MB peak, 0 violations)** - sections 13.5-13.6, with
+what is left in the path in 13.7. Written after the
 hardcore-realm build-watchdog work (commits 528828a / 90556d6), which made the
 cost visible: on a realm that throttles addon scripts the same build stretches
 from ~2 s to 10 s of wall time, and the user sits on "Wegpunkte werden noch
@@ -693,3 +694,224 @@ read ~465 ms on TBC and ~355 ms on Era, with a lower peak behind the
   loadstring parse, not the file load. Skipping the file itself would need
   per-flavour TOC files - a separate, bigger question, and not needed for these
   265 ms.
+
+### 13.4 What the WotLK waypoint half actually contains (measured 2026-08-20)
+
+The question this had to answer before planning anything around the Lich King
+port: is the WotLK waypoint set "the Northrend data", or is it the same old
+world we already ship? Measured with
+`dev/rework-docs/analyze_waypoint_coverage.py` (waypoints per areaId in the
+WaypointsNew section, mapped through InternalAreaTable) plus a name-set compare.
+
+**Both files are full-world exports of the same survey.** Per continent:
+
+```
+                    Era file   WotLK file
+Eastern Kingdoms      12,180       10,731
+Kalimdor              14,218       14,254
+Outland               10,738       10,854
+Northrend             13,255       13,377
+total                 50,708       49,533
+```
+
+So no: the Era file is not "the old world" - it carries 13,255 Northrend
+waypoints itself - and the WotLK file is not "the Northrend file".
+
+**They are 96% the same waypoints.** Distinct names: Era 50,693, WotLK 49,522,
+shared 48,610 = 95.9% of Era, 98.2% of WotLK. Only 2 zones exist in one file and
+not the other, one waypoint each.
+
+**Where they diverge is the Plaguelands, in both directions** - exactly the
+history of this data (surveyed during WotLK, backported to Era, re-exported for
+TBC):
+
+```
+only in the WotLK file   912 waypoints / 21 zones
+   WesternPlaguelands 489   Netherstorm 118   Icecrown 89   StormwindCity 66
+   HrothgarsLanding 36      EasternPlaguelands 29
+only in the Era file   2,083 waypoints / 22 zones
+   EasternPlaguelands 1,405   WesternPlaguelands 500   SwampofSorrows 101
+```
+
+Three consequences:
+
+1. **For the 265 ms (13.1-13.3): unchanged and safe.** On TBC those waypoints
+   are built and then deleted unread; not building them loses nothing, and the
+   file still ships complete.
+2. **The WotLK file's unique asset is its LINK set, not its waypoints** - and
+   TBC already consumes exactly that through the union (fix aa5bc49). Its
+   waypoint half is a near-duplicate of the Era half.
+3. **Warning for the Lich King port:** switching to the WotLK waypoint set
+   wholesale would DROP 2,083 waypoints, 1,405 of them in Eastern Plaguelands -
+   the same stranding failure the July union fix repaired, from the other
+   direction. The port should merge (union) the waypoints too, or at minimum
+   graft the 912 WotLK-only ones onto the Era set; the WotLK-endgame content
+   that is genuinely missing today is small and identifiable (Icecrown 89,
+   Hrothgar's Landing 36, plus the Argent Tournament entries inside Icecrown).
+
+### 13.5 Implemented (2026-08-20) - UNTESTED in game
+
+All of 13.2 A-D. E (the measurement) is the next login.
+
+**A. Both route files are wrapped per section.** `_wrap_deferred.py` has a third
+mode, `sections`: it cuts the `routedata.global` constructor on top-level
+`["Name"] = { ... },` boundaries by brace-depth counting (string- and
+comment-aware) and emits one builder per section, each holding a byte-exact
+slice inside its own `loadstring`. Nothing is re-serialised, and the tool proves
+it twice - once on the slices before writing, once by re-reading the generated
+file - plus a Lua parse of the scaffolding with the blobs stubbed out. Emitted
+builders, in file order:
+
+```
+SkuDBBuildRouteWotlk{WaypointsNew,Waypoints,SequenceNumbers,WaypointLevels,Links}
+   21.11 MB / 0.00 / 0.00 / 0.19 / 8.58
+SkuDBBuildRouteGlobal{WaypointsNew,Waypoints,Links,WaypointLevels,SequenceNumbers}
+   14.25 MB / 0.00 / 4.41 / 0.14 / 0.00
+```
+
+Each builder carries a self-sufficient prologue (`<root> = <root> or {}` down to
+`routedata["global"] = ... or {}`, plus `routedata.version` on the WotLK side),
+so any subset may run in any order. The only semantic change against the old
+wrapper is `SkuDB.SessionRouteData = SkuDB.SessionRouteData or {}` instead of a
+hard `= {}`: `SkuNav:OnEnable` already creates that container (with an empty
+`Waypoints`) before `EnsureData` runs, and `LoadDefaultMapData` overwrites
+`.Waypoints`/`.Links` right after - so the end state is identical and the reset
+was only ever destroying a placeholder.
+
+**The `.bak` was stale and had to be rebuilt first.** 13.3's first bullet was
+right to worry: the 2026-08-13 route-data re-import overwrote both already
+wrapped files, so `pristine_body()` never refreshed the June 28 `.bak` - it held
+the PREVIOUS dataset (2,099 waypoints fewer, no French names, CRLF). Wrapping
+from it would have silently rolled the data back. New `--rebak` mode: unwrap the
+CURRENT file in memory and write that as the `.bak`, keeping the old one as
+`.bak.old`. It refuses to run on an already-section-wrapped file (there is no
+single constructor left to recover, and the prologue's `= <root> or {}` line
+would parse as an empty one) - `--unwrap` first.
+
+**B. The selection lives in SkuDeferredData.lua**, built from the section list
+at load: TBC gets every Era-file section plus `SkuDBBuildRouteWotlkLinks`, Era
+gets the Era file only. `Sku:RegisterDeferredData` takes a third argument, the
+UNUSED builder names, and `EnsureData` nils those globals after the build - not
+building a section saves the construct time, nil'ing its builder saves the
+source string (~21 MB for the WotLK waypoint half alone).
+
+All five Era sections stay live on both flavours: `SequenceNumbers` and
+`WaypointLevels` are read by `SkuNav/importExport.lua` and
+`SkuNav:GetWaypointLevel`.
+
+**C.** `LoadDefaultMapData` unchanged; its four nil-ings are now no-ops and are
+kept as a guard, with a comment saying so.
+
+**D. `/skucheck routes`** (invariant 4, `SkuCore/LocalMenu.lua`; the menu sweep
+renumbered to 5). Part of a bare `/skucheck`, synchronous, and it declines while
+the routes dataset is still building. The load-bearing check is the first one:
+**after `EnsureData` no `SkuDBBuildRoute*` global may survive.** That catches
+both halves at once - a builder that RAN is nil'ed on success, one that was
+SKIPPED is nil'ed as unused, so a survivor means a section the selection does
+not know about (e.g. the wrapper emitted a new one and nobody added it), still
+pinning its blob. Then: `SessionRouteData.Waypoints`, `SessionRouteData.Links`
+and `routedata.global.WaypointLevels` are non-empty; and per flavour, on TBC
+`SkuDBTMP.routedata.global.Links` IS the live union table while its
+`WaypointsNew` is absent, on Era `SkuDBTMP` does not exist at all.
+
+**E. What to read on the next login.** The metric point now prints six builders
+instead of two:
+
+```
+deferred build 'routes' construct = X ms (  SkuDBBuildRouteGlobalWaypointsNew ..  ... SkuDBBuildRouteWotlkLinks ..), GC = .., MB -> MB
+```
+
+Expect ~465 ms on TBC against the recorded 729.8 ms (375 + 355), and a lower
+peak behind the `538 MB -> 438 MB` line. `/skucheck wp` must still report
+146,922 records, 0 violations and the same edge count; `/skucheck routes` must
+report 0 violations. Patch notes for all three languages are in the v43.0 login
+entry as "Technisch, dritter Teil" / "Technical, part three" / "Technique,
+troisième partie".
+
+### 13.6 Verified in game (2026-08-20 00:35 login) - TESTED OK
+
+```
+deferred build 'routes' construct = 468.6 ms (  SkuDBBuildRouteGlobalWaypointsNew 210
+   SkuDBBuildRouteGlobalWaypoints 0  SkuDBBuildRouteGlobalSequenceNumbers 0
+   SkuDBBuildRouteGlobalWaypointLevels 2  SkuDBBuildRouteGlobalLinks 95
+   SkuDBBuildRouteWotlkLinks 161), GC = 162 ms, 439 MB -> 396 MB
+skucheck routes done: 18 route-data checks, 0 pending, 0 violations
+skucheck wp    done: 146922 records checked, 0 violations (verlinkt 84384, Kanten 171750)
+SkuDBTMP   13.0 MB  (tables 85292, strings 4, numbers 428789)   -- the link table alone
+```
+
+Against the recorded baseline `729.8 ms (Wotlk 375 + Global 355), GC 157 ms,
+538 MB -> 438 MB`: **-261 ms** (13.1 predicted ~265), **-99 MB peak**, -42 MB
+after GC. `SkuErrorLog`'s newest entry is still 2026-08-17 - no new errors.
+
+The 18 checks are exactly 12 builder globals + 3 live tables + 3 TBC-specific,
+so every branch of the new invariant ran rather than short-circuiting.
+
+**It is not perceptible, and that is arithmetic, not a failure.** Same capture:
+Sku files compiled at 0.466 s, routes construct at 4.266 s, PEW at 4.643 s,
+first frame at 7.534 s, and then the waypoint-cache build spends 2105.7 ms of
+work in the background (`creatures 707  objects 75  custom 341  linksCur 399
+linksRest 477  linksClean 106`). 261 ms of that is ~3%. The peak-memory drop is
+the more practical half on a weak machine.
+
+**No Plaguelands trip is needed for THIS change, and here is why.** The EPL
+stranding failure of July was about which WAYPOINT set TBC navigates. Measured
+in the shipped files: the Era file carries **1,527** EPL waypoints (WPL 741,
+Scarlet Enclave 242), the WotLK file only **151**. TBC navigates the Era set -
+and every Era section is still built, unchanged. The WotLK waypoint half was
+already `nil`ed unread by `LoadDefaultMapData` before this change; not building
+it reaches the same end state earlier. The runtime proof is in the log: 146,922
+records and 84,384 linked, **identical to the pre-change run of 2026-08-19
+23:49**. Losing EPL would have shown as ~1,527 fewer records.
+
+Zone-level confirmation without travelling, if wanted (expect roughly 1500 / 740;
+a 0 would be the stranding failure):
+
+```
+/run local c=SkuNav:DevGetWaypointCacheTables().WaypointCache local a,b=0,0 for i=1,#c do local z=c[i].areaId if z==139 then a=a+1 elseif z==28 then b=b+1 end end print(a,b)
+```
+
+### 13.7 What is left in the route-data path (measured sizes, nothing started)
+
+The route DATA path is close to done. Ranked by what tonight's capture actually
+shows, all without touching the shipped files:
+
+1. **The waypoint-cache build, ~2.1 s** (2105.7 ms, and 2128.4 ms on the repeat
+   run - stable) - the only item big enough to be
+   *felt*, and it is what holds "Wegpunkte werden noch geladen". Biggest single
+   phase is now `creatures 707 ms`, then the three link phases (399 + 477 + 106
+   = 982 ms, already halved by tiers 1-3). This is no longer route-data work; it
+   is cache-build work.
+2. **`LoadDefaultMapData`'s name unpacking - MEASURED 2026-08-20 01:46, it is
+   small: 125 ms.** Instrumented (the function now emits its own metric point):
+
+   ```
+   LoadDefaultMapData = 788.9 ms (EnsureData 621  names 125 for 52272 wps x 2 locales  links 43)
+   ```
+
+   `EnsureData 621` = the 473.9 ms construct plus its 147 ms GC, already counted
+   above; the two NEW numbers are `names 125` and `links 43`. 125 ms over 52,272
+   waypoints is 2.4 us each - a table, a `string.find` split, 2-3 `string.sub`
+   and a second table - which is about as tight as Lua 5.1 gets for that shape.
+
+   **And it cannot be deferred.** The obvious idea (keep the packed string, split
+   on first read) gains nothing: the waypoint-cache custom pass reads
+   `tData.names[Sku.Loc]` for EVERY waypoint (SkuNav/Core.lua ~884) to key
+   `WaypointCacheLookupAll`, so every name is read in the same login anyway.
+   Lazy would move the cost, not remove it.
+
+   The only real saving left in it is hoisting `Sku:LocaleIsWanted(tLoc)` out of
+   the inner loop - it is called per waypoint per locale (~157k calls) and the
+   answer never changes. Worth ~20 ms of the 125. Zero risk, but not worth a
+   login cycle on its own; do it if that function is open for another reason.
+3. **The blob lex at file load, 0.188 s** (0.110 WotLK + 0.078 Era). Removing it
+   for Era needs per-flavour TOC files so the WotLK file is never loaded at all;
+   that buys ~0.11 s on Era, nothing on TBC, and doubles the TOC maintenance
+   against the exact-interface gate. Poor trade.
+4. **The Era `WaypointsNew` construct, 210 ms** - irreducible without changing
+   the shipped data.
+
+Beyond those, further gains need dataset/format changes (pre-normalised or
+binary route data), which is exactly the risk class this project has been
+avoiding. Some construct cost is irreducible: ~50k waypoints and ~172k edges
+have to become Lua tables at some point in every session.

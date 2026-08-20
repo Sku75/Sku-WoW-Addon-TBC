@@ -22,7 +22,7 @@ Changes in Sku v43.0
             Aura evaluation per combat event is considerably cheaper.
             Cancelling navigation is one key again instead of two.
             The login tool's log survives a restart of the tool.
-            Route waypoint data becomes usable much earlier after login, your own continent first, and needs about 22 MB less memory.
+            Route waypoint data becomes usable much earlier after login, your own continent first, and needs about 22 MB less memory; the part of the route data your game version does not read is no longer built at all.
 
         Bugfixes
             French clients: all aura sounds and pre-recorded speech clips were silent (fix by Naxedim).
@@ -330,7 +330,14 @@ Changes in Sku v43.0
             continent are there roughly 0.7 seconds earlier. Nothing about the routes themselves
             changes - the same waypoints, the same connections, just sooner. On top of that the
             waypoint store needs about 22 MB less memory, because every connection is no longer
-            kept twice - on weak machines that is the more noticeable half.
+            kept twice - on weak machines that is the more noticeable half. And another slice of
+            the wait disappears entirely: Sku ships two large route files, and the TBC build only
+            needs the connections out of the second one. Its waypoints were built at every login
+            anyway and thrown away unread a moment later; they are simply not built now. That
+            saves roughly a quarter of a second and about 21 MB of peak memory per login - on Era
+            realms, where the whole file is unused, roughly 0.4 seconds. Both files keep shipping
+            complete: when we move to Wrath of the Lich King later, that is exactly the data that
+            becomes the right one, and the selection flips over.
         Technical: The link part of the waypoint cache build ran as FOUR full passes over ~197,000
             directed edges: prune and symmetrise (CheckAndUpdateProfileLinkData), materialise
             byId/byName, re-derive the whole table back out of the cache (SaveLinkDataToProfile),
@@ -364,6 +371,23 @@ Changes in Sku v43.0
             stayed. Three latent bugs went with it: a loop in waypoint deletion that only
             cleaned the deleted waypoint against itself, ids built from ".areaid" instead of
             ".areaId" (so always with area 1), and an access to Links[nil] for temp waypoints.
+        Technical, part three: each route file was ONE builder that constructed the whole file.
+            Measured in game: 375 ms for the WotLK file and 355 ms for the base file, every login.
+            On TBC the navigation uses the base file's waypoints and only the WotLK file's LINKS
+            (the union of both graphs, since July) - LoadDefaultMapData nil'ed the WotLK
+            waypoints, levels and sequence numbers again right after the merge. That is 71% of
+            that file's bytes, built and discarded unread. The files are now wrapped per SECTION
+            (dev/rework-docs/_wrap_deferred.py, mode "sections"): one builder per top-level
+            section of routedata.global, each holding a byte-exact slice of the original data -
+            the tool asserts the slices reassemble into the source file, nothing is
+            re-serialised. SkuDeferredData.lua picks the builders by game version (TBC: every
+            base-file section plus the WotLK links; Era: the base file only) and nils the builder
+            globals it skipped, or their source-string constants would stay pinned in memory.
+            New: /skucheck routes. It is deliberately shaped so that a wrong selection is loud
+            instead of silently costing half the graph: after EnsureData not a single
+            SkuDBBuildRoute* global may survive - a survivor means a section the selection does
+            not know about - the tables the navigation reads must be present and non-empty, and
+            per game version exactly the right half must be absent.
 
     Waypoint lists now tell you how far the loading has got
         Simple: the message "waypoints still loading" was written for a wait of a second or two.
