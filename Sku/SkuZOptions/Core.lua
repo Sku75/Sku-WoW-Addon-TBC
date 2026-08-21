@@ -4678,9 +4678,21 @@ function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString)
 	-- vocalization below (that would silence the item NAME on nav while the
 	-- error keeps firing). Speak-the-name is more important than a complete
 	-- submenu; a partial/failed submenu is recoverable, a silent menu is not.
+	-- [2026-08-21] ...but it must not be SILENT either. A swallowed builder error
+	-- leaves the level with ZERO children and nothing to hear: no entries, no
+	-- "Liste leer" (that text comes from the builder itself), no Lua error, no
+	-- BugSack line - which is exactly how a broken list can look like real data
+	-- instead of a crash. Worse, the guard above means a builder that died AFTER
+	-- its first InjectMenuItems leaves a truncated list that is never rebuilt for
+	-- the rest of the session. So log it, with the node name, and mark the node.
 	local tPos = SkuOptions.currentMenuPosition
 	if tPos.BuildChildren and not (tPos.children and #tPos.children > 0) then
-		pcall(function() tPos:BuildChildren(tPos) end)
+		local tOk, tErr = pcall(function() tPos:BuildChildren(tPos) end)
+		if not tOk then
+			tPos.buildChildrenFailed = tostring(tErr)
+			dprint("BuildChildren FAILED for menu node", tostring(tPos.name), "->", tostring(tErr),
+				"| children now", tPos.children and #tPos.children or 0)
+		end
 	end
 
 	--handle filter placeholder
@@ -4992,7 +5004,14 @@ local function tFindMenuNodeByPath(aPath)
 		if not node then return nil end
 		-- BuildChildren ggf. anstoßen
 		if node.children and #node.children == 0 and node.BuildChildren then
-			pcall(function() node:BuildChildren(node) end)
+			-- [2026-08-21] same reason as the vocalize call site: a swallowed
+			-- builder error here makes a path walk land on an empty level with
+			-- nothing announced anywhere.
+			local tOk, tErr = pcall(function() node:BuildChildren(node) end)
+			if not tOk then
+				node.buildChildrenFailed = tostring(tErr)
+				dprint("BuildChildren FAILED (path walk) for menu node", tostring(node.name), "->", tostring(tErr))
+			end
 		end
 		children = node.children or {}
 	end

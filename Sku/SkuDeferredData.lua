@@ -1,4 +1,4 @@
--- [Workstream 3 / load profiling] Deferred data loader.
+﻿-- [Workstream 3 / load profiling] Deferred data loader.
 --
 -- Some SkuDB datasets are large and only needed on demand (navigation routes
 -- first; items/objects/quests later). Their data files are wrapped as BUILDER
@@ -50,8 +50,27 @@ function Sku:EnsureData(aKey)
 	-- the WotLK one is thrown away again a moment later (LoadDefaultMapData nils
 	-- its waypoint half). Without the split there is no way to price that.
 	local tPerBuilder = ""
+	-- [2026-08-21] A builder global that is NOT a function used to be skipped by
+	-- the type test below with no else branch: EnsureData then reported the whole
+	-- dataset ready while having built nothing at all. That is the worst possible
+	-- failure shape, because every consumer's guard is "is it ready", not "is it
+	-- there" - for 'routes' it ends with SessionRouteData.Links empty, every
+	-- linkless route waypoint deleted by CleanupWaypoints, and the menus calmly
+	-- announcing "Liste leer". It is also a REAL risk, not a theoretical one: the
+	-- route data files are generated assets that ship outside git, so a build
+	-- whose files were not re-wrapped per section (_wrap_deferred.py) defines none
+	-- of the names this list asks for. Count what was missing and say so.
+	local tMissing = 0
 	for _, tName in ipairs(tBuilders) do
 		local tFn = _G[tName]
+		if type(tFn) ~= "function" then
+			tMissing = tMissing + 1
+			local tMsg = string.format("deferred build '%s': builder %s is MISSING (%s) - that section is not in the shipped data file",
+				aKey, tName, type(tFn))
+			if SkuErrorLog and SkuErrorLog.Log then pcall(function() SkuErrorLog:Log("deferredData", tMsg) end) end
+			if Sku.MetricPoint then Sku:MetricPoint(tMsg) end
+			dprint(tMsg)
+		end
 		if type(tFn) == "function" then
 			local tB0 = debugprofilestop()
 			local tOk, tErr = pcall(tFn)
@@ -80,6 +99,20 @@ function Sku:EnsureData(aKey)
 		for _, tName in ipairs(tUnused) do
 			_G[tName] = nil
 		end
+	end
+	-- Every builder missing = nothing was built. Never report that as ready: the
+	-- dataset is FAILED, so the consumers' guards stay up and it is audible.
+	if tMissing > 0 and tMissing == #tBuilders then
+		local tMsg = string.format("deferred build '%s' FAILED: all %d builders missing - the data file is absent or not section-wrapped", aKey, tMissing)
+		if SkuErrorLog and SkuErrorLog.Log then pcall(function() SkuErrorLog:Log("deferredData", tMsg) end) end
+		if Sku.MetricPoint then Sku:MetricPoint(tMsg) end
+		print("|cffff4040Sku|r " .. tMsg)
+		pcall(function()
+			if SkuOptions and SkuOptions.Voice and SkuOptions.Voice.OutputStringBTtts then
+				SkuOptions.Voice:OutputStringBTtts("Sku Datenbank Fehler, Datensatz " .. aKey, false, true, 0.2)
+			end
+		end)
+		return false
 	end
 	Sku.DeferredData.failed[aKey] = nil
 	Sku.DeferredData.ready[aKey] = true

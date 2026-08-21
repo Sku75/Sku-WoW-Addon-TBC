@@ -34,6 +34,9 @@ Changes in Sku v43.0
             Menu: on large maps the Shift-F9 waypoint list only opened on the second try.
             The keys in the keyring were announced as "Empty".
             On hardcore realms Sku now finishes building its waypoint data instead of stopping silently.
+            Navigation: the route list could come up empty and silent when the waypoint data was rebuilt while a menu was open.
+            Missing route data is reported now instead of showing up as an empty list.
+            A popup that opened during combat (group invite, summon, release) could be read but not answered.
             A route would not start if its list finished loading while you were in it.
             The login tool mistook the login screen for character selection.
             The login tool: on realms with ten or more characters the character list was incomplete, wrongly numbered or would not scroll back.
@@ -353,6 +356,42 @@ Changes in Sku v43.0
             client itself calls every frame, so a killed packet costs one frame instead of the
             whole build. If the coroutine dies regardless, the build restarts up to three times,
             and the build step puts its request back instead of losing it inside a pcall.
+
+    Navigation: a route list could come up empty without saying why
+        Simple: a tester on a hardcore realm reported that the Shift-F10 route list only said
+            "list empty" in a place that has routes. Behind that were two different ways for a
+            list to end up empty with nothing at all to indicate it.
+            First: now that Sku restarts its waypoint build on hardcore realms when the client
+            kills it (see above), the waypoints can be swapped out while a menu is open. A list
+            still built from the previous run then pointed at a waypoint that no longer existed.
+            That threw an error in the middle of building the sub-entries, and because the error
+            was caught, the level was simply left empty: no entries, no hint, no error message,
+            nothing to hear.
+            Second: if the route data itself was missing, Sku still reported "loaded" and every
+            route list was empty - again with no indication whatsoever. Both are visible now: the
+            list answers properly instead of staying mute, and missing route data is announced
+            like any other database error.
+        Technical: three places, all the same shape - a failure must not stay invisible.
+            1. SkuNav:GetAllMetaTargetsFromWp5 dereferenced the start waypoint (.worldX) with no
+            check. After a waypoint cache rebuild - new in v43.0, because the build restarts
+            itself on hardcore realms and because CleanupWaypoints deletes waypoints that have no
+            links - that name can be gone. It returns an empty answer now and logs a line with
+            the cache generation.
+            2. SkuOptions:VocalizeCurrentMenuName and the path walker call BuildChildren inside a
+            pcall so that a broken submenu builder can never swallow the announcement of the
+            entry's NAME. That stays - but the error is now logged with the node name and the
+            node is marked (buildChildrenFailed). Without it, a level with zero children was
+            indistinguishable from a level that is genuinely empty.
+            3. Sku:EnsureData skipped a builder global that is not a function without a word and
+            then reported the dataset ready anyway. That is the worst possible shape: every guard
+            in the rest of the code asks "is it ready", not "is it there". For the routes it ends
+            in empty link data, deleted route waypoints, and menus calmly announcing "list
+            empty". Each missing builder is logged individually now; if they are ALL missing the
+            dataset counts as failed and is spoken.
+            Plus one log line in SkuNav:GetAllLinkedWPsInRangeToCoords: when Sku cannot map the
+            current area to a continent (caves, the Deeprun Tram, unmapped sub-areas) that query
+            bails out empty - and the list then said "list empty", which sounds like a statement
+            about the data and is not one. /skuzoneprobe reports the same case in full.
 
     Login: the route waypoint data is ready much earlier
         Simple: After login Sku rebuilds every waypoint and every connection between them; until
@@ -837,6 +876,32 @@ Changes in Sku v42.13
             entry and pressing Enter is a deliberate act, not a misclick. Those buttons
             also keep their OnClick handler even when the disabled widget reports no
             mouse-click input, so the entry cannot end up listed but dead.
+
+    Combat: a popup could be read but not answered
+        Simple: when a popup opened during a fight - a group invite, a summon, the release
+            prompt - Sku could read it out and you could navigate it, but the activate key did
+            nothing; the entry was simply announced again. You had to wait for the fight to end,
+            and an invite expired in the meantime. Popup buttons can be pressed in combat now,
+            all four of them, not just Accept and Decline.
+        Technical: in combat the activate key never reaches the secure menu button at all:
+            PLAYER_REGEN_DISABLED hides OnSkuOptionsMain, whose OnHide clears that button's
+            override bindings while the grace window is still open, and the key is driven instead
+            by SkuCombatMenuKey's snippet, which treats ENTER as "route only" and hands it
+            straight to the insecure dispatcher (SkuCore/combatMenuKeys.lua). Readable,
+            navigable, dead on ENTER.
+            Unlike the bag and trade paths this needs no mirror and no secure arming: a
+            StaticPopup button is NOT a protected frame and its OnClick is plain Lua
+            (StaticPopup_OnClick calls the dialog's own OnAccept/OnCancel: AcceptGroup,
+            DeclineGroup, ResurrectAccept, RepopMe, ConfirmSummon). None of those is
+            hardware-gated, so calling it directly works in combat exactly as out of it.
+            Deliberately limited to the popup buttons - every other click payload in this builder
+            does need the genuine hardware event and belongs in the mirror.
+            Guards: only in combat, only while the button is really there, and only while
+            Blizzard has it ENABLED (the decline button is locked for its first second, where
+            "/click" is equally inert). Also new: all four buttons are handled this way; buttons
+            3 and 4 used to fall through to the generic click path with no insecure action at
+            all. /skucheck menu counts the cases where an activation in combat found no button
+            left to click.
 
     Typing in input fields: no more letters trailing after the field is gone
         Simple: While typing into a Sku input field (writing mail, a search box, the

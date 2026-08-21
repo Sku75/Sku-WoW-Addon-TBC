@@ -34,6 +34,9 @@ Aenderungen in Sku v43.0
             Menue: die Wegpunktliste auf Shift-F9 oeffnete sich auf grossen Karten erst beim zweiten Versuch.
             Die Schluessel im Schluesselbund wurden als "Leer" angesagt.
             Auf Hardcore-Realms baut Sku seine Wegpunktdaten jetzt fertig statt still stehenzubleiben.
+            Navigation: die Routenliste konnte leer und stumm bleiben, wenn die Wegpunktdaten waehrend eines offenen Menues neu aufgebaut wurden.
+            Fehlende Routendaten werden jetzt gemeldet, statt als leere Liste zu erscheinen.
+            Ein Popup, das im Kampf aufging (Gruppeneinladung, Beschwoerung, Wiederbeleben), liess sich lesen, aber nicht beantworten.
             Eine Route liess sich nicht starten, wenn ihre Liste waehrend des Ladens fertig wurde.
             Das Anmelde-Tool hielt den Anmeldebildschirm faelschlich fuer die Charakterauswahl.
             Anmelde-Tool: Auf Realms mit zehn oder mehr Charakteren war die Charakterliste unvollstaendig, falsch nummeriert oder liess sich nicht zurueckblaettern.
@@ -386,6 +389,45 @@ Aenderungen in Sku v43.0
             abgeschossenes Paket kostet damit ein Bild statt den ganzen Aufbau. Stirbt die
             Coroutine trotzdem, wird bis zu dreimal neu aufgebaut, und der Build-Step legt seine
             Anforderung zurueck, statt sie in einem pcall zu verlieren.
+
+    Navigation: eine Routenliste konnte leer bleiben, ohne zu sagen warum
+        Einfach: Ein Tester auf einem Hardcore-Realm meldete, dass die Routenliste auf Shift-F10
+            nur "Liste leer" sagte, obwohl es dort Routen gibt. Dahinter steckten zwei
+            verschiedene Wege, auf denen eine Liste leer werden konnte, ohne dass irgendetwas
+            darauf hinwies.
+            Erstens: Seit Sku seinen Wegpunktaufbau auf Hardcore-Realms notfalls neu startet
+            (siehe oben), koennen die Wegpunkte waehrend eines geoeffneten Menues ausgetauscht
+            werden. Eine Liste, die noch aus dem alten Aufbau stammte, zeigte dann auf einen
+            Wegpunkt, den es nicht mehr gab. Das warf einen Fehler mitten im Aufbau der
+            Untereintraege, und weil dieser Fehler abgefangen wurde, blieb einfach eine leere
+            Ebene stehen: keine Eintraege, kein Hinweis, keine Fehlermeldung, nichts zu hoeren.
+            Zweitens: Fehlten die Routendaten selbst, meldete Sku trotzdem "fertig geladen", und
+            dann waren alle Routenlisten leer - auch das ohne jeden Hinweis. Beides faellt jetzt
+            auf: Die Liste antwortet ordentlich, statt stumm zu bleiben, und fehlende Routendaten
+            werden angesagt wie jeder andere Datenbankfehler.
+        Technisch: Drei Stellen, alle nach demselben Muster - ein Fehlschlag darf nicht unsichtbar
+            sein.
+            1. SkuNav:GetAllMetaTargetsFromWp5 griff ohne Pruefung auf den Startwegpunkt zu
+            (.worldX). Nach einem Neuaufbau des Wegpunkt-Cache - neu in v43.0, weil der Aufbau
+            sich auf Hardcore-Realms selbst neu startet und weil CleanupWaypoints Wegpunkte ohne
+            Verbindungen loescht - kann dieser Name weg sein. Die Funktion liefert jetzt eine
+            leere Antwort und schreibt eine Logzeile mit der Cache-Generation.
+            2. SkuOptions:VocalizeCurrentMenuName und der Pfadlaeufer rufen BuildChildren in einem
+            pcall auf, damit ein defekter Untermenue-Aufbau nie die Ansage des Eintragsnamens
+            verschluckt. Das bleibt so - aber der Fehler wird jetzt mit Knotennamen protokolliert
+            und der Knoten markiert (buildChildrenFailed). Ohne das war eine Ebene mit null
+            Eintraegen von einer Ebene, die wirklich leer ist, nicht zu unterscheiden.
+            3. Sku:EnsureData uebersprang ein Builder-Global, das keine Funktion ist, kommentarlos
+            und meldete den Datensatz danach trotzdem als bereit. Genau das ist die schlimmste
+            Form: Jede Pruefung im Rest des Codes fragt "ist es bereit", nicht "ist es da". Fuer
+            die Routen endet das mit leeren Verbindungsdaten, geloeschten Routenwegpunkten und
+            Menues, die seelenruhig "Liste leer" sagen. Jeder fehlende Builder wird jetzt einzeln
+            protokolliert; fehlen ALLE, gilt der Datensatz als fehlgeschlagen und wird angesagt.
+            Dazu kommt eine Logzeile in SkuNav:GetAllLinkedWPsInRangeToCoords: Wenn Sku das
+            aktuelle Gebiet keinem Kontinent zuordnen kann (Hoehlen, die Tiefenbahn, nicht
+            kartierte Unterzonen), bricht diese Abfrage leer ab - und die Liste sagte dann "Liste
+            leer", was sich wie eine Aussage ueber die Daten anhoert und keine ist. /skuzoneprobe
+            weist denselben Fall vollstaendig aus.
 
     Anmelden: die Wegpunktdaten der Routen stehen deutlich frueher bereit
         Einfach: Nach dem Anmelden baut Sku alle Wegpunkte und ihre Verbindungen neu auf; bis das
@@ -926,6 +968,33 @@ Aenderungen in Sku v42.13
             Diese Knoepfe behalten ausserdem ihren OnClick-Handler, auch wenn das
             deaktivierte Element keine Mausklick-Eingabe meldet - sonst stuende der
             Eintrag zwar in der Liste, waere aber wirkungslos.
+
+    Kampf: ein Popup liess sich lesen, aber nicht beantworten
+        Einfach: Ging waehrend eines Kampfes ein Popup auf - eine Gruppeneinladung, eine
+            Beschwoerung, die Frage nach dem Wiederbeleben -, dann konnte Sku es vorlesen und man
+            konnte darin navigieren, aber die Eingabetaste tat nichts: Der Eintrag wurde nur noch
+            einmal vorgelesen. Man musste warten, bis der Kampf vorbei war, und eine Einladung
+            lief in der Zwischenzeit ab. Die Knoepfe eines Popups lassen sich jetzt auch im Kampf
+            druecken, alle vier, nicht nur Annehmen und Ablehnen.
+        Technisch: Im Kampf erreicht die Aktivierungstaste den sicheren Menue-Knopf gar nicht:
+            PLAYER_REGEN_DISABLED blendet OnSkuOptionsMain aus, dessen OnHide loescht die
+            Override-Bindings dieses Knopfes noch waehrend des Gnadenfensters, und die Taste
+            laeuft stattdessen ueber das Snippet von SkuCombatMenuKey, das die Eingabetaste als
+            "nur Route" behandelt und sie direkt an den unsicheren Verteiler gibt
+            (SkuCore/combatMenuKeys.lua). Ergebnis: lesbar, navigierbar, tot bei Enter.
+            Anders als bei den Taschen- und Handelspfaden braucht es dafuer keinen Spiegel und
+            kein sicheres Vorbereiten: Ein StaticPopup-Knopf ist KEIN geschuetzter Frame, sein
+            OnClick ist gewoehnliches Lua (StaticPopup_OnClick ruft OnAccept/OnCancel des Dialogs
+            auf: AcceptGroup, DeclineGroup, ResurrectAccept, RepopMe, ConfirmSummon). Nichts davon
+            haengt am Hardware-Ereignis, also wirkt der direkte Aufruf im Kampf genau wie
+            ausserhalb. Bewusst auf die Popup-Knoepfe beschraenkt - jede andere Klick-Nutzlast in
+            diesem Menue braucht das echte Hardware-Ereignis und gehoert in den Spiegel.
+            Abgesichert: nur im Kampf, nur solange der Knopf da ist, und nur solange Blizzard ihn
+            AKTIV hat (der Ablehnen-Knopf ist in seiner ersten Sekunde gesperrt, dort ist auch
+            "/click" wirkungslos). Neu ist ausserdem, dass alle vier Knoepfe so behandelt werden;
+            Knopf 3 und 4 fielen vorher auf den allgemeinen Klickpfad ohne jede unsichere Aktion
+            zurueck. /skucheck menu zaehlt die Faelle mit, in denen im Kampf aktiviert wurde und
+            gar kein Knopf mehr da war.
 
     Tippen in Eingabefeldern: kein Nachplappern mehr nach dem Schliessen
         Einfach: Beim Tippen in ein Sku-Eingabefeld (Brief schreiben, Suchfeld,

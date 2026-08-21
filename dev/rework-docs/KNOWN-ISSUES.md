@@ -190,6 +190,97 @@ Analyse nicht erneut herleitet.
 
 ## Beobachtung (auf Anfrage nachprüfen)
 
+- **v43.0 Hardcore-Realms: Kartendaten laden — der Aufbau ist repariert, die
+  LISTEN darüber sind es erst teilweise.** Anfrage: "check the hardcore map data
+  monitor". Ausgangslage: Auf Hardcore-Realms bricht der Client lange
+  Addon-Skripte ab (LUA_WARNING "insecure scripts exceeded execution limit for
+  addon Sku", bzw. "script ran too long" mitten in der Coroutine). Der
+  Wegpunkt-Cache-Aufbau ist dagegen abgesichert (Budget-Backoff, OnUpdate-Treiber,
+  bis zu drei Neustarts — `528828a`, `90556d6`, verifiziert 2026-08-19). Was
+  daraus folgt und NICHT abgesichert ist:
+  1. **`Sku:EnsureData` hat keinen Backoff und keine Wiederholung.** Jeder
+     Abschnitts-Builder der Routendateien ist EIN unteilbarer Aufruf (gemessen
+     355 ms Basisdatei / 375 ms WotLK-Datei) in einem `pcall`. Wird er
+     abgeschossen, gilt der Datensatz dauerhaft als `failed` — ein dritter
+     Zustand, der nie erneut versucht wird. `"Links"` steht ZULETZT in
+     `tRouteSections` (`SkuDeferredData.lua`), ein Abbruch weiter vorne nimmt
+     also genau die Verbindungen mit. Folge: `SessionRouteData.Links` leer,
+     `CleanupWaypoints` löscht jeden Routenwegpunkt ohne Verbindung,
+     `wpCacheReady` wird trotzdem `true`, und jede Routenliste sagt "Liste leer".
+     Seit 2026-08-21 wird das wenigstens gemeldet (fehlende Builder einzeln,
+     alle fehlend = Datensatz `failed` + Sprachausgabe), aber der Abbruch selbst
+     ist weiterhin unbehandelt. Offen: Abschnitts-Builder scheibchenweise oder
+     mit Wiederholung fahren, falls das im Feld auftritt.
+  2. **`SkuNav:EnsureWaypointCacheComplete` startet nichts neu.** Der Neustart
+     hängt am `coroutine.resume` der Pumpe; wird die Coroutine im synchronen
+     Leerlauf dieser Funktion abgeschossen, `break`t die Schleife, der Treiber
+     hält an und der Aufbau ist für die Sitzung weg (dann bleibt der Ladehinweis
+     stehen, es wird nicht "leer" gesagt).
+  3. **`SkuNav:SaveLinkDataToProfile()` (ohne Argument) ersetzt
+     `SkuDB.SessionRouteData.Links` und füllt die neue Tabelle ÜBER
+     `tWpcYield()`-Grenzen hinweg.** Ein Abbruch mittendrin lässt sie
+     unvollständig zurück, und die ausgelieferte Kopie ist weg (auf TBC nach der
+     Union genil't, die Builder-Globals nach `EnsureData` ebenfalls). Der
+     Neustart baut dann gegen Trümmer. Gemessen läuft der Pfad normalerweise gar
+     nicht (`tDivergent` = 0: 6 doppelte Namen, keiner davon Endpunkt eines
+     Links — ROUTE-LINK-BUILD-PLAN.md 10.1), er ist also latent, nicht akut.
+  Nachprüfen, wenn wieder jemand auf Hardcore testet: `/skucheck routes` (meldet
+  "route data not built yet - skipped", WENN `EnsureData` gescheitert ist), im
+  `SkuDebugLog` nach `deferred build 'routes'`, `builder ... is MISSING`,
+  `restarting waypoint cache build` und `CleanupWaypoints: disconnected custom
+  waypoints removed` suchen, dazu das Feld `SkuDebugLog.wpcResult`.
+- **v43.0 "Liste leer" statt einer Aussage — drei Härtungen vom 2026-08-21,
+  UNGETESTET im Spiel.** Anfrage: "check the empty list monitor". Auslöser: Ein
+  Tester meldete auf einem Hardcore-Realm (Era) für Shift-F10 nur "Liste leer",
+  obwohl es dort Routen gibt. Geändert:
+  1. `SkuNav:GetAllMetaTargetsFromWp5` griff ungeprüft auf den Startwegpunkt zu
+     (`.worldX`). Nach einem Cache-Neuaufbau — auf Hardcore-Realms neu, weil der
+     Aufbau sich selbst neu startet — zeigt eine noch offene Menüebene auf Namen
+     der ALTEN Generation. Der Fehler flog in `BuildChildren`, der Aufrufer
+     `pcall`t, und die Ebene blieb mit null Einträgen stehen: nichts zu hören.
+     Liefert jetzt `{}` plus Logzeile.
+  2. Die beiden schluckenden `pcall`s um `BuildChildren` (`SkuZOptions/Core.lua`,
+     Vokalisierungs-Aufrufstelle und Pfadlaufer) loggen den Fehler jetzt mit
+     Knotennamen und setzen `node.buildChildrenFailed`. Verhalten unverändert —
+     eine kaputte Unterebene darf die Namensansage weiterhin nicht abwürgen.
+     ACHTUNG, weiterhin offen: Die Wächterbedingung `not (children and
+     #children > 0)` heißt, dass ein Builder, der NACH seinem ersten
+     `InjectMenuItems` stirbt, eine abgeschnittene Liste hinterlässt, die für den
+     Rest der Sitzung nie wieder gebaut wird.
+  3. `Sku:EnsureData` überspringt ein Builder-Global, das keine Funktion ist,
+     nicht mehr wortlos (siehe Eintrag oben).
+  Dazu eine reine Diagnosezeile in `SkuNav:GetAllLinkedWPsInRangeToCoords` für
+  den Abbruch ohne Kontinent.
+  **Wahrscheinlichste Ursache des Testerberichts ist aber KEINE davon**, sondern
+  der in `SkuNav/Geo.lua` bereits dokumentierte Split: Steht der Spieler in einem
+  Gebiet ohne `ExternalMapID -> AreaId`-Zeile (Höhlen, Tiefenbahn, nicht
+  kartierte Unterzonen), liefert `GetCurrentAreaId` nil,
+  `GetAllLinkedWPsInRangeToCoords` bricht leer ab, und
+  `SkuNav:InjectWpListEmptyHint` fällt mangels Kontinent auf das GLOBALE
+  `wpCacheReady` zurück — das `true` ist. Ergebnis: "Liste leer" als Aussage über
+  Daten, obwohl die Aussage in Wahrheit "ich weiß nicht, wo du stehst" lautet.
+  Nachprüfen: Tester an dieselbe Stelle stellen, `/szp` (`/skuzoneprobe`),
+  `/reload`, `Sku.lua` auswerten — der Dump enthält "BROKEN: GetCurrentAreaId
+  returned nil ..." und "Shift-F10 source GetAllLinkedWPsInRangeToCoords: N
+  linked entry points in range 300". Offene ENTSCHEIDUNG, bewusst noch nicht
+  umgesetzt: Soll der leere Hinweis in diesem Fall etwas anderes sagen als "Liste
+  leer" (eigener Text = neuer Locale-Key in drei Sprachen)?
+- **v43.0 Popup-Knöpfe im Kampf — UNGETESTET im Spiel.** Anfrage: "check the
+  combat popup monitor". Ein `StaticPopup`, das im Kampf aufgeht, war lesbar und
+  navigierbar, aber tot bei Enter (2026-08-21 `combatTrace` 15:56:23: "navClick
+  key=ENTER pos=Annehmen" -> "mirror click key ENTER (route only)" -> nichts).
+  Grund: Im Kampf erreicht die Taste `SecureOnSkuOptionsMainOption1` nie, sie
+  läuft über das `SkuCombatMenuKey`-Snippet. Fix ohne Spiegel und ohne sicheres
+  Armieren, weil ein Popup-Knopf KEIN geschützter Frame ist: direkter Aufruf
+  seines `OnClick`, nur im Kampf, nur wenn der Knopf da UND enabled ist. Neu
+  gelten alle vier Knöpfe (3 und 4 fielen vorher ganz durch).
+  Nachprüfen: In einer Gruppe im Kampf eine Einladung/Beschwörung annehmen UND
+  ablehnen; danach `/skucheck menu` — es zählt "in-combat popup fallback
+  click(s)" und schlägt an, wenn im Kampf aktiviert wurde und gar kein Knopf mehr
+  da war. Revert-Kandidat: der Popup-Block in `SkuIterateGossipList`
+  (`SkuZOptions/Core.lua`) plus die `skuClickStagingBlocked`-Markierung in
+  `SkuZOptions/templates.lua`.
+
 - **Dial Targeting (#21-Dedup) — in Gruppe/Raid ungetestet.** Das W6-C-#21-Refactor
   (Commit `d5a4eb9`) hat gemeinsame Helfer `tClearUnitNameSlots()` /
   `tApplyNumpadBindings(aNumpadFrameName)` aus den Raid-/Raid10-/Party-Zweigen

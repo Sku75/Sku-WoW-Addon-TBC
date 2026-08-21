@@ -37,6 +37,9 @@ Changements dans Sku v43.0
             Menu : sur les grandes cartes, la liste de points de passage de Shift-F9 ne s'ouvrait qu'au deuxième essai.
             Les clés du porte-clés étaient annoncées comme « Vide ».
             Sur les royaumes hardcore, Sku termine désormais le chargement de ses points de passage au lieu de s'arrêter en silence.
+            Navigation : la liste des itinéraires pouvait rester vide et muette lorsque les points de passage étaient reconstruits pendant qu'un menu était ouvert.
+            Des données d'itinéraires manquantes sont désormais signalées au lieu d'apparaître comme une liste vide.
+            Une fenêtre surgissante ouverte en combat (invitation de groupe, invocation, libération) pouvait être lue mais pas répondue.
             Un itinéraire ne démarrait pas si sa liste finissait de charger pendant que vous y étiez.
             L'outil de connexion prenait l'écran de connexion pour la sélection de personnage.
             L'outil de connexion : sur les royaumes comptant dix personnages ou plus, la liste des personnages était incomplète, mal numérotée ou refusait de revenir en arrière.
@@ -397,6 +400,48 @@ Changements dans Sku v43.0
             image au lieu de toute la construction. Si la coroutine meurt malgré tout, la
             construction est relancée jusqu'à trois fois, et l'étape de construction remet sa
             demande en place au lieu de la perdre dans un pcall.
+
+    Navigation : une liste d'itinéraires pouvait rester vide sans dire pourquoi
+        Simple : un testeur sur un royaume hardcore a signalé que la liste d'itinéraires de
+            Shift-F10 annonçait seulement « liste vide » à un endroit où il y a des itinéraires.
+            Derrière cela se cachaient deux chemins différents par lesquels une liste pouvait
+            devenir vide sans que rien ne l'indique.
+            Premièrement : depuis que Sku redémarre sa construction de points de passage sur les
+            royaumes hardcore lorsque le client l'interrompt (voir ci-dessus), les points de
+            passage peuvent être remplacés pendant qu'un menu est ouvert. Une liste issue de la
+            construction précédente pointait alors vers un point de passage qui n'existait plus.
+            Cela levait une erreur en plein milieu de la construction des sous-entrées, et comme
+            cette erreur était capturée, le niveau restait simplement vide : aucune entrée, aucune
+            indication, aucun message d'erreur, rien à entendre.
+            Deuxièmement : si les données d'itinéraires elles-mêmes manquaient, Sku annonçait
+            malgré tout « chargé » et toutes les listes d'itinéraires étaient vides - là encore
+            sans la moindre indication. Les deux cas sont désormais visibles : la liste répond
+            correctement au lieu de rester muette, et des données d'itinéraires manquantes sont
+            annoncées comme n'importe quelle autre erreur de base de données.
+        Technique : trois endroits, tous de la même forme - un échec ne doit pas rester invisible.
+            1. SkuNav:GetAllMetaTargetsFromWp5 accédait au point de passage de départ (.worldX)
+            sans vérification. Après une reconstruction du cache de points de passage - nouveauté
+            de la v43.0, puisque la construction se relance d'elle-même sur les royaumes hardcore
+            et que CleanupWaypoints supprime les points de passage sans liaison - ce nom peut
+            avoir disparu. La fonction renvoie désormais une réponse vide et écrit une ligne de
+            journal avec la génération du cache.
+            2. SkuOptions:VocalizeCurrentMenuName et le parcours de chemin appellent BuildChildren
+            dans un pcall afin qu'un constructeur de sous-menu défectueux n'avale jamais
+            l'annonce du NOM de l'entrée. Cela reste ainsi - mais l'erreur est maintenant
+            journalisée avec le nom du nœud, et le nœud est marqué (buildChildrenFailed). Sans
+            cela, un niveau à zéro entrée était indiscernable d'un niveau réellement vide.
+            3. Sku:EnsureData ignorait sans un mot une globale de constructeur qui n'est pas une
+            fonction, puis déclarait quand même le jeu de données prêt. C'est la pire forme
+            possible : toutes les protections du reste du code demandent « est-ce prêt », pas
+            « est-ce là ». Pour les itinéraires, cela finit en données de liaison vides, points
+            de passage d'itinéraire supprimés et menus annonçant tranquillement « liste vide ».
+            Chaque constructeur manquant est désormais journalisé individuellement ; s'ils
+            manquent TOUS, le jeu de données est considéré comme en échec et annoncé.
+            S'y ajoute une ligne de journal dans SkuNav:GetAllLinkedWPsInRangeToCoords : lorsque
+            Sku ne parvient pas à rattacher la zone actuelle à un continent (grottes, le Tram des
+            Profondeurs, sous-zones non cartographiées), cette requête abandonne à vide - et la
+            liste disait alors « liste vide », ce qui sonne comme une affirmation sur les données
+            alors que ce n'en est pas une. /skuzoneprobe expose le même cas en entier.
 
     Connexion : les données de points de passage des itinéraires sont prêtes bien plus tôt
         Simple : Après la connexion, Sku reconstruit tous les points de passage et toutes leurs
@@ -948,6 +993,34 @@ Changements dans Sku v42.13
             malencontreux. Ces boutons conservent également leur gestionnaire OnClick même
             lorsque l'élément désactivé ne signale aucune entrée de clic souris - sinon
             l'entrée figurerait dans la liste mais resterait sans effet.
+
+    Combat : une fenêtre surgissante pouvait être lue mais pas répondue
+        Simple : lorsqu'une fenêtre surgissante s'ouvrait pendant un combat - une invitation de
+            groupe, une invocation, la demande de libération -, Sku pouvait la lire et vous
+            pouviez y naviguer, mais la touche d'activation ne faisait rien : l'entrée était
+            simplement annoncée à nouveau. Il fallait attendre la fin du combat, et une
+            invitation expirait entre-temps. Les boutons des fenêtres surgissantes peuvent
+            désormais être pressés en combat, les quatre, pas seulement Accepter et Refuser.
+        Technique : en combat, la touche d'activation n'atteint même pas le bouton de menu
+            sécurisé : PLAYER_REGEN_DISABLED masque OnSkuOptionsMain, dont le OnHide efface les
+            liaisons de substitution de ce bouton alors que la fenêtre de grâce est encore
+            ouverte, et la touche passe alors par le snippet de SkuCombatMenuKey, qui traite
+            Entrée comme « itinéraire uniquement » et la remet directement au répartiteur non
+            sécurisé (SkuCore/combatMenuKeys.lua). Lisible, navigable, morte sur Entrée.
+            Contrairement aux chemins des sacs et de l'échange, cela ne demande ni miroir ni
+            armement sécurisé : un bouton de StaticPopup n'est PAS un cadre protégé et son
+            OnClick est du Lua ordinaire (StaticPopup_OnClick appelle les OnAccept/OnCancel du
+            dialogue : AcceptGroup, DeclineGroup, ResurrectAccept, RepopMe, ConfirmSummon). Aucun
+            de ceux-ci n'est conditionné à l'événement matériel, l'appel direct fonctionne donc
+            en combat exactement comme hors combat. Volontairement limité aux boutons de fenêtre
+            surgissante - toute autre charge de clic de ce constructeur a besoin du véritable
+            événement matériel et relève du miroir.
+            Protections : uniquement en combat, uniquement tant que le bouton est bien là, et
+            uniquement tant que Blizzard le laisse ACTIF (le bouton Refuser est verrouillé pendant
+            sa première seconde, où « /click » est tout aussi inopérant). Nouveauté également :
+            les quatre boutons sont traités ainsi ; les boutons 3 et 4 retombaient auparavant sur
+            le chemin de clic générique sans aucune action non sécurisée. /skucheck menu compte
+            les cas où une activation en combat n'a plus trouvé de bouton à cliquer.
 
     Saisie dans les champs de texte : plus de lettres qui continuent après la fermeture
         Simple : en tapant dans un champ de saisie de Sku (écrire un courrier, un champ de

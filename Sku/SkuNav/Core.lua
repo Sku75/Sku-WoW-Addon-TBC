@@ -1719,6 +1719,19 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 
 	local aStartWpNameData = WaypointCache[WaypointCacheLookupAll[aStartWpName]]
 	local aReturnPathForWpData = WaypointCache[WaypointCacheLookupAll[aReturnPathForWp]]
+	-- [2026-08-21] The start record can be GONE: the menu level that hands us this
+	-- name was built from an earlier cache generation, and the cache is rebuilt
+	-- from scratch mid-session now (the post-login build restarts itself when the
+	-- client's execution-limit watchdog kills a slice, and CleanupWaypoints deletes
+	-- linkless route waypoints outright). Indexing .worldX on the nil that leaves
+	-- behind threw inside the menu builder, and the builder's caller pcalls it - so
+	-- the whole level came out with zero children and nothing was announced at all.
+	-- Answer "no routes" instead, and leave a breadcrumb saying why.
+	if not aStartWpNameData then
+		dprint("GetAllMetaTargetsFromWp5: start waypoint not in the cache:", tostring(aStartWpName),
+			"(stale menu level? cache generation", SkuNav._wpcGen, ")")
+		return {}
+	end
 	local fPlayerPosX, fPlayerPosY = UnitPosition("player")
 	local tDistanceToStartWp = SkuNav:Distance(aStartWpNameData.worldX, aStartWpNameData.worldY, fPlayerPosX, fPlayerPosY)	
 
@@ -3527,6 +3540,14 @@ function SkuNav:GetAllLinkedWPsInRangeToCoords(aX, aY, aRange)
 	local tPlayerUIMapId = SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId()) or SkuNav:GetCurrentAreaId()
 
 	if not tPlayerContinentID then
+		-- [2026-08-21] This is a "we do not know where you stand" bail, not an
+		-- "there is nothing here" answer - GetCurrentAreaId returns nil wherever
+		-- the area has no ExternalMapID -> AreaId row (caves, the Deeprun Tram,
+		-- unmapped sub-areas). The caller sees an empty table and announces
+		-- "Liste leer", which reads as data. Say so in the log; /skuzoneprobe
+		-- prints the same finding in full.
+		dprint("GetAllLinkedWPsInRangeToCoords: no continent for the player's area (GetCurrentAreaId ->",
+			tostring(SkuNav:GetCurrentAreaId()), ") - the route list bails out empty here")
 		return tFoundWps
 	end
 
