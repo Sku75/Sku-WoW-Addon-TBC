@@ -5281,6 +5281,24 @@ local function tSkuCheckAuras()
 			dprint("skucheck", "VIOLATION auras: global", tSkuCheckAuraGlobals[x], "leaked -- the evaluate loop wrote a global again")
 		end
 	end
+
+	-- Tripwire tally (v43.0 "einmal" once-gate regression): an aura whose action is
+	-- a single/"einmal" one AND which carries a bigger/smaller threshold is gated on
+	-- a STATE, so it cannot legitimately fire twice inside one second. It did: the
+	-- condition census was built INSIDE the evaluate loop, which breaks on the first
+	-- false condition, so an aura that has a threshold looked like one that has none
+	-- whenever an unrelated combat-log event failed a plain condition first -- and
+	-- the no-threshold branch re-arms the gate unconditionally. SkuAuras counts every
+	-- sub-second refire (SkuAuras/Core.lua, tSkuAuraLastSingleFire).
+	local tRefires = (SkuAuras and SkuAuras.tSingleGateRefires) or 0
+	tChecked = tChecked + 1
+	if tRefires > 0 then
+		tViolations = tViolations + tRefires
+		dprint("skucheck", "VIOLATION auras:", tRefires,
+			"once-gate refire(s) inside one second this session, last:",
+			tostring(SkuAuras and SkuAuras.tSingleGateRefireLast))
+	end
+
 	return tChecked, 0, tViolations
 end
 

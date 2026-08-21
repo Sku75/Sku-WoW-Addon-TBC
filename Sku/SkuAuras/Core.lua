@@ -1390,6 +1390,27 @@ local tAuraScratch = {
 	debuffPlayerOwn = {},
 }
 
+-- [v43.0] Per-aura attribute ORDER buffers (see the "evaluate all attributes"
+-- loop). The condition loop breaks on the first false, so which condition it
+-- lands on decides what the once-gate ("einmal") does afterwards. Evaluating in
+-- hash order made that a coin flip; these two buffers impose a fixed order --
+-- plain conditions first, the bigger/smaller threshold conditions last -- so a
+-- break always carries the same meaning. Reused across auras (refilled per
+-- aura, never escapes the aura's own iteration), so no per-event allocation.
+local tAttOrderPlain = {}
+local tAttOrderCount = {}
+
+-- [v43.0] Once-gate tripwire state (reported by /skucheck auras). An aura whose
+-- action is a "...einmal" one AND which carries a bigger/smaller threshold is
+-- gated on a STATE that cannot flip twice inside a second, so two firings that
+-- close together mean the gate re-armed off something that was not a state
+-- change -- the exact shape of the 2026-08-21 report ("dang" six times in one
+-- second on one Moonfire). Keyed by aura name in a side table so no timestamp is
+-- written into the SavedVariables aura record.
+local tSkuAuraLastSingleFire = {}
+SkuAuras.tSingleGateRefires = 0
+SkuAuras.tSingleGateRefireLast = nil
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- [v43.0] LAZY tEvaluateData fields.
 --
@@ -2260,12 +2281,53 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 					tArmDeadlineForSmaller(tAuraData.attributes.weaponEnchantOffHandDuration, tEvaluateData.weaponEnchantOffHandDuration)
 				end
 				
-				--evaluate all attributes
+				-- [v43.0] Attribute ORDER + complete condition census, both required by
+				-- the once-gate re-arm below.
+				--
+				-- The evaluation loop breaks on the first false condition, so it only
+				-- ever sees a PREFIX of the aura's conditions. The re-arm code under
+				-- "set aura to unused" then read tallies built inside that loop, which
+				-- meant two things went wrong at once:
+				--   * NumCountConditions counted only the conditions reached before the
+				--     break, so an aura that HAS a bigger/smaller threshold looked like
+				--     one that has none whenever the break came first -- and the
+				--     no-threshold branch re-arms UNCONDITIONALLY.
+				--   * the order was pairs() hash order, so which condition broke the
+				--     loop (and therefore whether that happened) varied per aura.
+				-- Result in the field: "Debuff Liste ... verbleibende Dauer kleiner 1"
+				-- with "audio ausgabe einmal" re-armed off any unrelated combat-log
+				-- event that merely failed its "Ereignis Ziel" condition -- a swing, a
+				-- cooldown end, someone else's heal -- and then fired again on the next
+				-- matching one: six "dang" sounds inside one second of a single DoT
+				-- (2026-08-21 log, seq 47642..47653).
+				-- The census is now taken over ALL attributes up front, and the loop
+				-- runs plain conditions first / threshold conditions last, so:
+				--   * break on a plain condition -> NumConditionsWoCountIsTrue stays
+				--     below the plain-condition total -> formula false -> NO re-arm.
+				--     ("this event was not about us" is not evidence the state changed.)
+				--   * break on a threshold condition -> every plain condition was true
+				--     and tallied -> formula holds -> re-arm, which is exactly the
+				--     intended case (the DoT was refreshed / recast above the
+				--     threshold, or a fresh application arrived).
+				local tOrderPlainN, tOrderCountN = 0, 0
 				for tAttributeName, tAttributeValue in pairs(tAuraData.attributes) do
 					if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
 						tHasCountCondition_NumCountConditions = tHasCountCondition_NumCountConditions + 1
+						tOrderCountN = tOrderCountN + 1
+						tAttOrderCount[tOrderCountN] = tAttributeName
+					else
+						tOrderPlainN = tOrderPlainN + 1
+						tAttOrderPlain[tOrderPlainN] = tAttributeName
 					end
 					tHasCountCondition_NumConditions = tHasCountCondition_NumConditions + 1
+				end
+
+				--evaluate all attributes
+				for tOrderI = 1, tOrderPlainN + tOrderCountN do
+					local tAttributeName = tOrderI <= tOrderPlainN
+						and tAttOrderPlain[tOrderI]
+						or tAttOrderCount[tOrderI - tOrderPlainN]
+					local tAttributeValue = tAuraData.attributes[tAttributeName]
 
 					tHasApplicableAttributes = true
 					if #tAttributeValue > 1 then
@@ -2348,6 +2410,18 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 							-- test clicks stay silent. Same frequency as the audible outputs
 							-- themselves, so it cannot flood the ring.
 							dprint(string.format("aura fired: %s  event %s  dest %s  t %.3f", tostring(tAuraName), tostring(tEvaluateData.event), tostring(tEvaluateData.destName), GetTime()))
+
+							-- [v43.0] Once-gate tripwire (see tSkuAuraLastSingleFire).
+							if tOrderCountN > 0 and SkuAuras.actions[tAuraData.actions[1]].single == true then
+								local tNow = GetTime()
+								local tPrev = tSkuAuraLastSingleFire[tAuraName]
+								if tPrev and (tNow - tPrev) < 1 then
+									SkuAuras.tSingleGateRefires = (SkuAuras.tSingleGateRefires or 0) + 1
+									SkuAuras.tSingleGateRefireLast = tAuraName
+									dprint(string.format("skucheck VIOLATION auras: once-gate refire after %.3f s: %s", tNow - tPrev, tostring(tAuraName)))
+								end
+								tSkuAuraLastSingleFire[tAuraName] = tNow
+							end
 
 							for i, v in pairs(tAuraData.outputs) do
 								if SkuAuras.outputs[sgsub(v, "output:", "")] then
