@@ -207,6 +207,7 @@ L["Aktivieren"]  = "Enable" --
 L["aktiviert"]  = "activated" --
 L["Aktivierte"]  = "Enabled" --
 L["Aktualisiert"]  = "Updated" --
+L["Aktuelle Ressource"] = "Current resource" -- power monitor: follow the bar the game shows
 L["Aktuelle Karte Entfernung mit Auto"]  = "Current map by distance with auto" --
 L["Aktuelle Karte Entfernung"]  = "Current map by distance" --
 L["Aktuelle Preisdaten (für ein Stück)"]  = "Recent price data (for one item)" --

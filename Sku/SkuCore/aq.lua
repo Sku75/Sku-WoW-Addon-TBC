@@ -57,13 +57,38 @@ local tOutputStyles = {
 	[2] = L["short"],
 }
 
+-- "ACTIVE" is the former "NOTHING" entry, with a meaning instead of a hole: it
+-- follows the bar the game itself shows (UnitPowerType), so a druid gets mana in
+-- caster form, rage in bear and energy in cat without ever touching the setting.
+-- The old entry passed its number (-1) straight into UnitPower/UnitPowerMax,
+-- which is Enum.PowerType.None - an argument the monitor has no business asking
+-- for, and the source of the "set it to nothing and it errors" reports.
+-- Switching the monitor off is what "Enabled: No" is for.
 local tPowerTypes = {
-	["NOTHING"] = {name = L["nichts"], number = -1},
+	["ACTIVE"] = {name = L["Aktuelle Ressource"], number = nil},
 	["MANA"] = {name = L["MANA"], number = 0},
 	["RAGE"] = {name = L["RAGE"], number = 1},
 	["ENERGY"] = {name = L["ENERGY"], number = 3},
 	["RUNIC_POWER"] = {name = L["RUNIC_POWER"], number = 6},
 }
+-- Menu order: the menu shows entries in INSERTION order, and pairs() over the
+-- table above is arbitrary - so drive the list from here, automatic entry first.
+local tPowerTypesOrder = {"ACTIVE", "MANA", "RAGE", "ENERGY", "RUNIC_POWER"}
+
+-- Resolve the configured power type to the (token, index) pair to actually read.
+-- Returns nil, nil when there is nothing sane to read - every caller must treat
+-- that as "skip this pass" rather than reading the player's power anyway.
+local function GetMonitoredPowerType(aType)
+	if aType ~= nil and aType ~= "ACTIVE" and tPowerTypes[aType] and tPowerTypes[aType].number then
+		return aType, tPowerTypes[aType].number
+	end
+	-- automatic, or a stale/unknown stored value: whatever bar is shown right now.
+	local tIndex, tToken = UnitPowerType("player")
+	if tToken and tIndex then
+		return tToken, tIndex
+	end
+	return nil, nil
+end
 
 local tDebuffTypes = {
 	["magic"] = L["magic"],
@@ -446,6 +471,18 @@ local tPrevHpPer = 100
 local tPrevHpDir = false
 local tPrevPwrPer = 100
 local tPrevPwrDir = false
+-- Which power the prev-values above belong to. With the automatic type the
+-- tracked resource changes under us (druid form switch), and a stale previous
+-- percentage would either swallow the first announcement of the new resource or
+-- give it a wrong up/down direction. Reset the pair whenever the token changes.
+local tPrevPwrToken = nil
+local function PwrPrevReset(aToken)
+	if tPrevPwrToken ~= aToken then
+		tPrevPwrToken = aToken
+		tPrevPwrPer = -1
+		tPrevNumberToUtterancePlPwr = -1
+	end
+end
 local tPrevHpPetPer = 100
 local tPrevHpPetDir = false
 
@@ -579,26 +616,34 @@ local beginTime = debugprofilestop()
 			if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.enabled == true then
 				ttimeMonPwr = ttimeMonPwr + time
 				if ttimeMonPwr > (SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.continouslyTimer) and tPowerMonitorPause == false then
-					local power = UnitPower("player", tPowerTypes[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.type].number)
-					local powerMax = UnitPowerMax("player", tPowerTypes[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.type].number)
-					local pwrPer = math.floor((power / powerMax) * 100)
-					if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.continouslyStartAt >= 0 and (math.floor(pwrPer / 10) <= SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.continouslyStartAt) then
-						local tsinglestep = math.floor(100 / SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.steps)
-						local tNumberToUtterance = ((math.floor(pwrPer / tsinglestep)) * tsinglestep) / 10
+					-- Guarded: an unknown stored type, or a resource the unit does not
+					-- currently have, must skip the pass - the unguarded division that
+					-- used to sit here ran once per OnUpdate tick, so a nil/zero max
+					-- turned into a stream of errors rather than one.
+					local tPwrToken, tPwrIndex = GetMonitoredPowerType(SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.type)
+					local power = tPwrToken and UnitPower("player", tPwrIndex)
+					local powerMax = tPwrToken and UnitPowerMax("player", tPwrIndex)
+					if power and powerMax and powerMax > 0 then
+						PwrPrevReset(tPwrToken)
+						local pwrPer = math.floor((power / powerMax) * 100)
+						if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.continouslyStartAt >= 0 and (math.floor(pwrPer / 10) <= SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.continouslyStartAt) then
+							local tsinglestep = math.floor(100 / SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.steps)
+							local tNumberToUtterance = ((math.floor(pwrPer / tsinglestep)) * tsinglestep) / 10
 
-						tPrevPwrDir = pwrPer > tPrevPwrPer
-						local tPrevNumberToUtteranceOutput = tNumberToUtterance
-						if tPrevPwrDir == false then
-							tPrevNumberToUtteranceOutput = tPrevNumberToUtteranceOutput + 1
+							tPrevPwrDir = pwrPer > tPrevPwrPer
+							local tPrevNumberToUtteranceOutput = tNumberToUtterance
+							if tPrevPwrDir == false then
+								tPrevNumberToUtteranceOutput = tPrevNumberToUtteranceOutput + 1
+							end
+
+							tPrevPwrPer = pwrPer
+
+							if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.silentOn100and0 == false or (tPrevNumberToUtteranceOutput < 10 and tPrevNumberToUtteranceOutput > 0) then
+								C_Timer.After(0.25, function()
+									Aq:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.voice].path)
+								end)
+							end
 						end
-
-						tPrevPwrPer = pwrPer
-
-						if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.silentOn100and0 == false or (tPrevNumberToUtteranceOutput < 10 and tPrevNumberToUtteranceOutput > 0) then
-							C_Timer.After(0.25, function()
-								Aq:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.continouslyVolume, SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.instancesOnly, tVoices[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.voice].path)
-							end)
-						end							
 					end
 					ttimeMonPwr = 0
 				end
@@ -1071,12 +1116,23 @@ function Aq:AqOnLogin()
 		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].player.power.enabled == nil then
 			SkuSettings:Sub("SkuCore", nil, "char").aq[q].player.power.enabled = true
 		end
+		-- Default to the automatic entry: for every class but a druid that is
+		-- simply their one bar, and for a druid it is the bar the current form
+		-- shows. No need to seed a concrete token from UnitPowerType any more -
+		-- resolving it at read time is exactly what "ACTIVE" does.
 		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].player.power.type == nil then
-			local _, powerToken = UnitPowerType("player")
-			if not powerToken or tPowerTypes[powerToken] == nil then
-				powerToken = "NOTHING"
-			end
-			SkuSettings:Sub("SkuCore", nil, "char").aq[q].player.power.type = powerToken
+			SkuSettings:Sub("SkuCore", nil, "char").aq[q].player.power.type = "ACTIVE"
+		end
+		-- One-time migration off the old "NOTHING" entry. It read as "monitor
+		-- nothing" but actually meant power type -1, so honour the intent - switch
+		-- the monitor off - instead of silently turning a mis-set option into new
+		-- speech, and leave a valid type behind.
+		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].player.power.type == "NOTHING" then
+			SkuSettings:Sub("SkuCore", nil, "char").aq[q].player.power.type = "ACTIVE"
+			SkuSettings:Sub("SkuCore", nil, "char").aq[q].player.power.enabled = false
+		end
+		if tPowerTypes[SkuSettings:Sub("SkuCore", nil, "char").aq[q].player.power.type] == nil then
+			SkuSettings:Sub("SkuCore", nil, "char").aq[q].player.power.type = "ACTIVE"
 		end
 		if SkuSettings:Sub("SkuCore", nil, "char").aq[q].player.power.instancesOnly == nil then
 			SkuSettings:Sub("SkuCore", nil, "char").aq[q].player.power.instancesOnly = false
@@ -1524,13 +1580,81 @@ function Aq:UNIT_HEALTH(eventName, aUnitID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- Invariant (power monitor; from the v43.0 "nothing" fix): the configured power
+-- type must resolve to a resource the client can actually read. The old
+-- "NOTHING" entry resolved to power index -1 and the read path divided by its
+-- max anyway, so a mis-set option turned into a stream of errors from inside the
+-- OnUpdate driver, and what it monitored instead was never anybody's choice.
+-- Three parts:
+--   1. the stored value is a known key and never the retired "NOTHING" - a
+--      survivor means the login migration did not run.
+--   2. the automatic entry always resolves: every player unit shows exactly one
+--      bar, so ACTIVE must yield a token AND a positive max. If it does not, the
+--      monitor is silent for a reason nobody can see.
+--   3. an explicitly chosen resource that the unit does not have right now is a
+--      user choice, not a defect - counted as PENDING, with the reason logged,
+--      because it does explain "I hear nothing".
+function Aq.SkuCheck()
+	local tChecked, tPending, tViolations = 0, 0, 0
+	local tCfg = SkuSettings:Sub("SkuCore", nil, "char").aq
+	tCfg = tCfg and tCfg[SkuCore.talentSet] and tCfg[SkuCore.talentSet].player and tCfg[SkuCore.talentSet].player.power
+	if not tCfg then
+		dprint("skucheck", "power: no monitor settings yet, skipped")
+		return 0, 0, 0
+	end
+
+	tChecked = tChecked + 1
+	if tCfg.type == "NOTHING" or tPowerTypes[tCfg.type] == nil then
+		tViolations = tViolations + 1
+		dprint("skucheck", "VIOLATION power: stored type", tostring(tCfg.type),
+			"is not a known resource -- the login migration off the retired NOTHING entry did not run")
+	end
+
+	local tToken, tIndex = GetMonitoredPowerType(tCfg.type)
+	local tMax = tToken and UnitPowerMax("player", tIndex)
+	tChecked = tChecked + 1
+	if tCfg.type == nil or tCfg.type == "ACTIVE" or tPowerTypes[tCfg.type] == nil then
+		if not tToken or not tMax or tMax <= 0 then
+			tViolations = tViolations + 1
+			dprint("skucheck", "VIOLATION power: the automatic type resolved to token", tostring(tToken),
+				"index", tostring(tIndex), "max", tostring(tMax),
+				"-- the bar the game shows must always be readable")
+		end
+	elseif not tMax or tMax <= 0 then
+		tPending = tPending + 1
+		dprint("skucheck", "power:", tostring(tCfg.type),
+			"is set explicitly but this unit has no such resource right now -- the monitor stays silent by design")
+	end
+
+	return tChecked, tPending, tViolations
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function Aq:UNIT_POWER_UPDATE(eventName, unitTarget, powerType)
+	-- Reached twice per event while the module is enabled (own AceEvent
+	-- registration plus the SkuCore.lua dispatcher one) and - because only the
+	-- AceEvent half is dropped in OnDisable - it is still reached when the whole
+	-- monitor is switched off in the Features menu. Bail on a disabled module so
+	-- an off monitor genuinely says nothing; the tPrevPwrPer guard below already
+	-- swallows the duplicate dispatch.
+	if Aq.IsEnabled and not Aq:IsEnabled() then
+		return
+	end
 	if unitTarget == "player" then
 		if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet] then
 			if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.enabled == true then
-				if powerType == SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.type then
-					local power = UnitPower("player", tPowerTypes[powerType].number)
-					local powerMax = UnitPowerMax("player", tPowerTypes[powerType].number)
+				-- Resolve first, then compare: with the automatic type the token to
+				-- react to is whatever bar the game shows right now, not a stored one.
+				local tPwrToken, tPwrIndex = GetMonitoredPowerType(SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.type)
+				if tPwrToken and powerType == tPwrToken then
+					local power = UnitPower("player", tPwrIndex)
+					local powerMax = UnitPowerMax("player", tPwrIndex)
+					-- A resource the unit does not have reads back nil or a zero max;
+					-- dividing by it is what threw on the old "nothing" setting.
+					if not power or not powerMax or powerMax <= 0 then
+						return
+					end
+					PwrPrevReset(tPwrToken)
 					local pwrPer = math.floor((power / powerMax) * 100)
 					local tsinglestep = math.floor(100 / SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.steps)
 					local tNumberToUtterance = ((math.floor(pwrPer / tsinglestep)) * tsinglestep) / 10
@@ -2195,22 +2319,19 @@ function Aq:MonitorMenuBuilder()
 			tNewMenuEntry.sorting = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-				for i, v in pairs(tPowerTypes) do
-					if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.type == i then
-						return v.name
-					end
-				end
+				local tType = tPowerTypes[SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.type]
+				return tType and tType.name or tPowerTypes["ACTIVE"].name
 			end
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
-				for i, v in pairs(tPowerTypes) do
-					if aName == v.name then
-						SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.type = i
+				for x = 1, #tPowerTypesOrder do
+					if aName == tPowerTypes[tPowerTypesOrder[x]].name then
+						SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.type = tPowerTypesOrder[x]
 					end
 				end
 			end
 			tNewMenuEntry.BuildChildren = function(self)
-				for i, v in pairs(tPowerTypes) do
-					SkuOptions:InjectMenuItems(self, {v.name}, SkuGenericMenuItem)
+				for x = 1, #tPowerTypesOrder do
+					SkuOptions:InjectMenuItems(self, {tPowerTypes[tPowerTypesOrder[x]].name}, SkuGenericMenuItem)
 				end
 			end
 

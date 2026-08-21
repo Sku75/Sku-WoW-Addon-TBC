@@ -5546,14 +5546,14 @@ end
 --   mem = memory ranking - opt-in only, same reason.
 local tSkuCheckDomains = {
 	bags = true, auras = true, keys = true, menu = true, taxi = true,
-	routes = true, wp = true, db = true, mem = true,
+	routes = true, power = true, wp = true, db = true, mem = true,
 }
 
 SLASH_SKUCHECK1 = "/skucheck"
 SlashCmdList["SKUCHECK"] = function(aParam)
 	local tDomain, tArg = string.match(aParam or "", "^%s*(%S*)%s*(.-)%s*$")
 	if tDomain ~= "" and not tSkuCheckDomains[tDomain] then
-		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags, auras, keys, menu, taxi, routes, wp, db, mem", "Unknown check. Available: bags, auras, keys, menu, taxi, routes, wp, db, mem", "Vérification inconnue. Disponible : bags, auras, keys, menu, taxi, routes, wp, db, mem"), false, true, 0.2) end)
+		pcall(function() SkuOptions.Voice:OutputStringBTtts(Sku.deEn("Unbekannte Prüfung. Verfügbar: bags, auras, keys, menu, taxi, routes, power, wp, db, mem", "Unknown check. Available: bags, auras, keys, menu, taxi, routes, power, wp, db, mem", "Vérification inconnue. Disponible : bags, auras, keys, menu, taxi, routes, power, wp, db, mem"), false, true, 0.2) end)
 		return
 	end
 	-- the two measurement domains never run as part of a sweep: they are
@@ -5593,6 +5593,13 @@ SlashCmdList["SKUCHECK"] = function(aParam)
 		local c, p, v = tSkuCheckRoutes()
 		dprint("skucheck", "routes done:", c, "route-data checks,", p, "pending,", v, "violations")
 		tChecked, tPending, tViolations = tChecked + c, tPending + p, tViolations + v
+	end
+	-- power: the configured resource of the health & power monitor must resolve
+	-- to something the client can read (SkuCore/aq.lua, Aq.SkuCheck).
+	if (tDomain == "" or tDomain == "power") and SkuCore.Aq and SkuCore.Aq.SkuCheck then
+		local c, p, v = SkuCore.Aq.SkuCheck()
+		dprint("skucheck", "power done:", c, "monitor checks,", p, "pending,", v, "violations")
+		tChecked, tPending, tViolations = tChecked + c, tPending + (p or 0), tViolations + v
 	end
 	-- taxi: an early landing is never the flight's own start or end point
 	-- (SkuCore/taxi.lua, Taxi.SkuCheck).

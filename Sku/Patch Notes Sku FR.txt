@@ -24,6 +24,7 @@ Changements dans Sku v43.0
             Les avertissements d'expiration d'aura arrivent à l'heure au lieu du prochain événement de combat.
             L'évaluation des auras par événement de combat est nettement moins coûteuse.
             Annuler la navigation ne passe plus que par une seule touche.
+            Le moniteur de ressource peut suivre la barre que le jeu affiche : un druide obtient ainsi mana, rage ou énergie selon sa forme.
             Le journal de l'outil de connexion survit à un redémarrage de l'outil.
             Les données de points de passage sont utilisables bien plus tôt après la connexion, votre propre continent d'abord, et occupent environ 22 Mo de mémoire en moins ; la partie des données d'itinéraires que votre version de jeu ne lit pas n'est plus construite du tout.
 
@@ -43,6 +44,8 @@ Changements dans Sku v43.0
             Un itinéraire ne démarrait pas si sa liste finissait de charger pendant que vous y étiez.
             L'outil de connexion prenait l'écran de connexion pour la sélection de personnage.
             L'outil de connexion : sur les royaumes comptant dix personnages ou plus, la liste des personnages était incomplète, mal numérotée ou refusait de revenir en arrière.
+            Moniteur de ressource : le réglage « rien » provoquait une série d'erreurs Lua.
+            Moniteur de ressource : un moniteur désactivé dans le menu des fonctions annonçait quand même les changements de ressource.
 
     Avec nos remerciements à Naxedim et ZenqFR
         Les quatre correctifs suivants sont les premières contributions de code directes au dépôt
@@ -747,6 +750,42 @@ Changements dans Sku v43.0
             « /skucheck taxi » fixe la règle : un atterrissage anticipé n'est jamais le point de
             départ ni le point d'arrivée du vol lui-même. Le réglage est enregistré par profil
             sous taxiAnnounceLandingPoints.
+
+    Moniteur de ressource : « rien » devient « Ressource actuelle », et elle suit la barre que vous voyez
+        Simple : Le moniteur de vie & de ressource surveille exactement une ressource, et
+            c'était un choix figé : mana, rage, énergie - ou « rien ». Mais « rien » n'était pas
+            un interrupteur, c'était un trou : il provoquait une série d'erreurs Lua, et ce que
+            le moniteur surveillait à la place n'avait été choisi par personne. L'entrée
+            s'appelle désormais « Ressource actuelle » et figure en tête de liste. Elle suit la
+            barre que le jeu vous affiche : un druide obtient le mana en forme normale, la rage
+            en ours et l'énergie en félin, sans jamais retourner dans le menu. Toutes les autres
+            classes n'ont qu'une seule barre - pour elles, c'est simplement leur ressource.
+            Choisir une ressource fixe fonctionne exactement comme avant. Pour désactiver le
+            moniteur, utilisez « Activé : Non » - c'est à cela que sert le réglage. Si vous
+            aviez « rien » de sélectionné, vous trouverez le moniteur désactivé et la ressource
+            réglée sur « Ressource actuelle » ; réactivez-le si vous voulez l'entendre.
+        Technique : « NOTHING » transmettait l'indice de ressource -1 (Enum.PowerType.None)
+            directement à UnitPower et UnitPowerMax - une valeur que le moniteur n'a aucune
+            raison de demander. À sa place vient GetMonitoredPowerType(), qui résout la valeur
+            enregistrée au moment de la lecture : un choix fixe vers son indice, « Ressource
+            actuelle » via UnitPowerType("player") vers la barre affichée. Les deux chemins de
+            lecture passent par là, y compris la comparaison de jeton dans UNIT_POWER_UPDATE -
+            avec le type automatique, le jeton auquel réagir n'est pas celui qui est enregistré.
+            Les deux chemins vérifient aussi désormais nil et un maximum de 0 au lieu de
+            diviser par lui ; c'était la véritable source des erreurs, et comme l'un des deux se
+            trouve dans le pilote OnUpdate, il ne produisait pas une erreur mais une par tick.
+            Comme la ressource surveillée peut maintenant changer sous le moniteur, le
+            pourcentage précédent est réinitialisé à chaque changement de jeton - sinon la
+            première annonce après un changement de forme serait avalée ou recevrait la mauvaise
+            direction (hausse/baisse). En outre, le gestionnaire s'arrête si le module est
+            désactivé : il dépend de deux enregistrements (son propre objet AceEvent et le
+            répartiteur dans Core.lua) alors qu'OnDisable ne retirait que le premier, si bien
+            qu'un moniteur désactivé dans le menu des fonctions continuait d'annoncer. Le
+            nouveau contrôle « /skucheck power » fixe la règle : la ressource configurée doit
+            toujours se résoudre vers quelque chose que le client peut lire ; une ressource
+            choisie volontairement mais absente de la classe compte comme « en attente », pas
+            comme une infraction. La valeur enregistrée « NOTHING » est migrée une seule fois
+            vers « ACTIVE » à la connexion, moniteur désactivé.
 
 
 -------------------------------------------------------------------------------------------------------

@@ -21,6 +21,7 @@ Changes in Sku v43.0
             Aura expiry warnings arrive on time instead of at the next combat event.
             Aura evaluation per combat event is considerably cheaper.
             Cancelling navigation is one key again instead of two.
+            The power monitor can follow the resource bar the game shows, so a druid gets mana, rage or energy according to form.
             The login tool's log survives a restart of the tool.
             Route waypoint data becomes usable much earlier after login, your own continent first, and needs about 22 MB less memory; the part of the route data your game version does not read is no longer built at all.
 
@@ -40,6 +41,8 @@ Changes in Sku v43.0
             A route would not start if its list finished loading while you were in it.
             The login tool mistook the login screen for character selection.
             The login tool: on realms with ten or more characters the character list was incomplete, wrongly numbered or would not scroll back.
+            Power monitor: the resource setting "nothing" threw a stream of Lua errors.
+            Power monitor: a monitor switched off in the features menu still announced resource changes.
 
     With thanks to Naxedim and ZenqFR
         The next four fixes are the first direct code contributions to the now-public Sku
@@ -659,6 +662,39 @@ Changes in Sku v43.0
             spot. New tripwire "/skucheck taxi" pins the rule: an early landing is never the flight's
             own start or end point. The switch is stored per profile as
             taxiAnnounceLandingPoints.
+
+    Power monitor: "nothing" is now "current resource", and it follows the bar you see
+        Simple: The health & power monitor watches exactly one resource, and it was a fixed
+            choice: mana, rage, energy - or "nothing". But "nothing" was not an off switch, it
+            was a hole: it threw a stream of Lua errors, and what the monitor watched instead
+            was never anybody's choice. The entry is now called "current resource" and it is
+            first in the list. It follows the bar the game is showing you: a druid gets mana in
+            caster form, rage in bear and energy in cat without ever going back into the menu.
+            Every other class has only one bar, so for them it is simply their resource.
+            Picking a fixed resource still works exactly as before. To switch the monitor off,
+            use "Enabled: No" - that is what the switch is for. If you had "nothing" selected,
+            you will find the monitor switched off and the resource set to "current resource";
+            switch it back on if you want to hear it.
+        Technically: "NOTHING" passed power index -1 (Enum.PowerType.None) straight into
+            UnitPower and UnitPowerMax - a value the monitor has no business asking for. In its
+            place there is GetMonitoredPowerType(), which resolves the stored value at read
+            time: a fixed choice to its index, "current resource" through
+            UnitPowerType("player") to the bar being displayed. Both read paths go through it,
+            including the token comparison in UNIT_POWER_UPDATE - with the automatic type the
+            token to react to is not the stored one. Both paths now also check for nil and for
+            a zero maximum instead of dividing by it; that was the actual error source, and
+            because one of the two sits inside the OnUpdate driver it produced not one error
+            but one per tick. Since the watched resource can now change under the monitor, the
+            previous percentage is reset whenever the token changes - otherwise the first
+            announcement after a form shift would either be swallowed or given the wrong
+            rising/falling direction. On top of that the handler now bails when the module is
+            disabled: it hangs off two registrations (its own AceEvent object and the
+            dispatcher in Core.lua) but OnDisable dropped only the first, so a monitor switched
+            off in the features menu kept announcing. New check "/skucheck power" pins the
+            rule: the configured resource must always resolve to something the client can read;
+            a deliberately chosen resource the class does not have counts as pending, not as a
+            violation. The stored value "NOTHING" is migrated to "ACTIVE" once at login, with
+            the monitor switched off.
 
 
 -------------------------------------------------------------------------------------------------------

@@ -21,6 +21,7 @@ Aenderungen in Sku v43.0
             Auren-Ablaufwarnungen kommen puenktlich statt erst beim naechsten Kampfereignis.
             Die Aurenauswertung pro Kampfereignis ist deutlich billiger geworden.
             Navigation abbrechen liegt nur noch auf einer Taste.
+            Der Energiemonitor kann der Ressourcenleiste folgen, die das Spiel gerade zeigt - ein Druide bekommt so je nach Gestalt Mana, Wut oder Energie.
             Das Protokoll des Anmelde-Tools ueberlebt einen Neustart des Tools.
             Die Wegpunktdaten der Routen sind nach dem Anmelden deutlich frueher benutzbar, der eigene Kontinent zuerst, und brauchen rund 22 MB weniger Arbeitsspeicher; der Teil der Routendaten, den die eigene Spielversion nicht liest, wird gar nicht mehr aufgebaut.
 
@@ -40,6 +41,8 @@ Aenderungen in Sku v43.0
             Eine Route liess sich nicht starten, wenn ihre Liste waehrend des Ladens fertig wurde.
             Das Anmelde-Tool hielt den Anmeldebildschirm faelschlich fuer die Charakterauswahl.
             Anmelde-Tool: Auf Realms mit zehn oder mehr Charakteren war die Charakterliste unvollstaendig, falsch nummeriert oder liess sich nicht zurueckblaettern.
+            Energiemonitor: die Ressourcenauswahl "nichts" warf laufend Lua-Fehler.
+            Energiemonitor: ein im Funktionsmenue abgeschalteter Monitor sagte Ressourcenaenderungen trotzdem an.
 
     Mit Dank an Naxedim und ZenqFR
         Die naechsten vier Korrekturen sind die ersten direkten Code-Beitraege zum inzwischen
@@ -727,6 +730,42 @@ Aenderungen in Sku v43.0
             Pruefung "/skucheck taxi" haelt die Regel fest: Eine vorzeitige Landung ist nie der
             Start- oder Zielpunkt des eigenen Fluges. Der Schalter liegt pro Profil unter
             taxiAnnounceLandingPoints.
+
+    Energiemonitor: aus "nichts" wird "Aktuelle Ressource", und die folgt der Leiste, die du siehst
+        Einfach: Der Lebens- & Energiemonitor beobachtet genau eine Ressource, und die war fest
+            eingestellt: Mana, Wut, Energie - oder "nichts". "Nichts" war aber kein Ausschalter,
+            sondern ein Loch: es warf laufend Lua-Fehler, und was der Monitor stattdessen
+            beobachtete, hatte niemand ausgewaehlt. Der Eintrag heisst jetzt "Aktuelle
+            Ressource" und steht als erster in der Liste. Er folgt der Leiste, die das Spiel
+            dir gerade zeigt: ein Druide bekommt in Normalgestalt Mana, im Baeren Wut und in
+            der Katze Energie, ohne je wieder ins Menue zu muessen. Alle anderen Klassen haben
+            nur eine Leiste - fuer sie ist es einfach ihre Ressource. Eine feste Ressource
+            auszuwaehlen funktioniert unveraendert weiter. Zum Abschalten ist "Aktiviert: Nein"
+            da, dafuer ist der Schalter gedacht. Wer bisher "nichts" eingestellt hatte, findet
+            den Monitor jetzt abgeschaltet und die Ressource auf "Aktuelle Ressource" - wer ihn
+            hoeren will, schaltet ihn wieder ein.
+        Technisch: "NOTHING" gab den Energie-Index -1 (Enum.PowerType.None) direkt an UnitPower
+            und UnitPowerMax weiter - einen Wert, nach dem der Monitor gar nicht fragen sollte.
+            An seine Stelle tritt GetMonitoredPowerType(), das den gespeicherten Wert erst beim
+            Lesen aufloest: eine feste Auswahl auf ihren Index, "Aktuelle Ressource" ueber
+            UnitPowerType("player") auf die gerade angezeigte Leiste. Beide Lesepfade gehen
+            darueber, auch der Token-Vergleich in UNIT_POWER_UPDATE - mit der automatischen
+            Auswahl ist das Token, auf das reagiert werden muss, eben nicht das gespeicherte.
+            Beide Pfade pruefen jetzt ausserdem auf nil und auf ein Maximum von 0, statt
+            dadurch zu teilen; das war die eigentliche Fehlerquelle, und weil einer der beiden
+            Pfade im OnUpdate-Treiber liegt, kam nicht ein Fehler, sondern einer pro Tick.
+            Weil die beobachtete Ressource jetzt unter dem Monitor wechseln kann, wird der
+            vorige Prozentwert beim Wechsel des Tokens zurueckgesetzt - sonst wuerde die erste
+            Ansage nach einem Gestaltwechsel entweder verschluckt oder bekaeme die falsche
+            Richtung (steigend/fallend). Zusaetzlich: der Handler steigt aus, wenn das Modul
+            abgeschaltet ist. Er haengt an zwei Registrierungen (eigenes AceEvent-Objekt und
+            der Dispatcher in Core.lua), OnDisable loeste aber nur die erste - ein im
+            Funktionsmenue abgeschalteter Monitor sagte deshalb weiter an. Neue Pruefung
+            "/skucheck power" haelt die Regel fest: die eingestellte Ressource muss sich immer
+            zu etwas aufloesen, das der Client lesen kann; eine bewusst gewaehlte Ressource,
+            die die eigene Klasse nicht hat, zaehlt als "ausstehend", nicht als Fehler. Der
+            gespeicherte Wert "NOTHING" wird beim Anmelden einmalig auf "ACTIVE" umgestellt und
+            der Monitor dabei abgeschaltet.
 
 
 -------------------------------------------------------------------------------------------------------
