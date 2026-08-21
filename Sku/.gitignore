@@ -15,9 +15,21 @@
 *.blp
 *.xlsx
 
-# === Large generated game-data tables (not hand-edited source) ===
-/routedata_global_wotlk.lua
-/SkuDB/assets/
+# === Generated game-data tables ===
+# These ARE tracked (since 2026-08-21). They are generated, not hand-edited, but
+# they are Lua TEXT: git deltas them extremely well, and the whole 136 MB tree
+# costs ~27 MB of pack, a commit that does not touch them costs 0, and an
+# ordinary data edit costs single-digit KB. A full regeneration that restructures
+# a file (e.g. the per-section _wrap_deferred.py wrap) costs ~1.3 MB - once.
+# What we buy for that: the shipped data and the code that reads it can no longer
+# drift apart unseen. SkuDeferredData.lua asks for builder globals BY NAME; when
+# a data file did not define them there was no diff to catch it, only a tester
+# reporting an empty list. Keep them in.
+# The genuinely expensive assets stay out, above: 118 MB of mp3 in 12,618 files.
+# Already-compressed binary cannot be deltaed or zlibbed, so it costs full size
+# in history and full size again on every re-encode. Those ship in the release
+# ZIPs, which are separate storage and do not count against the repo at all.
+# Generator scratch (*.bak, *.bak.old) stays ignored - see the section below.
 
 # === OS / editor cruft ===
 .DS_Store
