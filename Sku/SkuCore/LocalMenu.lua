@@ -5516,7 +5516,23 @@ local function tSkuCheckMenu()
 		dprint("skucheck", "VIOLATION menu:", tMisses, "dead ENTER(s) this session, last:",
 			tostring(SkuOptions.tMenuSelectTargetLast))
 	end
-	dprint("skucheck", "menu: live sweep checked", tSweepChecked, "built children,", tMisses, "dead ENTERs this session")
+	-- Tripwire tally (v43.0 in-combat popup regression): SkuOptions:StageClickMacros
+	-- refuses to run in combat, so a StaticPopup that OPENS during a fight had no
+	-- secure click payload and its Accept/Decline entries were dead -- a group invite
+	-- mid-fight could be read and navigated but not answered. The popup nodes now
+	-- fall back to the button's own (insecure, unprotected) OnClick; this counts the
+	-- activations where even that found no button to click.
+	local tPopupDead = (SkuOptions and SkuOptions.tPopupCombatDead) or 0
+	tChecked = tChecked + 1
+	if tPopupDead > 0 then
+		tViolations = tViolations + tPopupDead
+		dprint("skucheck", "VIOLATION menu:", tPopupDead,
+			"in-combat popup activation(s) with nothing to click this session, last:",
+			tostring(SkuOptions and SkuOptions.tPopupCombatDeadLast))
+	end
+
+	dprint("skucheck", "menu: live sweep checked", tSweepChecked, "built children,", tMisses, "dead ENTERs this session,",
+		(SkuOptions and SkuOptions.tPopupCombatFallbackUsed) or 0, "in-combat popup fallback click(s)")
 	return tChecked, 0, tViolations
 end
 

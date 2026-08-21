@@ -5572,19 +5572,66 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									tNewMenuEntry.macrotext = "/script RollOnLoot("..aGossipListTable[index].obj:GetParent().rollID..", "..aGossipListTable[index].obj:GetID()..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 								end
 								if aGossipListTable[index].obj:GetParent():GetName() == "StaticPopup1" then
-									if string.find(aGossipListTable[index].obj:GetName(), "StaticPopup") and string.find(aGossipListTable[index].obj:GetName(), "Button1") then
-										tNewMenuEntry.macrotext = "/click StaticPopup1Button1 LeftButton"
-										tNewMenuEntry.OnLeftAction = function()
-											C_Timer.After(0.5, function()
-												pcall(function() SkuCore:CheckFrames() end)
-												C_Timer.After(0.35, function()
-													pcall(SkuStepBackAndRefresh)
-												end)
-											end)
-										end
-									elseif string.find(aGossipListTable[index].obj:GetName(), "StaticPopup") and string.find(aGossipListTable[index].obj:GetName(), "Button2") then
-										tNewMenuEntry.macrotext = "/click StaticPopup1Button2 LeftButton"
-										tNewMenuEntry.OnLeftAction = function()
+									-- All four popup buttons, not just Accept/Decline: 3 and 4 used
+									-- to fall through to the generic "/click <frame> LeftButton"
+									-- with no insecure action at all, so they had no in-combat path.
+									local tPopupBtnName = string.match(aGossipListTable[index].obj:GetName() or "", "^StaticPopup1Button%d$")
+									if tPopupBtnName then
+										tNewMenuEntry.macrotext = "/click "..tPopupBtnName.." LeftButton"
+										tNewMenuEntry.OnLeftAction = function(self)
+											-- [v43.0] IN-COMBAT PATH. Out of combat the secure macro
+											-- above IS the whole action -- it runs on the hardware event
+											-- and this function only does the housekeeping below.
+											--
+											-- IN COMBAT the activate key never reaches
+											-- SecureOnSkuOptionsMainOption1 at all: PLAYER_REGEN_DISABLED
+											-- hides OnSkuOptionsMain, whose OnHide clears that button's
+											-- override bindings while the grace window is still open, and
+											-- the key is driven instead by SkuCombatMenuKey's snippet,
+											-- which treats ENTER as "route only" and hands it straight to
+											-- the insecure dispatcher (SkuCore/combatMenuKeys.lua). So a
+											-- popup that opens mid-fight was fully readable and navigable
+											-- and completely dead on ENTER -- a group invite could not be
+											-- accepted (2026-08-21 combatTrace 15:56:23:
+											-- "navClick key=ENTER pos=Annehmen" -> "mirror click key ENTER
+											-- (route only)" -> nothing).
+											--
+											-- No mirror and no secure arming is needed for this, unlike the
+											-- bag /use and trade-accept paths: a StaticPopup button is NOT
+											-- a protected frame and its OnClick is plain Lua
+											-- (StaticPopup_OnClick -> the dialog's own OnAccept/OnCancel:
+											-- AcceptGroup, DeclineGroup, ResurrectAccept, RepopMe,
+											-- ConfirmSummon, ...). None of those is hardware-gated, so
+											-- calling the script directly works in combat exactly as out
+											-- of it. Deliberately limited to the popup buttons -- every
+											-- other click payload in this builder DOES need the genuine
+											-- hardware event and belongs in the mirror, not here.
+											--
+											-- Guards: only in combat (out of it the secure macro already
+											-- did the work), only while the button is really there, and
+											-- only while Blizzard has it ENABLED -- the decline button is
+											-- locked for its first second and "/click" on it is a no-op
+											-- too, so this must be one as well.
+											if InCombatLockdown and InCombatLockdown() then
+												local tBtn = _G[tPopupBtnName]
+												if tBtn and tBtn:IsShown() and (not tBtn.IsEnabled or tBtn:IsEnabled()) then
+													dprint("popup.combatClick", tPopupBtnName,
+														"which=", tostring(_G.StaticPopup1 and _G.StaticPopup1.which),
+														"txt=", tostring(tBtn:GetText()),
+														"stagingBlocked=", tostring(self and self.skuClickStagingBlocked))
+													SkuOptions.tPopupCombatFallbackUsed = (SkuOptions.tPopupCombatFallbackUsed or 0) + 1
+													local tOnClick = tBtn:GetScript("OnClick")
+													if tOnClick then pcall(tOnClick, tBtn, "LeftButton") end
+												elseif not (tBtn and tBtn:IsShown()) then
+													-- Tripwire (/skucheck menu): activated in combat and there
+													-- was no button left to click -- the keypress did nothing
+													-- at all. A DISABLED button is not counted: that is
+													-- Blizzard's own decline lock and the secure path is
+													-- equally inert against it.
+													SkuOptions.tPopupCombatDead = (SkuOptions.tPopupCombatDead or 0) + 1
+													SkuOptions.tPopupCombatDeadLast = tPopupBtnName
+												end
+											end
 											C_Timer.After(0.5, function()
 												pcall(function() SkuCore:CheckFrames() end)
 												C_Timer.After(0.35, function()

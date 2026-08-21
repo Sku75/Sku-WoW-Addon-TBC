@@ -473,6 +473,19 @@ SkuGenericMenuItem = {
 			end
 			-- (The right-click button's rightMacrotext staging moved into
 			-- SkuOptions:StageClickMacros above, together with the left one.)
+			self.skuClickStagingBlocked = nil
+		else
+			-- [v43.0] In combat SetAttribute and SetOverrideBindingClick are both
+			-- refused, so NOTHING above ran: this node's secure left payload was
+			-- never staged and the activate key clicks a secure button that holds
+			-- either an empty or a stale macro. For most payloads that is correct
+			-- (they need the hardware event anyway and cannot work in combat), but
+			-- it silently killed the ones that are pure insecure Lua -- above all
+			-- the StaticPopup buttons: a group invite arriving mid-fight could be
+			-- read and navigated but not answered (2026-08-21 log, seq 47580: ENTER
+			-- on "Annehmen" only re-announced the entry). Mark the node so the
+			-- ENTER/RCLICK dispatcher can use a node-provided insecure fallback.
+			self.skuClickStagingBlocked = true
 		end
 	end,
 	OnSelect = function(self, aEnterFlag)
