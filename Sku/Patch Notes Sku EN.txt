@@ -16,7 +16,7 @@ Changes in Sku v43.0
             The installer collects every log file for a bug report at one button press.
             The login screen is usable with the login tool now.
             Waypoint lists announce how far the loading has got.
-            The aura value lists start with "Enter spell ID": if you know a spell's number you no longer have to hunt for its name.
+            Aura value lists start with "Enter spell ID", for when you know the number and not the name.
 
         Changes
             Aura expiry warnings arrive on time instead of at the next combat event.
@@ -25,7 +25,10 @@ Changes in Sku v43.0
             The power monitor can follow the resource bar the game shows, so a druid gets mana, rage or energy according to form.
             The login tool's log survives a restart of the tool.
             Route waypoint data becomes usable much earlier after login, your own continent first, and needs about 22 MB less memory; the part of the route data your game version does not read is no longer built at all.
-            Auras identify spells by identity instead of by the translated name: an aura works on every language client, shared aura sets arrive usable, and every rank of a spell counts as one entry.
+            Auras are internationally interchangeable now: an aura works on every language client.
+            Shared aura sets arrive usable at a group member on another language.
+            Every rank of a spell counts as one entry for an aura.
+            Spell names the game hands out more than once can be told apart in the selection lists now.
             The bundled aura sets are no longer German clients only.
 
         Bugfixes

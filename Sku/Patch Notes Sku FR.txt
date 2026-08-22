@@ -19,7 +19,7 @@ Changements dans Sku v43.0
             L'installateur collecte tous les journaux pour un rapport de bogue en un seul bouton.
             L'écran de connexion est désormais utilisable avec l'outil de connexion.
             Les listes de points de passage annoncent l'avancement du chargement.
-            Les listes de valeurs d'aura commencent par « Saisir l'ID du sort » : si vous connaissez le numéro d'un sort, plus besoin d'en chercher le nom.
+            Les listes de valeurs d'aura commencent par « Saisir l'ID du sort », quand vous connaissez le numéro et pas le nom.
 
         Changements
             Les avertissements d'expiration d'aura arrivent à l'heure au lieu du prochain événement de combat.
@@ -28,7 +28,10 @@ Changements dans Sku v43.0
             Le moniteur de ressource peut suivre la barre que le jeu affiche : un druide obtient ainsi mana, rage ou énergie selon sa forme.
             Le journal de l'outil de connexion survit à un redémarrage de l'outil.
             Les données de points de passage sont utilisables bien plus tôt après la connexion, votre propre continent d'abord, et occupent environ 22 Mo de mémoire en moins ; la partie des données d'itinéraires que votre version de jeu ne lit pas n'est plus construite du tout.
-            Les auras reconnaissent les sorts à leur identité plutôt qu'à leur nom traduit : une aura fonctionne sur tous les clients, les ensembles d'auras partagés arrivent utilisables, et tous les rangs d'un sort comptent pour une seule entrée.
+            Les auras sont désormais interchangeables entre langues : une aura fonctionne sur tous les clients.
+            Les ensembles d'auras partagés arrivent utilisables chez un équipier d'une autre langue.
+            Tous les rangs d'un sort comptent pour une seule entrée d'aura.
+            Les noms de sorts attribués plusieurs fois par le jeu se distinguent maintenant dans les listes de sélection.
             Les ensembles d'auras fournis ne sont plus réservés aux clients allemands.
 
         Corrections

@@ -16,7 +16,7 @@ Aenderungen in Sku v43.0
             Der Installer sammelt auf Knopfdruck alle Logdateien fuer eine Fehlermeldung.
             Der Anmeldebildschirm ist mit dem Anmelde-Tool jetzt bedienbar.
             Wegpunktlisten sagen an, wie weit das Laden fortgeschritten ist.
-            In den Auren-Wertelisten steht an erster Stelle "Zauber-ID eingeben": wer die Nummer eines Zaubers kennt, muss den Namen nicht mehr suchen.
+            Auren-Wertelisten beginnen mit "Zauber-ID eingeben", falls du die Nummer kennst und den Namen nicht.
 
         Aenderungen
             Auren-Ablaufwarnungen kommen puenktlich statt erst beim naechsten Kampfereignis.
@@ -25,7 +25,10 @@ Aenderungen in Sku v43.0
             Der Energiemonitor kann der Ressourcenleiste folgen, die das Spiel gerade zeigt - ein Druide bekommt so je nach Gestalt Mana, Wut oder Energie.
             Das Protokoll des Anmelde-Tools ueberlebt einen Neustart des Tools.
             Die Wegpunktdaten der Routen sind nach dem Anmelden deutlich frueher benutzbar, der eigene Kontinent zuerst, und brauchen rund 22 MB weniger Arbeitsspeicher; der Teil der Routendaten, den die eigene Spielversion nicht liest, wird gar nicht mehr aufgebaut.
-            Auren erkennen Zauber jetzt an ihrer Identitaet statt am uebersetzten Namen: eine Aura wirkt auf jedem Sprachclient, geteilte Aurensets kommen benutzbar an, und alle Raenge eines Zaubers zaehlen als ein Eintrag.
+            Auren sind jetzt international austauschbar: eine Aura wirkt auf jedem Sprachclient.
+            Geteilte Aurensets kommen bei Mitspielern anderer Sprache benutzbar an.
+            Alle Raenge eines Zaubers zaehlen fuer eine Aura als ein Eintrag.
+            Zaubernamen, die im Spiel mehrfach vergeben sind, lassen sich in den Auswahllisten jetzt unterscheiden.
             Die mitgelieferten Aurensets gibt es nicht mehr nur auf deutschen Clients.
 
         Fehlerbehebungen
