@@ -3282,6 +3282,12 @@ L["show group members quests"] = "afficher les quêtes des membres du groupe"
 L["Keine Questie-Daten empfangen"] = "Aucune donnée Questie reçue"
 L["Unbekannte Zone"] = "Zone inconnue"
 
+-- Sku v43.0: saisie d'un ID de sort en position 0 des listes de valeurs d'aura
+L["Zauber-ID eingeben"] = "Saisir l'ID du sort"
+L["Zauber-ID eingeben und Enter, oder Escape zum Abbrechen"] = "Saisissez un ID de sort puis Entrée, ou Échap pour annuler"
+L["Unbekannte Zauber-ID"] = "ID de sort inconnu"
+L["Wert gesetzt: "] = "Valeur définie : "
+
 -- NOT user-facing text: Sku.Loc is read straight from this (Sku/Core.lua:28)
 -- and selects which SkuDB name tables the whole client uses. It must stay the
 -- locale CODE. Never let a regeneration re-import it from enUS - check with

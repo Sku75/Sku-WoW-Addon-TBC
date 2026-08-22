@@ -31,7 +31,9 @@ local function RemoveTagFromValue(aValue)
    if not aValue then
       return
    end
-   local tCleanValue = string.gsub(aValue, "item:", "")
+   -- [v43.0] group tag first, same rule as SkuAuras:RemoveTags in data.lua
+   local tCleanValue = string.gsub(aValue, "spellgroup:", "")
+   tCleanValue = string.gsub(tCleanValue, "item:", "")
    tCleanValue = string.gsub(tCleanValue, "spell:", "")
    tCleanValue = string.gsub(tCleanValue, "output:", "")
    return tCleanValue
@@ -432,13 +434,134 @@ local slower = string.lower
 -- seconds of a session - or one referencing a key the current data set no longer
 -- knows - must degrade to the raw key instead of erroring out of the menu with
 -- "attempt to index field '?'".
+-- [v43.0] The raw-key fallback goes through RemoveTags now. Values carry a tag
+-- ("spellgroup:Frostbolt", "item:1234"), and on a friendlyName miss - a stale
+-- key, or a menu opened while the background list build is still running - the
+-- old fallback read the tag out loud to the user. Note the degraded path now
+-- speaks the ENGLISH group name rather than a localized one; that is the
+-- unresolvable case either way, and "Frostbolt" beats "spellgroup:Frostbolt".
+--
+-- The type guard is load-bearing: SkuAuras:RemoveTags maps the STRINGS "true"
+-- and "false" to the booleans, and the binary attributes' values are exactly
+-- those two keys. A menu opened before the value lists finish building reaches
+-- the fallback for them, and returning a boolean into a string concatenation is
+-- how the aura menu would error out instead of merely reading a raw key.
+local function tStripTagsForDisplay(aKey)
+	local tKey = tostring(aKey)
+	local tClean = SkuAuras:RemoveTags(tKey)
+	if type(tClean) ~= "string" then
+		return tKey
+	end
+	return tClean
+end
 local function tFriendlyName(aTbl, aKey)
 	local e = aTbl and aTbl[aKey]
-	return (e and e.friendlyName) or tostring(aKey)
+	return (e and e.friendlyName) or tStripTagsForDisplay(aKey)
 end
 local function tValueName(aKey)
 	return tFriendlyName(SkuAuras.values, aKey)
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.0] "I know the id but not the name": an input node at index 0 of every
+-- spell value list. Injecting it before the loop genuinely puts it first - the
+-- menu keeps INSERTION order, and the `sorting` flag selects type-ahead vs
+-- filter rather than sorting anything.
+--
+-- The typed id is RESOLVED to its group and the GROUP value is stored, not the
+-- id. The list attributes match against live lists keyed by group name, so a
+-- bare "spell:<id>" could never match one of them, and spellName compares names
+-- and could not match an id either. spellId is the one attribute where an id is
+-- the value - and there it is stored exactly as typed.
+local tIdInputAttributes = {
+	spellId = "id",
+	spellName = "group", spellNameOnCd = "group", spellNameUsable = "group",
+	buffListTarget = "group", debuffListTarget = "group",
+	buffListPlayer = "group", debuffListPlayer = "group",
+}
+
+local function tSpellIdValueFor(aAttributeName, aSpellId)
+	local tMode = tIdInputAttributes[aAttributeName]
+	if not tMode then
+		return nil
+	end
+	if tMode == "id" then
+		local tValue = "spell:"..tostring(aSpellId)
+		return SkuAuras.values[tValue] and tValue or nil
+	end
+	local tGroup = SkuAuras:SpellGroupName(aSpellId, nil)
+	if not tGroup then
+		return nil
+	end
+	local tValue = SkuAuras.SPELL_GROUP_TAG..tGroup
+	return SkuAuras.values[tValue] and tValue or nil
+end
+
+-- ENTER inside a select level always dispatches to the LEVEL'S SELECT TARGET
+-- (SkuZOptions/templates.lua OnPostSelect), never to the focused node's own
+-- OnAction, so this node cannot own its ENTER. The target's OnAction is wrapped
+-- once per target instead and recognises the node by its auraIdInput marker.
+local function tPromptForSpellId(aNode, aSelectTarget)
+	local tAttributeName = aNode.parent and aNode.parent.parent and aNode.parent.parent.internalName
+	SkuOptions.Voice:OutputStringBTtts(L["Zauber-ID eingeben und Enter, oder Escape zum Abbrechen"], false, true, 0.2)
+	SkuOptions:EditBoxShow("", function(self)
+		local tText = strtrim(SkuOptionsEditBoxEditBox:GetText() or "")
+		local tSpellId = tonumber(tText)
+		local tValue = tSpellId and tSpellIdValueFor(tAttributeName, tSpellId)
+		if not tValue then
+			SkuOptions.Voice:OutputStringBTtts(L["Unbekannte Zauber-ID"], false, true, 0.2)
+			return
+		end
+		aNode.internalName = tValue
+		aNode.name = tValueName(tValue)
+		aNode.auraIdInput = nil
+		aSelectTarget.collectValuesFrom = aNode
+		if aSelectTarget.usedAttributes and tAttributeName then
+			aSelectTarget.usedAttributes[tAttributeName] = true
+		end
+		if not aSelectTarget.single then
+			aNode.BuildChildren = SkuAuras:NewAuraAttributeBuilder(aNode)
+		end
+		-- The framework parked the cursor on the select target when OnAction
+		-- returned (synchronously, long before this callback runs). Put it back
+		-- on the node the user just filled in, so the next ENTER commits it.
+		SkuOptions.currentMenuPosition = aNode
+		SkuOptions.Voice:OutputStringBTtts(L["Wert gesetzt: "]..tostring(aNode.name), false, true, 0.2)
+	end)
+end
+
+local function tInjectValueIdInput(aLevel, aSelectTarget)
+	local tAttributeName = aLevel.parent and aLevel.parent.internalName
+	if not (tAttributeName and tIdInputAttributes[tAttributeName]) then
+		return
+	end
+	local tNode = SkuOptions:InjectMenuItems(aLevel, {L["Zauber-ID eingeben"]}, SkuGenericMenuItem)
+	tNode.internalName = ""
+	tNode.auraIdInput = true
+	tNode.elementType = "value"
+	tNode.vocalizeAsIs = true
+	tNode.sorting = true
+	if not aSelectTarget.single then
+		tNode.dynamic = true
+		tNode.BuildChildren = function(self)
+		end
+	end
+	tNode.OnEnter = function(self, aValue, aName)
+		-- Claim the value slot only once an id has actually been typed: while
+		-- this is still the prompt its internalName is empty, and the aura
+		-- builder walks internalNames upward to assemble the condition.
+		if self.auraIdInput ~= true then
+			aSelectTarget.collectValuesFrom = self
+			aSelectTarget.usedAttributes[self.parent.parent.internalName] = true
+			if not aSelectTarget.single then
+				self.BuildChildren = SkuAuras:NewAuraAttributeBuilder(self)
+			end
+		end
+		SkuAuras:BuildAuraTooltip(self)
+	end
+	return tNode
+end
+
 function SkuAuras:NewAuraValueBuilder(self)
 	local tSelectTarget = nil
 	if self.isSelect then
@@ -451,6 +574,21 @@ function SkuAuras:NewAuraValueBuilder(self)
 	
 	tSelectTarget.usedOutputs = {}
 
+	-- [v43.0] One wrapper per select target, for the ID-input node's ENTER.
+	if tSelectTarget and tSelectTarget.tAuraIdInputHooked ~= true then
+		tSelectTarget.tAuraIdInputHooked = true
+		local tOriginalOnAction = tSelectTarget.OnAction
+		tSelectTarget.OnAction = function(aSelf, aNode, aName, ...)
+			if type(aNode) == "table" and aNode.auraIdInput == true then
+				tPromptForSpellId(aNode, tSelectTarget)
+				return
+			end
+			if tOriginalOnAction then
+				return tOriginalOnAction(aSelf, aNode, aName, ...)
+			end
+		end
+	end
+
 	local tBuildChildrenFunc = function(self)
 		if not tSelectTarget then
 			local tAttributeValueEntry = SkuOptions:InjectMenuItems(self, {L["empty"]}, SkuGenericMenuItem)
@@ -458,6 +596,8 @@ function SkuAuras:NewAuraValueBuilder(self)
 		end
 
 		if SkuAuras.Types[tSelectTarget.internalName] then
+			-- [v43.0] index 0: type an id instead of hunting for the name
+			tInjectValueIdInput(self, tSelectTarget)
 			local tSortedList = {}
 			for k, v in SkuSpairs(SkuAuras.attributes[self.parent.internalName].values,
 				function(t, a, b)
@@ -523,9 +663,12 @@ function SkuAuras:BuildAuraName(aNewType, aNewAttributes, aNewActions, aNewOutpu
 	-- Schluessel den Rohschluessel als Text - so kann der Namensaufbau nicht
 	-- mehr abstuerzen ("attempt to index field '?'"), wenn eine gespeicherte
 	-- Aura eine nicht mehr aufloesbare Aktion/Wert/Output referenziert.
+	-- [v43.0] Same tag-stripping fallback as tFriendlyName above: without it an
+	-- unresolvable value would put "spellgroup:Frostbolt" verbatim into the
+	-- aura's NAME, and the name is the table key it is stored under.
 	local function tFn(aTbl, aKey)
 		local e = aTbl and aTbl[aKey]
-		return (e and e.friendlyName) or tostring(aKey)
+		return (e and e.friendlyName) or tStripTagsForDisplay(aKey)
 	end
 	local tAuraName = tFn(SkuAuras.Types, aNewType)..";"
 	local tOuterCount = 0
@@ -856,6 +999,12 @@ function SkuAuras:ImportAuraData()
 						return
 					end
 					auraData.enabled = true
+					-- [v43.0] Same-locale values move to group identity, and the
+					-- NAME is re-derived so an imported aura is named in THIS
+					-- client's language (it is derived data; only customName auras
+					-- keep theirs, and those are the ones other auras reference).
+					SkuAuras:ConvertAuraValuesToGroups(auraData)
+					auraName = SkuAuras:RelocalizedAuraName(auraName, auraData)
 					SkuSettings:Sub("SkuAuras", nil, "char").Auras[auraName] = auraData
 					print(L["Aura importiert:"])
 					print(auraName)
@@ -870,7 +1019,9 @@ function SkuAuras:ImportAuraData()
 				for i, v in pairs(auraData) do
 					print(i)
 					v.enabled = true
-					SkuSettings:Sub("SkuAuras", nil, "char").Auras[i] = v
+					-- [v43.0] see the single-aura branch above
+					SkuAuras:ConvertAuraValuesToGroups(v)
+					SkuSettings:Sub("SkuAuras", nil, "char").Auras[SkuAuras:RelocalizedAuraName(i, v)] = v
 				end
 				SkuOptions.Voice:OutputStringBTtts(L["Aura importiert"], false, true, 0.3)		
 			end

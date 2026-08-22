@@ -16,6 +16,7 @@ Changes in Sku v43.0
             The installer collects every log file for a bug report at one button press.
             The login screen is usable with the login tool now.
             Waypoint lists announce how far the loading has got.
+            The aura value lists start with "Enter spell ID": if you know a spell's number you no longer have to hunt for its name.
 
         Changes
             Aura expiry warnings arrive on time instead of at the next combat event.
@@ -24,6 +25,8 @@ Changes in Sku v43.0
             The power monitor can follow the resource bar the game shows, so a druid gets mana, rage or energy according to form.
             The login tool's log survives a restart of the tool.
             Route waypoint data becomes usable much earlier after login, your own continent first, and needs about 22 MB less memory; the part of the route data your game version does not read is no longer built at all.
+            Auras identify spells by identity instead of by the translated name: an aura works on every language client, shared aura sets arrive usable, and every rank of a spell counts as one entry.
+            The bundled aura sets are no longer German clients only.
 
         Bugfixes
             French clients: all aura sounds and pre-recorded speech clips were silent (fix by Naxedim).
@@ -43,6 +46,7 @@ Changes in Sku v43.0
             The login tool: on realms with ten or more characters the character list was incomplete, wrongly numbered or would not scroll back.
             Power monitor: the resource setting "nothing" threw a stream of Lua errors.
             Power monitor: a monitor switched off in the features menu still announced resource changes.
+            French clients: the list of weapon enchants for aura conditions was empty.
 
     With thanks to Naxedim and ZenqFR
         The next four fixes are the first direct code contributions to the now-public Sku
@@ -695,6 +699,85 @@ Changes in Sku v43.0
             a deliberately chosen resource the class does not have counts as pending, not as a
             violation. The stored value "NOTHING" is migrated to "ACTIVE" once at login, with
             the monitor switched off.
+
+    Auras identify spells by identity, no longer by the translated name
+        Simple: An aura you built used to be tied to your game language. The stored value was the
+            translated spell name - "Frostblitz" - and an English client only knows "Frostbolt", so
+            the same aura never fired there. For the same reason an aura set shared in a group
+            arrived dead at a group member on another language, and the bundled aura sets existed
+            on German clients only. Sku now remembers the language-independent identity of the
+            spell. What you see and hear is still exactly the name your game uses - in the menu, in
+            the aura's own name, and in the announcement when it fires. Your existing auras are
+            converted once at the first login, with nothing for you to do; their names do not
+            change.
+            A second win comes with it: every rank of a spell, and the variants enemies cast,
+            belong to one entry. "Tell me when my target casts Frostbolt" now covers all 103
+            Frostbolt variants instead of the single one that happened to be in the list. Whether
+            YOU or an enemy cast it is still decided by the separate "Event source" condition, not
+            by the spell.
+            Where one translated spell name stands for several different English ones - German
+            "Verblassen" is both "Fade" and "Fade Out" - the list adds the English name in
+            brackets so the entries stay distinguishable. Only the list; the announcement when the
+            aura fires stays short. Pick such an entry and the oldest variant wins - for
+            "Verblassen" that is the priest spell, not "Fade Out". Auras you had already saved
+            under such a name are left untouched and keep reacting to every variant, as before.
+        Technically: The identity is the enUS spell name out of SkuDB.SpellDataTBC, which already
+            ships and is already maintained - no new file, no generated id table (one would have to
+            be kept in sync with spells.lua, and a regeneration would silently orphan saved auras).
+            Stored values carry the "spellgroup:" tag; the display still comes from
+            SkuAuras.values[key].friendlyName. The live UnitAura list is mapped to the group name
+            via return value 10 (spellId); on a non-English client the localized name sits beside
+            it as a compatibility alias so an unconverted old value keeps matching. On an English
+            client group name and live name are the same string, the alias is never written, and
+            the cost is exactly zero. An id SpellDataTBC does not know - the population most likely
+            to drift as the Anniversary timeline cycles - falls back to the localized name, i.e. to
+            the previous behaviour. 838 of the 26,603 German names (3.15%) cover more than one
+            English name. At runtime the group with the lowest spell id wins - the colliding
+            variants are without exception later additions; checked against the cases where the
+            answer is known (Verblassen 586 vs 5543, Geschwaechte Seele 6788 vs 36788,
+            Schattenwort: Schmerz 589 vs 37603, Erneuerung 139 vs 37563, Gedankenkontrolle 605 vs
+            7645). SAVED values under such a name are still NOT converted, because today they
+            match every variant and converting would silently drop the others; their menu entries
+            get the English name appended. A group's display name always
+            comes from the lowest id in it, so it cannot change between sessions. New checks under
+            "/skucheck auras": group entries exist at all, every id of a spell resolves to ONE
+            group, and the run-once conversion left no value behind.
+
+    Sharing aura sets: new format without a language tag
+        Simple: A shared aura set no longer carries a language tag, and the "set is for another
+            language" warning is gone - the conditions are language-free now. On accepting, each
+            aura is also named in YOUR language instead of keeping the sender's sentence. Auras you
+            named yourself keep their name.
+        Technically: SkuAuraSetV2 (payload "AURASET2", no loc field) is what gets sent; V1 is still
+            received, warning included, because such packets still carry localized values. Only V2
+            is sent on purpose: an additional V1 packet would leave older clients holding auras with
+            group values they cannot resolve. The name is re-derived through BuildAuraName on import
+            (SkuAuras:RelocalizedAuraName); customName auras are excluded, and those are exactly the
+            ones other auras can reference, so cross-aura references survive intact.
+
+    Auras: "Enter spell ID" as the first entry of every spell value list
+        Simple: If you know a spell's number you no longer have to find its name in a list of over
+            27,000 entries. "Enter spell ID" sits at the very top of the value list; Enter opens an
+            input field, you type the number, Enter, and Sku tells you which spell it resolved it
+            to. If Sku does not know the number it says "Unknown spell ID" and changes nothing.
+        Technically: Injected at index 0 - the menu keeps insertion order, and the sorting flag only
+            picks filter versus type-ahead. ENTER inside a select level always dispatches to the
+            level's selectTarget and never to the focused node's own OnAction, so the selectTarget's
+            OnAction is wrapped once and the node recognised by its marker. The typed id is resolved
+            to its group and the GROUP value is stored, not the id: the list attributes compare
+            against group-keyed live lists, and "spell name" compares names - a bare id could never
+            match either. Only for the "spell ID" attribute, where the id IS the value, is it stored
+            exactly as typed.
+
+    French clients: the list of weapon enchants for aura conditions was empty
+        Simple: On a French client the aura condition for weapon enchants offered not a single
+            entry, so such a condition could not be built at all.
+        Technically: SkuAuras:ResolveWeaponEnchantName read column 1 of the enchant database for
+            enUS and column 2 for deDE and otherwise left the name nil - for any other language the
+            function therefore returned nil for EVERY enchant and the value list came out empty. It
+            takes the column of your own language now, else the English one, the way the rest of the
+            naming system has since v42.09. Found while porting to group identity, not from a
+            report.
 
 
 -------------------------------------------------------------------------------------------------------

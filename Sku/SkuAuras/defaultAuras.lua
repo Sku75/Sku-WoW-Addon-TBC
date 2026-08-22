@@ -4,8 +4,14 @@ SkuAuras.DefaultAuras = {
 }
 --setmetatable(SkuAuras.DefaultAuras, SkuPrintMTWo)
 
-if Sku.Loc == "deDE" then
-   SkuAuras.AuraSets = {
+-- [v43.0] No longer behind an `if Sku.Loc == "deDE"` gate. The condition values
+-- are group keys now (enUS spell names), so the sets match on every client, and
+-- gating them out meant an English or French player got NO default sets at all.
+-- Still open: the aura keys and the "friendlyNameShort" labels below are German
+-- prose. They are not derived data, so nothing can re-generate them - and the
+-- menu that would apply these sets is currently disabled (Options.lua, the
+-- "[Fix Nr22]" `if false then` block), so nothing reads them today either.
+SkuAuras.AuraSets = {
       warriorDef = {
          tooltip = {
             "Aura set für Schutz Krieger\r\n", 
@@ -84,11 +90,11 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Inneres Feuer", -- [2]
+                        "spellgroup:Inner Fire", -- [2]
                      }, -- [1]
                      {
                         "is", -- [1]
-                        "spell:Verbessertes inneres Feuer", -- [2]
+                        "spellgroup:Improved Inner Fire", -- [2]
                      }, -- [2]
                   },
                },
@@ -121,7 +127,7 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Geschwächte Seele", -- [2]
+                        "spellgroup:Weakened Soul", -- [2]
                      }, -- [1]
                   },
                },
@@ -142,19 +148,19 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Machtwort: Seelenstärke", -- [2]
+                        "spellgroup:Power Word: Fortitude", -- [2]
                      }, -- [1]
                      {
                         "is", -- [1]
-                        "spell:Verbessertes Machtwort: Seelenstärke", -- [2]
+                        "spellgroup:Improved Power Word: Fortitude", -- [2]
                      }, -- [1]
                      {
                         "is", -- [1]
-                        "spell:Gebet der Seelenstärke", -- [2]
+                        "spellgroup:Prayer of Fortitude", -- [2]
                      }, -- [1]
                      {
                         "is", -- [1]
-                        "spell:Heiliges Wort: Seelenstärke", -- [2]
+                        "spellgroup:Holy Word: Fortitude", -- [2]
                      }, -- [1]
                   },
                   ["event"] = {
@@ -195,11 +201,11 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Schattenschutz", -- [2]
+                        "spellgroup:Shadow Protection", -- [2]
                      }, -- [1]
                      {
                         "is", -- [1]
-                        "spell:Gebet des Schattenschutzes", -- [2]
+                        "spellgroup:Prayer of Shadow Protection", -- [2]
                      }, -- [1]
                   },
                   ["event"] = {
@@ -235,7 +241,7 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Verblassen", -- [2]
+                        "spellgroup:Fade", -- [2]
                      }, -- [1]
                      {
                         "is", -- [1]
@@ -273,11 +279,11 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Schattengeist", -- [2]
+                        "spellgroup:Shadowfiend", -- [2]
                      }, -- [1]
                      {
                         "is", -- [1]
-                        "spell:Verbesserter Schattengeist", -- [2]
+                        "spellgroup:Improved Shadowfiend", -- [2]
                      }, -- [2]
                   },
                   ["event"] = {
@@ -312,11 +318,11 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Psychischer Schrei", -- [2]
+                        "spellgroup:Psychic Scream", -- [2]
                      }, -- [1]
                      {
                         "is", -- [1]
-                        "spell:Verbesserter psychischer Schrei", -- [2]
+                        "spellgroup:Improved Psychic Scream", -- [2]
                      }, -- [2]
                   },
                   ["event"] = {
@@ -351,7 +357,7 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Furchtzauberschutz", -- [2]
+                        "spellgroup:Fear Ward", -- [2]
                      }, -- [1]
                   },
                   ["event"] = {
@@ -386,7 +392,7 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Stille", -- [2]
+                        "spellgroup:Silence", -- [2]
                      }, -- [1]
                   },
                   ["event"] = {
@@ -421,7 +427,7 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Untote fesseln", -- [2]
+                        "spellgroup:Shackle Undead", -- [2]
                      }, -- [1]
                   },
                   ["event"] = {
@@ -474,11 +480,11 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Vampirumarmung", -- [2]
+                        "spellgroup:Vampiric Embrace", -- [2]
                      }, -- [1]
                      {
                         "is", -- [1]
-                        "spell:Verbesserte Vampirumarmung", -- [2]
+                        "spellgroup:Improved Vampiric Embrace", -- [2]
                      }, -- [2]
                   },
                   ["event"] = {
@@ -513,11 +519,11 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Gedankenschlag", -- [2]
+                        "spellgroup:Mind Blast", -- [2]
                      }, -- [1]
                      {
                         "is", -- [1]
-                        "spell:Verbesserter Gedankenschlag", -- [2]
+                        "spellgroup:Improved Mind Blast", -- [2]
                      }, -- [2]
                   },
                   ["event"] = {
@@ -559,7 +565,7 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Vampirumarmung", -- [2]
+                        "spellgroup:Vampiric Embrace", -- [2]
                      }, -- [1]
                   },
                   ["event"] = {
@@ -616,7 +622,7 @@ if Sku.Loc == "deDE" then
                   ["debuffListTarget"] = {
                      {
                         "containsNot", -- [1]
-                        "spell:Vampirumarmung", -- [2]
+                        "spellgroup:Vampiric Embrace", -- [2]
                      }, -- [1]
                   },
                },
@@ -644,7 +650,7 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Vampirberührung", -- [2]
+                        "spellgroup:Vampiric Touch", -- [2]
                      }, -- [1]
                   },
                   ["tInCombat"] = {
@@ -701,7 +707,7 @@ if Sku.Loc == "deDE" then
                   ["debuffListTarget"] = {
                      {
                         "containsNot", -- [1]
-                        "spell:Vampirberührung", -- [2]
+                        "spellgroup:Vampiric Touch", -- [2]
                      }, -- [1]
                   },
                },
@@ -729,11 +735,11 @@ if Sku.Loc == "deDE" then
                   ["spellName"] = {
                      {
                         "is", -- [1]
-                        "spell:Schattenwort: Schmerz", -- [2]
+                        "spellgroup:Shadow Word: Pain", -- [2]
                      }, -- [1]
                      {
                         "is", -- [1]
-                        "spell:Verbessertes Schattenwort: Schmerz", -- [2]
+                        "spellgroup:Improved Shadow Word: Pain", -- [2]
                      }, -- [2]
                   },
                   ["tInCombat"] = {
@@ -790,11 +796,11 @@ if Sku.Loc == "deDE" then
                   ["debuffListTarget"] = {
                      {
                         "containsNot", -- [1]
-                        "spell:Schattenwort: Schmerz", -- [2]
+                        "spellgroup:Shadow Word: Pain", -- [2]
                      }, -- [1]
                      {
                         "is", -- [1]
-                        "spell:Verbessertes Schattenwort: Schmerz", -- [2]
+                        "spellgroup:Improved Shadow Word: Pain", -- [2]
                      }, -- [2]
                   },
                },
@@ -808,7 +814,4 @@ if Sku.Loc == "deDE" then
             },
          },
       },
-   }
-else
-   SkuAuras.AuraSets = {}
-end
+}

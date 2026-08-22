@@ -19,6 +19,7 @@ Changements dans Sku v43.0
             L'installateur collecte tous les journaux pour un rapport de bogue en un seul bouton.
             L'écran de connexion est désormais utilisable avec l'outil de connexion.
             Les listes de points de passage annoncent l'avancement du chargement.
+            Les listes de valeurs d'aura commencent par « Saisir l'ID du sort » : si vous connaissez le numéro d'un sort, plus besoin d'en chercher le nom.
 
         Changements
             Les avertissements d'expiration d'aura arrivent à l'heure au lieu du prochain événement de combat.
@@ -27,6 +28,8 @@ Changements dans Sku v43.0
             Le moniteur de ressource peut suivre la barre que le jeu affiche : un druide obtient ainsi mana, rage ou énergie selon sa forme.
             Le journal de l'outil de connexion survit à un redémarrage de l'outil.
             Les données de points de passage sont utilisables bien plus tôt après la connexion, votre propre continent d'abord, et occupent environ 22 Mo de mémoire en moins ; la partie des données d'itinéraires que votre version de jeu ne lit pas n'est plus construite du tout.
+            Les auras reconnaissent les sorts à leur identité plutôt qu'à leur nom traduit : une aura fonctionne sur tous les clients, les ensembles d'auras partagés arrivent utilisables, et tous les rangs d'un sort comptent pour une seule entrée.
+            Les ensembles d'auras fournis ne sont plus réservés aux clients allemands.
 
         Corrections
             Clients français : tous les sons d'auras et les clips vocaux enregistrés étaient muets (correctif de Naxedim).
@@ -46,6 +49,7 @@ Changements dans Sku v43.0
             L'outil de connexion : sur les royaumes comptant dix personnages ou plus, la liste des personnages était incomplète, mal numérotée ou refusait de revenir en arrière.
             Moniteur de ressource : le réglage « rien » provoquait une série d'erreurs Lua.
             Moniteur de ressource : un moniteur désactivé dans le menu des fonctions annonçait quand même les changements de ressource.
+            Clients français : la liste des enchantements d'arme pour les auras était vide.
 
     Avec nos remerciements à Naxedim et ZenqFR
         Les quatre correctifs suivants sont les premières contributions de code directes au dépôt
@@ -786,6 +790,97 @@ Changements dans Sku v43.0
             choisie volontairement mais absente de la classe compte comme « en attente », pas
             comme une infraction. La valeur enregistrée « NOTHING » est migrée une seule fois
             vers « ACTIVE » à la connexion, moniteur désactivé.
+
+    Les auras reconnaissent les sorts à leur identité, plus à leur nom traduit
+        Simple : Une aura que vous aviez créée était jusqu'ici liée à la langue de votre jeu. La
+            valeur enregistrée était le nom traduit du sort - « Frostblitz » - et un client anglais
+            ne connaît que « Frostbolt » : la même aura ne s'y déclenchait donc jamais. Pour la même
+            raison, un ensemble d'auras partagé en groupe arrivait mort chez un équipier d'une autre
+            langue, et les ensembles d'auras fournis n'existaient que sur les clients allemands. Sku
+            retient désormais l'identité du sort, indépendante de la langue. Ce que vous voyez et
+            entendez reste exactement le nom qu'emploie votre jeu - dans le menu, dans le nom de
+            l'aura et dans l'annonce quand elle se déclenche. Vos auras existantes sont converties
+            une seule fois à la première connexion, sans rien faire de votre côté ; leurs noms ne
+            changent pas.
+            Un second gain vient avec : tous les rangs d'un sort, ainsi que les variantes lancées
+            par les ennemis, appartiennent à une seule entrée. « Préviens-moi quand ma cible lance
+            Éclair de givre » couvre donc les 103 variantes au lieu de la seule qui se trouvait dans
+            la liste. Savoir si c'est VOUS ou un ennemi qui l'a lancé reste décidé par la condition
+            « Source de l'événement », pas par le sort.
+            Là où un nom traduit recouvre plusieurs noms anglais différents - l'allemand
+            « Verblassen » est à la fois « Fade » et « Fade Out » - la liste ajoute le nom anglais
+            entre parenthèses pour que les entrées restent distinguables. La liste seulement ;
+            l'annonce au déclenchement reste courte. Si vous choisissez une telle entrée, c'est la
+            variante la plus ancienne qui l'emporte : pour « Verblassen », le sort de prêtre et non
+            « Fade Out ». Les auras déjà enregistrées sous un tel nom restent intactes et
+            continuent de réagir à toutes les variantes, comme avant.
+        Technique : L'identité est le nom anglais du sort tiré de SkuDB.SpellDataTBC, déjà livré et
+            déjà maintenu - aucun nouveau fichier, aucune table d'ID générée (il faudrait la garder
+            synchronisée avec spells.lua, et une régénération orphelinerait silencieusement les
+            auras enregistrées). Les valeurs enregistrées portent la marque « spellgroup: » ;
+            l'affichage vient toujours de SkuAuras.values[key].friendlyName. La liste vivante issue
+            de UnitAura est ramenée au nom de groupe via la valeur de retour 10 (spellId) ; sur un
+            client non anglais, le nom localisé reste à côté comme alias de compatibilité pour
+            qu'une ancienne valeur non convertie continue de correspondre. Sur un client anglais,
+            nom de groupe et nom vivant sont la même chaîne, l'alias n'est jamais écrit et le coût
+            est exactement nul. Un ID que SpellDataTBC ne connaît pas - la population la plus
+            susceptible de dériver au fil du cycle Anniversary - retombe sur le nom localisé,
+            c'est-à-dire sur le comportement précédent. 838 des 26 603 noms allemands (3,15 %)
+            recouvrent plus d'un nom anglais. À l'exécution, c'est le groupe dont l'ID de sort est
+            la plus basse qui l'emporte : les variantes en conflit sont sans exception des ajouts
+            ultérieurs ; vérifié sur les cas dont la réponse est connue (Verblassen 586 contre
+            5543, Geschwächte Seele 6788 contre 36788, Schattenwort: Schmerz 589 contre 37603,
+            Erneuerung 139 contre 37563, Gedankenkontrolle 605 contre 7645). Les valeurs DÉJÀ
+            ENREGISTRÉES sous un tel nom ne sont malgré tout PAS converties, car elles
+            correspondent aujourd'hui à toutes les variantes et une conversion supprimerait
+            silencieusement les autres ; leurs entrées de menu reçoivent le nom anglais en
+            suffixe. Le nom
+            affiché d'un groupe provient toujours de l'ID la plus basse qu'il contient, afin qu'il
+            ne change pas d'une session à l'autre. Nouvelles vérifications sous « /skucheck auras »
+            : il existe bien des entrées de groupe, tous les ID d'un sort se résolvent vers UN seul
+            groupe, et la conversion unique n'a laissé aucune valeur derrière elle.
+
+    Partage d'ensembles d'auras : nouveau format sans indicateur de langue
+        Simple : Un ensemble d'auras partagé ne porte plus d'indicateur de langue, et
+            l'avertissement « l'ensemble est pour une autre langue » disparaît - les conditions sont
+            désormais indépendantes de la langue. À l'acceptation, chaque aura reçoit en plus son
+            nom dans VOTRE langue au lieu de garder la phrase de l'expéditeur. Les auras que vous
+            avez nommées vous-même gardent leur nom.
+        Technique : C'est SkuAuraSetV2 (charge « AURASET2 », sans champ loc) qui est envoyé ; V1
+            reste reçu, avertissement compris, car de tels paquets portent encore des valeurs
+            localisées. Seul V2 est envoyé, volontairement : un paquet V1 supplémentaire déposerait
+            chez les anciens clients des auras avec des valeurs de groupe qu'ils ne savent pas
+            résoudre. Le nom est redérivé via BuildAuraName à l'import
+            (SkuAuras:RelocalizedAuraName) ; les auras customName en sont exclues, et ce sont
+            justement celles auxquelles d'autres auras peuvent renvoyer : les renvois restent donc
+            intacts.
+
+    Auras : « Saisir l'ID du sort » en première entrée de chaque liste de valeurs
+        Simple : Si vous connaissez le numéro d'un sort, vous n'avez plus à en chercher le nom dans
+            une liste de plus de 27 000 entrées. « Saisir l'ID du sort » figure tout en haut de la
+            liste ; Entrée ouvre un champ de saisie, vous tapez le numéro, Entrée, et Sku vous
+            annonce le sort qu'il en a tiré. Si Sku ne connaît pas ce numéro, il dit « ID de sort
+            inconnu » et ne change rien.
+        Technique : Injecté en position 0 - le menu conserve l'ordre d'insertion, et l'indicateur
+            sorting ne choisit qu'entre filtre et saisie prédictive. ENTRÉE dans un niveau de
+            sélection va toujours au selectTarget du niveau et jamais au OnAction du nœud ciblé : le
+            OnAction du selectTarget est donc enveloppé une fois et le nœud reconnu à sa marque.
+            L'ID saisi est résolu vers son groupe et c'est la VALEUR DE GROUPE qui est enregistrée,
+            pas l'ID : les attributs de liste comparent avec des listes vivantes indexées par
+            groupe, et « nom du sort » compare des noms - un ID nu ne pourrait jamais y
+            correspondre. Uniquement pour l'attribut « ID du sort », où l'ID EST la valeur, il est
+            enregistré exactement tel que saisi.
+
+    Clients français : la liste des enchantements d'arme pour les auras était vide
+        Simple : Sur un client français, la condition d'aura portant sur les enchantements d'arme
+            ne proposait pas une seule entrée, si bien qu'une telle condition ne pouvait pas être
+            créée.
+        Technique : SkuAuras:ResolveWeaponEnchantName lisait la colonne 1 de la base
+            d'enchantements pour enUS et la colonne 2 pour deDE, et laissait le nom à nil sinon -
+            pour toute autre langue la fonction renvoyait donc nil pour CHAQUE enchantement et la
+            liste de valeurs sortait vide. Elle prend maintenant la colonne de votre langue, sinon
+            l'anglaise, comme le reste du système de noms depuis la v42.09. Trouvé lors du portage
+            vers l'identité de groupe, pas via un rapport.
 
 
 -------------------------------------------------------------------------------------------------------

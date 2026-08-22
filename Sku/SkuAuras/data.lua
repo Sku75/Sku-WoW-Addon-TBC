@@ -50,7 +50,12 @@ function SkuAuras:RemoveTags(aValue)
    if type(aValue) ~= "string" then
       return aValue
    end
-   local tCleanValue = sgsub(aValue, "item:", "")
+   -- [v43.0] "spellgroup:" is stripped FIRST. It does not contain the literal
+   -- "spell:" so the order is not load-bearing, but a stored group value that
+   -- reached a friendlyName miss would otherwise be read out to the user
+   -- verbatim as "spellgroup:Frostbolt".
+   local tCleanValue = sgsub(aValue, "spellgroup:", "")
+   tCleanValue = sgsub(tCleanValue, "item:", "")
    tCleanValue = sgsub(tCleanValue, "spell:", "")
    tCleanValue = sgsub(tCleanValue, "output:", "")
    if tCleanValue == "true" then
@@ -60,6 +65,50 @@ function SkuAuras:RemoveTags(aValue)
    else
       return tCleanValue
    end
+end
+
+------------------------------------------------------------------------------------------------------------------
+-- [v43.0] Match a stored condition value against the SEVERAL forms the live
+-- data can carry for the same thing: the enUS group identity and the localized
+-- name (the fallback lane, for an id SpellDataTBC does not know or a saved
+-- value the migration could not resolve).
+--
+-- Plain OR would be wrong for the negating operators: "spell name is not X"
+-- would come out true the moment EITHER form differs from X, i.e. always. A
+-- negating operator therefore has to hold for EVERY form present, an
+-- affirmative one for any.
+--
+-- The SET attributes need none of this - their live lists carry both forms as
+-- keys, so contains/containsNot answer correctly by construction. Only the
+-- scalar (CATEGORY) lane comes through here.
+local tNegatingOperators = {isNot = true, containsNot = true,}
+local function MatchAnyForm(aOperator, aValue, aFormA, aFormB)
+   local tOp = SkuAuras.Operators[aOperator]
+   if not tOp then
+      return false
+   end
+   local tNegating = tNegatingOperators[aOperator]
+   local tSeen = false
+   for x = 1, 2 do
+      local tLive = (x == 1) and aFormA or aFormB
+      -- `false` is the lazy-field cache marker for "no value" (see
+      -- tLazyEvaluateFields in Core.lua), not a form to compare against.
+      if tLive ~= nil and tLive ~= false then
+         tSeen = true
+         local tResult = tOp.func(tLive, aValue) == true
+         if tNegating == true then
+            if tResult ~= true then
+               return false
+            end
+         elseif tResult == true then
+            return true
+         end
+      end
+   end
+   if tSeen ~= true then
+      return false
+   end
+   return tNegating == true
 end
 
 ------------------------------------------------------------------------------------------------------------------
@@ -1827,9 +1876,12 @@ SkuAuras.attributes = {
       type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.spellName.evaluate")
+         -- [v43.0] Group lane (aEventData.spellGroup, the event spell's enUS
+         -- name) with the localized live name as the fallback lane. Unlike the
+         -- buff lists this is a scalar, so it cannot carry both forms as keys
+         -- and needs the negation-aware combiner.
          if aEventData.spellName then
-            local tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.spellName, aValue)
-            if tEvaluation == true then
+            if MatchAnyForm(aOperator, aValue, aEventData.spellGroup, aEventData.spellName) == true then
                return true
             end
          end
@@ -2141,20 +2193,34 @@ SkuAuras.attributes = {
       values = {
       },      
       updateValues = function(self)
-         SkuAuras.attributes.spellNameUsable.values = {}
+         -- [v43.0] Group identity, deduped, built into a local and published in
+         -- one assignment (the value-list lesson: an abort mid-fill used to leave
+         -- a permanently half-populated list). Also nil-tolerant on the locale
+         -- sub-table - the unguarded index this used to do is the exact shape
+         -- that threw on a French client.
+         local tValues, tSeen = {}, {}
+         local tNameKey = SkuDB.spellKeys["name_lang"]
          for spellId, spellData in pairs(SkuDB.SpellDataTBC) do
             if C_ActionBar.FindSpellActionButtons(spellId) then
-               local spellName = spellData[Sku.Loc][SkuDB.spellKeys["name_lang"]]
-               SkuAuras.attributes.spellNameUsable.values[#SkuAuras.attributes.spellNameUsable.values + 1] = "spell:"..tostring(spellName)
-
-               if not SkuAuras.values["spell:"..tostring(spellId)] then
-                  SkuAuras.values["spell:"..tostring(spellId)] = {friendlyName = spellId.." ("..spellName..")",}
-               end
-               if not SkuAuras.values["spell:"..tostring(spellName)] then
-                  SkuAuras.values["spell:"..tostring(spellName)] = {friendlyName = spellName,}
+               local tLocData = spellData and (spellData[Sku.Loc] or spellData.enUS or spellData.deDE)
+               local spellName = tLocData and tLocData[tNameKey]
+               if spellName then
+                  local tEnData = spellData.enUS
+                  local tGroupValue = SkuAuras.SPELL_GROUP_TAG..tostring((tEnData and tEnData[tNameKey]) or spellName)
+                  if not tSeen[tGroupValue] then
+                     tSeen[tGroupValue] = true
+                     tValues[#tValues + 1] = tGroupValue
+                  end
+                  if not SkuAuras.values[tGroupValue] then
+                     SkuAuras.values[tGroupValue] = {friendlyName = spellName,}
+                  end
+                  if not SkuAuras.values["spell:"..tostring(spellId)] then
+                     SkuAuras.values["spell:"..tostring(spellId)] = {friendlyName = spellId.." ("..spellName..")",}
+                  end
                end
             end
          end
+         SkuAuras.attributes.spellNameUsable.values = tValues
       end,
    },
 

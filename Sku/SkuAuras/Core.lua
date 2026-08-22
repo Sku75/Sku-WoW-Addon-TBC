@@ -6,6 +6,7 @@ local L = Sku.L
 local sgsub = string.gsub
 local sfind = string.find
 local smatch = string.match
+local ssub = string.sub
 local GetTime = GetTime
 local UnitGUID = UnitGUID
 local UnitName = UnitName
@@ -524,6 +525,245 @@ end
 local TableCopy = SkuUtil.TableCopy
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.0] GROUP IDENTITY for spell-based aura conditions.
+--
+-- Before this, every spell condition was matched by the LOCALIZED spell name:
+-- the live scan keyed its buff/debuff lists by UnitAura's first return, and the
+-- stored condition value was "spell:<localized name>". Consequence: an aura
+-- authored on a German client never fired on an English one, the German-only
+-- default sets were unusable everywhere else, and a shared set arrived dead.
+--
+-- The identity is now the enUS spell name, read out of SkuDB.SpellDataTBC,
+-- which already ships and is already maintained. No new data file, no generated
+-- id->repId map (rejected: it would have to be kept in sync with spells.lua and
+-- a regenerated repId silently orphans every saved aura holding the old one).
+-- Stored values carry the SPELL_GROUP_TAG; the user-visible name stays the
+-- localized one (SkuAuras.values[key].friendlyName), so nothing in the menu, in
+-- the aura name or in speech changes language.
+--
+-- Grouping is deliberately BROAD: all 103 ids that share the enUS name
+-- "Frostbolt" - the 16 player ranks and the 87 NPC/proc variants - resolve to
+-- one key. Tracking what an opponent casts is a primary use case, so merging
+-- the mob variants in is the point, not a compromise; "I cast it" vs "the mob
+-- cast it" is answered by the separate sourceUnitId attribute, never by spell
+-- identity.
+--
+-- Two fallback lanes keep a stale DB from turning into a dead aura:
+--   * id not in SpellDataTBC (the NPC population most likely to drift as the
+--     Anniversary timeline cycles) -> key by the localized live name, i.e.
+--     exactly today's behaviour.
+--   * a stored value that is still a bare "spell:<localized name>" (imported
+--     from an older client, or one the migration could not resolve) -> the live
+--     lists carry the localized name as a COMPATIBILITY ALIAS beside the group
+--     key, so the old value keeps matching. On an enUS client group == live
+--     name, so the alias is never written and the cost is exactly zero.
+SkuAuras.SPELL_GROUP_TAG = "spellgroup:"
+local SPELL_GROUP_TAG = SkuAuras.SPELL_GROUP_TAG
+
+-- Localized spell name -> enUS group name. Built by BuildAttributeValueLists,
+-- and ONLY on a non-English client: on enUS the two are the same string, so the
+-- map would be 27k identity entries for nothing. It is what the fallback lane
+-- uses when a live aura carries an id SpellDataTBC does not know but whose NAME
+-- it does know under some other id (the mob-cast Frostbolt case), and what the
+-- run-once value migration converts saved auras with.
+--
+-- AMBIGUITY. The mapping is NOT injective: 838 of the 26,603 German names
+-- (3.15%, measured over the shipped spells.lua) cover more than one English
+-- name - 1,899 groups in total. Real ones, not only junk rows: "Verblassen" is
+-- both "Fade" and "Fade Out", "Geschwaechte Seele" is "Weakened Soul", "Diminish
+-- Soul" AND "Weakened Spirit", "Schattenwort: Schmerz" is "Shadow Word: Pain"
+-- and "Shadow Word Pain Damage".
+--
+-- Such a name resolves to the candidate group whose LOWEST spell id is lowest.
+-- This is not a cosmetic tie-break, it is what makes those spells work at all:
+-- the shipped db does not carry every rank (of the priest's Verblassen it has
+-- 586 and nothing else - 9578, 9579, 9592, 10941 and 10942 are absent), so a
+-- levelled priest's cast arrives with an id the db cannot resolve and lands
+-- here. Refusing to map, which this did first, left the aura permanently silent
+-- even though the user had picked the right entry in the menu. Lowest id is the
+-- right rule because the colliding variants are always LATER additions -
+-- checked against the cases where the answer is known: Verblassen -> Fade (586
+-- vs 5543), Geschwaechte Seele -> Weakened Soul (6788 vs 36788), Schattenwort:
+-- Schmerz -> Shadow Word: Pain (589 vs 37603), Erneuerung -> Renew (139 vs
+-- 37563), Gedankenkontrolle -> Mind Control (605 vs 7645). Picking by "most ids
+-- in the group" instead gets Geschwaechte Seele wrong (Diminish Soul has six).
+-- Resolved in one pass at the end of the build, so it cannot depend on pairs()
+-- order.
+--
+-- The ambiguity is still RECORDED, in spellGroupAmbiguousLocName, for the one
+-- decision where guessing would be wrong: the run-once migration leaves such a
+-- saved value on the localized-name lane, where the compatibility alias keeps
+-- it matching every variant exactly as it did before the port. Rewriting it to
+-- one group would silently drop the others.
+SkuAuras.spellGroupByLocName = {}
+SkuAuras.spellGroupAmbiguousLocName = {}
+
+-- The enUS identity of a live aura/spell. aLiveName is the localized name the
+-- client just handed us and doubles as the fallback, so this never returns nil
+-- for a named spell.
+function SkuAuras:SpellGroupName(aSpellId, aLiveName)
+	local tRow = aSpellId and SkuDB and SkuDB.SpellDataTBC and SkuDB.SpellDataTBC[aSpellId]
+	local tEn = tRow and tRow.enUS
+	-- Guarded on purpose: SoD rows are merged in via SkuDBMergeAbsent and an
+	-- unguarded locale index has already thrown once in this project (see
+	-- SkuDB/ChunkLoader.lua:561-564).
+	local tName = tEn and tEn[(SkuDB.spellKeys and SkuDB.spellKeys["name_lang"]) or 1]
+	if tName then
+		return tName
+	end
+	if aLiveName then
+		-- The id is not in the db (a rank the dump lacks, or NPC drift). Map the
+		-- localized name instead; an ambiguous one resolves to its lowest-id
+		-- candidate (see the map's comment). No mapping at all -> the name
+		-- itself, which is what the alias lane matches.
+		local tMapped = SkuAuras.spellGroupByLocName[aLiveName]
+		return (type(tMapped) == "string" and tMapped) or aLiveName
+	end
+	return nil
+end
+
+-- Localized display name for a stored condition value of any vintage
+-- ("spellgroup:Frostbolt", "spell:Frostblitz", "item:123"). Used wherever a
+-- condition value is SPOKEN rather than matched - without it the group key
+-- would leak English into the announcement of a fired aura.
+function SkuAuras:ValueFriendlyName(aValue)
+	local tEntry = SkuAuras.values and SkuAuras.values[aValue]
+	if tEntry then
+		-- speakName exists only on the ~1,900 entries whose MENU label had to be
+		-- disambiguated with the English identity ("Schattenwort: Schmerz (Shadow
+		-- Word: Pain)"). The menu and the aura's own name want that; an
+		-- announcement fired mid-fight does not - it wants the plain name.
+		return tEntry.speakName or tEntry.friendlyName or SkuAuras:RemoveTags(aValue)
+	end
+	return SkuAuras:RemoveTags(aValue)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.0] The attributes whose stored values live in the spell/group lane.
+-- Explicit list, not derived: including an attribute here means its values get
+-- REWRITTEN by the migration, so it has to be a decision, not a pattern match.
+-- itemName/itemId are deliberately absent - items keep their own lookup lane
+-- for now (see the port plan's open question 11).
+local tGroupLaneAttributes = {
+	spellName = true, spellNameOnCd = true, spellNameUsable = true,
+	buffListTarget = true, debuffListTarget = true,
+	buffListPlayer = true, debuffListPlayer = true,
+	weaponEnchantMainHand = true, weaponEnchantOffHand = true,
+}
+SkuAuras.groupLaneAttributes = tGroupLaneAttributes
+
+-- Move ONE aura's stored condition values from "spell:<localized name>" to
+-- "spellgroup:<enUS name>". Returns how many values changed.
+--
+-- Idempotent (a value already carrying the group tag does not start with
+-- "spell:"), and conservative: a value that resolves to no known group is left
+-- exactly as it was. That is not a failure - the live lists carry the localized
+-- name as a compatibility alias, so an unconverted value keeps matching on this
+-- client precisely as it did before the port.
+function SkuAuras:ConvertAuraValuesToGroups(aAuraData)
+	if type(aAuraData) ~= "table" or type(aAuraData.attributes) ~= "table" then
+		return 0
+	end
+	local tChanged = 0
+	for tAttName, tAttValue in pairs(aAuraData.attributes) do
+		if tGroupLaneAttributes[tAttName] and type(tAttValue) == "table" then
+			for _, tEntry in pairs(tAttValue) do
+				local tValue = type(tEntry) == "table" and tEntry[2]
+				if type(tValue) == "string" and ssub(tValue, 1, 6) == "spell:" then
+					local tBare = ssub(tValue, 7)
+					-- A name that spans several groups is left alone on purpose:
+					-- the saved value matches EVERY variant today (through the
+					-- compatibility alias), and rewriting it to the one group the
+					-- runtime lane guesses would silently drop the others.
+					if not SkuAuras.spellGroupAmbiguousLocName[tBare] then
+						-- On enUS the localized name IS the group name, so the map
+						-- is empty and the identity fallback is the right answer.
+						local tMapped = SkuAuras.spellGroupByLocName[tBare]
+						local tGroup = (type(tMapped) == "string" and tMapped) or tBare
+						if SkuAuras.values[SPELL_GROUP_TAG..tGroup] then
+							tEntry[2] = SPELL_GROUP_TAG..tGroup
+							tChanged = tChanged + 1
+						end
+					end
+				end
+			end
+		end
+	end
+	return tChanged
+end
+
+-- Run-once per character, from the end of BuildAttributeValueLists (which is
+-- where the value set and the loc->group map become available) - the shape is
+-- the same as the pre-3.2.7 rename pass and tMigrateQuickKeys.
+--
+-- The aura NAME is deliberately NOT re-derived here: friendlyName is unchanged
+-- by the migration, so BuildAuraName would produce the identical string, and
+-- renaming would break the "skuAura<name>" cross-references for nothing. Names
+-- ARE re-derived on IMPORT, where the source language really can differ - see
+-- SkuAuras:RelocalizedAuraName.
+--
+-- The account-wide aura SETS are converted in the same sweep. They live in the
+-- global scope while the flag is per character, so a second character re-walks
+-- them; that is free, because the conversion is idempotent.
+function SkuAuras:MigrateAuraValuesToGroups()
+	if not SkuAuras.attributeValueListsBuilt then
+		return
+	end
+	local tSub = SkuSettings and SkuSettings:Sub("SkuAuras", nil, "char")
+	if not tSub or tSub.auraGroupValueMigration == true then
+		return
+	end
+	local tAuraCount, tChanged, tSetAuras = 0, 0, 0
+	if type(tSub.Auras) == "table" then
+		for _, tAuraData in pairs(tSub.Auras) do
+			tAuraCount = tAuraCount + 1
+			tChanged = tChanged + SkuAuras:ConvertAuraValuesToGroups(tAuraData)
+		end
+	end
+	local tGlobal = SkuSettings:Sub("SkuAuras", nil, "global")
+	if tGlobal then
+		for _, tStoreName in pairs({"Sets", "PendingSets"}) do
+			local tStore = tGlobal[tStoreName]
+			if type(tStore) == "table" then
+				for _, tSet in pairs(tStore) do
+					if type(tSet) == "table" and type(tSet.auraData) == "table" then
+						for _, tAuraData in pairs(tSet.auraData) do
+							tSetAuras = tSetAuras + 1
+							tChanged = tChanged + SkuAuras:ConvertAuraValuesToGroups(tAuraData)
+						end
+					end
+				end
+			end
+		end
+	end
+	tSub.auraGroupValueMigration = true
+	dprint(string.format("SkuAuras group migration: %d auras + %d set auras walked, %d values moved to group identity",
+		tAuraCount, tSetAuras, tChanged))
+end
+
+-- [v43.0] The name an imported aura should carry on THIS client. Group identity
+-- makes attributes/actions/outputs locale-free, so the name is the only piece
+-- left that arrives in the sender's language - and it is derived data, so
+-- re-deriving it renames the aura into the importer's language.
+--
+-- customName auras keep their name: they are also the only auras that can be
+-- REFERENCED by other auras (see UpdateAttributesListWithCurrentAuras), so
+-- leaving them alone is what keeps cross-aura references intact across an
+-- import.
+function SkuAuras:RelocalizedAuraName(aAuraName, aAuraData)
+	if type(aAuraData) ~= "table" or aAuraData.customName == true then
+		return aAuraName
+	end
+	local tOk, tName = pcall(function()
+		return SkuAuras:BuildAuraName(aAuraData.type, aAuraData.attributes, aAuraData.actions, aAuraData.outputs)
+	end)
+	if tOk and type(tName) == "string" and tName ~= "" then
+		return tName
+	end
+	return aAuraName
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 -- [DB rework stage 3] Build the attribute value lists (iterates ALL of
 -- itemLookup and SpellDataTBC plus the enchant db). Extracted from
 -- PLAYER_ENTERING_WORLD: with the streamed SkuDB build the data is not ready
@@ -579,24 +819,87 @@ function SkuAuras:BuildAttributeValueLists(aYield)
 		tTick()
 	end
 
+	-- [v43.0] The NAME lane is now the GROUP lane: one entry per distinct enUS
+	-- spell name, tagged SPELL_GROUP_TAG, displayed under the LOCALIZED name.
+	-- The id lane ("spell:<id>") is unchanged. The reverse map is built in the
+	-- same pass and only where it can differ from identity (non-enUS clients).
 	local tSpellIds, tSpellNames, tSpellNamesOnCd = {}, {}, {}
 	local tBuffList, tDebuffList = {}, {}
+	local tNameKey = SkuDB.spellKeys["name_lang"]
+	-- localized name -> group name, or `false` once a SECOND group claims that
+	-- same localized name (see SkuAuras.spellGroupByLocName). tLocOwner keeps the
+	-- first claimant's group VALUE so the collision fixup below can reach it, and
+	-- tLocCollisions lists the extra claimants - 838 names on a German client, so
+	-- it stays small. On enUS the localized name is the group name, no two groups
+	-- can collide, and none of this runs.
+	local tGroupByLoc = {}
+	local tLocOwner, tLocCollisions, tLocAmbiguous = {}, {}, {}
+	local tNeedsGroupMap = Sku.Loc ~= "enUS"
+	-- Which spell id a group's DISPLAY name came from. 545 of the 27,065 groups
+	-- (2%) hold ids with differing German names - "Ancestral Spirit" is both
+	-- "Ahnengeist" and "Geist der Ahnen" - and taking whichever row pairs()
+	-- reached first would make the menu entry read differently from session to
+	-- session, which breaks type-ahead for the user. Lowest id wins instead:
+	-- deterministic, and it is the base rank rather than some late variant.
+	-- Transient (dropped when the build returns) and non-English only: on enUS
+	-- every id of a group carries the same name by construction.
+	local tGroupLowId = tNeedsGroupMap and {} or nil
+	-- Records who claims a localized name. A collision is only NOTED here, never
+	-- decided: the winner is the candidate with the lowest spell id, and the
+	-- lowest id per group is not final until the pass ends (see the fixup below).
+	local function tClaimLocName(aLocName, aGroupName, aGroupValue)
+		if not tNeedsGroupMap then return end
+		local tOwner = tLocOwner[aLocName]
+		if tOwner == nil then
+			tLocOwner[aLocName] = aGroupValue
+			if aGroupName ~= aLocName then
+				tGroupByLoc[aLocName] = aGroupName
+			end
+		elseif tOwner ~= aGroupValue then
+			tLocAmbiguous[aLocName] = true
+			local tExtra = tLocCollisions[aLocName]
+			if tExtra then
+				tExtra[#tExtra + 1] = aGroupValue
+			else
+				tLocCollisions[aLocName] = {tOwner, aGroupValue,}
+			end
+		end
+	end
 	for spellId, spellData in pairs(SkuDB.SpellDataTBC) do
 		local tLocData = spellData and (spellData[Sku.Loc] or spellData.enUS or spellData.deDE)
-		local spellName = tLocData and tLocData[SkuDB.spellKeys["name_lang"]]
+		local spellName = tLocData and tLocData[tNameKey]
 		if spellName then
 			tSpellIds[#tSpellIds + 1] = "spell:"..tostring(spellId)
 			tValues["spell:"..tostring(spellId)] = {friendlyName = spellId.." ("..spellName..")",}
-			if not tValues["spell:"..tostring(spellName)] then
+			-- Nil-tolerant on the enUS sub-table for the same reason the locale
+			-- read above is: a merged row can be missing it, and then the group
+			-- degrades to the localized name (fallback lane).
+			local tEnData = spellData.enUS
+			local tGroupName = (tEnData and tEnData[tNameKey]) or spellName
+			local tGroupValue = SPELL_GROUP_TAG..tostring(tGroupName)
+			local tExisting = tValues[tGroupValue]
+			if not tExisting then
 				-- (the four lists are appended in lockstep, as before - the old
 				-- code indexed spellNameOnCd via #spellName + 1, which at this
 				-- point is the same slot)
-				tSpellNamesOnCd[#tSpellNamesOnCd + 1] = "spell:"..tostring(spellName)
-				tSpellNames[#tSpellNames + 1] = "spell:"..tostring(spellName)
-				tBuffList[#tBuffList + 1] = "spell:"..tostring(spellName)
-				tDebuffList[#tDebuffList + 1] = "spell:"..tostring(spellName)
-				tValues["spell:"..tostring(spellName)] = {friendlyName = spellName,}
+				tSpellNamesOnCd[#tSpellNamesOnCd + 1] = tGroupValue
+				tSpellNames[#tSpellNames + 1] = tGroupValue
+				tBuffList[#tBuffList + 1] = tGroupValue
+				tDebuffList[#tDebuffList + 1] = tGroupValue
+				tValues[tGroupValue] = {friendlyName = spellName,}
+				if tGroupLowId then
+					tGroupLowId[tGroupValue] = spellId
+				end
+			elseif tGroupLowId and tGroupLowId[tGroupValue] and spellId < tGroupLowId[tGroupValue] then
+				-- lower id -> its localized name is the group's display name
+				tGroupLowId[tGroupValue] = spellId
+				tExisting.friendlyName = spellName
 			end
+			-- Claimed on EVERY row, not only on the one that created the group:
+			-- two ids of the same enUS group can carry different localized names
+			-- (a rank whose German name was reworded, say), and a name that never
+			-- gets claimed can never be migrated off the compatibility lane.
+			tClaimLocName(spellName, tGroupName, tGroupValue)
 		end
 		tTick()
 	end
@@ -608,25 +911,82 @@ function SkuAuras:BuildAttributeValueLists(aYield)
 	-- den nicht-passiven Eintrag, der nie matchte -> Aura feuerte EINMAL und nie wieder (kein
 	-- Re-Arm, weil Bedingung dauerhaft wahr). RUECKBAU: Block ersetzen durch
 	-- "= SkuAuras.attributes.buffListTarget.values" (beide Haende).
+	-- [v43.0] Same group treatment: the KEY is the enchant's enUS identity
+	-- (its spell row's enUS name where the enchant db carries a spell id, else
+	-- the enUS column of the enchant db itself), the DISPLAY stays localized.
+	-- Weapon enchants are not part of UnitAura and have no spellId of their own,
+	-- so this resolver is the only place their identity can come from.
 	local tEnchantNames = {}
 	do
-		local tSeenEnchantNames = {}
+		local tSeenEnchantGroups = {}
 		for tEnchantId in pairs(SkuDB.WotLK.enchantIDs) do
 			local tName = SkuAuras:ResolveWeaponEnchantName(tEnchantId)
-			if tName and not tSeenEnchantNames[tName] then
-				tSeenEnchantNames[tName] = true
-				tEnchantNames[#tEnchantNames + 1] = "spell:"..tName
-				if not tValues["spell:"..tName] then
-					tValues["spell:"..tName] = {friendlyName = tName,}
+			local tGroup = SkuAuras:ResolveWeaponEnchantGroup(tEnchantId)
+			if tName and tGroup and not tSeenEnchantGroups[tGroup] then
+				tSeenEnchantGroups[tGroup] = true
+				local tGroupValue = SPELL_GROUP_TAG..tGroup
+				tEnchantNames[#tEnchantNames + 1] = tGroupValue
+				if not tValues[tGroupValue] then
+					tValues[tGroupValue] = {friendlyName = tName,}
 				end
+				tClaimLocName(tName, tGroup, tGroupValue)
 			end
 			tTick()
 		end
 	end
 
+	-- [v43.0] Disambiguate the MENU where one localized name covers several
+	-- groups (838 German names, 1,899 groups - measured over the shipped
+	-- spells.lua). Each group is its own entry now, so without this the user
+	-- would meet two or three entries that all read "Verblassen" with no way to
+	-- tell them apart. The colliding entries get the enUS identity appended -
+	-- "Verblassen (Fade Out)" - and the ~25,000 unambiguous ones keep the plain
+	-- localized name. Never runs on an enUS client: there the localized name IS
+	-- the group name, so two groups cannot share one.
+	local tDisambiguated = 0
+	local tTagLen = #SPELL_GROUP_TAG
+	local tSuffixed = {}
+	for tLocName, tGroupValues in pairs(tLocCollisions) do
+		-- 1. Decide the winner: the candidate whose lowest spell id is lowest.
+		-- This is the map entry the FALLBACK lane reads when an id is not in the
+		-- db at all, which is the common case for the ranks the dump lacks - see
+		-- the header on SkuAuras.spellGroupByLocName for why this rule and not
+		-- another. A group created by the enchant db carries no id and loses.
+		local tWinner, tWinnerLow
+		for x = 1, #tGroupValues do
+			local tLow = tGroupLowId and tGroupLowId[tGroupValues[x]]
+			if tLow and (tWinnerLow == nil or tLow < tWinnerLow) then
+				tWinner, tWinnerLow = tGroupValues[x], tLow
+			end
+		end
+		if tWinner then
+			local tWinnerName = ssub(tWinner, tTagLen + 1)
+			tGroupByLoc[tLocName] = (tWinnerName ~= tLocName) and tWinnerName or nil
+		end
+
+		-- 2. Tell the MENU entries apart. Each group can appear under more than
+		-- one colliding localized name; suffix it once.
+		for x = 1, #tGroupValues do
+			local tGroupValue = tGroupValues[x]
+			local tEntry = tValues[tGroupValue]
+			if tEntry and not tSuffixed[tGroupValue] then
+				tSuffixed[tGroupValue] = true
+				-- Keep the plain name for SPEECH (see SkuAuras:ValueFriendlyName):
+				-- the menu needs the two entries told apart, a fired aura's
+				-- announcement does not want the English name read after it.
+				tEntry.speakName = tEntry.friendlyName
+				tEntry.friendlyName = tEntry.friendlyName.." ("..ssub(tGroupValue, tTagLen + 1)..")"
+				tDisambiguated = tDisambiguated + 1
+			end
+		end
+		tTick()
+	end
+
 	-- [v42.13] Publish. One assignment per list, no yields past this point, so
 	-- consumers never see a half-built set (see the header comment).
 	SkuAuras.values = tValues
+	SkuAuras.spellGroupByLocName = tGroupByLoc
+	SkuAuras.spellGroupAmbiguousLocName = tLocAmbiguous
 	SkuAuras.attributes.itemId.values = tItemIds
 	SkuAuras.attributes.itemName.values = tItemNames
 	SkuAuras.attributes.spellId.values = tSpellIds
@@ -646,10 +1006,29 @@ function SkuAuras:BuildAttributeValueLists(aYield)
 	-- suspended - not the CPU cost). "0 spell ids" here means the data was not
 	-- there after all.
 	local tMs = debugprofilestop() - tT0
-	dprint(string.format("SkuAuras value lists built: %d rows, %d items, %d spell ids, %d spell names, %d enchants, %.0f ms wall",
-		tRows, #tItemIds, #tSpellIds, #tSpellNames, #tEnchantNames, tMs))
+	local tGroupMapped, tGroupAmbiguous = 0, 0
+	for _ in pairs(tGroupByLoc) do tGroupMapped = tGroupMapped + 1 end
+	for _ in pairs(tLocAmbiguous) do tGroupAmbiguous = tGroupAmbiguous + 1 end
+	dprint(string.format("SkuAuras value lists built: %d rows, %d items, %d spell ids, %d spell groups, %d enchants, %d loc->group (%d ambiguous, %d entries disambiguated), %.0f ms wall",
+		tRows, #tItemIds, #tSpellIds, #tSpellNames, #tEnchantNames, tGroupMapped, tGroupAmbiguous, tDisambiguated, tMs))
 	if Sku.MetricPoint then
 		Sku:MetricPoint(string.format("SkuAuras value lists = %.0f ms wall, %d rows", tMs, tRows))
+	end
+
+	-- [v43.0] The run-once value migration needs exactly what this pass just
+	-- published (the value set plus the loc->group map), so it runs here rather
+	-- than from PLAYER_ENTERING_WORLD, where the sliced build may not have
+	-- finished yet. It is a no-op after the first run per character.
+	--
+	-- pcall'd because this runs INSIDE the build coroutine: an error here would
+	-- otherwise be caught by the coroutine's handler and reported as "SkuAuras
+	-- value-list build failed", which is exactly wrong - the lists are published
+	-- and live by this point. A failed migration leaves the flag unset, so the
+	-- next PLAYER_ENTERING_WORLD retries it, and every saved value keeps working
+	-- through the compatibility alias meanwhile.
+	local tMigrateOk, tMigrateErr = pcall(function() SkuAuras:MigrateAuraValuesToGroups() end)
+	if not tMigrateOk then
+		dprint("SkuAuras group migration failed: "..tostring(tMigrateErr))
 	end
 end
 
@@ -734,6 +1113,12 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	tInvalidateGroupGuidMap()
 	SkuSettings:Sub("SkuAuras", nil, "char")
 	SkuSettings:Sub("SkuAuras", nil, "char").Auras = SkuSettings:Sub("SkuAuras", nil, "char").Auras or {}
+
+	-- [v43.0] The group migration normally runs off the end of the value-list
+	-- build. On a LATER PEW (zone-in, instance entry, profile switch) that build
+	-- is already done and its starter is a no-op, so ask here as well; the
+	-- per-character flag makes every call after the first one free.
+	SkuAuras:MigrateAuraValuesToGroups()
 
 	-- [DB rework stage 3] gate on the streamed SkuDB init: too early = the
 	-- lists come out empty. The master sequence builds them on completion.
@@ -957,8 +1342,18 @@ function SkuAuras:SPELL_COOLDOWN_START(aEventData)
 					eventData = aEventData,
 				}
 
-				if aEventData[CleuBase.spellName] then
-					SkuAuras.thingsNamesOnCd["spell:"..aEventData[CleuBase.spellName]] = "spell:"..aEventData[CleuBase.spellName]
+				-- [v43.0] Keyed by GROUP identity, with the localized name kept
+				-- beside it as the compatibility alias for saved auras that still
+				-- hold a bare "spell:<localized name>". The tag itself never takes
+				-- part in the match (both sides run through RemoveTags); it only
+				-- keeps the two keys apart in this table.
+				local tCdName = aEventData[CleuBase.spellName]
+				if tCdName then
+					local tCdGroup = SkuAuras:SpellGroupName(aEventData[CleuBase.spellId], tCdName)
+					SkuAuras.thingsNamesOnCd[SPELL_GROUP_TAG..tCdGroup] = SPELL_GROUP_TAG..tCdGroup
+					if tCdGroup ~= tCdName then
+						SkuAuras.thingsNamesOnCd["spell:"..tCdName] = "spell:"..tCdName
+					end
 				end
 			end
 		end
@@ -970,15 +1365,46 @@ end
 -- den Namen, der auch in der Aura-Werteliste steht (Core.lua ~256). Wird BEIDE Male
 -- genutzt: beim Aufbau der Werteliste UND live in EvaluateAllAuras. Dadurch matcht
 -- "enthaelt / enthaelt nicht <VZ>" zuverlaessig. RUECKBAU: Funktion + ihre Aufrufer entfernen.
+-- [v43.0] The spell row a weapon enchant borrows its name from, if any. Column
+-- 3 is preferred over 4 exactly as before; a column pointing at an id the spell
+-- db does not carry is treated as absent, so the enchant db's own name wins.
+local function tEnchantSpellId(aEnchantId)
+	local tRow = SkuDB.WotLK.enchantIDs[aEnchantId]
+	if not tRow then return nil end
+	if tRow[3] ~= nil and SkuDB.SpellDataTBC[tRow[3]] then return tRow[3] end
+	if tRow[4] ~= nil and SkuDB.SpellDataTBC[tRow[4]] then return tRow[4] end
+	return nil
+end
+
 function SkuAuras:ResolveWeaponEnchantName(aEnchantId)
 	if not (aEnchantId and type(aEnchantId) == "number" and aEnchantId > 0 and SkuDB.WotLK.enchantIDs[aEnchantId]) then return nil end
-	local tName
-	if Sku.Loc == "enUS" then tName = SkuDB.WotLK.enchantIDs[aEnchantId][1]
-	elseif Sku.Loc == "deDE" then tName = SkuDB.WotLK.enchantIDs[aEnchantId][2] end
-	if tName and SkuDB.WotLK.enchantIDs[aEnchantId][3] ~= nil and SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[aEnchantId][3]] then
-		tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[aEnchantId][3]][Sku.Loc][1]
-	elseif tName and SkuDB.WotLK.enchantIDs[aEnchantId][4] ~= nil and SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[aEnchantId][4]] then
-		tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[aEnchantId][4]][Sku.Loc][1]
+	local tRow = SkuDB.WotLK.enchantIDs[aEnchantId]
+	-- [v43.0] Locale column, else the English one. Before, a client that is
+	-- neither enUS nor deDE left tName nil and the function returned nil for
+	-- EVERY enchant: on a French client the weapon-enchant value list came out
+	-- empty and no "Waffenverzauberung enthaelt ..." condition could ever be
+	-- authored, let alone match.
+	local tName = (Sku.Loc == "deDE" and tRow[2]) or tRow[1]
+	local tSpellId = tEnchantSpellId(aEnchantId)
+	if tName and tSpellId then
+		local tLocData = SkuDB.SpellDataTBC[tSpellId][Sku.Loc] or SkuDB.SpellDataTBC[tSpellId].enUS
+		tName = (tLocData and tLocData[1]) or tName
+	end
+	return tName
+end
+
+-- [v43.0] The enUS identity of a weapon enchant - the group key its live name
+-- and its value-list entry are stored under. Enchants are not part of UnitAura
+-- and carry no spellId of their own, so this resolver is the only place their
+-- cross-locale identity can come from.
+function SkuAuras:ResolveWeaponEnchantGroup(aEnchantId)
+	if not (aEnchantId and type(aEnchantId) == "number" and aEnchantId > 0 and SkuDB.WotLK.enchantIDs[aEnchantId]) then return nil end
+	local tRow = SkuDB.WotLK.enchantIDs[aEnchantId]
+	local tName = tRow[1]
+	local tSpellId = tEnchantSpellId(aEnchantId)
+	if tSpellId then
+		local tEnData = SkuDB.SpellDataTBC[tSpellId].enUS
+		tName = (tEnData and tEnData[1]) or tName
 	end
 	return tName
 end
@@ -1165,7 +1591,17 @@ function SkuAuras:SPELL_COOLDOWN_END(aEventData)
 	--dprint("SPELL_COOLDOWN_END", aEventData[CleuBase.subevent], aEventData[13])
 	aEventData[CleuBase.subevent] = "SPELL_COOLDOWN_END"
 	aEventData[CleuBase.timestamp] = GetTime()
-	SkuAuras.thingsNamesOnCd["spell:"..aEventData[13]] = nil
+	-- [v43.0] Clear BOTH keys the start handler may have written (group +
+	-- localized alias); clearing only one would leave the spell permanently
+	-- "on cooldown" for half the conditions that can reference it.
+	local tCdName = aEventData[CleuBase.spellName]
+	if tCdName then
+		SkuAuras.thingsNamesOnCd["spell:"..tCdName] = nil
+		local tCdGroup = SkuAuras:SpellGroupName(aEventData[CleuBase.spellId], tCdName)
+		if tCdGroup then
+			SkuAuras.thingsNamesOnCd[SPELL_GROUP_TAG..tCdGroup] = nil
+		end
+	end
 	SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
 end
 
@@ -1453,6 +1889,19 @@ local tEvaluateDataMT = {
 tLazyEvaluateFields = {
 	spellNameUsable = function()
 		return SkuAuras:GetSpellNamesUsable()
+	end,
+	-- [v43.0] enUS identity of the event's spell, for the group lane of the
+	-- spellName attribute. LAZY on purpose: only an aura carrying a spellName
+	-- condition ever reads it, and this table is built for EVERY combat-log
+	-- event. Reads the raw fields, so the UNIT_DESTROYED override of spellName
+	-- further down is picked up (that path carries a unit name, not a spell, and
+	-- resolves to itself).
+	spellGroup = function(aTab)
+		local tName = rawget(aTab, "spellName")
+		if not tName then
+			return nil
+		end
+		return SkuAuras:SpellGroupName(rawget(aTab, "spellId"), tName)
 	end,
 	-- [v43.0] LibRangeCheck's GetRange runs a checker cascade of item/spell
 	-- range probes — dozens of C calls, and it ran eagerly on EVERY event with
@@ -1858,28 +2307,18 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 	-- [W6-C #34] shared weapon-enchant-ID -> display-name resolver (was duplicated
 	-- inline for main/off hand in getAuraList; a 3rd copy diverged - see
 	-- ResolveWeaponEnchantName, left as-is).
+	-- [v43.0] Folded onto the central resolvers - this WAS the third, diverged
+	-- copy the comment above warns about. Writes the GROUP key, plus (non-English
+	-- client only) the localized name as the compatibility alias, exactly like
+	-- the UnitAura scan below.
 	local function tAddWeaponEnchantName(aHasEnchant, aEnchantID, aBuffList)
-		if aHasEnchant == true then
-			if aEnchantID and aEnchantID > 0 and SkuDB.WotLK.enchantIDs[aEnchantID] then
-				local tName
-				if Sku.Loc == "enUS" then
-					tName = SkuDB.WotLK.enchantIDs[aEnchantID][1]
-				elseif Sku.Loc == "deDE" then
-					tName = SkuDB.WotLK.enchantIDs[aEnchantID][2]
-				end
-				if tName and SkuDB.WotLK.enchantIDs[aEnchantID][3] ~= nil then
-					if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[aEnchantID][3]] then
-						tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[aEnchantID][3]][Sku.Loc][1]
-					end
-				elseif tName and SkuDB.WotLK.enchantIDs[aEnchantID][4] ~= nil then
-					if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[aEnchantID][4]] then
-						tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[aEnchantID][4]][Sku.Loc][1]
-					end
-				end
-				if tName then
-					aBuffList[tName] = tName
-				end
-			end
+		if aHasEnchant ~= true then return end
+		local tGroup = SkuAuras:ResolveWeaponEnchantGroup(aEnchantID)
+		if not tGroup then return end
+		aBuffList[tGroup] = tGroup
+		local tName = SkuAuras:ResolveWeaponEnchantName(aEnchantID)
+		if tName and tName ~= tGroup then
+			aBuffList[tName] = tName
 		end
 	end
 	-- [v43.0] aOwnScratch/aOwnExpScratch: parallel caster == "player" subsets,
@@ -1912,27 +2351,52 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 			for k in pairs(aOwnExpScratch) do aOwnExpScratch[k] = nil end
 		end
 		for x = 1, 40  do
-			local name, icon, count, dispelType, duration, expirationTime, caster = UnitAura(unit, x, filter)
+			-- [v43.0] spellId is UnitAura return 10 on 2.5.6 (the client's own
+			-- UnitAura is a shim over C_UnitAuras.GetAuraDataByIndex, and
+			-- AuraUtil.UnpackAuraData puts spellId there). Naming it is the whole
+			-- cost of group identity at this call site.
+			local name, icon, count, dispelType, duration, expirationTime, caster, isStealable, nameplateShowPersonal, spellId = UnitAura(unit, x, filter)
 			-- UnitAura indices are contiguous then nil: once name is nil there are
 			-- no further auras on this unit/filter, so stop instead of probing all
 			-- 40 slots every call. Behaviour-identical (the trailing slots returned
 			-- nil and did nothing); cuts the loop to (aura count + 1) iterations.
 			if not name then break end
+			-- Group key + compatibility alias. tAlias is nil on an enUS client and
+			-- for any id whose group falls back to the live name, so the extra
+			-- stores below only happen where they can actually be needed.
+			local tKey = SkuAuras:SpellGroupName(spellId, name)
+			local tAlias = (tKey ~= name) and name or nil
 			if durationForAuraName then
-				if name == durationForAuraName and (not aOwnOnly or caster == "player") then
+				if (tKey == durationForAuraName or tAlias == durationForAuraName) and (not aOwnOnly or caster == "player") then
 					return (expirationTime or GetTime()) - GetTime()
 				end
 			end
-			if aExpScratch and aExpScratch[name] == nil then
-				aExpScratch[name] = expirationTime or false
+			if aExpScratch then
+				if aExpScratch[tKey] == nil then
+					aExpScratch[tKey] = expirationTime or false
+				end
+				if tAlias and aExpScratch[tAlias] == nil then
+					aExpScratch[tAlias] = expirationTime or false
+				end
 			end
-			tBuffList[name] = name
+			tBuffList[tKey] = tKey
+			if tAlias then
+				tBuffList[tAlias] = tAlias
+			end
 			if caster == "player" then
 				if aOwnScratch then
-					aOwnScratch[name] = name
+					aOwnScratch[tKey] = tKey
+					if tAlias then
+						aOwnScratch[tAlias] = tAlias
+					end
 				end
-				if aOwnExpScratch and aOwnExpScratch[name] == nil then
-					aOwnExpScratch[name] = expirationTime or false
+				if aOwnExpScratch then
+					if aOwnExpScratch[tKey] == nil then
+						aOwnExpScratch[tKey] = expirationTime or false
+					end
+					if tAlias and aOwnExpScratch[tAlias] == nil then
+						aOwnExpScratch[tAlias] = expirationTime or false
+					end
 				end
 			end
 		end
@@ -2130,10 +2594,10 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 	-- teilen. Setzt NUR neue tEvaluateData-Felder. RUECKBAU: diesen do-Block entfernen.
 	do
 		local hasMH, mhExp, _, mhId, hasOH, ohExp, _, ohId = tWE_hasMH, tWE_mhExp, tWE_mhCharges, tWE_mhId, tWE_hasOH, tWE_ohExp, tWE_ohCharges, tWE_ohId
-		local function tResolveEnchantName(aEnchantId)
-			-- [41.03 Fix] zentral aufloesen (gleiche Quelle wie die Werteliste)
-			return SkuAuras:ResolveWeaponEnchantName(aEnchantId)
-		end
+		-- [v43.0] Fills through tAddWeaponEnchantName (above) so these two SET
+		-- attributes carry the same group key + localized alias the buff lists do.
+		-- Before it wrote the localized name only, which is what the value list
+		-- offered - correct within one locale, unmatchable across two.
 		-- [41.03 Fix] Immer eine Tabelle setzen (leer = keine VZ), damit "enthaelt nicht
 		-- <VZ>" auch OHNE VZ greift. Dauer-Default 0: "keine VZ = Dauer 0" (Nutzerwunsch),
 		-- damit "Dauer < X" auch beim vollstaendigen Entfernen feuert.
@@ -2142,13 +2606,11 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 		tEvaluateData.weaponEnchantOffHand = {}
 		tEvaluateData.weaponEnchantOffHandDuration = 0
 		if hasMH then
-			local tName = tResolveEnchantName(mhId)
-			if tName then tEvaluateData.weaponEnchantMainHand[tName] = tName end
+			tAddWeaponEnchantName(true, mhId, tEvaluateData.weaponEnchantMainHand)
 			tEvaluateData.weaponEnchantMainHandDuration = (mhExp or 0) / 1000
 		end
 		if hasOH then
-			local tName = tResolveEnchantName(ohId)
-			if tName then tEvaluateData.weaponEnchantOffHand[tName] = tName end
+			tAddWeaponEnchantName(true, ohId, tEvaluateData.weaponEnchantOffHand)
 			tEvaluateData.weaponEnchantOffHandDuration = (ohExp or 0) / 1000
 		end
 	end
@@ -2370,21 +2832,28 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 						end
 					end
 
+					-- [v43.0] These five feed OUTPUTS (they are spoken), so they must
+					-- carry the LOCALIZED name. Stripping the tag off the stored value
+					-- used to be the same thing; with group identity the stored value
+					-- is the enUS key, and a raw strip would announce "Frostbolt" to a
+					-- German player. SkuAuras:ValueFriendlyName resolves the value set's
+					-- friendlyName and falls back to the bare value for a stale key,
+					-- which is what the old strip produced anyway.
 					if tAttributeName == "buffListTarget" then
-						tSingleBuffListTargetValue = sgsub(tAttributeValue[1][2], "spell:", "")
+						tSingleBuffListTargetValue = SkuAuras:ValueFriendlyName(tAttributeValue[1][2])
 					end
 					if tAttributeName == "debuffListTarget" then
-						tSingleDebuffListTargetValue = sgsub(tAttributeValue[1][2], "spell:", "")
+						tSingleDebuffListTargetValue = SkuAuras:ValueFriendlyName(tAttributeValue[1][2])
 					end
 					if tAttributeName == "spellNameOnCd" then
-						tSpellNameOnCdValue = sgsub(tAttributeValue[1][2], "spell:", "")
+						tSpellNameOnCdValue = SkuAuras:ValueFriendlyName(tAttributeValue[1][2])
 					end
 					-- [41.03 Fix] in DIESER Aura gewaehlten VZ-Namen merken (fuer die Ausgabe).
 					if tAttributeName == "weaponEnchantMainHand" then
-						tEvaluateData.weaponEnchantMainHandSelected = sgsub(tAttributeValue[1][2], "spell:", "")
+						tEvaluateData.weaponEnchantMainHandSelected = SkuAuras:ValueFriendlyName(tAttributeValue[1][2])
 					end
 					if tAttributeName == "weaponEnchantOffHand" then
-						tEvaluateData.weaponEnchantOffHandSelected = sgsub(tAttributeValue[1][2], "spell:", "")
+						tEvaluateData.weaponEnchantOffHandSelected = SkuAuras:ValueFriendlyName(tAttributeValue[1][2])
 					end
 				end
 
@@ -2730,6 +3199,121 @@ function SkuAuras:RoleCheckerGetUnitRole(aUnitGUID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.0] /skucheck auras -- the group-identity invariants (project rule: every
+-- regression fix ships its tripwire). Called from tSkuCheckAuras in
+-- SkuCore/LocalMenu.lua; returns checked, pending, violations.
+--
+-- 1. The value lists carry group entries at all. "0 group values" means the
+--    port silently fell back to an empty or a name-keyed list, which reads as
+--    "no spell is selectable" in the menu and as "no aura ever fires".
+-- 2. Every id of a known multi-id spell resolves to ONE group key. This is the
+--    whole promise of the port -- all 103 Frostbolt ids, player ranks and mob
+--    variants alike, are one condition -- and it is the thing a regenerated
+--    spells.lua could quietly break.
+-- 3. No saved aura value is left on the bare localized-name lane while its name
+--    WOULD have resolved to a single group. Such a value still matches on this
+--    client (the compatibility alias) but would not survive being shared, so it
+--    means the run-once migration missed it. A value whose localized name is
+--    ambiguous (spans several groups) is expected to stay and is not counted.
+-- 4. Every ambiguous localized name still resolves to a group that EXISTS.
+--    Refusing to resolve them was the first v43.0 defect, found in game: the
+--    shipped db carries no row for the priest's Verblassen past rank 1, so
+--    every cast arrived with an id it could not resolve, fell through to the
+--    name lane, found no mapping there either - and the aura stayed silent
+--    although the user had picked the right entry in the menu. If a name ever
+--    resolves to itself again, "spellgroup:<that name>" is not in the value set
+--    and this catches it.
+local tSkuCheckGroupSamples = {
+	["Frostbolt"] = {116, 205, 837, 7322, 71420, 72166,},
+	["Fireball"] = {133, 143, 145, 3140, 71928, 72163,},
+	["Shadow Word: Pain"] = {589, 594, 970, 992, 65541, 72318,},
+	["Fear Ward"] = {6346,},
+}
+function SkuAuras.SkuCheck()
+	local tChecked, tPending, tViolations = 0, 0, 0
+
+	if not SkuAuras.attributeValueListsBuilt then
+		dprint("skucheck", "auras: value lists not built yet - group checks skipped")
+		return tChecked, 1, tViolations
+	end
+
+	-- 1. group entries present
+	local tGroupValues = 0
+	for _, tValue in pairs(SkuAuras.attributes.buffListTarget.values or {}) do
+		if type(tValue) == "string" and ssub(tValue, 1, #SPELL_GROUP_TAG) == SPELL_GROUP_TAG then
+			tGroupValues = tGroupValues + 1
+		end
+	end
+	tChecked = tChecked + 1
+	if tGroupValues == 0 then
+		tViolations = tViolations + 1
+		dprint("skucheck", "VIOLATION auras: the buff-list value set holds NO group values -- spell conditions are unselectable and cannot match")
+	end
+
+	-- 2. one group key per multi-id spell
+	for tGroupName, tIds in pairs(tSkuCheckGroupSamples) do
+		for x = 1, #tIds do
+			tChecked = tChecked + 1
+			local tResolved = SkuAuras:SpellGroupName(tIds[x], nil)
+			if tResolved == nil then
+				-- the id is not in this dataset (phase drift) -- not a defect,
+				-- the fallback lane covers it, but say so rather than pass it.
+				tPending = tPending + 1
+			elseif tResolved ~= tGroupName then
+				tViolations = tViolations + 1
+				dprint("skucheck", "VIOLATION auras: spell id", tIds[x], "resolves to group", tostring(tResolved),
+					"but shares its name group with", tGroupName, "-- the group is split, so one aura no longer covers all its ranks")
+			end
+		end
+	end
+
+	-- 4. ambiguous names resolve to a real group
+	for tLocName in pairs(SkuAuras.spellGroupAmbiguousLocName) do
+		tChecked = tChecked + 1
+		local tGroup = SkuAuras:SpellGroupName(nil, tLocName)
+		if not (tGroup and SkuAuras.values[SPELL_GROUP_TAG..tGroup]) then
+			tViolations = tViolations + 1
+			dprint("skucheck", "VIOLATION auras: the localized name", tLocName,
+				"covers several groups and resolves to", tostring(tGroup),
+				"-- which is not a known group, so every spell of that name whose id is not in the db is unmatchable")
+		end
+	end
+
+	-- 3. saved values still on the name lane although a group exists
+	local tSub = SkuSettings and SkuSettings:Sub("SkuAuras", nil, "char")
+	local tAuras = tSub and tSub.Auras
+	if type(tAuras) == "table" then
+		for tAuraName, tAuraData in pairs(tAuras) do
+			if type(tAuraData) == "table" and type(tAuraData.attributes) == "table" then
+				for tAttName, tAttValue in pairs(tAuraData.attributes) do
+					if tGroupLaneAttributes[tAttName] and type(tAttValue) == "table" then
+						for _, tEntry in pairs(tAttValue) do
+							local tValue = type(tEntry) == "table" and tEntry[2]
+							if type(tValue) == "string" and ssub(tValue, 1, 6) == "spell:" then
+								tChecked = tChecked + 1
+								local tBare = ssub(tValue, 7)
+								if not SkuAuras.spellGroupAmbiguousLocName[tBare] then
+									local tMapped = SkuAuras.spellGroupByLocName[tBare]
+									local tGroup = (type(tMapped) == "string" and tMapped) or tBare
+									if SkuAuras.values[SPELL_GROUP_TAG..tGroup] then
+										tViolations = tViolations + 1
+										dprint("skucheck", "VIOLATION auras: aura", tostring(tAuraName), "condition", tAttName,
+											"still holds the localized value", tValue, "although group", tGroup,
+											"exists -- the migration missed it, so this aura cannot be shared across languages")
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	return tChecked, tPending, tViolations
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:LogRecorder(aEventName, aEventData)
 	-- [v43.0] One settings walk instead of four — this runs on EVERY combat-log
 	-- event, and the walks ran even with logging disabled.
@@ -2749,7 +3333,13 @@ function SkuAuras:GetSpellNamesUsable()
 			local tUsable = SkuAuras:ActionButtonUsable(x)
 
 			if tUsable == true then
-				tResult["spell:"..abilityName] = "spell:"..abilityName
+				-- [v43.0] Group key + localized compatibility alias, same rule as
+				-- thingsNamesOnCd and the UnitAura scan.
+				local tGroup = SkuAuras:SpellGroupName(id, abilityName)
+				tResult[SPELL_GROUP_TAG..tGroup] = SPELL_GROUP_TAG..tGroup
+				if tGroup ~= abilityName then
+					tResult["spell:"..abilityName] = "spell:"..abilityName
+				end
 			end
 		end
 	end

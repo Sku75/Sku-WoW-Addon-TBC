@@ -1,7 +1,10 @@
 # SkuAuras: from name matching to group (ID) matching
 
-Date: 2026-08-20. Status: **planned, nothing implemented**. Written from a
-source + shipped-data survey in one session; no in-game work was done.
+Date: 2026-08-20. Status: **IMPLEMENTED 2026-08-22 under v43.0. First in-game
+pass done; one defect found and fixed (12.5), the fix itself is UNTESTED.** The
+plan below is left as written; section 12 at the end records what was built,
+where the implementation deviated from it and why, and what is still open. Read
+section 12 before acting on anything above it.
 
 Goal: an aura authored on a German client fires on an English or French client,
 and the German-only default aura sets become available to every locale.
@@ -323,3 +326,166 @@ needed.
 - Cast-ID versus aura-ID divergence (a talent whose applied aura has a different
   name than the cast) is unchanged by this work - neither better nor worse.
   Worth a pass later to see whether it is worth a curated alias list.
+---
+
+## 12. Implementation record (2026-08-22, v43.0)
+
+Everything in sections 1-10 was built. Syntax-checked with `luaparser`, the
+build pass was modelled offline against the shipped `spells.lua`
+(counts and order-stability verified), and the `UnitAura` return order was
+re-confirmed against the client's own `AuraUtil.UnpackAuraData`. **Nothing has
+been run in game.**
+
+Files touched: `SkuAuras/Core.lua`, `SkuAuras/data.lua`, `SkuAuras/Options.lua`,
+`SkuAuras/sharing.lua`, `SkuAuras/defaultAuras.lua`, `SkuCore/LocalMenu.lua`,
+`locales/{enUS,deDE,frFR}.lua`, plus the three patch-notes files.
+
+### 12.1 What the plan did not know: the reverse map is not injective
+
+The plan assumed localized name -> enUS name is a usable mapping. Measured over
+the shipped `spells.lua`: **838 of 26,603 German names (3.15%) cover more than
+one English name**, spanning 1,899 groups. Not only junk rows - "Verblassen" is
+`Fade` *and* `Fade Out`, "Geschwaechte Seele" is `Weakened Soul`, `Diminish
+Soul` *and* `Weakened Spirit`, "Schattenwort: Schmerz" is `Shadow Word: Pain`
+*and* `Shadow Word Pain Damage`.
+
+Two consequences the plan did not anticipate, both handled:
+
+- **Migration.** An ambiguous name is recorded in
+  `SkuAuras.spellGroupAmbiguousLocName` and its saved values are left on the
+  localized-name lane, where the compatibility alias keeps them matching every
+  variant exactly as before. Converting one to a single group would silently
+  drop the others.
+  *(The reverse map itself no longer refuses these names - see 12.5.)*
+- **The menu.** Each group is its own entry now, so those 1,899 groups would
+  have produced two or three entries reading identically. Colliding entries get
+  the English identity appended - "Verblassen (Fade Out)". Only the MENU label;
+  `speakName` keeps the plain name for the announcement when an aura fires.
+
+A related determinism problem: **545 groups (2%) hold ids with differing German
+names** ("Ancestral Spirit" is both "Ahnengeist" and "Geist der Ahnen"), so the
+display name depended on which row `pairs` reached first and could change
+between sessions - which breaks type-ahead. The lowest id in the group now wins.
+Verified order-stable offline over the real data (shuffled and reverse-sorted
+input produce byte-identical labels, mapping and group set).
+
+### 12.2 Deviations from the plan
+
+- **Compatibility alias, additional to the plan's fallback lanes.** The live
+  lists (`tBuffList`, the exp maps, the own-subsets, `thingsNamesOnCd`,
+  `GetSpellNamesUsable`) carry the localized name *beside* the group key
+  whenever the two differ. This is what makes an unmigrated or unmigratable
+  value keep working instead of going silently dead. On an enUS client group ==
+  live name, so the alias is never written and the cost is zero - the plan's
+  cost claim in 3.3 holds unchanged there, and on deDE it is <=40 extra table
+  stores per (cached) rebuild.
+- **`AuraMembershipCheck` (Core.lua:1662) was deliberately NOT converted.** The
+  plan lists it, but it is a pure change-detector comparing this client's
+  previous scan against its current one. Group keying cannot make it more
+  sensitive - it can only make it *less* (two ranks of the same spell swapping
+  is invisible either way, and grouping merges more names, not fewer) - and it
+  would add work to a per-frame path. Name keying stays.
+- **The ID input (section 8) stores the GROUP value, not `spell:<id>`**, for
+  every attribute except `spellId`. The plan's "a typed ID gets exact
+  semantics" is not achievable for the list attributes: their live lists are
+  name-keyed, so a bare id could never match one, and `spellName` compares
+  names. The typed id is resolved to its group and Sku speaks back the spell it
+  resolved to. `spellId`, where the id *is* the value, stores it as typed.
+- **The ID input's ENTER goes through a wrapper on the level's `selectTarget`.**
+  `SkuZOptions/templates.lua` `OnPostSelect` always dispatches ENTER to the
+  select target, never to the focused node's own `OnAction`, so the node cannot
+  own its ENTER. The wrapper recognises the node by an `auraIdInput` marker and
+  re-points `SkuOptions.currentMenuPosition` back at it from the edit box's OK
+  callback (the framework parks the cursor on the select target synchronously,
+  long before the user types).
+- **Sharing sends V2 ONLY** (section 6 said "still accepting V1", which it
+  does). Sending an additional V1 packet would leave older clients holding auras
+  with group values they cannot resolve - silent garbage is worse than nothing.
+
+### 12.3 Fixed on the way
+
+- `SkuAuras:ResolveWeaponEnchantName` read enchant-db column 1 for enUS and
+  column 2 for deDE and left the name `nil` otherwise, so on a **French client it
+  returned nil for every enchant** and the weapon-enchant value list came out
+  empty - the condition could not be authored at all. Locale column, else
+  English, like the rest of the naming system since v42.09.
+- `tAddWeaponEnchantName` in `EvaluateAllAuras` was the third, diverged copy of
+  the enchant resolver that the W6-C comment above it warns about. Folded onto
+  the central resolvers.
+- `spellNameUsable.updateValues` indexed `spellData[Sku.Loc]` unguarded (the
+  exact shape that threw on frFR before) and filled its list in place. Guarded,
+  deduped, built into a local and published atomically.
+- The nil-tolerant `friendlyName` fallbacks (`tFriendlyName` / `tFn`) returned
+  the RAW key, which after this port would read "spellgroup:Frostbolt" out loud.
+  They strip tags now - with a type guard, because `RemoveTags` maps the strings
+  "true"/"false" to booleans and the binary attributes' values are exactly those
+  two keys (a boolean into a string concatenation is how the menu would have
+  errored instead of merely reading a raw key).
+
+### 12.4 Still open
+
+- **Items (open question 11) were not ported.** `itemName` stays localized;
+  `SkuDB.itemLookup.enUS[id]` would make the same treatment cheap, but the plan
+  left this undecided and it is a decision, not an omission. A shared aura that
+  conditions on an item name still only works within one language.
+- **`defaultAuras.lua`**: the 29 resolvable values were converted to group
+  values, one (`Verbessertes Verblassen`, no deDE row in the DB) stays on the
+  name lane, and the `if Sku.Loc == "deDE"` gate is gone so every locale gets
+  the sets. But the aura KEYS and the `friendlyNameShort` labels are German
+  prose - not derived data, so nothing can regenerate them - and the menu that
+  would apply these sets is still disabled behind the `[Fix Nr22] if false then`
+  block in `Options.lua`. Nothing reads them today either way.
+- **Cast-ID vs aura-ID divergence** is unchanged, as the plan said.
+- **In-game verification.** Nothing here has been run. The first read-back is
+  the value-list `dprint`, which now reports group count, loc->group mappings,
+  ambiguous names and disambiguated entries, followed by the one-line group
+  migration report. Then `/skucheck auras`.
+
+### 12.5 In-game pass 2026-08-22: one defect, found and fixed
+
+Most of it worked on the first run - duration conditions, aura-lost, and group
+matching on `spellName` (a `spellgroup:Power Word: Fortitude` aura fired). One
+class did not: **auras on "Verblassen (Fade)" and "Verblassen (Fade Out)" never
+fired.**
+
+Cause, confirmed from the shipped data rather than guessed: the dump carries the
+priest's Verblassen **only at rank 1** (id 586). Ids 9578, 9579, 9592, 10941 and
+10942 are absent - unusual, Renew, Power Word: Fortitude and Frostbolt all have
+their full rank sets. So a levelled priest's cast arrives with an id
+`SpellDataTBC` cannot resolve and drops to the localized-name lane - and there
+"Verblassen" was one of the 838 ambiguous names, which 12.1 had deliberately
+mapped to *nothing*. The value stayed "Verblassen", the stored value was
+"Fade", nothing matched, and the aura was silent although the user had picked
+the right entry in the menu.
+
+The two decisions were separated, which is what 12.1 got wrong by conflating
+them:
+
+- **Resolution** (runtime, `spellGroupByLocName`): an ambiguous name now
+  resolves to the candidate group whose **lowest spell id is lowest**, decided
+  in one pass at the end of the build so it cannot depend on `pairs` order.
+  Verified against the cases where the answer is known - Verblassen -> Fade (586
+  vs 5543), Geschwaechte Seele -> Weakened Soul (6788 vs 36788), Schattenwort:
+  Schmerz -> Shadow Word: Pain (589 vs 37603), Erneuerung -> Renew (139 vs
+  37563), Gedankenkontrolle -> Mind Control (605 vs 7645): **5/5**. "Most ids in
+  the group" instead scores 4/5 - it picks `Diminish Soul` (six ids) over
+  `Weakened Soul` (one).
+- **Migration** (`spellGroupAmbiguousLocName`): unchanged, still refuses. A
+  saved localized value matches every variant today; rewriting it to the one
+  group the runtime guesses would silently drop the others.
+
+Strictly additive at runtime: before the fix an unknown id produced the single
+key `"Verblassen"`, now it produces `"Fade"` plus `"Verblassen"` as the alias -
+so group auras start working and legacy name auras are untouched.
+
+Tripwire, per the project rule: `/skucheck auras` invariant 4 - every ambiguous
+localized name must resolve to a group that exists in the value set. A
+regression to "resolves to itself" fails it, because
+`spellgroup:<that name>` is not a group.
+
+**Not a defect:** the user's second aura, on "Verblassen (Fade Out)", still does
+not fire for the priest's Fade, and should not - `Fade Out` (5543) is a
+different spell. The disambiguated menu label is what makes that choice
+visible; picking "Verblassen (Fade)" is the priest spell.
+
+**Still untested:** the fix itself, and everything under 12.4.

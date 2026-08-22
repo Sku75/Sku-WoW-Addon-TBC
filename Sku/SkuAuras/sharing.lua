@@ -4,12 +4,19 @@
 -- Teilen in der Gruppe ueber AceComm (versteckte Addon-Nachrichten, automatisches
 -- Zerteilen). Vollstaendig isoliert und pcall-geschuetzt; aendert das bestehende
 -- Auren-System NICHT. Auren bleiben name-basiert.
--- Stufe 2 zunaechst nur gleiche Clientsprache (Sprach-Kennzeichen). Der echte
--- Sprach-Uebersetzer (Stufe 4) ist spaeter ueber SkuDB.SpellDataTBC moeglich.
+-- [v43.0] Stufe 4 ist erledigt, aber nicht als Uebersetzer: seit der Umstellung
+-- auf Gruppen-Identitaet (enUS-Zaubername als Schluessel, siehe SkuAuras/Core.lua)
+-- sind Bedingungswerte sprachfrei. Damit braucht ein geteiltes Set kein
+-- Sprach-Kennzeichen mehr - das V2-Format laesst es weg - und der Aura-NAME wird
+-- beim Annehmen neu abgeleitet, also in der Sprache des Empfaengers.
+-- V1 wird weiter EMPFANGEN (alte Clients, alte Sets): solche Werte tragen noch
+-- lokalisierte Namen, laufen ueber die Kompatibilitaetsschiene der Live-Listen
+-- und behalten deshalb genau das bisherige Verhalten samt Sprach-Warnung.
 ---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME = "SkuAuras"
 local L = Sku.L
 local SHARE_PREFIX = "SkuAuraSetV1"
+local SHARE_PREFIX_V2 = "SkuAuraSetV2"
 
 local AceComm = LibStub and LibStub("AceComm-3.0", true)
 if AceComm and SkuAuras and not SkuAuras.SendCommMessage then
@@ -112,6 +119,10 @@ function SkuAuras:SetsActivate(aName)
 	for auraName, auraTable in pairs(set.auraData or {}) do
 		local tCopy = tDeepCopy(auraTable)
 		tCopy.enabled = true
+		-- [v43.0] Ein Set, das vor der Umstellung angelegt wurde, traegt noch
+		-- lokalisierte Werte; heben. Der NAME bleibt wie er ist - das Set gehoert
+		-- dem Nutzer und ist bereits in seiner Sprache benannt.
+		pcall(function() SkuAuras:ConvertAuraValuesToGroups(tCopy) end)
 		tNew[auraName] = tCopy
 		tCount = tCount + 1
 	end
@@ -135,8 +146,11 @@ function SkuAuras:ShareSet(aName)
 		tSay(L["Du bist in keiner Gruppe"])
 		return
 	end
+	-- [v43.0] V2: kein Sprach-Kennzeichen mehr. Bewusst NUR V2 gesendet - ein
+	-- zusaetzliches V1-Paket wuerde bei alten Clients Auren mit Gruppen-Werten
+	-- ablegen, die sie nicht aufloesen koennen, also stillen Muell statt nichts.
 	local ok, payload = pcall(function()
-		return SkuOptions:Serialize("AURASET1", set.loc or (Sku.Loc or "enUS"), aName, set.auraData)
+		return SkuOptions:Serialize("AURASET2", aName, set.auraData)
 	end)
 	if not ok or type(payload) ~= "string" then
 		tSay(L["Set konnte nicht vorbereitet werden"])
@@ -144,19 +158,31 @@ function SkuAuras:ShareSet(aName)
 	end
 	local me = (UnitName and UnitName("player")) or "?"
 	pcall(SendChatMessage, me..L[" teilt Aurenset "]..aName, chan)
-	pcall(function() SkuAuras:SendCommMessage(SHARE_PREFIX, payload, chan) end)
+	pcall(function() SkuAuras:SendCommMessage(SHARE_PREFIX_V2, payload, chan) end)
 	pcall(SendChatMessage, L["Teilen abgeschlossen"], chan)
 	tSay(string.format(L["Aurenset %s geteilt"], aName))
 end
 
 function SkuAuras:OnAuraSetComm(aPrefix, aMessage, aDist, aSender)
-	if aPrefix ~= SHARE_PREFIX then return end
+	if aPrefix ~= SHARE_PREFIX and aPrefix ~= SHARE_PREFIX_V2 then return end
 	if aSender and UnitName and aSender == UnitName("player") then return end
-	local ok, tag, loc, setName, auraData = SkuOptions:Deserialize(aMessage)
-	if not ok or tag ~= "AURASET1" or type(auraData) ~= "table" then return end
+	-- [v43.0] Zwei Formate. V2 fuehrt kein loc-Feld mehr - das ist der Punkt der
+	-- Umstellung, nicht ein vergessenes Feld -, deshalb bleibt loc hier nil und
+	-- die Sprach-Warnung beim Annehmen entfaellt fuer V2.
+	local tOk, tTag, tA, tB, tC = SkuOptions:Deserialize(aMessage)
+	if not tOk then return end
+	local loc, setName, auraData
+	if tTag == "AURASET2" then
+		setName, auraData = tA, tB
+	elseif tTag == "AURASET1" then
+		loc, setName, auraData = tA, tB, tC
+	else
+		return
+	end
+	if type(auraData) ~= "table" then return end
 	local pending = tEnsurePending(); if not pending then return end
 	local tKey = tUniqueName(pending, setName or "Set")
-	pending[tKey] = { from = aSender or "?", loc = loc or "?", auraData = auraData }
+	pending[tKey] = { from = aSender or "?", loc = loc, auraData = auraData }
 	tSay(string.format(L["Aurenset %s von %s empfangen. Unter Auren, Sets, Empfangene Sets annehmen."], tostring(setName), tostring(aSender)))
 end
 
@@ -166,14 +192,23 @@ function SkuAuras:AcceptPendingSet(aKey)
 	if not p then return end
 	local tAuras = SkuSettings:Sub("SkuAuras", nil, "char").Auras
 	if not tAuras then return end
+	-- [v43.0] Nur noch fuer V1-Pakete: die tragen lokalisierte Werte, also gilt
+	-- die alte Einschraenkung weiter. V2 hat kein loc-Feld und braucht keine
+	-- Warnung - seine Werte sind Gruppen-Schluessel und damit sprachfrei.
 	if p.loc and p.loc ~= (Sku.Loc or "enUS") then
 		tSay(L["Achtung, Set ist fuer eine andere Sprache. Auren koennten nicht ausloesen."])
 	end
 	local tCount = 0
 	for auraName, auraTable in pairs(p.auraData) do
-		local tUnique = tUniqueName(tAuras, auraName)
 		local tCopy = tDeepCopy(auraTable)
 		tCopy.enabled = true
+		-- Werte gleicher Sprache auf Gruppen-Identitaet heben (bei einem V1-Set
+		-- vom gleichen Client-Typ), dann den Namen in DIESER Sprache neu
+		-- ableiten. Beides ist idempotent bzw. ein No-Op, wenn nichts zu tun ist.
+		pcall(function() SkuAuras:ConvertAuraValuesToGroups(tCopy) end)
+		local tName = auraName
+		pcall(function() tName = SkuAuras:RelocalizedAuraName(auraName, tCopy) end)
+		local tUnique = tUniqueName(tAuras, tName)
 		tAuras[tUnique] = tCopy
 		tCount = tCount + 1
 	end
@@ -297,4 +332,5 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 if AceComm and SkuAuras and SkuAuras.RegisterComm then
 	pcall(function() SkuAuras:RegisterComm(SHARE_PREFIX, "OnAuraSetComm") end)
+	pcall(function() SkuAuras:RegisterComm(SHARE_PREFIX_V2, "OnAuraSetComm") end)
 end

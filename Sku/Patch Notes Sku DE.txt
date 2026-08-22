@@ -16,6 +16,7 @@ Aenderungen in Sku v43.0
             Der Installer sammelt auf Knopfdruck alle Logdateien fuer eine Fehlermeldung.
             Der Anmeldebildschirm ist mit dem Anmelde-Tool jetzt bedienbar.
             Wegpunktlisten sagen an, wie weit das Laden fortgeschritten ist.
+            In den Auren-Wertelisten steht an erster Stelle "Zauber-ID eingeben": wer die Nummer eines Zaubers kennt, muss den Namen nicht mehr suchen.
 
         Aenderungen
             Auren-Ablaufwarnungen kommen puenktlich statt erst beim naechsten Kampfereignis.
@@ -24,6 +25,8 @@ Aenderungen in Sku v43.0
             Der Energiemonitor kann der Ressourcenleiste folgen, die das Spiel gerade zeigt - ein Druide bekommt so je nach Gestalt Mana, Wut oder Energie.
             Das Protokoll des Anmelde-Tools ueberlebt einen Neustart des Tools.
             Die Wegpunktdaten der Routen sind nach dem Anmelden deutlich frueher benutzbar, der eigene Kontinent zuerst, und brauchen rund 22 MB weniger Arbeitsspeicher; der Teil der Routendaten, den die eigene Spielversion nicht liest, wird gar nicht mehr aufgebaut.
+            Auren erkennen Zauber jetzt an ihrer Identitaet statt am uebersetzten Namen: eine Aura wirkt auf jedem Sprachclient, geteilte Aurensets kommen benutzbar an, und alle Raenge eines Zaubers zaehlen als ein Eintrag.
+            Die mitgelieferten Aurensets gibt es nicht mehr nur auf deutschen Clients.
 
         Fehlerbehebungen
             Franzoesische Clients: alle Aura-Sounds und aufgenommenen Sprachclips waren stumm (Korrektur von Naxedim).
@@ -43,6 +46,7 @@ Aenderungen in Sku v43.0
             Anmelde-Tool: Auf Realms mit zehn oder mehr Charakteren war die Charakterliste unvollstaendig, falsch nummeriert oder liess sich nicht zurueckblaettern.
             Energiemonitor: die Ressourcenauswahl "nichts" warf laufend Lua-Fehler.
             Energiemonitor: ein im Funktionsmenue abgeschalteter Monitor sagte Ressourcenaenderungen trotzdem an.
+            Franzoesische Clients: die Liste der Waffenverzauberungen fuer Auren war leer.
 
     Mit Dank an Naxedim und ZenqFR
         Die naechsten vier Korrekturen sind die ersten direkten Code-Beitraege zum inzwischen
@@ -766,6 +770,93 @@ Aenderungen in Sku v43.0
             die die eigene Klasse nicht hat, zaehlt als "ausstehend", nicht als Fehler. Der
             gespeicherte Wert "NOTHING" wird beim Anmelden einmalig auf "ACTIVE" umgestellt und
             der Monitor dabei abgeschaltet.
+
+    Auren erkennen Zauber an ihrer Identitaet, nicht mehr am uebersetzten Namen
+        Einfach: Eine Aura, die du angelegt hast, war bisher an deine Spielsprache gebunden. Der
+            gespeicherte Wert war der uebersetzte Zaubername - "Frostblitz" - und ein englischer
+            Client kennt nur "Frostbolt", also feuerte dieselbe Aura dort nie. Aus demselben Grund
+            kam ein in der Gruppe geteiltes Aurenset bei einem Mitspieler mit anderer Sprache tot
+            an, und die mitgelieferten Aurensets gab es ueberhaupt nur auf deutschen Clients. Sku
+            merkt sich jetzt die sprachunabhaengige Identitaet des Zaubers. Zu sehen und zu hoeren
+            bekommst du weiterhin genau den Namen, den dein Spiel benutzt - im Menue, im Namen der
+            Aura und in der Ansage, wenn sie feuert. Deine bestehenden Auren werden beim ersten
+            Anmelden einmalig umgestellt, ohne dass du etwas tun musst; ihre Namen aendern sich
+            dabei nicht.
+            Ein zweiter Gewinn nebenbei: alle Raenge eines Zaubers und auch die Varianten, die
+            Gegner wirken, gehoeren zu einem Eintrag. "Sag mir, wenn mein Ziel Frostblitz wirkt"
+            deckt damit alle 103 Frostblitz-Varianten ab, statt nur die eine, die zufaellig in
+            der Liste stand. Ob DU oder ein Gegner den Zauber gewirkt hat, entscheidet weiterhin
+            die eigene Bedingung "Ereignis Quelle", nicht der Zauber selbst.
+            Wo ein deutscher Zaubername fuer mehrere verschiedene englische steht - "Verblassen"
+            ist sowohl "Fade" als auch "Fade Out" - nennt die Liste den englischen Namen in
+            Klammern dazu, damit die Eintraege unterscheidbar bleiben. Nur die Liste; die Ansage
+            beim Feuern bleibt kurz. Waehlst du so einen Eintrag, gewinnt die aelteste Variante -
+            bei "Verblassen" also der Priesterzauber und nicht "Fade Out". Bereits gespeicherte
+            Auren mit so einem Namen bleiben unveraendert und reagieren weiter auf jede Variante,
+            wie bisher.
+        Technisch: Identitaet ist der enUS-Zaubername aus SkuDB.SpellDataTBC, das ohnehin
+            ausgeliefert und gepflegt wird - keine neue Datei, keine generierte ID-Tabelle (eine
+            solche muesste mit spells.lua synchron gehalten werden, und eine Neugenerierung wuerde
+            gespeicherte Auren still verwaisen lassen). Gespeicherte Werte tragen die Marke
+            "spellgroup:", angezeigt wird weiter SkuAuras.values[key].friendlyName. Die Live-Liste
+            aus UnitAura wird ueber Rueckgabewert 10 (spellId) auf den Gruppennamen abgebildet;
+            auf einem nicht-englischen Client steht der lokalisierte Name als Kompatibilitaets-
+            Alias daneben, damit ein nicht umgestellter Altwert weiter matcht. Auf einem
+            englischen Client sind Gruppen- und Live-Name identisch, der Alias entfaellt und die
+            Kosten sind exakt null. Kennt SpellDataTBC eine ID nicht - die Population, die mit dem
+            Anniversary-Zyklus am ehesten driftet -, faellt die Zuordnung auf den lokalisierten
+            Namen zurueck, also auf das bisherige Verhalten. 838 der 26.603 deutschen Namen (3,15
+            Prozent) decken mehr als einen englischen ab. Zur Laufzeit gewinnt die Gruppe mit der
+            niedrigsten Zauber-ID - die kollidierenden Varianten sind ausnahmslos spaeter
+            hinzugekommen; geprueft an den Faellen mit bekannter Antwort (Verblassen 586 gegen
+            5543, Geschwaechte Seele 6788 gegen 36788, Schattenwort: Schmerz 589 gegen 37603,
+            Erneuerung 139 gegen 37563, Gedankenkontrolle 605 gegen 7645). GESPEICHERTE Werte mit
+            so einem Namen werden trotzdem NICHT umgestellt, weil sie heute auf jede Variante
+            passen und eine Umstellung die anderen still wegnehmen wuerde; ihre Menueeintraege
+            bekommen den englischen Namen angehaengt. Der Anzeigename einer Gruppe stammt immer von der niedrigsten ID
+            darin, damit er sich zwischen Sitzungen nicht aendert. Neue Pruefungen unter
+            "/skucheck auren": es gibt ueberhaupt Gruppeneintraege, alle IDs eines Zaubers loesen
+            zu EINER Gruppe auf, und die einmalige Umstellung hat keinen Wert liegen lassen.
+
+    Aurensets teilen: neues Format ohne Sprachkennzeichen
+        Einfach: Ein geteiltes Aurenset traegt kein Sprachkennzeichen mehr und die Warnung "Set
+            ist fuer eine andere Sprache" entfaellt - die Bedingungen sind jetzt sprachfrei. Beim
+            Annehmen bekommt jede Aura ausserdem ihren Namen in DEINER Sprache, statt den Satz
+            des Absenders zu behalten. Auren, denen du selbst einen Namen gegeben hast, behalten
+            ihn.
+        Technisch: SkuAuraSetV2 (Nutzlast "AURASET2", ohne loc-Feld) wird gesendet; V1 wird
+            weiterhin empfangen, samt bisheriger Sprachwarnung, weil solche Pakete noch
+            lokalisierte Werte tragen. Bewusst wird nur V2 gesendet: ein zusaetzliches V1-Paket
+            wuerde bei aelteren Clients Auren mit Gruppenwerten ablegen, die sie nicht aufloesen
+            koennen. Der Name wird beim Import ueber BuildAuraName neu abgeleitet
+            (SkuAuras:RelocalizedAuraName); customName-Auren sind ausgenommen, und das sind genau
+            die, auf die andere Auren verweisen koennen - die Querverweise bleiben also heil.
+
+    Auren: "Zauber-ID eingeben" als erster Eintrag jeder Zauber-Werteliste
+        Einfach: Wenn du die Nummer eines Zaubers kennst, musst du seinen Namen nicht mehr in
+            einer Liste mit ueber 27.000 Eintraegen suchen. Ganz oben in der Werteliste steht
+            "Zauber-ID eingeben"; Enter oeffnet ein Eingabefeld, du tippst die Nummer, Enter,
+            und Sku sagt dir den Zauber an, den es daraus gemacht hat. Kennt Sku die Nummer
+            nicht, sagt es "Unbekannte Zauber-ID" und aendert nichts.
+        Technisch: An Position 0 injiziert - das Menue behaelt Einfuegereihenfolge, das
+            sorting-Flag waehlt nur Filter gegen Type-Ahead. ENTER in einer Auswahlebene laeuft
+            immer zum selectTarget der Ebene und nie zur OnAction des fokussierten Knotens,
+            deshalb wird die OnAction des selectTarget einmal umschlossen und der Knoten an
+            seiner Marke erkannt. Die getippte ID wird zur Gruppe aufgeloest und der GRUPPENWERT
+            gespeichert, nicht die ID: die Listenattribute vergleichen gegen gruppengeschluesselte
+            Live-Listen, "zauber name" vergleicht Namen - eine nackte ID koennte dort nie
+            matchen. Nur beim Attribut "zauber nr", wo die ID der Wert IST, wird sie genau so
+            gespeichert, wie sie getippt wurde.
+
+    Franzoesische Clients: die Liste der Waffenverzauberungen fuer Auren war leer
+        Einfach: Auf einem franzoesischen Client bot die Aura-Bedingung fuer Waffenverzauberungen
+            keinen einzigen Eintrag an, sodass sich so eine Bedingung gar nicht anlegen liess.
+        Technisch: SkuAuras:ResolveWeaponEnchantName las Spalte 1 der Enchant-Datenbank fuer
+            enUS und Spalte 2 fuer deDE und liess den Namen sonst nil - fuer jede andere Sprache
+            gab die Funktion damit fuer JEDE Verzauberung nil zurueck, und die Werteliste kam
+            leer heraus. Sie nimmt jetzt die Spalte der eigenen Sprache, sonst die englische,
+            wie der Rest des Namenssystems seit v42.09. Gefunden beim Umbau auf Gruppen-
+            Identitaet, nicht aus einem Bericht.
 
 
 -------------------------------------------------------------------------------------------------------

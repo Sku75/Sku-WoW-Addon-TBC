@@ -5299,7 +5299,17 @@ local function tSkuCheckAuras()
 			tostring(SkuAuras and SkuAuras.tSingleGateRefireLast))
 	end
 
-	return tChecked, 0, tViolations
+	-- [v43.0] Group-identity invariants live with the code they guard
+	-- (SkuAuras/Core.lua, SkuAuras.SkuCheck): group entries exist at all, every
+	-- id of a multi-id spell resolves to ONE group, and no saved value was left
+	-- behind on the localized-name lane by the run-once migration.
+	local tPending = 0
+	if SkuAuras and SkuAuras.SkuCheck then
+		local c, p, v = SkuAuras.SkuCheck()
+		tChecked, tPending, tViolations = tChecked + (c or 0), tPending + (p or 0), tViolations + (v or 0)
+	end
+
+	return tChecked, tPending, tViolations
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -5576,7 +5586,7 @@ SlashCmdList["SKUCHECK"] = function(aParam)
 	end
 	if tDomain == "" or tDomain == "auras" then
 		local c, p, v = tSkuCheckAuras()
-		dprint("skucheck", "auras done:", c, "globals checked,", v, "violations")
+		dprint("skucheck", "auras done:", c, "checks,", p, "pending,", v, "violations")
 		tChecked, tPending, tViolations = tChecked + c, tPending + p, tViolations + v
 	end
 	if tDomain == "" or tDomain == "keys" then

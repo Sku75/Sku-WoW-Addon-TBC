@@ -3308,3 +3308,8 @@ L["Gruppenmitglieder"] = "Group members"
 L["show group members quests"] = "show group members quests"
 L["Keine Questie-Daten empfangen"] = "No Questie data received"
 L["Unbekannte Zone"] = "Unknown zone"
+-- Sku v43.0: spell-ID input at index 0 of the aura value lists (SkuAuras/Options.lua)
+L["Zauber-ID eingeben"] = "Enter spell ID"
+L["Zauber-ID eingeben und Enter, oder Escape zum Abbrechen"] = "Enter a spell ID and press Enter, or Escape to cancel"
+L["Unbekannte Zauber-ID"] = "Unknown spell ID"
+L["Wert gesetzt: "] = "Value set: "

@@ -3318,3 +3318,8 @@ L["Gruppenmitglieder"] = "Gruppenmitglieder"
 L["show group members quests"] = "Quests von Gruppenmitgliedern anzeigen"
 L["Keine Questie-Daten empfangen"] = "Keine Questie-Daten empfangen"
 L["Unbekannte Zone"] = "Unbekannte Zone"
+-- Sku v43.0: Zauber-ID Eingabe an Position 0 der Auren-Wertelisten (SkuAuras/Options.lua)
+L["Zauber-ID eingeben"] = "Zauber-ID eingeben"
+L["Zauber-ID eingeben und Enter, oder Escape zum Abbrechen"] = "Zauber-ID eingeben und Enter, oder Escape zum Abbrechen"
+L["Unbekannte Zauber-ID"] = "Unbekannte Zauber-ID"
+L["Wert gesetzt: "] = "Wert gesetzt: "
