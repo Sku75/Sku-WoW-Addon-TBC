@@ -11,12 +11,11 @@ Aenderungen in Sku v43.0
         Neu
             Shift-F9 bis Shift-F12 haben jetzt eigene Eintraege in der Tastenbelegung, die Schnellzugriffe 1 bis 4 sind wieder frei.
             Die Ansagen im Taxiflug lassen sich abschalten, und sie nennen nie mehr den Start- oder Zielpunkt als Landemoeglichkeit.
-            Neue Aura-Bedingung "Listen nur selbst gewirkte" filtert die Listen auf eigene Effekte, und "Quelle/ziel (L)" heissen jetzt "Ereignis Quelle/Ziel (L)".
+            Neue Aura-Bedingung "Buff Debuff nur selbst gewirkte" filtert die Buff- und Debufflisten auf Effekte, die du selbst gewirkt hast.
             Neuer Befehl /skucheck prueft feste Regeln gegen den laufenden Spielzustand; er hat auch die Datenbank-Werkzeuge als Unterbefehle uebernommen (wp, db, mem).
             Der Installer sammelt auf Knopfdruck alle Logdateien fuer eine Fehlermeldung.
             Der Anmeldebildschirm ist mit dem Anmelde-Tool jetzt bedienbar.
             Wegpunktlisten sagen an, wie weit das Laden fortgeschritten ist.
-            Auren-Wertelisten beginnen mit "Zauber eingeben", falls du die Nummer kennst und den Namen nicht.
 
         Aenderungen
             Auren-Ablaufwarnungen kommen puenktlich statt erst beim naechsten Kampfereignis.
@@ -30,14 +29,10 @@ Aenderungen in Sku v43.0
             Alle Raenge eines Zaubers zaehlen fuer eine Aura als ein Eintrag.
             Zaubernamen, die im Spiel mehrfach vergeben sind, lassen sich in den Auswahllisten jetzt unterscheiden.
             Die mitgelieferten Aurensets gibt es nicht mehr nur auf deutschen Clients.
-            Die Aura-Bedingungen "zauber nr" und "gegenstand nr" gibt es nicht mehr; "zauber name" und "gegenstand name" nehmen auch eine getippte Nummer.
-            Die Ereignisliste einer Aura-Bedingung fasst alle Zauber-Ereignisse unter einem Eintrag "Zauber Ereignisse" zusammen.
-            "Eigene combopunkte" steht jetzt in der Gruppe "Eigene Gesundheit oder Ressource" statt in der obersten Attributliste.
-            Die Werteliste "zauber benutzbar" oeffnet ohne Haenger, und alle Aura-Wertelisten oeffnen spuerbar schneller.
+            Das Menue zum Anlegen einer Aura ist neu aufgebaut: nach Namen sortierte Attributliste, Bedingungen mit zwei Werten als Schalter, Zauber auch tippbar statt nur waehlbar, und alle Wertelisten oeffnen schneller.
             Jeder Menueeintrag im ganzen Addon wird rund 13 mal guenstiger erzeugt; die grossen Zauberlisten oeffnen dadurch etwa dreimal so schnell.
             Eine Liste, deren Aufbau vom Server abgebrochen wurde, wird im naechsten Frame weitergebaut statt unbemerkt unvollstaendig zu bleiben.
             Einstellungen mit zwei Werten sagen ihren Wert gleich mit und schalten mit Enter um; Pfeil rechts und das Untermenue entfallen.
-            Aura-Bedingungen mit nur zwei Werten (wahr/falsch, buff/debuff) sind Schalter: der Wert steht am Eintrag, Enter schaltet um.
 
         Fehlerbehebungen
             Franzoesische Clients: alle Aura-Sounds und aufgenommenen Sprachclips waren stumm (Korrektur von Naxedim).
@@ -58,7 +53,7 @@ Aenderungen in Sku v43.0
             Energiemonitor: die Ressourcenauswahl "nichts" warf laufend Lua-Fehler.
             Energiemonitor: ein im Funktionsmenue abgeschalteter Monitor sagte Ressourcenaenderungen trotzdem an.
             Franzoesische Clients: die Liste der Waffenverzauberungen fuer Auren war leer.
-            Auren: der Zauberwechsel in einer Dauer-Bedingung haengte kurz, und ueber "Zauber eingeben" blieb der vorherige Zauber als ausgewaehlt stehen.
+            Der Bereitschaftscheck sprang nicht direkt auf "Bereit", wie es jedes andere Popup tut.
 
     Mit Dank an Naxedim und ZenqFR
         Die naechsten vier Korrekturen sind die ersten direkten Code-Beitraege zum inzwischen
@@ -658,28 +653,6 @@ Aenderungen in Sku v43.0
             Beobachtet wurden vier Feuerungen in 987 ms (DURATION_DEADLINE, dann zweimal
             UNIT_POWER und SPELL_PERIODIC_DAMAGE).
 
-    Auren: neue Bedingung "Listen nur selbst gewirkte", und zwei Bedingungen heissen jetzt klarer
-        Einfach: Neu im Aura-Editor ist die Bedingung "Listen nur selbst gewirkte". Steht sie auf
-            wahr, sehen die Buff- und Debuff-Listen dieser Aura - und deren Dauer-Bedingungen -
-            nur noch Effekte, die DU gewirkt hast. Damit meldet "mein Schattenwort: Schmerz
-            laeuft ab" nicht mehr das eines anderen Priesters auf demselben Ziel.
-            Waffenverzauberungen zaehlen als selbst gewirkt, und ohne die Bedingung bleibt alles
-            wie bisher. Ausserdem heissen die Bedingungen "Quelle (L)" und "ziel (L)" jetzt
-            "Ereignis Quelle (L)" und "Ereignis Ziel (L)": Sie filtern das ausloesende EREIGNIS,
-            nicht dein aktuelles Ziel - eine Verwechslung, die immer wieder zu Auren gefuehrt
-            hat, die nie feuerten.
-        Technisch: listsOwnOnly ist ein binaerer Modifikator (die Bedingung wertet immer wahr,
-            die Bedeutung traegt der Wert). getAuraList faengt im selben Scan den 7.
-            Rueckgabewert von UnitAura ab (den Wirker) und fuellt parallele own- und
-            ownExp-Mengen; Cache-Slots, Rueckfallpuffer und die Verify-Puffer sind mitgezogen.
-            EvaluateAllAuras tauscht die Mengen pro markierter Aura in tEvaluateData und stellt
-            danach alle vier Listen wieder her, getFixedDuration liest ownExp. Bekannte Grenze:
-            Faellt deine eigene Aura weg, waehrend die gleichnamige eines anderen Wirkers auf der
-            Einheit bleibt, aendert sich keine Namensmenge - ausserhalb der Kampflog-Reichweite
-            fehlt dann der Weckruf. Die Umbenennungen sind reine Werteaenderungen in
-            deDE/enUS/frFR, die Schluessel bleiben stabil; die Tooltips erklaeren jetzt
-            Ereignisebene gegen Listenbedingung.
-
     Menue: die Wegpunktliste auf Shift-F9 oeffnete sich auf grossen Karten erst beim zweiten Versuch
         Einfach: Auf Karten mit sehr vielen Wegpunkten blieb Shift-F9 auf dem obersten Eintrag
             stehen, statt die Liste zu oeffnen; ein weiterer Pfeildruck oeffnete sie dann doch.
@@ -844,21 +817,76 @@ Aenderungen in Sku v43.0
             (SkuAuras:RelocalizedAuraName); customName-Auren sind ausgenommen, und das sind genau
             die, auf die andere Auren verweisen koennen - die Querverweise bleiben also heil.
 
-    Auren: "Zauber-ID eingeben" als erster Eintrag jeder Zauber-Werteliste
-        Einfach: Wenn du die Nummer eines Zaubers kennst, musst du seinen Namen nicht mehr in
-            einer Liste mit ueber 27.000 Eintraegen suchen. Ganz oben in der Werteliste steht
-            "Zauber-ID eingeben"; Enter oeffnet ein Eingabefeld, du tippst die Nummer, Enter,
-            und Sku sagt dir den Zauber an, den es daraus gemacht hat. Kennt Sku die Nummer
-            nicht, sagt es "Unbekannte Zauber-ID" und aendert nichts.
-        Technisch: An Position 0 injiziert - das Menue behaelt Einfuegereihenfolge, das
-            sorting-Flag waehlt nur Filter gegen Type-Ahead. ENTER in einer Auswahlebene laeuft
-            immer zum selectTarget der Ebene und nie zur OnAction des fokussierten Knotens,
-            deshalb wird die OnAction des selectTarget einmal umschlossen und der Knoten an
-            seiner Marke erkannt. Die getippte ID wird zur Gruppe aufgeloest und der GRUPPENWERT
-            gespeichert, nicht die ID: die Listenattribute vergleichen gegen gruppengeschluesselte
-            Live-Listen, "zauber name" vergleicht Namen - eine nackte ID koennte dort nie
-            matchen. Eine getippte ID gilt damit immer fuer den ganzen Zauber, alle Raenge
-            eingeschlossen.
+    Auren anlegen: das Menue zum Bauen einer Aura ist neu aufgebaut
+        Einfach: Eine Aura besteht weiterhin aus Bedingungen, und alles, was du schon gebaut hast,
+            rechnet unveraendert weiter - aber der Weg zu einer Bedingung ist an vielen Stellen
+            kuerzer geworden, und die Listen, durch die man dabei laeuft, sind sortiert, kurz und
+            schnell. Der Reihe nach, wie eine Aura jetzt entsteht:
+            Die Attributliste ist durchgehend nach Namen sortiert - auch die Gruppeneintraege, die
+            frueher immer oben standen. Ein Eintrag liegt also da, wo sein Name ihn hinstellt, und
+            ist ueber die ersten Buchstaben erreichbar. Die 35 Ereignisse liegen hinter zwei
+            Eintraegen, "Ereignisse allgemein" und "Ereignisse Zauber"; Gesundheit, Ressource,
+            Mana, Wut, Energie, Runenmacht und Combopunkte liegen zusammen in "Eigene Gesundheit
+            oder Ressource"; und alle Auren, denen du selbst einen Namen gegeben hast, stehen als
+            Bedingung unter "Selbsterstellte Auren" statt einzeln zwischen den echten Attributen -
+            frueher wuchs die oberste Liste mit jeder benannten Aura um einen Eintrag mehr, der
+            sich in jeden Buchstaben des Alphabets einsortierte. Jeder Gruppeneintrag sagt beim
+            Vorlesen selbst, was in ihm ausgewaehlt ist; hineingehen muss man dafuer nicht.
+            Eine Bedingung mit nur zwei Werten - "wahr" und "falsch", oder "buff" und "debuff" -
+            ist jetzt ein Schalter statt drei Ebenen. Der Wert steht am Eintrag, Enter schaltet
+            um: "Im Kampf; wahr", Enter, "Im Kampf; falsch". Beim Anlegen geht Enter einen Schritt
+            weiter auf "nicht festgelegt" und wieder zurueck, damit ein versehentlich gesetzter
+            Schalter auch wieder wegzunehmen ist. Wichtig zum Verstaendnis: "nicht festgelegt" ist
+            kein dritter Wert, sondern heisst, dass es die Bedingung gar nicht gibt - das ist der
+            neutrale Zustand, nicht "falsch". "falsch" ist ein Vergleich wie jeder andere: "Im
+            Kampf gleich falsch" loest NUR ausserhalb des Kampfes aus.
+            Zauber waehlst du weiter aus einer Liste, kannst sie aber auch tippen: ganz oben in
+            jeder Zauber-Werteliste steht "Zauber eingeben", Enter, Name oder Nummer, Enter, und
+            Sku sagt an, welchen Zauber es daraus gemacht hat. Die beiden Bedingungen "zauber nr"
+            und "gegenstand nr" stehen dafuer nicht mehr in der Attributliste: sie meinten einen
+            EINZELNEN Zauberrang und bedeuteten damit direkt neben "zauber name" das Gegenteil von
+            dem, was derselbe getippte Wert dort tut. Neu dazugekommen ist "Buff Debuff nur selbst
+            gewirkte" - steht sie auf wahr, sehen die Buff- und Debufflisten dieser Aura nur noch
+            Effekte, die DU gewirkt hast, sodass "mein Schattenwort: Schmerz laeuft ab" nicht mehr
+            das eines anderen Priesters auf demselben Ziel meldet. Und weil "Quelle (L)" und
+            "ziel (L)" regelmaessig fuer das eigene Ziel gehalten wurden, heissen sie jetzt
+            "Ereignis Quelle (L)" und "Ereignis Ziel (L)": sie filtern das ausloesende EREIGNIS.
+            Zuletzt das Verhalten der Listen selbst: alle Wertelisten oeffnen spuerbar schneller,
+            "zauber benutzbar" friert das Spiel beim Aufklappen nicht mehr ein, ein Zauberwechsel
+            in einer Dauer-Bedingung geht ohne Haenger und ohne den vorherigen Zauber weiter als
+            ausgewaehlt vorzulesen, und "Loeschen" fragt jetzt nach, bevor eine Aura weg ist - es
+            war der einzige Eintrag der Liste, der das nicht tat, direkt neben "Duplizieren", das
+            immer gefragt hat.
+        Technisch: Ein Attribut wird als Schalter gebaut, wenn sein Typ BINARY ist, es genau zwei
+            Werte hat und der Typ genau einen Operator erlaubt (tBinaryValuesForAttribute in
+            SkuAuras/Options.lua); geschrieben wird exakt das, was die alte Werteliste geschrieben
+            hat, eine ueber den Schalter gebaute Aura ist von einer alt gebauten also nicht zu
+            unterscheiden, und eine leere values-Liste faellt aus dem Entwurf - das ist "nicht
+            festgelegt". Die Bedingungszeile paart actionInPlace mit actionOnEnter, das ist es,
+            was Enter und Pfeil rechts auf demselben Knoten auseinanderhaelt. Die Attributliste
+            sammelt Gruppen und Attribute mit ihrem Anzeigenamen ein und fuegt beides in
+            Namensreihenfolge ein. Die zwei Ereignisfamilien sind EIN Attribut und EINE
+            gespeicherte Bedingung: jede Familienliste bietet die andere als einen Eintrag an, und
+            beide zeigen auf die Bedingung, die der Entwurf schon haelt - sonst hinterliesse ein
+            Gang durch beide zwei Bedingungen auf event, die der Speichern-Lauf zu einer immer
+            wahren ODER-Gruppe verschmilzt. listsOwnOnly ist ein binaerer Modifikator: getAuraList
+            faengt im selben Scan den Wirker (7. Rueckgabewert von UnitAura) ab und fuellt
+            parallele own-Mengen, die EvaluateAllAuras pro markierter Aura eintauscht. Die
+            Wertelisten sortieren mit einem Sortierschluessel pro Eintrag statt zweien pro
+            Vergleich (27.057 statt rund 800.000 neue Zeichenketten pro Zauberliste), "zauber
+            benutzbar" fragt die 132 Aktionsplaetze statt aller 49.000 Zauber der Datenbank, und
+            die Dauer-Bedingung laesst jeden Eintrag beim Vorlesen selbst sagen, wie er steht
+            (tValueToggleRefreshLiveName, EINE per Referenz geteilte Funktion), statt bei jedem
+            Enter 27.000 Eintraege zurueckzusetzen. "zauber nr"/"gegenstand nr" werden weiter
+            ausgewertet und sind nur ueber ein retired-Flag aus dem Builder ausgeblendet, damit
+            eine importierte oder alte Aura nicht auf ein nil laeuft; mit ihnen entfallen ihre
+            Wertelisten, rund 49.000 Zauber- und 25.000 Gegenstands-IDs, die bei jedem Laden
+            aufgebaut wurden. Die Locale-SCHLUESSEL der umbenannten Bedingungen sind unveraendert,
+            es verschiebt sich also keine gespeicherte Aura. Beim Loeschen musste zusaetzlich der
+            aName-Zweig des Verwalten-Menues weichen: selectTarget wird erst umgehaengt, wenn die
+            Ebene betreten ist, bis dahin waere die Rueckfrage kosmetisch gewesen. Loeschen
+            frischt jetzt auch die Aura-Pseudoattribute auf - eine geloeschte Aura blieb vorher
+            als Bedingung waehlbar.
 
     Franzoesische Clients: die Liste der Waffenverzauberungen fuer Auren war leer
         Einfach: Auf einem franzoesischen Client bot die Aura-Bedingung fuer Waffenverzauberungen
@@ -869,84 +897,6 @@ Aenderungen in Sku v43.0
             leer heraus. Sie nimmt jetzt die Spalte der eigenen Sprache, sonst die englische,
             wie der Rest des Namenssystems seit v42.09. Gefunden beim Umbau auf Gruppen-
             Identitaet, nicht aus einem Bericht.
-
-    Auren: die Bedingungen "zauber nr" und "gegenstand nr" sind entfallen
-        Einfach: Die beiden Bedingungen, die eine Zauber- oder Gegenstandsnummer direkt
-            abgefragt haben, stehen nicht mehr in der Attributliste. Gemeint war damit ein
-            EINZELNER Zauberrang - "Frostblitz Rang 1" und sonst nichts. Gleich daneben steht
-            "zauber name", das dieselbe getippte Nummer annimmt und daraus den ganzen Zauber
-            macht, alle Raenge eingeschlossen: zwei benachbarte Eintraege, die dieselbe Eingabe
-            annehmen und Gegenteiliges bedeuten, ohne dass im Menue etwas darauf hinweist. Wer
-            wirklich einen einzelnen Rang braucht, sagt bitte Bescheid - dann kommt die Bedingung
-            zurueck. "gegenstand nr" hat ausserdem noch nie funktioniert. Gespeicherte Auren mit
-            einer der beiden laufen unveraendert weiter.
-        Technisch: Beide Attribute bleiben in SkuAuras.attributes und werden weiter ausgewertet,
-            sind aber ueber ein retired-Flag aus dem Builder ausgeblendet - eine importierte oder
-            alte Aura darf nicht auf ein nil laufen. "gegenstand nr" verglich tonumber() ueber den
-            GESPEICHERTEN Wert "item:6948", also nil, worauf jeder Operator an seiner eigenen
-            nil-Pruefung ausstieg: die Bedingung war in jeder ausgelieferten Version dauerhaft
-            falsch. Repariert, statt kaputt liegenzulassen - ein Lesepfad, den man behaelt, muss
-            ehrlich sein. Mit den Attributen entfallen ihre Wertelisten, rund 49.000 Zauber-IDs
-            und 25.000 Gegenstands-IDs mit je einem eigenen Tabelleneintrag, die bei jedem Laden
-            aufgebaut wurden. Ausserdem faengt die Auswertungsschleife jetzt ein Attribut ab, das
-            dieser Build gar nicht kennt: importierte Auren werden ungeprueft uebernommen, und ein
-            solcher Name warf vorher bei JEDEM Kampfereignis einen Lua-Fehler. /skucheck auras
-            meldet beide Faelle.
-
-    Auren: die Ereignisliste hat jetzt eine Gruppe "Zauber Ereignisse"
-        Einfach: Die Liste der Ereignisse, aus der eine Bedingung waehlt, hatte 35 Eintraege, und
-            18 davon waren Zauber-Ereignisse. Dazwischen lagen die Ereignisse, die gar nichts mit
-            einem Zauber zu tun haben - Nahkampf, Fernkampf, Gegenstands-Cooldown, Tastendruck,
-            Zielwechsel - und waren nur noch durch Vorbeilaufen zu finden. Die 18 stehen jetzt
-            unter einem Eintrag "Zauber Ereignisse"; oben bleiben 18 Eintraege statt 35. Der
-            Gruppeneintrag nennt selbst, was darin ausgewaehlt ist, du musst also nicht
-            hineingehen, um das zu erfahren. An den Auren selbst aendert sich nichts.
-        Technisch: Reine Menue-Gruppierung, eine Ebene unter der Attributgruppe "Eigene
-            Gesundheit oder Ressource" und nach demselben Muster. Jeder Wert bleibt sein eigener
-            Wert, die Mehrfachauswahl und der Operator gelten unveraendert fuer die ganze
-            Bedingung. Die Mitgliedschaft ist eine ausgeschriebene Liste, kein Praefix-Vergleich
-            auf "SPELL_": zwei der Ereignisse erzeugt Sku selbst, ihre Namen gehoeren uns, und ein
-            Muster wuerde still umgruppieren, sobald eines umbenannt wird. Der Baustein fuer die
-            Wertetoggles wurde herausgezogen, damit ein Wert in der Gruppe und einer ausserhalb
-            garantiert derselbe Eintrag sind.
-
-    Auren: "Eigene combopunkte" ist in die Gruppe "Eigene Gesundheit oder Ressource" gezogen
-        Einfach: Die Bedingung steht nicht mehr einzeln in der obersten Attributliste, sondern
-            zusammen mit Gesundheit, Ressource, Mana, Wut, Energie und Runenmacht in der Gruppe,
-            in der man sie sucht. Sie kann genau dasselbe wie vorher.
-        Technisch: Verschoben, nicht entfernt - kein anderer Eintrag der Gruppe meldet
-            Kombopunkte, ein blosses Loeschen haette die Faehigkeit ersatzlos gestrichen. Sie
-            waren beim Bau der Gruppe bewusst draussen geblieben, weil sie 0 bis 5 zaehlen,
-            waehrend alles andere dort ein Prozentwert ist; diesen Unterschied traegt aber ihre
-            eigene Werteliste, und er ist kein Grund, sie woanders suchen zu lassen. Der
-            Gruppen-Hinweistext nennt beides jetzt. Nebenbei entfernt: eine vergessene
-            Debug-Ausgabe, die bei jeder Auswertung dieser Bedingung eine Zeile ins Protokoll
-            schrieb.
-
-    Auren: die Werteliste "zauber benutzbar" liess das Spiel haengen
-        Einfach: Diese Bedingung aufzuklappen hat das Spiel spuerbar eingefroren, und zwar bei
-            JEDEM Oeffnen. Sie oeffnet jetzt sofort. Angeboten werden dieselben Zauber wie vorher,
-            naemlich die auf deinen Aktionsleisten.
-        Technisch: Die Liste wurde gebaut, indem ueber ALLE rund 49.000 Zauber der Datenbank
-            gelaufen wurde und fuer jeden einzelnen C_ActionBar.FindSpellActionButtons gefragt
-            wurde, ob er auf einer Leiste liegt - und das bei jedem Oeffnen erneut, weil die
-            Werteliste vor jedem Aufbau neu erzeugt wird. Jetzt werden die 132 Aktionsplaetze
-            gefragt, was sie tragen: dieselbe Antwort in 132 statt 49.000 Schritten. Nebenbei
-            behoben: der Aufbau nimmt jetzt denselben Namensaufloeser wie die Live-Seite
-            (SkuAuras:SpellGroupName mit dem Live-Namen als Rueckfallebene), sodass Auswahlliste
-            und live anliegende Menge sich per Konstruktion decken. Vorher konnte ein Zauber, den
-            die mitgelieferte Datenbank nicht kennt, live anliegen, aber in der Liste gar nicht
-            erst auftauchen - derselbe Fehler, fuer den die Waffenverzauberungsliste in v43.0
-            korrigiert wurde.
-
-    Auren: alle Wertelisten oeffnen schneller
-        Einfach: Jede Auswahlliste einer Aura-Bedingung braucht jetzt weniger Zeit, am deutlichsten
-            die grossen Zauberlisten.
-        Technisch: Die Sortierung berechnet den Sortierschluessel einmal pro Eintrag statt zweimal
-            pro Vergleich. Die Zauberlisten haben 27.057 Gruppen; table.sort macht darauf rund
-            400.000 Vergleiche, und jeder Vergleich hat auf BEIDEN Seiten den Namen kleingeschrieben
-            - also etwa 800.000 neue Zeichenketten, bevor der erste Menueeintrag ueberhaupt
-            existierte. Jetzt sind es 27.057. Die Reihenfolge ist unveraendert.
 
     Menue: jeder Eintrag wird jetzt rund 13 mal guenstiger erzeugt
         Einfach: Lange Listen bauen sich deutlich schneller auf. Am staerksten faellt es bei den
@@ -1026,67 +976,23 @@ Aenderungen in Sku v43.0
             /skucheck menu gezaehlt - er klaenge sonst wie eine Einstellung ohne Wert statt wie
             ein Defekt.
 
-    Auren: der Zauberwechsel in einer Dauer-Bedingung haengte
-        Einfach: Eine Bedingung mit Dauer ("laenger als", "kuerzer als") haelt genau einen Zauber.
-            Wechselte man ihn, ging Sku danach die ganze Liste durch, nur um den vorher gewaehlten
-            Eintrag wieder auf "aus" zu setzen - bei den Buff- und Debufflisten sind das 27.000
-            Eintraege bei JEDEM Enter, auf Hardcore-Realms genau die Stelle, an der der Server
-            gern abbricht. Jeder Eintrag sagt jetzt beim Vorlesen selbst, wie er steht, und das
-            Durchgehen entfaellt. Nebenbei behoben: wer den Zauber ueber "Zauber eingeben" tippte,
-            bekam den vorher gewaehlten Eintrag weiterhin als "ein" vorgelesen - die Liste nannte
-            zwei ausgewaehlte Zauber, gespeichert war einer.
-        Technisch: tValueToggleRefreshLiveName in SkuAuras/Options.lua ist EINE geteilte Funktion,
-            die per Referenz an jeden Eintrag gehaengt wird: kein Closure pro Eintrag, also keine
-            zusaetzliche Belegung beim Aufbau. Sie liest internalName gegen auraCond der Ebene und
-            laeuft einmal pro Tastendruck, nicht einmal pro Eintrag. Die grossen Wertelisten gehen
-            bewusst NICHT ueber MakeToggleNode: das kostete drei Closures und eine Tabelle je
-            Eintrag - bei 27.057 Eintraegen genau die Kosten pro Knoten, die der Umbau dieser
-            Version beseitigt hat. Wertegruppen setzen self.auraCond in ihrem BuildChildren, damit
-            der begrenzte Elternlauf sie findet.
-
-    Auren: Bedingungen mit nur zwei Werten sind jetzt Schalter
-        Einfach: Eine Aura-Bedingung, die nur zwei Werte kennt - "wahr" und "falsch", oder "buff"
-            und "debuff" - kostete drei Ebenen: das Attribut, darunter den einzigen Vergleich
-            "gleich", und darunter eine Liste aus genau zwei Eintraegen. Jetzt steht der Wert
-            direkt am Eintrag und Enter schaltet ihn um: "Im Kampf; wahr", Enter, "Im Kampf;
-            falsch". Pfeil rechts wird dafuer nicht mehr gebraucht.
-            Beim ANLEGEN geht Enter einen Schritt weiter zu "nicht festgelegt" und wieder zurueck
-            zum ersten Wert. So laesst sich ein versehentlich gesetzter Schalter wieder wegnehmen,
-            ohne die Bedingung erst anzulegen und dann zu loeschen. Bei einer FERTIGEN Bedingung
-            wechselt Enter nur zwischen den beiden Werten - sie ganz zu entfernen wuerde die Zeile
-            wegnehmen, auf der du gerade stehst; dafuer gibt es weiterhin "Loeschen" eine Ebene
-            tiefer, ueber Pfeil rechts.
-            Betroffen sind "Im Kampf", "Listen nur selbst gewirkte", "Kritisch", "Quelle des
-            Ereignisses angreifbar", "Ziel des Ereignisses angreifbar", "Dein aktuelles Ziel
-            angreifbar" und "Buff oder Debuff" - und jede Bedingung, die auf eine deiner eigenen
-            Auren verweist.
-            Wichtig zum Verstaendnis: "nicht festgelegt" ist KEIN dritter Wert, sondern heisst,
-            dass es die Bedingung gar nicht gibt. Das ist der neutrale Zustand, nicht "falsch".
-            "falsch" ist ein Vergleich wie jeder andere: "Im Kampf gleich falsch" loest NUR
-            ausserhalb des Kampfes aus, und eine Aura mit "Kritisch gleich falsch" auf einem
-            Ereignis, das gar kein Treffer ist, loest ueberhaupt nie aus. Deshalb faengt ein
-            Schalter unbelegt an und nicht bei einem Wert.
-        Technisch: Ein Attribut ist ein Schalter, wenn sein Typ BINARY ist, es genau zwei Werte
-            hat und sein Typ genau einen Operator erlaubt (tBinaryValuesForAttribute in
-            SkuAuras/Options.lua). Alle drei werden geprueft und nicht angenommen: bekaeme BINARY
-            je einen zweiten Operator, gaebe es wieder zwei Achsen und der Schalter wuerde eine
-            davon verstecken. Die beiden Werte kommen in DEKLARATIONS-Reihenfolge, nicht in der
-            sortierten Anzeigereihenfolge - der erste ist, was ein erstes Enter setzt, und "wahr"
-            vor "falsch" ist der brauchbare Vorgabewert, waehrend die Namenssortierung einem
-            deutschen Client "falsch" zuerst gaebe.
-            tStepBinaryCondition schreibt genau das, was die alte Werteliste geschrieben hat: den
-            einen Operator, den der Typ erlaubt, und eine values-Liste mit genau einem der
-            Wert-Strings des Attributs. Die Auswertung wird nicht angefasst - gespeicherte und
-            importierte Auren rechnen unveraendert, und eine ueber den Schalter gebaute Aura ist
-            von einer alt gebauten nicht zu unterscheiden. Eine leere values-Liste faellt durch
-            tDraftConditionSaysSomething, also nimmt tDraftSyncCondition die Bedingung wieder aus
-            dem Entwurf: das ist "nicht festgelegt".
-            Die Bedingungszeile paart actionInPlace mit actionOnEnter - sie HAT Kinder, und der
-            Absteigen-Zweig wird zuerst geprueft, also ist erst dieses Paar das, was Enter und
-            Pfeil rechts auseinanderhaelt (siehe SkuGenericMenuItem in SkuZOptions/templates.lua).
-            tBuildConditionAspects steigt fuer einen Schalter sofort wieder aus, oben in der
-            Funktion statt an den Aufrufstellen, damit die Operator-Ebene nicht versehentlich
-            zurueckkommen kann.
+    Bereitschaftscheck: das Fenster landete nicht auf der Antwort, wie es jedes andere Popup tut
+        Einfach: Startet jemand in der Gruppe einen Bereitschaftscheck, oeffnet Sku wie bei jedem
+            Popup das Menue und springt hinein. Bei diesem einen Fenster kam der Cursor aber nicht
+            auf "Bereit" an, sondern eine Ebene darueber, sodass es zwei weitere Tastendruecke bis
+            zur Antwort waren. Jetzt stehst du sofort auf "Bereit", darunter liegt "Nicht bereit",
+            und Pfeil links fuehrt zurueck auf "Bereitschaft check". Wer den Check gestartet hat,
+            steht an beiden Eintraegen als Volltext.
+        Technisch: ReadyCheckFrame ist nur eine Huelle um ReadyCheckListenerFrame, das die Meldung
+            und die beiden Knoepfe traegt; generisch abgelaufen wurde diese Huelle eine eigene
+            Menueebene, und der Absprung von SkuCore:CheckFrames landete auf ihr. Es gibt jetzt
+            einen eigenen Bauplan (SkuCore:Build_ReadyCheckFrame in SkuCore/LocalMenu.lua,
+            eingetragen in interactFramesListManual), der die beiden Antworten flach als
+            directAction-Eintraege baut - dasselbe Muster wie Build_RolePollPopup fuer die
+            Rollenabfrage. Die Beschriftungen kommen von den Knoepfen selbst, die Blizzard in
+            ReadyCheckFrame_OnLoad uebersetzt, es braucht also keinen neuen Locale-Eintrag.
+            Gelistet werden nur sichtbare Knoepfe: hast du den Check selbst gestartet, blendet
+            Blizzard die Antwortseite aus und es gibt nichts zu beantworten.
 
 
 -------------------------------------------------------------------------------------------------------

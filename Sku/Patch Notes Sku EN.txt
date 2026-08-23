@@ -11,12 +11,11 @@ Changes in Sku v43.0
         New
             Shift-F9 to Shift-F12 have their own keybinding entries now, and quick-access slots 1 to 4 are free again.
             The taxi flight announcements can be switched off, and they never name your take-off or arrival point as a landing option.
-            New aura condition "Lists own casts only" filters the lists to your own effects, and "Source/target (L)" are now "Event source/target (L)".
+            New aura condition "Buff Debuff own casts only" filters this aura's buff and debuff lists to effects you cast yourself.
             New command /skucheck verifies fixed rules against the live game state; it has also taken over the database tools as sub-commands (wp, db, mem).
             The installer collects every log file for a bug report at one button press.
             The login screen is usable with the login tool now.
             Waypoint lists announce how far the loading has got.
-            Aura value lists start with "Enter spell", for when you know the number and not the name.
 
         Changes
             Aura expiry warnings arrive on time instead of at the next combat event.
@@ -30,14 +29,10 @@ Changes in Sku v43.0
             Every rank of a spell counts as one entry for an aura.
             Spell names the game hands out more than once can be told apart in the selection lists now.
             The bundled aura sets are no longer German clients only.
-            The aura conditions "spell ID" and "item ID" are gone; "spell name" and "item name" take a typed number too.
-            The event list of an aura condition collects every spell event under one "Spell events" entry.
-            "Your combo points" now sits in the "Your health or resource" group instead of the top-level attribute list.
-            The "spell usable" value list opens without a hang, and every aura value list opens noticeably faster.
+            The menu you build an aura in has been rebuilt: attribute list sorted by name, two-value conditions as switches, spells typed as well as picked, and every value list opens faster.
             Every menu entry in the whole addon is about 13 times cheaper to create, which makes the big spell lists open about three times faster.
             A list whose build was cut off by the server is continued on the next frame instead of quietly staying incomplete.
             Settings with two values read their value out with the name and switch with Enter; the RIGHT arrow and the submenu are gone.
-            Aura conditions with only two values (true/false, buff/debuff) are switches: the value sits on the entry and Enter flips it.
 
         Bugfixes
             French clients: all aura sounds and pre-recorded speech clips were silent (fix by Naxedim).
@@ -58,7 +53,7 @@ Changes in Sku v43.0
             Power monitor: the resource setting "nothing" threw a stream of Lua errors.
             Power monitor: a monitor switched off in the features menu still announced resource changes.
             French clients: the list of weapon enchants for aura conditions was empty.
-            Auras: switching the spell of a duration condition stalled, and via "Enter spell" the previous spell still read as selected.
+            The ready check did not land straight on "Ready" the way every other popup does.
 
     With thanks to Naxedim and ZenqFR
         The next four fixes are the first direct code contributions to the now-public Sku
@@ -597,25 +592,6 @@ Changes in Sku v43.0
             "aura gate re-armed" records every release. Observed as four firings within 987 ms
             (DURATION_DEADLINE, then UNIT_POWER twice and SPELL_PERIODIC_DAMAGE).
 
-    Auras: new condition "Lists own casts only", and two conditions have clearer names
-        Simple: The aura editor has a new condition, "Lists own casts only". Set to true, this
-            aura's buff and debuff lists - and their duration conditions - only see effects YOU
-            cast. So "my Shadow Word: Pain is expiring" no longer reports another priest's on the
-            same target. Weapon enchants count as your own, and without the condition everything
-            behaves as before. The conditions "Source (L)" and "target (L)" are now called
-            "Event source (L)" and "Event target (L)": they filter the TRIGGERING EVENT, not your
-            current target - a confusion that repeatedly produced auras which never fired.
-        Technical: listsOwnOnly is a binary modifier (the condition always evaluates true, the
-            VALUE carries the meaning). getAuraList captures UnitAura's 7th return (the caster)
-            in the same scan and fills parallel own/ownExp sets; cache slots, fallback scratches
-            and the verify buffers were all extended. EvaluateAllAuras swaps the sets into
-            tEvaluateData per flagged aura and restores all four lists afterwards;
-            getFixedDuration reads ownExp. Known edge: if your own aura drops while another
-            caster's same-name aura stays on the unit, no name set changes - out of combat-log
-            range the wake-up cannot see it. The renames are value-only changes in
-            deDE/enUS/frFR, keys stay stable; the tooltips now explain the event plane versus the
-            list conditions.
-
     Menu: on large maps the Shift-F9 waypoint list only opened on the second try
         Simple: On maps with very many waypoints Shift-F9 stayed on the top entry instead of
             opening the list; one more arrow press then opened it. The reason was work that ran
@@ -767,19 +743,68 @@ Changes in Sku v43.0
             (SkuAuras:RelocalizedAuraName); customName auras are excluded, and those are exactly the
             ones other auras can reference, so cross-aura references survive intact.
 
-    Auras: "Enter spell ID" as the first entry of every spell value list
-        Simple: If you know a spell's number you no longer have to find its name in a list of over
-            27,000 entries. "Enter spell ID" sits at the very top of the value list; Enter opens an
-            input field, you type the number, Enter, and Sku tells you which spell it resolved it
-            to. If Sku does not know the number it says "Unknown spell ID" and changes nothing.
-        Technically: Injected at index 0 - the menu keeps insertion order, and the sorting flag only
-            picks filter versus type-ahead. ENTER inside a select level always dispatches to the
-            level's selectTarget and never to the focused node's own OnAction, so the selectTarget's
-            OnAction is wrapped once and the node recognised by its marker. The typed id is resolved
-            to its group and the GROUP value is stored, not the id: the list attributes compare
-            against group-keyed live lists, and "spell name" compares names - a bare id could never
-            match either. A typed id therefore always stands for the whole spell, every rank
-            included.
+    Building auras: the menu you build an aura in has been rebuilt
+        Simply: An aura is still made of conditions, and everything you have already built keeps
+            evaluating unchanged - but the way to a condition is shorter in a lot of places now,
+            and the lists you walk through on the way are sorted, short and fast. In the order you
+            meet them:
+            The attribute list is sorted by name throughout - including the group entries, which
+            used to sit on top no matter what they were called. An entry is where its name puts
+            it, and typing its first letters gets you there. The 35 events sit behind two entries,
+            "General events" and "Spell events"; health, resource, mana, rage, energy, runic power
+            and combo points sit together in "Your health or resource"; and every aura you have
+            named yourself is a condition under "Your own auras" instead of loose among the real
+            attributes - the top list used to grow by one entry every time you named something,
+            and those entries sorted into every letter of the alphabet. Each group entry says what
+            is selected inside it as you read past, so you do not have to enter it to find out.
+            A condition with only two values - "true" and "false", or "buff" and "debuff" - is a
+            switch now instead of three levels. The value sits on the entry and Enter flips it:
+            "In combat; true", Enter, "In combat; false". While you are BUILDING, Enter goes one
+            step further to "not set" and back again, so a switch you set by accident can be taken
+            off. Worth understanding: "not set" is not a third value, it means the condition is not
+            there at all - that is the neutral state, not "false". "false" is a comparison like any
+            other: "in combat equals false" fires ONLY out of combat.
+            Spells still come from a list, but you can also type them: "Enter spell" is the first
+            entry of every spell value list - Enter, name or number, Enter, and Sku tells you which
+            spell it made of it. The two conditions "spell ID" and "item ID" are gone from the
+            attribute list in exchange: they meant a SINGLE rank of a spell, and so, sitting right
+            next to "spell name", they meant the opposite of what the same typed value does there.
+            New in the list is "Buff Debuff own casts only" - set to true, this aura's buff and
+            debuff lists only see effects YOU cast, so "my Shadow Word: Pain is running out" no
+            longer reports another priest's on the same target. And because "Source (L)" and
+            "target (L)" were regularly taken for your own target, they are called "Event source
+            (L)" and "Event target (L)" now: they filter the triggering EVENT.
+            Finally the lists themselves: every value list opens noticeably faster, "spell usable"
+            no longer freezes the game when you open it, switching the spell of a duration
+            condition has no stall and no longer reads the previous spell as still selected, and
+            "Delete" asks before an aura is gone - it was the one entry in that list that did not,
+            right next to "Duplicate", which always asked.
+        Technically: An attribute becomes a switch when its type is BINARY, it has exactly two
+            values, and its type allows exactly one operator (tBinaryValuesForAttribute in
+            SkuAuras/Options.lua); what gets written is exactly what the old value list wrote, so
+            an aura built through the switch is indistinguishable from one built the old way, and
+            an empty values list drops out of the draft - that is "not set". The condition row
+            pairs actionInPlace with actionOnEnter, which is what tells Enter and RIGHT apart on
+            the same node. The attribute list collects groups and attributes with their display
+            name and injects both in name order. The two event families are ONE attribute and ONE
+            stored condition: each family list offers the other as a single entry, and both
+            re-point at the condition the draft already holds - without that, walking into both
+            would leave two conditions on `event`, which the save merges into one always-true OR
+            group. listsOwnOnly is a binary modifier: getAuraList picks up the caster (7th return
+            of UnitAura) in the same scan and fills parallel own-sets that EvaluateAllAuras swaps
+            in per marked aura. The value lists sort with one sort key per entry instead of two per
+            comparison (27,057 instead of about 800,000 new strings per spell list), "spell usable"
+            asks the 132 action slots instead of all 49,000 spells in the database, and the
+            duration condition lets each entry say its own state as it is read
+            (tValueToggleRefreshLiveName, ONE function shared by reference) instead of resetting
+            27,000 entries on every Enter. "spell ID"/"item ID" are still evaluated and only hidden
+            from the builder behind a retired flag, so an imported or old aura cannot run onto a
+            nil; with them go their value lists, about 49,000 spell and 25,000 item IDs that were
+            built on every load. The locale KEYS of the renamed conditions are unchanged, so no
+            stored aura moves. Deleting also meant removing the manage menu's aName branch:
+            selectTarget is only re-pointed once the level is entered, so until then the
+            confirmation would have been cosmetic. Delete now refreshes the aura pseudo-attributes
+            too - a deleted aura used to stay offerable as a condition.
 
     French clients: the list of weapon enchants for aura conditions was empty
         Simple: On a French client the aura condition for weapon enchants offered not a single
@@ -790,76 +815,6 @@ Changes in Sku v43.0
             takes the column of your own language now, else the English one, the way the rest of the
             naming system has since v42.09. Found while porting to group identity, not from a
             report.
-
-    Auras: the conditions "spell ID" and "item ID" have been removed
-        Simple: The two conditions that asked for a spell or item number directly are gone from
-            the attribute list. What they meant was one SINGLE rank of a spell - "Frostbolt Rank 1"
-            and nothing else. Right beside them sits "spell name", which takes the very same typed
-            number and turns it into the whole spell, every rank included: two neighbouring entries
-            that accept identical input and mean opposite things, with nothing in the menu saying
-            so. If you really do need a single rank, say the word and the condition comes back.
-            "item ID" could never work at all on top of that. Stored auras using either one keep
-            running unchanged.
-        Technically: Both attributes stay in SkuAuras.attributes and are still evaluated, but a
-            retired flag keeps them out of the builder - an imported or old aura must not run into
-            a nil. "item ID" ran tonumber() over the STORED value "item:6948", which is nil, so
-            every operator bailed on its own nil guard: the condition was permanently false in
-            every shipped version. Repaired rather than left broken - a read path you keep has to
-            be honest. Retiring them drops their value lists, some 49,000 spell ids and 25,000 item
-            ids with a table entry each, built on every load. The evaluation loop also catches an
-            attribute this build does not know at all now: imported auras are stored unvalidated,
-            and such a name used to throw a Lua error on EVERY combat event. /skucheck auras
-            reports both cases.
-
-    Auras: the event list now has a "Spell events" group
-        Simple: The list of events a condition picks from had 35 entries and 18 of them were spell
-            events. The events that have nothing to do with a spell - melee, ranged, item
-            cooldown, a keypress, a target change - lay scattered between them and could only be
-            found by walking past them. Those 18 now sit under one "Spell events" entry, and the
-            top level holds 18 entries instead of 35. The group entry says for itself which of
-            them are picked, so you do not have to walk in to find out. Nothing about your auras
-            changes.
-        Technically: Menu grouping only, one level below the "Your health or resource" attribute
-            group and built to the same pattern. Every value stays its own value; multi-select and
-            the operator still apply to the whole condition. Membership is a written-out list, not
-            a "starts with SPELL_" test: two of these events are ones Sku synthesizes itself, so
-            their names are ours, and a pattern would silently regroup a value the day one gets
-            renamed. The value-toggle builder was extracted so that a value inside the group and
-            one outside it are guaranteed to be the same entry.
-
-    Auras: "Your combo points" moved into the "Your health or resource" group
-        Simple: The condition no longer sits on its own in the top-level attribute list but
-            together with health, resource, mana, rage, energy and runic power, in the group where
-            you would look for it. It does exactly what it did before.
-        Technically: Moved, not removed - no other entry in the group reports combo points, so
-            simply deleting it would have dropped the capability with nothing to replace it. They
-            were deliberately left out when the group was built, because they count 0 to 5 while
-            everything else in there is a percentage; but that difference is carried by their own
-            value list, and it is not a reason to make you look for them somewhere else. The
-            group's hint text now names both. Removed along the way: a forgotten debug line that
-            wrote to the log on every evaluation of this condition.
-
-    Auras: the "spell usable" value list froze the game
-        Simple: Opening that condition visibly froze the game, and it did so on EVERY open. It
-            opens instantly now. The spells offered are the same as before, the ones on your
-            action bars.
-        Technically: The list was built by walking ALL of the roughly 49,000 spells in the
-            database and asking C_ActionBar.FindSpellActionButtons about each one whether it sits
-            on a bar - and doing that again on every open, because a value list is rebuilt before
-            every use. It now asks the 132 action slots what they hold: the same answer in 132
-            steps instead of 49,000. Fixed along the way: the build now uses the same name
-            resolver as the live side (SkuAuras:SpellGroupName with the live name as its fallback),
-            so the offered list and the live set agree by construction. Before, a spell the
-            shipped database does not know could be live and yet never appear in the list at all -
-            the same defect the weapon enchant list was fixed for in v43.0.
-
-    Auras: every value list opens faster
-        Simple: Every selection list of an aura condition takes less time to open, most visibly
-            the big spell lists.
-        Technically: The sort computes its key once per entry instead of twice per comparison. The
-            spell lists hold 27,057 groups; table.sort makes about 400,000 comparisons over that,
-            and each comparison lowercased the name on BOTH sides - roughly 800,000 fresh strings
-            before the first menu entry even existed. It is 27,057 now. The order is unchanged.
 
     Menu: every entry is now about 13 times cheaper to create
         Simple: Long lists build noticeably faster. It shows most on the spell lists of an aura
@@ -932,60 +887,22 @@ Changes in Sku v43.0
             reader throws is counted in /skucheck menu - it would otherwise sound like a setting
             with no value rather than like a defect.
 
-    Auras: switching the spell of a duration condition stalled
-        Simple: A condition with a duration ("longer than", "shorter than") holds exactly one
-            spell. Switching it made Sku walk the entire list afterwards just to set the
-            previously chosen entry back to "off" - on the buff and debuff lists that is 27,000
-            entries on EVERY Enter, and on hardcore realms precisely the kind of thing the server
-            likes to cut off. Every entry now reports its own state as it is read out, so there is
-            nothing to walk. Fixed along the way: if you typed the spell via "Enter spell", the
-            previously chosen entry still read as "on" - the list named two selected spells while
-            one was stored.
-        Technically: tValueToggleRefreshLiveName in SkuAuras/Options.lua is ONE shared function
-            attached to every entry by reference: no closure per entry, so it allocates nothing at
-            build time. It reads internalName against the level's auraCond and runs once per
-            keypress, not once per entry. The big value lists deliberately do NOT go through
-            MakeToggleNode: that would cost three closures and a table per entry, which at 27,057
-            entries is exactly the per-node cost this version's node rework removed. Value groups
-            set self.auraCond in their BuildChildren so the bounded parent walk finds it.
-
-    Auras: conditions with only two values are switches now
-        Simple: An aura condition that only knows two values - "true" and "false", or "buff" and
-            "debuff" - cost three levels: the attribute, below it the single comparison "equal",
-            and below that a list of exactly two entries. The value now sits on the entry itself
-            and Enter flips it: "In combat; true", Enter, "In combat; false". The RIGHT arrow is
-            no longer needed for it.
-            While BUILDING a condition, Enter goes one step further to "not set" and then back to
-            the first value. That way a switch you set by accident can be taken back without
-            first creating the condition and then deleting it. On a FINISHED condition Enter only
-            alternates between the two values - clearing it there would remove the very row you
-            are standing on; "Delete" one level down, via the RIGHT arrow, still does that.
-            This covers "In combat", "Lists own casts only", "Critical", "Event source
-            attackable", "Event target attackable", "Your current target is attackable" and
-            "Buff or debuff" - and every condition that refers to one of your own auras.
-            Worth understanding: "not set" is NOT a third value, it means the condition does not
-            exist. That is the neutral state, not "false". "false" is a comparison like any
-            other: "In combat equal false" fires ONLY out of combat, and an aura carrying
-            "Critical equal false" on an event that is not a hit at all never fires. That is why
-            a switch starts unset rather than at a value.
-        Technically: An attribute is a switch when its type is BINARY, it has exactly two values,
-            and its type allows exactly one operator (tBinaryValuesForAttribute in
-            SkuAuras/Options.lua). All three are checked rather than assumed: the day BINARY grows
-            a second operator there are two axes to set again and a switch would hide one of them.
-            The two values come in DECLARATION order, not the sorted display order - the first of
-            them is what a first Enter sets, and "true" before "false" is the useful default,
-            while sorting by name would hand a German client "falsch" first.
-            tStepBinaryCondition writes exactly what the old value list wrote: the one operator
-            the type allows, and a values list holding exactly one of the attribute's own value
-            strings. Evaluation is untouched - stored and imported auras evaluate identically, and
-            an aura built through the switch is indistinguishable from one built the old way. An
-            empty values list fails tDraftConditionSaysSomething, so tDraftSyncCondition detaches
-            the condition from the draft again: that is what "not set" is.
-            The condition row pairs actionInPlace with actionOnEnter - it HAS children, and the
-            descend branch is checked first, so only that pair separates Enter from the RIGHT
-            arrow (see SkuGenericMenuItem in SkuZOptions/templates.lua). tBuildConditionAspects
-            returns immediately for a switch, at the top of the function rather than at the call
-            sites, so the operator level cannot come back by accident.
+    Ready check: the window did not land on the answer the way every other popup does
+        Simply: When someone in the group starts a ready check, Sku opens the menu and jumps into
+            it, exactly as it does for any popup. For this one window the cursor did not arrive on
+            "Ready" but one level above it, which left two more keypresses between you and the
+            answer. You now land on "Ready" straight away, "Not ready" is below it, and LEFT takes
+            you back up to "ready check". Who started the check is on both entries as full text.
+        Technically: ReadyCheckFrame is only a wrapper around ReadyCheckListenerFrame, which
+            carries the message and the two buttons; walked generically, that wrapper became a
+            menu level of its own and the auto-descend in SkuCore:CheckFrames landed on it. There
+            is a builder for it now (SkuCore:Build_ReadyCheckFrame in SkuCore/LocalMenu.lua,
+            registered in interactFramesListManual) that builds the two answers flat as
+            directAction entries - the same pattern Build_RolePollPopup uses for the role poll.
+            The captions come from the buttons themselves, which Blizzard localises in
+            ReadyCheckFrame_OnLoad, so no new locale entry is needed. Only visible buttons are
+            listed: when you started the check yourself, Blizzard hides the answer side and there
+            is nothing to answer.
 
 
 -------------------------------------------------------------------------------------------------------

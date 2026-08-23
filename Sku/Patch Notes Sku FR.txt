@@ -14,12 +14,11 @@ Changements dans Sku v43.0
         Nouveautés
             Shift-F9 à Shift-F12 ont désormais leurs propres entrées de raccourcis, et les accès rapides 1 à 4 sont de nouveau libres.
             Les annonces de vol en taxi peuvent être désactivées, et elles ne nomment plus jamais le point de départ ni celui d'arrivée comme atterrissage possible.
-            Nouvelle condition d'aura « Listes : vos sorts uniquement » qui filtre les listes sur vos propres effets, et « Source/cible (L) » deviennent « Source/Cible de l'événement (L) ».
+            Nouvelle condition d'aura « Buff debuff vos sorts uniquement » qui filtre les listes de buffs et de debuffs de cette aura sur les effets que vous avez lancés.
             Nouvelle commande /skucheck qui vérifie des règles fixes sur l'état réel du jeu ; elle reprend aussi les outils de base de données comme sous-commandes (wp, db, mem).
             L'installateur collecte tous les journaux pour un rapport de bogue en un seul bouton.
             L'écran de connexion est désormais utilisable avec l'outil de connexion.
             Les listes de points de passage annoncent l'avancement du chargement.
-            Les listes de valeurs d'aura commencent par « Saisir le sort », quand vous connaissez le numéro et pas le nom.
 
         Changements
             Les avertissements d'expiration d'aura arrivent à l'heure au lieu du prochain événement de combat.
@@ -33,14 +32,10 @@ Changements dans Sku v43.0
             Tous les rangs d'un sort comptent pour une seule entrée d'aura.
             Les noms de sorts attribués plusieurs fois par le jeu se distinguent maintenant dans les listes de sélection.
             Les ensembles d'auras fournis ne sont plus réservés aux clients allemands.
-            Les conditions d'aura « ID du sort » et « ID de l'objet » ont disparu ; « nom du sort » et « nom de l'objet » acceptent aussi un numéro saisi.
-            La liste d'événements d'une condition d'aura regroupe tous les événements de sort sous une entrée « Événements de sort ».
-            « Vos points de combo » figure désormais dans le groupe « Votre santé ou ressource » et non plus dans la liste d'attributs de premier niveau.
-            La liste de valeurs « sort utilisable » s'ouvre sans à-coup, et toutes les listes de valeurs d'aura s'ouvrent nettement plus vite.
+            Le menu dans lequel on construit une aura a été refait : liste d'attributs triée par nom, conditions à deux valeurs en bascules, sorts saisissables autant que sélectionnables, et toutes les listes de valeurs s'ouvrent plus vite.
             Chaque entrée de menu de tout l'addon coûte environ 13 fois moins à créer, ce qui ouvre les grandes listes de sorts environ trois fois plus vite.
             Une liste dont la construction a été interrompue par le serveur est poursuivie à la frame suivante au lieu de rester incomplète sans le dire.
             Les réglages à deux valeurs annoncent leur valeur avec le nom et se basculent avec Entrée ; la flèche droite et le sous-menu disparaissent.
-            Les conditions d'aura à deux valeurs seulement (vrai/faux, buff/debuff) sont des bascules : la valeur figure sur l'entrée et Entrée la change.
 
         Corrections
             Clients français : tous les sons d'auras et les clips vocaux enregistrés étaient muets (correctif de Naxedim).
@@ -61,7 +56,7 @@ Changements dans Sku v43.0
             Moniteur de ressource : le réglage « rien » provoquait une série d'erreurs Lua.
             Moniteur de ressource : un moniteur désactivé dans le menu des fonctions annonçait quand même les changements de ressource.
             Clients français : la liste des enchantements d'arme pour les auras était vide.
-            Auras : changer le sort d'une condition de durée marquait un temps d'arrêt, et via « Saisir le sort » l'ancien sort restait annoncé comme sélectionné.
+            La vérification de préparation n'arrivait pas directement sur « Prêt » comme le fait toute autre fenêtre surgissante.
 
     Avec nos remerciements à Naxedim et ZenqFR
         Les quatre correctifs suivants sont les premières contributions de code directes au dépôt
@@ -676,28 +671,6 @@ Changements dans Sku v43.0
             « aura gate re-armed » consigne chaque levée. Observé : quatre déclenchements en
             987 ms (DURATION_DEADLINE, puis deux fois UNIT_POWER et SPELL_PERIODIC_DAMAGE).
 
-    Auras : nouvelle condition « Listes : vos sorts uniquement », et deux conditions plus claires
-        Simple : L'éditeur d'auras dispose d'une nouvelle condition, « Listes : vos sorts
-            uniquement ». Réglée sur vrai, les listes de buffs et de debuffs de cette aura - et
-            leurs conditions de durée - ne voient plus que les effets que VOUS avez lancés.
-            Ainsi « mon Mot de l'ombre : douleur expire » ne signale plus celui d'un autre prêtre
-            sur la même cible. Les enchantements d'arme comptent comme vôtres, et sans la
-            condition tout se comporte comme avant. Par ailleurs, les conditions « Source (L) »
-            et « cible (L) » s'appellent désormais « Source de l'événement (L) » et « Cible de
-            l'événement (L) » : elles filtrent l'ÉVÉNEMENT déclencheur, pas votre cible actuelle -
-            une confusion qui a maintes fois produit des auras qui ne se déclenchaient jamais.
-        Technique : listsOwnOnly est un modificateur binaire (la condition vaut toujours vrai,
-            c'est la VALEUR qui porte le sens). getAuraList capture le 7e retour d'UnitAura (le
-            lanceur) dans le même balayage et remplit des ensembles own/ownExp parallèles ;
-            emplacements de cache, tampons de repli et tampons de vérification ont tous été
-            étendus. EvaluateAllAuras échange les ensembles dans tEvaluateData pour chaque aura
-            marquée puis restaure les quatre listes ; getFixedDuration lit ownExp. Limite connue :
-            si votre propre aura disparaît alors que celle de même nom d'un autre lanceur reste
-            sur l'unité, aucun ensemble de noms ne change - hors de portée du journal de combat,
-            le réveil ne peut pas le voir. Les renommages ne changent que des valeurs dans
-            deDE/enUS/frFR, les clés restent stables ; les infobulles expliquent désormais le
-            plan de l'événement face aux conditions de liste.
-
     Menu : sur les grandes cartes, la liste de points de passage de Shift-F9 ne s'ouvrait qu'au deuxième essai
         Simple : Sur les cartes comptant beaucoup de points de passage, Shift-F9 restait sur
             l'entrée du haut au lieu d'ouvrir la liste ; une pression de flèche supplémentaire
@@ -867,21 +840,78 @@ Changements dans Sku v43.0
             justement celles auxquelles d'autres auras peuvent renvoyer : les renvois restent donc
             intacts.
 
-    Auras : « Saisir l'ID du sort » en première entrée de chaque liste de valeurs
-        Simple : Si vous connaissez le numéro d'un sort, vous n'avez plus à en chercher le nom dans
-            une liste de plus de 27 000 entrées. « Saisir l'ID du sort » figure tout en haut de la
-            liste ; Entrée ouvre un champ de saisie, vous tapez le numéro, Entrée, et Sku vous
-            annonce le sort qu'il en a tiré. Si Sku ne connaît pas ce numéro, il dit « ID de sort
-            inconnu » et ne change rien.
-        Technique : Injecté en position 0 - le menu conserve l'ordre d'insertion, et l'indicateur
-            sorting ne choisit qu'entre filtre et saisie prédictive. ENTRÉE dans un niveau de
-            sélection va toujours au selectTarget du niveau et jamais au OnAction du nœud ciblé : le
-            OnAction du selectTarget est donc enveloppé une fois et le nœud reconnu à sa marque.
-            L'ID saisi est résolu vers son groupe et c'est la VALEUR DE GROUPE qui est enregistrée,
-            pas l'ID : les attributs de liste comparent avec des listes vivantes indexées par
-            groupe, et « nom du sort » compare des noms - un ID nu ne pourrait jamais y
-            correspondre. Un ID saisi vaut donc toujours pour le sort entier, tous rangs
-            compris.
+    Créer une aura : le menu dans lequel on construit une aura a été refait
+        En clair : Une aura est toujours faite de conditions, et tout ce que vous avez déjà
+            construit continue de s'évaluer sans changement - mais le chemin vers une condition
+            est plus court à beaucoup d'endroits, et les listes que l'on parcourt en route sont
+            triées, courtes et rapides. Dans l'ordre où on les rencontre :
+            La liste des attributs est triée par nom de bout en bout - y compris les entrées de
+            groupe, qui se plaçaient auparavant toujours en tête quel que soit leur nom. Une
+            entrée se trouve donc là où son nom la place, et les premières lettres suffisent pour
+            l'atteindre. Les 35 événements tiennent derrière deux entrées, « Événements généraux »
+            et « Événements de sort » ; santé, ressource, mana, rage, énergie, puissance runique
+            et points de combo sont ensemble dans « Votre santé ou ressource » ; et toutes les
+            auras que vous avez nommées vous-même sont des conditions sous « Auras créées par
+            vous » au lieu d'être éparpillées parmi les vrais attributs - la liste du haut
+            grandissait d'une entrée à chaque aura nommée, et ces entrées se rangeaient dans
+            toutes les lettres de l'alphabet. Chaque entrée de groupe annonce elle-même ce qui est
+            sélectionné à l'intérieur : inutile d'y entrer pour le savoir.
+            Une condition à deux valeurs seulement - « vrai » et « faux », ou « buff » et
+            « debuff » - est désormais une bascule au lieu de trois niveaux. La valeur figure sur
+            l'entrée et Entrée la change : « En combat ; vrai », Entrée, « En combat ; faux ».
+            Pendant la CRÉATION, Entrée va un cran plus loin sur « non défini » puis revient, pour
+            qu'une bascule posée par erreur puisse être retirée. À comprendre : « non défini »
+            n'est pas une troisième valeur, cela veut dire que la condition n'existe pas du tout -
+            c'est l'état neutre, pas « faux ». « faux » est une comparaison comme une autre : « en
+            combat égal faux » ne se déclenche QU'EN dehors du combat.
+            Les sorts viennent toujours d'une liste, mais on peut aussi les saisir : « Saisir le
+            sort » est la première entrée de chaque liste de valeurs de sorts - Entrée, nom ou
+            numéro, Entrée, et Sku annonce le sort qu'il en a fait. En échange, les deux conditions
+            « ID du sort » et « ID de l'objet » ont quitté la liste des attributs : elles
+            désignaient un SEUL rang de sort et signifiaient donc, juste à côté de « nom du sort »,
+            l'inverse de ce que la même valeur saisie y produit. Nouvelle venue : « Buff debuff vos
+            sorts uniquement » - réglée sur vrai, les listes de buffs et de debuffs de cette aura
+            ne voient plus que les effets que VOUS avez lancés, si bien que « mon Mot de l'ombre :
+            douleur expire » ne signale plus celui d'un autre prêtre sur la même cible. Et comme
+            « Source (L) » et « cible (L) » étaient régulièrement pris pour votre propre cible,
+            elles s'appellent maintenant « Source de l'événement (L) » et « Cible de l'événement
+            (L) » : elles filtrent l'ÉVÉNEMENT déclencheur.
+            Enfin le comportement des listes : toutes les listes de valeurs s'ouvrent nettement
+            plus vite, « Sort utilisable (L) » ne fige plus le jeu à l'ouverture, changer le sort
+            d'une condition de durée se fait sans à-coup et sans continuer d'annoncer l'ancien sort
+            comme sélectionné, et « Supprimer » demande confirmation avant qu'une aura disparaisse
+            - c'était la seule entrée de cette liste à ne pas le faire, juste à côté de
+            « Dupliquer », qui a toujours demandé.
+        Techniquement : Un attribut devient une bascule quand son type est BINARY, qu'il a
+            exactement deux valeurs et que son type n'autorise qu'un seul opérateur
+            (tBinaryValuesForAttribute dans SkuAuras/Options.lua) ; ce qui est écrit est exactement
+            ce qu'écrivait l'ancienne liste de valeurs, une aura construite par la bascule est donc
+            indiscernable d'une aura construite à l'ancienne, et une liste values vide sort du
+            brouillon - c'est cela, « non défini ». La ligne de condition associe actionInPlace et
+            actionOnEnter, ce qui distingue Entrée de la flèche droite sur le même nœud. La liste
+            des attributs collecte groupes et attributs avec leur nom affiché et insère les deux
+            dans l'ordre des noms. Les deux familles d'événements sont UN attribut et UNE condition
+            stockée : chaque liste de famille propose l'autre comme une seule entrée, et les deux
+            pointent vers la condition que le brouillon détient déjà - sans quoi passer par les
+            deux laisserait deux conditions sur `event`, que l'enregistrement fusionne en un groupe
+            OU toujours vrai. listsOwnOnly est un modificateur binaire : getAuraList récupère le
+            lanceur (7e valeur de retour d'UnitAura) dans le même balayage et remplit des ensembles
+            own parallèles qu'EvaluateAllAuras échange par aura marquée. Les listes de valeurs
+            trient avec une clé de tri par entrée au lieu de deux par comparaison (27 057 au lieu
+            d'environ 800 000 nouvelles chaînes par liste de sorts), « Sort utilisable (L) »
+            interroge les 132 emplacements d'action au lieu des 49 000 sorts de la base, et la
+            condition de durée laisse chaque entrée annoncer son propre état à la lecture
+            (tValueToggleRefreshLiveName, UNE fonction partagée par référence) au lieu de
+            réinitialiser 27 000 entrées à chaque Entrée. « ID du sort » et « ID de l'objet » sont
+            toujours évaluées et seulement masquées du constructeur par un drapeau retired, pour
+            qu'une aura importée ou ancienne ne tombe pas sur un nil ; avec elles disparaissent
+            leurs listes de valeurs, environ 49 000 ID de sorts et 25 000 ID d'objets reconstruites
+            à chaque chargement. Les CLÉS de localisation des conditions renommées sont inchangées,
+            aucune aura stockée ne bouge donc. La suppression a également imposé de retirer la
+            branche aName du menu de gestion : selectTarget n'est repointé qu'une fois le niveau
+            entré, jusque-là la confirmation aurait été cosmétique. Supprimer rafraîchit désormais
+            aussi les pseudo-attributs d'auras - une aura supprimée restait auparavant proposée
+            comme condition.
 
     Clients français : la liste des enchantements d'arme pour les auras était vide
         Simple : Sur un client français, la condition d'aura portant sur les enchantements d'arme
@@ -893,82 +923,6 @@ Changements dans Sku v43.0
             liste de valeurs sortait vide. Elle prend maintenant la colonne de votre langue, sinon
             l'anglaise, comme le reste du système de noms depuis la v42.09. Trouvé lors du portage
             vers l'identité de groupe, pas via un rapport.
-
-    Auras : les conditions « ID du sort » et « ID de l'objet » ont été retirées
-        Simple : Les deux conditions qui demandaient directement un numéro de sort ou d'objet ne
-            figurent plus dans la liste des attributs. Elles désignaient un rang UNIQUE d'un sort -
-            « Éclair de givre rang 1 » et rien d'autre. Juste à côté se trouve « nom du sort », qui
-            accepte exactement le même numéro saisi et en fait le sort entier, tous rangs compris :
-            deux entrées voisines qui acceptent la même saisie et signifient le contraire, sans que
-            le menu le dise. Si vous avez réellement besoin d'un rang précis, dites-le et la
-            condition reviendra. « ID de l'objet » n'a de plus jamais fonctionné. Les auras
-            enregistrées qui utilisent l'une des deux continuent de fonctionner.
-        Technique : Les deux attributs restent dans SkuAuras.attributes et sont toujours évalués,
-            mais un indicateur retired les écarte du constructeur - une aura importée ou ancienne
-            ne doit pas tomber sur un nil. « ID de l'objet » appliquait tonumber() à la valeur
-            ENREGISTRÉE « item:6948 », donc nil, et chaque opérateur s'arrêtait sur sa propre
-            vérification de nil : la condition était définitivement fausse dans toutes les versions
-            publiées. Réparée plutôt que laissée cassée - un chemin de lecture que l'on conserve
-            doit être honnête. Leur retrait supprime leurs listes de valeurs, environ 49 000 ID de
-            sorts et 25 000 ID d'objets avec une entrée de table chacun, reconstruites à chaque
-            chargement. La boucle d'évaluation intercepte aussi désormais un attribut que cette
-            version ne connaît pas du tout : les auras importées sont enregistrées sans
-            vérification, et un tel nom levait auparavant une erreur Lua à CHAQUE événement de
-            combat. /skucheck auras signale les deux cas.
-
-    Auras : la liste d'événements a désormais un groupe « Événements de sort »
-        Simple : La liste d'événements dans laquelle une condition choisit comptait 35 entrées,
-            dont 18 événements de sort. Les événements qui n'ont rien à voir avec un sort - mêlée,
-            distance, temps de recharge d'objet, appui de touche, changement de cible - étaient
-            dispersés entre eux et ne se trouvaient qu'en passant devant. Ces 18 figurent
-            maintenant sous une entrée « Événements de sort », et le niveau supérieur contient 18
-            entrées au lieu de 35. L'entrée de groupe indique elle-même lesquels sont
-            sélectionnés : inutile d'y entrer pour le savoir. Vos auras ne changent pas.
-        Technique : Regroupement de menu uniquement, un niveau sous le groupe d'attributs « Votre
-            santé ou ressource » et bâti sur le même modèle. Chaque valeur reste sa propre valeur ;
-            la sélection multiple et l'opérateur s'appliquent toujours à la condition entière.
-            L'appartenance est une liste écrite en toutes lettres, pas un test « commence par
-            SPELL_ » : deux de ces événements sont synthétisés par Sku, leurs noms nous
-            appartiennent, et un motif regrouperait silencieusement une valeur le jour où l'une
-            serait renommée. Le constructeur de bascules de valeur a été extrait afin qu'une valeur
-            dans le groupe et une valeur hors du groupe soient forcément la même entrée.
-
-    Auras : « Vos points de combo » a rejoint le groupe « Votre santé ou ressource »
-        Simple : La condition ne figure plus seule dans la liste d'attributs de premier niveau,
-            mais avec la santé, la ressource, le mana, la rage, l'énergie et la puissance runique,
-            dans le groupe où on la cherche. Elle fait exactement ce qu'elle faisait avant.
-        Technique : Déplacée, pas supprimée - aucune autre entrée du groupe ne rapporte les points
-            de combo, la supprimer aurait retiré la fonction sans remplacement. Ils avaient été
-            volontairement écartés à la création du groupe parce qu'ils se comptent de 0 à 5 alors
-            que tout le reste y est un pourcentage ; mais cette différence est portée par leur
-            propre liste de valeurs, et ce n'est pas une raison de vous les faire chercher
-            ailleurs. Le texte d'aide du groupe mentionne désormais les deux. Retiré au passage :
-            une sortie de débogage oubliée qui écrivait une ligne dans le journal à chaque
-            évaluation de cette condition.
-
-    Auras : la liste de valeurs « sort utilisable » figeait le jeu
-        Simple : Ouvrir cette condition figeait visiblement le jeu, et à CHAQUE ouverture. Elle
-            s'ouvre désormais instantanément. Les sorts proposés sont les mêmes qu'avant, ceux de
-            vos barres d'action.
-        Technique : La liste était construite en parcourant les quelque 49 000 sorts de la base et
-            en demandant pour chacun à C_ActionBar.FindSpellActionButtons s'il se trouve sur une
-            barre - et cela à chaque ouverture, puisqu'une liste de valeurs est reconstruite avant
-            chaque usage. Elle demande maintenant aux 132 emplacements d'action ce qu'ils
-            contiennent : la même réponse en 132 étapes au lieu de 49 000. Corrigé au passage : la
-            construction utilise désormais le même résolveur de noms que le côté vivant
-            (SkuAuras:SpellGroupName avec le nom vivant en repli), si bien que la liste proposée et
-            l'ensemble vivant coïncident par construction. Auparavant, un sort inconnu de la base
-            livrée pouvait être actif sans jamais apparaître dans la liste - le même défaut que
-            celui corrigé pour la liste des enchantements d'arme en v43.0.
-
-    Auras : toutes les listes de valeurs s'ouvrent plus vite
-        Simple : Chaque liste de sélection d'une condition d'aura met moins de temps à s'ouvrir,
-            surtout les grandes listes de sorts.
-        Technique : Le tri calcule sa clé une fois par entrée au lieu de deux fois par comparaison.
-            Les listes de sorts comptent 27 057 groupes ; table.sort y effectue environ 400 000
-            comparaisons, et chaque comparaison passait le nom en minuscules des DEUX côtés - soit
-            près de 800 000 chaînes créées avant même la première entrée de menu. Il y en a 27 057
-            désormais. L'ordre est inchangé.
 
     Menu : chaque entrée coûte désormais environ 13 fois moins à créer
         Simple : Les longues listes se construisent nettement plus vite. Cela se voit surtout sur
@@ -1046,69 +1000,25 @@ Changements dans Sku v43.0
             lève une erreur est comptée par /skucheck menu - elle sonnerait sinon comme un réglage
             sans valeur plutôt que comme un défaut.
 
-    Auras : changer le sort d'une condition de durée marquait un temps d'arrêt
-        Simple : Une condition avec durée (« plus long que », « plus court que ») ne retient qu'un
-            seul sort. En changer un obligeait ensuite Sku à parcourir toute la liste, uniquement
-            pour remettre à « désactivé » l'entrée choisie auparavant - sur les listes de buffs et
-            de débuffs, cela fait 27 000 entrées à CHAQUE Entrée, et sur les royaumes hardcore
-            exactement le genre de chose que le serveur interrompt volontiers. Chaque entrée
-            indique désormais elle-même son état au moment où elle est lue, et il n'y a donc plus
-            rien à parcourir. Corrigé au passage : si vous saisissiez le sort via « Saisir le
-            sort », l'entrée choisie auparavant restait annoncée comme « activé » - la liste
-            nommait deux sorts sélectionnés alors qu'un seul était enregistré.
-        Technique : tValueToggleRefreshLiveName dans SkuAuras/Options.lua est UNE fonction
-            partagée attachée à chaque entrée par référence : aucune fermeture par entrée, donc
-            aucune allocation supplémentaire à la construction. Elle lit internalName par rapport
-            au auraCond du niveau et s'exécute une fois par appui de touche, pas une fois par
-            entrée. Les grandes listes de valeurs ne passent volontairement PAS par
-            MakeToggleNode : cela coûterait trois fermetures et une table par entrée, soit, pour
-            27 057 entrées, exactement le coût par nœud que la refonte des nœuds de cette version
-            a supprimé. Les groupes de valeurs définissent self.auraCond dans leur BuildChildren
-            afin que la remontée bornée vers le parent le trouve.
-
-    Auras : les conditions à deux valeurs seulement sont désormais des bascules
-        Simple : Une condition d'aura qui ne connaît que deux valeurs - « vrai » et « faux », ou
-            « buff » et « debuff » - coûtait trois niveaux : l'attribut, en dessous l'unique
-            comparaison « égal », et en dessous une liste de deux entrées exactement. La valeur
-            figure maintenant sur l'entrée elle-même et Entrée la change : « En combat ; vrai »,
-            Entrée, « En combat ; faux ». La flèche droite n'est plus nécessaire pour cela.
-            Pendant la CRÉATION d'une condition, Entrée fait un pas de plus vers « non défini »,
-            puis revient à la première valeur. Une bascule réglée par erreur peut ainsi être
-            reprise sans devoir d'abord créer la condition puis la supprimer. Sur une condition
-            TERMINÉE, Entrée alterne seulement entre les deux valeurs - l'effacer reviendrait à
-            retirer la ligne même sur laquelle vous vous trouvez ; « Supprimer », un niveau plus
-            bas via la flèche droite, s'en charge toujours.
-            Sont concernés « En combat », « Listes : vos sorts uniquement », « Critique »,
-            « Source de l'événement attaquable », « Cible de l'événement attaquable », « Votre
-            cible actuelle est attaquable » et « Amélioration ou affaiblissement » - ainsi que
-            toute condition renvoyant à l'une de vos propres auras.
-            À bien comprendre : « non défini » n'est PAS une troisième valeur, cela signifie que
-            la condition n'existe pas. C'est l'état neutre, pas « faux ». « faux » est une
-            comparaison comme une autre : « En combat égal faux » ne se déclenche QUE hors
-            combat, et une aura portant « Critique égal faux » sur un événement qui n'est pas un
-            coup ne se déclenche jamais. C'est pourquoi une bascule démarre non définie et non
-            sur une valeur.
-        Technique : Un attribut est une bascule si son type est BINARY, s'il a exactement deux
-            valeurs et si son type n'autorise qu'un seul opérateur (tBinaryValuesForAttribute dans
-            SkuAuras/Options.lua). Les trois sont vérifiés et non supposés : le jour où BINARY
-            gagnerait un second opérateur, il y aurait de nouveau deux axes et une bascule en
-            masquerait un. Les deux valeurs arrivent dans l'ordre de DÉCLARATION, pas dans l'ordre
-            d'affichage trié - la première est ce qu'un premier Entrée règle, et « vrai » avant
-            « faux » est la valeur par défaut utile, alors qu'un tri par nom donnerait « falsch »
-            en premier à un client allemand.
-            tStepBinaryCondition écrit exactement ce qu'écrivait l'ancienne liste de valeurs :
-            l'unique opérateur autorisé par le type, et une liste values contenant exactement
-            l'une des chaînes de valeur de l'attribut. L'évaluation n'est pas touchée - les auras
-            enregistrées et importées s'évaluent à l'identique, et une aura construite avec la
-            bascule est indiscernable d'une aura construite à l'ancienne. Une liste values vide
-            échoue à tDraftConditionSaysSomething, donc tDraftSyncCondition détache la condition
-            du brouillon : c'est cela, « non défini ».
-            La ligne de condition associe actionInPlace à actionOnEnter - elle A des enfants, et
-            la branche de descente est testée en premier, donc seule cette paire sépare Entrée de
-            la flèche droite (voir SkuGenericMenuItem dans SkuZOptions/templates.lua).
-            tBuildConditionAspects ressort immédiatement pour une bascule, en tête de fonction
-            plutôt qu'aux points d'appel, afin que le niveau des opérateurs ne puisse pas
-            revenir par accident.
+    Vérification de préparation : la fenêtre n'arrivait pas sur la réponse comme toutes les autres
+        En clair : Quand quelqu'un du groupe lance une vérification de préparation, Sku ouvre le
+            menu et y saute, exactement comme pour n'importe quelle fenêtre surgissante. Pour
+            celle-ci, le curseur n'arrivait pas sur « Prêt » mais un niveau au-dessus, ce qui
+            laissait deux appuis de touche de plus avant la réponse. Vous arrivez maintenant
+            directement sur « Prêt », « Pas prêt » est juste en dessous, et la flèche gauche
+            ramène sur « vérification de préparation ». Qui a lancé la vérification figure sur les
+            deux entrées en texte complet.
+        Techniquement : ReadyCheckFrame n'est qu'une enveloppe autour de ReadyCheckListenerFrame,
+            qui porte le message et les deux boutons ; parcourue génériquement, cette enveloppe
+            devenait un niveau de menu à part entière et la descente automatique de
+            SkuCore:CheckFrames y atterrissait. Il existe désormais un constructeur dédié
+            (SkuCore:Build_ReadyCheckFrame dans SkuCore/LocalMenu.lua, inscrit dans
+            interactFramesListManual) qui construit les deux réponses à plat en entrées
+            directAction - le même schéma que Build_RolePollPopup pour le sondage de rôle. Les
+            libellés viennent des boutons eux-mêmes, que Blizzard traduit dans
+            ReadyCheckFrame_OnLoad : aucune nouvelle entrée de localisation n'est nécessaire. Seuls
+            les boutons visibles sont listés : si vous avez lancé la vérification vous-même,
+            Blizzard masque le côté réponse et il n'y a rien à répondre.
 
 
 -------------------------------------------------------------------------------------------------------
