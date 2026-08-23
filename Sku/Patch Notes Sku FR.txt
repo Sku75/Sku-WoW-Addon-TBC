@@ -40,6 +40,7 @@ Changements dans Sku v43.0
             Chaque entrée de menu de tout l'addon coûte environ 13 fois moins à créer, ce qui ouvre les grandes listes de sorts environ trois fois plus vite.
             Une liste dont la construction a été interrompue par le serveur est poursuivie à la frame suivante au lieu de rester incomplète sans le dire.
             Les réglages à deux valeurs annoncent leur valeur avec le nom et se basculent avec Entrée ; la flèche droite et le sous-menu disparaissent.
+            Les conditions d'aura à deux valeurs seulement (vrai/faux, buff/debuff) sont des bascules : la valeur figure sur l'entrée et Entrée la change.
 
         Corrections
             Clients français : tous les sons d'auras et les clips vocaux enregistrés étaient muets (correctif de Naxedim).
@@ -1064,6 +1065,50 @@ Changements dans Sku v43.0
             27 057 entrées, exactement le coût par nœud que la refonte des nœuds de cette version
             a supprimé. Les groupes de valeurs définissent self.auraCond dans leur BuildChildren
             afin que la remontée bornée vers le parent le trouve.
+
+    Auras : les conditions à deux valeurs seulement sont désormais des bascules
+        Simple : Une condition d'aura qui ne connaît que deux valeurs - « vrai » et « faux », ou
+            « buff » et « debuff » - coûtait trois niveaux : l'attribut, en dessous l'unique
+            comparaison « égal », et en dessous une liste de deux entrées exactement. La valeur
+            figure maintenant sur l'entrée elle-même et Entrée la change : « En combat ; vrai »,
+            Entrée, « En combat ; faux ». La flèche droite n'est plus nécessaire pour cela.
+            Pendant la CRÉATION d'une condition, Entrée fait un pas de plus vers « non défini »,
+            puis revient à la première valeur. Une bascule réglée par erreur peut ainsi être
+            reprise sans devoir d'abord créer la condition puis la supprimer. Sur une condition
+            TERMINÉE, Entrée alterne seulement entre les deux valeurs - l'effacer reviendrait à
+            retirer la ligne même sur laquelle vous vous trouvez ; « Supprimer », un niveau plus
+            bas via la flèche droite, s'en charge toujours.
+            Sont concernés « En combat », « Listes : vos sorts uniquement », « Critique »,
+            « Source de l'événement attaquable », « Cible de l'événement attaquable », « Votre
+            cible actuelle est attaquable » et « Amélioration ou affaiblissement » - ainsi que
+            toute condition renvoyant à l'une de vos propres auras.
+            À bien comprendre : « non défini » n'est PAS une troisième valeur, cela signifie que
+            la condition n'existe pas. C'est l'état neutre, pas « faux ». « faux » est une
+            comparaison comme une autre : « En combat égal faux » ne se déclenche QUE hors
+            combat, et une aura portant « Critique égal faux » sur un événement qui n'est pas un
+            coup ne se déclenche jamais. C'est pourquoi une bascule démarre non définie et non
+            sur une valeur.
+        Technique : Un attribut est une bascule si son type est BINARY, s'il a exactement deux
+            valeurs et si son type n'autorise qu'un seul opérateur (tBinaryValuesForAttribute dans
+            SkuAuras/Options.lua). Les trois sont vérifiés et non supposés : le jour où BINARY
+            gagnerait un second opérateur, il y aurait de nouveau deux axes et une bascule en
+            masquerait un. Les deux valeurs arrivent dans l'ordre de DÉCLARATION, pas dans l'ordre
+            d'affichage trié - la première est ce qu'un premier Entrée règle, et « vrai » avant
+            « faux » est la valeur par défaut utile, alors qu'un tri par nom donnerait « falsch »
+            en premier à un client allemand.
+            tStepBinaryCondition écrit exactement ce qu'écrivait l'ancienne liste de valeurs :
+            l'unique opérateur autorisé par le type, et une liste values contenant exactement
+            l'une des chaînes de valeur de l'attribut. L'évaluation n'est pas touchée - les auras
+            enregistrées et importées s'évaluent à l'identique, et une aura construite avec la
+            bascule est indiscernable d'une aura construite à l'ancienne. Une liste values vide
+            échoue à tDraftConditionSaysSomething, donc tDraftSyncCondition détache la condition
+            du brouillon : c'est cela, « non défini ».
+            La ligne de condition associe actionInPlace à actionOnEnter - elle A des enfants, et
+            la branche de descente est testée en premier, donc seule cette paire sépare Entrée de
+            la flèche droite (voir SkuGenericMenuItem dans SkuZOptions/templates.lua).
+            tBuildConditionAspects ressort immédiatement pour une bascule, en tête de fonction
+            plutôt qu'aux points d'appel, afin que le niveau des opérateurs ne puisse pas
+            revenir par accident.
 
 
 -------------------------------------------------------------------------------------------------------

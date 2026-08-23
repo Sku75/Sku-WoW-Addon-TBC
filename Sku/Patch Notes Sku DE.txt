@@ -37,6 +37,7 @@ Aenderungen in Sku v43.0
             Jeder Menueeintrag im ganzen Addon wird rund 13 mal guenstiger erzeugt; die grossen Zauberlisten oeffnen dadurch etwa dreimal so schnell.
             Eine Liste, deren Aufbau vom Server abgebrochen wurde, wird im naechsten Frame weitergebaut statt unbemerkt unvollstaendig zu bleiben.
             Einstellungen mit zwei Werten sagen ihren Wert gleich mit und schalten mit Enter um; Pfeil rechts und das Untermenue entfallen.
+            Aura-Bedingungen mit nur zwei Werten (wahr/falsch, buff/debuff) sind Schalter: der Wert steht am Eintrag, Enter schaltet um.
 
         Fehlerbehebungen
             Franzoesische Clients: alle Aura-Sounds und aufgenommenen Sprachclips waren stumm (Korrektur von Naxedim).
@@ -1042,6 +1043,50 @@ Aenderungen in Sku v43.0
             Eintrag - bei 27.057 Eintraegen genau die Kosten pro Knoten, die der Umbau dieser
             Version beseitigt hat. Wertegruppen setzen self.auraCond in ihrem BuildChildren, damit
             der begrenzte Elternlauf sie findet.
+
+    Auren: Bedingungen mit nur zwei Werten sind jetzt Schalter
+        Einfach: Eine Aura-Bedingung, die nur zwei Werte kennt - "wahr" und "falsch", oder "buff"
+            und "debuff" - kostete drei Ebenen: das Attribut, darunter den einzigen Vergleich
+            "gleich", und darunter eine Liste aus genau zwei Eintraegen. Jetzt steht der Wert
+            direkt am Eintrag und Enter schaltet ihn um: "Im Kampf; wahr", Enter, "Im Kampf;
+            falsch". Pfeil rechts wird dafuer nicht mehr gebraucht.
+            Beim ANLEGEN geht Enter einen Schritt weiter zu "nicht festgelegt" und wieder zurueck
+            zum ersten Wert. So laesst sich ein versehentlich gesetzter Schalter wieder wegnehmen,
+            ohne die Bedingung erst anzulegen und dann zu loeschen. Bei einer FERTIGEN Bedingung
+            wechselt Enter nur zwischen den beiden Werten - sie ganz zu entfernen wuerde die Zeile
+            wegnehmen, auf der du gerade stehst; dafuer gibt es weiterhin "Loeschen" eine Ebene
+            tiefer, ueber Pfeil rechts.
+            Betroffen sind "Im Kampf", "Listen nur selbst gewirkte", "Kritisch", "Quelle des
+            Ereignisses angreifbar", "Ziel des Ereignisses angreifbar", "Dein aktuelles Ziel
+            angreifbar" und "Buff oder Debuff" - und jede Bedingung, die auf eine deiner eigenen
+            Auren verweist.
+            Wichtig zum Verstaendnis: "nicht festgelegt" ist KEIN dritter Wert, sondern heisst,
+            dass es die Bedingung gar nicht gibt. Das ist der neutrale Zustand, nicht "falsch".
+            "falsch" ist ein Vergleich wie jeder andere: "Im Kampf gleich falsch" loest NUR
+            ausserhalb des Kampfes aus, und eine Aura mit "Kritisch gleich falsch" auf einem
+            Ereignis, das gar kein Treffer ist, loest ueberhaupt nie aus. Deshalb faengt ein
+            Schalter unbelegt an und nicht bei einem Wert.
+        Technisch: Ein Attribut ist ein Schalter, wenn sein Typ BINARY ist, es genau zwei Werte
+            hat und sein Typ genau einen Operator erlaubt (tBinaryValuesForAttribute in
+            SkuAuras/Options.lua). Alle drei werden geprueft und nicht angenommen: bekaeme BINARY
+            je einen zweiten Operator, gaebe es wieder zwei Achsen und der Schalter wuerde eine
+            davon verstecken. Die beiden Werte kommen in DEKLARATIONS-Reihenfolge, nicht in der
+            sortierten Anzeigereihenfolge - der erste ist, was ein erstes Enter setzt, und "wahr"
+            vor "falsch" ist der brauchbare Vorgabewert, waehrend die Namenssortierung einem
+            deutschen Client "falsch" zuerst gaebe.
+            tStepBinaryCondition schreibt genau das, was die alte Werteliste geschrieben hat: den
+            einen Operator, den der Typ erlaubt, und eine values-Liste mit genau einem der
+            Wert-Strings des Attributs. Die Auswertung wird nicht angefasst - gespeicherte und
+            importierte Auren rechnen unveraendert, und eine ueber den Schalter gebaute Aura ist
+            von einer alt gebauten nicht zu unterscheiden. Eine leere values-Liste faellt durch
+            tDraftConditionSaysSomething, also nimmt tDraftSyncCondition die Bedingung wieder aus
+            dem Entwurf: das ist "nicht festgelegt".
+            Die Bedingungszeile paart actionInPlace mit actionOnEnter - sie HAT Kinder, und der
+            Absteigen-Zweig wird zuerst geprueft, also ist erst dieses Paar das, was Enter und
+            Pfeil rechts auseinanderhaelt (siehe SkuGenericMenuItem in SkuZOptions/templates.lua).
+            tBuildConditionAspects steigt fuer einen Schalter sofort wieder aus, oben in der
+            Funktion statt an den Aufrufstellen, damit die Operator-Ebene nicht versehentlich
+            zurueckkommen kann.
 
 
 -------------------------------------------------------------------------------------------------------

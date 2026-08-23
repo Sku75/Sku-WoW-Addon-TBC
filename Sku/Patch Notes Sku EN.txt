@@ -37,6 +37,7 @@ Changes in Sku v43.0
             Every menu entry in the whole addon is about 13 times cheaper to create, which makes the big spell lists open about three times faster.
             A list whose build was cut off by the server is continued on the next frame instead of quietly staying incomplete.
             Settings with two values read their value out with the name and switch with Enter; the RIGHT arrow and the submenu are gone.
+            Aura conditions with only two values (true/false, buff/debuff) are switches: the value sits on the entry and Enter flips it.
 
         Bugfixes
             French clients: all aura sounds and pre-recorded speech clips were silent (fix by Naxedim).
@@ -947,6 +948,44 @@ Changes in Sku v43.0
             MakeToggleNode: that would cost three closures and a table per entry, which at 27,057
             entries is exactly the per-node cost this version's node rework removed. Value groups
             set self.auraCond in their BuildChildren so the bounded parent walk finds it.
+
+    Auras: conditions with only two values are switches now
+        Simple: An aura condition that only knows two values - "true" and "false", or "buff" and
+            "debuff" - cost three levels: the attribute, below it the single comparison "equal",
+            and below that a list of exactly two entries. The value now sits on the entry itself
+            and Enter flips it: "In combat; true", Enter, "In combat; false". The RIGHT arrow is
+            no longer needed for it.
+            While BUILDING a condition, Enter goes one step further to "not set" and then back to
+            the first value. That way a switch you set by accident can be taken back without
+            first creating the condition and then deleting it. On a FINISHED condition Enter only
+            alternates between the two values - clearing it there would remove the very row you
+            are standing on; "Delete" one level down, via the RIGHT arrow, still does that.
+            This covers "In combat", "Lists own casts only", "Critical", "Event source
+            attackable", "Event target attackable", "Your current target is attackable" and
+            "Buff or debuff" - and every condition that refers to one of your own auras.
+            Worth understanding: "not set" is NOT a third value, it means the condition does not
+            exist. That is the neutral state, not "false". "false" is a comparison like any
+            other: "In combat equal false" fires ONLY out of combat, and an aura carrying
+            "Critical equal false" on an event that is not a hit at all never fires. That is why
+            a switch starts unset rather than at a value.
+        Technically: An attribute is a switch when its type is BINARY, it has exactly two values,
+            and its type allows exactly one operator (tBinaryValuesForAttribute in
+            SkuAuras/Options.lua). All three are checked rather than assumed: the day BINARY grows
+            a second operator there are two axes to set again and a switch would hide one of them.
+            The two values come in DECLARATION order, not the sorted display order - the first of
+            them is what a first Enter sets, and "true" before "false" is the useful default,
+            while sorting by name would hand a German client "falsch" first.
+            tStepBinaryCondition writes exactly what the old value list wrote: the one operator
+            the type allows, and a values list holding exactly one of the attribute's own value
+            strings. Evaluation is untouched - stored and imported auras evaluate identically, and
+            an aura built through the switch is indistinguishable from one built the old way. An
+            empty values list fails tDraftConditionSaysSomething, so tDraftSyncCondition detaches
+            the condition from the draft again: that is what "not set" is.
+            The condition row pairs actionInPlace with actionOnEnter - it HAS children, and the
+            descend branch is checked first, so only that pair separates Enter from the RIGHT
+            arrow (see SkuGenericMenuItem in SkuZOptions/templates.lua). tBuildConditionAspects
+            returns immediately for a switch, at the top of the function rather than at the call
+            sites, so the operator level cannot come back by accident.
 
 
 -------------------------------------------------------------------------------------------------------

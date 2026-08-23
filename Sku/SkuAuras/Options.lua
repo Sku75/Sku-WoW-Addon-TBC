@@ -502,6 +502,86 @@ local function tDraftSyncCondition(aCond)
 	end
 end
 
+-- [v43.0] A BINARY attribute is a SWITCH. Its type allows exactly ONE comparison
+-- ("gleich", see SkuAuras.operatorsForAttributeType) and it has exactly TWO
+-- values, so a condition on one has nothing to decide except which of the two it
+-- holds - and yet reaching that decision cost an operator level whose single
+-- entry opened a value list whose two entries were the actual answer. Three
+-- levels, two of them with one meaningful choice each.
+--
+-- Returns the two values in DECLARATION order, not the sorted display order:
+-- the first of them is what a first ENTER sets, and "wahr" before "falsch" is
+-- the useful default, while sorting by localized name would hand a German user
+-- "falsch". nil for anything that is not a switch, which is the gate every
+-- caller tests.
+local function tBinaryValuesForAttribute(aAttName)
+	local tAtt = SkuAuras.attributes[aAttName]
+	if not tAtt or tAtt.type ~= "BINARY" then
+		return nil
+	end
+	if type(tAtt.values) ~= "table" or #tAtt.values ~= 2 then
+		return nil
+	end
+	-- Checked rather than assumed: the day BINARY gets a second operator there
+	-- are two axes to set again, and a switch would silently hide one of them.
+	local tOperatorCount = 0
+	for _ in pairs(SkuAuras.operatorsForAttributeType.BINARY or {}) do
+		tOperatorCount = tOperatorCount + 1
+	end
+	if tOperatorCount ~= 1 then
+		return nil
+	end
+	return tAtt.values[1], tAtt.values[2]
+end
+
+-- Step a binary condition on. Two shapes, and which one you get depends on
+-- whether "no condition at all" is reachable from where the user is standing:
+--
+--   aAllowUnset = true  (the ADD chain): wahr -> falsch -> nicht festgelegt.
+--   aAllowUnset = false (a finished row): wahr -> falsch -> wahr.
+--
+-- "nicht festgelegt" is NOT a third value of the switch, it is the condition not
+-- existing: an empty values list fails tDraftConditionSaysSomething, so
+-- tDraftSyncCondition detaches the condition from the draft again. That is the
+-- neutral state, and it is the only one that means "this aura does not care".
+-- `false` never does - it is a comparison like any other, and a strict one:
+-- "Im Kampf gleich falsch" fires ONLY out of combat, and `critical` is not even
+-- filled on an event that is not a damage or a heal, so on those the `is`
+-- operator's nil guard makes the whole aura dead. Which is why the switch starts
+-- unset rather than at a value.
+--
+-- Unset is offered in the ADD chain because nothing is stored there yet, so it
+-- is a real undo of the press that created the condition. It is NOT offered on a
+-- finished condition row: clearing there would delete the very row the cursor is
+-- standing on, and "Loeschen" one level down already does that properly.
+--
+-- What it stores is byte for byte what picking the value in the old list stored:
+-- the same single operator its type allows, and a values list holding exactly
+-- one of the attribute's own value strings. The evaluator is not involved and
+-- sees no difference - existing and imported auras keep evaluating identically,
+-- and an aura built through the switch is indistinguishable from one built the
+-- old way.
+local function tStepBinaryCondition(aCond, aAllowUnset)
+	local tFirst, tSecond = tBinaryValuesForAttribute(aCond.att)
+	if not tFirst then
+		return false
+	end
+	local tCurrent = aCond.values[1]
+	if tCurrent == tFirst then
+		aCond.values = {tSecond}
+	elseif tCurrent == tSecond and aAllowUnset == true then
+		aCond.values = {}
+	else
+		-- Covers "nothing set yet", the wrap from the second value, and a stray
+		-- value an older build or an import left behind - none of which may
+		-- leave the switch stuck.
+		aCond.values = {tFirst}
+	end
+	aCond.op = tDefaultOperator(aCond.att)
+	tDraftSyncCondition(aCond)
+	return true
+end
+
 local function tToggleLabel(aName, aOn)
 	-- Name first, state after: the list is scanned by name (and type-ahead keys
 	-- off the first letter), the state is what the user needs to hear right
@@ -1154,6 +1234,13 @@ end
 -- and less than three seconds left of it" one row instead of two.
 local function tBuildConditionAspects(aLevel, aCond, aOwnerNode)
 	aLevel.sorting = true
+	-- A switch has no aspects: its one comparison and its two values are the
+	-- entry itself now (tStepBinaryCondition), so there is nothing to put
+	-- here. Guarded at the top rather than at the call sites so a future caller
+	-- cannot reintroduce the operator level for a binary attribute by accident.
+	if tBinaryValuesForAttribute(aCond.att) then
+		return
+	end
 	local tDurAtt = tListDurationPartner[aCond.att]
 	local tBorrows = tDurationBorrowsSpell[aCond.att] == true
 	local tNodes = {}
@@ -1466,6 +1553,40 @@ local function tInjectAttributeNode(aLevel, aAttName, aLabel)
 		local tEntry = SkuAuras.attributes[self.internalName]
 		tSetDraftTooltip(self, tEntry and tEntry.tooltip)
 	end
+
+	-- [v43.0] A binary attribute is picked and set in ONE place: the entry reads
+	-- "<attribut>;<wert>", ENTER steps it, and there is nothing below it to arrow
+	-- into. The condition is still created lazily and still attached by
+	-- tDraftSyncCondition, so walking over the entry without pressing ENTER leaves
+	-- no empty condition behind - exactly as before.
+	--
+	-- Three steps here, not two: the third is "nicht festgelegt", which detaches
+	-- the condition again. Nothing is saved yet at this point, so that is a real
+	-- undo of the press that created it - without it, a mis-set switch could only
+	-- be cleared by backing out and deleting the row.
+	if tBinaryValuesForAttribute(aAttName) then
+		local tBaseName = aLabel or tFriendlyName(SkuAuras.attributes, aAttName)
+		tNode.dynamic = false
+		tNode.actionInPlace = true
+		tNode.RefreshLiveName = function(self)
+			local tValue = self.auraCond and self.auraCond.values[1]
+			self.name = tBaseName..";"..(tValue and tValueName(tValue) or L["nicht festgelegt"])
+		end
+		tNode.OnAction = function(self)
+			if not self.auraCond then
+				self.auraCond = {att = self.internalName, op = tDefaultOperator(self.internalName), values = {}}
+			end
+			tStepBinaryCondition(self.auraCond, true)
+			self:RefreshLiveName()
+			local tCondLevel = self:FindAncestorById(AURA_COND_ID)
+			if tCondLevel then
+				tCondLevel.name = tConditionsLabel()
+			end
+		end
+		tNode:RefreshLiveName()
+		return tNode
+	end
+
 	tNode.BuildChildren = function(self)
 		-- Created here, attached to the draft by the first toggle
 		-- (tDraftSyncCondition). Backing out without toggling anything
@@ -1539,6 +1660,32 @@ local function tBuildConditionsLevel(aLevel)
 		tRow.elementType = "attribute"
 		tRow.OnEnter = function(self)
 			tSetDraftTooltip(self)
+		end
+
+		-- [v43.0] A binary condition flips on the ROW: ENTER switches it between
+		-- its two values and reads the row back, RIGHT still descends (to
+		-- "Loeschen" - the aspects builder has nothing to add for a switch).
+		-- Two steps here, not the three of the ADD chain: unsetting would strip
+		-- the condition the cursor is standing on out of the draft, leaving the
+		-- user on a row for something that no longer exists.
+		-- actionInPlace ALONE would not do it here: the row has children, and the
+		-- descend branch is checked first, so the pair with actionOnEnter is what
+		-- separates the two keys (see SkuGenericMenuItem in
+		-- SkuZOptions/templates.lua).
+		if tBinaryValuesForAttribute(tCond.att) then
+			tRow.actionInPlace = true
+			tRow.actionOnEnter = true
+			tRow.RefreshLiveName = function(self)
+				self.name = tConditionText(tCond)
+			end
+			tRow.OnAction = function(self)
+				tStepBinaryCondition(tCond)
+				self:RefreshLiveName()
+				local tCondLevel = self:FindAncestorById(AURA_COND_ID)
+				if tCondLevel then
+					tCondLevel.name = tConditionsLabel()
+				end
+			end
 		end
 		tRow.BuildChildren = function(self)
 			-- The same four (or two) aspects the ADD chain shows, on the stored
