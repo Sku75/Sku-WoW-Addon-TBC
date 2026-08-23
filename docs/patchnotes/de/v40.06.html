@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v40.06 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v40.06.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v40.06 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.01.01.html">Neuere Version: v41.01.01</a></li>
+<li><a href="v40.05.html">Aeltere Version: v40.05</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Wunschliste</h2>
+<ul>
+<li>Items hinzufuegen/entfernen repariert: Die Wunschliste reagiert jetzt zuverlaessig beim Hinzufuegen und Entfernen von Items. Vorher konnte die Aktion still fehlschlagen, wenn das Item noch nicht im Cache war oder der Menu-Rebuild einen Fehler ausloeste.
+</li>
+<li>Audio-Feedback: Beim Hinzufuegen eines Items wird jetzt "Auf Wunschliste gesetzt" angesagt, beim Entfernen "Von Wunschliste entfernt". Bisher gab es keinerlei Rueckmeldung.
+</li>
+<li>Cache-Fallback: Wenn ein Item beim ersten Versuch noch nicht im Client-Cache liegt, wird es automatisch angefragt und nach kurzer Verzoegerung erneut versucht.
+</li>
+</ul>
+<h2>Pet-Umbenennung</h2>
+<ul>
+<li>Bestaetigung repariert: Der Zwei-Schritt-Prozess (Name eingeben, dann "Umbenennung bestaetigen" waehlen) funktioniert wieder zuverlaessig. Der fehlerhafte Menu-Rebuild nach der Namenseingabe, der den Absturz "attempt to call method 'BuildChildren' (a nil value)" ausloeste, wurde entfernt.
+</li>
+</ul>
+<h2>Stallmeister</h2>
+<ul>
+<li>Drag/Drop repariert: Pet-Tausch zwischen aktivem Begleiter und Stallplaetzen nutzt jetzt macrotext im Hardware-Event-Kontext. Vorher lief der Klick im Addon-Kontext und konnte von Blizzard blockiert werden.
+</li>
+<li>Kaufpreis: Der Button "Weiteren Platz kaufen" zeigt jetzt den Preis in Gold/Silber/Kupfer an.
+</li>
+<li>Automatischer Refresh: Nach einem Pet-Tausch oder Stallplatz-Kauf wird das Stallmeister-Fenster automatisch aktualisiert (PET_STABLE_UPDATE Event).
+</li>
+<li>Event-Registrierung: PET_STABLE_SHOW, PET_STABLE_CLOSED und PET_STABLE_UPDATE werden jetzt korrekt im SkuDispatcher registriert. Die Event-Handler existierten vorher, wurden aber nie aufgerufen.
+</li>
+</ul>
+<h2>Fehlerbehebungen</h2>
+<ul>
+<li>VocalizeCurrentMenuName: Nil-Guard fuer BuildChildren eingefuegt. Verhindert den generischen Absturz "attempt to call method 'BuildChildren' (a nil value)", der in mehreren Menuebereichen (Wunschliste, Pet-Umbenennung, Stallmeister) auftreten konnte.
+</li>
+</ul>
+<h2>Versionsanzeige</h2>
+<ul>
+<li>Sku.toc und SkuDispatcher/Sku.toc aktualisiert auf Titel/Version v40.06.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.01.01.html">Neuere Version: v41.01.01</a></li>
+<li><a href="v40.05.html">Aeltere Version: v40.05</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

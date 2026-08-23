@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v42.03 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v42.03.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v42.03 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v42.04.html">Neuere Version: v42.04</a></li>
+<li><a href="v41.06.html">Aeltere Version: v41.06</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Bankfenster: Item-Namen und Rechtsklick wiederhergestellt</h2>
+<p><strong>Einfach:</strong> Bankplaetze zeigten "Leer", obwohl ein Gegenstand drin lag, und ein Rechtsklick auf einen Bankplatz tat nichts. Bankplaetze lesen jetzt wieder ihren Item-Namen vor, und Rechtsklick (Strg+Enter) legt den Gegenstand in die Taschen.</p>
+<h3>Technisch: Die Container-API-Umstellung las Namen ueber</h3>
+<ul>
+<li>GameTooltip:SetBagItem, das fuer den Bank-Hauptcontainer (id -1) auf 2.5.6 nichts liefert; ein Hyperlink-Fallback (SetHyperlink via GetContainerItemLink) stellt den Namen wieder her. Der Bank-Rechtsklick nutzt jetzt ein unsicheres UseContainerItem (Bank-Bewegungen sind nicht hardware-gated) mit Event-basiertem Refresh auf BAG_UPDATE_DELAYED.</li>
+</ul>
+<h2>Taschen sortieren und aufraeumen: neu gebaut, keine Fehlerschleifen mehr</h2>
+<p><strong>Einfach:</strong> Sortieren oder Aufraeumen konnte interne Taschenfehler ausloesen, Gegenstaende verlegen oder sich endlos aufhaengen. Das Sortieren ist neu geschrieben und zuverlaessig, braucht die Taschen nicht mehr offen, und "alle Taschen sortieren" funktioniert.</p>
+<p><strong>Technisch:</strong> Der Klick-Simulations-Bubblesort (Coroutine auf 0.01s-Ticker) ist durch eine C_Container-Engine ersetzt: PickupContainerItem-Tausch, Selectionsort (garantiertes Ende), ein Tausch pro BAG_UPDATE_DELAYED mit Watchdog und Schrittlimit je Tasche, alles pcall-geschuetzt und getract. Behebt zusaetzlich einen Talentfenster-Absturz ("table index is nil").</p>
+<h2>Fehler-Feedback: pro Fehler waehlen, wie er gemeldet wird</h2>
+<p><strong>Einfach:</strong> Jeder Fehlertyp (nicht in Reichweite, betaeubt, falsche Richtung, unterbrochen, keine Sichtlinie, ...) hat jetzt ein eigenes Untermenue, in dem du waehlst, wie er angesagt wird: eine TTS-Stimme, ein gesprochener Sprachhinweis (Marlene oder Hans, deutsch oder englisch), ein kurzer Ton oder Stille. Die alten gesprochenen Hinweis-Clips sind wieder waehlbar.</p>
+<p><strong>Technisch:</strong> SkuCore\UIErrors.lua bekommt einen verschachtelten Menuebauer (analog zu den Chat-Stimmen pro Kanal); der Wert bleibt ein einzelner String ("voice" / "voice#&lt;n&gt;" / Clip-Pfad / Ton-Pfad / silent), bestehende Einstellungen bleiben erhalten. OutputError decodiert "voice#&lt;n&gt;" und gibt den Stimmindex an OutputStringBTtts; die Fokus-Vorschau spielt die Auswahl an.</p>
+<h2>Menues umsortiert</h2>
+<p><strong>Einfach:</strong> Neues Menue "Werkzeuge" mit Dial Targeting und Soft Targeting. Der Monitor enthaelt jetzt zusaetzlich Entfernung, Fallerkennung,</p>
+<p>Fehler-Feedback, Ziel-Optionen und Quest-Benachrichtigungen. Das Audio-Menue ist verschlankt. Das alte Menue "Barrierefreiheit" heisst jetzt "Schnellmenue".</p>
+<p><strong>Technisch:</strong> Verschiebungen in SkuZOptions/SkuMenu und SkuCore\aq.lua</p>
+<p>MonitorMenuBuilder; RangecheckMenuBuilder fuer Wiederverwendung freigelegt;</p>
+<p>das nun leere Kampf-Untermenue entfernt; gleiche db/keyPrefix, daher bleiben gespeicherte Werte erhalten.</p>
+<h2>Gruppenmitglieder-Quests: kein Absturz mehr bei Fortschritt</h2>
+<p><strong>Einfach:</strong> Das Oeffnen einer Quest eines Gruppenmitglieds mit Zielfortschritt fuehrte manchmal zu einem Fehler und brach das Vorlesen ab. Sie oeffnet jetzt zuverlaessig.</p>
+<p><strong>Technisch:</strong> Der Gruppenmitglieder-OnEnter haengte an die Sektionen-TABELLE aus GetQuestDataStringFromDB an; er baut jetzt eine echte Sektionentabelle (Live-Fortschritt zuerst) wie der eigene Questpfad.</p>
+<h2>Installer: funktioniert hinter geteilten / VPN-Verbindungen</h2>
+<p><strong>Einfach:</strong> Der Installer konnte mit "rate limit exceeded" scheitern, bevor ueberhaupt ein Download begann, bei geteilten oder VPN-Verbindungen. Das passiert jetzt nicht mehr.</p>
+<p><strong>Technisch:</strong> Die api.github.com-Release-Abfrage (Limit 60/h/IP) entfaellt; die (Tag, Dateiname)-Paare sind in Config gepinnt und direkte</p>
+<p>github.com/.../releases/download-URLs werden gebaut.</p>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v42.04.html">Neuere Version: v42.04</a></li>
+<li><a href="v41.06.html">Aeltere Version: v41.06</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.01.02 - patch notes beta</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v41.01.02.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.01.02 - patch notes beta</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.01.03.html">Newer version: v41.01.03</a></li>
+<li><a href="v41.01.01.html">Older version: v41.01.01</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Bug Fixes (Sound)</h2>
+<ul>
+<li>Sound loss fixed: If the saved profile contained a master volume of 0 (e.g. due to corrupted SavedVariables), all WoW sound channels were set to mute on login. There is now a safeguard: if a master volume of 0 is detected in the profile, the addon re-reads the current Blizzard settings instead of applying 0.
+</li>
+<li>CVar reads secured: All volume queries during first-time profile initialization now use tonumber() with a fallback to 100 percent. If WoW returns an invalid value, full volume is used instead of mute.
+</li>
+<li>Pre-existing CVar bug fixed: Three sound settings (DSP effects, sound in background, zone music without delay) were previously not passed correctly to WoW because the same CVar name was used due to a copy-paste error. The three settings are now applied correctly.
+</li>
+</ul>
+<h2>Installation Note</h2>
+<ul>
+<li>After copying the new addon, it is recommended to delete the Sku SavedVariables once. The file is located at WTF/Account/ACCOUNTNAME/SavedVariables/Sku.lua in the WoW folder. This creates a fresh profile that picks up the correct Blizzard volume settings.
+</li>
+</ul>
+<h2>Version Display</h2>
+<ul>
+<li>Sku.toc and SkuDispatcher/Sku.toc updated to title/version v41.01.02 beta.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.01.03.html">Newer version: v41.01.03</a></li>
+<li><a href="v41.01.01.html">Older version: v41.01.01</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

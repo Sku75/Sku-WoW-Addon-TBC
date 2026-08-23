@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v42.10 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v42.10.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v42.10 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v42.11.html">Neuere Version: v42.11</a></li>
+<li><a href="v42.09.html">Aeltere Version: v42.09</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Navigation: Wegpunkte in Gebieten ohne eigene Karte funktionieren wieder</h2>
+<p><strong>Einfach:</strong> In der Tiefenbahn meldeten Shift+F9 und Shift+F10 keine Wegpunkte, obwohl das Gebiet vollstaendig kartiert und verknuepft ist. Dieselbe Ursachenfamilie traf Orte am Rand von Instanzen - den Eingangsbereich von Uldaman, den Vorplatz von Karazhan und aehnliche Stellen in Hoehlen und Tunneln: auch dort blieben beide Listen einfach leer, ohne Fehlermeldung. Das ist behoben, Wegpunktliste und Routenfuehrung arbeiten an diesen Orten wieder.</p>
+<p>Zu beachten: an solchen Stellen kann die Liste auch Wegpunkte des Gebiets enthalten, das ueber oder neben dir liegt. Wenn du in einer Hoehle unter einem anderen Gebiet stehst, pruefe vor dem Auswaehlen kurz, ob der Wegpunkt wirklich zu deiner Umgebung gehoert - sonst laeuft die Fuehrung gegen die Decke.</p>
+<p>In den Instanzen selbst (Uldaman innen, Karazhan innen) gibt es weiterhin keine Wegpunkte. Dort ist nichts kartiert, und das bleibt auch so.</p>
+<p><strong>Technisch:</strong> Zwei getrennte Ursachen, beide in SkuNav/Geo.lua. Erstens hat areaId 2257 (Die Tiefenbahn) keine ExternalMapID-Zeile, GetUiMapIdFromAreaId liefert dafuer also nil, und die strenge Namens-plus-uiMap-Schleife in GetCurrentAreaId kann solche Gebiete nie treffen. Bis v41 verglich diese Schleife gegen eine nie deklarierte globale Variable und traf genau sie zufaellig; seit der Deklaration lieferte GetCurrentAreaId dort nil, und mit nil als Kontinent brechen ListWaypoints2 und GetAllLinkedWPsInRangeToCoords wortlos ab. Der Namensabgleich wird jetzt bewusst als zweiter Durchgang wiederholt, beschraenkt auf Gebiete ohne uiMap - genau die Menge, die die strenge Schleife ohnehin nie treffen konnte, weshalb kein normales Gebiet anders ausgewertet werden kann. Zweitens gibt der Client in Hoehlen, Tunneln und vor Instanztueren oft die Kontinent-uiMap (1415/1414) zurueck. Die Rettung dafuer in GetBestMapForUnit glich den Namen der UNTERzone gegen InternalAreaTable ab - dort sind aber alle 285 Instanzzeilen auskommentiert, ein Unterzonenname wie "Uldaman" trifft also nichts, die Kontinent-ID ueberlebt, GetAreaIdFromUiMapId macht daraus AreaId -1, und GetCurrentAreaId bleibt ohne Ausweg (eine Zeile namens "Oestliche Koenigreiche" gibt es nicht). Es gibt jetzt einen Rueckfall auf GetRealZoneText, den Zonennamen, der immer eine Zeile hat; er greift nur, wenn die bisherigen Wege nichts Brauchbares geliefert haben.</p>
+<p>Ausserdem meldet /skuzoneprobe (/szp) jetzt beide Gebiets-Aufloeser nebeneinander, die Cache-Aufteilung nach Wegpunkttyp, die Groesse des Kontinent-Eimers und was die beiden Schnelllisten an Ort und Stelle zurueckgeben. Ein Fehler darin ist mitbehoben: die Sonde las WaypointCache als globale Tabelle, obwohl sie eine Dateilokale von SkuNav/Core.lua ist - die Zahl "im Cache ueberlebt" war deshalb immer 0 und meldete faelschlich, alles sei weggeraeumt worden.</p>
+<h2>Kampf: Die Zaehlung der Gegner im Kampf ist deutlich ruhiger und genauer</h2>
+<p><strong>Einfach:</strong> Die Ansage der Gegnerzahl sprang staendig hoch und runter, obwohl sich an der Lage nichts geaendert hatte - in einem Bosskampf mit drei Gegnern kamen so in gut einer Minute vierzehn Ansagen zusammen, von denen die meisten falsch waren. Vier Ursachen sind behoben:</p>
+<p>Erstens wurde ein Gegner, der sechs Sekunden lang nichts tat - waehrend einer Furcht, in einer Zauberphase, wenn ihn gerade niemand angriff -, aus der Zaehlung geworfen und beim naechsten Schlag wieder aufgenommen. Sku erkennt jetzt an viel mehr Anzeichen, dass ein Gegner noch mitkaempft. Gegner, die wirklich zurueckkehren oder verschwinden, verschwinden weiterhin aus der Zahl.</p>
+<p>Zweitens hoertest du nach einem Kill richtig "0", kurz darauf faelschlich "1" und dann wieder "0". Tote Gegner koennen nicht mehr zurueckkommen.</p>
+<p>Drittens fiel die Zahl mitten im Kampf auf 0 und kletterte danach wieder hoch, wenn du selbst kurz aus dem Kampf warst - etwa weil du gefuerchtet weggelaufen bist oder dein letzter Angreifer starb. In den Gruppen-Modi ("Gegner, die die Gruppe oder dich angreifen") zaehlt jetzt, ob noch jemand in der Gruppe kaempft.</p>
+<p>Viertens wurden freundliche NPCs mitgezaehlt, sobald ein Gruppenmitglied sie geheilt oder gestaerkt hat - etwa Begleit-NPCs in Instanzen. Sie zaehlen nicht mehr mit.</p>
+<p><strong>Technisch:</strong> Alles in SkuCore/aqCombat.lua. (1) lastUpdate wird jetzt von jeder Kampflog-Zeile aufgefrischt, die einen erfassten Gegner als Quelle ODER Ziel nennt, und zusaetzlich von blosser Sichtbarkeit in einem abgefragten Unit-Slot - letzteres nur, solange UnitAffectingCombat fuer den Slot wahr ist. Genau diese Bedingung erhaelt den Zweck der 6-Sekunden-Bereinigung: ein zurueckkehrender Gegner bleibt zwar sichtbar, verliert aber die Kampfmarkierung, wird also nicht aufgefrischt und faellt weiterhin heraus. (2) Ein Todesfall wird in tDeadGuids vermerkt, der Eintrag aus dem Sammelfenster tPendingAdds entfernt, und aqCombat_CREATURE_ADDED_TO_COMBAT weist tote GUIDs ab - vorher machte "false or {}" aus der Totenmarkierung wieder einen lebenden Eintrag. Aufgehoben wird die Markierung nur, wenn ein Unit-Token den Gegner wieder als lebend meldet. (3) PLAYER_REGEN_ENABLED (= "DU hast den Kampf verlassen") leerte die ganze threatTable; in den Modi 2 und 3 wird das jetzt aufgeschoben, solange ein Gruppenmitglied noch UnitAffectingCombat ist, mit einer 2-Sekunden-Nachfrage. Modus 4 ("greifen dich an") raeumt weiterhin sofort auf. (4) Die Feindlichkeit wird aus den Reaktions-Flags der Kampflog-Zeile (COMBATLOG_OBJECT_REACTION_*) und aus UnitReaction &lt;= 4 bestimmt, einmal pro Gegner und danach nie neu - bewusst NICHT ueber UnitCanAttack, denn Bosse werden mitten im Kampf unangreifbar oder immun gesetzt und wuerden genau dann aus der Zahl fallen.</p>
+<h2>Auktionshaus: Auktionen lassen sich wieder einstellen, ohne vorher die Taschen zu oeffnen</h2>
+<p><strong>Einfach:</strong> Beim Einstellen einer Auktion passierte manchmal schlicht nichts - der Verkaufsslot blieb leer und die Auktion ging still nicht raus. Wer vorher am Briefkasten, beim Haendler oder an der Bank war, bei dem ging es, denn diese Fenster oeffnen alle Taschen automatisch. Deshalb wirkte der Fehler zufaellig und traf nur manche Sitzungen. Das Einstellen braucht die Taschen jetzt nie mehr geoeffnet.</p>
+<p>Nebenbei wird das Item im Moment des Einstellens frisch in den Taschen gesucht:</p>
+<p>hat sich der Stapel seit dem Aufbau des Menues verschoben, wird trotzdem das richtige Item eingestellt. Gerade gesperrte und seelengebundene Kopien derselben Item-ID werden uebersprungen, statt das Einstellen still scheitern zu lassen.</p>
+<p><strong>Technisch:</strong> SkuCore/auctionHouse.lua. Der Verkaufspfad zog das Item ueber das Skript des Taschen-FENSTERS in den Slot:</p>
+<p>_G["ContainerFrame(bag+1)Item(numSlots-slot+1)"]:GetScript("OnDragStart").</p>
+<p>Diese Buttons entstehen erst, wenn eine Tasche wirklich einmal dargestellt wurde, und die Zuordnung ContainerFrame[N] &lt;-&gt; Taschen-ID wird beim OEFFNEN vergeben - die feste Annahme N = bag + 1 stimmt nur, wenn alle Taschen der Reihe nach geoeffnet wurden. Ohne das griff der Zug ins Leere und PostAuction lief ohne Wirkung durch. Das war ein Rueckfall in den Stand vor dem 25.06.2026:</p>
+<p>die v42-Ueberarbeitung des Verkaufens hat den "originalen v41.06-Pfad" wiederhergestellt und den Fensterzug damit zurueckgeholt.</p>
+<p>Gelesen und aufgenommen wird jetzt ueber die Container-API - denselben Weg, den Taschensortierung und Sockeln schon nehmen: neue Helfer _ASBagNumSlots, _ASBagSlotInfo, _ASFindBagSlot und _ASPickupBagItem, jeweils zweigleisig ueber C_Container und die klassischen Globalen. Tasche und Platz werden beim Klick neu ueber die Item-ID aufgeloest (der beim Menueaufbau gemerkte Platz ist nur noch ein Hinweis und wird nachgeprueft), dann PickupContainerItem gefolgt von ClickAuctionSellItemButton; im Abbruchzweig raeumt ClearCursor auf, damit ein fehlgeschlagenes Aufnehmen das Item nicht am Cursor liegen laesst. Auch die Verfeinerung ueber _G[containerFrameName].info.id in der Preisvorgabe entfaellt:</p>
+<p>sie lieferte ohne dargestellte Taschen nichts, und die Item-ID aus dem Container-Durchlauf ist ohnehin die verlaessliche Quelle.</p>
+<h2>Auktionshaus: Der niedrigste Preis wird nicht mehr faelschlich als 0 Kupfer gemeldet</h2>
+<p><strong>Einfach:</strong> Bei manchen Items nannte Sku als niedrigsten Sofortkaufpreis "0 Kupfer", obwohl mehrere Auktionen mit ganz gewoehnlichen Preisen im Haus lagen - eine Suche von Hand nach demselben Item fand die richtigen Preise sofort. Aus derselben Ursache war der angesagte Durchschnitt zu niedrig, die Zahl der Datenpunkte zu hoch, und der beim Verkaufen vorgeschlagene Preis konnte auf 0 stehen. Bei anderen Items hiess es umgekehrt "Keine Sofortkaufdaten vorhanden", obwohl es Sofortkaeufe gab. Beides ist behoben. Die aktuellen Preisdaten sind nach dem naechsten vollstaendigen Scan wieder richtig; gespeicherte historische Daten heilen pro Item, sobald es erneut gescannt wurde, und bis dahin werden alte Null-Preise als "keine Daten" behandelt statt vorgelesen.</p>
+<p><strong>Technisch:</strong> SkuCore/auctionHouse.lua. Zwei Fehler, die zusammenwirkten. Erstens steuerte in AuctionBuildPriceData jede Auktionszeile immer ZWEI Datenpunkte bei, einen Gebots- und einen Sofortkaufpreis. Auktionen ohne Sofortkauf (buyoutPrice == 0, im TBC-Auktionshaus der Normalfall) wurden dabei als glatte 0 in die Sofortkaufliste geschrieben. Zweitens band die Bedingung in AuctionUpdateAuctionDBHistory - "not tLow or (tPrice &gt; 0 and tPrice &lt; tLow)" - den Schutz tPrice &gt; 0 nur an den ZWEITEN Zweig. Der zuerst gesehene Preis besetzte das Minimum also unabhaengig von seinem Wert, auch mit 0; danach war kein Preis mehr kleiner als 0, das Minimum blieb also 0. Deshalb schlug es nur manchmal zu - naemlich wenn die erste Auktion dieses Items im Scan keinen Sofortkauf hatte. Die Nullen zogen ausserdem den Median nach unten, und lag mehr als die Haelfte der Auktionen ohne Sofortkauf, wurde der Median 0, worauf der Ausreisserfilter tPrice &lt; Median * 10 samt aller echten Preise alles verwarf - das war der Fall "keine Daten trotz vorhandener Sofortkaeufe".</p>
+<p>Jetzt werden nur echte Preise &gt; 0 ueberhaupt zu Datenpunkten (eine Auktion ohne Sofortkauf liefert schlicht keinen Sofortkauf-Datenpunkt), tPrice &gt; 0 gilt fuer beide Zweige, und ein Median &lt;= 0 umgeht den Ausreisserfilter, statt alles wegzufiltern. Beim Auslesen in AuctionHouseGetAuctionPriceHistoryData gilt ein gespeichertes Minimum &lt;= 0 als "keine Daten" - noetig, weil in bereits gespeicherter AuctionDBHistory noch Null-Minima aus der alten Rechnung stehen koennen, bis das Item wieder gescannt wird.</p>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v42.11.html">Neuere Version: v42.11</a></li>
+<li><a href="v42.09.html">Aeltere Version: v42.09</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

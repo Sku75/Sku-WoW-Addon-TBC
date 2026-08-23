@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.06 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v41.06.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.06 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v42.03.html">Newer version: v42.03</a></li>
+<li><a href="v41.05.html">Older version: v41.05</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Friends list: "Invite" works again</h2>
+<p><strong>Simple:</strong> In the Friends window a friend could not be invited (error tone). The invite works again, including Battle.net friends.</p>
+<p><strong>Technical:</strong> InviteUnit is no longer a global in 2.5.5; the normal friend branch (SkuCore\friends.lua) now uses C_PartyInfo.InviteUnit with a fallback, like the Battle.net branch.</p>
+<h2>Aura set sharing: easier to use</h2>
+<p><strong>Simple:</strong> "Sets (share)" now sits in 3rd place (under New aura and Manage auras). "Create set from current auras" is now "Create new set from current auras". When creating a set you can now type the name directly (previously only pasting worked). The announcement is simplified to "Set created" because a freely chosen name cannot be voiced.</p>
+<p><strong>Technical:</strong> SkuAuras\sharing.lua now uses SkuOptions:EditBoxShow (with keyboard focus) instead of EditBoxPasteShow; menu order adjusted in</p>
+<p>SkuAuras\Options.lua; announcement only once.</p>
+<h2>Aura set sharing: "Delete set" now works reliably</h2>
+<p><strong>Simple:</strong> When deleting a set the entry sometimes stayed and the next Enter only played an error tone. Now the set is deleted, the menu jumps back to the set list and rebuilds it.</p>
+<p><strong>Technical:</strong> After SetsDelete the menu navigates back to "Sets (share)" and calls OnSelect / VocalizeCurrentMenuName (SkuAuras\sharing.lua); announcement simplified to "Set deleted".</p>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v42.03.html">Newer version: v42.03</a></li>
+<li><a href="v41.05.html">Older version: v41.05</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

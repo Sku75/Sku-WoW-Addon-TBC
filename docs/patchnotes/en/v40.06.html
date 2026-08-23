@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v40.06 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v40.06.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v40.06 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.01.01.html">Newer version: v41.01.01</a></li>
+<li><a href="v40.05.html">Older version: v40.05</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Wishlist</h2>
+<ul>
+<li>Add/remove items fixed: The wishlist now reliably responds when adding and removing items. Previously, the action could silently fail if the item was not yet cached or if the menu rebuild triggered an error.
+</li>
+<li>Audio feedback: When adding an item, "Added to wishlist" is now announced; when removing, "Removed from wishlist". Previously there was no feedback at all.
+</li>
+<li>Cache fallback: If an item is not yet in the client cache on the first attempt, it is automatically requested and retried after a short delay.
+</li>
+</ul>
+<h2>Pet Rename</h2>
+<ul>
+<li>Confirmation fixed: The two-step process (enter name, then select "Confirm rename") now works reliably again. The faulty menu rebuild after name entry, which triggered the crash "attempt to call method 'BuildChildren' (a nil value)", has been removed.
+</li>
+</ul>
+<h2>Stable Master</h2>
+<ul>
+<li>Drag/drop fixed: Pet swapping between active companion and stable slots now uses macrotext in hardware event context. Previously the click ran in addon context and could be blocked by Blizzard.
+</li>
+<li>Purchase price: The "Buy another slot" button now displays the price in gold/silver/copper.
+</li>
+<li>Automatic refresh: After a pet swap or stable slot purchase, the stable master window is automatically refreshed (PET_STABLE_UPDATE event).
+</li>
+<li>Event registration: PET_STABLE_SHOW, PET_STABLE_CLOSED and PET_STABLE_UPDATE are now correctly registered in the SkuDispatcher. The event handlers existed before but were never called.
+</li>
+</ul>
+<h2>Bug Fixes</h2>
+<ul>
+<li>VocalizeCurrentMenuName: Nil guard for BuildChildren added. Prevents the generic crash "attempt to call method 'BuildChildren' (a nil value)" which could occur in multiple menu areas (wishlist, pet rename, stable master).
+</li>
+</ul>
+<h2>Version Display</h2>
+<ul>
+<li>Sku.toc and SkuDispatcher/Sku.toc updated to title/version v40.06.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.01.01.html">Newer version: v41.01.01</a></li>
+<li><a href="v40.05.html">Older version: v40.05</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

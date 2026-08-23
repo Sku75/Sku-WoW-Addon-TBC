@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v40.05 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v40.05.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v40.05 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v40.06.html">Newer version: v40.06</a></li>
+<li><a href="v40.04.01.html">Older version: v40.04.01</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Wishlist</h2>
+<ul>
+<li>Sound on chat link: When a wishlist item is linked in party, raid, say or yell chat, the same notification sound now plays as with the loot roll window.
+</li>
+<li>Color codes removed: Dungeon names and boss names from AtlasLoot are now displayed without WoW color codes (|cff...). Affects both the "By dungeon" view and the tooltip with boss drop sources.
+</li>
+</ul>
+<h2>Bug Fixes</h2>
+<ul>
+<li>Missing locale entries: L["Up"] and L["Down"] for wishlist item reordering added. Fixes "AceLocale-3.0: Missing entry for 'Down'" error.
+</li>
+<li>Combat log: CombatLog_OnEvent is now checked for availability before calling. Fixes the crash "attempt to call global 'CombatLog_OnEvent' (a nil value)" on TBC Anniversary.
+</li>
+<li>Item list: C_Item.GetItemNameByID is now guarded with a fallback. Fixes the crash "attempt to concatenate a nil value" when an item is not yet cached.
+</li>
+<li>Interact distance: CheckInteractDistance is now called via pcall. Fixes "ADDON_ACTION_BLOCKED CheckInteractDistance()" during combat.
+</li>
+</ul>
+<h2>Version Display</h2>
+<ul>
+<li>Sku.toc and SkuDispatcher/Sku.toc updated to title/version v40.05.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v40.06.html">Newer version: v40.06</a></li>
+<li><a href="v40.04.01.html">Older version: v40.04.01</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

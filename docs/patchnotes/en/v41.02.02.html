@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.02.02 - patch notes (Working version)</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v41.02.02.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.02.02 - patch notes (Working version)</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.02.03.html">Newer version: v41.02.03</a></li>
+<li><a href="v41.02.01.html">Older version: v41.02.01</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Insights from mailbox repair:</h2>
+<ul>
+<li>CloseMenu() also closes the Blizzard MailFrame. SendMail() requires an open MailFrame. Therefore CloseMenu() must NOT be called before mail input.
+</li>
+<li>EditBox OnEnterPressed does not fire when SetScript("OnKeyDown") is set. Enter must be intercepted manually in the OnKeyDown handler.
+</li>
+<li>SkuOptionsEditBoxOkScript is a local variable in SkuZOptions/Core.lua and cannot be called from other files (e.g. mail.lua). Callbacks must be defined as local functions in the calling scope.
+</li>
+<li>RegisterForClicks("AnyDown") prevents double-enter but blocks EditBox OnEnterPressed (fires on key-up). Solution: OnKeyDown handler on EditBox intercepts Enter directly — independent of SecureActionButton override binding.
+</li>
+<li>Debounce approach (100ms lock in PostClick) works for bags and wishlist but breaks mailbox and other EditBox inputs.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.02.03.html">Newer version: v41.02.03</a></li>
+<li><a href="v41.02.01.html">Older version: v41.02.01</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

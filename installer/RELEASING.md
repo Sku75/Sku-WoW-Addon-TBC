@@ -28,8 +28,11 @@ and you get:
 - a new GitHub release marked **Latest**, carrying the addon, the installer and
   `installer-version.txt` (the two-line file that tells already-installed
   updaters a newer installer exists, and the checksum they verify it against),
-- the download pages' links updated to the new version (English and French),
-- the patch notes copied onto the website in all three languages,
+- the download pages' links updated to the new version (English, German and
+  French),
+- the patch notes copied onto the website in all three languages **and rebuilt
+  as HTML pages**, one page per version per language, with every download page
+  pointing its "what is new" button at this release's page,
 - an announcement posted to each Discord channel, in that channel's languages.
 
 ## Discord: one message per channel, not one message for everyone
@@ -64,7 +67,7 @@ one for whoever maintains the code next.
 
 Sometimes you want a build in a tester's hands without shipping it to everyone.
 
-    installerelease.ps1 -Dev -Version 43.0
+    installer\release.ps1 -Dev -Version 43.0
 
 That packs the addon exactly as it stands on disk right now — work in progress
 included, that is the point — and puts it on GitHub as a **pre-release** under
@@ -104,11 +107,23 @@ before it builds so it is never a surprise.
 - **tools\build_sku_zip.py** — packs the addon folder into the release zip.
 - **the installer project** — rebuilt into the `SkuInstaller.exe` that ships with each release.
 - **.secrets\discord-webhooks.txt** — your two Discord channel links, kept private and never uploaded.
-- **the download pages** (`docs\index.html`, `docs\index-fr.html`) — their links
-  are refreshed automatically. Both are listed in `$DocsPages` in release.ps1; a
-  page that is not in that list silently keeps an old version number, which is
-  exactly the bug the v42.11 stale-heading fix was about. Add any new
-  translation of the page there.
+- **the download pages** (`docs\index.html`, `docs\index-de.html`,
+  `docs\index-fr.html`) — their links are refreshed automatically. All three are
+  listed in `$DocsPages` in release.ps1; a page that is not in that list
+  silently keeps an old version number, which is exactly the bug the v42.11
+  stale-heading fix was about. Add any new translation of the page there.
+- **`docs\sku.css`** — one stylesheet for the download pages and the generated
+  patch note pages.
+- **dev\rework-docs\_gen_patchnotes_html.py** — turns the three patch note text
+  files into `docs\patchnotes\<lang><version>.html` plus a version list per
+  language. release.ps1 runs it on every release (`Build-PatchNotesHtml`), right
+  after the notes are copied. Everything under `docs\patchnotes\` is
+  GENERATED — edit the text files in `Sku\`, never the HTML.
+- **the language of the page** — `docs\index.html` is the entry point and the
+  only page that redirects: an explicit `?lang=xx` wins and is remembered, then
+  a previous choice, then the browser's own language list. The German and
+  French pages never redirect, so a link someone was handed opens the page it
+  names, and the language links at the top always work without JavaScript.
 
 ## What it needs to run
 

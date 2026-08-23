@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v40.05 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v40.05.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v40.05 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v40.06.html">Neuere Version: v40.06</a></li>
+<li><a href="v40.04.01.html">Aeltere Version: v40.04.01</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Wunschliste</h2>
+<ul>
+<li>Sound bei Chat-Link: Wenn ein Wunschlisten-Gegenstand im Party-, Raid-, Sag- oder Schrei-Chat verlinkt wird, ertoennt jetzt der gleiche Hinweiston wie beim Wuerfelfenster.
+</li>
+<li>Farbcodes entfernt: Dungeon-Namen und Boss-Namen aus AtlasLoot werden jetzt ohne WoW-Farbcodes (|cff...) angezeigt. Betrifft sowohl die Ansicht "Nach Dungeon" als auch den Tooltip mit Boss-Drop-Quellen.
+</li>
+</ul>
+<h2>Fehlerbehebungen</h2>
+<ul>
+<li>Fehlende Locale-Eintraege: L["Up"] und L["Down"] fuer die Wunschlisten-Reihenfolge hinzugefuegt. Behebt "AceLocale-3.0: Missing entry for 'Down'" Fehler.
+</li>
+<li>Kampflog: CombatLog_OnEvent wird jetzt auf Verfuegbarkeit geprueft, bevor es aufgerufen wird. Behebt den Absturz "attempt to call global 'CombatLog_OnEvent' (a nil value)" auf TBC Anniversary.
+</li>
+<li>Gegenstandsliste: C_Item.GetItemNameByID wird jetzt mit einem Fallback abgesichert. Behebt den Absturz "attempt to concatenate a nil value" wenn ein Item noch nicht im Cache ist.
+</li>
+<li>Interaktionsdistanz: CheckInteractDistance wird jetzt per pcall aufgerufen. Behebt "ADDON_ACTION_BLOCKED CheckInteractDistance()" im Kampf.
+</li>
+</ul>
+<h2>Versionsanzeige</h2>
+<ul>
+<li>Sku.toc und SkuDispatcher/Sku.toc aktualisiert auf Titel/Version v40.05.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v40.06.html">Neuere Version: v40.06</a></li>
+<li><a href="v40.04.01.html">Aeltere Version: v40.04.01</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

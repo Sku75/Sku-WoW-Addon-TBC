@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.02.06 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v41.02.06.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.02.06 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.02.07.html">Neuere Version: v41.02.07</a></li>
+<li><a href="v41.02.05.html">Aeltere Version: v41.02.05</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Kamera-Optionen (Menuepunkt 7)</h2>
+<ul>
+<li>Neues Menue "Kamera-Optionen" ersetzt den bisherigen Platzhalter "Reserviert".
+</li>
+<li>Sku Standard sperren/entsperren: Sperrt alle Kameraeinstellungen auf den Sku-Standard (noetig fuer Wegpunktnavigation). Beim Sperren wird eine Bestaetigung abgefragt und ein vollstaendiger Kamera-Reset durchgefuehrt inkl. SaveView(2). Beim Entsperren werden die gespeicherten User-Einstellungen wiederhergestellt.
+</li>
+<li>Kamera-Entfernung: 6 Stufen von Nah (Faktor 1) bis Maximum (Faktor 4). Zoom wird physisch ausgefuehrt.
+</li>
+<li>Kamera-Hoehe: 4 Stufen von flach bis Vogelperspektive. Hinweis: funktioniert nur wenn Verfolgungsstil nicht auf Immer steht.
+</li>
+<li>Kamera-Neigungsgeschwindigkeit: 4 Stufen von Langsam bis Sehr schnell.
+</li>
+<li>Kamera-Verfolgungsstil: 4 Optionen wie im WoW-Original (Intelligent, Nur bei Bewegung, Immer, Niemals). "Immer" ist der Sku Standard fuer Wegpunktnavigation.
+</li>
+<li>Interface ein/ausblenden: Blendet die gesamte WoW-Oberflaeche ein oder aus.
+</li>
+<li>Weitere Kamerafunktionen: Kamera-Uebergang (sofort/sanft), Ueber-die-Schulter-Ansicht, Plaketten (Gegner/Freundliche/Alle ein/aus).
+</li>
+<li>Alle Einstellungen zeigen ihren aktuellen Wert im Menuenamen an. Aktive Option mit "(eingestellt)" markiert.
+</li>
+<li>Bei gesperrtem Sku Standard sind alle Untermenues blockiert mit Ansage.
+</li>
+<li>Einstellungen bleiben ueber Logout/Login erhalten (persistent in SavedVariables).
+</li>
+</ul>
+<h2>Auktionshaus: Absturz auf englischem Client behoben</h2>
+<ul>
+<li>Beim Oeffnen des Auktionshauses konnte ein Fehler auftreten (ipairs auf nil), wenn AuctionCategories noch nicht von Blizzard initialisiert war. Fix: nil-Guard vor beiden ipairs-Schleifen und 0.3s Verzoegerung beim Menue-Aufbau.
+</li>
+</ul>
+<h2>AtlasLoot: Lokalisierung korrigiert</h2>
+<ul>
+<li>Die Gruppen "Instanzen", "Schlachtzuege" und "Weltbosse" unter AtlasLoot Listen waren hardcoded auf Deutsch. Sie verwenden jetzt L[]-Eintraege und erscheinen auf englischen Clients korrekt. Ebenso "Heroisch", "Normal" und der Schwierigkeitsgrad-Fallback.
+</li>
+</ul>
+<h2>Charakterfenster: Gegenstand im Slot</h2>
+<ul>
+<li>CheckFrames wird nach dem Aufnehmen eines Gegenstands aus einem Equipment-Slot nicht mehr sofort aufgerufen. Dadurch kann der Gegenstand in die Tasche gelegt werden, ohne dass das Menue den Slot-Zustand verfaelscht.
+</li>
+</ul>
+<h2>Soulbind-Bestaetigung: Fokus-Verbesserung</h2>
+<ul>
+<li>Nach dem Bestaetigen der "Gegenstand wird gebunden"-Abfrage springt der Fokus nicht mehr auf die Taschen-Ebene zurueck. Stattdessen wird CheckFrames verzoegert aufgerufen und der Cursor korrekt positioniert.
+</li>
+</ul>
+<h2>Weltkarte: Visuelles Flackern reduziert</h2>
+<ul>
+<li>Das Addon oeffnete und schloss die Weltkarte im Hintergrund (alle 0.15s), um Positionsdaten zu lesen. Wenn die Karte bereits offen war, verursachte dies visuelles Flackern. Fix: Show/Hide wird nur noch ausgefuehrt, wenn die Karte nicht sichtbar ist.
+</li>
+</ul>
+<h2>Versionsanzeige</h2>
+<ul>
+<li>Sku.toc und SkuDispatcher/Sku.toc aktualisiert auf v41.02.06.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.02.07.html">Neuere Version: v41.02.07</a></li>
+<li><a href="v41.02.05.html">Aeltere Version: v41.02.05</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

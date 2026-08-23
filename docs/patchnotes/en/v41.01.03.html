@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.01.03 - patch notes beta</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v41.01.03.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.01.03 - patch notes beta</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.02.html">Newer version: v41.02</a></li>
+<li><a href="v41.01.02.html">Older version: v41.01.02</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Pet Rename</h2>
+<ul>
+<li>ADDON_ACTION_BLOCKED fixed: The SecureActionButton was tainted by a HookScript handler. WoW therefore blocked the protected PetRename() call. The HookScript has been replaced with PostClick, which does not affect secure macro execution.
+</li>
+<li>Menu rebuild after name input restored: After typing the new name, the menu is now automatically updated so the confirmation entry is immediately visible.
+</li>
+</ul>
+<h2>Auction House</h2>
+<ul>
+<li>Crash on "New Auction" fixed: When an inventory item was not yet fully loaded in the client cache, a nil value on the name query caused a crash. Items without a cached name are now skipped.
+</li>
+</ul>
+<h2>Navigation</h2>
+<ul>
+<li>Crash on special tasks fixed: When the task database was not loaded, accessing SkuDB.Tasks caused a crash. The data is now checked for existence first.
+</li>
+<li>Dangerous menu item removed: The menu item "Delete all routes and waypoints" under Navigation/Data has been removed. It would have irreversibly deleted all user-defined navigation data.
+</li>
+<li>Export function enabled: Route mapping data can now be exported as text under Navigation/Data for import into the SkuMapper tool.
+</li>
+</ul>
+<h2>Wishlist (Atlasloot)</h2>
+<ul>
+<li>Audio feedback on Enter fixed: The feedback when adding/removing wishlist items was immediately cleared by an internal cleanup. The voice output is now slightly delayed so it is reliably audible.
+</li>
+</ul>
+<h2>Stability</h2>
+<ul>
+<li>Nil guard for menu position name: Prevents the follow-up error "bad argument #1 to find (string expected, got nil)" when the menu is in an invalid state.
+</li>
+</ul>
+<h2>Version Display</h2>
+<ul>
+<li>Sku.toc and SkuDispatcher/Sku.toc updated to v41.01.03 beta.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.02.html">Newer version: v41.02</a></li>
+<li><a href="v41.01.02.html">Older version: v41.01.02</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

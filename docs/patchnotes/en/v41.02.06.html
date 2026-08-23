@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.02.06 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v41.02.06.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.02.06 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.02.07.html">Newer version: v41.02.07</a></li>
+<li><a href="v41.02.05.html">Older version: v41.02.05</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Camera Options (Menu item 7)</h2>
+<ul>
+<li>New menu "Camera options" replaces the former "Reserved" placeholder.
+</li>
+<li>Sku standard lock/unlock: Locks all camera settings to the Sku standard (required for waypoint navigation). Locking triggers a confirmation dialog and performs a full camera reset including SaveView(2). Unlocking restores saved user settings.
+</li>
+<li>Camera distance: 6 levels from Close (factor 1) to Maximum (factor 4). Zoom is physically applied.
+</li>
+<li>Camera height: 4 levels from flat to bird eye view. Note: only works when tracking style is not set to Always.
+</li>
+<li>Camera pitch speed: 4 levels from Slow to Very fast.
+</li>
+<li>Camera tracking style: 4 options matching WoW originals (Smart, Only when moving, Always, Never). "Always" is the Sku standard for waypoint navigation.
+</li>
+<li>Show/hide interface: Toggles the entire WoW UI on or off.
+</li>
+<li>More camera functions: Camera transition (instant/smooth), over shoulder view, nameplates (enemy/friendly/all on/off).
+</li>
+<li>All settings display their current value in the menu name. Active option marked with "(active)".
+</li>
+<li>When Sku standard is locked, all sub-menus are blocked with an announcement.
+</li>
+<li>Settings persist across logout/login (stored in SavedVariables).
+</li>
+</ul>
+<h2>Auction House: Crash on English client fixed</h2>
+<ul>
+<li>Opening the Auction House could cause an error (ipairs on nil) when AuctionCategories was not yet initialized by Blizzard. Fix: nil-guard before both ipairs loops and 0.3s delay on menu build.
+</li>
+</ul>
+<h2>AtlasLoot: Localization corrected</h2>
+<ul>
+<li>The groups "Instances", "Raids" and "World Bosses" under AtlasLoot Lists were hardcoded in German. They now use L[] entries and display correctly on English clients. Also fixed: "Heroic", "Normal" and the difficulty fallback label.
+</li>
+</ul>
+<h2>Character Frame: Item in slot</h2>
+<ul>
+<li>CheckFrames is no longer called immediately after picking up an item from an equipment slot. This allows placing the item into a bag without the menu corrupting the slot state.
+</li>
+</ul>
+<h2>Soulbind confirmation: Focus improvement</h2>
+<ul>
+<li>After confirming the "This item will be bound to you" dialog, the focus no longer jumps back to the Bags level. Instead, CheckFrames is called with a delay and the cursor is properly repositioned.
+</li>
+</ul>
+<h2>World Map: Visual flickering reduced</h2>
+<ul>
+<li>The addon opened and closed the World Map in the background (every 0.15s) to read position data. When the map was already open, this caused visual flickering. Fix: Show/Hide is only executed when the map is not visible.
+</li>
+</ul>
+<h2>Version display</h2>
+<ul>
+<li>Sku.toc and SkuDispatcher/Sku.toc updated to v41.02.06.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.02.07.html">Newer version: v41.02.07</a></li>
+<li><a href="v41.02.05.html">Older version: v41.02.05</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

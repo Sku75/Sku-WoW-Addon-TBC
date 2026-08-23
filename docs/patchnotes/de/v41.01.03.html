@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.01.03 - Patchnotes beta</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v41.01.03.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.01.03 - Patchnotes beta</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.02.html">Neuere Version: v41.02</a></li>
+<li><a href="v41.01.02.html">Aeltere Version: v41.01.02</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Pet-Umbenennung</h2>
+<ul>
+<li>ADDON_ACTION_BLOCKED behoben: Der SecureActionButton war durch einen HookScript-Handler getaintet. WoW blockierte deshalb den geschuetzten PetRename()-Aufruf. Der HookScript wurde durch PostClick ersetzt, der die sichere Macro-Ausfuehrung nicht beeintraechtigt.
+</li>
+<li>Menu-Rebuild nach Namenseingabe wiederhergestellt: Nach dem Eintippen des neuen Namens wird das Menu jetzt automatisch aktualisiert, damit der Bestaetigungseintrag sofort sichtbar ist.
+</li>
+</ul>
+<h2>Auktionshaus</h2>
+<ul>
+<li>Absturz bei "Neue Auktion" behoben: Wenn ein Gegenstand im Inventar noch nicht vollstaendig im Client-Cache geladen war, fuehrte ein nil-Wert bei der Namensabfrage zum Absturz. Items ohne gecachten Namen werden jetzt uebersprungen.
+</li>
+</ul>
+<h2>Navigation</h2>
+<ul>
+<li>Absturz bei Spezialaufgaben behoben: Wenn die Aufgaben-Datenbank nicht geladen war, fuehrte der Zugriff auf SkuDB.Tasks zum Absturz. Es wird jetzt vorher geprueft ob die Daten vorhanden sind.
+</li>
+<li>Gefaehrlichen Menuepunkt entfernt: Der Menuepunkt "Alle Routen und Wegpunkte loeschen" unter Navigation/Daten wurde entfernt. Er haette alle benutzerdefinierten Navigationsdaten unwiderruflich geloescht.
+</li>
+<li>Export-Funktion freigeschaltet: Unter Navigation/Daten kann die Routendaten-Kartierung jetzt als Text exportiert werden, um sie im SkuMapper-Tool zu importieren.
+</li>
+</ul>
+<h2>Wunschliste (Atlasloot)</h2>
+<ul>
+<li>Audio-Feedback bei Enter repariert: Die Rueckmeldung beim Hinzufuegen/Entfernen von Wunschlisten-Items wurde von einer internen Bereinigung sofort geloescht. Die Sprachausgabe wird jetzt leicht verzoegert abgespielt, sodass sie zuverlaessig hoerbar ist.
+</li>
+</ul>
+<h2>Stabilitaet</h2>
+<ul>
+<li>Nil-Guard fuer Menueposition-Name: Verhindert den Folgefehler "bad argument #1 to find (string expected, got nil)" wenn das Menue in einem ungueltigen Zustand ist.
+</li>
+</ul>
+<h2>Versionsanzeige</h2>
+<ul>
+<li>Sku.toc und SkuDispatcher/Sku.toc aktualisiert auf v41.01.03 beta.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.02.html">Neuere Version: v41.02</a></li>
+<li><a href="v41.01.02.html">Aeltere Version: v41.01.02</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

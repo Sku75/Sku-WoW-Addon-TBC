@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.02 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v41.02.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.02 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.02.01.html">Newer version: v41.02.01</a></li>
+<li><a href="v41.01.03.html">Older version: v41.01.03</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Version Jump 40.x to 41.x</h2>
+<ul>
+<li>Performance improved, wiki section removed.
+</li>
+<li>Localization of new content: socketing, AtlasLoot wishlist, dropdown menus, dungeon finder.
+</li>
+</ul>
+<h2>Bugfix: Letter and Number Keys Blocked on English Clients</h2>
+<ul>
+<li>When logging in on an English WoW client, an automatic profile switch caused all letter, number and space key inputs to be blocked by orphaned override bindings. This affected e.g. the 7 key (and therefore / on QWERTZ keyboards). Root cause: SkuKeyBindsUpdate() directly called the OnShow handler of the menu frame, which set all menu navigation bindings without OnHide ever clearing them. The affected keybinding entry (SKU_KEY_QUESTABANDON) has been corrected.
+</li>
+<li>Additionally, all module OnEnable calls in the profile handlers (OnProfileChanged, OnProfileCopied, OnProfileReset) are now wrapped in pcall, so SkuKeyBindsUpdate() is always reached even if individual modules error.
+</li>
+<li>The deduplication in SkuKeyBindsUpdate has been fixed: functions like CreateMainFrame are now called only once instead of approximately 30 times.
+</li>
+</ul>
+<h2>Localization: Socketing Window</h2>
+<ul>
+<li>All approximately 20 hardcoded German strings in Build_SocketingFrame.lua replaced with L[] calls. English clients now display correct English text (socket colors, menu items, status messages).
+</li>
+<li>Critical menu comparison (child.name == "Sockeln") localized so the socketing menu is correctly found on English clients.
+</li>
+</ul>
+<h2>Missing Locale Key</h2>
+<ul>
+<li>L["Warlock"] added to enUS.lua. The key existed in deDE.lua but was missing from the English locale file.
+</li>
+</ul>
+<h2>API Compatibility</h2>
+<ul>
+<li>SetMinResize/SetMaxResize in SkuNav/SkuMM.lua replaced with capability detection (SetResizeBounds preferred, fallback to SetMinResize). Prevents possible errors on TBC Anniversary (Interface 11508).
+</li>
+</ul>
+<h2>Version Display</h2>
+<ul>
+<li>Sku.toc and SkuDispatcher/Sku.toc updated to v41.01.04 (without beta).
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.02.01.html">Newer version: v41.02.01</a></li>
+<li><a href="v41.01.03.html">Older version: v41.01.03</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v42.07 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v42.07.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v42.07 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v42.08.html">Newer version: v42.08</a></li>
+<li><a href="v42.06.html">Older version: v42.06</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>AddOn settings: read and change other addons' options</h2>
+<p><strong>Simple:</strong> A new "AddOn settings" entry in the Addons menu (and the "AddOns" button in the Escape game menu) lets you read and change other addons' settings with the screen reader - Questie, Deadly Boss Mods, AtlasLoot, Extended Character Stats and more. Their options show up as normal Sku menus: on/off toggles, choice lists, sliders and text fields. Can be turned off in the Features menu.</p>
+<p><strong>Technical:</strong> SkuCore/addonOptions.lua walks any addon's AceConfig options table via the process-global AceConfigRegistry (IterateOptionsTables / GetOptionsTable) with AceConfig inheritance semantics, rendered with the same menu shapes as gameOptions.lua. Curated top-level list; load-on- demand config addons are loaded when opened. Deadly Boss Mods has its own adapters: per-boss-mod options from DBM.Mods and the core options via a DBM-GUI widget walk.</p>
+<h2>Distance checks: bands stay put and are ready quickly after login</h2>
+<p><strong>Simple:</strong> The distance announcements (the "Entfernung" range checks) had a bug where range bands you had configured could silently switch themselves off and the list could come up empty. Fixed: your bands stay, the list fills in reliably, and newly available bands are announced. After a fresh login the bands are also ready much faster than before, and the 100-yard band works again on TBC. Heads-up: you will now hear more distance callouts than you are used to, because every band that becomes available is announced - silence any you do not want under Monitor -&gt; Entfernung.</p>
+<p><strong>Technical:</strong> RangeCheck no longer prunes saved bands against transient</p>
+<p>LibRangeCheck availability; the menu populates synchronously on enable with timed silent retries and refreshes from the live library.</p>
+<p>LibRangeCheck-3.0 was updated v31 -&gt; v35 (spell bands refresh while leveling via LEARNED_SPELL_IN_TAB). A parallel item pre-warm at activate fills item bands in a burst on a cold client cache instead of a serial per-item crawl. Five DM-tribute permanent elixirs were added to the TBC 100-yard tables so the 100 band forms. A combat guard skips non-attackable targets whose interact-distance checkers return wrong values in combat.</p>
+<h2>Focus: game focus changes announced by voice</h2>
+<p><strong>Simple:</strong> Setting or clearing the game's focus target is now announced by voice ("Focus set to &lt;name&gt;" / "Focus removed"). The eight Sku focus keybinds and their menu group are renamed "Sku Focus" so they read as clearly distinct from the game's own focus. Setting a Sku focus no longer speaks its confirmation twice.</p>
+<p><strong>Technical:</strong> PLAYER_FOCUS_CHANGED is routed through Blizzard TTS (engine 2, the user's global voice) and registered with the SkuFocus module toggle. The "set" keybind now registers AnyDown only (was AnyUp+AnyDown, which fired on both key edges).</p>
+<h2>Menu: stray sound on open/close removed</h2>
+<p><strong>Simple:</strong> Opening or closing the menu sometimes played an extra "off" ping left over from an internal cleanup. Now only the menu swoosh plays; every other action keeps its usual sound.</p>
+<p><strong>Technical:</strong> SkuTTS:Hide gained a silent flag that the menu open/close toggle uses to suppress the sound-off2 ping from the defensive hide of a leftover reading frame.</p>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v42.08.html">Newer version: v42.08</a></li>
+<li><a href="v42.06.html">Older version: v42.06</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

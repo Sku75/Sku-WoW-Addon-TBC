@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.04 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v41.04.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.04 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.05.html">Newer version: v41.05</a></li>
+<li><a href="v41.03.html">Older version: v41.03</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Auction house: purchase messages now in the correct language</h2>
+<p><strong>Simple:</strong> If something goes wrong during a purchase (e.g. you press Enter too early), the message now appears in English when you play the English client - before it was always in German.</p>
+<h3>Technical: Three hard-coded German strings in the buy path</h3>
+<ul>
+<li>(auctionHouse.lua) are now localized via L[...]; keys added to deDE.lua and enUS.lua.</li>
+</ul>
+<h2>Auction house: full scan starts reliably, no false 16-minute lockout</h2>
+<p><strong>Simple:</strong> Previously the full scan could fail silently and then be locked for 16 minutes without ever scanning. Now it either really starts, or you hear "Scan not possible yet, please wait a moment" - and the lockout is only set when a scan actually ran. Focus stays on the scan entry.</p>
+<h3>Technical: AuctionHouseStartQuery now returns true only when</h3>
+<ul>
+<li>QueryAuctionItems was actually issued; the getAll scan is checked against CanSendAuctionQuery first. The timestamp (AuctionLastFullScanTime) is only set on a real start.</li>
+<li>noStepUpAfterSelect keeps the focus.</li>
+</ul>
+<h2>Auction house: focus stays when filtering/sorting</h2>
+<p><strong>Simple:</strong> After choosing e.g. "rare" or "level descending", the focus no longer jumps one level too far back but stays on the filter.</p>
+<p><strong>Technical:</strong> The five filter/sort entries (level min/max, quality, usable only, sort by) now have noStepUpAfterSelect = true.</p>
+<h2>AtlasLoot/Wishlist: no more raid lag</h2>
+<p><strong>Simple:</strong> The wishlist slowed things down during raid combat with lots of chat messages. Fixed - the wishlist-item sound on loot/roll/link still works.</p>
+<h3>Technical: Instead of scanning the whole favorites list with</h3>
+<ul>
+<li>GetItemInfoInstant per chat line/item link, there is now an itemID cache (O(1) lookup) rebuilt only on change. With an empty wishlist the chat handlers return immediately.</li>
+</ul>
+<h2>AtlasLoot: Ctrl+Shift+L simplified</h2>
+<p><strong>Simple:</strong> Ctrl+Shift+L now simply opens Atlas Loot. The automatic jump to the current instance or the boss in your target was removed - it was</p>
+<p>unreliable and could cause errors.</p>
+<p><strong>Technical:</strong> The context detection (instance/boss/difficulty) in</p>
+<p>AtlasLootShortcut was removed; it always opens the default path and clears the context flag.</p>
+<h2>Friends list: invite Battle.net friends</h2>
+<p><strong>Simple:</strong> You can now invite a Battle.net friend who is currently playing WoW to your group via the menu. Before, nothing happened.</p>
+<p><strong>Technical:</strong> The invite OnAction (friends.lua) now has a BNet branch:</p>
+<p>character name + realm from gameAccountInfo, invite via C_PartyInfo.InviteUnit (fallback InviteUnit/BNInviteFriend). If the friend is not playing WoW, an announcement is made.</p>
+<h2>Auras: display name no longer crashes</h2>
+<p><strong>Simple:</strong> When showing or browsing auras, a Lua error could occur if an aura used a value or action the addon could not resolve at that moment. Fixed.</p>
+<p><strong>Technical:</strong> BuildAuraName (SkuAuras/Options.lua) now does all dynamic</p>
+<p>lookups (types, attributes, operators, values, actions, outputs) nil-safe; unknown keys show the raw key instead of erroring.</p>
+<h2>Not in this version (intentionally deferred)</h2>
+<ul>
+<li>Bags: focus/refresh after "will be bound to you" - touches the sensitive
+</li>
+</ul>
+<p>bag frame area and will be handled separately.</p>
+<ul>
+<li>Soft/hard target (hard target should override soft target; less target
+</li>
+</ul>
+<p>spam when zoomed out) - lives in the protected targeting system; analyzed only, not yet implemented.</p>
+<h2>Version</h2>
+<ul>
+<li>Sku.toc and SkuDispatcher/Sku.toc updated to v41.04.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.05.html">Newer version: v41.05</a></li>
+<li><a href="v41.03.html">Older version: v41.03</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

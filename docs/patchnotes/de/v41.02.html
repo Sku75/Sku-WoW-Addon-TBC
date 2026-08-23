@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.02 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v41.02.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.02 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.02.01.html">Neuere Version: v41.02.01</a></li>
+<li><a href="v41.01.03.html">Aeltere Version: v41.01.03</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Versionssprung 40.x auf 41.x</h2>
+<ul>
+<li>Performance verbessert, Wiki-Bereich entfernt.
+</li>
+<li>Lokalisierung der neuen Inhalte: Sockeln, AtlasLoot-Wunschliste, Dropdown-Menue, Dungeonfinder.
+</li>
+</ul>
+<h2>Bugfix: Zahlen- und Buchstabentasten auf englischem Client blockiert</h2>
+<ul>
+<li>Beim Einloggen auf einem englischen WoW-Client wurden nach einem automatischen Profilwechsel alle Buchstaben-, Zahlen- und Leertasten-Eingaben durch verwaiste Override-Bindings blockiert. Betroffen war z. B. die Taste 7 (und damit / auf QWERTZ-Tastaturen). Ursache: SkuKeyBindsUpdate() rief direkt den OnShow-Handler des Menuefensters auf, der saemtliche Menue-Navigations-Bindings setzte, ohne dass OnHide sie wieder raeumte. Der betroffene Keybinding-Eintrag (SKU_KEY_QUESTABANDON) wurde korrigiert.
+</li>
+<li>Zusaetzlich werden alle Modul-OnEnable-Aufrufe in den Profil-Handlern (OnProfileChanged, OnProfileCopied, OnProfileReset) nun per pcall geschuetzt, damit SkuKeyBindsUpdate() auch bei einzelnen Modul-Fehlern immer erreicht wird.
+</li>
+<li>Die Deduplizierung in SkuKeyBindsUpdate wurde repariert: Funktionen wie CreateMainFrame werden jetzt nur noch einmal statt ~30-mal aufgerufen.
+</li>
+</ul>
+<h2>Lokalisierung: Sockelfenster</h2>
+<ul>
+<li>Alle ~20 hardcoded deutschen Strings in Build_SocketingFrame.lua durch L[]-Aufrufe ersetzt. Auf englischen Clients erscheinen nun korrekte englische Texte (Sockelfarben, Menuepunkte, Statusmeldungen).
+</li>
+<li>Kritischer Menueabgleich (child.name == "Sockeln") lokalisiert, sodass das Sockelmenue auf englischen Clients korrekt gefunden wird.
+</li>
+</ul>
+<h2>Fehlender Locale-Key</h2>
+<ul>
+<li>L["Warlock"] in enUS.lua ergaenzt. Der Key war in deDE.lua vorhanden, fehlte aber in der englischen Locale-Datei.
+</li>
+</ul>
+<h2>API-Kompatibilitaet</h2>
+<ul>
+<li>SetMinResize/SetMaxResize in SkuNav/SkuMM.lua durch Capability Detection ersetzt (SetResizeBounds bevorzugt, Fallback auf SetMinResize). Verhindert moegliche Fehler auf TBC Anniversary (Interface 11508).
+</li>
+</ul>
+<h2>Versionsanzeige</h2>
+<ul>
+<li>Sku.toc und SkuDispatcher/Sku.toc auf v41.01.04 aktualisiert (ohne beta).
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.02.01.html">Neuere Version: v41.02.01</a></li>
+<li><a href="v41.01.03.html">Aeltere Version: v41.01.03</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

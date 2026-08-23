@@ -4,205 +4,189 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sku TBC - Interface de lecteur d'écran pour World of Warcraft The Burning Crusade</title>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-            color: #222;
-            background: #fff;
-        }
-        h1 { margin-top: 0; }
-        h2 { margin-top: 2em; }
-        a {
-            color: #0366d6;
-            text-decoration: underline;
-        }
-        a:focus {
-            outline: 3px solid #0366d6;
-            outline-offset: 2px;
-        }
-        .download-link {
-            display: inline-block;
-            margin: 8px 0;
-            padding: 8px 16px;
-            background: #0366d6;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 1.1em;
-        }
-        .download-link:hover,
-        .download-link:focus {
-            background: #0250a3;
-            color: #fff;
-            outline: 3px solid #0250a3;
-            outline-offset: 2px;
-        }
-        section {
-            margin-bottom: 2em;
-        }
-        .notice {
-            border-left: 4px solid #e36209;
-            background: #fff8f0;
-            padding: 12px 16px;
-            margin: 1.5em 0;
-        }
-        .notice strong {
-            color: #e36209;
-        }
-        .langnav {
-            margin: 0 0 1.5em 0;
-            padding: 0;
-        }
-        .langnav li {
-            display: inline;
-            margin-right: 1em;
-        }
-    </style>
+    <meta name="description" content="Sku rend World of Warcraft The Burning Crusade Anniversary jouable avec un lecteur d'écran. Téléchargements, installateur et guides pour les joueuses et joueurs aveugles et malvoyants.">
+    <link rel="stylesheet" href="sku.css">
+    <link rel="alternate" hreflang="en" href="https://sku75.github.io/Sku-WoW-Addon-TBC/index.html">
+    <link rel="alternate" hreflang="de" href="https://sku75.github.io/Sku-WoW-Addon-TBC/index-de.html">
+    <link rel="alternate" hreflang="fr" href="https://sku75.github.io/Sku-WoW-Addon-TBC/index-fr.html">
+    <link rel="alternate" hreflang="x-default" href="https://sku75.github.io/Sku-WoW-Addon-TBC/index.html">
+    <script>
+    /* On mémorise seulement, on ne redirige pas : une page demandée
+       directement doit s'ouvrir. C'est la page d'accueil (index.html) qui
+       choisit la langue. */
+    (function () {
+        try {
+            var forced = (location.search.match(/[?&]lang=([a-zA-Z-]+)/) || [])[1];
+            localStorage.setItem('sku-lang', forced ? forced.slice(0, 2).toLowerCase() : 'fr');
+        } catch (e) { }
+    })();
+    </script>
 </head>
 <body>
 
+<a class="skiplink" href="#main">Aller au contenu de la page</a>
+
 <nav aria-label="Langue de cette page">
     <ul class="langnav">
-        <li><a href="index.html" lang="en" hreflang="en">English</a></li>
-        <li><span aria-current="page">Français</span></li>
+        <li><a href="index.html?lang=en" lang="en" hreflang="en">English</a></li>
+        <li><a href="index-de.html?lang=de" lang="de" hreflang="de">Deutsch</a></li>
+        <li><span aria-current="page">Fran&ccedil;ais</span></li>
     </ul>
 </nav>
 
-<h1>Sku TBC - Interface de lecteur d'écran pour World of Warcraft The Burning Crusade</h1>
+<h1>Sku TBC - Interface de lecteur d'&eacute;cran pour World of Warcraft The Burning Crusade</h1>
 
 <p>
-    Sku est un addon pour World of Warcraft qui fournit une interface complète de lecteur
-    d'écran, rendant le jeu accessible aux joueuses et joueurs aveugles et malvoyants.
-    Il fonctionne avec des lecteurs d'écran comme NVDA et JAWS.
+    Sku est un addon pour World of Warcraft qui fournit une interface compl&egrave;te de lecteur
+    d'&eacute;cran, rendant le jeu accessible aux joueuses et joueurs aveugles et malvoyants.
+    Il fonctionne avec des lecteurs d'&eacute;cran comme NVDA et JAWS.
 </p>
 
-<h2>Installation automatique (recommandée)</h2>
-<h3>Sku Installer - Version 4.3</h3>
-<p>Le Sku Installer est un petit programme Windows adapté aux lecteurs d'écran qui réalise toute l'installation de l'addon pour vous : il trouve votre dossier World of Warcraft, télécharge Sku ainsi que tous les addons compagnons nécessaires, copie le tout au bon endroit, et active les réglages du jeu dont Sku a besoin. Il installe également le WoW Login Tool (voir plus bas), y compris ses textures d'écran de connexion, ses polices et le moteur AutoHotkey, et le maintient à jour lors des exécutions suivantes. C'est la façon la plus simple d'installer ou de mettre à jour Sku. Quand Windows le demande, autorisez-le à s'exécuter en tant qu'administrateur.</p>
-<p>L'installateur parle français : il choisit sa langue d'après celle de Windows, et vous pouvez la changer à tout moment dans la liste « Langue de cet installateur ».</p>
-<p><a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/latest/download/SkuInstaller.exe">Télécharger le Sku Installer (Windows)</a></p>
-<p>Le jeu lui-même doit déjà être installé, et une aide voyante reste nécessaire une seule fois pour les écrans de connexion Battle.net et pour le contrat de licence affiché dans le jeu &mdash; voir le guide d'installation manuelle ci-dessous pour ces étapes.</p>
-<p>L'installateur a son propre numéro de version, distinct de celui de l'addon Sku indiqué plus bas. Le lien de téléchargement ci-dessus vous donne toujours l'installateur le plus récent, quelle que soit la version de Sku en cours.</p>
+<main id="main">
 
-<h2>Documentation et aide</h2>
+<nav aria-labelledby="surcettepage">
+    <h2 id="surcettepage">Sur cette page</h2>
+    <ul class="toc">
+        <li><a href="#installer">Installation automatique (recommand&eacute;e)</a></li>
+        <li><a href="#docs">Documentation et aide</a></li>
+        <li><a href="#patchnotes">Notes de version</a></li>
+        <li><a href="#manual">Installation manuelle</a></li>
+        <li><a href="#downloads">T&eacute;l&eacute;chargements obligatoires</a></li>
+        <li><a href="#languagepack">Pack de langue</a></li>
+        <li><a href="#optional">Extensions facultatives</a></li>
+        <li><a href="#logintool">Menu de d&eacute;marrage (Login Tool)</a></li>
+        <li><a href="#mapper">Outil de cartographie (pour les aidants voyants)</a></li>
+    </ul>
+</nav>
+
+<h2 id="installer">Installation automatique (recommand&eacute;e)</h2>
+<h3>Sku Installer - Version 4.3</h3>
+<p>Le Sku Installer est un petit programme Windows adapt&eacute; aux lecteurs d'&eacute;cran qui r&eacute;alise toute l'installation de l'addon pour vous : il trouve votre dossier World of Warcraft, t&eacute;l&eacute;charge Sku ainsi que tous les addons compagnons n&eacute;cessaires, copie le tout au bon endroit, et active les r&eacute;glages du jeu dont Sku a besoin. Il installe &eacute;galement le WoW Login Tool (voir plus bas), y compris ses textures d'&eacute;cran de connexion, ses polices et le moteur AutoHotkey, et le maintient &agrave; jour lors des ex&eacute;cutions suivantes. C'est la fa&ccedil;on la plus simple d'installer ou de mettre &agrave; jour Sku. Quand Windows le demande, autorisez-le &agrave; s'ex&eacute;cuter en tant qu'administrateur.</p>
+<p>L'installateur parle fran&ccedil;ais : il choisit sa langue d'apr&egrave;s celle de Windows, et vous pouvez la changer &agrave; tout moment dans la liste &laquo; Langue de cet installateur &raquo;.</p>
+<p><a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/latest/download/SkuInstaller.exe">T&eacute;l&eacute;charger le Sku Installer (Windows)</a></p>
+<p>Le jeu lui-m&ecirc;me doit d&eacute;j&agrave; &ecirc;tre install&eacute;, et une aide voyante reste n&eacute;cessaire une seule fois pour les &eacute;crans de connexion Battle.net et pour le contrat de licence affich&eacute; dans le jeu &mdash; voir le guide d'installation manuelle ci-dessous pour ces &eacute;tapes.</p>
+<p>L'installateur a son propre num&eacute;ro de version, distinct de celui de l'addon Sku indiqu&eacute; plus bas. Le lien de t&eacute;l&eacute;chargement ci-dessus vous donne toujours l'installateur le plus r&eacute;cent, quelle que soit la version de Sku en cours.</p>
+
+<h2 id="docs">Documentation et aide</h2>
 <p>Guides pour installer Sku et pour jouer avec.</p>
 
 <section>
-    <h3>Comment jouer &mdash; assignation standard des touches</h3>
-    <p>La disposition clavier recommandée pour les joueurs aveugles : déplacement, ciblage, jeu en binôme et pillage, navigation par balises audio, métiers et ciblage souple. C'est la disposition que l'addon met en place quand vous réinitialisez les touches de Sku.</p>
-    <p><a class="download-link" href="Raccourcis-Francais.txt" download>Raccourcis clavier (Français)</a></p>
-</section>
-
-<section>
-    <h3>Notes de version</h3>
-    <p>Ce qui a changé dans chaque version de Sku. Les notes françaises commencent à la v42.11, la version où Sku s'est mis à parler français ; pour les versions antérieures, voir les notes anglaises ou allemandes.</p>
-    <p><a class="download-link" href="Patch-Notes-Francais.txt" download>Notes de version (Français)</a></p>
-    <p><a class="download-link" href="Patch-Notes-English.txt" download>Notes de version (English)</a></p>
-    <p><a class="download-link" href="Patch-Notes-Deutsch.txt" download>Notes de version (Deutsch)</a></p>
-</section>
-
-<section>
     <h3>Premiers pas &mdash; guide d'installation complet</h3>
-    <p>Le parcours complet pour un joueur aveugle, de la création d'un compte Battle.net à l'installation de Sku et au jeu &mdash; en utilisant l'installateur automatique. Ce guide n'existe pas encore en français ; il est disponible dans ces langues :</p>
+    <p>Le parcours complet pour un joueur aveugle, de la cr&eacute;ation d'un compte Battle.net &agrave; l'installation de Sku et au jeu &mdash; en utilisant l'installateur automatique. Ce guide n'existe pas encore en fran&ccedil;ais ; il est disponible dans ces langues :</p>
     <p><a class="download-link" href="First-Steps-English.html" lang="en">First Steps (English)</a></p>
     <p><a class="download-link" href="First-Steps-Deutsch.html" lang="de">Erste Schritte (Deutsch)</a></p>
-    <p><a class="download-link" href="First-Steps-Russian.html" lang="ru">Первые шаги (Русский)</a></p>
+    <p><a class="download-link" href="First-Steps-Russian.html" lang="ru">&#1055;&#1077;&#1088;&#1074;&#1099;&#1077; &#1096;&#1072;&#1075;&#1080; (&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;)</a></p>
 </section>
 
-<h2>Installation manuelle</h2>
-<p>Vous préférez tout installer à la main, ou vous voulez le parcours détaillé étape par étape ? Le guide n'existe pas encore en français ; téléchargez-le dans une autre langue :</p>
+<section>
+    <h3>Comment jouer &mdash; assignation standard des touches</h3>
+    <p>La disposition clavier recommand&eacute;e pour les joueurs aveugles : d&eacute;placement, ciblage, jeu en bin&ocirc;me et pillage, navigation par balises audio, m&eacute;tiers et ciblage souple. C'est la disposition que l'addon met en place quand vous r&eacute;initialisez les touches de Sku.</p>
+    <p><a class="download-link" href="Raccourcis-Francais.txt" download>Raccourcis clavier (Fran&ccedil;ais)</a></p>
+    <p><a class="download-link" href="Key-Bindings-English.txt" lang="en" download>Key bindings (English)</a></p>
+    <p><a class="download-link" href="Tastenbelegung-Deutsch.txt" lang="de" download>Tastenbelegung (Deutsch)</a></p>
+</section>
+
+<section id="patchnotes">
+    <h3>Notes de version</h3>
+    <p>Ce qui a chang&eacute; dans chaque version de Sku, sous forme de pages web avec titres et liens &mdash; une page par version, la plus r&eacute;cente en premier. Les notes fran&ccedil;aises commencent &agrave; la v42.11, la version o&ugrave; Sku s'est mis &agrave; parler fran&ccedil;ais ; pour les versions ant&eacute;rieures, voir les notes anglaises ou allemandes.</p>
+    <p><a class="download-link" href="patchnotes/fr/v43.0.html">Quoi de neuf dans Sku v43.0</a></p>
+    <p><a class="download-link" href="patchnotes/fr/index.html">Toutes les notes de version (Fran&ccedil;ais)</a></p>
+    <p><a class="download-link" href="patchnotes/en/index.html" lang="en">All patch notes (English)</a></p>
+    <p><a class="download-link" href="patchnotes/de/index.html" lang="de">Alle Patchnotes (Deutsch)</a></p>
+</section>
+
+<h2 id="manual">Installation manuelle</h2>
+<p>Vous pr&eacute;f&eacute;rez tout installer &agrave; la main, ou vous voulez le parcours d&eacute;taill&eacute; &eacute;tape par &eacute;tape ? Le guide n'existe pas encore en fran&ccedil;ais ; t&eacute;l&eacute;chargez-le dans une autre langue :</p>
 <p><a class="download-link" href="Installation-Guide-English.txt" lang="en" download>Guide d'installation manuelle (English)</a></p>
 <p><a class="download-link" href="Installationsanleitung-Deutsch.txt" lang="de" download>Anleitung zur manuellen Installation (Deutsch)</a></p>
 
-<div class="crosslink" style="border-left: 4px solid #0366d6; background: #f0f6ff; padding: 12px 16px; margin: 1.5em 0;">
+<div class="crosslink">
     Vous cherchez la version Classic Era ? <a href="https://sku75.github.io/Sku-WoW-Addon-Era/">Rendez-vous ici pour la version Sku Era.</a>
 </div>
 
 <div class="notice">
-    <strong>À noter :</strong> les versions de l'addon proposées sur cette page sont destinées au serveur World of Warcraft &ndash; The Burning Crusade Anniversary.
+    <strong>&Agrave; noter :</strong> les versions de l'addon propos&eacute;es sur cette page sont destin&eacute;es au serveur World of Warcraft &ndash; The Burning Crusade Anniversary.
 </div>
 
 <div class="notice">
-    <strong>Vous passez à une nouvelle version ?</strong> Vous devez remplacer <strong>tous</strong> les addons Sku de votre dossier AddOns &mdash; pas seulement l'addon principal. Téléchargez tout ce qui est listé sur cette page et remplacez vos fichiers existants. Laisser d'anciennes versions d'addons Sku à côté d'une nouvelle peut provoquer des erreurs.
+    <strong>Vous passez &agrave; une nouvelle version ?</strong> Vous devez remplacer <strong>tous</strong> les addons Sku de votre dossier AddOns &mdash; pas seulement l'addon principal. T&eacute;l&eacute;chargez tout ce qui est list&eacute; sur cette page et remplacez vos fichiers existants. Laisser d'anciennes versions d'addons Sku &agrave; c&ocirc;t&eacute; d'une nouvelle peut provoquer des erreurs.
 </div>
 
-<h2>Téléchargements obligatoires</h2>
+<h2 id="downloads">T&eacute;l&eacute;chargements obligatoires</h2>
 
-<p>Ces deux addons sont nécessaires pour utiliser Sku. Téléchargez-les et installez-les dans votre dossier AddOns de WoW.</p>
+<p>Ces deux addons sont n&eacute;cessaires pour utiliser Sku. T&eacute;l&eacute;chargez-les et installez-les dans votre dossier AddOns de WoW.</p>
 
 <section>
     <h3>Sku (addon principal) - Version 43.0</h3>
-    <p>L'addon central, qui fournit l'interface de lecteur d'écran.</p>
-    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v43.0/Sku-43.0.zip">Télécharger Sku v43.0</a>
+    <p>L'addon central, qui fournit l'interface de lecteur d'&eacute;cran.</p>
+    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v43.0/Sku-43.0.zip">T&eacute;l&eacute;charger Sku v43.0</a>
 </section>
 
 <section>
     <h3>SkuBeaconSoundsets</h3>
-    <p>Les jeux de sons nécessaires au système de navigation par balises audio de Sku.</p>
-    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v41.02.05/SkuBeaconSoundsets.zip">Télécharger SkuBeaconSoundsets</a>
+    <p>Les jeux de sons n&eacute;cessaires au syst&egrave;me de navigation par balises audio de Sku.</p>
+    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v41.02.05/SkuBeaconSoundsets.zip">T&eacute;l&eacute;charger SkuBeaconSoundsets</a>
 </section>
 
-<h2>Pack de langue (en choisir un)</h2>
+<h2 id="languagepack">Pack de langue (en choisir un)</h2>
 
-<p>Choisissez le pack de langue correspondant à votre langue préférée. Un seul est nécessaire. Il n'existe pas encore de pack de voix français : sur un client français, Sku parle via votre lecteur d'écran, et le pack anglais est le choix qui convient ici.</p>
+<p>Choisissez le pack de langue correspondant &agrave; votre langue pr&eacute;f&eacute;r&eacute;e. Un seul est n&eacute;cessaire. Il n'existe pas encore de pack de voix fran&ccedil;ais : sur un client fran&ccedil;ais, Sku parle via votre lecteur d'&eacute;cran, et le pack anglais est le choix qui convient ici.</p>
 
 <section>
     <h3>Anglais (English)</h3>
-    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v41.02.05/SkuAudioData_en.zip">Télécharger SkuAudioData Anglais</a>
+    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v41.02.05/SkuAudioData_en.zip">T&eacute;l&eacute;charger SkuAudioData Anglais</a>
 </section>
 
 <section>
     <h3>Allemand (Deutsch)</h3>
-    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v41.02.05/SkuAudioData.zip">Télécharger SkuAudioData Allemand</a>
+    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v41.02.05/SkuAudioData.zip">T&eacute;l&eacute;charger SkuAudioData Allemand</a>
 </section>
 
 <section>
     <h3>Allemand rapide (Deutsch schnell)</h3>
     <p>Pack de langue allemand avec une sortie vocale plus rapide.</p>
-    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v41.02.05/SkuAudioData_fast_de.zip">Télécharger SkuAudioData Allemand rapide</a>
+    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v41.02.05/SkuAudioData_fast_de.zip">T&eacute;l&eacute;charger SkuAudioData Allemand rapide</a>
 </section>
 
-<h2>Extensions facultatives</h2>
+<h2 id="optional">Extensions facultatives</h2>
 
-<p>Ce sont des packs de sons supplémentaires qui ajoutent d'autres sons de balise. Ils ne sont pas nécessaires pour utiliser Sku.</p>
+<p>Ce sont des packs de sons suppl&eacute;mentaires qui ajoutent d'autres sons de balise. Ils ne sont pas n&eacute;cessaires pour utiliser Sku.</p>
 
 <section>
     <h3>SkuCustomBeaconsEssential</h3>
-    <p>Une petite collection de sons de balise personnalisés essentiels.</p>
-    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v41.02.05/SkuCustomBeaconsEssential.zip">Télécharger SkuCustomBeaconsEssential</a>
+    <p>Une petite collection de sons de balise personnalis&eacute;s essentiels.</p>
+    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v41.02.05/SkuCustomBeaconsEssential.zip">T&eacute;l&eacute;charger SkuCustomBeaconsEssential</a>
 </section>
 
 <section>
     <h3>SkuCustomBeaconsAdditional</h3>
-    <p>Une collection plus large de sons de balise supplémentaires.</p>
-    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v41.02.05/SkuCustomBeaconsAdditional.zip">Télécharger SkuCustomBeaconsAdditional</a>
+    <p>Une collection plus large de sons de balise suppl&eacute;mentaires.</p>
+    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/v41.02.05/SkuCustomBeaconsAdditional.zip">T&eacute;l&eacute;charger SkuCustomBeaconsAdditional</a>
 </section>
 
-<h2>Menu de démarrage (Login Tool)</h2>
+<h2 id="logintool">Menu de d&eacute;marrage (Login Tool)</h2>
 
 <section>
-    <h3>WoW Login Tool r2.0 (à l'origine de Yennister)</h3>
-    <p>Voici l'outil de menu de démarrage actuel. Il aide pour la connexion, la création de personnage, la sélection de personnage et le choix du serveur. La version 2 lit à voix haute le contenu réel de l'écran (noms de personnages, listes de royaumes et fenêtres surgissantes) grâce à la reconnaissance de texte. Merci de lire les fichiers readme fournis. L'installateur automatique ci-dessus s'en occupe pour vous, y compris des textures d'écran de connexion, des polices et du moteur AutoHotkey nécessaires.</p>
-    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/login-tool/WoW-Login-Tool.zip">Télécharger le WoW Login Tool</a>
+    <h3>WoW Login Tool r2.0 (&agrave; l'origine de Yennister)</h3>
+    <p>Voici l'outil de menu de d&eacute;marrage actuel. Il aide pour la connexion, la cr&eacute;ation de personnage, la s&eacute;lection de personnage et le choix du serveur. La version 2 lit &agrave; voix haute le contenu r&eacute;el de l'&eacute;cran (noms de personnages, listes de royaumes et fen&ecirc;tres surgissantes) gr&acirc;ce &agrave; la reconnaissance de texte. Merci de lire les fichiers readme fournis. L'installateur automatique ci-dessus s'en occupe pour vous, y compris des textures d'&eacute;cran de connexion, des polices et du moteur AutoHotkey n&eacute;cessaires.</p>
+    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/login-tool/WoW-Login-Tool.zip">T&eacute;l&eacute;charger le WoW Login Tool</a>
 </section>
 
-<h2>Outil de cartographie (pour les aidants voyants)</h2>
+<h2 id="mapper">Outil de cartographie (pour les aidants voyants)</h2>
 
 <section>
     <h3>SkuMapper 4.8</h3>
-    <p>Un outil visuel permettant à des aidants voyants de créer et de modifier les données de carte de Sku (points de passage et routes). Dans le jeu, ouvrez la carte avec l'assignation de touche « Open Sku Minimap » (Assignations de touches, catégorie « Autre ») ; importez et exportez les données de carte avec /sku import et /sku export.</p>
-    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/skumapper-4.8/SkuMapper-4.8.zip">Télécharger SkuMapper 4.8</a>
+    <p>Un outil visuel permettant &agrave; des aidants voyants de cr&eacute;er et de modifier les donn&eacute;es de carte de Sku (points de passage et routes). Dans le jeu, ouvrez la carte avec l'assignation de touche &laquo; Open Sku Minimap &raquo; (Assignations de touches, cat&eacute;gorie &laquo; Autre &raquo;) ; importez et exportez les donn&eacute;es de carte avec /sku import et /sku export.</p>
+    <a class="download-link" href="https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/skumapper-4.8/SkuMapper-4.8.zip">T&eacute;l&eacute;charger SkuMapper 4.8</a>
 </section>
+
+</main>
 
 <hr>
 
 <footer>
-    <p>Sku est un projet open source. Pour toute question ou demande d'aide, rendez-vous sur le
-    <a href="https://github.com/Sku75/Sku-WoW-Addon-TBC">dépôt GitHub</a>.</p>
+    <p>Sku est un projet open source. Pour toute question et pour de l'aide, rendez-vous sur le
+    <a href="https://github.com/Sku75/Sku-WoW-Addon-TBC">d&eacute;p&ocirc;t GitHub</a>.</p>
 </footer>
 
 </body>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v40.04.01 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v40.04.01.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v40.04.01 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v40.05.html">Neuere Version: v40.05</a></li>
+<li><a href="v40.04.html">Aeltere Version: v40.04</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Atlas Loot</h2>
+<ul>
+<li>Atlas Loot ist jetzt ueber Strg+Shift+L erreichbar (wenn installiert). Das Tastenkuerzel kann unter Shift+F1, Core, Skutastenbelegung frei umbelegt werden.
+</li>
+<li>Wunschliste mit Sound: Wenn ein Wunschlisten-Item im Loot erscheint, ertoennt ein Sound. Beim Erhalten des Items wird es automatisch von der Wunschliste entfernt.
+</li>
+<li>Wunschliste: Neue Menuestruktur mit zwei Untermenues "Nach Dungeon" und "Nach Slot". "Nach Dungeon" zeigt nur Dungeons, die Items auf der Wunschliste haben (Format: "Anzahl Dungeonname"). "Nach Slot" enthaelt die bisherige Slot-basierte Liste.
+</li>
+</ul>
+<h2>Ausruestungsmanager</h2>
+<ul>
+<li>Der Ausruestungsmanager ist im Charakterfenster (Taste C) erreichbar. Ausruestungssets koennen gespeichert, angelegt, ueberschrieben, umbenannt und geloescht werden.
+</li>
+<li>Makro erstellen: Neuer Menueeintrag bei jedem Ausruestungsset. Erstellt ein Charaktermakro, das beim Ausfuehren das Set anlegt. Bereits vorhandene Makros werden aktualisiert.
+</li>
+<li>Lokalisierung: Alle Menue-Eintraege und Statusmeldungen des Ausruestungsmanagers sind jetzt lokalisiert. Auf englischen Clients erscheinen alle Texte auf Englisch.
+</li>
+</ul>
+<h2>Ziel-Aktionsmenue (CTRL+T) / Pet-Aktionen</h2>
+<ul>
+<li>Zuruecklassen repariert: "Zuruecklassen" verwendet jetzt macrotext (/petdismiss) statt eines Addon-Kontext-Aufrufs. Dadurch wird ADDON_ACTION_FORBIDDEN vermieden und das Pet wird zuverlaessig temporaer weggeschickt.
+</li>
+<li>Umbenennen repariert: Die Pet-Umbenennung funktioniert jetzt ueber ein Zwei-Schritt-Verfahren. Schritt 1: Name eingeben. Schritt 2: "Umbenennung bestaetigen" waehlen (macrotext im Hardware-Kontext). Dadurch wird ADDON_ACTION_FORBIDDEN beim Speichern des Namens vermieden.
+</li>
+<li>Aufloesen mit Sicherheitsabfrage: "Pet aufloesen" heisst jetzt "Pet dauerhaft entlassen" und erfordert eine Bestaetigung ueber einen Sicherheitsdialog. Der bisherige Code rief PetAbandon direkt auf, was das Pet permanent entliess, ohne dass der Benutzer gewarnt wurde.
+</li>
+</ul>
+<h2>PopUp-Erkennung</h2>
+<ul>
+<li>Verzoegerter Zweitaufruf: StaticPopup_Show ruft CheckFrames jetzt zusaetzlich mit 0,15 Sekunden Verzoegerung auf. Damit werden PopUps (z.B. Verzauberung ueberschreiben, Pet-Umbenennung bestaetigen) zuverlaessig im Sku-Menue angezeigt, auch wenn der PopUp-Inhalt beim ersten Aufruf noch nicht vollstaendig gesetzt ist.
+</li>
+</ul>
+<h2>Fehlerprotokoll (ErrorLog)</h2>
+<ul>
+<li>Kampf-Throttling: Waehrend des Kampfes werden maximal 5 Fehler pro Sekunde protokolliert. Ueberzaehlige Fehler werden verworfen. Die BugGrabber-Bridge wird im Kampf vollstaendig pausiert. Dadurch wird die Fehlermeldung "insecure scripts exceeded execution limit" in Raids (z.B. Karazhan, AQ40) vermieden.
+</li>
+<li>Lokalisierung: Alle Slash-Befehl-Hilfe und Statusmeldungen sind jetzt lokalisiert.
+</li>
+</ul>
+<h2>Lokalisierung</h2>
+<ul>
+<li>Rund 70 neue L[]-Eintraege in beiden Locale-Dateien (AL_*, EQ_*, ERRLOG_*, MOB_*).
+</li>
+<li>Hardcoded deutsche Strings in alIntegration.lua, equipmentSets.lua und ErrorLog.lua durch L[]-Aufrufe ersetzt.
+</li>
+<li>equipmentSets.lua: Fehlerhaftes Locale-System (SkuLocale) durch Sku.L ersetzt.
+</li>
+</ul>
+<h2>Versionsanzeige</h2>
+<ul>
+<li>Sku.toc und SkuDispatcher/Sku.toc auf Title/Version v40.04.01 aktualisiert.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v40.05.html">Neuere Version: v40.05</a></li>
+<li><a href="v40.04.html">Aeltere Version: v40.04</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

@@ -108,13 +108,14 @@ $SiteUrl  = 'https://sku75.github.io/Sku-WoW-Addon-TBC/'
 $RepoRoot    = Split-Path $PSScriptRoot -Parent
 $SkuDir      = Join-Path $RepoRoot 'Sku'
 $DocsHtml    = Join-Path $RepoRoot 'docs\index.html'
+$DocsHtmlDe  = Join-Path $RepoRoot 'docs\index-de.html'
 $DocsHtmlFr  = Join-Path $RepoRoot 'docs\index-fr.html'
 # Every download page that carries version numbers. A page added here is kept in
 # step by all the Set-Docs* rewrites below; one that is NOT here silently rots,
 # which is the exact failure the v42.11 stale-heading fix was about. The
 # rewrites therefore match on language-NEUTRAL fragments ("Sku v42.11",
 # "SkuMapper 4.8", the URLs) so the same pass works on a translated page.
-$DocsPages   = @($DocsHtml, $DocsHtmlFr)
+$DocsPages   = @($DocsHtml, $DocsHtmlDe, $DocsHtmlFr)
 $ConfigCs    = Join-Path $PSScriptRoot 'SkuInstaller\Config.cs'
 $Csproj      = Join-Path $PSScriptRoot 'SkuInstaller\SkuInstaller.csproj'
 $ExeBuilt    = Join-Path $PSScriptRoot 'SkuInstaller\bin\Release\net48\SkuInstaller.exe'
@@ -241,6 +242,31 @@ function Set-DocsInstallerVersion {
         if ($new -ne $html) { Write-Text $page $new; Info "  $(Split-Path $page -Leaf) installer version -> $ver" }
     }
 }
+
+# The "what is new in Sku vNN" button on every download page points at ONE
+# version page, so it has to move with the release like the zip link does.
+function Set-DocsPatchNotesLink($ver) {
+    if ($DryRun) { Dry "docs: patch note link -> patchnotes/<lang>/v$ver.html"; return }
+    foreach ($page in $DocsPages) {
+        if (-not (Test-Path $page)) { continue }
+        $html = Read-Text $page
+        $html = [regex]::Replace($html, 'patchnotes/(en|de|fr)/v[\d.]+\.html', "patchnotes/`$1/v$ver.html")
+        Write-Text $page $html
+    }
+}
+
+# The website's patch notes are GENERATED from the text files - one HTML page
+# per version per language - so this has to run after Sync-PatchNotesToDocs and
+# before the commit, or the site keeps showing the previous release.
+function Build-PatchNotesHtml {
+    $gen = Join-Path $RepoRoot 'dev\rework-docs\_gen_patchnotes_html.py'
+    if ($DryRun) { Dry "py -3 $gen"; return }
+    if (-not (Test-Path $gen)) { Write-Warning "  Patch note generator missing: $gen"; return }
+    Info "  Rebuilding the HTML patch notes..."
+    & py -3 $gen
+    if ($LASTEXITCODE -ne 0) { throw "Patch note generation failed." }
+}
+
 function Set-DocsLoginToolRolling {
     if ($DryRun) { Dry "docs: login tool link -> releases/download/$LoginToolTag/WoW-Login-Tool.zip"; return }
     foreach ($page in $DocsPages) {
@@ -427,17 +453,20 @@ $Uml = @{
     a = [char]0x00E0   # a grave
 }
 
-# The download page a given language should land on. German has no page of its
-# own yet, so it goes to the English one - change this the day docs\index-de.html
-# exists and the German announcement follows automatically.
+# The download page a given language should land on. index.html also redirects
+# by browser language on a first visit, but an announcement link names the page
+# outright: the reader of a German channel gets the German page, full stop.
 function Get-SiteUrlFor($lang) {
+    if ($lang -eq 'de') { return $SiteUrl + 'index-de.html' }
     if ($lang -eq 'fr') { return $SiteUrl + 'index-fr.html' }
     return $SiteUrl
 }
-function Get-NotesUrlFor($lang) {
-    if ($lang -eq 'de') { return $SiteUrl + 'Patch-Notes-Deutsch.txt' }
-    if ($lang -eq 'fr') { return $SiteUrl + 'Patch-Notes-Francais.txt' }
-    return $SiteUrl + 'Patch-Notes-English.txt'
+# Straight to THIS version's page, not to the whole notes file: the announcement
+# is about one release, so the link should open what changed in it.
+function Get-NotesUrlFor($lang, $ver) {
+    if ($lang -eq 'de') { return $SiteUrl + "patchnotes/de/v$ver.html" }
+    if ($lang -eq 'fr') { return $SiteUrl + "patchnotes/fr/v$ver.html" }
+    return $SiteUrl + "patchnotes/en/v$ver.html"
 }
 
 # A channel that speaks one language gets its title in that language; a mixed
@@ -462,7 +491,7 @@ function Build-AnnouncementBody($ver, $langs) {
         # local $notes IS the script's -Notes parameter and the extra release
         # text below would come out as a stray patch-notes URL instead.
         $siteLink  = Get-SiteUrlFor  $lang
-        $notesLink = Get-NotesUrlFor $lang
+        $notesLink = Get-NotesUrlFor $lang $ver
         switch ($lang) {
             'en' { $lines += "**English** - Sku for WoW TBC Anniversary is now **v$ver**. [Download or update]($siteLink) - [Patch notes]($notesLink)" }
             'de' { $lines += "**Deutsch** - Sku f${u}r WoW TBC Anniversary ist jetzt **v$ver**. [Herunterladen oder aktualisieren]($siteLink) - [Patchnotes]($notesLink)" }
@@ -541,6 +570,8 @@ function Do-MainRelease($ver) {
     Set-DocsInstallerLatest    # idempotent: keeps installer link on latest/download
     Set-DocsInstallerVersion   # show WHICH installer that rolling link serves
     Sync-PatchNotesToDocs      # mirror the hand-written notes onto the website
+    Build-PatchNotesHtml       # ...and turn them into the website's HTML pages
+    Set-DocsPatchNotesLink $ver
 
     $insVer = Get-InstallerVersion
     if ($insVer) { Info "  Installer version going out with this release: $insVer" }
@@ -548,7 +579,7 @@ function Do-MainRelease($ver) {
     Info "Committing + pushing the release commit..."
     # Commit-Push is a no-op when nothing changed, so re-running after a partial
     # failure (commit already made) skips straight to creating the release.
-    Commit-Push @('Sku/Sku.toc', 'Sku/Patch Notes Sku EN.txt', 'Sku/Patch Notes Sku DE.txt', 'Sku/Patch Notes Sku FR.txt', 'installer/SkuInstaller/Config.cs', 'docs/index.html', 'docs/index-fr.html', 'docs/Patch-Notes-English.txt', 'docs/Patch-Notes-Deutsch.txt', 'docs/Patch-Notes-Francais.txt') "release: v$ver"
+    Commit-Push @('Sku/Sku.toc', 'Sku/Patch Notes Sku EN.txt', 'Sku/Patch Notes Sku DE.txt', 'Sku/Patch Notes Sku FR.txt', 'installer/SkuInstaller/Config.cs', 'docs/index.html', 'docs/index-de.html', 'docs/index-fr.html', 'docs/sku.css', 'docs/patchnotes', 'docs/Patch-Notes-English.txt', 'docs/Patch-Notes-Deutsch.txt', 'docs/Patch-Notes-Francais.txt') "release: v$ver"
 
     # Record the installer version in the release notes. The exe is attached to
     # every addon release whether or not it changed, so without this there is no

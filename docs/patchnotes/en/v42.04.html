@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v42.04 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v42.04.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v42.04 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v42.05.html">Newer version: v42.05</a></li>
+<li><a href="v42.03.html">Older version: v42.03</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Bags: applying enchantments and armor kits with the left click works again</h2>
+<p><strong>Simple:</strong> With an enchantment or an armor kit waiting for a target item, pressing Enter (left click) on the target item in the bags did</p>
+<p>nothing - only Ctrl+Enter (right click) applied it. Enter now applies it, like the standard UI does. On equipped items both keys already worked.</p>
+<h3>Technical: The bag item's Enter action was a plain insecure</h3>
+<ul>
+<li>PickupContainerItem; the native left click routes through the hardware-event-gated UseContainerItem when SpellCanTargetItem(). Bag items and equipment slots now carry an applyMacrotext ("/use bag slot" resp. "/use slot") that the menu stages on the secure left-click button while SpellIsTargeting() is live at focus time; a targeting-only PreClick snapshot lets the insecure fallback skip its pickup after the macro applied, without breaking drop/swap of a held cursor item. The /use form is also modifier-independent - a synthesized "/click ... LeftButton" reads the live keyboard state, so a rebound left-click key with a modifier would count as a modified click (dress-up/chat link) and never apply.</li>
+</ul>
+<h2>Starting zones: Ctrl+Shift+Tab cycles protected NPCs again</h2>
+<p><strong>Simple:</strong> Since the WoW client update of July 9 the special Ctrl+Shift+Tab key no longer cycled through the protected (otherwise untargetable) NPCs in the starting zones - pressing it just cleared your target. It works again.</p>
+<p><strong>Technical:</strong> Client build 2.5.6.68575 removed the CVar nameplateShowFriends (split into nameplateShowFriendlyPlayers + nameplateShowFriendlyNpcs). GetCVar on the gone name returns nil without an error, so Sku's force-on silently stopped, friendly nameplates never appeared and the name repo behind SkuCoreSecureTabButton stayed empty. A new cached resolver</p>
+<p>SkuCore.FriendlyNameplateCVars() picks the CVar set per client (the Era client keeps the old umbrella name) and is used by the cycler's force-on, the login CVar baseline and the camera menu (the friendly nameplates toggle now sets a CVar list).</p>
+<h2>Navigation menu: flattened, Shift+F9/F10 quick lists reworked</h2>
+<p><strong>Simple:</strong> The Navigation menu entries now sit directly under Navigation (Units route on top, then Direct waypoint - renamed from "Select" -, Clear visited, Set quick waypoint); the old "Waypoint" / "Follow route" wrappers and the redundant "Deselect all" / "Deselect" entries are gone (Shift+F12 already cancels navigation silently). The navigation settings moved out of the Nav menu: general settings to Settings -&gt; Navigation, beacon settings to Monitor -&gt; Beacon. Shift+F9 / Shift+F10 open the nearby-waypoints / nearby-route-destinations lists directly, and LEFT from such a quick list switches into the fuller menu it shortcuts into.</p>
+<p><strong>Technical:</strong> The quick keys use a dedicated handler plus a transient root entry (like the Shift+F11 action-bars handler) instead of the fragile localized SlashFunc label-walk; shared list builders hoisted to SkuNav module scope; the stale MenuQuickSelect1-4 label-path defaults are retired and the inert "quick select" settings group is hidden. Same args/db, saved values kept.</p>
+<h2>AtlasLoot professions: Classic and TBC recipes in one list</h2>
+<p><strong>Simple:</strong> In the AtlasLoot profession menu each profession appeared twice (e.g. "Enchanting" for Classic and again for TBC) and a category such as bracer enchants only showed one era's recipes. Each profession is now a single entry and every category lists both eras' recipes, sorted by required skill.</p>
+<p><strong>Technical:</strong> The profession branch merges at two levels: crafting modules are grouped by localized profession name (Enchanting + EnchantingBC -&gt; one entry), then same-named categories are merged across modules and the leaf renders both modules' recipes sorted by skill. WotLK modules self-gate to the WotLK client, so the TBC phase yields exactly Classic + BC.</p>
+<h2>Mailbox: typed field contents are read back reliably</h2>
+<p><strong>Simple:</strong> After typing recipient, subject or text into a mail field, the confirmation (e.g. "Recipient: Playername") was spoken with the Sku audio voice, which cannot speak free text like player names - the line stayed silent or incomplete. The confirmation now always uses the Blizzard TTS voice.</p>
+<p><strong>Technical:</strong> The MailEditor confirmation calls pass engine 2 (Blizzard TTS) to OutputStringBTtts instead of the default audio-databank path.</p>
+<h2>Class trainer: focus stays on "Train"</h2>
+<p><strong>Simple:</strong> Pressing "Train" at a class trainer jumped the focus to the top of the window. It now stays on the Train button after the skill list has settled, so training several skills in a row is one keypress each.</p>
+<p><strong>Technical:</strong> The post-train re-pin searched the focused entry's CHILDREN for the Train button instead of its siblings; the window rebuild re-anchors by index, so it never matched. It now searches the level the cursor is on (parent.children, then children), and the intermediate CheckFrames runs quiet so only the final position is announced.</p>
+<h2>Flightmaster: "Close" no longer listed</h2>
+<p><strong>Simple:</strong> The flightmaster window listed a "Close" entry. Sku never lists close buttons (Escape closes every window), so it is gone.</p>
+<p><strong>Technical:</strong> The "Close" label was auto-attached to the nameless TaxiCloseButton by the buttons-without-fontstring fallback. "Close" is now in</p>
+<p>blockedWidgetStrings, so generically mirrored windows drop close buttons like the hand-built window mirrors always did.</p>
+<h2>Menus reorganized</h2>
+<p><strong>Simple:</strong> "Sku menu in combat" moved from Monitor -&gt; Combat to a re-added Settings -&gt; Combat submenu. "Notice on pet starving" moved to Monitor -&gt; Pet -&gt; Health. The Auras menu lost its duplicated level: one RIGHT from the Auras entry lands directly on "New aura" (the functionless "Options" entry is gone).</p>
+<h3>Technical: Same settings and storage (combatMenuOpen,</h3>
+<ul>
+<li>classes.hunter.petHappyness) - only the menu placement changed.</li>
+<li>SkuAuras:MenuBuilder builds the list directly into the module root entry;</li>
+<li>the SlashFunc anchor paths dropped the aurenList segment.</li>
+</ul>
+<h2>Documentation: standard key binding hints corrected</h2>
+<p><strong>Simple:</strong> The "Standard Key Bindings for Blind Players" help files (English, German, French) named several outdated defaults. Corrected: herb/ore scan is Ctrl+Shift+F / Ctrl+Shift+R, advance/back one beacon is Ctrl+Shift+W / Ctrl+Shift+S, quick waypoints are Shift+F5 to Shift+F8, turn to beacon is I. The README now points at the current download page, which also links these help files and the patch notes directly.</p>
+<h3>Technical: Verified against skuDefaultKeyBindings in</h3>
+<ul>
+<li>SkuZOptions/SkuKeyBinds.lua; the website copies under docs/ carry the same corrections.</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v42.05.html">Newer version: v42.05</a></li>
+<li><a href="v42.03.html">Older version: v42.03</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

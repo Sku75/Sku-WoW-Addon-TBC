@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.04 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v41.04.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.04 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.05.html">Neuere Version: v41.05</a></li>
+<li><a href="v41.03.html">Aeltere Version: v41.03</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Auktionshaus: Kaufmeldungen jetzt in der richtigen Sprache</h2>
+<p><strong>Einfach:</strong> Wenn beim Kauf etwas schiefgeht (z. B. man drueckt zu frueh</p>
+<p>Enter), kommt die Meldung jetzt auf Englisch, wenn man den englischen Client spielt - vorher kam sie immer auf Deutsch.</p>
+<p><strong>Technisch:</strong> Drei fest einprogrammierte deutsche Texte im Kaufpfad</p>
+<p>(auctionHouse.lua) sind jetzt ueber L[...] lokalisiert; Schluessel in deDE.lua und enUS.lua ergaenzt.</p>
+<h2>Auktionshaus: Komplettscan startet zuverlaessig, keine falsche 16-Minuten-Sperre</h2>
+<p><strong>Einfach:</strong> Frueher konnte der Komplettscan stumm fehlschlagen und danach 16 Minuten gesperrt sein, ohne dass je gescannt wurde. Jetzt startet er entweder wirklich, oder es kommt die Ansage "Scan noch nicht moeglich, bitte kurz warten" - und die Sperre wird nur gesetzt, wenn wirklich gescannt wurde. Der Fokus bleibt auf dem Scan-Punkt.</p>
+<p><strong>Technisch:</strong> AuctionHouseStartQuery gibt true nur zurueck, wenn</p>
+<p>QueryAuctionItems tatsaechlich abgesetzt wurde; der getAll-Scan wird vorher gegen CanSendAuctionQuery geprueft. Der Zeitstempel (AuctionLastFullScanTime) wird nur bei echtem Start gesetzt.</p>
+<p>noStepUpAfterSelect haelt den Fokus.</p>
+<h2>Auktionshaus: Fokus bleibt beim Filtern/Sortieren</h2>
+<p><strong>Einfach:</strong> Nach dem Waehlen von z. B. "selten" oder "Level absteigend"</p>
+<p>springt der Fokus nicht mehr eine Ebene zu weit zurueck, sondern bleibt auf dem Filter.</p>
+<p><strong>Technisch:</strong> Die fuenf Filter-/Sortier-Eintraege (Level min/max, Qualitaet, nur benutzbare, Sortierung) haben jetzt noStepUpAfterSelect = true.</p>
+<h2>AtlasLoot/Wunschliste: keine Raid-Lags mehr</h2>
+<p><strong>Einfach:</strong> Die Wunschliste hat im Raid-Kampf bei vielen Chat-Nachrichten gebremst. Das ist behoben - der Wunsch-Item-Ton beim Looten/Wuerfeln/ Verlinken funktioniert weiter.</p>
+<p><strong>Technisch:</strong> Statt pro Chat-Zeile/Item-Link die ganze Favoritenliste mit GetItemInfoInstant zu durchlaufen, gibt es jetzt einen itemID-Cache (O(1)-Lookup), der nur bei Aenderung neu gebaut wird. Bei leerer</p>
+<p>Wunschliste brechen die Chat-Handler sofort ab.</p>
+<h2>AtlasLoot: Strg+Shift+L vereinfacht</h2>
+<p><strong>Einfach:</strong> Strg+Shift+L oeffnet jetzt einfach Atlas Loot. Der automatische Sprung auf die aktuelle Instanz oder den Boss im Ziel wurde entfernt - er war unzuverlaessig und konnte Fehler machen.</p>
+<p><strong>Technisch:</strong> Die Kontext-Erkennung (Instanz/Boss/Schwierigkeit) in</p>
+<p>AtlasLootShortcut wurde entfernt; es wird immer der Standard-Pfad geoeffnet und das Kontext-Flag geleert.</p>
+<h2>Freundesliste: Battle.net-Freunde einladen</h2>
+<p><strong>Einfach:</strong> Man kann jetzt einen Battle.net-Freund, der gerade WoW spielt, ueber das Menue in die Gruppe einladen. Vorher passierte nichts.</p>
+<p><strong>Technisch:</strong> Im Invite-OnAction (friends.lua) gibt es jetzt einen BNet-Zweig: Charaktername + Realm aus gameAccountInfo, Einladung via</p>
+<p>C_PartyInfo.InviteUnit (Fallback InviteUnit/BNInviteFriend). Spielt der Freund nicht WoW, kommt eine Ansage.</p>
+<h2>Auren: Anzeigename stuerzt nicht mehr ab</h2>
+<p><strong>Einfach:</strong> Beim Anzeigen oder Durchblaettern von Auren konnte es einen</p>
+<p>Lua-Fehler geben, wenn eine Aura einen Wert oder eine Aktion benutzte, die das Addon gerade nicht aufloesen konnte. Das ist behoben.</p>
+<p><strong>Technisch:</strong> BuildAuraName (SkuAuras/Options.lua) macht alle dynamischen Lookups (Types, attributes, Operators, values, actions, outputs) jetzt nil-sicher; bei unbekanntem Schluessel wird der Rohschluessel angezeigt statt eines Fehlers.</p>
+<h2>Nicht in dieser Version (bewusst verschoben)</h2>
+<ul>
+<li>Taschen: Fokus/Aktualisierung nach "wird an dich gebunden" - beruehrt den
+</li>
+</ul>
+<p>empfindlichen Taschen-Frame-Bereich und wird separat angegangen.</p>
+<ul>
+<li>Soft-/Hardtarget (Hardtarget soll Softtarget verdraengen; weniger
+</li>
+</ul>
+<p>Target-Spam bei rausgezoomter Kamera) - liegt im geschuetzten Zielsystem; nur analysiert, noch nicht umgesetzt.</p>
+<h2>Versionsanzeige</h2>
+<ul>
+<li>Sku.toc und SkuDispatcher/Sku.toc auf v41.04 aktualisiert.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.05.html">Neuere Version: v41.05</a></li>
+<li><a href="v41.03.html">Aeltere Version: v41.03</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

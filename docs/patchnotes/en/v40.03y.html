@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v40.03y - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v40.03y.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v40.03y - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v40.04.html">Newer version: v40.04</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Mailbox</h2>
+<ul>
+<li>Multiple attachments: after taking a single attachment, the remaining attachments in the same mail are reliably read out by Sapi again. Custom auto-jump path removed -- the mailbox now uses the standard refresh again (MAIL_INBOX_UPDATE, currentMenuPosition:OnUpdate), exactly like a fresh mailbox open.
+</li>
+</ul>
+<h2>Atlas Loot</h2>
+<ul>
+<li>Open keyboard shortcut is now freely rebindable: under Shift+F1, Core, Sku key bindings, Assign key the entry "Open Atlas Loot" appears. The default key remains Ctrl+Shift+L; the user can rebind it like any other Sku shortcut. The new binding takes effect immediately.
+</li>
+<li>Context-aware jump into boss/instance submenu significantly improved: Path order now matches the actual menu hierarchy (Lists, Plugin, Expansion, Group, Instance/Raid, Boss, Difficulty, Items). The difficulty was previously placed before the instance -- the path could never resolve. Difficulty detection has three fallback layers: primary GetInstanceInfo, secondary the character portrait setting (GetDungeonDifficulty / GetRaidDifficulty -- locked in by the server when entering the instance and therefore reliable), tertiary default "Normal" for world bosses. Lookup tables are now eagerly populated already at login (with staggered retries 5/10/20/35/60 s) and on zone change into an instance. The shortcut therefore works without a cold-start delay on the first key press.
+</li>
+<li>Wishlist auto-remove: as soon as the "I feel Good" sound plays (a wishlist item has entered the inventory), the item is automatically removed from all wishlist slots. Comparison is primarily by itemID, with a hyperlink-pattern fallback. Items like rings or trinkets that can sit in two slots simultaneously are fully cleaned up.
+</li>
+</ul>
+<h2>Character Frame (equipment slots)</h2>
+<ul>
+<li>Left-click / right-click on equipped items works again. On TBC Anniversary 2.5.5 a /click &lt;slot&gt; LeftButton without a modifier only triggers UseInventoryItem -- useless for armor, rings and trinkets. Sku now uses a direct API path for equipment slots: Left-click: PickupInventoryItem(slotID) -- the item attaches to the cursor (for swapping, selling or socketing). Right-click: unequip -- PickupInventoryItem + iteration through the bags, first empty slot, PickupContainerItem. If all bags are full the cursor is cleared and a Sapi notice "No free bag space" is announced. On an empty slot an "Empty" notice is announced.
+</li>
+</ul>
+<h2>Dungeon Browser</h2>
+<ul>
+<li>Auto-refresh removed: the player list is no longer automatically refreshed every 10 seconds. The previous ticker incorrectly affected all Sku menus (currentMenuPosition:OnUpdate independent of the current menu path) and interrupted announcements in completely unrelated submenus.
+</li>
+<li>Manual "Refresh list" button: triggers a /who search and rebuilds the dungeon browser menu specifically after 0.6 s. Cross-menu protection: if the user navigated away in the meantime nothing happens.
+</li>
+<li>Sapi feedback after a successful refresh: "Updated. N players found" (or "No players found" / "1 player found"). Issued with a delay after the OnUpdate vocalization so the status announcement is not suppressed.
+</li>
+<li>Phase transition A to B (sign-up): two staggered passes -- the first pass announces the new status via Sapi, the second pass runs silently in the background (DungeonBrowserRebuildSilent) to integrate the players received via /who. The status announcement now plays through completely while the player list is populated regardless.
+</li>
+<li>Phase transition B to A (sign-off): double rebuild reduced to one; Sapi announcement is no longer cut off.
+</li>
+<li>Behavior on group invite: the Sku menu stays open while an invite popup is open. Sku's standard path focuses the popup so the user can interact with Yes/No directly. On accept, Blizzard automatically closes the container frame -- the Sku menu follows and closes too. On decline the container frame stays open and so does the Sku menu.
+</li>
+</ul>
+<h2>Stability / quest tooltip</h2>
+<ul>
+<li>Crash on quest tooltip request (Shift+Arrow Down) in Shadowmoon Valley fixed. Cause: tInternalChannelName could become nil in CHAT_MSG_CHANNEL_NOTICE/YOU_LEFT (zone-specific channel without a mapping), string.lower(nil) crashed. The follow-up Lua error wiped out the currentMenuPosition pointer, causing all subsequent arrow/Enter key presses to cascade with "attempt to index nil" -- the Sku menu was unusable until reload.
+</li>
+<li>Three combined safety layers:
+<p>1. Direct nil-guard in SkuChat/Core.lua before the string.lower call.</p>
+<p>2. Defensive nil-protection in the SkuGenericMenuItem OnUpdate (templates.lua) for currentMenuPosition:OnEnter / VocalizeCurrentMenuName.</p>
+<p>3. Recovery guard in the OnClick key dispatcher: on a nil currentMenuPosition Menu[1] is set as a fallback, otherwise the key press is silently discarded -- no more error spam.</p>
+</li>
+</ul>
+<h2>Version Display</h2>
+<ul>
+<li>Sku.toc and SkuDispatcher/Sku.toc updated to title/version v40.03y.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v40.04.html">Newer version: v40.04</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

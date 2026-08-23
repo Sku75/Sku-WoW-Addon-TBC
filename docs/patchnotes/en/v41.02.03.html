@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.02.03 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v41.02.03.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.02.03 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.02.04.html">Newer version: v41.02.04</a></li>
+<li><a href="v41.02.02.html">Older version: v41.02.02</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Mailbox: New combined input</h2>
+<ul>
+<li>New Letter now has three menu entries: "Attach items", "Attach gold" and "Start sending". The order is logical: optional attachments first, then send.
+</li>
+<li>"Start sending" opens an input field. Usage: type name, press Tab, type subject, press Tab, optionally type body text, press Enter. The mail is sent immediately.
+</li>
+<li>After attaching items or gold, focus automatically returns to the respective menu entry. After sending, focus returns to "New Letter".
+</li>
+<li><strong>Technical:</strong> New function SkuCore:MailEditorCombined() in mail.lua. Uses OnKeyDown handler on EditBox for Tab and Enter detection. Tab switches fields (name/subject/body), Enter finalizes and calls SendMail() directly. Menu stays open (MailFrame must be visible for SendMail()).
+</li>
+</ul>
+<h2>Warlock Pet: Separate target menu</h2>
+<ul>
+<li>The target menu for warlock pets (demons) now shows the correct actions: Raid Marker, Set Focus, Interact and Dismiss. Previously, hunter pet actions were incorrectly displayed.
+</li>
+<li><strong>Technical:</strong> SkuMob/Options.lua, tIsPet block: Class check via UnitClass("player"). HUNTER shows hunter actions, all other classes show the generic pet menu.
+</li>
+</ul>
+<h2>Missing audio words fixed</h2>
+<ul>
+<li>"Tabulatortaste" and "absenden" replaced with "Tab" and "Senden", as the original words had no audio files in SkuAudioData and triggered a beep.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.02.04.html">Newer version: v41.02.04</a></li>
+<li><a href="v41.02.02.html">Older version: v41.02.02</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.01.01 - Patchnotes beta</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v41.01.01.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.01.01 - Patchnotes beta</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.01.02.html">Neuere Version: v41.01.02</a></li>
+<li><a href="v40.06.html">Aeltere Version: v40.06</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Performance</h2>
+<ul>
+<li>Wiki/Tutorial-Modul entfernt: Das Modul "Tutorials und Wiki" (Menuepunkt 7) wurde vollstaendig entfernt. Das spart ca. 30 MB Arbeitsspeicher (28 MB Wiki-Datenbank plus Lookup-Index) und beschleunigt den Login spuerbar, da 39.600 Zeilen weniger geparst werden muessen.
+</li>
+<li>Kein permanenter OnUpdate-Handler mehr: Der Frame-Handler, der bei jedem Wiki-Menueoeffnen lief (~60x pro Sekunde), existiert nicht mehr.
+</li>
+</ul>
+<h2>Menue</h2>
+<ul>
+<li>Menuepunkt 7 ist jetzt ein Platzhalter mit dem Namen "Reserviert". Er zeigt den Hinweis "Dieser Bereich wird derzeit ueberarbeitet" an. Der Bereich wird in einer zukuenftigen Version mit neuen Inhalten befuellt.
+</li>
+</ul>
+<h2>Tastenbelegung</h2>
+<ul>
+<li>Die Standard-Tastenbelegung SHIFT-F4 (Abenteuerfuehrer oeffnen) wurde entfernt, da das zugehoerige Modul nicht mehr existiert. Spieler, die die Taste manuell umbelegt hatten, muessen nichts tun — der Eintrag wird ignoriert und verursacht keinen Fehler.
+</li>
+</ul>
+<h2>Sicherheit</h2>
+<ul>
+<li>Nil-Guards fuer Wiki-Referenzen: Alle Stellen im TTS-System (SkuTTS), im Optionssystem (SkuZOptions) und in der Sprachausgabe (SkuVoice), die auf Wiki-Daten zugreifen, sind jetzt mit Nil-Pruefungen abgesichert. Damit wird sichergestellt, dass keine Fehlermeldungen auftreten, obwohl die Wiki-Daten nicht mehr geladen werden.
+</li>
+</ul>
+<h2>Fehlerbehebungen</h2>
+<ul>
+<li>tasks.lua (Navigations-Aufgaben fuer DK-Quests) wurde faelschlicherweise mit dem Wiki-Modul entfernt. Die Datei wurde wiederhergestellt. Behebt den Fehler "bad argument #1 to 'pairs' (table expected, got nil)" in specialNavigationTasks.lua.
+</li>
+</ul>
+<h2>Begleit-Addons</h2>
+<ul>
+<li>SkuAudioData_fast_de: Interface-Version auf 11508 aktualisiert, Abhaengigkeit zu Sku hinzugefuegt. Behebt "attempt to index global 'Sku' (a nil value)".
+</li>
+<li>SkuBeaconSoundsets: Interface-Version auf 11508 aktualisiert.
+</li>
+<li>SkuCustomBeaconsAdditional: Interface-Version auf 11508 aktualisiert, Abhaengigkeiten hinzugefuegt.
+</li>
+<li>SkuCustomBeaconsEssential: Interface-Version auf 11508 aktualisiert, Abhaengigkeiten hinzugefuegt.
+</li>
+<li>Die korrigierten TOC-Dateien liegen im Ergebnisordner neben dem Sku-Ordner. Einfach in die bestehenden Addon-Ordner im Spiel kopieren.
+</li>
+</ul>
+<h2>Versionsanzeige</h2>
+<ul>
+<li>Sku.toc und SkuDispatcher/Sku.toc aktualisiert auf Titel/Version v41.01.01 beta.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.01.02.html">Neuere Version: v41.01.02</a></li>
+<li><a href="v40.06.html">Aeltere Version: v40.06</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

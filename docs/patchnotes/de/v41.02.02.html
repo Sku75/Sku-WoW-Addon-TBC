@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.02.02 - Patchnotes (Arbeitsversion)</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v41.02.02.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.02.02 - Patchnotes (Arbeitsversion)</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.02.03.html">Neuere Version: v41.02.03</a></li>
+<li><a href="v41.02.01.html">Aeltere Version: v41.02.01</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Erkenntnisse aus der Briefkasten-Reparatur:</h2>
+<ul>
+<li>CloseMenu() schliesst auch das Blizzard MailFrame. SendMail() benoetigt aber ein offenes MailFrame. Daher darf CloseMenu() NICHT vor der Mail-Eingabe aufgerufen werden.
+</li>
+<li>EditBox OnEnterPressed feuert nicht wenn SetScript("OnKeyDown") gesetzt ist. Enter muss im OnKeyDown-Handler manuell abgefangen werden.
+</li>
+<li>SkuOptionsEditBoxOkScript ist eine lokale Variable in SkuZOptions/Core.lua und kann nicht aus anderen Dateien (z.B. mail.lua) aufgerufen werden. Callbacks muessen als lokale Funktionen im aufrufenden Scope definiert werden.
+</li>
+<li>RegisterForClicks("AnyDown") verhindert Double-Enter, blockiert aber EditBox-OnEnterPressed (feuert auf Key-Up). Loesung: OnKeyDown-Handler auf der EditBox faengt Enter direkt ab — unabhaengig vom SecureActionButton-Override-Binding.
+</li>
+<li>Debounce-Ansatz (100ms Sperre im PostClick) funktioniert fuer Taschen und Wunschliste, bricht aber Briefkasten und andere EditBox-Eingaben.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.02.03.html">Neuere Version: v41.02.03</a></li>
+<li><a href="v41.02.01.html">Aeltere Version: v41.02.01</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

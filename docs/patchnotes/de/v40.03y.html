@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v40.03y - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v40.03y.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v40.03y - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v40.04.html">Neuere Version: v40.04</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Briefkasten</h2>
+<ul>
+<li>Mehrfach-Anhaenge: nach dem Entnehmen eines einzelnen Anhangs werden die verbleibenden Anhaenge im selben Brief wieder zuverlaessig per Sapi vorgelesen. Auto-Jump-Pfad entfernt -- der Briefkasten nutzt jetzt wieder den Standard-Refresh (MAIL_INBOX_UPDATE, currentMenuPosition:OnUpdate), exakt wie beim physischen Wieder-Oeffnen des Briefkastens.
+</li>
+</ul>
+<h2>Atlas Loot</h2>
+<ul>
+<li>Tastenkuerzel zum Oeffnen frei umbelegbar: unter Shift+F1, Core, Skutastenbelegung, Taste zuweisen erscheint jetzt der Eintrag "Atlas Loot oeffnen". Die Standardtaste bleibt Strg+Shift+L; der User kann sie aber wie alle anderen Sku-Tastenkuerzel auf eine eigene Kombination umlegen. Die neue Belegung wird sofort wirksam.
+</li>
+<li>Zielorientierter Sprung in Boss-/Instanz-Submenue deutlich verbessert: Pfad-Reihenfolge entspricht jetzt exakt der Menue-Hierarchie (Listen, Plugin, Erweiterung, Gruppe, Instanz/Raid, Boss, Schwierigkeit, Items). Die Schwierigkeitsstufe wurde vorher faelschlich vor die Instanz gesetzt -- Pfad konnte nie aufgeloest werden. Schwierigkeits-Erkennung dreifach abgesichert: primaer GetInstanceInfo, sekundaer die Charakterportrait-Einstellung (GetDungeonDifficulty / GetRaidDifficulty -- wird beim Betreten der Instanz festgenagelt und ist daher zuverlaessig), tertiaer Default "Normal" fuer Welt-Bosse. Lookup-Tabellen werden jetzt bereits beim Login (mit gestaffelten Retries 5/10/20/35/60 s) und bei Zonenwechsel ins Instanz-Innere vorbefuellt. Damit ist der Sprung beim ersten Tastendruck ohne Latenz nutzbar.
+</li>
+<li>Wunschlisten-Auto-Remove: sobald der "I feel Good"-Sound spielt (Wunschlisten-Item ist im Inventar gelandet), wird das Item automatisch aus allen Wunschlisten-Slots entfernt. Vergleich primaer per itemID, mit Hyperlink-Pattern als Fallback. Items wie Ringe oder Schmuckstuecke, die in zwei Slots gleichzeitig stehen koennen, werden vollstaendig abgeraeumt.
+</li>
+</ul>
+<h2>Charakterfenster (Equipment-Slots)</h2>
+<ul>
+<li>Linksklick / Rechtsklick auf ausgeruestete Items funktioniert wieder. Auf TBC-Anniversary 2.5.5 ruft /click &lt;slot&gt; LeftButton ohne Modifier-Taste nur UseInventoryItem auf -- wirkungslos fuer Ruestung, Ringe und Schmuckstuecke. Sku nutzt fuer Equipment-Slots jetzt den direkten API-Pfad: Linksklick: PickupInventoryItem(slotID) -- Item heftet sich an den Cursor (zum Umsetzen, Verkaufen oder Abstecken). Rechtsklick: ausziehen -- PickupInventoryItem + Iteration ueber die Taschen, erstes freies Fach, PickupContainerItem. Bei vollen Taschen Cursor leeren und Sapi-Hinweis "Keine Tasche frei". Bei leerem Slot Sapi-Hinweis "Leer".
+</li>
+</ul>
+<h2>Dungeon-Browser</h2>
+<ul>
+<li>Auto-Refresh entfernt: die Spielerliste wird nicht mehr automatisch alle 10 Sekunden aktualisiert. Der bisherige Ticker griff faelschlich auf alle Sku-Menues durch (currentMenuPosition:OnUpdate unabhaengig vom aktuellen Menue-Pfad) und unterbrach Ansagen in komplett unbeteiligten Untermenues.
+</li>
+<li>Manueller "Liste aktualisieren"-Button: loest /who-Suche aus und rebuildet das Dungeon-Browser-Menue gezielt nach 0,6 s. Cross-Menue-Schutz: wenn der User in der Zwischenzeit wegnavigiert ist, passiert nichts.
+</li>
+<li>Sapi-Feedback nach erfolgreichem Refresh: "Aktualisiert. N Spieler gefunden" (oder "Keine Spieler gefunden" / "1 Spieler gefunden"). Wird zeitversetzt nach der OnUpdate-Vokalisierung abgesetzt, damit die Status-Ansage nicht unterdrueckt wird.
+</li>
+<li>Phasenwechsel A nach B (Anmeldung): zwei zeitversetzte Paesse -- erster Pass mit Sapi-Ansage des neuen Status, zweiter Pass stumm im Hintergrund (DungeonBrowserRebuildSilent), um die per /who eingelaufenen Spieler nachzuziehen. Status-Ansage laeuft jetzt vollstaendig durch, und die Spielerliste ist trotzdem sofort gefuellt.
+</li>
+<li>Phasenwechsel B nach A (Abmeldung): Doppel-Rebuild auf einen reduziert; Sapi-Ansage wird nicht mehr abgeschnitten.
+</li>
+<li>Verhalten bei Gruppeneinladung: Sku-Menue bleibt waehrend eines offenen Einladungs-Popups offen. Skus Standard-Pfad fokussiert das Popup, der User kann direkt mit Ja/Nein interagieren. Bei Annehmen schliesst Blizzard das Container-Frame automatisch -- Sku-Menue folgt und schliesst sich. Bei Ablehnen bleibt das Container-Frame stehen und das Sku-Menue ebenfalls.
+</li>
+</ul>
+<h2>Stabilitaet / Quest-Tooltip</h2>
+<ul>
+<li>Crash beim Quest-Tooltip-Aufruf (Shift+Pfeil-Runter) im Schattenmondtal behoben. Ursache: tInternalChannelName konnte in CHAT_MSG_CHANNEL_NOTICE/YOU_LEFT nil werden (zonen-spezifischer Channel ohne Mapping), string.lower(nil) crashte. Der nachfolgende Lua-Error riss den currentMenuPosition-Pointer mit sich, wodurch alle weiteren Pfeil-/Enter-Tastendrucke mit "attempt to index nil" kaskadierten -- Sku-Menue blieb bis zum Reload unbedienbar.
+</li>
+<li>Drei zusammenwirkende Schutzschichten:
+<p>1. Direkter nil-Guard in SkuChat/Core.lua vor dem string.lower-Aufruf.</p>
+<p>2. Defensiver nil-Schutz im SkuGenericMenuItem-OnUpdate (templates.lua) fuer currentMenuPosition:OnEnter / VocalizeCurrentMenuName.</p>
+<p>3. Recovery-Guard im OnClick-Key-Dispatcher: bei nil-currentMenuPosition wird Menu[1] als Fallback gesetzt, andernfalls der Tastendruck still verworfen -- kein Crash-Spam mehr.</p>
+</li>
+</ul>
+<h2>Versionsanzeige</h2>
+<ul>
+<li>Sku.toc und SkuDispatcher/Sku.toc auf Title/Version v40.03y aktualisiert.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v40.04.html">Neuere Version: v40.04</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

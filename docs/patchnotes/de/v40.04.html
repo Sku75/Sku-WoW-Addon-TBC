@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v40.04 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v40.04.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v40.04 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v40.04.01.html">Neuere Version: v40.04.01</a></li>
+<li><a href="v40.03y.html">Aeltere Version: v40.03y</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Dungeon-Browser</h2>
+<ul>
+<li>Lokalisierung: Alle Menue-Eintraege des Dungeon-Browsers (Rollen, Status, Dungeon-Liste, Spielerliste, Aktionen) verwenden jetzt das Lokalisierungssystem. Auf englischen Clients erscheinen alle Texte korrekt auf Englisch.
+</li>
+<li>Heroische Dungeons: Der Dungeon-Browser zeigt jetzt auch heroische Dungeons an. Diese erscheinen in einer eigenen Sektion unterhalb der normalen Dungeons mit dem Praefix "Heroisch: " vor dem Namen. Heroische Dungeons koennen wie normale Dungeons ausgewaehlt und angemeldet werden.
+</li>
+<li>Tastenkuerzel: Der Dungeon-Browser hat jetzt ein eigenes Tastenkuerzel unter Shift+F1, Core, Skutastenbelegung, Taste zuweisen, "Dungeon Browser oeffnen". Standard ist keine Taste belegt; der User kann frei zuweisen.
+</li>
+<li>Alle abwaehlen: Neuer Button "Alle abwaehlen" im Dungeon-Browser. Setzt alle Dungeon-Auswahlen auf einmal zurueck.
+</li>
+<li>Anzeige: Der Hinweis "Ausgewaehlt" wird jetzt vor den Dungeon-Namen gesetzt (statt dahinter), damit blinde Spieler beim Durchblaettern sofort hoeren, ob ein Dungeon bereits markiert ist.
+</li>
+<li><strong>Technisch:</strong> ~39 neue L[]-Eintraege (DB_*) in beiden Locale-Dateien. Hardcoded Strings in dungeonBrowser.lua durch L[]-Aufrufe ersetzt. Zwei "not info.isHeroic"-Filter entfernt (tGetEligibleDungeons und tBuildPhaseB). Heroische Dungeons werden in Phase A als eigene Sektion mit L["DB_HeroicSection"] dargestellt. SKU_KEY_OPENDUNGEONBROWSER in SkuKeyBinds.lua definiert, Handler und Override-Binding in SkuZOptions/Core.lua. DungeonBrowserDeselectAll() setzt db.selection = {} und triggert Menu-Rebuild.
+</li>
+</ul>
+<h2>Navigation / Nahe Route</h2>
+<ul>
+<li>Bugfix: "Nahe Route" bricht nicht mehr nach dem ersten Wegpunkt ab. Die Navigation ueber "Nahe Route" (im Questbuch und im SkuNav-Menue) wurde nach Erreichen des ersten Wegpunkts faelschlicherweise mit "Route folgen beendet" abgebrochen, anstatt zum Ziel weiterzufuehren. Dieser Fehler trat zonenuebergreifend auf und betraf alle Nahe-Route-Navigationen. Das Problem ist behoben -- Nahe Routen fuehren nun zuverlaessig bis zum Ziel.
+</li>
+<li><strong>Technisch:</strong> Die BuildChildren der "Closest route"-Handler in SkuQuest/Options.lua (Zeilen 1101ff) und SkuNav/Options.lua (Zeilen 447ff) verwendeten eine flache Struktur, die metapathFollowingStart und metapathFollowingMetapaths einmalig fuer den ersten Einstiegspunkt setzte. Der bereits korrigierte "Route"-Handler setzte in seinen Per-Entry-Point-Submenues metapathFollowingTarget = nil, was bei Menue-Navigation zwischen Geschwistern die Nahe-Route-Daten zerstoerte. Fix: Gleiche Umstrukturierung auf Per-Entry-Point-Submenues wie beim "Route"-Handler -- jeder Einstiegspunkt berechnet seine eigenen Metapaths in seiner eigenen BuildChildren-Funktion.
+</li>
+</ul>
+<h2>Chat-Einladung</h2>
+<ul>
+<li>Bugfix: Die Einladungsfunktion im Chat-Kontextmenue (CTRL+Enter) funktioniert wieder. Bisher konnte ein Fehler auftreten, wenn InviteUnit als globale Funktion nicht verfuegbar war.
+</li>
+<li><strong>Technisch:</strong> SkuChat/Core.lua Zeile 2688: InviteUnit() durch C_PartyInfo.InviteUnit()-Fallback ersetzt (gleicher Pattern wie in SkuMob/Options.lua).
+</li>
+</ul>
+<h2>Ziel-Aktionsmenue (CTRL+T)</h2>
+<ul>
+<li>Pet-Aktionen erweitert: Zwei neue Eintraege im Pet-Untermenue. "Zuruecklassen" schickt das Pet temporaer weg (es kann jederzeit wieder gerufen werden). "Umbenennen" oeffnet ein Eingabefeld, in dem ein neuer Name eingegeben und mit Eingabetaste bestaetigt werden kann.
+</li>
+<li>Lokalisierung: Alle Eintraege des Ziel-Aktionsmenues (Untersuchen, Folgen, Handeln, Duell, Fluestern, Einladen, Freund hinzufuegen, Ignorieren, Anfuehrer uebergeben, Entfernen, Pet-Aktionen, Pet-Modus, Raid-Markierungen, Spieler melden, Pluendermethode, Instanzen zuruecksetzen, Gruppe verlassen) sind jetzt lokalisiert. Auf englischen Clients erscheinen alle Texte auf Englisch.
+</li>
+<li><strong>Technisch:</strong> SkuMob/Options.lua: ~78 neue L[]-Eintraege (MOB_*) in beiden Locale-Dateien. Alle hardcoded Strings in tRaidMarkers, tReportReasons, tLootMethods, tBuildPetModeSubmenu und tBuildTargetMenu durch L[]-Aufrufe ersetzt. PetDismiss (nur temporaer) und PetRename (ueber EditBoxPasteShow) als neue tAddAction-Eintraege im tIsPet-Zweig.
+</li>
+</ul>
+<h2>Charakterfenster (Equipment-Slots)</h2>
+<ul>
+<li>Bugfix: Wizard Oil, Gifte und Schleifsteine koennen jetzt ueber das Sku-Menue auf ausgeruestete Waffen angewendet werden, ohne ADDON_ACTION_FORBIDDEN-Fehler. Bisher wurde der Klick auf Equipment-Slots aus dem Addon-Kontext ausgefuehrt, was von Blizzard blockiert wurde.
+</li>
+<li><strong>Technisch:</strong> SkuZOptions/Core.lua Zeile 3958: Equipment-Slot-Linksklick verwendet jetzt macrotext ("/click SlotName LeftButton") statt reinem OnAction mit PickupInventoryItem. Dadurch laeuft der Klick im Hardware-Event-Kontext und Blizzard erlaubt die Interaktion. Der bisherige OnAction-Code bleibt als Fallback erhalten.
+</li>
+</ul>
+<h2>Rollenabfrage</h2>
+<ul>
+<li>Bugfix: Die manuelle Rollenabfrage (Tank/Heiler/Schaden) verursacht keinen Absturz mehr. Bisher konnte ein Fehler auftreten, wenn die Rollenbuttons keine .role-Eigenschaft hatten, was zu einem nil-Fehler fuehrte und einen Reload erforderte.
+</li>
+<li><strong>Technisch:</strong> SkuCore/LocalMenu.lua Zeile 2026: Nil-Guard und Fallback-Rollennamen (TANK/HEALER/DAMAGER) eingefuegt. tButtons[x] wird zusaetzlich auf Existenz geprueft.
+</li>
+</ul>
+<h2>Aura-Export</h2>
+<ul>
+<li>Bugfix: "Alle Auren exportieren" funktioniert wieder und wirft keinen Fehler mehr. Die Funktion GetAddOnMetadata war in neueren WoW-Versionen nicht verfuegbar und verursachte beim Export einen Absturz.
+</li>
+<li><strong>Technisch:</strong> SkuAuras/Options.lua Zeile 812: GetAddOnMetadata durch sicheren Fallback-Pattern ersetzt (GetAddOnMetadata oder C_AddOns.GetAddOnMetadata, mit "unknown" als letztem Fallback). Gleicher Fix auch in SkuZOptions/Core.lua Zeile 5252 (Wegpunkt-Export).
+</li>
+</ul>
+<h2>/sku version Befehl</h2>
+<ul>
+<li>Bugfix: Der Chat-Befehl "/sku version" gibt jetzt zuverlaessig die Addon-Version aus. Bisher konnte die Ausgabe leer bleiben, wenn GetAddOnInfo nicht verfuegbar war.
+</li>
+<li><strong>Technisch:</strong> SkuZOptions/Core.lua Zeile 128: GetAddOnInfo durch sicheren GetAddOnMetadata-Fallback ergaenzt (gleicher Pattern wie ErrorLog.lua). Ausgabe zeigt jetzt Titel und Versionsnummer.
+</li>
+</ul>
+<h2>Minimap-Ressourcen-Scan</h2>
+<ul>
+<li>Bugfix: Die passive Minimap-Ueberwachung (Erz, Kraeuter, etc.) faengt keine Mausklicks mehr ab. Bisher konnte beim Klicken an verschiedenen Stellen im Addon ein "Ping"-Geraeusch ertoennen und der Klick wurde nicht ausgefuehrt, weil die unsichtbare 1-Pixel-Minimap unter dem Cursor Klicks abgefangen hat.
+</li>
+<li><strong>Technisch:</strong> SkuCore/minimapScanner.lua: In MinimapScanFast() werden jetzt vor dem Positionieren der Minimap unter den Cursor alle sichtbaren Minimap-Kinder (insbesondere MiniMapTrackingFrame) versteckt. Schutz portiert aus Version 1.x (Zeilen 479-484). RestoreMinimap stellt die Kinder per MMA_VISIBLE wieder her.
+</li>
+<li>Bugfix: Kraeutersuche, Bergbau und weitere Tracking-Funktionen funktionieren jetzt korrekt mit dem passiven Minimap-Scan. Bisher wurde der Tracking-Zustand bei jedem Scan-Durchlauf deaktiviert und konnte nicht wiederhergestellt werden, weil die C_Minimap.GetTrackingInfo-Rueckgabe (Tabelle statt Einzelwerte) falsch entpackt wurde. Kraeuter und Erze erschienen nicht mehr auf der Minimap, obwohl der Buff-Balken die Suche als aktiv anzeigte.
+</li>
+<li><strong>Technisch:</strong> GetTrackingInfo-Aufrufe in tCaptureMinimapState() und in der Tracking-Disable-Schleife von MinimapScanFast() verwenden jetzt den gleichen type(result)=="table"-Check wie SlashActiveSeekings und SkuZOptions/Core.lua. tCaptureMinimapState/tApplyMinimapState sichern und stellen den Tracking-Zustand korrekt wieder her.
+</li>
+<li>Bugfix: Der passive Minimap-Scan kuendigt Kraeuter, Erze und andere Ressourcen beim Laufen jetzt wieder per Sprache an. Bisher blieb die Ansage aus, weil die Tooltip-Auswertung im passiven Scan-Pfad die Ressourcennamen nie korrekt erkennen konnte -- die Matching-Logik verwendete exakte Gleichheit statt Teilstring-Suche und konnte bei Sonderzeichen (Apostrophe in "Khadgar's Whisker" etc.) oder fehlenden Abhaengigkeiten den Tooltip-Text nicht zuordnen.
+</li>
+<li><strong>Technisch:</strong> C_Timer.After-Callback in MinimapScanFast() verwendet jetzt denselben string.find-Substring-Match wie der aktive Scan (MinimapScanFindActiveRessource). SkuChat:Unescape wird optional genutzt, blockiert aber nicht mehr die Verarbeitung. gmatch-Fragmentierung und exakte Gleichheitspruefung entfernt.
+</li>
+</ul>
+<h2>Versionsanzeige</h2>
+<ul>
+<li>Sku.toc und SkuDispatcher/Sku.toc auf Title/Version v40.04 aktualisiert.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v40.04.01.html">Neuere Version: v40.04.01</a></li>
+<li><a href="v40.03y.html">Aeltere Version: v40.03y</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v42.09 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v42.09.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v42.09 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v42.10.html">Newer version: v42.10</a></li>
+<li><a href="v42.08.html">Older version: v42.08</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Classic Era: game key bindings can now be set again</h2>
+<p><strong>Simple:</strong> On the Classic Era client it was possible to clear a game key binding, but never to assign a new one - the menu simply reported the key as "nothing" afterwards. Assigning keys now works exactly as it does on the Anniversary client, for both the first and the second key of a command.</p>
+<p><strong>Technical:</strong> SkuCore's binding helpers called SetBinding(key, command, 1) on the non-TBC branch. The third bindingMode argument is rejected by Era 1.15, so the call returned false and bound nothing, while the one-argument unbind form kept working - hence "unbinding works, binding does not". Sku.isTBC is true for every client from interface 20505 upwards, so that branch was only ever reached on Era. All five call sites (SetBinding, SetBinding2, DeleteBinding2 and both keys in ResetBindings) now use the two-argument form, which is correct on both clients.</p>
+<h2>Classic Era: joining the Sku chat channel no longer fails</h2>
+<p><strong>Simple:</strong> Turning on "Join Sku Chat Channel" on Classic Era did not work properly - the channel was never added to your chat window. It now joins correctly.</p>
+<p><strong>Technical:</strong> SkuChat:JoinOrLeaveSkuChatChannel branched on Sku.isTBC and called a global ChatFrame_AddChannel, which does not exist in the Anniversary interface code at all. The real API is ChatFrameMixin:AddChannel, which loads on every flavour including Era, so the branch was removed.</p>
+<h2>"Join Sku Chat Channel" is findable again</h2>
+<p><strong>Simple:</strong> The setting had been moved to Settings -&gt; Speech output, where it sat next to the text-to-speech options. Because a second menu of the same name (under Audio) shows only the three TTS sliders, the setting appeared to be missing entirely. It is back where it belongs, under Sku Chat -&gt; Options.</p>
+<p><strong>Technical:</strong> Rendered with keyPrefix "" - the same prefix the speech-output menu used - so existing saved values carry over untouched. The remaining relocated SkuChat options (TTS voice, speed and volume, never reset queues, all voice output via Blizzard TTS, do not read out emojis) stay under Speech output.</p>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v42.10.html">Newer version: v42.10</a></li>
+<li><a href="v42.08.html">Older version: v42.08</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

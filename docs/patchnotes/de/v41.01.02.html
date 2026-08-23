@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.01.02 - Patchnotes beta</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v41.01.02.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.01.02 - Patchnotes beta</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.01.03.html">Neuere Version: v41.01.03</a></li>
+<li><a href="v41.01.01.html">Aeltere Version: v41.01.01</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Fehlerbehebungen (Sound)</h2>
+<ul>
+<li>Sound-Verlust behoben: Wenn das gespeicherte Profil eine Gesamt-Lautstaerke von 0 enthielt (z.B. durch beschaedigte SavedVariables), wurden beim Login alle WoW-Sound-Kanaele auf stumm gesetzt. Es gibt jetzt einen Schutz: Wird im Profil eine Gesamt-Lautstaerke von 0 erkannt, liest das Addon die aktuellen Blizzard-Einstellungen neu ein, anstatt die 0 anzuwenden.
+</li>
+<li>CVar-Reads abgesichert: Alle Lautstaerke-Abfragen beim Profil-Erststart verwenden jetzt tonumber() mit Fallback auf 100 Prozent. Falls WoW einen ungueltigen Wert zurueckgibt, wird die volle Lautstaerke verwendet statt stumm.
+</li>
+<li>Vorbestehenden CVar-Bug behoben: Drei Sound-Einstellungen (DSP-Effekte, Sound im Hintergrund, Zonenmusik ohne Verzoegerung) wurden bisher nicht korrekt an WoW uebergeben, weil durch einen Copy-Paste-Fehler immer derselbe CVar-Name verwendet wurde. Die drei Einstellungen werden jetzt korrekt angewendet.
+</li>
+</ul>
+<h2>Hinweis zur Installation</h2>
+<ul>
+<li>Nach dem Kopieren des neuen Addons wird empfohlen, einmalig die Sku-SavedVariables zu loeschen. Die Datei befindet sich unter WTF/Account/ACCOUNTNAME/SavedVariables/Sku.lua im WoW-Ordner. Dadurch wird ein frisches Profil erstellt, das die korrekten Blizzard-Lautstaerken uebernimmt.
+</li>
+</ul>
+<h2>Versionsanzeige</h2>
+<ul>
+<li>Sku.toc und SkuDispatcher/Sku.toc aktualisiert auf Titel/Version v41.01.02 beta.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.01.03.html">Neuere Version: v41.01.03</a></li>
+<li><a href="v41.01.01.html">Aeltere Version: v41.01.01</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

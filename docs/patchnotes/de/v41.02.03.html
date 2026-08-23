@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.02.03 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v41.02.03.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.02.03 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.02.04.html">Neuere Version: v41.02.04</a></li>
+<li><a href="v41.02.02.html">Aeltere Version: v41.02.02</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Briefkasten: Neue kombinierte Eingabe</h2>
+<ul>
+<li>Neuer Brief hat jetzt drei Menuepunkte: "Gegenstaende anhaengen", "Gold anhaengen" und "Versendevorgang starten". Die Reihenfolge ist logisch: zuerst optionale Anhaenge, dann Versand.
+</li>
+<li>"Versendevorgang starten" oeffnet ein Eingabefeld. Bedienung: Name eingeben, Tab druecken, Betreff eingeben, Tab druecken, optional Text eingeben, Enter druecken. Der Brief wird direkt gesendet.
+</li>
+<li>Nach dem Anhaengen von Gegenstaenden oder Gold kehrt der Fokus automatisch zum jeweiligen Menuepunkt zurueck. Nach dem Senden kehrt der Fokus auf "Neuer Brief" zurueck.
+</li>
+<li><strong>Technisch:</strong> Neue Funktion SkuCore:MailEditorCombined() in mail.lua. Nutzt OnKeyDown-Handler auf der EditBox fuer Tab- und Enter-Erkennung. Tab wechselt das Feld (Name/Betreff/Text), Enter schliesst ab und ruft SendMail() direkt auf. Das Menue bleibt offen (MailFrame muss fuer SendMail() sichtbar sein).
+</li>
+</ul>
+<h2>Hexenmeister-Begleiter: Eigenes Zielmenue</h2>
+<ul>
+<li>Das Zielmenue fuer Hexenmeister-Begleiter (Daemonen) zeigt jetzt die korrekten Aktionen: Schlachtzugsymbol, Fokus setzen, Interagieren und Freigeben. Bisher wurden faelschlich die Jaeger-Pet-Aktionen angezeigt.
+</li>
+<li><strong>Technisch:</strong> SkuMob/Options.lua, tIsPet-Block: Klassenpruefung via UnitClass("player"). HUNTER zeigt Jaeger-Aktionen, alle anderen Klassen zeigen das generische Pet-Menue.
+</li>
+</ul>
+<h2>Fehlende Audiowoerter behoben</h2>
+<ul>
+<li>"Tabulatortaste" und "absenden" durch "Tab" und "Senden" ersetzt, da die urspruenglichen Woerter keine Audiodateien im SkuAudioData hatten und einen Beep ausloesten.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.02.04.html">Neuere Version: v41.02.04</a></li>
+<li><a href="v41.02.02.html">Aeltere Version: v41.02.02</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

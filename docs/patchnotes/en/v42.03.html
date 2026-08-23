@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v42.03 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v42.03.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v42.03 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v42.04.html">Newer version: v42.04</a></li>
+<li><a href="v41.06.html">Older version: v41.06</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Bank window: item names and right-click restored</h2>
+<p><strong>Simple:</strong> Bank slots showed "Empty" even when they held an item, and right- clicking a bank slot did nothing. Bank slots now read out their item name again, and right-click (Ctrl+Enter) moves the item into your bags.</p>
+<p><strong>Technical:</strong> The container-API bag rework read names via GameTooltip:SetBagItem, which returns nothing for the bank main container (id -1) on 2.5.6; a hyperlink fallback (SetHyperlink via GetContainerItemLink) restores the name. The bank right-click now runs an insecure UseContainerItem (bank moves are not hardware-gated) with an event-driven refresh on</p>
+<p>BAG_UPDATE_DELAYED.</p>
+<h2>Bag sorting and cleanup: rebuilt, no more error loops</h2>
+<p><strong>Simple:</strong> Sorting or cleaning up bags could spam internal bag errors, misplace items or get stuck in an endless loop. Sorting is rewritten to be reliable, no longer needs the bags to be open, and "sort all bags" works.</p>
+<p><strong>Technical:</strong> Replaced the click-simulation bubble sort (coroutine on a 0.01s ticker) with a C_Container engine: PickupContainerItem swaps, a selection sort (guaranteed termination), one swap per BAG_UPDATE_DELAYED settle with a watchdog and per-bag step cap, all pcall-guarded and traced. Also guards a talent-frame "table index is nil" crash.</p>
+<h2>Error feedback: choose how each error is signalled</h2>
+<p><strong>Simple:</strong> Each error type (out of range, stunned, wrong direction, interrupted, no line of sight, ...) now has its own submenu where you pick how it is announced: a TTS voice, a spoken voice hint (Marlene or Hans, German or English), a short sound, or silence. The old spoken hint clips are selectable again.</p>
+<p><strong>Technical:</strong> SkuCore\UIErrors.lua gains a nested menu builder (mirrors the chat per-channel voice pattern); the value stays one persisted string</p>
+<p>("voice" / "voice#&lt;n&gt;" / clip path / beep path / silent) so existing settings carry over. OutputError decodes "voice#&lt;n&gt;" and passes the voice index to OutputStringBTtts; focus-preview auditions the choice.</p>
+<h2>Menus reorganized</h2>
+<p><strong>Simple:</strong> New "Werkzeuge" (Tools) menu holds Dial Targeting and Soft Targeting. Monitor now also holds Distance, Fall detection, Error feedback, Target options and Quest notifications. The Audio menu is flattened. The old "Barrierefreiheit" menu is now called "Schnellmenue" (Quick menu).</p>
+<p><strong>Technical:</strong> Moves in SkuZOptions/SkuMenu and SkuCore\aq.lua MonitorMenuBuilder; RangecheckMenuBuilder exposed for reuse; the now-empty Kampf submenu removed; same db/keyPrefix so saved values are preserved.</p>
+<h2>Group-member quests: no longer crash on progress</h2>
+<p><strong>Simple:</strong> Opening a group member's quest that had objective progress sometimes errored and aborted the read. It now opens reliably.</p>
+<p><strong>Technical:</strong> The group-member OnEnter concatenated onto the sections TABLE from GetQuestDataStringFromDB; it now builds a proper sections table (live progress first) like the own-quest-log path.</p>
+<h2>Installer: works behind shared / VPN connections</h2>
+<p><strong>Simple:</strong> The installer could fail with "rate limit exceeded" before any download started, on shared or VPN internet connections. It no longer does.</p>
+<p><strong>Technical:</strong> Dropped the api.github.com release enumeration (60 req/h/IP cap); asset (tag, filename) pairs are pinned in Config and direct</p>
+<p>github.com/.../releases/download URLs are built instead.</p>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v42.04.html">Newer version: v42.04</a></li>
+<li><a href="v41.06.html">Older version: v41.06</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

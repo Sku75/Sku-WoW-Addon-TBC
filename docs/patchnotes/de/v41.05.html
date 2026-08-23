@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.05 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v41.05.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.05 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.06.html">Neuere Version: v41.06</a></li>
+<li><a href="v41.04.html">Aeltere Version: v41.04</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Gegnerstatus Kampf: Kampf/passiv beim Anvisieren (Aus / Beep / Ansage)</h2>
+<p><strong>Einfach:</strong> Neuer Punkt unter Barrierefreiheit, Sonstiges: "Gegnerstatus Kampf". "Beep" (Standard) ist das bisherige Verhalten - ein Ton vor dem Gegnernamen, wenn der Gegner mit dir oder deiner Gruppe kaempft. "Ansage" behaelt den Ton und sagt zusaetzlich "im Kampf" bzw. "passiv" vor dem Namen. "Aus" schaltet Ton und Statusansage ab. Der Durchschalt-Knopf bleibt unveraendert.</p>
+<p><strong>Technisch:</strong> In SkuMob\Core.lua (PLAYER_TARGET_CHANGED) wird der vorhandene InCombatSound nur noch gespielt, wenn der Modus nicht "aus" ist; im Modus "Ansage" wird "im kampf" analog zum vorhandenen "passiv" vor den Namen gehaengt. Neuer DB-Wert profile.SkuMob.enemyCombatStatusMode</p>
+<p>(off/beep/announce, Standard beep -&gt; bestehende Charaktere unveraendert).</p>
+<p>Menue in SkuZOptions\Core.lua, Locale "im kampf" in deDE/enUS. Reiner Ansage-Code, kein Taint.</p>
+<h2>Stabilitaet: Absturz beim freundlichen Lebens-/Heil-Monitor behoben</h2>
+<p><strong>Einfach:</strong> Der Fehler "fatality", der auftreten konnte, wenn man im Kampf auf sich selbst oder einen Begleiter wechselte (bei aktiver Option "eingehende Heilung einrechnen"), ist behoben. Die Lebensansagen laufen normal weiter.</p>
+<h3>Technisch: In SkuCore\aq.lua holte UNIT_HEALTH den Wert</h3>
+<ul>
+<li>UnitGetIncomingHeals(unit, "player") ohne nil-Absicherung; bei fehlender eingehender Spielerheilung (Normalfall) ergab die Subtraktion "Zahl minus nil" einen Lua-Fehler. An vier Stellen "or 0" ergaenzt.</li>
+</ul>
+<h2>Stabilitaet: seltener Menue-Fehler (Core.lua:4021) behoben</h2>
+<p><strong>Einfach:</strong> Ein Fehlerton, der ganz selten beim Navigieren in bestimmten Menue- Zustaenden (z.B. offene Chatzeile per Strg+Enter, dann Pfeil) auftrat, ist weg.</p>
+<p><strong>Technisch:</strong> In SkuOptions:VocalizeMultipartString lief eine Debug-Brotkrumen-Schleife "while tTable.parent.name do" ohne nil-Schutz; an einem Wurzelknoten ohne parent -&gt; "attempt to index field 'parent'". Guard ergaenzt (tTable und tTable.parent geprueft). Reiner Debug-Pfad, keine Funktionsaenderung.</p>
+<h2>Folgen-Warnung: kein faelschliches "Folgen beendet" beim erneuten Folgen-Druck</h2>
+<p><strong>Einfach:</strong> Wenn du beim Folgen die Folgen-Taste erneut druckst (um es zu pruefen), unterbricht WoW das Folgen kurz und baut es sofort neu auf. Vorher kam dabei faelschlich "Folgen beendet". Jetzt bleibt es in diesem Fall beim normalen Bling; "Folgen beendet" kommt nur noch bei einem ECHTEN Abbruch.</p>
+<p><strong>Technisch:</strong> Die Ansage bei AUTOFOLLOW_END wird um 0,4 s verzoegert und unterdrueckt, wenn in der Zwischenzeit ein AUTOFOLLOW_BEGIN kommt (Wieder-Folgen). Generation- Zaehler gegen veraltete Timer. In SkuCore\visualAids.lua.</p>
+<h2>Fix: "Ton fuer Klick bei Beacons" - Menue war manchmal leer (Navigation, Optionen)</h2>
+<p><strong>Einfach:</strong> Die Auswahl des Klick-Tons (Beep/Click) war manchmal leer und nicht umstellbar (der An/Aus-Schalter ging trotzdem). Grund war ein Ladereihenfolge- Rennen: die Klick-Toene kommen aus dem Zusatz-Addon SkuBeaconSoundsets und werden erst beim Betreten der Welt registriert - Sku baute die Liste aber manchmal schon vorher (leer) auf. Jetzt wird die Liste kurz nach dem Laden zuverlaessig nachgebaut.</p>
+<p><strong>Technisch:</strong> Additiver, verzoegerter Nachzieher in SkuNav\Options.lua (NICHT in der geschuetzten SkuNav\Core.lua): auf PLAYER_ENTERING_WORLD + C_Timer.After baut er SkuNav.ClickClackSoundsets neu aus BeaconLib:GetClickClackSoundSets() und zeigt die Auswahl (clickClackSoundset.values) darauf um. pcall-geschuetzt, No-Op falls SkuBeaconSoundsets fehlt. WICHTIG: ist SkuBeaconSoundsets deaktiviert/fehlt, bleibt die Liste leer (dann fehlen auch die Beacon-Sounds) - haeufige Ursache von "Audioproblemen" bei Nutzern. Details: Heute\Diagnose - Klick bei Beacon Tonmenue leer.txt.</p>
+<h2>Maus: alternative Steuerung ("zum Ziel laufen") sauber abschaltbar + Schalter im Menue</h2>
+<p><strong>Einfach:</strong> Im Barrierefreiheitsmenue unter Sonstiges gibt es jetzt den Schalter "Bei Interagieren zum Ziel laufen". Sehende koennen die automatische Lauf-bei-Klick-Steuerung damit abschalten; sie stoert die normale Maus nicht mehr.</p>
+<p><strong>Technisch:</strong> Der WorldFrame-Maushandler wird nicht mehr per SetScript ueberschrieben, sondern additiv per HookScript GENAU EINMAL installiert (Guard-Flag, nicht im 100ms-Pfad) und tut nichts, solange interactMove aus ist. Schalter ueber den vorhandenen Options-Knoten in die Barrierefreiheit (Sonstiges) eingehaengt.</p>
+<h2>Plaketten an die Kamera gekoppelt</h2>
+<p><strong>Einfach:</strong> Die freundlichen Plaketten werden nur noch erzwungen, solange in der Kamera der SkuStandard aktiv ist. Bei freigegebenem Kameramenue kannst du die Plaketten selbst veraendern oder ausschalten.</p>
+<p><strong>Technisch:</strong> Der Zwang nameplateShowFriends=1 im OnUpdate-Loop wird nur noch angewendet, wenn cameraOptions.skuStandard ~= false (reiner Read mit voller and-Kette, Kampf-Gate bleibt erhalten).</p>
+<h2>Neu: Schwarzer Lesebalken (Barrierefreiheit, fuer Sehbehinderte)</h2>
+<p><strong>Einfach:</strong> Ein schwarzer Balken am oberen oder unteren Bildschirmrand zeigt gross und kontrastreich NUR den aktuellen Menuepunkt (nicht den ganzen Pfad), der gerade vorgelesen wird. Nur sichtbar, wenn das Menue offen ist. Standard AUS. Im neuen Menuepunkt Barrierefreiheit, Visuelle Hilfen, kannst du ihn ein- und ausschalten und Schriftgroesse (bis sehr gross; groesser wird auch fetter), Position (oben/unten) und Deckkraft einstellen. Lange Zeilen laufen rechts heraus - das ist gewollt. Korrektur: bei sehr grosser Schrift waechst der Balken jetzt nach UNTEN (Text war oben abgeschnitten); er wird nicht mehr oben am Bildschirmrand abgeschnitten.</p>
+<p><strong>Technisch:</strong> Neues nicht-secure FontString-Frame an UIParent (EnableMouse(false), kein Taint), gespeist aus SkuOptions.currentMenuPosition.name (nur die aktuelle Zeile), event-getrieben (kein OnUpdate, nicht im 100ms-Loop), Text NACH der Sprachausgabe gesetzt. Schrift via SetFont mit THICKOUTLINE ab mittlerer Groesse (Fettung). FontString jetzt an TOPLEFT verankert (JustifyV TOP), Balkenhoehe px+40%+12, damit grosse Schrift nach unten waechst statt am oberen Rand abzuschneiden. Logik isoliert in SkuCore\visualAids.lua; Werte pro Profil unter db.profile.SkuCore.visualAids.lineBar. Neuer Menuepunkt "Visuelle Hilfen".</p>
+<h2>Neu: Plaketten-Farben (Barrierefreiheit, fuer Sehbehinderte)</h2>
+<p><strong>Einfach:</strong> In Barrierefreiheit, Visuelle Hilfen, Plaketten-Farben kannst du die Plaketten nach Reaktion einfaerben (Feind, Neutral, Freund), jede Farbe selbst waehlen, dazu Modus (nur Ziel oder alle Plaketten), Groesse und Deckkraft. Standard AUS. Ein Warnhinweis erklaert, dass die Farben reine Anzeige sind.</p>
+<p><strong>Technisch:</strong> Eigene Funktion in SkuCore\visualAids.lua, eigener Opt-in-Flag (nicht testMode), ereignisgesteuert (NAME_PLATE_UNIT_ADDED/REMOVED, PLAYER_TARGET_CHANGED), kein C_Timer-Fan-out, nicht im 100ms-Loop, keine TOOLTIP-Strata. Volle nil-Guards (UnitReaction, 4-stufige Frame-Pruefung). Im AUS-Zustand sind die Events abgemeldet.</p>
+<h2>Neu: Maus-Finder (Barrierefreiheit, fuer Sehbehinderte)</h2>
+<p><strong>Einfach:</strong> In Barrierefreiheit, Visuelle Hilfen, Maus-Finder einschalten. Die Taste vergibst du jetzt DIREKT im Maus-Finder-Menue (dritter Punkt "maus finden", nach rechts, Neu belegen) - genau wie in der Sku Tastenbelegung, du musst sie nicht mehr separat suchen. Der reine Texthinweis ist entfallen. Auf Tastendruck leuchtet kurz eine kontrastreiche Markierung um die Maus auf (Pulsring oder Kompass-Striche waehlbar). Standard AUS.</p>
+<p><strong>Technisch:</strong> Sauber geformter Tasten-Eintrag SKU_KEY_MOUSEFINDER (kein leerer Eintrag, daher kein Login-Crash), Handler ruft ein nicht-interaktives Overlay (EnableMouse(false)) zentriert auf GetCursorPosition, etwa ein Viertel Bildschirm, blendet via C_Timer.After automatisch aus. Kein Secure-Button, kein Taint. Der Tastenbelegungs-Eintrag im Maus-Finder-Menue ist vollstaendig in</p>
+<p>SkuCore\visualAids.lua gekapselt (eigener Capture-Helper, schreibt in dieselbe SkuKeyBinds-DB wie das Hauptmenue); SkuCore\Options.lua bleibt unangetastet.</p>
+<h2>Neu: Anzahl der Gegner ansagen (Barrierefreiheit, Sonstiges)</h2>
+<p><strong>Einfach:</strong> Unter Barrierefreiheit, Sonstiges gibt es jetzt "Anzahl der Gegner ansagen" mit drei Einstellungen: "nur Elitegegner", "alle Gegner" und "ausgeschaltet". Damit setzt du mit einem Griff die passende Kombination, ohne die zwei Einzelschalter im Monitor feindlich suchen zu muessen.</p>
+<p><strong>Technisch:</strong> Komfort-Auswahl, die zwei vorhandene Werte koppelt (in</p>
+<p>db.char.SkuCore.aq[talentSet].combat.hostile): relativeNumberUnitsInCombat.value und ignoreNonElite. Zuordnung: nur Elite -&gt; ignoreNonElite=true, value=3 (Gegner die dich/Gruppe angreifen); alle Gegner -&gt; ignoreNonElite=false, value=3;</p>
+<p>ausgeschaltet -&gt; ignoreNonElite=true, value=1 (aus). Korrektur: bei "alle Gegner" und "nur Elite" wird jetzt ZUSAETZLICH der Kampfmonitor-Master aktiviert (db.char.SkuCore.aq[talentSet].combat.enabled=true) - vorher kam auf einem Charakter, bei dem der Master aus war, trotz "alle Gegner" keine Ansage. Bei "ausgeschaltet" bleibt der Master bewusst unberuehrt (nur die zwei Einzeloptionen werden gesetzt), damit anderes Kampfmonitoring nicht angetastet wird.</p>
+<h2>Neu: Warnton wenn das Folgen abbricht (Barrierefreiheit, Sonstiges)</h2>
+<p><strong>Einfach:</strong> Unter Barrierefreiheit, Sonstiges gibt es jetzt "Warnton wenn Folgen abbricht" (ein/aus, Standard aus). Wenn du jemandem folgst (Autofollow) und das Folgen endet - egal ob das Ziel zu weit weg ist, stehen bleibt oder du dich bewegst -, kommt die Ansage "Folgen beendet". Eine Distanzmessung oder das Festlegen einer Person ist dafuer nicht noetig.</p>
+<p><strong>Technisch:</strong> Schlanker Listener auf die oeffentlichen Events AUTOFOLLOW_BEGIN/END in SkuCore\visualAids.lua; Ansage nur, wenn vorher ein Folgen begann und der Schalter (db.profile.SkuCore.followBreakWarn) an ist. Kein Taint, keine Distanzmessung, kein OnUpdate. Hinweis: eine Warnung, wenn JEMAND ANDERES aufhoert DIR zu folgen, ist technisch nicht moeglich (kein Event dafuer).</p>
+<h2>Neu: Taste "naechster Gegner im Kampf" (Sku Tastenbelegung)</h2>
+<p><strong>Einfach:</strong> In der Sku Tastenbelegung (Menue Core) gibt es die neue Aktion "naechster Gegner im Kampf". Belegst du sie mit einer Taste, schaltest du auf Tastendruck durch die nahen Gegner - auch mitten im Kampf. Sku sagt das neue Ziel wie gewohnt an. Standard: keine Taste vergeben.</p>
+<p><strong>Technisch:</strong> SICHERE Umsetzung ueber einen SecureActionButton (Makro /targetenemy), an den die gewaehlte Taste per SetOverrideBindingClick gebunden wird. Damit ist der Zielwechsel im Kampf erlaubt (kein ADDON_ACTION_BLOCKED, kein Taint). SKU_KEY_NEXTCOMBATENEMY -&gt; SkuCore:UpdateNextCombatEnemyBinding (in SkuCore\visualAids.lua), Bindung wird im Kampf zurueckgestellt und via PLAYER_REGEN_ENABLED nachgezogen. Hinweis: /targetenemy schaltet durch nahe angreifbare Gegner, nicht exakt gefiltert nur auf die, die mit dir kaempfen - eine exakt gefilterte Variante waere ein groesserer, spaeterer Ausbau.</p>
+<h2>Neu: Auren-Sets anlegen und in der Gruppe teilen (Stufe 1+2)</h2>
+<p><strong>Einfach:</strong> Im Menue Auren gibt es jetzt "Sets (teilen)". Du kannst aus deinen aktuellen Auren ein benanntes Set anlegen (gleicher Name vorhanden -&gt; es wird eine Zahl angehaengt), Sets auflisten und loeschen. Ein Set laesst sich "An Gruppe teilen": deine Gruppe sieht "&lt;du&gt; teilt Aurenset &lt;Name&gt;" und am Ende "Teilen abgeschlossen". Wer Sku hat und in der Gruppe ist, bekommt das Set unter "Empfangene Sets" und kann es dort annehmen (mit Doubletten-Pruefung) oder verwerfen. Hinweis: in dieser Stufe nur zwischen gleicher Clientsprache; der Sprach-Uebersetzer kommt spaeter.</p>
+<p><strong>Technisch:</strong> Isoliert in NEUER Datei SkuAuras\sharing.lua, pcall-geschuetzt, aendert das bestehende Auren-System NICHT (Auren bleiben name-basiert). Sets: db.char.SkuAuras.Sets (Schnappschuss). Transport ueber AceComm-3.0 (Embed in SkuAuras, Prefix SkuAuraSetV1, automatisches Zerteilen) plus AceSerializer (SkuOptions:Serialize/Deserialize). Empfang in db.char.SkuAuras.PendingSets; Annehmen importiert mit Doubletten-Pruefung und ruft</p>
+<p>UpdateAttributesListWithCurrentAuras. Sichtbare Gruppen-Ansage via SendChatMessage, Daten versteckt per Addon-Nachricht. Kein Taint. Spaeter:</p>
+<p>Stufe 3 (accountweite Bibliothek), Stufe 4 (Sprach-Uebersetzer ueber SkuDB.SpellDataTBC). Details im Plan im Heute-Ordner.</p>
+<h2>Standardwert: Fortlaufend-Lautstaerke der Gesundheits-Monitore jetzt 100</h2>
+<p><strong>Einfach:</strong> Bei einer NEUEN Installation ist die Lautstaerke fuer die fortlaufende Ausgabe der Gesundheits-Monitore (Spieler, Gruppe, Raid, Pet) jetzt 100 statt 50 - passend zur Ereignis-Lautstaerke (die war schon 100). Bestehende Profile bleiben unveraendert.</p>
+<p><strong>Technisch:</strong> Default continouslyVolume in SkuCore\aq.lua von 50 auf 100 (4 Stellen: player/party/raid/pet health). Greift nur, wenn der Wert noch nil ist (Neuanlage).</p>
+<h2>Soft-Targeting: "Hardtarget vor Softtarget" wirkt jetzt + kein Kampf-Fehler mehr</h2>
+<p><strong>Einfach:</strong> Die Einstellung "Hardtarget zaehlt vor Softtarget" hatte bisher KEINE Wirkung - ein Zauber ging trotz festem Ziel auf das Soft-Ziel. Behoben: mit festem (hard) Ziel zaehlt jetzt das feste Ziel. Ausserdem verschwindet der "ADDON_ACTION_BLOCKED"-Fehler, der nach Login beim ersten freundlichen Ziel im Kampf auftrat.</p>
+<p><strong>Technisch:</strong> In UpdateSoftTargetingSettings (SkuZOptions/Core.lua) setzten frueher BEIDE Zweige SoftTargetMatchLocked = 0 (Bug) -&gt; bei matchLocked&gt;0 jetzt = 1. Zudem sind SoftTarget-CVars im Kampf gesperrt: die Funktion ueberspringt im Kampf alle SetCVar-Aufrufe (InCombatLockdown-Guard) und zieht sie nach Kampfende (PLAYER_REGEN_ENABLED) einmal nach. Kein Funktionsverlust (CVars sind im Kampf ohnehin eingefroren), kein ADDON_ACTION_BLOCKED mehr.</p>
+<p>Versionsnummer auf 41.05 angehoben.</p>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.06.html">Neuere Version: v41.06</a></li>
+<li><a href="v41.04.html">Aeltere Version: v41.04</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

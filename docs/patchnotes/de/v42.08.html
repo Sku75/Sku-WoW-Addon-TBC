@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v42.08 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v42.08.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v42.08 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v42.09.html">Neuere Version: v42.09</a></li>
+<li><a href="v42.07.html">Aeltere Version: v42.07</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Mit Dank an Naxedim</h2>
+<p>Fast jede Verbesserung dieser Version wurde von den Begleit-Addons angeregt, die Naxedim unter https://naxedim.github.io/sku-addons/ entwickelt und geteilt hat - SkuMoneyReplacement, SkuMailboxReplacement, SkuAuctionHouseReplacement und SkuMinimapScannerFR. Sie wurden hier nativ in Sku uebernommen, mit Skus eigenem Menuesystem. Die Ideen und die funktionierenden Loesungen stammen von Naxedim.</p>
+<h2>Post: Anhaenge, Versand und grosse Betraege</h2>
+<p><strong>Einfach:</strong> Einen Gegenstand an einen Brief anzuhaengen klappt jetzt zuverlaessig - der Gegenstand landet wirklich am Brief und bleibt nie am Cursor haengen. Ein neuer Punkt "Angehaengte Gegenstaende" zeigt, was angehaengt ist; mit ENTER schickst du einen Gegenstand in die Taschen zurueck. Kann ein Brief nicht gesendet werden (z. B. unbekannter Empfaenger), hoerst du jetzt "Senden fehlgeschlagen" mit Grund, und Empfaenger, Betreff und Text bleiben erhalten, damit du nur den Namen korrigieren und erneut senden musst. Du kannst jetzt auch mehr als 999 Gold anhaengen: jede Muenzliste hat oben einen neuen Punkt "Betrag eingeben".</p>
+<p><strong>Technisch:</strong> Der Anhang-Pfad sucht einen freien Sende-Slot und verifiziert mit GetSendMailItem (ClearCursor bei Fehlschlag); der alte OnDropAny-Pfad ist auf Anniversary wirkungslos. MAIL_FAILED wird nun behandelt (Ansage + Entwurf bleibt), der Entwurf wird erst bei MAIL_SEND_SUCCESS geleert. Muenzlisten erhielten einen Editbox-Eintrag; die Anhang-Liste nutzt GetSendMailItem und ClickSendMailItemButton.</p>
+<h2>Textfelder: jedes Zeichen wird beim Tippen und Bearbeiten vorgelesen</h2>
+<p><strong>Einfach:</strong> Wenn du in ein Sku-Textfeld tippst (Post, Auktionssuche, Betraege, Ausruestungsset-Namen usw.), hoerst du jetzt jedes getippte und jedes geloeschte Zeichen. Die Pfeiltasten lesen das Zeichen am Cursor (Strg + Pfeil das ganze Wort), Hoch/Runter den ganzen Text, und Escape sagt "Abgebrochen".</p>
+<p><strong>Technisch:</strong> SkuOptions:EditBoxShow liest jetzt ueber OnChar/OnKeyDown (UTF-8-sicher). Getippte Zeichen werden in die Queue gehaengt, damit schnelles Tippen auf langsamen Stimmen jedes Zeichen spricht; Cursor-Lesen ueberschreibt. Schlichte Pfeile sind frei (Menue-Navigation liegt auf Umschalt-Pfeilen).</p>
+<h2>Auktionshaus: Addon-Tooltip-Infos, keine haengenden Tasten, Item-Namen in jeder Sprache</h2>
+<p><strong>Einfach:</strong> Item-Tooltips im Auktionshaus zeigen jetzt auch Infos, die andere Addons hinzufuegen (z. B. Pawn-Wertungen), als zusaetzliche Sektion "Addon-Infos" am Ende</p>
+<ul>
+<li>ohne Skus eigenen Tooltip zu veraendern. Das Schliessen des Auktionshauses laesst
+</li>
+</ul>
+<p>Enter und Escape nicht mehr haengen (Escape oeffnet wieder das Spielmenue). Im Strategiekauf kannst du den Item-Namen jetzt in deiner eigenen Sprache tippen.</p>
+<p><strong>Technisch:</strong> AuctionBuildItemTooltip bespielt einmal unsichtbar den echten GameTooltip, liest die Zeilen fremder OnTooltipSetItem-Hooks und haengt die Nicht-Basiszeilen als Sektion an (der SkuScanningTooltip wird nicht umgehaengt). Beim Menue-Schliessen werden die Override-Bindings des Kauf-Binders und beider Menue-Buttons mehrfach geleert (nur bei geschlossenem Menue / ausser Kampf). Der Strategiekauf erhielt eine Freitext-Eingabe (Sku liefert nur deutsche/englische Namenstabellen). Komplettscan 250 -&gt; 400 Zeilen pro Frame.</p>
+<h2>Gildenbank: Gold lesen und bewegen</h2>
+<p><strong>Einfach:</strong> Das Gildenbank-Menue hat einen neuen Punkt "Gildenbank-Geld": lies, wie viel Gold in der Bank ist, wie viel du heute noch abheben kannst und wie viel du bei dir traegst, und zahle Gold ein oder hebe es ab, indem du einen Betrag eingibst. Ein- und Auszahlungen werden vorher geprueft (genug Gold, Tageslimit) und per Stimme bestaetigt.</p>
+<p><strong>Technisch:</strong> Das Geld-TODO in Build_GuildBankFrame ist mit rohen Gossip-Eintraegen gefuellt; Ein-/Auszahlung nutzt die GetGuildBankWithdrawMoney-Limitpruefung und sagt die Vorher/Nachher-Differenz an.</p>
+<h2>Handel: das Handelsfenster-Geld wird vorgelesen</h2>
+<p><strong>Einfach:</strong> Beim Handeln sagt Sku jetzt an, wenn der andere Spieler Gold in den Handel legt, es aendert oder zurueckzieht, und liest dein eigenes Angebot vor, waehrend du es einstellst. (Gold aus einem Addon in einen Handel zu LEGEN ist von Blizzard gesperrt, daher nur die Lese-Seite.)</p>
+<p><strong>Technisch:</strong> TRADE_MONEY_CHANGED wird ueber den Dispatcher behandelt; eigenes und Partner-Geld werden gegen die letzten Werte verglichen und mit Partnernamen angesagt.</p>
+<h2>Ressourcen-Scanner: native franzoesische Knotennamen</h2>
+<p><strong>Einfach:</strong> Der Minimap- und Boden-Ressourcenscanner kennt jetzt die franzoesischen Namen von Erzadern, Kraeutern, Gaswolken und Truhen und funktioniert damit nativ auf einem franzoesischen Spielclient.</p>
+<p><strong>Technisch:</strong> frFR-Ressourcennamen wurden zu SkuCore.RessourceTypes ergaenzt und frFR zu Sku.LocsPartly, damit Sku.LocP auf einem frFR-Client frFR bleibt, mit enUS-Fallback.</p>
+<h2>Navigation: ein Flugmeister-Flug bricht eine aktive Route ab</h2>
+<p><strong>Einfach:</strong> Wenn du bei einem Flugmeister einen Flug nimmst, waehrend gerade eine Route verfolgt wird, wird die Route jetzt automatisch abgebrochen - sie beizubehalten ergibt keinen Sinn, waehrend der Taxiflug dich woandershin bringt. Selbst auf einem Reittier zu fliegen oder ein Flugfahrzeug zu steuern bricht die Route nicht ab.</p>
+<p><strong>Technisch:</strong> Der Taxi-Start-Zweig (PLAYER_CONTROL_LOST gefolgt von</p>
+<p>PLAYER_MOUNT_DISPLAY_CHANGED) ruft jetzt SkuNav:CancelNavigationSilent auf, abgesichert mit UnitOnTaxi("player"), damit es nur bei Flugmeister-Fluegen ausloest - Selbstfliegen loest nie PLAYER_CONTROL_LOST aus, und in einem Flugfahrzeug bleibt UnitOnTaxi false.</p>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v42.09.html">Neuere Version: v42.09</a></li>
+<li><a href="v42.07.html">Aeltere Version: v42.07</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

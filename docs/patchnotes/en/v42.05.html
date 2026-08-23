@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v42.05 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v42.05.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v42.05 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v42.06.html">Newer version: v42.06</a></li>
+<li><a href="v42.04.html">Older version: v42.04</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Professions: recipe tooltip via Shift+Arrow-down (all professions)</h2>
+<p><strong>Simple:</strong> With the focus on a recipe in the list, Shift+Arrow-down now reads a tooltip: the result name, the reagents per line as "have slash required", and the finished item's tooltip. It shows the FOCUSED recipe, even if a different one is selected. Works for all normal professions and for Enchanting. The existing tooltip on the selected recipe stays.</p>
+<p><strong>Technical:</strong> Each recipe row carries its real index (button GetID); the tooltip is built from GetTradeSkillReagentInfo / GetCraftReagentInfo and the result item link by that index, without changing the selection.</p>
+<h2>Professions: "materials available" filter (all professions)</h2>
+<p><strong>Simple:</strong> A toggle at the top of the profession window. Enter switches it on/off and says the state. When on, only makeable recipes stay in the list. Default off, remembered per profession and character. Beast training gets no filter (no materials there).</p>
+<p><strong>Technical:</strong> Normal professions via Blizzard's TradeSkillOnlyShowMakeable; Enchanting filters itself via GetCraftInfo.numAvailable.</p>
+<h2>Aura sets: available account-wide</h2>
+<p><strong>Simple:</strong> Created and received aura sets are now available on all characters of the account, no longer just one.</p>
+<p><strong>Technical:</strong> Set storage moved from char to global scope; the login reset of the global SkuAuras table now clears only the debug log and keeps the sets.</p>
+<h2>Aura sets: rename and activate</h2>
+<p><strong>Simple:</strong> A set's submenu now also has Rename and Activate. Activate replaces the current auras with the set's and asks first (Enter confirms, Escape cancels).</p>
+<h2>Aura menu cleaned up</h2>
+<p><strong>Simple:</strong> The dead "import aura sets" entry is gone. The old set management with the three test sets is removed. The share entry is now called "Set management".</p>
+<h2>Auras: crash when creating a new aura fixed</h2>
+<p><strong>Simple:</strong> Creating a new aura threw an error. Fixed.</p>
+<h2>Dual talent specialization: switching specs without reload</h2>
+<p><strong>Simple:</strong> After switching the active spec the talent tree is shown correctly right away; a /reload is no longer needed.</p>
+<p><strong>Technical:</strong> On ACTIVE_TALENT_GROUP_CHANGED the Blizzard talent frame is pulled to the new active group and redrawn before Sku builds its menu.</p>
+<h2>Talents: correct tab names in the inactive specialization</h2>
+<p><strong>Simple:</strong> In the inactive specialization the talent trees showed as</p>
+<p>"tab 201", "281" and similar for some classes instead of their names. The real tree names are shown now.</p>
+<p><strong>Technical:</strong> Name taken from the Blizzard tab button PlayerTalentFrameTab instead of the group-parametrized API value, with a numeric fallback.</p>
+<h2>Trainer: price in the confirmation dialog</h2>
+<p><strong>Simple:</strong> When resetting talent points, buying dual talent specialization, and on other gold confirmations, a "Cost" line with the gold amount now shows at the top.</p>
+<p><strong>Technical:</strong> The StaticPopup reader now includes StaticPopup1MoneyFrame.staticMoney as the first child entry (via SkuGetCoinText).</p>
+<h2>Questie: remote-control chat announcements</h2>
+<p><strong>Simple:</strong> Under Addons there is now Questie (when Questie is loaded). There you can set the chat-announcement channel (Off / Group / Raid / Both) and toggle each individually: quest accepted, abandoned, progress, completed, quest item.</p>
+<p><strong>Technical:</strong> Sets Questie.db.profile.questAnnounce* directly; Questie persists itself.</p>
+<h2>Pet: unspent training points are shown</h2>
+<p><strong>Simple:</strong> The overview page always showed 0 for the pet's training points. It now shows the real number.</p>
+<p><strong>Technical:</strong> GetPetTrainingPoints instead of UnitCharacterPoints("pet") (TBC has no pet talent points).</p>
+<h2>Friends list: "Remove" moved to the bottom</h2>
+<p><strong>Simple:</strong> In a friend's submenu, "Remove" is now the last entry instead of near the top.</p>
+<h2>Monitor: "notice on pet starving" placed correctly</h2>
+<p><strong>Simple:</strong> The entry sat one level too deep. It is now under Monitor, Health and status, Pet, next to Health.</p>
+<h2>Mail: keyring items can be attached</h2>
+<p><strong>Simple:</strong> When composing mail, "add item" now also shows keyring items (e.g. a non-soulbound silver skeleton key) and lets you send them. Soulbound keys stay hidden. Keyring entries are at the end of the list, bag contents first.</p>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v42.06.html">Newer version: v42.06</a></li>
+<li><a href="v42.04.html">Older version: v42.04</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

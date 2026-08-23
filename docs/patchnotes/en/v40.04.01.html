@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v40.04.01 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v40.04.01.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v40.04.01 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v40.05.html">Newer version: v40.05</a></li>
+<li><a href="v40.04.html">Older version: v40.04</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Atlas Loot</h2>
+<ul>
+<li>Atlas Loot is now accessible via Ctrl+Shift+L (when installed). The keybinding can be freely reassigned under Shift+F1, Core, Sku key bindings.
+</li>
+<li>Wishlist with sound: When a wishlist item appears in loot, a sound plays. When the item is received, it is automatically removed from the wishlist.
+</li>
+<li>Wishlist: New menu structure with two submenus "By dungeon" and "By slot". "By dungeon" shows only dungeons that have wishlist items (format: "Count Dungeonname"). "By slot" contains the previous slot-based list.
+</li>
+</ul>
+<h2>Equipment Manager</h2>
+<ul>
+<li>The equipment manager is accessible in the character frame (key C). Equipment sets can be saved, equipped, overwritten, renamed and deleted.
+</li>
+<li>Create macro: New menu entry for each equipment set. Creates a character macro that equips the set when executed. Existing macros are updated.
+</li>
+<li>Localization: All menu entries and status messages of the equipment manager are now localized. On English clients all texts appear in English.
+</li>
+</ul>
+<h2>Target Action Menu (CTRL+T) / Pet Actions</h2>
+<ul>
+<li>Dismiss fixed: "Dismiss" now uses macrotext (/petdismiss) instead of an addon context call. This avoids ADDON_ACTION_FORBIDDEN and reliably sends the pet away temporarily.
+</li>
+<li>Rename fixed: Pet renaming now works via a two-step process. Step 1: Enter name. Step 2: Select "Confirm rename" (macrotext in hardware context). This avoids ADDON_ACTION_FORBIDDEN when saving the name.
+</li>
+<li>Release with safety check: "Release pet" is now called "Permanently release pet" and requires confirmation through a safety dialog. The previous code called PetAbandon directly, which permanently released the pet without warning the user.
+</li>
+</ul>
+<h2>PopUp Detection</h2>
+<ul>
+<li>Delayed second call: StaticPopup_Show now additionally calls CheckFrames with a 0.15 second delay. This ensures popups (e.g. overwrite enchantment, confirm pet rename) are reliably shown in the Sku menu, even when the popup content is not yet fully set on the first call.
+</li>
+</ul>
+<h2>Error Log (ErrorLog)</h2>
+<ul>
+<li>Combat throttling: During combat, a maximum of 5 errors per second are logged. Excess errors are discarded. The BugGrabber bridge is fully paused during combat. This prevents the "insecure scripts exceeded execution limit" error in raids (e.g. Karazhan, AQ40).
+</li>
+<li>Localization: All slash command help and status messages are now localized.
+</li>
+</ul>
+<h2>Localization</h2>
+<ul>
+<li>Approximately 70 new L[] entries in both locale files (AL_*, EQ_*, ERRLOG_*, MOB_*).
+</li>
+<li>Hardcoded German strings in alIntegration.lua, equipmentSets.lua and ErrorLog.lua replaced with L[] calls.
+</li>
+<li>equipmentSets.lua: Broken locale system (SkuLocale) replaced with Sku.L.
+</li>
+</ul>
+<h2>Version Display</h2>
+<ul>
+<li>Sku.toc and SkuDispatcher/Sku.toc updated to title/version v40.04.01.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v40.05.html">Newer version: v40.05</a></li>
+<li><a href="v40.04.html">Older version: v40.04</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

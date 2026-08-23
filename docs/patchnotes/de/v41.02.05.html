@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.02.05 - Patchnotes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Sprache der Patchnotes">
+<ul class="langnav">
+<li><a href="../en/v41.02.05.html" lang="en" hreflang="en">English</a></li>
+<li><span aria-current="page" lang="de">Deutsch</span></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.02.05 - Patchnotes</h1>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.02.06.html">Neuere Version: v41.02.06</a></li>
+<li><a href="v41.02.04.html">Aeltere Version: v41.02.04</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+<main>
+<h2>Begleiter-Aktionsleiste: Automodus repariert</h2>
+<ul>
+<li>Der Automodus (Autocast) fuer Begleiterfaehigkeiten funktioniert jetzt. Die Umschaltung nutzt macrotext mit /click RightButton im Hardware-Event-Kontext. Menue zeigt "Permanent (aktiviert/deaktiviert)" mit Untereintraegen zum Ein- und Ausschalten.
+</li>
+</ul>
+<h2>Rollenabfrage-Fenster zugaenglich gemacht</h2>
+<ul>
+<li>Die Rollenabfrage des Gruppenleiters oeffnet jetzt ein Sku-Menue mit den Optionen "Tank", "Heiler" und "Schaden". Enter auf eine Rolle waehlt sie und bestaetigt sofort. Bereits gewaehlte Rollen werden nicht zurueckgesetzt.
+</li>
+</ul>
+<h2>Equipment-Slot Doppelklick behoben</h2>
+<ul>
+<li>Linksklick auf ausgeruestete Gegenstaende im Charakterfenster nahm den Gegenstand auf und legte ihn sofort wieder ab. Ursache: macrotext und OnAction feuerten beide. Fix: OnAction prueft per GetCursorInfo ob der Gegenstand bereits am Cursor haengt.
+</li>
+</ul>
+<h2>Tastenbelegung: Konflikt-Aufloesung repariert</h2>
+<ul>
+<li>Beim Umbelegen einer Taste auf eine andere Aktion wurden bisher ALLE Belegungen der alten Aktion geloescht (primaer und sekundaer). Jetzt wird nur die konfliktbehaftete Taste entfernt, die andere Belegung bleibt erhalten.
+</li>
+</ul>
+<h2>Sockelfenster: Duplikat-Edelsteine repariert</h2>
+<ul>
+<li>Gleichnamige Edelsteine werden jetzt gruppiert und mit Anzahl angezeigt (z.B. "Gediegener Zirkon 2x"). Nach dem Einsetzen in einen Sockel wird der genutzte Taschenplatz als belegt markiert, sodass der naechste Sockelplatz den verbleibenden Stein korrekt anzeigt und einsetzen kann.
+</li>
+</ul>
+<h2>Wunschliste: Kategorie "Sonstiges" hinzugefuegt</h2>
+<ul>
+<li>Items ohne Equipment-Slot (Tokens, Rezepte, Reittiere) koennen jetzt zur Wunschliste hinzugefuegt werden. Sie erscheinen unter "Nach Slot" in der neuen Kategorie "Sonstiges".
+</li>
+</ul>
+<h2>Tastenbelegungsliste beigelegt</h2>
+<ul>
+<li>Drei Readme-Dateien im Sku-Ordner: Standard-Tastenbelegung fuer blinde Spieler auf Deutsch, Englisch und Franzoesisch.
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Navigation in den Patchnotes">
+<ul class="pagenav">
+<li><a href="index.html">Alle Patchnotes</a></li>
+<li><a href="v41.02.06.html">Neuere Version: v41.02.06</a></li>
+<li><a href="v41.02.04.html">Aeltere Version: v41.02.04</a></li>
+<li><a href="../../index-de.html">Sku Downloadseite</a></li>
+</ul>
+</nav>
+</body>
+</html>

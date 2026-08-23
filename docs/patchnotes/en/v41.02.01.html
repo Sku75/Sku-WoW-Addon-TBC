@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.02.01 - patch notes (Working version)</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v41.02.01.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.02.01 - patch notes (Working version)</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.02.02.html">Newer version: v41.02.02</a></li>
+<li><a href="v41.02.html">Older version: v41.02</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Double Enter trigger fixed</h2>
+<ul>
+<li>The SecureActionButton responded to both key-down AND key-up, causing every Enter press to trigger two actions. Affected all menus: bags, auction house, wishlist.
+</li>
+<li><strong>Technical:</strong> SkuZOptions/Core.lua line 2738. "AnyUp, AnyDown" -&gt; "AnyDown". AnyDown provides hardware event context (important for left-click/items). AnyUp alone does not provide hardware context.
+</li>
+</ul>
+<h2>Stable Master restored</h2>
+<ul>
+<li>Stable master functions from version 40.x adopted. The stable master is usable again.
+</li>
+<li><strong>Technical:</strong> SkuCore/LocalMenu.lua, Build_PetStableFrame copied 1:1 from template 2.x. Uses tFrame:GetScript("OnDragStart")(...) and OnReceiveDrag — works in the Gossip/LocalMenu system via the click=true path.
+</li>
+</ul>
+<h2>Pet Rename fixed</h2>
+<ul>
+<li>Fix: Menu closed before input field (CloseMenu), EditBoxShow instead of EditBoxPasteShow, with delay (C_Timer.After 0.3s).
+</li>
+<li><strong>Technical:</strong> EditBoxPasteShow was for paste input (OnChar, min 10 chars). EditBoxShow is for keyboard input (OnEnterPressed). CloseMenu() clears the Enter override binding so the EditBox can receive Enter.
+</li>
+</ul>
+<h2>secureMacro system for protected functions</h2>
+<ul>
+<li>The SecureActionButton attribute was set with invalid mouse button parameter "ENTER". TBC 2.5.5 does not find type/macrotext attributes for unknown button names (no fallback to default attributes).
+</li>
+<li>Fix: New secureMacro flag on menu entries. When set, additionally sets typeENTER/macrotextENTER attributes. Entries without secureMacro clear these attributes (prevents conflicts with left-click/OnAction).
+</li>
+<li><strong>Technical:</strong> SkuZOptions/templates.lua OnEnter handler. SkuMob/Options.lua: secureMacro=true on PetDismiss and PetRename confirmation entry.
+</li>
+<li>Key insight: macrotext does NOT fire in the Gossip/LocalMenu system (tested with /say, /run, /click — no output). macrotext ONLY fires in the SkuMob/SkuGenericMenuItem system (proven by PetRename/PetDismiss).
+</li>
+</ul>
+<h2>Pet Dismiss / Pet Release localization</h2>
+<ul>
+<li>Labels matched to in-game terms.
+</li>
+<li>secureMacro flag for PetDismiss (/petdismiss in hardware event context).
+</li>
+</ul>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.02.02.html">Newer version: v41.02.02</a></li>
+<li><a href="v41.02.html">Older version: v41.02</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>

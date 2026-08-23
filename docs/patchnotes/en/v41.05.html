@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sku v41.05 - patch notes</title>
+<link rel="stylesheet" href="../../sku.css">
+</head>
+<body>
+<nav aria-label="Patch notes language">
+<ul class="langnav">
+<li><span aria-current="page" lang="en">English</span></li>
+<li><a href="../de/v41.05.html" lang="de" hreflang="de">Deutsch</a></li>
+<li><a href="../fr/index.html" lang="fr" hreflang="fr">Français</a></li>
+</ul>
+</nav>
+<h1>Sku v41.05 - patch notes</h1>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.06.html">Newer version: v41.06</a></li>
+<li><a href="v41.04.html">Older version: v41.04</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+<main>
+<h2>Enemy combat status: in-combat/passive on target (Off / Beep / Announce)</h2>
+<p><strong>Simple:</strong> New item under Accessibility, Misc: "Enemy combat status". "Beep" (default) is the previous behavior - a tone before the enemy name when the enemy is fighting you or your group. "Announce" keeps the tone and also says "in combat" or "passive" before the name. "Off" disables tone and status announcement. The cycle key is unchanged.</p>
+<p><strong>Technical:</strong> In SkuMob\Core.lua (PLAYER_TARGET_CHANGED) the existing InCombatSound now only plays when the mode is not "off"; in "announce" mode "in combat" is prepended to the name like the existing "passive". New DB value</p>
+<p>profile.SkuMob.enemyCombatStatusMode (off/beep/announce, default beep -&gt; existing characters unchanged). Menu in SkuZOptions\Core.lua, locale "im kampf" in deDE/enUS. Pure announcement code, no taint.</p>
+<h2>Stability: crash in the friendly health/heal monitor fixed</h2>
+<p><strong>Simple:</strong> The "fatality" error that could occur when switching to yourself or a pet during combat (with the "factor in incoming heals" option enabled) is fixed. Health announcements keep working normally.</p>
+<p><strong>Technical:</strong> In SkuCore\aq.lua, UNIT_HEALTH read UnitGetIncomingHeals(unit, "player") without a nil guard; with no incoming player heal (the normal case) the subtraction "number minus nil" threw a Lua error. Added "or 0" in four places.</p>
+<h2>Stability: rare menu error (Core.lua:4021) fixed</h2>
+<p><strong>Simple:</strong> A rare error tone when navigating in certain menu states (e.g. an open chat line via Ctrl+Enter, then arrow) is gone.</p>
+<p><strong>Technical:</strong> In SkuOptions:VocalizeMultipartString a debug breadcrumb loop "while tTable.parent.name do" had no nil guard; at a root node without parent -&gt; "attempt to index field 'parent'". Guard added. Debug path only, no behavior change.</p>
+<h2>Follow warning: no false "follow ended" when re-pressing follow</h2>
+<p><strong>Simple:</strong> When you press the follow key again while following (to check it), WoW briefly stops and immediately re-establishes the follow. Previously this falsely said "follow ended". Now it stays with the normal bling in that case; "follow ended" only fires on a REAL break.</p>
+<p><strong>Technical:</strong> The AUTOFOLLOW_END announcement is delayed by 0.4 s and suppressed if an AUTOFOLLOW_BEGIN arrives in between (re-follow). Generation counter against stale timers. In SkuCore\visualAids.lua.</p>
+<h2>Fix: "click sound at beacons" menu was sometimes empty (Navigation, Options)</h2>
+<p><strong>Simple:</strong> The click-sound choice (beep/click) was sometimes empty and not changeable (the on/off toggle still worked). Cause was a load-order race: the click sounds come from the add-on SkuBeaconSoundsets and are only registered on entering the world - but Sku sometimes built the list earlier (empty). Now the list is reliably rebuilt shortly after loading.</p>
+<p><strong>Technical:</strong> Additive deferred rebuild in SkuNav\Options.lua (NOT in the protected SkuNav\Core.lua): on PLAYER_ENTERING_WORLD + C_Timer.After it rebuilds SkuNav.ClickClackSoundsets from BeaconLib:GetClickClackSoundSets() and re-points clickClackSoundset.values. pcall-guarded, no-op if SkuBeaconSoundsets is missing. IMPORTANT: if SkuBeaconSoundsets is disabled/missing the list stays empty (beacon sounds also missing) - a common cause of user "audio problems".</p>
+<h2>Mouse: alternative control ("walk to target") cleanly toggleable + switch in the menu</h2>
+<p><strong>Simple:</strong> Accessibility menu, under Other, now has the switch "Walk to target on interact". Sighted players can turn off the auto-walk-on-click control; it no longer disturbs the normal mouse.</p>
+<p><strong>Technical:</strong> The WorldFrame mouse handler is no longer overwritten via SetScript but installed additively via HookScript EXACTLY ONCE (guard flag, not in the 100ms path) and does nothing while interactMove is off. The switch reuses the existing options node, exposed in Accessibility, Other.</p>
+<h2>Nameplates tied to the camera</h2>
+<p><strong>Simple:</strong> Friendly nameplates are only forced as long as the camera SkuStandard is active. When the camera menu is released you can change or disable the nameplates yourself.</p>
+<p><strong>Technical:</strong> The nameplateShowFriends=1 enforcement in the OnUpdate loop now only applies when cameraOptions.skuStandard ~= false (plain read with full and-chain, combat gate preserved).</p>
+<h2>New: black reading bar (accessibility, for low-vision players)</h2>
+<p><strong>Simple:</strong> A black bar at the top or bottom of the screen shows ONLY the current menu item (not the whole path) being spoken, in large high-contrast text. Only visible while the menu is open. Default OFF. In the new menu item Accessibility, Visual aids, you can toggle it and set font size (up to very large; larger also gets bolder), position (top/bottom) and opacity. Long lines run off to the right - this is intended. Fix: with very large font the bar now grows DOWNWARD (text was cut off at the top); it is no longer clipped at the top screen edge.</p>
+<p><strong>Technical:</strong> New non-secure FontString frame on UIParent (EnableMouse(false), no taint), fed by SkuOptions.currentMenuPosition.name (current line only), event-driven (no OnUpdate, not in the 100ms loop), text set AFTER speech. Font via SetFont with THICKOUTLINE from medium size up (boldness). FontString now anchored TOPLEFT (JustifyV TOP), bar height px+40%+12, so large text grows downward instead of clipping at the top. Logic isolated in SkuCore\visualAids.lua; values per profile under db.profile.SkuCore.visualAids.lineBar. New "Visual aids" item.</p>
+<h2>New: nameplate colors (accessibility, for low-vision players)</h2>
+<p><strong>Simple:</strong> In Accessibility, Visual aids, Nameplate colors you can color nameplates by reaction (enemy, neutral, friend), choose each color yourself, plus mode (only target or all nameplates), size and opacity. Default OFF. A warning explains that the colors are display only.</p>
+<p><strong>Technical:</strong> Own function in SkuCore\visualAids.lua, own opt-in flag (not testMode), event-driven (NAME_PLATE_UNIT_ADDED/REMOVED, PLAYER_TARGET_CHANGED), no C_Timer fan-out, not in the 100ms loop, no TOOLTIP strata. Full nil guards (UnitReaction, 4-level frame check). In the OFF state the events are unregistered.</p>
+<h2>New: mouse finder (accessibility, for low-vision players)</h2>
+<p><strong>Simple:</strong> In Accessibility, Visual aids, Mouse finder, enable it. You now bind the key DIRECTLY in the Mouse finder menu (third item "find mouse", go right, Rebind) - just like in the Sku key bindings, no separate search needed. The plain text hint was removed. On key press a high-contrast marker briefly lights up around the mouse (pulse ring or compass strokes, selectable). Default OFF.</p>
+<p><strong>Technical:</strong> Well-formed key entry SKU_KEY_MOUSEFINDER (no blank entry, hence no login crash), the handler shows a non-interactive overlay (EnableMouse(false)) centered on GetCursorPosition, about a quarter of the screen, auto-hidden via C_Timer.After. No secure button, no taint. The key-binding entry inside the Mouse finder menu is fully encapsulated in SkuCore\visualAids.lua (own capture helper, writes to the same SkuKeyBinds DB as the main menu); SkuCore\Options.lua is left untouched.</p>
+<h2>New: announce number of enemies (accessibility, Other)</h2>
+<p><strong>Simple:</strong> Accessibility, Other now has "Announce number of enemies" with three settings: "elite enemies only", "all enemies" and "off". One choice sets the right combination, so you do not have to find the two separate switches in the hostile monitor.</p>
+<p><strong>Technical:</strong> Convenience selector that couples two existing values (in</p>
+<p>db.char.SkuCore.aq[talentSet].combat.hostile): relativeNumberUnitsInCombat.value and ignoreNonElite. Mapping: elite only -&gt; ignoreNonElite=true, value=3 (enemies attacking you/party); all enemies -&gt; ignoreNonElite=false, value=3; off -&gt; ignoreNonElite=true, value=1 (off). Fix: "all enemies" and "elite only" now ALSO enable the combat monitor master (db.char.SkuCore.aq[talentSet].combat.enabled= true) - previously, on a character whose master was off, "all enemies" produced no announcement. "off" deliberately leaves the master untouched (only the two single options are set), so other combat monitoring is not affected.</p>
+<h2>New: warning when follow breaks (accessibility, Other)</h2>
+<p><strong>Simple:</strong> Accessibility, Other now has "Warning when follow breaks" (on/off, default off). When you follow someone (autofollow) and the follow ends - whether the target moves too far, stops, or you move - you hear "Follow ended". No distance tracking or picking a person is required.</p>
+<p><strong>Technical:</strong> Lean listener on the public events AUTOFOLLOW_BEGIN/END in</p>
+<p>SkuCore\visualAids.lua; announcement only if a follow had begun and the switch (db.profile.SkuCore.followBreakWarn) is on. No taint, no distance tracking, no OnUpdate. Note: warning when SOMEONE ELSE stops following YOU is not possible (no event for it).</p>
+<h2>New: key "next enemy in combat" (Sku key bindings)</h2>
+<p><strong>Simple:</strong> The Sku key bindings (Core menu) have the new action "next enemy in combat". Bind it to a key and you cycle through nearby enemies on key press - even in the middle of combat. Sku announces the new target as usual. Default: no key set.</p>
+<p><strong>Technical:</strong> SECURE implementation via a SecureActionButton (macro /targetenemy) to which the chosen key is bound with SetOverrideBindingClick. This makes the in- combat target switch allowed (no ADDON_ACTION_BLOCKED, no taint).</p>
+<p>SKU_KEY_NEXTCOMBATENEMY -&gt; SkuCore:UpdateNextCombatEnemyBinding (in SkuCore\visualAids.lua); the binding is deferred during combat and reapplied via PLAYER_REGEN_ENABLED. Note: /targetenemy cycles nearby attackable enemies, not exactly filtered to those fighting you - an exactly filtered variant would be a larger, later addition.</p>
+<h2>New: create aura sets and share them in the group (stage 1+2)</h2>
+<p><strong>Simple:</strong> The Auras menu now has "Sets (share)". You can create a named set from your current auras (same name exists -&gt; a number is appended), list and delete sets. A set can be "share with group": your group sees "&lt;you&gt; shares aura set &lt;name&gt;" and at the end "sharing complete". Anyone with Sku in the group receives it under "received sets" and can accept it there (with duplicate-name check) or discard it. Note: in this stage only between the same client language; the language translator comes later.</p>
+<p><strong>Technical:</strong> Isolated in NEW file SkuAuras\sharing.lua, pcall-guarded, does NOT change the existing aura system (auras stay name-based). Sets: db.char.SkuAuras.Sets (snapshot). Transport via AceComm-3.0 (embedded into SkuAuras, prefix SkuAuraSetV1, automatic chunking) plus AceSerializer (SkuOptions:Serialize/ Deserialize). Receive into db.char.SkuAuras.PendingSets; accept imports with duplicate check and calls UpdateAttributesListWithCurrentAuras. Visible group announce via SendChatMessage, data hidden via addon message. No taint. Later: stage 3 (account-wide library), stage 4 (language translator via</p>
+<p>SkuDB.SpellDataTBC). Details in the plan in the Heute folder.</p>
+<h2>Default value: continuous volume of health monitors is now 100</h2>
+<p><strong>Simple:</strong> On a NEW installation the volume for the continuous output of the health monitors (player, party, raid, pet) is now 100 instead of 50 - matching the event volume (which was already 100). Existing profiles stay unchanged.</p>
+<p><strong>Technical:</strong> Default continouslyVolume in SkuCore\aq.lua changed from 50 to 100 (4 places: player/party/raid/pet health). Only applies while the value is still nil (fresh setup).</p>
+<h2>Soft targeting: "hard target over soft target" now works + no more combat error</h2>
+<p><strong>Simple:</strong> The setting "hard target counts before soft target" had NO effect before - a spell went to the soft target despite having a hard target. Fixed: with a hard target, the hard target now counts. Also the "ADDON_ACTION_BLOCKED" error that appeared after login on the first friendly target in combat is gone.</p>
+<p><strong>Technical:</strong> In UpdateSoftTargetingSettings (SkuZOptions/Core.lua) BOTH branches used to set SoftTargetMatchLocked = 0 (bug) -&gt; now 1 when matchLocked&gt;0. Also the SoftTarget CVars are protected in combat: the function now skips all SetCVar calls in combat (InCombatLockdown guard) and re-applies once after combat (PLAYER_REGEN_ENABLED). No loss of function (CVars are frozen in combat anyway), no more ADDON_ACTION_BLOCKED.</p>
+<p>Version number raised to 41.05.</p>
+</main>
+<hr>
+<nav aria-label="Patch note navigation">
+<ul class="pagenav">
+<li><a href="index.html">All patch notes</a></li>
+<li><a href="v41.06.html">Newer version: v41.06</a></li>
+<li><a href="v41.04.html">Older version: v41.04</a></li>
+<li><a href="../../index.html">Sku download page</a></li>
+</ul>
+</nav>
+</body>
+</html>
