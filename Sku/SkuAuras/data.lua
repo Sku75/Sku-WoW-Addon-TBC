@@ -81,7 +81,12 @@ end
 -- The SET attributes need none of this - their live lists carry both forms as
 -- keys, so contains/containsNot answer correctly by construction. Only the
 -- scalar (CATEGORY) lane comes through here.
-local tNegatingOperators = {isNot = true, containsNot = true,}
+-- [v43.1] Promoted to a field: the evaluate loop in Core.lua and the two places
+-- that NAME a condition (SkuAuras:BuildAuraName, the builder's condition rows)
+-- all need the same answer to "is this operator a negation?", and three copies
+-- of a two-entry list is how they drift apart.
+SkuAuras.negatingOperators = {isNot = true, containsNot = true,}
+local tNegatingOperators = SkuAuras.negatingOperators
 local function MatchAnyForm(aOperator, aValue, aFormA, aFormB)
    local tOp = SkuAuras.Operators[aOperator]
    if not tOp then
@@ -1953,7 +1958,7 @@ SkuAuras.attributes = {
    buffListTargetDuration = {
       tooltip = L["The remaining duration of the buff from the buff list target (L) condition"],
       friendlyName = L["buff list target remaining duration"],
-      type = "ORDINAL",
+      type = "THRESHOLD",
       evaluate = function(self, aEventData, aOperator, aValue)
          if aEventData.buffListTargetDuration then
             local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.buffListTargetDuration), tonumber(aValue))
@@ -1967,7 +1972,7 @@ SkuAuras.attributes = {
    debuffListTargetDuration = {
       tooltip = L["The remaining duration of the debuff from the debuff list target (L) condition"],
       friendlyName = L["Debuff list target remaining duration"],
-      type = "ORDINAL",
+      type = "THRESHOLD",
       evaluate = function(self, aEventData, aOperator, aValue)
          if aEventData.debuffListTargetDuration then
             local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.debuffListTargetDuration), tonumber(aValue))
@@ -1981,7 +1986,7 @@ SkuAuras.attributes = {
    buffListPlayerDuration = {
       tooltip = L["The remaining duration of the buff from the your buff list (L) condition"],
       friendlyName = L["Your buff list remaining duration"],
-      type = "ORDINAL",
+      type = "THRESHOLD",
       evaluate = function(self, aEventData, aOperator, aValue)
          if aEventData.buffListPlayerDuration then
             local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.buffListPlayerDuration), tonumber(aValue))
@@ -1995,7 +2000,7 @@ SkuAuras.attributes = {
    debuffListPlayerDuration = {
       tooltip = L["The remaining duration of the debuff from the your debuff list (L) condition"],
       friendlyName = L["Your debuff list remaining duration"],
-      type = "ORDINAL",
+      type = "THRESHOLD",
       evaluate = function(self, aEventData, aOperator, aValue)
          if aEventData.debuffListPlayerDuration then
             local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.debuffListPlayerDuration), tonumber(aValue))
@@ -2031,7 +2036,7 @@ SkuAuras.attributes = {
    weaponEnchantMainHandDuration = {
       tooltip = L["AURA_WeMHDurTip"],
       friendlyName = L["AURA_WeMHDur"],
-      type = "ORDINAL",
+      type = "THRESHOLD",
       evaluate = function(self, aEventData, aOperator, aValue)
          if aEventData.weaponEnchantMainHandDuration then
             local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.weaponEnchantMainHandDuration), tonumber(aValue))
@@ -2045,7 +2050,7 @@ SkuAuras.attributes = {
    weaponEnchantOffHandDuration = {
       tooltip = L["AURA_WeOHDurTip"],
       friendlyName = L["AURA_WeOHDur"],
-      type = "ORDINAL",
+      type = "THRESHOLD",
       evaluate = function(self, aEventData, aOperator, aValue)
          if aEventData.weaponEnchantOffHandDuration then
             local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.weaponEnchantOffHandDuration), tonumber(aValue))
@@ -2411,9 +2416,40 @@ SkuAuras.operatorsForAttributeType = {
    ORDINAL = operatorsSubset("is", "isNot", "bigger", "smaller"),
    ---Supports checking if contains a given element (e.g. source, buff list)
    SET = operatorsSubset("contains", "containsNot"),
+   -- [v43.1] A CONTINUOUSLY falling numeric reading: the remaining duration of a
+   -- buff, a debuff or a weapon enchant. Same comparisons as ORDINAL minus the
+   -- two that are useless on it:
+   --   "gleich 8"    - the reading is a float that is sampled on events, so it
+   --                   is essentially never exactly 8; the condition would
+   --                   simply never fire, and a condition that cannot fire is
+   --                   worse than a missing one because it looks right.
+   --   "ungleich 8"  - the same fact inverted: always true, so it is not a
+   --                   condition at all.
+   -- Only a THRESHOLD ("weniger als 5 Sekunden übrig") says anything about a
+   -- value that is falling past you. Stored auras are untouched: the operators
+   -- still exist and still evaluate, they are only gone from the builder.
+   THRESHOLD = operatorsSubset("bigger", "smaller"),
 }
 
 ------------------------------------------------------------------------------------------------------------------
+-- [v43.1] Only the NAME lookup is left of this table. The aura builder no
+-- longer offers a type choice: every aura it creates is "if", and the type step
+-- is gone from the flow.
+--
+-- "ifNot" stays here, and its branch stays in the evaluator, so a legacy or
+-- imported aura keeps working - but nothing can create a new one. Why it went:
+--   * it was expressible as "if" throughout. One condition is the negating
+--     operator (CATEGORY isNot, SET containsNot, BINARY has two values, ORDINAL
+--     isNot/bigger/smaller); several conditions compose through the BINARY
+--     skuAura<Name> attribute ("if skuAuraX is false").
+--   * measured 2026-08-23: 0 of the 22 auras in the live account and 0 of the
+--     19 shipped default-set auras were ifNot; not one negating operator was in
+--     use anywhere either.
+--   * it was already degraded. The evaluation loop BREAKS on the first false
+--     condition, and for ifNot that break IS the fire path - so the five
+--     output-feeding assignments after it never run for any attribute past the
+--     break, and an ifNot aura that announces a buff name can announce nothing.
+--     tAuraWatchesEvent (Core.lua) also reasons affirmatively by construction.
 SkuAuras.Types = {
    ["if"] = {
       tooltip = L["Wenn die Bedingungen dieser Aura zutreffen"],

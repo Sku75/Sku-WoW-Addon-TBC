@@ -2227,6 +2227,54 @@ SlashCmdList["SKUAURACACHE"] = function(aMsg)
 	print(string.format("|cff80c0ffSkuAuraCache|r enabled=%s verify=%s", tostring(c.enabled), tostring(c.verify)))
 end
 
+-- [v43.1] /skuauratrace <text> -- "why did my aura not fire?"
+--
+-- The evaluate loop BREAKS on the first false condition and says nothing, which
+-- is correct for the hot path (hundreds of events a second, dozens of auras)
+-- and useless when one specific aura stays silent and the user cannot see why.
+--
+-- Tracing is scoped to ONE aura by a case-insensitive substring of its name.
+-- That is what makes it affordable: an unconditional trace would write a line
+-- per aura per event and blow the whole 12000-line ring away inside a second,
+-- even behind the verbose gate (dprintv's ARGUMENTS are still built by the
+-- caller). With a name filter the cost when idle is one string compare on the
+-- aura already in hand, and only when something is being traced at all.
+--
+-- Reads the SkuDebugLog ring afterwards with
+--     py -3 dev/rework-docs/_dbgtail.py 200 "auratrace"
+SkuAuras.traceAura = nil
+SLASH_SKUAURATRACE1 = "/skuauratrace"
+SlashCmdList["SKUAURATRACE"] = function(aMsg)
+	aMsg = (aMsg or ""):match("^%s*(.-)%s*$")
+	if aMsg == "" or aMsg:lower() == "off" then
+		SkuAuras.traceAura = nil
+		print("|cff80c0ffSkuAuraTrace|r off")
+		return
+	end
+	SkuAuras.traceAura = aMsg:lower()
+	Sku.debug.log = true
+	print("|cff80c0ffSkuAuraTrace|r tracing auras whose name contains: "..aMsg)
+	print("|cff80c0ffSkuAuraTrace|r trigger it now, then /reload and read the log")
+end
+
+-- [v43.1] One traced condition, as one log line (see /skuauratrace). Prints the
+-- stored condition AND the live value it was compared against, because "spellName
+-- is Mark of the Wild -> false" on its own does not say whether the event carried
+-- a different spell or no spell at all.
+local function tAuraTraceCondition(aAuraName, aAttName, aOperator, aValue, aResult, aEvaluateData)
+	local tLive = aEvaluateData[aAttName]
+	if type(tLive) == "table" then
+		local tParts = {}
+		for _, v in pairs(tLive) do
+			tParts[#tParts + 1] = tostring(v)
+		end
+		tLive = "{"..table.concat(tParts, ",").."}"
+	end
+	dprint(string.format("auratrace %s: %s %s %s -> %s   (live: %s)",
+		tostring(aAuraName), tostring(aAttName), tostring(aOperator), tostring(aValue),
+		tostring(aResult == true), tostring(tLive)))
+end
+
 -- aRequiredEventValue: when set, only auras that affirmatively watch that event
 -- value are evaluated (see tAuraWatchesEvent). Everything else is left completely
 -- untouched -- not evaluated, `used` not reset -- i.e. exactly as if this pass had
@@ -2648,6 +2696,13 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 		end
 		if tSkipAura ~= true and (tSpecificAuraToTestIndex == nil or (tSpecificAuraToTestIndex ~= nil and tSpecificAuraToTestIndex == tAuraName)) then
 			if tAuraData.enabled == true then
+				-- [v43.1] /skuauratrace: is THIS aura the one being explained?
+				-- Resolved once per aura per event, and only while a trace name is
+				-- set at all - the name lower/find must not run on the hot path.
+				local tTrace = false
+				if SkuAuras.traceAura ~= nil then
+					tTrace = sfind(string.lower(tAuraName), SkuAuras.traceAura, 1, true) ~= nil
+				end
 				tEvaluateData.buffListTarget = toBuffListTarget
 				tEvaluateData.debuffListTarget = toDebuffListTarget
 				tEvaluateData.buffListPlayer = toBuffListPlayer
@@ -2793,17 +2848,61 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 
 					tHasApplicableAttributes = true
 					if #tAttributeValue > 1 then
-						local tLocalResult = false
+						-- [v43.1] The several values of ONE condition are a SET, and the
+						-- operator is applied to the whole set (De Morgan):
+						--   affirmative operator -> holds when the attribute matches ANY
+						--     of them  ("zauber name gleich Eisbarriere ODER Manaschild")
+						--   negating operator    -> holds only when it matches NONE
+						--     ("zauber name ungleich Frostblitz UND Feuerball")
+						-- Before this the group was OR-ed unconditionally, which made a
+						-- negating group a TAUTOLOGY on a scalar attribute: a class
+						-- cannot be both warrior and mage, so "class isNot warrior OR
+						-- class isNot mage" was true for every class on earth. The
+						-- multi-select value lists of the v43.1 builder are what make
+						-- such a group easy to author, so the reading had to be pinned
+						-- down before anyone could hit it. Measured 2026-08-23: no
+						-- stored aura used a negating operator at all, so nothing that
+						-- exists changes meaning.
+						-- The condition NAME says which reading applies - "oder" between
+						-- the values for an affirmative group, "und" for a negating one
+						-- (SkuAuras:BuildAuraName and the builder's condition rows) - so
+						-- the difference is audible, not just documented.
+						--
+						-- The group's operator is read off entry 1, as the threshold
+						-- bookkeeping below already did. The builder writes one operator
+						-- per group, so that is exact; a hand-edited SavedVariables file
+						-- that MIXES operators inside one group gets the first entry's
+						-- reading applied to all of them. /skucheck auras reports such a
+						-- group as pending.
+						local tNegatingGroup = SkuAuras.negatingOperators[tAttributeValue[1][1]] == true
+						local tLocalResult = tNegatingGroup
 						for tInd, tLocalValue in pairs(tAttributeValue) do
-							local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2], tRawEventData)
-							if tResult == true then
+							local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2], tRawEventData) == true
+							if tNegatingGroup == true then
+								if tResult ~= true then
+									tLocalResult = false
+									break
+								end
+							elseif tResult == true then
 								tLocalResult = true
-								if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
-									tHasCountCondition_NumCountConditionsTrue = tHasCountCondition_NumCountConditionsTrue + 1
-								else
-									tHasCountCondition_NumConditionsWoCountIsTrue = tHasCountCondition_NumConditionsWoCountIsTrue + 1
-								end							
+								break
 							end
+						end
+						-- One tally per CONDITION, matching the census taken above and the
+						-- single-value branch below. It used to be incremented once per
+						-- matching VALUE, so a two-value group that matched twice counted
+						-- as two conditions and could push the once-gate formula over its
+						-- own total.
+						if tLocalResult == true then
+							if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
+								tHasCountCondition_NumCountConditionsTrue = tHasCountCondition_NumCountConditionsTrue + 1
+							else
+								tHasCountCondition_NumConditionsWoCountIsTrue = tHasCountCondition_NumConditionsWoCountIsTrue + 1
+							end
+						end
+						if tTrace == true then
+							tAuraTraceCondition(tAuraName, tAttributeName, tAttributeValue[1][1],
+								"("..#tAttributeValue.." Werte)", tLocalResult, tEvaluateData)
 						end
 						if tLocalResult ~= true then
 							tOverallResult = false
@@ -2826,6 +2925,10 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 							end
 						end
 
+						if tTrace == true then
+							tAuraTraceCondition(tAuraName, tAttributeName, tAttributeValue[1][1],
+								tAttributeValue[1][2], tResult, tEvaluateData)
+						end
 						if tResult ~= true then
 							tOverallResult = false
 							break
@@ -2861,6 +2964,12 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 				tEvaluateData.buffListTarget = tSingleBuffListTargetValue
 				tEvaluateData.debuffListTarget = tSingleDebuffListTargetValue
 				tEvaluateData.spellNameOnCd = tSpellNameOnCdValue
+
+				if tTrace == true then
+					dprint(string.format("auratrace VERDICT %s: event %s  allConditionsTrue %s  hadConditions %s  alreadyUsed %s",
+						tostring(tAuraName), tostring(tEvaluateData.event), tostring(tOverallResult),
+						tostring(tHasApplicableAttributes), tostring(tAuraData.used)))
+				end
 
 				--overall result
 				if tAuraData.type == "if" then
@@ -2938,8 +3047,19 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 
 					end		
 				else
+					-- [v43.1] LEGACY READ PATH: type "ifNot". The builder cannot create
+					-- one any more (see the note on SkuAuras.Types in data.lua); this
+					-- branch is kept so an aura imported or shared from an older client
+					-- keeps firing exactly as it did. Do not extend it, and do not port
+					-- the once-gate / threshold bookkeeping of the "if" branch into it -
+					-- the point is that it stays frozen.
+					--
+					-- Note what "fires" means here: tOverallResult == false is set by the
+					-- BREAK on the first failing condition, so the output-feeding
+					-- assignments for every attribute after that break did not run. That
+					-- is a defect of the type, not of this branch.
 					if tOverallResult == false and tHasApplicableAttributes == true then
-						if ((tAuraData.used ~= true and SkuAuras.actions[tAuraData.actions[1]].single == true) or SkuAuras.actions[tAuraData.actions[1]].single ~= true) then					
+						if ((tAuraData.used ~= true and SkuAuras.actions[tAuraData.actions[1]].single == true) or SkuAuras.actions[tAuraData.actions[1]].single ~= true) then
 							--set aura to used
 							tAuraData.used = true
 
