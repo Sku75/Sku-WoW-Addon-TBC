@@ -5692,6 +5692,62 @@ local function tSkuCheckMenu()
 		end
 	end
 
+	-- [v43.1] Stored data that cannot be read must not be able to stop a module
+	-- from loading. SkuStringToTable used to be assert(loadstring(s))(), so a
+	-- truncated AuctionDBHistory -- which the old SkuTableToString could produce,
+	-- because it discarded coroutine.resume's result and treated a coroutine that
+	-- had DIED as one that had FINISHED -- threw inside AuctionHouse's OnEnable.
+	-- The failure landed a whole session away from the scan that caused it. Bad
+	-- stored data is an empty history, not a load error.
+	if SkuStringToTable then
+		tChecked = tChecked + 1
+		local tBad = {
+			"return {[1] = {[1] = \"abgeschnitten\",",   -- truncated mid-table
+			"return {[1] = ",                            -- truncated mid-value
+			"kein lua",                                  -- not Lua at all
+		}
+		for x = 1, #tBad do
+			local tOk, tRes = pcall(SkuStringToTable, tBad[x])
+			if not tOk or tRes ~= nil then
+				tViolations = tViolations + 1
+				dprint("skucheck", "VIOLATION data: SkuStringToTable -- kaputter String", x,
+					"ergab ok:", tostring(tOk), "Wert:", tostring(tRes),
+					"-- erwartet: nil ohne Fehler, sonst blockieren Altdaten das Laden eines Moduls")
+			end
+		end
+		-- ... und gültige Daten müssen weiterhin durchkommen
+		tChecked = tChecked + 1
+		local tOkGood, tGood = pcall(SkuStringToTable, "return {[1] = \"a\", [2] = \"b\",}")
+		if not tOkGood or type(tGood) ~= "table" or tGood[2] ~= "b" then
+			tViolations = tViolations + 1
+			dprint("skucheck", "VIOLATION data: SkuStringToTable -- gültige Daten kamen nicht durch:", tostring(tGood))
+		end
+	end
+
+	-- [v43.1] Der Schnellscan-Lock der Minimap wird nur am Ende eines C_Timer-
+	-- Tails gelöst. Erreicht der Tail sein Ende nicht, war der Lock bisher für den
+	-- Rest der Sitzung gesetzt: die passive Ressourcenansage schwieg, ohne Fehler
+	-- und ohne Meldung, und kein Stop-Pfad kam mehr heraus (MinimapStopScan setzte
+	-- nur IsMMScanning zurück). Ein Stop muss ALLE Locks lösen -- sonst ist es
+	-- kein Stop. Zustand vorher sichern, damit die Probe keinen laufenden Scan
+	-- abwürgt.
+	if SkuCore and SkuCore.MinimapScanner and SkuCore.MinimapScanner.MinimapStopScan then
+		local tMS = SkuCore.MinimapScanner
+		local tSaved = {tMS.IsMMScanning, tMS.MinimapScanFastRunning, tMS.MinimapScanFastStartedAt}
+		tChecked = tChecked + 1
+		tMS.IsMMScanning = true
+		tMS.MinimapScanFastRunning = true
+		tMS.MinimapScanFastStartedAt = GetTime()
+		pcall(tMS.MinimapStopScan, tMS)
+		if tMS.MinimapScanFastRunning == true or tMS.IsMMScanning == true then
+			tViolations = tViolations + 1
+			dprint("skucheck", "VIOLATION scanner: MinimapStopScan ließ einen Lock stehen --",
+				"IsMMScanning", tostring(tMS.IsMMScanning), "MinimapScanFastRunning", tostring(tMS.MinimapScanFastRunning),
+				"-- ein stehender Lock schaltet die passive Ressourcenansage dauerhaft stumm")
+		end
+		tMS.IsMMScanning, tMS.MinimapScanFastRunning, tMS.MinimapScanFastStartedAt = tSaved[1], tSaved[2], tSaved[3]
+	end
+
 	-- Invariant (from the v43.0 path-walk regression): a path walk must never close
 	-- the menu on a node that has a BuildChildren -- that node is a LEVEL, and closing
 	-- the menu also closes every open interact window (the flightmaster's own gossip
