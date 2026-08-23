@@ -4151,6 +4151,13 @@ function SkuOptions:ApplyFilter(aFilterstring)
 
 		local tChildrenFiltered = {}
 		local tFilterEntry = SkuOptions:TableCopy(tOldChildren[1])
+		-- [v43.0] The copy carries only the node's OWN fields now: a node
+		-- inherits the template through its metatable rather than owning a copy
+		-- of it (see MenuMT.__add). Without this the filter entry would come out
+		-- with no OnEnter, no OnPostSelect and no key handlers at all - a dead
+		-- first row in every filtered list. This is the only place in the addon
+		-- that copies a menu node.
+		setmetatable(tFilterEntry, getmetatable(tOldChildren[1]))
 		tFilterEntry.name = L["Filter"]..";"..aFilterstring
 		table.insert(tChildrenFiltered, tFilterEntry)
 		for x = 1, #tOldChildren do
@@ -4692,6 +4699,13 @@ function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString)
 			tPos.buildChildrenFailed = tostring(tErr)
 			dprint("BuildChildren FAILED for menu node", tostring(tPos.name), "->", tostring(tErr),
 				"| children now", tPos.children and #tPos.children or 0)
+			-- [v43.0] A builder that died after its first InjectMenuItems leaves a
+			-- truncated level that this very guard then refuses to rebuild, so the
+			-- next keypress serves the partial list as if it were complete. If the
+			-- builder can continue where it stopped, do that on the next frame -
+			-- the script budget is per execution (see ContinueInterruptedBuild).
+			tPos.buildChildrenIncomplete = true
+			SkuOptions:ContinueInterruptedBuild(tPos)
 		end
 	end
 

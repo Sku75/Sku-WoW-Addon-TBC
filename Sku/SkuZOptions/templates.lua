@@ -7,12 +7,52 @@ local MENU_MENU = 1
 local MENU_DROPDOWN = 2
 local MENU_DROPDOWN_MULTI = 3
 
-SkuOptions.MenuMT = {
-	__add = function(thisTable, newTable)
+-- [v43.0] One shared metatable per template. A menu node INHERITS the template's
+-- fields through __index instead of getting a copy of all 28 of them, which is
+-- what makes a node cheap to create - see the note on __add below.
+--
+-- Weak keys: a template is a long-lived global today, but nothing here should be
+-- the reason one can never be collected.
+local tNodeMetatables = setmetatable({}, {__mode = "k"})
+local function tNodeMetatable(aTemplate)
+	local tMT = tNodeMetatables[aTemplate]
+	if not tMT then
+		-- __tostring is carried over so tostring(node) still dumps a node the way
+		-- tostring(template) always has. Resolved at call time, not at load time:
+		-- SkuOptions.MenuMT does not exist yet while this function is being
+		-- defined.
+		tMT = {__index = aTemplate, __tostring = SkuOptions.MenuMT.__tostring}
+		tNodeMetatables[aTemplate] = tMT
+	end
+	return tMT
+end
 
-		-- Widget-safe deep copy, consolidated to SkuUtil (W6-B #3).
-		local seen = {}
-		local tTable = SkuUtil.TableCopy(newTable, true, seen)
+SkuOptions.MenuMT = {
+	-- [v43.0] A node is a nearly EMPTY table pointed at its template, not a deep
+	-- copy of it. This runs once per menu entry, and the aura spell lists build
+	-- 27,057 of them in one go: on a hardcore realm the old version did not
+	-- merely lag, it hit the server's script execution limit and the list never
+	-- opened at all (log 2026-08-23, "BuildChildren FAILED ... script ran too
+	-- long | children now 11389" - it died about 40% of the way in, at a
+	-- different point every time).
+	--
+	-- What the copy used to cost per node: a `seen` table, a pairs() walk of all
+	-- 28 template fields with a type() call and three key comparisons each, 28
+	-- table stores, and a recursive TableCopy of the `children` table. What it
+	-- costs now: two table allocations and one store. Everything the node does
+	-- not override is read straight off the template.
+	--
+	-- `children` MUST stay a fresh table per node - it is the one mutable
+	-- table-valued field in the template, and inheriting it would give every menu
+	-- entry in the addon the same children list.
+	--
+	-- Writing a field on a node still shadows the template as it always did; the
+	-- one thing that changes is that pairs(node) now sees only what the node
+	-- itself set. Audited: nothing in the addon iterates a node's own fields (the
+	-- __tostring dump aside), and the single place that COPIES a node
+	-- (SkuOptions:ApplyFilter, the filter entry) re-attaches the metatable.
+	__add = function(thisTable, newTable)
+		local tTable = setmetatable({children = {}}, tNodeMetatable(newTable))
 		table.insert(thisTable, tTable)
 		return thisTable
 	end,
@@ -74,6 +114,69 @@ function SkuOptions:RebuildNodeChildren(aNode, aKeepSelectTarget)
 			aNode.children[x].selectTarget = aNode.selectTarget
 		end
 	end
+end
+
+-- [v43.0] CONTINUE a level whose BuildChildren was cut off mid-way.
+--
+-- A hardcore realm kills an addon script that runs too long, and the aura spell
+-- lists are 27,000 entries: the build died partway and left a TRUNCATED level
+-- behind (log 2026-08-23, "children now 6869"). The guard at the vocalize call
+-- site then saw a non-empty children list and never rebuilt it, so the second
+-- arrow-right silently handed the user a list missing twenty thousand spells -
+-- which reads as real data, not as a failure. That is the bug this fixes; the
+-- node change already made the whole thing three times cheaper, this is about
+-- what happens when it STILL does not fit.
+--
+-- The script budget is per execution, so the next frame gets a fresh one: the
+-- continuation runs on a zero-delay timer and appends where the last pass
+-- stopped, exactly the way the route data is sliced across frames. The user
+-- hears the first entries immediately and the rest arrives behind them.
+--
+-- Only a builder that declares `resumableBuild` is re-entered. A normal
+-- BuildChildren APPENDS, so calling it again on a level that already has
+-- children would duplicate every entry - which is precisely why the guard at
+-- the call site exists. A resumable builder is one that keeps its own cursor and
+-- continues from it (see tBuildValueToggleList in SkuAuras/Options.lua).
+local BUILD_CONTINUE_MAX = 40
+function SkuOptions:ContinueInterruptedBuild(aNode)
+	if type(aNode) ~= "table" or aNode.resumableBuild ~= true or not aNode.BuildChildren then
+		return
+	end
+	if aNode.buildContinuePending == true then
+		return
+	end
+	aNode.buildContinuePending = true
+	local tPasses = 0
+	local tStep
+	tStep = function()
+		aNode.buildContinuePending = nil
+		-- Left the level, or something rebuilt it from scratch: drop the cursor
+		-- and stop. Continuing into a level nobody is standing in would fill it
+		-- for a user who has moved on, on a client that just proved it has no
+		-- budget to spare.
+		if aNode.buildChildrenIncomplete ~= true then
+			return
+		end
+		local tBefore = aNode.children and #aNode.children or 0
+		local tOk, tErr = pcall(function() aNode:BuildChildren(aNode) end)
+		local tAfter = aNode.children and #aNode.children or 0
+		tPasses = tPasses + 1
+		if aNode.buildChildrenIncomplete ~= true then
+			dprint("BuildChildren continued to completion for", tostring(aNode.name), "after", tPasses, "passes,", tAfter, "entries")
+			return
+		end
+		-- No progress means it is not a budget problem at all (a builder that
+		-- throws on the same entry every time), and repeating it forever would
+		-- pin the client. Same for a runaway count.
+		if tAfter <= tBefore or tPasses >= BUILD_CONTINUE_MAX then
+			dprint("BuildChildren continuation GAVE UP for", tostring(aNode.name), "-- pass", tPasses,
+				"went from", tBefore, "to", tAfter, "entries; last error", tostring(tErr))
+			return
+		end
+		aNode.buildContinuePending = true
+		C_Timer.After(0, tStep)
+	end
+	C_Timer.After(0, tStep)
 end
 
 local tPrevErrorUtterance
