@@ -58,6 +58,44 @@ but never writes them:
 Same structure in each: a `Simple:` paragraph for players and a `Technical:`
 one for whoever maintains the code next.
 
+## Test builds for testers
+
+Sometimes you want a build in a tester's hands without shipping it to everyone.
+
+    installerelease.ps1 -Dev -Version 43.0
+
+That packs the addon exactly as it stands on disk right now — work in progress
+included, that is the point — and puts it on GitHub as a **pre-release** under
+the permanent tag `dev`. Nothing else moves: no installer rebuild, no version
+pin, no download-page links, no commit, no Discord.
+
+Normal users never see it. Both ways Sku offers an update — the installer's
+check and the download button — resolve through GitHub's "Latest" badge, and a
+pre-release never carries that badge. The stable release stays the one everyone
+gets.
+
+The tester link is always the same one, so you can send it once and re-use it
+for every test build:
+
+    https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/dev/Sku-dev.zip
+
+Testers close WoW, unpack that zip into `Interface\AddOns` letting it replace
+the existing `Sku` folder, and start the game. To go back to the stable version
+they just run the normal Sku installer again.
+
+The release notes on that page are written for testers (English and German) and
+are rewritten on every run, so they always name the version that is actually up
+there, which commit it came from, and whether it carried uncommitted work.
+
+Take it down again with:
+
+    gh release delete dev --repo Sku75/Sku-WoW-Addon-TBC --cleanup-tag
+
+Two things worth knowing. It bumps `Sku\Sku.toc` to the given version in place,
+same as a real release does. And it does **not** need a clean working tree — but
+whatever is uncommitted goes into the zip, and the script lists those files
+before it builds so it is never a surprise.
+
 ## The moving parts
 
 - **release.ps1** — the conductor; it runs everything below.
@@ -103,6 +141,7 @@ one for whoever maintains the code next.
 - Preview anything safely: add `-DryRun`
 - Stay silent (skip Discord): add `-SkipDiscord`
 - Publish without the Latest badge: add `-Prerelease`
+- Test build for testers only: `-Dev -Version 43.0`
 - Login-tool update: `-PublishLoginTool -LoginToolVersion 2.1`
 - SkuMapper update: `-PublishSkuMapper -SkuMapperVersion 4.9`
 - One-time fixups: `-BackfillLatestAssets`

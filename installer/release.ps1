@@ -24,6 +24,23 @@ release.ps1 - one-command Sku release pipeline.
          for (see the webhooks file below) - one line per language, each with
          that language's own download and patch-notes links.
 
+  TEST BUILD FOR TESTERS (zip only, invisible to normal users):
+    installer
+elease.ps1 -Dev -Version 43.0
+      Packs the addon as it stands right now and uploads it to the permanent
+      rolling tag 'dev' as a PRE-RELEASE. Nothing else moves: no installer
+      rebuild, no version pin, no docs links, no commit, no Discord. A
+      pre-release never carries the Latest badge, and that badge is what both
+      the installer's update check and the website's download button resolve
+      through - so users keep getting the stable version. The tester link is
+      constant:
+        https://github.com/Sku75/Sku-WoW-Addon-TBC/releases/download/dev/Sku-dev.zip
+      Testers unpack it into Interface\AddOns over the existing Sku folder, and
+      get back to stable by re-running the normal installer.
+      NOTE it bumps Sku\Sku.toc to the given version in place, same as a real
+      release, and it does NOT require a clean working tree - uncommitted work
+      goes into the zip on purpose, and is listed in the release notes.
+
   INSTALLER ONLY (no new Sku version - bump <Version> in the csproj first):
     installer\release.ps1 -PublishInstaller
       Rebuilds the exe, replaces the asset on whichever release currently holds
@@ -60,6 +77,7 @@ release.ps1 - one-command Sku release pipeline.
 [CmdletBinding()]
 param(
     [string]$Version,
+    [switch]$Dev,
     [switch]$PublishLoginTool,
     [string]$LoginToolVersion,
     [switch]$PublishSkuMapper,
@@ -108,6 +126,15 @@ $SecretsFile = Join-Path $PSScriptRoot '.secrets\discord-webhooks.txt'
 $LoginToolTag   = 'login-tool'    # permanent rolling tag (website + installer)
 $LoginToolBuild = Join-Path $RepoRoot 'logintool\tools\build_release_zip.ps1'
 $LoginToolZip   = Join-Path $RepoRoot 'logintool\dist\WoW-Login-Tool.zip'
+
+# Test builds for testers. A PERMANENT rolling tag plus a CONSTANT asset name,
+# so the link handed to a tester never changes and never needs re-sending. The
+# release is flagged pre-release, and that is what keeps it out of BOTH update
+# channels: github.com/.../releases/latest excludes pre-releases, and that
+# redirect is what the installer reads (GitHubClient.ResolveLatestMainVersionAsync)
+# and what the website's download button points at.
+$DevTag    = 'dev'
+$DevAsset  = 'Sku-dev.zip'
 
 # --- Small helpers ----------------------------------------------------------
 function Info($m) { Write-Host $m -ForegroundColor Cyan }
@@ -452,8 +479,9 @@ function Build-InstallerExe {
     Info "  -> $ExeDist"
 }
 
-function Build-SkuZip($ver) {
-    $out = Join-Path $Dist "Sku-$ver.zip"
+function Build-SkuZip($ver, $outName) {
+    if (-not $outName) { $outName = "Sku-$ver.zip" }
+    $out = Join-Path $Dist $outName
     if ($DryRun) { Dry "build $out (bumps Sku.toc Title/Version to $ver)"; return $out }
     Info "Building Sku-$ver.zip (bumps Sku.toc)..."
     New-Item -ItemType Directory -Force $Dist | Out-Null
@@ -511,6 +539,91 @@ function Do-MainRelease($ver) {
 
     Announce-Discord $ver $SiteUrl
     Info "Done: $tag published."
+}
+
+# --- Mode: test build for testers (rolling 'dev' tag, pre-release) ----------
+# Publish-only, deliberately: it uploads a zip and nothing else. No installer
+# rebuild, no Config.FallbackMainVersion bump, no docs link rewrite, no commit,
+# no Discord. Testers install by hand; everybody else keeps seeing the stable
+# release, because a pre-release never takes GitHub's "Latest" badge and the
+# badge is what both update paths resolve through.
+function Do-DevRelease($ver) {
+    if (-not $ver) { throw "Give -Version too, e.g. -Dev -Version 43.0 (the number the build reports in game)." }
+    if ($ver -notmatch '^\d+\.\d+(\.\d+)?$') { throw "Version must look like 43.0 or 43.0.1 (got '$ver')." }
+    Info "=== Sku TEST build $ver -> rolling tag '$DevTag' (pre-release, testers only) ==="
+
+    # A test build ships the tree AS IT STANDS, work in progress included - that
+    # is the point of it. It is not silent about that: the commit it was built
+    # from and any uncommitted files are written into the release notes, so a
+    # tester's report can always be traced back to a known state.
+    $sha   = (git -C $RepoRoot rev-parse --short HEAD)
+    $dirty = @(git -C $RepoRoot status --porcelain | Where-Object { $_ })
+    if ($dirty.Count -gt 0) {
+        Note "  Working tree has $($dirty.Count) uncommitted change(s) - they WILL be in this zip:"
+        $dirty | ForEach-Object { Note "    $_" }
+    }
+
+    $zip = Build-SkuZip $ver $DevAsset
+    $stamp = (Get-Date -Format 'yyyy-MM-dd HH:mm')
+    $built = "Built from commit $sha"
+    if ($dirty.Count -gt 0) { $built = "$built plus $($dirty.Count) uncommitted change(s)" }
+    $built = "$built on $stamp."
+
+    $notes = @"
+Sku TBC $ver - TEST BUILD. Not a public release.
+
+This is a pre-release for testers. The Sku installer and the download page do
+not see it: they keep serving the stable version, so nobody gets this by
+accident.
+
+Install by hand:
+1. Close World of Warcraft completely.
+2. Download $DevAsset below.
+3. Unpack it into Interface\AddOns of your WoW folder and let it replace the
+   existing Sku folder. The zip contains one folder called "Sku".
+4. Start the game.
+
+Back to the stable version at any time: run the normal Sku installer again.
+
+$built
+
+---
+
+Sku TBC $ver - TESTVERSION. Keine oeffentliche Version.
+
+Dies ist eine Vorabversion fuer Tester. Der Sku-Installer und die Downloadseite
+sehen sie nicht, dort gibt es weiterhin die stabile Version - niemand bekommt
+diese Version aus Versehen.
+
+Von Hand installieren:
+1. World of Warcraft komplett beenden.
+2. $DevAsset unten herunterladen.
+3. In den Ordner Interface\AddOns des WoW-Verzeichnisses entpacken und den
+   vorhandenen Ordner Sku ersetzen lassen. Im Zip liegt ein Ordner "Sku".
+4. Das Spiel starten.
+
+Zurueck zur stabilen Version: einfach wieder den normalen Sku-Installer laufen
+lassen.
+"@
+
+    Exec "ensure rolling pre-release '$DevTag' exists (create if missing, never Latest)" {
+        gh release view $DevTag --repo $Slug 1>$null 2>$null
+        if ($LASTEXITCODE -ne 0) {
+            gh release create $DevTag --repo $Slug --title "Sku TBC $ver (test build)" --notes $notes --prerelease --latest=false --target main
+        } else { $global:LASTEXITCODE = 0 }
+    }
+    # Refresh title + notes on every run: the tag rolls, so the page must always
+    # describe the zip that is on it right now, not the one from last time.
+    Exec "refresh release title + notes -> $ver" {
+        gh release edit $DevTag --repo $Slug --title "Sku TBC $ver (test build)" --notes $notes --prerelease --latest=false
+    }
+    Exec "upload $DevAsset --clobber" { gh release upload $DevTag $zip --repo $Slug --clobber }
+
+    Info "  Test build $ver published."
+    Info "  Permanent tester link (never changes):"
+    Info "    https://github.com/$Slug/releases/download/$DevTag/$DevAsset"
+    Note "  Release page: https://github.com/$Slug/releases/tag/$DevTag"
+    Note "  Retract it with: gh release delete $DevTag --repo $Slug --cleanup-tag"
 }
 
 # --- Mode: publish/refresh the login tool (rolling tag) ---------------------
@@ -602,13 +715,15 @@ function Do-PublishInstaller {
 # --- Dispatch ---------------------------------------------------------------
 if ($DryRun) { Write-Host "DRY RUN - no outward-facing action will be performed." -ForegroundColor Yellow }
 
-if ($PublishLoginTool)         { Do-PublishLoginTool }
+if ($Dev)                      { Do-DevRelease $Version }
+elseif ($PublishLoginTool)     { Do-PublishLoginTool }
 elseif ($PublishSkuMapper)     { Do-PublishSkuMapper $SkuMapperVersion }
 elseif ($PublishInstaller -or $BackfillLatestAssets) { Do-PublishInstaller }
 elseif ($Version)              { Do-MainRelease $Version }
 else {
     Write-Host "Nothing to do. Pick a mode:" -ForegroundColor Yellow
     Write-Host "  -Version 42.12            main Sku release (also rebuilds + attaches the installer)"
+    Write-Host "  -Dev -Version 43.0        test build for testers (hidden pre-release, zip only)"
     Write-Host "  -PublishInstaller         new installer only, no new Sku version"
     Write-Host "  -PublishLoginTool         refresh the login tool rolling release"
     Write-Host "  -PublishSkuMapper -SkuMapperVersion 4.9"
