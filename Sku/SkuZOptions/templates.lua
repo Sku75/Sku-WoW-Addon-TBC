@@ -87,6 +87,23 @@ SkuGenericMenuItem = {
 	next = nil,
 	isSelect = false,
 	isMultiselect = false,
+	-- [v43.1] "act here, stay here". ENTER on a node with this flag runs the
+	-- node's OWN OnAction and leaves the cursor exactly where it is; the node's
+	-- children are NOT freed. Everything else in this template moves the cursor
+	-- on ENTER (to the level's select target, or up to the parent), which is why
+	-- a MULTI-select list was not buildable before: every toggle threw the user
+	-- out of the list they were toggling in.
+	-- The node is expected to rewrite its own `name` inside OnAction; the key
+	-- handler vocalizes currentMenuPosition after ENTER, so the user hears the
+	-- item they just toggled, in its new state, without having moved.
+	-- See SkuAuras/Options.lua for the first users (output list, condition value
+	-- lists, the aura workbench's text prompts).
+	--
+	-- On a LEAF this flag is all that is needed. A node that also has children
+	-- must additionally set `actionOnEnter = true`, otherwise ENTER descends
+	-- (the descend branch below is checked first) and the flag never applies -
+	-- RIGHT still descends in both cases, which is the point of the pairing.
+	actionInPlace = false,
 	selectTarget = nil,
 	dynamic = false,
 	sorting = false,
@@ -378,7 +395,12 @@ SkuGenericMenuItem = {
 			end
 		elseif string.find(self.name, L["aura;sound"].."#") then
 			for i, v in pairs(SkuAuras.outputs) do
-				if self.name == v.friendlyName then
+				-- [v43.1] auraOutputKey: the aura output TOGGLES carry a state
+				-- suffix in their name ("...#glas 1;ein"), so the exact-name
+				-- comparison can no longer find them. The key identifies the
+				-- output directly; the name comparison stays for every node built
+				-- before the flag existed.
+				if self.name == v.friendlyName or (self.auraOutputKey ~= nil and self.auraOutputKey == i) then
 					SkuOptions.Voice:OutputStringBTtts(v.outputString, false, false, 0.3, true)
 				end
 			end
@@ -552,7 +574,32 @@ SkuGenericMenuItem = {
 				end
 			end			
 		else
-			if self.selectTarget and self.selectTarget ~= self then
+			if self.actionInPlace == true then
+				-- [v43.1] "act here, stay here" (see the flag on the template above).
+				-- Checked BEFORE the selectTarget branch on purpose: ENTER inside a
+				-- select level otherwise always dispatches to the LEVEL'S target and
+				-- parks the cursor there, so a toggle node under such a level could
+				-- never own its own ENTER.
+				local tCleanValue = self.name
+				local tPos = string.find(self.name, "#")
+				if tPos then
+					tCleanValue = string.sub(self.name, tPos + 1)
+				end
+				if self.OnAction == nil or self.OnAction == SkuGenericMenuItem.OnAction then
+					-- Acts in place but has no action of its own: a silently dead
+					-- ENTER, same defect class as the selectTarget miss below.
+					SkuOptions.tMenuActionInPlaceMisses = (SkuOptions.tMenuActionInPlaceMisses or 0) + 1
+					SkuOptions.tMenuActionInPlaceLast = tostring(self.name)
+					dprint("skucheck", "VIOLATION menu: ENTER on", self.name, "-- actionInPlace without an own OnAction")
+				else
+					self:OnAction(self, tCleanValue, self.parent and self.parent.name)
+				end
+				-- children deliberately NOT freed and the cursor deliberately NOT
+				-- moved -- that is the whole point of the flag. The node is expected
+				-- to have rewritten its own `name`; the key handler vocalizes
+				-- currentMenuPosition right after this, so the user hears the new
+				-- state of the entry they are still standing on.
+			elseif self.selectTarget and self.selectTarget ~= self then
 				if self.selectTarget.parent.isMultiselect == true then
 					if self.selectTarget.name == L["Nothing selected"] and (self.name ~= L["Small"] and self.name ~= L["Large"]) then
 						self.selectTarget.name = L["Selected"]..";"..self.name

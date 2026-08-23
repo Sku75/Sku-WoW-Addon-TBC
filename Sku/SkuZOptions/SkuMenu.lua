@@ -194,6 +194,7 @@ end
 
 local PASSTHROUGH_FLAGS = {
 	"sorting", "dynamic", "isSelect", "isMultiselect",
+	"actionInPlace",  -- [v43.1] act-here-stay-here (templates.lua)
 	"noStepUpAfterSelect", "macrotext", "secureMacro",
 	"id",  -- stable nav anchor (W6-B #14): a Build spec may carry an id
 }
