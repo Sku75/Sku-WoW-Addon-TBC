@@ -3322,3 +3322,30 @@ L["Debuff bei Zielwechsel ausgeben"] = "Annoncer un affaiblissement au changemen
 -- Sku v43.1: atelier d'auras, sortie au lieu d'action (SkuAuras/Options.lua)
 L["Ausgabe Typ"] = "Type de sortie"
 L["Ausgabe"] = "Sortie"
+
+-- Sku v43.1: la liste des buffs/debuffs et la durée restante sont UNE condition (SkuAuras/Options.lua)
+L["verbleibende Dauer kleiner"] = "durée restante inférieure à"
+L["verbleibende Dauer groesser"] = "durée restante supérieure à"
+L["verbleibende Dauer"] = "durée restante"
+L["Sekunden"] = "Secondes"
+L["nur ein Zauber, weitere entfernt"] = "un seul sort, les autres ont été retirés"
+L["verbleibende Dauer entfernt"] = "durée restante retirée"
+
+-- Sku v43.1: groupe santé/ressource + ressources individuelles (SkuAuras)
+L["Eigene Gesundheit oder Ressource"] = "Votre santé ou ressource"
+L["AURA_VitalsGroupTip"] = "La santé du joueur, ou l'une de ses ressources, en pourcentage"
+L["AURA_PowerActive"] = "Votre ressource actuelle"
+L["AURA_PowerActiveTip"] = "La ressource dont la barre est affichée actuellement, en pourcentage - pour un druide, mana en forme normale, rage en forme d'ours, énergie en forme de félin"
+L["AURA_PowerMana"] = "Votre mana"
+L["AURA_PowerManaTip"] = "Votre mana en pourcentage, quelle que soit la barre affichée. Jamais vrai si votre personnage n'a pas de mana"
+L["AURA_PowerManaOutTip"] = "Votre mana en pourcentage"
+L["AURA_PowerRage"] = "Votre rage"
+L["AURA_PowerRageTip"] = "Votre rage en pourcentage, quelle que soit la barre affichée. Jamais vrai si votre personnage n'a pas de rage"
+L["AURA_PowerRageOutTip"] = "Votre rage en pourcentage"
+L["AURA_PowerEnergy"] = "Votre énergie"
+L["AURA_PowerEnergyTip"] = "Votre énergie en pourcentage, quelle que soit la barre affichée. Jamais vrai si votre personnage n'a pas d'énergie"
+L["AURA_PowerEnergyOutTip"] = "Votre énergie en pourcentage"
+L["AURA_PowerRunic"] = "Votre puissance runique"
+L["AURA_PowerRunicTip"] = "Votre puissance runique en pourcentage, quelle que soit la barre affichée. Jamais vrai si votre personnage n'a pas de puissance runique"
+L["AURA_PowerRunicOutTip"] = "Votre puissance runique en pourcentage"
+L["diesen Vergleich verwenden"] = "utiliser cette comparaison"

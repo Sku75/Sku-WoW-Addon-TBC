@@ -758,3 +758,314 @@ having a non-player source; the group-identity lane failing to resolve) were
 argued at length against an aura that was not there. `/skuauratrace` was built
 in the process and stays — it answers the real version of this question — but
 the first check is cheaper: grep the SavedVariables for the aura's name.
+
+## 15. Buff/debuff list and remaining duration are ONE condition (2026-08-23)
+
+### 15.1 The rule nobody could have guessed
+
+A duration attribute stores a threshold and nothing else. It carries no spell.
+The evaluator therefore reads the watched spell out of the LIST condition
+sitting next to it — `Core.lua`, the `tAuraDurationAtts` loop:
+
+    if tAuraData.attributes[tAttsI] and tAuraData.attributes[tAttsI.."Duration"] then
+       local tWatchedName = tEvaluateData[tAttsI][...aAttributes[tAttsI][1][2]]
+
+Two facts follow, and neither was visible anywhere in the menu:
+
+- **A duration condition alone can never fire.** The `if` needs BOTH attributes,
+  so `tEvaluateData[...Duration]` is never assigned, the attribute's `evaluate`
+  falls through its `if aEventData.X then` guard, the condition is false and the
+  AND-chain breaks. The builder happily offered all eight attributes.
+- **A duration condition measures entry ONE of the list group.** So
+  "enthält Verderbnis oder Fluch der Pein" plus "Dauer kleiner 3" measures
+  Verderbnis and silently drops Fluch der Pein. If only Fluch der Pein is on the
+  target the aura says nothing at all — `tWatchedName` is nil. The name promises
+  two spells, the evaluation covers one, and the failure mode is silence, which
+  is indistinguishable from "the DoT is still running".
+
+There is a third, older trap in the same area, left as-is and only documented:
+`getFixedDuration` returns 0 for an aura with no expiration (the exp map stores
+`false`), so "verbleibende Dauer kleiner 5" is TRUE for a permanent buff.
+
+### 15.2 What was built
+
+The eight attributes are four in the builder, and the level under one of them is
+now the condition's **aspects** rather than an operator step:
+
+- `enthält;ein` / `enthält;aus` — entering it selects it and opens the spell list
+- `enthält nicht;ein` / `aus` — same list, same values, other comparison
+- `verbleibende Dauer kleiner;3 Sekunden` / `;aus` — opens ONLY the seconds
+- `verbleibende Dauer größer;…` — same
+
+All four edit the SAME condition, which is what makes "this spell, and less than
+three seconds left of it" one row. The spell is picked under `enthält`, because
+that is the spell the evaluator measures; a duration entry holds nothing but the
+threshold, plus an `aus` at index 0 so a duration can be switched off again
+(without it, un-setting one would have meant deleting the whole condition).
+
+This replaced the `Werte ändern` / `Operator ändern` pair on a condition row as
+well, so **building and editing are one shape**. Those two entries were saying
+one thing between them: there was never anything to change about the values
+except under one operator, and the operator step was a level that existed to be
+walked through. The row's own children are the aspects plus `Löschen`.
+
+The aspects carry each other's state, and every change refreshes every label on
+the level plus the row above it (`tRefresh`):
+
+- setting a duration pins the operator to `enthält` — a remaining duration is
+  measured on an aura that IS there, so there is nothing to measure under a
+  negating operator;
+- entering `enthält nicht` while a duration is set drops the duration, and
+  **says so** ("verbleibende Dauer entfernt");
+- `durOp` is one field, so arming one duration comparison disarms the other by
+  construction.
+
+A condition row may now carry `durOp` and `durValue` beside its `att`/`op`/
+`values`. `tAttributesFromConditions` expands that into the two stored
+attributes the evaluator already expects, and `tConditionsFromAttributes` folds
+them back on load. **The storage format and the evaluator are untouched** — that
+was the whole point of choosing this over giving the duration its own spell
+value: the deadline scheduler, the once-gate census and `tSmallerDurationNoRead`
+all key on the aura having both attributes, and all of them keep working
+unchanged. Stored auras need no migration.
+
+One thing worth keeping: `tDefaultOperator` picks the new condition's operator
+by **preference order**, not by "the first one the menu lists". The menu order
+comes from `TableSortByIndex`, which sorts by the LOCALIZED friendlyName — so
+"first" is a different operator per language, and a new condition would have
+started out negated in whichever locale happened to sort that way.
+
+### 15.2b The weapon enchants merged the same way — but they are not the same
+
+`weaponEnchantMainHand` + `…Duration` and the off-hand pair went through the
+same merge, so twelve attributes became six. **The mechanics underneath differ,
+and the difference is a flag (`tDurationBorrowsSpell`), not a comment:**
+
+- The four buff/debuff lists **borrow**. The duration has no spell of its own,
+  so a spell is mandatory, exactly one, and affirmative.
+- The two weapon enchants **do not**. There is only one main-hand enchant, so
+  `tEvaluateData.weaponEnchantMainHandDuration` is filled unconditionally in
+  `EvaluateAllAuras` (the `[41.03]` do-block, defaulting to 0 = no enchant).
+  Their duration is a whole condition with **no name at all** ("my weapon buff
+  is running out, whichever it is"), takes any number of names, and works under
+  `enthält nicht` too.
+
+So for the weapon enchants this was a menu change only — nothing about what they
+can express changed. `tDraftConditionSaysSomething` is what lets a value-less
+duration row belong to the draft, and it is deliberately restricted to the
+non-borrowing pairs: a borrowing duration without a spell has nothing to
+measure, which is the whole defect this section is about.
+
+Note their seconds list is still `zeroToOneHundred`, so a weapon-enchant
+threshold cannot be set above 100 s. Pre-existing, unchanged by the merge, and
+fine for the "it is running out" case it is actually used for.
+
+### 15.2c An operator entry never carries a state word
+
+`enthält;ein` / `enthält;aus` became `enthält;Verderbnis`, and when nothing is
+picked under it, plain `enthält`. No "ein", no "aus", no "nicht festgelegt".
+
+Those three words belong to the **toggles one level down**, where they answer
+exactly one question — is this spell picked. An operator wearing them made the
+same two words answer a different question one level up, which is the kind of
+overload a reader has to keep a rule in their head for. So: a bare operator name
+means nothing is selected under it, and the entry carrying values IS the
+comparison the aura makes. The same rule applies to the duration comparisons,
+which are operators too — `verbleibende Dauer kleiner;3 Sekunden` when armed,
+plain `verbleibende Dauer kleiner` when not. The `aus` that switches one off
+again is a **value** in its own list, which is where an off state legitimately
+lives.
+
+Both operator entries share one value set, because the storage holds one
+operator per attribute group, so only one of them can be the comparison —
+showing the spells under both would say the aura checks them twice, in opposite
+directions.
+
+### 15.3 The one-spell cap
+
+A duration row holds exactly one spell. The toggle list SWITCHES instead of
+adding (and clears the previous entry's "ein"), typing a name switches too, and
+changing an existing multi-spell condition into a duration one truncates and
+SAYS so ("nur ein Zauber, weitere entfernt") rather than dropping a value
+silently.
+
+Two debuffs that should fire the same sound at the same remaining duration are
+therefore two auras. Deliberate, and it costs nothing: the user's call,
+2026-08-23, after checking whether a "measure the minimum across the group"
+variant would enable any aura that two auras cannot express. **It would not.**
+`tAuraData.used`, the condition evaluation and the deadline are all per aura and
+independent, so N auras fire exactly as N spells in one row would. The only
+behavioural difference is that one row shares one "einmal" gate, i.e. a single
+sound when two DoTs cross the threshold in the same instant — and it would drag
+the output path in with it, because `Core.lua:2946`/`2949` name entry one too.
+Not worth an evaluator rewrite. Do not re-propose it.
+
+### 15.4 Legacy and hand-edited data
+
+The fold only happens when the shape is one the evaluator honours: one list row,
+one duration row, `contains`, one spell. Anything else stays visible as two
+separate rows on purpose — folding it into a tidy merged row would repeat the
+original lie one level up. The user can see it and delete it.
+
+New `/skucheck auras` tripwires (Core.lua, check 5), all reported as violations
+because each one is an aura that cannot do what its name says:
+
+- a `*Duration` condition with no list partner ("can never fire")
+- a duration compared while the list group holds several values ("only the first
+  one is ever measured")
+- a duration compared while the list group is negated ("measured on an aura that
+  is not there")
+- `is`/`isNot` on a duration (the section-10 shape, now machine-checked)
+
+### 15.5 Status
+
+**TESTED OK in game 2026-08-23**, after the two fixes in section 17. What was
+walked: building a condition through the aspect level, switching operators, and
+the labels following every change. Still untested: the fold on reopening a
+stored duration aura, the truncation and removal announcements, and switching a
+duration off through `aus`.
+
+Original test list:
+
+1. Create a duration condition end to end: attribute, `enthält` + spell,
+   `verbleibende Dauer kleiner` + seconds, save.
+2. Reopen a stored duration aura for editing — that exercises the fold, and the
+   row and its aspect labels have to read the stored state back.
+3. Set a duration on a condition that already holds several spells (the
+   truncation announcement), and enter `enthält nicht` on one that has a
+   duration (the removal announcement).
+4. Switch a duration back off through the `aus` entry at the top of the seconds
+   list.
+
+## 16. The vitals group: health and the resource pools (2026-08-23)
+
+### 16.1 What it is
+
+`Eigene Gesundheit`, `Eigene aktuelle Ressource` and four **new** specific pools
+are one entry in the attribute list, `Eigene Gesundheit oder Ressource`, and the
+pool is the choice behind it.
+
+Unlike the duration merge in section 15 this is a **menu grouping and nothing
+else**: each pool is still its own attribute and its own stored condition, so a
+row reads and saves exactly as it always did, and all four ORDINAL operators
+(gleich / ungleich / größer / kleiner) are there as before. What the group buys
+is that six related entries stop being scattered through an alphabetically
+sorted list of fifty, and that the pool choice sits where the resource monitor's
+does.
+
+Order mirrors `SkuCore/aq.lua`'s `tPowerTypesOrder`: health first (every
+character has it), then the automatic entry, then the named pools.
+
+Inside the group the entries drop the "Eigene" their friendlyName carries —
+`Gesundheit`, `Aktuelle Ressource`, `Mana`, `Wut`, `Energie`, `Runenmacht`. The
+**group entry keeps it** (`Eigene Gesundheit oder Ressource`), because it is read
+in the attribute list where nothing above it has said whose vitals these are;
+its children are read under it, where repeating it six times is six words heard
+for nothing. The labels are the **resource monitor's
+own locale keys** (`L["Health"]`, `L["Aktuelle Ressource"]`, `L["MANA"]`, …), so
+the two menus name the same pool identically and there is one place to change
+it. The friendlyName is untouched, so a condition ROW — read in the Bedingungen
+list with no group above it — still says `Eigene Gesundheit`.
+
+### 16.2 The four new attributes
+
+`unitManaPlayer`, `unitRagePlayer`, `unitEnergyPlayer`, `unitRunicPowerPlayer` —
+this part is a genuine capability addition, not a restructure. `unitPowerPlayer`
+has always been `UnitPower("player")` with no type argument, i.e. **whatever bar
+the game is showing**; there was no way to say "mana" and mean mana. A druid
+could not write "warn me under 20% mana" and have it hold in cat form.
+
+The reading is **nil**, and the condition therefore false, for a pool the
+character does not have — `UnitPowerMax` returns 0 for a warrior's mana. That
+guard is load-bearing: reporting 0% instead would make "Eigenes Mana kleiner 20"
+true for every warrior alive, on every event.
+
+The four fields are **lazy** (`tLazyEvaluateFields`, Core.lua). Four more
+`UnitPower`/`UnitPowerMax` pairs on every combat-log event would be paid by every
+user; only an aura that asks for a specific pool needs them. `unitPowerPlayer`
+stays eager because it already was.
+
+Each also gained an output, so an aura can announce the value it fired on.
+
+### 16.3 Not included, on purpose
+
+- **Combo points** (`unitComboPlayer`) stay a top-level attribute. They are
+  counted 0..5, not a percentage, so they would be the one entry in the group
+  whose values mean something else.
+- **The target's** health and resource (`unitHealthTarget`, `unitPowerTarget`)
+  stay top-level. The request was for the player's; grouping the target's the
+  same way is a small follow-up if wanted.
+
+### 16.4 Renamed
+
+`unitPowerPlayer`'s friendlyName is `Eigene aktuelle Ressource` now (was `Eigene
+Ressource`), so it reads like the monitor's `ACTIVE` entry and cannot be mistaken
+for one of the named pools next to it. Aura names are only rebuilt on save, so
+stored auras keep their existing keys; an edited one picks up the new label.
+
+### 16.5 Status
+
+BUILT 2026-08-23. The menu side is **TESTED OK in game** after the section 17
+fixes. Still untested: that a specific pool the character does not have never
+fires, and that `Eigene aktuelle Ressource` still behaves as `Eigene Ressource`
+did.
+
+**Separate pre-existing defect found while in there, NOT fixed:**
+`SkuAuras.outputs.unitHealthPlayer` is defined **twice** (data.lua ~326 and
+~482), with different tooltips and friendlyNames ("eigene Gesundheit" vs "eigene
+gesundheit"). Lua keeps the last, so the first block is dead and its tooltip is
+never seen. The function bodies are identical, so nothing misbehaves — it is
+dead code, not a bug.
+
+## 17. First in-game pass on the merge (2026-08-23) — two defects, one level
+
+Reported: "it now shows numbers on some operators and is not updating properly.
+I put equal on 2, it showed 2 on other operators but not on equal. I put equal
+on 0, it showed 2 on equal."
+
+The debug log (`SkuDebugLog`, 15:39) reads the whole thing back:
+
+```
+15:39:11  [gleich]        entered gleich, label still bare
+15:39:23  [ungleich 2]    walked to ungleich - the 2 appeared HERE
+15:39:25  [gleich]        still bare
+15:39:33  [gleich 2]      entered gleich - now it has the 2
+15:39:36  [ungleich]      and ungleich lost it
+```
+
+Two defects in `tBuildConditionAspects`, both mine, both from the same wrong
+idea about what walking a menu means.
+
+### 17.1 Entering an operator selected it
+
+`tNode.BuildChildren` did `aCond.op = tOp`. So merely descending into an entry to
+READ it rewrote the condition, and the value appeared to follow the cursor from
+one operator to the next. Browsing the level changed the aura.
+
+**Fixed:** entering an operator does nothing. Choosing a **value** under it is
+what chooses the comparison (`onChange`, guarded on `#values > 0` so that
+removing the last value does not re-arm an operator on a condition that is
+detaching). A new entry `diesen Vergleich verwenden` appears at the top of a
+non-active operator's list, for changing the comparison while keeping the
+values — the one thing the toggle rule alone cannot express.
+
+### 17.2 The label never followed a toggle
+
+`tRefresh` was only ever called from an operator's `BuildChildren`, i.e. when the
+user entered a **different** operator. Toggling a value updated the condition,
+the row and the `Bedingungen (n)` count — and left the entry the user was
+standing under reading its bare name. The two defects together are what made the
+number look like it was on the wrong entry: it was written by the walk, not by
+the toggle.
+
+**Fixed:** the aspect level passes an `onChange` into `tBuildValueToggleList`, so
+every toggle and every typed-in value refreshes the operator labels and the row.
+
+### 17.3 Rule worth keeping
+
+**Descending into a menu entry must not change state.** Every other node on this
+level already obeyed it — the duration entries are `isSelect` and only mutate in
+`OnAction`, the value toggles are `actionInPlace` and only mutate on ENTER. The
+operator entries were the one place where the act of looking was the act of
+choosing, and for a screen-reader user, who reaches an entry by walking past it,
+that is not a subtle bug: it is the normal way to read a menu.

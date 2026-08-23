@@ -393,6 +393,74 @@ SkuAuras.outputs = {
          end,
       },
    },
+   unitManaPlayer = {
+      tooltip = L["AURA_PowerManaOutTip"],
+      friendlyName = L["AURA_PowerMana"],
+      functs = {
+         ["nothing"] = tNothingOutputFunction,
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
+            if tEvaluateData.unitManaPlayer then
+               SkuOptions.Voice:OutputString(tEvaluateData.unitManaPlayer, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.unitManaPlayer then
+               print(tEvaluateData.unitManaPlayer)
+            end
+         end,
+      },
+   },
+   unitRagePlayer = {
+      tooltip = L["AURA_PowerRageOutTip"],
+      friendlyName = L["AURA_PowerRage"],
+      functs = {
+         ["nothing"] = tNothingOutputFunction,
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
+            if tEvaluateData.unitRagePlayer then
+               SkuOptions.Voice:OutputString(tEvaluateData.unitRagePlayer, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.unitRagePlayer then
+               print(tEvaluateData.unitRagePlayer)
+            end
+         end,
+      },
+   },
+   unitEnergyPlayer = {
+      tooltip = L["AURA_PowerEnergyOutTip"],
+      friendlyName = L["AURA_PowerEnergy"],
+      functs = {
+         ["nothing"] = tNothingOutputFunction,
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
+            if tEvaluateData.unitEnergyPlayer then
+               SkuOptions.Voice:OutputString(tEvaluateData.unitEnergyPlayer, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.unitEnergyPlayer then
+               print(tEvaluateData.unitEnergyPlayer)
+            end
+         end,
+      },
+   },
+   unitRunicPowerPlayer = {
+      tooltip = L["AURA_PowerRunicOutTip"],
+      friendlyName = L["AURA_PowerRunic"],
+      functs = {
+         ["nothing"] = tNothingOutputFunction,
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
+            if tEvaluateData.unitRunicPowerPlayer then
+               SkuOptions.Voice:OutputString(tEvaluateData.unitRunicPowerPlayer, aFirst, true, 0.1, true, nil, nil, nil, nil, nil, aInstant)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.unitRunicPowerPlayer then
+               print(tEvaluateData.unitRunicPowerPlayer)
+            end
+         end,
+      },
+   },
    unitComboPlayer = {
       tooltip = L["Deine combopunkte auf dein aktuelles ziel"],
       friendlyName = L["Eigene combopunkte"],
@@ -1729,8 +1797,8 @@ SkuAuras.attributes = {
       values = zeroToOneHundred,
    },   
    unitPowerPlayer = {
-      tooltip = L["Dein Ressourcen Level in Prozent, das die Aura auslösen soll (deine Primärressource wie Mana, Energie, Wut etc."],
-      friendlyName = L["Eigene Ressource"],
+      tooltip = L["AURA_PowerActiveTip"],
+      friendlyName = L["AURA_PowerActive"],
       type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.unitPowerPlayer.evaluate")
@@ -1739,6 +1807,62 @@ SkuAuras.attributes = {
             if tEvaluation == true then
                return true
             end
+         end
+      end,
+      values = zeroToOneHundred,
+   },
+   -- [v43.1] The SPECIFIC power pools, beside unitPowerPlayer's "whatever bar
+   -- the game is showing". Same split the resource monitor has had all along
+   -- (SkuCore/aq.lua, tPowerTypes: ACTIVE / MANA / RAGE / ENERGY / RUNIC_POWER),
+   -- so a druid can say "mana under 20" and have it mean mana in cat form too,
+   -- where unitPowerPlayer reads energy.
+   --
+   -- The reading is nil, and the condition therefore false, for a pool the
+   -- character does not have - UnitPowerMax comes back 0 for a warrior's mana -
+   -- which is what keeps "Eigenes Mana kleiner 20" from firing on every warrior
+   -- event. The fields are LAZY (Core.lua, tLazyEvaluateFields): four more
+   -- UnitPower pairs on every combat-log event would be paid by every user,
+   -- and only an aura that asks needs them.
+   unitManaPlayer = {
+      tooltip = L["AURA_PowerManaTip"],
+      friendlyName = L["AURA_PowerMana"],
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         if aEventData.unitManaPlayer then
+            return SkuAuras.Operators[aOperator].func(tonumber(aEventData.unitManaPlayer), tonumber(aValue)) == true
+         end
+      end,
+      values = zeroToOneHundred,
+   },
+   unitRagePlayer = {
+      tooltip = L["AURA_PowerRageTip"],
+      friendlyName = L["AURA_PowerRage"],
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         if aEventData.unitRagePlayer then
+            return SkuAuras.Operators[aOperator].func(tonumber(aEventData.unitRagePlayer), tonumber(aValue)) == true
+         end
+      end,
+      values = zeroToOneHundred,
+   },
+   unitEnergyPlayer = {
+      tooltip = L["AURA_PowerEnergyTip"],
+      friendlyName = L["AURA_PowerEnergy"],
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         if aEventData.unitEnergyPlayer then
+            return SkuAuras.Operators[aOperator].func(tonumber(aEventData.unitEnergyPlayer), tonumber(aValue)) == true
+         end
+      end,
+      values = zeroToOneHundred,
+   },
+   unitRunicPowerPlayer = {
+      tooltip = L["AURA_PowerRunicTip"],
+      friendlyName = L["AURA_PowerRunic"],
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         if aEventData.unitRunicPowerPlayer then
+            return SkuAuras.Operators[aOperator].func(tonumber(aEventData.unitRunicPowerPlayer), tonumber(aValue)) == true
          end
       end,
       values = zeroToOneHundred,

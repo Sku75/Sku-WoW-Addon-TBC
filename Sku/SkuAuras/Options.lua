@@ -46,6 +46,7 @@ end
 -- the fallback for them, and returning a boolean into a string concatenation is
 -- how the aura menu would error out instead of merely reading a raw key.
 local slower = string.lower
+local ssub = string.sub
 
 local function tStripTagsForDisplay(aKey)
 	local tKey = tostring(aKey)
@@ -177,6 +178,135 @@ end
 local AURA_DRAFT_ID = "auraDraftWorkbench"
 local AURA_COND_ID = "auraDraftConditions"
 
+-- [v43.1] MERGED LIST + DURATION CONDITIONS.
+--
+-- Six pairs of attributes used to be twelve entries in the attribute list, and
+-- for four of those pairs the user had to know that picking the duration one
+-- ALONE builds an aura that can never fire. It is not a rule anyone could have
+-- guessed: a duration attribute stores a threshold and nothing else, so for the
+-- buff/debuff lists the evaluator reads the watched spell out of the LIST
+-- condition next to it (Core.lua, the tAuraDurationAtts loop,
+-- `tAuraData.attributes[tAttsI][1][2]`). No list condition, no name, no
+-- reading, condition permanently false.
+--
+-- So each pair is ONE condition in the builder now. A row may carry
+--     durOp    - "smaller" / "bigger"
+--     durValue - the threshold in seconds
+-- next to its att/op/values, and saving expands that into the two stored
+-- attributes the evaluator already expects. Nothing about the storage format or
+-- the evaluator changes; stored auras keep working and fold back into one row
+-- on load.
+local tListDurationPartner = {
+	buffListTarget = "buffListTargetDuration",
+	debuffListTarget = "debuffListTargetDuration",
+	buffListPlayer = "buffListPlayerDuration",
+	debuffListPlayer = "debuffListPlayerDuration",
+	weaponEnchantMainHand = "weaponEnchantMainHandDuration",
+	weaponEnchantOffHand = "weaponEnchantOffHandDuration",
+}
+-- ...but the two kinds are NOT the same underneath, and the difference decides
+-- three rules, so it is a flag and not a comment.
+--
+-- The four buff/debuff lists BORROW: the duration has no spell of its own and
+-- the evaluator reads one out of entry 1 of the list group. Hence a spell is
+-- mandatory, exactly one, and affirmative.
+--
+-- The two weapon enchants do NOT. There is only ever one main-hand enchant, so
+-- `tEvaluateData.weaponEnchantMainHandDuration` is filled unconditionally in
+-- EvaluateAllAuras (the [41.03] do-block, defaulting to 0 = "no enchant"), and
+-- the name condition beside it is an ordinary independent condition. So their
+-- duration is meaningful with NO name at all ("my weapon buff is running out,
+-- whichever it is"), takes any number of names, and works under "enthält nicht"
+-- too. Merging them is a menu change only - eight attributes became four and
+-- four became two, and nothing about what they can express changed.
+local tDurationBorrowsSpell = {
+	buffListTarget = true,
+	debuffListTarget = true,
+	buffListPlayer = true,
+	debuffListPlayer = true,
+}
+-- The duration attributes are gone from the attribute LIST (they are reachable
+-- only through their list partner now), so this is what tAttributeAllowed tests.
+local tDurationAttributeOwner = {}
+for tListAtt, tDurAtt in pairs(tListDurationPartner) do
+	tDurationAttributeOwner[tDurAtt] = tListAtt
+end
+-- The operator a brand-new condition starts on: the AFFIRMATIVE one its type
+-- offers ("enthält" for the lists, "gleich" for a category). It is stated as
+-- such on the aspect level, so it is a setting the user can see and change, not
+-- a default hidden behind the first walk.
+--
+-- Preference order, not "the first one listed": the menu order comes from
+-- TableSortByIndex, which sorts by the LOCALIZED friendlyName - so "first"
+-- would mean a different operator in German, English and French, and a new
+-- condition would start out negated in whichever locale sorted that way.
+local tDefaultOperatorPreference = {"contains", "is", "bigger"}
+local function tDefaultOperator(aAttName)
+	local tAttribute = SkuAuras.attributes[aAttName]
+	local tOperators = SkuAuras.operatorsForAttributeType[(tAttribute and tAttribute.type) or "CATEGORY"]
+		or SkuAuras.operatorsForAttributeType.CATEGORY
+	for x = 1, #tDefaultOperatorPreference do
+		if tOperators[tDefaultOperatorPreference[x]] then
+			return tDefaultOperatorPreference[x]
+		end
+	end
+	local tSorted = TableSortByIndex(tOperators)
+	for x = 1, #tSorted do
+		if tSorted[x] ~= "then" then
+			return tSorted[x]
+		end
+	end
+	return "is"
+end
+
+-- [v43.1] THE VITALS GROUP.
+--
+-- "Eigene Gesundheit", "Eigene Ressource" and the four specific pools are one
+-- entry in the attribute list, "Gesundheit oder Ressource", and the pool is the
+-- choice behind it. Unlike the duration merge this is a MENU grouping and
+-- nothing else: each pool is still its own attribute and its own stored
+-- condition, so a row reads and saves exactly as it always did. What the group
+-- buys is that six related entries stop being scattered through an
+-- alphabetically sorted list of fifty, and that the pool choice sits where the
+-- resource monitor's does.
+--
+-- Order is INSERTION order (the menu does not sort), and it mirrors
+-- SkuCore/aq.lua's tPowerTypesOrder: health first because it is the one every
+-- character has, then the automatic entry, then the specific pools. "Eigene
+-- Ressource" IS the monitor's ACTIVE - whatever bar the game is showing - which
+-- is why it comes before the pools that name themselves.
+--
+-- Combo points are deliberately NOT in here: they are counted 0..5, not a
+-- percentage, so they would be the one entry in the group whose values mean
+-- something else.
+--
+-- Inside the group the entries drop the "Eigene" their friendlyName carries -
+-- the group entry above them ("Eigene Gesundheit oder Ressource") already said
+-- whose vitals these are, and repeating it on all six is six words the user
+-- hears for nothing. The GROUP entry keeps it: it is read in the attribute
+-- list, where nothing above it has said so. The labels are the
+-- resource monitor's OWN keys, so the two menus name the same pool identically
+-- and there is one place to change it. The friendlyName is untouched, so a
+-- CONDITION ROW - which is read in the Bedingungen list with no group above it -
+-- still says "Eigene Gesundheit".
+local tVitalsGroupOrder = {
+	{att = "unitHealthPlayer", label = "Health"},
+	{att = "unitPowerPlayer", label = "Aktuelle Ressource"},
+	{att = "unitManaPlayer", label = "MANA"},
+	{att = "unitRagePlayer", label = "RAGE"},
+	{att = "unitEnergyPlayer", label = "ENERGY"},
+	{att = "unitRunicPowerPlayer", label = "RUNIC_POWER"},
+}
+local tVitalsGroupMember = {}
+for x = 1, #tVitalsGroupOrder do
+	tVitalsGroupMember[tVitalsGroupOrder[x].att] = true
+end
+
+-- The threshold a duration falls back on when a stored row is missing one. The
+-- menu never leaves one unset - the seconds ARE the choice that arms a duration
+-- - so this only ever covers a hand-edited file.
+local AURA_DUR_DEFAULT = "3"
+
 SkuAuras.draft = nil
 
 local function tConditionsFromAttributes(aAttributes)
@@ -205,6 +335,50 @@ local function tConditionsFromAttributes(aAttributes)
 			tConditions[#tConditions + 1] = {att = tAtt, op = tOp, values = tByOp[tOp]}
 		end
 	end
+	-- [v43.1] Fold a duration row into its list row, so the two stored
+	-- attributes read back as the ONE condition the builder now creates.
+	-- Folded only when the shape is one the evaluator actually honours: a single
+	-- affirmative list row holding a single spell, and a single duration row.
+	-- Anything else is left as two visible rows on purpose - that is the shape
+	-- whose name promises more than its evaluation delivers, and hiding it
+	-- inside a tidy merged row would be the same lie one level up. The user can
+	-- see it, and delete it; /skucheck names it.
+	for tListAtt, tDurAtt in pairs(tListDurationPartner) do
+		local tListRow, tDurRow, tListRows, tDurRows = nil, nil, 0, 0
+		for x = 1, #tConditions do
+			if tConditions[x].att == tListAtt then
+				tListRows = tListRows + 1
+				tListRow = tConditions[x]
+			elseif tConditions[x].att == tDurAtt then
+				tDurRows = tDurRows + 1
+				tDurRow = tConditions[x]
+			end
+		end
+		local tFold = tDurRow and tDurRows == 1 and #tDurRow.values == 1 and tListRows <= 1
+		if tFold and tDurationBorrowsSpell[tListAtt] == true then
+			-- Only a shape the evaluator honours folds: it needs a spell, and
+			-- exactly the one it will measure.
+			tFold = tListRow ~= nil and tListRow.op == "contains" and #tListRow.values == 1
+		end
+		if tFold then
+			if not tListRow then
+				-- A weapon-enchant duration with no name condition beside it.
+				-- It is a whole condition, and the row it folds into is the
+				-- value-less one the builder itself creates.
+				tListRow = {att = tListAtt, op = tDefaultOperator(tListAtt), values = {}}
+				tConditions[#tConditions + 1] = tListRow
+			end
+			tListRow.durOp = tDurRow.op
+			tListRow.durValue = tDurRow.values[1]
+			for x = #tConditions, 1, -1 do
+				if tConditions[x] == tDurRow then
+					table.remove(tConditions, x)
+					break
+				end
+			end
+		end
+	end
+
 	-- pairs() order is hash order; the menu needs a stable one.
 	table.sort(tConditions, function(a, b)
 		return slower(tFriendlyName(SkuAuras.attributes, a.att)) < slower(tFriendlyName(SkuAuras.attributes, b.att))
@@ -215,14 +389,32 @@ end
 local function tAttributesFromConditions(aConditions)
 	local tAttributes = {}
 	for _, tCond in ipairs(aConditions) do
-		if tCond.att and tCond.op and type(tCond.values) == "table" and #tCond.values > 0 then
-			local tGroup = tAttributes[tCond.att]
-			if not tGroup then
-				tGroup = {}
-				tAttributes[tCond.att] = tGroup
+		if tCond.att and tCond.op and type(tCond.values) == "table" then
+			if #tCond.values > 0 then
+				local tGroup = tAttributes[tCond.att]
+				if not tGroup then
+					tGroup = {}
+					tAttributes[tCond.att] = tGroup
+				end
+				for _, tValue in ipairs(tCond.values) do
+					tGroup[#tGroup + 1] = {tCond.op, tValue}
+				end
 			end
-			for _, tValue in ipairs(tCond.values) do
-				tGroup[#tGroup + 1] = {tCond.op, tValue}
+			-- [v43.1] The duration half of a merged row becomes its own stored
+			-- attribute again. For the borrowing attributes the PAIR is what the
+			-- evaluator reads - the list condition names the spell, the duration
+			-- compares its remaining time (Core.lua, tAuraDurationAtts) - so a
+			-- duration without values cannot occur there (the draft would not
+			-- have kept the row). A weapon-enchant duration stands alone, and
+			-- writing it out of a value-less row is exactly how it should.
+			local tDurAtt = tListDurationPartner[tCond.att]
+			if tDurAtt and tCond.durOp and tCond.durValue then
+				local tDurGroup = tAttributes[tDurAtt]
+				if not tDurGroup then
+					tDurGroup = {}
+					tAttributes[tDurAtt] = tDurGroup
+				end
+				tDurGroup[#tDurGroup + 1] = {tCond.durOp, tCond.durValue}
 			end
 		end
 	end
@@ -274,13 +466,27 @@ local function tDraftIndexOfCondition(aCond)
 	return nil
 end
 
--- A condition belongs to the draft exactly while it has at least one value.
--- That is what lets the user walk attribute -> operator -> values and simply
--- arrow back out: nothing was added if nothing was toggled on.
+-- A condition belongs to the draft exactly while it says something. For almost
+-- every attribute that means "at least one value" - which is what lets the user
+-- walk attribute -> operator -> values and simply arrow back out: nothing was
+-- added if nothing was toggled on.
+--
+-- The exception is a weapon-enchant duration, which is a whole condition by
+-- itself ("my weapon buff is running out, whichever it is") because the
+-- evaluator fills its reading with no help from the name condition. The
+-- borrowing durations are NOT an exception: without a spell they have nothing
+-- to measure. See tDurationBorrowsSpell.
+local function tDraftConditionSaysSomething(aCond)
+	if #aCond.values > 0 then
+		return true
+	end
+	return aCond.durOp ~= nil and tDurationBorrowsSpell[aCond.att] ~= true
+end
+
 local function tDraftSyncCondition(aCond)
 	local tD = tDraft()
 	local tIndex = tDraftIndexOfCondition(aCond)
-	if #aCond.values > 0 then
+	if tDraftConditionSaysSomething(aCond) == true then
 		if not tIndex then
 			tD.conditions[#tD.conditions + 1] = aCond
 		end
@@ -308,17 +514,54 @@ local function tValueJoinWord(aOperator)
 	return L["oder;"]
 end
 
-local function tConditionText(aCond)
-	local tText = tFriendlyName(SkuAuras.attributes, aCond.att)..";"..tFriendlyName(SkuAuras.Operators, aCond.op)..";"
-	if #aCond.values == 0 then
-		return tText..L["nicht festgelegt"]
+-- [v43.1] The spoken label of a merged duration operator, as it reads UNDER its
+-- list attribute: the attribute already said "Debuff Liste Ziel", so this only
+-- has to say what is being compared. A legacy stored operator that is neither
+-- bigger nor smaller (an `is`/`isNot` from before THRESHOLD existed) still gets
+-- a truthful reading rather than a wrong one.
+local function tDurationOperatorName(aOperator)
+	if aOperator == "smaller" then
+		return L["verbleibende Dauer kleiner"]
+	elseif aOperator == "bigger" then
+		return L["verbleibende Dauer groesser"]
 	end
+	return L["verbleibende Dauer"]..";"..tFriendlyName(SkuAuras.Operators, aOperator)
+end
+
+-- The values of a condition as one spoken run, joined by the word its operator
+-- earns (see tValueJoinWord).
+local function tValuesText(aCond)
+	if #aCond.values == 0 then
+		return L["nicht festgelegt"]
+	end
+	local tText = ""
 	local tJoin = tValueJoinWord(aCond.op)
 	for x = 1, #aCond.values do
 		if x > 1 then
 			tText = tText..tJoin
 		end
 		tText = tText..tValueName(aCond.values[x])..";"
+	end
+	return ssub(tText, 1, -2)
+end
+
+-- What ONE condition row says. A duration is stated BEHIND the values it goes
+-- with, because that is the order it is set in and the order it reads in:
+-- "Debuff Liste Ziel; enthaelt; Verderbnis; verbleibende Dauer kleiner;
+-- 3 Sekunden". A weapon-enchant condition that is ONLY a duration says only
+-- that - "enthaelt; nicht festgelegt" in front of it would be a comparison the
+-- aura does not make.
+local function tConditionText(aCond)
+	local tAttName = tFriendlyName(SkuAuras.attributes, aCond.att)
+	local tDuration = aCond.durOp
+		and (tDurationOperatorName(aCond.durOp)..";"..tostring(aCond.durValue or AURA_DUR_DEFAULT)..L[" Sekunden"])
+		or nil
+	if #aCond.values == 0 and tDuration then
+		return tAttName..";"..tDuration
+	end
+	local tText = tAttName..";"..tFriendlyName(SkuAuras.Operators, aCond.op)..";"..tValuesText(aCond)
+	if tDuration then
+		tText = tText..";"..tDuration
 	end
 	return tText
 end
@@ -499,7 +742,13 @@ local function tPromptForSpellValue(aNode, aCond, aCtx)
 			return
 		end
 		if not tIndexOfValue(aCond.values, tValue) then
-			aCond.values[#aCond.values + 1] = tValue
+			-- [v43.1] Same one-spell cap as the toggle list: a duration row
+			-- SWITCHES its spell, it does not collect several.
+			if aCond.durOp and tDurationBorrowsSpell[aCond.att] == true then
+				aCond.values = {tValue}
+			else
+				aCond.values[#aCond.values + 1] = tValue
+			end
 			tCtxOnChange(aCtx, aCond)
 		end
 		-- The framework parked the cursor when OnAction returned, long before
@@ -602,6 +851,20 @@ local function tBuildValueToggleList(aLevel, aCond, aOwnerNode, aCtx)
 			local tIndex = tIndexOfValue(aCond.values, self.internalName)
 			if tIndex then
 				table.remove(aCond.values, tIndex)
+			elseif aCond.durOp and tDurationBorrowsSpell[aCond.att] == true then
+				-- [v43.1] A duration row holds exactly ONE spell (see the note at
+				-- tListDurationPartner): the evaluator measures entry one, so a
+				-- second spell here would be a name the aura never checks.
+				-- Switching, not adding - and the entry that was on has to stop
+				-- saying "ein", or the level would read two selected spells while
+				-- one is stored.
+				aCond.values = {self.internalName}
+				for x = 1, #(aLevel.children or {}) do
+					local tOther = aLevel.children[x]
+					if tOther ~= self and tOther.internalName then
+						tOther.name = tToggleLabel(tValueName(tOther.internalName), false)
+					end
+				end
 			else
 				aCond.values[#aCond.values + 1] = self.internalName
 			end
@@ -625,36 +888,95 @@ local function tBuildValueToggleList(aLevel, aCond, aOwnerNode, aCtx)
 	end
 end
 
--- Plain operator entries for a select level ("Operator ändern").
-local function tBuildOperatorEntries(aLevel, aAttName)
+-- [v43.1] THE ASPECTS OF ONE CONDITION - the level under an attribute in the
+-- ADD chain, and under a condition row in the edit path. It replaced the pair
+-- "Werte ändern" / "Operator ändern": there was never anything to change about
+-- the values EXCEPT under one operator, so two entries were saying one thing
+-- and the operator step was a level that existed to be walked through.
+--
+-- An operator entry says whether it is the one in force and opens its value
+-- list; entering it IS choosing it, which is what the ADD chain always did. On
+-- a buff/debuff list attribute two more entries follow, and those hold ONLY the
+-- seconds - the spell a duration measures is the one picked under "enthält",
+-- because that is the one the evaluator measures (see tListDurationPartner).
+-- So all four aspects edit the SAME condition, which is what makes "this spell,
+-- and less than three seconds left of it" one row instead of two.
+local function tBuildConditionAspects(aLevel, aCond, aOwnerNode)
 	aLevel.sorting = true
-	local tAttribute = SkuAuras.attributes[aAttName]
-	-- An attribute with no declared type falls back to CATEGORY, exactly as the
-	-- old chained builder did; the nil guard is for a type that has no operator
-	-- subset at all, which would otherwise take the whole menu down.
-	local tOperators = SkuAuras.operatorsForAttributeType[(tAttribute and tAttribute.type) or "CATEGORY"]
-		or SkuAuras.operatorsForAttributeType.CATEGORY
-	local tSorted = TableSortByIndex(tOperators)
-	for x = 1, #tSorted do
-		local tOp = tSorted[x]
-		if tOp ~= "then" then
-			local tNode = SkuOptions:InjectMenuItems(aLevel, {tFriendlyName(SkuAuras.Operators, tOp)}, SkuGenericMenuItem)
-			tNode.internalName = tOp
-			tNode.sorting = true
-			tNode.vocalizeAsIs = true
-			tNode.elementType = "operator"
-			tNode.OnEnter = function(self)
-				tSetDraftTooltip(self, tFriendlyName(SkuAuras.Operators, self.internalName))
-			end
+	local tDurAtt = tListDurationPartner[aCond.att]
+	local tBorrows = tDurationBorrowsSpell[aCond.att] == true
+	local tNodes = {}
+
+	-- An operator entry is its name, plus the values picked under it when it is
+	-- the one IN FORCE. Nothing else - no "ein", no "aus", no "nicht
+	-- festgelegt": those three belong to the toggles one level down, where they
+	-- answer exactly one question ("is this spell picked"), and an operator
+	-- wearing them made the same words answer a different question one level up.
+	-- So a bare operator name means nothing is selected under it, and the entry
+	-- carrying values IS the comparison the aura makes.
+	--
+	-- Both entries share one value set: the storage holds one operator per
+	-- attribute group, so only one of them can be the comparison, and showing
+	-- the spells under both would say the aura checks them twice, in opposite
+	-- directions.
+	local function tOperatorLabel(aOp)
+		local tName = tFriendlyName(SkuAuras.Operators, aOp)
+		if aCond.op ~= aOp or #aCond.values == 0 then
+			return tName
+		end
+		return tName..";"..tValuesText(aCond)
+	end
+
+	-- Same rule: a duration comparison is an operator, so it says its name and,
+	-- when it is armed, the threshold. The "aus" that switches it off again is a
+	-- VALUE in its list, which is where an off state legitimately lives.
+	local function tDurationLabel(aDurOp)
+		if aCond.durOp == aDurOp then
+			return tDurationOperatorName(aDurOp)..";"..tostring(aCond.durValue or AURA_DUR_DEFAULT)..L[" Sekunden"]
+		end
+		return tDurationOperatorName(aDurOp)
+	end
+
+	-- The entries carry each other's state: choosing a duration pins the
+	-- operator to an affirmative one, choosing a negating operator drops the
+	-- duration. One changing must not leave the others reading what they said
+	-- before, and neither must the row above them.
+	local function tRefresh()
+		for x = 1, #tNodes do
+			tNodes[x].name = tNodes[x].auraAspectLabel()
+		end
+		if aOwnerNode then
+			aOwnerNode.name = tConditionText(aCond)
+		end
+		local tCondLevel = aLevel.FindAncestorById and aLevel:FindAncestorById(AURA_COND_ID)
+		if tCondLevel then
+			tCondLevel.name = tConditionsLabel()
 		end
 	end
-end
 
--- Operator entries for the ADD chain: each one descends into the value list of
--- the condition it is about to create.
-local function tBuildNewConditionOperators(aLevel, aAttName)
-	aLevel.sorting = true
-	local tAttribute = SkuAuras.attributes[aAttName]
+	-- Make aOp the comparison this condition makes. The values come along - they
+	-- are one set, and that is what "Operator ändern" always did.
+	local function tSetOperator(aOp)
+		if aCond.op == aOp then
+			return
+		end
+		aCond.op = aOp
+		-- A BORROWED duration is measured on the aura the list condition names,
+		-- so under a negating operator there is nothing to measure and it goes -
+		-- audibly, because a condition half disappearing from an aura the user
+		-- built must never be silent. A weapon-enchant duration is read
+		-- independently of its name condition, so "enthält nicht
+		-- Steinschleifstein und weniger als 60 Sekunden übrig" is a real
+		-- condition and stays.
+		if tBorrows and aCond.durOp and SkuAuras.negatingOperators[aOp] == true then
+			aCond.durOp, aCond.durValue = nil, nil
+			SkuOptions.Voice:OutputStringBTtts(L["verbleibende Dauer entfernt"], false, true, 0.2)
+		end
+		tDraftSyncCondition(aCond)
+		tRefresh()
+	end
+
+	local tAttribute = SkuAuras.attributes[aCond.att]
 	-- An attribute with no declared type falls back to CATEGORY, exactly as the
 	-- old chained builder did; the nil guard is for a type that has no operator
 	-- subset at all, which would otherwise take the whole menu down.
@@ -664,23 +986,156 @@ local function tBuildNewConditionOperators(aLevel, aAttName)
 	for x = 1, #tSorted do
 		local tOp = tSorted[x]
 		if tOp ~= "then" then
-			local tNode = SkuOptions:InjectMenuItems(aLevel, {tFriendlyName(SkuAuras.Operators, tOp)}, SkuGenericMenuItem)
+			local tNode = SkuOptions:InjectMenuItems(aLevel, {tOperatorLabel(tOp)}, SkuGenericMenuItem)
+			tNode.auraAspectLabel = function() return tOperatorLabel(tOp) end
 			tNode.internalName = tOp
 			tNode.dynamic = true
 			tNode.sorting = true
 			tNode.vocalizeAsIs = true
 			tNode.elementType = "operator"
+			tNodes[#tNodes + 1] = tNode
 			tNode.OnEnter = function(self)
-				tSetDraftTooltip(self, tFriendlyName(SkuAuras.Operators, self.internalName))
+				tSetDraftTooltip(self, tFriendlyName(SkuAuras.Operators, tOp))
 			end
+			-- [v43.1 fix] ENTERING an operator does NOT select it, and PICKING a
+			-- value under one does.
+			--
+			-- It was the other way round, and the log of the first in-game pass
+			-- (2026-08-23, 15:39) shows exactly what that costs. The user set
+			-- "gleich 2", walked over to "ungleich" to read it, and the 2 moved
+			-- there - because merely descending had rewritten the condition's
+			-- operator - then walked back into "gleich" and it moved back. A
+			-- value appeared to wander between the operators, and browsing the
+			-- level silently changed the aura.
+			--
+			-- Now the level is safe to walk: the only thing that chooses a
+			-- comparison is choosing a value under it (or the explicit entry
+			-- below, for changing the comparison while keeping the values).
 			tNode.BuildChildren = function(self)
-				-- Created here, attached to the draft by the first toggle
-				-- (tDraftSyncCondition). Backing out without toggling anything
-				-- therefore leaves no empty condition behind.
-				if not self.auraCond then
-					self.auraCond = {att = aAttName, op = self.internalName, values = {}}
+				if aCond.op ~= tOp then
+					local tUse = SkuOptions:InjectMenuItems(self, {L["diesen Vergleich verwenden"]}, SkuGenericMenuItem)
+					tUse.actionInPlace = true
+					tUse.vocalizeAsIs = true
+					tUse.sorting = true
+					tUse.elementType = "operator"
+					tUse.OnEnter = function(aSelf)
+						tSetDraftTooltip(aSelf, tFriendlyName(SkuAuras.Operators, tOp))
+					end
+					tUse.OnAction = function(aSelf)
+						tSetOperator(tOp)
+						-- Same shape as every other actionInPlace node here: it
+						-- rewrites its own name and the key handler speaks it, so
+						-- pressing "diesen Vergleich verwenden" reads back
+						-- "gleich; 2". An extra OutputString would land BEHIND
+						-- that and say it twice.
+						aSelf.name = tOperatorLabel(tOp)
+					end
 				end
-				tBuildValueToggleList(self, self.auraCond)
+				tBuildValueToggleList(self, aCond, aOwnerNode, {
+					-- The missing refresh, and the operator choice, in one place.
+					-- Without the refresh the label only ever changed when the
+					-- user entered a DIFFERENT operator, which is the second half
+					-- of the same 15:39 log: toggling a value updated the
+					-- condition and the row, and left the entry the user was
+					-- standing under reading its bare name.
+					onChange = function(aChanged)
+						if #aChanged.values > 0 then
+							tSetOperator(tOp)
+						end
+						tDraftSyncCondition(aChanged)
+						tRefresh()
+					end,
+				})
+			end
+		end
+	end
+
+	if not tDurAtt then
+		return
+	end
+
+	local tDurOps = {"smaller", "bigger"}
+	for x = 1, #tDurOps do
+		local tDurOp = tDurOps[x]
+		local tNode = SkuOptions:InjectMenuItems(aLevel, {tDurationLabel(tDurOp)}, SkuGenericMenuItem)
+		tNode.auraAspectLabel = function() return tDurationLabel(tDurOp) end
+		tNode.dynamic = true
+		tNode.isSelect = true
+		tNode.sorting = true
+		tNode.vocalizeAsIs = true
+		tNode.elementType = "value"
+		tNodes[#tNodes + 1] = tNode
+		tNode.OnEnter = function(self)
+			tSetDraftTooltip(self, tDurationOperatorName(tDurOp))
+		end
+		-- Compared against the child's NAME by the generic pre-position
+		-- (SkuZOptions/templates.lua, OnPostSelect), so it has to be the whole
+		-- label - otherwise the list always opens on its first entry instead of
+		-- on the value that is set.
+		tNode.GetCurrentValue = function(self)
+			if aCond.durOp == tDurOp then
+				return tostring(aCond.durValue or AURA_DUR_DEFAULT)..L[" Sekunden"]
+			end
+			return L["aus"]
+		end
+		tNode.OnAction = function(self, aNode)
+			if type(aNode) ~= "table" then
+				return
+			end
+			local tTruncated = false
+			if aNode.auraDurationOff == true then
+				if aCond.durOp == tDurOp then
+					aCond.durOp, aCond.durValue = nil, nil
+				end
+			elseif aNode.internalName then
+				-- durOp is ONE field, so setting this one switches the other off
+				-- by construction - the two entries cannot both be armed.
+				aCond.durOp = tDurOp
+				aCond.durValue = aNode.internalName
+				if tBorrows then
+					-- The evaluator measures entry ONE of the list group, so any
+					-- further spell here would be a name the aura never checks,
+					-- and a negated list condition would leave nothing to
+					-- measure at all.
+					while #aCond.values > 1 do
+						table.remove(aCond.values)
+						tTruncated = true
+					end
+					if SkuAuras.negatingOperators[aCond.op] == true then
+						aCond.op = "contains"
+					end
+				end
+			else
+				return
+			end
+			-- A weapon-enchant duration stands on its own, so switching one on
+			-- or off is what attaches or detaches the condition. The value
+			-- toggles do that for the borrowing attributes; nothing did it here.
+			tDraftSyncCondition(aCond)
+			tRefresh()
+			local tSpoken = self.name
+			if tTruncated == true then
+				tSpoken = tSpoken..";"..L["nur ein Zauber, weitere entfernt"]
+			end
+			SkuOptions.Voice:OutputStringBTtts(tSpoken, false, true, 0.1, true)
+		end
+		tNode.BuildChildren = function(self)
+			self.sorting = true
+			-- index 0: switch the comparison off again. Without it a duration
+			-- could be set but never unset, and "delete the whole condition and
+			-- build it again" is not an undo.
+			local tOff = SkuOptions:InjectMenuItems(self, {L["aus"]}, SkuGenericMenuItem)
+			tOff.auraDurationOff = true
+			tOff.sorting = true
+			tOff.vocalizeAsIs = true
+			tOff.elementType = "value"
+			local tValues = tSortedAttributeValues(SkuAuras.attributes[tDurAtt])
+			for y = 1, #tValues do
+				local tValueNode = SkuOptions:InjectMenuItems(self, {tostring(tValues[y])..L[" Sekunden"]}, SkuGenericMenuItem)
+				tValueNode.internalName = tValues[y]
+				tValueNode.sorting = true
+				tValueNode.vocalizeAsIs = true
+				tValueNode.elementType = "value"
 			end
 		end
 	end
@@ -691,10 +1146,17 @@ end
 -- bigger 3" plus "duration smaller 10" would silently become "bigger 3 OR
 -- smaller 10", i.e. always true. The old chained builder enforced the same rule
 -- through usedAttributes.
-local function tAttributeAllowed(aAttName)
+local function tAttributeUsable(aAttName)
 	if aAttName == "action" then
 		-- the pseudo-attribute the old chain used to reach the action step; the
 		-- action has its own section now.
+		return false
+	end
+	if tDurationAttributeOwner[aAttName] then
+		-- [v43.1] Merged into its list attribute (see tListDurationPartner). It
+		-- was never a condition anyone could use on its own: it holds a
+		-- threshold and no spell, so alone it can only ever be false. Reachable
+		-- through "Debuff Liste Ziel" -> "verbleibende Dauer kleiner" now.
 		return false
 	end
 	local tD = tDraft()
@@ -720,27 +1182,85 @@ local function tAttributeAllowed(aAttName)
 	return true
 end
 
+-- ...and whether it appears in the attribute list ITSELF, as opposed to behind
+-- a group entry. Same shape as the merged durations: an attribute is hidden from
+-- the top level when there is one place it belongs, and that place says more.
+local function tAttributeAllowed(aAttName)
+	if tVitalsGroupMember[aAttName] then
+		return false
+	end
+	return tAttributeUsable(aAttName)
+end
+
+-- One node per attribute, with the parts that both the flat list and the vitals
+-- group need. aLabel lets the group entry say something other than the plain
+-- friendlyName if it ever has to; it passes nil today.
+local function tInjectAttributeNode(aLevel, aAttName, aLabel)
+	local tNode = SkuOptions:InjectMenuItems(aLevel, {aLabel or tFriendlyName(SkuAuras.attributes, aAttName)}, SkuGenericMenuItem)
+	tNode.internalName = aAttName
+	tNode.dynamic = true
+	tNode.sorting = true
+	tNode.vocalizeAsIs = true
+	tNode.elementType = "attribute"
+	tNode.OnEnter = function(self)
+		local tEntry = SkuAuras.attributes[self.internalName]
+		tSetDraftTooltip(self, tEntry and tEntry.tooltip)
+	end
+	tNode.BuildChildren = function(self)
+		-- Created here, attached to the draft by the first toggle
+		-- (tDraftSyncCondition). Backing out without toggling anything
+		-- therefore leaves no empty condition behind. It lives on the
+		-- ATTRIBUTE node, not on an operator node, because all four
+		-- aspects below edit this one condition.
+		if not self.auraCond then
+			self.auraCond = {att = self.internalName, op = tDefaultOperator(self.internalName), values = {}}
+		end
+		tBuildConditionAspects(self, self.auraCond)
+	end
+	return tNode
+end
+
 local function tBuildAttributeList(aLevel)
 	aLevel.sorting = true
 	local tSorted = TableSortByIndex(SkuAuras.attributes)
 	local tAny = false
+
+	-- [v43.1] The vitals group first: one entry instead of six, and the pool is
+	-- the choice behind it. Listed only while at least one of its members is
+	-- still free, so it cannot open onto an empty level.
+	local tVitalsAny = false
+	for x = 1, #tVitalsGroupOrder do
+		if tAttributeUsable(tVitalsGroupOrder[x].att) then
+			tVitalsAny = true
+			break
+		end
+	end
+	if tVitalsAny then
+		tAny = true
+		local tGroup = SkuOptions:InjectMenuItems(aLevel, {L["Eigene Gesundheit oder Ressource"]}, SkuGenericMenuItem)
+		tGroup.dynamic = true
+		tGroup.sorting = true
+		tGroup.vocalizeAsIs = true
+		tGroup.elementType = "attribute"
+		tGroup.OnEnter = function(self)
+			tSetDraftTooltip(self, L["AURA_VitalsGroupTip"])
+		end
+		tGroup.BuildChildren = function(self)
+			self.sorting = true
+			for y = 1, #tVitalsGroupOrder do
+				local tMember = tVitalsGroupOrder[y]
+				if tAttributeUsable(tMember.att) then
+					tInjectAttributeNode(self, tMember.att, L[tMember.label])
+				end
+			end
+		end
+	end
+
 	for x = 1, #tSorted do
 		local tAttName = tSorted[x]
 		if tAttributeAllowed(tAttName) then
 			tAny = true
-			local tNode = SkuOptions:InjectMenuItems(aLevel, {tFriendlyName(SkuAuras.attributes, tAttName)}, SkuGenericMenuItem)
-			tNode.internalName = tAttName
-			tNode.dynamic = true
-			tNode.sorting = true
-			tNode.vocalizeAsIs = true
-			tNode.elementType = "attribute"
-			tNode.OnEnter = function(self)
-				local tEntry = SkuAuras.attributes[self.internalName]
-				tSetDraftTooltip(self, tEntry and tEntry.tooltip)
-			end
-			tNode.BuildChildren = function(self)
-				tBuildNewConditionOperators(self, self.internalName)
-			end
+			tInjectAttributeNode(aLevel, tAttName)
 		end
 	end
 	if tAny ~= true then
@@ -761,38 +1281,9 @@ local function tBuildConditionsLevel(aLevel)
 			tSetDraftTooltip(self)
 		end
 		tRow.BuildChildren = function(self)
-			local tValuesEntry = SkuOptions:InjectMenuItems(self, {L["Werte ändern"]}, SkuGenericMenuItem)
-			tValuesEntry.dynamic = true
-			tValuesEntry.OnEnter = function(self)
-				tSetDraftTooltip(self, tConditionText(tCond))
-			end
-			tValuesEntry.BuildChildren = function(self)
-				tBuildValueToggleList(self, tCond, self.parent)
-			end
-
-			local tOperatorEntry = SkuOptions:InjectMenuItems(self, {L["Operator ändern"]}, SkuGenericMenuItem)
-			tOperatorEntry.dynamic = true
-			tOperatorEntry.isSelect = true
-			tOperatorEntry.sorting = true
-			tOperatorEntry.OnEnter = function(self)
-				tSetDraftTooltip(self, tConditionText(tCond))
-			end
-			tOperatorEntry.GetCurrentValue = function(self)
-				return tFriendlyName(SkuAuras.Operators, tCond.op)
-			end
-			tOperatorEntry.OnAction = function(self, aNode)
-				if type(aNode) ~= "table" or not aNode.internalName then
-					return
-				end
-				tCond.op = aNode.internalName
-				if self.parent then
-					self.parent.name = tConditionText(tCond)
-				end
-				SkuOptions.Voice:OutputStringBTtts(tFriendlyName(SkuAuras.Operators, tCond.op), false, true, 0.1, true)
-			end
-			tOperatorEntry.BuildChildren = function(self)
-				tBuildOperatorEntries(self, tCond.att)
-			end
+			-- The same four (or two) aspects the ADD chain shows, on the stored
+			-- condition. One shape for building and for editing.
+			tBuildConditionAspects(self, tCond, self)
 
 			local tDeleteEntry = SkuOptions:InjectMenuItems(self, {L["Löschen"]}, SkuGenericMenuItem)
 			tDeleteEntry.actionInPlace = true

@@ -3342,3 +3342,30 @@ L["Debuff bei Zielwechsel ausgeben"] = "Announce a debuff when the target change
 -- Sku v43.1: aura workbench, output instead of action (SkuAuras/Options.lua)
 L["Ausgabe Typ"] = "Output type"
 L["Ausgabe"] = "Output"
+
+-- Sku v43.1: buff/debuff list and remaining duration are ONE condition (SkuAuras/Options.lua)
+L["verbleibende Dauer kleiner"] = "remaining duration less than"
+L["verbleibende Dauer groesser"] = "remaining duration more than"
+L["verbleibende Dauer"] = "remaining duration"
+L["Sekunden"] = "Seconds"
+L["nur ein Zauber, weitere entfernt"] = "one spell only, the others were removed"
+L["verbleibende Dauer entfernt"] = "remaining duration removed"
+
+-- Sku v43.1: health/resource group + individual resource pools (SkuAuras)
+L["Eigene Gesundheit oder Ressource"] = "Your health or resource"
+L["AURA_VitalsGroupTip"] = "The player's health, or one of the player's resources, as a percentage"
+L["AURA_PowerActive"] = "Your current resource"
+L["AURA_PowerActiveTip"] = "The resource whose bar the game is showing right now, as a percentage - so for a druid mana in caster form, rage in bear form, energy in cat form"
+L["AURA_PowerMana"] = "Your mana"
+L["AURA_PowerManaTip"] = "Your mana as a percentage, whichever bar is on show. Never true if your character has no mana"
+L["AURA_PowerManaOutTip"] = "Your mana as a percentage"
+L["AURA_PowerRage"] = "Your rage"
+L["AURA_PowerRageTip"] = "Your rage as a percentage, whichever bar is on show. Never true if your character has no rage"
+L["AURA_PowerRageOutTip"] = "Your rage as a percentage"
+L["AURA_PowerEnergy"] = "Your energy"
+L["AURA_PowerEnergyTip"] = "Your energy as a percentage, whichever bar is on show. Never true if your character has no energy"
+L["AURA_PowerEnergyOutTip"] = "Your energy as a percentage"
+L["AURA_PowerRunic"] = "Your runic power"
+L["AURA_PowerRunicTip"] = "Your runic power as a percentage, whichever bar is on show. Never true if your character has no runic power"
+L["AURA_PowerRunicOutTip"] = "Your runic power as a percentage"
+L["diesen Vergleich verwenden"] = "use this comparison"

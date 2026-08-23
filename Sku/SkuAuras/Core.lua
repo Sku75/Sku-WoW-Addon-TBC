@@ -1886,9 +1886,39 @@ local tEvaluateDataMT = {
 		return tValue
 	end,
 }
+-- [v43.1] Percentage of ONE specific power pool, for the four specific-resource
+-- attributes (unitManaPlayer & co). nil - so the condition is false rather than
+-- 0 - when the character has no such pool at all: UnitPowerMax comes back 0 for
+-- a warrior's mana, and dividing by it would be the bug, while reporting 0%
+-- would make "Mana kleiner 20" true for every warrior alive.
+local function tPlayerPowerPercent(aPowerIndex)
+	local tMax = UnitPowerMax("player", aPowerIndex)
+	if not tMax or tMax <= 0 then
+		return nil
+	end
+	return mfloor(UnitPower("player", aPowerIndex) / (tMax / 100))
+end
+
 tLazyEvaluateFields = {
 	spellNameUsable = function()
 		return SkuAuras:GetSpellNamesUsable()
+	end,
+	-- The power-type indices are the game's own (SkuCore/aq.lua tPowerTypes uses
+	-- the same four). LAZY on purpose: four UnitPower/UnitPowerMax pairs on every
+	-- combat-log event would be paid by every user, and only an aura that asks
+	-- for a specific pool needs them - unitPowerPlayer, the active bar, stays
+	-- eager because the pre-existing field already was.
+	unitManaPlayer = function()
+		return tPlayerPowerPercent(0)
+	end,
+	unitRagePlayer = function()
+		return tPlayerPowerPercent(1)
+	end,
+	unitEnergyPlayer = function()
+		return tPlayerPowerPercent(3)
+	end,
+	unitRunicPowerPlayer = function()
+		return tPlayerPowerPercent(6)
 	end,
 	-- [v43.0] enUS identity of the event's spell, for the group lane of the
 	-- spellName attribute. LAZY on purpose: only an aura carrying a spellName
@@ -3422,6 +3452,52 @@ function SkuAuras.SkuCheck()
 											"exists -- the migration missed it, so this aura cannot be shared across languages")
 									end
 								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	-- 5. [v43.1] duration conditions the evaluator cannot honour.
+	-- The builder merged the list and duration conditions into one row and caps
+	-- that row at one spell, so it can no longer create any of these. A stored
+	-- aura from before the merge, or a hand-edited SavedVariables file, still
+	-- can -- and every shape below is a condition whose NAME says more than its
+	-- evaluation does (see the tAuraDurationAtts loop in EvaluateAllAuras, which
+	-- reads the watched spell out of entry ONE of the list group).
+	if type(tAuras) == "table" then
+		for tAuraName, tAuraData in pairs(tAuras) do
+			if type(tAuraData) == "table" and type(tAuraData.attributes) == "table" then
+				for tListAtt in pairs(tAuraDurationAtts) do
+					local tDurAtt = tListAtt.."Duration"
+					local tDurGroup = tAuraData.attributes[tDurAtt]
+					if type(tDurGroup) == "table" and #tDurGroup > 0 then
+						local tListGroup = tAuraData.attributes[tListAtt]
+						tChecked = tChecked + 1
+						if type(tListGroup) ~= "table" or #tListGroup == 0 then
+							tViolations = tViolations + 1
+							dprint("skucheck", "VIOLATION auras: aura", tostring(tAuraName), "has", tDurAtt,
+								"but no", tListAtt, "condition -- the duration has no spell to measure, so this aura can never fire")
+						elseif #tListGroup > 1 then
+							tViolations = tViolations + 1
+							dprint("skucheck", "VIOLATION auras: aura", tostring(tAuraName), "compares", tDurAtt,
+								"while", tListAtt, "holds", #tListGroup,
+								"values -- only the first one is ever measured, the rest of the name is not evaluated")
+						elseif type(tListGroup[1]) ~= "table" or tListGroup[1][1] ~= "contains" then
+							tViolations = tViolations + 1
+							dprint("skucheck", "VIOLATION auras: aura", tostring(tAuraName), "compares", tDurAtt,
+								"while", tListAtt, "uses", tostring(tListGroup[1][1]),
+								"-- a duration is measured on an aura that is NOT there, so this aura can never fire")
+						end
+						for _, tEntry in pairs(tDurGroup) do
+							if type(tEntry) == "table" and tEntry[1] ~= "bigger" and tEntry[1] ~= "smaller" then
+								tChecked = tChecked + 1
+								tViolations = tViolations + 1
+								dprint("skucheck", "VIOLATION auras: aura", tostring(tAuraName), "uses operator",
+									tostring(tEntry[1]), "on", tDurAtt,
+									"-- a remaining duration is a continuously falling float, so equality never matches and inequality never fails")
 							end
 						end
 					end
