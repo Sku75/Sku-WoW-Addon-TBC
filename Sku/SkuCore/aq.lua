@@ -1996,6 +1996,10 @@ end
 
 --menu
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.1] Sortierte Liste aller eindeutigen Zaubernamen, einmal pro Sitzung
+-- berechnet (siehe die Begründung im "nicht ignoriert"-Builder unten).
+local tSpellNameCache = nil
+
 local function MonitorSpellMenuBuilder(self)
 	local tUnitType = "player"
 	if self.parent.parent.name == L["Party"] then
@@ -2036,24 +2040,100 @@ local function MonitorSpellMenuBuilder(self)
 	tNewMenuEntry.OnAction = function(self, aValue, aName)
 		SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tUnitType].debuffs.ignored[self.spellName] = true
 	end
+	-- [v43.1] RESUMABLE BUILD - dieselbe Behandlung wie die Aura-Wertelisten.
+	--
+	-- Diese Liste ist ihr Zwilling: ein Durchlauf durch alle ~27.000 eindeutigen
+	-- Zaubernamen aus SkuDB.SpellDataTBC, ein Menüknoten pro Name. Im
+	-- Hardcore-Log sind ALLE sechs abgebrochenen Menü-Builds Listen dieser Größe
+	-- gewesen (abgebrochen bei 4.404 bis 12.695 Einträgen von 27.105) - der
+	-- Abbruchpunkt schwankt, weil das Budget mit den anderen Addons im selben
+	-- Frame geteilt wird. Ein halb gebautes Level wird vom Guard an der
+	-- Aufrufstelle nie wieder neu gebaut und liest sich dann wie echte Daten:
+	-- eine Zauberliste, der zwanzigtausend Zauber fehlen, ohne jede Meldung.
+	--
+	-- Der Vertrag ist der von SkuOptions:ContinueInterruptedBuild: `resumableBuild`
+	-- setzen, einen eigenen Cursor führen, und beim erneuten Aufruf dort
+	-- weitermachen statt neu anzufangen (ein normales BuildChildren HÄNGT AN,
+	-- ein Neustart wären also 27.000 Duplikate).
+	--
+	-- Die Namensliste wird EINMAL eingesammelt und auf dem Level gehalten:
+	-- pairs() über SkuDB.SpellDataTBC hat keine garantierte Reihenfolge, ein
+	-- Cursor in einen Hash-Durchlauf hinein wäre also bedeutungslos. Erst
+	-- sortieren, dann indiziert abarbeiten - damit ist der Cursor stabil, und
+	-- die Liste kommt nebenbei alphabetisch statt in Hash-Reihenfolge.
 	tNewMenuEntry.BuildChildren = function(self)
-		local tFoundNames = {}
-		for spellId, spellData in pairs(SkuDB.SpellDataTBC) do
-			local spellName = spellData[Sku.Loc][SkuDB.spellKeys["name_lang"]]
-			if not SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tUnitType].debuffs.ignored[spellName] then
-				if not tFoundNames[spellName] then
-					tFoundNames[spellName] = true
-					local tSpellEntry = SkuOptions:InjectMenuItems(self, {spellName}, SkuGenericMenuItem)
-					tSpellEntry.dynamic = true
-					tSpellEntry.BuildChildren = function(self)
-						local tActionEntry = SkuOptions:InjectMenuItems(self, {L["add to ignore list"]}, SkuGenericMenuItem)
-						tActionEntry.OnEnter = function(self, aValue, aName)
-							self.selectTarget.spellName = spellName
-						end
+		local tIgnored = SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tUnitType].debuffs.ignored
+
+		-- Drei Bedingungen, und die children-Prüfung ist die entscheidende:
+		-- RebuildNodeChildren leert das Level, ohne diese Felder anzufassen -
+		-- ohne sie würde ein Rebuild während eines unfertigen Builds bei Eintrag
+		-- 6.869 eines LEEREN Levels weitermachen und alles davor verlieren.
+		local tResuming = self.buildChildrenIncomplete == true
+			and type(self.buildSorted) == "table"
+			and type(self.children) == "table" and #self.children > 0
+
+		local tNames
+		if tResuming then
+			tNames = self.buildSorted
+		elseif tSpellNameCache then
+			-- Der Durchlauf und die Sortierung kosten pro Öffnen ~27.000 Einträge,
+			-- und das Ergebnis kann sich innerhalb einer Sitzung nicht ändern:
+			-- SkuDB.SpellDataTBC wird einmal vom Chunk-Stream gebaut und Sku.Loc
+			-- liegt fest. Einmal rechnen spart die Arbeit bei jedem weiteren
+			-- Öffnen - und weniger Arbeit heißt hier auch weniger Angriffsfläche
+			-- für das Ausführungslimit, das genau diese Liste schon abgeschnitten
+			-- hat. Zwischenspeicher wird nur gesetzt, wenn die Daten fertig sind
+			-- (siehe unten), sonst würde eine halbe DB dauerhaft festgehalten.
+			tNames = tSpellNameCache
+			self.resumableBuild = true
+			self.buildSorted = tNames
+			self.buildCursor = 0
+		else
+			local tSeen = {}
+			tNames = {}
+			for spellId, spellData in pairs(SkuDB.SpellDataTBC) do
+				-- Nil-tolerant wie der Aufbau der Aura-Listen: eine zusammen-
+				-- geführte Zeile kann die Sprachtabelle nicht haben, und ein
+				-- harter Index darauf hätte den ganzen Build geworfen.
+				local tLocData = spellData and spellData[Sku.Loc]
+				local spellName = tLocData and tLocData[SkuDB.spellKeys["name_lang"]]
+				if spellName and not tSeen[spellName] then
+					tSeen[spellName] = true
+					tNames[#tNames + 1] = spellName
+				end
+			end
+			table.sort(tNames)
+			-- Nur zwischenspeichern, wenn die Zauber-Familie wirklich fertig ist.
+			-- Wird das Menü früher geöffnet, ist die Liste unvollständig, und ein
+			-- Zwischenspeicher würde diese Lücke für die ganze Sitzung festhalten.
+			if not Sku.IsDataReady or Sku:IsDataReady("skudb.spells") then
+				tSpellNameCache = tNames
+			end
+			self.resumableBuild = true
+			self.buildSorted = tNames
+			self.buildCursor = 0
+		end
+
+		for x = (self.buildCursor or 0) + 1, #tNames do
+			local spellName = tNames[x]
+			if not tIgnored[spellName] then
+				local tSpellEntry = SkuOptions:InjectMenuItems(self, {spellName}, SkuGenericMenuItem)
+				tSpellEntry.dynamic = true
+				tSpellEntry.BuildChildren = function(self)
+					local tActionEntry = SkuOptions:InjectMenuItems(self, {L["add to ignore list"]}, SkuGenericMenuItem)
+					tActionEntry.OnEnter = function(self, aValue, aName)
+						self.selectTarget.spellName = spellName
 					end
 				end
 			end
+			-- nach dem Eintrag, nie davor: wird der Build innerhalb von
+			-- InjectMenuItems abgebrochen, ist der Eintrag nicht gelandet, und
+			-- der Cursor darf das nicht behaupten
+			self.buildCursor = x
 		end
+		self.buildChildrenIncomplete = false
+		self.buildSorted = nil
+		self.buildCursor = nil
 	end
 end
 
