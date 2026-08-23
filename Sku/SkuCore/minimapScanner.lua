@@ -554,6 +554,13 @@ function MinimapScanner:MinimapStopScan()
    MinimapScanner:RestoreMinimap()
    MinimapScanner.noMouseOverNotification = nil
    MinimapScanner.IsMMScanning = false
+   -- [v43.1] Auch den Schnellscan-Lock lösen. Bisher wurde hier nur IsMMScanning
+   -- zurückgesetzt; blieb MinimapScanFastRunning stehen (abgebrochener Tail),
+   -- half kein einziger Stop-Pfad mehr heraus - weder PLAYER_STARTED_MOVING noch
+   -- Kampfbeginn noch das Abschalten des Moduls. "Scan anhalten" muss ALLE Locks
+   -- lösen, sonst ist es kein Stop.
+   MinimapScanner.MinimapScanFastRunning = false
+   MinimapScanner.MinimapScanFastStartedAt = nil
    MinimapScanner:RestoreMinimap()
    MinimapScanner.noMouseOverNotification = nil
    -- Auch Zoom/Rotation/Altitude-Hint zurücksetzen, falls vor dem Scan
@@ -721,6 +728,51 @@ local tRessourceTypes = {
 local tInitialCenterMouse
 local tPrevResult = ""
 local mmx, mmy
+
+-- [v43.1] Tooltip-Auswertung des Schnellscans, herausgezogen aus dem
+-- C_Timer-Tail von MinimapScanFast, damit sie EINZELN unter pcall laufen kann.
+--
+-- Das war der einzige ungeschützte Teil des Tails, und der Tail ist der einzige
+-- Ort, der den Scan-Lock (MinimapScanFastRunning) wieder freigibt. Jeder Fehler
+-- hier - GameTooltip liefert nichts, Sku.LocP ist nil, ein Settings-Zweig fehlt,
+-- oder die Ausführung wird abgebrochen - sprang aus dem Callback heraus, BEVOR
+-- MinimapScanFastStop lief. Und MinimapStopScan setzt den Lock nicht zurück
+-- (nur IsMMScanning), also blieb er für den Rest der Sitzung stehen: der Guard
+-- am Kopf von MinimapScanFast kehrte ab da sofort zurück, die passive
+-- Ressourcenansage schwieg bis zum nächsten /reload, und die Minimap blieb auf
+-- 15x15 mit Alpha 0 am Mauszeiger hängen. Genau dieser Fall wurde gemeldet.
+local function tScanFastScrapeTooltip()
+   local foundResult = nil
+   for i = 1, GameTooltip:NumLines() do
+      local lineFrame = _G['GameTooltipTextLeft' .. i]
+      local lineRaw = lineFrame and lineFrame:GetText()
+      if lineRaw then
+         lineRaw = SkuUtil:Unescape(lineRaw)
+         local line = string.lower(lineRaw)
+         for r = 1, #tRessourceTypes do
+            for x = 1, #tRessourceTypes[r] do
+               if SkuSettings:Sub("SkuCore").ressourceScanning[toptionTypes[r]][x] ~= false then
+                  for w in string.gmatch(tRessourceTypes[r][x][Sku.LocP], ".+") do
+                     if string.find(line, string.lower(w), 1, true)
+                        and not string.find(line, string.lower(w .. "|"), 1, true) then
+                        local hit = lineRaw
+                        if hit == "Kobaltablagerung" then hit = "Kobaltvorkommen" end
+                        if hit == "Reiche Kobaltablagerung" then hit = "Reiches Kobaltvorkommen" end
+                        foundResult = hit
+                        break
+                     end
+                  end
+               end
+               if foundResult then break end
+            end
+            if foundResult then break end
+         end
+      end
+      if foundResult then break end
+   end
+   return foundResult
+end
+
 function MinimapScanner:MinimapScanFast()
    if not MinimapScanner:IsEnabled() then return end
    if MinimapScanner.MinimapScanFastRunning == true then return end
@@ -728,6 +780,11 @@ function MinimapScanner:MinimapScanFast()
 
    MinimapScanner.noMouseOverNotification = true
    MinimapScanner.MinimapScanFastRunning = true
+   -- [v43.1] Zeitstempel des Locks. Der Lock wird erst am ENDE eines
+   -- C_Timer-Tails wieder freigegeben (MinimapScanFastStop); erreicht der Tail
+   -- sein Ende nicht, blieb er bisher für den Rest der Sitzung stehen und die
+   -- passive Ressourcenansage war tot. Siehe die Deadline im OnUpdate-Treiber.
+   MinimapScanner.MinimapScanFastStartedAt = GetTime()
    tFoundPositions = {}
 
    -- Vor-Scan-Zustand sichern, damit wir nach dem Scan exakt zurück-
@@ -828,33 +885,16 @@ function MinimapScanner:MinimapScanFast()
       -- und war an Unescape gekoppelt — fiel SkuChat weg, wurden alle Zeilen
       -- still uebersprungen. Unescape lebt jetzt in SkuUtil (laedt immer zuerst),
       -- daher braucht es keinen SkuChat-Vorhandensein-Guard mehr.
-      local foundResult = nil
-      for i = 1, GameTooltip:NumLines() do
-         local lineFrame = _G['GameTooltipTextLeft' .. i]
-         local lineRaw = lineFrame and lineFrame:GetText()
-         if lineRaw then
-            lineRaw = SkuUtil:Unescape(lineRaw)
-            local line = string.lower(lineRaw)
-            for r = 1, #tRessourceTypes do
-               for x = 1, #tRessourceTypes[r] do
-                  if SkuSettings:Sub("SkuCore").ressourceScanning[toptionTypes[r]][x] ~= false then
-                     for w in string.gmatch(tRessourceTypes[r][x][Sku.LocP], ".+") do
-                        if string.find(line, string.lower(w), 1, true)
-                           and not string.find(line, string.lower(w .. "|"), 1, true) then
-                           local hit = lineRaw
-                           if hit == "Kobaltablagerung" then hit = "Kobaltvorkommen" end
-                           if hit == "Reiche Kobaltablagerung" then hit = "Reiches Kobaltvorkommen" end
-                           foundResult = hit
-                           break
-                        end
-                     end
-                  end
-                  if foundResult then break end
-               end
-               if foundResult then break end
-            end
+      -- [v43.1] Unter pcall: alles ab hier bis MinimapScanFastStop MUSS laufen,
+      -- sonst bleibt der Scan-Lock stehen (siehe tScanFastScrapeTooltip). Ein
+      -- fehlgeschlagener Scrape heißt "nichts gefunden", nicht "Scanner tot".
+      local tScrapeOk, foundResult = pcall(tScanFastScrapeTooltip)
+      if not tScrapeOk then
+         dprint("MinimapScanFast: Tooltip-Auswertung fehlgeschlagen:", tostring(foundResult))
+         if SkuErrorLog and SkuErrorLog.Log then
+            pcall(function() SkuErrorLog:Log("minimapScanner", "MinimapScanFast scrape: " .. tostring(foundResult)) end)
          end
-         if foundResult then break end
+         foundResult = nil
       end
 
       -- Größe wiederherstellen, dann normalen Restore-Pfad gehen.
@@ -884,6 +924,7 @@ function MinimapScanner:MinimapScanFastStop(aResult)
    MinimapScanner.noMouseOverNotification = nil
    MinimapScanner.IsMMScanning = false
    MinimapScanner.MinimapScanFastRunning = false
+   MinimapScanner.MinimapScanFastStartedAt = nil
    -- Timer zurücksetzen, damit der nächste Scan erst nach vollem Intervall startet
    if MinimapScanner.minimapScannerFrame then
       MinimapScanner.minimapScannerFrame.timeCounter = 0
@@ -925,6 +966,22 @@ function MinimapScanner:MinimapScannerOnLogin()
          return
       end
       if SkuCore.inCombat == true then
+         return
+      end
+      -- [v43.1] Deadline gegen einen hängenden Schnellscan-Lock. Der Lock wird
+      -- im C_Timer-Tail freigegeben (nominell nach 0,1 s); läuft dieser Tail gar
+      -- nicht erst an - abgebrochene Ausführung, gelöschter Timer -, greift der
+      -- pcall im Tail nicht, weil er nie erreicht wird. Dann räumt das hier auf.
+      -- Ein Vergleich pro Frame, und nur solange ein Scan als laufend gilt.
+      if MinimapScanner.MinimapScanFastRunning == true
+         and MinimapScanner.MinimapScanFastStartedAt
+         and GetTime() - MinimapScanner.MinimapScanFastStartedAt > 5 then
+         dprint("MinimapScanFast: Lock nach 5 s ohne Abschluss freigegeben")
+         pcall(MinimapScanner.MinimapStopScan, MinimapScanner)
+         MinimapScanner.MinimapScanFastRunning = false
+         MinimapScanner.MinimapScanFastStartedAt = nil
+         MinimapScanner.IsMMScanning = false
+         self.timeCounter = 0
          return
       end
       if (GetUnitSpeed("player") or 0) <= 0 then
