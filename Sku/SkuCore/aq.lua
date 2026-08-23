@@ -2156,9 +2156,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.enabled == true then
 					return L["Yes"]
@@ -2173,15 +2171,10 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.enabled = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Factor in incoming heals"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.factorInIncomingHeals == true then
 					return L["Yes"]
@@ -2196,15 +2189,10 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.factorInIncomingHeals = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.instancesOnly == true then
 					return L["Yes"]
@@ -2219,10 +2207,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.instancesOnly = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output start at"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
@@ -2266,9 +2251,7 @@ function Aq:MonitorMenuBuilder()
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on 100 and 0 percent"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.silentOn100and0 == true then
 					return L["Yes"]
@@ -2283,10 +2266,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.health.silentOn100and0 = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 			
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
@@ -2372,9 +2352,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.enabled == true then
 					return L["Yes"]
@@ -2389,10 +2367,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.enabled = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Power Type"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
@@ -2416,9 +2391,7 @@ function Aq:MonitorMenuBuilder()
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.instancesOnly == true then
 					return L["Yes"]
@@ -2433,10 +2406,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.instancesOnly = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output start at"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
@@ -2480,9 +2450,7 @@ function Aq:MonitorMenuBuilder()
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on 100 and 0 percent"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.silentOn100and0 == true then
 					return L["Yes"]
@@ -2497,10 +2465,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.power.silentOn100and0 = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 			
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
@@ -2580,9 +2545,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.enabled == true then
 					return L["Yes"]
@@ -2597,40 +2560,30 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.enabled = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["debuff types"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
-			tNewMenuEntry.OnAction = function(self, aValue, aName)
-				if aName == L["Enabled"] then
-					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.types[self.itemName] = true
-				else
-					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.types[self.itemName] = false
-				end
-			end
+			-- Jeder Debuff-Typ ist ein eigener Zwei-Zustands-Eintrag: er liest
+			-- "<Typ>;an/aus" und ENTER schaltet ihn um. Frueher trug die Ebene den
+			-- OnAction, und der gerade angesteuerte Typ wurde ueber OnEnter in
+			-- selectTarget.itemName gemerkt -- ein Umweg, den ein Eintrag mit
+			-- eigenem Schreibzugriff nicht mehr braucht.
 			tNewMenuEntry.BuildChildren = function(self)
 				for i, v in pairs(tDebuffTypes) do
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
-					tNewMenuEntry.dynamic = true
-					tNewMenuEntry.OnEnter = function(self, aValue, aName)
-						self.selectTarget.itemName = i
-					end
-					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-						if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.types[i] == true then
-							return L["Enabled"]
-						else
-							return L["disabled"]
-						end
-					end
-					tNewMenuEntry.BuildChildren = function(self)
-						SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-						SkuOptions:InjectMenuItems(self, {L["disabled"]}, SkuGenericMenuItem)
-					end
+					local tTypeEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+					SkuOptions:MakeToggleNode(tTypeEntry, {
+						label = v,
+						onLabel = L["Enabled"],
+						offLabel = L["disabled"],
+						get = function()
+							return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.types[i] == true
+						end,
+						set = function(self, aNewValue)
+							SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.types[i] = aNewValue
+						end,
+					})
 				end
 			end
 
@@ -2639,9 +2592,7 @@ function Aq:MonitorMenuBuilder()
 			tNewMenuEntry.BuildChildren = MonitorSpellMenuBuilder
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.instancesOnly == true then
 					return L["Yes"]
@@ -2656,10 +2607,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].player.debuffs.instancesOnly = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output starts after seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
@@ -2768,9 +2716,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.enabled == true then
 					return L["Yes"]
@@ -2785,15 +2731,10 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.enabled = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Factor in incoming heals"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.factorInIncomingHeals == true then
 					return L["Yes"]
@@ -2808,15 +2749,10 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.factorInIncomingHeals = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.instancesOnly == true then
 					return L["Yes"]
@@ -2831,10 +2767,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.instancesOnly = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output start at"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
@@ -2878,9 +2811,7 @@ function Aq:MonitorMenuBuilder()
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on 100 and 0 percent"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.silentOn100and0 == true then
 					return L["Yes"]
@@ -2895,10 +2826,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].pet.health.silentOn100and0 = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 			
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
@@ -2977,9 +2905,7 @@ function Aq:MonitorMenuBuilder()
 			-- "Gesundheit" unter Monitor -> Gesundheit und Status -> Tier
 			-- (vorher faelschlich unter Tier -> Gesundheit). self ist hier der Tier-Knoten.
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Notice on pet starving"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore").classes.hunter.petHappyness == true then
 					return L["Yes"]
@@ -2994,10 +2920,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore").classes.hunter.petHappyness = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 	end
 
 	--party
@@ -3010,9 +2933,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.enabled == true then
 					return L["Yes"]
@@ -3027,15 +2948,10 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.enabled = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.instancesOnly == true then
 					return L["Yes"]
@@ -3050,15 +2966,10 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.instancesOnly = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.continouslyEnabled == true then
 					return L["Yes"]
@@ -3073,10 +2984,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.continouslyEnabled = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
@@ -3095,9 +3003,7 @@ function Aq:MonitorMenuBuilder()
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on all at 100 percent"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.silentAtAll100 == true then
 					return L["Yes"]
@@ -3112,10 +3018,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.silentAtAll100 = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Speed"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
@@ -3134,9 +3037,7 @@ function Aq:MonitorMenuBuilder()
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Include self"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.includeSelf == true then
 					return L["Yes"]
@@ -3151,10 +3052,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health.includeSelf = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end			
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 		end
 		]]
 
@@ -3163,9 +3061,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.enabled == true then
 					return L["Yes"]
@@ -3180,15 +3076,10 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.enabled = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Factor in incoming heals"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.factorInIncomingHeals == true then
 					return L["Yes"]
@@ -3203,10 +3094,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.factorInIncomingHeals = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Role assignment"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
@@ -3329,8 +3217,6 @@ function Aq:MonitorMenuBuilder()
 			tNewMenuEntry.BuildChildren = function(self)
 				for x = 1, #tRoles do
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tRoles[x]}, SkuGenericMenuItem)
-					tNewMenuEntry.dynamic = true
-					tNewMenuEntry.isSelect = true
 					tNewMenuEntry.OnAction = function(self, aValue, aName)
 						if aName == L["No"] then
 							SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.prioOutput[x] = false
@@ -3345,17 +3231,12 @@ function Aq:MonitorMenuBuilder()
 							return L["Yes"]
 						end
 					end
-					tNewMenuEntry.BuildChildren = function(self)
-						SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-						SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-					end
+					SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 				end
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on 100 and 0 percent"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.silentOn100and0 == true then
 					return L["Yes"]
@@ -3370,15 +3251,10 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.silentOn100and0 = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add sound on 100 percent"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.addSoundOn100Percent == true then
 					return L["Yes"]
@@ -3393,15 +3269,10 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.addSoundOn100Percent = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end		
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add Dead on 0 percent"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.addDeadOn0Percent == true then
 					return L["Yes"]
@@ -3416,10 +3287,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.health2.addDeadOn0Percent = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end				
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
@@ -3475,9 +3343,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.enabled == true then
 					return L["Yes"]
@@ -3492,40 +3358,30 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.enabled = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["debuff types"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
-			tNewMenuEntry.OnAction = function(self, aValue, aName)
-				if aName == L["Enabled"] then
-					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.types[self.itemName] = true
-				else
-					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.types[self.itemName] = false
-				end
-			end
+			-- Jeder Debuff-Typ ist ein eigener Zwei-Zustands-Eintrag: er liest
+			-- "<Typ>;an/aus" und ENTER schaltet ihn um. Frueher trug die Ebene den
+			-- OnAction, und der gerade angesteuerte Typ wurde ueber OnEnter in
+			-- selectTarget.itemName gemerkt -- ein Umweg, den ein Eintrag mit
+			-- eigenem Schreibzugriff nicht mehr braucht.
 			tNewMenuEntry.BuildChildren = function(self)
 				for i, v in pairs(tDebuffTypes) do
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
-					tNewMenuEntry.dynamic = true
-					tNewMenuEntry.OnEnter = function(self, aValue, aName)
-						self.selectTarget.itemName = i
-					end
-					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-						if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.types[i] == true then
-							return L["Enabled"]
-						else
-							return L["disabled"]
-						end
-					end
-					tNewMenuEntry.BuildChildren = function(self)
-						SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-						SkuOptions:InjectMenuItems(self, {L["disabled"]}, SkuGenericMenuItem)
-					end
+					local tTypeEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+					SkuOptions:MakeToggleNode(tTypeEntry, {
+						label = v,
+						onLabel = L["Enabled"],
+						offLabel = L["disabled"],
+						get = function()
+							return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.types[i] == true
+						end,
+						set = function(self, aNewValue)
+							SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.types[i] = aNewValue
+						end,
+					})
 				end
 			end
 
@@ -3534,9 +3390,7 @@ function Aq:MonitorMenuBuilder()
 			tNewMenuEntry.BuildChildren = MonitorSpellMenuBuilder
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.instancesOnly == true then
 					return L["Yes"]
@@ -3551,10 +3405,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.instancesOnly = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output starts after seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
@@ -3605,9 +3456,7 @@ function Aq:MonitorMenuBuilder()
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unit number first"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.numberFirst == true then
 					return L["Yes"]
@@ -3622,10 +3471,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].party.debuffs.numberFirst = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
@@ -3709,9 +3555,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.enabled == true then
 					return L["Yes"]
@@ -3726,15 +3570,10 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.enabled = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Factor in incoming heals"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.factorInIncomingHeals == true then
 					return L["Yes"]
@@ -3749,10 +3588,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.factorInIncomingHeals = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Role assignment"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
@@ -3938,8 +3774,6 @@ function Aq:MonitorMenuBuilder()
 			tNewMenuEntry.BuildChildren = function(self)
 				for x = 1, #tRoles do
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tRoles[x]}, SkuGenericMenuItem)
-					tNewMenuEntry.dynamic = true
-					tNewMenuEntry.isSelect = true
 					tNewMenuEntry.OnAction = function(self, aValue, aName)
 						if aName == L["No"] then
 							SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.prioOutput[x] = false
@@ -3954,18 +3788,13 @@ function Aq:MonitorMenuBuilder()
 							return L["Yes"]
 						end
 					end
-					tNewMenuEntry.BuildChildren = function(self)
-						SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-						SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-					end
+					SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 				end
 			end
 
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on 100 and 0 percent"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.silentOn100and0 == true then
 					return L["Yes"]
@@ -3980,16 +3809,11 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.silentOn100and0 = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add sound on 100 percent"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.addSoundOn100Percent == true then
 					return L["Yes"]
@@ -4004,16 +3828,11 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.addSoundOn100Percent = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end		
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 			
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add Dead on 0 percent"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.addDeadOn0Percent == true then
 					return L["Yes"]
@@ -4028,10 +3847,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.health2.addDeadOn0Percent = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end				
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 			
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
@@ -4090,9 +3906,7 @@ function Aq:MonitorMenuBuilder()
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.enabled == true then
 					return L["Yes"]
@@ -4107,40 +3921,30 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.enabled = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["debuff types"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
-			tNewMenuEntry.OnAction = function(self, aValue, aName)
-				if aName == L["Enabled"] then
-					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.types[self.itemName] = true
-				else
-					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.types[self.itemName] = false
-				end
-			end
+			-- Jeder Debuff-Typ ist ein eigener Zwei-Zustands-Eintrag: er liest
+			-- "<Typ>;an/aus" und ENTER schaltet ihn um. Frueher trug die Ebene den
+			-- OnAction, und der gerade angesteuerte Typ wurde ueber OnEnter in
+			-- selectTarget.itemName gemerkt -- ein Umweg, den ein Eintrag mit
+			-- eigenem Schreibzugriff nicht mehr braucht.
 			tNewMenuEntry.BuildChildren = function(self)
 				for i, v in pairs(tDebuffTypes) do
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
-					tNewMenuEntry.dynamic = true
-					tNewMenuEntry.OnEnter = function(self, aValue, aName)
-						self.selectTarget.itemName = i
-					end
-					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-						if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.types[i] == true then
-							return L["Enabled"]
-						else
-							return L["disabled"]
-						end
-					end
-					tNewMenuEntry.BuildChildren = function(self)
-						SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-						SkuOptions:InjectMenuItems(self, {L["disabled"]}, SkuGenericMenuItem)
-					end
+					local tTypeEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+					SkuOptions:MakeToggleNode(tTypeEntry, {
+						label = v,
+						onLabel = L["Enabled"],
+						offLabel = L["disabled"],
+						get = function()
+							return SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.types[i] == true
+						end,
+						set = function(self, aNewValue)
+							SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.types[i] = aNewValue
+						end,
+					})
 				end
 			end
 
@@ -4149,9 +3953,7 @@ function Aq:MonitorMenuBuilder()
 			tNewMenuEntry.BuildChildren = MonitorSpellMenuBuilder
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.instancesOnly == true then
 					return L["Yes"]
@@ -4166,10 +3968,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.instancesOnly = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 			
 
 
@@ -4273,9 +4072,7 @@ function Aq:MonitorMenuBuilder()
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unit number first"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.sorting = true
-			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 				if SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.numberFirst == true then
 					return L["Yes"]
@@ -4290,10 +4087,7 @@ function Aq:MonitorMenuBuilder()
 					SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet].raid.debuffs.numberFirst = true
 				end
 			end
-			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			end
+			SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["Yes"], L["No"])
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true

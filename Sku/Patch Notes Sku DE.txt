@@ -36,6 +36,7 @@ Aenderungen in Sku v43.0
             Die Werteliste "zauber benutzbar" oeffnet ohne Haenger, und alle Aura-Wertelisten oeffnen spuerbar schneller.
             Jeder Menueeintrag im ganzen Addon wird rund 13 mal guenstiger erzeugt; die grossen Zauberlisten oeffnen dadurch etwa dreimal so schnell.
             Eine Liste, deren Aufbau vom Server abgebrochen wurde, wird im naechsten Frame weitergebaut statt unbemerkt unvollstaendig zu bleiben.
+            Einstellungen mit zwei Werten sagen ihren Wert gleich mit und schalten mit Enter um; Pfeil rechts und das Untermenue entfallen.
 
         Fehlerbehebungen
             Franzoesische Clients: alle Aura-Sounds und aufgenommenen Sprachclips waren stumm (Korrektur von Naxedim).
@@ -56,6 +57,7 @@ Aenderungen in Sku v43.0
             Energiemonitor: die Ressourcenauswahl "nichts" warf laufend Lua-Fehler.
             Energiemonitor: ein im Funktionsmenue abgeschalteter Monitor sagte Ressourcenaenderungen trotzdem an.
             Franzoesische Clients: die Liste der Waffenverzauberungen fuer Auren war leer.
+            Auren: der Zauberwechsel in einer Dauer-Bedingung haengte kurz, und ueber "Zauber eingeben" blieb der vorherige Zauber als ausgewaehlt stehen.
 
     Mit Dank an Naxedim und ZenqFR
         Die naechsten vier Korrekturen sind die ersten direkten Code-Beitraege zum inzwischen
@@ -991,6 +993,55 @@ Aenderungen in Sku v43.0
             den der Abbruch verhindert hat. Macht ein Durchlauf keinen Fortschritt, wird
             aufgegeben statt endlos zu wiederholen. /skucheck menu prueft an einer Wegwerf-Ebene,
             dass ein abgebrochener Aufbau fortgesetzt und nicht neu begonnen wird.
+
+    Einstellungen mit zwei Werten sind jetzt Schalter statt Untermenues
+        Einfach: Eine Einstellung, die nur zwei Zustaende kennt - "Ein" und "Aus", "Ja" und
+            "Nein" -, sagt ihren Wert jetzt gleich beim Vorlesen mit: du hoerst zum Beispiel
+            "Sku Menue im Kampf; ein". Enter schaltet um, der Fokus bleibt stehen, und du hoerst
+            den Eintrag sofort im neuen Zustand. Pfeil rechts brauchst du dafuer nicht mehr, denn
+            das Untermenue mit den beiden Werten gibt es nicht mehr. Vorher waren es drei Tasten -
+            rechts, Pfeil, Enter -, und man musste ueberhaupt erst hineingehen, um zu erfahren,
+            wie die Einstellung gerade steht. Das betrifft die gesamten Einstellungen, den
+            Gesundheits- und Kampfmonitor, die Filter von Chat- und Kampfprotokoll, das
+            Funktionsmenue, das Kameramenue und die Einstellungen fremder Addons: rund 150
+            Eintraege. Einstellungen mit MEHR als zwei Werten behalten ihre Liste, dort gibt es
+            ja etwas auszuwaehlen.
+        Technisch: Neues gemeinsames Menue-Element SkuOptions:MakeToggleNode in
+            SkuZOptions/templates.lua; SkuOptions:MakeInPlaceToggle stellt eine vorhandene
+            isSelect-Stelle mit EINER Zeile darauf um und benutzt deren eigenes GetCurrentValue
+            und OnAction weiter, damit jede Besonderheit einer Einstellung bleibt, wie sie war.
+            Welcher der beiden Werte dabei als "ein" uebergeben wird, ist egal, und genau das
+            machte die Umstellung der rund 50 vorhandenen Ja/Nein-Stellen mechanisch. Ein Schalter
+            ist ein Blatt (actionInPlace, kein dynamic, keine Kinder) - deshalb tut Pfeil rechts
+            nichts mehr -, und ein RefreshLiveName liest den Zustand unmittelbar vor jeder Ansage
+            neu; das alte Untermenue bekam das umsonst, weil es bei jedem Abstieg GetCurrentValue
+            aufrief. Drei Fallen dabei: der Pfadlauf von SkuOptions:SlashFunc und die
+            Einstellungssuche waehlen mit aEnterFlag = true aus und haetten einen so benannten
+            Schalter UMGELEGT, statt ihn anzusteuern - beide setzen jetzt nur den Fokus, und die
+            Suche vergleicht gegen toggleLabel, weil der Name den Zustand traegt. Auf den
+            Filtereintrag einer Liste wird RefreshLiveName nicht angewandt: SkuOptions:ApplyFilter
+            baut ihn als Kopie des ersten Kindes, und die Kopie wuerde sonst den getippten Text
+            ueberschreiben. Und ein Schalter, dessen Leser einen Fehler wirft, wird in
+            /skucheck menu gezaehlt - er klaenge sonst wie eine Einstellung ohne Wert statt wie
+            ein Defekt.
+
+    Auren: der Zauberwechsel in einer Dauer-Bedingung haengte
+        Einfach: Eine Bedingung mit Dauer ("laenger als", "kuerzer als") haelt genau einen Zauber.
+            Wechselte man ihn, ging Sku danach die ganze Liste durch, nur um den vorher gewaehlten
+            Eintrag wieder auf "aus" zu setzen - bei den Buff- und Debufflisten sind das 27.000
+            Eintraege bei JEDEM Enter, auf Hardcore-Realms genau die Stelle, an der der Server
+            gern abbricht. Jeder Eintrag sagt jetzt beim Vorlesen selbst, wie er steht, und das
+            Durchgehen entfaellt. Nebenbei behoben: wer den Zauber ueber "Zauber eingeben" tippte,
+            bekam den vorher gewaehlten Eintrag weiterhin als "ein" vorgelesen - die Liste nannte
+            zwei ausgewaehlte Zauber, gespeichert war einer.
+        Technisch: tValueToggleRefreshLiveName in SkuAuras/Options.lua ist EINE geteilte Funktion,
+            die per Referenz an jeden Eintrag gehaengt wird: kein Closure pro Eintrag, also keine
+            zusaetzliche Belegung beim Aufbau. Sie liest internalName gegen auraCond der Ebene und
+            laeuft einmal pro Tastendruck, nicht einmal pro Eintrag. Die grossen Wertelisten gehen
+            bewusst NICHT ueber MakeToggleNode: das kostete drei Closures und eine Tabelle je
+            Eintrag - bei 27.057 Eintraegen genau die Kosten pro Knoten, die der Umbau dieser
+            Version beseitigt hat. Wertegruppen setzen self.auraCond in ihrem BuildChildren, damit
+            der begrenzte Elternlauf sie findet.
 
 
 -------------------------------------------------------------------------------------------------------

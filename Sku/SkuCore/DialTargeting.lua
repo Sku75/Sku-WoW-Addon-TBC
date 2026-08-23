@@ -461,9 +461,7 @@ function DialTargeting:DialTargetingMenuBuilder()
    end
 
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Single key action in raids up to 10 players"]}, SkuGenericMenuItem)
-   tNewMenuEntry.dynamic = true
    tNewMenuEntry.sorting = true
-   tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
       return SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10
    end
@@ -471,10 +469,9 @@ function DialTargeting:DialTargetingMenuBuilder()
       SkuSettings:Sub("SkuCore").dialTargeting.singleKeyinRaid10 = aName
       DialTargeting:DialTargeting_EndableDisable()
    end
-   tNewMenuEntry.BuildChildren = function(self)
-      SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
-      SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
-   end
+   -- Two values, so it is one entry: reads "<name>;<state>", ENTER flips it.
+   -- The stored value stays the localized label the old On/Off children wrote.
+   SkuOptions:MakeInPlaceToggle(tNewMenuEntry)
 
 
 end

@@ -112,9 +112,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- The generic "Features" menu: one On/Off toggle per registered module. Each
--- toggle node mirrors the IterateOptionsArgs toggle shape (isSelect + On/Off
--- children + GetCurrentValue cursor pre-position + OnAction) but routes the write
--- through SetModuleEnabled so toggling truly enables/disables the feature.
+-- entry is a real in-place toggle (SkuOptions:MakeToggleNode, same element the
+-- settings tree uses since v43.0): it reads "<feature>;<state>" and ENTER flips
+-- it. The write routes through SetModuleEnabled, so toggling truly enables or
+-- disables the feature rather than only storing a flag.
 local function resolveLabel(aEntry)
 	local lbl = aEntry.label
 	if type(lbl) == "function" then
@@ -128,23 +129,11 @@ end
 
 local function buildModuleToggle(aParent, aName, aLabel)
 	local tEntry = SkuOptions:InjectMenuItems(aParent, {aLabel}, SkuGenericMenuItem)
-	tEntry.dynamic = true
-	tEntry.isSelect = true
-	tEntry.OnAction = function(self, aValue, aChildName)
-		if aChildName == L["On"] then
-			SkuCore:SetModuleEnabled(aName, true)
-		elseif aChildName == L["Off"] then
-			SkuCore:SetModuleEnabled(aName, false)
-		end
-	end
-	tEntry.BuildChildren = function(self)
-		SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
-		SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
-	end
-	tEntry.GetCurrentValue = function(self)
-		if SkuCore:IsModuleEnabled(aName) then return L["On"] else return L["Off"] end
-	end
-	return tEntry
+	return SkuOptions:MakeToggleNode(tEntry, {
+		label = aLabel,
+		get = function() return SkuCore:IsModuleEnabled(aName) == true end,
+		set = function(self, aNewValue) SkuCore:SetModuleEnabled(aName, aNewValue) end,
+	})
 end
 
 function SkuCore:FeaturesMenuBuilder(aEntry)

@@ -2164,9 +2164,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
             end
 
             tNewMenuEntryFilterOption = SkuOptions:InjectMenuItems(self, {L["Nur benutzbare"]}, SkuGenericMenuItem)
-            tNewMenuEntryFilterOption.dynamic = true
             tNewMenuEntryFilterOption.sorting = true
-            tNewMenuEntryFilterOption.isSelect = true
             tNewMenuEntryFilterOption.noStepUpAfterSelect = true
             tNewMenuEntryFilterOption.GetCurrentValue = function(self, aValue, aName)
                if SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable == true then
@@ -2183,10 +2181,7 @@ function AuctionHouse:AuctionHouseMenuBuilder()
                   SkuSettings:Sub("SkuCore", nil, "char").AuctionCurrentFilter.Usable = false
                end
             end
-            tNewMenuEntryFilterOption.BuildChildren = function(self)
-               SkuOptions:InjectMenuItems(self, {L["Ein"]}, SkuGenericMenuItem)
-               SkuOptions:InjectMenuItems(self, {L["Aus"]}, SkuGenericMenuItem)
-            end
+            SkuOptions:MakeInPlaceToggle(tNewMenuEntryFilterOption, L["Ein"], L["Aus"])
          end    
 
          tNewMenuEntryCategorySub = SkuOptions:InjectMenuItems(self, {L["Sortierung"]}, SkuGenericMenuItem)

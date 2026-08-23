@@ -1066,9 +1066,7 @@ function Taxi.AnnounceMenuBuilder(aParentEntry)
       Sku.deEn("Flugpunkte zum Landen ansagen", "Announce flight points you can land at",
          "Annoncer les points de vol où atterrir"),
    }, SkuGenericMenuItem)
-   tNewMenuEntry.dynamic = true
    tNewMenuEntry.sorting = true
-   tNewMenuEntry.isSelect = true
    tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
       if tAnnounceEnabled() == true then
          return L["Yes"]
@@ -1083,10 +1081,7 @@ function Taxi.AnnounceMenuBuilder(aParentEntry)
          SkuSettings:Set("SkuCore", "taxiAnnounceLandingPoints", true)
       end
    end
-   tNewMenuEntry.BuildChildren = function(self)
-      SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-      SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-   end
+   SkuOptions:MakeInPlaceToggle(tNewMenuEntry, L["No"], L["Yes"])
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

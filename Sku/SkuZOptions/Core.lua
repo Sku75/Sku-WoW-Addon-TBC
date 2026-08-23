@@ -350,7 +350,13 @@ function SkuOptions:SlashFunc(input, aSilent)
 					if tIsMatch then
 						tFoundMenuPos = tMenu[y]
 						tSelectedInLoop = tMenu[y]
-						tMenu[y].OnSelect(tMenu[y], true)
+						-- [v43.0] A two-value setting (SkuOptions:MakeToggleNode) acts on
+						-- ENTER, and this walk selects with aEnterFlag = true -- so naming
+						-- one in a path would FLIP it. "Navigate me to this setting" must
+						-- not change it; park the cursor and let the user press ENTER.
+						if tMenu[y].isSkuToggle ~= true then
+							tMenu[y].OnSelect(tMenu[y], true)
+						end
 						tMenu = tMenu[y].children
 						break
 					end
@@ -372,7 +378,13 @@ function SkuOptions:SlashFunc(input, aSilent)
 				-- job -- same node, children present, and no actionOnEnter (for those the two
 				-- calls genuinely differ: the loop passes aEnterFlag=true, which fires the
 				-- action, while this one descends).
-				if tFoundMenuPos == tSelectedInLoop
+				if tFoundMenuPos.isSkuToggle == true then
+					-- Landed ON a two-value setting: that is the destination, not a
+					-- level to descend into and not an action to run. Speak it in its
+					-- current state and leave the menu open.
+					SkuOptions.currentMenuPosition = tFoundMenuPos
+					SkuOptions:VocalizeCurrentMenuName()
+				elseif tFoundMenuPos == tSelectedInLoop
 					and tFoundMenuPos.actionOnEnter ~= true
 					and tFoundMenuPos.children and #tFoundMenuPos.children > 0
 				then
@@ -2270,24 +2282,19 @@ function SkuOptions:CreateMainFrame()
 
 							-- [41.05] Warnton wenn das Folgen (Autofollow) abbricht. Logik in SkuCore\visualAids.lua.
 							local tFollowWarnEntry = SkuOptions:InjectMenuItems(self, {L["Warnton wenn Folgen abbricht"]}, SkuGenericMenuItem)
-							tFollowWarnEntry.dynamic = true
-							tFollowWarnEntry.isSelect = true
-							tFollowWarnEntry.GetCurrentValue = function(self, aValue, aName)
-								if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.FollowWarnGetEnabled and SkuCore.VisualAids:FollowWarnGetEnabled() then
-									return L["ein"]
-								else
-									return L["aus"]
-								end
-							end
-							tFollowWarnEntry.OnAction = function(self, aValue, aName)
-								if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.FollowWarnSetEnabled then
-									SkuCore.VisualAids:FollowWarnSetEnabled(aName == L["ein"])
-								end
-							end
-							tFollowWarnEntry.BuildChildren = function(self)
-								SkuOptions:InjectMenuItems(self, {L["ein"]}, SkuGenericMenuItem)
-								SkuOptions:InjectMenuItems(self, {L["aus"]}, SkuGenericMenuItem)
-							end
+							SkuOptions:MakeToggleNode(tFollowWarnEntry, {
+								onLabel = L["ein"],
+								offLabel = L["aus"],
+								get = function()
+									return SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.FollowWarnGetEnabled
+										and SkuCore.VisualAids:FollowWarnGetEnabled() == true
+								end,
+								set = function(self, aNewValue)
+									if SkuCore and SkuCore.VisualAids and SkuCore.VisualAids.FollowWarnSetEnabled then
+										SkuCore.VisualAids:FollowWarnSetEnabled(aNewValue)
+									end
+								end,
+							})
 
 							-- [41.05] Gegnerstatus Kampf: Beep + gesprochener Status beim Anvisieren.
 							-- Logik in SkuMob\Core.lua (PLAYER_TARGET_CHANGED). Werte off/beep/announce,
@@ -4642,8 +4649,18 @@ function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString)
 	-- Option 2 (live values): a leaf may carry a RefreshLiveName function
 	-- that re-reads its underlying game data and rewrites self.name right
 	-- before we speak it. This keeps frame-walker leaves (e.g. character
-	-- stats) current without rebuilding the menu or re-anchoring it.
-	if tTable and tTable.RefreshLiveName then
+	-- stats) and two-value settings (SkuOptions:MakeToggleNode) current without
+	-- rebuilding the menu or re-anchoring it.
+	--
+	-- NOT on the filter header: SkuOptions:ApplyFilter builds it by COPYING the
+	-- level's first child and renaming it to "Filter;<typed>". The copy brings
+	-- this function along, so refreshing here would overwrite the typed string
+	-- with the copied entry's own label - the user would type into a row that
+	-- keeps reading back as a setting.
+	if tTable and tTable.RefreshLiveName
+		and not (type(tTable.name) == "string"
+			and string.sub(tTable.name, 1, string.len(L["Filter"]..";")) == L["Filter"]..";")
+	then
 		pcall(function() tTable:RefreshLiveName() end)
 	end
 
@@ -6458,15 +6475,6 @@ function SkuOptions.CameraMenuBuilder(self)
 							SkuOptions:InjectMenuItems(aSelf, {tName}, SkuGenericMenuItem)
 						end
 					end
-					local function tBuildOnOff(aSelf, aCVar)
-						local tIsOn = (GetCVar(aCVar) ~= "0" and GetCVar(aCVar) ~= nil)
-						local tOnLabel = L["on"]
-						local tOffLabel = L["off"]
-						if tIsOn then tOnLabel = tOnLabel.." "..L["CAM_Active"] end
-						if not tIsOn then tOffLabel = tOffLabel.." "..L["CAM_Active"] end
-						SkuOptions:InjectMenuItems(aSelf, {tOnLabel}, SkuGenericMenuItem)
-						SkuOptions:InjectMenuItems(aSelf, {tOffLabel}, SkuGenericMenuItem)
-					end
 					local function tCleanName(aName)
 						if not aName then return "" end
 						return string.gsub(aName, " "..L["CAM_Active"], "")
@@ -6480,53 +6488,49 @@ function SkuOptions.CameraMenuBuilder(self)
 						pcall(SetView, 2)
 					end
 
-					-- 7.1 Sku Standard — nach rechts fuer Optionen
-					local tStdStatus = tIsLocked() and L["CAM_StatusLocked"] or L["CAM_StatusFree"]
-					local tSkuStdEntry = SkuOptions:InjectMenuItems(self, {L["CAM_SkuDefault"]..", "..tStdStatus}, SkuGenericMenuItem)
-					tSkuStdEntry.dynamic = true
-					tSkuStdEntry.isSelect = true
-					tSkuStdEntry.OnAction = function(self, aValue, aName)
-						local db = tCamDB()
-						if aName == L["CAM_ActivateSku"] or string.find(aName, L["CAM_ActivateSku"]) then
-							-- SkuStandart einschalten
-							for cvar, _ in pairs(tSkuDefaults) do
-								db.userValues[cvar] = GetCVar(cvar)
-							end
-							db.skuStandard = true
-							db.preferFree = false   -- [Kamera-Entkopplung] beim naechsten Login wieder SkuStandard erzwingen
-							tDoSkuReset()
-							C_Timer.After(0.3, function()
-								tCamSay(L["CAM_SkuDefaultOn"])
-							end)
-							C_Timer.After(3, function()
-								tCamSay(L["CAM_AltF4Reminder"])
-							end)
-						elseif aName == L["CAM_FreeMenu"] then
-							-- Videomenue freigeben
-							db.skuStandard = false
-							db.preferFree = true   -- [Kamera-Entkopplung] Wunsch merken: beim Login mein Profil automatisch laden
-							db.userValues = db.userValues or {}
-							for cvar, _ in pairs(tSkuDefaults) do
-								if db.userValues[cvar] then
-									tApplyCVar(cvar, db.userValues[cvar])
+					-- 7.1 Sku Standard — ENTER schaltet um (zwei Zustaende, kein Untermenue)
+					local tSkuStdEntry = SkuOptions:InjectMenuItems(self, {L["CAM_SkuDefault"]}, SkuGenericMenuItem)
+					SkuOptions:MakeToggleNode(tSkuStdEntry, {
+						label = L["CAM_SkuDefault"],
+						onLabel = L["CAM_StatusLocked"],
+						offLabel = L["CAM_StatusFree"],
+						get = function() return tIsLocked() end,
+						set = function(self, aNewValue)
+							local db = tCamDB()
+							if aNewValue == true then
+								-- SkuStandart einschalten
+								for cvar, _ in pairs(tSkuDefaults) do
+									db.userValues[cvar] = GetCVar(cvar)
+								end
+								db.skuStandard = true
+								db.preferFree = false   -- [Kamera-Entkopplung] beim naechsten Login wieder SkuStandard erzwingen
+								tDoSkuReset()
+							else
+								-- Videomenue freigeben
+								db.skuStandard = false
+								db.preferFree = true   -- [Kamera-Entkopplung] Wunsch merken: beim Login mein Profil automatisch laden
+								db.userValues = db.userValues or {}
+								for cvar, _ in pairs(tSkuDefaults) do
+									if db.userValues[cvar] then
+										tApplyCVar(cvar, db.userValues[cvar])
+									end
 								end
 							end
+						end,
+						onChange = function(self, aNewValue)
+							-- Verzoegert wie bisher: der Menue-Eintrag wird direkt nach
+							-- dem Umschalten neu gesprochen, die Bestaetigung kommt
+							-- dahinter statt sie zu ueberfahren.
 							C_Timer.After(0.3, function()
-								tCamSay(L["CAM_SkuDefaultOff"])
+								tCamSay(aNewValue and L["CAM_SkuDefaultOn"] or L["CAM_SkuDefaultOff"])
 							end)
-						end
-					end
-					tSkuStdEntry.BuildChildren = function(self)
-						local tSkuLabel = L["CAM_ActivateSku"]
-						local tFreeLabel = L["CAM_FreeMenu"]
-						if tIsLocked() then
-							tSkuLabel = tSkuLabel.." "..L["CAM_Active"]
-						else
-							tFreeLabel = tFreeLabel.." "..L["CAM_Active"]
-						end
-						SkuOptions:InjectMenuItems(self, {tSkuLabel}, SkuGenericMenuItem)
-						SkuOptions:InjectMenuItems(self, {tFreeLabel}, SkuGenericMenuItem)
-					end
+							if aNewValue == true then
+								C_Timer.After(3, function()
+									tCamSay(L["CAM_AltF4Reminder"])
+								end)
+							end
+						end,
+					})
 
 					local tLocked = tIsLocked() and ", "..L["CAM_Locked"] or ""
 
@@ -6612,78 +6616,85 @@ function SkuOptions.CameraMenuBuilder(self)
 					tFollowEntry.BuildChildren = function(self) tBuildSteps(self, tFollowSteps, "cameraSmoothStyle") end
 
 					-- 7.6 Interface ein/ausblenden
-					local tUIVisible = UIParent and UIParent:IsShown()
-					local tUIEntry = SkuOptions:InjectMenuItems(self, {L["CAM_UIToggle"]..", "..(tUIVisible and L["on"] or L["off"])}, SkuGenericMenuItem)
-					tUIEntry.dynamic = true
-					tUIEntry.isSelect = true
-					tUIEntry.OnAction = function(self, aValue, aName)
-						local tClean = tCleanName(aName)
-						if tClean == L["CAM_UIOn"] then
-							tCamSay(L["CAM_UIShown"])
+					-- Das Ein-/Ausblenden bleibt verzoegert (wie bisher): UIParent zu
+					-- verstecken nimmt die Ansage mit, wenn es im selben Frame passiert.
+					-- Solange die Umschaltung noch aussteht, meldet get den GEWUENSCHTEN
+					-- Zustand -- sonst spraeche der Eintrag direkt nach ENTER noch den
+					-- alten, weil UIParent zu dem Zeitpunkt unveraendert ist.
+					local tUIPending = nil
+					local tUIEntry = SkuOptions:InjectMenuItems(self, {L["CAM_UIToggle"]}, SkuGenericMenuItem)
+					SkuOptions:MakeToggleNode(tUIEntry, {
+						label = L["CAM_UIToggle"],
+						onLabel = L["on"],
+						offLabel = L["off"],
+						get = function()
+							if tUIPending ~= nil then return tUIPending end
+							return UIParent and UIParent:IsShown() == true
+						end,
+						set = function(self, aNewValue)
+							tUIPending = aNewValue
 							C_Timer.After(0.3, function()
-								if UIParent then UIParent:Show() end
+								if UIParent then
+									if aNewValue then UIParent:Show() else UIParent:Hide() end
+								end
+								tUIPending = nil
 							end)
-						elseif tClean == L["CAM_UIOff"] then
-							tCamSay(L["CAM_UIHidden"])
-							C_Timer.After(0.3, function()
-								if UIParent then UIParent:Hide() end
-							end)
-						end
-					end
-					tUIEntry.BuildChildren = function(self)
-						local tVis = UIParent and UIParent:IsShown()
-						local tOnLabel = L["CAM_UIOn"]
-						local tOffLabel = L["CAM_UIOff"]
-						if tVis then tOnLabel = tOnLabel.." "..L["CAM_Active"] end
-						if not tVis then tOffLabel = tOffLabel.." "..L["CAM_Active"] end
-						SkuOptions:InjectMenuItems(self, {tOnLabel}, SkuGenericMenuItem)
-						SkuOptions:InjectMenuItems(self, {tOffLabel}, SkuGenericMenuItem)
-					end
+						end,
+						onChange = function(self, aNewValue)
+							tCamSay(aNewValue and L["CAM_UIShown"] or L["CAM_UIHidden"])
+						end,
+					})
 
 					-- 7.7 Weitere Kamerafunktionen
 					local tMoreEntry = SkuOptions:InjectMenuItems(self, {L["CAM_More"]}, SkuGenericMenuItem)
 					tMoreEntry.dynamic = true
 					tMoreEntry.BuildChildren = function(self)
-						-- Kamera-Uebergang
-						local tTransIsInstant = (GetCVar("cameraViewBlendStyle") == "2")
-						local tTransCur = tTransIsInstant and L["CAM_TransInstant"] or L["CAM_TransSmooth"]
-						local tTransEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Transition"]..", "..tTransCur}, SkuGenericMenuItem)
-						tTransEntry.dynamic = true
-						tTransEntry.isSelect = true
-						tTransEntry.OnAction = function(self, aValue, aName)
-							if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
-							local tClean = tCleanName(aName)
-							if tClean == L["CAM_TransInstant"] then tApplyCVar("cameraViewBlendStyle", "2"); tSaveUser("cameraViewBlendStyle", "2"); tCamSay(L["CAM_TransSet"].." "..L["CAM_TransInstant"])
-							elseif tClean == L["CAM_TransSmooth"] then tApplyCVar("cameraViewBlendStyle", "1"); tSaveUser("cameraViewBlendStyle", "1"); tCamSay(L["CAM_TransSet"].." "..L["CAM_TransSmooth"]) end
-						end
-						tTransEntry.BuildChildren = function(self)
-							local tInst = (GetCVar("cameraViewBlendStyle") == "2")
-							local tA, tB = L["CAM_TransInstant"], L["CAM_TransSmooth"]
-							if tInst then tA = tA.." "..L["CAM_Active"] else tB = tB.." "..L["CAM_Active"] end
-							SkuOptions:InjectMenuItems(self, {tA}, SkuGenericMenuItem)
-							SkuOptions:InjectMenuItems(self, {tB}, SkuGenericMenuItem)
-						end
+						-- Kamera-Uebergang (zwei Zustaende -> ein Eintrag, ENTER schaltet um)
+						local tTransEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Transition"]}, SkuGenericMenuItem)
+						SkuOptions:MakeToggleNode(tTransEntry, {
+							label = L["CAM_Transition"],
+							onLabel = L["CAM_TransInstant"],
+							offLabel = L["CAM_TransSmooth"],
+							canChange = function()
+								if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return false end
+								return true
+							end,
+							get = function() return GetCVar("cameraViewBlendStyle") == "2" end,
+							set = function(self, aNewValue)
+								local tCVarValue = aNewValue and "2" or "1"
+								tApplyCVar("cameraViewBlendStyle", tCVarValue)
+								tSaveUser("cameraViewBlendStyle", tCVarValue)
+							end,
+							onChange = function(self, aNewValue)
+								tCamSay(L["CAM_TransSet"].." "..(aNewValue and L["CAM_TransInstant"] or L["CAM_TransSmooth"]))
+							end,
+						})
 
-						-- Ueber-die-Schulter
-						local tShVal = pcall(GetCVar, "test_cameraOverShoulder") and GetCVar("test_cameraOverShoulder") or "0"
-						local tShOn = (tShVal == "1")
-						local tShEntry = SkuOptions:InjectMenuItems(self, {L["CAM_OverShoulder"]..", "..(tShOn and L["on"] or L["off"])}, SkuGenericMenuItem)
-						tShEntry.dynamic = true
-						tShEntry.isSelect = true
-						tShEntry.OnAction = function(self, aValue, aName)
-							if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
-							local tClean = tCleanName(aName)
-							if tClean == L["on"] then pcall(function() tApplyCVar("test_cameraOverShoulder", "1") end); tSaveUser("test_cameraOverShoulder", "1"); tCamSay(L["CAM_OverShoulderOn"])
-							elseif tClean == L["off"] then pcall(function() tApplyCVar("test_cameraOverShoulder", "0") end); tSaveUser("test_cameraOverShoulder", "0"); tCamSay(L["CAM_OverShoulderOff"]) end
-						end
-						tShEntry.BuildChildren = function(self)
-							local tV = pcall(GetCVar, "test_cameraOverShoulder") and GetCVar("test_cameraOverShoulder") or "0"
-							local tOn = (tV == "1")
-							local tA, tB = L["on"], L["off"]
-							if tOn then tA = tA.." "..L["CAM_Active"] else tB = tB.." "..L["CAM_Active"] end
-							SkuOptions:InjectMenuItems(self, {tA}, SkuGenericMenuItem)
-							SkuOptions:InjectMenuItems(self, {tB}, SkuGenericMenuItem)
-						end
+						-- Ueber-die-Schulter (zwei Zustaende -> ein Eintrag)
+						local tShEntry = SkuOptions:InjectMenuItems(self, {L["CAM_OverShoulder"]}, SkuGenericMenuItem)
+						SkuOptions:MakeToggleNode(tShEntry, {
+							label = L["CAM_OverShoulder"],
+							onLabel = L["on"],
+							offLabel = L["off"],
+							canChange = function()
+								if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return false end
+								return true
+							end,
+							get = function()
+								-- test_* CVars existieren nicht auf jedem Client:
+								-- ohne pcall wirft GetCVar hier statt "aus" zu melden.
+								local tOk, tV = pcall(GetCVar, "test_cameraOverShoulder")
+								return tOk and tV == "1"
+							end,
+							set = function(self, aNewValue)
+								local tCVarValue = aNewValue and "1" or "0"
+								pcall(function() tApplyCVar("test_cameraOverShoulder", tCVarValue) end)
+								tSaveUser("test_cameraOverShoulder", tCVarValue)
+							end,
+							onChange = function(self, aNewValue)
+								tCamSay(aNewValue and L["CAM_OverShoulderOn"] or L["CAM_OverShoulderOff"])
+							end,
+						})
 
 						-- Plaketten
 						local tNPEntry = SkuOptions:InjectMenuItems(self, {L["CAM_Nameplates"]}, SkuGenericMenuItem)
@@ -6692,24 +6703,30 @@ function SkuOptions.CameraMenuBuilder(self)
 							-- aCVar: string oder Liste (Freundlich = pro Client aufgeloeste
 							-- Namen, siehe SkuCore.FriendlyNameplateCVars). Zustand liest
 							-- der erste Eintrag, gesetzt werden alle.
+							-- Zwei Zustaende -> ein Eintrag. Der Zustand wird am ERSTEN
+							-- CVar gelesen und auf alle geschrieben (Freundlich ist auf
+							-- manchen Clients mehr als einer, siehe
+							-- SkuCore.FriendlyNameplateCVars).
 							local function tBuildNP(aLabel, aCVar)
 								local tCVars = (type(aCVar) == "table") and aCVar or {aCVar}
-								local tOn = (GetCVar(tCVars[1]) == "1")
-								local tE = SkuOptions:InjectMenuItems(self, {aLabel..", "..(tOn and L["on"] or L["off"])}, SkuGenericMenuItem)
-								tE.dynamic = true
-								tE.isSelect = true
-								tE.OnAction = function(self, aValue, aName)
-									if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return end
-									local tClean = tCleanName(aName)
-									if tClean == L["on"] then
-										for _, c in ipairs(tCVars) do tApplyCVar(c, "1"); tSaveUser(c, "1") end
-										tCamSay(aLabel.." "..L["CAM_NPOn"])
-									elseif tClean == L["off"] then
-										for _, c in ipairs(tCVars) do tApplyCVar(c, "0"); tSaveUser(c, "0") end
-										tCamSay(aLabel.." "..L["CAM_NPOff"])
-									end
-								end
-								tE.BuildChildren = function(self) tBuildOnOff(self, tCVars[1]) end
+								local tE = SkuOptions:InjectMenuItems(self, {aLabel}, SkuGenericMenuItem)
+								SkuOptions:MakeToggleNode(tE, {
+									label = aLabel,
+									onLabel = L["on"],
+									offLabel = L["off"],
+									canChange = function()
+										if tIsLocked() then tCamSay(L["CAM_SkuLocked"]) return false end
+										return true
+									end,
+									get = function() return GetCVar(tCVars[1]) == "1" end,
+									set = function(self, aNewValue)
+										local tCVarValue = aNewValue and "1" or "0"
+										for _, c in ipairs(tCVars) do tApplyCVar(c, tCVarValue); tSaveUser(c, tCVarValue) end
+									end,
+									onChange = function(self, aNewValue)
+										tCamSay(aLabel.." "..(aNewValue and L["CAM_NPOn"] or L["CAM_NPOff"]))
+									end,
+								})
 							end
 							tBuildNP(L["CAM_NPEnemy"], "nameplateShowEnemies")
 							tBuildNP(L["CAM_NPFriendly"], SkuCore.FriendlyNameplateCVars())
@@ -6763,47 +6780,41 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 			SkuOptions:IterateOptionsArgs(v.args, tParentMenu, tProfileParentPath[i], aModule, (aKeyPrefix or "") .. tostring(i) .. ".")
 		else
 			if v.type == "toggle" then
+				-- [v43.0] A boolean setting is ONE entry now: it reads
+				-- "<name>;<state>" and ENTER flips it where the cursor stands.
+				-- The old On/Off child level is gone -- see
+				-- SkuOptions:MakeToggleNode (SkuZOptions/templates.lua) for what a
+				-- toggle node is and why a two-value submenu carried no
+				-- information the entry could not carry itself.
+				--
+				-- The write still goes through tOptSet, so the three storage
+				-- cases (schema-managed / own set closure / direct table) are
+				-- unchanged; only the way the user reaches them is different.
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentMenu, {v.name}, SkuGenericMenuItem)
 				tNewMenuEntry.optionsPath = aArgTable
 				tNewMenuEntry.profilePath = tProfileParentPath
 				tNewMenuEntry.profileIndex = i
-				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.skuModule = aModule
 				tNewMenuEntry.skuKey = (aKeyPrefix or "") .. tostring(i)
 				tNewMenuEntry.skuManaged = (v.get == nil and v.set == nil and aModule ~= nil)
-				tNewMenuEntry.OnAction = function(self, aValue, aName)
-					local tNewToggleValue
-					if aName == L["On"] then
-						tNewToggleValue = true
-					elseif aName == L["Off"] then
-						tNewToggleValue = false
-					end
-					if tNewToggleValue ~= nil then
-						if self.skuManaged then
-							SkuSettings:Set(self.skuModule, self.skuKey, tNewToggleValue)
-						else
-							self.profilePath[self.profileIndex] = tNewToggleValue
+				SkuOptions:MakeToggleNode(tNewMenuEntry, {
+					label = v.name,
+					get = function(self) return tOptGet(self) == true end,
+					set = function(self, aNewValue) tOptSet(self, aNewValue) end,
+					onChange = function(self)
+						-- The option's own OnAction hook, invoked exactly as the
+						-- old On/Off child invoked it. The value handed over is
+						-- READ BACK from the store rather than assumed, so a set
+						-- closure that massages what it writes still hands its
+						-- hook what actually landed (the old code read it back
+						-- out of profilePath, which is only the same thing for a
+						-- setting that stores plain and unmanaged).
+						local tOpt = self.optionsPath[self.profileIndex]
+						if tOpt.OnAction then
+							tOpt:OnAction(nil, tOptGet(self))
 						end
-					end
-					
-					if self.optionsPath[self.profileIndex].OnAction then
-						self.optionsPath[self.profileIndex]:OnAction(nil, self.profilePath[self.profileIndex])
-					end
-					--PlaySound(835)
-				end
-				tNewMenuEntry.BuildChildren = function(self)
-					tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
-					tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
-				end
-				tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-					local tStored = tOptGet(self)
-					if tStored == true then
-						return L["On"]
-					else
-						return L["Off"]
-					end
-				end
+					end,
+				})
 
 			elseif v.type == "select" then
 				local tNewMenuEntry =SkuOptions:InjectMenuItems(aParentMenu, {v.name}, SkuGenericMenuItem)

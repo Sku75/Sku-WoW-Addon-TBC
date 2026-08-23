@@ -808,27 +808,16 @@ function SkuChat:MenuBuilder(aParentEntry)
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Combat Log"],
 		build = function(self)
 		local tEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-		tEntry.dynamic = true
-		tEntry.isSelect = true
-		tEntry.GetCurrentValue = function(self, aValue, aName)
-			if SkuSettings:Sub("SkuChat").CombatLog.enabled == true then
-				return L["Yes"]
-			else
-				return L["No"]
-			end
-		end
-		tEntry.OnAction = function(self, aValue, aName)
-			if aName == L["No"] then
-				SkuSettings:Sub("SkuChat").CombatLog.enabled = false
-			elseif aName == L["Yes"] then
-				SkuSettings:Sub("SkuChat").CombatLog.enabled = true
-			end
-			SkuChat:InitCombatLogTab()	
-		end
-		tEntry.BuildChildren = function(self)
-			SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-		end		
+		SkuOptions:MakeToggleNode(tEntry, {
+			label = L["Enabled"],
+			onLabel = L["Yes"],
+			offLabel = L["No"],
+			get = function() return SkuSettings:Sub("SkuChat").CombatLog.enabled == true end,
+			set = function(self, aNewValue)
+				SkuSettings:Sub("SkuChat").CombatLog.enabled = aNewValue
+				SkuChat:InitCombatLogTab()
+			end,
+		})
 
 		local tFiltersEntry = SkuOptions:InjectMenuItems(self, {L["Filters"]}, SkuGenericMenuItem)
 		tFiltersEntry.dynamic = true
@@ -857,46 +846,34 @@ function SkuChat:MenuBuilder(aParentEntry)
 					local tEventsEntry = SkuOptions:InjectMenuItems(self, {L["Events"]}, SkuGenericMenuItem)
 					tEventsEntry.dynamic = true
 					tEventsEntry.BuildChildren = function(self)
+						-- Ein Eintrag pro Ereignisgruppe: er liest "<Gruppe>;Ja/Nein" und
+						-- ENTER schaltet um. Der Zustand wird bei JEDER Ansage frisch aus
+						-- der Filtertabelle gelesen (MakeToggleNode -> RefreshLiveName),
+						-- deshalb braucht es weder das alte " (enabled)" im Namen noch den
+						-- OnUpdate-Neuaufbau der ganzen Ebene nach dem Umschalten.
 						for iMainMtype, vMainMtype in pairs(SkuChat.CombatConfigMessageTypes) do
-							local tEnabled = true
-							for iEvent, vEvent in pairs(vMainMtype.type) do
-								if v.filters[1].eventList[vEvent] ~= true then
-									tEnabled = false
-								end
-							end
-							local tMenuname = vMainMtype.text .. (tEnabled == true and " (enabled)" or "")
-							local tEventEntry = SkuOptions:InjectMenuItems(self, {tMenuname}, SkuGenericMenuItem)
-							tEventEntry.dynamic = true
-							tEventEntry.isSelect = true
-							tEventEntry.GetCurrentValue = function(self, aValue, aName)
-								if tEnabled == true then
-									return L["Yes"]
-								else
-									return L["No"]
-								end
-							end
-							tEventEntry.OnAction = function(self, aValue, aName)
-								for iEvent, vEvent in pairs(vMainMtype.type) do
-									if aName == L["No"] then
-										v.filters[1].eventList[vEvent] = false
-										v.filters[2].eventList[vEvent] = false
-									elseif aName == L["Yes"] then
-										v.filters[1].eventList[vEvent] = true
-										v.filters[2].eventList[vEvent] = true
+							local tEventEntry = SkuOptions:InjectMenuItems(self, {vMainMtype.text}, SkuGenericMenuItem)
+							SkuOptions:MakeToggleNode(tEventEntry, {
+								label = vMainMtype.text,
+								onLabel = L["Yes"],
+								offLabel = L["No"],
+								get = function()
+									for iEvent, vEvent in pairs(vMainMtype.type) do
+										if v.filters[1].eventList[vEvent] ~= true then
+											return false
+										end
 									end
-								end
-								Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
-								Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
-							
-								C_Timer.After(0.001, function()
-									SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
-								end)								
-							end
-							tEventEntry.BuildChildren = function(self)
-								SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-								SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-							end	
-					
+									return true
+								end,
+								set = function(self, aNewValue)
+									for iEvent, vEvent in pairs(vMainMtype.type) do
+										v.filters[1].eventList[vEvent] = aNewValue
+										v.filters[2].eventList[vEvent] = aNewValue
+									end
+									Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
+									Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
+								end,
+							})
 						end
 					end
 
@@ -904,40 +881,18 @@ function SkuChat:MenuBuilder(aParentEntry)
 					tEventsEntry.dynamic = true
 					tEventsEntry.BuildChildren = function(self)
 						for iMainMtype, vMainMtype in pairs(SkuChat.CombatConfigUnitTypes) do
-							local tEnabled = true
-							if v.filters[1].sourceFlags[vMainMtype.type] ~= true then
-								tEnabled = false
-							end
-
-							local tMenuname = vMainMtype.text .. (tEnabled == true and " (enabled)" or "")
-							local tEventEntry = SkuOptions:InjectMenuItems(self, {tMenuname}, SkuGenericMenuItem)
-							tEventEntry.dynamic = true
-							tEventEntry.isSelect = true
-							tEventEntry.GetCurrentValue = function(self, aValue, aName)
-								if tEnabled == true then
-									return L["Yes"]
-								else
-									return L["No"]
-								end
-							end
-							tEventEntry.OnAction = function(self, aValue, aName)
-								if aName == L["No"] then
-									v.filters[1].sourceFlags[vMainMtype.type] = false
-								elseif aName == L["Yes"] then
-									v.filters[1].sourceFlags[vMainMtype.type] = true
-								end
-								Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
-								Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
-							
-								C_Timer.After(0.001, function()
-									SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
-								end)								
-							end
-							tEventEntry.BuildChildren = function(self)
-								SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-								SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-							end	
-					
+							local tEventEntry = SkuOptions:InjectMenuItems(self, {vMainMtype.text}, SkuGenericMenuItem)
+							SkuOptions:MakeToggleNode(tEventEntry, {
+								label = vMainMtype.text,
+								onLabel = L["Yes"],
+								offLabel = L["No"],
+								get = function() return v.filters[1].sourceFlags[vMainMtype.type] == true end,
+								set = function(self, aNewValue)
+									v.filters[1].sourceFlags[vMainMtype.type] = aNewValue
+									Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
+									Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
+								end,
+							})
 						end
 					end
 
@@ -945,40 +900,18 @@ function SkuChat:MenuBuilder(aParentEntry)
 					tEventsEntry.dynamic = true
 					tEventsEntry.BuildChildren = function(self)
 						for iMainMtype, vMainMtype in pairs(SkuChat.CombatConfigUnitTypes) do
-							local tEnabled = true
-							if v.filters[2].destFlags[vMainMtype.type] ~= true then
-								tEnabled = false
-							end
-
-							local tMenuname = vMainMtype.text .. (tEnabled == true and " (enabled)" or "")
-							local tEventEntry = SkuOptions:InjectMenuItems(self, {tMenuname}, SkuGenericMenuItem)
-							tEventEntry.dynamic = true
-							tEventEntry.isSelect = true
-							tEventEntry.GetCurrentValue = function(self, aValue, aName)
-								if tEnabled == true then
-									return L["Yes"]
-								else
-									return L["No"]
-								end
-							end
-							tEventEntry.OnAction = function(self, aValue, aName)
-								if aName == L["No"] then
-									v.filters[2].destFlags[vMainMtype.type] = false
-								elseif aName == L["Yes"] then
-									v.filters[2].destFlags[vMainMtype.type] = true
-								end
-								Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
-								Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
-							
-								C_Timer.After(0.001, function()
-									SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
-								end)								
-							end
-							tEventEntry.BuildChildren = function(self)
-								SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-								SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-							end	
-					
+							local tEventEntry = SkuOptions:InjectMenuItems(self, {vMainMtype.text}, SkuGenericMenuItem)
+							SkuOptions:MakeToggleNode(tEventEntry, {
+								label = vMainMtype.text,
+								onLabel = L["Yes"],
+								offLabel = L["No"],
+								get = function() return v.filters[2].destFlags[vMainMtype.type] == true end,
+								set = function(self, aNewValue)
+									v.filters[2].destFlags[vMainMtype.type] = aNewValue
+									Blizzard_CombatLog_CurrentSettings = SkuSettings:Sub("SkuChat", nil, "global").CombatLogFilters[SkuSettings:Sub("SkuChat").CombatLog.currentFilter]
+									Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
+								end,
+							})
 						end
 					end
 
@@ -1080,27 +1013,16 @@ function SkuChat:MenuBuilder(aParentEntry)
 	tSpecs[#tSpecs+1] = { kind = "list", label = L["Audio Log"],
 		build = function(self)
 		local tEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
-		tEntry.dynamic = true
-		tEntry.isSelect = true
-		tEntry.GetCurrentValue = function(self, aValue, aName)
-			if SkuSettings:Sub("SkuChat").AudioLog.enabled == true then
-				return L["Yes"]
-			else
-				return L["No"]
-			end
-		end
-		tEntry.OnAction = function(self, aValue, aName)
-			if aName == L["No"] then
-				SkuSettings:Sub("SkuChat").AudioLog.enabled = false
-			elseif aName == L["Yes"] then
-				SkuSettings:Sub("SkuChat").AudioLog.enabled = true
-			end
-			SkuChat:InitAudioLogTab()
-		end
-		tEntry.BuildChildren = function(self)
-			SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-		end	
+		SkuOptions:MakeToggleNode(tEntry, {
+			label = L["Enabled"],
+			onLabel = L["Yes"],
+			offLabel = L["No"],
+			get = function() return SkuSettings:Sub("SkuChat").AudioLog.enabled == true end,
+			set = function(self, aNewValue)
+				SkuSettings:Sub("SkuChat").AudioLog.enabled = aNewValue
+				SkuChat:InitAudioLogTab()
+			end,
+		})
 	end }
 
 

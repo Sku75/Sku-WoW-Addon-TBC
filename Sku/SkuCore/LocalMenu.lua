@@ -5789,6 +5789,19 @@ local function tSkuCheckMenu()
 			tostring(SkuOptions and SkuOptions.tMenuActionInPlaceLast))
 	end
 
+	-- Tripwire tally (v43.0, two-value settings): a toggle node whose reader threw
+	-- is announced as a bare label with NO state -- it sounds like a setting that
+	-- has no value rather than like one that cannot be read, so nothing about it
+	-- says "defect" to the user.
+	local tToggleReadFails = (SkuOptions and SkuOptions.tMenuToggleGetFailures) or 0
+	tChecked = tChecked + 1
+	if tToggleReadFails > 0 then
+		tViolations = tViolations + tToggleReadFails
+		dprint("skucheck", "VIOLATION menu:", tToggleReadFails,
+			"two-value setting(s) could not read their state this session, last:",
+			tostring(SkuOptions and SkuOptions.tMenuToggleGetFailureLast))
+	end
+
 	local tPopupDead = (SkuOptions and SkuOptions.tPopupCombatDead) or 0
 	tChecked = tChecked + 1
 	if tPopupDead > 0 then

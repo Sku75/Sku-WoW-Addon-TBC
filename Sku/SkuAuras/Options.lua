@@ -509,6 +509,50 @@ local function tToggleLabel(aName, aOn)
 	return aName..";"..(aOn and L["ein"] or L["aus"])
 end
 
+-- [v43.0] The state of ONE value toggle, re-read from the condition right before
+-- the entry is spoken. SkuOptions:VocalizeCurrentMenuName calls this hook, so it
+-- runs ONCE PER KEYPRESS - on the entry the cursor is on, never on the list.
+-- (Same idea backs the settings toggles; see SkuOptions:MakeToggleNode in
+-- SkuZOptions/templates.lua. These lists do NOT go through that helper: it costs
+-- three closures and a spec table per node, and at 27,057 nodes that is exactly
+-- the per-node cost the v43.0 node rework was written to remove.)
+--
+-- Deliberately ONE shared function assigned by REFERENCE, not a closure per
+-- node: it allocates nothing per entry, and everything it needs is already
+-- there - `internalName` on the node, `auraCond` on the level.
+--
+-- What it replaces: the duration rows used to correct their siblings EAGERLY.
+-- A duration row holds exactly one spell, so switching spells meant walking the
+-- whole level and rewriting every label - up to 27,000 name strings per ENTER,
+-- on precisely the lists that trip a hardcore realm's script watchdog. An entry
+-- that re-reads itself when it is announced needs no sweep at all. It also fixes
+-- the typed-in path for free: tPromptForSpellValue replaced the stored spell
+-- without touching the entry that was on, so the level read two selected spells
+-- while one was stored.
+--
+-- The walk up to `auraCond` is bounded and cheap (the flat level carries it, a
+-- value group is one hop further). Finding none leaves the label untouched,
+-- which is the honest answer - better a name without a fresh state than a state
+-- read off the wrong condition.
+local function tValueToggleRefreshLiveName(self)
+	if not self.internalName then
+		return
+	end
+	local tCond, tNode, tHops = nil, self.parent, 0
+	while tNode and tHops < 4 do
+		if tNode.auraCond then
+			tCond = tNode.auraCond
+			break
+		end
+		tNode = tNode.parent
+		tHops = tHops + 1
+	end
+	if not tCond then
+		return
+	end
+	self.name = tToggleLabel(tValueName(self.internalName), tIndexOfValue(tCond.values, self.internalName) ~= nil)
+end
+
 -- [v43.1] The joining word is the ONLY thing that tells the user which reading a
 -- multi-value condition gets, so it has to match the evaluator exactly (see the
 -- De Morgan note in SkuAuras/Core.lua): "oder" for an affirmative operator,
@@ -906,6 +950,8 @@ local function tInjectValueToggle(aLevel, aValue, aCond, aOwnerNode, aCtx, aGrou
 	tNode.vocalizeAsIs = true
 	tNode.elementType = "value"
 	tNode.actionInPlace = true
+	-- One reference store, no allocation -- see tValueToggleRefreshLiveName.
+	tNode.RefreshLiveName = tValueToggleRefreshLiveName
 	tNode.OnEnter = function(self)
 		if aCtx and aCtx.tooltip then
 			aCtx.tooltip(self)
@@ -921,24 +967,20 @@ local function tInjectValueToggle(aLevel, aValue, aCond, aOwnerNode, aCtx, aGrou
 			-- [v43.1] A duration row holds exactly ONE spell (see the note at
 			-- tListDurationPartner): the evaluator measures entry one, so a
 			-- second spell here would be a name the aura never checks.
-			-- Switching, not adding - and the entry that was on has to stop
-			-- saying "ein", or the level would read two selected spells while
-			-- one is stored.
-			-- Clears the siblings on THIS level, which is the whole list: no
-			-- duration-borrowing attribute has value groups (only `event` does),
-			-- so its values are never split across two levels.
+			-- Switching, not adding.
+			-- [v43.0] The entry that WAS on stops saying "ein" by itself now:
+			-- every entry re-reads its state when it is announced
+			-- (tValueToggleRefreshLiveName). This used to rewrite the label of
+			-- every sibling right here, which on a 27,000-entry spell list is
+			-- 27,000 strings built to correct one of them.
 			aCond.values = {self.internalName}
-			for x = 1, #(aLevel.children or {}) do
-				local tOther = aLevel.children[x]
-				if tOther ~= self and tOther.internalName then
-					tOther.name = tToggleLabel(tValueName(tOther.internalName), false)
-				end
-			end
 		else
 			aCond.values[#aCond.values + 1] = self.internalName
 		end
 		tCtxOnChange(aCtx, aCond)
-		self.name = tToggleLabel(tValueName(self.internalName), tIndex == nil)
+		-- Through the hook rather than from tIndex, so the entry reports what the
+		-- condition now HOLDS instead of what this branch believes it wrote.
+		self:RefreshLiveName()
 		-- Keep the labels ABOVE this list current: arrowing left must not read
 		-- back the condition, or the condition count, as it was before the
 		-- toggle. None of those levels is rebuilt by simply stepping out of it.
@@ -1062,6 +1104,10 @@ local function tBuildValueToggleList(aLevel, aCond, aOwnerNode, aCtx)
 			end
 			tGroupNode.BuildChildren = function(self)
 				self.sorting = true
+				-- The level a value toggle reads its state from. Set once per
+				-- group, not per entry: tValueToggleRefreshLiveName walks up to
+				-- the nearest level carrying it.
+				self.auraCond = aCond
 				-- Re-sorted rather than closed over: an attribute carrying an
 				-- updateValues would otherwise show the list as it stood when the
 				-- level ABOVE was built. `event` has none, so today this costs a

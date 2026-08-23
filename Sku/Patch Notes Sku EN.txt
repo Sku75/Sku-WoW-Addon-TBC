@@ -36,6 +36,7 @@ Changes in Sku v43.0
             The "spell usable" value list opens without a hang, and every aura value list opens noticeably faster.
             Every menu entry in the whole addon is about 13 times cheaper to create, which makes the big spell lists open about three times faster.
             A list whose build was cut off by the server is continued on the next frame instead of quietly staying incomplete.
+            Settings with two values read their value out with the name and switch with Enter; the RIGHT arrow and the submenu are gone.
 
         Bugfixes
             French clients: all aura sounds and pre-recorded speech clips were silent (fix by Naxedim).
@@ -56,6 +57,7 @@ Changes in Sku v43.0
             Power monitor: the resource setting "nothing" threw a stream of Lua errors.
             Power monitor: a monitor switched off in the features menu still announced resource changes.
             French clients: the list of weapon enchants for aura conditions was empty.
+            Auras: switching the spell of a duration condition stalled, and via "Enter spell" the previous spell still read as selected.
 
     With thanks to Naxedim and ZenqFR
         The next four fixes are the first direct code contributions to the now-public Sku
@@ -899,6 +901,52 @@ Changes in Sku v43.0
             entry, never before, or an entry the interrupt prevented would count as built. A pass
             that makes no progress gives up rather than repeating forever. /skucheck menu verifies
             on a throwaway level that a cut-off build continues instead of restarting.
+
+    Settings with two values are switches now, not submenus
+        Simple: A setting that only knows two states - "On" and "Off", "Yes" and "No" - now reads
+            its value out together with its name: you hear "Sku menu in combat; on", for example.
+            Enter flips it, the focus stays where it is, and you hear the entry again in its new
+            state straight away. You no longer need the RIGHT arrow for it, because the submenu
+            holding the two values is gone. It used to take three keys - right, arrow, Enter - and
+            you had to go in before you could find out what the setting was even set to. This
+            covers the whole settings tree, the health and combat monitor, the chat and combat log
+            filters, the features menu, the camera menu and other addons' settings: about 150
+            entries. Settings with MORE than two values keep their list, because there is
+            genuinely something to pick there.
+        Technically: A new shared menu element, SkuOptions:MakeToggleNode in
+            SkuZOptions/templates.lua; SkuOptions:MakeInPlaceToggle converts an existing isSelect
+            site in ONE line and keeps using that site's own GetCurrentValue and OnAction, so
+            every per-setting quirk stays exactly as it was. Which of the two values is handed
+            over as "on" does not matter, and that is what made converting the ~50 existing
+            Yes/No sites mechanical rather than a judgement call each time. A toggle is a leaf
+            (actionInPlace, no dynamic, no children), which is why RIGHT does nothing on one, and
+            a RefreshLiveName hook re-reads the state immediately before every announcement - the
+            old submenu got that for free by calling GetCurrentValue on each descend. Three traps
+            came with it: SkuOptions:SlashFunc's path walk and the settings search both select
+            with aEnterFlag = true and would have FLIPPED a toggle named in a path instead of
+            navigating to it - both now only park the cursor, and the search matches against
+            toggleLabel because the name carries the state. RefreshLiveName is not applied to a
+            list's filter header: SkuOptions:ApplyFilter builds it by copying the first child, and
+            the copy would otherwise overwrite the string you are typing. And a toggle whose
+            reader throws is counted in /skucheck menu - it would otherwise sound like a setting
+            with no value rather than like a defect.
+
+    Auras: switching the spell of a duration condition stalled
+        Simple: A condition with a duration ("longer than", "shorter than") holds exactly one
+            spell. Switching it made Sku walk the entire list afterwards just to set the
+            previously chosen entry back to "off" - on the buff and debuff lists that is 27,000
+            entries on EVERY Enter, and on hardcore realms precisely the kind of thing the server
+            likes to cut off. Every entry now reports its own state as it is read out, so there is
+            nothing to walk. Fixed along the way: if you typed the spell via "Enter spell", the
+            previously chosen entry still read as "on" - the list named two selected spells while
+            one was stored.
+        Technically: tValueToggleRefreshLiveName in SkuAuras/Options.lua is ONE shared function
+            attached to every entry by reference: no closure per entry, so it allocates nothing at
+            build time. It reads internalName against the level's auraCond and runs once per
+            keypress, not once per entry. The big value lists deliberately do NOT go through
+            MakeToggleNode: that would cost three closures and a table per entry, which at 27,057
+            entries is exactly the per-node cost this version's node rework removed. Value groups
+            set self.auraCond in their BuildChildren so the bounded parent walk finds it.
 
 
 -------------------------------------------------------------------------------------------------------

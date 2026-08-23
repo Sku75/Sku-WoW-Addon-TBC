@@ -2316,7 +2316,9 @@ end
 -- tree, collect every entry whose name contains the typed text, and render the
 -- matches as this entry's children -- a flat, breadcrumb-labelled result list. ENTER
 -- (or RIGHT) on a result JUMPS the live menu to that setting and opens it (its
--- on/off / value submenu), exactly like navigating there by hand. RIGHT on the
+-- value submenu; a two-value setting has none, so the cursor simply lands on it
+-- and it is read out with its current state), exactly like navigating there by
+-- hand. RIGHT on the
 -- search field itself re-browses the last result list without re-typing.
 --
 -- The walk uses a scratch tree (SkuCore:MenuBuilder on a throwaway root) so the live
@@ -2405,15 +2407,31 @@ function SkuCore:SettingsSearchGoTo(aNavRoot, aPath)
 		end
 	end
 
+	-- [v43.0] A two-value setting carries its state in its name ("<name>;Ein"),
+	-- so matching the collected path literally would miss it the moment the value
+	-- changed between collecting and jumping. Match such a node on its stable
+	-- label instead -- and never OnSelect it: ENTER is what FLIPS a toggle, and
+	-- jumping to a setting must not change it.
+	local function tPathMatches(aNode, aWanted)
+		if aNode.name == aWanted then return true end
+		if aNode.isSkuToggle == true and type(aNode.toggleLabel) == "string" then
+			return aWanted == aNode.toggleLabel
+				or string.sub(aWanted, 1, string.len(aNode.toggleLabel) + 1) == aNode.toggleLabel..";"
+		end
+		return false
+	end
+
 	local tMenu = aNavRoot.children
 	local tFound = nil
 	for x = 1, #aPath do
 		if type(tMenu) ~= "table" then tMenu = nil break end
 		local tMatched = nil
 		for y = 1, #tMenu do
-			if aPath[x] == tMenu[y].name then
+			if tPathMatches(tMenu[y], aPath[x]) then
 				tMatched = tMenu[y]
-				pcall(function() tMatched:OnSelect(true) end)
+				if tMatched.isSkuToggle ~= true then
+					pcall(function() tMatched:OnSelect(true) end)
+				end
 				tMenu = tMatched.children
 				break
 			end
@@ -2424,7 +2442,9 @@ function SkuCore:SettingsSearchGoTo(aNavRoot, aPath)
 
 	if tFound then
 		SkuOptions.currentMenuPosition = tFound
-		pcall(function() tFound:OnSelect() end)
+		if tFound.isSkuToggle ~= true then
+			pcall(function() tFound:OnSelect() end)
+		end
 	else
 		SkuOptions.Voice:OutputStringBTtts(L["No results"], true, true, 0.2, nil, nil, nil, 2)
 	end

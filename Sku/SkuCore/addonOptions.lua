@@ -243,6 +243,25 @@ local function MakeSelect(aParent, aName, aOpts, aGetCurrentLabel, aSetByLabel)
    return e
 end
 
+-- A BOOLEAN option is ONE entry, not a container: it reads "<name>;Ein/Aus" and
+-- ENTER flips it where the cursor stands (SkuOptions:MakeToggleNode, the shared
+-- two-value menu element -- see SkuZOptions/templates.lua). Deliberately no tSay
+-- confirmation: the menu re-speaks the entry in its new state immediately after
+-- the flip, so announcing it here as well would say the same thing twice.
+local function MakeOnOff(aParent, aName, aGetBool, aSetBool)
+   local e = Inject(aParent, aName)
+   e.noStepUpAfterSelect = true
+   return SkuOptions:MakeToggleNode(e, {
+      label = aName,
+      onLabel = _L.on,
+      offLabel = _L.off,
+      -- not `== true`: several of these readers are game APIs that answer 1/nil
+      -- rather than true/false (GetChecked on this client, for one).
+      get = function() return aGetBool() and true or false end,
+      set = function(self, aNewValue) aSetBool(aNewValue) end,
+   })
+end
+
 local function MakeLabel(aParent, aName)
    local e = Inject(aParent, aName)
    e.dynamic = false
@@ -312,12 +331,23 @@ local function CurrentValueText(aInfo, aTab)
 end
 
 local function RenderToggle(aParent, aName, aTab, aInfo)
-   local opts = { { value = true, label = _L.on }, { value = false, label = _L.off } }
-   if aTab.tristate then opts[#opts + 1] = { value = nil, label = _L.default } end
+   if not aTab.tristate then
+      MakeOnOff(aParent, aName,
+         function() return CallMethod(aInfo, aTab, "get") end,
+         function(aNewValue) tValidatedSet(aInfo, aTab, aNewValue) end)
+      return
+   end
+   -- A TRISTATE option has three states (on / off / "use the default"), so it
+   -- keeps the value list -- there is nothing to flip between.
+   local opts = {
+      { value = true, label = _L.on },
+      { value = false, label = _L.off },
+      { value = nil, label = _L.default },
+   }
    MakeSelect(aParent, aName, opts,
       function()
          local b = CallMethod(aInfo, aTab, "get")
-         if b == nil and aTab.tristate then return _L.default end
+         if b == nil then return _L.default end
          return b and _L.on or _L.off
       end,
       function(aLabel)
@@ -372,15 +402,9 @@ local function RenderMultiselect(aParent, aName, aTab, aInfo)
       if #opts == 0 then Inject(self, _L.empty) return end
       for _, o in ipairs(opts) do
          local key = o.value
-         MakeSelect(self, o.label,
-            { { value = true, label = _L.on }, { value = false, label = _L.off } },
-            function()
-               return CallMethod(aInfo, aTab, "get", key) and _L.on or _L.off
-            end,
-            function(aLabel)
-               tValidatedSet(aInfo, aTab, key, aLabel == _L.on)
-               tSay(o.label .. " " .. aLabel)
-            end)
+         MakeOnOff(self, o.label,
+            function() return CallMethod(aInfo, aTab, "get", key) end,
+            function(aNewValue) tValidatedSet(aInfo, aTab, key, aNewValue) end)
       end
    end
 end
@@ -590,12 +614,6 @@ local function DBMText(aText)
    return CleanText(aText)
 end
 
-local mOnOff = nil
-local function tOnOffOpts()
-   mOnOff = mOnOff or { { value = true, label = _L.on }, { value = false, label = _L.off } }
-   return mOnOff
-end
-
 -- One boss-mod option (a member of a spell group or a category): boolean ->
 -- on/off select, dropdown key -> value select. Mirrors DBM-GUI addOptions.
 local function DBMAddOption(aParent, aMod, aKey)
@@ -603,17 +621,13 @@ local function DBMAddOption(aParent, aMod, aKey)
    if type(aKey) ~= "string" then return end   -- {line=..} separators etc.
    local tName = DBMText(tostring((aMod.localization and aMod.localization.options and aMod.localization.options[aKey]) or aKey))
    if type(aMod.Options[aKey]) == "boolean" then
-      MakeSelect(aParent, tName, tOnOffOpts(),
-         function()
-            return aMod.Options[aKey] and _L.on or _L.off
-         end,
-         function(aLabel)
-            local v = (aLabel == _L.on)
-            if aMod.Options[aKey] ~= v then
-               aMod.Options[aKey] = v
+      MakeOnOff(aParent, tName,
+         function() return aMod.Options[aKey] end,
+         function(aNewValue)
+            if aMod.Options[aKey] ~= aNewValue then
+               aMod.Options[aKey] = aNewValue
                if aMod.optionFuncs and aMod.optionFuncs[aKey] then pcall(aMod.optionFuncs[aKey]) end
             end
-            tSay(tName .. " " .. aLabel)
          end)
    elseif aMod.dropdowns and aMod.dropdowns[aKey] then
       local opts = {}
@@ -669,16 +683,14 @@ end
 -- One mod's children: master enable, then the per-spell groups, then the
 -- classic categories (announces, timers, ...).
 local function DBMBuildModChildren(aSelf, aMod)
-   MakeSelect(aSelf, _L.dbmEnabled, tOnOffOpts(),
-      function()
-         return aMod.Options.Enabled and _L.on or _L.off
-      end,
-      function(aLabel)
-         local tWant = (aLabel == _L.on)
-         if (not not aMod.Options.Enabled) ~= tWant then
+   MakeOnOff(aSelf, _L.dbmEnabled,
+      function() return aMod.Options.Enabled end,
+      function(aNewValue)
+         -- DBM only offers a flip, so guard against re-flipping a state that is
+         -- already what we want.
+         if (not not aMod.Options.Enabled) ~= aNewValue then
             pcall(function() aMod:Toggle() end)
          end
-         tSay(_L.dbmEnabled .. " " .. aLabel)
       end)
 
    -- Per-spell option groups (the modern DBM layout). Ordered __pairs
@@ -765,18 +777,18 @@ local function DBMGuiCheckbutton(aSelf, aBtn)
       local tOnShow = aBtn:GetScript("OnShow")
       if tOnShow then pcall(tOnShow, aBtn) end
    end
-   MakeSelect(aSelf, tName, tOnOffOpts(),
+   MakeOnOff(aSelf, tName,
       function()
          tSync()
-         return aBtn:GetChecked() and _L.on or _L.off
+         return aBtn:GetChecked()
       end,
-      function(aLabel)
+      function(aNewValue)
          tSync()
-         local tWant = (aLabel == _L.on)
-         if (not not aBtn:GetChecked()) ~= tWant then
+         -- The only way to set a Blizzard checkbutton is to click it, so click
+         -- only when it is not already where we want it.
+         if (not not aBtn:GetChecked()) ~= aNewValue then
             pcall(aBtn.Click, aBtn)
          end
-         tSay(tName .. " " .. aLabel)
       end)
 end
 

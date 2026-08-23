@@ -179,6 +179,180 @@ function SkuOptions:ContinueInterruptedBuild(aNode)
 	C_Timer.After(0, tStep)
 end
 
+
+-- =====================================================================
+-- [v43.0] TWO-VALUE SETTING = ONE MENU ENTRY (a real toggle)
+--
+-- Sku used to render every boolean setting as a CONTAINER: the entry carried
+-- the setting's name and nothing else, and the two values ("Ein"/"Aus",
+-- "Ja"/"Nein", ...) lived one level down as its children. Reading the entry
+-- therefore never told the user what the setting was actually set to - finding
+-- that out cost a RIGHT arrow, and changing it cost RIGHT, an arrow to the
+-- other value, and ENTER. For a setting with exactly two states that submenu
+-- carries no information the entry could not carry itself.
+--
+-- The aura value lists (SkuAuras/Options.lua) already do the better thing via
+-- `actionInPlace`: the entry reads "<name>;<state>", ENTER flips it, the cursor
+-- does not move, and the key handler re-speaks the entry in its new state. This
+-- is that pattern, generalized, so every two-value setting in the addon behaves
+-- the same way and only ONE place has to get it right.
+--
+-- What a toggle node is:
+--   * a LEAF - no children, `dynamic` off, so RIGHT does nothing on it (the key
+--     handler only descends when there are children or the node is dynamic) and
+--     nothing has to be built to read or change it
+--   * `actionInPlace`, so ENTER runs its own OnAction and leaves the cursor
+--     where it is (see the flag's note on SkuGenericMenuItem below)
+--   * `RefreshLiveName`, so the state in the label is re-read from the setting
+--     immediately before it is spoken. That is what keeps a mirrored entry (the
+--     same setting rendered a second time in the quick menu) and an entry sitting
+--     in a level that is not rebuilt from going stale - the OLD submenu got that
+--     for free because it re-read GetCurrentValue on every descend.
+--
+-- Label order is name-first, state-after, exactly like the aura toggles: the
+-- list is scanned by name and type-ahead keys off the first letter, while the
+-- state is what the user needs to hear right after pressing ENTER.
+--
+-- aSpec:
+--   label     - display name without the state (defaults to the node's name)
+--   get       - function(node) -> truthy when the setting is ON. REQUIRED.
+--   set       - function(node, aNewValue) writes the new boolean. REQUIRED.
+--   onLabel   - state word for ON  (default L["On"])
+--   offLabel  - state word for OFF (default L["Off"])
+--   onChange  - optional function(node, aNewValue) run after a successful write
+--               (announcements, applying the value to the game, ...)
+--   canChange - optional function(node) -> false to refuse the flip (a locked
+--               setting). It is responsible for saying why; the label is left
+--               untouched, so the user hears the unchanged state back.
+--   vocalizeAsIs - passed through to the node when set
+-- =====================================================================
+function SkuOptions:MakeToggleNode(aNode, aSpec)
+	if type(aNode) ~= "table" or type(aSpec) ~= "table" then
+		return aNode
+	end
+	if type(aSpec.get) ~= "function" or type(aSpec.set) ~= "function" then
+		dprint("MakeToggleNode: refusing", tostring(aNode.name), "-- get/set are both required")
+		return aNode
+	end
+
+	aNode.toggleLabel = aSpec.label or aNode.name
+	aNode.toggleOnLabel = aSpec.onLabel or L["On"]
+	aNode.toggleOffLabel = aSpec.offLabel or L["Off"]
+	aNode.toggleGet = aSpec.get
+	aNode.toggleSet = aSpec.set
+	aNode.toggleOnChange = aSpec.onChange
+	aNode.toggleCanChange = aSpec.canChange
+
+	-- A two-value setting is a leaf now. Clearing these on the INSTANCE lets the
+	-- shared template show through again (its BuildChildren is a no-op), which is
+	-- what we want: nothing left to descend into, nothing left to build.
+	aNode.isSkuToggle = true
+	aNode.actionInPlace = true
+	aNode.isSelect = false
+	aNode.isMultiselect = false
+	aNode.dynamic = false
+	aNode.BuildChildren = nil
+	aNode.GetCurrentValue = nil
+	-- Only when there is something to drop: InjectMenuItems already hands over a
+	-- node with its own fresh empty children table, and replacing that with a
+	-- second empty one is an allocation per toggle for nothing.
+	if type(aNode.children) ~= "table" or #aNode.children > 0 then
+		aNode.children = {}
+	end
+	if aSpec.vocalizeAsIs ~= nil then
+		aNode.vocalizeAsIs = aSpec.vocalizeAsIs
+	end
+
+	aNode.RefreshLiveName = function(self)
+		local tOk, tOn = pcall(self.toggleGet, self)
+		if tOk then
+			self.name = self.toggleLabel..";"..(tOn and self.toggleOnLabel or self.toggleOffLabel)
+		elseif self.toggleGetFailed ~= true then
+			-- Once per node: a reader that throws leaves the entry reading as a
+			-- bare label with no state at all, which sounds like a setting that
+			-- simply has no value rather than like a defect. Not every call --
+			-- this runs before EVERY announce, and a broken one would then own
+			-- the debug ring. Counted for /skucheck menu, so it shows up as a
+			-- number rather than as "that setting never says whether it is on".
+			self.toggleGetFailed = true
+			SkuOptions.tMenuToggleGetFailures = (SkuOptions.tMenuToggleGetFailures or 0) + 1
+			SkuOptions.tMenuToggleGetFailureLast = tostring(self.toggleLabel)
+			dprint("MakeToggleNode: get FAILED for", tostring(self.toggleLabel), "->", tostring(tOn))
+		end
+	end
+
+	aNode.OnAction = function(self)
+		if self.toggleCanChange and self.toggleCanChange(self) == false then
+			return
+		end
+		local tOk, tOn = pcall(self.toggleGet, self)
+		if not tOk then
+			dprint("MakeToggleNode: get FAILED for", tostring(self.toggleLabel), "->", tostring(tOn))
+			return
+		end
+		local tNew = not tOn
+		local tSetOk, tErr = pcall(self.toggleSet, self, tNew)
+		if not tSetOk then
+			-- Do NOT relabel: the user must not hear a state the setting did not
+			-- take. Same reason the aura toggles rewrite their name only after the
+			-- store call returned.
+			dprint("MakeToggleNode: set FAILED for", tostring(self.toggleLabel), "->", tostring(tErr))
+			return
+		end
+		self:RefreshLiveName()
+		if self.toggleOnChange then
+			pcall(self.toggleOnChange, self, tNew)
+		end
+	end
+
+	aNode:RefreshLiveName()
+	return aNode
+end
+
+-- The same thing for a node that ALREADY has the classic on/off shape -
+-- `isSelect` plus a GetCurrentValue that returns one of the two state labels
+-- plus an OnAction that takes the chosen label. Those two functions are the
+-- site's own reader and writer, so reusing them keeps every per-setting quirk
+-- (talent-set indirection, .value sub-tables, side effects) exactly as it was
+-- and the conversion is a single added line at the call site.
+--
+-- OnAction is invoked the way the menu framework invokes it for a value child
+-- (self, chosenLabel, parentName), so a site that switches on `aName` needs no
+-- change at all.
+--
+-- The two labels only have to BE the two strings GetCurrentValue can return -
+-- which of them is passed as "on" does not matter. `get` answers true exactly
+-- when the stored value is aOnLabel, and the label shown is aOnLabel in that
+-- case, so the state the user hears is the stored one either way; flipping just
+-- writes the other of the pair. That is what makes converting the ~50 existing
+-- Ja/Nein, Ein/Aus and Low/High sites a mechanical one-liner per site instead of
+-- a judgement call about which value counts as "on".
+function SkuOptions:MakeInPlaceToggle(aNode, aOnLabel, aOffLabel, aLabel)
+	if type(aNode) ~= "table" then
+		return aNode
+	end
+	local tOn = aOnLabel or L["On"]
+	local tOff = aOffLabel or L["Off"]
+	local tGetCurrentValue = aNode.GetCurrentValue
+	local tOnAction = aNode.OnAction
+	if type(tGetCurrentValue) ~= "function" or type(tOnAction) ~= "function" then
+		dprint("MakeInPlaceToggle: refusing", tostring(aNode.name), "-- needs GetCurrentValue and OnAction")
+		return aNode
+	end
+	return SkuOptions:MakeToggleNode(aNode, {
+		label = aLabel or aNode.name,
+		onLabel = tOn,
+		offLabel = tOff,
+		get = function(self)
+			return tGetCurrentValue(self) == tOn
+		end,
+		set = function(self, aNewValue)
+			tOnAction(self, self, aNewValue and tOn or tOff, self.parent and self.parent.name)
+		end,
+	})
+end
+
+
 local tPrevErrorUtterance
 local tCurrentErrorUtteranceTimerHandle
 SkuGenericMenuItem = {

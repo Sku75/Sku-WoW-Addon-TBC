@@ -804,17 +804,12 @@ function Friends:FriendsMenuBuilder()
 
       -- Show-offline dropdown (default off; roster rebuilds on next descent).
       local tOffline = SkuOptions:InjectMenuItems(self, {Sku.deEn("offline anzeigen", "show offline", "afficher les hors ligne")}, SkuGenericMenuItem)
-      tOffline.dynamic = true
-      tOffline.isSelect = true
       tOffline.noStepUpAfterSelect = true
       tOffline.GetCurrentValue = function(self) return Friends.gShowOffline and Sku.deEn("an", "on", "activé") or Sku.deEn("aus", "off", "désactivé") end
       tOffline.OnAction = function(self, aValue, aSelName)
          Friends.gShowOffline = (aSelName == Sku.deEn("an", "on", "activé"))
       end
-      tOffline.BuildChildren = function(self)
-         SkuOptions:InjectMenuItems(self, {Sku.deEn("an", "on", "activé")}, SkuGenericMenuItem)
-         SkuOptions:InjectMenuItems(self, {Sku.deEn("aus", "off", "désactivé")}, SkuGenericMenuItem)
-      end
+      SkuOptions:MakeInPlaceToggle(tOffline, Sku.deEn("an", "on", "activé"), Sku.deEn("aus", "off", "désactivé"))
 
       -- Member roster (online first, offline behind the toggle). Sorted +
       -- type-ahead so a big guild is jump-navigable by name.

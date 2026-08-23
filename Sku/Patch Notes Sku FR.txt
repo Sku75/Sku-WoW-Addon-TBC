@@ -39,6 +39,7 @@ Changements dans Sku v43.0
             La liste de valeurs « sort utilisable » s'ouvre sans à-coup, et toutes les listes de valeurs d'aura s'ouvrent nettement plus vite.
             Chaque entrée de menu de tout l'addon coûte environ 13 fois moins à créer, ce qui ouvre les grandes listes de sorts environ trois fois plus vite.
             Une liste dont la construction a été interrompue par le serveur est poursuivie à la frame suivante au lieu de rester incomplète sans le dire.
+            Les réglages à deux valeurs annoncent leur valeur avec le nom et se basculent avec Entrée ; la flèche droite et le sous-menu disparaissent.
 
         Corrections
             Clients français : tous les sons d'auras et les clips vocaux enregistrés étaient muets (correctif de Naxedim).
@@ -59,6 +60,7 @@ Changements dans Sku v43.0
             Moniteur de ressource : le réglage « rien » provoquait une série d'erreurs Lua.
             Moniteur de ressource : un moniteur désactivé dans le menu des fonctions annonçait quand même les changements de ressource.
             Clients français : la liste des enchantements d'arme pour les auras était vide.
+            Auras : changer le sort d'une condition de durée marquait un temps d'arrêt, et via « Saisir le sort » l'ancien sort restait annoncé comme sélectionné.
 
     Avec nos remerciements à Naxedim et ZenqFR
         Les quatre correctifs suivants sont les premières contributions de code directes au dépôt
@@ -1011,6 +1013,57 @@ Changements dans Sku v43.0
             sinon une entrée empêchée par l'interruption compterait comme construite. Une passe
             sans progrès abandonne au lieu de se répéter indéfiniment. /skucheck menu vérifie sur
             un niveau jetable qu'une construction interrompue se poursuit au lieu de recommencer.
+
+    Les réglages à deux valeurs sont désormais des bascules, plus des sous-menus
+        Simple : Un réglage qui ne connaît que deux états - « Activé » et « Désactivé », « Oui » et
+            « Non » - annonce maintenant sa valeur en même temps que son nom : vous entendez par
+            exemple « Menu Sku en combat ; activé ». Entrée bascule, le focus ne bouge pas, et
+            vous entendez aussitôt l'entrée dans son nouvel état. La flèche droite n'est plus
+            nécessaire, car le sous-menu contenant les deux valeurs a disparu. Il fallait
+            auparavant trois touches - droite, flèche, Entrée - et il fallait y entrer rien que
+            pour savoir où en était le réglage. Cela concerne tous les réglages, le moniteur de
+            santé et de combat, les filtres du chat et du journal de combat, le menu des
+            fonctions, le menu de la caméra et les réglages des autres extensions : environ 150
+            entrées. Les réglages à PLUS de deux valeurs gardent leur liste, puisqu'il y a
+            réellement quelque chose à y choisir.
+        Technique : Nouvel élément de menu partagé, SkuOptions:MakeToggleNode dans
+            SkuZOptions/templates.lua ; SkuOptions:MakeInPlaceToggle convertit un emplacement
+            isSelect existant en UNE ligne et continue d'utiliser ses propres GetCurrentValue et
+            OnAction, afin que chaque particularité d'un réglage reste telle quelle. Peu importe
+            laquelle des deux valeurs est passée comme « activé », et c'est précisément ce qui a
+            rendu mécanique la conversion des quelque 50 emplacements Oui/Non existants. Une
+            bascule est une feuille (actionInPlace, pas de dynamic, pas d'enfants) - d'où
+            l'inaction de la flèche droite - et un RefreshLiveName relit l'état juste avant chaque
+            annonce ; l'ancien sous-menu l'obtenait gratuitement en appelant GetCurrentValue à
+            chaque descente. Trois pièges : le parcours de chemin de SkuOptions:SlashFunc et la
+            recherche dans les réglages sélectionnent avec aEnterFlag = true et auraient BASCULÉ
+            une bascule nommée dans un chemin au lieu d'y amener le curseur - les deux se
+            contentent désormais de placer le focus, et la recherche compare avec toggleLabel
+            puisque le nom porte l'état. RefreshLiveName ne s'applique pas à l'entrée de filtre
+            d'une liste : SkuOptions:ApplyFilter la construit en copiant le premier enfant, et la
+            copie écraserait sinon le texte que vous saisissez. Enfin, une bascule dont le lecteur
+            lève une erreur est comptée par /skucheck menu - elle sonnerait sinon comme un réglage
+            sans valeur plutôt que comme un défaut.
+
+    Auras : changer le sort d'une condition de durée marquait un temps d'arrêt
+        Simple : Une condition avec durée (« plus long que », « plus court que ») ne retient qu'un
+            seul sort. En changer un obligeait ensuite Sku à parcourir toute la liste, uniquement
+            pour remettre à « désactivé » l'entrée choisie auparavant - sur les listes de buffs et
+            de débuffs, cela fait 27 000 entrées à CHAQUE Entrée, et sur les royaumes hardcore
+            exactement le genre de chose que le serveur interrompt volontiers. Chaque entrée
+            indique désormais elle-même son état au moment où elle est lue, et il n'y a donc plus
+            rien à parcourir. Corrigé au passage : si vous saisissiez le sort via « Saisir le
+            sort », l'entrée choisie auparavant restait annoncée comme « activé » - la liste
+            nommait deux sorts sélectionnés alors qu'un seul était enregistré.
+        Technique : tValueToggleRefreshLiveName dans SkuAuras/Options.lua est UNE fonction
+            partagée attachée à chaque entrée par référence : aucune fermeture par entrée, donc
+            aucune allocation supplémentaire à la construction. Elle lit internalName par rapport
+            au auraCond du niveau et s'exécute une fois par appui de touche, pas une fois par
+            entrée. Les grandes listes de valeurs ne passent volontairement PAS par
+            MakeToggleNode : cela coûterait trois fermetures et une table par entrée, soit, pour
+            27 057 entrées, exactement le coût par nœud que la refonte des nœuds de cette version
+            a supprimé. Les groupes de valeurs définissent self.auraCond dans leur BuildChildren
+            afin que la remontée bornée vers le parent le trouve.
 
 
 -------------------------------------------------------------------------------------------------------
