@@ -5309,6 +5309,86 @@ local function tSkuCheckAuras()
 		tChecked, tPending, tViolations = tChecked + (c or 0), tPending + (p or 0), tViolations + (v or 0)
 	end
 
+	-- [v43.1] The builder can no longer create a "wenn nicht" aura -- the type
+	-- step is gone with the draft rework (see SkuAuras.Types in data.lua). Any
+	-- that remain are legacy or imported; the frozen branch in Core.lua still
+	-- evaluates them, so they are reported as PENDING (worth a look), not as a
+	-- defect. A number that GROWS between sessions would mean the type came back
+	-- in through some path.
+	do
+		local tStore = SkuSettings and SkuSettings:Sub("SkuAuras", nil, "char")
+		tStore = tStore and tStore.Auras
+		if type(tStore) == "table" then
+			for tName, tData in pairs(tStore) do
+				if type(tData) == "table" and tData.type == "ifNot" then
+					tPending = tPending + 1
+					dprint("skucheck", "auras: legacy ifNot aura still stored:", tostring(tName))
+				end
+				-- [v43.1] One condition group = one attribute, one operator, N OR-ed
+				-- (or, for a negating operator, N AND-ed) values. The reading of the
+				-- group is taken from entry 1, so a group that MIXES operators has
+				-- the first entry's reading applied to all of them and its name says
+				-- something the evaluation does not do. The builder cannot produce
+				-- one; a hand-edited SavedVariables file or a very old aura can.
+				if type(tData) == "table" and type(tData.attributes) == "table" then
+					for tAtt, tEntries in pairs(tData.attributes) do
+						-- [v43.1] A THRESHOLD attribute is a continuously falling
+						-- reading (remaining duration). "gleich N" on it is a
+						-- condition that can never be true and "ungleich N" one that
+						-- is never false, so the aura is silently dead or silently
+						-- unconditional. The builder only offers bigger/smaller now;
+						-- an aura authored before that can still carry one.
+						local tAttDef = SkuAuras and SkuAuras.attributes and SkuAuras.attributes[tAtt]
+						if tAttDef and tAttDef.type == "THRESHOLD" and type(tEntries) == "table" then
+							for x = 1, #tEntries do
+								local tOp = tEntries[x] and tEntries[x][1]
+								if tOp == "is" or tOp == "isNot" then
+									tPending = tPending + 1
+									dprint("skucheck", "auras: THRESHOLD condition with", tostring(tOp), "--",
+										tostring(tName), "/", tostring(tAtt),
+										"-- a falling duration is never exactly a value; use bigger/smaller")
+									break
+								end
+							end
+						end
+						if type(tEntries) == "table" and #tEntries > 1 then
+							local tFirstOp = tEntries[1] and tEntries[1][1]
+							for x = 2, #tEntries do
+								if tEntries[x] and tEntries[x][1] ~= tFirstOp then
+									tPending = tPending + 1
+									dprint("skucheck", "auras: condition group with MIXED operators:",
+										tostring(tName), "/", tostring(tAtt), "--",
+										tostring(tFirstOp), "vs", tostring(tEntries[x][1]),
+										"-- the whole group is read as", tostring(tFirstOp))
+									break
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+		tChecked = tChecked + 1
+	end
+
+	-- [v43.1] tDraftSyncCondition attaches a condition row to the draft only
+	-- while it holds at least one value, and detaches it again when the last one
+	-- is toggled off. An EMPTY row sitting in the draft therefore means some
+	-- write path bypassed it -- and empty rows are silently dropped by
+	-- tAttributesFromConditions on save, i.e. the user would lose a condition
+	-- without being told.
+	tChecked = tChecked + 1
+	if SkuAuras and type(SkuAuras.draft) == "table" and type(SkuAuras.draft.conditions) == "table" then
+		for x = 1, #SkuAuras.draft.conditions do
+			local tCond = SkuAuras.draft.conditions[x]
+			if type(tCond) ~= "table" or type(tCond.values) ~= "table" or #tCond.values == 0 then
+				tViolations = tViolations + 1
+				dprint("skucheck", "VIOLATION auras: draft condition", x,
+					"is attached with no values -- tDraftSyncCondition was bypassed, and the row would be dropped on save without a word")
+			end
+		end
+	end
+
 	return tChecked, tPending, tViolations
 end
 
@@ -5532,6 +5612,19 @@ local function tSkuCheckMenu()
 	-- mid-fight could be read and navigated but not answered. The popup nodes now
 	-- fall back to the button's own (insecure, unprotected) OnClick; this counts the
 	-- activations where even that found no button to click.
+	-- Tripwire tally (v43.1, with the actionInPlace flag): a node that acts in
+	-- place runs its OWN OnAction and keeps the cursor. If it never got one, its
+	-- ENTER does nothing at all and -- unlike the selectTarget miss above -- not
+	-- even the step up to the parent happens, so the key is completely silent.
+	local tInPlaceMisses = (SkuOptions and SkuOptions.tMenuActionInPlaceMisses) or 0
+	tChecked = tChecked + 1
+	if tInPlaceMisses > 0 then
+		tViolations = tViolations + tInPlaceMisses
+		dprint("skucheck", "VIOLATION menu:", tInPlaceMisses,
+			"actionInPlace ENTER(s) with no own OnAction this session, last:",
+			tostring(SkuOptions and SkuOptions.tMenuActionInPlaceLast))
+	end
+
 	local tPopupDead = (SkuOptions and SkuOptions.tPopupCombatDead) or 0
 	tChecked = tChecked + 1
 	if tPopupDead > 0 then
