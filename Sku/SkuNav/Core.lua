@@ -1168,7 +1168,49 @@ function SkuNav:EnsureWaypointCacheComplete()
 	while co and coroutine.status(co) ~= "dead" do
 		local ok, err = coroutine.resume(co)
 		if not ok then
-			dprint("EnsureWaypointCacheComplete coroutine error", err)
+			-- [v43.1] Das hier war ein blankes `break`, und es ist die Stelle mit
+			-- den MEISTEN gemessenen Abbrüchen: von 15 "script ran too long" im
+			-- Hardcore-Log entfallen 8 auf den Wegpunkt-Cache, der erste davon
+			-- (11:55:55) genau hier. Der asynchrone Pfad hat seit 2026-08-19 einen
+			-- Neustart-Pfad, dieser synchrone hatte keinen - der Cache blieb halb
+			-- gebaut, wpCacheReady blieb false, und NICHTS hat je wieder gebaut.
+			--
+			-- Der Zustand der Coroutine ist nach dem Abbruch verloren, ein zweites
+			-- resume also sinnlos: was bleibt, ist ein Neustart. Synchron hier
+			-- nochmal anzufangen hieße, im selben Frame in dasselbe Limit zu
+			-- laufen, deshalb geht der Neustart an den asynchronen Treiber - der
+			-- hat das Frame-Budget und die 3 Versuche. Der Aufrufer bekommt damit
+			-- keinen vollständigen Cache mehr zurück, aber "gleich fertig" statt
+			-- "für diese Sitzung kaputt"; wpCacheReady bleibt false, also greifen
+			-- bei allen Verbrauchern die vorhandenen Guards und der gesprochene
+			-- Hinweis "Wegpunkte werden noch geladen".
+			local tErrText = tostring(err)
+			dprint("EnsureWaypointCacheComplete coroutine error", tErrText)
+			if SkuErrorLog and SkuErrorLog.Log then
+				pcall(function() SkuErrorLog:Log("skuNavWpCache", "EnsureWaypointCacheComplete abgebrochen: " .. tErrText) end)
+			end
+			-- Dasselbe Backoff wie im asynchronen Pump: sagt dem Budget-Arbiter,
+			-- dass dieser Client gerade kein 150-ms-Fenster hergibt.
+			if Sku.NoteScriptExecutionLimit
+				and (sfind(tErrText, "too long", 1, true) or sfind(tErrText, "execution limit", 1, true)) then
+				pcall(function() Sku:NoteScriptExecutionLimit() end)
+			end
+			SkuNav._wpcCo = nil
+			SkuNav.wpCacheReady = false
+			-- Nicht aus diesem Frame heraus neu starten (der ist verbraucht), und
+			-- nur, wenn inzwischen niemand anderes einen Build angestoßen hat.
+			local tGen = SkuNav._wpcGen
+			C_Timer.After(0.5, function()
+				if SkuNav._wpcGen == tGen and SkuNav.wpCacheReady ~= true then
+					dprint("Wegpunkt-Cache: Neustart asynchron nach abgebrochenem Sync-Build")
+					-- Eigenständiger Build, nicht die Fortsetzung einer alten
+					-- Retry-Kette: den Zähler zurücksetzen, sonst hätte eine
+					-- Sitzung, die ihre drei Versuche schon verbraucht hat, hier
+					-- gar keinen mehr (gleiche Begründung wie beim Login-Build).
+					SkuNav._wpcRestarts = 0
+					SkuNav:CreateWaypointCache(nil, true)
+				end
+			end)
 			break
 		end
 	end
