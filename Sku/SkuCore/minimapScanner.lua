@@ -554,7 +554,7 @@ function MinimapScanner:MinimapStopScan()
    MinimapScanner:RestoreMinimap()
    MinimapScanner.noMouseOverNotification = nil
    MinimapScanner.IsMMScanning = false
-   -- [v43.1] Auch den Schnellscan-Lock lösen. Bisher wurde hier nur IsMMScanning
+   -- [v43.0] Auch den Schnellscan-Lock lösen. Bisher wurde hier nur IsMMScanning
    -- zurückgesetzt; blieb MinimapScanFastRunning stehen (abgebrochener Tail),
    -- half kein einziger Stop-Pfad mehr heraus - weder PLAYER_STARTED_MOVING noch
    -- Kampfbeginn noch das Abschalten des Moduls. "Scan anhalten" muss ALLE Locks
@@ -729,7 +729,7 @@ local tInitialCenterMouse
 local tPrevResult = ""
 local mmx, mmy
 
--- [v43.1] Tooltip-Auswertung des Schnellscans, herausgezogen aus dem
+-- [v43.0] Tooltip-Auswertung des Schnellscans, herausgezogen aus dem
 -- C_Timer-Tail von MinimapScanFast, damit sie EINZELN unter pcall laufen kann.
 --
 -- Das war der einzige ungeschützte Teil des Tails, und der Tail ist der einzige
@@ -780,7 +780,7 @@ function MinimapScanner:MinimapScanFast()
 
    MinimapScanner.noMouseOverNotification = true
    MinimapScanner.MinimapScanFastRunning = true
-   -- [v43.1] Zeitstempel des Locks. Der Lock wird erst am ENDE eines
+   -- [v43.0] Zeitstempel des Locks. Der Lock wird erst am ENDE eines
    -- C_Timer-Tails wieder freigegeben (MinimapScanFastStop); erreicht der Tail
    -- sein Ende nicht, blieb er bisher für den Rest der Sitzung stehen und die
    -- passive Ressourcenansage war tot. Siehe die Deadline im OnUpdate-Treiber.
@@ -885,7 +885,7 @@ function MinimapScanner:MinimapScanFast()
       -- und war an Unescape gekoppelt — fiel SkuChat weg, wurden alle Zeilen
       -- still uebersprungen. Unescape lebt jetzt in SkuUtil (laedt immer zuerst),
       -- daher braucht es keinen SkuChat-Vorhandensein-Guard mehr.
-      -- [v43.1] Unter pcall: alles ab hier bis MinimapScanFastStop MUSS laufen,
+      -- [v43.0] Unter pcall: alles ab hier bis MinimapScanFastStop MUSS laufen,
       -- sonst bleibt der Scan-Lock stehen (siehe tScanFastScrapeTooltip). Ein
       -- fehlgeschlagener Scrape heißt "nichts gefunden", nicht "Scanner tot".
       local tScrapeOk, foundResult = pcall(tScanFastScrapeTooltip)
@@ -968,7 +968,7 @@ function MinimapScanner:MinimapScannerOnLogin()
       if SkuCore.inCombat == true then
          return
       end
-      -- [v43.1] Deadline gegen einen hängenden Schnellscan-Lock. Der Lock wird
+      -- [v43.0] Deadline gegen einen hängenden Schnellscan-Lock. Der Lock wird
       -- im C_Timer-Tail freigegeben (nominell nach 0,1 s); läuft dieser Tail gar
       -- nicht erst an - abgebrochene Ausführung, gelöschter Timer -, greift der
       -- pcall im Tail nicht, weil er nie erreicht wird. Dann räumt das hier auf.

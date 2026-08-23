@@ -364,7 +364,7 @@ SkuGenericMenuItem = {
 	next = nil,
 	isSelect = false,
 	isMultiselect = false,
-	-- [v43.1] "act here, stay here". ENTER on a node with this flag runs the
+	-- [v43.0] "act here, stay here". ENTER on a node with this flag runs the
 	-- node's OWN OnAction and leaves the cursor exactly where it is; the node's
 	-- children are NOT freed. Everything else in this template moves the cursor
 	-- on ENTER (to the level's select target, or up to the parent), which is why
@@ -672,7 +672,7 @@ SkuGenericMenuItem = {
 			end
 		elseif string.find(self.name, L["aura;sound"].."#") then
 			for i, v in pairs(SkuAuras.outputs) do
-				-- [v43.1] auraOutputKey: the aura output TOGGLES carry a state
+				-- [v43.0] auraOutputKey: the aura output TOGGLES carry a state
 				-- suffix in their name ("...#glas 1;ein"), so the exact-name
 				-- comparison can no longer find them. The key identifies the
 				-- output directly; the name comparison stays for every node built
@@ -852,7 +852,7 @@ SkuGenericMenuItem = {
 			end			
 		else
 			if self.actionInPlace == true then
-				-- [v43.1] "act here, stay here" (see the flag on the template above).
+				-- [v43.0] "act here, stay here" (see the flag on the template above).
 				-- Checked BEFORE the selectTarget branch on purpose: ENTER inside a
 				-- select level otherwise always dispatches to the LEVEL'S target and
 				-- parks the cursor there, so a toggle node under such a level could

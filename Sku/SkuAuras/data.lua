@@ -81,7 +81,7 @@ end
 -- The SET attributes need none of this - their live lists carry both forms as
 -- keys, so contains/containsNot answer correctly by construction. Only the
 -- scalar (CATEGORY) lane comes through here.
--- [v43.1] Promoted to a field: the evaluate loop in Core.lua and the two places
+-- [v43.0] Promoted to a field: the evaluate loop in Core.lua and the two places
 -- that NAME a condition (SkuAuras:BuildAuraName, the builder's condition rows)
 -- all need the same answer to "is this operator a negation?", and three copies
 -- of a two-entry list is how they drift apart.
@@ -1619,7 +1619,7 @@ SkuAuras.attributes = {
       friendlyName = L["Your target is attackable"],
       type = "BINARY",
       evaluate = function(self, aEventData, aOperator, aValue)
-         -- [v43.1] targetCanAttack is a LAZY field now (tLazyEvaluateFields in
+         -- [v43.0] targetCanAttack is a LAZY field now (tLazyEvaluateFields in
          -- Core.lua) and arrives as "true"/"false", with plain `false` as the
          -- "no value" marker, i.e. no target selected at all. That case must
          -- stay false for EVERY operator - which is what the pre-lazy nil did,
@@ -1820,7 +1820,7 @@ SkuAuras.attributes = {
       end,
       values = zeroToOneHundred,
    },
-   -- [v43.1] The SPECIFIC power pools, beside unitPowerPlayer's "whatever bar
+   -- [v43.0] The SPECIFIC power pools, beside unitPowerPlayer's "whatever bar
    -- the game is showing". Same split the resource monitor has had all along
    -- (SkuCore/aq.lua, tPowerTypes: ACTIVE / MANA / RAGE / ENERGY / RUNIC_POWER),
    -- so a druid can say "mana under 20" and have it mean mana in cat form too,
@@ -2583,7 +2583,7 @@ SkuAuras.operatorsForAttributeType = {
    ORDINAL = operatorsSubset("is", "isNot", "bigger", "smaller"),
    ---Supports checking if contains a given element (e.g. source, buff list)
    SET = operatorsSubset("contains", "containsNot"),
-   -- [v43.1] A CONTINUOUSLY falling numeric reading: the remaining duration of a
+   -- [v43.0] A CONTINUOUSLY falling numeric reading: the remaining duration of a
    -- buff, a debuff or a weapon enchant. Same comparisons as ORDINAL minus the
    -- two that are useless on it:
    --   "gleich 8"    - the reading is a float that is sampled on events, so it
@@ -2599,7 +2599,7 @@ SkuAuras.operatorsForAttributeType = {
 }
 
 ------------------------------------------------------------------------------------------------------------------
--- [v43.1] Only the NAME lookup is left of this table. The aura builder no
+-- [v43.0] Only the NAME lookup is left of this table. The aura builder no
 -- longer offers a type choice: every aura it creates is "if", and the type step
 -- is gone from the flow.
 --

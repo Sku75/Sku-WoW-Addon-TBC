@@ -1889,7 +1889,7 @@ local tEvaluateDataMT = {
 		return tValue
 	end,
 }
--- [v43.1] Percentage of ONE specific power pool, for the four specific-resource
+-- [v43.0] Percentage of ONE specific power pool, for the four specific-resource
 -- attributes (unitManaPlayer & co). nil - so the condition is false rather than
 -- 0 - when the character has no such pool at all: UnitPowerMax comes back 0 for
 -- a warrior's mana, and dividing by it would be the bug, while reporting 0%
@@ -1906,7 +1906,7 @@ tLazyEvaluateFields = {
 	spellNameUsable = function()
 		return SkuAuras:GetSpellNamesUsable()
 	end,
-	-- [v43.1] Your CURRENTLY SELECTED target - unrelated to the triggering event,
+	-- [v43.0] Your CURRENTLY SELECTED target - unrelated to the triggering event,
 	-- unlike tDestinationUnitIDCannAttack. LAZY on purpose: it reads nothing from
 	-- the event, so the UnitCanAttack call was paid on EVERY combat-log event
 	-- while only an aura carrying this one condition ever looks at it.
@@ -2276,7 +2276,7 @@ SlashCmdList["SKUAURACACHE"] = function(aMsg)
 	print(string.format("|cff80c0ffSkuAuraCache|r enabled=%s verify=%s", tostring(c.enabled), tostring(c.verify)))
 end
 
--- [v43.1] /skuauratrace <text> -- "why did my aura not fire?"
+-- [v43.0] /skuauratrace <text> -- "why did my aura not fire?"
 --
 -- The evaluate loop BREAKS on the first false condition and says nothing, which
 -- is correct for the hot path (hundreds of events a second, dozens of auras)
@@ -2306,7 +2306,7 @@ SlashCmdList["SKUAURATRACE"] = function(aMsg)
 	print("|cff80c0ffSkuAuraTrace|r trigger it now, then /reload and read the log")
 end
 
--- [v43.1] One traced condition, as one log line (see /skuauratrace). Prints the
+-- [v43.0] One traced condition, as one log line (see /skuauratrace). Prints the
 -- stored condition AND the live value it was compared against, because "spellName
 -- is Mark of the Wild -> false" on its own does not say whether the event carried
 -- a different spell or no spell at all.
@@ -2375,7 +2375,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 	
 	local tDestinationUnitIDCannAttack
 	if tDestinationUnitID and tDestinationUnitID[1] then
-		-- [v43.1] The old `tDestinationUnitID ~= "party0"` guard compared the whole
+		-- [v43.0] The old `tDestinationUnitID ~= "party0"` guard compared the whole
 		-- TABLE against a string, so it was always true and skipped nothing. Dropped
 		-- rather than repaired to `[1] ~= "party0"`: GetBestUnitId stopped emitting
 		-- the invalid "party0" token in v43.0 (see the comment there), so [1] can no
@@ -2390,7 +2390,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 
 	local tSourceUnitIDCannAttack
 	if tSourceUnitID and tSourceUnitID[1] then
-		-- [v43.1] Dead "party0" guard removed, see tDestinationUnitIDCannAttack above.
+		-- [v43.0] Dead "party0" guard removed, see tDestinationUnitIDCannAttack above.
 		tSourceUnitIDCannAttack = UnitCanAttack("player", tSourceUnitID[1])
 	elseif tEventData[CleuBase.sourceFlags] then
 		tSourceUnitIDCannAttack = CombatLog_Object_IsA(tEventData[CleuBase.sourceFlags], CombatLogFilterAttackable)
@@ -2746,7 +2746,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 		end
 		if tSkipAura ~= true and (tSpecificAuraToTestIndex == nil or (tSpecificAuraToTestIndex ~= nil and tSpecificAuraToTestIndex == tAuraName)) then
 			if tAuraData.enabled == true then
-				-- [v43.1] /skuauratrace: is THIS aura the one being explained?
+				-- [v43.0] /skuauratrace: is THIS aura the one being explained?
 				-- Resolved once per aura per event, and only while a trace name is
 				-- set at all - the name lower/find must not run on the hot path.
 				local tTrace = false
@@ -2923,7 +2923,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 
 					tHasApplicableAttributes = true
 					if #tAttributeValue > 1 then
-						-- [v43.1] The several values of ONE condition are a SET, and the
+						-- [v43.0] The several values of ONE condition are a SET, and the
 						-- operator is applied to the whole set (De Morgan):
 						--   affirmative operator -> holds when the attribute matches ANY
 						--     of them  ("zauber name gleich Eisbarriere ODER Manaschild")
@@ -2933,7 +2933,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 						-- negating group a TAUTOLOGY on a scalar attribute: a class
 						-- cannot be both warrior and mage, so "class isNot warrior OR
 						-- class isNot mage" was true for every class on earth. The
-						-- multi-select value lists of the v43.1 builder are what make
+						-- multi-select value lists of the v43.0 builder are what make
 						-- such a group easy to author, so the reading had to be pinned
 						-- down before anyone could hit it. Measured 2026-08-23: no
 						-- stored aura used a negating operator at all, so nothing that
@@ -3122,7 +3122,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 
 					end		
 				else
-					-- [v43.1] LEGACY READ PATH: type "ifNot". The builder cannot create
+					-- [v43.0] LEGACY READ PATH: type "ifNot". The builder cannot create
 					-- one any more (see the note on SkuAuras.Types in data.lua); this
 					-- branch is kept so an aura imported or shared from an older client
 					-- keeps firing exactly as it did. Do not extend it, and do not port
@@ -3505,7 +3505,7 @@ function SkuAuras.SkuCheck()
 		end
 	end
 
-	-- 5. [v43.1] duration conditions the evaluator cannot honour.
+	-- 5. [v43.0] duration conditions the evaluator cannot honour.
 	-- The builder merged the list and duration conditions into one row and caps
 	-- that row at one spell, so it can no longer create any of these. A stored
 	-- aura from before the merge, or a hand-edited SavedVariables file, still
@@ -3551,7 +3551,7 @@ function SkuAuras.SkuCheck()
 		end
 	end
 
-	-- [v43.1] targetCanAttack is LAZY and string-encoded. Project rule: every
+	-- [v43.0] targetCanAttack is LAZY and string-encoded. Project rule: every
 	-- regression fix ships its tripwire. The breakage this catches is a future
 	-- revert to a raw boolean (or an eager targetCanAttack re-added to the
 	-- tEvaluateData constructor, which would shadow the getter): both make the

@@ -1990,7 +1990,7 @@ L["purr drop"] = "katze und tropfen"
 L["PvP"] = "PvP"
 L["Q"] = "Q"
 L["Qualität"] = "Qualität"
-L["Quell Einheit angreifbar"] = "Quelle des Ereignisses angreifbar" -- [v43.1] renamed: event-relative vs your current target, see the sibling Quelle/Ziel des Ereignisses (L)
+L["Quell Einheit angreifbar"] = "Quelle des Ereignisses angreifbar" -- [v43.0] renamed: event-relative vs your current target, see the sibling Quelle/Ziel des Ereignisses (L)
 L["quell einheit"] = "quell einheit"
 L["Quelle (L)"] = "Quelle des Ereignisses (L)" -- [v43.0] renamed: filters the TRIGGERING EVENT's source, not list contents
 L["Querying data..."] = "Daten werden abgefragt ..."
@@ -2876,7 +2876,7 @@ L["Your list of buffs"] = "Die Liste deiner Buffs" -- aura attribute tooltip
 L["Your list of dbuffs"] = "Die Liste deiner Debuffs" -- aura attribute tooltip
 L["Your pet"] = "dein begleiter" -- aura value friendly name
 L["your role"] = "deine rolle"
-L["Your target is attackable"] = "Dein aktuelles Ziel angreifbar" -- aura attribute friendly name; [v43.1] renamed: event-relative vs your current target, see the sibling Quelle/Ziel des Ereignisses (L)
+L["Your target is attackable"] = "Dein aktuelles Ziel angreifbar" -- aura attribute friendly name; [v43.0] renamed: event-relative vs your current target, see the sibling Quelle/Ziel des Ereignisses (L)
 L["Your target's health percentage"] = "Gesundheit deines Ziels in Prozent" -- aura attribute tooltip
 L["Your target's health"] = "Gesundheit Ziel" -- aura attribute friendly name
 L["Your target's resource"] = "ressource deines Ziels" -- aura attribute friendly name
@@ -2913,7 +2913,7 @@ L["ziel deines ziels (L)"] = "ziel deines ziels (L)"
 L["ziel deines ziels"] = "ziel deines ziels"
 L["Ziel deines ziels"] = "ziel deines ziels"
 L["ziel deines Ziels"] = "ziel deines ziels"
-L["Ziel Einheit angreifbar"] = "Ziel des Ereignisses angreifbar" -- [v43.1] renamed: event-relative vs your current target, see the sibling Quelle/Ziel des Ereignisses (L)
+L["Ziel Einheit angreifbar"] = "Ziel des Ereignisses angreifbar" -- [v43.0] renamed: event-relative vs your current target, see the sibling Quelle/Ziel des Ereignisses (L)
 L["ziel einheit"] = "ziel einheit"
 L["ziel von Gruppenmitglied 0 (du)."] = "ziel von Gruppenmitglied 0 (du)."
 L["ziel von gruppenmitglied 0"] = "ziel von gruppenmitglied 0"
@@ -3323,7 +3323,7 @@ L["Zauber-ID eingeben"] = "Zauber-ID eingeben"
 L["Zauber-ID eingeben und Enter, oder Escape zum Abbrechen"] = "Zauber-ID eingeben und Enter, oder Escape zum Abbrechen"
 L["Unbekannte Zauber-ID"] = "Unbekannte Zauber-ID"
 L["Wert gesetzt: "] = "Wert gesetzt: "
--- Sku v43.1: Auren-Baukasten (Entwurf statt Menuepfad) + Basis-Auren (SkuAuras/Options.lua)
+-- Sku v43.0: Auren-Baukasten (Entwurf statt Menuepfad) + Basis-Auren (SkuAuras/Options.lua)
 L["Basis-Auren"] = "Basis-Auren"
 L["Eigene Aura erstellen"] = "Eigene Aura erstellen"
 L["Name"] = "Name"
@@ -3344,16 +3344,16 @@ L["Unbekannter Zauber"] = "Unbekannter Zauber"
 L["Zaubername oder ID eingeben und Enter, oder Escape zum Abbrechen"] = "Zaubername oder ID eingeben und Enter, oder Escape zum Abbrechen"
 L["Namen eingeben und Enter, leer für automatisch"] = "Namen eingeben und Enter, leer für automatisch"
 L["Eigener Cooldown wieder bereit"] = "Eigener Cooldown wieder bereit"
--- Sku v43.1: Basis-Auren umbenannt (SkuAuras/Options.lua)
+-- Sku v43.0: Basis-Auren umbenannt (SkuAuras/Options.lua)
 L["Dein Debuff auf Ziel läuft aus"] = "Dein Debuff auf Ziel läuft aus"
 L["Dein Buff auf Ziel läuft aus"] = "Dein Buff auf Ziel läuft aus"
 L["Dein Buff auf Gruppenmitglied ausgelaufen"] = "Dein Buff auf Gruppenmitglied ausgelaufen"
 L["Debuff bei Zielwechsel ausgeben"] = "Debuff bei Zielwechsel ausgeben"
--- Sku v43.1: Auren-Baukasten, Ausgabe statt Aktion (SkuAuras/Options.lua)
+-- Sku v43.0: Auren-Baukasten, Ausgabe statt Aktion (SkuAuras/Options.lua)
 L["Ausgabe Typ"] = "Ausgabe Typ"
 L["Ausgabe"] = "Ausgabe"
 
--- Sku v43.1: Buff-/Debuff-Liste und verbleibende Dauer sind EINE Bedingung (SkuAuras/Options.lua)
+-- Sku v43.0: Buff-/Debuff-Liste und verbleibende Dauer sind EINE Bedingung (SkuAuras/Options.lua)
 L["verbleibende Dauer kleiner"] = "verbleibende Dauer kleiner"
 L["verbleibende Dauer groesser"] = "verbleibende Dauer größer"
 L["verbleibende Dauer"] = "verbleibende Dauer"
@@ -3361,7 +3361,7 @@ L["Sekunden"] = "Sekunden"
 L["nur ein Zauber, weitere entfernt"] = "nur ein Zauber, weitere entfernt"
 L["verbleibende Dauer entfernt"] = "verbleibende Dauer entfernt"
 
--- Sku v43.1: Gesundheit/Ressourcen-Gruppe + einzelne Ressourcen-Pools (SkuAuras)
+-- Sku v43.0: Gesundheit/Ressourcen-Gruppe + einzelne Ressourcen-Pools (SkuAuras)
 L["Eigene Gesundheit oder Ressource"] = "Eigene Gesundheit oder Ressource"
 L["AURA_VitalsGroupTip"] = "Gesundheit oder eine Ressource des Spielers in Prozent, dazu die Kombopunkte als Anzahl"
 L["AURA_ComboPointsShort"] = "Kombopunkte"

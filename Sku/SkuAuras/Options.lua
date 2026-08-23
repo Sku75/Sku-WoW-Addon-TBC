@@ -95,7 +95,7 @@ local function tSpellIdValueFor(aAttributeName, aSpellId)
 	return SkuAuras.values and SkuAuras.values[tValue] and tValue or nil
 end
 
--- [v43.1] Type a spell NAME instead of hunting for it in a list of several
+-- [v43.0] Type a spell NAME instead of hunting for it in a list of several
 -- thousand entries - a numeric input still goes down the id lane above. The
 -- result is always the value KEY the attribute actually stores, so a typed name
 -- and a picked list entry produce byte-identical auras.
@@ -147,7 +147,7 @@ local function tResolveSpellText(aAttributeName, aText)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- [v43.1] THE AURA BUILDER - draft model
+-- [v43.0] THE AURA BUILDER - draft model
 --
 -- Until v43.0 a new aura WAS the menu path the user had walked: the type node
 -- collected the aura by walking `collectValuesFrom` back up the .parent chain,
@@ -176,7 +176,7 @@ end
 local AURA_DRAFT_ID = "auraDraftWorkbench"
 local AURA_COND_ID = "auraDraftConditions"
 
--- [v43.1] MERGED LIST + DURATION CONDITIONS.
+-- [v43.0] MERGED LIST + DURATION CONDITIONS.
 --
 -- Six pairs of attributes used to be twelve entries in the attribute list, and
 -- for four of those pairs the user had to know that picking the duration one
@@ -257,7 +257,7 @@ local function tDefaultOperator(aAttName)
 	return "is"
 end
 
--- [v43.1] THE VITALS GROUP.
+-- [v43.0] THE VITALS GROUP.
 --
 -- "Eigene Gesundheit", "Eigene Ressource" and the four specific pools are one
 -- entry in the attribute list, "Gesundheit oder Ressource", and the pool is the
@@ -342,7 +342,7 @@ local function tConditionsFromAttributes(aAttributes)
 			tConditions[#tConditions + 1] = {att = tAtt, op = tOp, values = tByOp[tOp]}
 		end
 	end
-	-- [v43.1] Fold a duration row into its list row, so the two stored
+	-- [v43.0] Fold a duration row into its list row, so the two stored
 	-- attributes read back as the ONE condition the builder now creates.
 	-- Folded only when the shape is one the evaluator actually honours: a single
 	-- affirmative list row holding a single spell, and a single duration row.
@@ -407,7 +407,7 @@ local function tAttributesFromConditions(aConditions)
 					tGroup[#tGroup + 1] = {tCond.op, tValue}
 				end
 			end
-			-- [v43.1] The duration half of a merged row becomes its own stored
+			-- [v43.0] The duration half of a merged row becomes its own stored
 			-- attribute again. For the borrowing attributes the PAIR is what the
 			-- evaluator reads - the list condition names the spell, the duration
 			-- compares its remaining time (Core.lua, tAuraDurationAtts) - so a
@@ -553,7 +553,7 @@ local function tValueToggleRefreshLiveName(self)
 	self.name = tToggleLabel(tValueName(self.internalName), tIndexOfValue(tCond.values, self.internalName) ~= nil)
 end
 
--- [v43.1] The joining word is the ONLY thing that tells the user which reading a
+-- [v43.0] The joining word is the ONLY thing that tells the user which reading a
 -- multi-value condition gets, so it has to match the evaluator exactly (see the
 -- De Morgan note in SkuAuras/Core.lua): "oder" for an affirmative operator,
 -- "und" for a negating one. Getting this wrong is worse than not showing it -
@@ -565,7 +565,7 @@ local function tValueJoinWord(aOperator)
 	return L["oder;"]
 end
 
--- [v43.1] The spoken label of a merged duration operator, as it reads UNDER its
+-- [v43.0] The spoken label of a merged duration operator, as it reads UNDER its
 -- list attribute: the attribute already said "Debuff Liste Ziel", so this only
 -- has to say what is being compared. A legacy stored operator that is neither
 -- bigger nor smaller (an `is`/`isNot` from before THRESHOLD existed) still gets
@@ -670,7 +670,7 @@ local function tDraftSummary()
 	return tSections
 end
 
--- [v43.1] The old chained builder rewrote the reading frame at EVERY step, so
+-- [v43.0] The old chained builder rewrote the reading frame at EVERY step, so
 -- wherever the user stood they could read back the aura as it was so far. That
 -- is the one thing the path-as-aura design got right, and it has to survive:
 -- the draft summary goes on EVERY node of the builder, not just on the two that
@@ -793,7 +793,7 @@ local function tPromptForSpellValue(aNode, aCond, aCtx)
 			return
 		end
 		if not tIndexOfValue(aCond.values, tValue) then
-			-- [v43.1] Same one-spell cap as the toggle list: a duration row
+			-- [v43.0] Same one-spell cap as the toggle list: a duration row
 			-- SWITCHES its spell, it does not collect several.
 			if aCond.durOp and tDurationBorrowsSpell[aCond.att] == true then
 				aCond.values = {tValue}
@@ -964,7 +964,7 @@ local function tInjectValueToggle(aLevel, aValue, aCond, aOwnerNode, aCtx, aGrou
 		if tIndex then
 			table.remove(aCond.values, tIndex)
 		elseif aCond.durOp and tDurationBorrowsSpell[aCond.att] == true then
-			-- [v43.1] A duration row holds exactly ONE spell (see the note at
+			-- [v43.0] A duration row holds exactly ONE spell (see the note at
 			-- tListDurationPartner): the evaluator measures entry one, so a
 			-- second spell here would be a name the aura never checks.
 			-- Switching, not adding.
@@ -1139,7 +1139,7 @@ local function tBuildValueToggleList(aLevel, aCond, aOwnerNode, aCtx)
 	aLevel.buildCursor = nil
 end
 
--- [v43.1] THE ASPECTS OF ONE CONDITION - the level under an attribute in the
+-- [v43.0] THE ASPECTS OF ONE CONDITION - the level under an attribute in the
 -- ADD chain, and under a condition row in the edit path. It replaced the pair
 -- "Werte ändern" / "Operator ändern": there was never anything to change about
 -- the values EXCEPT under one operator, so two entries were saying one thing
@@ -1248,7 +1248,7 @@ local function tBuildConditionAspects(aLevel, aCond, aOwnerNode)
 			tNode.OnEnter = function(self)
 				tSetDraftTooltip(self, tFriendlyName(SkuAuras.Operators, tOp))
 			end
-			-- [v43.1 fix] ENTERING an operator does NOT select it, and PICKING a
+			-- [v43.0 fix] ENTERING an operator does NOT select it, and PICKING a
 			-- value under one does.
 			--
 			-- It was the other way round, and the log of the first in-game pass
@@ -1413,7 +1413,7 @@ local function tAttributeUsable(aAttName)
 		return false
 	end
 	if tDurationAttributeOwner[aAttName] then
-		-- [v43.1] Merged into its list attribute (see tListDurationPartner). It
+		-- [v43.0] Merged into its list attribute (see tListDurationPartner). It
 		-- was never a condition anyone could use on its own: it holds a
 		-- threshold and no spell, so alone it can only ever be false. Reachable
 		-- through "Debuff Liste Ziel" -> "verbleibende Dauer kleiner" now.
@@ -1485,7 +1485,7 @@ local function tBuildAttributeList(aLevel)
 	local tSorted = TableSortByIndex(SkuAuras.attributes)
 	local tAny = false
 
-	-- [v43.1] The vitals group first: one entry instead of six, and the pool is
+	-- [v43.0] The vitals group first: one entry instead of six, and the pool is
 	-- the choice behind it. Listed only while at least one of its members is
 	-- still free, so it cannot open onto an empty level.
 	local tVitalsAny = false
@@ -1560,7 +1560,7 @@ local function tBuildConditionsLevel(aLevel)
 		end
 	end
 
-	-- [v43.1] The attribute list sits DIRECTLY in this level, behind the existing
+	-- [v43.0] The attribute list sits DIRECTLY in this level, behind the existing
 	-- condition rows - there is no "Bedingung hinzufügen" step to walk through
 	-- first. The step carried no information: it had exactly one thing behind it,
 	-- so it was a keypress that only ever said "yes, really". The two kinds of
@@ -1769,7 +1769,7 @@ function SkuAuras:BuildDraftWorkbench(aLevel)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- [v43.1] BASE AURAS
+-- [v43.0] BASE AURAS
 --
 -- The recipes that cover what nearly everybody wants: a fixed condition
 -- skeleton plus ONE attribute the user fills in. The sound and the aura name
@@ -1954,7 +1954,7 @@ local function tBaseAttributes(aRecipe)
 	return tAttributes
 end
 
--- [v43.1] The same read-back the workbench gives, for a recipe form: what this
+-- [v43.0] The same read-back the workbench gives, for a recipe form: what this
 -- aura WILL be, rendered from the recipe's own skeleton through the very same
 -- formatting as a hand-built condition. A recipe is not a black box just
 -- because it fills itself in - the user has to be able to hear what they are
@@ -2043,7 +2043,7 @@ end
 local function tBuildBaseRecipeForm(aLevel, aRecipe)
 	tBaseForm(aRecipe)
 
-	-- [v43.1] The spell entry is a plain container over THE value list the
+	-- [v43.0] The spell entry is a plain container over THE value list the
 	-- custom builder uses - same entries, same order, same multi-select, same
 	-- "Zauber eingeben" at index 0. It used to have a list of its own that
 	-- allowed one pick and threw the user back out, which meant the easy path
@@ -2197,7 +2197,7 @@ function SkuAuras:BuildAuraName(aNewType, aNewAttributes, aNewActions, aNewOutpu
 		end
 		if #tAttributeValue > 1 then
 			local tCount = 0
-			-- [v43.1] "oder" or "und" between the values of one condition, from the
+			-- [v43.0] "oder" or "und" between the values of one condition, from the
 			-- group's operator - the aura NAME has to state the same reading the
 			-- evaluator applies (see tValueJoinWord above).
 			local tJoin = tValueJoinWord(tAttributeValue[1][1])
@@ -2268,7 +2268,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 				end			
 			end
 		end
-		-- [v43.1] Editing IS the workbench: same builder, same draft table, the
+		-- [v43.0] Editing IS the workbench: same builder, same draft table, the
 		-- only difference is that the save writes back under the old name
 		-- instead of creating. The old per-keystroke path went with it - every
 		-- ENTER in the old "Bedingungen"/"Ausgaben" sub-chains called

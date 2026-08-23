@@ -55,7 +55,7 @@ function SkuTableToString(aTable, aCallback)
 	local tSkuCoroutineControlFrame = _G["SkuCoroutineControlFrame"] or CreateFrame("Frame", "SkuCoroutineControlFrame", UIParent)
 	tSkuCoroutineControlFrame:SetPoint("CENTER")
 	tSkuCoroutineControlFrame:SetSize(50, 50)
-	-- [v43.1] Der Rückgabewert von coroutine.resume wurde komplett verworfen.
+	-- [v43.0] Der Rückgabewert von coroutine.resume wurde komplett verworfen.
 	-- Stirbt die Coroutine an einem Fehler (kaputter Schlüssel, abgebrochene
 	-- Ausführung), ist ihr Status danach "dead" - also genau der Zustand, den
 	-- der else-Zweig als "fertig" liest. Er hängt dann eine schließende Klammer
@@ -97,7 +97,7 @@ function SkuTableToString(aTable, aCallback)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- [v43.1] Gegenstück zu SkuTableToString. War `assert(loadstring(aString))()`,
+-- [v43.0] Gegenstück zu SkuTableToString. War `assert(loadstring(aString))()`,
 -- also ungeschützt: ein abgeschnittener oder sonst kaputter String - wie ihn die
 -- alte Serialisierung bei einem Abbruch erzeugen konnte - warf hier hart, und
 -- zwar im OnEnable-Pfad von AuctionHouse (auctionHouse.lua, AuctionHouseOnLogin).

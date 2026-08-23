@@ -1996,7 +1996,7 @@ end
 
 --menu
 ---------------------------------------------------------------------------------------------------------------------------------------
--- [v43.1] Sortierte Liste aller eindeutigen Zaubernamen, einmal pro Sitzung
+-- [v43.0] Sortierte Liste aller eindeutigen Zaubernamen, einmal pro Sitzung
 -- berechnet (siehe die Begründung im "nicht ignoriert"-Builder unten).
 local tSpellNameCache = nil
 
@@ -2040,7 +2040,7 @@ local function MonitorSpellMenuBuilder(self)
 	tNewMenuEntry.OnAction = function(self, aValue, aName)
 		SkuSettings:Sub("SkuCore", nil, "char").aq[SkuCore.talentSet][tUnitType].debuffs.ignored[self.spellName] = true
 	end
-	-- [v43.1] RESUMABLE BUILD - dieselbe Behandlung wie die Aura-Wertelisten.
+	-- [v43.0] RESUMABLE BUILD - dieselbe Behandlung wie die Aura-Wertelisten.
 	--
 	-- Diese Liste ist ihr Zwilling: ein Durchlauf durch alle ~27.000 eindeutigen
 	-- Zaubernamen aus SkuDB.SpellDataTBC, ein Menüknoten pro Name. Im

@@ -5309,7 +5309,7 @@ local function tSkuCheckAuras()
 		tChecked, tPending, tViolations = tChecked + (c or 0), tPending + (p or 0), tViolations + (v or 0)
 	end
 
-	-- [v43.1] The builder can no longer create a "wenn nicht" aura -- the type
+	-- [v43.0] The builder can no longer create a "wenn nicht" aura -- the type
 	-- step is gone with the draft rework (see SkuAuras.Types in data.lua). Any
 	-- that remain are legacy or imported; the frozen branch in Core.lua still
 	-- evaluates them, so they are reported as PENDING (worth a look), not as a
@@ -5324,7 +5324,7 @@ local function tSkuCheckAuras()
 					tPending = tPending + 1
 					dprint("skucheck", "auras: legacy ifNot aura still stored:", tostring(tName))
 				end
-				-- [v43.1] One condition group = one attribute, one operator, N OR-ed
+				-- [v43.0] One condition group = one attribute, one operator, N OR-ed
 				-- (or, for a negating operator, N AND-ed) values. The reading of the
 				-- group is taken from entry 1, so a group that MIXES operators has
 				-- the first entry's reading applied to all of them and its name says
@@ -5332,7 +5332,7 @@ local function tSkuCheckAuras()
 				-- one; a hand-edited SavedVariables file or a very old aura can.
 				if type(tData) == "table" and type(tData.attributes) == "table" then
 					for tAtt, tEntries in pairs(tData.attributes) do
-						-- [v43.1] A THRESHOLD attribute is a continuously falling
+						-- [v43.0] A THRESHOLD attribute is a continuously falling
 						-- reading (remaining duration). "gleich N" on it is a
 						-- condition that can never be true and "ungleich N" one that
 						-- is never false, so the aura is silently dead or silently
@@ -5393,7 +5393,7 @@ local function tSkuCheckAuras()
 		tChecked = tChecked + 1
 	end
 
-	-- [v43.1] tDraftSyncCondition attaches a condition row to the draft only
+	-- [v43.0] tDraftSyncCondition attaches a condition row to the draft only
 	-- while it holds at least one value, and detaches it again when the last one
 	-- is toggled off. An EMPTY row sitting in the draft therefore means some
 	-- write path bypassed it -- and empty rows are silently dropped by
@@ -5692,7 +5692,7 @@ local function tSkuCheckMenu()
 		end
 	end
 
-	-- [v43.1] Stored data that cannot be read must not be able to stop a module
+	-- [v43.0] Stored data that cannot be read must not be able to stop a module
 	-- from loading. SkuStringToTable used to be assert(loadstring(s))(), so a
 	-- truncated AuctionDBHistory -- which the old SkuTableToString could produce,
 	-- because it discarded coroutine.resume's result and treated a coroutine that
@@ -5724,7 +5724,7 @@ local function tSkuCheckMenu()
 		end
 	end
 
-	-- [v43.1] Der Schnellscan-Lock der Minimap wird nur am Ende eines C_Timer-
+	-- [v43.0] Der Schnellscan-Lock der Minimap wird nur am Ende eines C_Timer-
 	-- Tails gelöst. Erreicht der Tail sein Ende nicht, war der Lock bisher für den
 	-- Rest der Sitzung gesetzt: die passive Ressourcenansage schwieg, ohne Fehler
 	-- und ohne Meldung, und kein Stop-Pfad kam mehr heraus (MinimapStopScan setzte
@@ -5776,7 +5776,7 @@ local function tSkuCheckMenu()
 	-- mid-fight could be read and navigated but not answered. The popup nodes now
 	-- fall back to the button's own (insecure, unprotected) OnClick; this counts the
 	-- activations where even that found no button to click.
-	-- Tripwire tally (v43.1, with the actionInPlace flag): a node that acts in
+	-- Tripwire tally (v43.0, with the actionInPlace flag): a node that acts in
 	-- place runs its OWN OnAction and keeps the cursor. If it never got one, its
 	-- ENTER does nothing at all and -- unlike the selectTarget miss above -- not
 	-- even the step up to the parent happens, so the key is completely silent.

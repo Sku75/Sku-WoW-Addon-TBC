@@ -3293,7 +3293,7 @@ L["Wert gesetzt: "] = "Valeur définie : "
 -- locale CODE. Never let a regeneration re-import it from enUS - check with
 -- py -3 dev/rework-docs/_locale_dupes.py, which fails on a duplicate here.
 L["locale"] = "frFR"
--- Sku v43.1: atelier d'auras (brouillon au lieu du chemin de menu) + auras de base (SkuAuras/Options.lua)
+-- Sku v43.0: atelier d'auras (brouillon au lieu du chemin de menu) + auras de base (SkuAuras/Options.lua)
 L["Basis-Auren"] = "Auras de base"
 L["Eigene Aura erstellen"] = "Créer une aura personnalisée"
 L["Name"] = "Nom"
@@ -3314,16 +3314,16 @@ L["Unbekannter Zauber"] = "Sort inconnu"
 L["Zaubername oder ID eingeben und Enter, oder Escape zum Abbrechen"] = "Saisissez un nom de sort ou un ID et appuyez sur Entrée, ou Échap pour annuler"
 L["Namen eingeben und Enter, leer für automatisch"] = "Saisissez un nom et appuyez sur Entrée, vide pour automatique"
 L["Eigener Cooldown wieder bereit"] = "Votre temps de recharge est de nouveau prêt"
--- Sku v43.1: auras de base renommées (SkuAuras/Options.lua)
+-- Sku v43.0: auras de base renommées (SkuAuras/Options.lua)
 L["Dein Debuff auf Ziel läuft aus"] = "Votre affaiblissement sur la cible expire"
 L["Dein Buff auf Ziel läuft aus"] = "Votre amélioration sur la cible expire"
 L["Dein Buff auf Gruppenmitglied ausgelaufen"] = "Votre amélioration sur un membre du groupe a expiré"
 L["Debuff bei Zielwechsel ausgeben"] = "Annoncer un affaiblissement au changement de cible"
--- Sku v43.1: atelier d'auras, sortie au lieu d'action (SkuAuras/Options.lua)
+-- Sku v43.0: atelier d'auras, sortie au lieu d'action (SkuAuras/Options.lua)
 L["Ausgabe Typ"] = "Type de sortie"
 L["Ausgabe"] = "Sortie"
 
--- Sku v43.1: la liste des buffs/debuffs et la durée restante sont UNE condition (SkuAuras/Options.lua)
+-- Sku v43.0: la liste des buffs/debuffs et la durée restante sont UNE condition (SkuAuras/Options.lua)
 L["verbleibende Dauer kleiner"] = "durée restante inférieure à"
 L["verbleibende Dauer groesser"] = "durée restante supérieure à"
 L["verbleibende Dauer"] = "durée restante"
@@ -3331,7 +3331,7 @@ L["Sekunden"] = "Secondes"
 L["nur ein Zauber, weitere entfernt"] = "un seul sort, les autres ont été retirés"
 L["verbleibende Dauer entfernt"] = "durée restante retirée"
 
--- Sku v43.1: groupe santé/ressource + ressources individuelles (SkuAuras)
+-- Sku v43.0: groupe santé/ressource + ressources individuelles (SkuAuras)
 L["Eigene Gesundheit oder Ressource"] = "Votre santé ou ressource"
 L["AURA_VitalsGroupTip"] = "La santé du joueur, ou l'une de ses ressources, en pourcentage, plus les points de combo en nombre"
 L["AURA_ComboPointsShort"] = "Points de combo"

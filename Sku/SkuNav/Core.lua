@@ -1168,7 +1168,7 @@ function SkuNav:EnsureWaypointCacheComplete()
 	while co and coroutine.status(co) ~= "dead" do
 		local ok, err = coroutine.resume(co)
 		if not ok then
-			-- [v43.1] Das hier war ein blankes `break`, und es ist die Stelle mit
+			-- [v43.0] Das hier war ein blankes `break`, und es ist die Stelle mit
 			-- den MEISTEN gemessenen Abbrüchen: von 15 "script ran too long" im
 			-- Hardcore-Log entfallen 8 auf den Wegpunkt-Cache, der erste davon
 			-- (11:55:55) genau hier. Der asynchrone Pfad hat seit 2026-08-19 einen
