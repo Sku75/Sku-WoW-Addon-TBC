@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace SkuInstaller
 {
@@ -82,7 +82,7 @@ namespace SkuInstaller
         // Tag and asset name both derive from the effective version:
         //   tag  = "v" + MainVersion       e.g. "v42.02"
         //   file = "Sku-" + MainVersion    e.g. "Sku-42.02.zip"
-        public const string FallbackMainVersion = "42.13";
+        public const string FallbackMainVersion = "43.0";
         public static string MainVersion { get; private set; } = FallbackMainVersion;
         public static string MainTag => "v" + MainVersion;
         public static string MainAssetName => "Sku-" + MainVersion + ".zip";

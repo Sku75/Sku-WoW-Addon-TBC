@@ -1,10 +1,62 @@
--------------------------------------------------------------------------------------------------------
+﻿-------------------------------------------------------------------------------------------------------
 - Sku Anniversary Addon Release Notes (English)
 -------------------------------------------------------------------------------------------------------
 
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku v43.0
+
+    Overview
+
+        New
+            Shift-F9 to Shift-F12 have their own keybinding entries now, and quick-access slots 1 to 4 are free again.
+            The taxi flight announcements can be switched off, and they never name your take-off or arrival point as a landing option.
+            New aura condition "Buff Debuff own casts only" filters this aura's buff and debuff lists to effects you cast yourself.
+            New command /skucheck verifies fixed rules against the live game state; it has also taken over the database tools as sub-commands (wp, db, mem).
+            The installer collects every log file for a bug report at one button press.
+            The login screen is usable with the login tool now.
+            Waypoint lists announce how far the loading has got.
+
+        Changes
+            Aura expiry warnings arrive on time instead of at the next combat event.
+            Aura evaluation per combat event is considerably cheaper.
+            Cancelling navigation is one key again instead of two.
+            The power monitor can follow the resource bar the game shows, so a druid gets mana, rage or energy according to form.
+            The login tool's log survives a restart of the tool.
+            Route waypoint data becomes usable much earlier after login, your own continent first, and needs about 22 MB less memory; the part of the route data your game version does not read is no longer built at all.
+            Auras are internationally interchangeable now: an aura works on every language client.
+            Shared aura sets arrive usable at a group member on another language.
+            Every rank of a spell counts as one entry for an aura.
+            Spell names the game hands out more than once can be told apart in the selection lists now.
+            The bundled aura sets are no longer German clients only.
+            The menu you build an aura in has been rebuilt: attribute list sorted by name, two-value conditions as switches, spells typed as well as picked, and every value list opens faster.
+            Every menu entry in the whole addon is about 13 times cheaper to create, which makes the big spell lists open about three times faster.
+            A list whose build was cut off by the server is continued on the next frame instead of quietly staying incomplete.
+            Settings with two values read their value out with the name and switch with Enter; the RIGHT arrow and the submenu are gone.
+            The volume sliders in the Sku menu set the game's own setting directly; Sku no longer keeps a copy of its own.
+
+        Bugfixes
+            French clients: all aura sounds and pre-recorded speech clips were silent (fix by Naxedim).
+            French clients: the range check announced nothing and its menu threw an error (fix by Naxedim).
+            French clients: two follow-ups from the same report fixed.
+            Nine translated labels meant something different depending on the language (fix by ZenqFR).
+            Auras: some group slots were announced as a beep instead of a word.
+            Auras: an aura set to "once" could fire several times in a row in dense combat.
+            Menu: on large maps the Shift-F9 waypoint list only opened on the second try.
+            The keys in the keyring were announced as "Empty".
+            On hardcore realms Sku now finishes building its waypoint data instead of stopping silently.
+            Navigation: the route list could come up empty and silent when the waypoint data was rebuilt while a menu was open.
+            Missing route data is reported now instead of showing up as an empty list.
+            A popup that opened during combat (group invite, summon, release) could be read but not answered.
+            A route would not start if its list finished loading while you were in it.
+            The login tool mistook the login screen for character selection.
+            The login tool: on realms with ten or more characters the character list was incomplete, wrongly numbered or would not scroll back.
+            Power monitor: the resource setting "nothing" threw a stream of Lua errors.
+            Power monitor: a monitor switched off in the features menu still announced resource changes.
+            French clients: the list of weapon enchants for aura conditions was empty.
+            The ready check did not land straight on "Ready" the way every other popup does.
+            A game volume set in the Sku menu could be back at an old value on another character.
+            The four standard profiles are created without switching profile in between - on hardcore realms that could leave you in a profile that is not yours.
 
     With thanks to Naxedim and ZenqFR
         The next four fixes are the first direct code contributions to the now-public Sku
@@ -116,12 +168,24 @@ Changes in Sku v43.0
             data itself, not the menus - so it would have reported the keyring bug even if you
             never open the keyring. The rule list grows only with fixed bugs: from now on every fix
             ships its own tripwire rule, so a later change cannot quietly reintroduce the same bug.
+            As of this version /skucheck is also the only check command: the three database
+            tools have become sub-commands - /skucheck wp verifies the waypoint data and runs
+            as part of a bare /skucheck, while /skucheck db and /skucheck mem are measurements
+            and only run when asked for. The old names /skudbwpcheck, /skudbcheck and
+            /skudbmem still work.
         Technical: At the bottom of LocalMenu.lua; iterates tBagSlotListSorted with the same
             container API and the same name resolution the bag menu uses. Rule 1: slot with an item
             id but blank tooltip text = violation; each violation is written to the SkuDebugLog
             ring as a "skucheck" line with bag, slot, item id and link. The closed bank is skipped
             with a log line (not silently), the keyring is deliberately swept at all raw 32 slots,
             and items not yet sent by the server count as "pending" rather than as failures.
+            The wp/db/mem domains call SkuDBTools.RunWpCheck/RunDbCheck/RunMem
+            (SkuDBTools.lua); they run as a background job and announce their own result, but
+            also write it into the ring as "skucheck" lines - the waypoint violations
+            individually, which used to be readable only in SavedVariables. /skucheck db also
+            reports how many datasets changed against the previous capture. The reason for the
+            merge: with three separate commands it was possible to run "the check" and miss
+            the waypoint rules entirely.
 
     Auras: expiry warnings arrive on time, not at the next combat event
         Simple: Two long-standing complaints shared one cause: an aura like "debuff on the target
@@ -249,6 +313,41 @@ Changes in Sku v43.0
             realm join; two-button dialogs are read and answered. Where the widgets are absent
             (Cata, Retail) the entries say so and do nothing.
 
+    Login tool: the character list on realms with ten or more characters
+        Simple: The character panel shows exactly nine characters at a time. From the tenth on
+            the list scrolls, and everything about the list went wrong at once: characters were
+            missing, the numbering did not match the actual list, and getting back to the top of
+            the list did not always work. All three are the same cause. The tool walks the list
+            with the arrow keys and watches how the highlight moves - and once the list scrolls,
+            the highlight stops moving, so "nothing changed" was read as "the list ends here".
+            A single keypress the game swallows looks exactly the same, and that is what cut
+            lists short. With nine characters or fewer the list never scrolls, which is why none
+            of this was ever visible. The tool now asks twice before believing the list ended,
+            and it reads the character name printed under the character model to settle it -
+            that name is the selected character no matter where the list is scrolled. It also
+            says the running count every ten characters, because a long list is otherwise half a
+            minute of silence, and the menu stays usable while it is being rebuilt instead of
+            going dead. NOT TESTED in the game: there is no realm here with more than nine
+            characters. If the list is still wrong, the tool's log now names the exact decision
+            it got wrong.
+        Technically: Verified against the client's own interface source. Blizzard_GlueXML_TBC.toc
+            loads Vanilla\CharacterSelectConstants.lua with CHARACTER_SELECT_MAX_CHARACTERS = 9,
+            and CharacterSelect_OnShow assigns that to MAX_CHARACTERS_DISPLAYED. Every stop
+            condition in the walk that rested on ONE observation now needs two, with a longer
+            settle in between, and presses again only after a look has proved nothing moved -
+            pressing again on a step that already registered skips a character silently.
+            The wrap-around detection now demands slot 1 exactly, because
+            CharacterSelectScrollDown_OnClick past the last character does
+            CHARACTER_LIST_OFFSET = 0 followed by SelectCharacter(1); it also waits for the
+            re-scroll to draw before confirming. The fallback that reads only the visible section
+            now scrolls to the top first, because UpdateCharacterSelection sets the offset to
+            selectedIndex - MAX_CHARACTERS_DISPLAYED whenever the last played character sits
+            below the fold - the nine visible rows were then characters 6 to 14 announced as 1 to
+            9. The pixel probes for the selection bar were moved left: at ten characters
+            UpdateCharacterList widens the panel from 260 to 280 and shows a scrollbar whose
+            backdrop is solid black over the strip the bar vacates. The menu is now built
+            detached and published in one assignment like the realm list.
+
     Hardcore realms: Sku now finishes loading its waypoint data instead of stopping silently
         Simple: On hardcore realms the game client allows addons noticeably less computing time per
             frame than on normal realms. Sku builds its waypoint and route data right after login,
@@ -275,6 +374,113 @@ Changes in Sku v43.0
             whole build. If the coroutine dies regardless, the build restarts up to three times,
             and the build step puts its request back instead of losing it inside a pcall.
 
+    Navigation: a route list could come up empty without saying why
+        Simple: a tester on a hardcore realm reported that the Shift-F10 route list only said
+            "list empty" in a place that has routes. Behind that were two different ways for a
+            list to end up empty with nothing at all to indicate it.
+            First: now that Sku restarts its waypoint build on hardcore realms when the client
+            kills it (see above), the waypoints can be swapped out while a menu is open. A list
+            still built from the previous run then pointed at a waypoint that no longer existed.
+            That threw an error in the middle of building the sub-entries, and because the error
+            was caught, the level was simply left empty: no entries, no hint, no error message,
+            nothing to hear.
+            Second: if the route data itself was missing, Sku still reported "loaded" and every
+            route list was empty - again with no indication whatsoever. Both are visible now: the
+            list answers properly instead of staying mute, and missing route data is announced
+            like any other database error.
+        Technical: three places, all the same shape - a failure must not stay invisible.
+            1. SkuNav:GetAllMetaTargetsFromWp5 dereferenced the start waypoint (.worldX) with no
+            check. After a waypoint cache rebuild - new in v43.0, because the build restarts
+            itself on hardcore realms and because CleanupWaypoints deletes waypoints that have no
+            links - that name can be gone. It returns an empty answer now and logs a line with
+            the cache generation.
+            2. SkuOptions:VocalizeCurrentMenuName and the path walker call BuildChildren inside a
+            pcall so that a broken submenu builder can never swallow the announcement of the
+            entry's NAME. That stays - but the error is now logged with the node name and the
+            node is marked (buildChildrenFailed). Without it, a level with zero children was
+            indistinguishable from a level that is genuinely empty.
+            3. Sku:EnsureData skipped a builder global that is not a function without a word and
+            then reported the dataset ready anyway. That is the worst possible shape: every guard
+            in the rest of the code asks "is it ready", not "is it there". For the routes it ends
+            in empty link data, deleted route waypoints, and menus calmly announcing "list
+            empty". Each missing builder is logged individually now; if they are ALL missing the
+            dataset counts as failed and is spoken.
+            Plus one log line in SkuNav:GetAllLinkedWPsInRangeToCoords: when Sku cannot map the
+            current area to a continent (caves, the Deeprun Tram, unmapped sub-areas) that query
+            bails out empty - and the list then said "list empty", which sounds like a statement
+            about the data and is not one. /skuzoneprobe reports the same case in full.
+
+    Login: the route waypoint data is ready much earlier
+        Simple: After login Sku rebuilds every waypoint and every connection between them; until
+            that is done the waypoint lists answer "waypoints are still loading". More than half
+            of that wait went into the connections, and the same data was walked four times over.
+            It is one walk now, and it starts with the continent you are standing on: that one is
+            finished first, and from that moment your lists are usable while the rest of the world
+            is still being built. If you are sitting on the waiting hint at that moment, the first
+            entry is read out to you automatically, without pressing a key. Measured on the same
+            machine: the connection part now costs about half, and the lists for your own
+            continent are there roughly 0.7 seconds earlier. Nothing about the routes themselves
+            changes - the same waypoints, the same connections, just sooner. On top of that the
+            waypoint store needs about 22 MB less memory, because every connection is no longer
+            kept twice - on weak machines that is the more noticeable half. And another slice of
+            the wait disappears entirely: Sku ships two large route files, and the TBC build only
+            needs the connections out of the second one. Its waypoints were built at every login
+            anyway and thrown away unread a moment later; they are simply not built now. That
+            saves roughly a quarter of a second and about 21 MB of peak memory per login - on Era
+            realms, where the whole file is unused, roughly 0.4 seconds. Both files keep shipping
+            complete: when we move to Wrath of the Lich King later, that is exactly the data that
+            becomes the right one, and the selection flips over.
+        Technical: The link part of the waypoint cache build ran as FOUR full passes over ~197,000
+            directed edges: prune and symmetrise (CheckAndUpdateProfileLinkData), materialise
+            byId/byName, re-derive the whole table back out of the cache (SaveLinkDataToProfile),
+            and a final pass over all ~145,000 cache records (CleanupWaypoints). It is one pass
+            now: the pruning rides along, the reverse edge is written straight into the target
+            record - which is why the order of continents no longer matters - and the re-derive is
+            gone, because it rewrote the table that is already there. The one case where it could
+            still change something (an endpoint whose name belongs to a different cache record) is
+            counted and triggers the old path; it does not occur in the shipped route data. The
+            final pass gets the list of records that can be deleted at all from the custom pass,
+            bucketed by continent, and runs per continent as soon as that continent is done. Fixed
+            along the way: the old prune pass inserted new KEYS into the very table it was
+            iterating with pairs() - undefined behaviour in Lua; the reverse edges are collected
+            and applied afterwards now. And the "own continent first" split added in July was
+            never active at login: it resolves the zone through GetMinimapZoneText, which is still
+            empty when the build starts - the continent is resolved again before the link part
+            now. Backed by a reimplementation of both variants over the real route data
+            (dev/rework-docs/simulate_link_build.py: identical cache, identical link table, for
+            every continent) and in game by /skucheck wp, which now also verifies that every link
+            has its reverse edge.
+        Technical, part two: every link was held twice - once under the target waypoint's cache
+            index (byId) and once under its name (byName). byName is gone and all 14 call sites
+            use byId; the new WaypointCacheGetIdForIndex is the counterpart to
+            WaypointCacheGetIdForName. The writer into the link table got cheaper rather than
+            just smaller: it used to translate every target name back into an id, and now it
+            already has the record. Measured: about 70,000 tables and 224,000 strings less,
+            22 MB off the memory report (/skucheck mem), and another ~40 ms off the link part of
+            the build. Why it was doubled: an unfinished migration - Sku 32.31 already carries
+            the commented-out call that was meant to write the byName table straight into the
+            stored link table; byId arrived later as the fast path for route finding, and both
+            stayed. Three latent bugs went with it: a loop in waypoint deletion that only
+            cleaned the deleted waypoint against itself, ids built from ".areaid" instead of
+            ".areaId" (so always with area 1), and an access to Links[nil] for temp waypoints.
+        Technical, part three: each route file was ONE builder that constructed the whole file.
+            Measured in game: 375 ms for the WotLK file and 355 ms for the base file, every login.
+            On TBC the navigation uses the base file's waypoints and only the WotLK file's LINKS
+            (the union of both graphs, since July) - LoadDefaultMapData nil'ed the WotLK
+            waypoints, levels and sequence numbers again right after the merge. That is 71% of
+            that file's bytes, built and discarded unread. The files are now wrapped per SECTION
+            (dev/rework-docs/_wrap_deferred.py, mode "sections"): one builder per top-level
+            section of routedata.global, each holding a byte-exact slice of the original data -
+            the tool asserts the slices reassemble into the source file, nothing is
+            re-serialised. SkuDeferredData.lua picks the builders by game version (TBC: every
+            base-file section plus the WotLK links; Era: the base file only) and nils the builder
+            globals it skipped, or their source-string constants would stay pinned in memory.
+            New: /skucheck routes. It is deliberately shaped so that a wrong selection is loud
+            instead of silently costing half the graph: after EnsureData not a single
+            SkuDBBuildRoute* global may survive - a survivor means a section the selection does
+            not know about - the tables the navigation reads must be present and non-empty, and
+            per game version exactly the right half must be absent.
+
     Waypoint lists now tell you how far the loading has got
         Simple: the message "waypoints still loading" was written for a wait of a second or two.
             When the client throttles Sku (see the previous entry) it can stand for ten seconds and
@@ -294,8 +500,126 @@ Changes in Sku v43.0
             places that used to recognise it by name - the not-selectable gate and the automatic
             refresh at the end of the build - test the tag now.
 
-    Taxi flight: the landing announcements can be switched off - and they no longer name the
-    flight point you took off from or the one you are flying to
+    Shift-F9 to Shift-F12: named keybindings, and four quick-access slots back
+        Simple: Four Sku actions - the two navigation quick lists (Shift-F9 and Shift-F10), the
+            action bars menu (Shift-F11) and cancelling route navigation (Shift-F12) - were wired
+            straight onto the keys of audio menu quick access 1 to 4. That had two consequences.
+            Those four quick-access slots were dead: their set keys (Ctrl-Shift-F9 to
+            Ctrl-Shift-F12) still stored a menu path and still confirmed it out loud, but no key
+            could ever call it back. And the four actions could only be moved to a different key by
+            rebinding an entry named "audio menu quick access 1" to "4" - which is not where anyone
+            looks for "cancel navigation". Each action now has its own entry in the keybinding
+            menu, under its own name, still on Shift-F9 to Shift-F12. Quick access 1 to 4 are free
+            and unassigned again, exactly like slots 5 to 10. Your existing settings are carried
+            over on first login: whatever key you have on quick access 1 to 4 today is the key that
+            keeps performing that same action - it simply moves to the new entry, so nothing
+            changes for your fingers. A slot you had deliberately cleared stays cleared.
+        Technical: SkuZOptions/Core.lua's OnClick intercepted SKU_KEY_MENUQUICK1..4 and returned
+            before the generic quick-select loop further down the same handler. The three moved
+            actions are now SKU_KEY_NAVWAYPOINTSQUICK, SKU_KEY_NAVROUTEDESTINATIONSQUICK and
+            SKU_KEY_ACTIONBARSOPEN, each dispatched by the module that owns it; the two nav lists
+            joined the "Navigation and waypoints" keybinding group. A run-once migration in
+            SkuKeyBindsUpdate moves key and key2 from the old slot to the new const, detected by
+            the absence of the new const in the profile, so it runs exactly once and before the
+            defaults are filled. Stored quick-select paths are kept, so binding a key to slot 1
+            to 4 restores the old shortcut. New tripwire: /skucheck keys reports any key held by
+            two Sku bindings at once (transient override keys excepted, they share by design).
+
+    Cancelling navigation was two different keys behind one action
+        Simple: there were two ways to stop following a route or waypoint, and they behaved
+            differently. The properly named binding "stop following route or waypoint" shipped
+            without a key at all, and when you did assign one it announced "following stopped" -
+            the same words the automatic arrival uses, so you could not tell the two apart - and it
+            said nothing whatsoever when what you cancelled was a route rather than a single
+            waypoint. The other was the hardcoded Shift-F12, which said "navigation canceled" but
+            existed only as quick-access slot 4. They are one key now: "stop following route or
+            waypoint", on Shift-F12 by default and freely rebindable, with the confirmation sound
+            and the distinct "navigation canceled". It stays completely silent when there was
+            nothing to cancel, and it still works while you are moving and in combat.
+        Technical: the SkuNav OnClick branch for SKU_KEY_STOPROUTEORWAYPOINT now calls
+            SkuNav:CancelNavigationSilent() and only speaks and plays sound 835 on a true return.
+            That drops the old unguarded path, which fired SKU_NAVIGATION_STOPPED and the sound
+            even with nothing running, and whose announce came from EndFollowingWpOrRt and was
+            conditional on a selected waypoint. EndFollowingWpOrRt itself is unchanged - its
+            fifteen other call sites use it as the teardown before selecting a new target, where
+            clearing temporary waypoints would be wrong.
+
+    Navigation: a route would not start if its list finished loading while you were in it
+        Simple: If you opened the route list (Shift-F10) while Sku was still building its waypoint
+            data, the list refreshed itself the moment that data was ready - and from then on
+            Enter on a route point no longer started the navigation. Instead the menu jumped back
+            up to the entry-point level, as if the key had done nothing at all. Closing the menu
+            and opening it again fixed it, which made the whole thing look random. The refreshed
+            list now behaves exactly like a freshly opened one: Enter starts the navigation. The
+            same applies to the nearby-waypoints list (Shift-F9) and to every waypoint list that
+            refreshes itself when the data arrives.
+        Technical: the push-refresh at the end of the asynchronous waypoint-cache build rebuilt the
+            level with a bare children = {} plus BuildChildren. That skips what OnPostSelect does
+            for a select level: seed selectTarget on the level and copy it onto every fresh child.
+            Without it the entire sublevel below inherits selectTarget = nil, so the leaf's Enter
+            falls into the generic branch of OnPostSelect - no OnAction runs (RouteFollowOnAction
+            never fired) and the cursor is set to self.parent, which is the observed jump. That
+            rebuild now lives in exactly one place, SkuOptions:RebuildNodeChildren, used by
+            OnPostSelect itself, by the waypoint push-refresh and by the volatile-list refresh -
+            the last one in keep mode, so a live refresh cannot discard a target the user has
+            already selected. Two tripwires ship with the fix: OnPostSelect logs and counts every
+            Enter that lands on a leaf with no selectTarget below a select level, and
+            /skucheck menu rebuilds a throwaway select level to verify the contract and reports
+            that session tally.
+
+    Auras: group slots were announced as a beep instead of a word
+        Simple: When an aura announces the unit that triggered the event, some group slots
+            produced only a short beep instead of a word - the sound Sku plays when it has no
+            recording for a word. Slot 3 and every "target of" slot were affected. These are now
+            split into words the voice pack reliably ships: "party 3", "target party 2". All
+            other units keep saying their translated name.
+        Technical: sourceUnitId and destUnitId handed the raw unit token to the audio voice as
+            ONE word. The packs ship party0/1/2/4 but no party3 and no partyNtarget file at all,
+            so the rest degraded to the missingAudio beep (party3 alone counted 129).
+            tUnitIdToSpokenName in SkuAuras/data.lua splits the party tokens; other tokens fall
+            back to their localised friendlyName from the value lists and only then to the raw
+            token. Fixed in passing: notifyChat printed the table reference instead of the unit.
+
+    Auras: an aura set to "once" could fire several times in a row in dense combat
+        Simple: An aura meant to report only ONCE per application - typically "Shadow Word: Pain
+            expires in one second" - could produce four sounds in one second during a boss
+            fight. It happened when several players had the same effect on the target, or when
+            the remaining duration could not be read at all in one pass: Sku took that as "the
+            effect is fresh again" and released the once-lock. With no reading, the lock now
+            stays closed. A genuine refresh or a new application still releases it immediately.
+        Technical: The reset formula of the count condition re-armed used on every pass where the
+            other conditions held and the smaller-duration condition read false - and a pass with
+            NO reading (name not in the list, no exp entry, or the exp map answering with another
+            caster's same-name aura) satisfies exactly that. tSmallerDurationNoRead in
+            SkuAuras/Core.lua blocks the reset when there was no reading; the new log line
+            "aura gate re-armed" records every release. Observed as four firings within 987 ms
+            (DURATION_DEADLINE, then UNIT_POWER twice and SPELL_PERIODIC_DAMAGE).
+
+    Menu: on large maps the Shift-F9 waypoint list only opened on the second try
+        Simple: On maps with very many waypoints Shift-F9 stayed on the top entry instead of
+            opening the list; one more arrow press then opened it. The reason was work that ran
+            three times instead of once: the jump built the same list - about 1900 entries on
+            some maps - three times in a single frame, and the game client aborted that with its
+            script time limit. The abort is silent, which is why nothing appeared to happen. On
+            top of that, every keypress on an entry rebuilt its child list and duplicated the
+            entries. Both are gone, the list is built once. Shift-F10 was never affected because
+            that list is capped at ten destinations.
+        Technical: SlashFunc built the children three times: before the name match, in the loop's
+            OnSelect, and again in the tail. The match is now decided BEFORE the build, and the
+            tail skips its re-select when the loop already selected that same node
+            (actionOnEnter nodes excluded - there the two calls genuinely differ).
+            VocalizeCurrentMenuName only builds when there is nothing to count - it needs the
+            children solely for the ";plus" marker, and most builders APPEND through
+            InjectMenuItems rather than replace (measured 1859 -> 3718 -> 5577 entries while
+            arrowing). Follow-up from testing: window levels under "Local" (Dialog, Merchant,
+            Quest, Flight master) build their children lazily and carry no dynamic flag; with the
+            pre-build skipped they looked like childless leaves, and the leaf branch calls
+            CloseMenu - but closing clicks the close button of every window in
+            interactFramesList, so the jump to a flight master closed its window again at once.
+            The build therefore still runs when the list is empty, unless the node is dynamic.
+            Two tripwires in /skucheck menu count both cases.
+
+    Taxi flight: the landing announcements can be switched off - and they no longer name the flight point you took off from or the one you are flying to
         Simple: During a taxi flight Sku says "next flight point X" and, about 800 yards out,
             "early landing available at X", so that you can get off early with the keybind.
             For anybody who flies a lot that is chatter, so there is a switch now: Settings >
@@ -333,6 +657,299 @@ Changes in Sku v43.0
             spot. New tripwire "/skucheck taxi" pins the rule: an early landing is never the flight's
             own start or end point. The switch is stored per profile as
             taxiAnnounceLandingPoints.
+
+    Power monitor: "nothing" is now "current resource", and it follows the bar you see
+        Simple: The health & power monitor watches exactly one resource, and it was a fixed
+            choice: mana, rage, energy - or "nothing". But "nothing" was not an off switch, it
+            was a hole: it threw a stream of Lua errors, and what the monitor watched instead
+            was never anybody's choice. The entry is now called "current resource" and it is
+            first in the list. It follows the bar the game is showing you: a druid gets mana in
+            caster form, rage in bear and energy in cat without ever going back into the menu.
+            Every other class has only one bar, so for them it is simply their resource.
+            Picking a fixed resource still works exactly as before. To switch the monitor off,
+            use "Enabled: No" - that is what the switch is for. If you had "nothing" selected,
+            you will find the monitor switched off and the resource set to "current resource";
+            switch it back on if you want to hear it.
+        Technically: "NOTHING" passed power index -1 (Enum.PowerType.None) straight into
+            UnitPower and UnitPowerMax - a value the monitor has no business asking for. In its
+            place there is GetMonitoredPowerType(), which resolves the stored value at read
+            time: a fixed choice to its index, "current resource" through
+            UnitPowerType("player") to the bar being displayed. Both read paths go through it,
+            including the token comparison in UNIT_POWER_UPDATE - with the automatic type the
+            token to react to is not the stored one. Both paths now also check for nil and for
+            a zero maximum instead of dividing by it; that was the actual error source, and
+            because one of the two sits inside the OnUpdate driver it produced not one error
+            but one per tick. Since the watched resource can now change under the monitor, the
+            previous percentage is reset whenever the token changes - otherwise the first
+            announcement after a form shift would either be swallowed or given the wrong
+            rising/falling direction. On top of that the handler now bails when the module is
+            disabled: it hangs off two registrations (its own AceEvent object and the
+            dispatcher in Core.lua) but OnDisable dropped only the first, so a monitor switched
+            off in the features menu kept announcing. New check "/skucheck power" pins the
+            rule: the configured resource must always resolve to something the client can read;
+            a deliberately chosen resource the class does not have counts as pending, not as a
+            violation. The stored value "NOTHING" is migrated to "ACTIVE" once at login, with
+            the monitor switched off.
+
+    Auras identify spells by identity, no longer by the translated name
+        Simple: An aura you built used to be tied to your game language. The stored value was the
+            translated spell name - "Frostblitz" - and an English client only knows "Frostbolt", so
+            the same aura never fired there. For the same reason an aura set shared in a group
+            arrived dead at a group member on another language, and the bundled aura sets existed
+            on German clients only. Sku now remembers the language-independent identity of the
+            spell. What you see and hear is still exactly the name your game uses - in the menu, in
+            the aura's own name, and in the announcement when it fires. Your existing auras are
+            converted once at the first login, with nothing for you to do; their names do not
+            change.
+            A second win comes with it: every rank of a spell, and the variants enemies cast,
+            belong to one entry. "Tell me when my target casts Frostbolt" now covers all 103
+            Frostbolt variants instead of the single one that happened to be in the list. Whether
+            YOU or an enemy cast it is still decided by the separate "Event source" condition, not
+            by the spell.
+            Where one translated spell name stands for several different English ones - German
+            "Verblassen" is both "Fade" and "Fade Out" - the list adds the English name in
+            brackets so the entries stay distinguishable. Only the list; the announcement when the
+            aura fires stays short. Pick such an entry and the oldest variant wins - for
+            "Verblassen" that is the priest spell, not "Fade Out". Auras you had already saved
+            under such a name are left untouched and keep reacting to every variant, as before.
+        Technically: The identity is the enUS spell name out of SkuDB.SpellDataTBC, which already
+            ships and is already maintained - no new file, no generated id table (one would have to
+            be kept in sync with spells.lua, and a regeneration would silently orphan saved auras).
+            Stored values carry the "spellgroup:" tag; the display still comes from
+            SkuAuras.values[key].friendlyName. The live UnitAura list is mapped to the group name
+            via return value 10 (spellId); on a non-English client the localized name sits beside
+            it as a compatibility alias so an unconverted old value keeps matching. On an English
+            client group name and live name are the same string, the alias is never written, and
+            the cost is exactly zero. An id SpellDataTBC does not know - the population most likely
+            to drift as the Anniversary timeline cycles - falls back to the localized name, i.e. to
+            the previous behaviour. 838 of the 26,603 German names (3.15%) cover more than one
+            English name. At runtime the group with the lowest spell id wins - the colliding
+            variants are without exception later additions; checked against the cases where the
+            answer is known (Verblassen 586 vs 5543, Geschwaechte Seele 6788 vs 36788,
+            Schattenwort: Schmerz 589 vs 37603, Erneuerung 139 vs 37563, Gedankenkontrolle 605 vs
+            7645). SAVED values under such a name are still NOT converted, because today they
+            match every variant and converting would silently drop the others; their menu entries
+            get the English name appended. A group's display name always
+            comes from the lowest id in it, so it cannot change between sessions. New checks under
+            "/skucheck auras": group entries exist at all, every id of a spell resolves to ONE
+            group, and the run-once conversion left no value behind.
+
+    Sharing aura sets: new format without a language tag
+        Simple: A shared aura set no longer carries a language tag, and the "set is for another
+            language" warning is gone - the conditions are language-free now. On accepting, each
+            aura is also named in YOUR language instead of keeping the sender's sentence. Auras you
+            named yourself keep their name.
+        Technically: SkuAuraSetV2 (payload "AURASET2", no loc field) is what gets sent; V1 is still
+            received, warning included, because such packets still carry localized values. Only V2
+            is sent on purpose: an additional V1 packet would leave older clients holding auras with
+            group values they cannot resolve. The name is re-derived through BuildAuraName on import
+            (SkuAuras:RelocalizedAuraName); customName auras are excluded, and those are exactly the
+            ones other auras can reference, so cross-aura references survive intact.
+
+    Building auras: the menu you build an aura in has been rebuilt
+        Simply: An aura is still made of conditions, and everything you have already built keeps
+            evaluating unchanged - but the way to a condition is shorter in a lot of places now,
+            and the lists you walk through on the way are sorted, short and fast. In the order you
+            meet them:
+            The attribute list is sorted by name throughout - including the group entries, which
+            used to sit on top no matter what they were called. An entry is where its name puts
+            it, and typing its first letters gets you there. The 35 events sit behind two entries,
+            "General events" and "Spell events"; health, resource, mana, rage, energy, runic power
+            and combo points sit together in "Your health or resource"; and every aura you have
+            named yourself is a condition under "Your own auras" instead of loose among the real
+            attributes - the top list used to grow by one entry every time you named something,
+            and those entries sorted into every letter of the alphabet. Each group entry says what
+            is selected inside it as you read past, so you do not have to enter it to find out.
+            A condition with only two values - "true" and "false", or "buff" and "debuff" - is a
+            switch now instead of three levels. The value sits on the entry and Enter flips it:
+            "In combat; true", Enter, "In combat; false". While you are BUILDING, Enter goes one
+            step further to "not set" and back again, so a switch you set by accident can be taken
+            off. Worth understanding: "not set" is not a third value, it means the condition is not
+            there at all - that is the neutral state, not "false". "false" is a comparison like any
+            other: "in combat equals false" fires ONLY out of combat.
+            Spells still come from a list, but you can also type them: "Enter spell" is the first
+            entry of every spell value list - Enter, name or number, Enter, and Sku tells you which
+            spell it made of it. The two conditions "spell ID" and "item ID" are gone from the
+            attribute list in exchange: they meant a SINGLE rank of a spell, and so, sitting right
+            next to "spell name", they meant the opposite of what the same typed value does there.
+            New in the list is "Buff Debuff own casts only" - set to true, this aura's buff and
+            debuff lists only see effects YOU cast, so "my Shadow Word: Pain is running out" no
+            longer reports another priest's on the same target. And because "Source (L)" and
+            "target (L)" were regularly taken for your own target, they are called "Event source
+            (L)" and "Event target (L)" now: they filter the triggering EVENT.
+            Finally the lists themselves: every value list opens noticeably faster, "spell usable"
+            no longer freezes the game when you open it, switching the spell of a duration
+            condition has no stall and no longer reads the previous spell as still selected, and
+            "Delete" asks before an aura is gone - it was the one entry in that list that did not,
+            right next to "Duplicate", which always asked.
+        Technically: An attribute becomes a switch when its type is BINARY, it has exactly two
+            values, and its type allows exactly one operator (tBinaryValuesForAttribute in
+            SkuAuras/Options.lua); what gets written is exactly what the old value list wrote, so
+            an aura built through the switch is indistinguishable from one built the old way, and
+            an empty values list drops out of the draft - that is "not set". The condition row
+            pairs actionInPlace with actionOnEnter, which is what tells Enter and RIGHT apart on
+            the same node. The attribute list collects groups and attributes with their display
+            name and injects both in name order. The two event families are ONE attribute and ONE
+            stored condition: each family list offers the other as a single entry, and both
+            re-point at the condition the draft already holds - without that, walking into both
+            would leave two conditions on `event`, which the save merges into one always-true OR
+            group. listsOwnOnly is a binary modifier: getAuraList picks up the caster (7th return
+            of UnitAura) in the same scan and fills parallel own-sets that EvaluateAllAuras swaps
+            in per marked aura. The value lists sort with one sort key per entry instead of two per
+            comparison (27,057 instead of about 800,000 new strings per spell list), "spell usable"
+            asks the 132 action slots instead of all 49,000 spells in the database, and the
+            duration condition lets each entry say its own state as it is read
+            (tValueToggleRefreshLiveName, ONE function shared by reference) instead of resetting
+            27,000 entries on every Enter. "spell ID"/"item ID" are still evaluated and only hidden
+            from the builder behind a retired flag, so an imported or old aura cannot run onto a
+            nil; with them go their value lists, about 49,000 spell and 25,000 item IDs that were
+            built on every load. The locale KEYS of the renamed conditions are unchanged, so no
+            stored aura moves. Deleting also meant removing the manage menu's aName branch:
+            selectTarget is only re-pointed once the level is entered, so until then the
+            confirmation would have been cosmetic. Delete now refreshes the aura pseudo-attributes
+            too - a deleted aura used to stay offerable as a condition.
+
+    French clients: the list of weapon enchants for aura conditions was empty
+        Simple: On a French client the aura condition for weapon enchants offered not a single
+            entry, so such a condition could not be built at all.
+        Technically: SkuAuras:ResolveWeaponEnchantName read column 1 of the enchant database for
+            enUS and column 2 for deDE and otherwise left the name nil - for any other language the
+            function therefore returned nil for EVERY enchant and the value list came out empty. It
+            takes the column of your own language now, else the English one, the way the rest of the
+            naming system has since v42.09. Found while porting to group identity, not from a
+            report.
+
+    Menu: every entry is now about 13 times cheaper to create
+        Simple: Long lists build noticeably faster. It shows most on the spell lists of an aura
+            condition: those hold 27,057 entries, and on a hardcore realm they had stopped opening
+            at all - that server kills addon scripts that run too long, and the build only got
+            about halfway. This is not only the aura lists: every menu in Sku is made of the same
+            entries.
+        Technically: A menu entry used to be a deep copy of the SkuGenericMenuItem template - per
+            entry a helper table, a pairs() walk over all 28 fields with a type() call and three
+            key comparisons each, 28 stores, and a recursive copy of the children table. An entry
+            is now an almost empty table whose metatable points at the template through __index:
+            two tables and one store. Measured over 27,057 entries: creating the nodes drops from
+            78 to 6 ms (13x), and the whole list build from 100 to 31 ms (3.2x, and 2.7x faster
+            than before the aura rework). Writing a field on an entry still shadows the template
+            as it always did; children stays a table of its own per entry on purpose, or every
+            menu item in the addon would share ONE child list. The single place that copies an
+            entry (the filter entry in SkuOptions:ApplyFilter) re-attaches the metatable.
+            /skucheck menu verifies both on throwaway entries.
+
+    Measured for comparison: the aura rework itself barely slowed these lists down. Moving to
+        groups grew the spell list by 460 entries out of 26,597 (+1.7%), and toggles instead of
+        plain entries cost about 19% more build time. The build was expensive long before that; on
+        a hardcore realm, though, a script limit is a cliff and not a slope, and 19% was enough to
+        go over it.
+
+    Menu: a cut-off list stayed silently incomplete
+        Simple: On a hardcore realm the server kills an addon script that runs too long. When that
+            hit the build of a long list, the list did open on the SECOND arrow-right - but that
+            was not a fresh attempt, it was the half-finished remains of the first. On the spell
+            lists that meant about 6,900 of 27,000 spells with nothing to say so: anyone who could
+            not find their spell had to conclude it did not exist. The build is now continued on
+            the next frame from where it stopped, and the list completes within a few frames
+            without you pressing anything.
+        Technically: The script budget is per execution, so the next frame gets a fresh one -
+            exactly why the route data build is sliced across frames. SkuOptions:ContinueInterruptedBuild
+            calls BuildChildren again on a zero-delay timer for as long as the level is incomplete.
+            Only a builder that declares itself with `resumableBuild` and keeps its own cursor is
+            re-entered: an ordinary BuildChildren APPENDS, so a second call would create every
+            entry twice - which is exactly why the old guard existed. The cursor is set AFTER an
+            entry, never before, or an entry the interrupt prevented would count as built. A pass
+            that makes no progress gives up rather than repeating forever. /skucheck menu verifies
+            on a throwaway level that a cut-off build continues instead of restarting.
+
+    Settings with two values are switches now, not submenus
+        Simple: A setting that only knows two states - "On" and "Off", "Yes" and "No" - now reads
+            its value out together with its name: you hear "Sku menu in combat; on", for example.
+            Enter flips it, the focus stays where it is, and you hear the entry again in its new
+            state straight away. You no longer need the RIGHT arrow for it, because the submenu
+            holding the two values is gone. It used to take three keys - right, arrow, Enter - and
+            you had to go in before you could find out what the setting was even set to. This
+            covers the whole settings tree, the health and combat monitor, the chat and combat log
+            filters, the features menu, the camera menu and other addons' settings: about 150
+            entries. Settings with MORE than two values keep their list, because there is
+            genuinely something to pick there.
+        Technically: A new shared menu element, SkuOptions:MakeToggleNode in
+            SkuZOptions/templates.lua; SkuOptions:MakeInPlaceToggle converts an existing isSelect
+            site in ONE line and keeps using that site's own GetCurrentValue and OnAction, so
+            every per-setting quirk stays exactly as it was. Which of the two values is handed
+            over as "on" does not matter, and that is what made converting the ~50 existing
+            Yes/No sites mechanical rather than a judgement call each time. A toggle is a leaf
+            (actionInPlace, no dynamic, no children), which is why RIGHT does nothing on one, and
+            a RefreshLiveName hook re-reads the state immediately before every announcement - the
+            old submenu got that for free by calling GetCurrentValue on each descend. Three traps
+            came with it: SkuOptions:SlashFunc's path walk and the settings search both select
+            with aEnterFlag = true and would have FLIPPED a toggle named in a path instead of
+            navigating to it - both now only park the cursor, and the search matches against
+            toggleLabel because the name carries the state. RefreshLiveName is not applied to a
+            list's filter header: SkuOptions:ApplyFilter builds it by copying the first child, and
+            the copy would otherwise overwrite the string you are typing. And a toggle whose
+            reader throws is counted in /skucheck menu - it would otherwise sound like a setting
+            with no value rather than like a defect.
+
+    Ready check: the window did not land on the answer the way every other popup does
+        Simply: When someone in the group starts a ready check, Sku opens the menu and jumps into
+            it, exactly as it does for any popup. For this one window the cursor did not arrive on
+            "Ready" but one level above it, which left two more keypresses between you and the
+            answer. You now land on "Ready" straight away, "Not ready" is below it, and LEFT takes
+            you back up to "ready check". Who started the check is on both entries as full text.
+        Technically: ReadyCheckFrame is only a wrapper around ReadyCheckListenerFrame, which
+            carries the message and the two buttons; walked generically, that wrapper became a
+            menu level of its own and the auto-descend in SkuCore:CheckFrames landed on it. There
+            is a builder for it now (SkuCore:Build_ReadyCheckFrame in SkuCore/LocalMenu.lua,
+            registered in interactFramesListManual) that builds the two answers flat as
+            directAction entries - the same pattern Build_RolePollPopup uses for the role poll.
+            The captions come from the buttons themselves, which Blizzard localises in
+            ReadyCheckFrame_OnLoad, so no new locale entry is needed. Only visible buttons are
+            listed: when you started the check yourself, Blizzard hides the answer side and there
+            is nothing to answer.
+
+
+    Game volumes: a value you set came back loud again on another character
+        Simply: If you turned the master volume down in the Sku menu, you found it back at the old
+            value on another character. Sku had been keeping its own copy of the five volumes and
+            the five sound switches on top of the game's, and writing that copy back into the game
+            at every login. The copy hangs off the Sku profile, the game setting off the account:
+            two characters in different profiles therefore heard two different volumes, and a
+            change made in Blizzard's own sound options was silently gone again at the next login.
+            Sku only sets the values now; remembering them is the game's job, exactly as it is for
+            every other player. The sliders in the menu show the game's real value from now on,
+            including when you changed it somewhere else. What you give up: volumes no longer
+            follow a Sku profile.
+        Technically: SkuOptions:OnEnable wrote soundChannels and soundSettings from the profile
+            back into the CVars at every login, preceded by a special rule that read a stored
+            value of 0 or -1 as a corrupted profile and then re-adopted all five channels from the
+            CVars. That whole block is gone. The menu nodes in SkuZOptions/Options.lua read and
+            write the CVars directly (tGetSoundCVarPercent, tSetSoundCVarPercent,
+            tGetSoundCVarBool); the ten keys are out of SkuOptions.defaults and out of the schema,
+            and a one-time pass in OnInitialize clears them from every stored profile - not just
+            the active one, because without a defaults entry AceDB would never strip them again.
+            soundChannels itself stays: SkuChannel, the channel Sku plays its own output on, is a
+            real Sku setting. Reading now rounds instead of truncating - tonumber("0.35") * 100 is
+            34.999... and would have come back as 34. New profiles ship no volume defaults at all;
+            the game's own defaults apply.
+
+    The four standard profiles are created without switching profile in between
+        Simply: At your first login Sku creates the four standard profiles if they are missing. It
+            used to do that by switching into each missing profile in turn and then back into
+            yours. On a hardcore realm the server aborts long addon scripts, and if that caught
+            this sequence the character was left sitting in someone else's profile - with all of
+            that profile's settings instead of yours. But a profile exists as soon as it has a
+            name; nothing needs to be switched for it. Ten heavy steps have become four short ones
+            that cannot go wrong halfway through.
+        Technically: The four SetProfile calls plus the switch back in SkuCore/Core.lua are
+            replaced by four assignments into SkuOptions.db.sv.profiles. AceDB's GetProfiles
+            enumerates exactly that table, and a profile is only populated by copyDefaults the
+            first time someone switches into it anyway - the stored end state is the same as
+            before, four empty tables. Each SetProfile call by contrast fired OnProfileShutdown
+            and ran removeDefaults and copyDefaults over the complete defaults tree of all eight
+            modules, about ten walks in a single frame. Dropping the switching also drops the
+            SkuCore.AutoChange flag, which muted OnProfileChanged meanwhile and stayed at true
+            when the sequence was cut off - after which no profile change got through for the rest
+            of the session. The dispatcher pcalls this handler, so the abort was invisible.
 
 
 -------------------------------------------------------------------------------------------------------
@@ -550,6 +1167,32 @@ Changes in Sku v42.13
             entry and pressing Enter is a deliberate act, not a misclick. Those buttons
             also keep their OnClick handler even when the disabled widget reports no
             mouse-click input, so the entry cannot end up listed but dead.
+
+    Combat: a popup could be read but not answered
+        Simple: when a popup opened during a fight - a group invite, a summon, the release
+            prompt - Sku could read it out and you could navigate it, but the activate key did
+            nothing; the entry was simply announced again. You had to wait for the fight to end,
+            and an invite expired in the meantime. Popup buttons can be pressed in combat now,
+            all four of them, not just Accept and Decline.
+        Technical: in combat the activate key never reaches the secure menu button at all:
+            PLAYER_REGEN_DISABLED hides OnSkuOptionsMain, whose OnHide clears that button's
+            override bindings while the grace window is still open, and the key is driven instead
+            by SkuCombatMenuKey's snippet, which treats ENTER as "route only" and hands it
+            straight to the insecure dispatcher (SkuCore/combatMenuKeys.lua). Readable,
+            navigable, dead on ENTER.
+            Unlike the bag and trade paths this needs no mirror and no secure arming: a
+            StaticPopup button is NOT a protected frame and its OnClick is plain Lua
+            (StaticPopup_OnClick calls the dialog's own OnAccept/OnCancel: AcceptGroup,
+            DeclineGroup, ResurrectAccept, RepopMe, ConfirmSummon). None of those is
+            hardware-gated, so calling it directly works in combat exactly as out of it.
+            Deliberately limited to the popup buttons - every other click payload in this builder
+            does need the genuine hardware event and belongs in the mirror.
+            Guards: only in combat, only while the button is really there, and only while
+            Blizzard has it ENABLED (the decline button is locked for its first second, where
+            "/click" is equally inert). Also new: all four buttons are handled this way; buttons
+            3 and 4 used to fall through to the generic click path with no insecure action at
+            all. /skucheck menu counts the cases where an activation in combat found no button
+            left to click.
 
     Typing in input fields: no more letters trailing after the field is gone
         Simple: While typing into a Sku input field (writing mail, a search box, the

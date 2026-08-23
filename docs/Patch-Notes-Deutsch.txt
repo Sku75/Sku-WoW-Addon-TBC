@@ -1,10 +1,62 @@
--------------------------------------------------------------------------------------------------------
+﻿-------------------------------------------------------------------------------------------------------
 - Sku Anniversary Addon Release Notes (Deutsch)
 -------------------------------------------------------------------------------------------------------
 
 
 -------------------------------------------------------------------------------------------------------
 Aenderungen in Sku v43.0
+
+    Ueberblick
+
+        Neu
+            Shift-F9 bis Shift-F12 haben jetzt eigene Eintraege in der Tastenbelegung, die Schnellzugriffe 1 bis 4 sind wieder frei.
+            Die Ansagen im Taxiflug lassen sich abschalten, und sie nennen nie mehr den Start- oder Zielpunkt als Landemoeglichkeit.
+            Neue Aura-Bedingung "Buff Debuff nur selbst gewirkte" filtert die Buff- und Debufflisten auf Effekte, die du selbst gewirkt hast.
+            Neuer Befehl /skucheck prueft feste Regeln gegen den laufenden Spielzustand; er hat auch die Datenbank-Werkzeuge als Unterbefehle uebernommen (wp, db, mem).
+            Der Installer sammelt auf Knopfdruck alle Logdateien fuer eine Fehlermeldung.
+            Der Anmeldebildschirm ist mit dem Anmelde-Tool jetzt bedienbar.
+            Wegpunktlisten sagen an, wie weit das Laden fortgeschritten ist.
+
+        Aenderungen
+            Auren-Ablaufwarnungen kommen puenktlich statt erst beim naechsten Kampfereignis.
+            Die Aurenauswertung pro Kampfereignis ist deutlich billiger geworden.
+            Navigation abbrechen liegt nur noch auf einer Taste.
+            Der Energiemonitor kann der Ressourcenleiste folgen, die das Spiel gerade zeigt - ein Druide bekommt so je nach Gestalt Mana, Wut oder Energie.
+            Das Protokoll des Anmelde-Tools ueberlebt einen Neustart des Tools.
+            Die Wegpunktdaten der Routen sind nach dem Anmelden deutlich frueher benutzbar, der eigene Kontinent zuerst, und brauchen rund 22 MB weniger Arbeitsspeicher; der Teil der Routendaten, den die eigene Spielversion nicht liest, wird gar nicht mehr aufgebaut.
+            Auren sind jetzt international austauschbar: eine Aura wirkt auf jedem Sprachclient.
+            Geteilte Aurensets kommen bei Mitspielern anderer Sprache benutzbar an.
+            Alle Raenge eines Zaubers zaehlen fuer eine Aura als ein Eintrag.
+            Zaubernamen, die im Spiel mehrfach vergeben sind, lassen sich in den Auswahllisten jetzt unterscheiden.
+            Die mitgelieferten Aurensets gibt es nicht mehr nur auf deutschen Clients.
+            Das Menue zum Anlegen einer Aura ist neu aufgebaut: nach Namen sortierte Attributliste, Bedingungen mit zwei Werten als Schalter, Zauber auch tippbar statt nur waehlbar, und alle Wertelisten oeffnen schneller.
+            Jeder Menueeintrag im ganzen Addon wird rund 13 mal guenstiger erzeugt; die grossen Zauberlisten oeffnen dadurch etwa dreimal so schnell.
+            Eine Liste, deren Aufbau vom Server abgebrochen wurde, wird im naechsten Frame weitergebaut statt unbemerkt unvollstaendig zu bleiben.
+            Einstellungen mit zwei Werten sagen ihren Wert gleich mit und schalten mit Enter um; Pfeil rechts und das Untermenue entfallen.
+            Die Lautstaerkeregler im Sku-Menue stellen die Spieleinstellung direkt ein; Sku speichert keine eigene Kopie mehr.
+
+        Fehlerbehebungen
+            Franzoesische Clients: alle Aura-Sounds und aufgenommenen Sprachclips waren stumm (Korrektur von Naxedim).
+            Franzoesische Clients: die Entfernungspruefung sagte nichts an und ihr Menue warf einen Fehler (Korrektur von Naxedim).
+            Franzoesische Clients: zwei Nachzuegler aus demselben Bericht behoben.
+            Neun Uebersetzungstexte bedeuteten je nach Sprache etwas anderes (Korrektur von ZenqFR).
+            Auren: manche Gruppenplaetze wurden als Piepser statt als Wort angesagt.
+            Auren: eine Aura mit "einmal" konnte im dichten Kampf mehrfach hintereinander feuern.
+            Menue: die Wegpunktliste auf Shift-F9 oeffnete sich auf grossen Karten erst beim zweiten Versuch.
+            Die Schluessel im Schluesselbund wurden als "Leer" angesagt.
+            Auf Hardcore-Realms baut Sku seine Wegpunktdaten jetzt fertig statt still stehenzubleiben.
+            Navigation: die Routenliste konnte leer und stumm bleiben, wenn die Wegpunktdaten waehrend eines offenen Menues neu aufgebaut wurden.
+            Fehlende Routendaten werden jetzt gemeldet, statt als leere Liste zu erscheinen.
+            Ein Popup, das im Kampf aufging (Gruppeneinladung, Beschwoerung, Wiederbeleben), liess sich lesen, aber nicht beantworten.
+            Eine Route liess sich nicht starten, wenn ihre Liste waehrend des Ladens fertig wurde.
+            Das Anmelde-Tool hielt den Anmeldebildschirm faelschlich fuer die Charakterauswahl.
+            Anmelde-Tool: Auf Realms mit zehn oder mehr Charakteren war die Charakterliste unvollstaendig, falsch nummeriert oder liess sich nicht zurueckblaettern.
+            Energiemonitor: die Ressourcenauswahl "nichts" warf laufend Lua-Fehler.
+            Energiemonitor: ein im Funktionsmenue abgeschalteter Monitor sagte Ressourcenaenderungen trotzdem an.
+            Franzoesische Clients: die Liste der Waffenverzauberungen fuer Auren war leer.
+            Der Bereitschaftscheck sprang nicht direkt auf "Bereit", wie es jedes andere Popup tut.
+            Eine im Sku-Menue gesetzte Spiel-Lautstaerke konnte auf einem anderen Charakter wieder auf einem alten Wert stehen.
+            Die vier Standardprofile werden angelegt, ohne dazwischen das Profil zu wechseln - auf Hardcore-Realms konnte man dabei in einem fremden Profil landen.
 
     Mit Dank an Naxedim und ZenqFR
         Die naechsten vier Korrekturen sind die ersten direkten Code-Beitraege zum inzwischen
@@ -128,14 +180,26 @@ Aenderungen in Sku v43.0
             Schluesselbund-Fehler also auch gemeldet, wenn man den Schluesselbund nie oeffnet. Die
             Pruefliste waechst nur mit behobenen Fehlern: Jede Korrektur bringt kuenftig ihre
             eigene Stolperdraht-Regel mit, damit eine spaetere Aenderung denselben Fehler nicht
-            unbemerkt wieder einbauen kann.
+            unbemerkt wieder einbauen kann. Seit dieser Version ist /skucheck ausserdem der
+            einzige Pruefbefehl: Die drei Datenbank-Werkzeuge sind Unterbefehle geworden -
+            /skucheck wp prueft die Wegpunktdaten und laeuft bei einem blossen /skucheck
+            automatisch mit, /skucheck db und /skucheck mem sind Messungen und laufen nur auf
+            Anforderung. Die alten Namen /skudbwpcheck, /skudbcheck und /skudbmem funktionieren
+            weiter.
         Technisch: Am Ende von LocalMenu.lua; laeuft ueber tBagSlotListSorted mit derselben
             Container-API und derselben Namensaufloesung wie das Taschenmenue. Regel 1: Platz mit
             Item-Id, aber leerem Tooltiptext = Verstoss; jeder Verstoss landet als "skucheck"-Zeile
             mit Tasche, Platz, Item-Id und Link im SkuDebugLog-Ring. Die geschlossene Bank wird mit
             Logzeile uebersprungen (nicht still), der Schluesselbund absichtlich mit allen rohen 32
             Plaetzen geprueft, und noch nicht vom Server geladene Items zaehlen als "ausstehend"
-            statt als Fehler.
+            statt als Fehler. Die Domaenen wp/db/mem rufen
+            SkuDBTools.RunWpCheck/RunDbCheck/RunMem (SkuDBTools.lua); sie laufen als
+            Hintergrundjob und sagen ihr Ergebnis selbst an, schreiben es aber zusaetzlich als
+            "skucheck"-Zeilen in den Ring - die Wegpunkt-Verstoesse einzeln, die vorher nur in
+            den SavedVariables lesbar waren. /skucheck db meldet zusaetzlich, wie viele
+            Datensaetze sich gegenueber der vorherigen Aufnahme geaendert haben. Grund fuer die
+            Zusammenlegung: Mit drei getrennten Befehlen liess sich "die Pruefung" laufen
+            lassen und die Wegpunktregeln dabei komplett verfehlen.
 
     Auren: Ablauf-Warnungen kommen puenktlich, nicht erst beim naechsten Kampfereignis
         Einfach: Zwei alte Beschwerden hatten dieselbe Ursache: Eine Aura wie "Debuff auf dem Ziel
@@ -275,6 +339,44 @@ Aenderungen in Sku v43.0
             beim Realmbeitritt; zweibuttonige Dialoge werden vorgelesen und beantwortet. Wo die
             Widgets fehlen (Cata, Retail), sagen die Eintraege das und tun nichts.
 
+    Anmelde-Tool: die Charakterliste auf Realms mit zehn oder mehr Charakteren
+        Einfach: Die Charakterleiste zeigt genau neun Charaktere gleichzeitig. Ab dem zehnten
+            blaettert die Liste, und damit ging alles auf einmal schief: Charaktere fehlten, die
+            Nummerierung passte nicht zur tatsaechlichen Liste, und der Weg zurueck an den Anfang
+            der Liste klappte nicht zuverlaessig. Alle drei haben dieselbe Ursache. Das Tool
+            laeuft die Liste mit den Pfeiltasten ab und beobachtet dabei, wie sich die
+            Auswahlleiste bewegt - sobald die Liste blaettert, bewegt sie sich aber nicht mehr,
+            und "nichts hat sich geaendert" wurde als "hier endet die Liste" gelesen. Ein vom
+            Spiel verschluckter Tastendruck sieht genau gleich aus, und der hat die Listen
+            abgeschnitten. Mit neun Charakteren oder weniger blaettert die Liste nie, deshalb war
+            davon nie etwas zu sehen. Das Tool fragt jetzt zweimal nach, bevor es ein Listenende
+            glaubt, und zieht den grossen Charakternamen unter dem Charaktermodell zur
+            Entscheidung heran - der zeigt den ausgewaehlten Charakter, egal wie weit die Liste
+            gescrollt ist. Ausserdem sagt es alle zehn Charaktere den Stand an, weil eine lange
+            Liste sonst eine halbe Minute Stille ist, und das Menue bleibt waehrend des Neuaufbaus
+            bedienbar statt tot. NICHT GETESTET im Spiel: Hier gibt es keinen Realm mit mehr als
+            neun Charakteren. Sollte die Liste weiterhin falsch sein, benennt das Log des Tools
+            jetzt genau die Entscheidung, die schiefging.
+        Technisch: Gegen den Interface-Quelltext des Clients selbst geprueft. Blizzard_GlueXML_TBC.toc
+            laedt Vanilla\CharacterSelectConstants.lua mit CHARACTER_SELECT_MAX_CHARACTERS = 9,
+            und CharacterSelect_OnShow setzt MAX_CHARACTERS_DISPLAYED darauf. Jede Abbruch-
+            bedingung im Walk, die auf EINER Beobachtung beruhte, braucht jetzt zwei mit
+            laengerer Wartezeit dazwischen und drueckt erst dann erneut, wenn ein Blick bewiesen
+            hat, dass sich nichts bewegt hat - ein zweiter Druck auf einen bereits angekommenen
+            Schritt ueberspringt spurlos einen Charakter. Die Umbruch-Erkennung verlangt jetzt
+            exakt Slot 1, denn CharacterSelectScrollDown_OnClick setzt nach dem letzten Charakter
+            CHARACTER_LIST_OFFSET = 0 und dann SelectCharacter(1); ausserdem wird das
+            Zurueckscrollen abgewartet, bevor bestaetigt wird. Der Notbehelf, der nur den
+            sichtbaren Ausschnitt liest, faehrt jetzt zuerst nach oben, denn
+            UpdateCharacterSelection setzt den Offset auf selectedIndex -
+            MAX_CHARACTERS_DISPLAYED, sobald der zuletzt gespielte Charakter unter der Kante
+            sitzt - die neun sichtbaren Zeilen waren dann Charakter 6 bis 14, angesagt als 1 bis
+            9. Die Pixelproben der Auswahlleiste wurden nach links verschoben: ab zehn Charakteren
+            verbreitert UpdateCharacterList die Leiste von 260 auf 280 und blendet eine Scrollbar
+            ein, deren Hintergrund schwarz genau auf dem Streifen liegt, den die Auswahlleiste
+            freigibt. Das Menue wird jetzt wie die Realmliste losgeloest aufgebaut und in einer
+            einzigen Zuweisung veroeffentlicht.
+
     Hardcore-Realms: Sku baut seine Wegpunktdaten jetzt fertig, statt still stehenzubleiben
         Einfach: Auf Hardcore-Realms raeumt der Spielclient Addons deutlich weniger Rechenzeit pro
             Bild ein als auf normalen Realms. Sku baut direkt nach dem Anmelden seine Wegpunkt- und
@@ -305,6 +407,126 @@ Aenderungen in Sku v43.0
             Coroutine trotzdem, wird bis zu dreimal neu aufgebaut, und der Build-Step legt seine
             Anforderung zurueck, statt sie in einem pcall zu verlieren.
 
+    Navigation: eine Routenliste konnte leer bleiben, ohne zu sagen warum
+        Einfach: Ein Tester auf einem Hardcore-Realm meldete, dass die Routenliste auf Shift-F10
+            nur "Liste leer" sagte, obwohl es dort Routen gibt. Dahinter steckten zwei
+            verschiedene Wege, auf denen eine Liste leer werden konnte, ohne dass irgendetwas
+            darauf hinwies.
+            Erstens: Seit Sku seinen Wegpunktaufbau auf Hardcore-Realms notfalls neu startet
+            (siehe oben), koennen die Wegpunkte waehrend eines geoeffneten Menues ausgetauscht
+            werden. Eine Liste, die noch aus dem alten Aufbau stammte, zeigte dann auf einen
+            Wegpunkt, den es nicht mehr gab. Das warf einen Fehler mitten im Aufbau der
+            Untereintraege, und weil dieser Fehler abgefangen wurde, blieb einfach eine leere
+            Ebene stehen: keine Eintraege, kein Hinweis, keine Fehlermeldung, nichts zu hoeren.
+            Zweitens: Fehlten die Routendaten selbst, meldete Sku trotzdem "fertig geladen", und
+            dann waren alle Routenlisten leer - auch das ohne jeden Hinweis. Beides faellt jetzt
+            auf: Die Liste antwortet ordentlich, statt stumm zu bleiben, und fehlende Routendaten
+            werden angesagt wie jeder andere Datenbankfehler.
+        Technisch: Drei Stellen, alle nach demselben Muster - ein Fehlschlag darf nicht unsichtbar
+            sein.
+            1. SkuNav:GetAllMetaTargetsFromWp5 griff ohne Pruefung auf den Startwegpunkt zu
+            (.worldX). Nach einem Neuaufbau des Wegpunkt-Cache - neu in v43.0, weil der Aufbau
+            sich auf Hardcore-Realms selbst neu startet und weil CleanupWaypoints Wegpunkte ohne
+            Verbindungen loescht - kann dieser Name weg sein. Die Funktion liefert jetzt eine
+            leere Antwort und schreibt eine Logzeile mit der Cache-Generation.
+            2. SkuOptions:VocalizeCurrentMenuName und der Pfadlaeufer rufen BuildChildren in einem
+            pcall auf, damit ein defekter Untermenue-Aufbau nie die Ansage des Eintragsnamens
+            verschluckt. Das bleibt so - aber der Fehler wird jetzt mit Knotennamen protokolliert
+            und der Knoten markiert (buildChildrenFailed). Ohne das war eine Ebene mit null
+            Eintraegen von einer Ebene, die wirklich leer ist, nicht zu unterscheiden.
+            3. Sku:EnsureData uebersprang ein Builder-Global, das keine Funktion ist, kommentarlos
+            und meldete den Datensatz danach trotzdem als bereit. Genau das ist die schlimmste
+            Form: Jede Pruefung im Rest des Codes fragt "ist es bereit", nicht "ist es da". Fuer
+            die Routen endet das mit leeren Verbindungsdaten, geloeschten Routenwegpunkten und
+            Menues, die seelenruhig "Liste leer" sagen. Jeder fehlende Builder wird jetzt einzeln
+            protokolliert; fehlen ALLE, gilt der Datensatz als fehlgeschlagen und wird angesagt.
+            Dazu kommt eine Logzeile in SkuNav:GetAllLinkedWPsInRangeToCoords: Wenn Sku das
+            aktuelle Gebiet keinem Kontinent zuordnen kann (Hoehlen, die Tiefenbahn, nicht
+            kartierte Unterzonen), bricht diese Abfrage leer ab - und die Liste sagte dann "Liste
+            leer", was sich wie eine Aussage ueber die Daten anhoert und keine ist. /skuzoneprobe
+            weist denselben Fall vollstaendig aus.
+
+    Anmelden: die Wegpunktdaten der Routen stehen deutlich frueher bereit
+        Einfach: Nach dem Anmelden baut Sku alle Wegpunkte und ihre Verbindungen neu auf; bis das
+            fertig ist, antworten die Wegpunktlisten mit "Wegpunkte werden noch geladen". Mehr als
+            die Haelfte dieser Wartezeit ging fuer die Verbindungen drauf, und dieselben Daten
+            wurden dabei viermal durchlaufen. Jetzt ist es ein Durchlauf, und er beginnt mit dem
+            Kontinent, auf dem ihr gerade steht: Der ist als erstes fertig, und ab diesem Moment
+            sind eure Listen benutzbar, waehrend der Rest der Welt noch gebaut wird. Wer dabei auf
+            dem Wartehinweis steht, bekommt den ersten Eintrag automatisch vorgelesen, ohne eine
+            Taste zu druecken. Auf demselben Rechner gemessen: Der Verbindungsteil kostet noch
+            etwa die Haelfte, und die Listen des eigenen Kontinents sind rund 0,7 Sekunden frueher
+            da. An den Routen selbst aendert sich nichts - dieselben Wegpunkte, dieselben
+            Verbindungen, nur frueher. Dazu braucht die Wegpunktverwaltung jetzt rund 22 MB
+            weniger Arbeitsspeicher, weil jede Verbindung nicht mehr doppelt gespeichert wird -
+            auf schwachen Rechnern ist das der spuerbarere Teil. Und ein weiteres Stueck
+            Wartezeit faellt ganz weg: Sku liefert zwei grosse Routendateien mit, und von der
+            zweiten braucht die TBC-Fassung nur die Verbindungen. Deren Wegpunkte wurden bisher
+            trotzdem bei jedem Anmelden aufgebaut und einen Augenblick spaeter ungelesen wieder
+            weggeworfen; sie werden jetzt gar nicht erst gebaut. Das spart rund eine viertel
+            Sekunde und rund 21 MB Spitzenspeicher pro Anmeldung - auf Era-Realms, wo die ganze
+            Datei ungenutzt ist, rund 0,4 Sekunden. Beide Dateien werden weiter vollstaendig
+            ausgeliefert: Beim spaeteren Wechsel auf Wrath of the Lich King sind genau diese
+            Daten die richtigen, dann wird andersherum ausgewaehlt.
+        Technisch: Der Verbindungsteil des Wegpunkt-Cache-Aufbaus lief als VIER volle Durchlaeufe
+            ueber ~197.000 gerichtete Kanten: pruefen und symmetrisieren
+            (CheckAndUpdateProfileLinkData), byId/byName materialisieren, die ganze Tabelle aus dem
+            Cache zurueckrechnen (SaveLinkDataToProfile) und ein Schlussdurchlauf ueber alle
+            ~145.000 Cache-Eintraege (CleanupWaypoints). Jetzt ist es ein Durchlauf: Das Pruefen
+            laeuft mit, die Gegenrichtung jeder Kante wird direkt in den Zieleintrag geschrieben -
+            deshalb ist die Reihenfolge der Kontinente egal -, und das Zurueckrechnen entfaellt,
+            weil es die Tabelle schrieb, die ohnehin schon dasteht. Der einzige Fall, in dem es
+            doch etwas aendern koennte (ein Endpunkt, dessen Name im Cache zu einem anderen
+            Eintrag gehoert), wird gezaehlt und loest den alten Weg aus; in den ausgelieferten
+            Routendaten kommt er nicht vor. Der Schlussdurchlauf bekommt vom Custom-Pass die Liste
+            der ueberhaupt loeschbaren Eintraege, nach Kontinent sortiert, und laeuft pro
+            Kontinent, sobald dieser fertig ist. Nebenbei behoben: Der alte Pruefdurchlauf fuegte
+            waehrend pairs() neue SCHLUESSEL in genau die Tabelle ein, ueber die er lief - in Lua
+            undefiniertes Verhalten; die Gegenkanten werden jetzt gesammelt und danach eingetragen.
+            Ausserdem war die im Juli eingebaute Zweiteilung "eigener Kontinent zuerst" beim
+            Anmelden nie aktiv: Sie ermittelt die Zone ueber GetMinimapZoneText, und die ist beim
+            Start des Aufbaus noch leer - der Kontinent wird jetzt vor dem Verbindungsteil erneut
+            ermittelt. Belegt durch einen Nachbau beider Varianten ueber die echten Routendaten
+            (dev/rework-docs/simulate_link_build.py: gleicher Cache, gleiche Verbindungstabelle,
+            fuer jeden Kontinent) und im Spiel durch /skucheck wp, das jetzt auch prueft, dass jede
+            Verbindung ihre Gegenrichtung hat.
+        Technisch, zweiter Teil: Jede Verbindung lag doppelt im Speicher - einmal unter der
+            Nummer des Zielwegpunkts (byId) und einmal unter seinem Namen (byName). byName ist
+            entfallen, alle 14 Fundstellen arbeiten jetzt mit byId; neu ist dafuer
+            WaypointCacheGetIdForIndex, das Gegenstueck zu WaypointCacheGetIdForName. Der
+            Schreibweg in die Verbindungstabelle wurde dadurch sogar billiger: Er hat bisher
+            jeden Zielnamen wieder in eine Id zurueckuebersetzt, jetzt hat er den Datensatz
+            schon. Gemessen: rund 70.000 Tabellen und 224.000 Zeichenketten weniger, 22 MB
+            weniger im Speicherbericht (/skucheck mem), und der Verbindungsteil des Aufbaus
+            wurde noch einmal etwa 40 ms schneller. Warum das doppelt war: eine nie zu Ende
+            gefuehrte Umstellung - schon in Sku 32.31 steht auskommentiert der Aufruf, der die
+            byName-Tabelle direkt in die gespeicherte Verbindungstabelle schreiben sollte;
+            byId kam spaeter als schneller Weg fuer die Routensuche dazu, und beide blieben.
+            Drei latente Fehler sind mitgegangen: eine Schleife beim Wegpunktloeschen, die nur
+            den geloeschten Wegpunkt gegen sich selbst aufraeumte, Ids die aus ".areaid" statt
+            ".areaId" gebaut wurden (also immer mit Gebiet 1) und ein Zugriff auf Links[nil]
+            bei temporaeren Wegpunkten.
+        Technisch, dritter Teil: Die beiden Routendateien waren je EIN Builder, der die ganze
+            Datei aufbaute. Gemessen im Spiel: 375 ms fuer die WotLK-Datei und 355 ms fuer die
+            Basisdatei, jedes Mal. Auf TBC nutzt die Navigation die Wegpunkte der Basisdatei und
+            von der WotLK-Datei nur die Verbindungen (die Vereinigung beider Graphen, seit
+            Juli) - LoadDefaultMapData setzte die WotLK-Wegpunkte, -Level und -Sequenznummern
+            direkt nach dem Verknuepfen wieder auf nil. Das sind 71% der Bytes dieser Datei,
+            gebaut und ungelesen weggeworfen. Die Dateien werden jetzt pro ABSCHNITT verpackt
+            (dev/rework-docs/_wrap_deferred.py, Modus "sections"): ein Builder je
+            Top-Level-Abschnitt von routedata.global, jeder mit einem byte-genauen Ausschnitt
+            der Originaldaten - das Werkzeug prueft, dass die Ausschnitte wieder exakt die
+            Ursprungsdatei ergeben, es wird nichts neu serialisiert. SkuDeferredData.lua waehlt
+            die Builder nach Spielversion (TBC: alle Abschnitte der Basisdatei plus die
+            WotLK-Verbindungen; Era: nur die Basisdatei) und setzt die uebersprungenen
+            Builder-Globals auf nil, sonst haengen ihre Quelltext-Konstanten weiter im Speicher.
+            Neu: /skucheck routes. Die Pruefung ist absichtlich so gebaut, dass ein falsch
+            gewaehlter Abschnitt laut wird statt still den halben Graphen zu kosten: Nach
+            EnsureData darf kein einziges SkuDBBuildRoute*-Global mehr existieren - ein
+            ueberlebendes bedeutet einen Abschnitt, den die Auswahl nicht kennt -, die Tabellen,
+            die die Navigation liest, muessen da und nicht leer sein, und pro Spielversion muss
+            genau die richtige Haelfte fehlen.
+
     Wegpunktlisten sagen jetzt an, wie weit das Laden fortgeschritten ist
         Einfach: Die Meldung "Wegpunkte werden noch geladen" war fuer ein, zwei Sekunden Wartezeit
             gedacht. Wenn der Client Sku ausbremst (siehe voriger Eintrag), kann sie aber zehn
@@ -326,8 +548,141 @@ Aenderungen in Sku v43.0
             Stellen, die ihn bisher am Namen erkannten - die Nicht-auswaehlbar-Sperre und die
             automatische Aktualisierung am Ende des Aufbaus - pruefen jetzt die Markierung.
 
-    Taxiflug: Die Ansagen lassen sich abschalten - und sie nennen nicht mehr den Startpunkt
-    oder das Ziel des Fluges
+    Shift-F9 bis Shift-F12: eigene Tastenbelegungen, und vier Schnellzugriffe zurueck
+        Einfach: Vier Sku-Aktionen - die beiden Navigations-Schnelllisten (Shift-F9 und Shift-F10),
+            das Aktionsleisten-Menue (Shift-F11) und das Abbrechen der Routennavigation
+            (Shift-F12) - haengten direkt auf den Tasten der Audio-Menue-Schnellzugriffe 1 bis 4.
+            Das hatte zwei Folgen. Diese vier Schnellzugriffe waren tot: Ihre Festlegen-Tasten
+            (Strg-Shift-F9 bis Strg-Shift-F12) speicherten weiterhin einen Menuepfad und bestaetigten
+            ihn auch laut, aber keine Taste konnte ihn je wieder aufrufen. Und die vier Aktionen
+            liessen sich nur auf eine andere Taste legen, indem man einen Eintrag namens
+            "audio menue schnell zugriff 1" bis "4" neu belegte - dort sucht niemand nach
+            "Navigation abbrechen". Jede Aktion hat jetzt ihren eigenen Eintrag in der
+            Tastenbelegung, unter ihrem eigenen Namen, weiterhin auf Shift-F9 bis Shift-F12. Die
+            Schnellzugriffe 1 bis 4 sind wieder frei und unbelegt, genau wie die Plaetze 5 bis 10.
+            Bestehende Einstellungen werden beim ersten Anmelden uebernommen: Welche Taste auch
+            immer heute auf Schnellzugriff 1 bis 4 liegt, sie fuehrt weiterhin genau dieselbe
+            Aktion aus - sie wandert nur auf den neuen Eintrag, fuer die Finger aendert sich
+            nichts. Ein Platz, den du absichtlich geleert hattest, bleibt leer.
+        Technisch: Der OnClick in SkuZOptions/Core.lua fing SKU_KEY_MENUQUICK1..4 ab und kehrte
+            zurueck, bevor die allgemeine Schnellauswahl-Schleife weiter unten im selben Handler
+            sie sehen konnte. Die drei verschobenen Aktionen heissen jetzt
+            SKU_KEY_NAVWAYPOINTSQUICK, SKU_KEY_NAVROUTEDESTINATIONSQUICK und
+            SKU_KEY_ACTIONBARSOPEN und werden von dem Modul verteilt, dem sie gehoeren; die beiden
+            Navigationslisten stehen in der Gruppe "Navigation und Wegpunkte". Eine einmalige
+            Migration in SkuKeyBindsUpdate verschiebt key und key2 vom alten Platz auf die neue
+            Konstante; erkannt wird sie am Fehlen der neuen Konstante im Profil, laeuft also genau
+            einmal und vor dem Setzen der Vorgaben. Gespeicherte Schnellauswahl-Pfade bleiben
+            erhalten - eine Taste auf Platz 1 bis 4 stellt die alte Abkuerzung wieder her. Neue
+            Stolperdrahtpruefung: /skucheck keys meldet jede Taste, die zwei Sku-Belegungen
+            gleichzeitig haelt (ausgenommen die transienten Override-Tasten, die sie sich per
+            Entwurf teilen).
+
+    Navigation abbrechen lief ueber zwei verschiedene Tasten
+        Einfach: Es gab zwei Wege, das Folgen einer Route oder eines Wegpunkts zu beenden, und sie
+            verhielten sich unterschiedlich. Die richtig benannte Belegung "route oder wegpunkt
+            folgen beenden" wurde ganz ohne Taste ausgeliefert, und wenn man ihr eine gab, sagte
+            sie "folgen beendet" - dieselben Worte wie beim automatischen Ankommen, man konnte
+            beides also nicht unterscheiden - und sie sagte ueberhaupt nichts, wenn man eine Route
+            statt eines einzelnen Wegpunkts abbrach. Der andere Weg war das fest verdrahtete
+            Shift-F12, das "Navigation abgebrochen" sagte, aber nur als Schnellzugriff 4
+            existierte. Beides ist jetzt eine Taste: "route oder wegpunkt folgen beenden",
+            standardmaessig auf Shift-F12 und frei belegbar, mit dem Bestaetigungston und dem
+            eindeutigen "Navigation abgebrochen". Sie bleibt vollkommen still, wenn es nichts
+            abzubrechen gab, und funktioniert weiterhin in Bewegung und im Kampf.
+        Technisch: Der SkuNav-OnClick-Zweig fuer SKU_KEY_STOPROUTEORWAYPOINT ruft jetzt
+            SkuNav:CancelNavigationSilent() auf und spricht bzw. spielt Sound 835 nur bei einem
+            true-Rueckgabewert. Damit faellt der alte ungeschuetzte Pfad weg, der
+            SKU_NAVIGATION_STOPPED und den Ton auch dann ausloeste, wenn nichts lief, und dessen
+            Ansage aus EndFollowingWpOrRt kam und an einen ausgewaehlten Wegpunkt gebunden war.
+            EndFollowingWpOrRt selbst bleibt unveraendert - seine fuenfzehn anderen Aufrufstellen
+            nutzen es als Abbau vor dem Auswaehlen eines neuen Ziels, wo das Loeschen temporaerer
+            Wegpunkte falsch waere.
+
+    Navigation: Eine Route liess sich nicht starten, wenn ihre Liste waehrend des Ladens fertig wurde
+        Einfach: Wenn du die Routenliste (Shift-F10) geoeffnet hast, waehrend Sku seine
+            Wegpunktdaten noch aufgebaut hat, hat sich die Liste in dem Moment aktualisiert, in dem
+            diese Daten fertig waren - und ab da hat Enter auf einem Routenpunkt die Navigation
+            nicht mehr gestartet. Stattdessen ist das Menue zurueck auf die Ebene der
+            Einstiegspunkte gesprungen, so als haette die Taste gar nichts getan. Menue schliessen
+            und neu oeffnen hat es behoben, was das Ganze zufaellig wirken liess. Die aktualisierte
+            Liste verhaelt sich jetzt genau wie eine frisch geoeffnete: Enter startet die
+            Navigation. Das gilt genauso fuer die Liste der Wegpunkte in der Naehe (Shift-F9) und
+            fuer jede Wegpunktliste, die sich beim Eintreffen der Daten selbst aktualisiert.
+        Technisch: Die Aktualisierung am Ende des asynchronen Wegpunkt-Cache-Aufbaus hat die Ebene
+            mit einem blossen children = {} plus BuildChildren neu gebaut. Damit faellt weg, was
+            OnPostSelect fuer eine Auswahl-Ebene tut: selectTarget auf der Ebene setzen und auf
+            jedes frisch gebaute Kind kopieren. Ohne das erbt die gesamte Unterebene
+            selectTarget = nil, also landet das Enter des Blatts im generischen Zweig von
+            OnPostSelect - es laeuft kein OnAction (RouteFollowOnAction wurde nie aufgerufen) und
+            der Cursor wird auf self.parent gesetzt, genau der beobachtete Sprung nach oben. Dieser
+            Neuaufbau liegt jetzt an genau einer Stelle, SkuOptions:RebuildNodeChildren, benutzt von
+            OnPostSelect selbst, von der Wegpunkt-Aktualisierung und von der Auffrischung
+            veraenderlicher Listen - letztere im Behalten-Modus, damit eine laufende Auffrischung
+            kein bereits ausgewaehltes Ziel wegwirft. Zwei Stolperdraehte gehoeren zur Korrektur:
+            OnPostSelect protokolliert und zaehlt jedes Enter, das auf einem Blatt ohne
+            selectTarget unterhalb einer Auswahl-Ebene landet, und /skucheck menu baut eine
+            Wegwerf-Auswahl-Ebene neu auf, prueft die Zusicherung und meldet diese Sitzungszaehlung.
+
+    Auren: Gruppenplaetze wurden als Piepser statt als Wort angesagt
+        Einfach: Sagt eine Aura die Einheit an, die das Ereignis ausgeloest hat, kam bei manchen
+            Gruppenplaetzen nur ein kurzer Piepser statt eines Wortes - der Ton, den Sku spielt,
+            wenn ihm die Aufnahme fuer ein Wort fehlt. Betroffen waren Platz 3 und jeder
+            "Ziel von"-Platz. Diese Angaben werden jetzt in Woerter zerlegt, die das Sprachpaket
+            sicher enthaelt: "party 3", "ziel party 2". Alle anderen Einheiten sagen weiterhin
+            ihren uebersetzten Namen.
+        Technisch: sourceUnitId und destUnitId reichten das rohe Unit-Token als EIN Wort an die
+            Audioausgabe. Die Pakete liefern party0/1/2/4, aber kein party3 und keine einzige
+            partyNtarget-Datei, der Rest fiel also auf den missingAudio-Piepser zurueck (allein
+            party3 zaehlte 129). tUnitIdToSpokenName in SkuAuras/data.lua splittet die
+            Party-Tokens; andere Tokens fallen auf ihren uebersetzten friendlyName aus den
+            Wertelisten und erst dann auf das rohe Token zurueck. Nebenbei behoben: notifyChat
+            druckte die Tabellenreferenz statt der Einheit.
+
+    Auren: eine Aura mit "einmal" konnte im dichten Kampf mehrfach hintereinander feuern
+        Einfach: Eine Aura, die pro Anwendung nur EINMAL melden soll - typisch "Schattenwort:
+            Schmerz laeuft in einer Sekunde ab" -, konnte im Bosskampf vier Toene in einer
+            Sekunde abgeben. Das passierte, wenn mehrere Spieler denselben Effekt auf dem Ziel
+            hatten oder die Restdauer in einem Durchlauf gar nicht ablesbar war: Sku wertete das
+            faelschlich als "der Effekt ist wieder frisch" und hob die Einmal-Sperre auf. Fehlt
+            die Ablesung, bleibt die Sperre jetzt zu. Eine echte Auffrischung oder eine neue
+            Anwendung hebt sie weiterhin sofort auf.
+        Technisch: Die Reset-Formel der Zaehl-Bedingung armierte used bei jedem Durchlauf neu, in
+            dem die uebrigen Bedingungen hielten und die kleiner-Dauerbedingung false las - und
+            ein Durchlauf OHNE Ablesung (Name nicht in der Liste, kein exp-Eintrag, oder die
+            exp-Karte antwortet mit der gleichnamigen Aura eines anderen Wirkers) erfuellt genau
+            das. tSmallerDurationNoRead in SkuAuras/Core.lua verhindert das Zuruecksetzen ohne
+            Ablesung; der neue Logeintrag "aura gate re-armed" haelt jedes Entsperren fest.
+            Beobachtet wurden vier Feuerungen in 987 ms (DURATION_DEADLINE, dann zweimal
+            UNIT_POWER und SPELL_PERIODIC_DAMAGE).
+
+    Menue: die Wegpunktliste auf Shift-F9 oeffnete sich auf grossen Karten erst beim zweiten Versuch
+        Einfach: Auf Karten mit sehr vielen Wegpunkten blieb Shift-F9 auf dem obersten Eintrag
+            stehen, statt die Liste zu oeffnen; ein weiterer Pfeildruck oeffnete sie dann doch.
+            Grund war Arbeit, die dreimal statt einmal lief: Der Sprung baute dieselbe Liste - auf
+            manchen Karten rund 1900 Eintraege - drei Mal in einem einzigen Frame, und der
+            Spielclient brach das mit seiner Skript-Zeitgrenze ab. Der Abbruch passiert
+            lautlos, deshalb schien einfach nichts zu geschehen. Dazu kam, dass jeder
+            Tastendruck auf einem Eintrag dessen Unterliste erneut aufbaute und die Eintraege
+            dabei verdoppelte. Beides ist weg, die Liste wird einmal gebaut. Shift-F10 war nie
+            betroffen, weil diese Liste auf zehn Ziele begrenzt ist.
+        Technisch: SlashFunc baute die Kinder dreimal: vor dem Namensvergleich, im OnSelect der
+            Schleife und noch einmal im Nachlauf. Der Vergleich entscheidet jetzt VOR dem Bau,
+            und der Nachlauf ueberspringt seine Wiederauswahl, wenn die Schleife denselben Knoten
+            bereits gewaehlt hat (actionOnEnter-Knoten ausgenommen, dort unterscheiden sich die
+            beiden Aufrufe wirklich). VocalizeCurrentMenuName baut nur noch, wenn es nichts zu
+            zaehlen gibt - es braucht die Kinder allein fuer die ";plus"-Markierung, und die
+            meisten Builder haengen ueber InjectMenuItems an, statt zu ersetzen (gemessen
+            1859 -> 3718 -> 5577 Eintraege beim Durchpfeilen). Nachtrag aus dem Test:
+            Fenster-Ebenen unter "Lokal" (Dialog, Haendler, Quest, Flugmeister) bauen ihre Kinder
+            lazy und tragen kein dynamic-Flag; mit uebersprungenem Vorbau sahen sie aus wie
+            kinderlose Blaetter, und der Blattzweig ruft CloseMenu - Schliessen klickt aber jeden
+            Fensterknopf aus interactFramesList, der Sprung zum Flugmeister schloss dessen
+            Fenster also sofort wieder. Gebaut wird deshalb weiter, wenn die Liste leer ist, es
+            sei denn der Knoten ist dynamic. Zwei Stolperdraehte in /skucheck menu zaehlen beide
+            Faelle mit.
+
+    Taxiflug: Die Ansagen lassen sich abschalten - und sie nennen nicht mehr den Startpunkt oder das Ziel des Fluges
         Einfach: Waehrend eines Taxiflugs sagt Sku "Naechster Flugpunkt X" und rund 800 Meter
             vorher "Vorzeitige Landung moeglich bei X", damit man mit der Tastenbelegung frueher
             aussteigen kann. Wer viel fliegt, empfindet das als Geschwaetz, deshalb gibt es
@@ -367,6 +722,327 @@ Aenderungen in Sku v43.0
             Pruefung "/skucheck taxi" haelt die Regel fest: Eine vorzeitige Landung ist nie der
             Start- oder Zielpunkt des eigenen Fluges. Der Schalter liegt pro Profil unter
             taxiAnnounceLandingPoints.
+
+    Energiemonitor: aus "nichts" wird "Aktuelle Ressource", und die folgt der Leiste, die du siehst
+        Einfach: Der Lebens- & Energiemonitor beobachtet genau eine Ressource, und die war fest
+            eingestellt: Mana, Wut, Energie - oder "nichts". "Nichts" war aber kein Ausschalter,
+            sondern ein Loch: es warf laufend Lua-Fehler, und was der Monitor stattdessen
+            beobachtete, hatte niemand ausgewaehlt. Der Eintrag heisst jetzt "Aktuelle
+            Ressource" und steht als erster in der Liste. Er folgt der Leiste, die das Spiel
+            dir gerade zeigt: ein Druide bekommt in Normalgestalt Mana, im Baeren Wut und in
+            der Katze Energie, ohne je wieder ins Menue zu muessen. Alle anderen Klassen haben
+            nur eine Leiste - fuer sie ist es einfach ihre Ressource. Eine feste Ressource
+            auszuwaehlen funktioniert unveraendert weiter. Zum Abschalten ist "Aktiviert: Nein"
+            da, dafuer ist der Schalter gedacht. Wer bisher "nichts" eingestellt hatte, findet
+            den Monitor jetzt abgeschaltet und die Ressource auf "Aktuelle Ressource" - wer ihn
+            hoeren will, schaltet ihn wieder ein.
+        Technisch: "NOTHING" gab den Energie-Index -1 (Enum.PowerType.None) direkt an UnitPower
+            und UnitPowerMax weiter - einen Wert, nach dem der Monitor gar nicht fragen sollte.
+            An seine Stelle tritt GetMonitoredPowerType(), das den gespeicherten Wert erst beim
+            Lesen aufloest: eine feste Auswahl auf ihren Index, "Aktuelle Ressource" ueber
+            UnitPowerType("player") auf die gerade angezeigte Leiste. Beide Lesepfade gehen
+            darueber, auch der Token-Vergleich in UNIT_POWER_UPDATE - mit der automatischen
+            Auswahl ist das Token, auf das reagiert werden muss, eben nicht das gespeicherte.
+            Beide Pfade pruefen jetzt ausserdem auf nil und auf ein Maximum von 0, statt
+            dadurch zu teilen; das war die eigentliche Fehlerquelle, und weil einer der beiden
+            Pfade im OnUpdate-Treiber liegt, kam nicht ein Fehler, sondern einer pro Tick.
+            Weil die beobachtete Ressource jetzt unter dem Monitor wechseln kann, wird der
+            vorige Prozentwert beim Wechsel des Tokens zurueckgesetzt - sonst wuerde die erste
+            Ansage nach einem Gestaltwechsel entweder verschluckt oder bekaeme die falsche
+            Richtung (steigend/fallend). Zusaetzlich: der Handler steigt aus, wenn das Modul
+            abgeschaltet ist. Er haengt an zwei Registrierungen (eigenes AceEvent-Objekt und
+            der Dispatcher in Core.lua), OnDisable loeste aber nur die erste - ein im
+            Funktionsmenue abgeschalteter Monitor sagte deshalb weiter an. Neue Pruefung
+            "/skucheck power" haelt die Regel fest: die eingestellte Ressource muss sich immer
+            zu etwas aufloesen, das der Client lesen kann; eine bewusst gewaehlte Ressource,
+            die die eigene Klasse nicht hat, zaehlt als "ausstehend", nicht als Fehler. Der
+            gespeicherte Wert "NOTHING" wird beim Anmelden einmalig auf "ACTIVE" umgestellt und
+            der Monitor dabei abgeschaltet.
+
+    Auren erkennen Zauber an ihrer Identitaet, nicht mehr am uebersetzten Namen
+        Einfach: Eine Aura, die du angelegt hast, war bisher an deine Spielsprache gebunden. Der
+            gespeicherte Wert war der uebersetzte Zaubername - "Frostblitz" - und ein englischer
+            Client kennt nur "Frostbolt", also feuerte dieselbe Aura dort nie. Aus demselben Grund
+            kam ein in der Gruppe geteiltes Aurenset bei einem Mitspieler mit anderer Sprache tot
+            an, und die mitgelieferten Aurensets gab es ueberhaupt nur auf deutschen Clients. Sku
+            merkt sich jetzt die sprachunabhaengige Identitaet des Zaubers. Zu sehen und zu hoeren
+            bekommst du weiterhin genau den Namen, den dein Spiel benutzt - im Menue, im Namen der
+            Aura und in der Ansage, wenn sie feuert. Deine bestehenden Auren werden beim ersten
+            Anmelden einmalig umgestellt, ohne dass du etwas tun musst; ihre Namen aendern sich
+            dabei nicht.
+            Ein zweiter Gewinn nebenbei: alle Raenge eines Zaubers und auch die Varianten, die
+            Gegner wirken, gehoeren zu einem Eintrag. "Sag mir, wenn mein Ziel Frostblitz wirkt"
+            deckt damit alle 103 Frostblitz-Varianten ab, statt nur die eine, die zufaellig in
+            der Liste stand. Ob DU oder ein Gegner den Zauber gewirkt hat, entscheidet weiterhin
+            die eigene Bedingung "Ereignis Quelle", nicht der Zauber selbst.
+            Wo ein deutscher Zaubername fuer mehrere verschiedene englische steht - "Verblassen"
+            ist sowohl "Fade" als auch "Fade Out" - nennt die Liste den englischen Namen in
+            Klammern dazu, damit die Eintraege unterscheidbar bleiben. Nur die Liste; die Ansage
+            beim Feuern bleibt kurz. Waehlst du so einen Eintrag, gewinnt die aelteste Variante -
+            bei "Verblassen" also der Priesterzauber und nicht "Fade Out". Bereits gespeicherte
+            Auren mit so einem Namen bleiben unveraendert und reagieren weiter auf jede Variante,
+            wie bisher.
+        Technisch: Identitaet ist der enUS-Zaubername aus SkuDB.SpellDataTBC, das ohnehin
+            ausgeliefert und gepflegt wird - keine neue Datei, keine generierte ID-Tabelle (eine
+            solche muesste mit spells.lua synchron gehalten werden, und eine Neugenerierung wuerde
+            gespeicherte Auren still verwaisen lassen). Gespeicherte Werte tragen die Marke
+            "spellgroup:", angezeigt wird weiter SkuAuras.values[key].friendlyName. Die Live-Liste
+            aus UnitAura wird ueber Rueckgabewert 10 (spellId) auf den Gruppennamen abgebildet;
+            auf einem nicht-englischen Client steht der lokalisierte Name als Kompatibilitaets-
+            Alias daneben, damit ein nicht umgestellter Altwert weiter matcht. Auf einem
+            englischen Client sind Gruppen- und Live-Name identisch, der Alias entfaellt und die
+            Kosten sind exakt null. Kennt SpellDataTBC eine ID nicht - die Population, die mit dem
+            Anniversary-Zyklus am ehesten driftet -, faellt die Zuordnung auf den lokalisierten
+            Namen zurueck, also auf das bisherige Verhalten. 838 der 26.603 deutschen Namen (3,15
+            Prozent) decken mehr als einen englischen ab. Zur Laufzeit gewinnt die Gruppe mit der
+            niedrigsten Zauber-ID - die kollidierenden Varianten sind ausnahmslos spaeter
+            hinzugekommen; geprueft an den Faellen mit bekannter Antwort (Verblassen 586 gegen
+            5543, Geschwaechte Seele 6788 gegen 36788, Schattenwort: Schmerz 589 gegen 37603,
+            Erneuerung 139 gegen 37563, Gedankenkontrolle 605 gegen 7645). GESPEICHERTE Werte mit
+            so einem Namen werden trotzdem NICHT umgestellt, weil sie heute auf jede Variante
+            passen und eine Umstellung die anderen still wegnehmen wuerde; ihre Menueeintraege
+            bekommen den englischen Namen angehaengt. Der Anzeigename einer Gruppe stammt immer von der niedrigsten ID
+            darin, damit er sich zwischen Sitzungen nicht aendert. Neue Pruefungen unter
+            "/skucheck auren": es gibt ueberhaupt Gruppeneintraege, alle IDs eines Zaubers loesen
+            zu EINER Gruppe auf, und die einmalige Umstellung hat keinen Wert liegen lassen.
+
+    Aurensets teilen: neues Format ohne Sprachkennzeichen
+        Einfach: Ein geteiltes Aurenset traegt kein Sprachkennzeichen mehr und die Warnung "Set
+            ist fuer eine andere Sprache" entfaellt - die Bedingungen sind jetzt sprachfrei. Beim
+            Annehmen bekommt jede Aura ausserdem ihren Namen in DEINER Sprache, statt den Satz
+            des Absenders zu behalten. Auren, denen du selbst einen Namen gegeben hast, behalten
+            ihn.
+        Technisch: SkuAuraSetV2 (Nutzlast "AURASET2", ohne loc-Feld) wird gesendet; V1 wird
+            weiterhin empfangen, samt bisheriger Sprachwarnung, weil solche Pakete noch
+            lokalisierte Werte tragen. Bewusst wird nur V2 gesendet: ein zusaetzliches V1-Paket
+            wuerde bei aelteren Clients Auren mit Gruppenwerten ablegen, die sie nicht aufloesen
+            koennen. Der Name wird beim Import ueber BuildAuraName neu abgeleitet
+            (SkuAuras:RelocalizedAuraName); customName-Auren sind ausgenommen, und das sind genau
+            die, auf die andere Auren verweisen koennen - die Querverweise bleiben also heil.
+
+    Auren anlegen: das Menue zum Bauen einer Aura ist neu aufgebaut
+        Einfach: Eine Aura besteht weiterhin aus Bedingungen, und alles, was du schon gebaut hast,
+            rechnet unveraendert weiter - aber der Weg zu einer Bedingung ist an vielen Stellen
+            kuerzer geworden, und die Listen, durch die man dabei laeuft, sind sortiert, kurz und
+            schnell. Der Reihe nach, wie eine Aura jetzt entsteht:
+            Die Attributliste ist durchgehend nach Namen sortiert - auch die Gruppeneintraege, die
+            frueher immer oben standen. Ein Eintrag liegt also da, wo sein Name ihn hinstellt, und
+            ist ueber die ersten Buchstaben erreichbar. Die 35 Ereignisse liegen hinter zwei
+            Eintraegen, "Ereignisse allgemein" und "Ereignisse Zauber"; Gesundheit, Ressource,
+            Mana, Wut, Energie, Runenmacht und Combopunkte liegen zusammen in "Eigene Gesundheit
+            oder Ressource"; und alle Auren, denen du selbst einen Namen gegeben hast, stehen als
+            Bedingung unter "Selbsterstellte Auren" statt einzeln zwischen den echten Attributen -
+            frueher wuchs die oberste Liste mit jeder benannten Aura um einen Eintrag mehr, der
+            sich in jeden Buchstaben des Alphabets einsortierte. Jeder Gruppeneintrag sagt beim
+            Vorlesen selbst, was in ihm ausgewaehlt ist; hineingehen muss man dafuer nicht.
+            Eine Bedingung mit nur zwei Werten - "wahr" und "falsch", oder "buff" und "debuff" -
+            ist jetzt ein Schalter statt drei Ebenen. Der Wert steht am Eintrag, Enter schaltet
+            um: "Im Kampf; wahr", Enter, "Im Kampf; falsch". Beim Anlegen geht Enter einen Schritt
+            weiter auf "nicht festgelegt" und wieder zurueck, damit ein versehentlich gesetzter
+            Schalter auch wieder wegzunehmen ist. Wichtig zum Verstaendnis: "nicht festgelegt" ist
+            kein dritter Wert, sondern heisst, dass es die Bedingung gar nicht gibt - das ist der
+            neutrale Zustand, nicht "falsch". "falsch" ist ein Vergleich wie jeder andere: "Im
+            Kampf gleich falsch" loest NUR ausserhalb des Kampfes aus.
+            Zauber waehlst du weiter aus einer Liste, kannst sie aber auch tippen: ganz oben in
+            jeder Zauber-Werteliste steht "Zauber eingeben", Enter, Name oder Nummer, Enter, und
+            Sku sagt an, welchen Zauber es daraus gemacht hat. Die beiden Bedingungen "zauber nr"
+            und "gegenstand nr" stehen dafuer nicht mehr in der Attributliste: sie meinten einen
+            EINZELNEN Zauberrang und bedeuteten damit direkt neben "zauber name" das Gegenteil von
+            dem, was derselbe getippte Wert dort tut. Neu dazugekommen ist "Buff Debuff nur selbst
+            gewirkte" - steht sie auf wahr, sehen die Buff- und Debufflisten dieser Aura nur noch
+            Effekte, die DU gewirkt hast, sodass "mein Schattenwort: Schmerz laeuft ab" nicht mehr
+            das eines anderen Priesters auf demselben Ziel meldet. Und weil "Quelle (L)" und
+            "ziel (L)" regelmaessig fuer das eigene Ziel gehalten wurden, heissen sie jetzt
+            "Ereignis Quelle (L)" und "Ereignis Ziel (L)": sie filtern das ausloesende EREIGNIS.
+            Zuletzt das Verhalten der Listen selbst: alle Wertelisten oeffnen spuerbar schneller,
+            "zauber benutzbar" friert das Spiel beim Aufklappen nicht mehr ein, ein Zauberwechsel
+            in einer Dauer-Bedingung geht ohne Haenger und ohne den vorherigen Zauber weiter als
+            ausgewaehlt vorzulesen, und "Loeschen" fragt jetzt nach, bevor eine Aura weg ist - es
+            war der einzige Eintrag der Liste, der das nicht tat, direkt neben "Duplizieren", das
+            immer gefragt hat.
+        Technisch: Ein Attribut wird als Schalter gebaut, wenn sein Typ BINARY ist, es genau zwei
+            Werte hat und der Typ genau einen Operator erlaubt (tBinaryValuesForAttribute in
+            SkuAuras/Options.lua); geschrieben wird exakt das, was die alte Werteliste geschrieben
+            hat, eine ueber den Schalter gebaute Aura ist von einer alt gebauten also nicht zu
+            unterscheiden, und eine leere values-Liste faellt aus dem Entwurf - das ist "nicht
+            festgelegt". Die Bedingungszeile paart actionInPlace mit actionOnEnter, das ist es,
+            was Enter und Pfeil rechts auf demselben Knoten auseinanderhaelt. Die Attributliste
+            sammelt Gruppen und Attribute mit ihrem Anzeigenamen ein und fuegt beides in
+            Namensreihenfolge ein. Die zwei Ereignisfamilien sind EIN Attribut und EINE
+            gespeicherte Bedingung: jede Familienliste bietet die andere als einen Eintrag an, und
+            beide zeigen auf die Bedingung, die der Entwurf schon haelt - sonst hinterliesse ein
+            Gang durch beide zwei Bedingungen auf event, die der Speichern-Lauf zu einer immer
+            wahren ODER-Gruppe verschmilzt. listsOwnOnly ist ein binaerer Modifikator: getAuraList
+            faengt im selben Scan den Wirker (7. Rueckgabewert von UnitAura) ab und fuellt
+            parallele own-Mengen, die EvaluateAllAuras pro markierter Aura eintauscht. Die
+            Wertelisten sortieren mit einem Sortierschluessel pro Eintrag statt zweien pro
+            Vergleich (27.057 statt rund 800.000 neue Zeichenketten pro Zauberliste), "zauber
+            benutzbar" fragt die 132 Aktionsplaetze statt aller 49.000 Zauber der Datenbank, und
+            die Dauer-Bedingung laesst jeden Eintrag beim Vorlesen selbst sagen, wie er steht
+            (tValueToggleRefreshLiveName, EINE per Referenz geteilte Funktion), statt bei jedem
+            Enter 27.000 Eintraege zurueckzusetzen. "zauber nr"/"gegenstand nr" werden weiter
+            ausgewertet und sind nur ueber ein retired-Flag aus dem Builder ausgeblendet, damit
+            eine importierte oder alte Aura nicht auf ein nil laeuft; mit ihnen entfallen ihre
+            Wertelisten, rund 49.000 Zauber- und 25.000 Gegenstands-IDs, die bei jedem Laden
+            aufgebaut wurden. Die Locale-SCHLUESSEL der umbenannten Bedingungen sind unveraendert,
+            es verschiebt sich also keine gespeicherte Aura. Beim Loeschen musste zusaetzlich der
+            aName-Zweig des Verwalten-Menues weichen: selectTarget wird erst umgehaengt, wenn die
+            Ebene betreten ist, bis dahin waere die Rueckfrage kosmetisch gewesen. Loeschen
+            frischt jetzt auch die Aura-Pseudoattribute auf - eine geloeschte Aura blieb vorher
+            als Bedingung waehlbar.
+
+    Franzoesische Clients: die Liste der Waffenverzauberungen fuer Auren war leer
+        Einfach: Auf einem franzoesischen Client bot die Aura-Bedingung fuer Waffenverzauberungen
+            keinen einzigen Eintrag an, sodass sich so eine Bedingung gar nicht anlegen liess.
+        Technisch: SkuAuras:ResolveWeaponEnchantName las Spalte 1 der Enchant-Datenbank fuer
+            enUS und Spalte 2 fuer deDE und liess den Namen sonst nil - fuer jede andere Sprache
+            gab die Funktion damit fuer JEDE Verzauberung nil zurueck, und die Werteliste kam
+            leer heraus. Sie nimmt jetzt die Spalte der eigenen Sprache, sonst die englische,
+            wie der Rest des Namenssystems seit v42.09. Gefunden beim Umbau auf Gruppen-
+            Identitaet, nicht aus einem Bericht.
+
+    Menue: jeder Eintrag wird jetzt rund 13 mal guenstiger erzeugt
+        Einfach: Lange Listen bauen sich deutlich schneller auf. Am staerksten faellt es bei den
+            Zauberlisten einer Aura-Bedingung auf: die haben 27.057 Eintraege, und auf einem
+            Hardcore-Realm liessen sie sich zuletzt gar nicht mehr oeffnen - der Server bricht dort
+            zu lange laufende Addon-Skripte hart ab, und der Aufbau kam nur etwa bis zur Haelfte.
+            Betroffen ist nicht nur die Aurenliste: jedes Menue in Sku baut sich aus denselben
+            Eintraegen auf.
+        Technisch: Ein Menueeintrag war eine tiefe Kopie der Vorlage SkuGenericMenuItem - pro
+            Eintrag eine Hilfstabelle, ein pairs()-Durchlauf ueber alle 28 Felder mit je einem
+            type()-Aufruf und drei Schluesselvergleichen, 28 Schreibzugriffe und eine rekursive
+            Kopie der children-Tabelle. Jetzt ist ein Eintrag eine fast leere Tabelle, deren
+            Metatabelle per __index auf die Vorlage zeigt: zwei Tabellen und ein Schreibzugriff.
+            Gemessen an 27.057 Eintraegen: das Erzeugen der Knoten faellt von 78 auf 6 ms (13x),
+            der komplette Listenaufbau von 100 auf 31 ms (3,2x, und 2,7x schneller als vor dem
+            Aurenumbau). Ein Schreibzugriff auf einen Eintrag ueberdeckt die Vorlage wie bisher;
+            children bleibt bewusst eine eigene Tabelle pro Eintrag, sonst teilten sich alle
+            Menuepunkte des Addons EINE Kinderliste. Einzige Stelle, die einen Eintrag kopiert
+            (der Filtereintrag in SkuOptions:ApplyFilter), haengt die Metatabelle wieder an.
+            /skucheck menu prueft beides an Wegwerf-Eintraegen.
+
+    Zum Vergleich nachgemessen: der Aurenumbau selbst hat diese Listen kaum verlangsamt. Die
+        Umstellung auf Gruppen hat die Zauberliste um 460 von 26.597 Eintraegen wachsen lassen
+        (+1,7 %), und Umschalter statt einfacher Eintraege kosten rund 19 % mehr Aufbauzeit. Teuer
+        war der Aufbau schon vorher; auf einem Hardcore-Realm ist eine Skriptgrenze aber eine
+        Kante und keine Schraege, und dafuer reichten die 19 %.
+
+    Menue: eine abgebrochene Liste blieb still unvollstaendig
+        Einfach: Auf einem Hardcore-Realm bricht der Server ein zu lang laufendes Addon-Skript ab.
+            Traf das den Aufbau einer langen Liste, dann liess sich die Liste beim ZWEITEN
+            Pfeil-rechts zwar oeffnen - aber es war nicht etwa ein neuer Versuch, sondern der halb
+            fertige Rest vom ersten. Bei den Zauberlisten hiess das rund 6.900 von 27.000
+            Zaubern, ohne jeden Hinweis: wer seinen Zauber nicht fand, musste glauben, es gebe ihn
+            nicht. Jetzt wird der Aufbau im naechsten Frame dort fortgesetzt, wo er abgebrochen
+            wurde, und die Liste ist nach wenigen Frames vollstaendig, ohne dass man etwas druecken
+            muss.
+        Technisch: Das Skript-Budget gilt pro Ausfuehrung, der naechste Frame hat also wieder
+            eines - genau wie beim Aufbau der Routendaten, der aus demselben Grund in Scheiben
+            laeuft. SkuOptions:ContinueInterruptedBuild ruft BuildChildren auf einem
+            Null-Timer erneut auf, solange die Ebene unvollstaendig ist. Fortgesetzt wird nur ein
+            Builder, der sich ueber `resumableBuild` dazu bekennt und einen eigenen Cursor
+            fuehrt: ein gewoehnliches BuildChildren HAENGT AN, ein zweiter Aufruf wuerde also
+            jeden Eintrag doppelt erzeugen - deshalb gab es die alte Sperre ueberhaupt. Der Cursor
+            wird erst NACH einem Eintrag gesetzt, nicht davor, sonst gilt ein Eintrag als gebaut,
+            den der Abbruch verhindert hat. Macht ein Durchlauf keinen Fortschritt, wird
+            aufgegeben statt endlos zu wiederholen. /skucheck menu prueft an einer Wegwerf-Ebene,
+            dass ein abgebrochener Aufbau fortgesetzt und nicht neu begonnen wird.
+
+    Einstellungen mit zwei Werten sind jetzt Schalter statt Untermenues
+        Einfach: Eine Einstellung, die nur zwei Zustaende kennt - "Ein" und "Aus", "Ja" und
+            "Nein" -, sagt ihren Wert jetzt gleich beim Vorlesen mit: du hoerst zum Beispiel
+            "Sku Menue im Kampf; ein". Enter schaltet um, der Fokus bleibt stehen, und du hoerst
+            den Eintrag sofort im neuen Zustand. Pfeil rechts brauchst du dafuer nicht mehr, denn
+            das Untermenue mit den beiden Werten gibt es nicht mehr. Vorher waren es drei Tasten -
+            rechts, Pfeil, Enter -, und man musste ueberhaupt erst hineingehen, um zu erfahren,
+            wie die Einstellung gerade steht. Das betrifft die gesamten Einstellungen, den
+            Gesundheits- und Kampfmonitor, die Filter von Chat- und Kampfprotokoll, das
+            Funktionsmenue, das Kameramenue und die Einstellungen fremder Addons: rund 150
+            Eintraege. Einstellungen mit MEHR als zwei Werten behalten ihre Liste, dort gibt es
+            ja etwas auszuwaehlen.
+        Technisch: Neues gemeinsames Menue-Element SkuOptions:MakeToggleNode in
+            SkuZOptions/templates.lua; SkuOptions:MakeInPlaceToggle stellt eine vorhandene
+            isSelect-Stelle mit EINER Zeile darauf um und benutzt deren eigenes GetCurrentValue
+            und OnAction weiter, damit jede Besonderheit einer Einstellung bleibt, wie sie war.
+            Welcher der beiden Werte dabei als "ein" uebergeben wird, ist egal, und genau das
+            machte die Umstellung der rund 50 vorhandenen Ja/Nein-Stellen mechanisch. Ein Schalter
+            ist ein Blatt (actionInPlace, kein dynamic, keine Kinder) - deshalb tut Pfeil rechts
+            nichts mehr -, und ein RefreshLiveName liest den Zustand unmittelbar vor jeder Ansage
+            neu; das alte Untermenue bekam das umsonst, weil es bei jedem Abstieg GetCurrentValue
+            aufrief. Drei Fallen dabei: der Pfadlauf von SkuOptions:SlashFunc und die
+            Einstellungssuche waehlen mit aEnterFlag = true aus und haetten einen so benannten
+            Schalter UMGELEGT, statt ihn anzusteuern - beide setzen jetzt nur den Fokus, und die
+            Suche vergleicht gegen toggleLabel, weil der Name den Zustand traegt. Auf den
+            Filtereintrag einer Liste wird RefreshLiveName nicht angewandt: SkuOptions:ApplyFilter
+            baut ihn als Kopie des ersten Kindes, und die Kopie wuerde sonst den getippten Text
+            ueberschreiben. Und ein Schalter, dessen Leser einen Fehler wirft, wird in
+            /skucheck menu gezaehlt - er klaenge sonst wie eine Einstellung ohne Wert statt wie
+            ein Defekt.
+
+    Bereitschaftscheck: das Fenster landete nicht auf der Antwort, wie es jedes andere Popup tut
+        Einfach: Startet jemand in der Gruppe einen Bereitschaftscheck, oeffnet Sku wie bei jedem
+            Popup das Menue und springt hinein. Bei diesem einen Fenster kam der Cursor aber nicht
+            auf "Bereit" an, sondern eine Ebene darueber, sodass es zwei weitere Tastendruecke bis
+            zur Antwort waren. Jetzt stehst du sofort auf "Bereit", darunter liegt "Nicht bereit",
+            und Pfeil links fuehrt zurueck auf "Bereitschaft check". Wer den Check gestartet hat,
+            steht an beiden Eintraegen als Volltext.
+        Technisch: ReadyCheckFrame ist nur eine Huelle um ReadyCheckListenerFrame, das die Meldung
+            und die beiden Knoepfe traegt; generisch abgelaufen wurde diese Huelle eine eigene
+            Menueebene, und der Absprung von SkuCore:CheckFrames landete auf ihr. Es gibt jetzt
+            einen eigenen Bauplan (SkuCore:Build_ReadyCheckFrame in SkuCore/LocalMenu.lua,
+            eingetragen in interactFramesListManual), der die beiden Antworten flach als
+            directAction-Eintraege baut - dasselbe Muster wie Build_RolePollPopup fuer die
+            Rollenabfrage. Die Beschriftungen kommen von den Knoepfen selbst, die Blizzard in
+            ReadyCheckFrame_OnLoad uebersetzt, es braucht also keinen neuen Locale-Eintrag.
+            Gelistet werden nur sichtbare Knoepfe: hast du den Check selbst gestartet, blendet
+            Blizzard die Antwortseite aus und es gibt nichts zu beantworten.
+
+
+    Spiel-Lautstaerken: ein gesetzter Wert kam auf einem anderen Charakter wieder laut zurueck
+        Einfach: Wer die Gesamtlautstaerke im Sku-Menue leiser stellte, fand sie auf einem anderen
+            Charakter wieder auf dem alten Wert. Sku hatte die fuenf Lautstaerken und die fuenf
+            Sound-Schalter naemlich zusaetzlich selbst gespeichert und bei jedem Anmelden wieder
+            ins Spiel zurueckgeschrieben. Diese Kopie haengt am Sku-Profil, die Spieleinstellung
+            aber am Konto: zwei Charaktere in verschiedenen Profilen hoerten deshalb zwei
+            verschiedene Lautstaerken, und eine Aenderung in Blizzards eigenen Soundoptionen war
+            beim naechsten Anmelden stillschweigend wieder weg. Sku stellt die Werte jetzt nur
+            noch ein, merken tut sie sich das Spiel selbst - wie bei jedem anderen Spieler auch.
+            Die Regler im Menue zeigen ab sofort den echten Wert des Spiels, auch wenn du ihn
+            woanders geaendert hast. Was wegfaellt: Lautstaerken folgen keinem Sku-Profil mehr.
+        Technisch: SkuOptions:OnEnable schrieb soundChannels und soundSettings bei jedem Anmelden
+            aus dem Profil in die CVars zurueck, davor eine Sonderregel, die einen gespeicherten
+            Wert von 0 oder -1 als defektes Profil ansah und dann alle fuenf Kanaele neu aus den
+            CVars uebernahm. Der ganze Block ist raus. Die Menueknoten in SkuZOptions/Options.lua
+            lesen und schreiben die CVars direkt (tGetSoundCVarPercent, tSetSoundCVarPercent,
+            tGetSoundCVarBool); die zehn Schluessel sind aus SkuOptions.defaults und aus dem
+            Schema entfernt, und ein einmaliger Durchlauf in OnInitialize raeumt sie aus jedem
+            gespeicherten Profil - nicht nur aus dem aktiven, denn ohne Defaults-Eintrag wuerde
+            AceDB sie nie wieder abraeumen. soundChannels selbst bleibt: SkuChannel, der Kanal
+            fuer Skus eigene Ausgabe, ist eine echte Sku-Einstellung. Beim Lesen wird jetzt
+            gerundet statt abgeschnitten - tonumber("0.35") * 100 ergibt 34,999... und waere als
+            34 zurueckgekommen. Neue Profile bringen keine Lautstaerke-Vorgaben mehr mit; es
+            gelten die Standardwerte des Spiels.
+
+    Die vier Standardprofile werden angelegt, ohne dazwischen das Profil zu wechseln
+        Einfach: Beim ersten Anmelden legt Sku die vier Standardprofile an, falls sie fehlen. Das
+            geschah bisher, indem Sku der Reihe nach in jedes fehlende Profil wechselte und danach
+            in deines zurueck. Auf einem Hardcore-Realm bricht der Server lange Addon-Skripte ab,
+            und traf das diesen Ablauf, blieb der Charakter in einem fremden Profil stehen - mit
+            allen Einstellungen dieses Profils statt deinen. Ein Profil entsteht aber schon
+            dadurch, dass es seinen Namen bekommt; gewechselt werden muss dafuer gar nichts. Aus
+            zehn schweren Schritten sind vier kurze geworden, die mittendrin nicht schiefgehen
+            koennen.
+        Technisch: Die vier SetProfile-Aufrufe plus der Rueckwechsel in SkuCore/Core.lua sind
+            durch vier Zuweisungen in SkuOptions.db.sv.profiles ersetzt. AceDBs GetProfiles zaehlt
+            genau diese Tabelle auf, und ein Profil wird ohnehin erst beim ersten Hineinwechseln
+            per copyDefaults gefuellt - der gespeicherte Endzustand ist derselbe wie vorher, vier
+            leere Tabellen. Jeder SetProfile-Aufruf dagegen feuerte OnProfileShutdown und lief mit
+            removeDefaults und copyDefaults ueber den kompletten Defaults-Baum aller acht Module,
+            rund zehn Durchlaeufe in einem einzigen Frame. Mit dem Wechseln entfaellt auch das
+            Flag SkuCore.AutoChange, das OnProfileChanged solange stummschaltete und bei einem
+            Abbruch auf true stehen blieb - danach kam fuer den Rest der Sitzung kein
+            Profilwechsel mehr durch. Der Dispatcher pcallt diesen Handler, der Abbruch war also
+            unsichtbar.
 
 
 -------------------------------------------------------------------------------------------------------
@@ -608,6 +1284,33 @@ Aenderungen in Sku v42.13
             Diese Knoepfe behalten ausserdem ihren OnClick-Handler, auch wenn das
             deaktivierte Element keine Mausklick-Eingabe meldet - sonst stuende der
             Eintrag zwar in der Liste, waere aber wirkungslos.
+
+    Kampf: ein Popup liess sich lesen, aber nicht beantworten
+        Einfach: Ging waehrend eines Kampfes ein Popup auf - eine Gruppeneinladung, eine
+            Beschwoerung, die Frage nach dem Wiederbeleben -, dann konnte Sku es vorlesen und man
+            konnte darin navigieren, aber die Eingabetaste tat nichts: Der Eintrag wurde nur noch
+            einmal vorgelesen. Man musste warten, bis der Kampf vorbei war, und eine Einladung
+            lief in der Zwischenzeit ab. Die Knoepfe eines Popups lassen sich jetzt auch im Kampf
+            druecken, alle vier, nicht nur Annehmen und Ablehnen.
+        Technisch: Im Kampf erreicht die Aktivierungstaste den sicheren Menue-Knopf gar nicht:
+            PLAYER_REGEN_DISABLED blendet OnSkuOptionsMain aus, dessen OnHide loescht die
+            Override-Bindings dieses Knopfes noch waehrend des Gnadenfensters, und die Taste
+            laeuft stattdessen ueber das Snippet von SkuCombatMenuKey, das die Eingabetaste als
+            "nur Route" behandelt und sie direkt an den unsicheren Verteiler gibt
+            (SkuCore/combatMenuKeys.lua). Ergebnis: lesbar, navigierbar, tot bei Enter.
+            Anders als bei den Taschen- und Handelspfaden braucht es dafuer keinen Spiegel und
+            kein sicheres Vorbereiten: Ein StaticPopup-Knopf ist KEIN geschuetzter Frame, sein
+            OnClick ist gewoehnliches Lua (StaticPopup_OnClick ruft OnAccept/OnCancel des Dialogs
+            auf: AcceptGroup, DeclineGroup, ResurrectAccept, RepopMe, ConfirmSummon). Nichts davon
+            haengt am Hardware-Ereignis, also wirkt der direkte Aufruf im Kampf genau wie
+            ausserhalb. Bewusst auf die Popup-Knoepfe beschraenkt - jede andere Klick-Nutzlast in
+            diesem Menue braucht das echte Hardware-Ereignis und gehoert in den Spiegel.
+            Abgesichert: nur im Kampf, nur solange der Knopf da ist, und nur solange Blizzard ihn
+            AKTIV hat (der Ablehnen-Knopf ist in seiner ersten Sekunde gesperrt, dort ist auch
+            "/click" wirkungslos). Neu ist ausserdem, dass alle vier Knoepfe so behandelt werden;
+            Knopf 3 und 4 fielen vorher auf den allgemeinen Klickpfad ohne jede unsichere Aktion
+            zurueck. /skucheck menu zaehlt die Faelle mit, in denen im Kampf aktiviert wurde und
+            gar kein Knopf mehr da war.
 
     Tippen in Eingabefeldern: kein Nachplappern mehr nach dem Schliessen
         Einfach: Beim Tippen in ein Sku-Eingabefeld (Brief schreiben, Suchfeld,
