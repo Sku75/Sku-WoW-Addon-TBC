@@ -25,7 +25,9 @@ and you get:
 
 - a freshly rebuilt installer program,
 - the full Sku addon packaged as `Sku-42.07.zip`,
-- a new GitHub release marked **Latest**, carrying both the addon and the installer,
+- a new GitHub release marked **Latest**, carrying the addon, the installer and
+  `installer-version.txt` (the two-line file that tells already-installed
+  updaters a newer installer exists, and the checksum they verify it against),
 - the download pages' links updated to the new version (English and French),
 - the patch notes copied onto the website in all three languages,
 - an announcement posted to each Discord channel, in that channel's languages.
@@ -125,6 +127,21 @@ before it builds so it is never a surprise.
 - **No stale versions, no rate limits.** The installer finds the newest version
   by itself and never uses GitHub's throttled API, so it can't get stuck on an
   old version or hit a download limit.
+- **The installer keeps itself current too.** Every release carries
+  `installer-version.txt` alongside `SkuInstaller.exe`. The copy people have on
+  their machine reads it at startup, offers the newer installer, checks the
+  download against the checksum in that file, replaces itself and restarts.
+  Two things follow. The exe and that file must always go out **together** —
+  the script uploads them in one call for exactly that reason, and a release
+  carrying a new exe with an old checksum would offer an update that then
+  refuses to install itself, over and over. And after publishing, run
+
+      installer\SkuSelfTest\bin\Release\net472\SkuSelfTest.exe selfupdate
+
+  which downloads the published installer and verifies it the same way the
+  users' copies will. It prints `PASS` or `FAIL`. This is the one part of a
+  release that nobody notices being broken, because a broken version file just
+  makes the installer say nothing at all.
 - **Links stay current on their own.** The installer and login-tool downloads
   use permanent "always latest" links; the Sku and SkuMapper links are refreshed
   by the script each release.

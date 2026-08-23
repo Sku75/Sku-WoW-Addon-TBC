@@ -38,8 +38,17 @@
          log of EVERY detected client — Sku's SavedVariables (SkuDebugLog +
          SkuErrorLog), BugGrabber, WVDebug, the client's Logs\ and Errors\,
          Config.wtf, the addon list, the login tool's log and this installer's own
-         log — into one zip in Downloads (LogCollector). -->
-    <Version>4.2</Version>
+         log — into one zip in Downloads (LogCollector).
+         4.3 = the updater updates ITSELF (SelfUpdater + SelfUpdatePromptForm).
+         The persistent copy in %LOCALAPPDATA%\SkuUpdater that the "Sku Updater"
+         shortcut launches used to stay on whatever build first created it, so
+         installer fixes only reached people who revisited the download page. It
+         now reads installer-version.txt from the rolling
+         releases/latest/download URL at startup, offers the update with a
+         strong recommendation, verifies the published SHA-256, renames itself
+         aside, moves the new exe into its place and restarts. Every failure
+         path falls through to a normal run with the current exe. -->
+    <Version>4.3</Version>
   </PropertyGroup>
 
   <ItemGroup>

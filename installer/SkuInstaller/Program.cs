@@ -31,6 +31,36 @@ namespace SkuInstaller
                 Logger.Warning("Not running as administrator.");
             }
 
+            // Keep the updater itself current, before anything else happens.
+            //
+            // First, because a self-update ends in a restart: asking later would
+            // mean discarding choices the user had already made, and a window that
+            // disappears and comes back mid-install is exactly the sort of thing
+            // that cannot be followed by ear. It is also the cheapest possible
+            // check — a two-line text file — so a user with nothing to update pays
+            // almost nothing for it.
+            //
+            // Every branch here falls through to a normal run. Offline, no version
+            // file published, hash mismatch, user says no: the installer carries on
+            // with the exe that is already here and can still install Sku.
+            SelfUpdater.CleanUpPreviousVersion(args);
+
+            if (SelfUpdater.ShouldCheck(args))
+            {
+                var offer = SelfUpdater.Check();
+                if (offer != null)
+                {
+                    var selfPrompt = new SelfUpdatePromptForm(offer);
+                    Application.Run(selfPrompt);
+
+                    if (selfPrompt.Choice == SelfUpdateChoice.Restart)
+                    {
+                        SelfUpdater.RestartAndExit(args);
+                        return;
+                    }
+                }
+            }
+
             // Discover the newest main-addon release from the github.com "latest"
             // redirect so this exe keeps finding releases published after it was
             // built. Must run before anything reads Config.MainVersion — which the

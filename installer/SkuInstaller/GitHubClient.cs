@@ -140,6 +140,51 @@ namespace SkuInstaller
             $"{Uri.EscapeDataString(tag)}/{Uri.EscapeDataString(assetName)}";
 
         /// <summary>
+        /// The ROLLING download URL for an asset on whichever release currently
+        /// carries the "Latest" badge, e.g.
+        /// https://github.com/OWNER/REPO/releases/latest/download/SkuInstaller.exe .
+        /// The website's installer button already uses this form, and
+        /// <see cref="SelfUpdater"/> uses it so an exe built a year ago still
+        /// resolves today's build without knowing any tag. Same github.com host as
+        /// every other download here — not the rate-limited api.github.com.
+        /// </summary>
+        public static string BuildLatestDownloadUrl(string assetName) =>
+            $"https://github.com/{Config.RepoOwner}/{Config.RepoName}/releases/latest/download/" +
+            $"{Uri.EscapeDataString(assetName)}";
+
+        /// <summary>
+        /// Fetches a small text asset. Returns null on any failure — a missing
+        /// file (404 on a release that predates it) is an ordinary outcome here,
+        /// not an error worth stopping for.
+        ///
+        /// Own short timeout, like <see cref="ResolveLatestMainVersionAsync"/>:
+        /// the shared <see cref="_http"/> timeout is sized for a 157 MB addon
+        /// download and would leave an offline user waiting ten minutes for a
+        /// two-line file.
+        /// </summary>
+        public async Task<string> DownloadTextAsync(string url, TimeSpan timeout)
+        {
+            try
+            {
+                using (var cts = new CancellationTokenSource(timeout))
+                using (var resp = await _http.GetAsync(url, cts.Token))
+                {
+                    if (!resp.IsSuccessStatusCode)
+                    {
+                        Logger.Info($"{url} -> HTTP {(int)resp.StatusCode}.");
+                        return null;
+                    }
+                    return await resp.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Warning($"Could not fetch {url}: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Streamed download with progress. <paramref name="progress"/> gets
         /// (bytesSoFar, totalBytesOrMinus1). totalBytes is -1 when the server
         /// doesn't send Content-Length.

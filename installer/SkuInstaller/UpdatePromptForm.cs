@@ -202,6 +202,15 @@ namespace SkuInstaller
         {
             var sb = new StringBuilder();
 
+            // After a self-update, the first thing the user meets is a window that
+            // closed and reopened on its own. Say why, once, at the top — where
+            // OnShown's announcement picks it up ahead of everything else.
+            if (!string.IsNullOrEmpty(SelfUpdater.PostUpdateNotice))
+            {
+                sb.AppendLine(SelfUpdater.PostUpdateNotice);
+                sb.AppendLine();
+            }
+
             if (!anyClient)
             {
                 sb.AppendLine(Loc.Get("update.noClientBody"));

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -32,6 +33,14 @@ namespace SkuInstaller
         /// Copies the running EXE to the stable location. Returns the stable path,
         /// or null on failure. No-op (returns the path) if we're already running
         /// from there.
+        ///
+        /// NEVER overwrites a NEWER copy. Downloaded exes live in Downloads for
+        /// years, and running an old one used to overwrite the persistent copy
+        /// unconditionally — which silently downgraded the "Sku Updater" shortcut
+        /// to whatever build the user happened to double-click. With
+        /// <see cref="SelfUpdater"/> keeping the persistent copy current, that
+        /// would also undo a self-update on the next run from Downloads, and the
+        /// two mechanisms would fight each other every time.
         /// </summary>
         public static string InstallPersistentCopy()
         {
@@ -43,6 +52,12 @@ namespace SkuInstaller
                 if (string.Equals(source, dest, StringComparison.OrdinalIgnoreCase))
                     return dest;
 
+                if (ExistingCopyIsNewer(dest, out string existingVersion))
+                {
+                    Logger.Info($"Persistent updater is {existingVersion}, newer than this exe — left in place.");
+                    return dest;
+                }
+
                 Directory.CreateDirectory(PersistentDir);
                 File.Copy(source, dest, overwrite: true);
                 Logger.Info($"Persistent updater copied to: {dest}");
@@ -52,6 +67,36 @@ namespace SkuInstaller
             {
                 Logger.Warning($"Could not place persistent updater copy: {ex.Message}");
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// True when a copy already sits at <paramref name="dest"/> and reports a
+        /// version above the running one. Anything unreadable counts as older, so
+        /// a corrupt or version-less file gets replaced rather than becoming
+        /// permanent.
+        /// </summary>
+        private static bool ExistingCopyIsNewer(string dest, out string existingVersion)
+        {
+            existingVersion = null;
+            try
+            {
+                if (!File.Exists(dest)) return false;
+
+                existingVersion = FileVersionInfo.GetVersionInfo(dest).FileVersion;
+                if (string.IsNullOrEmpty(existingVersion)) return false;
+
+                string running = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
+                if (string.IsNullOrEmpty(running)) return false;
+
+                // Same integer-per-component rule as everywhere else in the
+                // installer (AddonInstaller.CompareVersions).
+                return AddonInstaller.CompareVersions(existingVersion, running) > 0;
+            }
+            catch (Exception ex)
+            {
+                Logger.Warning($"Could not read the version of {dest}: {ex.Message}");
+                return false;
             }
         }
 

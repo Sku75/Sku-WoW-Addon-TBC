@@ -19,18 +19,24 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
-  <!-- Link the engine sources (exclude MainForm.cs / Program.cs / Shortcut.cs /
-       DefaultSettings.cs — not needed for the download pipeline). -->
+  <!-- Link the engine sources (exclude the forms / Program.cs / DefaultSettings.cs
+       — not needed for the download pipeline). Shortcut.cs and SelfUpdater.cs are
+       in: both are plain file/COM work with no WinForms in them, and the
+       "selfupdate" command needs them to verify a published exe against its
+       published checksum without a window or a UAC prompt. -->
   <ItemGroup>
     <Compile Include="..\SkuInstaller\Config.cs"          Link="Config.cs" />
     <Compile Include="..\SkuInstaller\Logger.cs"          Link="Logger.cs" />
     <Compile Include="..\SkuInstaller\Loc.cs"             Link="Loc.cs" />
+    <Compile Include="..\SkuInstaller\AppVersion.cs"      Link="AppVersion.cs" />
     <Compile Include="..\SkuInstaller\GitHubClient.cs"    Link="GitHubClient.cs" />
     <Compile Include="..\SkuInstaller\WowLocator.cs"      Link="WowLocator.cs" />
     <Compile Include="..\SkuInstaller\InstallManifest.cs" Link="InstallManifest.cs" />
     <Compile Include="..\SkuInstaller\AddonInstaller.cs"  Link="AddonInstaller.cs" />
     <Compile Include="..\SkuInstaller\GameSettings.cs"    Link="GameSettings.cs" />
     <Compile Include="..\SkuInstaller\TocSync.cs"         Link="TocSync.cs" />
+    <Compile Include="..\SkuInstaller\Shortcut.cs"        Link="Shortcut.cs" />
+    <Compile Include="..\SkuInstaller\SelfUpdater.cs"     Link="SelfUpdater.cs" />
   </ItemGroup>
 
 </Project>

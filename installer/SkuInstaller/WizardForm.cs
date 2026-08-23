@@ -168,27 +168,16 @@ namespace SkuInstaller
         }
 
         /// <summary>
-        /// The installer's own version, from the assembly version (single source
-        /// of truth in the csproj). Trailing zero components are dropped, but
-        /// never below major.minor — so 4.0.0.0 reads as "v4.0", not "v4", and
-        /// 4.1.2.0 as "v4.1.2". A bare "v4" invites being heard as a rounded-off
-        /// or approximate number when it is in fact exact.
+        /// The installer's own version for the title bar, e.g. "v4.3". Shown on
+        /// every page so the user can always tell which installer build they are
+        /// running. This is the INSTALLER version and is deliberately separate
+        /// from the Sku addon version, which the opening screen reports per
+        /// client on its own line.
         ///
-        /// Shown in every page's title bar so the user can always tell which
-        /// installer build they are running. This is the INSTALLER version and is
-        /// deliberately separate from the Sku addon version, which the opening
-        /// screen reports per client on its own line.
+        /// The formatting rule lives in <see cref="AppVersion"/> — the
+        /// self-updater compares against the same number, and it must not be
+        /// derived twice.
         /// </summary>
-        public static string InstallerVersion()
-        {
-            var v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version
-                    ?? new Version(0, 0);
-            int[] comps = { v.Major, Math.Max(0, v.Minor), Math.Max(0, v.Build), Math.Max(0, v.Revision) };
-            int last = comps.Length - 1;
-            while (last > 1 && comps[last] == 0) last--;
-            var parts = new string[last + 1];
-            for (int i = 0; i <= last; i++) parts[i] = comps[i].ToString();
-            return "v" + string.Join(".", parts);
-        }
+        public static string InstallerVersion() => AppVersion.Display();
     }
 }

@@ -97,6 +97,30 @@ namespace SkuInstaller
             ["logs.failedTitle"]           = "Logs could not be collected",
             ["logs.failed"]                = "The logs could not be collected.\n\n{0}",
 
+            // ── the installer updating itself (SelfUpdatePromptForm) ─────────
+            // The recommendation is spelled out in the body rather than left to
+            // the word "(recommended)" on the button: a user who has just been
+            // told their installer is out of date deserves to know what the
+            // update will do to their machine (nothing, beyond this one exe) and
+            // what happens if they decline (everything still works).
+            ["selfupdate.heading"]     = "An update for the installer itself is available",
+            ["selfupdate.body"]        = "You are using version {0} of the Sku installer. Version {1} is available.\n\nUpdating the installer first is strongly recommended: it is a small download, it takes a few seconds, and installing Sku afterwards then runs with all the current fixes. The installer closes and reopens on its own — nothing else on your computer is changed.\n\nYou can also carry on with version {0}; installing and updating Sku still works.",
+            ["selfupdate.updateBtn"]   = "&Update the installer now (recommended)",
+            ["selfupdate.updateAcc"]   = "Update the installer to version {0} now, recommended — it downloads the new version, restarts itself and then carries on",
+            ["selfupdate.skipBtn"]     = "&Continue with the current version",
+            ["selfupdate.skipAcc"]     = "Continue with the current installer version without updating it",
+            ["selfupdate.cancelBtn"]   = "Cancel the &download and continue with the current version",
+            ["selfupdate.cancelAcc"]   = "Cancel the download and continue with the current installer version",
+            ["selfupdate.statusAcc"]   = "Update progress",
+            ["selfupdate.working"]     = "Downloading the new installer version, please wait.",
+            ["selfupdate.progress"]    = "Downloading the new installer: {0} percent.",
+            ["selfupdate.applying"]    = "Installing the new version…",
+            ["selfupdate.restarting"]  = "The installer is restarting as version {0}. The window reopens in a moment.",
+            ["selfupdate.failedTitle"] = "The installer could not update itself",
+            ["selfupdate.failed"]      = "The installer could not update itself.\n\n{0}\n\nIt carries on with version {1}. Installing and updating Sku works normally.",
+            ["selfupdate.badHash"]     = "The downloaded file does not match the published checksum and was discarded.",
+            ["selfupdate.done"]        = "The installer updated itself to version {0}.",
+
             // ── end of run (CompletionForm) ──────────────────────────────────
             ["done.heading.ok"]        = "Finished",
             ["done.heading.failed"]    = "Finished with problems",
@@ -291,6 +315,25 @@ namespace SkuInstaller
             ["logs.done"]                  = "Die Protokolle wurden gespeichert unter:\n{0}\n\n{1} Dateien aus {2} Spielversion(en), zusammen {3}.\n\nHänge diese ZIP-Datei an deine Fehlermeldung an.",
             ["logs.failedTitle"]           = "Protokolle konnten nicht gesammelt werden",
             ["logs.failed"]                = "Die Protokolle konnten nicht gesammelt werden.\n\n{0}",
+
+            // ── Installer aktualisiert sich selbst (SelfUpdatePromptForm) ────
+            ["selfupdate.heading"]     = "Für den Installer selbst ist eine neue Version verfügbar",
+            ["selfupdate.body"]        = "Du verwendest Version {0} des Sku-Installers. Version {1} ist verfügbar.\n\nEs wird dringend empfohlen, zuerst den Installer zu aktualisieren: Der Download ist klein, dauert wenige Sekunden, und die Installation von Sku läuft danach mit allen aktuellen Korrekturen. Der Installer schließt sich dabei selbst und öffnet sich neu — sonst wird nichts auf dem Computer verändert.\n\nDu kannst auch mit Version {0} weiterarbeiten; Sku installieren und aktualisieren funktioniert weiterhin.",
+            ["selfupdate.updateBtn"]   = "&Installer jetzt aktualisieren (empfohlen)",
+            ["selfupdate.updateAcc"]   = "Den Installer jetzt auf Version {0} aktualisieren, empfohlen — er lädt die neue Version, startet sich neu und macht dann weiter",
+            ["selfupdate.skipBtn"]     = "Mit der &vorhandenen Version fortfahren",
+            ["selfupdate.skipAcc"]     = "Mit der vorhandenen Installer-Version fortfahren, ohne sie zu aktualisieren",
+            ["selfupdate.cancelBtn"]   = "&Download abbrechen und mit der vorhandenen Version fortfahren",
+            ["selfupdate.cancelAcc"]   = "Den Download abbrechen und mit der vorhandenen Installer-Version fortfahren",
+            ["selfupdate.statusAcc"]   = "Fortschritt der Aktualisierung",
+            ["selfupdate.working"]     = "Die neue Installer-Version wird heruntergeladen, bitte warten.",
+            ["selfupdate.progress"]    = "Der neue Installer wird heruntergeladen: {0} Prozent.",
+            ["selfupdate.applying"]    = "Die neue Version wird eingerichtet…",
+            ["selfupdate.restarting"]  = "Der Installer startet als Version {0} neu. Das Fenster öffnet sich gleich wieder.",
+            ["selfupdate.failedTitle"] = "Der Installer konnte sich nicht selbst aktualisieren",
+            ["selfupdate.failed"]      = "Der Installer konnte sich nicht selbst aktualisieren.\n\n{0}\n\nEr arbeitet mit Version {1} weiter. Sku installieren und aktualisieren funktioniert ganz normal.",
+            ["selfupdate.badHash"]     = "Die heruntergeladene Datei stimmt nicht mit der veröffentlichten Prüfsumme überein und wurde verworfen.",
+            ["selfupdate.done"]        = "Der Installer hat sich auf Version {0} aktualisiert.",
 
             // ── Abschluss (CompletionForm) ───────────────────────────────────
             ["done.heading.ok"]        = "Fertig",
@@ -492,6 +535,25 @@ namespace SkuInstaller
             ["logs.done"]                  = "Les journaux ont été enregistrés dans :\n{0}\n\n{1} fichiers de {2} version(s) du jeu, {3} au total.\n\nJoignez ce fichier zip à votre rapport de bogue.",
             ["logs.failedTitle"]           = "Impossible de collecter les journaux",
             ["logs.failed"]                = "Les journaux n'ont pas pu être collectés.\n\n{0}",
+
+            // ── l'installateur se met à jour lui-même (SelfUpdatePromptForm) ─
+            ["selfupdate.heading"]     = "Une mise à jour de l'installateur lui-même est disponible",
+            ["selfupdate.body"]        = "Vous utilisez la version {0} de l'installateur Sku. La version {1} est disponible.\n\nIl est fortement recommandé de mettre d'abord à jour l'installateur : le téléchargement est petit, il prend quelques secondes, et l'installation de Sku bénéficiera ensuite de toutes les corrections récentes. L'installateur se ferme et se rouvre tout seul — rien d'autre n'est modifié sur votre ordinateur.\n\nVous pouvez aussi continuer avec la version {0} ; installer et mettre à jour Sku fonctionne toujours.",
+            ["selfupdate.updateBtn"]   = "&Mettre à jour l'installateur maintenant (recommandé)",
+            ["selfupdate.updateAcc"]   = "Mettre l'installateur à jour vers la version {0} maintenant, recommandé — il télécharge la nouvelle version, redémarre puis poursuit",
+            ["selfupdate.skipBtn"]     = "&Continuer avec la version actuelle",
+            ["selfupdate.skipAcc"]     = "Continuer avec la version actuelle de l'installateur sans la mettre à jour",
+            ["selfupdate.cancelBtn"]   = "Annuler le &téléchargement et continuer avec la version actuelle",
+            ["selfupdate.cancelAcc"]   = "Annuler le téléchargement et continuer avec la version actuelle de l'installateur",
+            ["selfupdate.statusAcc"]   = "Progression de la mise à jour",
+            ["selfupdate.working"]     = "Téléchargement de la nouvelle version de l'installateur, veuillez patienter.",
+            ["selfupdate.progress"]    = "Téléchargement du nouvel installateur : {0} pour cent.",
+            ["selfupdate.applying"]    = "Installation de la nouvelle version…",
+            ["selfupdate.restarting"]  = "L'installateur redémarre en version {0}. La fenêtre se rouvre dans un instant.",
+            ["selfupdate.failedTitle"] = "L'installateur n'a pas pu se mettre à jour",
+            ["selfupdate.failed"]      = "L'installateur n'a pas pu se mettre à jour.\n\n{0}\n\nIl poursuit avec la version {1}. Installer et mettre à jour Sku fonctionne normalement.",
+            ["selfupdate.badHash"]     = "Le fichier téléchargé ne correspond pas à la somme de contrôle publiée ; il a été écarté.",
+            ["selfupdate.done"]        = "L'installateur s'est mis à jour vers la version {0}.",
 
             // ── fin de l'exécution (CompletionForm) ──────────────────────────
             ["done.heading.ok"]        = "Terminé",

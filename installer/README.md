@@ -130,6 +130,53 @@ tag without re-downloading), so a user who already installed them by hand isn't
 forced into a multi-hundred-MB re-download. After that the manifest is the
 primary key.
 
+## The updater updates itself (`SelfUpdater.cs`, `SelfUpdatePromptForm.cs`)
+
+The installer places a persistent copy of itself in
+`%LOCALAPPDATA%\SkuUpdater\SkuUpdater.exe` and points the "Sku Updater"
+shortcut at it (`Shortcut.cs`). That copy used to stay on whatever build first
+created it forever: Sku releases were still found, because those are resolved
+live, but a fix to the **installer** only ever reached people who happened to
+revisit the download page. Since 4.3 it updates itself.
+
+**The check.** At startup, before anything else, it fetches
+`releases/latest/download/installer-version.txt` — two lines, `version=` and
+`sha256=`, written by `release.ps1` and attached to every release next to the
+exe. Rolling URL, so an exe built a year ago still resolves today's build; plain
+`github.com`, so it can't hit the api.github.com rate limit that the rest of the
+download path already avoids.
+
+**The offer.** If the published version is higher, `SelfUpdatePromptForm` asks,
+strongly recommending yes: the update is the default button, holds the focus,
+and the body text says what it will do (download a few MB, restart itself,
+change nothing else) and what happens if you decline (everything still works).
+Declining is a real answer, not a delay tactic.
+
+**The swap.** Windows refuses to overwrite a running `.exe` but allows it to be
+**renamed**. So: verify the download against the published SHA-256 and its own
+version resource, rename ourselves to `SkuUpdater.old.exe`, move the new file
+into our name, start it, exit. The next launch deletes the `.old`. No helper
+process, no batch file, no waiting on a process id — that trick is what the
+other approaches spend all their complexity working around. The new file is
+staged in the same folder so both renames stay on one volume and the rollback
+(move the backup back) is reliable.
+
+**What it refuses.** It only self-updates the persistent copy — an exe sitting
+in someone's Downloads is theirs, and is by definition the newest one the
+website serves. It will not run an unverified binary: no published hash means
+no self-update at all. It never downgrades. And **every** failure path — no
+network, no version file, hash mismatch, user says no — falls through to a
+normal run. An updater that cannot update itself must still be able to update
+Sku.
+
+Related, fixed at the same time: `Shortcut.InstallPersistentCopy` used to
+overwrite the persistent copy unconditionally, so running an old exe out of
+Downloads silently downgraded the shortcut. It now leaves a newer copy alone.
+
+`--no-self-update` suppresses the check; `--self-updated` is what the restarted
+instance is launched with (it drives the `.old` cleanup and the "the installer
+updated itself to 4.3" line on the opening screen).
+
 ## WoW path detection + flavors (Anniversary AND Classic Era)
 
 Arena had one fixed install path. WoW has multiple "flavors" side by side and,
@@ -393,6 +440,29 @@ Point it at a **temp folder** (never the live symlinked AddOns). Because a temp
 path has no `WTF` tree, the game-settings step is correctly skipped. Run it twice:
 the second run should resolve everything and skip (manifest says up to date),
 exercising the no-re-download path.
+
+It also takes single-word commands for the pieces that have no other test:
+
+- `flavors` — list the detected WoW installs.
+- `toctest` — build-version → interface-number math, no network.
+- `resolve` — the live "latest release" discovery, no download.
+- `selfupdate [poseAsVersion]` — the real self-update check end to end except
+  the window and the restart: fetch the version file, compare, download,
+  verify. **Run this after every release** — it is what proves `release.ps1`
+  published the exe and its checksum as a matching pair. It defaults to posing
+  as version `0.1` so the offer path is reachable from a freshly built exe.
+- `selfupdateproof` — the verification logic in both directions against the
+  currently published exe: correct hash accepted, wrong hash rejected,
+  not-newer exe rejected. Needs no version file to exist.
+- `versionfile [path]` — parses `dist\installer-version.txt` exactly as the
+  installer would, including CRLF and BOM variants. Guards the coupling between
+  a PowerShell writer and a C# reader that nothing else would notice breaking.
+- `swaptest` — copies the harness into `%TEMP%\SkuSwapTest` and has that copy
+  rename itself aside and move a new file into its own path. Proves the one
+  Windows-specific assumption the self-updater rests on.
+
+All of them print `PASS`/`FAIL` lines and set the exit code, so they are
+readable by ear and usable from a script.
 
 ## Status of each file (so review is targeted)
 

@@ -120,6 +120,13 @@ $Csproj      = Join-Path $PSScriptRoot 'SkuInstaller\SkuInstaller.csproj'
 $ExeBuilt    = Join-Path $PSScriptRoot 'SkuInstaller\bin\Release\net48\SkuInstaller.exe'
 $Dist        = Join-Path $PSScriptRoot 'dist'
 $ExeDist     = Join-Path $Dist 'SkuInstaller.exe'
+# Published beside the exe on every release that carries the Latest badge, and
+# read by SelfUpdater through the same rolling releases/latest/download URL. It
+# is what lets an installer built a year ago learn that a newer one exists. Two
+# lines: version= and sha256= of the exe next to it. WITHOUT the hash the
+# installer refuses to self-update at all (it will not run an unverified exe),
+# so these two files must always be published as a pair.
+$VersionFile = Join-Path $Dist 'installer-version.txt'
 $ZipHelper   = Join-Path $PSScriptRoot 'tools\build_sku_zip.py'
 $SecretsFile = Join-Path $PSScriptRoot '.secrets\discord-webhooks.txt'
 
@@ -479,6 +486,22 @@ function Build-InstallerExe {
     Info "  -> $ExeDist"
 }
 
+# Writes installer-version.txt for the exe currently in dist. Both the version
+# and the hash are taken from that FILE, never from the csproj text - it is the
+# file that gets uploaded and the file the hash must match, and a stale build
+# would otherwise publish a checksum for a binary nobody downloads. Returns the
+# path so the caller can hand it to gh.
+function Write-InstallerVersionFile {
+    if ($DryRun) { Dry "write $VersionFile (version + sha256 of the built exe)"; return $VersionFile }
+    if (-not (Test-Path $ExeDist)) { throw "Built exe missing, cannot write the version file: $ExeDist" }
+    $ver = Get-InstallerVersion
+    if (-not $ver) { throw "Could not read the installer version from $ExeDist." }
+    $hash = (Get-FileHash $ExeDist -Algorithm SHA256).Hash.ToLower()
+    Write-Text $VersionFile "version=$ver`nsha256=$hash`n"
+    Info "  $(Split-Path $VersionFile -Leaf): version=$ver sha256=$($hash.Substring(0,12))..."
+    return $VersionFile
+}
+
 function Build-SkuZip($ver, $outName) {
     if (-not $outName) { $outName = "Sku-$ver.zip" }
     $out = Join-Path $Dist $outName
@@ -509,6 +532,7 @@ function Do-MainRelease($ver) {
     Assert-VersionSortsAbovePrevious $ver
     Require-Clean-Repo
     Build-InstallerExe
+    $verFile = Write-InstallerVersionFile
     $zip = Build-SkuZip $ver
 
     Info "Updating version files + docs links..."
@@ -532,9 +556,9 @@ function Do-MainRelease($ver) {
     if ($Notes) { $notesArg = $Notes } else { $notesArg = "Sku TBC v$ver. See the patch notes on the download page." }
     if ($insVer) { $notesArg = "$notesArg`n`nIncluded Sku Installer: $insVer" }
     if ($Prerelease) { $latestArg = '--prerelease' } else { $latestArg = '--latest' }
-    Info "Creating GitHub release $tag with Sku-$ver.zip + SkuInstaller.exe..."
-    Exec "gh release create $tag (zip + exe) $latestArg --target main" {
-        gh release create $tag $zip $ExeDist --repo $Slug --title "Sku TBC $tag" --notes $notesArg --target main $latestArg
+    Info "Creating GitHub release $tag with Sku-$ver.zip + SkuInstaller.exe + installer-version.txt..."
+    Exec "gh release create $tag (zip + exe + version file) $latestArg --target main" {
+        gh release create $tag $zip $ExeDist $verFile --repo $Slug --title "Sku TBC $tag" --notes $notesArg --target main $latestArg
     }
 
     Announce-Discord $ver $SiteUrl
@@ -687,11 +711,12 @@ function Do-PublishSkuMapper($ver) {
 function Do-PublishInstaller {
     Info "=== Publish installer: rebuild, attach to the Latest release, update docs ==="
     Build-InstallerExe
+    $verFile = Write-InstallerVersionFile
     $insVer = Get-InstallerVersion
     if ($insVer) { Info "  Installer version: $insVer" }
 
     if ($DryRun) {
-        Dry "gh release view (resolve Latest tag) + upload SkuInstaller.exe --clobber"
+        Dry "gh release view (resolve Latest tag) + upload SkuInstaller.exe + installer-version.txt --clobber"
         Set-DocsInstallerLatest
         Set-DocsInstallerVersion
         Dry "git add docs/index.html; git commit; git push"
@@ -701,7 +726,13 @@ function Do-PublishInstaller {
     $latestTag = & gh release view --repo $Slug --json tagName --jq '.tagName'
     if ($LASTEXITCODE -ne 0 -or -not $latestTag) { throw "Could not resolve the Latest release tag." }
     Info "  Latest release is $latestTag"
-    Exec "upload SkuInstaller.exe to $latestTag --clobber" { gh release upload $latestTag $ExeDist --repo $Slug --clobber }
+    # Both in ONE call, so the exe and the checksum that describes it can never
+    # land separately: a release carrying a new exe with the old version file
+    # would offer every installed updater a self-update whose hash check then
+    # fails, over and over.
+    Exec "upload SkuInstaller.exe + installer-version.txt to $latestTag --clobber" {
+        gh release upload $latestTag $ExeDist $verFile --repo $Slug --clobber
+    }
 
     Set-DocsInstallerLatest
     Set-DocsInstallerVersion
