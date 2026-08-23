@@ -2303,6 +2303,71 @@ function SkuCore:Build_RolePollPopup(aParentChilds)
 
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Ready check.
+--
+-- ReadyCheckFrame is a bare WRAPPER: its only child is ReadyCheckListenerFrame
+-- (Blizzard_ReadyCheck/Classic/ReadyCheck.xml), which carries the message
+-- FontString and the two answer buttons. Walked by the generic scraper that
+-- wrapper became a menu level of its own, so the auto-descend in
+-- SkuCore:CheckFrames landed on it (message text) and the answers sat one level
+-- BELOW -- while every other prompt (StaticPopup, role poll) drops the user
+-- straight onto an answer. Build the two answers flat here so a ready check
+-- reads and answers exactly like the other popups. The message keeps its place
+-- as the entries' full text (read with the full-text key), which is why nothing
+-- of it is lost by removing the level.
+--
+-- Only the buttons that are actually visible are listed: when the PLAYER started
+-- the check, ShowReadyCheck hides ReadyCheckListenerFrame and there is nothing to
+-- answer.
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:Build_ReadyCheckFrame(aParentChilds)
+	local tButtons = {
+		{obj = _G["ReadyCheckFrameYesButton"], fallback = _G["READY"] or "Ready"},
+		{obj = _G["ReadyCheckFrameNoButton"], fallback = _G["NOT_READY"] or "Not ready"},
+	}
+
+	local tMessage = ""
+	if _G["ReadyCheckFrameText"] and _G["ReadyCheckFrameText"]:GetText() then
+		tMessage = SkuUtil:Unescape(_G["ReadyCheckFrameText"]:GetText())
+		tMessage = string.gsub(tMessage, "\r\n", " ")
+		tMessage = string.gsub(tMessage, "\n", " ")
+	end
+
+	for x = 1, #tButtons do
+		local tButton = tButtons[x].obj
+		if tButton and tButton:IsVisible() == true then
+			-- Blizzard localises the captions in ReadyCheckFrame_OnLoad
+			-- (GetText("READY", UnitSex("player"))), so the button's own text is
+			-- already the right wording -- no Sku locale key needed for it.
+			local tName = tButton:GetText()
+			if not tName or tName == "" then
+				tName = tButtons[x].fallback
+			end
+			tName = SkuUtil:Unescape(tName)
+
+			table.insert(aParentChilds, tName)
+			aParentChilds[tName] = {
+				frameName = "",
+				RoC = "Child",
+				type = "Button",
+				obj = tButton,
+				textFirstLine = tName,
+				textFull = tMessage,
+				childs = {},
+				-- directAction: answering has no left/right semantics, so Enter
+				-- fires it straight away instead of expanding the node.
+				directAction = true,
+				func = function()
+					-- The button's own OnClick is the whole answer (sound,
+					-- ConfirmReadyCheck, hide) -- insecure, no hardware gate.
+					pcall(function() tButton:Click("LeftMouse") end)
+				end,
+			}
+		end
+	end
+end
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:BuildEngravingFrame(aParentChilds)
 	local tFrameName = "EngravingFrame"

@@ -302,6 +302,10 @@ SkuCore.interactFramesListManual = {
 	["CharacterFrame"] = function(...) SkuCore:Build_CharacterFrame(...) end,
 	["PlayerTalentFrame"] = function(...) SkuCore:Build_TalentFrame(...) end,
 	["RolePollPopup"] = function(...) SkuCore:Build_RolePollPopup(...) end,
+	-- ReadyCheckFrame is only a wrapper around ReadyCheckListenerFrame; walked
+	-- generically that wrapper becomes an extra menu level and the Yes/No buttons
+	-- end up one level deeper than every other prompt. See Build_ReadyCheckFrame.
+	["ReadyCheckFrame"] = function(...) SkuCore:Build_ReadyCheckFrame(...) end,
 	-- Dungeon-Browser/LFG: Modul komplett entfernt, wird neu aufgebaut.
 	-- Vorher: ["PVEFrame"]/["LFGParentFrame"] -> Build_LfgFrame
 	-- Item socketing dialog (gem insertion). Manual builder, see
