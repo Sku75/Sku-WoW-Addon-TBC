@@ -3363,7 +3363,10 @@ L["verbleibende Dauer entfernt"] = "verbleibende Dauer entfernt"
 
 -- Sku v43.1: Gesundheit/Ressourcen-Gruppe + einzelne Ressourcen-Pools (SkuAuras)
 L["Eigene Gesundheit oder Ressource"] = "Eigene Gesundheit oder Ressource"
-L["AURA_VitalsGroupTip"] = "Gesundheit oder eine Ressource des Spielers in Prozent"
+L["AURA_VitalsGroupTip"] = "Gesundheit oder eine Ressource des Spielers in Prozent, dazu die Kombopunkte als Anzahl"
+L["AURA_ComboPointsShort"] = "Kombopunkte"
+L["AURA_SpellEventsGroup"] = "Zauber Ereignisse"
+L["AURA_SpellEventsGroupTip"] = "Alle Ereignisse, die von einem Zauber ausgeloest werden"
 L["AURA_PowerActive"] = "Eigene aktuelle Ressource"
 L["AURA_PowerActiveTip"] = "Die Ressource, deren Leiste das Spiel gerade zeigt, in Prozent - bei einem Druiden also Mana in Normalgestalt, Wut in Bärengestalt, Energie in Katzengestalt"
 L["AURA_PowerMana"] = "Eigenes Mana"

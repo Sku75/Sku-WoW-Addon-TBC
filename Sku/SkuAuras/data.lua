@@ -1872,7 +1872,7 @@ SkuAuras.attributes = {
       friendlyName = L["Eigene combopunkte"],
       type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.unitComboPlayer.evaluate", aEventData.unitComboPlayer)
+      	--dprint("    ","SkuAuras.attributes.unitComboPlayer.evaluate", aEventData.unitComboPlayer)
          if aEventData.unitComboPlayer then
             local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.unitComboPlayer), tonumber(aValue))
             if tEvaluation == true then
@@ -1940,7 +1940,16 @@ SkuAuras.attributes = {
       end,
       values = zeroToOneHundred,
    },
+   -- [v43.0] RETIRED from the builder (the `retired` gate in SkuAuras/Options.lua
+   -- keeps it out of the attribute list). It matched the EXACT combat-log spell
+   -- id - one rank of one spell - and sat one arrow-press from "Zauber Name",
+   -- which takes the very same typed id and widens it to the whole spell group.
+   -- Two neighbouring entries accepting identical input and meaning opposite
+   -- things, for a case nobody has ever authored: 0 stored auras, 0 shipped set
+   -- auras, 0 default auras. The evaluate stays so a legacy or imported aura
+   -- still runs; the menu entry and the ~49,000-entry value list are gone.
    spellId = {
+      retired = true,
       tooltip = L["Die Zauber-ID, die die Aura auslösen soll"],
       friendlyName = L["zauber nr"],
       type = "CATEGORY",
@@ -2202,14 +2211,22 @@ SkuAuras.attributes = {
       values = {
       },      
    },
+   -- [v43.0] RETIRED from the builder for the same reason as spellId above, and
+   -- unlike spellId this one never worked at ALL: the comparison ran tonumber()
+   -- over the STORED value ("item:6948"), which is nil, so every operator bailed
+   -- on its own nil guard and the condition was permanently false in every
+   -- shipped version. Repaired rather than left broken - a read path kept for
+   -- stored auras has to be honest about what it does. "Gegenstand Name" is the
+   -- lane that works and is the one in live use.
    itemId = {
+      retired = true,
       tooltip = L["Die Gegenstands-ID, die die Aura auslösen soll"],
       friendlyName = L["gegenstand nr"],
       type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.itemId.evaluate")
          if aEventData.itemId then
-            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.itemId), tonumber(aValue))
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.itemId), tonumber(SkuAuras:RemoveTags(aValue)))
             if tEvaluation == true then
                return true
             end
@@ -2324,27 +2341,44 @@ SkuAuras.attributes = {
       updateValues = function(self)
          -- [v43.0] Group identity, deduped, built into a local and published in
          -- one assignment (the value-list lesson: an abort mid-fill used to leave
-         -- a permanently half-populated list). Also nil-tolerant on the locale
-         -- sub-table - the unguarded index this used to do is the exact shape
-         -- that threw on a French client.
+         -- a permanently half-populated list).
+         --
+         -- [v43.0] Walks the 132 ACTION SLOTS, not the spell database. This runs
+         -- on every single open of the list (tSortedAttributeValues calls
+         -- updateValues each time), and it used to iterate all ~49,000 rows of
+         -- SkuDB.SpellDataTBC asking C_ActionBar.FindSpellActionButtons about
+         -- each one - a visible freeze when opening "Zauber benutzbar", and the
+         -- same shape as the script-too-long watchdog this project has already
+         -- hit once. Asking the bars what is on them instead answers the exact
+         -- same question ("which spells sit on an action bar") in 132 steps.
+         --
+         -- It also resolves through SkuAuras:SpellGroupName with the LIVE name as
+         -- the fallback - the very resolver SkuAuras:GetSpellNamesUsable uses to
+         -- build the set this attribute is matched against. That is what makes
+         -- the offered list and the live set agree BY CONSTRUCTION: the old pass
+         -- could only offer a spell the shipped dump knows, while the live side
+         -- falls back to the localized name for an id the dump lacks, so such a
+         -- spell was live-matchable but not selectable. Same defect the weapon
+         -- enchant list was fixed for in v43.0.
          local tValues, tSeen = {}, {}
-         local tNameKey = SkuDB.spellKeys["name_lang"]
-         for spellId, spellData in pairs(SkuDB.SpellDataTBC) do
-            if C_ActionBar.FindSpellActionButtons(spellId) then
-               local tLocData = spellData and (spellData[Sku.Loc] or spellData.enUS or spellData.deDE)
-               local spellName = tLocData and tLocData[tNameKey]
-               if spellName then
-                  local tEnData = spellData.enUS
-                  local tGroupValue = SkuAuras.SPELL_GROUP_TAG..tostring((tEnData and tEnData[tNameKey]) or spellName)
+         for tSlot = 1, 132 do
+            local tType, tId = GetActionInfo(tSlot)
+            if tType == "spell" and tId then
+               local tLiveName = GetSpellInfo(tId)
+               local tGroup = SkuAuras:SpellGroupName(tId, tLiveName)
+               if tGroup then
+                  local tGroupValue = SkuAuras.SPELL_GROUP_TAG..tGroup
                   if not tSeen[tGroupValue] then
                      tSeen[tGroupValue] = true
                      tValues[#tValues + 1] = tGroupValue
                   end
+                  -- Only for a group the main value-list build never created (an
+                  -- id outside the dump, resolved to its live name): every group
+                  -- that build knows already carries its localized friendlyName,
+                  -- and overwriting it here would undo the disambiguation suffix
+                  -- the ambiguous names get.
                   if not SkuAuras.values[tGroupValue] then
-                     SkuAuras.values[tGroupValue] = {friendlyName = spellName,}
-                  end
-                  if not SkuAuras.values["spell:"..tostring(spellId)] then
-                     SkuAuras.values["spell:"..tostring(spellId)] = {friendlyName = spellId.." ("..spellName..")",}
+                     SkuAuras.values[tGroupValue] = {friendlyName = tLiveName or tGroup,}
                   end
                end
             end

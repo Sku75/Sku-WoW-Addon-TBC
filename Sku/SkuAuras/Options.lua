@@ -71,23 +71,21 @@ end
 -- group and the GROUP value is stored, not the id: the list attributes match
 -- against live lists keyed by group name, so a bare "spell:<id>" could never
 -- match one of them, and spellName compares names and could not match an id
--- either. spellId is the one attribute where an id IS the value - and there it
--- is stored exactly as typed.
+-- either.
+-- [v43.0] Group is now the ONLY mode. `spellId` used to sit here as mode "id",
+-- the one attribute that kept the typed id as the value and so matched a single
+-- RANK; it is retired (see data.lua). A typed id therefore always widens to the
+-- whole spell group, which is what every one of these attributes means by a
+-- spell.
 local tIdInputAttributes = {
-	spellId = "id",
-	spellName = "group", spellNameOnCd = "group", spellNameUsable = "group",
-	buffListTarget = "group", debuffListTarget = "group",
-	buffListPlayer = "group", debuffListPlayer = "group",
+	spellName = true, spellNameOnCd = true, spellNameUsable = true,
+	buffListTarget = true, debuffListTarget = true,
+	buffListPlayer = true, debuffListPlayer = true,
 }
 
 local function tSpellIdValueFor(aAttributeName, aSpellId)
-	local tMode = tIdInputAttributes[aAttributeName]
-	if not tMode then
+	if not tIdInputAttributes[aAttributeName] then
 		return nil
-	end
-	if tMode == "id" then
-		local tValue = "spell:"..tostring(aSpellId)
-		return SkuAuras.values and SkuAuras.values[tValue] and tValue or nil
 	end
 	local tGroup = SkuAuras:SpellGroupName(aSpellId, nil)
 	if not tGroup then
@@ -296,6 +294,15 @@ local tVitalsGroupOrder = {
 	{att = "unitRagePlayer", label = "RAGE"},
 	{att = "unitEnergyPlayer", label = "ENERGY"},
 	{att = "unitRunicPowerPlayer", label = "RUNIC_POWER"},
+	-- [v43.0] Combo points sit here too now. They were deliberately left out
+	-- when the group was built, on the grounds that they are counted 0..5 while
+	-- everything else in it is a percentage - but that difference is carried by
+	-- the entry's own value list (0..5, its own, not zeroToOneHundred) and by its
+	-- name, and it is not a reason to make the user find a resource-shaped
+	-- reading somewhere else. Nothing in the group reports combo points, so this
+	-- is a MOVE: dropping the top-level entry without it would have removed the
+	-- capability outright.
+	{att = "unitComboPlayer", label = "AURA_ComboPointsShort"},
 }
 local tVitalsGroupMember = {}
 for x = 1, #tVitalsGroupOrder do
@@ -780,6 +787,14 @@ end
 -- localized name otherwise. Shared by the multi-select condition list and the
 -- single-pick list of a base-aura form, so the same attribute always offers the
 -- same entries in the same order wherever it turns up.
+--
+-- [v43.0] The sort KEY of each entry is computed once, not inside the
+-- comparator. The comparator used to call slower(tValueName(...)) on BOTH sides
+-- of every comparison, and the spell lists hold 27,057 groups: table.sort makes
+-- roughly n*log(n) ~ 400,000 comparisons there, so opening one of those lists
+-- allocated about 800,000 lowercased strings before a single menu entry existed.
+-- Keying up front makes that 27,057 calls. Same order out, and it applies to
+-- every value list, not only the big ones.
 local function tSortedAttributeValues(aAttribute)
 	local tSorted = {}
 	if not aAttribute then
@@ -788,17 +803,161 @@ local function tSortedAttributeValues(aAttribute)
 	if aAttribute.updateValues then
 		aAttribute:updateValues()
 	end
-	for _, v in SkuSpairs(aAttribute.values or {},
-		function(t, a, b)
-			if aAttribute.type == "ORDINAL" or aAttribute.type == "THRESHOLD" then
-				return (tonumber(t[a]) or 0) < (tonumber(t[b]) or 0)
-			end
-			return slower(tValueName(t[b])) > slower(tValueName(t[a]))
-		end)
-	do
+	for _, v in pairs(aAttribute.values or {}) do
 		tSorted[#tSorted + 1] = v
 	end
+	local tKey = {}
+	if aAttribute.type == "ORDINAL" or aAttribute.type == "THRESHOLD" then
+		for x = 1, #tSorted do
+			tKey[tSorted[x]] = tonumber(tSorted[x]) or 0
+		end
+	else
+		for x = 1, #tSorted do
+			tKey[tSorted[x]] = slower(tValueName(tSorted[x]))
+		end
+	end
+	-- Ties compare false both ways, which is the strict ordering table.sort
+	-- needs; two entries reading the same name were in an arbitrary order before
+	-- this as well (SkuSpairs sorted the indices, not the names).
+	table.sort(tSorted, function(a, b)
+		return tKey[a] < tKey[b]
+	end)
 	return tSorted
+end
+
+-- [v43.0] VALUE groups - one entry holding a family of values, for a list long
+-- enough that the values which are NOT of that family get lost inside it. Same
+-- shape and the same reason as the vitals ATTRIBUTE group above, one level down.
+--
+-- The event list is 35 entries and eighteen of them are the spell family, so the
+-- events that are not about a spell at all - a melee swing, a ranged shot, an
+-- item cooldown, a keypress, a target change - lay spread thin between them.
+--
+-- Membership is an explicit list, never a "starts with SPELL_" match: two of
+-- these (SPELL_COOLDOWN_START/_END) are Sku's OWN synthesized events, so the
+-- naming is ours to change, and a pattern would silently regroup a value the day
+-- one of them is renamed.
+local tValueGroups = {
+	event = {
+		{
+			label = "AURA_SpellEventsGroup",
+			tip = "AURA_SpellEventsGroupTip",
+			values = {
+				"SPELL_AURA_APPLIED;SPELL_AURA_REFRESH;SPELL_AURA_APPLIED_DOSE",
+				"SPELL_AURA_REMOVED",
+				"SPELL_CAST_START",
+				"SPELL_CAST_SUCCESS",
+				"SPELL_CAST_FAILED",
+				"SPELL_COOLDOWN_START",
+				"SPELL_COOLDOWN_END",
+				"SPELL_DAMAGE",
+				"SPELL_PERIODIC_DAMAGE",
+				"SPELL_HEAL",
+				"SPELL_PERIODIC_HEAL",
+				"SPELL_MISSED",
+				"SPELL_ENERGIZE",
+				"SPELL_INTERRUPT",
+				"SPELL_EXTRA_ATTACKS",
+				"SPELL_CREATE",
+				"SPELL_SUMMON",
+				"SPELL_RESURRECT",
+			},
+		},
+	},
+}
+-- value -> its group, per attribute, so the flat pass can skip what a group holds
+local tValueGroupOf = {}
+for tAtt, tGroups in pairs(tValueGroups) do
+	tValueGroupOf[tAtt] = {}
+	for x = 1, #tGroups do
+		tGroups[x].member = {}
+		for y = 1, #tGroups[x].values do
+			tValueGroupOf[tAtt][tGroups[x].values[y]] = tGroups[x]
+			tGroups[x].member[tGroups[x].values[y]] = true
+		end
+	end
+end
+
+-- What a value GROUP entry says: its name, then the values picked INSIDE it,
+-- joined by the word the operator earns - the same reading an operator entry
+-- gets, for the same reason. A bare name means nothing in there is picked, so
+-- the user can tell from outside whether they have to walk in at all.
+local function tValueGroupLabel(aGroup, aCond)
+	local tText = L[aGroup.label]
+	local tFirst = true
+	for x = 1, #aCond.values do
+		if aGroup.member[aCond.values[x]] then
+			tText = tText..(tFirst and ";" or tValueJoinWord(aCond.op))..tValueName(aCond.values[x])
+			tFirst = false
+		end
+	end
+	return tText
+end
+
+-- ONE value toggle. Extracted so the flat list and a group level build the very
+-- same entry: a value inside a group has to behave exactly like one outside it,
+-- and two copies of this would drift.
+-- aGroup/aGroupNode are nil in the flat list; when set, the group entry above
+-- has to follow the toggle the way the condition row does.
+local function tInjectValueToggle(aLevel, aValue, aCond, aOwnerNode, aCtx, aGroup, aGroupNode)
+	local tNode = SkuOptions:InjectMenuItems(aLevel, {tToggleLabel(tValueName(aValue), tIndexOfValue(aCond.values, aValue) ~= nil)}, SkuGenericMenuItem)
+	tNode.internalName = aValue
+	tNode.sorting = true
+	tNode.vocalizeAsIs = true
+	tNode.elementType = "value"
+	tNode.actionInPlace = true
+	tNode.OnEnter = function(self)
+		if aCtx and aCtx.tooltip then
+			aCtx.tooltip(self)
+		else
+			tSetDraftTooltip(self, tConditionText(aCond))
+		end
+	end
+	tNode.OnAction = function(self)
+		local tIndex = tIndexOfValue(aCond.values, self.internalName)
+		if tIndex then
+			table.remove(aCond.values, tIndex)
+		elseif aCond.durOp and tDurationBorrowsSpell[aCond.att] == true then
+			-- [v43.1] A duration row holds exactly ONE spell (see the note at
+			-- tListDurationPartner): the evaluator measures entry one, so a
+			-- second spell here would be a name the aura never checks.
+			-- Switching, not adding - and the entry that was on has to stop
+			-- saying "ein", or the level would read two selected spells while
+			-- one is stored.
+			-- Clears the siblings on THIS level, which is the whole list: no
+			-- duration-borrowing attribute has value groups (only `event` does),
+			-- so its values are never split across two levels.
+			aCond.values = {self.internalName}
+			for x = 1, #(aLevel.children or {}) do
+				local tOther = aLevel.children[x]
+				if tOther ~= self and tOther.internalName then
+					tOther.name = tToggleLabel(tValueName(tOther.internalName), false)
+				end
+			end
+		else
+			aCond.values[#aCond.values + 1] = self.internalName
+		end
+		tCtxOnChange(aCtx, aCond)
+		self.name = tToggleLabel(tValueName(self.internalName), tIndex == nil)
+		-- Keep the labels ABOVE this list current: arrowing left must not read
+		-- back the condition, or the condition count, as it was before the
+		-- toggle. None of those levels is rebuilt by simply stepping out of it.
+		if aGroup and aGroupNode then
+			aGroupNode.name = tValueGroupLabel(aGroup, aCond)
+		end
+		if aOwnerNode then
+			if aCtx and aCtx.ownerLabel then
+				aOwnerNode.name = aCtx.ownerLabel(aCond)
+			else
+				aOwnerNode.name = tConditionText(aCond)
+			end
+		end
+		local tCondLevel = self:FindAncestorById(AURA_COND_ID)
+		if tCondLevel then
+			tCondLevel.name = tConditionsLabel()
+		end
+	end
+	return tNode
 end
 
 local function tBuildValueToggleList(aLevel, aCond, aOwnerNode, aCtx)
@@ -810,6 +969,47 @@ local function tBuildValueToggleList(aLevel, aCond, aOwnerNode, aCtx)
 		SkuOptions:InjectMenuItems(aLevel, {L["leer"]}, SkuGenericMenuItem)
 		return
 	end
+
+	-- [v43.0] RESUMABLE BUILD. The spell lists are 27,000 entries and a hardcore
+	-- realm kills a script that runs too long, so this build can be cut off in
+	-- the middle - and a half-built level that nothing rebuilds is a list
+	-- silently missing twenty thousand spells (log 2026-08-23, "children now
+	-- 6869"). SkuOptions:ContinueInterruptedBuild calls us again on the next
+	-- frame, which has a fresh script budget, and we pick up at the cursor.
+	--
+	-- The sorted list is HELD on the level while a build is incomplete: sorting
+	-- again would hand back a different table and the cursor would index into
+	-- something else. Three conditions have to hold to call it a continuation,
+	-- and the children check is the one that matters - RebuildNodeChildren empties
+	-- the level without touching these fields, so without it a rebuild during an
+	-- incomplete build would resume at entry 6,869 of an EMPTY level and drop
+	-- everything before it.
+	local tResuming = aLevel.buildChildrenIncomplete == true
+		and type(aLevel.buildSorted) == "table"
+		and type(aLevel.children) == "table" and #aLevel.children > 0
+
+	if tResuming then
+		local tSorted = aLevel.buildSorted
+		local tGroupOf = tValueGroupOf[aCond.att]
+		for x = (aLevel.buildCursor or 0) + 1, #tSorted do
+			local tValue = tSorted[x]
+			if not (tGroupOf and tGroupOf[tValue]) then
+				tInjectValueToggle(aLevel, tValue, aCond, aOwnerNode, aCtx)
+			end
+			-- after the entry, never before: if the script is killed inside
+			-- tInjectValueToggle the entry did not land, and the cursor must not
+			-- claim that it did
+			aLevel.buildCursor = x
+		end
+		aLevel.buildChildrenIncomplete = false
+		aLevel.buildSorted = nil
+		aLevel.buildCursor = nil
+		return
+	end
+
+	aLevel.resumableBuild = true
+	aLevel.buildCursor = 0
+
 	-- index 0: type the name or the id rather than hunt through thousands of
 	-- entries. Injected before the loop, and the menu keeps INSERTION order.
 	if tIdInputAttributes[aCond.att] then
@@ -831,61 +1031,66 @@ local function tBuildValueToggleList(aLevel, aCond, aOwnerNode, aCtx)
 	end
 
 	local tSorted = tSortedAttributeValues(tAttribute)
+	local tGroups = tValueGroups[aCond.att]
+	local tGroupOf = tValueGroupOf[aCond.att]
 
-	for x = 1, #tSorted do
-		local tValue = tSorted[x]
-		local tNode = SkuOptions:InjectMenuItems(aLevel, {tToggleLabel(tValueName(tValue), tIndexOfValue(aCond.values, tValue) ~= nil)}, SkuGenericMenuItem)
-		tNode.internalName = tValue
-		tNode.sorting = true
-		tNode.vocalizeAsIs = true
-		tNode.elementType = "value"
-		tNode.actionInPlace = true
-		tNode.OnEnter = function(self)
-			if aCtx and aCtx.tooltip then
-				aCtx.tooltip(self)
-			else
-				tSetDraftTooltip(self, tConditionText(aCond))
+	-- The groups first (the menu keeps insertion order), then every value that
+	-- belongs to none of them. A group entry is built only when at least one of
+	-- its members is really in the attribute's value list, so a data change can
+	-- never leave behind an entry that opens onto an empty level.
+	for x = 1, (tGroups and #tGroups or 0) do
+		local tGroup = tGroups[x]
+		local tAny = false
+		for y = 1, #tSorted do
+			if tGroup.member[tSorted[y]] then
+				tAny = true
+				break
 			end
 		end
-		tNode.OnAction = function(self)
-			local tIndex = tIndexOfValue(aCond.values, self.internalName)
-			if tIndex then
-				table.remove(aCond.values, tIndex)
-			elseif aCond.durOp and tDurationBorrowsSpell[aCond.att] == true then
-				-- [v43.1] A duration row holds exactly ONE spell (see the note at
-				-- tListDurationPartner): the evaluator measures entry one, so a
-				-- second spell here would be a name the aura never checks.
-				-- Switching, not adding - and the entry that was on has to stop
-				-- saying "ein", or the level would read two selected spells while
-				-- one is stored.
-				aCond.values = {self.internalName}
-				for x = 1, #(aLevel.children or {}) do
-					local tOther = aLevel.children[x]
-					if tOther ~= self and tOther.internalName then
-						tOther.name = tToggleLabel(tValueName(tOther.internalName), false)
+		if tAny == true then
+			local tGroupNode = SkuOptions:InjectMenuItems(aLevel, {tValueGroupLabel(tGroup, aCond)}, SkuGenericMenuItem)
+			tGroupNode.dynamic = true
+			tGroupNode.sorting = true
+			tGroupNode.vocalizeAsIs = true
+			tGroupNode.elementType = "value"
+			tGroupNode.OnEnter = function(self)
+				if aCtx and aCtx.tooltip then
+					aCtx.tooltip(self)
+				else
+					tSetDraftTooltip(self, L[tGroup.tip])
+				end
+			end
+			tGroupNode.BuildChildren = function(self)
+				self.sorting = true
+				-- Re-sorted rather than closed over: an attribute carrying an
+				-- updateValues would otherwise show the list as it stood when the
+				-- level ABOVE was built. `event` has none, so today this costs a
+				-- sort of 35 entries.
+				local tMembers = tSortedAttributeValues(tAttribute)
+				for y = 1, #tMembers do
+					if tGroup.member[tMembers[y]] then
+						tInjectValueToggle(self, tMembers[y], aCond, aOwnerNode, aCtx, tGroup, self)
 					end
 				end
-			else
-				aCond.values[#aCond.values + 1] = self.internalName
-			end
-			tCtxOnChange(aCtx, aCond)
-			self.name = tToggleLabel(tValueName(self.internalName), tIndex == nil)
-			-- Keep the labels ABOVE this list current: arrowing left must not
-			-- read back the condition, or the condition count, as it was before
-			-- the toggle. Neither level is rebuilt by simply stepping out of it.
-			if aOwnerNode then
-				if aCtx and aCtx.ownerLabel then
-					aOwnerNode.name = aCtx.ownerLabel(aCond)
-				else
-					aOwnerNode.name = tConditionText(aCond)
-				end
-			end
-			local tCondLevel = self:FindAncestorById(AURA_COND_ID)
-			if tCondLevel then
-				tCondLevel.name = tConditionsLabel()
 			end
 		end
 	end
+
+	-- Only the flat value loop is resumable: it is the only part that is long, and
+	-- everything above it (the input node, the group entries) is a handful of
+	-- nodes that either all exist or none do - which is why a continuation skips
+	-- straight to this loop.
+	aLevel.buildSorted = tSorted
+	for x = 1, #tSorted do
+		local tValue = tSorted[x]
+		if not (tGroupOf and tGroupOf[tValue]) then
+			tInjectValueToggle(aLevel, tValue, aCond, aOwnerNode, aCtx)
+		end
+		aLevel.buildCursor = x
+	end
+	aLevel.buildChildrenIncomplete = false
+	aLevel.buildSorted = nil
+	aLevel.buildCursor = nil
 end
 
 -- [v43.1] THE ASPECTS OF ONE CONDITION - the level under an attribute in the
@@ -1147,6 +1352,15 @@ end
 -- smaller 10", i.e. always true. The old chained builder enforced the same rule
 -- through usedAttributes.
 local function tAttributeUsable(aAttName)
+	local tDef = SkuAuras.attributes and SkuAuras.attributes[aAttName]
+	if tDef and tDef.retired == true then
+		-- [v43.0] Kept in SkuAuras.attributes so the evaluator can still run a
+		-- legacy or imported aura that carries one (the evaluate loop indexes
+		-- the table without a guard), but never offered again. Gated HERE rather
+		-- than in tAttributeAllowed so it is out of the vitals group and every
+		-- other grouped path too, not just the flat list.
+		return false
+	end
 	if aAttName == "action" then
 		-- the pseudo-attribute the old chain used to reach the action step; the
 		-- action has its own section now.

@@ -3333,7 +3333,10 @@ L["verbleibende Dauer entfernt"] = "durée restante retirée"
 
 -- Sku v43.1: groupe santé/ressource + ressources individuelles (SkuAuras)
 L["Eigene Gesundheit oder Ressource"] = "Votre santé ou ressource"
-L["AURA_VitalsGroupTip"] = "La santé du joueur, ou l'une de ses ressources, en pourcentage"
+L["AURA_VitalsGroupTip"] = "La santé du joueur, ou l'une de ses ressources, en pourcentage, plus les points de combo en nombre"
+L["AURA_ComboPointsShort"] = "Points de combo"
+L["AURA_SpellEventsGroup"] = "Événements de sort"
+L["AURA_SpellEventsGroupTip"] = "Tous les événements déclenchés par un sort"
 L["AURA_PowerActive"] = "Votre ressource actuelle"
 L["AURA_PowerActiveTip"] = "La ressource dont la barre est affichée actuellement, en pourcentage - pour un druide, mana en forme normale, rage en forme d'ours, énergie en forme de félin"
 L["AURA_PowerMana"] = "Votre mana"

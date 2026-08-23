@@ -247,10 +247,15 @@ function SkuAuras:OnEnable()
 	-- existing auras to the attributes list). If the feature is enabled AFTER
 	-- PEW already fired, that handler will not run again, so build it now if it
 	-- has not been built yet. We detect "not built" by the still-empty
-	-- itemId.values list (data.lua ships it as {}; PEW fills it). On first
+	-- itemName.values list (data.lua ships it as {}; PEW fills it). On first
 	-- login this is a no-op (PEW fires right after) -- behaviour preserved.
-	if SkuAuras.attributes and SkuAuras.attributes.itemId
-		and #SkuAuras.attributes.itemId.values == 0 then
+	-- [v43.0] Was keyed on itemId.values, which is no longer filled at all now
+	-- that the attribute is retired. itemName ships as {} the same way and was
+	-- published in the same atomic assignment block, so the test is unchanged in
+	-- meaning - but a probe on a list nothing fills would have re-run PEW on
+	-- every mid-session enable, forever.
+	if SkuAuras.attributes and SkuAuras.attributes.itemName
+		and #SkuAuras.attributes.itemName.values == 0 then
 		SkuAuras:PLAYER_ENTERING_WORLD("PLAYER_ENTERING_WORLD")
 	end
 
@@ -807,11 +812,11 @@ function SkuAuras:BuildAttributeValueLists(aYield)
 	local seen = {}
 	local tValues = TableCopy(SkuAuras.valuesDefault, true, seen)
 
-	local tItemIds, tItemNames = {}, {}
+	-- [v43.0] NAME lane only. The id lane ("item:<id>", one value per item plus
+	-- one tValues entry each, ~25,000 of both) existed solely to fill the value
+	-- list of the retired `itemId` attribute - see the note on it in data.lua.
+	local tItemNames = {}
 	for itemId, itemName in pairs(SkuDB.itemLookup[Sku.Loc]) do
-		tItemIds[#tItemIds + 1] = "item:"..tostring(itemId)
-		tValues["item:"..tostring(itemId)] = {friendlyName = itemId.." ("..itemName..")",}
-
 		if not tValues["item:"..tostring(itemName)] then
 			tItemNames[#tItemNames + 1] = "item:"..tostring(itemName)
 			tValues["item:"..tostring(itemName)] = {friendlyName = itemName,}
@@ -821,9 +826,11 @@ function SkuAuras:BuildAttributeValueLists(aYield)
 
 	-- [v43.0] The NAME lane is now the GROUP lane: one entry per distinct enUS
 	-- spell name, tagged SPELL_GROUP_TAG, displayed under the LOCALIZED name.
-	-- The id lane ("spell:<id>") is unchanged. The reverse map is built in the
-	-- same pass and only where it can differ from identity (non-enUS clients).
-	local tSpellIds, tSpellNames, tSpellNamesOnCd = {}, {}, {}
+	-- [v43.0] The id lane ("spell:<id>") is GONE: it only ever fed the retired
+	-- `spellId` attribute's value list, ~49,000 entries with a tValues table
+	-- each. The reverse map is built in the same pass and only where it can
+	-- differ from identity (non-enUS clients).
+	local tSpellNames, tSpellNamesOnCd = {}, {}
 	local tBuffList, tDebuffList = {}, {}
 	local tNameKey = SkuDB.spellKeys["name_lang"]
 	-- localized name -> group name, or `false` once a SECOND group claims that
@@ -869,8 +876,6 @@ function SkuAuras:BuildAttributeValueLists(aYield)
 		local tLocData = spellData and (spellData[Sku.Loc] or spellData.enUS or spellData.deDE)
 		local spellName = tLocData and tLocData[tNameKey]
 		if spellName then
-			tSpellIds[#tSpellIds + 1] = "spell:"..tostring(spellId)
-			tValues["spell:"..tostring(spellId)] = {friendlyName = spellId.." ("..spellName..")",}
 			-- Nil-tolerant on the enUS sub-table for the same reason the locale
 			-- read above is: a merged row can be missing it, and then the group
 			-- degrades to the localized name (fallback lane).
@@ -987,9 +992,7 @@ function SkuAuras:BuildAttributeValueLists(aYield)
 	SkuAuras.values = tValues
 	SkuAuras.spellGroupByLocName = tGroupByLoc
 	SkuAuras.spellGroupAmbiguousLocName = tLocAmbiguous
-	SkuAuras.attributes.itemId.values = tItemIds
 	SkuAuras.attributes.itemName.values = tItemNames
-	SkuAuras.attributes.spellId.values = tSpellIds
 	SkuAuras.attributes.spellName.values = tSpellNames
 	SkuAuras.attributes.spellNameOnCd.values = tSpellNamesOnCd
 	SkuAuras.attributes.buffListTarget.values = tBuffList
@@ -1003,14 +1006,14 @@ function SkuAuras:BuildAttributeValueLists(aYield)
 
 	-- Evidence line for the log read-back: rows walked and list sizes, plus the
 	-- WALL-CLOCK span of the build (sliced, so it includes the frames it spent
-	-- suspended - not the CPU cost). "0 spell ids" here means the data was not
+	-- suspended - not the CPU cost). "0 spell groups" here means the data was not
 	-- there after all.
 	local tMs = debugprofilestop() - tT0
 	local tGroupMapped, tGroupAmbiguous = 0, 0
 	for _ in pairs(tGroupByLoc) do tGroupMapped = tGroupMapped + 1 end
 	for _ in pairs(tLocAmbiguous) do tGroupAmbiguous = tGroupAmbiguous + 1 end
-	dprint(string.format("SkuAuras value lists built: %d rows, %d items, %d spell ids, %d spell groups, %d enchants, %d loc->group (%d ambiguous, %d entries disambiguated), %.0f ms wall",
-		tRows, #tItemIds, #tSpellIds, #tSpellNames, #tEnchantNames, tGroupMapped, tGroupAmbiguous, tDisambiguated, tMs))
+	dprint(string.format("SkuAuras value lists built: %d rows, %d items, %d spell groups, %d enchants, %d loc->group (%d ambiguous, %d entries disambiguated), %.0f ms wall",
+		tRows, #tItemNames, #tSpellNames, #tEnchantNames, tGroupMapped, tGroupAmbiguous, tDisambiguated, tMs))
 	if Sku.MetricPoint then
 		Sku:MetricPoint(string.format("SkuAuras value lists = %.0f ms wall, %d rows", tMs, tRows))
 	end
@@ -2876,6 +2879,31 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 						or tAttOrderCount[tOrderI - tOrderPlainN]
 					local tAttributeValue = tAuraData.attributes[tAttributeName]
 
+					-- [v43.0] An attribute this build does not define at all. Both
+					-- branches below index the definition unguarded, so this used to
+					-- throw on EVERY combat-log event once such an aura existed - and
+					-- one can, because an imported aura's attribute table is stored
+					-- wholesale without being checked against SkuAuras.attributes
+					-- (sharing.lua), so a peer on another build hands you one. Read as
+					-- a condition that cannot hold: the aura stays silent instead of
+					-- erroring, and /skucheck auras names it out of band (logging it
+					-- here would write per event).
+					local tAttributeDef = SkuAuras.attributes[tAttributeName]
+					if tAttributeDef == nil then
+						if tTrace == true then
+							tAuraTraceCondition(tAuraName, tAttributeName, "?", "?", false, tEvaluateData)
+						end
+						-- Both flags, and that is not belt-and-braces: the legacy ifNot
+						-- branch fires on tOverallResult == FALSE, so leaving
+						-- tHasApplicableAttributes set would make an unevaluable
+						-- condition TRIGGER such an aura instead of silencing it (only
+						-- when the unknown attribute is not the first one, which is
+						-- exactly the kind of difference nobody would find later).
+						tOverallResult = false
+						tHasApplicableAttributes = false
+						break
+					end
+
 					tHasApplicableAttributes = true
 					if #tAttributeValue > 1 then
 						-- [v43.1] The several values of ONE condition are a SET, and the
@@ -2907,7 +2935,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 						local tNegatingGroup = SkuAuras.negatingOperators[tAttributeValue[1][1]] == true
 						local tLocalResult = tNegatingGroup
 						for tInd, tLocalValue in pairs(tAttributeValue) do
-							local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2], tRawEventData) == true
+							local tResult = tAttributeDef:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2], tRawEventData) == true
 							if tNegatingGroup == true then
 								if tResult ~= true then
 									tLocalResult = false
@@ -2946,7 +2974,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 						-- every event — and assigned `tLocalResult` as a leaked global that
 						-- nothing read. The count-condition bookkeeping below is the same
 						-- bookkeeping that inner loop did, driven by the one real result.
-						local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tAttributeValue[1][1], tAttributeValue[1][2], tRawEventData)
+						local tResult = tAttributeDef:evaluate(tEvaluateData, tAttributeValue[1][1], tAttributeValue[1][2], tRawEventData)
 						if tResult == true then
 							if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
 								tHasCountCondition_NumCountConditionsTrue = tHasCountCondition_NumCountConditionsTrue + 1
