@@ -3378,3 +3378,7 @@ L["AURA_GeneralEventsGroup"] = "General events"
 L["AURA_GeneralEventsGroupTip"] = "Every event that is not triggered by a spell: melee, ranged, items, health, resources, target change, death and key presses"
 -- Sku v43.0: deleting an aura asks first (SkuAuras/Options.lua)
 L["Wirklich löschen?"] = "Really delete?"
+
+-- Sku v43.0: aura references in one submenu (SkuAuras/Options.lua)
+L["AURA_AuraRefGroup"] = "Other auras"
+L["AURA_AuraRefGroupTip"] = "Whether another one of your auras currently applies. Only auras you have named yourself appear here"

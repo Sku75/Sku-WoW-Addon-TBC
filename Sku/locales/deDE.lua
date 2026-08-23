@@ -3388,3 +3388,7 @@ L["AURA_GeneralEventsGroup"] = "Ereignisse allgemein"
 L["AURA_GeneralEventsGroupTip"] = "Alle Ereignisse, die nicht von einem Zauber ausgeloest werden: Nahkampf, Fernkampf, Gegenstaende, Gesundheit, Ressourcen, Zielwechsel, Tod und Tastendruck"
 -- Sku v43.0: Aura loeschen fragt nach (SkuAuras/Options.lua)
 L["Wirklich löschen?"] = "Wirklich löschen?"
+
+-- Sku v43.0: Aura-Referenzen in einem Untermenue (SkuAuras/Options.lua)
+L["AURA_AuraRefGroup"] = "Andere Auren"
+L["AURA_AuraRefGroupTip"] = "Ob eine andere deiner Auren gerade zutrifft. Hier stehen nur Auren, denen du selbst einen Namen gegeben hast"

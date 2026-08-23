@@ -3358,3 +3358,7 @@ L["AURA_GeneralEventsGroup"] = "Événements généraux"
 L["AURA_GeneralEventsGroupTip"] = "Tous les événements qui ne sont pas déclenchés par un sort : mêlée, distance, objets, santé, ressources, changement de cible, mort et touches"
 -- Sku v43.0 : la suppression d'une aura demande confirmation (SkuAuras/Options.lua)
 L["Wirklich löschen?"] = "Vraiment supprimer ?"
+
+-- Sku v43.0 : références d'auras dans un sous-menu (SkuAuras/Options.lua)
+L["AURA_AuraRefGroup"] = "Autres auras"
+L["AURA_AuraRefGroupTip"] = "Si une autre de vos auras s'applique actuellement. Seules les auras que vous avez nommées vous-même apparaissent ici"

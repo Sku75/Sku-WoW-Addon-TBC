@@ -1571,6 +1571,15 @@ local function tBuildConditionAspects(aLevel, aCond, aOwnerNode, aValueGroup)
 	end
 end
 
+-- [v43.0] "does this attribute reference ANOTHER of the user's auras", and the
+-- aura's own name if it does. One source for the pattern - tAttributeUsable's
+-- one-level-deep rule, the group that hides them from the top level and the
+-- labels inside that group all key on the same match, and the key is built as
+-- "skuAura"..GetBaseAuraName in SkuAuras:UpdateAttributesListWithCurrentAuras.
+local function tAuraRefBaseName(aAttName)
+	return string.match(aAttName, "^skuAura(.+)$")
+end
+
 -- One row per attribute. Two rows on the SAME attribute would be merged into
 -- one stored group on save, and the evaluator ORs a group - so "duration
 -- bigger 3" plus "duration smaller 10" would silently become "bigger 3 OR
@@ -1604,7 +1613,7 @@ local function tAttributeUsable(aAttName)
 			return false
 		end
 	end
-	local tRef = string.match(aAttName, "^skuAura(.+)$")
+	local tRef = tAuraRefBaseName(aAttName)
 	if tRef then
 		-- Aura-references are one level deep only; that is what keeps the nested
 		-- EvaluateAllAuras call in the skuAura attribute from recursing.
@@ -1633,6 +1642,14 @@ local function tAttributeAllowed(aAttName)
 		-- friendlyName ("ereignis") names no entry - the families do. The CONDITION
 		-- ROW still reads "ereignis;gleich;...": it is read in the Bedingungen list
 		-- with no family above it, and it is one condition, not two.
+		return false
+	end
+	if tAuraRefBaseName(aAttName) then
+		-- [v43.0] Behind the "Andere Auren" entry. There is one per named aura, so
+		-- left in the flat list they outnumber the real attributes the moment the
+		-- user has named a few - and they carry the user's own aura names, which
+		-- sort into every letter, so no position in a flat list keeps them out of
+		-- the way.
 		return false
 	end
 	return tAttributeUsable(aAttName)
@@ -1732,14 +1749,24 @@ local function tInjectAttributeNode(aLevel, aAttName, aLabel, aValueGroup, aTool
 	return tNode
 end
 
+-- [v43.0] ONE ENTRY of the attribute list, before it is built: its display name
+-- and the closure that injects it. Collected first and injected in name order,
+-- because a group entry is an entry like any other and the user looks for it
+-- where its name puts it. The groups used to be injected ahead of the loop and so
+-- always sat on top - which is defensible for one of them and confusing for
+-- three, since "on top" is not a place you can look something up by.
+local function tAttributeListEntry(aName, aInject)
+	return {name = aName, key = slower(aName or ""), inject = aInject}
+end
+
 local function tBuildAttributeList(aLevel)
 	aLevel.sorting = true
 	local tSorted = TableSortByIndex(SkuAuras.attributes)
-	local tAny = false
+	local tEntries = {}
 
-	-- [v43.0] The vitals group first: one entry instead of six, and the pool is
-	-- the choice behind it. Listed only while at least one of its members is
-	-- still free, so it cannot open onto an empty level.
+	-- [v43.0] The vitals group: one entry instead of six, and the pool is the
+	-- choice behind it. Listed only while at least one of its members is still
+	-- free, so it cannot open onto an empty level.
 	local tVitalsAny = false
 	for x = 1, #tVitalsGroupOrder do
 		if tAttributeUsable(tVitalsGroupOrder[x].att) then
@@ -1748,51 +1775,102 @@ local function tBuildAttributeList(aLevel)
 		end
 	end
 	if tVitalsAny then
-		tAny = true
-		local tGroup = SkuOptions:InjectMenuItems(aLevel, {L["Eigene Gesundheit oder Ressource"]}, SkuGenericMenuItem)
-		tGroup.dynamic = true
-		tGroup.sorting = true
-		tGroup.vocalizeAsIs = true
-		tGroup.elementType = "attribute"
-		tGroup.OnEnter = function(self)
-			tSetDraftTooltip(self, L["AURA_VitalsGroupTip"])
-		end
-		tGroup.BuildChildren = function(self)
-			self.sorting = true
-			for y = 1, #tVitalsGroupOrder do
-				local tMember = tVitalsGroupOrder[y]
-				if tAttributeUsable(tMember.att) then
-					tInjectAttributeNode(self, tMember.att, L[tMember.label])
+		tEntries[#tEntries + 1] = tAttributeListEntry(L["Eigene Gesundheit oder Ressource"], function(aTo)
+			local tGroup = SkuOptions:InjectMenuItems(aTo, {L["Eigene Gesundheit oder Ressource"]}, SkuGenericMenuItem)
+			tGroup.dynamic = true
+			tGroup.sorting = true
+			tGroup.vocalizeAsIs = true
+			tGroup.elementType = "attribute"
+			tGroup.OnEnter = function(self)
+				tSetDraftTooltip(self, L["AURA_VitalsGroupTip"])
+			end
+			tGroup.BuildChildren = function(self)
+				self.sorting = true
+				for y = 1, #tVitalsGroupOrder do
+					local tMember = tVitalsGroupOrder[y]
+					if tAttributeUsable(tMember.att) then
+						tInjectAttributeNode(self, tMember.att, L[tMember.label])
+					end
 				end
 			end
-		end
+		end)
 	end
 
-	-- [v43.0] Then the split attributes, one entry per value family
-	-- ("Ereignisse allgemein", "Ereignisse Zauber"). Insertion order, so they
-	-- stand together right after the vitals group instead of being sorted apart
-	-- by their localized names. Each entry is the SAME attribute and produces the
-	-- SAME single condition, which is why they all disappear together the moment
-	-- one of them has been used (tAttributeUsable, one row per attribute).
+	-- The split attributes, one entry per value family ("Ereignisse allgemein",
+	-- "Ereignisse Zauber"). Each entry is the SAME attribute and produces the SAME
+	-- single condition, which is why they all disappear together the moment one of
+	-- them has been used (tAttributeUsable, one row per attribute).
 	for tAttName in pairs(tAttributeValueFamilies) do
 		if tAttributeUsable(tAttName) == true then
 			local tFamilies = tValueGroups[tAttName]
 			for x = 1, (tFamilies and #tFamilies or 0) do
 				local tFamily = tFamilies[x]
-				tAny = true
-				tInjectAttributeNode(aLevel, tAttName, L[tFamily.label], tFamily, L[tFamily.tip])
+				tEntries[#tEntries + 1] = tAttributeListEntry(L[tFamily.label], function(aTo)
+					tInjectAttributeNode(aTo, tAttName, L[tFamily.label], tFamily, L[tFamily.tip])
+				end)
 			end
 		end
+	end
+
+	-- [v43.0] The aura references behind ONE entry. There is one of these per
+	-- named aura (UpdateAttributesListWithCurrentAuras rebuilds them), so the list
+	-- grew by one every time the user named an aura and the fifty real attributes
+	-- silently became the minority in their own list. Their names are the user's
+	-- own aura names, so they sort into every letter of the alphabet - there is no
+	-- position in a flat list where they stop being in the way.
+	--
+	-- Inside, they drop the "sku aura " their friendlyName carries: the entry
+	-- above already said what these are, and repeating it on every one of them is
+	-- a word the user hears once per aura for nothing.
+	local tAuraRefs = {}
+	for x = 1, #tSorted do
+		local tAttName = tSorted[x]
+		if tAuraRefBaseName(tAttName) and tAttributeUsable(tAttName) == true then
+			tAuraRefs[#tAuraRefs + 1] = tAttName
+		end
+	end
+	if #tAuraRefs > 0 then
+		tEntries[#tEntries + 1] = tAttributeListEntry(L["AURA_AuraRefGroup"], function(aTo)
+			local tGroup = SkuOptions:InjectMenuItems(aTo, {L["AURA_AuraRefGroup"]}, SkuGenericMenuItem)
+			tGroup.dynamic = true
+			tGroup.sorting = true
+			tGroup.vocalizeAsIs = true
+			tGroup.elementType = "attribute"
+			tGroup.OnEnter = function(self)
+				tSetDraftTooltip(self, L["AURA_AuraRefGroupTip"])
+			end
+			tGroup.BuildChildren = function(self)
+				self.sorting = true
+				-- Re-tested rather than closed over: naming or deleting an aura
+				-- between the two builds changes which of them are still offerable,
+				-- and this level is where that shows.
+				for y = 1, #tAuraRefs do
+					local tAttName = tAuraRefs[y]
+					if tAttributeUsable(tAttName) == true then
+						tInjectAttributeNode(self, tAttName, tAuraRefBaseName(tAttName))
+					end
+				end
+			end
+		end)
 	end
 
 	for x = 1, #tSorted do
 		local tAttName = tSorted[x]
 		if tAttributeAllowed(tAttName) then
-			tAny = true
-			tInjectAttributeNode(aLevel, tAttName)
+			tEntries[#tEntries + 1] = tAttributeListEntry(tFriendlyName(SkuAuras.attributes, tAttName), function(aTo)
+				tInjectAttributeNode(aTo, tAttName)
+			end)
 		end
 	end
-	if tAny ~= true then
+
+	-- Ties compare false both ways, which is the strict ordering table.sort needs.
+	table.sort(tEntries, function(a, b)
+		return a.key < b.key
+	end)
+	for x = 1, #tEntries do
+		tEntries[x].inject(aLevel)
+	end
+	if #tEntries == 0 then
 		SkuOptions:InjectMenuItems(aLevel, {L["leer"]}, SkuGenericMenuItem)
 	end
 end
