@@ -5339,6 +5339,28 @@ local function tSkuCheckAuras()
 						-- unconditional. The builder only offers bigger/smaller now;
 						-- an aura authored before that can still carry one.
 						local tAttDef = SkuAuras and SkuAuras.attributes and SkuAuras.attributes[tAtt]
+						-- [v43.0] An attribute the builder no longer offers (spellId,
+						-- itemId - see the notes on them in SkuAuras/data.lua). The
+						-- evaluator still runs them, so this is legacy data worth a
+						-- look, not a defect: PENDING. A count that GROWS between
+						-- sessions would mean some path still creates one.
+						if tAttDef and tAttDef.retired == true then
+							tPending = tPending + 1
+							dprint("skucheck", "auras: retired attribute still stored:",
+								tostring(tName), "/", tostring(tAtt),
+								"-- the builder cannot create this any more; the spell/item NAME lane replaces it")
+						end
+						-- ...and one this build does not define AT ALL, which the
+						-- evaluate loop can only read as "cannot hold", so the aura is
+						-- permanently silent with nothing in the menu saying why. Gets
+						-- here through an import from a peer on another build: the
+						-- attribute table is stored wholesale, unvalidated
+						-- (SkuAuras/sharing.lua).
+						if SkuAuras and SkuAuras.attributes and tAttDef == nil then
+							tViolations = tViolations + 1
+							dprint("skucheck", "VIOLATION auras: aura", tostring(tName), "has condition", tostring(tAtt),
+								"-- no such attribute in this build, so the aura can never fire")
+						end
 						if tAttDef and tAttDef.type == "THRESHOLD" and type(tEntries) == "table" then
 							for x = 1, #tEntries do
 								local tOp = tEntries[x] and tEntries[x][1]
@@ -5581,6 +5603,92 @@ local function tSkuCheckMenu()
 				tViolations = tViolations + 1
 				dprint("skucheck", "VIOLATION menu: rebuild probe -- keep mode lost the existing selectTarget")
 			end
+		end
+	end
+
+	-- [v43.0] Node-inheritance contract (MenuMT.__add). A node is no longer a deep
+	-- copy of SkuGenericMenuItem but an almost empty table pointed at it through
+	-- __index, which is what made a 27,057-entry list buildable at all. Two ways
+	-- that can silently break, both checked here on throwaway nodes:
+	--   * the metatable is not attached -> every node loses OnEnter/OnPostSelect
+	--     and the whole menu goes dead on ENTER,
+	--   * `children` is inherited instead of created fresh -> every menu entry in
+	--     the addon shares ONE children list, which reads as wild menu corruption
+	--     rather than as a node bug.
+	if SkuGenericMenuItem then
+		local tScratch = {}
+		local tOk = pcall(function()
+			tScratch = tScratch + SkuGenericMenuItem
+			tScratch = tScratch + SkuGenericMenuItem
+		end)
+		tChecked = tChecked + 1
+		if not tOk or #tScratch ~= 2 then
+			tViolations = tViolations + 1
+			dprint("skucheck", "VIOLATION menu: node probe -- could not create nodes from the template at all")
+		else
+			local tA, tB = tScratch[1], tScratch[2]
+			tChecked = tChecked + 1
+			if type(tA.OnPostSelect) ~= "function" or type(tA.OnKey) ~= "function" then
+				tViolations = tViolations + 1
+				dprint("skucheck", "VIOLATION menu: node probe -- a fresh node does not resolve the template's handlers;",
+					"the __index metatable is missing, so every menu entry is dead on ENTER")
+			end
+			tChecked = tChecked + 1
+			if type(tA.children) ~= "table" or tA.children == tB.children or tA.children == SkuGenericMenuItem.children then
+				tViolations = tViolations + 1
+				dprint("skucheck", "VIOLATION menu: node probe -- nodes SHARE a children table;",
+					"every level would show every other level's entries")
+			end
+			-- and a write on a node must still shadow rather than reach through
+			tChecked = tChecked + 1
+			tA.name = "skucheckNodeProbe"
+			if SkuGenericMenuItem.name == "skucheckNodeProbe" or tB.name == "skucheckNodeProbe" then
+				tViolations = tViolations + 1
+				dprint("skucheck", "VIOLATION menu: node probe -- setting a field on one node wrote through to the TEMPLATE")
+			end
+		end
+	end
+
+	-- [v43.0] Resumable-build contract. A builder that declares `resumableBuild`
+	-- is re-entered after the script watchdog cuts it off, instead of leaving a
+	-- truncated level that nothing ever rebuilds. Re-entry must CONTINUE at the
+	-- cursor: a builder that restarts instead would append its entries a second
+	-- time, and on the spell lists that is 27,000 duplicates rather than a
+	-- visible crash. Checked synchronously here (the real driver runs the same
+	-- BuildChildren on a timer, which /skucheck cannot wait for).
+	if SkuOptions and SkuOptions.ContinueInterruptedBuild then
+		local tProbe = {name = "skucheckResumeProbe", children = {}, resumableBuild = true, buildCursor = 0}
+		tProbe.BuildChildren = function(self)
+			local tBuilt = 0
+			for x = (self.buildCursor or 0) + 1, 20 do
+				self.children[#self.children + 1] = "e"..x
+				self.buildCursor = x
+				tBuilt = tBuilt + 1
+				if tBuilt >= 7 and x < 20 then
+					error("skucheck simulated watchdog")
+				end
+			end
+			self.buildChildrenIncomplete = false
+			self.buildCursor = nil
+		end
+		pcall(function() tProbe:BuildChildren(tProbe) end)
+		tProbe.buildChildrenIncomplete = true
+		local tFirst = #tProbe.children
+		for _ = 1, 5 do
+			if tProbe.buildChildrenIncomplete ~= true then break end
+			pcall(function() tProbe:BuildChildren(tProbe) end)
+		end
+		local tSeen, tDupes = {}, 0
+		for x = 1, #tProbe.children do
+			if tSeen[tProbe.children[x]] then tDupes = tDupes + 1 end
+			tSeen[tProbe.children[x]] = true
+		end
+		tChecked = tChecked + 1
+		if tFirst >= 20 or #tProbe.children ~= 20 or tDupes > 0 or tProbe.buildChildrenIncomplete == true then
+			tViolations = tViolations + 1
+			dprint("skucheck", "VIOLATION menu: resume probe -- first pass", tFirst, "then", #tProbe.children,
+				"entries with", tDupes, "duplicates, incomplete", tostring(tProbe.buildChildrenIncomplete),
+				"-- expected 20 entries and no duplicates; a cut-off list either stays truncated or is built twice")
 		end
 	end
 
