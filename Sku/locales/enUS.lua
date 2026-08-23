@@ -3380,5 +3380,5 @@ L["AURA_GeneralEventsGroupTip"] = "Every event that is not triggered by a spell:
 L["Wirklich löschen?"] = "Really delete?"
 
 -- Sku v43.0: aura references in one submenu (SkuAuras/Options.lua)
-L["AURA_AuraRefGroup"] = "Other auras"
+L["AURA_AuraRefGroup"] = "Your own auras"
 L["AURA_AuraRefGroupTip"] = "Whether another one of your auras currently applies. Only auras you have named yourself appear here"

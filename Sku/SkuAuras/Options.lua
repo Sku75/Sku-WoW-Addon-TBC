@@ -1645,11 +1645,11 @@ local function tAttributeAllowed(aAttName)
 		return false
 	end
 	if tAuraRefBaseName(aAttName) then
-		-- [v43.0] Behind the "Andere Auren" entry. There is one per named aura, so
-		-- left in the flat list they outnumber the real attributes the moment the
-		-- user has named a few - and they carry the user's own aura names, which
-		-- sort into every letter, so no position in a flat list keeps them out of
-		-- the way.
+		-- [v43.0] Behind the "Selbsterstellte Auren" entry. There is one per named
+		-- aura, so left in the flat list they outnumber the real attributes the
+		-- moment the user has named a few - and they carry the user's own aura
+		-- names, which sort into every letter, so no position in a flat list keeps
+		-- them out of the way.
 		return false
 	end
 	return tAttributeUsable(aAttName)

@@ -3390,5 +3390,5 @@ L["AURA_GeneralEventsGroupTip"] = "Alle Ereignisse, die nicht von einem Zauber a
 L["Wirklich löschen?"] = "Wirklich löschen?"
 
 -- Sku v43.0: Aura-Referenzen in einem Untermenue (SkuAuras/Options.lua)
-L["AURA_AuraRefGroup"] = "Andere Auren"
+L["AURA_AuraRefGroup"] = "Selbsterstellte Auren"
 L["AURA_AuraRefGroupTip"] = "Ob eine andere deiner Auren gerade zutrifft. Hier stehen nur Auren, denen du selbst einen Namen gegeben hast"

@@ -3360,5 +3360,5 @@ L["AURA_GeneralEventsGroupTip"] = "Tous les événements qui ne sont pas déclen
 L["Wirklich löschen?"] = "Vraiment supprimer ?"
 
 -- Sku v43.0 : références d'auras dans un sous-menu (SkuAuras/Options.lua)
-L["AURA_AuraRefGroup"] = "Autres auras"
+L["AURA_AuraRefGroup"] = "Auras créées par vous"
 L["AURA_AuraRefGroupTip"] = "Si une autre de vos auras s'applique actuellement. Seules les auras que vous avez nommées vous-même apparaissent ici"
