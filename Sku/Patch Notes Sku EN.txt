@@ -33,6 +33,7 @@ Changes in Sku v43.0
             Every menu entry in the whole addon is about 13 times cheaper to create, which makes the big spell lists open about three times faster.
             A list whose build was cut off by the server is continued on the next frame instead of quietly staying incomplete.
             Settings with two values read their value out with the name and switch with Enter; the RIGHT arrow and the submenu are gone.
+            The volume sliders in the Sku menu set the game's own setting directly; Sku no longer keeps a copy of its own.
 
         Bugfixes
             French clients: all aura sounds and pre-recorded speech clips were silent (fix by Naxedim).
@@ -54,6 +55,8 @@ Changes in Sku v43.0
             Power monitor: a monitor switched off in the features menu still announced resource changes.
             French clients: the list of weapon enchants for aura conditions was empty.
             The ready check did not land straight on "Ready" the way every other popup does.
+            A game volume set in the Sku menu could be back at an old value on another character.
+            The four standard profiles are created without switching profile in between - on hardcore realms that could leave you in a profile that is not yours.
 
     With thanks to Naxedim and ZenqFR
         The next four fixes are the first direct code contributions to the now-public Sku
@@ -903,6 +906,50 @@ Changes in Sku v43.0
             ReadyCheckFrame_OnLoad, so no new locale entry is needed. Only visible buttons are
             listed: when you started the check yourself, Blizzard hides the answer side and there
             is nothing to answer.
+
+
+    Game volumes: a value you set came back loud again on another character
+        Simply: If you turned the master volume down in the Sku menu, you found it back at the old
+            value on another character. Sku had been keeping its own copy of the five volumes and
+            the five sound switches on top of the game's, and writing that copy back into the game
+            at every login. The copy hangs off the Sku profile, the game setting off the account:
+            two characters in different profiles therefore heard two different volumes, and a
+            change made in Blizzard's own sound options was silently gone again at the next login.
+            Sku only sets the values now; remembering them is the game's job, exactly as it is for
+            every other player. The sliders in the menu show the game's real value from now on,
+            including when you changed it somewhere else. What you give up: volumes no longer
+            follow a Sku profile.
+        Technically: SkuOptions:OnEnable wrote soundChannels and soundSettings from the profile
+            back into the CVars at every login, preceded by a special rule that read a stored
+            value of 0 or -1 as a corrupted profile and then re-adopted all five channels from the
+            CVars. That whole block is gone. The menu nodes in SkuZOptions/Options.lua read and
+            write the CVars directly (tGetSoundCVarPercent, tSetSoundCVarPercent,
+            tGetSoundCVarBool); the ten keys are out of SkuOptions.defaults and out of the schema,
+            and a one-time pass in OnInitialize clears them from every stored profile - not just
+            the active one, because without a defaults entry AceDB would never strip them again.
+            soundChannels itself stays: SkuChannel, the channel Sku plays its own output on, is a
+            real Sku setting. Reading now rounds instead of truncating - tonumber("0.35") * 100 is
+            34.999... and would have come back as 34. New profiles ship no volume defaults at all;
+            the game's own defaults apply.
+
+    The four standard profiles are created without switching profile in between
+        Simply: At your first login Sku creates the four standard profiles if they are missing. It
+            used to do that by switching into each missing profile in turn and then back into
+            yours. On a hardcore realm the server aborts long addon scripts, and if that caught
+            this sequence the character was left sitting in someone else's profile - with all of
+            that profile's settings instead of yours. But a profile exists as soon as it has a
+            name; nothing needs to be switched for it. Ten heavy steps have become four short ones
+            that cannot go wrong halfway through.
+        Technically: The four SetProfile calls plus the switch back in SkuCore/Core.lua are
+            replaced by four assignments into SkuOptions.db.sv.profiles. AceDB's GetProfiles
+            enumerates exactly that table, and a profile is only populated by copyDefaults the
+            first time someone switches into it anyway - the stored end state is the same as
+            before, four empty tables. Each SetProfile call by contrast fired OnProfileShutdown
+            and ran removeDefaults and copyDefaults over the complete defaults tree of all eight
+            modules, about ten walks in a single frame. Dropping the switching also drops the
+            SkuCore.AutoChange flag, which muted OnProfileChanged meanwhile and stayed at true
+            when the sequence was cut off - after which no profile change got through for the rest
+            of the session. The dispatcher pcalls this handler, so the abort was invisible.
 
 
 -------------------------------------------------------------------------------------------------------

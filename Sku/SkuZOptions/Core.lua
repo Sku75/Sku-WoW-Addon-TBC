@@ -488,8 +488,9 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnProfileChanged()
-	if SkuCore.AutoChange == true then return end
-
+	-- No SkuCore.AutoChange guard any more: nothing switches the profile behind
+	-- the player's back now that the standard profiles are created as bare keys
+	-- (SkuCore/Core.lua), so every profile change reaching here is a real one.
 	dprint("SkuOptions:OnProfileChanged")
 	SkuChat:PLAYER_ENTERING_WORLD()
 	SkuNav:PLAYER_ENTERING_WORLD()
@@ -2149,7 +2150,7 @@ function SkuOptions:CreateMainFrame()
 							Sound_EnableDSPEffects              = tSs.Sound_EnableDSPEffects,
 							Sound_EnableSoundWhenGameIsInBG     = tSs.Sound_EnableSoundWhenGameIsInBG,
 							Sound_ZoneMusicNoDelay              = tSs.Sound_ZoneMusicNoDelay,
-						}, self, SkuSettings:Sub("SkuOptions").soundSettings, "SkuOptions", "soundSettings.")
+						}, self, nil, "SkuOptions", "soundSettings.")
 
 						-- [41.02.08] Fokus bleibt nach Wertaenderung auf dem Regler stehen
 						-- (nur 7er-Menue; geteilter Renderer/templates.lua bleibt unberuehrt).
@@ -4062,6 +4063,27 @@ function SkuOptions:OnInitialize()
 	SkuOptions.AceConfigDialog = LibStub("AceConfigDialog-3.0")
 	SkuOptions.AceConfigDialog:AddToBlizOptions("Sku")
 	SkuOptions.db = LibStub("AceDB-3.0"):New("SkuOptionsDB", defaults, true)
+
+	-- Drop the retired game-sound mirror (five volume channels + the five Sound_*
+	-- toggles) out of EVERY stored profile, not just the active one: they are no
+	-- longer in the defaults, so AceDB would never strip them, and a stale copy
+	-- left lying in another profile is exactly what made this look like a
+	-- per-character setting. soundChannels itself stays -- SkuChannel, which
+	-- channel Sku plays its OWN output on, is a real Sku setting and lives there.
+	do
+		local tRetiredChannelKeys = {"MasterVolume", "SFXVolume", "MusicVolume", "AmbienceVolume", "DialogVolume"}
+		for _, tProfile in pairs(SkuOptions.db.sv.profiles or {}) do
+			local tStored = tProfile["SkuOptions"]
+			if type(tStored) == "table" then
+				if type(tStored.soundChannels) == "table" then
+					for _, tKey in ipairs(tRetiredChannelKeys) do
+						tStored.soundChannels[tKey] = nil
+					end
+				end
+				tStored.soundSettings = nil
+			end
+		end
+	end
 	options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(SkuOptions.db)
 
 	SkuOptions:UpdateMovedAceDbProfileValues()
@@ -4300,41 +4322,14 @@ function SkuOptions:OnEnable()
 		return
 	end
 
-	--safety: if MasterVolume is 0 (corrupted profile), reset sentinel to re-read from Blizzard
-	if SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume == 0 then
-		SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume = -1
-	end
-
-	if SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume == -1 then
-		SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_MasterVolume")) or 1) * 100)
-		SkuSettings:Sub("SkuOptions").soundChannels.SFXVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_SFXVolume")) or 1) * 100)
-		SkuSettings:Sub("SkuOptions").soundChannels.MusicVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_MusicVolume")) or 1) * 100)
-		SkuSettings:Sub("SkuOptions").soundChannels.AmbienceVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_AmbienceVolume")) or 1) * 100)
-		SkuSettings:Sub("SkuOptions").soundChannels.DialogVolume = math.floor((tonumber(C_CVar.GetCVar("Sound_DialogVolume")) or 1) * 100)
-
-		SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableReverb = C_CVar.GetCVar("Sound_EnableReverb") == "1"
-		SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnablePositionalLowPassFilter = C_CVar.GetCVar("Sound_EnablePositionalLowPassFilter") == "1"
-		SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableDSPEffects = C_CVar.GetCVar("Sound_EnableDSPEffects") == "1"
-		SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableSoundWhenGameIsInBG = C_CVar.GetCVar("Sound_EnableSoundWhenGameIsInBG") == "1"
-		SkuSettings:Sub("SkuOptions").soundSettings.Sound_ZoneMusicNoDelay = C_CVar.GetCVar("Sound_ZoneMusicNoDelay") == "1"
-
-	end
-
-	--set the sound channel volumes
-	C_CVar.SetCVar("Sound_MasterVolume", SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume / 100)
-	C_CVar.SetCVar("Sound_SFXVolume", SkuSettings:Sub("SkuOptions").soundChannels.SFXVolume / 100)
-	C_CVar.SetCVar("Sound_MusicVolume", SkuSettings:Sub("SkuOptions").soundChannels.MusicVolume / 100)
-	C_CVar.SetCVar("Sound_AmbienceVolume", SkuSettings:Sub("SkuOptions").soundChannels.AmbienceVolume / 100)
-	C_CVar.SetCVar("Sound_DialogVolume", SkuSettings:Sub("SkuOptions").soundChannels.DialogVolume / 100)
-
-	--set more sound options
-	local tbValues = {["true"] = "1", ["false"] = "0"}
-	
-	C_CVar.SetCVar("Sound_EnableReverb", tbValues[tostring(SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableReverb)])
-	C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", tbValues[tostring(SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnablePositionalLowPassFilter)])
-	C_CVar.SetCVar("Sound_EnableDSPEffects", tbValues[tostring(SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableDSPEffects)])
-	C_CVar.SetCVar("Sound_EnableSoundWhenGameIsInBG", tbValues[tostring(SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableSoundWhenGameIsInBG)])
-	C_CVar.SetCVar("Sound_ZoneMusicNoDelay", tbValues[tostring(SkuSettings:Sub("SkuOptions").soundSettings.Sound_ZoneMusicNoDelay)])
+	-- The game sound CVars (Sound_MasterVolume and friends, Sound_EnableReverb
+	-- and friends) are NOT restored here any more. The client persists them in
+	-- Config.wtf itself; Sku's own copy was profile-scoped while the CVars are
+	-- account-wide, so pushing the copy back at every login overwrote whatever
+	-- the player had set -- and a character whose AceDB profile pointer resolves
+	-- to another profile (e.g. the "Default" one AceDB falls back to) restored a
+	-- different set entirely. The menu nodes in SkuZOptions/Options.lua read and
+	-- write the CVars directly now, so the game is the single owner.
 
 	local overviewSectionsAll = {
 		["party"] = {pos = 1, locName = L["Party"], },

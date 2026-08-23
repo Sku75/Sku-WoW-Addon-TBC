@@ -3049,7 +3049,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 				-- (more important) entries above. Same db/keyPrefix (soundSettings.<key> under
 				-- SkuOptions) -> saved values preserved.
 				if a and a.soundSettings and a.soundSettings.args then
-					SkuOptions:IterateOptionsArgs(a.soundSettings.args, self, SkuSettings:Sub("SkuOptions").soundSettings, "SkuOptions", "soundSettings.", true)
+					SkuOptions:IterateOptionsArgs(a.soundSettings.args, self, nil, "SkuOptions", "soundSettings.", true)
 				end
 			end },
 		-- W8: Kamera, relocated from the Barrierefreiheit root menu (7.3); the

@@ -2669,27 +2669,39 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	SetCVar("nameplateShowAll", 1)
 
 	if isInitialLogin == true then
-		--add default profiles if they are not there
-		local tCurrentP = SkuOptions.db:GetCurrentProfile()
-
-		local pGeneral, pHealer, pCaster, pMelee
-		
-		local tProfiles = SkuOptions.db:GetProfiles()
-		for i, v in pairs(tProfiles) do
-			if v == L["Standard profil Allgemein"] then pGeneral = true end
-			if v == L["Standard profil Heiler"] then pHealer = true end
-			if v == L["Standard profil Caster"] then pCaster = true end
-			if v == L["Standard profil Nahkämpfer"] then pMelee = true end
+		-- Make sure the four standard profiles EXIST. They only have to be
+		-- listable: AceDB's GetProfiles enumerates sv.profiles, and a profile is
+		-- populated lazily (copyDefaults) the first time someone actually switches
+		-- to it. So an empty table under its name is a complete profile.
+		--
+		-- This used to create them by SWITCHING to each missing one and then back
+		-- (four SetProfile calls plus a return switch, wrapped in a SkuCore.AutoChange
+		-- flag that suppressed OnProfileChanged meanwhile). Every switch fires
+		-- OnProfileShutdown, runs removeDefaults over the whole defaults tree of the
+		-- profile it leaves and copyDefaults over the one it enters -- about ten full
+		-- walks of an ~11k-key tree, in one frame, inside the login handler. The end
+		-- state was four EMPTY tables, because removeDefaults stripped each freshly
+		-- copied profile again on the way past, so all of it was waste.
+		--
+		-- It was also dangerous on a hardcore realm, where the client aborts a script
+		-- that runs too long: killed mid-loop it left the character on whatever
+		-- profile the loop had reached instead of its own (a different profile means
+		-- a different set of EVERY profile-scoped setting), and left AutoChange stuck
+		-- at true, which suppresses OnProfileChanged for the rest of the session.
+		-- The dispatcher pcalls this handler, so that failed silently.
+		--
+		-- Four table assignments cannot be interrupted into a bad state, so there is
+		-- nothing here to make resumable and no AutoChange flag to leak.
+		local tStandardProfiles = {
+			L["Standard profil Allgemein"],
+			L["Standard profil Heiler"],
+			L["Standard profil Caster"],
+			L["Standard profil Nahkämpfer"],
+		}
+		SkuOptions.db.sv.profiles = SkuOptions.db.sv.profiles or {}
+		for _, tProfileName in ipairs(tStandardProfiles) do
+			SkuOptions.db.sv.profiles[tProfileName] = SkuOptions.db.sv.profiles[tProfileName] or {}
 		end
-
-		SkuCore.AutoChange = true
-		if not pGeneral then SkuOptions.db:SetProfile(L["Standard profil Allgemein"]) end
-		if not pHealer then SkuOptions.db:SetProfile(L["Standard profil Heiler"]) end
-		if not pCaster then SkuOptions.db:SetProfile(L["Standard profil Caster"]) end
-		if not pMelee then SkuOptions.db:SetProfile(L["Standard profil Nahkämpfer"]) end
-		SkuCore.AutoChange = nil
-
-		SkuOptions.db:SetProfile(tCurrentP)
 
 		dprint(SkuSettings:Sub("SkuCore", nil, "global").IsFirstAccountLogin, SkuSettings:Sub("SkuCore", nil, "char").IsFirstCharLogin)
 		if SkuSettings:Sub("SkuCore", nil, "global").IsFirstAccountLogin ~= false then

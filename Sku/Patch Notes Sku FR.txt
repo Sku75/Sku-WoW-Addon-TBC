@@ -36,6 +36,7 @@ Changements dans Sku v43.0
             Chaque entrée de menu de tout l'addon coûte environ 13 fois moins à créer, ce qui ouvre les grandes listes de sorts environ trois fois plus vite.
             Une liste dont la construction a été interrompue par le serveur est poursuivie à la frame suivante au lieu de rester incomplète sans le dire.
             Les réglages à deux valeurs annoncent leur valeur avec le nom et se basculent avec Entrée ; la flèche droite et le sous-menu disparaissent.
+            Les curseurs de volume du menu Sku règlent directement le réglage du jeu ; Sku n'en garde plus de copie.
 
         Corrections
             Clients français : tous les sons d'auras et les clips vocaux enregistrés étaient muets (correctif de Naxedim).
@@ -57,6 +58,8 @@ Changements dans Sku v43.0
             Moniteur de ressource : un moniteur désactivé dans le menu des fonctions annonçait quand même les changements de ressource.
             Clients français : la liste des enchantements d'arme pour les auras était vide.
             La vérification de préparation n'arrivait pas directement sur « Prêt » comme le fait toute autre fenêtre surgissante.
+            Un volume de jeu réglé dans le menu Sku pouvait revenir à une ancienne valeur sur un autre personnage.
+            Les quatre profils standard sont créés sans changer de profil entre-temps - sur les royaumes hardcore, cela pouvait vous laisser dans un profil qui n'est pas le vôtre.
 
     Avec nos remerciements à Naxedim et ZenqFR
         Les quatre correctifs suivants sont les premières contributions de code directes au dépôt
@@ -1019,6 +1022,53 @@ Changements dans Sku v43.0
             ReadyCheckFrame_OnLoad : aucune nouvelle entrée de localisation n'est nécessaire. Seuls
             les boutons visibles sont listés : si vous avez lancé la vérification vous-même,
             Blizzard masque le côté réponse et il n'y a rien à répondre.
+
+
+    Volumes du jeu : une valeur réglée revenait forte sur un autre personnage
+        Simple : Si vous baissiez le volume général dans le menu Sku, vous le retrouviez à
+            l'ancienne valeur sur un autre personnage. Sku conservait en effet sa propre copie des
+            cinq volumes et des cinq interrupteurs de son, en plus de celle du jeu, et réécrivait
+            cette copie dans le jeu à chaque connexion. Cette copie dépend du profil Sku, alors
+            que le réglage du jeu dépend du compte : deux personnages dans des profils différents
+            entendaient donc deux volumes différents, et une modification faite dans les options
+            de son de Blizzard disparaissait sans bruit à la connexion suivante. Sku ne fait plus
+            que régler les valeurs ; c'est au jeu de les retenir, comme pour tout autre joueur.
+            Les curseurs du menu affichent désormais la valeur réelle du jeu, y compris si vous
+            l'avez changée ailleurs. Ce que l'on perd : les volumes ne suivent plus un profil Sku.
+        Technique : SkuOptions:OnEnable réécrivait soundChannels et soundSettings du profil vers
+            les CVars à chaque connexion, précédé d'une règle spéciale qui prenait une valeur
+            stockée de 0 ou -1 pour un profil corrompu et réadoptait alors les cinq canaux depuis
+            les CVars. Tout ce bloc a disparu. Les nœuds de menu dans SkuZOptions/Options.lua
+            lisent et écrivent les CVars directement (tGetSoundCVarPercent, tSetSoundCVarPercent,
+            tGetSoundCVarBool) ; les dix clés sont retirées de SkuOptions.defaults et du schéma,
+            et un passage unique dans OnInitialize les nettoie de chaque profil enregistré - pas
+            seulement de l'actif, car sans entrée dans les défauts AceDB ne les retirerait plus
+            jamais. soundChannels reste : SkuChannel, le canal sur lequel Sku diffuse sa propre
+            sortie, est un vrai réglage Sku. La lecture arrondit désormais au lieu de tronquer -
+            tonumber("0.35") * 100 vaut 34,999... et serait revenu à 34. Les nouveaux profils
+            n'apportent plus aucune valeur de volume par défaut ; ce sont les défauts du jeu qui
+            s'appliquent.
+
+    Les quatre profils standard sont créés sans changer de profil entre-temps
+        Simple : À la première connexion, Sku crée les quatre profils standard s'ils manquent. Il
+            le faisait jusqu'ici en basculant tour à tour dans chaque profil manquant puis en
+            revenant dans le vôtre. Sur un royaume hardcore, le serveur interrompt les scripts
+            d'addon trop longs, et si cela tombait sur cette séquence le personnage restait dans
+            le profil d'un autre - avec tous les réglages de ce profil au lieu des vôtres. Or un
+            profil existe dès qu'il porte un nom ; il n'y a rien à basculer pour cela. Dix étapes
+            lourdes sont devenues quatre étapes courtes qui ne peuvent pas échouer à mi-chemin.
+        Technique : Les quatre appels à SetProfile plus le retour dans SkuCore/Core.lua sont
+            remplacés par quatre affectations dans SkuOptions.db.sv.profiles. Le GetProfiles
+            d'AceDB énumère exactement cette table, et un profil n'est de toute façon rempli par
+            copyDefaults qu'au premier basculement - l'état enregistré final est le même
+            qu'auparavant, quatre tables vides. Chaque appel à SetProfile déclenchait au contraire
+            OnProfileShutdown et parcourait avec removeDefaults et copyDefaults l'arbre complet
+            des défauts des huit modules, soit une dizaine de parcours dans une seule frame.
+            Supprimer les basculements supprime aussi le drapeau SkuCore.AutoChange, qui rendait
+            OnProfileChanged muet pendant ce temps et restait à true en cas d'interruption -
+            après quoi plus aucun changement de profil ne passait pour le reste de la session. Le
+            répartiteur enveloppe ce gestionnaire dans un pcall, l'interruption était donc
+            invisible.
 
 
 -------------------------------------------------------------------------------------------------------

@@ -33,6 +33,30 @@ do
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
+-- The game sound CVars belong to the GAME, not to Sku: the client persists them
+-- in Config.wtf on its own. Sku reads and writes them and keeps NO copy of its
+-- own. The copy it used to keep was profile-scoped while the CVars are not, and
+-- it was pushed back over the game's values at every login -- so a volume set on
+-- one character came back at the old value on the next one whose AceDB profile
+-- pointer resolved elsewhere.
+local function tGetSoundCVarPercent(aCVar)
+	local tValue = tonumber(C_CVar.GetCVar(aCVar))
+	if not tValue then
+		return 100
+	end
+	-- round, do not floor: tonumber("0.35") * 100 is 34.999... and would read back one step low
+	return math.floor((tValue * 100) + 0.5)
+end
+
+local function tSetSoundCVarPercent(aCVar, aValue)
+	C_CVar.SetCVar(aCVar, (tonumber(aValue) or 0) / 100)
+end
+
+local function tGetSoundCVarBool(aCVar)
+	return C_CVar.GetCVar(aCVar) == "1"
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
 SkuOptions.options = {
 	name = MODULE_NAME,
 	handler = SkuOptions,
@@ -97,11 +121,10 @@ SkuOptions.options = {
 						desc = "",
 						type = "range",
 						set = function(info,val)
-							SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume = val
-							C_CVar.SetCVar("Sound_MasterVolume", SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume / 100)
+							tSetSoundCVarPercent("Sound_MasterVolume", val)
 						end,
 						get = function(info)
-							return SkuSettings:Sub("SkuOptions").soundChannels.MasterVolume
+							return tGetSoundCVarPercent("Sound_MasterVolume")
 						end
 					},
 					SFXVolume = {
@@ -110,11 +133,10 @@ SkuOptions.options = {
 						desc = "",
 						type = "range",
 						set = function(info,val)
-							SkuSettings:Sub("SkuOptions").soundChannels.SFXVolume = val
-							C_CVar.SetCVar("Sound_SFXVolume", SkuSettings:Sub("SkuOptions").soundChannels.SFXVolume / 100)
+							tSetSoundCVarPercent("Sound_SFXVolume", val)
 						end,
 						get = function(info)
-							return SkuSettings:Sub("SkuOptions").soundChannels.SFXVolume
+							return tGetSoundCVarPercent("Sound_SFXVolume")
 						end
 					},
 					MusicVolume = {
@@ -123,11 +145,10 @@ SkuOptions.options = {
 						desc = "",
 						type = "range",
 						set = function(info,val)
-							SkuSettings:Sub("SkuOptions").soundChannels.MusicVolume = val
-							C_CVar.SetCVar("Sound_MusicVolume", SkuSettings:Sub("SkuOptions").soundChannels.MusicVolume / 100)
+							tSetSoundCVarPercent("Sound_MusicVolume", val)
 						end,
 						get = function(info)
-							return SkuSettings:Sub("SkuOptions").soundChannels.MusicVolume
+							return tGetSoundCVarPercent("Sound_MusicVolume")
 						end
 					},
 					AmbienceVolume = {
@@ -136,11 +157,10 @@ SkuOptions.options = {
 						desc = "",
 						type = "range",
 						set = function(info,val)
-							SkuSettings:Sub("SkuOptions").soundChannels.AmbienceVolume = val
-							C_CVar.SetCVar("Sound_AmbienceVolume", SkuSettings:Sub("SkuOptions").soundChannels.AmbienceVolume / 100)
+							tSetSoundCVarPercent("Sound_AmbienceVolume", val)
 						end,
 						get = function(info)
-							return SkuSettings:Sub("SkuOptions").soundChannels.AmbienceVolume
+							return tGetSoundCVarPercent("Sound_AmbienceVolume")
 						end
 					},
 					DialogVolume = {
@@ -149,11 +169,10 @@ SkuOptions.options = {
 						desc = "",
 						type = "range",
 						set = function(info,val)
-							SkuSettings:Sub("SkuOptions").soundChannels.DialogVolume = val
-							C_CVar.SetCVar("Sound_DialogVolume", SkuSettings:Sub("SkuOptions").soundChannels.DialogVolume / 100)
+							tSetSoundCVarPercent("Sound_DialogVolume", val)
 						end,
 						get = function(info)
-							return SkuSettings:Sub("SkuOptions").soundChannels.DialogVolume
+							return tGetSoundCVarPercent("Sound_DialogVolume")
 						end
 					},
 					SkuChannel = {
@@ -184,7 +203,6 @@ SkuOptions.options = {
 						end
 					end,
 					set = function(info,val)
-						SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableReverb = val
 						if val == true then
 							C_CVar.SetCVar("Sound_EnableReverb", 1)
 						else
@@ -192,7 +210,7 @@ SkuOptions.options = {
 						end
 					end,
 					get = function(info)
-						return SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableReverb
+						return tGetSoundCVarBool("Sound_EnableReverb")
 					end
 				},
 				Sound_EnablePositionalLowPassFilter = {
@@ -208,7 +226,6 @@ SkuOptions.options = {
 						end
 					end,
 					set = function(info,val)
-						SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnablePositionalLowPassFilter = val
 						if val == true then
 							C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", 1)
 						else
@@ -216,7 +233,7 @@ SkuOptions.options = {
 						end
 					end,
 					get = function(info)
-						return SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnablePositionalLowPassFilter
+						return tGetSoundCVarBool("Sound_EnablePositionalLowPassFilter")
 					end
 				},
 				Sound_EnableDSPEffects = {
@@ -232,7 +249,6 @@ SkuOptions.options = {
 						end
 					end,
 					set = function(info,val)
-						SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableDSPEffects = val
 						if val == true then
 							C_CVar.SetCVar("Sound_EnableDSPEffects", 1)
 						else
@@ -240,7 +256,7 @@ SkuOptions.options = {
 						end
 					end,
 					get = function(info)
-						return SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableDSPEffects
+						return tGetSoundCVarBool("Sound_EnableDSPEffects")
 					end
 				},
 				Sound_EnableSoundWhenGameIsInBG = {
@@ -256,7 +272,6 @@ SkuOptions.options = {
 						end
 					end,
 					set = function(info,val)
-						SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableSoundWhenGameIsInBG = val
 						if val == true then
 							C_CVar.SetCVar("Sound_EnableSoundWhenGameIsInBG", 1)
 						else
@@ -264,7 +279,7 @@ SkuOptions.options = {
 						end
 					end,
 					get = function(info)
-						return SkuSettings:Sub("SkuOptions").soundSettings.Sound_EnableSoundWhenGameIsInBG
+						return tGetSoundCVarBool("Sound_EnableSoundWhenGameIsInBG")
 					end
 				},
 				Sound_ZoneMusicNoDelay = {
@@ -280,7 +295,6 @@ SkuOptions.options = {
 						end
 					end,
 					set = function(info,val)
-						SkuSettings:Sub("SkuOptions").soundSettings.Sound_ZoneMusicNoDelay = val
 						if val == true then
 							C_CVar.SetCVar("Sound_ZoneMusicNoDelay", 1)
 						else
@@ -288,7 +302,7 @@ SkuOptions.options = {
 						end
 					end,
 					get = function(info)
-						return SkuSettings:Sub("SkuOptions").soundSettings.Sound_ZoneMusicNoDelay
+						return tGetSoundCVarBool("Sound_ZoneMusicNoDelay")
 					end
 				},
 			},
@@ -682,19 +696,7 @@ SkuOptions.defaults = {
 		MenuQuickSelect4 = "",
 		},
 	soundChannels  = {
-		MasterVolume = -1, --this is to check if the profile has sound settings. take the current blizz settings, if not.
-		SFXVolume = 100,
-		MusicVolume = 100,
-		AmbienceVolume = 100,
-		DialogVolume = 100,
 		SkuChannel = "Talking Head",
-		},
-	soundSettings  = {
-		Sound_EnableReverb = false, --this is to check if the profile has sound settings. take the current blizz settings, if not.
-		Sound_EnablePositionalLowPassFilter = false,
-		Sound_EnableDSPEffects = false,
-		Sound_EnableSoundWhenGameIsInBG = false,
-		Sound_ZoneMusicNoDelay = false,
 		},
 		softTargeting = {
 			enemy = {
@@ -750,17 +752,7 @@ SkuSettings:Register("SkuOptions", {
 	["TTSSepPause"] = { scope = "profile", default = 85, type = "number" },
 	["backgroundSound"] = { scope = "profile", default = "silence.mp3", type = "string" },
 	["localActive"] = { scope = "profile", default = true, type = "boolean" },
-	["soundChannels.MasterVolume"] = { scope = "profile", default = -1, type = "number" },
-	["soundChannels.SFXVolume"] = { scope = "profile", default = 100, type = "number" },
-	["soundChannels.MusicVolume"] = { scope = "profile", default = 100, type = "number" },
-	["soundChannels.AmbienceVolume"] = { scope = "profile", default = 100, type = "number" },
-	["soundChannels.DialogVolume"] = { scope = "profile", default = 100, type = "number" },
 	["soundChannels.SkuChannel"] = { scope = "profile", default = "Talking Head", type = "string" },
-	["soundSettings.Sound_EnableReverb"] = { scope = "profile", default = false, type = "boolean" },
-	["soundSettings.Sound_EnablePositionalLowPassFilter"] = { scope = "profile", default = false, type = "boolean" },
-	["soundSettings.Sound_EnableDSPEffects"] = { scope = "profile", default = false, type = "boolean" },
-	["soundSettings.Sound_EnableSoundWhenGameIsInBG"] = { scope = "profile", default = false, type = "boolean" },
-	["soundSettings.Sound_ZoneMusicNoDelay"] = { scope = "profile", default = false, type = "boolean" },
 	["debugOptions.soundOnError"] = { scope = "profile", default = false, type = "boolean" },
 	["allModules.MenuQuickSelect1"] = { scope = "profile", default = "", type = "string" },
 	["allModules.MenuQuickSelect2"] = { scope = "profile", default = "", type = "string" },

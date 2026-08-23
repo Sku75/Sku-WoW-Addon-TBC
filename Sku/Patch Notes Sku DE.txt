@@ -33,6 +33,7 @@ Aenderungen in Sku v43.0
             Jeder Menueeintrag im ganzen Addon wird rund 13 mal guenstiger erzeugt; die grossen Zauberlisten oeffnen dadurch etwa dreimal so schnell.
             Eine Liste, deren Aufbau vom Server abgebrochen wurde, wird im naechsten Frame weitergebaut statt unbemerkt unvollstaendig zu bleiben.
             Einstellungen mit zwei Werten sagen ihren Wert gleich mit und schalten mit Enter um; Pfeil rechts und das Untermenue entfallen.
+            Die Lautstaerkeregler im Sku-Menue stellen die Spieleinstellung direkt ein; Sku speichert keine eigene Kopie mehr.
 
         Fehlerbehebungen
             Franzoesische Clients: alle Aura-Sounds und aufgenommenen Sprachclips waren stumm (Korrektur von Naxedim).
@@ -54,6 +55,8 @@ Aenderungen in Sku v43.0
             Energiemonitor: ein im Funktionsmenue abgeschalteter Monitor sagte Ressourcenaenderungen trotzdem an.
             Franzoesische Clients: die Liste der Waffenverzauberungen fuer Auren war leer.
             Der Bereitschaftscheck sprang nicht direkt auf "Bereit", wie es jedes andere Popup tut.
+            Eine im Sku-Menue gesetzte Spiel-Lautstaerke konnte auf einem anderen Charakter wieder auf einem alten Wert stehen.
+            Die vier Standardprofile werden angelegt, ohne dazwischen das Profil zu wechseln - auf Hardcore-Realms konnte man dabei in einem fremden Profil landen.
 
     Mit Dank an Naxedim und ZenqFR
         Die naechsten vier Korrekturen sind die ersten direkten Code-Beitraege zum inzwischen
@@ -993,6 +996,53 @@ Aenderungen in Sku v43.0
             ReadyCheckFrame_OnLoad uebersetzt, es braucht also keinen neuen Locale-Eintrag.
             Gelistet werden nur sichtbare Knoepfe: hast du den Check selbst gestartet, blendet
             Blizzard die Antwortseite aus und es gibt nichts zu beantworten.
+
+
+    Spiel-Lautstaerken: ein gesetzter Wert kam auf einem anderen Charakter wieder laut zurueck
+        Einfach: Wer die Gesamtlautstaerke im Sku-Menue leiser stellte, fand sie auf einem anderen
+            Charakter wieder auf dem alten Wert. Sku hatte die fuenf Lautstaerken und die fuenf
+            Sound-Schalter naemlich zusaetzlich selbst gespeichert und bei jedem Anmelden wieder
+            ins Spiel zurueckgeschrieben. Diese Kopie haengt am Sku-Profil, die Spieleinstellung
+            aber am Konto: zwei Charaktere in verschiedenen Profilen hoerten deshalb zwei
+            verschiedene Lautstaerken, und eine Aenderung in Blizzards eigenen Soundoptionen war
+            beim naechsten Anmelden stillschweigend wieder weg. Sku stellt die Werte jetzt nur
+            noch ein, merken tut sie sich das Spiel selbst - wie bei jedem anderen Spieler auch.
+            Die Regler im Menue zeigen ab sofort den echten Wert des Spiels, auch wenn du ihn
+            woanders geaendert hast. Was wegfaellt: Lautstaerken folgen keinem Sku-Profil mehr.
+        Technisch: SkuOptions:OnEnable schrieb soundChannels und soundSettings bei jedem Anmelden
+            aus dem Profil in die CVars zurueck, davor eine Sonderregel, die einen gespeicherten
+            Wert von 0 oder -1 als defektes Profil ansah und dann alle fuenf Kanaele neu aus den
+            CVars uebernahm. Der ganze Block ist raus. Die Menueknoten in SkuZOptions/Options.lua
+            lesen und schreiben die CVars direkt (tGetSoundCVarPercent, tSetSoundCVarPercent,
+            tGetSoundCVarBool); die zehn Schluessel sind aus SkuOptions.defaults und aus dem
+            Schema entfernt, und ein einmaliger Durchlauf in OnInitialize raeumt sie aus jedem
+            gespeicherten Profil - nicht nur aus dem aktiven, denn ohne Defaults-Eintrag wuerde
+            AceDB sie nie wieder abraeumen. soundChannels selbst bleibt: SkuChannel, der Kanal
+            fuer Skus eigene Ausgabe, ist eine echte Sku-Einstellung. Beim Lesen wird jetzt
+            gerundet statt abgeschnitten - tonumber("0.35") * 100 ergibt 34,999... und waere als
+            34 zurueckgekommen. Neue Profile bringen keine Lautstaerke-Vorgaben mehr mit; es
+            gelten die Standardwerte des Spiels.
+
+    Die vier Standardprofile werden angelegt, ohne dazwischen das Profil zu wechseln
+        Einfach: Beim ersten Anmelden legt Sku die vier Standardprofile an, falls sie fehlen. Das
+            geschah bisher, indem Sku der Reihe nach in jedes fehlende Profil wechselte und danach
+            in deines zurueck. Auf einem Hardcore-Realm bricht der Server lange Addon-Skripte ab,
+            und traf das diesen Ablauf, blieb der Charakter in einem fremden Profil stehen - mit
+            allen Einstellungen dieses Profils statt deinen. Ein Profil entsteht aber schon
+            dadurch, dass es seinen Namen bekommt; gewechselt werden muss dafuer gar nichts. Aus
+            zehn schweren Schritten sind vier kurze geworden, die mittendrin nicht schiefgehen
+            koennen.
+        Technisch: Die vier SetProfile-Aufrufe plus der Rueckwechsel in SkuCore/Core.lua sind
+            durch vier Zuweisungen in SkuOptions.db.sv.profiles ersetzt. AceDBs GetProfiles zaehlt
+            genau diese Tabelle auf, und ein Profil wird ohnehin erst beim ersten Hineinwechseln
+            per copyDefaults gefuellt - der gespeicherte Endzustand ist derselbe wie vorher, vier
+            leere Tabellen. Jeder SetProfile-Aufruf dagegen feuerte OnProfileShutdown und lief mit
+            removeDefaults und copyDefaults ueber den kompletten Defaults-Baum aller acht Module,
+            rund zehn Durchlaeufe in einem einzigen Frame. Mit dem Wechseln entfaellt auch das
+            Flag SkuCore.AutoChange, das OnProfileChanged solange stummschaltete und bei einem
+            Abbruch auf true stehen blieb - danach kam fuer den Rest der Sitzung kein
+            Profilwechsel mehr durch. Der Dispatcher pcallt diesen Handler, der Abbruch war also
+            unsichtbar.
 
 
 -------------------------------------------------------------------------------------------------------
