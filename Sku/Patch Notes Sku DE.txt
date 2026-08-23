@@ -16,7 +16,7 @@ Aenderungen in Sku v43.0
             Der Installer sammelt auf Knopfdruck alle Logdateien fuer eine Fehlermeldung.
             Der Anmeldebildschirm ist mit dem Anmelde-Tool jetzt bedienbar.
             Wegpunktlisten sagen an, wie weit das Laden fortgeschritten ist.
-            Auren-Wertelisten beginnen mit "Zauber-ID eingeben", falls du die Nummer kennst und den Namen nicht.
+            Auren-Wertelisten beginnen mit "Zauber eingeben", falls du die Nummer kennst und den Namen nicht.
 
         Aenderungen
             Auren-Ablaufwarnungen kommen puenktlich statt erst beim naechsten Kampfereignis.
@@ -30,6 +30,12 @@ Aenderungen in Sku v43.0
             Alle Raenge eines Zaubers zaehlen fuer eine Aura als ein Eintrag.
             Zaubernamen, die im Spiel mehrfach vergeben sind, lassen sich in den Auswahllisten jetzt unterscheiden.
             Die mitgelieferten Aurensets gibt es nicht mehr nur auf deutschen Clients.
+            Die Aura-Bedingungen "zauber nr" und "gegenstand nr" gibt es nicht mehr; "zauber name" und "gegenstand name" nehmen auch eine getippte Nummer.
+            Die Ereignisliste einer Aura-Bedingung fasst alle Zauber-Ereignisse unter einem Eintrag "Zauber Ereignisse" zusammen.
+            "Eigene combopunkte" steht jetzt in der Gruppe "Eigene Gesundheit oder Ressource" statt in der obersten Attributliste.
+            Die Werteliste "zauber benutzbar" oeffnet ohne Haenger, und alle Aura-Wertelisten oeffnen spuerbar schneller.
+            Jeder Menueeintrag im ganzen Addon wird rund 13 mal guenstiger erzeugt; die grossen Zauberlisten oeffnen dadurch etwa dreimal so schnell.
+            Eine Liste, deren Aufbau vom Server abgebrochen wurde, wird im naechsten Frame weitergebaut statt unbemerkt unvollstaendig zu bleiben.
 
         Fehlerbehebungen
             Franzoesische Clients: alle Aura-Sounds und aufgenommenen Sprachclips waren stumm (Korrektur von Naxedim).
@@ -848,8 +854,8 @@ Aenderungen in Sku v43.0
             seiner Marke erkannt. Die getippte ID wird zur Gruppe aufgeloest und der GRUPPENWERT
             gespeichert, nicht die ID: die Listenattribute vergleichen gegen gruppengeschluesselte
             Live-Listen, "zauber name" vergleicht Namen - eine nackte ID koennte dort nie
-            matchen. Nur beim Attribut "zauber nr", wo die ID der Wert IST, wird sie genau so
-            gespeichert, wie sie getippt wurde.
+            matchen. Eine getippte ID gilt damit immer fuer den ganzen Zauber, alle Raenge
+            eingeschlossen.
 
     Franzoesische Clients: die Liste der Waffenverzauberungen fuer Auren war leer
         Einfach: Auf einem franzoesischen Client bot die Aura-Bedingung fuer Waffenverzauberungen
@@ -860,6 +866,131 @@ Aenderungen in Sku v43.0
             leer heraus. Sie nimmt jetzt die Spalte der eigenen Sprache, sonst die englische,
             wie der Rest des Namenssystems seit v42.09. Gefunden beim Umbau auf Gruppen-
             Identitaet, nicht aus einem Bericht.
+
+    Auren: die Bedingungen "zauber nr" und "gegenstand nr" sind entfallen
+        Einfach: Die beiden Bedingungen, die eine Zauber- oder Gegenstandsnummer direkt
+            abgefragt haben, stehen nicht mehr in der Attributliste. Gemeint war damit ein
+            EINZELNER Zauberrang - "Frostblitz Rang 1" und sonst nichts. Gleich daneben steht
+            "zauber name", das dieselbe getippte Nummer annimmt und daraus den ganzen Zauber
+            macht, alle Raenge eingeschlossen: zwei benachbarte Eintraege, die dieselbe Eingabe
+            annehmen und Gegenteiliges bedeuten, ohne dass im Menue etwas darauf hinweist. Wer
+            wirklich einen einzelnen Rang braucht, sagt bitte Bescheid - dann kommt die Bedingung
+            zurueck. "gegenstand nr" hat ausserdem noch nie funktioniert. Gespeicherte Auren mit
+            einer der beiden laufen unveraendert weiter.
+        Technisch: Beide Attribute bleiben in SkuAuras.attributes und werden weiter ausgewertet,
+            sind aber ueber ein retired-Flag aus dem Builder ausgeblendet - eine importierte oder
+            alte Aura darf nicht auf ein nil laufen. "gegenstand nr" verglich tonumber() ueber den
+            GESPEICHERTEN Wert "item:6948", also nil, worauf jeder Operator an seiner eigenen
+            nil-Pruefung ausstieg: die Bedingung war in jeder ausgelieferten Version dauerhaft
+            falsch. Repariert, statt kaputt liegenzulassen - ein Lesepfad, den man behaelt, muss
+            ehrlich sein. Mit den Attributen entfallen ihre Wertelisten, rund 49.000 Zauber-IDs
+            und 25.000 Gegenstands-IDs mit je einem eigenen Tabelleneintrag, die bei jedem Laden
+            aufgebaut wurden. Ausserdem faengt die Auswertungsschleife jetzt ein Attribut ab, das
+            dieser Build gar nicht kennt: importierte Auren werden ungeprueft uebernommen, und ein
+            solcher Name warf vorher bei JEDEM Kampfereignis einen Lua-Fehler. /skucheck auras
+            meldet beide Faelle.
+
+    Auren: die Ereignisliste hat jetzt eine Gruppe "Zauber Ereignisse"
+        Einfach: Die Liste der Ereignisse, aus der eine Bedingung waehlt, hatte 35 Eintraege, und
+            18 davon waren Zauber-Ereignisse. Dazwischen lagen die Ereignisse, die gar nichts mit
+            einem Zauber zu tun haben - Nahkampf, Fernkampf, Gegenstands-Cooldown, Tastendruck,
+            Zielwechsel - und waren nur noch durch Vorbeilaufen zu finden. Die 18 stehen jetzt
+            unter einem Eintrag "Zauber Ereignisse"; oben bleiben 18 Eintraege statt 35. Der
+            Gruppeneintrag nennt selbst, was darin ausgewaehlt ist, du musst also nicht
+            hineingehen, um das zu erfahren. An den Auren selbst aendert sich nichts.
+        Technisch: Reine Menue-Gruppierung, eine Ebene unter der Attributgruppe "Eigene
+            Gesundheit oder Ressource" und nach demselben Muster. Jeder Wert bleibt sein eigener
+            Wert, die Mehrfachauswahl und der Operator gelten unveraendert fuer die ganze
+            Bedingung. Die Mitgliedschaft ist eine ausgeschriebene Liste, kein Praefix-Vergleich
+            auf "SPELL_": zwei der Ereignisse erzeugt Sku selbst, ihre Namen gehoeren uns, und ein
+            Muster wuerde still umgruppieren, sobald eines umbenannt wird. Der Baustein fuer die
+            Wertetoggles wurde herausgezogen, damit ein Wert in der Gruppe und einer ausserhalb
+            garantiert derselbe Eintrag sind.
+
+    Auren: "Eigene combopunkte" ist in die Gruppe "Eigene Gesundheit oder Ressource" gezogen
+        Einfach: Die Bedingung steht nicht mehr einzeln in der obersten Attributliste, sondern
+            zusammen mit Gesundheit, Ressource, Mana, Wut, Energie und Runenmacht in der Gruppe,
+            in der man sie sucht. Sie kann genau dasselbe wie vorher.
+        Technisch: Verschoben, nicht entfernt - kein anderer Eintrag der Gruppe meldet
+            Kombopunkte, ein blosses Loeschen haette die Faehigkeit ersatzlos gestrichen. Sie
+            waren beim Bau der Gruppe bewusst draussen geblieben, weil sie 0 bis 5 zaehlen,
+            waehrend alles andere dort ein Prozentwert ist; diesen Unterschied traegt aber ihre
+            eigene Werteliste, und er ist kein Grund, sie woanders suchen zu lassen. Der
+            Gruppen-Hinweistext nennt beides jetzt. Nebenbei entfernt: eine vergessene
+            Debug-Ausgabe, die bei jeder Auswertung dieser Bedingung eine Zeile ins Protokoll
+            schrieb.
+
+    Auren: die Werteliste "zauber benutzbar" liess das Spiel haengen
+        Einfach: Diese Bedingung aufzuklappen hat das Spiel spuerbar eingefroren, und zwar bei
+            JEDEM Oeffnen. Sie oeffnet jetzt sofort. Angeboten werden dieselben Zauber wie vorher,
+            naemlich die auf deinen Aktionsleisten.
+        Technisch: Die Liste wurde gebaut, indem ueber ALLE rund 49.000 Zauber der Datenbank
+            gelaufen wurde und fuer jeden einzelnen C_ActionBar.FindSpellActionButtons gefragt
+            wurde, ob er auf einer Leiste liegt - und das bei jedem Oeffnen erneut, weil die
+            Werteliste vor jedem Aufbau neu erzeugt wird. Jetzt werden die 132 Aktionsplaetze
+            gefragt, was sie tragen: dieselbe Antwort in 132 statt 49.000 Schritten. Nebenbei
+            behoben: der Aufbau nimmt jetzt denselben Namensaufloeser wie die Live-Seite
+            (SkuAuras:SpellGroupName mit dem Live-Namen als Rueckfallebene), sodass Auswahlliste
+            und live anliegende Menge sich per Konstruktion decken. Vorher konnte ein Zauber, den
+            die mitgelieferte Datenbank nicht kennt, live anliegen, aber in der Liste gar nicht
+            erst auftauchen - derselbe Fehler, fuer den die Waffenverzauberungsliste in v43.0
+            korrigiert wurde.
+
+    Auren: alle Wertelisten oeffnen schneller
+        Einfach: Jede Auswahlliste einer Aura-Bedingung braucht jetzt weniger Zeit, am deutlichsten
+            die grossen Zauberlisten.
+        Technisch: Die Sortierung berechnet den Sortierschluessel einmal pro Eintrag statt zweimal
+            pro Vergleich. Die Zauberlisten haben 27.057 Gruppen; table.sort macht darauf rund
+            400.000 Vergleiche, und jeder Vergleich hat auf BEIDEN Seiten den Namen kleingeschrieben
+            - also etwa 800.000 neue Zeichenketten, bevor der erste Menueeintrag ueberhaupt
+            existierte. Jetzt sind es 27.057. Die Reihenfolge ist unveraendert.
+
+    Menue: jeder Eintrag wird jetzt rund 13 mal guenstiger erzeugt
+        Einfach: Lange Listen bauen sich deutlich schneller auf. Am staerksten faellt es bei den
+            Zauberlisten einer Aura-Bedingung auf: die haben 27.057 Eintraege, und auf einem
+            Hardcore-Realm liessen sie sich zuletzt gar nicht mehr oeffnen - der Server bricht dort
+            zu lange laufende Addon-Skripte hart ab, und der Aufbau kam nur etwa bis zur Haelfte.
+            Betroffen ist nicht nur die Aurenliste: jedes Menue in Sku baut sich aus denselben
+            Eintraegen auf.
+        Technisch: Ein Menueeintrag war eine tiefe Kopie der Vorlage SkuGenericMenuItem - pro
+            Eintrag eine Hilfstabelle, ein pairs()-Durchlauf ueber alle 28 Felder mit je einem
+            type()-Aufruf und drei Schluesselvergleichen, 28 Schreibzugriffe und eine rekursive
+            Kopie der children-Tabelle. Jetzt ist ein Eintrag eine fast leere Tabelle, deren
+            Metatabelle per __index auf die Vorlage zeigt: zwei Tabellen und ein Schreibzugriff.
+            Gemessen an 27.057 Eintraegen: das Erzeugen der Knoten faellt von 78 auf 6 ms (13x),
+            der komplette Listenaufbau von 100 auf 31 ms (3,2x, und 2,7x schneller als vor dem
+            Aurenumbau). Ein Schreibzugriff auf einen Eintrag ueberdeckt die Vorlage wie bisher;
+            children bleibt bewusst eine eigene Tabelle pro Eintrag, sonst teilten sich alle
+            Menuepunkte des Addons EINE Kinderliste. Einzige Stelle, die einen Eintrag kopiert
+            (der Filtereintrag in SkuOptions:ApplyFilter), haengt die Metatabelle wieder an.
+            /skucheck menu prueft beides an Wegwerf-Eintraegen.
+
+    Zum Vergleich nachgemessen: der Aurenumbau selbst hat diese Listen kaum verlangsamt. Die
+        Umstellung auf Gruppen hat die Zauberliste um 460 von 26.597 Eintraegen wachsen lassen
+        (+1,7 %), und Umschalter statt einfacher Eintraege kosten rund 19 % mehr Aufbauzeit. Teuer
+        war der Aufbau schon vorher; auf einem Hardcore-Realm ist eine Skriptgrenze aber eine
+        Kante und keine Schraege, und dafuer reichten die 19 %.
+
+    Menue: eine abgebrochene Liste blieb still unvollstaendig
+        Einfach: Auf einem Hardcore-Realm bricht der Server ein zu lang laufendes Addon-Skript ab.
+            Traf das den Aufbau einer langen Liste, dann liess sich die Liste beim ZWEITEN
+            Pfeil-rechts zwar oeffnen - aber es war nicht etwa ein neuer Versuch, sondern der halb
+            fertige Rest vom ersten. Bei den Zauberlisten hiess das rund 6.900 von 27.000
+            Zaubern, ohne jeden Hinweis: wer seinen Zauber nicht fand, musste glauben, es gebe ihn
+            nicht. Jetzt wird der Aufbau im naechsten Frame dort fortgesetzt, wo er abgebrochen
+            wurde, und die Liste ist nach wenigen Frames vollstaendig, ohne dass man etwas druecken
+            muss.
+        Technisch: Das Skript-Budget gilt pro Ausfuehrung, der naechste Frame hat also wieder
+            eines - genau wie beim Aufbau der Routendaten, der aus demselben Grund in Scheiben
+            laeuft. SkuOptions:ContinueInterruptedBuild ruft BuildChildren auf einem
+            Null-Timer erneut auf, solange die Ebene unvollstaendig ist. Fortgesetzt wird nur ein
+            Builder, der sich ueber `resumableBuild` dazu bekennt und einen eigenen Cursor
+            fuehrt: ein gewoehnliches BuildChildren HAENGT AN, ein zweiter Aufruf wuerde also
+            jeden Eintrag doppelt erzeugen - deshalb gab es die alte Sperre ueberhaupt. Der Cursor
+            wird erst NACH einem Eintrag gesetzt, nicht davor, sonst gilt ein Eintrag als gebaut,
+            den der Abbruch verhindert hat. Macht ein Durchlauf keinen Fortschritt, wird
+            aufgegeben statt endlos zu wiederholen. /skucheck menu prueft an einer Wegwerf-Ebene,
+            dass ein abgebrochener Aufbau fortgesetzt und nicht neu begonnen wird.
 
 
 -------------------------------------------------------------------------------------------------------

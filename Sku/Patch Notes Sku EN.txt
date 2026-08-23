@@ -16,7 +16,7 @@ Changes in Sku v43.0
             The installer collects every log file for a bug report at one button press.
             The login screen is usable with the login tool now.
             Waypoint lists announce how far the loading has got.
-            Aura value lists start with "Enter spell ID", for when you know the number and not the name.
+            Aura value lists start with "Enter spell", for when you know the number and not the name.
 
         Changes
             Aura expiry warnings arrive on time instead of at the next combat event.
@@ -30,6 +30,12 @@ Changes in Sku v43.0
             Every rank of a spell counts as one entry for an aura.
             Spell names the game hands out more than once can be told apart in the selection lists now.
             The bundled aura sets are no longer German clients only.
+            The aura conditions "spell ID" and "item ID" are gone; "spell name" and "item name" take a typed number too.
+            The event list of an aura condition collects every spell event under one "Spell events" entry.
+            "Your combo points" now sits in the "Your health or resource" group instead of the top-level attribute list.
+            The "spell usable" value list opens without a hang, and every aura value list opens noticeably faster.
+            Every menu entry in the whole addon is about 13 times cheaper to create, which makes the big spell lists open about three times faster.
+            A list whose build was cut off by the server is continued on the next frame instead of quietly staying incomplete.
 
         Bugfixes
             French clients: all aura sounds and pre-recorded speech clips were silent (fix by Naxedim).
@@ -769,8 +775,8 @@ Changes in Sku v43.0
             OnAction is wrapped once and the node recognised by its marker. The typed id is resolved
             to its group and the GROUP value is stored, not the id: the list attributes compare
             against group-keyed live lists, and "spell name" compares names - a bare id could never
-            match either. Only for the "spell ID" attribute, where the id IS the value, is it stored
-            exactly as typed.
+            match either. A typed id therefore always stands for the whole spell, every rank
+            included.
 
     French clients: the list of weapon enchants for aura conditions was empty
         Simple: On a French client the aura condition for weapon enchants offered not a single
@@ -781,6 +787,118 @@ Changes in Sku v43.0
             takes the column of your own language now, else the English one, the way the rest of the
             naming system has since v42.09. Found while porting to group identity, not from a
             report.
+
+    Auras: the conditions "spell ID" and "item ID" have been removed
+        Simple: The two conditions that asked for a spell or item number directly are gone from
+            the attribute list. What they meant was one SINGLE rank of a spell - "Frostbolt Rank 1"
+            and nothing else. Right beside them sits "spell name", which takes the very same typed
+            number and turns it into the whole spell, every rank included: two neighbouring entries
+            that accept identical input and mean opposite things, with nothing in the menu saying
+            so. If you really do need a single rank, say the word and the condition comes back.
+            "item ID" could never work at all on top of that. Stored auras using either one keep
+            running unchanged.
+        Technically: Both attributes stay in SkuAuras.attributes and are still evaluated, but a
+            retired flag keeps them out of the builder - an imported or old aura must not run into
+            a nil. "item ID" ran tonumber() over the STORED value "item:6948", which is nil, so
+            every operator bailed on its own nil guard: the condition was permanently false in
+            every shipped version. Repaired rather than left broken - a read path you keep has to
+            be honest. Retiring them drops their value lists, some 49,000 spell ids and 25,000 item
+            ids with a table entry each, built on every load. The evaluation loop also catches an
+            attribute this build does not know at all now: imported auras are stored unvalidated,
+            and such a name used to throw a Lua error on EVERY combat event. /skucheck auras
+            reports both cases.
+
+    Auras: the event list now has a "Spell events" group
+        Simple: The list of events a condition picks from had 35 entries and 18 of them were spell
+            events. The events that have nothing to do with a spell - melee, ranged, item
+            cooldown, a keypress, a target change - lay scattered between them and could only be
+            found by walking past them. Those 18 now sit under one "Spell events" entry, and the
+            top level holds 18 entries instead of 35. The group entry says for itself which of
+            them are picked, so you do not have to walk in to find out. Nothing about your auras
+            changes.
+        Technically: Menu grouping only, one level below the "Your health or resource" attribute
+            group and built to the same pattern. Every value stays its own value; multi-select and
+            the operator still apply to the whole condition. Membership is a written-out list, not
+            a "starts with SPELL_" test: two of these events are ones Sku synthesizes itself, so
+            their names are ours, and a pattern would silently regroup a value the day one gets
+            renamed. The value-toggle builder was extracted so that a value inside the group and
+            one outside it are guaranteed to be the same entry.
+
+    Auras: "Your combo points" moved into the "Your health or resource" group
+        Simple: The condition no longer sits on its own in the top-level attribute list but
+            together with health, resource, mana, rage, energy and runic power, in the group where
+            you would look for it. It does exactly what it did before.
+        Technically: Moved, not removed - no other entry in the group reports combo points, so
+            simply deleting it would have dropped the capability with nothing to replace it. They
+            were deliberately left out when the group was built, because they count 0 to 5 while
+            everything else in there is a percentage; but that difference is carried by their own
+            value list, and it is not a reason to make you look for them somewhere else. The
+            group's hint text now names both. Removed along the way: a forgotten debug line that
+            wrote to the log on every evaluation of this condition.
+
+    Auras: the "spell usable" value list froze the game
+        Simple: Opening that condition visibly froze the game, and it did so on EVERY open. It
+            opens instantly now. The spells offered are the same as before, the ones on your
+            action bars.
+        Technically: The list was built by walking ALL of the roughly 49,000 spells in the
+            database and asking C_ActionBar.FindSpellActionButtons about each one whether it sits
+            on a bar - and doing that again on every open, because a value list is rebuilt before
+            every use. It now asks the 132 action slots what they hold: the same answer in 132
+            steps instead of 49,000. Fixed along the way: the build now uses the same name
+            resolver as the live side (SkuAuras:SpellGroupName with the live name as its fallback),
+            so the offered list and the live set agree by construction. Before, a spell the
+            shipped database does not know could be live and yet never appear in the list at all -
+            the same defect the weapon enchant list was fixed for in v43.0.
+
+    Auras: every value list opens faster
+        Simple: Every selection list of an aura condition takes less time to open, most visibly
+            the big spell lists.
+        Technically: The sort computes its key once per entry instead of twice per comparison. The
+            spell lists hold 27,057 groups; table.sort makes about 400,000 comparisons over that,
+            and each comparison lowercased the name on BOTH sides - roughly 800,000 fresh strings
+            before the first menu entry even existed. It is 27,057 now. The order is unchanged.
+
+    Menu: every entry is now about 13 times cheaper to create
+        Simple: Long lists build noticeably faster. It shows most on the spell lists of an aura
+            condition: those hold 27,057 entries, and on a hardcore realm they had stopped opening
+            at all - that server kills addon scripts that run too long, and the build only got
+            about halfway. This is not only the aura lists: every menu in Sku is made of the same
+            entries.
+        Technically: A menu entry used to be a deep copy of the SkuGenericMenuItem template - per
+            entry a helper table, a pairs() walk over all 28 fields with a type() call and three
+            key comparisons each, 28 stores, and a recursive copy of the children table. An entry
+            is now an almost empty table whose metatable points at the template through __index:
+            two tables and one store. Measured over 27,057 entries: creating the nodes drops from
+            78 to 6 ms (13x), and the whole list build from 100 to 31 ms (3.2x, and 2.7x faster
+            than before the aura rework). Writing a field on an entry still shadows the template
+            as it always did; children stays a table of its own per entry on purpose, or every
+            menu item in the addon would share ONE child list. The single place that copies an
+            entry (the filter entry in SkuOptions:ApplyFilter) re-attaches the metatable.
+            /skucheck menu verifies both on throwaway entries.
+
+    Measured for comparison: the aura rework itself barely slowed these lists down. Moving to
+        groups grew the spell list by 460 entries out of 26,597 (+1.7%), and toggles instead of
+        plain entries cost about 19% more build time. The build was expensive long before that; on
+        a hardcore realm, though, a script limit is a cliff and not a slope, and 19% was enough to
+        go over it.
+
+    Menu: a cut-off list stayed silently incomplete
+        Simple: On a hardcore realm the server kills an addon script that runs too long. When that
+            hit the build of a long list, the list did open on the SECOND arrow-right - but that
+            was not a fresh attempt, it was the half-finished remains of the first. On the spell
+            lists that meant about 6,900 of 27,000 spells with nothing to say so: anyone who could
+            not find their spell had to conclude it did not exist. The build is now continued on
+            the next frame from where it stopped, and the list completes within a few frames
+            without you pressing anything.
+        Technically: The script budget is per execution, so the next frame gets a fresh one -
+            exactly why the route data build is sliced across frames. SkuOptions:ContinueInterruptedBuild
+            calls BuildChildren again on a zero-delay timer for as long as the level is incomplete.
+            Only a builder that declares itself with `resumableBuild` and keeps its own cursor is
+            re-entered: an ordinary BuildChildren APPENDS, so a second call would create every
+            entry twice - which is exactly why the old guard existed. The cursor is set AFTER an
+            entry, never before, or an entry the interrupt prevented would count as built. A pass
+            that makes no progress gives up rather than repeating forever. /skucheck menu verifies
+            on a throwaway level that a cut-off build continues instead of restarting.
 
 
 -------------------------------------------------------------------------------------------------------

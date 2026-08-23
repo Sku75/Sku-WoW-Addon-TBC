@@ -19,7 +19,7 @@ Changements dans Sku v43.0
             L'installateur collecte tous les journaux pour un rapport de bogue en un seul bouton.
             L'écran de connexion est désormais utilisable avec l'outil de connexion.
             Les listes de points de passage annoncent l'avancement du chargement.
-            Les listes de valeurs d'aura commencent par « Saisir l'ID du sort », quand vous connaissez le numéro et pas le nom.
+            Les listes de valeurs d'aura commencent par « Saisir le sort », quand vous connaissez le numéro et pas le nom.
 
         Changements
             Les avertissements d'expiration d'aura arrivent à l'heure au lieu du prochain événement de combat.
@@ -33,6 +33,12 @@ Changements dans Sku v43.0
             Tous les rangs d'un sort comptent pour une seule entrée d'aura.
             Les noms de sorts attribués plusieurs fois par le jeu se distinguent maintenant dans les listes de sélection.
             Les ensembles d'auras fournis ne sont plus réservés aux clients allemands.
+            Les conditions d'aura « ID du sort » et « ID de l'objet » ont disparu ; « nom du sort » et « nom de l'objet » acceptent aussi un numéro saisi.
+            La liste d'événements d'une condition d'aura regroupe tous les événements de sort sous une entrée « Événements de sort ».
+            « Vos points de combo » figure désormais dans le groupe « Votre santé ou ressource » et non plus dans la liste d'attributs de premier niveau.
+            La liste de valeurs « sort utilisable » s'ouvre sans à-coup, et toutes les listes de valeurs d'aura s'ouvrent nettement plus vite.
+            Chaque entrée de menu de tout l'addon coûte environ 13 fois moins à créer, ce qui ouvre les grandes listes de sorts environ trois fois plus vite.
+            Une liste dont la construction a été interrompue par le serveur est poursuivie à la frame suivante au lieu de rester incomplète sans le dire.
 
         Corrections
             Clients français : tous les sons d'auras et les clips vocaux enregistrés étaient muets (correctif de Naxedim).
@@ -871,8 +877,8 @@ Changements dans Sku v43.0
             L'ID saisi est résolu vers son groupe et c'est la VALEUR DE GROUPE qui est enregistrée,
             pas l'ID : les attributs de liste comparent avec des listes vivantes indexées par
             groupe, et « nom du sort » compare des noms - un ID nu ne pourrait jamais y
-            correspondre. Uniquement pour l'attribut « ID du sort », où l'ID EST la valeur, il est
-            enregistré exactement tel que saisi.
+            correspondre. Un ID saisi vaut donc toujours pour le sort entier, tous rangs
+            compris.
 
     Clients français : la liste des enchantements d'arme pour les auras était vide
         Simple : Sur un client français, la condition d'aura portant sur les enchantements d'arme
@@ -884,6 +890,127 @@ Changements dans Sku v43.0
             liste de valeurs sortait vide. Elle prend maintenant la colonne de votre langue, sinon
             l'anglaise, comme le reste du système de noms depuis la v42.09. Trouvé lors du portage
             vers l'identité de groupe, pas via un rapport.
+
+    Auras : les conditions « ID du sort » et « ID de l'objet » ont été retirées
+        Simple : Les deux conditions qui demandaient directement un numéro de sort ou d'objet ne
+            figurent plus dans la liste des attributs. Elles désignaient un rang UNIQUE d'un sort -
+            « Éclair de givre rang 1 » et rien d'autre. Juste à côté se trouve « nom du sort », qui
+            accepte exactement le même numéro saisi et en fait le sort entier, tous rangs compris :
+            deux entrées voisines qui acceptent la même saisie et signifient le contraire, sans que
+            le menu le dise. Si vous avez réellement besoin d'un rang précis, dites-le et la
+            condition reviendra. « ID de l'objet » n'a de plus jamais fonctionné. Les auras
+            enregistrées qui utilisent l'une des deux continuent de fonctionner.
+        Technique : Les deux attributs restent dans SkuAuras.attributes et sont toujours évalués,
+            mais un indicateur retired les écarte du constructeur - une aura importée ou ancienne
+            ne doit pas tomber sur un nil. « ID de l'objet » appliquait tonumber() à la valeur
+            ENREGISTRÉE « item:6948 », donc nil, et chaque opérateur s'arrêtait sur sa propre
+            vérification de nil : la condition était définitivement fausse dans toutes les versions
+            publiées. Réparée plutôt que laissée cassée - un chemin de lecture que l'on conserve
+            doit être honnête. Leur retrait supprime leurs listes de valeurs, environ 49 000 ID de
+            sorts et 25 000 ID d'objets avec une entrée de table chacun, reconstruites à chaque
+            chargement. La boucle d'évaluation intercepte aussi désormais un attribut que cette
+            version ne connaît pas du tout : les auras importées sont enregistrées sans
+            vérification, et un tel nom levait auparavant une erreur Lua à CHAQUE événement de
+            combat. /skucheck auras signale les deux cas.
+
+    Auras : la liste d'événements a désormais un groupe « Événements de sort »
+        Simple : La liste d'événements dans laquelle une condition choisit comptait 35 entrées,
+            dont 18 événements de sort. Les événements qui n'ont rien à voir avec un sort - mêlée,
+            distance, temps de recharge d'objet, appui de touche, changement de cible - étaient
+            dispersés entre eux et ne se trouvaient qu'en passant devant. Ces 18 figurent
+            maintenant sous une entrée « Événements de sort », et le niveau supérieur contient 18
+            entrées au lieu de 35. L'entrée de groupe indique elle-même lesquels sont
+            sélectionnés : inutile d'y entrer pour le savoir. Vos auras ne changent pas.
+        Technique : Regroupement de menu uniquement, un niveau sous le groupe d'attributs « Votre
+            santé ou ressource » et bâti sur le même modèle. Chaque valeur reste sa propre valeur ;
+            la sélection multiple et l'opérateur s'appliquent toujours à la condition entière.
+            L'appartenance est une liste écrite en toutes lettres, pas un test « commence par
+            SPELL_ » : deux de ces événements sont synthétisés par Sku, leurs noms nous
+            appartiennent, et un motif regrouperait silencieusement une valeur le jour où l'une
+            serait renommée. Le constructeur de bascules de valeur a été extrait afin qu'une valeur
+            dans le groupe et une valeur hors du groupe soient forcément la même entrée.
+
+    Auras : « Vos points de combo » a rejoint le groupe « Votre santé ou ressource »
+        Simple : La condition ne figure plus seule dans la liste d'attributs de premier niveau,
+            mais avec la santé, la ressource, le mana, la rage, l'énergie et la puissance runique,
+            dans le groupe où on la cherche. Elle fait exactement ce qu'elle faisait avant.
+        Technique : Déplacée, pas supprimée - aucune autre entrée du groupe ne rapporte les points
+            de combo, la supprimer aurait retiré la fonction sans remplacement. Ils avaient été
+            volontairement écartés à la création du groupe parce qu'ils se comptent de 0 à 5 alors
+            que tout le reste y est un pourcentage ; mais cette différence est portée par leur
+            propre liste de valeurs, et ce n'est pas une raison de vous les faire chercher
+            ailleurs. Le texte d'aide du groupe mentionne désormais les deux. Retiré au passage :
+            une sortie de débogage oubliée qui écrivait une ligne dans le journal à chaque
+            évaluation de cette condition.
+
+    Auras : la liste de valeurs « sort utilisable » figeait le jeu
+        Simple : Ouvrir cette condition figeait visiblement le jeu, et à CHAQUE ouverture. Elle
+            s'ouvre désormais instantanément. Les sorts proposés sont les mêmes qu'avant, ceux de
+            vos barres d'action.
+        Technique : La liste était construite en parcourant les quelque 49 000 sorts de la base et
+            en demandant pour chacun à C_ActionBar.FindSpellActionButtons s'il se trouve sur une
+            barre - et cela à chaque ouverture, puisqu'une liste de valeurs est reconstruite avant
+            chaque usage. Elle demande maintenant aux 132 emplacements d'action ce qu'ils
+            contiennent : la même réponse en 132 étapes au lieu de 49 000. Corrigé au passage : la
+            construction utilise désormais le même résolveur de noms que le côté vivant
+            (SkuAuras:SpellGroupName avec le nom vivant en repli), si bien que la liste proposée et
+            l'ensemble vivant coïncident par construction. Auparavant, un sort inconnu de la base
+            livrée pouvait être actif sans jamais apparaître dans la liste - le même défaut que
+            celui corrigé pour la liste des enchantements d'arme en v43.0.
+
+    Auras : toutes les listes de valeurs s'ouvrent plus vite
+        Simple : Chaque liste de sélection d'une condition d'aura met moins de temps à s'ouvrir,
+            surtout les grandes listes de sorts.
+        Technique : Le tri calcule sa clé une fois par entrée au lieu de deux fois par comparaison.
+            Les listes de sorts comptent 27 057 groupes ; table.sort y effectue environ 400 000
+            comparaisons, et chaque comparaison passait le nom en minuscules des DEUX côtés - soit
+            près de 800 000 chaînes créées avant même la première entrée de menu. Il y en a 27 057
+            désormais. L'ordre est inchangé.
+
+    Menu : chaque entrée coûte désormais environ 13 fois moins à créer
+        Simple : Les longues listes se construisent nettement plus vite. Cela se voit surtout sur
+            les listes de sorts d'une condition d'aura : elles comptent 27 057 entrées, et sur un
+            royaume hardcore elles ne s'ouvraient plus du tout - ce serveur interrompt les scripts
+            d'addon trop longs, et la construction n'allait qu'à peu près à la moitié. Cela ne
+            concerne pas que les auras : tous les menus de Sku sont faits des mêmes entrées.
+        Technique : Une entrée de menu était une copie profonde du modèle SkuGenericMenuItem - par
+            entrée une table auxiliaire, un parcours pairs() des 28 champs avec un appel type() et
+            trois comparaisons de clé chacun, 28 écritures, et une copie récursive de la table
+            children. Une entrée est maintenant une table presque vide dont la métatable pointe
+            vers le modèle via __index : deux tables et une écriture. Mesuré sur 27 057 entrées :
+            la création des nœuds passe de 78 à 6 ms (13x), et la construction complète de la
+            liste de 100 à 31 ms (3,2x, et 2,7x plus rapide qu'avant la refonte des auras). Écrire
+            un champ sur une entrée masque toujours le modèle comme avant ; children reste une
+            table propre à chaque entrée, sinon tous les éléments de menu de l'addon partageraient
+            UNE seule liste d'enfants. Le seul endroit qui copie une entrée (l'entrée de filtre
+            dans SkuOptions:ApplyFilter) rattache la métatable. /skucheck menu vérifie les deux sur
+            des entrées jetables.
+
+    Mesuré pour comparaison : la refonte des auras elle-même n'a presque pas ralenti ces listes.
+        Le passage aux groupes a fait croître la liste de sorts de 460 entrées sur 26 597 (+1,7 %),
+        et les bascules au lieu d'entrées simples coûtent environ 19 % de temps de construction en
+        plus. La construction était coûteuse bien avant ; sur un royaume hardcore, cependant, une
+        limite de script est une falaise et non une pente, et ces 19 % ont suffi à la franchir.
+
+    Menu : une liste interrompue restait incomplète sans le dire
+        Simple : Sur un royaume hardcore, le serveur interrompt un script d'addon trop long.
+            Quand cela touchait la construction d'une longue liste, celle-ci s'ouvrait bien à la
+            DEUXIÈME flèche droite - mais ce n'était pas une nouvelle tentative, c'était le reste
+            à moitié construit de la première. Sur les listes de sorts, cela représentait environ
+            6 900 sorts sur 27 000, sans le moindre avertissement : qui ne trouvait pas son sort
+            devait en conclure qu'il n'existait pas. La construction reprend désormais à la frame
+            suivante là où elle s'est arrêtée, et la liste se complète en quelques frames sans que
+            vous ayez à appuyer sur quoi que ce soit.
+        Technique : Le budget de script vaut par exécution, la frame suivante en a donc un neuf -
+            c'est précisément pour cela que la construction des données d'itinéraires est
+            découpée. SkuOptions:ContinueInterruptedBuild rappelle BuildChildren sur un minuteur à
+            délai nul tant que le niveau est incomplet. Seul un constructeur qui se déclare via
+            `resumableBuild` et tient son propre curseur est réinvoqué : un BuildChildren ordinaire
+            AJOUTE, un second appel créerait donc chaque entrée en double - c'est exactement la
+            raison d'être de l'ancien verrou. Le curseur est posé APRÈS une entrée, jamais avant,
+            sinon une entrée empêchée par l'interruption compterait comme construite. Une passe
+            sans progrès abandonne au lieu de se répéter indéfiniment. /skucheck menu vérifie sur
+            un niveau jetable qu'une construction interrompue se poursuit au lieu de recommencer.
 
 
 -------------------------------------------------------------------------------------------------------
