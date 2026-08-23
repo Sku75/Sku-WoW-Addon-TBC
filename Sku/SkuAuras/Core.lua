@@ -1906,6 +1906,22 @@ tLazyEvaluateFields = {
 	spellNameUsable = function()
 		return SkuAuras:GetSpellNamesUsable()
 	end,
+	-- [v43.1] Your CURRENTLY SELECTED target - unrelated to the triggering event,
+	-- unlike tDestinationUnitIDCannAttack. LAZY on purpose: it reads nothing from
+	-- the event, so the UnitCanAttack call was paid on EVERY combat-log event
+	-- while only an aura carrying this one condition ever looks at it.
+	-- Encoded as "true"/"false" STRINGS so the metatable's nil -> false caching
+	-- (which means "no value" - see MatchAnyForm in data.lua) stays
+	-- distinguishable from a real "target exists but is not attackable": with no
+	-- target UnitCanAttack returns nil, and the pre-lazy code made both `is` and
+	-- `isNot` come out false in that case, through the operators' own nil guard.
+	targetCanAttack = function()
+		local tCanAttack = UnitCanAttack("player", "target")
+		if tCanAttack == nil then
+			return nil
+		end
+		return tCanAttack == true and "true" or "false"
+	end,
 	-- The power-type indices are the game's own (SkuCore/aq.lua tPowerTypes uses
 	-- the same four). LAZY on purpose: four UnitPower/UnitPowerMax pairs on every
 	-- combat-log event would be paid by every user, and only an aura that asks
@@ -2359,9 +2375,12 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 	
 	local tDestinationUnitIDCannAttack
 	if tDestinationUnitID and tDestinationUnitID[1] then
-		if tDestinationUnitID ~= "party0" then
-			tDestinationUnitIDCannAttack = UnitCanAttack("player", tDestinationUnitID[1])
-		end
+		-- [v43.1] The old `tDestinationUnitID ~= "party0"` guard compared the whole
+		-- TABLE against a string, so it was always true and skipped nothing. Dropped
+		-- rather than repaired to `[1] ~= "party0"`: GetBestUnitId stopped emitting
+		-- the invalid "party0" token in v43.0 (see the comment there), so [1] can no
+		-- longer carry it. Behaviour is unchanged, one compare per event less.
+		tDestinationUnitIDCannAttack = UnitCanAttack("player", tDestinationUnitID[1])
 	elseif tEventData[CleuBase.destFlags] then
 		tDestinationUnitIDCannAttack = CombatLog_Object_IsA(tEventData[CleuBase.destFlags], CombatLogFilterAttackable)
 	end
@@ -2371,9 +2390,8 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 
 	local tSourceUnitIDCannAttack
 	if tSourceUnitID and tSourceUnitID[1] then
-		if tSourceUnitID ~= "party0" then
-			tSourceUnitIDCannAttack = UnitCanAttack("player", tSourceUnitID[1])
-		end
+		-- [v43.1] Dead "party0" guard removed, see tDestinationUnitIDCannAttack above.
+		tSourceUnitIDCannAttack = UnitCanAttack("player", tSourceUnitID[1])
 	elseif tEventData[CleuBase.sourceFlags] then
 		tSourceUnitIDCannAttack = CombatLog_Object_IsA(tEventData[CleuBase.sourceFlags], CombatLogFilterAttackable)
 	end
@@ -2634,7 +2652,6 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex, aRequir
 		debuffListPlayer = tDebuffListPlayerFull,
 		tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
 		tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
-		targetCanAttack = UnitCanAttack("player", "target"),
 		tInCombat = SkuState:IsInCombat(),
 		pressedKey = tEventData[50],
 		spellNameOnCd = SkuAuras.thingsNamesOnCd,
@@ -3531,6 +3548,40 @@ function SkuAuras.SkuCheck()
 					end
 				end
 			end
+		end
+	end
+
+	-- [v43.1] targetCanAttack is LAZY and string-encoded. Project rule: every
+	-- regression fix ships its tripwire. The breakage this catches is a future
+	-- revert to a raw boolean (or an eager targetCanAttack re-added to the
+	-- tEvaluateData constructor, which would shadow the getter): both make the
+	-- attribute's `tCanAttack == "true"` compare false forever, so "Dein
+	-- aktuelles Ziel angreifbar = ja" would silently never fire again.
+	local tLazyTargetCanAttack = tLazyEvaluateFields.targetCanAttack
+	tChecked = tChecked + 1
+	if type(tLazyTargetCanAttack) ~= "function" then
+		tViolations = tViolations + 1
+		dprint("skucheck", "VIOLATION auras: targetCanAttack is not a lazy field any more --",
+			"the targetCannAttack attribute expects the \"true\"/\"false\" encoding")
+	else
+		local tRaw = tLazyTargetCanAttack()
+		if tRaw ~= nil and tRaw ~= "true" and tRaw ~= "false" then
+			tViolations = tViolations + 1
+			dprint("skucheck", "VIOLATION auras: the lazy targetCanAttack returned", tostring(tRaw),
+				"-- expected nil, \"true\" or \"false\"")
+		end
+		-- ...and the no-target reading must stay the `false` no-value marker, which
+		-- is what makes both `is` and `isNot` come out false, as the pre-lazy nil did.
+		if UnitCanAttack("player", "target") == nil then
+			tChecked = tChecked + 1
+			local tProbe = setmetatable({}, tEvaluateDataMT)
+			if tProbe.targetCanAttack ~= false then
+				tViolations = tViolations + 1
+				dprint("skucheck", "VIOLATION auras: with no target the lazy targetCanAttack read",
+					tostring(tProbe.targetCanAttack), "-- expected the false no-value marker")
+			end
+		else
+			tPending = tPending + 1
 		end
 	end
 

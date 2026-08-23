@@ -1619,7 +1619,16 @@ SkuAuras.attributes = {
       friendlyName = L["Your target is attackable"],
       type = "BINARY",
       evaluate = function(self, aEventData, aOperator, aValue)
-         return SkuAuras.Operators[aOperator].func(aEventData.targetCanAttack, aValue == "true")
+         -- [v43.1] targetCanAttack is a LAZY field now (tLazyEvaluateFields in
+         -- Core.lua) and arrives as "true"/"false", with plain `false` as the
+         -- "no value" marker, i.e. no target selected at all. That case must
+         -- stay false for EVERY operator - which is what the pre-lazy nil did,
+         -- through the nil guard inside is/isNot.
+         local tCanAttack = aEventData.targetCanAttack
+         if tCanAttack == false then
+            return false
+         end
+         return SkuAuras.Operators[aOperator].func(tCanAttack == "true", aValue == "true")
       end,
       values = {
          "true",
