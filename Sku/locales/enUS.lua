@@ -749,7 +749,7 @@ L["Die Höhlen des Wehklagens"]  = "The Wailing Caverns" ---tPlayerUIMap
 L["Die Klasse der Einheit für das ausgelöste Ereignis"]  = "The class of the unit on the triggered event" --
 L["Die Liste der Buffs des Ziels"]  = "The list of buffs on the target" --
 L["Die Liste der Debuffs  des Ziels"]  = "The list of debuffs on the target" --
-L["Die Quell Einheit, bei der die Aura ausgelöst werden soll"]  = "The source unit of the triggering event. For buff and debuff lists use the condition lists own casts only instead" --
+L["Die Quell Einheit, bei der die Aura ausgelöst werden soll"]  = "The source unit of the triggering event. For buff and debuff lists use the condition buff debuff own casts only instead" --
 L["Die Stapel Anzahl der Aura"]  = "The stack count of the aura" --
 L["Die verbleibende Menge eines Gegenstands in deinen Taschen, bei der die auslösen soll"]  = "The remaining amount of an item that triggered the aura" --
 L["Die Zauber-ID, die die Aura auslösen soll"]  = "The spell ID to trigger the aura" --
@@ -1728,8 +1728,8 @@ L["Nur Gebot "]  = " only Bid " --
 L["O"] = "O"
 L["ö"] = "ö"
 L["Ob das Event im Kampf auftritt"]  = "Whether the event occurs in combat" --
-L["Ob die Listen Bedingungen nur selbst gewirkte Auren sehen"]  = "Whether the list conditions only see auras cast by yourself" --
-L["Listen nur selbst gewirkte"]  = "Lists own casts only" --
+L["Ob die Listen Bedingungen nur selbst gewirkte Auren sehen"]  = "Whether this aura's buff and debuff lists only see auras cast by yourself" --
+L["Listen nur selbst gewirkte"]  = "Buff Debuff own casts only" --
 L["Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist"]  = "Whether the source unit of the triggering event is attackable" --
 L["Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist"]  = "Whether the destination unit of the triggering event is attackable, not your current target" --
 L["Ob ein Zauber gerade auf CD ist"]  = "Whether a spell is currently on CD" --
@@ -3372,3 +3372,9 @@ L["AURA_PowerRunic"] = "Your runic power"
 L["AURA_PowerRunicTip"] = "Your runic power as a percentage, whichever bar is on show. Never true if your character has no runic power"
 L["AURA_PowerRunicOutTip"] = "Your runic power as a percentage"
 L["diesen Vergleich verwenden"] = "use this comparison"
+
+-- Sku v43.0: event families as their own entries in the attribute list (SkuAuras/Options.lua)
+L["AURA_GeneralEventsGroup"] = "General events"
+L["AURA_GeneralEventsGroupTip"] = "Every event that is not triggered by a spell: melee, ranged, items, health, resources, target change, death and key presses"
+-- Sku v43.0: deleting an aura asks first (SkuAuras/Options.lua)
+L["Wirklich löschen?"] = "Really delete?"

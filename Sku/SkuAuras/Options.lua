@@ -961,9 +961,46 @@ end
 -- these (SPELL_COOLDOWN_START/_END) are Sku's OWN synthesized events, so the
 -- naming is ours to change, and a pattern would silently regroup a value the day
 -- one of them is renamed.
+--
+-- [v43.0] The event families cover ALL 35 events now, and the split moved one
+-- level UP: "Ereignisse allgemein" and "Ereignisse Zauber" are two entries in
+-- the ATTRIBUTE list (see tAttributeValueFamilies), so the family is chosen
+-- before the comparison instead of two levels below it. Picking a spell event
+-- was attribute -> operator -> group -> value, four steps for the eighteen
+-- events people reach for most.
+--
+-- The group entries did not go away: inside a family list, the OTHER family is
+-- still offered as one entry at the top, because the values of ONE event
+-- condition are ORed and an aura that fires on "aura erhalten" or on "ziel
+-- änderung" has to stay expressible.
 local tValueGroups = {
 	event = {
 		{
+			key = "general",
+			label = "AURA_GeneralEventsGroup",
+			tip = "AURA_GeneralEventsGroupTip",
+			values = {
+				"UNIT_TARGETCHANGE",
+				"UNIT_POWER",
+				"UNIT_HEALTH",
+				"UNIT_DIED",
+				"UNIT_DESTROYED",
+				"SWING_DAMAGE",
+				"SWING_MISSED",
+				"SWING_EXTRA_ATTACKS",
+				"SWING_ENERGIZE",
+				"RANGE_DAMAGE",
+				"RANGE_MISSED",
+				"RANGE_EXTRA_ATTACKS",
+				"ITEM_COOLDOWN_START",
+				"ITEM_COOLDOWN_END",
+				"ITEM_USE",
+				"WEAPON_ENCHANT_REMOVED",
+				"KEY_PRESS",
+			},
+		},
+		{
+			key = "spell",
 			label = "AURA_SpellEventsGroup",
 			tip = "AURA_SpellEventsGroupTip",
 			values = {
@@ -1000,6 +1037,36 @@ for tAtt, tGroups in pairs(tValueGroups) do
 			tGroups[x].member[tGroups[x].values[y]] = true
 		end
 	end
+end
+
+-- [v43.0] The attributes whose ENTRY in the attribute list is split into one
+-- entry per value family. An attribute listed here never appears under its own
+-- friendlyName (tAttributeAllowed hides it, the way it hides a vitals member);
+-- its families stand in for it, and each of them opens the very same attribute
+-- with its family pre-selected. It is still ONE attribute and ONE stored
+-- condition - the split is a menu grouping, exactly like the vitals group.
+--
+-- Only an attribute whose groups cover EVERY one of its values belongs here: a
+-- value in none of them would be reachable through no entry at all.
+local tAttributeValueFamilies = {
+	event = true,
+}
+-- The family a condition is already in, for the EDIT path - a stored condition
+-- carries its values but not the entry the user once walked through. First value
+-- that has a family decides; a condition holding both (built through the "other
+-- family" entry) opens on the family of its first value and offers the other one
+-- inside, which is where it came from.
+local function tCondValueGroup(aCond)
+	local tGroupOf = tValueGroupOf[aCond.att]
+	if not tGroupOf then
+		return nil
+	end
+	for x = 1, #aCond.values do
+		if tGroupOf[aCond.values[x]] then
+			return tGroupOf[aCond.values[x]]
+		end
+	end
+	return nil
 end
 
 -- What a value GROUP entry says: its name, then the values picked INSIDE it,
@@ -1092,6 +1159,19 @@ local function tBuildValueToggleList(aLevel, aCond, aOwnerNode, aCtx)
 		return
 	end
 
+	-- [v43.0] The family this level IS. Its members are the flat list here, and
+	-- every OTHER family stays one entry, the way the spell family used to be the
+	-- one entry in a flat list of everything else. aCtx carries it down from the
+	-- attribute entry the user walked through; the edit path has no such entry,
+	-- so the condition's own values answer instead.
+	local tActiveGroup = (aCtx and aCtx.valueGroup) or tCondValueGroup(aCond)
+	local tGroupOf = tValueGroupOf[aCond.att]
+	-- A value belongs in the FLAT list when no group holds it, or when the group
+	-- that holds it is the one this level already is.
+	local function tIsFlatValue(aValue)
+		return not (tGroupOf and tGroupOf[aValue]) or tGroupOf[aValue] == tActiveGroup
+	end
+
 	-- [v43.0] RESUMABLE BUILD. The spell lists are 27,000 entries and a hardcore
 	-- realm kills a script that runs too long, so this build can be cut off in
 	-- the middle - and a half-built level that nothing rebuilds is a list
@@ -1112,10 +1192,9 @@ local function tBuildValueToggleList(aLevel, aCond, aOwnerNode, aCtx)
 
 	if tResuming then
 		local tSorted = aLevel.buildSorted
-		local tGroupOf = tValueGroupOf[aCond.att]
 		for x = (aLevel.buildCursor or 0) + 1, #tSorted do
 			local tValue = tSorted[x]
-			if not (tGroupOf and tGroupOf[tValue]) then
+			if tIsFlatValue(tValue) == true then
 				tInjectValueToggle(aLevel, tValue, aCond, aOwnerNode, aCtx)
 			end
 			-- after the entry, never before: if the script is killed inside
@@ -1154,19 +1233,23 @@ local function tBuildValueToggleList(aLevel, aCond, aOwnerNode, aCtx)
 
 	local tSorted = tSortedAttributeValues(tAttribute)
 	local tGroups = tValueGroups[aCond.att]
-	local tGroupOf = tValueGroupOf[aCond.att]
 
 	-- The groups first (the menu keeps insertion order), then every value that
 	-- belongs to none of them. A group entry is built only when at least one of
 	-- its members is really in the attribute's value list, so a data change can
 	-- never leave behind an entry that opens onto an empty level.
+	-- [v43.0] ...and never for the family this level already IS: its members are
+	-- the flat list below, and an entry opening onto the level it sits in would
+	-- be a loop the user walks in circles.
 	for x = 1, (tGroups and #tGroups or 0) do
 		local tGroup = tGroups[x]
 		local tAny = false
-		for y = 1, #tSorted do
-			if tGroup.member[tSorted[y]] then
-				tAny = true
-				break
+		if tGroup ~= tActiveGroup then
+			for y = 1, #tSorted do
+				if tGroup.member[tSorted[y]] then
+					tAny = true
+					break
+				end
 			end
 		end
 		if tAny == true then
@@ -1209,7 +1292,7 @@ local function tBuildValueToggleList(aLevel, aCond, aOwnerNode, aCtx)
 	aLevel.buildSorted = tSorted
 	for x = 1, #tSorted do
 		local tValue = tSorted[x]
-		if not (tGroupOf and tGroupOf[tValue]) then
+		if tIsFlatValue(tValue) == true then
 			tInjectValueToggle(aLevel, tValue, aCond, aOwnerNode, aCtx)
 		end
 		aLevel.buildCursor = x
@@ -1232,7 +1315,12 @@ end
 -- because that is the one the evaluator measures (see tListDurationPartner).
 -- So all four aspects edit the SAME condition, which is what makes "this spell,
 -- and less than three seconds left of it" one row instead of two.
-local function tBuildConditionAspects(aLevel, aCond, aOwnerNode)
+--
+-- [v43.0] aValueGroup is the value family the user picked one level up (an
+-- attribute split by tAttributeValueFamilies). It is only ever passed on the ADD
+-- chain: the edit path has no such entry, and tBuildValueToggleList reads the
+-- family out of the condition's own values there.
+local function tBuildConditionAspects(aLevel, aCond, aOwnerNode, aValueGroup)
 	aLevel.sorting = true
 	-- A switch has no aspects: its one comparison and its two values are the
 	-- entry itself now (tStepBinaryCondition), so there is nothing to put
@@ -1370,6 +1458,10 @@ local function tBuildConditionAspects(aLevel, aCond, aOwnerNode)
 					end
 				end
 				tBuildValueToggleList(self, aCond, aOwnerNode, {
+					-- The family chosen one level up, handed straight through: on
+					-- the ADD chain the condition is still empty, so its values
+					-- cannot say which family the user asked for.
+					valueGroup = aValueGroup,
 					-- The missing refresh, and the operator choice, in one place.
 					-- Without the refresh the label only ever changed when the
 					-- user entered a DIFFERENT operator, which is the second half
@@ -1536,20 +1628,53 @@ local function tAttributeAllowed(aAttName)
 	if tVitalsGroupMember[aAttName] then
 		return false
 	end
+	if tAttributeValueFamilies[aAttName] then
+		-- [v43.0] Split into one entry per value family, so the attribute's own
+		-- friendlyName ("ereignis") names no entry - the families do. The CONDITION
+		-- ROW still reads "ereignis;gleich;...": it is read in the Bedingungen list
+		-- with no family above it, and it is one condition, not two.
+		return false
+	end
 	return tAttributeUsable(aAttName)
+end
+
+-- [v43.0] The condition the draft ALREADY holds for an attribute, if any. Two
+-- entries on the same attribute exist now (the event families), and each of them
+-- would otherwise create a condition table of its own: pick "Ereignisse Zauber",
+-- toggle an event, step back out and into "Ereignisse allgemein", toggle there,
+-- and the draft carries TWO conditions on `event` - which the save merges into
+-- one OR-group, i.e. exactly the always-true row tAttributeUsable's one-row rule
+-- exists to prevent. Re-pointing at the stored table instead makes both entries
+-- edit the one condition, which is what they are: two doors into one row.
+local function tDraftConditionForAttribute(aAttName)
+	local tD = tDraft()
+	for _, tCond in ipairs(tD.conditions) do
+		if tCond.att == aAttName then
+			return tCond
+		end
+	end
+	return nil
 end
 
 -- One node per attribute, with the parts that both the flat list and the vitals
 -- group need. aLabel lets the group entry say something other than the plain
--- friendlyName if it ever has to; it passes nil today.
-local function tInjectAttributeNode(aLevel, aAttName, aLabel)
+-- friendlyName if it ever has to.
+-- aValueGroup marks the node as ONE FAMILY of an attribute that was split
+-- (tAttributeValueFamilies): same attribute, same condition, the value list one
+-- level down opens on that family.
+local function tInjectAttributeNode(aLevel, aAttName, aLabel, aValueGroup, aTooltip)
 	local tNode = SkuOptions:InjectMenuItems(aLevel, {aLabel or tFriendlyName(SkuAuras.attributes, aAttName)}, SkuGenericMenuItem)
 	tNode.internalName = aAttName
 	tNode.dynamic = true
 	tNode.sorting = true
 	tNode.vocalizeAsIs = true
 	tNode.elementType = "attribute"
+	tNode.auraValueGroup = aValueGroup
 	tNode.OnEnter = function(self)
+		if aTooltip then
+			tSetDraftTooltip(self, aTooltip)
+			return
+		end
 		local tEntry = SkuAuras.attributes[self.internalName]
 		tSetDraftTooltip(self, tEntry and tEntry.tooltip)
 	end
@@ -1593,10 +1718,16 @@ local function tInjectAttributeNode(aLevel, aAttName, aLabel)
 		-- therefore leaves no empty condition behind. It lives on the
 		-- ATTRIBUTE node, not on an operator node, because all four
 		-- aspects below edit this one condition.
-		if not self.auraCond then
+		-- Checked EVERY build, not only when the node has none: the node keeps the
+		-- table it made, so a sibling entry on the same attribute that got there
+		-- first would otherwise be edited past (see tDraftConditionForAttribute).
+		local tStored = tDraftConditionForAttribute(self.internalName)
+		if tStored then
+			self.auraCond = tStored
+		elseif not self.auraCond then
 			self.auraCond = {att = self.internalName, op = tDefaultOperator(self.internalName), values = {}}
 		end
-		tBuildConditionAspects(self, self.auraCond)
+		tBuildConditionAspects(self, self.auraCond, nil, self.auraValueGroup)
 	end
 	return tNode
 end
@@ -1633,6 +1764,23 @@ local function tBuildAttributeList(aLevel)
 				if tAttributeUsable(tMember.att) then
 					tInjectAttributeNode(self, tMember.att, L[tMember.label])
 				end
+			end
+		end
+	end
+
+	-- [v43.0] Then the split attributes, one entry per value family
+	-- ("Ereignisse allgemein", "Ereignisse Zauber"). Insertion order, so they
+	-- stand together right after the vitals group instead of being sorted apart
+	-- by their localized names. Each entry is the SAME attribute and produces the
+	-- SAME single condition, which is why they all disappear together the moment
+	-- one of them has been used (tAttributeUsable, one row per attribute).
+	for tAttName in pairs(tAttributeValueFamilies) do
+		if tAttributeUsable(tAttName) == true then
+			local tFamilies = tValueGroups[tAttName]
+			for x = 1, (tFamilies and #tFamilies or 0) do
+				local tFamily = tFamilies[x]
+				tAny = true
+				tInjectAttributeNode(aLevel, tAttName, L[tFamily.label], tFamily, L[tFamily.tip])
 			end
 		end
 	end
@@ -2461,7 +2609,48 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 		end
 
 		if SkuAuras:AuraUsedInOtherAuras(self.selectTarget.targetAuraName) ~= true then
+			-- [v43.0] Deleting asks, the way duplicating always did: the entry is
+			-- its own select level and the ENTER that really deletes is the one on
+			-- "Wirklich löschen?" below it. Before this, "Löschen" sat as a plain
+			-- leaf between "Duplizieren" and "Exportieren" and one ENTER while
+			-- walking the list destroyed an aura with no way back - and the
+			-- HARMLESS neighbour was the one that asked.
+			--
+			-- Handled here rather than in the "Auren verwalten" OnAction branch
+			-- (aName == L["Löschen"]) that used to catch it: that branch is reached
+			-- from the leaf's nearest isSelect ancestor, and this entry is now an
+			-- isSelect level of its own, so its child's ENTER lands here instead.
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Löschen"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				-- The aura is the level ABOVE this entry - the same reading
+				-- "Duplizieren" takes, and it does not depend on targetAuraName
+				-- having been set by whichever sibling the user walked over last.
+				local tAuraName = self.parent and self.parent.name
+				local tGroupName = self.parent and self.parent.parent and self.parent.parent.name
+				if not tAuraName or not SkuSettings:Sub("SkuAuras", nil, "char").Auras[tAuraName] then
+					return
+				end
+				SkuSettings:Sub("SkuAuras", nil, "char").Auras[tAuraName] = nil
+				-- The deleted aura also had a "sku aura <name>" pseudo-attribute in
+				-- the condition list; without this it stays there, offering a
+				-- condition on an aura that no longer exists.
+				SkuAuras:UpdateAttributesListWithCurrentAuras()
+				SkuOptions.Voice:OutputStringBTtts(L["gelöscht"], false, true, 0.1, true)
+
+				-- Out of the level that belonged to the deleted aura, up to the
+				-- list it was in - same move "Duplizieren" makes, for the same
+				-- reason: nothing below here describes anything that still exists.
+				if tGroupName then
+					C_Timer.After(0.01, function()
+						SkuOptions:SlashFunc(Sku.MENU_ROOT..",SkuAuras,aurenVerwalten,"..tGroupName)
+					end)
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				local tConfirmEntry = SkuOptions:InjectMenuItems(self, {L["Wirklich löschen?"]}, SkuGenericMenuItem)
+			end
 		end
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Exportieren"]}, SkuGenericMenuItem)
 	end
@@ -2573,10 +2762,14 @@ function SkuAuras:MenuBuilder(aParentEntry)
 					SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.targetAuraName].enabled = true
 					SkuOptions.Voice:OutputStringBTtts(L["aktiviert"], false, true, 0.1, true)
 				end			
-			elseif aName == L["Löschen"] then
-				SkuSettings:Sub("SkuAuras", nil, "char").Auras[self.targetAuraName] = nil
-				SkuOptions.Voice:OutputStringBTtts(L["gelöscht"], false, true, 0.1, true)
-			elseif aName == L["Exportieren"] then				
+			-- [v43.0] There is deliberately no aName == L["Löschen"] branch here any
+			-- more. "Löschen" is a select level of its own now and deletes from its
+			-- OWN OnAction, behind "Wirklich löschen?" (see BuildManageSubMenu).
+			-- Leaving this branch in place would have made the confirmation
+			-- pointless: a node's selectTarget is only re-pointed at itself once the
+			-- level is entered, so until then ENTER on "Löschen" still arrived here
+			-- - and deleted the aura without asking, which is the whole bug.
+			elseif aName == L["Exportieren"] then
 				SkuAuras:ExportAuraData({self.targetAuraName})
 
 			elseif aName == L["Set name to auto generated"] then		
