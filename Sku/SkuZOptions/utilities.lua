@@ -55,9 +55,36 @@ function SkuTableToString(aTable, aCallback)
 	local tSkuCoroutineControlFrame = _G["SkuCoroutineControlFrame"] or CreateFrame("Frame", "SkuCoroutineControlFrame", UIParent)
 	tSkuCoroutineControlFrame:SetPoint("CENTER")
 	tSkuCoroutineControlFrame:SetSize(50, 50)
+	-- [v43.1] Der Rückgabewert von coroutine.resume wurde komplett verworfen.
+	-- Stirbt die Coroutine an einem Fehler (kaputter Schlüssel, abgebrochene
+	-- Ausführung), ist ihr Status danach "dead" - also genau der Zustand, den
+	-- der else-Zweig als "fertig" liest. Er hängt dann eine schließende Klammer
+	-- an die HALBE Ausgabe und ruft den Callback auf, als wäre alles gut.
+	--
+	-- Das Ergebnis ist kein Absturz, sondern ein abgeschnittener Table-String,
+	-- den der einzige Aufrufer (auctionHouse.lua) als AuctionDBHistory in die
+	-- SavedVariables schreibt - und beim nächsten Login über
+	-- SkuStringToTable = assert(loadstring(...))() ungeschützt wieder einliest.
+	-- Der Fehler schlägt also weit entfernt von seiner Ursache zu, in einer
+	-- Sitzung, in der der Scan längst vorbei ist.
+	--
+	-- Ein Fehler muss deshalb den Callback GAR NICHT aufrufen: kein Ergebnis ist
+	-- richtig, halbe Daten sind falsch. Der Aufrufer behält seinen alten Stand.
+	local tFail = function(aErr)
+		tCoCompleted = true
+		tSkuCoroutineControlFrame:SetScript("OnUpdate", nil)
+		local tMsg = "SkuTableToString abgebrochen, Daten NICHT gespeichert: " .. tostring(aErr)
+		dprint(tMsg)
+		if SkuErrorLog and SkuErrorLog.Log then
+			pcall(function() SkuErrorLog:Log("skuTableToString", tMsg) end)
+		end
+	end
 	tSkuCoroutineControlFrame:SetScript("OnUpdate", function(self, time)
 		if coroutine.status(co) == "suspended" then
-			coroutine.resume(co)
+			local tOk, tErr = coroutine.resume(co)
+			if not tOk then
+				tFail(tErr)
+			end
 		else
 			if tCoCompleted == false then
 				tCoCompleted = true
@@ -70,8 +97,34 @@ function SkuTableToString(aTable, aCallback)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- [v43.1] Gegenstück zu SkuTableToString. War `assert(loadstring(aString))()`,
+-- also ungeschützt: ein abgeschnittener oder sonst kaputter String - wie ihn die
+-- alte Serialisierung bei einem Abbruch erzeugen konnte - warf hier hart, und
+-- zwar im OnEnable-Pfad von AuctionHouse (auctionHouse.lua, AuctionHouseOnLogin).
+-- Der einzige Aufrufer schreibt ohnehin `... or {}`, verkraftet nil also. Solche
+-- Altbestände dürfen kein Modul mehr am Laden hindern; sie sind eine leere
+-- Historie, kein Ladefehler. Laut sagen, was passiert ist, und weitergehen.
 function SkuStringToTable(aString)
-	return assert(loadstring(aString))()
+	if type(aString) ~= "string" or aString == "" then return nil end
+	local tChunk, tLoadErr = loadstring(aString)
+	if not tChunk then
+		local tMsg = "SkuStringToTable: gespeicherte Daten unlesbar (" .. tostring(tLoadErr) .. "), werden verworfen"
+		dprint(tMsg)
+		if SkuErrorLog and SkuErrorLog.Log then
+			pcall(function() SkuErrorLog:Log("skuStringToTable", tMsg) end)
+		end
+		return nil
+	end
+	local tOk, tResult = pcall(tChunk)
+	if not tOk then
+		local tMsg = "SkuStringToTable: gespeicherte Daten fehlerhaft (" .. tostring(tResult) .. "), werden verworfen"
+		dprint(tMsg)
+		if SkuErrorLog and SkuErrorLog.Log then
+			pcall(function() SkuErrorLog:Log("skuStringToTable", tMsg) end)
+		end
+		return nil
+	end
+	return tResult
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
