@@ -70,6 +70,10 @@ r5.0
 	  copy/paste, no digging through the WTF folder. Map anywhere you like —
 	  merging with other mappers' work is done by the team, waypoint by
 	  waypoint, nothing gets lost or overwritten.
+	- New map data arrives as "SkuMapper-Datenpaket-Karte-N.zip": put it in
+	  your Downloads folder or on the desktop, double-click InstallMapData.bat
+	  in the addon folder, then /sku reset and /reload in game. Hand in your
+	  own unsent work BEFORE installing (the reset discards the local copy).
 	- Every map dataset now has a MAP NUMBER. The tool records which number your
 	  work is based on and sends it along with the hand-in, so contributions can
 	  never be mixed up.

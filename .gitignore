@@ -11,3 +11,5 @@ __pycache__/
 # incoming mapper contributions (25+ MB SavedVariables zips/files; archived on
 # disk only — the merged RESULT is what gets committed, see dev/mapper/)
 /dev/mapper/inbox/
+# outgoing mapper data packs (derived from the tracked route file, ~6 MB each)
+/dev/mapper/packs/

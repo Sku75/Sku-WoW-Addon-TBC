@@ -10,6 +10,14 @@ Einbau
 2. Karte oeffnen: Escape, Tastenbelegung, Kategorie Other (Sonstiges), Eintrag
    "Open Sku Minimap" eine Taste zuweisen, dann diese Taste druecken.
 
+Neue Kartendaten bekommen (der normale Weg seit 5.0)
+1. Das Kartendaten-Paket vom Sku-Team ("SkuMapper-Datenpaket-Karte-N.zip") in
+   den Download-Ordner oder auf den Desktop legen.
+2. Im SkuMapper-Addon-Ordner die Datei InstallMapData.bat doppelklicken.
+   ACHTUNG: Vorher eigene, noch nicht abgegebene Arbeit abgeben (siehe unten)!
+3. Danach im Spiel:  /sku reset  und dann  /reload  — fertig, die neue Karte
+   ist aktiv (WoW muss nicht neu gestartet werden).
+
 Kartendaten abgeben (der normale Weg seit 5.0)
 1. Im Spiel:  /sku save <kurzer Kommentar>   (z.B.: /sku save Westfall Wegpunkte)
 2. Im Spiel:  /reload                        (erst das schreibt die Daten auf die Platte)
@@ -29,6 +37,9 @@ Neu in 5.0
   Sku-Karte und eine belegbare Taste "Save map data for hand-in"
   (Tastenbelegung, Kategorie Other/Sonstiges). Beide nutzen den zuletzt per
   /sku save gesetzten Kommentar weiter.
+- Neue Kartendaten kommen als "SkuMapper-Datenpaket-Karte-N.zip" und werden
+  mit InstallMapData.bat installiert (siehe oben) — kein Datei-Kopieren von
+  Hand mehr.
 - Jede Datenbasis hat jetzt eine KARTENNUMMER. Das Tool merkt sich, auf welcher
   Nummer die eigene Arbeit aufsetzt, und gibt sie bei der Abgabe mit — so kann
   nichts mehr verwechselt oder ueberschrieben werden.

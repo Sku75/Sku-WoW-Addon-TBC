@@ -24,10 +24,22 @@ und Befehle bleiben im Original.
 
 ## Mapper-Seite (steht auch in SkuMapper/LIESMICH.txt)
 
-1. Im Spiel: `/sku save Westfall Wegpunkte` (Kommentar frei).
+Abgeben:
+
+1. Im Spiel: `/sku save Westfall Wegpunkte` (Kommentar frei; auch als Knopf
+   "Save hand-in" auf dem Kartenoptionsfeld und als belegbare Taste).
 2. `/reload` — erst das schreibt die SavedVariables auf die Platte.
 3. `HandInMapData.bat` im SkuMapper-Ordner doppelklicken -> ZIP auf dem Desktop.
 4. ZIP ans Team senden. Keine Zonenzuteilung, kein WTF-Ordner, kein Copy/Paste.
+
+Neue Karte bekommen:
+
+1. `SkuMapper-Datenpaket-Karte-N.zip` vom Team in Downloads oder auf den
+   Desktop legen (eigene, noch nicht abgegebene Arbeit VORHER abgeben).
+2. `InstallMapData.bat` im SkuMapper-Ordner doppelklicken (fragt nach, warnt
+   vor dem Verwerfen der lokalen Kopie, meldet die installierte Kartennummer).
+3. Im Spiel `/sku reset` + `/reload` — die neue Karte ist aktiv, WoW muss
+   nicht neu gestartet werden.
 
 ## Maintainer-Seite
 
@@ -36,6 +48,7 @@ py -3 dev/mapper/skumap.py status                 # Registry + Zustand
 py -3 dev/mapper/skumap.py merge <zip> [<zip2> …] [--dry-run]
 py -3 dev/mapper/skumap.py dump                   # Zonen-Dumps neu erzeugen
 py -3 dev/mapper/skumap.py seed --note "…"        # Ergebnis als naechste Karte registrieren
+py -3 dev/mapper/skumap.py pack                   # Datenpaket-ZIP fuer die Mapper bauen
 py -3 dev/mapper/skumap.py selftest               # nach jeder Aenderung am Tool
 ```
 
@@ -53,10 +66,15 @@ Ablauf pro Mapping-Runde:
 4. `seed` registriert den committeten Stand als naechste Kartennummer und
    stempelt `SkuMapper/SkuDB/assets/mapid.lua`. seeds.json + mapid.lua mit
    committen.
-5. Paketieren: SkuMapper-Quelle + die aktuelle
-   `Sku/SkuDB/assets/routedata_global.lua` als Byte-Kopie nach
-   `SkuMapper/SkuDB/assets/` (wie gehabt, SKUMAPPER-AUDIT.md 4.1) — mapid.lua
-   ist jetzt Teil des Pakets und traegt die Nummer.
+5. `pack` baut `dev/mapper/packs/SkuMapper-Datenpaket-Karte-N.zip`
+   (routedata + mapid unter SkuDB/assets/-Pfaden plus eine Anleitungs-Textdatei;
+   verweigert, wenn die Live-Datei seit der Registrierung von N geaendert
+   wurde). Das ZIP an die Mapper verteilen — sie installieren es mit
+   `InstallMapData.bat` und machen `/sku reset` + `/reload`. Ein komplettes
+   Tool-Paket (SKUMAPPER-AUDIT.md 4.1) ist nur noch bei TOOL-Updates noetig;
+   ein Nebeneffekt der Bat: sie befuellt auch das Repo-`SkuMapper/` selbst
+   (`InstallMapData.ps1 -PackPath … -Yes`), was den Kopierschritt beim
+   Tool-Paketieren ersetzt.
 
 ## Merge-Regeln im Detail
 

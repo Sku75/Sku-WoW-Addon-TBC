@@ -31,6 +31,13 @@ Commands (run from anywhere; paths are repo-anchored):
   py -3 dev/mapper/skumap.py dump
       Regenerate dev/mapper/zones/*.txt from the live file (one line per
       waypoint, links inline) — the git-diffable view of the map data.
+  py -3 dev/mapper/skumap.py pack
+      Build the mapper data pack for the current registered map:
+      dev/mapper/packs/SkuMapper-Datenpaket-Karte-<N>.zip containing the live
+      routedata_global.lua + the stamped mapid.lua (under SkuDB/assets/ paths,
+      so manual extraction into the SkuMapper folder works too). Mappers
+      install it with InstallMapData.bat, then /sku reset + /reload in game.
+      Refuses if the live file changed since map <N> was registered.
   py -3 dev/mapper/skumap.py selftest
       Synthetic three-way merge exercise + parser/serialiser round-trip on the
       real live file. Run after changing this tool.
@@ -1026,6 +1033,54 @@ def cmd_dump():
     print("Zone dumps: %d files under dev/mapper/zones/" % n)
 
 
+PACKS_DIR = os.path.join(HERE, "packs")
+
+PACK_README = """SkuMapper-Datenpaket — Karte %d
+
+Automatische Installation (empfohlen):
+  Diese ZIP in den Download-Ordner oder auf den Desktop legen und im
+  SkuMapper-Addon-Ordner InstallMapData.bat doppelklicken.
+
+Manuelle Installation:
+  Den Inhalt dieser ZIP in den SkuMapper-Addon-Ordner entpacken
+  (<WoW>\\Interface\\AddOns\\SkuMapper\\), vorhandene Dateien ueberschreiben.
+
+Danach IM SPIEL (wichtig):
+  /sku reset    (verwirft die lokale Arbeitskopie — vorher abgeben!)
+  /reload       (laedt die neue Karte %d)
+"""
+
+
+def cmd_pack():
+    reg = load_seeds()
+    cur = reg["current"]
+    if cur == 0:
+        raise SystemExit("ERROR: no map registered yet — run 'seed' first.")
+    with open(MAPID_LUA, encoding="utf-8-sig") as f:
+        m = re.search(r"SKUMAPPER_SEED_MAPID\s*=\s*(\d+)", f.read())
+    stamp = int(m.group(1)) if m else -1
+    if stamp != cur:
+        raise SystemExit("ERROR: mapid.lua is stamped %d but the registry says map %d — run 'seed'." % (stamp, cur))
+    if git("status", "--porcelain", "--", LIVE_REL).stdout.strip():
+        raise SystemExit("ERROR: %s has uncommitted changes — commit, then 'seed', then 'pack'." % LIVE_REL)
+    info = reg["seeds"][str(cur)]
+    r = git("diff", "--quiet", info["commit"], "HEAD", "--", LIVE_REL)
+    if r.returncode != 0:
+        raise SystemExit("ERROR: the live route data changed since map %d was registered.\n"
+                         "Run 'seed' to register the current state as the next map, then 'pack'." % cur)
+
+    os.makedirs(PACKS_DIR, exist_ok=True)
+    out = os.path.join(PACKS_DIR, "SkuMapper-Datenpaket-Karte-%d.zip" % cur)
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+        z.write(LIVE, "SkuDB/assets/routedata_global.lua")
+        z.write(MAPID_LUA, "SkuDB/assets/mapid.lua")
+        z.writestr("LIESMICH-DATENPAKET.txt", PACK_README % (cur, cur))
+    print("Data pack for map %d: %s (%.1f MB)" % (cur, os.path.relpath(out, ROOT),
+                                                  os.path.getsize(out) / 1048576.0))
+    print("Hand this zip to mappers; they install it with InstallMapData.bat,")
+    print("then /sku reset + /reload in game.")
+
+
 # ==================================================================== selftest
 def _mk_wp(name_en, name_de, area, x, y, size=1, phase=None):
     t = LTable()
@@ -1222,6 +1277,8 @@ def main():
         cmd_merge(paths, base_override, base_file, assume, dry)
     elif cmd == "dump":
         cmd_dump()
+    elif cmd == "pack":
+        cmd_pack()
     elif cmd == "selftest":
         cmd_selftest()
     else:
