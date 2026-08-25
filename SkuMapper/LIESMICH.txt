@@ -1,8 +1,14 @@
 SkuMapper 5.0 (Karten-Tool fuer Sku)
 
+Diese Anleitung gibt es auch auf Englisch (README.txt) und Franzoesisch
+(LISEZMOI.txt).
+
 Wozu
 - Zum Erstellen und Bearbeiten von Kartendaten (Wegpunkte, Routen) fuer das SkuAddon.
   Sichtbares Tool, gedacht fuer sehende Helfer.
+- Jede Datenbasis hat eine KARTENNUMMER. Das Tool merkt sich, auf welcher Nummer
+  die eigene Arbeit aufsetzt, und gibt sie bei der Abgabe mit — so kann nichts
+  verwechselt oder ueberschrieben werden. Es darf frei ueberall gemappt werden.
 
 Einbau
 1. Den Ordner SkuMapper nach Interface\AddOns kopieren und das Addon aktivieren.
@@ -20,6 +26,8 @@ Neue Kartendaten bekommen (der normale Weg seit 5.0)
 
 Kartendaten abgeben (der normale Weg seit 5.0)
 1. Im Spiel:  /sku save <kurzer Kommentar>   (z.B.: /sku save Westfall Wegpunkte)
+   Geht auch per Knopf "Save hand-in" auf dem Kartenoptionsfeld oder per Taste
+   "Save map data for hand-in" (beide nutzen den letzten Kommentar weiter).
 2. Im Spiel:  /reload                        (erst das schreibt die Daten auf die Platte)
 3. Im SkuMapper-Addon-Ordner die Datei HandInMapData.bat doppelklicken.
    Sie legt eine ZIP-Datei auf den Desktop.

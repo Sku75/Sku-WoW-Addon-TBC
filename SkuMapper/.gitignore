@@ -10,7 +10,14 @@ SkuNav/assets/
 
 # Large generated game-data tables (creatures/items/objects/quests/spells/
 # routes/wiki/…). These are byte-identical copies of Sku's own SkuDB assets.
-SkuDB/assets/
+# (`/*` + negation instead of ignoring the directory itself, so the tiny
+# tooling-stamped mapid.lua CAN be tracked — a fully ignored directory would
+# swallow it silently.)
+SkuDB/assets/*
+!SkuDB/assets/mapid.lua
+
+# Built release zips (installer\release.ps1 -PublishSkuMapper reads them here)
+dist/
 
 # Audio
 audio/

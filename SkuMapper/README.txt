@@ -1,7 +1,46 @@
-SkuMapper Addon
+SkuMapper 5.0 (mapping tool for Sku)
 
-This addon is used to build and edit map data for the Sku addon.
+This addon is used to build and edit map data (waypoints, routes) for the Sku
+addon. It is a visual tool, made for sighted helpers.
 For more information join the Sku Discord server: https://discord.gg/FsfKeqxZV4
+This readme also exists in German (LIESMICH.txt) and French (LISEZMOI.txt).
+
+------------------------------------------------
+Installation
+	1. Copy the SkuMapper folder into Interface\AddOns and enable the addon.
+	   After a Blizzard patch you may need to tick "Load out of date AddOns".
+	2. Open the map: Escape > Key bindings > category Other, assign a key to
+	   "Open Sku Minimap", then press that key.
+
+------------------------------------------------
+The mapping workflow (since 5.0)
+
+	Every map dataset has a MAP NUMBER. The tool records which number your
+	work is based on and sends it along when you hand your work in, so
+	nothing can be mixed up or overwritten. You can map wherever you want —
+	merging everyone's work is done by the Sku team, waypoint by waypoint.
+
+	Step 1 — Get the current map data:
+		Put the "SkuMapper-Datenpaket-Karte-N.zip" from the Sku team into
+		your Downloads folder or on the desktop, then double-click
+		InstallMapData.bat in the SkuMapper addon folder. In game afterwards:
+		/sku reset and /reload. (A fresh SkuMapper install already contains
+		a map — this step is only needed when a new map number comes out.
+		Hand in your own unsent work BEFORE installing: the reset discards
+		the local working copy.)
+
+	Step 2 — Map and save:
+		Do your mapping work. When you are done for the day, save it:
+		/sku save <short comment>     (e.g.: /sku save Westfall waypoints)
+		then /reload — only the reload writes the data to disk.
+		Instead of the slash command you can use the "Save hand-in" button
+		on the map options panel or the key binding "Save map data for
+		hand-in"; both keep the last comment you set with /sku save.
+
+	Step 3 — Hand your work in:
+		Double-click HandInMapData.bat in the SkuMapper addon folder. It puts
+		a zip with your map data on the desktop. Send that zip to the Sku
+		team — done. No copy/paste, no digging through the WTF folder.
 
 ------------------------------------------------
 Key bindings (no default bindings, set them up via Game Settings > Interface > Key bindings > Other)
@@ -51,10 +90,10 @@ Mouse buttons
 
 ------------------------------------------------
 Slash commands
-	/sku save <comment>	mark your map work for hand-in (then /reload and run
-				HandInMapData.bat in the addon folder — see release notes 5.0)
-	/sku import		import a text file with map data
-	/sku export		output the map data for the text file
+	/sku save <comment>	mark your map work for hand-in (see "The mapping
+				workflow" above)
+	/sku import		(legacy) import map data from a pasted text blob
+	/sku export		(legacy) show the map data as a text blob to copy out
 	/sku follow		set the sku minimap to follow
 	/sku reset		reset all map data to the the default data (caution: all your work will be lost)
 	/sku version	output the addon version

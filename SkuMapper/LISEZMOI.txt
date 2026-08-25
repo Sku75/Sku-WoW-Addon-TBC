@@ -1,0 +1,58 @@
+SkuMapper 5.0 (outil de cartographie pour Sku)
+
+Ce guide existe aussi en anglais (README.txt) et en allemand (LIESMICH.txt).
+
+A quoi ca sert
+- A creer et modifier les donnees de carte (points de passage, routes) pour
+  l'addon Sku. Outil visuel, concu pour des assistants voyants.
+- Chaque jeu de donnees porte un NUMERO DE CARTE. L'outil retient sur quel
+  numero votre travail est base et l'envoie avec votre contribution — rien ne
+  peut etre confondu ni ecrase. Vous pouvez cartographier ou vous voulez.
+
+Installation
+1. Copier le dossier SkuMapper dans Interface\AddOns et activer l'addon.
+   Apres un patch Blizzard, cocher au besoin "Charger les addons obsoletes".
+2. Ouvrir la carte : Echap > Raccourcis clavier > categorie Autre (Other),
+   assigner une touche a "Open Sku Minimap", puis appuyer sur cette touche.
+
+Recevoir de nouvelles donnees de carte (la methode normale depuis la 5.0)
+1. Placer le paquet de donnees de l'equipe Sku ("SkuMapper-Datenpaket-Karte-N.zip")
+   dans le dossier Telechargements ou sur le Bureau.
+2. Double-cliquer sur InstallMapData.bat dans le dossier de l'addon SkuMapper.
+   ATTENTION : remettre d'abord votre travail non envoye (voir ci-dessous) !
+3. Ensuite, en jeu :  /sku reset  puis  /reload  — la nouvelle carte est active
+   (pas besoin de redemarrer WoW).
+
+Remettre son travail (la methode normale depuis la 5.0)
+1. En jeu :  /sku save <petit commentaire>   (ex. : /sku save Westfall routes)
+   Existe aussi comme bouton "Save hand-in" sur le panneau d'options de la
+   carte et comme touche "Save map data for hand-in" (les deux reutilisent le
+   dernier commentaire).
+2. En jeu :  /reload    (c'est le reload qui ecrit les donnees sur le disque)
+3. Double-cliquer sur HandInMapData.bat dans le dossier de l'addon SkuMapper.
+   Une archive ZIP est creee sur le Bureau.
+4. Envoyer ce ZIP a l'equipe Sku. Termine — pas de copier/coller, pas de
+   dossier WTF. La fusion avec le travail des autres cartographes est faite
+   par l'equipe Sku, point par point, rien n'est perdu.
+
+Donnees de carte (ancienne methode)
+- Import et export par une zone de texte (copier/coller) : /sku import et
+  /sku export.
+
+Nouveau en 5.0
+- Nouveau flux de remise : /sku save <commentaire> + /reload + HandInMapData.bat
+  (voir ci-dessus). Le commentaire aide l'equipe a comprendre ce qui a ete fait.
+- Bouton "Save hand-in" sur le panneau d'options de la carte et touche
+  assignable "Save map data for hand-in".
+- Les nouvelles donnees arrivent en "SkuMapper-Datenpaket-Karte-N.zip" et
+  s'installent avec InstallMapData.bat — plus de copie de fichiers a la main.
+- Chaque jeu de donnees porte maintenant un NUMERO DE CARTE (voir plus haut).
+- Les nouveaux points de passage sont marques avec la phase de jeu
+  (era/tbc/wotlk) dans laquelle ils ont ete observes — la chronologie
+  Anniversary est cyclique et les cartes changent entre les phases.
+- Les noms francais sont conserves : l'outil ne connaissait que en/de et
+  perdait la troisieme colonne de noms (frFR) a chaque sauvegarde, ou coupait
+  mal les noms a trois colonnes. Toutes les colonnes sont maintenant traitees
+  correctement.
+- Charge les donnees de base depuis le format de routes actuel de Sku (la 4.9
+  aurait demarre a vide avec ce format).

@@ -704,7 +704,9 @@ function Do-PublishLoginTool {
     # then commit so the shipped installer upgrades users to this build.
     Set-LoginToolVersion $LoginToolVersion
     Set-DocsLoginToolRolling
-    Commit-Push @('installer/SkuInstaller/Config.cs', 'docs/index.html') "login tool: publish v$LoginToolVersion (rolling '$LoginToolTag')"
+    # $DocsPages, not just index.html: Set-DocsLoginToolRolling edits ALL
+    # language pages; committing only index.html left -de/-fr dirty.
+    Commit-Push (@('installer/SkuInstaller/Config.cs') + $DocsPages) "login tool: publish v$LoginToolVersion (rolling '$LoginToolTag')"
     Info "  Login tool v$LoginToolVersion published on rolling tag '$LoginToolTag' (installer + website)."
     Note "  Rebuild + ship the installer (a -Version release, or -BackfillLatestAssets)"
     Note "  so users get an exe that carries the new Config.LoginToolVersion pin."
@@ -726,7 +728,8 @@ function Do-PublishSkuMapper($ver) {
         gh release create $tag $src --repo $Slug --title "SkuMapper $ver (Mapping Tool)" --notes "SkuMapper $ver." --latest=false --target main
     }
     Set-DocsSkuMapperVersion $ver
-    Commit-Push @('docs/index.html') "docs: SkuMapper link -> $ver"
+    # $DocsPages, not just index.html: the version bump edits ALL language pages.
+    Commit-Push $DocsPages "docs: SkuMapper link -> $ver"
     Info "  SkuMapper $ver published. Docs link now uses releases/download/$tag/SkuMapper-$ver.zip"
 }
 
